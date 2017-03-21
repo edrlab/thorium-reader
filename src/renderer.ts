@@ -1,0 +1,2 @@
+
+console.log("renderer process");
