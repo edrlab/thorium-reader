@@ -25,14 +25,14 @@ let mainConfig = Object.assign({}, {
     },
 
     resolve: {
-        // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".jsx"]
+        // Add '.ts' as resolvable extensions.
+        extensions: [".ts", ".js"]
     },
 
     module: {
         loaders: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            { test: /\.tsx?$/, loaders: ["react-hot-loader", "awesome-typescript-loader"] }
+            { test: /\.tsx?$/, loaders: ["awesome-typescript-loader"] }
         ]
     },
     plugins: [
@@ -51,6 +51,18 @@ let rendererConfig = Object.assign({}, {
 
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",
+
+    resolve: {
+        // Add '.ts' and '.tsx' as resolvable extensions.
+        extensions: [".ts", ".tsx", ".js", ".jsx"]
+    },
+
+    module: {
+        loaders: [
+            // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
+            { test: /\.tsx?$/, loaders: ["react-hot-loader", "awesome-typescript-loader"] }
+        ]
+    },
 
     devServer: {
         contentBase: __dirname,
