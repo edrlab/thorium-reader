@@ -1,0 +1,6 @@
+install:
+  - npm install tslint
+  - npm run lint
+
+before_script:
+  - npm run lint
