@@ -17,5 +17,6 @@ script:
 - 'yarn run build'
 after_success:
 - 'pwd && ls -als'
+- 'ls dist'
 after_failure:
 - 'pwd && ls -als'
