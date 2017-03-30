@@ -11,6 +11,7 @@ install:
 - 'pwd && ls -als'
 before_script:
 - 'pwd && ls -als'
+- 'yarn install'
 script:
 - 'yarn run lint'
 - 'yarn run build'
