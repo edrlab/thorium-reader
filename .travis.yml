@@ -1,13 +1,22 @@
+esudo: false
+branches:
+  only:
+  - master
 language: node_js
 node_js:
-  - 6
-
+- '6'
+before_install:
+- 'pwd && ls -als'
 install:
-  - npm install
-  - npm run lint
-
+- 'pwd && ls -als'
 before_script:
-  - npm run lint
-
+- 'pwd && ls -als'
+- 'yarn install'
 script:
-  - npm run build
+- 'yarn run lint'
+- 'yarn run build'
+after_success:
+- 'pwd && ls -als'
+- 'ls dist'
+after_failure:
+- 'pwd && ls -als'

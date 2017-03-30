@@ -19,12 +19,28 @@ import { lazyInject } from "../di";
 import { Translator } from "../i18n/translator";
 import { IAppState } from "../reducers/app";
 
+// DANIEL - IPC test
+import { ipcRenderer } from "electron";
+
 interface ILibraryState {
     locale: string;
 }
 
 export default class Library extends React.Component<undefined, ILibraryState> {
     public state: ILibraryState;
+
+    // DANIEL - IPC test
+    public _handleClick() {
+        console.log("CLICK");
+
+        // let response = ipcRenderer.sendSync('synchronous-message', 'RENDERER SYNC');
+        // console.log(response);
+
+        ipcRenderer.on('asynchronous-reply', (event, arg) => {
+            console.log(arg);
+        })
+        ipcRenderer.send('asynchronous-message', 'RENDERER ASYNC')
+    }
 
     @lazyInject(Translator)
     private translator: Translator;
@@ -80,6 +96,8 @@ export default class Library extends React.Component<undefined, ILibraryState> {
                     </ToolbarGroup>
                 </Toolbar>
                 <h1>{__("library.heading")}</h1>
+
+                <RaisedButton label="DANIEL - IPC test" onClick={this._handleClick} />
             </div>
         );
     }

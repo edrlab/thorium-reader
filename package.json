@@ -1,14 +1,23 @@
 {
   "name": "readium-desktop",
-  "version": "0.1.0",
+  "version": "0.0.1-alpha1",
   "description": "Desktop application to read ebooks",
-  "main": "index.js",
+  "keywords": [
+    "readium",
+    "epub"
+  ],
+  "engines": {
+    "node": ">=6",
+    "npm": ">=3",
+    "yarn": ">= 0.21"
+  },
+  "main": "dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cross-env BUILD_ENV=PROD webpack -p",
     "start": "npm run build && cross-env BUILD_ENV=PROD electron ./dist/main.js",
     "lint:ts": "tslint './src/**/*.ts'",
-    "lint:editorconfig": "editorconfig-tools check .* * src/* src/*/*",
+    "lint:editorconfig": "eclint check '**/*' '[!].git/**/*' '[!]node_modules/**/*' '[!]dist/**/*' '[!]**/.DS_Store'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer": "webpack-dev-server",
     "start:dev:main": "webpack -d && electron ./dist/main.js",
@@ -18,8 +27,22 @@
     "type": "git",
     "url": "git@github.com:edrlab/readium-desktop.git"
   },
-  "author": "EDRLab",
-  "license": "Copyright @EDRLab",
+  "author": {
+    "name": "EDRLab developers",
+    "organization": "EDRLab",
+    "url": "http://github.com/edrlab/"
+  },
+  "license": "BSD-3-Clause",
+  "licenses": [
+    {
+      "type": "BSD-3-Clause",
+      "url": "http://opensource.org/licenses/BSD-3-Clause"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/edrlab/readium-desktop/issues"
+  },
+  "homepage": "https://github.com/edrlab/readium-desktop",
   "dependencies": {
     "@types/electron": "^1.4.34",
     "@types/i18next": "^2.3.35",
@@ -50,7 +73,7 @@
     "concurrently": "^3.4.0",
     "cross-env": "^3.2.4",
     "css-loader": "^0.28.0",
-    "editorconfig-tools": "^0.1.1",
+    "eclint": "^2.0.1",
     "electron": "^1.6.2",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",

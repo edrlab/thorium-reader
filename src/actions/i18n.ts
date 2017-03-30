@@ -3,7 +3,7 @@ import { Action } from "redux";
 export const SET_LOCALE = "SET_LOCALE";
 
 export interface ILocaleAction extends Action {
-  locale: string;
+    locale: string;
 }
 
 export function setLocale(locale: string): ILocaleAction {

@@ -1,17 +1,16 @@
 {
-  /*
-   * Possible values:
-   * - the name of a built-in config
-   * - a string that can be resolved as a module that exports the config object, e.g.:
-   *   - an npm package name
-   *   - an npm package name followed by the path to a file inside
-   *   - a relative path to a JSON file
-   */
   "extends": "tslint:recommended",
   "rules": {
-    /*
-     * Any rules specified here will override those from the base config we are extending.
-     */
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "case-insensitive",
+        "named-imports-order": "case-insensitive"
+      }
+    ],
+    "no-console": false
+  },
+  "jsRules": {
     "ordered-imports": [
       true,
       {
@@ -20,22 +19,6 @@
       }
     ]
   },
-  "jsRules": {
-    /*
-     * Any rules specified here will override those from the base config we are extending.
-     */
-     "ordered-imports": [
-      true,
-      {
-        "import-sources-order": "case-insensitive",
-        "named-imports-order": "case-insensitive"
-      }
-    ]
-  },
   "rulesDirectory": [
-    /*
-     * A list of relative or absolute paths to directories that contain custom rules.
-     * See the Custom Rules documentation below for more details.
-     */
   ]
 }

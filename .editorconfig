@@ -1,23 +1,23 @@
-# top-most EditorConfig file
 root=true
 
-# Unix-style newlines with a newline ending every file
 [*]
+charset = utf-8
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# Matches multiple files with brace expansion notation
-# Set default charset
-[*.{js,ts}]
-charset = utf-8
+[*.{md}]
+indent_style = ignore
+indent_size = ignore
 
-# 4 space indentation
-[*.{scss,css,py}]
+[*.{js,ts,jsx,tsx}]
 indent_style = space
 indent_size = 4
 
-# 2 space indentation
-[*.{html,yml,json,ejs}]
+[*.{yml,json}]
+indent_style = space
+indent_size = 2
+
+[*.{html,ejs,css,scss}]
 indent_style = space
 indent_size = 2
