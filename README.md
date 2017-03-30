@@ -23,3 +23,37 @@ Command line steps:
 6) `yarn run lint` (code linting)
 7) `yarn start` (runs the app)
 8) `yarn start:dev` (runs the app in dev mode)
+
+## Technologies
+
+* typescript
+* electron
+* reactjs
+* redux
+* i18next
+
+## Install
+
+Install all dependencies
+
+```
+yarn install
+```
+
+## Getting started
+
+### Production
+
+```
+yarn start
+```
+
+### Development
+
+```
+yarn run start:dev
+```
+
+This environment provides a hot loader.
+So if you made changes in your code, electron will automatically reload
+your app.

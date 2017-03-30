@@ -4,6 +4,7 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
+    "lib": ["es6", "dom"],
     "target": "es5",
     "jsx": "react",
     "experimentalDecorators": true,
@@ -14,5 +15,8 @@
   ],
   "exclude": [
     "node_modules"
+  ],
+  "files": [
+    "typings.d.ts"
   ]
 }
