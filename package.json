@@ -16,7 +16,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cross-env BUILD_ENV=PROD webpack -p",
     "start": "npm run build && cross-env BUILD_ENV=PROD electron ./dist/main.js",
-    "lint:ts": "tslint './src/**/*.ts'",
+    "lint:ts": "tslint './src/**/*.ts' './src/**/*.tsx'",
     "lint:editorconfig": "eclint check '**/*' '[!].git/**/*' '[!]node_modules/**/*' '[!]dist/**/*' '[!]**/.DS_Store'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer": "webpack-dev-server",
