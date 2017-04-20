@@ -29,19 +29,6 @@ interface ILibraryState {
 export default class Library extends React.Component<undefined, ILibraryState> {
     public state: ILibraryState;
 
-    // DANIEL - IPC test
-    public _handleClick() {
-        console.log("CLICK");
-
-        // let response = ipcRenderer.sendSync('synchronous-message', 'RENDERER SYNC');
-        // console.log(response);
-
-        ipcRenderer.on('asynchronous-reply', (event, arg) => {
-            console.log(arg);
-        })
-        ipcRenderer.send('asynchronous-message', 'RENDERER ASYNC')
-    }
-
     @lazyInject(Translator)
     private translator: Translator;
 
@@ -55,6 +42,20 @@ export default class Library extends React.Component<undefined, ILibraryState> {
         };
 
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
+    }
+
+    // DANIEL - IPC test
+    public _handleClick() {
+        console.log("CLICK");
+
+        // let response = ipcRenderer.sendSync('synchronous-message', 'RENDERER SYNC');
+        // console.log(response);
+
+        ipcRenderer.on("asynchronous-reply", (event, arg) => {
+            console.log(arg);
+        });
+
+        ipcRenderer.send("asynchronous-message", "RENDERER ASYNC");
     }
 
     public componentDidMount() {

@@ -8,7 +8,7 @@
         "named-imports-order": "case-insensitive"
       }
     ],
-    "no-console": false
+    "no-console": [false]
   },
   "jsRules": {
     "ordered-imports": [
@@ -18,7 +18,5 @@
         "named-imports-order": "case-insensitive"
       }
     ]
-  },
-  "rulesDirectory": [
-  ]
+  }
 }
