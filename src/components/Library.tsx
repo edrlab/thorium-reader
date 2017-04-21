@@ -21,6 +21,7 @@ import { IAppState } from "../reducers/app";
 
 // DANIEL - IPC test
 import { ipcRenderer } from "electron";
+import AppToolbar from "./AppToolbar";
 
 interface ILibraryState {
     locale: string;
@@ -40,8 +41,6 @@ export default class Library extends React.Component<undefined, ILibraryState> {
         this.state = {
             locale: this.store.getState().i18n.locale,
         };
-
-        this.handleLocaleChange = this.handleLocaleChange.bind(this);
     }
 
     // DANIEL - IPC test
@@ -71,39 +70,11 @@ export default class Library extends React.Component<undefined, ILibraryState> {
 
         return (
             <div>
-                <Toolbar>
-                    <ToolbarGroup firstChild={true}>
-                        <DropDownMenu value={this.state.locale} onChange={this.handleLocaleChange}>
-                            <MenuItem value="en" primaryText="English" />
-                            <MenuItem value="fr" primaryText="French" />
-                        </DropDownMenu>
-                    </ToolbarGroup>
-                    <ToolbarGroup>
-                        <ToolbarTitle text="Options" />
-                        <FontIcon className="muidocs-icon-custom-sort" />
-                        <ToolbarSeparator />
-                        <IconMenu
-                        iconButtonElement={
-                            <IconButton touch={true}>
-                                <FontIcon
-                                    className="fa fa-home"
-                                    color={blue500} />
-                            </IconButton>
-                        }
-                        >
-                            <MenuItem primaryText="Download" />
-                            <MenuItem primaryText="More Info" />
-                        </IconMenu>
-                    </ToolbarGroup>
-                </Toolbar>
+                <AppToolbar />
                 <h1>{__("library.heading")}</h1>
 
                 <RaisedButton label="DANIEL - IPC test" onClick={this._handleClick} />
             </div>
         );
-    }
-
-    private handleLocaleChange(event: any, index: any, locale: string) {
-        this.store.dispatch(setLocale(locale));
     }
 }
