@@ -1,11 +1,11 @@
 import * as path from "path";
 
-import { app, BrowserWindow, dialog } from "electron";
+import { app, BrowserWindow } from "electron";
 
 import { ipcMain } from "electron";
 
 // Preprocessing directive
-declare var __RENDERER_BASE_URL__: string;
+declare const __RENDERER_BASE_URL__: string;
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.

@@ -1,7 +1,7 @@
 import { Store } from "redux";
 import "reflect-metadata";
 
-import { Container, inject, injectable } from "inversify";
+import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 
 import { Translator } from "./i18n/translator";

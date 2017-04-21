@@ -1,6 +1,5 @@
 import * as i18n from "i18next";
 import { injectable} from "inversify";
-import * as path from "path";
 
 import * as enCatalog from "../resources/locales/en.json";
 import * as frCatalog from "../resources/locales/fr.json";

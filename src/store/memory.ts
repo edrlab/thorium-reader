@@ -1,4 +1,3 @@
-import { injectable} from "inversify";
 import { createStore, Store } from "redux";
 
 import { app, IAppState } from "./../reducers/app";
