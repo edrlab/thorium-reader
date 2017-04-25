@@ -8,6 +8,8 @@
         "named-imports-order": "case-insensitive"
       }
     ],
+    "interface-name": [false],
+    "no-unused-variable": [true],
     "no-console": [false]
   },
   "jsRules": {

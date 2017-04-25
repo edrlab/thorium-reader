@@ -1,4 +1,3 @@
-import { MinLength, validate } from "class-validator";
 import * as React from "react";
 import { Store } from "redux";
 
@@ -200,8 +199,6 @@ export default class Library extends React.Component<undefined, ILibraryState> {
             locale: this.store.getState().i18n.locale,
             list: false,
         };
-
-        this.handleLocaleChange = this.handleLocaleChange.bind(this);
     }
 
     // DANIEL - IPC test
@@ -256,31 +253,6 @@ export default class Library extends React.Component<undefined, ILibraryState> {
 
         return (
             <div>
-                <Toolbar>
-                    <ToolbarGroup firstChild={true}>
-                        <DropDownMenu value={this.state.locale} onChange={this.handleLocaleChange}>
-                            <MenuItem value="en" primaryText="English" />
-                            <MenuItem value="fr" primaryText="French" />
-                        </DropDownMenu>
-                    </ToolbarGroup>
-                    <ToolbarGroup>
-                        <ToolbarTitle text="Options" />
-                        <FontIcon className="muidocs-icon-custom-sort" />
-                        <ToolbarSeparator />
-                        <IconMenu
-                        iconButtonElement={
-                            <IconButton touch={true}>
-                                <FontIcon
-                                    className="fa fa-home"
-                                    color={blue500} />
-                            </IconButton>
-                        }
-                        >
-                            <MenuItem primaryText="Download" />
-                            <MenuItem primaryText="More Info" />
-                        </IconMenu>
-                    </ToolbarGroup>
-                </Toolbar>
                 <RaisedButton label="DANIEL - IPC test" onClick={this._handleClick} />
                 <div>
                     <h1 style={styles.Library.title}>{__("library.heading")}</h1>
@@ -299,9 +271,5 @@ export default class Library extends React.Component<undefined, ILibraryState> {
                 </div>
             </div>
         );
-    }
-
-    private handleLocaleChange(event: any, index: any, locale: string) {
-        this.store.dispatch(setLocale(locale));
     }
 }

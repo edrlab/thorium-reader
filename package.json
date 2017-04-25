@@ -15,12 +15,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cross-env BUILD_ENV=PROD webpack -p",
-    "start": "npm run build && cross-env BUILD_ENV=PROD electron ./dist/main.js",
+    "start": "npm run build && cross-env BUILD_ENV=PROD electron .",
     "lint:ts": "tslint './src/**/*.ts' './src/**/*.tsx'",
     "lint:editorconfig": "eclint check '**/*' '[!].git/**/*' '[!]node_modules/**/*' '[!]dist/**/*' '[!]**/.DS_Store'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer": "webpack-dev-server",
-    "start:dev:main": "webpack -d && electron ./dist/main.js",
+    "start:dev:main": "webpack -d && electron .",
     "start:dev": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:main\""
   },
   "repository": {
