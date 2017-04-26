@@ -124,13 +124,13 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
                 </Toolbar>
 
                 <Dialog
-                    title="Dialog With Actions"
                     actions={actions}
                     modal={false}
                     open={this.state.open}
                     onRequestClose={this.handleClose}
+                    autoScrollBodyContent={true}
                     >
-                    {this.state.dialogContent}
+                    <div dangerouslySetInnerHTML={{__html: this.state.dialogContent}} />
                 </Dialog>
             </div>
         );
@@ -143,7 +143,6 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
 
         var parsed = reader.parse(content);
         var result = writer.render(parsed);
-
         this.setState({open: true});
         this.setState({dialogContent : result});
     };
