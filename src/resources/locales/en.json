@@ -1,5 +1,11 @@
 {
     "library": {
-        "heading": "Your library"
+        "heading": "Your library",
+        "add": "Add to the library"
+    },
+    "toolbar": {
+        "help":"Help",
+        "news":"What's new?",
+        "sync":"Synchronize the library"
     }
 }

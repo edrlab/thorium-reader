@@ -1,5 +1,11 @@
 {
     "library": {
-        "heading": "Votre bibliothèque"
+        "heading": "Votre bibliothèque",
+        "add": "Ajouter à la bibliothèque"
+    },
+    "toolbar": {
+        "help":"Aide",
+        "news":"Quoi de neuf ?",
+        "sync":"Synchroniser la bibliothèque"
     }
 }
