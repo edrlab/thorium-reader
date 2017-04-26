@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Store } from "redux";
 
+import Dialog from "material-ui/Dialog";
 import DropDownMenu from "material-ui/DropDownMenu";
 import FontIcon from "material-ui/FontIcon";
 import IconButton from "material-ui/IconButton";
@@ -8,16 +9,16 @@ import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
 import { blue500 } from "material-ui/styles/colors";
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from "material-ui/Toolbar";
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+
+import FlatButton from "material-ui/FlatButton";
 
 import { setLocale } from "../actions/i18n";
 import { lazyInject } from "../di";
-import { IAppState } from "../reducers/app";
 import { Translator } from "../i18n/translator";
+import { IAppState } from "../reducers/app";
 
-var fs = require('fs');
-var commonmark = require('commonmark');
+import * as commonmark from "commonmark";
+import * as fs from "fs";
 
 interface AppToolbarState {
     locale: string;
@@ -54,9 +55,9 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
     constructor() {
         super();
         this.state = {
+            dialogContent: undefined,
             locale: this.store.getState().i18n.locale,
             open: false,
-            dialogContent: undefined
         };
 
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
@@ -77,12 +78,12 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
                 label="Cancel"
                 primary={true}
                 onTouchTap={this.handleClose}
-            />
+            />,
         ];
 
-        var that = this;
-        var helpUrl = "./src/resources/docs/" + this.state.locale + "/help.md";
-        var aboutUrl = "./src/resources/docs/" + this.state.locale + "/about.md";
+        const that = this;
+        const helpUrl = "./src/resources/docs/" + this.state.locale + "/help.md";
+        const aboutUrl = "./src/resources/docs/" + this.state.locale + "/about.md";
 
         return (
 
@@ -116,9 +117,22 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
                                 </IconButton>
                             }
                         >
-                            <MenuItem primaryText= {__("toolbar.help")} onClick={function(){that.handleOpen(helpUrl)}} leftIcon={<FontIcon className="fa fa-question-circle" color={blue500} />} />
-                            <MenuItem primaryText={__("toolbar.news")} onClick={function(){that.handleOpen(aboutUrl)}} leftIcon={<FontIcon className="fa fa-gift" color={blue500} />} />
-                            <MenuItem primaryText={__("toolbar.sync")} leftIcon={<FontIcon className="fa fa-refresh" color={blue500} />} />
+                            <MenuItem
+                                primaryText= {__("toolbar.help")}
+                                onClick={() => {
+                                    that.handleOpen(helpUrl);
+                                }}
+                                leftIcon={<FontIcon className="fa fa-question-circle" color={blue500} />} />
+                            <MenuItem
+                                primaryText={__("toolbar.news")}
+                                onClick={() => {
+                                    that.handleOpen(aboutUrl);
+                                }}
+                                leftIcon={<FontIcon className="fa fa-gift" color={blue500} />} />
+                            <MenuItem
+                                primaryText={__("toolbar.sync")}
+                                leftIcon={<FontIcon className="fa fa-refresh"
+                                color={blue500} />} />
                         </IconMenu>
                     </ToolbarGroup>
                 </Toolbar>
@@ -136,20 +150,20 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
         );
     }
 
-    handleOpen = (url:string) => {
-        var content = fs.readFileSync(url).toString()
-        var reader = new commonmark.Parser();
-        var writer = new commonmark.HtmlRenderer();
+    private handleOpen = (url: string) => {
+        const content = fs.readFileSync(url).toString();
+        const reader = new commonmark.Parser();
+        const writer = new commonmark.HtmlRenderer();
 
-        var parsed = reader.parse(content);
-        var result = writer.render(parsed);
+        const parsed = reader.parse(content);
+        const result = writer.render(parsed);
         this.setState({open: true});
         this.setState({dialogContent : result});
-    };
+    }
 
-    handleClose = () => {
+    private handleClose = () => {
         this.setState({open: false});
-    };
+    }
 
     private handleLocaleChange(event: any, index: any, locale: string) {
         this.store.dispatch(setLocale(locale));

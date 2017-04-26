@@ -55,6 +55,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-saga": "^0.10.5",
     "@types/reflect-metadata": "0.0.5",
+    "babel-core": "^6.24.1",
     "class-validator": "^0.6.8",
     "commonmark": "^0.27.0",
     "font-awesome": "^4.7.0",
