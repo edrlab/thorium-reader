@@ -32,6 +32,7 @@ const styles = {
         cursor: "pointer",
         left: 0,
         opacity: 0,
+        overflow: "hidden",
         position: "absolute",
         right: 0,
         top: 0,
