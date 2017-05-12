@@ -1,7 +1,8 @@
 {
     "library": {
-        "heading": "Votre bibliothèque",
-        "add": "Ajouter à la bibliothèque"
+        "heading": "Collection",
+        "add": "Ajouter à la bibliothèque",
+        "downloadButton": "Télécharger"
     },
     "toolbar": {
         "help":"Aide",

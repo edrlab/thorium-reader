@@ -1,7 +1,8 @@
 {
     "library": {
-        "heading": "Your library",
-        "add": "Add to the library"
+        "heading": "Collection",
+        "add": "Add to the library",
+        "downloadButton": "Download"
     },
     "toolbar": {
         "help":"Help",

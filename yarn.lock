@@ -3736,9 +3736,9 @@ querystringify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
 
-r2-streamer-js@^0.0.1-alpha7:
-  version "0.0.1-alpha7"
-  resolved "https://registry.yarnpkg.com/r2-streamer-js/-/r2-streamer-js-0.0.1-alpha7.tgz#e2c125c85ad33d090390fe14085b8b6fb885061f"
+r2-streamer-js@latest:
+  version "0.0.1-alpha10"
+  resolved "https://registry.yarnpkg.com/r2-streamer-js/-/r2-streamer-js-0.0.1-alpha10.tgz#4dd674afeb795c1abbebeef629926e8e6e8055f7"
   dependencies:
     express latest
     mime-types latest

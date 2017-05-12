@@ -6,33 +6,50 @@ import FontIcon from "material-ui/FontIcon";
 import IconButton from "material-ui/IconButton";
 import RaisedButton from "material-ui/RaisedButton";
 import { blue500 } from "material-ui/styles/colors";
+let ReactCardFlip = require("react-card-flip");
+import FlatButton from "material-ui/FlatButton";
 
 import { lazyInject } from "../di";
 import { Translator } from "../i18n/translator";
 import { IAppState } from "../reducers/app";
 
-// DANIEL - IPC test
-import { ipcRenderer } from "electron";
+
+import * as fs from "fs";
+
+let http = require("follow-redirects").http;
+let Parser = require("opds-feed-parser").default;
+let request = require("request");
 
 interface ILibraryState {
     locale: string;
     list: boolean;
+    library: boolean;
+    books: any;
+    isFlipped: boolean[];
 }
 
 const styles = {
     BookCard: {
         body: {
             display: "inline-block",
+            height: 400,
             margin: "5px 5px",
             textAlign: "center",
             width: 210,
         },
+        downloadButton: {
+            top: "50%",
+        },
         image: {
             height: 320,
+            width: 210,
         },
         title: {
             overflow: "hidden",
             whiteSpace: "nowrap",
+        },
+        titleCard: {
+            top: "320px",
         },
     },
     BookListElement: {
@@ -83,98 +100,24 @@ const styles = {
     },
 };
 
-const books = [
-    {
-        author: "Antoine de Saint-Exupéry",
-        editor: "Folio Junior",
-        format: "Epub 3",
-        image: "prince.jpg",
-        size: "15,8 Mo",
-        title: "Le petit prince",
-    },
-    {
-        author: "H.P Lovecraft",
-        editor: "Folio",
-        format: "Epub 3",
-        image: "chtulhu.jpg",
-        size: "17,3 Mo",
-        title: "Le mythe de Chtulhu",
-    },
-    {
-        author: "Maeda Jun & Asami Yuriko",
-        editor: "Folio",
-        format: "Epub 3",
-        image: "angel.jpg",
-        size: "30,1 Mo",
-        title: "Angel Beats",
-    },
-    {
-        author: "George Orwell",
-        editor: "Folio",
-        image: "1984.jpg",
-        title: "1984",
-    },
-    {
-        author: "Jonas Johanson",
-        editor: "Pocket",
-        image: "vieux.jpg",
-        title: "Le vieux qui ne voulait pas fêter son anniversaire",
-    },
-    {
-        author: "Knut Hamsun",
-        editor: "Biblio",
-        format: "Epub 2",
-        image: "faim.jpeg",
-        size: "11,9 Mo",
-        title: "La Faim",
-    },
-    {
-        author: "Isaac Asimov",
-        editor: "J'ai lu",
-        image: "robot.jpg",
-        title: "Le cycle des robots",
-    },
-];
-
-function BookListElement (props: any) {
-        const book = props.book;
-        const image = "images/" + book.image;
-
-        return (
-            <div style={styles.BookListElement.body}>
-                <img style={styles.BookListElement.image} src={image} />
-                <div style={styles.BookListElement.description}>
-                    <h4 style={styles.BookListElement.title}>{book.title}</h4>
-                    <div style={styles.BookListElement.column}>
-                        <p>{book.author}</p>
-                        <p>{book.editor}</p>
-                    </div>
-                    <div style={styles.BookListElement.column}>
-                        <p>{book.format}</p>
-                        <p>{book.size}</p>
-                    </div>
-                </div>
-            </div>
-        );
-};
-
-function BookCard (props: any) {
-        const book = props.book;
-        const image = "images/" + book.image;
-
-        return (
-            <Card style={styles.BookCard.body}>
-                <CardMedia>
-                    <img style={styles.BookCard.image} src={image} />
-                </CardMedia>
-                <CardTitle
-                    titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
-                    title={book.title}
-                    subtitle={book.author}
-                />
-            </Card>
-        );
-};
+function downloadEPUB(url: string, title: string) {
+        let fileName = title.replace(/ /g, "-");
+        fileName = fileName.substring(0, 245);
+        let i: number = 0;
+        if (fs.existsSync("./epubs/" + fileName + ".epub")) {
+            i = 2;
+            while (fs.existsSync("./epubs/" + fileName + "(" + i + ")" + ".epub")) {
+                i++;
+            }
+        }
+        if (i !== 0) {
+            fileName = fileName + "(" + i + ")";
+        }
+        let file = fs.createWriteStream("./epubs/" + fileName + ".epub");
+        http.get(url, (response: any) => {
+            response.pipe(file);
+        });
+}
 
 export default class Library extends React.Component<undefined, ILibraryState> {
     public state: ILibraryState;
@@ -188,37 +131,167 @@ export default class Library extends React.Component<undefined, ILibraryState> {
     constructor() {
         super();
         this.state = {
+            books: undefined,
+            isFlipped: [false, false, false],
+            library : true,
             list: false,
             locale: this.store.getState().i18n.locale,
         };
+        this.handleSync();
     }
 
-    // DANIEL - IPC test
-    public _handleClick() {
-        console.log("CLICK");
-
-        // let response = ipcRenderer.sendSync('synchronous-message', 'RENDERER SYNC');
-        // console.log(response);
-
-        ipcRenderer.on("asynchronous-reply", (event, arg) => {
-            console.log(arg);
-        });
-
-        ipcRenderer.send("asynchronous-message", "RENDERER ASYNC");
+    public handleFront(id: any) {
+        let newIsFlipped = this.state.isFlipped;
+        newIsFlipped[id] = true;
+        this.setState({ isFlipped: newIsFlipped });
     }
 
-    public bookCardList() {
+    public handleBack(id: any) {
+        let newIsFlipped = this.state.isFlipped;
+        newIsFlipped[id] = false;
+        this.setState({ isFlipped: newIsFlipped });
+    }
+
+    public BookListElement (props: any) {
+            const book = props.book;
+            let translator = props.translator;
+            return (
+                <div style={styles.BookListElement.body}>
+                    <img style={styles.BookListElement.image} src={book.image} />
+                    <div style={styles.BookListElement.description}>
+                        <h4 style={styles.BookListElement.title}>{book.title}</h4>
+                        <div style={styles.BookListElement.column}>
+                            <p>{book.author}</p>
+                            <p>{book.editor}</p>
+                        </div>
+                        <div style={styles.BookListElement.column}>
+                            <p>{book.format}</p>
+                            <p>{book.size}</p>
+                        </div>
+                            <FlatButton
+                                style={styles.BookCard.downloadButton}
+                                label={translator.translate("library.downloadButton")}
+                                onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                    </div>
+                </div>
+            );
+    };
+
+    public BookCard = (props: any) => {
+            const book = props.book;
+            let that = this;
+            let id = book.id;
+
+            return (
+                <div style={styles.BookCard.body}>
+                    <Card style={styles.BookCard.body}>
+                        <ReactCardFlip isFlipped={that.state.isFlipped[id]}>
+                            <CardMedia key="front" >
+                                <div
+                                    onMouseEnter={() => {this.handleFront(id); }}
+                                    onMouseLeave={() => {this.handleBack(id); }}
+                                >
+                                    <img  style={styles.BookCard.image} src={book.image}/>
+                                </div>
+                            </CardMedia>
+                            <CardMedia key="back">
+                                <div
+                                    onMouseEnter={() => {this.handleFront(id); }}
+                                    onMouseLeave={() => {this.handleBack(id); }}
+                                    style={styles.BookCard.image}
+                                >
+                                    {props.downloadable ? (
+                                        <div>
+                                            <FlatButton
+                                                style={styles.BookCard.downloadButton}
+                                                label={this.translator.translate("library.downloadButton")}
+                                                onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <FlatButton
+                                            style={styles.BookCard.downloadButton}
+                                            label="Supprimer"
+                                            onClick={() => {}}/>
+
+                                            <FlatButton
+                                            style={styles.BookCard.downloadButton}
+                                            label={"Favoris"}
+                                            onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                        </div>
+                                    )}
+                                </div>
+                            </CardMedia>
+                        </ReactCardFlip>
+                        <CardTitle
+                            titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
+                            subtitleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
+                            title={book.title}
+                            subtitle={book.author}
+                            style={styles.BookCard.titleCard}
+                        />
+                    </Card>
+                </div>
+            );
+    }
+
+    public createCardList() {
         let list: any = [];
-        for (let i = 0; i < books.length; i++) {
-            list.push(<BookCard key={i} book={books[i]} />);
+        let books = this.state.books;
+        for (let i = 0; i < books.entries.length; i++) {
+            let newAuthor: string = "";
+            let newImage: string = "";
+            let newdownloadUrl: string = "";
+            if (books.entries[i].authors[0]) {
+                newAuthor = books.entries[i].authors[0].name;
+            }
+            for (let link of books.entries[i].links) {
+                let rel = link.rel.split("/");
+                if ((rel[rel.length - 1] === "cover" || rel[rel.length - 1] === "image") && newImage === "") {
+                    newImage = link.href;
+                }
+                if (link.type === "application/epub+zip" && newdownloadUrl === "") {
+                    newdownloadUrl = link.href;
+                }
+            }
+            let book = {
+                author: newAuthor,
+                downloadUrl:  newdownloadUrl,
+                id: i,
+                image: newImage,
+                title: books.entries[i].title,
+            };
+            list.push(<this.BookCard key={i} downloadable={true} book={book} />);
         }
         return list;
     }
 
-    public bookListElementList() {
+    public createElementList() {
         let list: any = [];
-        for (let i = 0; i < books.length; i++) {
-            list.push(<BookListElement key={i} book={books[i]} />);
+        let books = this.state.books;
+        for (let i = 0; i < books.entries.length; i++) {
+            let newAuthor: string = "";
+            let newdownloadUrl: string = "";
+            let newImage: string = "";
+            if (books.entries[i].authors[0]) {
+                newAuthor = books.entries[i].authors[0].name;
+            }
+            for (let link of books.entries[i].links) {
+                let rel = link.rel.split("/");
+                if (rel[rel.length - 1] === "thumbnail" && newImage === "") {
+                    newImage = link.href;
+                }
+                if (link.type === "application/epub+zip" && newdownloadUrl === "") {
+                    newdownloadUrl = link.href;
+                }
+            }
+            let book = {
+                author: newAuthor,
+                downloadUrl:  newdownloadUrl,
+                image: newImage,
+                title: books.entries[i].title,
+            };
+            list.push(<this.BookListElement key={i} book={book} translator={this.translator}/>);
         }
         return <div style={styles.BookListElement.container}> {list} </div>;
     }
@@ -236,16 +309,16 @@ export default class Library extends React.Component<undefined, ILibraryState> {
         const that = this;
 
         let listToDisplay: any;
-
-        if (this.state.list) {
-            listToDisplay = this.bookListElementList();
-        } else {
-            listToDisplay = this.bookCardList();
+        if (this.state.books) {
+            if (this.state.list) {
+                listToDisplay = this.createElementList();
+            } else {
+                listToDisplay = this.createCardList();
+            }
         }
 
         return (
             <div>
-                <RaisedButton label="DANIEL - IPC test" onClick={this._handleClick} />
                 <div>
                     <h1 style={styles.Library.title}>{__("library.heading")}</h1>
 
@@ -265,7 +338,7 @@ export default class Library extends React.Component<undefined, ILibraryState> {
                     >
                         <FontIcon className="fa fa-th-large" color={blue500} />
                     </IconButton>
-                    <RaisedButton label="Ajouter à la bibliotheque" style={styles.Library.addButton} />
+                    <RaisedButton label={__("library.add")} style={styles.Library.addButton} />
                 </div >
 
                 <div style={styles.Library.list}>
@@ -273,5 +346,17 @@ export default class Library extends React.Component<undefined, ILibraryState> {
                 </div>
             </div>
         );
+    }
+
+    private handleSync() {
+        let url = "http://fr.feedbooks.com/books/top.atom?category=FBFIC019000&lang=fr";
+
+        let parser = new Parser();
+        request(url, (error: any, response: any, body: any) => {
+            let promise = parser.parse(body);
+            promise.then((result: any) => {
+                this.setState({books: result});
+            });
+        });
     }
 }

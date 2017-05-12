@@ -105,7 +105,16 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
                                 className="fa fa-plus-circle"
                                 style={styles.iconButton}
                                 color={blue500}>
-                                <input type="file" style={styles.fileInput} />
+                                <input type="file" style={{bottom: 0,
+                                    cursor: "pointer",
+                                    left: 0,
+                                    opacity: 0,
+                                    overflow: "hidden",
+                                    position: "absolute",
+                                    right: 0,
+                                    top: 0,
+                                    width: "100%",
+                                    zIndex: 100}} />
                             </FontIcon>
                         </IconButton>
                         <IconMenu
