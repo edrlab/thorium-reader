@@ -12,6 +12,12 @@
   dependencies:
     "@types/node" "*"
 
+"@types/form-data@*":
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/@types/form-data/-/form-data-0.0.33.tgz#c9ac85b2a5fd18435b8c85d9ecb50e6d6c893ff8"
+  dependencies:
+    "@types/node" "*"
+
 "@types/i18next@^2.3.35":
   version "2.3.38"
   resolved "https://registry.yarnpkg.com/@types/i18next/-/i18next-2.3.38.tgz#eb9bd4f579aefb7a2e86b15e2b8024edaaf4a4c9"
@@ -71,6 +77,13 @@
 "@types/reflect-metadata@0.0.5":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@types/reflect-metadata/-/reflect-metadata-0.0.5.tgz#9c042bfa9803d577aad4f57dfbca4b7cae4286fe"
+
+"@types/request@^0.0.43":
+  version "0.0.43"
+  resolved "https://registry.yarnpkg.com/@types/request/-/request-0.0.43.tgz#fcc59cfd88e63034e813c6884a0aade2d0f7e935"
+  dependencies:
+    "@types/form-data" "*"
+    "@types/node" "*"
 
 abbrev@1:
   version "1.1.0"
