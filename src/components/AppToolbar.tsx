@@ -50,7 +50,7 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
     @lazyInject("store")
     private store: Store<IAppState>;
 
-    @lazyInject(Translator)
+    @lazyInject("translator")
     private translator: Translator;
 
     constructor() {

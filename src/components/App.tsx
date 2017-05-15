@@ -20,7 +20,7 @@ export default class App extends React.Component<undefined, undefined> {
     @lazyInject("store")
     private store: Store<IAppState>;
 
-    @lazyInject(Translator)
+    @lazyInject("translator")
     private translator: Translator;
 
     constructor() {

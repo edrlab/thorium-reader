@@ -9,7 +9,7 @@ import { IAppState } from "./reducers/app";
 import { store } from "./store/memory";
 
 let container = new Container();
-container.bind<Translator>(Translator).toSelf();
+container.bind<Translator>("translator").to(Translator);
 container.bind<Store<IAppState>>("store").toConstantValue(store);
 
 let {

@@ -125,7 +125,7 @@ function downloadEPUB(url: string, title: string) {
 export default class Library extends React.Component<undefined, ILibraryState> {
     public state: ILibraryState;
 
-    @lazyInject(Translator)
+    @lazyInject("translator")
     private translator: Translator;
 
     @lazyInject("store")
