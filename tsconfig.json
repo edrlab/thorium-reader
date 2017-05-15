@@ -8,7 +8,11 @@
     "target": "es5",
     "jsx": "react",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
+    "paths": {
+      "readium-desktop/*": ["./src/*"]
+    }
   },
   "include": [
     "./src/**/*"

@@ -10,15 +10,16 @@ import IconButton from "material-ui/IconButton";
 import RaisedButton from "material-ui/RaisedButton";
 import { blue500 } from "material-ui/styles/colors";
 
-import { lazyInject } from "../di";
-import { Translator } from "../i18n/translator";
-import { IAppState } from "../reducers/app";
+import { lazyInject } from "readium-desktop/di";
+
+import { Translator } from "readium-desktop/i18n/translator";
+import { IAppState } from "readium-desktop/reducers/app";
 
 import * as ReactCardFlip from "react-card-flip";
 
-import { http } from "follow-redirects";
-
 import * as request from "request";
+
+import { RequestResponse } from "request";
 
 import { default as Parser } from "opds-feed-parser";
 

@@ -3,5 +3,4 @@ declare module "*.json" {
     export default value;
 }
 
-// support NodeJS modules without type definitions
-declare module "*";
+declare module "react-card-flip";

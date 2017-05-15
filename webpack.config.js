@@ -29,6 +29,9 @@ let mainConfig = Object.assign({}, {
     resolve: {
         // Add '.ts' as resolvable extensions.
         extensions: [".ts", ".js"],
+        alias: {
+            "readium-desktop": path.resolve(__dirname, "src"),
+        },
     },
 
     module: {
@@ -53,6 +56,9 @@ let rendererConfig = Object.assign({}, {
 
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx"],
+        alias: {
+            "readium-desktop": path.resolve(__dirname, "src"),
+        },
     },
 
     module: {
