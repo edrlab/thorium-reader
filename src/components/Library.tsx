@@ -1,24 +1,26 @@
+import * as fs from "fs";
+
 import * as React from "react";
 import { Store } from "redux";
 
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
+import FlatButton from "material-ui/FlatButton";
 import FontIcon from "material-ui/FontIcon";
 import IconButton from "material-ui/IconButton";
 import RaisedButton from "material-ui/RaisedButton";
 import { blue500 } from "material-ui/styles/colors";
-let ReactCardFlip = require("react-card-flip");
-import FlatButton from "material-ui/FlatButton";
 
 import { lazyInject } from "../di";
 import { Translator } from "../i18n/translator";
 import { IAppState } from "../reducers/app";
 
+import * as ReactCardFlip from "react-card-flip";
 
-import * as fs from "fs";
+import { http } from "follow-redirects";
 
-let http = require("follow-redirects").http;
-let Parser = require("opds-feed-parser").default;
-let request = require("request");
+import * as request from "request";
+
+import { default as Parser } from "opds-feed-parser";
 
 interface ILibraryState {
     locale: string;
@@ -211,8 +213,7 @@ export default class Library extends React.Component<undefined, ILibraryState> {
                                         <div>
                                             <FlatButton
                                             style={styles.BookCard.downloadButton}
-                                            label="Supprimer"
-                                            onClick={() => {}}/>
+                                            label="Supprimer" />
 
                                             <FlatButton
                                             style={styles.BookCard.downloadButton}
