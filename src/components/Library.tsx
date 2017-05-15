@@ -117,7 +117,7 @@ function downloadEPUB(url: string, title: string) {
             fileName = fileName + "(" + i + ")";
         }
         let file = fs.createWriteStream("./epubs/" + fileName + ".epub");
-        http.get(url, (response: any) => {
+        request.get(url, (error: any, response: RequestResponse, body: any) => {
             response.pipe(file);
         });
 }
