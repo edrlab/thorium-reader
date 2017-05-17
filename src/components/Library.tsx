@@ -117,9 +117,11 @@ function downloadEPUB(url: string, title: string) {
             fileName = fileName + "(" + i + ")";
         }
         let file = fs.createWriteStream("./epubs/" + fileName + ".epub");
-        request.get(url, (error: any, response: RequestResponse, body: any) => {
-            response.pipe(file);
-        });
+        request.get(url).on("response", (response) => {
+            console.log(response.statusCode);
+            console.log(response.headers["content-type"]);
+        })
+        .pipe(file);
 }
 
 export default class Library extends React.Component<undefined, ILibraryState> {
