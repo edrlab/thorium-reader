@@ -26,7 +26,6 @@ import { default as Parser } from "opds-feed-parser";
 interface ILibraryState {
     locale: string;
     list: boolean;
-    library: boolean;
     books: any;
     isFlipped: boolean[];
 }
@@ -117,9 +116,11 @@ function downloadEPUB(url: string, title: string) {
             fileName = fileName + "(" + i + ")";
         }
         let file = fs.createWriteStream("./epubs/" + fileName + ".epub");
-        request.get(url, (error: any, response: RequestResponse, body: any) => {
-            response.pipe(file);
-        });
+        request.get(url).on("response", (response) => {
+            console.log(response.statusCode);
+            console.log(response.headers["content-type"]);
+        })
+        .pipe(file);
 }
 
 export default class Library extends React.Component<undefined, ILibraryState> {
@@ -135,8 +136,7 @@ export default class Library extends React.Component<undefined, ILibraryState> {
         super();
         this.state = {
             books: undefined,
-            isFlipped: [false, false, false],
-            library : true,
+            isFlipped: [],
             list: false,
             locale: this.store.getState().i18n.locale,
         };
@@ -188,49 +188,49 @@ export default class Library extends React.Component<undefined, ILibraryState> {
             return (
                 <div style={styles.BookCard.body}>
                     <Card style={styles.BookCard.body}>
-                        <ReactCardFlip isFlipped={that.state.isFlipped[id]}>
-                            <CardMedia key="front" >
-                                <div
-                                    onMouseEnter={() => {this.handleFront(id); }}
-                                    onMouseLeave={() => {this.handleBack(id); }}
-                                >
-                                    <img  style={styles.BookCard.image} src={book.image}/>
-                                </div>
-                            </CardMedia>
-                            <CardMedia key="back">
-                                <div
-                                    onMouseEnter={() => {this.handleFront(id); }}
-                                    onMouseLeave={() => {this.handleBack(id); }}
-                                    style={styles.BookCard.image}
-                                >
-                                    {props.downloadable ? (
+                        <CardMedia>
+                            <div style={styles.BookCard.image}
+                                 onMouseEnter={() => {this.handleFront(id); }}
+                                 onMouseLeave={() => {this.handleBack(id); }}>
+                                <ReactCardFlip isFlipped={that.state.isFlipped[id]}>
+                                    <div key="front" >
                                         <div>
-                                            <FlatButton
-                                                style={styles.BookCard.downloadButton}
-                                                label={this.translator.translate("library.downloadButton")}
-                                                onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                            <img  style={styles.BookCard.image} src={book.image}/>
                                         </div>
-                                    ) : (
-                                        <div>
-                                            <FlatButton
-                                            style={styles.BookCard.downloadButton}
-                                            label="Supprimer" />
+                                    </div>
+                                    <div key="back">
+                                        <div
+                                            style={styles.BookCard.image}
+                                        >
+                                            {props.downloadable ? (
+                                                <div>
+                                                    <FlatButton
+                                                        style={styles.BookCard.downloadButton}
+                                                        label={this.translator.translate("library.downloadButton")}
+                                                        onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <FlatButton
+                                                    style={styles.BookCard.downloadButton}
+                                                    label="Supprimer" />
 
-                                            <FlatButton
-                                            style={styles.BookCard.downloadButton}
-                                            label={"Favoris"}
-                                            onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                                    <FlatButton
+                                                    style={styles.BookCard.downloadButton}
+                                                    label={"Favoris"}
+                                                    onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
-                            </CardMedia>
-                        </ReactCardFlip>
+                                    </div>
+                                </ReactCardFlip>
+                            </div>
+                        </CardMedia>
                         <CardTitle
                             titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
                             subtitleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
                             title={book.title}
                             subtitle={book.author}
-                            style={styles.BookCard.titleCard}
                         />
                     </Card>
                 </div>
