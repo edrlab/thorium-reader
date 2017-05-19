@@ -332,7 +332,7 @@ export default class Library extends React.Component<undefined, ILibraryState> {
                 listToDisplay = this.createCardList();
             }
         } else {
-            <this.Spinner/>
+            listToDisplay = <this.Spinner/>;
         }
 
         return (
