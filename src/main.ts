@@ -1,8 +1,18 @@
 import * as path from "path";
 
 import { app, BrowserWindow } from "electron";
-
 import { ipcMain } from "electron";
+
+import { container } from "readium-desktop/di";
+import { Catalog } from "readium-desktop/models/catalog";
+import {
+    CATALOG_GET_REQUEST,
+    CATALOG_GET_RESPONSE
+} from "readium-desktop/events/ipc";
+import {
+    UrlMessage
+} from "readium-desktop/models/ipc";
+import { OPDSParser } from "readium-desktop/services/opds";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -13,17 +23,6 @@ let mainWindow: Electron.BrowserWindow = null;
 
 // Opens the main window, with a native menu bar.
 function createWindow() {
-
-    ipcMain.on("asynchronous-message", (event, arg) => {
-        console.log(arg);
-        event.sender.send("asynchronous-reply", arg + "__PONG");
-    });
-
-    // ipcMain.on("synchronous-message", (event, arg) => {
-    //     console.log(arg);
-    //     event.returnValue = arg + "__PONG";
-    // });
-
     mainWindow = new BrowserWindow({ width: 800, height: 600 });
     let rendererBaseUrl = __RENDERER_BASE_URL__;
 
@@ -63,3 +62,17 @@ app.on("activate", () => {
         createWindow();
     }
 });
+
+const opdsParser: OPDSParser = container.get("opds-parser") as OPDSParser;
+const opdsUrl = "http://fr.feedbooks.com/books/top.atom?category=FBFIC019000&lang=fr";
+
+ipcMain.on(CATALOG_GET_REQUEST, (event, msg) => {
+    opdsParser
+        .parse(opdsUrl)
+        .then((catalog: Catalog) => {
+            event.sender.send(CATALOG_GET_RESPONSE, {
+                catalog: catalog
+            });
+        });
+});
+
