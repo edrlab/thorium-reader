@@ -14,7 +14,6 @@
   "main": "dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd node_modules/eclint && npm install",
     "build": "cross-env BUILD_ENV=PROD webpack -p",
     "start": "npm run build && cross-env BUILD_ENV=PROD electron .",
     "lint:ts": "tslint './src/**/*.ts' './src/**/*.tsx'",
@@ -84,7 +83,7 @@
     "concurrently": "^3.4.0",
     "cross-env": "^3.2.4",
     "css-loader": "^0.28.0",
-    "eclint": "github:jedmao/eclint#8a87cf3f24d22a4539079bf5804b4dd7978c5c2c",
+    "eclint": "^2.1.0",
     "electron": "^1.6.2",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
