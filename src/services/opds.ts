@@ -10,6 +10,7 @@ import { Publication } from "readium-desktop/models/publication";
 import * as requestPromise from "request-promise-native";
 
 const REL_COVER = "http://opds-spec.org/image";
+const TYPE_EPUB = "application/epub+zip"
 
 @injectable()
 export class OPDSParser {
@@ -35,12 +36,12 @@ export class OPDSParser {
                             publications: [],
                             title: feed.title,
                         };
-
                         for (let entry of feed.entries) {
                             let publication: Publication = {
                                 title: entry.title,
                                 description: entry.summary.content,
                                 authors: [],
+                                files: [],
                             };
 
                             // Fill authors
@@ -55,27 +56,40 @@ export class OPDSParser {
                                 code: entry.language
                             };
 
-                            // Retrieve cover
+                            // Retrieve cover and download link
                             for (let link of entry.links) {
-                                if (link.rel != REL_COVER) {
-                                    continue;
+                                if (link.rel == REL_COVER) {
+                                    // We found the cover
+                                    let url = new URL(link.href)
+                                    let ext = path.extname(url.pathname);
+
+                                    // Remove dot in extension
+                                    if (ext.length > 1) {
+                                        ext = ext.substr(1);
+                                    }
+
+                                    publication.cover = {
+                                        url: link.href,
+                                        contentType: link.type,
+                                        ext: ext
+                                    };
                                 }
+                                if (link.type == TYPE_EPUB) {
+                                    // We found the EPUB link
+                                    let url = new URL(link.href)
+                                    let ext = path.extname(url.pathname);
 
-                                // We found the cover
-                                let url = new URL(link.href)
-                                let ext = path.extname(url.pathname);
+                                    // Remove dot in extension
+                                    if (ext.length > 1) {
+                                        ext = ext.substr(1);
+                                    }
 
-                                // Remove dot in extension
-                                if (ext.length > 1) {
-                                    ext = ext.substr(1);
+                                    publication.files.push({
+                                        url: link.href,
+                                        contentType: link.type,
+                                        ext: ext
+                                    });
                                 }
-
-                                publication.cover = {
-                                    url: link.href,
-                                    contentType: link.type,
-                                    ext: ext
-                                };
-                                break;
                             }
 
                             catalog.publications.push(publication);
