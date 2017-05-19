@@ -57,6 +57,7 @@
     "@types/reflect-metadata": "0.0.5",
     "@types/request": "^0.0.43",
     "@types/request-promise-native": "^1.0.5",
+    "@types/tmp": "^0.0.33",
     "babel-core": "^6.24.1",
     "class-validator": "^0.6.8",
     "commonmark": "^0.27.0",
@@ -76,7 +77,8 @@
     "redux": "^3.6.0",
     "redux-saga": "^0.14.3",
     "reflect-metadata": "^0.1.10",
-    "request-promise-native": "^1.0.4"
+    "request-promise-native": "^1.0.4",
+    "tmp": "^0.0.31"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^3.1.2",
