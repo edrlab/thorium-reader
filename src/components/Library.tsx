@@ -19,8 +19,6 @@ import * as ReactCardFlip from "react-card-flip";
 
 import * as request from "request";
 
-import { RequestResponse } from "request";
-
 import { default as Parser } from "opds-feed-parser";
 
 interface ILibraryState {
@@ -189,9 +187,10 @@ export default class Library extends React.Component<undefined, ILibraryState> {
                 <div style={styles.BookCard.body}>
                     <Card style={styles.BookCard.body}>
                         <CardMedia>
-                            <div style={styles.BookCard.image}
-                                 onMouseEnter={() => {this.handleFront(id); }}
-                                 onMouseLeave={() => {this.handleBack(id); }}>
+                            <div
+                                style={styles.BookCard.image}
+                                onMouseEnter={() => {this.handleFront(id); }}
+                                onMouseLeave={() => {this.handleBack(id); }}>
                                 <ReactCardFlip isFlipped={that.state.isFlipped[id]}>
                                     <div key="front" >
                                         <div>

@@ -1,6 +1,6 @@
-import { URL } from "url";
-import * as path from "path";
 import { injectable} from "inversify";
+import * as path from "path";
+import { URL } from "url";
 
 import OPDSFeedParser from "opds-feed-parser";
 import { AcquisitionFeed } from "opds-feed-parser";
@@ -46,24 +46,24 @@ export class OPDSParser {
                             // Fill authors
                             for (let author of entry.authors) {
                                 publication.authors.push({
-                                    name: author.name
+                                    name: author.name,
                                 });
                             }
 
                             // Set language
                             publication.language = {
-                                code: entry.language
+                                code: entry.language,
                             };
 
                             // Retrieve cover
                             for (let link of entry.links) {
-                                if (link.rel != REL_COVER) {
+                                if (link.rel !== REL_COVER) {
                                     continue;
                                 }
 
                                 // We found the cover
-                                let url = new URL(link.href)
-                                let ext = path.extname(url.pathname);
+                                let urlObj = new URL(link.href);
+                                let ext = path.extname(urlObj.pathname);
 
                                 // Remove dot in extension
                                 if (ext.length > 1) {
@@ -73,7 +73,7 @@ export class OPDSParser {
                                 publication.cover = {
                                     url: link.href,
                                     contentType: link.type,
-                                    ext: ext
+                                    ext,
                                 };
                                 break;
                             }

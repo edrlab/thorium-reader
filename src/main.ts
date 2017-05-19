@@ -5,13 +5,11 @@ import { ipcMain } from "electron";
 
 import { container } from "readium-desktop/main/di";
 import { Catalog } from "readium-desktop/models/catalog";
+
 import {
     CATALOG_GET_REQUEST,
-    CATALOG_GET_RESPONSE
+    CATALOG_GET_RESPONSE,
 } from "readium-desktop/events/ipc";
-import {
-    UrlMessage
-} from "readium-desktop/models/ipc";
 import { OPDSParser } from "readium-desktop/services/opds";
 
 // Preprocessing directive
@@ -71,8 +69,9 @@ ipcMain.on(CATALOG_GET_REQUEST, (event, msg) => {
         .parse(opdsUrl)
         .then((catalog: Catalog) => {
             event.sender.send(CATALOG_GET_RESPONSE, {
-                catalog: catalog
+                catalog,
             });
         });
 });
 
+console.log(app.getPath("temp"));

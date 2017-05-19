@@ -5,8 +5,9 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-import { setLocale } from "readium-desktop/actions/i18n";
 import { lazyInject } from "readium-desktop/renderer/di";
+
+import { setLocale } from "readium-desktop/actions/i18n";
 import { Translator } from "readium-desktop/i18n/translator";
 import { IAppState } from "readium-desktop/reducers/app";
 

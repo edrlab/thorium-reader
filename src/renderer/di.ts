@@ -1,12 +1,12 @@
-import { Store } from "redux";
 import "reflect-metadata";
+
+import { Store } from "redux";
 
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 
 import { Translator } from "readium-desktop/i18n/translator";
 import { IAppState } from "readium-desktop/reducers/app";
-import { OPDSParser } from "readium-desktop/services/opds";
 import { store } from "readium-desktop/store/memory";
 
 let container = new Container();

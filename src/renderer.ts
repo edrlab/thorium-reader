@@ -8,11 +8,9 @@ import * as injectTapEventPlugin from "react-tap-event-plugin";
 
 import {
     CATALOG_GET_REQUEST,
-    CATALOG_GET_RESPONSE
+    CATALOG_GET_RESPONSE,
 } from "readium-desktop/events/ipc";
-import {
-    CatalogMessage
-} from "readium-desktop/models/ipc";
+import { CatalogMessage } from "readium-desktop/models/ipc";
 
 import App from "readium-desktop/components/App";
 
