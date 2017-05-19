@@ -10,7 +10,7 @@ import IconButton from "material-ui/IconButton";
 import RaisedButton from "material-ui/RaisedButton";
 import { blue500 } from "material-ui/styles/colors";
 
-import { lazyInject } from "readium-desktop/di";
+import { lazyInject } from "readium-desktop/renderer/di";
 
 import { Translator } from "readium-desktop/i18n/translator";
 import { IAppState } from "readium-desktop/reducers/app";

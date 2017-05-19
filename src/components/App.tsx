@@ -5,13 +5,13 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-import { setLocale } from "../actions/i18n";
-import { lazyInject } from "../di";
-import { Translator } from "../i18n/translator";
-import { IAppState } from "../reducers/app";
+import { setLocale } from "readium-desktop/actions/i18n";
+import { lazyInject } from "readium-desktop/renderer/di";
+import { Translator } from "readium-desktop/i18n/translator";
+import { IAppState } from "readium-desktop/reducers/app";
 
-import AppToolbar from "./AppToolbar";
-import Library from "./Library";
+import AppToolbar from "readium-desktop/components/AppToolbar";
+import Library from "readium-desktop/components/Library";
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
 const defaultLocale = "fr";

@@ -12,10 +12,10 @@ import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from "material-
 
 import FlatButton from "material-ui/FlatButton";
 
-import { setLocale } from "../actions/i18n";
-import { lazyInject } from "../di";
-import { Translator } from "../i18n/translator";
-import { IAppState } from "../reducers/app";
+import { setLocale } from "readium-desktop/actions/i18n";
+import { lazyInject } from "readium-desktop/renderer/di";
+import { Translator } from "readium-desktop//i18n/translator";
+import { IAppState } from "readium-desktop/reducers/app";
 
 import * as commonmark from "commonmark";
 import * as fs from "fs";

@@ -3,7 +3,7 @@ import * as path from "path";
 import { app, BrowserWindow } from "electron";
 import { ipcMain } from "electron";
 
-import { container } from "readium-desktop/di";
+import { container } from "readium-desktop/main/di";
 import { Catalog } from "readium-desktop/models/catalog";
 import {
     CATALOG_GET_REQUEST,
