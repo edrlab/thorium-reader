@@ -2,7 +2,6 @@ import * as fs from "fs";
 
 import * as React from "react";
 import { Store } from "redux";
-import { ipcRenderer } from "electron";
 
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
 import FlatButton from "material-ui/FlatButton";
@@ -15,26 +14,21 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { Translator } from "readium-desktop/i18n/translator";
 import { IAppState } from "readium-desktop/reducers/app";
-import {
-    CATALOG_GET_REQUEST,
-    CATALOG_GET_RESPONSE
-} from "readium-desktop/events/ipc";
-import {
-    CatalogMessage
-} from "readium-desktop/models/ipc";
+
 import { Catalog } from "readium-desktop/models/catalog";
 
 import * as ReactCardFlip from "react-card-flip";
 
 import * as request from "request";
 
-import { default as Parser } from "opds-feed-parser";
-
 interface ILibraryState {
     locale: string;
     list: boolean;
-    catalog: Catalog;
     isFlipped: boolean[];
+}
+
+interface ILibraryProps {
+    catalog: Catalog;
 }
 
 const styles = {
@@ -106,6 +100,10 @@ const styles = {
         title: {
             display: "inline-block",
         },
+        spinner: {
+            top: "200px",
+            fontSize: "40px",
+        },
     },
 };
 
@@ -123,13 +121,10 @@ function downloadEPUB(url: string, title: string) {
             fileName = fileName + "(" + i + ")";
         }
         let file = fs.createWriteStream("./epubs/" + fileName + ".epub");
-        request.get(url).on("response", (response) => {
-
-        })
-        .pipe(file);
+        request.get(url).pipe(file);
 }
 
-export default class Library extends React.Component<undefined, ILibraryState> {
+export default class Library extends React.Component<ILibraryProps, ILibraryState> {
     public state: ILibraryState;
 
     @lazyInject("translator")
@@ -138,15 +133,15 @@ export default class Library extends React.Component<undefined, ILibraryState> {
     @lazyInject("store")
     private store: Store<IAppState>;
 
+    private catalog: Catalog;
+
     constructor() {
         super();
         this.state = {
-            catalog: undefined,
             isFlipped: [],
             list: false,
             locale: this.store.getState().i18n.locale,
         };
-        this.handleSync();
     }
 
     public handleFront(id: any) {
@@ -164,6 +159,7 @@ export default class Library extends React.Component<undefined, ILibraryState> {
     public Spinner () {
         return (
             <FontIcon
+                style = {styles.Library.spinner}
                 className="fa fa-spinner fa-spin fa-3x fa-fw"
                 color={blue500}
             />
@@ -255,7 +251,7 @@ export default class Library extends React.Component<undefined, ILibraryState> {
 
     public createCardList() {
         let list: any = [];
-        let catalog = this.state.catalog;
+        let catalog = this.catalog;
         for (let i = 0; i < catalog.publications.length; i++) {
             let newAuthor: string = "";
             let newImage: string = "";
@@ -285,7 +281,7 @@ export default class Library extends React.Component<undefined, ILibraryState> {
 
     public createElementList() {
         let list: any = [];
-        let catalogs = this.state.catalog;
+        let catalogs = this.catalog;
         for (let i = 0; i < catalogs.publications.length; i++) {
             let newAuthor: string = "";
             let newdownloadUrl: string = "";
@@ -323,9 +319,10 @@ export default class Library extends React.Component<undefined, ILibraryState> {
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate;
         const that = this;
+        this.catalog = this.props.catalog;
 
         let listToDisplay: any;
-        if (this.state.catalog) {
+        if (this.catalog) {
             if (this.state.list) {
                 listToDisplay = this.createElementList();
             } else {
@@ -363,11 +360,5 @@ export default class Library extends React.Component<undefined, ILibraryState> {
                 </div>
             </div>
         );
-    }
-
-    private handleSync() {
-        ipcRenderer.on(CATALOG_GET_RESPONSE, (event: any, msg: CatalogMessage) => {
-            this.setState({catalog: msg.catalog});
-        });
     }
 }
