@@ -7,7 +7,6 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-
 import { lazyInject } from "readium-desktop/renderer/di";
 
 import { CATALOG_GET_RESPONSE } from "readium-desktop/events/ipc";

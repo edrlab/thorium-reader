@@ -10,7 +10,7 @@ import { Publication } from "readium-desktop/models/publication";
 import * as requestPromise from "request-promise-native";
 
 const REL_COVER = "http://opds-spec.org/image";
-const TYPE_EPUB = "application/epub+zip"
+const TYPE_EPUB = "application/epub+zip";
 
 @injectable()
 export class OPDSParser {
@@ -58,36 +58,36 @@ export class OPDSParser {
 
                             // Retrieve cover and download link
                             for (let link of entry.links) {
-                                if (link.rel == REL_COVER) {
+                                if (link.rel === REL_COVER) {
                                     // We found the cover
-                                    let url = new URL(link.href)
-                                    let ext = path.extname(url.pathname);
+                                    let urlObj = new URL(link.href);
+                                    let extObj = path.extname(urlObj.pathname);
 
                                     // Remove dot in extension
-                                    if (ext.length > 1) {
-                                        ext = ext.substr(1);
+                                    if (extObj.length > 1) {
+                                        extObj = extObj.substr(1);
                                     }
 
                                     publication.cover = {
                                         url: link.href,
                                         contentType: link.type,
-                                        ext: ext
+                                        ext: extObj,
                                     };
                                 }
-                                if (link.type == TYPE_EPUB) {
+                                if (link.type === TYPE_EPUB) {
                                     // We found the EPUB link
-                                    let url = new URL(link.href)
-                                    let ext = path.extname(url.pathname);
+                                    let urlObj = new URL(link.href);
+                                    let extObj = path.extname(urlObj.pathname);
 
                                     // Remove dot in extension
-                                    if (ext.length > 1) {
-                                        ext = ext.substr(1);
+                                    if (extObj.length > 1) {
+                                        extObj = extObj.substr(1);
                                     }
 
                                     publication.files.push({
                                         url: link.href,
                                         contentType: link.type,
-                                        ext: ext
+                                        ext: extObj,
                                     });
                                 }
                             }
