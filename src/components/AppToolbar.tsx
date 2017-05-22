@@ -87,7 +87,6 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
         const aboutUrl = "./src/resources/docs/" + this.state.locale + "/about.md";
 
         return (
-
             <div>
                 <Toolbar>
                     <ToolbarGroup firstChild={true}>
