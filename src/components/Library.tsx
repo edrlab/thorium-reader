@@ -1,5 +1,3 @@
-import * as fs from "fs";
-
 import * as React from "react";
 import { Store } from "redux";
 
@@ -12,14 +10,19 @@ import { blue500 } from "material-ui/styles/colors";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
+import { ipcRenderer } from "electron";
+import { PUBLICATION_DOWNLOAD_REQUEST,
+         PUBLICATION_DOWNLOAD_RESPONSE,
+        } from "readium-desktop/events/ipc";
+import { PublicationMessage } from "readium-desktop/models/ipc";
+import { Publication } from "readium-desktop/models/publication";
+
 import { Translator } from "readium-desktop/i18n/translator";
 import { IAppState } from "readium-desktop/reducers/app";
 
 import { Catalog } from "readium-desktop/models/catalog";
 
 import * as ReactCardFlip from "react-card-flip";
-
-import * as request from "request";
 
 interface ILibraryState {
     locale: string;
@@ -107,21 +110,10 @@ const styles = {
     },
 };
 
-function downloadEPUB(url: string, title: string) {
-        let fileName = title.replace(/ /g, "-");
-        fileName = fileName.substring(0, 245);
-        let i: number = 0;
-        if (fs.existsSync("./epubs/" + fileName + ".epub")) {
-            i = 2;
-            while (fs.existsSync("./epubs/" + fileName + "(" + i + ")" + ".epub")) {
-                i++;
-            }
-        }
-        if (i !== 0) {
-            fileName = fileName + "(" + i + ")";
-        }
-        let file = fs.createWriteStream("./epubs/" + fileName + ".epub");
-        request.get(url).pipe(file);
+function downloadEPUB(newPublication: Publication) {
+    let publicationMessage: PublicationMessage = {publication: newPublication};
+
+    ipcRenderer.send(PUBLICATION_DOWNLOAD_REQUEST, publicationMessage);
 }
 
 export default class Library extends React.Component<ILibraryProps, ILibraryState> {
@@ -142,6 +134,10 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
             list: false,
             locale: this.store.getState().i18n.locale,
         };
+
+        ipcRenderer.on(PUBLICATION_DOWNLOAD_RESPONSE, (event: any, msg: PublicationMessage) => {
+        console.log("Ceci est une réponse au download ! Haha :D", msg);
+    });
     }
 
     public handleFront(id: any) {
@@ -167,34 +163,50 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
     }
 
     public BookListElement (props: any) {
-            const book = props.book;
-            let translator = props.translator;
+            const publication: Publication = props.publication;
+
+            let author: string = "";
+            let image: string = "";
+
+            if (publication.authors[0]) {
+                author = publication.authors[0].name;
+            }
+            if (publication.cover) {
+                image = publication.cover.url;
+            }
+
             return (
                 <div style={styles.BookListElement.body}>
-                    <img style={styles.BookListElement.image} src={book.image} />
+                    <img style={styles.BookListElement.image} src={image} />
                     <div style={styles.BookListElement.description}>
-                        <h4 style={styles.BookListElement.title}>{book.title}</h4>
+                        <h4 style={styles.BookListElement.title}>{publication.title}</h4>
                         <div style={styles.BookListElement.column}>
-                            <p>{book.author}</p>
-                            <p>{book.editor}</p>
-                        </div>
-                        <div style={styles.BookListElement.column}>
-                            <p>{book.format}</p>
-                            <p>{book.size}</p>
+                            <p>{author}</p>
+                            <p>Editeur</p>
                         </div>
                             <FlatButton
                                 style={styles.BookCard.downloadButton}
-                                label={translator.translate("library.downloadButton")}
-                                onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                label={this.translator.translate("library.downloadButton")}
+                                onClick={() => {downloadEPUB(publication); }}/>
                     </div>
                 </div>
             );
     };
 
     public BookCard = (props: any) => {
-            const book = props.book;
+            const publication = props.publication;
             let that = this;
-            let id = book.id;
+            let id = props.publicationId;
+
+            let author: string = "";
+            let image: string = "";
+
+            if (publication.authors[0]) {
+                author = publication.authors[0].name;
+            }
+            if (publication.cover) {
+                image = publication.cover.url;
+            }
 
             return (
                 <div style={styles.BookCard.body}>
@@ -207,7 +219,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                                 <ReactCardFlip isFlipped={that.state.isFlipped[id]}>
                                     <div key="front" >
                                         <div>
-                                            <img  style={styles.BookCard.image} src={book.image}/>
+                                            <img  style={styles.BookCard.image} src={image}/>
                                         </div>
                                     </div>
                                     <div key="back">
@@ -219,7 +231,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                                                     <FlatButton
                                                         style={styles.BookCard.downloadButton}
                                                         label={this.translator.translate("library.downloadButton")}
-                                                        onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                                        onClick={() => {downloadEPUB(publication); }}/>
                                                 </div>
                                             ) : (
                                                 <div>
@@ -229,8 +241,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
                                                     <FlatButton
                                                     style={styles.BookCard.downloadButton}
-                                                    label={"Favoris"}
-                                                    onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                                    label={"Favoris"}/>
                                                 </div>
                                             )}
                                         </div>
@@ -241,8 +252,8 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                         <CardTitle
                             titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
                             subtitleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
-                            title={book.title}
-                            subtitle={book.author}
+                            title={publication.title}
+                            subtitle={author}
                         />
                     </Card>
                 </div>
@@ -253,28 +264,10 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         let list: any = [];
         let catalog = this.catalog;
         for (let i = 0; i < catalog.publications.length; i++) {
-            let newAuthor: string = "";
-            let newImage: string = "";
-            let newdownloadUrl: string = "";
-            if (catalog.publications[i].authors[0]) {
-                newAuthor = catalog.publications[i].authors[0].name;
-            }
-            if (catalog.publications[i].cover) {
-                    newImage = catalog.publications[i].cover.url;
-            }
-            for (let file of catalog.publications[i].files) {
-                if (file.contentType === "application/epub+zip" && newdownloadUrl === "") {
-                    newdownloadUrl = file.url;
-                }
-            }
-            let book = {
-                author: newAuthor,
-                downloadUrl:  newdownloadUrl,
-                id: i,
-                image: newImage,
-                title: catalog.publications[i].title,
-            };
-            list.push(<this.BookCard key={i} downloadable={true} book={book} />);
+            list.push(<this.BookCard key={i}
+                publicationId={i}
+                downloadable={true}
+                publication={catalog.publications[i]} />);
         }
         return list;
     }
@@ -283,27 +276,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         let list: any = [];
         let catalogs = this.catalog;
         for (let i = 0; i < catalogs.publications.length; i++) {
-            let newAuthor: string = "";
-            let newdownloadUrl: string = "";
-            let newImage: string = "";
-            if (catalogs.publications[i].authors[0]) {
-                newAuthor = catalogs.publications[i].authors[0].name;
-            }
-            if (catalogs.publications[i].cover) {
-                    newImage = catalogs.publications[i].cover.url;
-            }
-            for (let files of catalogs.publications[i].files) {
-                if (files.contentType === "application/epub+zip" && newdownloadUrl === "") {
-                    newdownloadUrl = files.url;
-                }
-            }
-            let book = {
-                author: newAuthor,
-                downloadUrl:  newdownloadUrl,
-                image: newImage,
-                title: catalogs.publications[i].title,
-            };
-            list.push(<this.BookListElement key={i} book={book} translator={this.translator}/>);
+            list.push(<this.BookListElement key={i} publication={catalogs.publications[i]}/>);
         }
         return <div style={styles.BookListElement.container}> {list} </div>;
     }
