@@ -3,14 +3,20 @@ import * as path from "path";
 import { app, BrowserWindow } from "electron";
 import { ipcMain } from "electron";
 
-import { container } from "readium-desktop/main/di";
+import { Store } from "redux";
+
+// import { Downloader } from "readium-desktop/downloader/downloader";
+import { OPDSParser } from "readium-desktop/services/opds";
+
 import { Catalog } from "readium-desktop/models/catalog";
 
 import {
     CATALOG_GET_REQUEST,
     CATALOG_GET_RESPONSE,
 } from "readium-desktop/events/ipc";
-import { OPDSParser } from "readium-desktop/services/opds";
+
+import { container } from "readium-desktop/main/di";
+import { AppState } from "readium-desktop/main/reducer";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -61,6 +67,11 @@ app.on("activate", () => {
     }
 });
 
+const store: Store<AppState> = container.get("store") as Store<AppState>;
+store.subscribe(() => {
+    console.log(store.getState().downloader.downloads);
+});
+
 const opdsParser: OPDSParser = container.get("opds-parser") as OPDSParser;
 const opdsUrl = "http://fr.feedbooks.com/books/top.atom?category=FBFIC019000&lang=fr";
 
@@ -74,4 +85,7 @@ ipcMain.on(CATALOG_GET_REQUEST, (event, msg) => {
         });
 });
 
-console.log(app.getPath("temp"));
+/*
+const downloader: Downloader = container.get("downloader") as Downloader;
+downloader.download("https://s.gravatar.com/avatar/0328e81033d6047b12f60f2662f2193b?size=496&default=retro");
+*/

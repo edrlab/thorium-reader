@@ -1,18 +1,27 @@
-import { Store } from "redux";
 import "reflect-metadata";
+
+import { app } from "electron";
+import { Store } from "redux";
 
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 
+import { Downloader } from "readium-desktop/downloader/downloader";
 import { Translator } from "readium-desktop/i18n/translator";
-import { IAppState } from "readium-desktop/reducers/app";
+import { AppState } from "readium-desktop/main/reducer";
 import { OPDSParser } from "readium-desktop/services/opds";
-import { store } from "readium-desktop/store/memory";
+
+import { store } from "readium-desktop/main/store/memory";
 
 let container = new Container();
+
+// Bind services
 container.bind<Translator>("translator").to(Translator);
-container.bind<Store<IAppState>>("store").toConstantValue(store);
+container.bind<Store<AppState>>("store").toConstantValue(store);
 container.bind<OPDSParser>("opds-parser").to(OPDSParser);
+container.bind<Downloader>("downloader").toConstantValue(
+    new Downloader(app.getPath("temp"), store),
+);
 
 let {
     lazyInject,

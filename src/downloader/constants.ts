@@ -1,0 +1,14 @@
+// Download actions
+export const DOWNLOAD_ADD = "DOWNLOAD_ADD";
+
+export const DOWNLOAD_REMOVE = "DOWNLOAD_REMOVE";
+
+export const DOWNLOAD_START = "DOWNLOAD_START";
+
+export const DOWNLOAD_PROGRESS = "DOWNLOAD_PROGRESS";
+
+export const DOWNLOAD_CANCEL = "DOWNLOAD_CANCEL";
+
+export const DOWNLOAD_FAIL = "DOWNLOAD_FAIL";
+
+export const DOWNLOAD_FINISH = "DOWNLOAD_FINISH";
