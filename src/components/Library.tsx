@@ -15,17 +15,20 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { Translator } from "readium-desktop/i18n/translator";
 import { IAppState } from "readium-desktop/reducers/app";
 
+import { Catalog } from "readium-desktop/models/catalog";
+
 import * as ReactCardFlip from "react-card-flip";
 
 import * as request from "request";
 
-import { default as Parser } from "opds-feed-parser";
-
 interface ILibraryState {
     locale: string;
     list: boolean;
-    books: any;
     isFlipped: boolean[];
+}
+
+interface ILibraryProps {
+    catalog: Catalog;
 }
 
 const styles = {
@@ -97,6 +100,10 @@ const styles = {
         title: {
             display: "inline-block",
         },
+        spinner: {
+            top: "200px",
+            fontSize: "40px",
+        },
     },
 };
 
@@ -114,14 +121,10 @@ function downloadEPUB(url: string, title: string) {
             fileName = fileName + "(" + i + ")";
         }
         let file = fs.createWriteStream("./epubs/" + fileName + ".epub");
-        request.get(url).on("response", (response) => {
-            console.log(response.statusCode);
-            console.log(response.headers["content-type"]);
-        })
-        .pipe(file);
+        request.get(url).pipe(file);
 }
 
-export default class Library extends React.Component<undefined, ILibraryState> {
+export default class Library extends React.Component<ILibraryProps, ILibraryState> {
     public state: ILibraryState;
 
     @lazyInject("translator")
@@ -130,15 +133,15 @@ export default class Library extends React.Component<undefined, ILibraryState> {
     @lazyInject("store")
     private store: Store<IAppState>;
 
+    private catalog: Catalog;
+
     constructor() {
         super();
         this.state = {
-            books: undefined,
             isFlipped: [],
             list: false,
             locale: this.store.getState().i18n.locale,
         };
-        this.handleSync();
     }
 
     public handleFront(id: any) {
@@ -151,6 +154,16 @@ export default class Library extends React.Component<undefined, ILibraryState> {
         let newIsFlipped = this.state.isFlipped;
         newIsFlipped[id] = false;
         this.setState({ isFlipped: newIsFlipped });
+    }
+
+    public Spinner () {
+        return (
+            <FontIcon
+                style = {styles.Library.spinner}
+                className="fa fa-spinner fa-spin fa-3x fa-fw"
+                color={blue500}
+            />
+        );
     }
 
     public BookListElement (props: any) {
@@ -238,21 +251,20 @@ export default class Library extends React.Component<undefined, ILibraryState> {
 
     public createCardList() {
         let list: any = [];
-        let books = this.state.books;
-        for (let i = 0; i < books.entries.length; i++) {
+        let catalog = this.catalog;
+        for (let i = 0; i < catalog.publications.length; i++) {
             let newAuthor: string = "";
             let newImage: string = "";
             let newdownloadUrl: string = "";
-            if (books.entries[i].authors[0]) {
-                newAuthor = books.entries[i].authors[0].name;
+            if (catalog.publications[i].authors[0]) {
+                newAuthor = catalog.publications[i].authors[0].name;
             }
-            for (let link of books.entries[i].links) {
-                let rel = link.rel.split("/");
-                if ((rel[rel.length - 1] === "cover" || rel[rel.length - 1] === "image") && newImage === "") {
-                    newImage = link.href;
-                }
-                if (link.type === "application/epub+zip" && newdownloadUrl === "") {
-                    newdownloadUrl = link.href;
+            if (catalog.publications[i].cover) {
+                    newImage = catalog.publications[i].cover.url;
+            }
+            for (let file of catalog.publications[i].files) {
+                if (file.contentType === "application/epub+zip" && newdownloadUrl === "") {
+                    newdownloadUrl = file.url;
                 }
             }
             let book = {
@@ -260,7 +272,7 @@ export default class Library extends React.Component<undefined, ILibraryState> {
                 downloadUrl:  newdownloadUrl,
                 id: i,
                 image: newImage,
-                title: books.entries[i].title,
+                title: catalog.publications[i].title,
             };
             list.push(<this.BookCard key={i} downloadable={true} book={book} />);
         }
@@ -269,28 +281,27 @@ export default class Library extends React.Component<undefined, ILibraryState> {
 
     public createElementList() {
         let list: any = [];
-        let books = this.state.books;
-        for (let i = 0; i < books.entries.length; i++) {
+        let catalogs = this.catalog;
+        for (let i = 0; i < catalogs.publications.length; i++) {
             let newAuthor: string = "";
             let newdownloadUrl: string = "";
             let newImage: string = "";
-            if (books.entries[i].authors[0]) {
-                newAuthor = books.entries[i].authors[0].name;
+            if (catalogs.publications[i].authors[0]) {
+                newAuthor = catalogs.publications[i].authors[0].name;
             }
-            for (let link of books.entries[i].links) {
-                let rel = link.rel.split("/");
-                if (rel[rel.length - 1] === "thumbnail" && newImage === "") {
-                    newImage = link.href;
-                }
-                if (link.type === "application/epub+zip" && newdownloadUrl === "") {
-                    newdownloadUrl = link.href;
+            if (catalogs.publications[i].cover) {
+                    newImage = catalogs.publications[i].cover.url;
+            }
+            for (let files of catalogs.publications[i].files) {
+                if (files.contentType === "application/epub+zip" && newdownloadUrl === "") {
+                    newdownloadUrl = files.url;
                 }
             }
             let book = {
                 author: newAuthor,
                 downloadUrl:  newdownloadUrl,
                 image: newImage,
-                title: books.entries[i].title,
+                title: catalogs.publications[i].title,
             };
             list.push(<this.BookListElement key={i} book={book} translator={this.translator}/>);
         }
@@ -308,21 +319,23 @@ export default class Library extends React.Component<undefined, ILibraryState> {
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate;
         const that = this;
+        this.catalog = this.props.catalog;
 
         let listToDisplay: any;
-        if (this.state.books) {
+        if (this.catalog) {
             if (this.state.list) {
                 listToDisplay = this.createElementList();
             } else {
                 listToDisplay = this.createCardList();
             }
+        } else {
+            listToDisplay = <this.Spinner/>;
         }
 
         return (
             <div>
                 <div>
                     <h1 style={styles.Library.title}>{__("library.heading")}</h1>
-
                     <IconButton
                         style={styles.Library.displayButton}
                         touch={true} onClick={() => {
@@ -347,17 +360,5 @@ export default class Library extends React.Component<undefined, ILibraryState> {
                 </div>
             </div>
         );
-    }
-
-    private handleSync() {
-        let url = "http://fr.feedbooks.com/books/top.atom?category=FBFIC019000&lang=fr";
-
-        let parser = new Parser();
-        request(url, (error: any, response: any, body: any) => {
-            let promise = parser.parse(body);
-            promise.then((result: any) => {
-                this.setState({books: result});
-            });
-        });
     }
 }
