@@ -77,11 +77,13 @@ function* startDownload(download: Download) {
 export function* watchDownloadStart(): SagaIterator {
     while (true) {
         const addAction = yield take(DOWNLOAD_ADD);
-        const task = yield fork(startDownload, addAction.download);
-        const stopAction = yield take([DOWNLOAD_CANCEL, DOWNLOAD_FAIL]);
+        yield fork(startDownload, addAction.download);
+        //const task = yield fork(startDownload, addAction.download);
+
+        /*const stopAction = yield take([DOWNLOAD_CANCEL, DOWNLOAD_FAIL]);
 
         if (stopAction.type === DOWNLOAD_CANCEL) {
             yield cancel(task);
-        }
+        }*/
     }
 }
