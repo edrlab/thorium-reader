@@ -10,7 +10,6 @@ import * as downloaderActions from "readium-desktop/actions/downloader";
 import { Download } from "readium-desktop/downloader/download";
 
 function downloadContent(download: Download, chan: any) {
-
     return request
         .get(download.srcUrl)
         .on("response", (response: any) => {
@@ -49,7 +48,7 @@ function downloadContent(download: Download, chan: any) {
                 msg: "Error code: " + error.code,
             });
         })
-        .pipe(fs.createWriteStream("/tmp/doodle.png"));
+        .pipe(fs.createWriteStream(download.dstPath));
 }
 
 function* startDownload(download: Download) {
