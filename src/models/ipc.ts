@@ -1,3 +1,4 @@
+import { Download } from "readium-desktop/downloader/download";
 import { Catalog } from "readium-desktop/models/catalog";
 import { Publication } from "readium-desktop/models/publication";
 
@@ -19,4 +20,8 @@ export interface CatalogMessage {
 
 export interface PublicationMessage {
     publication: Publication;
+}
+
+export interface DownloadMessage {
+    download: Download;
 }
