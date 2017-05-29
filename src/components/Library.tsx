@@ -14,14 +14,16 @@ import { blue500 }  from "material-ui/styles/colors";
 import { lazyInject } from "readium-desktop/renderer/di";
 
 import { ipcRenderer } from "electron";
-import { PUBLICATION_DOWNLOAD_FINISHED,
-         PUBLICATION_DOWNLOAD_PROGRESS,
-         PUBLICATION_DOWNLOAD_REQUEST,
-         PUBLICATION_DOWNLOAD_RESPONSE,
-        } from "readium-desktop/events/ipc";
-import { DownloadMessage,
-         PublicationMessage,
-        } from "readium-desktop/models/ipc";
+import {
+    PUBLICATION_DOWNLOAD_FINISHED,
+    PUBLICATION_DOWNLOAD_PROGRESS,
+    PUBLICATION_DOWNLOAD_REQUEST,
+    PUBLICATION_DOWNLOAD_RESPONSE,
+} from "readium-desktop/events/ipc";
+import {
+    DownloadMessage,
+    PublicationMessage,
+} from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
@@ -289,7 +291,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                                             {props.downloadable ? (
                                                 <div>
                                                     {(this.state.downloads.length === 0
-                                                     || this.state.downloads[id].progress === -1) ? (
+                                                        || this.state.downloads[id].progress === -1) ? (
                                                         <FlatButton
                                                             style={styles.BookCard.downloadButton}
                                                             label={this.translator.translate("library.downloadButton")}

@@ -22,7 +22,7 @@
 ### Interface
 
 * uuid: string (required)
-* name: string
+* title: string
 * publications: Publication[] (required)
 
 ### Sample

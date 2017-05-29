@@ -28,7 +28,7 @@ let mainConfig = Object.assign({}, {
 
     resolve: {
         // Add '.ts' as resolvable extensions.
-        extensions: [".ts", ".js"],
+        extensions: [".ts", ".js", ".node"],
         alias: {
             "readium-desktop": path.resolve(__dirname, "src"),
         },
@@ -37,7 +37,8 @@ let mainConfig = Object.assign({}, {
     module: {
         loaders: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            { test: /\.tsx?$/, loaders: ["awesome-typescript-loader"] },
+                { test: /\.tsx?$/, loaders: ["awesome-typescript-loader"] },
+                { test: /\.node$/, loaders: ["node-loader"] },
         ],
     },
     plugins: [

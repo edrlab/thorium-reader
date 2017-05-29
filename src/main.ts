@@ -71,12 +71,15 @@ app.on("activate", () => {
     }
 });
 
+// Retrieve services from DI container
 const store: Store<AppState> = container.get("store") as Store<AppState>;
+const downloader: Downloader = container.get("downloader") as Downloader;
+const opdsParser: OPDSParser = container.get("opds-parser") as OPDSParser;
+
 store.subscribe(() => {
     console.log(store.getState().downloader.downloads);
 });
 
-const opdsParser: OPDSParser = container.get("opds-parser") as OPDSParser;
 const opdsUrl = "http://fr.feedbooks.com/books/top.atom?category=FBFIC019000&lang=fr";
 
 ipcMain.on(CATALOG_GET_REQUEST, (event, msg) => {
@@ -101,7 +104,7 @@ ipcMain.on(PUBLICATION_DOWNLOAD_REQUEST, (event: any, msg: PublicationMessage) =
         }
     }
     if (url) {
-        const downloader: Downloader = container.get("downloader") as Downloader;
+
         download = downloader.download(url);
     }
 });
