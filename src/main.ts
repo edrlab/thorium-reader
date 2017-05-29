@@ -5,7 +5,8 @@ import { ipcMain } from "electron";
 
 import { Store } from "redux";
 
-// import { Downloader } from "readium-desktop/downloader/downloader";
+import { Download } from "readium-desktop/downloader/download";
+import { Downloader } from "readium-desktop/downloader/downloader";
 import { OPDSParser } from "readium-desktop/services/opds";
 
 import { Catalog } from "readium-desktop/models/catalog";
@@ -13,7 +14,10 @@ import { Catalog } from "readium-desktop/models/catalog";
 import {
     CATALOG_GET_REQUEST,
     CATALOG_GET_RESPONSE,
+    PUBLICATION_DOWNLOAD_REQUEST,
 } from "readium-desktop/events/ipc";
+import { PublicationMessage } from "readium-desktop/models/ipc";
+import { Publication } from "readium-desktop/models/publication";
 
 import { container } from "readium-desktop/main/di";
 import { AppState } from "readium-desktop/main/reducer";
@@ -85,7 +89,19 @@ ipcMain.on(CATALOG_GET_REQUEST, (event, msg) => {
         });
 });
 
-/*
-const downloader: Downloader = container.get("downloader") as Downloader;
-downloader.download("https://s.gravatar.com/avatar/0328e81033d6047b12f60f2662f2193b?size=496&default=retro");
-*/
+ipcMain.on(PUBLICATION_DOWNLOAD_REQUEST, (event: any, msg: PublicationMessage) => {
+    let pub: Publication = msg.publication;
+    let epubType = "application/epub+zip";
+    let url: string;
+    let download: Download;
+
+    for (let file of pub.files) {
+        if (file.contentType === epubType) {
+            url = file.url;
+        }
+    }
+    if (url) {
+        const downloader: Downloader = container.get("downloader") as Downloader;
+        download = downloader.download(url);
+    }
+});

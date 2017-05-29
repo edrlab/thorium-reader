@@ -11,3 +11,7 @@ export const PUBLICATION_DOWNLOAD_REQUEST = "publication.download.request";
 
 // The main process send a PublicationMessage to the renderer process
 export const PUBLICATION_DOWNLOAD_RESPONSE = "publication.download.response";
+
+export const PUBLICATION_DOWNLOAD_FINISHED = "publication.download.finished";
+
+export const PUBLICATION_DOWNLOAD_PROGRESS = "publication.download.progress";

@@ -1,34 +1,51 @@
-import * as fs from "fs";
-
 import * as React from "react";
 import { Store } from "redux";
 
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
-import FlatButton from "material-ui/FlatButton";
-import FontIcon from "material-ui/FontIcon";
-import IconButton from "material-ui/IconButton";
+import LinearProgress from "material-ui/LinearProgress";
+
+import FlatButton   from "material-ui/FlatButton";
+import FontIcon     from "material-ui/FontIcon";
+import IconButton   from "material-ui/IconButton";
 import RaisedButton from "material-ui/RaisedButton";
-import { blue500 } from "material-ui/styles/colors";
+import Snackbar     from "material-ui/Snackbar";
+import { blue500 }  from "material-ui/styles/colors";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { Translator } from "readium-desktop/i18n/translator";
-import { IAppState } from "readium-desktop/reducers/app";
+import { ipcRenderer } from "electron";
+import { PUBLICATION_DOWNLOAD_FINISHED,
+         PUBLICATION_DOWNLOAD_PROGRESS,
+         PUBLICATION_DOWNLOAD_REQUEST,
+         PUBLICATION_DOWNLOAD_RESPONSE,
+        } from "readium-desktop/events/ipc";
+import { DownloadMessage,
+         PublicationMessage,
+        } from "readium-desktop/models/ipc";
+import { Publication } from "readium-desktop/models/publication";
+
+import { Translator }   from "readium-desktop/i18n/translator";
+import { IAppState }    from "readium-desktop/reducers/app";
 
 import { Catalog } from "readium-desktop/models/catalog";
 
 import * as ReactCardFlip from "react-card-flip";
 
-import * as request from "request";
-
 interface ILibraryState {
+    downloads: IDownload[];
     locale: string;
     list: boolean;
+    open: boolean;
     isFlipped: boolean[];
 }
 
 interface ILibraryProps {
     catalog: Catalog;
+}
+
+interface IDownload {
+    link: string;
+    progress: number;
 }
 
 const styles = {
@@ -107,23 +124,6 @@ const styles = {
     },
 };
 
-function downloadEPUB(url: string, title: string) {
-        let fileName = title.replace(/ /g, "-");
-        fileName = fileName.substring(0, 245);
-        let i: number = 0;
-        if (fs.existsSync("./epubs/" + fileName + ".epub")) {
-            i = 2;
-            while (fs.existsSync("./epubs/" + fileName + "(" + i + ")" + ".epub")) {
-                i++;
-            }
-        }
-        if (i !== 0) {
-            fileName = fileName + "(" + i + ")";
-        }
-        let file = fs.createWriteStream("./epubs/" + fileName + ".epub");
-        request.get(url).pipe(file);
-}
-
 export default class Library extends React.Component<ILibraryProps, ILibraryState> {
     public state: ILibraryState;
 
@@ -134,14 +134,64 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
     private store: Store<IAppState>;
 
     private catalog: Catalog;
+    private snackBarMessage: string = "";
 
     constructor() {
         super();
         this.state = {
+            downloads: [],
             isFlipped: [],
+            open: false,
             list: false,
             locale: this.store.getState().i18n.locale,
         };
+
+        ipcRenderer.on(PUBLICATION_DOWNLOAD_RESPONSE, (event: any, msg: PublicationMessage) => {
+            console.log(msg);
+        });
+
+        ipcRenderer.on(PUBLICATION_DOWNLOAD_FINISHED, (event: any, msg: DownloadMessage) => {
+            this.snackBarMessage = "Le téléchargement de " + msg.download.uuid + " est terminé";
+            console.log(msg);
+            this.setState({open: true});
+        });
+
+        ipcRenderer.on(PUBLICATION_DOWNLOAD_PROGRESS, (event: any, msg: DownloadMessage) => {
+            let newdownloads = this.state.downloads;
+            for (let download of newdownloads){
+                if (download.link === msg.download.srcUrl) {
+                    download.progress = msg.download.progress;
+                    break;
+                }
+            }
+            this.setState({downloads: newdownloads});
+        });
+    }
+
+    public downloadEPUB = (newPublication: Publication, publicationId: number) => {
+        if (this.state.downloads.length === 0) {
+            let newDownloads: IDownload[] = [];
+            for (let publication of this.catalog.publications) {
+                let download: IDownload = {
+                    link: publication.files[0].url,
+                    progress: -1,
+                };
+                newDownloads.push(download);
+            }
+            this.setState({downloads: newDownloads}, () => {this.directDownloadEPUB(newPublication, publicationId); } );
+        } else {
+            this.directDownloadEPUB(newPublication, publicationId);
+        }
+    }
+
+    public directDownloadEPUB = (newPublication: Publication, publicationId: number) => {
+        let publicationMessage: PublicationMessage = {publication: newPublication};
+        let newDownloads = this.state.downloads;
+        newDownloads[publicationId].progress = 0;
+        this.setState({downloads: newDownloads});
+        ipcRenderer.send(PUBLICATION_DOWNLOAD_REQUEST, publicationMessage);
+        this.snackBarMessage = "Un téléchargement a été lancé.";
+        this.setState({open: true});
     }
 
     public handleFront(id: any) {
@@ -156,6 +206,10 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         this.setState({ isFlipped: newIsFlipped });
     }
 
+    public handleRequestClose = () => {
+        this.setState({ open: false });
+    }
+
     public Spinner () {
         return (
             <FontIcon
@@ -166,35 +220,53 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         );
     }
 
-    public BookListElement (props: any) {
-            const book = props.book;
-            let translator = props.translator;
+    public BookListElement  = (props: any) => {
+            const publication: Publication = props.publication;
+
+            let author: string = "";
+            let image: string = "";
+
+            let id = props.publicationId;
+
+            if (publication.authors[0]) {
+                author = publication.authors[0].name;
+            }
+            if (publication.cover) {
+                image = publication.cover.url;
+            }
+
             return (
                 <div style={styles.BookListElement.body}>
-                    <img style={styles.BookListElement.image} src={book.image} />
+                    <img style={styles.BookListElement.image} src={image} />
                     <div style={styles.BookListElement.description}>
-                        <h4 style={styles.BookListElement.title}>{book.title}</h4>
+                        <h4 style={styles.BookListElement.title}>{publication.title}</h4>
                         <div style={styles.BookListElement.column}>
-                            <p>{book.author}</p>
-                            <p>{book.editor}</p>
-                        </div>
-                        <div style={styles.BookListElement.column}>
-                            <p>{book.format}</p>
-                            <p>{book.size}</p>
+                            <p>{author}</p>
+                            <p>Editeur</p>
                         </div>
                             <FlatButton
                                 style={styles.BookCard.downloadButton}
-                                label={translator.translate("library.downloadButton")}
-                                onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                label={this.translator.translate("library.downloadButton")}
+                                onClick={() => {this.downloadEPUB(publication, id); }}/>
                     </div>
                 </div>
             );
-    };
+    }
 
     public BookCard = (props: any) => {
-            const book = props.book;
+            const publication = props.publication;
             let that = this;
-            let id = book.id;
+            let id = props.publicationId;
+
+            let author: string = "";
+            let image: string = "";
+
+            if (publication.authors[0]) {
+                author = publication.authors[0].name;
+            }
+            if (publication.cover) {
+                image = publication.cover.url;
+            }
 
             return (
                 <div style={styles.BookCard.body}>
@@ -207,7 +279,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                                 <ReactCardFlip isFlipped={that.state.isFlipped[id]}>
                                     <div key="front" >
                                         <div>
-                                            <img  style={styles.BookCard.image} src={book.image}/>
+                                            <img  style={styles.BookCard.image} src={image}/>
                                         </div>
                                     </div>
                                     <div key="back">
@@ -216,10 +288,21 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                                         >
                                             {props.downloadable ? (
                                                 <div>
-                                                    <FlatButton
-                                                        style={styles.BookCard.downloadButton}
-                                                        label={this.translator.translate("library.downloadButton")}
-                                                        onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                                    {(this.state.downloads.length === 0
+                                                     || this.state.downloads[id].progress === -1) ? (
+                                                        <FlatButton
+                                                            style={styles.BookCard.downloadButton}
+                                                            label={this.translator.translate("library.downloadButton")}
+                                                            onClick={() => {this.downloadEPUB(publication, id); }}/>
+                                                    ) : this.state.downloads[id].progress < 100 ? (
+                                                        <div>
+                                                            <p>Téléchargement en cours</p>
+                                                            <LinearProgress mode="determinate"
+                                                                value={this.state.downloads[id].progress} />
+                                                        </div>
+                                                    ) : (
+                                                        <p>Téléchargement Terminé</p>
+                                                    )}
                                                 </div>
                                             ) : (
                                                 <div>
@@ -229,8 +312,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
                                                     <FlatButton
                                                     style={styles.BookCard.downloadButton}
-                                                    label={"Favoris"}
-                                                    onClick={() => {downloadEPUB(book.downloadUrl, book.title); }}/>
+                                                    label={"Favoris"}/>
                                                 </div>
                                             )}
                                         </div>
@@ -241,8 +323,8 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                         <CardTitle
                             titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
                             subtitleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
-                            title={book.title}
-                            subtitle={book.author}
+                            title={publication.title}
+                            subtitle={author}
                         />
                     </Card>
                 </div>
@@ -253,28 +335,10 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         let list: any = [];
         let catalog = this.catalog;
         for (let i = 0; i < catalog.publications.length; i++) {
-            let newAuthor: string = "";
-            let newImage: string = "";
-            let newdownloadUrl: string = "";
-            if (catalog.publications[i].authors[0]) {
-                newAuthor = catalog.publications[i].authors[0].name;
-            }
-            if (catalog.publications[i].cover) {
-                    newImage = catalog.publications[i].cover.url;
-            }
-            for (let file of catalog.publications[i].files) {
-                if (file.contentType === "application/epub+zip" && newdownloadUrl === "") {
-                    newdownloadUrl = file.url;
-                }
-            }
-            let book = {
-                author: newAuthor,
-                downloadUrl:  newdownloadUrl,
-                id: i,
-                image: newImage,
-                title: catalog.publications[i].title,
-            };
-            list.push(<this.BookCard key={i} downloadable={true} book={book} />);
+            list.push(<this.BookCard key={i}
+                publicationId={i}
+                downloadable={true}
+                publication={catalog.publications[i]} />);
         }
         return list;
     }
@@ -283,27 +347,9 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         let list: any = [];
         let catalogs = this.catalog;
         for (let i = 0; i < catalogs.publications.length; i++) {
-            let newAuthor: string = "";
-            let newdownloadUrl: string = "";
-            let newImage: string = "";
-            if (catalogs.publications[i].authors[0]) {
-                newAuthor = catalogs.publications[i].authors[0].name;
-            }
-            if (catalogs.publications[i].cover) {
-                    newImage = catalogs.publications[i].cover.url;
-            }
-            for (let files of catalogs.publications[i].files) {
-                if (files.contentType === "application/epub+zip" && newdownloadUrl === "") {
-                    newdownloadUrl = files.url;
-                }
-            }
-            let book = {
-                author: newAuthor,
-                downloadUrl:  newdownloadUrl,
-                image: newImage,
-                title: catalogs.publications[i].title,
-            };
-            list.push(<this.BookListElement key={i} book={book} translator={this.translator}/>);
+            list.push(<this.BookListElement key={i}
+                publication={catalogs.publications[i]}
+                publicationId={i} />);
         }
         return <div style={styles.BookListElement.container}> {list} </div>;
     }
@@ -314,6 +360,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                 locale: this.store.getState().i18n.locale,
             });
         });
+
     }
 
     public render(): React.ReactElement<{}>  {
@@ -358,6 +405,13 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                 <div style={styles.Library.list}>
                     {listToDisplay}
                 </div>
+
+                <Snackbar
+                        open={this.state.open}
+                        message= {this.snackBarMessage}
+                        autoHideDuration={4000}
+                        onRequestClose={this.handleRequestClose}
+                    />
             </div>
         );
     }
