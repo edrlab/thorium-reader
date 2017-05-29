@@ -3,7 +3,7 @@ import createSagaMiddleware from "redux-saga";
 
 import { appReducer, AppState } from "readium-desktop/main/reducer";
 
-import { appSaga } from "readium-desktop/main/saga";
+import { appSaga } from "readium-desktop/main/sagas/app";
 
 const sagaMiddleware = createSagaMiddleware();
 

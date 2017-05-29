@@ -3,15 +3,7 @@ import { channel, SagaIterator } from "redux-saga";
 import { call, fork, put, take } from "redux-saga/effects";
 import * as request from "request";
 
-import { DOWNLOAD_ADD, DOWNLOAD_FINISH, DOWNLOAD_PROGRESS }
-    from "readium-desktop/downloader/constants";
-
-import {
-        PUBLICATION_DOWNLOAD_FINISHED,
-        PUBLICATION_DOWNLOAD_PROGRESS,
-} from "readium-desktop/events/ipc";
-
-import { BrowserWindow } from "electron";
+import { DOWNLOAD_ADD } from "readium-desktop/downloader/constants";
 
 import * as downloaderActions from "readium-desktop/actions/downloader";
 import { Download } from "readium-desktop/downloader/download";
@@ -92,26 +84,5 @@ export function* watchDownloadStart(): SagaIterator {
         if (stopAction.type === DOWNLOAD_CANCEL) {
             yield cancel(task);
         }*/
-    }
-}
-
-export function* watchDownloadFinish(): SagaIterator {
-    while (true) {
-        const finishAction = yield take(DOWNLOAD_FINISH);
-        let windows = BrowserWindow.getAllWindows();
-        for (let window of windows) {
-            window.webContents.send(PUBLICATION_DOWNLOAD_FINISHED, {download: finishAction.download});
-        }
-    }
-}
-
-export function* watchDownloadProgress(): SagaIterator {
-    while (true) {
-
-        const progressAction = yield take(DOWNLOAD_PROGRESS);
-        let windows = BrowserWindow.getAllWindows();
-        for (let window of windows) {
-            window.webContents.send(PUBLICATION_DOWNLOAD_PROGRESS, {download: progressAction.download});
-        }
     }
 }
