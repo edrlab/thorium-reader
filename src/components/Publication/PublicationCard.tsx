@@ -17,14 +17,13 @@ import * as ReactCardFlip from "react-card-flip";
 
 interface IPublicationState {
     locale: string;
+    isFlipped: boolean;
 }
 
 interface IPublicationProps {
     publication: Publication;
     publicationId: number;
     downloadEPUB: Function;
-    handleBack: Function;
-    handleFront: Function;
     downloadable: boolean;
     download: IDownload;
     isFlipped: boolean;
@@ -68,6 +67,15 @@ export default class PublicationListElement extends React.Component<IPublication
     @lazyInject("store")
     private store: Store<IAppState>;
 
+    constructor() {
+        super();
+
+        this.state = {
+            isFlipped: false,
+            locale: this.store.getState().i18n.locale,
+        };
+    }
+
     public componentDidMount() {
         this.store.subscribe(() => {
             this.setState({
@@ -75,6 +83,14 @@ export default class PublicationListElement extends React.Component<IPublication
             });
         });
 
+    }
+
+    public handleFront = () => {
+        this.setState({ isFlipped: true });
+    }
+
+    public handleBack = () => {
+        this.setState({ isFlipped: false });
     }
 
     public render(): React.ReactElement<{}>  {
@@ -99,9 +115,9 @@ export default class PublicationListElement extends React.Component<IPublication
                     <CardMedia>
                         <div
                             style={styles.BookCard.image}
-                            onMouseEnter={() => {this.props.handleFront(id); }}
-                            onMouseLeave={() => {this.props.handleBack(id); }}>
-                            <ReactCardFlip isFlipped={that.props.isFlipped}>
+                            onMouseEnter={() => {this.handleFront(); }}
+                            onMouseLeave={() => {this.handleBack(); }}>
+                            <ReactCardFlip isFlipped={that.state.isFlipped}>
                                 <div key="front" >
                                     <div>
                                         <img  style={styles.BookCard.image} src={image}/>

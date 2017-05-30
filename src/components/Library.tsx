@@ -14,7 +14,6 @@ import {
     PUBLICATION_DOWNLOAD_FINISHED,
     PUBLICATION_DOWNLOAD_PROGRESS,
     PUBLICATION_DOWNLOAD_REQUEST,
-    PUBLICATION_DOWNLOAD_RESPONSE,
 } from "readium-desktop/events/ipc";
 import {
     DownloadMessage,
@@ -100,13 +99,8 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
             locale: this.store.getState().i18n.locale,
         };
 
-        ipcRenderer.on(PUBLICATION_DOWNLOAD_RESPONSE, (event: any, msg: PublicationMessage) => {
-            console.log(msg);
-        });
-
         ipcRenderer.on(PUBLICATION_DOWNLOAD_FINISHED, (event: any, msg: DownloadMessage) => {
             this.snackBarMessage = this.__("library.endDownload");
-            console.log(msg);
             this.setState({open: true});
         });
 
@@ -148,18 +142,6 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         this.setState({open: true});
     }
 
-    public handleFront = (id: any) => {
-        let newIsFlipped = this.state.isFlipped;
-        newIsFlipped[id] = true;
-        this.setState({ isFlipped: newIsFlipped });
-    }
-
-    public handleBack = (id: any) => {
-        let newIsFlipped = this.state.isFlipped;
-        newIsFlipped[id] = false;
-        this.setState({ isFlipped: newIsFlipped });
-    }
-
     public handleRequestClose = () => {
         this.setState({ open: false });
     }
@@ -183,8 +165,6 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                 downloadable={true}
                 publication={catalog.publications[i]}
                 downloadEPUB={this.downloadEPUB}
-                handleBack={this.handleBack}
-                handleFront={this.handleFront}
                 download={this.state.downloads[i]}
                 isFlipped={this.state.isFlipped[i]} />);
         }
