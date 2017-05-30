@@ -2,7 +2,13 @@
     "library": {
         "heading": "Collection",
         "add": "Ajouter à la bibliothèque",
-        "downloadButton": "Télécharger"
+        "startDownload": "Un téléchargement a démarré.",
+        "endDownload": "Un téléchargement est terminé."
+    },
+    "publication": {
+      "downloadButton": "Télécharger",
+      "progressDownload": "Téléchargement en cours",
+      "endDownload": "Téléchargement terminé"
     },
     "toolbar": {
         "help":"Aide",

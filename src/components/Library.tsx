@@ -1,10 +1,6 @@
 import * as React from "react";
 import { Store } from "redux";
 
-import { Card, CardMedia, CardTitle} from "material-ui/Card";
-import LinearProgress from "material-ui/LinearProgress";
-
-import FlatButton   from "material-ui/FlatButton";
 import FontIcon     from "material-ui/FontIcon";
 import IconButton   from "material-ui/IconButton";
 import RaisedButton from "material-ui/RaisedButton";
@@ -31,7 +27,7 @@ import { IAppState }    from "readium-desktop/reducers/app";
 
 import { Catalog } from "readium-desktop/models/catalog";
 
-import * as ReactCardFlip from "react-card-flip";
+import { PublicationCard, PublicationListElement } from "readium-desktop/components/Publication/index";
 
 interface ILibraryState {
     downloads: IDownload[];
@@ -51,58 +47,11 @@ interface IDownload {
 }
 
 const styles = {
-    BookCard: {
-        body: {
-            display: "inline-block",
-            height: 400,
-            margin: "5px 5px",
-            textAlign: "center",
-            width: 210,
-        },
-        downloadButton: {
-            top: "50%",
-        },
-        image: {
-            height: 320,
-            width: 210,
-        },
-        title: {
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-        },
-        titleCard: {
-            top: "320px",
-        },
-    },
     BookListElement: {
-        body: {
-            boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
-            fontFamily: "Roboto, sans-serif",
-            margin: "5px 0px",
-            width: "1200px",
-        },
-        column: {
-            display: "inline-block",
-            width: "250px",
-        },
         container: {
             display: "inline-block",
             maxWidth: 1200,
             textAlign: "left",
-        },
-        description: {
-            display: "inline-block",
-            height: 120,
-            marginLeft: "5px",
-        },
-        image: {
-            display: "inline-block",
-            float: "left",
-            height: 120,
-            width: 78,
-        },
-        title: {
-            margin: "10px 0px",
         },
     },
     Library: {
@@ -135,11 +84,14 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
     @lazyInject("store")
     private store: Store<IAppState>;
 
+    private  __ = this.translator.translate;
+
     private catalog: Catalog;
     private snackBarMessage: string = "";
 
     constructor() {
         super();
+
         this.state = {
             downloads: [],
             isFlipped: [],
@@ -153,7 +105,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         });
 
         ipcRenderer.on(PUBLICATION_DOWNLOAD_FINISHED, (event: any, msg: DownloadMessage) => {
-            this.snackBarMessage = "Le téléchargement de " + msg.download.uuid + " est terminé";
+            this.snackBarMessage = this.__("library.endDownload");
             console.log(msg);
             this.setState({open: true});
         });
@@ -192,17 +144,17 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         newDownloads[publicationId].progress = 0;
         this.setState({downloads: newDownloads});
         ipcRenderer.send(PUBLICATION_DOWNLOAD_REQUEST, publicationMessage);
-        this.snackBarMessage = "Un téléchargement a été lancé.";
+        this.snackBarMessage = this.__("library.startDownload");
         this.setState({open: true});
     }
 
-    public handleFront(id: any) {
+    public handleFront = (id: any) => {
         let newIsFlipped = this.state.isFlipped;
         newIsFlipped[id] = true;
         this.setState({ isFlipped: newIsFlipped });
     }
 
-    public handleBack(id: any) {
+    public handleBack = (id: any) => {
         let newIsFlipped = this.state.isFlipped;
         newIsFlipped[id] = false;
         this.setState({ isFlipped: newIsFlipped });
@@ -222,125 +174,19 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         );
     }
 
-    public BookListElement  = (props: any) => {
-            const publication: Publication = props.publication;
-
-            let author: string = "";
-            let image: string = "";
-
-            let id = props.publicationId;
-
-            if (publication.authors[0]) {
-                author = publication.authors[0].name;
-            }
-            if (publication.cover) {
-                image = publication.cover.url;
-            }
-
-            return (
-                <div style={styles.BookListElement.body}>
-                    <img style={styles.BookListElement.image} src={image} />
-                    <div style={styles.BookListElement.description}>
-                        <h4 style={styles.BookListElement.title}>{publication.title}</h4>
-                        <div style={styles.BookListElement.column}>
-                            <p>{author}</p>
-                            <p>Editeur</p>
-                        </div>
-                            <FlatButton
-                                style={styles.BookCard.downloadButton}
-                                label={this.translator.translate("library.downloadButton")}
-                                onClick={() => {this.downloadEPUB(publication, id); }}/>
-                    </div>
-                </div>
-            );
-    }
-
-    public BookCard = (props: any) => {
-            const publication = props.publication;
-            let that = this;
-            let id = props.publicationId;
-
-            let author: string = "";
-            let image: string = "";
-
-            if (publication.authors[0]) {
-                author = publication.authors[0].name;
-            }
-            if (publication.cover) {
-                image = publication.cover.url;
-            }
-
-            return (
-                <div style={styles.BookCard.body}>
-                    <Card style={styles.BookCard.body}>
-                        <CardMedia>
-                            <div
-                                style={styles.BookCard.image}
-                                onMouseEnter={() => {this.handleFront(id); }}
-                                onMouseLeave={() => {this.handleBack(id); }}>
-                                <ReactCardFlip isFlipped={that.state.isFlipped[id]}>
-                                    <div key="front" >
-                                        <div>
-                                            <img  style={styles.BookCard.image} src={image}/>
-                                        </div>
-                                    </div>
-                                    <div key="back">
-                                        <div
-                                            style={styles.BookCard.image}
-                                        >
-                                            {props.downloadable ? (
-                                                <div>
-                                                    {(this.state.downloads.length === 0
-                                                        || this.state.downloads[id].progress === -1) ? (
-                                                        <FlatButton
-                                                            style={styles.BookCard.downloadButton}
-                                                            label={this.translator.translate("library.downloadButton")}
-                                                            onClick={() => {this.downloadEPUB(publication, id); }}/>
-                                                    ) : this.state.downloads[id].progress < 100 ? (
-                                                        <div>
-                                                            <p>Téléchargement en cours</p>
-                                                            <LinearProgress mode="determinate"
-                                                                value={this.state.downloads[id].progress} />
-                                                        </div>
-                                                    ) : (
-                                                        <p>Téléchargement Terminé</p>
-                                                    )}
-                                                </div>
-                                            ) : (
-                                                <div>
-                                                    <FlatButton
-                                                    style={styles.BookCard.downloadButton}
-                                                    label="Supprimer" />
-
-                                                    <FlatButton
-                                                    style={styles.BookCard.downloadButton}
-                                                    label={"Favoris"}/>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </ReactCardFlip>
-                            </div>
-                        </CardMedia>
-                        <CardTitle
-                            titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
-                            subtitleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
-                            title={publication.title}
-                            subtitle={author}
-                        />
-                    </Card>
-                </div>
-            );
-    }
-
     public createCardList() {
         let list: any = [];
         let catalog = this.catalog;
         for (let i = 0; i < catalog.publications.length; i++) {
-            list.push(<this.BookCard key={i}
+            list.push(<PublicationCard key={i}
                 publicationId={i}
                 downloadable={true}
-                publication={catalog.publications[i]} />);
+                publication={catalog.publications[i]}
+                downloadEPUB={this.downloadEPUB}
+                handleBack={this.handleBack}
+                handleFront={this.handleFront}
+                download={this.state.downloads[i]}
+                isFlipped={this.state.isFlipped[i]} />);
         }
         return list;
     }
@@ -349,9 +195,10 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         let list: any = [];
         let catalogs = this.catalog;
         for (let i = 0; i < catalogs.publications.length; i++) {
-            list.push(<this.BookListElement key={i}
+            list.push(<PublicationListElement key={i}
                 publication={catalogs.publications[i]}
-                publicationId={i} />);
+                publicationId={i}
+                downloadEPUB={this.downloadEPUB} />);
         }
         return <div style={styles.BookListElement.container}> {list} </div>;
     }
@@ -366,7 +213,6 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
     }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
         const that = this;
         this.catalog = this.props.catalog;
 
@@ -384,7 +230,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         return (
             <div>
                 <div>
-                    <h1 style={styles.Library.title}>{__("library.heading")}</h1>
+                    <h1 style={styles.Library.title}>{this.__("library.heading")}</h1>
                     <IconButton
                         style={styles.Library.displayButton}
                         touch={true} onClick={() => {
@@ -401,7 +247,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                     >
                         <FontIcon className="fa fa-th-large" color={blue500} />
                     </IconButton>
-                    <RaisedButton label={__("library.add")} style={styles.Library.addButton} />
+                    <RaisedButton label={this.__("library.add")} style={styles.Library.addButton} />
                 </div >
 
                 <div style={styles.Library.list}>
