@@ -2,6 +2,7 @@ import * as React from "react";
 import { Store } from "redux";
 
 import FlatButton   from "material-ui/FlatButton";
+import LinearProgress from "material-ui/LinearProgress";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
@@ -21,6 +22,12 @@ interface IPublicationProps {
     publication: Publication;
     publicationId: number;
     downloadEPUB: Function;
+    download: IDownload;
+}
+
+interface IDownload {
+    link: string;
+    progress: number;
 }
 
 const styles = {
@@ -100,9 +107,20 @@ export default class PublicationListElement extends React.Component<IPublication
                         <p>Editeur</p>
                     </div>
                     <div style={styles.BookListElement.column}>
-                        <FlatButton
-                            label={__("publication.downloadButton")}
-                            onClick={() => {this.props.downloadEPUB(publication, id); }}/>
+                            {(this.props.download === undefined
+                                || this.props.download.progress === -1) ? (
+                                <FlatButton
+                                    label={__("publication.downloadButton")}
+                                    onClick={() => {this.props.downloadEPUB(publication, id); }}/>
+                            ) : this.props.download.progress < 100 ? (
+                                <div>
+                                    <p>{__("publication.progressDownload")}</p>
+                                    <LinearProgress mode="determinate"
+                                        value={this.props.download.progress} />
+                                </div>
+                            ) : (
+                                <p>{__("publication.endDownload")}</p>
+                            )}
                     </div>
                 </div>
             </div>
