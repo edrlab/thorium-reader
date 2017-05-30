@@ -198,7 +198,8 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
             list.push(<PublicationListElement key={i}
                 publication={catalogs.publications[i]}
                 publicationId={i}
-                downloadEPUB={this.downloadEPUB} />);
+                downloadEPUB={this.downloadEPUB}
+                download={this.state.downloads[i]} />);
         }
         return <div style={styles.BookListElement.container}> {list} </div>;
     }
