@@ -84,11 +84,16 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
     @lazyInject("store")
     private store: Store<IAppState>;
 
+    private  __ = this.translator.translate;
+
     private catalog: Catalog;
     private snackBarMessage: string = "";
 
     constructor() {
         super();
+
+
+
         this.state = {
             downloads: [],
             isFlipped: [],
@@ -102,7 +107,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         });
 
         ipcRenderer.on(PUBLICATION_DOWNLOAD_FINISHED, (event: any, msg: DownloadMessage) => {
-            this.snackBarMessage = "Un téléchargement est terminé : " + msg.download.uuid;
+            this.snackBarMessage = this.__("library.endDownload");
             console.log(msg);
             this.setState({open: true});
         });
@@ -141,7 +146,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         newDownloads[publicationId].progress = 0;
         this.setState({downloads: newDownloads});
         ipcRenderer.send(PUBLICATION_DOWNLOAD_REQUEST, publicationMessage);
-        this.snackBarMessage = "Un téléchargement a été lancé.";
+        this.snackBarMessage = this.__("library.startDownload");
         this.setState({open: true});
     }
 
@@ -210,7 +215,6 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
     }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
         const that = this;
         this.catalog = this.props.catalog;
 
@@ -228,7 +232,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         return (
             <div>
                 <div>
-                    <h1 style={styles.Library.title}>{__("library.heading")}</h1>
+                    <h1 style={styles.Library.title}>{this.__("library.heading")}</h1>
                     <IconButton
                         style={styles.Library.displayButton}
                         touch={true} onClick={() => {
@@ -245,7 +249,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                     >
                         <FontIcon className="fa fa-th-large" color={blue500} />
                     </IconButton>
-                    <RaisedButton label={__("library.add")} style={styles.Library.addButton} />
+                    <RaisedButton label={this.__("library.add")} style={styles.Library.addButton} />
                 </div >
 
                 <div style={styles.Library.list}>

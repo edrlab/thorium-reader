@@ -78,6 +78,7 @@ export default class PublicationListElement extends React.Component<IPublication
     }
 
     public render(): React.ReactElement<{}>  {
+        const __ = this.translator.translate;
         const publication = this.props.publication;
         let that = this;
         let id = this.props.publicationId;
@@ -116,16 +117,16 @@ export default class PublicationListElement extends React.Component<IPublication
                                                     || this.props.download.progress === -1) ? (
                                                     <FlatButton
                                                         style={styles.BookCard.downloadButton}
-                                                        label={this.translator.translate("library.downloadButton")}
+                                                        label={__("publication.downloadButton")}
                                                         onClick={() => {this.props.downloadEPUB(publication, id); }}/>
                                                 ) : this.props.download.progress < 100 ? (
                                                     <div>
-                                                        <p>Téléchargement en cours</p>
+                                                        <p>{__("publication.progressDownload")}</p>
                                                         <LinearProgress mode="determinate"
                                                             value={this.props.download.progress} />
                                                     </div>
                                                 ) : (
-                                                    <p>Téléchargement Terminé</p>
+                                                    <p>{__("publication.endDownload")}</p>
                                                 )}
                                             </div>
                                         ) : (

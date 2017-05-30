@@ -74,6 +74,8 @@ export default class PublicationListElement extends React.Component<IPublication
     }
 
     public render(): React.ReactElement<{}>  {
+        const __ = this.translator.translate;
+
         const publication: Publication = this.props.publication;
 
         let author: string = "";
@@ -99,7 +101,7 @@ export default class PublicationListElement extends React.Component<IPublication
                     </div>
                     <div style={styles.BookListElement.column}>
                         <FlatButton
-                            label={this.translator.translate("library.downloadButton")}
+                            label={__("publication.downloadButton")}
                             onClick={() => {this.props.downloadEPUB(publication, id); }}/>
                     </div>
                 </div>

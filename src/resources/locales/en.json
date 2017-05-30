@@ -2,7 +2,13 @@
     "library": {
         "heading": "Collection",
         "add": "Add to the library",
-        "downloadButton": "Download"
+        "startDownload": "A download started.",
+        "endDownload": "A download ended."
+    },
+    "publication": {
+      "downloadButton": "Download",
+      "progressDownload": "Downloading",
+      "endDownload": "Download completed"
     },
     "toolbar": {
         "help":"Help",
