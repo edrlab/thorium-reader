@@ -27,7 +27,7 @@ import { IAppState }    from "readium-desktop/reducers/app";
 
 import { Catalog } from "readium-desktop/models/catalog";
 
-import { PublicationCard, PublicationListElement } from "readium-desktop/components/Publication";
+import { PublicationCard, PublicationListElement } from "readium-desktop/components/Publication/index";
 
 interface ILibraryState {
     downloads: IDownload[];
@@ -91,8 +91,6 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
     constructor() {
         super();
-
-
 
         this.state = {
             downloads: [],
