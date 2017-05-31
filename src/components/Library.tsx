@@ -86,6 +86,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
     private catalog: Catalog;
     private snackBarMessage: string = "";
+    private lastTimeUpdated = new Date().getTime() / 1000;
 
     constructor() {
         super();
@@ -106,11 +107,13 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
             let newdownloads = this.state.downloads;
             for (let download of newdownloads){
                 if (download.link === msg.download.srcUrl) {
-                    download.progress = msg.download.progress;
+                    if (msg.download.progress !== download.progress) {
+                        download.progress = msg.download.progress;
+                        this.setState({downloads: newdownloads});
+                    }
                     break;
                 }
             }
-            this.setState({downloads: newdownloads});
         });
     }
 
@@ -179,6 +182,35 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                 download={this.state.downloads[i]} />);
         }
         return <div style={styles.BookListElement.container}> {list} </div>;
+    }
+
+    public shouldComponentUpdate(nextProps: any, nextState: any) {
+        if (this.compareDownloads(nextState.downloads, this.state.downloads )) {
+            if ((new Date().getTime() / 1000) - this.lastTimeUpdated > 1 || nextState.open !== this.state.open) {
+                this.lastTimeUpdated = new Date().getTime() / 1000;
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public compareDownloads(array1: IDownload[], array2: IDownload[]): boolean {
+        if (!array1 || !array2) {
+            return false;
+        }
+
+        if (array1.length !== array2.length) {
+            return false;
+        }
+
+        for (let i = 0; i < array1.length; i++) {
+            if (array1[i].progress !== array2[i].progress) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public componentDidMount() {
