@@ -33,7 +33,6 @@ interface ILibraryState {
     locale: string;
     list: boolean;
     open: boolean;
-    isFlipped: boolean[];
 }
 
 interface ILibraryProps {
@@ -93,7 +92,6 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
         this.state = {
             downloads: [],
-            isFlipped: [],
             open: false,
             list: false,
             locale: this.store.getState().i18n.locale,
@@ -165,8 +163,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                 downloadable={true}
                 publication={catalog.publications[i]}
                 downloadEPUB={this.downloadEPUB}
-                download={this.state.downloads[i]}
-                isFlipped={this.state.isFlipped[i]} />);
+                download={this.state.downloads[i]}/>);
         }
         return list;
     }

@@ -26,7 +26,6 @@ interface IPublicationProps {
     downloadEPUB: Function;
     downloadable: boolean;
     download: IDownload;
-    isFlipped: boolean;
 }
 
 interface IDownload {
