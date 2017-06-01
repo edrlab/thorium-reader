@@ -104,7 +104,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         });
 
         ipcRenderer.on(PUBLICATION_DOWNLOAD_PROGRESS, (event: any, msg: DownloadMessage) => {
-            let newdownloads = this.state.downloads;
+            let newdownloads = JSON.parse(JSON.stringify(this.state.downloads));
             for (let download of newdownloads){
                 if (download.link === msg.download.srcUrl) {
                     if (msg.download.progress !== download.progress) {
@@ -135,7 +135,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
     public directDownloadEPUB = (newPublication: Publication, publicationId: number) => {
         let publicationMessage: PublicationMessage = {publication: newPublication};
-        let newDownloads = this.state.downloads;
+        let newDownloads = JSON.parse(JSON.stringify(this.state.downloads));
         newDownloads[publicationId].progress = 0;
         this.setState({downloads: newDownloads});
         ipcRenderer.send(PUBLICATION_DOWNLOAD_REQUEST, publicationMessage);
@@ -184,8 +184,12 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         return <div style={styles.BookListElement.container}> {list} </div>;
     }
 
-    public shouldComponentUpdate(nextProps: any, nextState: any) {
-        if (this.compareDownloads(nextState.downloads, this.state.downloads )) {
+    public shouldComponentUpdate(nextProps: any, nextState: any): boolean {
+        if (nextState.open !== this.state.open
+            || nextState.locale !== this.state.locale
+            || nextState.list !== this.state.list) {
+                return true;
+        } else {
             if ((new Date().getTime() / 1000) - this.lastTimeUpdated > 1 || nextState.open !== this.state.open) {
                 this.lastTimeUpdated = new Date().getTime() / 1000;
                 return true;
@@ -193,24 +197,6 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                 return false;
             }
         }
-        return true;
-    }
-
-    public compareDownloads(array1: IDownload[], array2: IDownload[]): boolean {
-        if (!array1 || !array2) {
-            return false;
-        }
-
-        if (array1.length !== array2.length) {
-            return false;
-        }
-
-        for (let i = 0; i < array1.length; i++) {
-            if (array1[i].progress !== array2[i].progress) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public componentDidMount() {
@@ -226,7 +212,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         const that = this;
         this.catalog = this.props.catalog;
 
-        let listToDisplay: any;
+        let listToDisplay: JSX.Element;
         if (this.catalog) {
             if (this.state.list) {
                 listToDisplay = this.createElementList();
