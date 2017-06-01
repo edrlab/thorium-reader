@@ -16,7 +16,7 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { setLocale } from "readium-desktop/actions/i18n";
 import { Translator } from "readium-desktop/i18n/translator";
-import { IAppState } from "readium-desktop/reducers/app";
+import { RendererState } from "readium-desktop/renderer/reducers";
 
 import * as commonmark from "commonmark";
 import * as fs from "fs";
@@ -49,7 +49,7 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
     public state: AppToolbarState;
 
     @lazyInject("store")
-    private store: Store<IAppState>;
+    private store: Store<RendererState>;
 
     @lazyInject("translator")
     private translator: Translator;

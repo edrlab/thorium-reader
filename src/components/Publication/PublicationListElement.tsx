@@ -9,7 +9,7 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
-import { IAppState }    from "readium-desktop/reducers/app";
+import { RendererState } from "readium-desktop/renderer/reducers";
 
 interface IPublicationState {
     locale: string;
@@ -69,7 +69,7 @@ export default class PublicationListElement extends React.Component<IPublication
     private translator: Translator;
 
     @lazyInject("store")
-    private store: Store<IAppState>;
+    private store: Store<RendererState>;
 
     public componentDidMount() {
         this.store.subscribe(() => {

@@ -22,7 +22,7 @@ import {
 import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
-import { IAppState }    from "readium-desktop/reducers/app";
+import { RendererState }    from "readium-desktop/renderer/reducers";
 
 import { Catalog } from "readium-desktop/models/catalog";
 
@@ -80,7 +80,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
     private translator: Translator;
 
     @lazyInject("store")
-    private store: Store<IAppState>;
+    private store: Store<RendererState>;
 
     private  __ = this.translator.translate;
 

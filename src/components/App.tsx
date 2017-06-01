@@ -15,7 +15,7 @@ import { CatalogMessage } from "readium-desktop/models/ipc";
 
 import { setLocale } from "readium-desktop/actions/i18n";
 import { Translator } from "readium-desktop/i18n/translator";
-import { IAppState as IViewState} from "readium-desktop/reducers/app";
+import { RendererState } from "readium-desktop/renderer/reducers";
 
 import AppToolbar from "readium-desktop/components/AppToolbar";
 import Library from "readium-desktop/components/Library";
@@ -29,7 +29,7 @@ const defaultLocale = "fr";
 
 export default class App extends React.Component<undefined, IAppState> {
     @lazyInject("store")
-    private store: Store<IViewState>;
+    private store: Store<RendererState>;
 
     @lazyInject("translator")
     private translator: Translator;
