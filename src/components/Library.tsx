@@ -30,7 +30,6 @@ import { PublicationCard, PublicationListElement } from "readium-desktop/compone
 
 interface ILibraryState {
     downloads: IDownload[];
-    locale: string;
     list: boolean;
     open: boolean;
 }
@@ -95,7 +94,6 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
             downloads: [],
             open: false,
             list: false,
-            locale: this.store.getState().i18n.locale,
         };
 
         ipcRenderer.on(PUBLICATION_DOWNLOAD_FINISHED, (event: any, msg: DownloadMessage) => {
@@ -211,15 +209,6 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
             }
         }
         return true;
-    }
-
-    public componentDidMount() {
-        this.store.subscribe(() => {
-            this.setState({
-                locale: this.store.getState().i18n.locale,
-            });
-        });
-
     }
 
     public render(): React.ReactElement<{}>  {

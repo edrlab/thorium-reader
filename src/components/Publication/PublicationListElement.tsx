@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Store } from "redux";
 
 import FlatButton   from "material-ui/FlatButton";
 import LinearProgress from "material-ui/LinearProgress";
@@ -9,14 +8,6 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
-import { RendererState } from "readium-desktop/renderer/reducers";
-
-interface IPublicationState {
-    locale: string;
-    list: boolean;
-    open: boolean;
-    isFlipped: boolean[];
-}
 
 interface IPublicationProps {
     publication: Publication;
@@ -64,21 +55,9 @@ const styles = {
     },
 };
 
-export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
+export default class PublicationListElement extends React.Component<IPublicationProps, null> {
     @lazyInject("translator")
     private translator: Translator;
-
-    @lazyInject("store")
-    private store: Store<RendererState>;
-
-    public componentDidMount() {
-        this.store.subscribe(() => {
-            this.setState({
-                locale: this.store.getState().i18n.locale,
-            });
-        });
-
-    }
 
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate;

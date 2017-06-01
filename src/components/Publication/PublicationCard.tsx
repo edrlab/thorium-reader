@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Store } from "redux";
 
 import FlatButton   from "material-ui/FlatButton";
 
@@ -8,7 +7,6 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
-import { RendererState }    from "readium-desktop/renderer/reducers";
 
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
 import LinearProgress from "material-ui/LinearProgress";
@@ -16,7 +14,6 @@ import LinearProgress from "material-ui/LinearProgress";
 import * as ReactCardFlip from "react-card-flip";
 
 interface IPublicationState {
-    locale: string;
     isFlipped: boolean;
 }
 
@@ -63,25 +60,12 @@ export default class PublicationListElement extends React.Component<IPublication
     @lazyInject("translator")
     private translator: Translator;
 
-    @lazyInject("store")
-    private store: Store<RendererState>;
-
     constructor() {
         super();
 
         this.state = {
-            isFlipped: false,
-            locale: this.store.getState().i18n.locale,
+            isFlipped: false
         };
-    }
-
-    public componentDidMount() {
-        this.store.subscribe(() => {
-            this.setState({
-                locale: this.store.getState().i18n.locale,
-            });
-        });
-
     }
 
     public handleFront = () => {
