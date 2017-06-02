@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Store } from "redux";
 
 import FontIcon     from "material-ui/FontIcon";
 import IconButton   from "material-ui/IconButton";
@@ -22,7 +21,6 @@ import {
 import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
-import { RendererState }    from "readium-desktop/renderer/reducers";
 
 import { Catalog } from "readium-desktop/models/catalog";
 
@@ -77,9 +75,6 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
     @lazyInject("translator")
     private translator: Translator;
-
-    @lazyInject("store")
-    private store: Store<RendererState>;
 
     private  __ = this.translator.translate;
 

@@ -64,7 +64,7 @@ export default class PublicationListElement extends React.Component<IPublication
         super();
 
         this.state = {
-            isFlipped: false
+            isFlipped: false,
         };
     }
 

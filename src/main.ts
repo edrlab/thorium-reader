@@ -3,8 +3,6 @@ import * as path from "path";
 import { app, BrowserWindow } from "electron";
 import { ipcMain } from "electron";
 
-import { Store } from "redux";
-
 import { Download } from "readium-desktop/downloader/download";
 import { Downloader } from "readium-desktop/downloader/downloader";
 import { OPDSParser } from "readium-desktop/services/opds";
@@ -20,7 +18,6 @@ import { PublicationMessage } from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
 
 import { container } from "readium-desktop/main/di";
-import { AppState } from "readium-desktop/main/reducer";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -72,13 +69,8 @@ app.on("activate", () => {
 });
 
 // Retrieve services from DI container
-const store: Store<AppState> = container.get("store") as Store<AppState>;
 const downloader: Downloader = container.get("downloader") as Downloader;
 const opdsParser: OPDSParser = container.get("opds-parser") as OPDSParser;
-
-store.subscribe(() => {
-    console.log(store.getState().downloader.downloads);
-});
 
 const opdsUrl = "http://fr.feedbooks.com/books/top.atom?category=FBFIC019000&lang=fr";
 
