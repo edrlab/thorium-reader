@@ -1,13 +1,13 @@
 import { CATALOG_CLEAN, CATALOG_SET } from "readium-desktop/actions/catalog";
 import { CatalogAction } from "readium-desktop/actions/catalog";
-import { Catalog } from "readium-desktop/models/catalog";
+import { Publication } from "readium-desktop/models/publication";
 
 export interface CatalogState {
-    catalog: Catalog;
+    publications: Publication[];
 }
 
 const initialState: CatalogState = {
-    catalog: null,
+    publications: [],
 };
 
 export function catalogReducer(
@@ -16,10 +16,10 @@ export function catalogReducer(
     ): CatalogState {
     switch (action.type) {
         case CATALOG_CLEAN:
-            state.catalog = null;
+            state.publications = [];
             return state;
         case CATALOG_SET:
-            state.catalog = action.catalog;
+            state.publications = action.catalog.publications;
             return state;
         default:
             return state;

@@ -5,16 +5,19 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-import { lazyInject } from "readium-desktop/renderer/di";
-
 import { Catalog } from "readium-desktop/models/catalog";
+
+import { lazyInject } from "readium-desktop/renderer/di";
 
 import { setLocale } from "readium-desktop/actions/i18n";
 import { Translator } from "readium-desktop/i18n/translator";
-import { RendererState } from "readium-desktop/renderer/reducers";
+
 
 import AppToolbar from "readium-desktop/components/AppToolbar";
 import Library from "readium-desktop/components/Library";
+
+import * as windowActions from "readium-desktop/renderer/actions/window";
+import { RendererState } from "readium-desktop/renderer/reducers";
 
 interface AppState {
     catalog: Catalog;
@@ -46,8 +49,12 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     public componentDidMount() {
+        this.store.dispatch(windowActions.init());
         this.store.subscribe(() => {
-            this.setState({catalog: this.store.getState().catalog.catalog});
+            this.setState({catalog: {
+                title: "My Catalog",
+                publications: this.store.getState().catalog.publications}
+            });
             this.translator.setLocale(this.store.getState().i18n.locale);
         });
     }

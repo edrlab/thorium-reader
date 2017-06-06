@@ -1,35 +1,46 @@
 import { ipcRenderer } from "electron";
-
-import { channel, Channel } from "redux-saga";
+import { channel, Channel, SagaIterator } from "redux-saga";
 import { call, fork, put, take } from "redux-saga/effects";
 
 import * as catalogActions from "readium-desktop/actions/catalog";
 import {
-    CATALOG_GET_REQUEST,
-    CATALOG_GET_RESPONSE,
+    SYNC_CATALOG_REQUEST,
+    SYNC_CATALOG_RESPONSE,
 } from "readium-desktop/events/ipc";
 import { Catalog } from "readium-desktop/models/catalog";
 import { CatalogMessage } from "readium-desktop/models/ipc";
 
-function sendRequest() {
-    // Request catalog from main process
-    ipcRenderer.send(CATALOG_GET_REQUEST);
+import { WINDOW_INIT } from "readium-desktop/renderer/actions/window";
+
+/**
+ * Retrieve catalog from main process
+ */
+function retrieveCatalog() {
+    ipcRenderer.send(SYNC_CATALOG_REQUEST);
 }
 
-function waitForResponse(chan: Channel<Catalog>) {
+export function* watchCatalogInit(): SagaIterator {
+    yield take(WINDOW_INIT);
+    yield call(retrieveCatalog);
+}
+
+function waitForSyncResponse(chan: Channel<Catalog>) {
     // Wait for catalog response from main process
-    ipcRenderer.on(CATALOG_GET_RESPONSE, (event: any, msg: CatalogMessage) => {
+    ipcRenderer.on(SYNC_CATALOG_RESPONSE, (event: any, msg: CatalogMessage) => {
         chan.put(msg.catalog);
     });
 }
 
-export function* loadCatalog() {
-    // Send request to the main process
-    yield call(sendRequest);
-
-    // Wait for a response from the main process
-    const chan = yield call(channel);
-    yield fork(waitForResponse, chan);
-    const catalog = yield take(chan);
-    yield put(catalogActions.set(catalog));
+/**
+ * If catalog from main process has been updated
+ * Update renderer catalog
+ */
+export function* watchMainCatalogResponse(): SagaIterator {
+    while (true) {
+        // Wait for a response from the main process
+        const chan = yield call(channel);
+        yield fork(waitForSyncResponse, chan);
+        const catalog = yield take(chan);
+        yield put(catalogActions.set(catalog));
+    }
 }
