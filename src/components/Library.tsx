@@ -34,6 +34,7 @@ interface ILibraryState {
 
 interface ILibraryProps {
     catalog: Catalog;
+    handleRead: Function;
 }
 
 interface IDownload {
@@ -76,6 +77,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
     @lazyInject("translator")
     private translator: Translator;
 
+    @lazyInject("store")
     private  __ = this.translator.translate;
 
     private catalog: Catalog;
@@ -159,6 +161,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                 downloadable={true}
                 publication={catalog.publications[i]}
                 downloadEPUB={this.downloadEPUB}
+                handleRead={this.props.handleRead.bind(this)}
                 download={this.state.downloads[i]}/>);
         }
         return list;
@@ -241,9 +244,11 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                     >
                         <FontIcon className="fa fa-th-large" color={blue500} />
                     </IconButton>
-                    <RaisedButton label={this.__("library.add")} style={styles.Library.addButton} />
+                    <RaisedButton
+                        label="Lire un livre"
+                        style={styles.Library.addButton}
+                        onClick={() => {this.props.handleRead(); }} />
                 </div >
-
                 <div style={styles.Library.list}>
                     {listToDisplay}
                 </div>

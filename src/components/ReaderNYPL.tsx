@@ -1,20 +1,26 @@
 import * as React from "react";
 
-interface IDownload {
-    link: string;
-    progress: number;
+import FlatButton   from "material-ui/FlatButton";
+
+interface IReaderNYPLProps {
+    manifestURL: string;
+    handleRead: Function;
 }
 
-export default class ReaderNYPL extends React.Component<null, null> {
+export default class ReaderNYPL extends React.Component<IReaderNYPLProps, null> {
 
     public render(): React.ReactElement<{}>  {
-        let url = "../reader-NYPL/index.html?url=https://readium2.herokuapp.com/pub/L2FwcC9jaGlsZHJlbnMtbGl0ZXJhdHVyZS5lcHVi/manifest.json";
+        let url = "../reader-NYPL/index.html?url=" + this.props.manifestURL;
 
         return (
             <div >
-                <iframe src={url} height="900" width="1600"></iframe>
+                <div>
+                    <FlatButton label="Retour" onClick={() => {this.props.handleRead(); }}/>
+                </div>
+                <div>
+                    <iframe src={url} height="900" width="100%"></iframe>
+                </div>
             </div>
         );
     }
 }
-

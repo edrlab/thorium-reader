@@ -23,6 +23,7 @@ interface IPublicationProps {
     downloadEPUB: Function;
     downloadable: boolean;
     download: IDownload;
+    handleRead: Function;
 }
 
 interface IDownload {
@@ -132,7 +133,8 @@ export default class PublicationListElement extends React.Component<IPublication
                                             <div>
                                                 <FlatButton
                                                 style={styles.BookCard.downloadButton}
-                                                label="Supprimer" />
+                                                onClick={() => {this.props.handleRead(); }}
+                                                label="Lire" />
 
                                                 <FlatButton
                                                 style={styles.BookCard.downloadButton}

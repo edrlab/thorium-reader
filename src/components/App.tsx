@@ -15,9 +15,11 @@ import { RendererState } from "readium-desktop/renderer/reducers";
 
 import AppToolbar from "readium-desktop/components/AppToolbar";
 import Library from "readium-desktop/components/Library";
+import ReaderNYPL from "readium-desktop/components/ReaderNYPL";
 
 interface AppState {
     catalog: Catalog;
+    isReader: boolean;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -42,7 +44,12 @@ export default class App extends React.Component<undefined, AppState> {
 
         this.state = {
             catalog: undefined,
+            isReader: false,
         };
+    }
+
+    public ToggleReaderView = () => {
+        this.setState({isReader: !this.state.isReader});
     }
 
     public componentDidMount() {
@@ -53,11 +60,24 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     public render(): React.ReactElement<{}> {
+        let manifestUrl = "https://readium2.herokuapp.com/pub/L2FwcC9jaGlsZHJlbnMtbGl0ZXJhdHVyZS5lcHVi/manifest.json";
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
-                    <AppToolbar />
-                    <Library catalog={this.state.catalog}/>
+                    {!this.state.isReader ? (
+                    <div>
+                        <AppToolbar />
+                        <Library
+                            catalog={this.state.catalog}
+                            handleRead={this.ToggleReaderView.bind(this)}/>
+                    </div>
+                    ) : (
+                        <div>
+                            <ReaderNYPL
+                                manifestURL={manifestUrl}
+                                handleRead={this.ToggleReaderView.bind(this)} />
+                        </div>
+                    )}
                 </div>
             </MuiThemeProvider>
         );
