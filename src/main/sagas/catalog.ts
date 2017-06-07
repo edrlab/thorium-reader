@@ -1,10 +1,8 @@
-import { ipcMain } from "electron";
+import { BrowserWindow, ipcMain } from "electron";
 import { Store } from "redux";
 import { channel, Channel, SagaIterator } from "redux-saga";
 import { call, fork, put, take } from "redux-saga/effects";
-
-import { BrowserWindow } from "electron";
-
+import * as request from "request";
 
 import * as catalogActions from "readium-desktop/actions/catalog";
 import { CATALOG_INIT, CATALOG_SET } from "readium-desktop/actions/catalog";
@@ -13,6 +11,7 @@ import {
     SYNC_CATALOG_RESPONSE
 } from "readium-desktop/events/ipc";
 import { Catalog } from "readium-desktop/models/catalog";
+import { Error } from "readium-desktop/models/error";
 import { OPDSParser } from "readium-desktop/services/opds";
 
 import {
@@ -25,26 +24,66 @@ import { container } from "readium-desktop/main/di";
 
 const CATALOG_OPDS_URL = "http://fr.feedbooks.com/books/top.atom?category=FBFIC019000&lang=fr";
 
-function loadCatalog(chan: Channel<Catalog>) {
-    const opdsParser: OPDSParser = container.get("opds-parser") as OPDSParser;
-    console.log("#####", "Load from OPDS");
-    opdsParser
-        .parse(CATALOG_OPDS_URL)
-        .then((catalog: Catalog) => {
-            console.log("#####", "Loaded from OPDS");
-            chan.put(catalog);
-        })
-        .catch((error: any) => {
-            console.log("## Error:", error);
-        });
+enum CatalogResponseType {
+    Error, // Response implements Error interface
+    Catalog, // Response implements Catalog interface
+}
+
+interface CatalogResponse {
+    type: CatalogResponseType;
+    catalog?: Catalog;
+    error?: Error;
+}
+
+function loadCatalog(chan: Channel<CatalogResponse>) {
+    request(CATALOG_OPDS_URL, (error, response, body) => {
+        if (response && (
+                response.statusCode < 200 || response.statusCode > 299)) {
+            // Unable to download the resource
+            return chan.put({
+                type: CatalogResponseType.Error,
+                error: {
+                    code: response.statusCode,
+                    msg: "Http error",
+                },
+            });
+        }
+
+        if (error) {
+            return chan.put({
+                type: CatalogResponseType.Error,
+                error: {
+                    code: 1,
+                    msg: "Error",
+                },
+            });
+        }
+
+        // A correct response has been received
+        // So parse the feed and generate a catalog
+        const opdsParser: OPDSParser = container.get("opds-parser") as OPDSParser;
+        opdsParser
+            .parse(body)
+            .then((catalog: Catalog) => {
+                chan.put({
+                    type: CatalogResponseType.Catalog,
+                    catalog,
+                });
+            });
+    });
 }
 
 export function* watchCatalogInit(): SagaIterator {
     yield take(CATALOG_INIT);
     const chan = yield call(channel);
     yield fork(loadCatalog, chan);
-    const catalog = yield take(chan);
-    yield put(catalogActions.set(catalog));
+    const catalogResponse: CatalogResponse = yield take(chan);
+
+    if (catalogResponse.type === CatalogResponseType.Catalog) {
+        yield put(catalogActions.set(catalogResponse.catalog));
+    } else {
+        console.error("Unable to load catalog");
+    }
 }
 
 function sendCatalogResponse(renderer: any) {

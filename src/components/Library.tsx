@@ -206,7 +206,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     public render(): React.ReactElement<{}>  {
         const that = this;
-
+        console.log(this.props.catalog);
         let listToDisplay: any;
         if (this.props.catalog) {
             if (this.state.list) {

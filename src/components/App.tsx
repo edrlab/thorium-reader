@@ -51,10 +51,17 @@ export default class App extends React.Component<undefined, AppState> {
     public componentDidMount() {
         this.store.dispatch(windowActions.init());
         this.store.subscribe(() => {
-            this.setState({catalog: {
-                title: "My Catalog",
-                publications: this.store.getState().catalog.publications}
-            });
+            const catalog = this.store.getState().catalog;
+
+            if (catalog.publications === undefined) {
+                this.setState({catalog: undefined});
+            } else {
+                this.setState({catalog: {
+                    title: "My Catalog",
+                    publications: catalog.publications}
+                });
+            }
+
             this.translator.setLocale(this.store.getState().i18n.locale);
         });
     }

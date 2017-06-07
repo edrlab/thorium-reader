@@ -7,7 +7,7 @@ export interface CatalogState {
 }
 
 const initialState: CatalogState = {
-    publications: [],
+    publications: undefined,
 };
 
 export function catalogReducer(
@@ -16,7 +16,7 @@ export function catalogReducer(
     ): CatalogState {
     switch (action.type) {
         case CATALOG_CLEAN:
-            state.publications = [];
+            state.publications = undefined;
             return state;
         case CATALOG_SET:
             state.publications = action.catalog.publications;
