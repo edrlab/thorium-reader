@@ -6,9 +6,6 @@ import { ipcMain } from "electron";
 
 import { Download } from "readium-desktop/downloader/download";
 import { Downloader } from "readium-desktop/downloader/downloader";
-import { OPDSParser } from "readium-desktop/services/opds";
-
-import { Catalog } from "readium-desktop/models/catalog";
 
 import * as catalogActions from "readium-desktop/actions/catalog";
 
@@ -20,7 +17,6 @@ import { Publication } from "readium-desktop/models/publication";
 
 import { container } from "readium-desktop/main/di";
 import { AppState } from "readium-desktop/main/reducers";
-
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;

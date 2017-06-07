@@ -12,7 +12,6 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { setLocale } from "readium-desktop/actions/i18n";
 import { Translator } from "readium-desktop/i18n/translator";
 
-
 import AppToolbar from "readium-desktop/components/AppToolbar";
 import Library from "readium-desktop/components/Library";
 
@@ -58,7 +57,7 @@ export default class App extends React.Component<undefined, AppState> {
             } else {
                 this.setState({catalog: {
                     title: "My Catalog",
-                    publications: catalog.publications}
+                    publications: catalog.publications},
                 });
             }
 

@@ -80,7 +80,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     private  __ = this.translator.translate;
 
     private snackBarMessage: string = "";
-    private lastTimeUpdated = new Date().getTime() / 1000;
+    // private lastTimeUpdated = new Date().getTime() / 1000;
 
     constructor(props: LibraryProps) {
         super(props);

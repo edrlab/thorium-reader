@@ -9,18 +9,18 @@ import {
 
 export function* watchPublicationDownloadStart(): SagaIterator {
     while (true) {
-        const action = yield take(PUBLICATION_DOWNLOAD_ADD);
+        yield take(PUBLICATION_DOWNLOAD_ADD);
     }
 }
 
 export function* watchPublicationDownloadProgress(): SagaIterator {
     while (true) {
-        const action = yield take(PUBLICATION_DOWNLOAD_PROGRESS);
+        yield take(PUBLICATION_DOWNLOAD_PROGRESS);
     }
 }
 
 export function* watchPublicationDownloadFinish(): SagaIterator {
     while (true) {
-        const action = yield take(PUBLICATION_DOWNLOAD_FINISH);
+        yield take(PUBLICATION_DOWNLOAD_FINISH);
     }
 }

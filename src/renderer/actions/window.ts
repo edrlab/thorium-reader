@@ -11,4 +11,3 @@ export function init(): WindowAction {
         type: WINDOW_INIT,
     };
 }
-

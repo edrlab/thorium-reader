@@ -8,7 +8,7 @@ import * as catalogActions from "readium-desktop/actions/catalog";
 import { CATALOG_INIT, CATALOG_SET } from "readium-desktop/actions/catalog";
 import {
     SYNC_CATALOG_REQUEST,
-    SYNC_CATALOG_RESPONSE
+    SYNC_CATALOG_RESPONSE,
 } from "readium-desktop/events/ipc";
 import { Catalog } from "readium-desktop/models/catalog";
 import { Error } from "readium-desktop/models/error";
@@ -114,7 +114,7 @@ export function* watchRendererCatalogRequest(): SagaIterator {
 // Synchronize catalog from main process to renderer processes
 export function* watchCatalogUpdate(): SagaIterator {
     while (true) {
-        const action = yield take([
+        yield take([
             PUBLICATION_DOWNLOAD_PROGRESS,
             PUBLICATION_DOWNLOAD_FINISH,
             CATALOG_SET,

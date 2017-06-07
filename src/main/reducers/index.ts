@@ -2,13 +2,12 @@ import { combineReducers } from "redux";
 
 import {
     catalogReducer,
-    CatalogState
+    CatalogState,
 } from "readium-desktop/reducers/catalog";
 import {
     downloader,
     DownloaderState,
 } from "readium-desktop/reducers/downloader";
-
 
 export interface AppState {
     downloader: DownloaderState;

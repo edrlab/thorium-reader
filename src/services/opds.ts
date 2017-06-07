@@ -7,8 +7,6 @@ import { AcquisitionFeed } from "opds-feed-parser";
 import { Catalog } from "readium-desktop/models/catalog";
 import { Publication } from "readium-desktop/models/publication";
 
-import * as requestPromise from "request-promise-native";
-
 const REL_COVER = "http://opds-spec.org/image";
 const TYPE_EPUB = "application/epub+zip";
 

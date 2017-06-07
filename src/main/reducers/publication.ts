@@ -1,9 +1,3 @@
-import {
-    PublicationDownloadAction,
-    PUBLICATION_DOWNLOAD_ADD,
-    PUBLICATION_DOWNLOAD_START,
-    PUBLICATION_DOWNLOAD_FINISH,
-} from "readium-desktop/main/actions/publication";
 /*
 export interface DownloaderState {
     downloads: { [id: string]: Download };
