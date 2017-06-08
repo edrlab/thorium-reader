@@ -8,7 +8,7 @@ import getDecorators from "inversify-inject-decorators";
 
 import { Downloader } from "readium-desktop/downloader/downloader";
 import { Translator } from "readium-desktop/i18n/translator";
-import { AppState } from "readium-desktop/main/reducer";
+import { AppState } from "readium-desktop/main/reducers";
 import { OPDSParser } from "readium-desktop/services/opds";
 
 import { store } from "readium-desktop/main/store/memory";

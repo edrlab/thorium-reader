@@ -32,7 +32,7 @@ interface ILibraryState {
     open: boolean;
 }
 
-interface ILibraryProps {
+interface LibraryProps {
     catalog: Catalog;
     handleRead: Function;
 }
@@ -71,8 +71,9 @@ const styles = {
     },
 };
 
-export default class Library extends React.Component<ILibraryProps, ILibraryState> {
+export default class Library extends React.Component<LibraryProps, ILibraryState> {
     public state: ILibraryState;
+    public props: LibraryProps;
 
     @lazyInject("translator")
     private translator: Translator;
@@ -80,12 +81,11 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
     @lazyInject("store")
     private  __ = this.translator.translate;
 
-    private catalog: Catalog;
     private snackBarMessage: string = "";
-    private lastTimeUpdated = new Date().getTime() / 1000;
+    // private lastTimeUpdated = new Date().getTime() / 1000;
 
-    constructor() {
-        super();
+    constructor(props: LibraryProps) {
+        super(props);
 
         this.state = {
             downloads: [],
@@ -115,7 +115,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
     public downloadEPUB = (newPublication: Publication, publicationId: number) => {
         if (this.state.downloads.length === 0) {
             let newDownloads: IDownload[] = [];
-            for (let publication of this.catalog.publications) {
+            for (let publication of this.props.catalog.publications) {
                 let download: IDownload = {
                     link: publication.files[0].url,
                     progress: -1,
@@ -154,12 +154,11 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
     public createCardList() {
         let list: any = [];
-        let catalog = this.catalog;
-        for (let i = 0; i < catalog.publications.length; i++) {
+        for (let i = 0; i < this.props.catalog.publications.length; i++) {
             list.push(<PublicationCard key={i}
                 publicationId={i}
                 downloadable={true}
-                publication={catalog.publications[i]}
+                publication={this.props.catalog.publications[i]}
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 download={this.state.downloads[i]}/>);
@@ -169,10 +168,9 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
     public createElementList() {
         let list: any = [];
-        let catalogs = this.catalog;
-        for (let i = 0; i < catalogs.publications.length; i++) {
+        for (let i = 0; i < this.props.catalog.publications.length; i++) {
             list.push(<PublicationListElement key={i}
-                publication={catalogs.publications[i]}
+                publication={this.props.catalog.publications[i]}
                 publicationId={i}
                 downloadEPUB={this.downloadEPUB}
                 download={this.state.downloads[i]} />);
@@ -180,7 +178,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         return <div style={styles.BookListElement.container}> {list} </div>;
     }
 
-    public shouldComponentUpdate(nextProps: any, nextState: any) {
+    /*public shouldComponentUpdate(nextProps: any, nextState: any) {
         if (this.compareDownloads(nextState.downloads, this.state.downloads )) {
             if ((new Date().getTime() / 1000) - this.lastTimeUpdated > 1 || nextState.open !== this.state.open) {
                 this.lastTimeUpdated = new Date().getTime() / 1000;
@@ -190,7 +188,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
             }
         }
         return true;
-    }
+    }*/
 
     public compareDownloads(array1: IDownload[], array2: IDownload[]): boolean {
         if (!array1 || !array2) {
@@ -211,10 +209,9 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
     public render(): React.ReactElement<{}>  {
         const that = this;
-        this.catalog = this.props.catalog;
-
+        console.log(this.props.catalog);
         let listToDisplay: any;
-        if (this.catalog) {
+        if (this.props.catalog) {
             if (this.state.list) {
                 listToDisplay = this.createElementList();
             } else {

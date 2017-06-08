@@ -7,8 +7,6 @@ import { AcquisitionFeed } from "opds-feed-parser";
 import { Catalog } from "readium-desktop/models/catalog";
 import { Publication } from "readium-desktop/models/publication";
 
-import * as requestPromise from "request-promise-native";
-
 const REL_COVER = "http://opds-spec.org/image";
 const TYPE_EPUB = "application/epub+zip";
 
@@ -23,81 +21,79 @@ export class OPDSParser {
     /**
      * Parse OPDS feed and returns a catalog
      */
-    public parse(url: string): Promise<Catalog> {
-        // FIXME catch errors
-        return requestPromise
-            .get(url)
-            .then((response) => {
-                return this.parser
-                    .parse(response)
-                    .then((feed: AcquisitionFeed) => {
-                        // Create new catalog
-                        let catalog: Catalog = {
-                            publications: [],
-                            title: feed.title,
-                        };
-                        for (let entry of feed.entries) {
-                            let publication: Publication = {
-                                title: entry.title,
-                                description: entry.summary.content,
-                                authors: [],
-                                files: [],
-                            };
+    public parse(opdsFeed: string): Promise<Catalog> {
+        return this.parser
+            .parse(opdsFeed)
+            .then((feed: AcquisitionFeed) => {
+                // Create new catalog
+                let catalog: Catalog = {
+                    publications: [],
+                    title: feed.title,
+                };
 
-                            // Fill authors
-                            for (let author of entry.authors) {
-                                publication.authors.push({
-                                    name: author.name,
-                                });
+                for (let entry of feed.entries) {
+                    let publication: Publication = {
+                        title: entry.title,
+                        description: entry.summary.content,
+                        authors: [],
+                        files: [],
+                    };
+
+                    // Fill authors
+                    for (let author of entry.authors) {
+                        publication.authors.push({
+                            name: author.name,
+                        });
+                    }
+
+                    // Set language
+                    publication.language = {
+                        code: entry.language,
+                    };
+
+                    // Retrieve cover and download link
+                    for (let link of entry.links) {
+                        if (link.rel === REL_COVER) {
+                            // We found the cover
+                            let urlObj = new URL(link.href);
+                            let extObj = path.extname(urlObj.pathname);
+
+                            // Remove dot in extension
+                            if (extObj.length > 1) {
+                                extObj = extObj.substr(1);
                             }
 
-                            // Set language
-                            publication.language = {
-                                code: entry.language,
+                            publication.cover = {
+                                url: link.href,
+                                contentType: link.type,
+                                ext: extObj,
                             };
-
-                            // Retrieve cover and download link
-                            for (let link of entry.links) {
-                                if (link.rel === REL_COVER) {
-                                    // We found the cover
-                                    let urlObj = new URL(link.href);
-                                    let extObj = path.extname(urlObj.pathname);
-
-                                    // Remove dot in extension
-                                    if (extObj.length > 1) {
-                                        extObj = extObj.substr(1);
-                                    }
-
-                                    publication.cover = {
-                                        url: link.href,
-                                        contentType: link.type,
-                                        ext: extObj,
-                                    };
-                                }
-                                if (link.type === TYPE_EPUB) {
-                                    // We found the EPUB link
-                                    let urlObj = new URL(link.href);
-                                    let extObj = path.extname(urlObj.pathname);
-
-                                    // Remove dot in extension
-                                    if (extObj.length > 1) {
-                                        extObj = extObj.substr(1);
-                                    }
-
-                                    publication.files.push({
-                                        url: link.href,
-                                        contentType: link.type,
-                                        ext: extObj,
-                                    });
-                                }
-                            }
-
-                            catalog.publications.push(publication);
                         }
+                        if (link.type === TYPE_EPUB) {
+                            // We found the EPUB link
+                            let urlObj = new URL(link.href);
+                            let extObj = path.extname(urlObj.pathname);
 
-                        return catalog;
-                    })
-                ;
+                            // Remove dot in extension
+                            if (extObj.length > 1) {
+                                extObj = extObj.substr(1);
+                            }
+
+                            publication.files.push({
+                                url: link.href,
+                                contentType: link.type,
+                                ext: extObj,
+                            });
+                        }
+                    }
+
+                    catalog.publications.push(publication);
+                }
+
+                return catalog;
+            })
+            .catch((err: any) => {
+                console.error(err);
             })
         ;
     }
