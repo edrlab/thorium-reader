@@ -14,12 +14,14 @@ import { Translator } from "readium-desktop/i18n/translator";
 
 import AppToolbar from "readium-desktop/components/AppToolbar";
 import Library from "readium-desktop/components/Library";
+import ReaderNYPL from "readium-desktop/components/ReaderNYPL";
 
 import * as windowActions from "readium-desktop/renderer/actions/window";
 import { RendererState } from "readium-desktop/renderer/reducers";
 
 interface AppState {
     catalog: Catalog;
+    isReader: boolean;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -44,7 +46,12 @@ export default class App extends React.Component<undefined, AppState> {
 
         this.state = {
             catalog: undefined,
+            isReader: false,
         };
+    }
+
+    public ToggleReaderView = () => {
+        this.setState({isReader: !this.state.isReader});
     }
 
     public componentDidMount() {
@@ -66,11 +73,24 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     public render(): React.ReactElement<{}> {
+        let manifestUrl = "https://hadriengardeur.github.io/webpub-manifest/examples/MobyDick/manifest.json";
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
-                    <AppToolbar />
-                    <Library catalog={this.state.catalog}/>
+                    {!this.state.isReader ? (
+                    <div>
+                        <AppToolbar />
+                        <Library
+                            catalog={this.state.catalog}
+                            handleRead={this.ToggleReaderView.bind(this)}/>
+                    </div>
+                    ) : (
+                        <div>
+                            <ReaderNYPL
+                                manifestURL={manifestUrl}
+                                handleRead={this.ToggleReaderView.bind(this)} />
+                        </div>
+                    )}
                 </div>
             </MuiThemeProvider>
         );
