@@ -73,7 +73,7 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     public render(): React.ReactElement<{}> {
-        let manifestUrl = "https://readium2.herokuapp.com/pub/L2FwcC9jaGlsZHJlbnMtbGl0ZXJhdHVyZS5lcHVi/manifest.json";
+        let manifestUrl = "https://hadriengardeur.github.io/webpub-manifest/examples/MobyDick/manifest.json";
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
