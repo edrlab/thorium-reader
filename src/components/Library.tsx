@@ -82,7 +82,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     private  __ = this.translator.translate;
 
     private snackBarMessage: string = "";
-    // private lastTimeUpdated = new Date().getTime() / 1000;
+    private lastTimeUpdated = new Date().getTime() / 1000;
 
     constructor(props: LibraryProps) {
         super(props);
@@ -178,9 +178,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         return <div style={styles.BookListElement.container}> {list} </div>;
     }
 
-    public shouldComponentUpdate(nextProps: any, nextState: any): boolean {
+    public shouldComponentUpdate(nextProps: LibraryProps, nextState: ILibraryState): boolean {
         if (nextState.open !== this.state.open
-            || nextState.locale !== this.state.locale
+            || nextProps.catalog !== this.props.catalog
             || nextState.list !== this.state.list) {
                 return true;
         } else {
