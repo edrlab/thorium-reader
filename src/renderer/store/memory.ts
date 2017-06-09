@@ -1,15 +1,14 @@
 import { applyMiddleware, createStore, Store } from "redux";
 import createSagaMiddleware from "redux-saga";
 
-import { AppState, rootReducer } from "readium-desktop/main/reducers";
-
-import { rootSaga } from "readium-desktop/main/sagas";
+import { RendererState, rootReducer } from "readium-desktop/renderer/reducers";
+import { rootSaga } from "readium-desktop/renderer/sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 
-export const store: Store<AppState> = createStore(
+export const store: Store<RendererState> = createStore(
     rootReducer,
     applyMiddleware(sagaMiddleware),
-) as (Store<AppState>);
+) as (Store<RendererState>);
 
 sagaMiddleware.run(rootSaga);

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Store } from "redux";
 
 import FontIcon     from "material-ui/FontIcon";
 import IconButton   from "material-ui/IconButton";
@@ -22,7 +21,6 @@ import {
 import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
-import { IAppState }    from "readium-desktop/reducers/app";
 
 import { Catalog } from "readium-desktop/models/catalog";
 
@@ -30,13 +28,13 @@ import { PublicationCard, PublicationListElement } from "readium-desktop/compone
 
 interface ILibraryState {
     downloads: IDownload[];
-    locale: string;
     list: boolean;
     open: boolean;
 }
 
-interface ILibraryProps {
+interface LibraryProps {
     catalog: Catalog;
+    handleRead: Function;
 }
 
 interface IDownload {
@@ -73,29 +71,26 @@ const styles = {
     },
 };
 
-export default class Library extends React.Component<ILibraryProps, ILibraryState> {
+export default class Library extends React.Component<LibraryProps, ILibraryState> {
     public state: ILibraryState;
+    public props: LibraryProps;
 
     @lazyInject("translator")
     private translator: Translator;
 
     @lazyInject("store")
-    private store: Store<IAppState>;
-
     private  __ = this.translator.translate;
 
-    private catalog: Catalog;
     private snackBarMessage: string = "";
-    private lastTimeUpdated = new Date().getTime() / 1000;
+    // private lastTimeUpdated = new Date().getTime() / 1000;
 
-    constructor() {
-        super();
+    constructor(props: LibraryProps) {
+        super(props);
 
         this.state = {
             downloads: [],
             open: false,
             list: false,
-            locale: this.store.getState().i18n.locale,
         };
 
         ipcRenderer.on(PUBLICATION_DOWNLOAD_FINISHED, (event: any, msg: DownloadMessage) => {
@@ -120,7 +115,7 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
     public downloadEPUB = (newPublication: Publication, publicationId: number) => {
         if (this.state.downloads.length === 0) {
             let newDownloads: IDownload[] = [];
-            for (let publication of this.catalog.publications) {
+            for (let publication of this.props.catalog.publications) {
                 let download: IDownload = {
                     link: publication.files[0].url,
                     progress: -1,
@@ -159,13 +154,13 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
     public createCardList() {
         let list: any = [];
-        let catalog = this.catalog;
-        for (let i = 0; i < catalog.publications.length; i++) {
+        for (let i = 0; i < this.props.catalog.publications.length; i++) {
             list.push(<PublicationCard key={i}
                 publicationId={i}
                 downloadable={true}
-                publication={catalog.publications[i]}
+                publication={this.props.catalog.publications[i]}
                 downloadEPUB={this.downloadEPUB}
+                handleRead={this.props.handleRead.bind(this)}
                 download={this.state.downloads[i]}/>);
         }
         return list;
@@ -173,10 +168,9 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
 
     public createElementList() {
         let list: any = [];
-        let catalogs = this.catalog;
-        for (let i = 0; i < catalogs.publications.length; i++) {
+        for (let i = 0; i < this.props.catalog.publications.length; i++) {
             list.push(<PublicationListElement key={i}
-                publication={catalogs.publications[i]}
+                publication={this.props.catalog.publications[i]}
                 publicationId={i}
                 downloadEPUB={this.downloadEPUB}
                 download={this.state.downloads[i]} />);
@@ -199,21 +193,11 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
         }
     }
 
-    public componentDidMount() {
-        this.store.subscribe(() => {
-            this.setState({
-                locale: this.store.getState().i18n.locale,
-            });
-        });
-
-    }
-
     public render(): React.ReactElement<{}>  {
         const that = this;
-        this.catalog = this.props.catalog;
-
+        console.log(this.props.catalog);
         let listToDisplay: JSX.Element;
-        if (this.catalog) {
+        if (this.props.catalog) {
             if (this.state.list) {
                 listToDisplay = this.createElementList();
             } else {
@@ -243,9 +227,11 @@ export default class Library extends React.Component<ILibraryProps, ILibraryStat
                     >
                         <FontIcon className="fa fa-th-large" color={blue500} />
                     </IconButton>
-                    <RaisedButton label={this.__("library.add")} style={styles.Library.addButton} />
+                    <RaisedButton
+                        label="Lire un livre"
+                        style={styles.Library.addButton}
+                        onClick={() => {this.props.handleRead(); }} />
                 </div >
-
                 <div style={styles.Library.list}>
                     {listToDisplay}
                 </div>

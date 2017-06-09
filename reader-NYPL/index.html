@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Webpub manifest viewer</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link href="webapp.webmanifest" rel="manifest" type="application/manifest+json">
+  <link rel="apple-touch-icon" href="cover.jpg" type="image/jpeg">
+  <link rel="stylesheet" href="main.css">
+  <script src="require.js"></script>
+  <script src="fetch.js"></script>
+  <script src="url.js"></script>
+  <script src="promise.js"></script>
+  <script src="webpub-viewer.js"></script>
+</head>
+<body>
+  <div id="viewer">
+  </div>
+  <script>
+    //https://github.com/NYPL-Simplified/webpub-viewer
+    //https://github.com/NYPL-Simplified/webpub-viewer/tree/master/examples
+    //https://github.com/NYPL-Simplified/web-reader-landing-page/blob/master/book_index.html.template
+
+    var getURLQueryParams = function() {
+      var params = {};
+      var query = window.location.search;
+      if (query && query.length) {
+        query = query.substring(1);
+        var keyParams = query.split('&');
+        for (var x = 0; x < keyParams.length; x++) {
+          var keyVal = keyParams[x].split('=');
+          if (keyVal.length > 1) {
+            params[keyVal[0]] = decodeURIComponent(keyVal[1]);
+          }
+        }
+      }
+      return params;
+    };
+
+    require(["LocalStorageStore", "ServiceWorkerCacher", "IFrameNavigator", "ColumnsPaginatedBookView", "ScrollingBookView", "LocalAnnotator", "BookSettings"],
+            function (LocalStorageStore, ServiceWorkerCacher, IFrameNavigator, ColumnsPaginatedBookView, ScrollingBookView, LocalAnnotator, BookSettings) {
+      var element = document.getElementById("viewer");
+      var urlParams = getURLQueryParams();
+      var webpubManifestUrl = new URL(urlParams['url']);
+      var store = new LocalStorageStore.default({ prefix: webpubManifestUrl.href });
+      var cacher = new ServiceWorkerCacher.default({
+        store: store,
+        manifestUrl: webpubManifestUrl,
+        serviceWorkerUrl: new URL("sw.js", window.location.href),
+        staticFileUrls: [
+          new URL(window.location.href),
+          new URL("index.html", window.location.href),
+          new URL("main.css", window.location.href),
+          new URL("require.js", window.location.href),
+          new URL("fetch.js", window.location.href),
+          new URL("url.js", window.location.href),
+          new URL("promise.js", window.location.href),
+          new URL("webpub-viewer.js", window.location.href)
+        ]
+      });
+      var paginator = new ColumnsPaginatedBookView.default();
+      var scroller = new ScrollingBookView.default();
+      var annotator = new LocalAnnotator.default({ store: store });
+      var settingsStore = new LocalStorageStore.default({ prefix: "webpub-viewer" });
+      var fontSizes = [ 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32 ];
+      var defaultFontSize = 20;
+      BookSettings.default.create({
+        store: settingsStore,
+        bookViews: [paginator, scroller],
+        fontSizesInPixels: fontSizes,
+        defaultFontSizeInPixels: defaultFontSize
+      }).then(function (settings) {
+        IFrameNavigator.default.create({
+          element: element,
+          manifestUrl: webpubManifestUrl,
+          store: store,
+          cacher: cacher,
+          settings: settings,
+          annotator: annotator,
+          paginator: paginator,
+          scroller: scroller
+        });
+      });
+    });
+
+  </script>
+</body>
+</html>
+

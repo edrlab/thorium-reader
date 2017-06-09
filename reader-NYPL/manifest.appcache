@@ -1,0 +1,14 @@
+CACHE MANIFEST
+# timestamp Wed May 3 11:42:04 -0400 EDT 2017
+
+index.html
+sw.js
+webpub-viewer.js
+require.js
+fetch.js
+url.js
+promise.js
+main.css
+
+NETWORK:
+*

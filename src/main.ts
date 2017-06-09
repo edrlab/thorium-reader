@@ -1,26 +1,22 @@
 import * as path from "path";
+import { Store } from "redux";
 
 import { app, BrowserWindow } from "electron";
 import { ipcMain } from "electron";
 
-import { Store } from "redux";
-
 import { Download } from "readium-desktop/downloader/download";
 import { Downloader } from "readium-desktop/downloader/downloader";
-import { OPDSParser } from "readium-desktop/services/opds";
 
-import { Catalog } from "readium-desktop/models/catalog";
+import * as catalogActions from "readium-desktop/actions/catalog";
 
 import {
-    CATALOG_GET_REQUEST,
-    CATALOG_GET_RESPONSE,
     PUBLICATION_DOWNLOAD_REQUEST,
 } from "readium-desktop/events/ipc";
 import { PublicationMessage } from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
 
 import { container } from "readium-desktop/main/di";
-import { AppState } from "readium-desktop/main/reducer";
+import { AppState } from "readium-desktop/main/reducers";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -61,6 +57,10 @@ app.on("window-all-closed", () => {
 // Call 'createWindow()' on startup.
 app.on("ready", () => {
     createWindow();
+
+    // Load catalog
+    const store: Store<AppState> = container.get("store") as Store<AppState>;
+    store.dispatch(catalogActions.init());
 });
 
 // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
@@ -72,25 +72,7 @@ app.on("activate", () => {
 });
 
 // Retrieve services from DI container
-const store: Store<AppState> = container.get("store") as Store<AppState>;
 const downloader: Downloader = container.get("downloader") as Downloader;
-const opdsParser: OPDSParser = container.get("opds-parser") as OPDSParser;
-
-store.subscribe(() => {
-    console.log(store.getState().downloader.downloads);
-});
-
-const opdsUrl = "http://fr.feedbooks.com/books/top.atom?category=FBFIC019000&lang=fr";
-
-ipcMain.on(CATALOG_GET_REQUEST, (event, msg) => {
-    opdsParser
-        .parse(opdsUrl)
-        .then((catalog: Catalog) => {
-            event.sender.send(CATALOG_GET_RESPONSE, {
-                catalog,
-            });
-        });
-});
 
 ipcMain.on(PUBLICATION_DOWNLOAD_REQUEST, (event: any, msg: PublicationMessage) => {
     let pub: Publication = msg.publication;

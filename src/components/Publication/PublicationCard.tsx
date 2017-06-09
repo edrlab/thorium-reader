@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Store } from "redux";
 
 import FlatButton   from "material-ui/FlatButton";
 
@@ -8,7 +7,6 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
-import { IAppState }    from "readium-desktop/reducers/app";
 
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
 import LinearProgress from "material-ui/LinearProgress";
@@ -16,7 +14,6 @@ import LinearProgress from "material-ui/LinearProgress";
 import * as ReactCardFlip from "react-card-flip";
 
 interface IPublicationState {
-    locale: string;
     isFlipped: boolean;
 }
 
@@ -26,6 +23,7 @@ interface IPublicationProps {
     downloadEPUB: Function;
     downloadable: boolean;
     download: IDownload;
+    handleRead: Function;
 }
 
 interface IDownload {
@@ -63,25 +61,12 @@ export default class PublicationListElement extends React.Component<IPublication
     @lazyInject("translator")
     private translator: Translator;
 
-    @lazyInject("store")
-    private store: Store<IAppState>;
-
     constructor() {
         super();
 
         this.state = {
             isFlipped: false,
-            locale: this.store.getState().i18n.locale,
         };
-    }
-
-    public componentDidMount() {
-        this.store.subscribe(() => {
-            this.setState({
-                locale: this.store.getState().i18n.locale,
-            });
-        });
-
     }
 
     public handleFront = () => {
@@ -148,7 +133,8 @@ export default class PublicationListElement extends React.Component<IPublication
                                             <div>
                                                 <FlatButton
                                                 style={styles.BookCard.downloadButton}
-                                                label="Supprimer" />
+                                                onClick={() => {this.props.handleRead(); }}
+                                                label="Lire" />
 
                                                 <FlatButton
                                                 style={styles.BookCard.downloadButton}
