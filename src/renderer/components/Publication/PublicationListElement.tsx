@@ -43,14 +43,14 @@ const styles = {
         },
         description: {
             display: "inline-block",
-            height: 120,
+            height: 140,
             marginLeft: "5px",
         },
         image: {
             display: "inline-block",
             float: "left",
-            height: 120,
-            width: 78,
+            height: 140,
+            width: 91,
         },
         title: {
             margin: "10px 0px",

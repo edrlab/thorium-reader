@@ -12,9 +12,9 @@ import {
 
 import { Download } from "readium-desktop/downloader/download";
 import { Downloader } from "readium-desktop/downloader/downloader";
-import {
-    PUBLICATION_DOWNLOAD_REQUEST,
-} from "readium-desktop/events/ipc";
+
+import { PUBLICATION_DOWNLOAD_REQUEST } from "readium-desktop/events/ipc";
+
 import { Error } from "readium-desktop/models/error";
 import { PublicationMessage } from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
