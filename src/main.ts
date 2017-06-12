@@ -2,18 +2,8 @@ import * as path from "path";
 import { Store } from "redux";
 
 import { app, BrowserWindow } from "electron";
-import { ipcMain } from "electron";
-
-import { Download } from "readium-desktop/downloader/download";
-import { Downloader } from "readium-desktop/downloader/downloader";
 
 import * as catalogActions from "readium-desktop/actions/catalog";
-
-import {
-    PUBLICATION_DOWNLOAD_REQUEST,
-} from "readium-desktop/events/ipc";
-import { PublicationMessage } from "readium-desktop/models/ipc";
-import { Publication } from "readium-desktop/models/publication";
 
 import { container } from "readium-desktop/main/di";
 import { AppState } from "readium-desktop/main/reducers";
@@ -68,25 +58,5 @@ app.on("ready", () => {
 app.on("activate", () => {
     if (mainWindow === null) {
         createWindow();
-    }
-});
-
-// Retrieve services from DI container
-const downloader: Downloader = container.get("downloader") as Downloader;
-
-ipcMain.on(PUBLICATION_DOWNLOAD_REQUEST, (event: any, msg: PublicationMessage) => {
-    let pub: Publication = msg.publication;
-    let epubType = "application/epub+zip";
-    let url: string;
-    let download: Download;
-
-    for (let file of pub.files) {
-        if (file.contentType === epubType) {
-            url = file.url;
-        }
-    }
-    if (url) {
-
-        download = downloader.download(url);
     }
 });

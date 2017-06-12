@@ -17,12 +17,12 @@ import { OPDSParser } from "readium-desktop/services/opds";
 import {
     PUBLICATION_DOWNLOAD_FINISH,
     PUBLICATION_DOWNLOAD_PROGRESS,
-} from "readium-desktop/main/actions/publication";
+} from "readium-desktop/actions/catalog";
 import { AppState } from "readium-desktop/main/reducers";
 
 import { container } from "readium-desktop/main/di";
 
-const CATALOG_OPDS_URL = "http://fr.feedbooks.com/books/top.atom?category=FBFIC019000&lang=fr";
+const CATALOG_OPDS_URL = "http://www.feedbooks.com/books/top.atom?category=FBFIC019000";
 
 enum CatalogResponseType {
     Error, // Response implements Error interface
@@ -61,6 +61,7 @@ function loadCatalog(chan: Channel<CatalogResponse>) {
 
         // A correct response has been received
         // So parse the feed and generate a catalog
+        console.log("### OPDS loaded");
         const opdsParser: OPDSParser = container.get("opds-parser") as OPDSParser;
         opdsParser
             .parse(body)
@@ -75,6 +76,7 @@ function loadCatalog(chan: Channel<CatalogResponse>) {
 
 export function* watchCatalogInit(): SagaIterator {
     yield take(CATALOG_INIT);
+    console.log("### Catalog init");
     const chan = yield call(channel);
     yield fork(loadCatalog, chan);
     const catalogResponse: CatalogResponse = yield take(chan);
