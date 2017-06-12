@@ -173,6 +173,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 publication={this.props.catalog.publications[i]}
                 publicationId={i}
                 downloadEPUB={this.downloadEPUB}
+                handleRead={this.props.handleRead.bind(this)}
                 download={this.state.downloads[i]} />);
         }
         return <div style={styles.BookListElement.container}> {list} </div>;

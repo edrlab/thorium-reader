@@ -7,6 +7,7 @@
     },
     "publication": {
       "downloadButton": "Download",
+      "readButton": "Read",
       "progressDownload": "Downloading",
       "endDownload": "Download completed"
     },

@@ -9,11 +9,14 @@ import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
 
+import RaisedButton from "material-ui/RaisedButton";
+
 interface IPublicationProps {
     publication: Publication;
     publicationId: number;
     downloadEPUB: Function;
     download: IDownload;
+    handleRead: Function;
 }
 
 interface IDownload {
@@ -98,7 +101,12 @@ export default class PublicationListElement extends React.Component<IPublication
                                         value={this.props.download.progress} />
                                 </div>
                             ) : (
-                                <p>{__("publication.endDownload")}</p>
+                                <div>
+                                    <p>{__("publication.endDownload")}</p>
+                                    <RaisedButton
+                                        label={__("publication.readButton")}
+                                        onClick={() => {this.props.handleRead(); }}/>
+                                </div>
                             )}
                     </div>
                 </div>

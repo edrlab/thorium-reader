@@ -8,6 +8,8 @@ import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
 
+import RaisedButton from "material-ui/RaisedButton";
+
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
 import LinearProgress from "material-ui/LinearProgress";
 
@@ -126,7 +128,12 @@ export default class PublicationListElement extends React.Component<IPublication
                                                             value={this.props.download.progress} />
                                                     </div>
                                                 ) : (
-                                                    <p>{__("publication.endDownload")}</p>
+                                                    <div>
+                                                        <p>{__("publication.endDownload")}</p>
+                                                        <RaisedButton
+                                                            label={__("publication.readButton")}
+                                                            onClick={() => {this.props.handleRead(); }}/>
+                                                    </div>
                                                 )}
                                             </div>
                                         ) : (
