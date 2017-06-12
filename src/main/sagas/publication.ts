@@ -18,6 +18,7 @@ import {
 } from "readium-desktop/downloader/constants";
 
 import { Downloader } from "readium-desktop/downloader/downloader";
+import { Download } from "readium-desktop/models/download";
 
 import { PUBLICATION_DOWNLOAD_REQUEST } from "readium-desktop/events/ipc";
 
