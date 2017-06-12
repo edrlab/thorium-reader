@@ -6,19 +6,21 @@ import RaisedButton from "material-ui/RaisedButton";
 import Snackbar     from "material-ui/Snackbar";
 import { blue500 }  from "material-ui/styles/colors";
 
-import { lazyInject } from "readium-desktop/renderer/di";
+import { Store } from "redux";
 
 import { ipcRenderer } from "electron";
 import {
     PUBLICATION_DOWNLOAD_FINISHED,
     PUBLICATION_DOWNLOAD_PROGRESS,
-    PUBLICATION_DOWNLOAD_REQUEST,
 } from "readium-desktop/events/ipc";
-import {
-    DownloadMessage,
-    PublicationMessage,
-} from "readium-desktop/models/ipc";
+import { DownloadMessage } from "readium-desktop/models/ipc";
+
+import * as catalogActions from "readium-desktop/actions/catalog";
+
 import { Publication } from "readium-desktop/models/publication";
+
+import { lazyInject } from "readium-desktop/renderer/di";
+import { RendererState } from "readium-desktop/renderer/reducers";
 
 import { Translator }   from "readium-desktop/i18n/translator";
 
@@ -79,6 +81,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     private translator: Translator;
 
     @lazyInject("store")
+    private store: Store<RendererState>;
+
+    @lazyInject("store")
     private  __ = this.translator.translate;
 
     private snackBarMessage: string = "";
@@ -112,6 +117,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         });
     }
 
+    // Create the download list if it doesn't exist then start the download
     public downloadEPUB = (newPublication: Publication, publicationId: number) => {
         if (this.state.downloads.length === 0) {
             let newDownloads: IDownload[] = [];
@@ -129,11 +135,12 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     public directDownloadEPUB = (newPublication: Publication, publicationId: number) => {
-        let publicationMessage: PublicationMessage = {publication: newPublication};
         let newDownloads = JSON.parse(JSON.stringify(this.state.downloads));
         newDownloads[publicationId].progress = 0;
         this.setState({downloads: newDownloads});
-        ipcRenderer.send(PUBLICATION_DOWNLOAD_REQUEST, publicationMessage);
+
+        this.store.dispatch(catalogActions.addPublicationDownload(newPublication));
+
         this.snackBarMessage = this.__("library.startDownload");
         this.setState({open: true});
     }
