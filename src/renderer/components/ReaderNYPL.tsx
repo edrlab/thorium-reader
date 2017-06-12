@@ -1,5 +1,11 @@
 import * as React from "react";
 
+import * as windowActions from "readium-desktop/renderer/actions/window";
+
+import { lazyInject } from "readium-desktop/renderer/di";
+import { RendererState } from "readium-desktop/renderer/reducers";
+import { Store } from "redux";
+
 import FlatButton   from "material-ui/FlatButton";
 
 interface IReaderNYPLProps {
@@ -8,6 +14,13 @@ interface IReaderNYPLProps {
 }
 
 export default class ReaderNYPL extends React.Component<IReaderNYPLProps, null> {
+
+    @lazyInject("store")
+    private store: Store<RendererState>;
+
+    public componentDidMount() {
+        this.store.dispatch(windowActions.showReader());
+    }
 
     public render(): React.ReactElement<{}>  {
         let url = "../reader-NYPL/index.html?url=" + this.props.manifestURL;

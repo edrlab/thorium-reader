@@ -22,6 +22,8 @@ import { Publication } from "readium-desktop/models/publication";
 import { lazyInject } from "readium-desktop/renderer/di";
 import { RendererState } from "readium-desktop/renderer/reducers";
 
+import * as windowActions from "readium-desktop/renderer/actions/window";
+
 import { Translator }   from "readium-desktop/i18n/translator";
 
 import { Catalog } from "readium-desktop/models/catalog";
@@ -115,6 +117,10 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 }
             }
         });
+    }
+
+    public componentDidMount() {
+        this.store.dispatch(windowActions.showLibrary());
     }
 
     // Create the download list if it doesn't exist then start the download
