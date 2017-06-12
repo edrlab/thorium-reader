@@ -13,10 +13,7 @@ import {
     PUBLICATION_DOWNLOAD_FINISHED,
     PUBLICATION_DOWNLOAD_PROGRESS,
 } from "readium-desktop/events/ipc";
-import {
-    DownloadMessage,
-    PublicationMessage,
-} from "readium-desktop/models/ipc";
+import { DownloadMessage } from "readium-desktop/models/ipc";
 
 import * as catalogActions from "readium-desktop/actions/catalog";
 
