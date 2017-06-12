@@ -24,7 +24,7 @@ import { Translator }   from "readium-desktop/i18n/translator";
 
 import { Catalog } from "readium-desktop/models/catalog";
 
-import { PublicationCard, PublicationListElement } from "readium-desktop/components/Publication/index";
+import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
 
 interface ILibraryState {
     downloads: IDownload[];

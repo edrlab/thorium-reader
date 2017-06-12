@@ -4,7 +4,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as injectTapEventPlugin from "react-tap-event-plugin";
 
-import App from "readium-desktop/components/App";
+import App from "readium-desktop/renderer/components/App";
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941

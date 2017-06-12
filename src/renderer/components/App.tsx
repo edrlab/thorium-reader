@@ -12,9 +12,9 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { setLocale } from "readium-desktop/actions/i18n";
 import { Translator } from "readium-desktop/i18n/translator";
 
-import AppToolbar from "readium-desktop/components/AppToolbar";
-import Library from "readium-desktop/components/Library";
-import ReaderNYPL from "readium-desktop/components/ReaderNYPL";
+import AppToolbar from "readium-desktop/renderer/components/AppToolbar";
+import Library from "readium-desktop/renderer/components/Library";
+import ReaderNYPL from "readium-desktop/renderer/components/ReaderNYPL";
 
 import * as windowActions from "readium-desktop/renderer/actions/window";
 import { RendererState } from "readium-desktop/renderer/reducers";
