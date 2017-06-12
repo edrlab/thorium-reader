@@ -9,8 +9,14 @@ import {
     PUBLICATION_DOWNLOAD_PROGRESS,
     PublicationAction,
 } from "readium-desktop/actions/catalog";
+import {
+    DownloadAction,
+} from "readium-desktop/actions/downloader";
+import {
+    DOWNLOAD_FINISH,
+    DOWNLOAD_PROGRESS,
+} from "readium-desktop/downloader/constants";
 
-import { Download } from "readium-desktop/downloader/download";
 import { Downloader } from "readium-desktop/downloader/downloader";
 import {
     PUBLICATION_DOWNLOAD_REQUEST,

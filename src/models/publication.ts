@@ -1,5 +1,5 @@
 import { Contributor } from "readium-desktop/models/contributor";
-import { Downloadable } from "readium-desktop/models/downloadable";
+import { Download } from "readium-desktop/models/download";
 import { File } from "readium-desktop/models/file";
 import { Language } from "readium-desktop/models/language";
 import { Tag } from "readium-desktop/models/tag";
