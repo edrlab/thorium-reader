@@ -9,7 +9,7 @@ import {
     DOWNLOAD_REMOVE,
     DOWNLOAD_START,
 } from "readium-desktop/downloader/constants";
-import { Download } from "readium-desktop/downloader/download";
+import { Download } from "readium-desktop/models/download";
 
 export interface DownloadAction extends Action {
     download: Download;

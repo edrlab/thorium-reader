@@ -8,10 +8,11 @@ import {
     DOWNLOAD_REMOVE,
     DOWNLOAD_START,
 } from "readium-desktop/downloader/constants";
-import { Download, DownloadStatus } from "readium-desktop/downloader/download";
+import { Download } from "readium-desktop/models/download";
+import { DownloadStatus } from "readium-desktop/models/downloadable";
 
 export interface DownloaderState {
-    downloads: { [id: string]: Download };
+    downloads: { [identifier: string]: Download };
 }
 
 const initialState: DownloaderState = {
@@ -25,35 +26,35 @@ export function downloader(
     if (action.download === undefined) {
         return state;
     }
-    let uuid = action.download.uuid;
+    let identifier = action.download.identifier;
 
     switch (action.type) {
         case DOWNLOAD_ADD:
-            state.downloads[uuid] = action.download;
+            state.downloads[identifier] = action.download;
             return state;
         case DOWNLOAD_REMOVE:
-            delete state.downloads[uuid];
+            delete state.downloads[identifier];
             return state;
         case DOWNLOAD_CANCEL:
             action.download.status = DownloadStatus.Canceled;
-            state.downloads[uuid] = action.download;
+            state.downloads[identifier] = action.download;
             return state;
         case DOWNLOAD_START:
             action.download.status = DownloadStatus.Downloading;
-            state.downloads[uuid] = action.download;
+            state.downloads[identifier] = action.download;
             return state;
         case DOWNLOAD_PROGRESS:
-            state.downloads[uuid] = action.download;
+            state.downloads[identifier] = action.download;
             return state;
         case DOWNLOAD_FINISH:
             action.download.status = DownloadStatus.Downloaded;
             action.download.progress = 100;
-            state.downloads[uuid] = action.download;
+            state.downloads[identifier] = action.download;
             return state;
         case DOWNLOAD_FAIL:
             action.download.status = DownloadStatus.Failed;
             action.download.progress = 0;
-            state.downloads[uuid] = action.download;
+            state.downloads[identifier] = action.download;
             return state;
         default:
             return state;

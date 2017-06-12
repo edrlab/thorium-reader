@@ -6,7 +6,8 @@ import { URL } from "url";
 import * as uuid from "uuid";
 
 import * as downloadActions from "readium-desktop/actions/downloader";
-import { Download, DownloadStatus } from "readium-desktop/downloader/download";
+import { Download } from "readium-desktop/models/download";
+import { DownloadStatus } from "readium-desktop/models/downloadable";
 
 @injectable()
 export class Downloader {
@@ -34,7 +35,7 @@ export class Downloader {
 
         // Create download
         let download: Download = {
-            uuid: uuid.v4(),
+            identifier: uuid.v4(),
             srcUrl: url,
             dstPath,
             progress: 0,

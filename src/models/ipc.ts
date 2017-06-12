@@ -1,5 +1,5 @@
-import { Download } from "readium-desktop/downloader/download";
 import { Catalog } from "readium-desktop/models/catalog";
+import { Download } from "readium-desktop/models/download";
 import { Publication } from "readium-desktop/models/publication";
 
 interface LibraryImportMessage {
