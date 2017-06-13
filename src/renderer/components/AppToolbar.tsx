@@ -65,14 +65,6 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
     }
 
-    public componentDidMount() {
-        this.store.subscribe(() => {
-            this.setState({
-                locale: this.store.getState().i18n.locale,
-            });
-        });
-    }
-
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate;
         const actions = [
@@ -175,7 +167,8 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
         this.setState({open: false});
     }
 
-    private handleLocaleChange(event: any, index: any, locale: string) {
-        this.store.dispatch(setLocale(locale));
+    private handleLocaleChange(event: any, index: any, newLocale: string) {
+        this.store.dispatch(setLocale(newLocale));
+        this.setState({locale: newLocale});
     }
 }
