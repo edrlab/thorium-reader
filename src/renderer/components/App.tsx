@@ -68,12 +68,15 @@ export default class App extends React.Component<undefined, AppState> {
                 });
             }
 
+
+
             this.translator.setLocale(this.store.getState().i18n.locale);
         });
     }
 
     public render(): React.ReactElement<{}> {
         let manifestUrl = "https://hadriengardeur.github.io/webpub-manifest/examples/MobyDick/manifest.json";
+        console.log("C'est le catalog !!! ", this.state.catalog);
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>

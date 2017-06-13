@@ -15,6 +15,8 @@ import LinearProgress from "material-ui/LinearProgress";
 
 import * as ReactCardFlip from "react-card-flip";
 
+import { DownloadStatus } from "readium-desktop/models/downloadable";
+
 interface IPublicationState {
     isFlipped: boolean;
 }
@@ -24,13 +26,7 @@ interface IPublicationProps {
     publicationId: number;
     downloadEPUB: Function;
     downloadable: boolean;
-    download: IDownload;
     handleRead: Function;
-}
-
-interface IDownload {
-    link: string;
-    progress: number;
 }
 
 const styles = {
@@ -115,24 +111,37 @@ export default class PublicationListElement extends React.Component<IPublication
                                     >
                                         {this.props.downloadable ? (
                                             <div>
-                                                {(this.props.download === undefined
-                                                    || this.props.download.progress === -1) ? (
+                                                {( !publication.download
+                                                   || publication.download.status === DownloadStatus.Init) ? (
                                                     <FlatButton
-                                                        style={styles.BookCard.downloadButton}
                                                         label={__("publication.downloadButton")}
                                                         onClick={() => {this.props.downloadEPUB(publication, id); }}/>
-                                                ) : this.props.download.progress < 100 ? (
+                                                ) : publication.download.status === DownloadStatus.Downloading ? (
                                                     <div>
                                                         <p>{__("publication.progressDownload")}</p>
                                                         <LinearProgress mode="determinate"
-                                                            value={this.props.download.progress} />
+                                                            value={publication.download.progress} />
                                                     </div>
-                                                ) : (
+                                                ) : publication.download.status === DownloadStatus.Downloaded ? (
                                                     <div>
                                                         <p>{__("publication.endDownload")}</p>
                                                         <RaisedButton
                                                             label={__("publication.readButton")}
                                                             onClick={() => {this.props.handleRead(); }}/>
+                                                    </div>
+                                                ) : publication.download.status === DownloadStatus.Failed ? (
+                                                    <div>
+                                                        <p>{__("publication.failedDownload")}</p>
+                                                        <FlatButton
+                                                        label={__("publication.downloadButton")}
+                                                        onClick={() => {this.props.downloadEPUB(publication, id); }}/>
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        <p>{__("publication.canceledDownload")}</p>
+                                                        <FlatButton
+                                                        label={__("publication.downloadButton")}
+                                                        onClick={() => {this.props.downloadEPUB(publication, id); }}/>
                                                     </div>
                                                 )}
                                             </div>
