@@ -2,7 +2,6 @@ import * as React from "react";
 
 import FontIcon     from "material-ui/FontIcon";
 import IconButton   from "material-ui/IconButton";
-import RaisedButton from "material-ui/RaisedButton";
 import Snackbar     from "material-ui/Snackbar";
 import { blue500 }  from "material-ui/styles/colors";
 
