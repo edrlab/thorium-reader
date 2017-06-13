@@ -56,6 +56,7 @@ function* startDownload(download: Download) {
     yield fork(downloadContent, download, chan);
 
     let progress: number = 0;
+    let lastTime = new Date();
 
     while (progress < 100) {
         const payload = yield take(chan);
@@ -65,8 +66,15 @@ function* startDownload(download: Download) {
             yield put(downloaderActions.fail(download, payload.msg));
             return;
         } else {
+            const currentTime = new Date();
+            let elapsedSeconds = (currentTime.getTime() - lastTime.getTime()) / 1000;
             progress = payload.progress;
-            yield put(downloaderActions.progress(download, progress));
+
+            if (elapsedSeconds > 1 || progress === 100) {
+                // Do not refresh more than every seconds
+                yield put(downloaderActions.progress(download, progress));
+                lastTime = currentTime;
+            }
         }
     }
 

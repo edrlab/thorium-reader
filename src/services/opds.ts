@@ -1,6 +1,7 @@
 import { injectable} from "inversify";
 import * as path from "path";
 import { URL } from "url";
+import * as uuid from "uuid";
 
 import OPDSFeedParser from "opds-feed-parser";
 import { AcquisitionFeed } from "opds-feed-parser";
@@ -33,6 +34,7 @@ export class OPDSParser {
 
                 for (let entry of feed.entries) {
                     let publication: Publication = {
+                        identifier: uuid.v4(),
                         title: entry.title,
                         description: entry.summary.content,
                         authors: [],

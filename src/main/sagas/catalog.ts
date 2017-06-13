@@ -5,7 +5,11 @@ import { call, fork, put, take } from "redux-saga/effects";
 import * as request from "request";
 
 import * as catalogActions from "readium-desktop/actions/catalog";
-import { CATALOG_INIT, CATALOG_SET } from "readium-desktop/actions/catalog";
+import {
+    CATALOG_INIT,
+    CATALOG_SET,
+    PUBLICATION_UPDATE,
+} from "readium-desktop/actions/catalog";
 import {
     SYNC_CATALOG_REQUEST,
     SYNC_CATALOG_RESPONSE,
@@ -17,7 +21,7 @@ import { OPDSParser } from "readium-desktop/services/opds";
 import {
     PUBLICATION_DOWNLOAD_FINISH,
     PUBLICATION_DOWNLOAD_PROGRESS,
-} from "readium-desktop/actions/catalog";
+} from "readium-desktop/actions/publication-download";
 import { AppState } from "readium-desktop/main/reducers";
 
 import { container } from "readium-desktop/main/di";
@@ -117,12 +121,9 @@ export function* watchRendererCatalogRequest(): SagaIterator {
 export function* watchCatalogUpdate(): SagaIterator {
     while (true) {
         yield take([
-            PUBLICATION_DOWNLOAD_PROGRESS,
-            PUBLICATION_DOWNLOAD_FINISH,
+            PUBLICATION_UPDATE,
             CATALOG_SET,
         ]);
-
-        console.log("#####", "Update renderer catalog");
 
         let windows = BrowserWindow.getAllWindows();
         for (let window of windows) {

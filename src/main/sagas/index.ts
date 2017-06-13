@@ -8,11 +8,10 @@ import {
 } from "readium-desktop/main/sagas/downloader";
 
 import {
-    watchPublicationDownloadFinish,
-    watchPublicationDownloadProgress,
-    watchPublicationDownloadStart,
+    watchPublicationDownloadUpdate,
+    watchDownloadUpdate,
     watchRendererPublicationDownloadRequest,
-} from "readium-desktop/main/sagas/publication";
+} from "readium-desktop/main/sagas/publication-download";
 
 import {
     watchCatalogInit,
@@ -29,8 +28,7 @@ export function* rootSaga() {
         watchDownloadFinish(),
         watchDownloadProgress(),
         watchRendererPublicationDownloadRequest(),
-        watchPublicationDownloadStart(),
-        watchPublicationDownloadFinish(),
-        watchPublicationDownloadProgress(),
+        watchDownloadUpdate(),
+        watchPublicationDownloadUpdate(),
     ];
 }

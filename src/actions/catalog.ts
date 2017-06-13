@@ -10,10 +10,8 @@ export const CATALOG_CLEAN = "CATALOG_CLEAN";
 
 // Publication action types
 export const PUBLICATION_ADD = "PUBLICATION_ADD";
-export const PUBLICATION_DOWNLOAD_ADD = "PUBLICATION_DOWNLOAD_ADD";
-export const PUBLICATION_DOWNLOAD_START = "PUBLICATION_DOWNLOAD_START";
-export const PUBLICATION_DOWNLOAD_PROGRESS = "PUBLICATION_DOWNLOAD_PROGRESS";
-export const PUBLICATION_DOWNLOAD_FINISH = "PUBLICATION_DOWNLOAD_FINISH";
+export const PUBLICATION_UPDATE = "PUBLICATION_UPDATE";
+export const PUBLICATION_REMOVE = "PUBLICATION_REMOVE";
 
 export interface CatalogAction extends Action {
     catalog?: Catalog;
@@ -36,22 +34,22 @@ export function set(catalog: Catalog): CatalogAction {
     };
 }
 
-export function addPublication(publication: Publication): PublicationAction {
-    return {
-        type: PUBLICATION_ADD,
-        publication,
-    };
-}
-
-export function addPublicationDownload(publication: Publication): PublicationAction {
-    return {
-        type: PUBLICATION_DOWNLOAD_ADD,
-        publication,
-    };
-}
-
 export function clean(): CatalogAction {
     return {
         type: CATALOG_CLEAN,
+    };
+}
+
+export function updatePublication(publication: Publication): PublicationAction {
+    return {
+        type: PUBLICATION_UPDATE,
+        publication,
+    };
+}
+
+export function removePublication(publication: Publication): PublicationAction {
+    return {
+        type: PUBLICATION_REMOVE,
+        publication,
     };
 }

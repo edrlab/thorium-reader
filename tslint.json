@@ -11,6 +11,7 @@
     "object-literal-sort-keys": false,
     "interface-name": [false],
     "no-unused-variable": [true],
-    "no-console": [false]
+    "no-console": [false],
+    "forin": false
   }
 }

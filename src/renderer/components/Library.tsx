@@ -15,7 +15,7 @@ import {
 } from "readium-desktop/events/ipc";
 import { DownloadMessage } from "readium-desktop/models/ipc";
 
-import * as catalogActions from "readium-desktop/actions/catalog";
+import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
 
 import { Publication } from "readium-desktop/models/publication";
 
@@ -139,7 +139,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         newDownloads[publicationId].progress = 0;
         this.setState({downloads: newDownloads});
 
-        this.store.dispatch(catalogActions.addPublicationDownload(newPublication));
+        this.store.dispatch(publicationDownloadActions.add(newPublication));
 
         this.snackBarMessage = this.__("library.startDownload");
         this.setState({open: true});
