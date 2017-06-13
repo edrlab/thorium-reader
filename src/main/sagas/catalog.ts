@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain } from "electron";
 import { Store } from "redux";
-import { channel, Channel, SagaIterator } from "redux-saga";
-import { call, fork, put, take } from "redux-saga/effects";
+import { Buffer, buffers, channel, Channel, SagaIterator } from "redux-saga";
+import { actionChannel, call, fork, put, take } from "redux-saga/effects";
 import * as request from "request";
 
 import * as catalogActions from "readium-desktop/actions/catalog";
@@ -119,11 +119,13 @@ export function* watchRendererCatalogRequest(): SagaIterator {
 
 // Synchronize catalog from main process to renderer processes
 export function* watchCatalogUpdate(): SagaIterator {
-    while (true) {
-        yield take([
+    let buffer: Buffer<any> = buffers.expanding(20);
+    let chan = yield actionChannel([
             PUBLICATION_UPDATE,
             CATALOG_SET,
-        ]);
+        ], buffer);
+    while (true) {
+        yield take(chan);
 
         let windows = BrowserWindow.getAllWindows();
         for (let window of windows) {

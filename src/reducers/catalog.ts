@@ -42,7 +42,6 @@ export function catalogReducer(
                 break;
             }
 
-            //console.log(publicationToUpdate);
             return state;
         default:
             return state;

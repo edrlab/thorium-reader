@@ -1,6 +1,6 @@
 import { ipcMain } from "electron";
-import { channel, Channel, SagaIterator } from "redux-saga";
-import { call, fork, put, select, take } from "redux-saga/effects";
+import { Buffer, buffers, channel, Channel, SagaIterator } from "redux-saga";
+import { actionChannel, call, fork, put, select, take } from "redux-saga/effects";
 
 import {
     PUBLICATION_DOWNLOAD_ADD,
@@ -72,18 +72,21 @@ function* updatePublication(publication: Publication) {
 }
 
 export function* watchPublicationDownloadUpdate(): SagaIterator {
-    while (true) {
-        const action: PublicationDownloadAction = yield take([
+    let buffer: Buffer<any> = buffers.expanding(20);
+    let chan = yield actionChannel([
             PUBLICATION_DOWNLOAD_ADD,
             PUBLICATION_DOWNLOAD_START,
             PUBLICATION_DOWNLOAD_FINISH,
             PUBLICATION_DOWNLOAD_PROGRESS,
-        ]);
+        ], buffer);
+    while (true) {
+        const action: PublicationDownloadAction = yield take(chan);
 
         const publication = action.publication;
 
         switch (action.type) {
             case PUBLICATION_DOWNLOAD_ADD:
+            console.log("### add");
                 publication.download = {
                     progress: 0,
                     status: DownloadStatus.Init,
@@ -91,18 +94,22 @@ export function* watchPublicationDownloadUpdate(): SagaIterator {
                 yield fork(startPublicationDownload, publication)
                 break;
             case PUBLICATION_DOWNLOAD_START:
+            console.log("### start");
                 publication.download = {
                     progress: 0,
                     status: DownloadStatus.Downloading,
                 };
                 break;
             case PUBLICATION_DOWNLOAD_PROGRESS:
+
+            console.log("### progress");
                 publication.download = {
                     progress: action.progress,
                     status: DownloadStatus.Downloading,
                 };
                 break;
             case PUBLICATION_DOWNLOAD_FINISH:
+            console.log("### finish");
                 publication.download = {
                     progress: 100,
                     status: DownloadStatus.Downloaded,
@@ -112,7 +119,7 @@ export function* watchPublicationDownloadUpdate(): SagaIterator {
                 break;
         }
 
-        fork(updatePublication, publication);
+        yield fork(updatePublication, publication);
     }
 }
 
