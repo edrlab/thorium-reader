@@ -191,10 +191,6 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                     >
                         <FontIcon className="fa fa-th-large" color={blue500} />
                     </IconButton>
-                    <RaisedButton
-                        label="Lire un livre"
-                        style={styles.Library.addButton}
-                        onClick={() => {this.props.handleRead(); }} />
                 </div >
                 <div style={styles.Library.list}>
                     {listToDisplay}
