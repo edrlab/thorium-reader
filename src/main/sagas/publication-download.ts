@@ -65,12 +65,6 @@ function *startPublicationDownload(publication: Publication): SagaIterator {
     yield put(publicationDownloadActions.start(publication, downloads));
 }
 
-function* updatePublication(publication: Publication) {
-    yield put(catalogActions.updatePublication(
-            publication,
-    ));
-}
-
 export function* watchPublicationDownloadUpdate(): SagaIterator {
     let buffer: Buffer<any> = buffers.expanding(20);
     let chan = yield actionChannel([
@@ -102,7 +96,7 @@ export function* watchPublicationDownloadUpdate(): SagaIterator {
                 break;
             case PUBLICATION_DOWNLOAD_PROGRESS:
 
-            console.log("### progress");
+            console.log("### progress", action.progress);
                 publication.download = {
                     progress: action.progress,
                     status: DownloadStatus.Downloading,
@@ -119,7 +113,9 @@ export function* watchPublicationDownloadUpdate(): SagaIterator {
                 break;
         }
 
-        yield fork(updatePublication, publication);
+        yield put(catalogActions.updatePublication(
+            publication,
+        ));
     }
 }
 
@@ -182,9 +178,10 @@ function waitForPublicationDownloadRequest(chan: Channel<any>) {
 }
 
 export function* watchRendererPublicationDownloadRequest(): SagaIterator {
+    const chan = yield call(channel);
+    yield fork(waitForPublicationDownloadRequest, chan);
+
     while (true) {
-        const chan = yield call(channel);
-        yield fork(waitForPublicationDownloadRequest, chan);
         const publicationResponse: PublicationResponse = yield take(chan);
         yield put(publicationDownloadActions.add(publicationResponse.publication));
     }

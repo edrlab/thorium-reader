@@ -36,10 +36,11 @@ function waitForSyncResponse(chan: Channel<Catalog>) {
  * Update renderer catalog
  */
 export function* watchMainCatalogResponse(): SagaIterator {
+    const chan = yield call(channel);
+    yield fork(waitForSyncResponse, chan);
+
     while (true) {
         // Wait for a response from the main process
-        const chan = yield call(channel);
-        yield fork(waitForSyncResponse, chan);
         const catalog = yield take(chan);
         yield put(catalogActions.set(catalog));
     }

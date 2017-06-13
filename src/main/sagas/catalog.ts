@@ -97,20 +97,15 @@ function sendCatalogResponse(renderer: any) {
     );
 }
 
-function waitForSyncRequest(chan: Channel<any>) {
+function waitForSyncRequest() {
     // Wait for catalog request from a renderer process
     ipcMain.on(SYNC_CATALOG_REQUEST, (event: any) => {
         sendCatalogResponse(event.sender);
-        chan.put({status: "success"});
     });
 }
 
 export function* watchRendererCatalogRequest(): SagaIterator {
-    while (true) {
-        const chan = yield call(channel);
-        yield fork(waitForSyncRequest, chan);
-        yield take(chan);
-    }
+    yield fork(waitForSyncRequest);
 }
 
 // Synchronize catalog from main process to renderer processes
