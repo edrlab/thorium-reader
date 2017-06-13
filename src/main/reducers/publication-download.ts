@@ -1,6 +1,7 @@
-import { PUBLICATION_DOWNLOAD_ADD,
-         PUBLICATION_DOWNLOAD_START,
-         PublicationDownloadAction,
+import {
+    PUBLICATION_DOWNLOAD_ADD,
+    PUBLICATION_DOWNLOAD_START,
+    PublicationDownloadAction,
 } from "readium-desktop/actions/publication-download";
 
 export interface PublicationDownloadState {
