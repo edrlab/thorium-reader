@@ -9,7 +9,9 @@
       "downloadButton": "Télécharger",
       "readButton": "Voir",
       "progressDownload": "Téléchargement en cours",
-      "endDownload": "Téléchargement terminé"
+      "endDownload": "Téléchargement terminé",
+      "failedDownload": "Téléchargement échoué",
+      "canceledDownload": "Téléchargement annulé"
     },
     "toolbar": {
         "help":"Aide",

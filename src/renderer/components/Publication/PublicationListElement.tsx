@@ -11,11 +11,12 @@ import { Translator }   from "readium-desktop/i18n/translator";
 
 import RaisedButton from "material-ui/RaisedButton";
 
+import { DownloadStatus } from "readium-desktop/models/downloadable";
+
 interface IPublicationProps {
     publication: Publication;
     publicationId: number;
     downloadEPUB: Function;
-    download: IDownload;
     handleRead: Function;
 }
 
@@ -89,23 +90,37 @@ export default class PublicationListElement extends React.Component<IPublication
                         <p>Editeur</p>
                     </div>
                     <div style={styles.BookListElement.column}>
-                            {(this.props.download === undefined
-                                || this.props.download.progress === -1) ? (
+                            { !publication.download
+                              || publication.download.status === DownloadStatus.Init ? (
                                 <FlatButton
                                     label={__("publication.downloadButton")}
                                     onClick={() => {this.props.downloadEPUB(publication, id); }}/>
-                            ) : this.props.download.progress < 100 ? (
+                            ) : publication.download.status === DownloadStatus.Downloading ? (
                                 <div>
                                     <p>{__("publication.progressDownload")}</p>
                                     <LinearProgress mode="determinate"
-                                        value={this.props.download.progress} />
+                                        value={publication.download.progress} />
                                 </div>
-                            ) : (
+                            ) : publication.download.status === DownloadStatus.Downloaded ? (
                                 <div>
                                     <p>{__("publication.endDownload")}</p>
                                     <RaisedButton
                                         label={__("publication.readButton")}
                                         onClick={() => {this.props.handleRead(); }}/>
+                                </div>
+                            ) : publication.download.status === DownloadStatus.Failed ? (
+                                <div>
+                                    <p>{__("publication.failedDownload")}</p>
+                                    <FlatButton
+                                    label={__("publication.downloadButton")}
+                                    onClick={() => {this.props.downloadEPUB(publication, id); }}/>
+                                </div>
+                            ) : (
+                                <div>
+                                    <p>{__("publication.canceledDownload")}</p>
+                                    <FlatButton
+                                    label={__("publication.downloadButton")}
+                                    onClick={() => {this.props.downloadEPUB(publication, id); }}/>
                                 </div>
                             )}
                     </div>

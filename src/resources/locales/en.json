@@ -9,7 +9,9 @@
       "downloadButton": "Download",
       "readButton": "Read",
       "progressDownload": "Downloading",
-      "endDownload": "Download completed"
+      "endDownload": "Download completed",
+      "failedDownload": "Download Failed",
+      "canceledDownload": "Download Canceled"
     },
     "toolbar": {
         "help":"Help",

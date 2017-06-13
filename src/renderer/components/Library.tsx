@@ -8,13 +8,6 @@ import { blue500 }  from "material-ui/styles/colors";
 
 import { Store } from "redux";
 
-import { ipcRenderer } from "electron";
-import {
-    PUBLICATION_DOWNLOAD_FINISHED,
-    PUBLICATION_DOWNLOAD_PROGRESS,
-} from "readium-desktop/events/ipc";
-import { DownloadMessage } from "readium-desktop/models/ipc";
-
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
 
 import { Publication } from "readium-desktop/models/publication";
@@ -31,7 +24,6 @@ import { Catalog } from "readium-desktop/models/catalog";
 import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
 
 interface ILibraryState {
-    downloads: IDownload[];
     list: boolean;
     open: boolean;
 }
@@ -89,34 +81,15 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     private  __ = this.translator.translate;
 
     private snackBarMessage: string = "";
-    private lastTimeUpdated = new Date().getTime() / 1000;
+    // private lastTimeUpdated = new Date().getTime() / 1000;
 
     constructor(props: LibraryProps) {
         super(props);
 
         this.state = {
-            downloads: [],
             open: false,
             list: false,
         };
-
-        ipcRenderer.on(PUBLICATION_DOWNLOAD_FINISHED, (event: any, msg: DownloadMessage) => {
-            this.snackBarMessage = this.__("library.endDownload");
-            this.setState({open: true});
-        });
-
-        ipcRenderer.on(PUBLICATION_DOWNLOAD_PROGRESS, (event: any, msg: DownloadMessage) => {
-            let newdownloads = JSON.parse(JSON.stringify(this.state.downloads));
-            for (let download of newdownloads){
-                if (download.link === msg.download.srcUrl) {
-                    if (msg.download.progress !== download.progress) {
-                        download.progress = msg.download.progress;
-                        this.setState({downloads: newdownloads});
-                    }
-                    break;
-                }
-            }
-        });
     }
 
     public componentDidMount() {
@@ -125,26 +98,6 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     // Create the download list if it doesn't exist then start the download
     public downloadEPUB = (newPublication: Publication, publicationId: number) => {
-        if (this.state.downloads.length === 0) {
-            let newDownloads: IDownload[] = [];
-            for (let publication of this.props.catalog.publications) {
-                let download: IDownload = {
-                    link: publication.files[0].url,
-                    progress: -1,
-                };
-                newDownloads.push(download);
-            }
-            this.setState({downloads: newDownloads}, () => {this.directDownloadEPUB(newPublication, publicationId); } );
-        } else {
-            this.directDownloadEPUB(newPublication, publicationId);
-        }
-    }
-
-    public directDownloadEPUB = (newPublication: Publication, publicationId: number) => {
-        let newDownloads = JSON.parse(JSON.stringify(this.state.downloads));
-        newDownloads[publicationId].progress = 0;
-        this.setState({downloads: newDownloads});
-
         this.store.dispatch(publicationDownloadActions.add(newPublication));
 
         this.snackBarMessage = this.__("library.startDownload");
@@ -173,8 +126,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 downloadable={true}
                 publication={this.props.catalog.publications[i]}
                 downloadEPUB={this.downloadEPUB}
-                handleRead={this.props.handleRead.bind(this)}
-                download={this.state.downloads[i]}/>);
+                handleRead={this.props.handleRead.bind(this)} />);
         }
         return list;
     }
@@ -186,15 +138,13 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 publication={this.props.catalog.publications[i]}
                 publicationId={i}
                 downloadEPUB={this.downloadEPUB}
-                handleRead={this.props.handleRead.bind(this)}
-                download={this.state.downloads[i]} />);
+                handleRead={this.props.handleRead.bind(this)} />);
         }
         return <div style={styles.BookListElement.container}> {list} </div>;
     }
 
-    public shouldComponentUpdate(nextProps: LibraryProps, nextState: ILibraryState): boolean {
+    /*public shouldComponentUpdate(nextProps: LibraryProps, nextState: ILibraryState): boolean {
         if (nextState.open !== this.state.open
-            || nextProps.catalog !== this.props.catalog
             || nextState.list !== this.state.list) {
                 return true;
         } else {
@@ -205,7 +155,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 return false;
             }
         }
-    }
+    }*/
 
     public render(): React.ReactElement<{}>  {
         const that = this;

@@ -67,7 +67,6 @@ export default class App extends React.Component<undefined, AppState> {
                     publications: catalog.publications},
                 });
             }
-
             this.translator.setLocale(this.store.getState().i18n.locale);
         });
     }
