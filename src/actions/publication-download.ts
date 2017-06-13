@@ -34,6 +34,7 @@ export function progress(publication: Publication, progress: number): Publicatio
     return {
         type: PUBLICATION_DOWNLOAD_PROGRESS,
         publication,
+        progress,
     };
 }
 
