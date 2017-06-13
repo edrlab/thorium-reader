@@ -3,11 +3,6 @@ import {
 } from "readium-desktop/sagas/downloader";
 
 import {
-    watchDownloadFinish,
-    watchDownloadProgress,
-} from "readium-desktop/main/sagas/downloader";
-
-import {
     watchDownloadUpdate,
     watchPublicationDownloadUpdate,
     watchRendererPublicationDownloadRequest,
@@ -25,8 +20,6 @@ export function* rootSaga() {
         watchCatalogUpdate(),
         watchRendererCatalogRequest(),
         watchDownloadStart(),
-        watchDownloadFinish(),
-        watchDownloadProgress(),
         watchRendererPublicationDownloadRequest(),
         watchDownloadUpdate(),
         watchPublicationDownloadUpdate(),
