@@ -95,7 +95,6 @@ export function* watchPublicationDownloadUpdate(): SagaIterator {
                 };
                 break;
             case PUBLICATION_DOWNLOAD_PROGRESS:
-
             console.log("### progress", action.progress);
                 publication.download = {
                     progress: action.progress,

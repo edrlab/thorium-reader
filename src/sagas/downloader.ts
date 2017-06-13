@@ -1,6 +1,6 @@
 import * as fs from "fs";
-import { channel, SagaIterator } from "redux-saga";
-import { call, fork, put, take } from "redux-saga/effects";
+import { Buffer, buffers, channel, SagaIterator } from "redux-saga";
+import { actionChannel, call, fork, put, take } from "redux-saga/effects";
 import * as request from "request";
 
 import { DOWNLOAD_ADD } from "readium-desktop/downloader/constants";
@@ -9,45 +9,58 @@ import * as downloaderActions from "readium-desktop/actions/downloader";
 import { Download } from "readium-desktop/models/download";
 
 function downloadContent(download: Download, chan: any) {
-    return request
-        .get(download.srcUrl)
-        .on("response", (response: any) => {
-            if (response.statusCode < 200 || response.statusCode > 299) {
-                // Unable to download the resource
-                chan.put({
-                    error: true,
-                    msg: "Bad status code: " + response.statusCode,
-                });
-            }
+    // Do not pipe request directly to this stream to void blocking issues
+    let outputStream = fs.createWriteStream(download.dstPath);
 
-            const totalSize: number = response.headers["content-length"];
-            let downloadedSize: number = 0;
+    // 5 seconds of timeout
+    let requestStream = request.get(
+        download.srcUrl,
+        {timeout: 5000},
+    );
 
-            response.on("data", (chunk: any) => {
-                // Download progress
-                downloadedSize += chunk.length;
-                chan.put({
-                    error: false,
-                    progress: Math.round((downloadedSize / totalSize) * 100),
-                });
-            });
-
-            response.on("end", () => {
-                // Download finished
-                chan.put({
-                    error: false,
-                    progress: 100,
-                });
-            });
-        })
-        .on("error", (error: any) => {
-            // Download error
+    requestStream.on("response", (response: any) => {
+        if (response.statusCode < 200 || response.statusCode > 299) {
+            // Unable to download the resource
             chan.put({
                 error: true,
-                msg: "Error code: " + error.code,
+                msg: "Bad status code: " + response.statusCode,
             });
-        })
-        .pipe(fs.createWriteStream(download.dstPath));
+        }
+
+        const totalSize: number = response.headers["content-length"];
+        let downloadedSize: number = 0;
+
+        response.on("data", (chunk: any) => {
+            // Write chunk
+            outputStream.write(chunk);
+
+            // Download progress
+            downloadedSize += chunk.length;
+            chan.put({
+                error: false,
+                progress: Math.round((downloadedSize / totalSize) * 100),
+            });
+        });
+
+        response.on("end", () => {
+            outputStream.end();
+            // Download finished
+            chan.put({
+                error: false,
+                progress: 100,
+            });
+        });
+    });
+
+    // Catch errors
+    requestStream.on("error", (error: any) => {
+        // Download error
+        outputStream.end();
+        chan.put({
+            error: true,
+            msg: "Error code: " + error.code,
+        });
+    });
 }
 
 function* startDownload(download: Download) {
@@ -63,6 +76,7 @@ function* startDownload(download: Download) {
         const error = payload.error;
 
         if (error) {
+            console.log("## error:", payload.msg);
             yield put(downloaderActions.fail(download, payload.msg));
             return;
         } else {
@@ -79,11 +93,15 @@ function* startDownload(download: Download) {
     }
 
     yield put(downloaderActions.finish(download));
+    chan.close();
 }
 
 export function* watchDownloadStart(): SagaIterator {
+    let buffer: Buffer<any> = buffers.expanding(20);
+    let chan = yield actionChannel([DOWNLOAD_ADD], buffer);
+
     while (true) {
-        const addAction = yield take(DOWNLOAD_ADD);
+        const addAction = yield take(chan);
         yield fork(startDownload, addAction.download);
         // const task = yield fork(startDownload, addAction.download);
 
