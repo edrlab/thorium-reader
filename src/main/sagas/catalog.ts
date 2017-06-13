@@ -18,10 +18,6 @@ import { Catalog } from "readium-desktop/models/catalog";
 import { Error } from "readium-desktop/models/error";
 import { OPDSParser } from "readium-desktop/services/opds";
 
-import {
-    PUBLICATION_DOWNLOAD_FINISH,
-    PUBLICATION_DOWNLOAD_PROGRESS,
-} from "readium-desktop/actions/publication-download";
 import { AppState } from "readium-desktop/main/reducers";
 
 import { container } from "readium-desktop/main/di";

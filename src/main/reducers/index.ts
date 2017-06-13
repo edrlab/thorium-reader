@@ -8,9 +8,9 @@ import {
     downloader,
     DownloaderState,
 } from "readium-desktop/reducers/downloader";
-import {
-    publicationDownloadReducer,
-    PublicationDownloadState,
+
+import { publicationDownloadReducer,
+         PublicationDownloadState,
 } from "readium-desktop/main/reducers/publication-download";
 
 export interface AppState {

@@ -91,7 +91,7 @@ export function* watchPublicationDownloadUpdate(): SagaIterator {
                     progress: 0,
                     status: DownloadStatus.Init,
                 };
-                yield fork(startPublicationDownload, publication)
+                yield fork(startPublicationDownload, publication);
                 break;
             case PUBLICATION_DOWNLOAD_START:
             console.log("### start");

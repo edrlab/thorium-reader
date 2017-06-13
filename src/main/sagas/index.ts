@@ -8,8 +8,8 @@ import {
 } from "readium-desktop/main/sagas/downloader";
 
 import {
-    watchPublicationDownloadUpdate,
     watchDownloadUpdate,
+    watchPublicationDownloadUpdate,
     watchRendererPublicationDownloadRequest,
 } from "readium-desktop/main/sagas/publication-download";
 
