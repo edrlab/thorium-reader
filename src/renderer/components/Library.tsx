@@ -103,6 +103,13 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         this.setState({open: true});
     }
 
+    public cancelDownload = (publication: Publication, publicationId: number) => {
+        this.store.dispatch(publicationDownloadActions.cancel(publication));
+
+        this.snackBarMessage = this.__("library.cancelDownload");
+        this.setState({open: true});
+    }
+
     public handleRequestClose = () => {
         this.setState({ open: false });
     }
@@ -125,7 +132,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 downloadable={true}
                 publication={this.props.catalog.publications[i]}
                 downloadEPUB={this.downloadEPUB}
-                handleRead={this.props.handleRead.bind(this)} />);
+                handleRead={this.props.handleRead.bind(this)}
+                cancelDownload={this.cancelDownload} />);
         }
         return list;
     }
@@ -137,7 +145,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 publication={this.props.catalog.publications[i]}
                 publicationId={i}
                 downloadEPUB={this.downloadEPUB}
-                handleRead={this.props.handleRead.bind(this)} />);
+                handleRead={this.props.handleRead.bind(this)}
+                cancelDownload={this.cancelDownload} />);
         }
         return <div style={styles.BookListElement.container}> {list} </div>;
     }

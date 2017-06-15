@@ -11,6 +11,7 @@ import { Translator }   from "readium-desktop/i18n/translator";
 import RaisedButton from "material-ui/RaisedButton";
 
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
+import IconButton from "material-ui/IconButton";
 import LinearProgress from "material-ui/LinearProgress";
 
 import * as ReactCardFlip from "react-card-flip";
@@ -24,8 +25,9 @@ interface IPublicationState {
 interface IPublicationProps {
     publication: Publication;
     publicationId: number;
-    downloadEPUB: Function;
     downloadable: boolean;
+    cancelDownload: Function;
+    downloadEPUB: Function;
     handleRead: Function;
 }
 
@@ -121,6 +123,9 @@ export default class PublicationListElement extends React.Component<IPublication
                                                         <p>{__("publication.progressDownload")}</p>
                                                         <LinearProgress mode="determinate"
                                                             value={publication.download.progress} />
+                                                        <IconButton
+                                                            iconClassName="fa fa-times"
+                                                            onClick={() => {this.props.cancelDownload(publication); }}/>
                                                     </div>
                                                 ) : publication.download.status === DownloadStatus.Downloaded ? (
                                                     <div>
