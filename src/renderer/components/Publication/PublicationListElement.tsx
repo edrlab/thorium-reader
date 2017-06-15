@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import FlatButton   from "material-ui/FlatButton";
+import IconButton from "material-ui/IconButton";
 import LinearProgress from "material-ui/LinearProgress";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -18,6 +19,7 @@ interface IPublicationProps {
     publicationId: number;
     downloadEPUB: Function;
     handleRead: Function;
+    cancelDownload: Function;
 }
 
 interface IDownload {
@@ -100,6 +102,9 @@ export default class PublicationListElement extends React.Component<IPublication
                                     <p>{__("publication.progressDownload")}</p>
                                     <LinearProgress mode="determinate"
                                         value={publication.download.progress} />
+                                    <IconButton
+                                        iconClassName="fa fa-times"
+                                        onClick={() => {this.props.cancelDownload(publication); }}/>
                                 </div>
                             ) : publication.download.status === DownloadStatus.Downloaded ? (
                                 <div>

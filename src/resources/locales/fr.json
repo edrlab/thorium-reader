@@ -3,6 +3,7 @@
         "heading": "Collection",
         "add": "Ajouter à la bibliothèque",
         "startDownload": "Un téléchargement a démarré.",
+        "cancelDownload": "Un téléchargement a été arrété.",
         "endDownload": "Un téléchargement est terminé."
     },
     "publication": {

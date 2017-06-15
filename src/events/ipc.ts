@@ -16,5 +16,7 @@ export const PUBLICATION_DOWNLOAD_FINISHED = "publication.download.finished";
 
 export const PUBLICATION_DOWNLOAD_PROGRESS = "publication.download.progress";
 
+export const PUBLICATION_DOWNLOAD_CANCEL = "publication.download.cancel";
+
 export const SYNC_CATALOG_REQUEST = "sync.catalog.request";
 export const SYNC_CATALOG_RESPONSE = "sync.catalog.response";

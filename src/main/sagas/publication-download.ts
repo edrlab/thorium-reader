@@ -12,6 +12,7 @@ import {
 
 import * as catalogActions from "readium-desktop/actions/catalog";
 
+import * as DownloaderAction from "readium-desktop/actions/downloader";
 import * as publicationDownloadActions
 from "readium-desktop/actions/publication-download";
 
@@ -24,6 +25,7 @@ import {
 
 import { Downloader } from "readium-desktop/downloader/downloader";
 import {
+    PUBLICATION_DOWNLOAD_CANCEL,
     PUBLICATION_DOWNLOAD_REQUEST,
 } from "readium-desktop/events/ipc";
 
@@ -33,6 +35,8 @@ import { Error } from "readium-desktop/models/error";
 import { Publication } from "readium-desktop/models/publication";
 
 import { PublicationMessage } from "readium-desktop/models/ipc";
+
+import { store } from "readium-desktop/main/store/memory"
 
 import { AppState } from "readium-desktop/main/reducers";
 
@@ -176,9 +180,46 @@ function waitForPublicationDownloadRequest(chan: Channel<any>) {
     );
 }
 
+function waitForPublicationDownloadCancel(chan: Channel<any>) {
+    // Wait for catalog request from a renderer process
+    ipcMain.on(
+        PUBLICATION_DOWNLOAD_CANCEL,
+        (event: any, msg: PublicationMessage) => {
+            put(publicationDownloadActions.cancel(msg.publication));
+        },
+    );
+}
+
+function sendCancelDownload(downloadIdentifiers: string[]) {
+    for (let newIdentifier of downloadIdentifiers) {
+        let download: Download = {
+            identifier: newIdentifier,
+            srcUrl: "",
+            dstPath: "",
+            status: DownloadStatus.Canceled,
+            progress: 0,
+        };
+        console.log(download);
+        put(DownloaderAction.cancel(download));
+    }
+}
+
+export function* watchPublicationDownloadCancel(): SagaIterator {
+    while (true) {
+        let resp = yield take(publicationDownloadActions.PUBLICATION_DOWNLOAD_CANCEL);
+        const state: AppState =  yield select();
+        let pub: Publication = resp.publication;
+        let downloadIdentifers = state.publicationDownloads.publicationToDownloads[pub.identifier];
+        console.log(downloadIdentifers);
+        yield fork(sendCancelDownload, downloadIdentifers);
+    }
+}
+
 export function* watchRendererPublicationDownloadRequest(): SagaIterator {
     const chan = yield call(channel);
+
     yield fork(waitForPublicationDownloadRequest, chan);
+    yield fork(waitForPublicationDownloadCancel, chan);
 
     while (true) {
         const publicationResponse: PublicationResponse = yield take(chan);

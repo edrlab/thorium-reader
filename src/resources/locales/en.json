@@ -3,6 +3,7 @@
         "heading": "Collection",
         "add": "Add to the library",
         "startDownload": "A download started.",
+        "cancelDownload": "A download canceled.",
         "endDownload": "A download ended."
     },
     "publication": {

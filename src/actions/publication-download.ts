@@ -8,6 +8,7 @@ export const PUBLICATION_DOWNLOAD_ADD = "PUBLICATION_DOWNLOAD_ADD";
 export const PUBLICATION_DOWNLOAD_START = "PUBLICATION_DOWNLOAD_START";
 export const PUBLICATION_DOWNLOAD_PROGRESS = "PUBLICATION_DOWNLOAD_PROGRESS";
 export const PUBLICATION_DOWNLOAD_FINISH = "PUBLICATION_DOWNLOAD_FINISH";
+export const PUBLICATION_DOWNLOAD_CANCEL = "PUBLICATION_DOWNLOAD_CANCEL";
 
 export interface PublicationDownloadAction extends Action {
     publication: Publication;
@@ -41,6 +42,13 @@ export function progress(publication: Publication, progress: number): Publicatio
 export function finish(publication: Publication): PublicationDownloadAction {
     return {
         type: PUBLICATION_DOWNLOAD_FINISH,
+        publication,
+    };
+}
+
+export function cancel(publication: Publication): PublicationDownloadAction {
+    return {
+        type: PUBLICATION_DOWNLOAD_CANCEL,
         publication,
     };
 }
