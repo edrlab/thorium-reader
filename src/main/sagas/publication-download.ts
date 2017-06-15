@@ -204,7 +204,6 @@ function waitForPublicationDownloadCancel(
     );
 }
 
-
 export function* watchRendererPublicationDownloadRequest(): SagaIterator {
     const chan = yield call(channel);
 

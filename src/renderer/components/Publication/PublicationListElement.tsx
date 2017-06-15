@@ -93,7 +93,7 @@ export default class PublicationListElement extends React.Component<IPublication
                     </div>
                     <div style={styles.BookListElement.column}>
                             { !publication.download
-                              || publication.download.status === DownloadStatus.Init ? (
+                                || publication.download.status === DownloadStatus.Init ? (
                                 <FlatButton
                                     label={__("publication.downloadButton")}
                                     onClick={() => {this.props.downloadEPUB(publication, id); }}/>
