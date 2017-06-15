@@ -36,8 +36,6 @@ import { Publication } from "readium-desktop/models/publication";
 
 import { PublicationMessage } from "readium-desktop/models/ipc";
 
-import { store } from "readium-desktop/main/store/memory"
-
 import { AppState } from "readium-desktop/main/reducers";
 
 import { container } from "readium-desktop/main/di";
