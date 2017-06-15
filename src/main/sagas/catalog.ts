@@ -1,6 +1,6 @@
 import { BrowserWindow, ipcMain } from "electron";
 import { Store } from "redux";
-import { Buffer, buffers, channel, Channel, SagaIterator } from "redux-saga";
+import { Buffer, buffers, channel, Channel, delay, SagaIterator } from "redux-saga";
 import { actionChannel, call, fork, put, take } from "redux-saga/effects";
 import * as request from "request";
 
@@ -122,5 +122,8 @@ export function* watchCatalogUpdate(): SagaIterator {
         for (let window of windows) {
             sendCatalogResponse(window.webContents);
         }
+
+        // Limit the catalog refresh to 1s
+        yield call(delay, 1000);
     }
 }
