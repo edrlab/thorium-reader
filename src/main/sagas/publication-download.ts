@@ -4,6 +4,7 @@ import { actionChannel, call, fork, put, select, take } from "redux-saga/effects
 
 import {
     PUBLICATION_DOWNLOAD_ADD,
+    PUBLICATION_DOWNLOAD_CANCEL,
     PUBLICATION_DOWNLOAD_FINISH,
     PUBLICATION_DOWNLOAD_PROGRESS,
     PUBLICATION_DOWNLOAD_START,
@@ -25,7 +26,7 @@ import {
 
 import { Downloader } from "readium-desktop/downloader/downloader";
 import {
-    PUBLICATION_DOWNLOAD_CANCEL,
+    PUBLICATION_DOWNLOAD_CANCEL_REQUEST,
     PUBLICATION_DOWNLOAD_REQUEST,
 } from "readium-desktop/events/ipc";
 
@@ -36,19 +37,18 @@ import { Publication } from "readium-desktop/models/publication";
 
 import { PublicationMessage } from "readium-desktop/models/ipc";
 
-import { store } from "readium-desktop/main/store/memory"
-
 import { AppState } from "readium-desktop/main/reducers";
 
 import { container } from "readium-desktop/main/di";
 
-enum PublicationResponseType {
-    Error, // Response implements Error interface
-    Catalog, // Response implements Catalog interface
+enum PublicationDownloadResponseType {
+    Error, // Publication download error
+    Add, // Add publication download
+    Cancel, // Cancel publication download
 }
 
-interface PublicationResponse {
-    type: PublicationResponseType;
+interface PublicationDownloadResponse {
+    type: PublicationDownloadResponseType;
     publication?: Publication;
     error?: Error;
 }
@@ -74,6 +74,7 @@ export function* watchPublicationDownloadUpdate(): SagaIterator {
     let chan = yield actionChannel([
             PUBLICATION_DOWNLOAD_ADD,
             PUBLICATION_DOWNLOAD_START,
+            PUBLICATION_DOWNLOAD_CANCEL,
             PUBLICATION_DOWNLOAD_FINISH,
             PUBLICATION_DOWNLOAD_PROGRESS,
         ], buffer);
@@ -84,7 +85,7 @@ export function* watchPublicationDownloadUpdate(): SagaIterator {
 
         switch (action.type) {
             case PUBLICATION_DOWNLOAD_ADD:
-            console.log("### add");
+                console.log("### add");
                 publication.download = {
                     progress: 0,
                     status: DownloadStatus.Init,
@@ -92,24 +93,40 @@ export function* watchPublicationDownloadUpdate(): SagaIterator {
                 yield fork(startPublicationDownload, publication);
                 break;
             case PUBLICATION_DOWNLOAD_START:
-            console.log("### start");
+                console.log("### start");
                 publication.download = {
                     progress: 0,
                     status: DownloadStatus.Downloading,
                 };
                 break;
             case PUBLICATION_DOWNLOAD_PROGRESS:
-            console.log("### progress", action.progress);
+                console.log("### progress", action.progress);
                 publication.download = {
                     progress: action.progress,
                     status: DownloadStatus.Downloading,
                 };
                 break;
             case PUBLICATION_DOWNLOAD_FINISH:
-            console.log("### finish");
+                console.log("### finish");
                 publication.download = {
                     progress: 100,
                     status: DownloadStatus.Downloaded,
+                };
+                break;
+            case PUBLICATION_DOWNLOAD_CANCEL:
+                console.log("### cancel");
+                const state: AppState =  yield select();
+                const downloads = state.publicationDownloads
+                    .publicationIdentifierToDownloads[publication.identifier];
+
+                // Cancel each downloads linked to this publication
+                for (const download of downloads) {
+                    yield put(DownloaderAction.cancel(download));
+                }
+
+                publication.download = {
+                    progress: action.progress,
+                    status: DownloadStatus.Canceled,
                 };
                 break;
             default:
@@ -133,18 +150,8 @@ export function* watchDownloadUpdate(): SagaIterator {
 
         // Find publication linked to this download
         const download = action.download;
-        const publicationIdentifier = state.publicationDownloads.downloadToPublication[download.identifier];
-
-        // Retrieve publication from catalog
-        let publication: Publication = undefined;
-        const publications: Publication[] = state.catalog.publications;
-
-        for (let pub of publications) {
-            if (pub.identifier ===  publicationIdentifier) {
-                publication = pub;
-                break;
-            }
-        }
+        const publication = state.publicationDownloads
+            .downloadIdentifierToPublication[download.identifier];
 
         // FIXME: A publication is composed of multiple downloads
         const progress = download.progress;
@@ -167,53 +174,36 @@ export function* watchDownloadUpdate(): SagaIterator {
     }
 }
 
-function waitForPublicationDownloadRequest(chan: Channel<any>) {
+function waitForPublicationDownloadRequest(
+    chan: Channel<PublicationDownloadResponse>,
+) {
     // Wait for catalog request from a renderer process
     ipcMain.on(
         PUBLICATION_DOWNLOAD_REQUEST,
         (event: any, msg: PublicationMessage) => {
             chan.put({
-                type: PublicationResponseType,
+                type: PublicationDownloadResponseType.Add,
                 publication: msg.publication,
             });
         },
     );
 }
 
-function waitForPublicationDownloadCancel(chan: Channel<any>) {
+function waitForPublicationDownloadCancel(
+    chan: Channel<PublicationDownloadResponse>,
+) {
     // Wait for catalog request from a renderer process
     ipcMain.on(
-        PUBLICATION_DOWNLOAD_CANCEL,
+        PUBLICATION_DOWNLOAD_CANCEL_REQUEST,
         (event: any, msg: PublicationMessage) => {
-            put(publicationDownloadActions.cancel(msg.publication));
+            chan.put({
+                type: PublicationDownloadResponseType.Cancel,
+                publication: msg.publication,
+            });
         },
     );
 }
 
-function sendCancelDownload(downloadIdentifiers: string[]) {
-    for (let newIdentifier of downloadIdentifiers) {
-        let download: Download = {
-            identifier: newIdentifier,
-            srcUrl: "",
-            dstPath: "",
-            status: DownloadStatus.Canceled,
-            progress: 0,
-        };
-        console.log(download);
-        put(DownloaderAction.cancel(download));
-    }
-}
-
-export function* watchPublicationDownloadCancel(): SagaIterator {
-    while (true) {
-        let resp = yield take(publicationDownloadActions.PUBLICATION_DOWNLOAD_CANCEL);
-        const state: AppState =  yield select();
-        let pub: Publication = resp.publication;
-        let downloadIdentifers = state.publicationDownloads.publicationToDownloads[pub.identifier];
-        console.log(downloadIdentifers);
-        yield fork(sendCancelDownload, downloadIdentifers);
-    }
-}
 
 export function* watchRendererPublicationDownloadRequest(): SagaIterator {
     const chan = yield call(channel);
@@ -222,7 +212,17 @@ export function* watchRendererPublicationDownloadRequest(): SagaIterator {
     yield fork(waitForPublicationDownloadCancel, chan);
 
     while (true) {
-        const publicationResponse: PublicationResponse = yield take(chan);
-        yield put(publicationDownloadActions.add(publicationResponse.publication));
+        const response: PublicationDownloadResponse = yield take(chan);
+
+        switch (response.type) {
+            case PublicationDownloadResponseType.Add:
+                yield put(publicationDownloadActions.add(response.publication));
+                break;
+            case PublicationDownloadResponseType.Cancel:
+                yield put(publicationDownloadActions.cancel(response.publication));
+                break;
+            default:
+                break;
+        }
     }
 }

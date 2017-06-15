@@ -2,7 +2,7 @@ import { ipcRenderer } from "electron";
 import { SagaIterator } from "redux-saga";
 import { take } from "redux-saga/effects";
 
-import { PUBLICATION_DOWNLOAD_CANCEL,
+import { PUBLICATION_DOWNLOAD_CANCEL_REQUEST,
          PUBLICATION_DOWNLOAD_REQUEST } from "readium-desktop/events/ipc";
 
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
@@ -24,7 +24,7 @@ export function* watchPublicationDownloadAdd(): SagaIterator {
 }
 
 function sendIPCCancelDownload(msg: PublicationMessage) {
-    ipcRenderer.send(PUBLICATION_DOWNLOAD_CANCEL, msg);
+    ipcRenderer.send(PUBLICATION_DOWNLOAD_CANCEL_REQUEST, msg);
 }
 
 export function* watchPublicationDownloadCancel(): SagaIterator {

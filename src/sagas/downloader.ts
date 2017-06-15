@@ -1,9 +1,12 @@
 import * as fs from "fs";
 import { Buffer, buffers, channel, SagaIterator } from "redux-saga";
-import { actionChannel, call, fork, put, take } from "redux-saga/effects";
+import { actionChannel, call, cancel, fork, put, take } from "redux-saga/effects";
 import * as request from "request";
 
-import { DOWNLOAD_ADD } from "readium-desktop/downloader/constants";
+import {
+    DOWNLOAD_ADD,
+    DOWNLOAD_CANCEL,
+} from "readium-desktop/downloader/constants";
 
 import * as downloaderActions from "readium-desktop/actions/downloader";
 import { Download } from "readium-desktop/models/download";
@@ -63,11 +66,7 @@ function downloadContent(download: Download, chan: any) {
     });
 }
 
-function* startDownload(download: Download) {
-    const chan = yield call(channel);
-    yield put(downloaderActions.start(download));
-    yield fork(downloadContent, download, chan);
-
+function* watchDownloadContent(download: Download, chan: any): SagaIterator {
     let progress: number = 0;
     let lastTime = new Date();
 
@@ -93,7 +92,26 @@ function* startDownload(download: Download) {
     }
 
     yield put(downloaderActions.finish(download));
-    chan.close();
+}
+
+function* startDownload(download: Download): SagaIterator {
+    const chan = yield call(channel);
+    yield put(downloaderActions.start(download));
+    const downloadTask = yield fork(downloadContent, download, chan);
+    const downloadWatcherTask = yield fork(watchDownloadContent, download, chan);
+
+    while (true) {
+        const cancelAction = yield take([DOWNLOAD_CANCEL]);
+
+        if (cancelAction.download.identifier === download.identifier) {
+            // Close channel before killing tasks
+            chan.close();
+
+            // Cancel all tasks specific to the download
+            yield cancel(downloadTask);
+            yield cancel(downloadWatcherTask);
+        }
+    }
 }
 
 export function* watchDownloadStart(): SagaIterator {
@@ -103,12 +121,5 @@ export function* watchDownloadStart(): SagaIterator {
     while (true) {
         const addAction = yield take(chan);
         yield fork(startDownload, addAction.download);
-        // const task = yield fork(startDownload, addAction.download);
-
-        /*const stopAction = yield take([DOWNLOAD_CANCEL, DOWNLOAD_FAIL]);
-
-        if (stopAction.type === DOWNLOAD_CANCEL) {
-            yield cancel(task);
-        }*/
     }
 }

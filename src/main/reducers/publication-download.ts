@@ -2,18 +2,20 @@ import { PUBLICATION_DOWNLOAD_ADD,
          PUBLICATION_DOWNLOAD_START,
          PublicationDownloadAction,
 } from "readium-desktop/actions/publication-download";
+import { Download } from "readium-desktop/models/download";
+import { Publication } from "readium-desktop/models/publication";
 
 export interface PublicationDownloadState {
     // Download identifier => Publication identifier
-    downloadToPublication: { [identifier: string]: string };
+    downloadIdentifierToPublication: { [identifier: string]: Publication };
 
     // Publication identifiers => Download identifiers
-    publicationToDownloads: { [identifier: string]: string[] };
+    publicationIdentifierToDownloads: { [identifier: string]: Download[] };
 }
 
 const initialState: PublicationDownloadState = {
-    downloadToPublication: {},
-    publicationToDownloads: {},
+    downloadIdentifierToPublication: {},
+    publicationIdentifierToDownloads: {},
 };
 
 export function publicationDownloadReducer(
@@ -27,13 +29,12 @@ export function publicationDownloadReducer(
         case PUBLICATION_DOWNLOAD_START:
             const publication = action.publication;
             const downloads = action.downloads;
-            let downloadIdentifiers: string[] = [];
 
             for (const download of downloads) {
-                state.downloadToPublication[download.identifier] = publication.identifier;
+                state.downloadIdentifierToPublication[download.identifier] = publication;
             }
 
-            state.publicationToDownloads[publication.identifier] = downloadIdentifiers;
+            state.publicationIdentifierToDownloads[publication.identifier] = downloads;
             return state;
         default:
             return state;
