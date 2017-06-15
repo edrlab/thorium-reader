@@ -1,3 +1,5 @@
+import "fs";
+
 import { ipcMain } from "electron";
 import { Buffer, buffers, channel, Channel, SagaIterator } from "redux-saga";
 import { actionChannel, call, fork, put, select, take } from "redux-saga/effects";

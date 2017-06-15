@@ -6,6 +6,7 @@ import * as request from "request";
 import {
     DOWNLOAD_ADD,
     DOWNLOAD_CANCEL,
+    DOWNLOAD_FINISH,
 } from "readium-desktop/downloader/constants";
 
 import * as downloaderActions from "readium-desktop/actions/downloader";
@@ -121,5 +122,22 @@ export function* watchDownloadStart(): SagaIterator {
     while (true) {
         const addAction = yield take(chan);
         yield fork(startDownload, addAction.download);
+    }
+}
+
+export function* watchDownloadFinish(): SagaIterator {
+    let buffer: Buffer<any> = buffers.expanding(20);
+    let chan = yield actionChannel([DOWNLOAD_FINISH], buffer);
+
+    while (true) {
+        const action = yield take(chan);
+        // FIXME: Rename file: remove .part
+        let srcPath: string = action.download.dstPath;
+        let dstPath: string = srcPath.substring(
+            0,
+            srcPath.lastIndexOf(".part"),
+        );
+        fs.renameSync(srcPath, dstPath);
+        action.download.dstPath = dstPath;
     }
 }
