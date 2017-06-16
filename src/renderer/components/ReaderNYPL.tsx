@@ -10,7 +10,7 @@ import FlatButton   from "material-ui/FlatButton";
 
 interface IReaderNYPLProps {
     manifestURL: string;
-    handleRead: Function;
+    handleClose: Function;
 }
 
 export default class ReaderNYPL extends React.Component<IReaderNYPLProps, null> {
@@ -28,7 +28,7 @@ export default class ReaderNYPL extends React.Component<IReaderNYPLProps, null> 
         return (
             <div >
                 <div>
-                    <FlatButton label="Retour" onClick={() => {this.props.handleRead(); }}/>
+                    <FlatButton label="Retour" onClick={() => {this.props.handleClose(); }}/>
                 </div>
                 <div>
                     <iframe src={url} height="900" width="100%"></iframe>

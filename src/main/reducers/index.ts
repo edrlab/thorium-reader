@@ -14,7 +14,13 @@ import {
     PublicationDownloadState,
 } from "readium-desktop/main/reducers/publication-download";
 
+import {
+    streamerReducer,
+    StreamerState,
+} from "readium-desktop/main/reducers/streamer";
+
 export interface AppState {
+    streamer: StreamerState;
     downloader: DownloaderState;
     publicationDownloads: PublicationDownloadState;
     catalog: CatalogState;
@@ -22,6 +28,7 @@ export interface AppState {
 
 export const rootReducer = combineReducers({
     downloader,
+    streamer: streamerReducer,
     catalog: catalogReducer,
     publicationDownloads: publicationDownloadReducer,
 });

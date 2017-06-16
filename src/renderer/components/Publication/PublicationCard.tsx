@@ -132,7 +132,7 @@ export default class PublicationListElement extends React.Component<IPublication
                                                         <p>{__("publication.endDownload")}</p>
                                                         <RaisedButton
                                                             label={__("publication.readButton")}
-                                                            onClick={() => {this.props.handleRead(); }}/>
+                                                            onClick={() => {this.props.handleRead(publication); }}/>
                                                     </div>
                                                 ) : publication.download.status === DownloadStatus.Failed ? (
                                                     <div>
@@ -154,7 +154,7 @@ export default class PublicationListElement extends React.Component<IPublication
                                             <div>
                                                 <FlatButton
                                                 style={styles.BookCard.downloadButton}
-                                                onClick={() => {this.props.handleRead(); }}
+                                                onClick={() => {this.props.handleRead(publication); }}
                                                 label="Lire" />
 
                                                 <FlatButton

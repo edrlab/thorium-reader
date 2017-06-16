@@ -6,22 +6,28 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 import { Store } from "redux";
 
 import { Catalog } from "readium-desktop/models/catalog";
+import { Publication } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
 import { setLocale } from "readium-desktop/actions/i18n";
 import { Translator } from "readium-desktop/i18n/translator";
 
+import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
+
 import AppToolbar from "readium-desktop/renderer/components/AppToolbar";
 import Library from "readium-desktop/renderer/components/Library";
 import ReaderNYPL from "readium-desktop/renderer/components/ReaderNYPL";
 
+import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
 import { RendererState } from "readium-desktop/renderer/reducers";
+import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
 
 interface AppState {
     catalog: Catalog;
-    isReader: boolean;
+    readerOpen: boolean;
+    manifestUrl?: string;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -46,18 +52,27 @@ export default class App extends React.Component<undefined, AppState> {
 
         this.state = {
             catalog: undefined,
-            isReader: false,
+            readerOpen: false,
+            manifestUrl: undefined,
         };
+
+        this.handleOpenPublication = this.handleOpenPublication.bind(this);
+        this.handleClosePublication = this.handleClosePublication.bind(this);
     }
 
-    public ToggleReaderView = () => {
-        this.setState({isReader: !this.state.isReader});
+    public handleOpenPublication(publication: Publication) {
+        this.store.dispatch(readerActions.init(publication));
+    }
+
+    public handleClosePublication() {
+        this.store.dispatch(readerActions.close());
     }
 
     public componentDidMount() {
         this.store.dispatch(windowActions.init());
         this.store.subscribe(() => {
-            const catalog = this.store.getState().catalog;
+            const storeState = this.store.getState();
+            const catalog = storeState.catalog;
 
             if (catalog.publications === undefined) {
                 this.setState({catalog: undefined});
@@ -67,27 +82,32 @@ export default class App extends React.Component<undefined, AppState> {
                     publications: catalog.publications},
                 });
             }
+
+            this.setState({
+                readerOpen: (storeState.reader.status === ReaderStatus.Open),
+                manifestUrl: storeState.reader.manifestUrl,
+            });
+
             this.translator.setLocale(this.store.getState().i18n.locale);
         });
     }
 
     public render(): React.ReactElement<{}> {
-        let manifestUrl = "https://hadriengardeur.github.io/webpub-manifest/examples/MobyDick/manifest.json";
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
-                    {!this.state.isReader ? (
+                    {!this.state.readerOpen ? (
                     <div>
                         <AppToolbar />
                         <Library
                             catalog={this.state.catalog}
-                            handleRead={this.ToggleReaderView.bind(this)}/>
+                            handleRead={this.handleOpenPublication}/>
                     </div>
                     ) : (
                         <div>
                             <ReaderNYPL
-                                manifestURL={manifestUrl}
-                                handleRead={this.ToggleReaderView.bind(this)} />
+                                manifestURL={ encodeURIComponent_RFC3986(this.state.manifestUrl) }
+                                handleClose={this.handleClosePublication} />
                         </div>
                     )}
                 </div>

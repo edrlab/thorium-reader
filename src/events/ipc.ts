@@ -17,3 +17,13 @@ export const PUBLICATION_DOWNLOAD_CANCEL_REQUEST = "publication.download.cancel"
 
 export const SYNC_CATALOG_REQUEST = "sync.catalog.request";
 export const SYNC_CATALOG_RESPONSE = "sync.catalog.response";
+
+
+// The renderer process request to the main process the manifest of an epub file
+export const STREAMER_MANIFEST_OPEN_REQUEST = "streamer.manifest.open.request";
+
+export const STREAMER_MANIFEST_OPEN_RESPONSE = "streamer.manifest.open.response";
+
+export const STREAMER_MANIFEST_CLOSE_REQUEST = "streamer.manifest.close.request";
+
+export const STREAMER_MANIFEST_CLOSE_RESPONSE = "streamer.manifest.close.response";
