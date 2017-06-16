@@ -27,7 +27,8 @@ import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
 interface AppState {
     catalog: Catalog;
     readerOpen: boolean;
-    manifestUrl?: string;
+    openManifestUrl?: string;
+    openPublication: Publication;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -53,7 +54,8 @@ export default class App extends React.Component<undefined, AppState> {
         this.state = {
             catalog: undefined,
             readerOpen: false,
-            manifestUrl: undefined,
+            openManifestUrl: undefined,
+            openPublication: undefined,
         };
 
         this.handleOpenPublication = this.handleOpenPublication.bind(this);
@@ -65,7 +67,11 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     public handleClosePublication() {
-        this.store.dispatch(readerActions.close());
+        this.store.dispatch(readerActions.close(
+            this.state.openPublication,
+            this.state.openManifestUrl,
+            ),
+        );
     }
 
     public componentDidMount() {
@@ -85,7 +91,8 @@ export default class App extends React.Component<undefined, AppState> {
 
             this.setState({
                 readerOpen: (storeState.reader.status === ReaderStatus.Open),
-                manifestUrl: storeState.reader.manifestUrl,
+                openManifestUrl: storeState.reader.manifestUrl,
+                openPublication: storeState.reader.publication,
             });
 
             this.translator.setLocale(this.store.getState().i18n.locale);
@@ -106,7 +113,7 @@ export default class App extends React.Component<undefined, AppState> {
                     ) : (
                         <div>
                             <ReaderNYPL
-                                manifestURL={ encodeURIComponent_RFC3986(this.state.manifestUrl) }
+                                manifestURL={ encodeURIComponent_RFC3986(this.state.openManifestUrl) }
                                 handleClose={this.handleClosePublication} />
                         </div>
                     )}

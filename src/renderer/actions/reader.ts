@@ -27,8 +27,10 @@ export function open(publication: Publication, manifestUrl: string): ReaderActio
     };
 }
 
-export function close(): ReaderAction {
+export function close(publication: Publication, manifestUrl: string): ReaderAction {
     return {
         type: READER_CLOSE,
+        publication,
+        manifestUrl,
     };
 }

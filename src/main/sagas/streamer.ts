@@ -90,7 +90,7 @@ function waitForStreamerManifestCloseRequest(
     ipcMain.on(
         STREAMER_MANIFEST_CLOSE_REQUEST,
         (event: any, msg: any) => {
-            chan.put({});
+            chan.put(msg);
         },
     );
 }
@@ -101,12 +101,20 @@ export function* watchStreamManifestCloseRequest(): SagaIterator {
     yield fork(waitForStreamerManifestCloseRequest, chan);
 
     while (true) {
-        yield take(chan);
+        const response = yield take(chan);
+        const publication = response.publication;
 
-        // Load epub in streamer
+        // Get epub file from publication
+        const state: AppState =  yield select();
+        const downloads = state.publicationDownloads
+            .publicationIdentifierToDownloads[publication.identifier];
+        const epubPath = downloads[0].dstPath;
+
+        // Remove epub from streamer
         const streamer: Server = container.get("streamer") as Server;
-        console.log("## Stop server");
-        streamer.stop();
+        console.log("## Remove publication");
+        streamer.removePublications([epubPath]);
+
         yield put(streamerActions.stop());
     }
 }

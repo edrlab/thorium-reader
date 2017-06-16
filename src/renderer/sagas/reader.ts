@@ -29,14 +29,24 @@ export function* watchReaderInit(): SagaIterator {
     }
 }
 
-function sendStreamerManifestCloseRequest() {
-    ipcRenderer.send(STREAMER_MANIFEST_CLOSE_REQUEST);
+function sendStreamerManifestCloseRequest(
+    publication: Publication,
+    manifestUrl: string,
+) {
+    ipcRenderer.send(STREAMER_MANIFEST_CLOSE_REQUEST, {
+        publication,
+        manifestUrl,
+    });
 }
 
 export function* watchReaderClose(): SagaIterator {
     while (true) {
-        yield take(READER_CLOSE);
-        yield call(sendStreamerManifestCloseRequest);
+        let action = yield take(READER_CLOSE);
+        yield call(
+            sendStreamerManifestCloseRequest,
+            action.publication,
+            action.manifestUrl,
+        );
     }
 }
 
