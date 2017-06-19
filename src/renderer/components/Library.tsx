@@ -152,13 +152,15 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                             <PublicationElementList
                                 catalog={this.props.catalog}
                                 downloadEPUB={this.downloadEPUB}
-                                handleRead={this.props.handleRead.bind(this)}/>
+                                handleRead={this.props.handleRead.bind(this)}
+                                cancelDownload={this.cancelDownload.bind(this)}/>
                         ) : (
                             <PublicationCardList
                                 downloadable={true}
                                 catalog={this.props.catalog}
                                 downloadEPUB={this.downloadEPUB}
-                                handleRead={this.props.handleRead.bind(this)}/>
+                                handleRead={this.props.handleRead.bind(this)}
+                                cancelDownload={this.cancelDownload.bind(this)}/>
                         )}
                         </div>
                     ) : (

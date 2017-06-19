@@ -17,9 +17,8 @@ interface IPublicationProps {
     downloadEPUB: Function;
     downloadable: boolean;
     handleRead: Function;
+    cancelDownload: Function;
 }
-
-
 
 export default class PublicationCardList extends React.Component<IPublicationProps, IPublicationState> {
     constructor() {
@@ -30,12 +29,16 @@ export default class PublicationCardList extends React.Component<IPublicationPro
         let list: any = [];
         for (let i = 0; i < this.props.catalog.publications.length; i++) {
             list.push(
-                <PublicationCard key={i}
-                    publicationId={i}
-                    downloadable={true}
-                    publication={this.props.catalog.publications[i]}
-                    downloadEPUB={this.props.downloadEPUB}
-                    handleRead={this.props.handleRead.bind(this)} />);
+                <LazyLoad offset={400} height={400} key={i}>
+                    <PublicationCard
+                        publicationId={i}
+                        downloadable={true}
+                        publication={this.props.catalog.publications[i]}
+                        downloadEPUB={this.props.downloadEPUB}
+                        handleRead={this.props.handleRead.bind(this)}
+                        cancelDownload={this.props.cancelDownload} />
+                </LazyLoad>,
+            );
         }
 
         return (

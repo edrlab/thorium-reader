@@ -10,6 +10,7 @@ interface IPublicationProps {
     catalog: Catalog;
     downloadEPUB: Function;
     handleRead: Function;
+    cancelDownload: Function;
 }
 
 interface IDownload {
@@ -56,11 +57,14 @@ export default class PublicationElementList extends React.Component<IPublication
         let list: any = [];
         for (let i = 0; i < this.props.catalog.publications.length; i++) {
             list.push(
-                    <PublicationListElement key={i}
-                        publication={this.props.catalog.publications[i]}
-                        publicationId={i}
-                        downloadEPUB={this.props.downloadEPUB}
-                        handleRead={this.props.handleRead.bind(this)} />
+                    <LazyLoad key={i} offset={180} height={150}>
+                        <PublicationListElement
+                            publication={this.props.catalog.publications[i]}
+                            publicationId={i}
+                            downloadEPUB={this.props.downloadEPUB}
+                            handleRead={this.props.handleRead.bind(this)}
+                            cancelDownload={this.props.cancelDownload} />
+                    </LazyLoad>,
             );
         }
         return (
