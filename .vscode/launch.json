@@ -1,0 +1,17 @@
+{
+    // Utilisez IntelliSense pour découvrir les attributs de débogage Node.js possibles.
+    // Pointez pour afficher la description des attributs existants.
+    // Pour plus d'informations, visitez : https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Lancer le programme",
+            "program": "${workspaceRoot}\\dist\\main.js",
+            "outFiles": [
+                "${workspaceRoot}/out/**/*.js"
+            ]
+        }
+    ]
+}
