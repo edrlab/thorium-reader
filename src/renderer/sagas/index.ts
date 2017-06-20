@@ -5,6 +5,7 @@ import {
 import {
     watchPublicationDownloadAdd,
     watchPublicationDownloadCancel,
+    watchPublicationUpload,
 } from "readium-desktop/renderer/sagas/publication";
 import {
     watchEpubManifestUrlResponse,
@@ -21,5 +22,6 @@ export function* rootSaga() {
         watchMainCatalogResponse(),
         watchPublicationDownloadAdd(),
         watchPublicationDownloadCancel(),
+        watchPublicationUpload(),
     ];
 }

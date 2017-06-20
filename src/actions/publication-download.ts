@@ -9,11 +9,13 @@ export const PUBLICATION_DOWNLOAD_START = "PUBLICATION_DOWNLOAD_START";
 export const PUBLICATION_DOWNLOAD_PROGRESS = "PUBLICATION_DOWNLOAD_PROGRESS";
 export const PUBLICATION_DOWNLOAD_FINISH = "PUBLICATION_DOWNLOAD_FINISH";
 export const PUBLICATION_DOWNLOAD_CANCEL = "PUBLICATION_DOWNLOAD_CANCEL";
+export const PUBLICATION_FILE_IMPORT = "PUBLICATION_FILE_IMPORT";
 
 export interface PublicationDownloadAction extends Action {
-    publication: Publication;
+    publication?: Publication;
     downloads?: Download[];
     progress?: number;
+    files?: File[];
 }
 
 export function add(publication: Publication): PublicationDownloadAction {
@@ -50,5 +52,12 @@ export function cancel(publication: Publication): PublicationDownloadAction {
     return {
         type: PUBLICATION_DOWNLOAD_CANCEL,
         publication,
+    };
+}
+
+export function fileImport(files: File[]): PublicationDownloadAction {
+    return {
+        type: PUBLICATION_FILE_IMPORT,
+        files,
     };
 }

@@ -13,7 +13,10 @@ export const PUBLICATION_DOWNLOAD_REQUEST = "publication.download.request";
 export const PUBLICATION_DOWNLOAD_RESPONSE = "publication.download.response";
 
 // The renderer process request a cancel on a publication download
-export const PUBLICATION_DOWNLOAD_CANCEL_REQUEST = "publication.download.cancel";
+export const PUBLICATION_DOWNLOAD_CANCEL_REQUEST = "publication.download.cancel.request";
+
+// The renderer process request a file import to the main process
+export const PUBLICATION_FILE_IMPORT_REQUEST  = "publication.file.import.request";
 
 export const SYNC_CATALOG_REQUEST = "sync.catalog.request";
 export const SYNC_CATALOG_RESPONSE = "sync.catalog.response";
