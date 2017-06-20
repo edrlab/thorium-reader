@@ -46,7 +46,7 @@ function startStreamer(streamer: Server, chan: Channel<any>) {
 function sendManifestOpenRequest(
     renderer: any,
     publication: Publication,
-    manifestUrl: string
+    manifestUrl: string,
 ) {
     renderer.send(
         STREAMER_MANIFEST_OPEN_RESPONSE,

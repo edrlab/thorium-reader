@@ -1,6 +1,6 @@
 import {
-    watchDownloadStart,
     watchDownloadFinish,
+    watchDownloadStart,
 } from "readium-desktop/sagas/downloader";
 
 import {

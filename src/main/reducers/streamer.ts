@@ -13,7 +13,7 @@ export interface StreamerState {
 const initialState: StreamerState = {
     baseUrl: undefined,
     status: StreamerStatus.Stopped,
-}
+};
 
 export function streamerReducer(
     state: StreamerState = initialState,
