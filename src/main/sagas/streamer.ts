@@ -18,6 +18,7 @@ import { container } from "readium-desktop/main/di";
 import { AppState } from "readium-desktop/main/reducers";
 
 import * as streamerActions from "readium-desktop/main/actions/streamer";
+import { STREAMER_PUBLICATION_CLOSE } from "readium-desktop/main/actions/streamer";
 
 function waitForStreamerManifestOpenRequest(chan: Channel<any>) {
     ipcMain.on(
@@ -34,9 +35,8 @@ function waitForStreamerManifestOpenRequest(chan: Channel<any>) {
 function startStreamer(streamer: Server, chan: Channel<any>) {
     // Find a free port on your local machine
     portfinder.getPort((err, port) => {
-        console.log("## Start server");
         const streamerUrl = streamer.start(port);
-
+        console.log("# Start r2 streamer", streamerUrl);
         chan.put({
             streamerUrl,
         });
@@ -71,16 +71,20 @@ export function* watchStreamManifestOpenRequest(): SagaIterator {
             .publicationIdentifierToDownloads[publication.identifier];
         const epubPath = downloads[0].dstPath;
 
-        // Start streamer
+        // Start streamer if it's not already started
         const streamer: Server = container.get("streamer") as Server;
-        yield fork(startStreamer, streamer, chanStreamerStart);
-        const streamerStartResponse: any = yield take(chanStreamerStart);
-        yield put(streamerActions.start(streamerStartResponse.streamerUrl));
+
+        if (state.streamer.baseUrl === undefined) {
+            yield fork(startStreamer, streamer, chanStreamerStart);
+            const streamerStartResponse: any = yield take(chanStreamerStart);
+            yield put(streamerActions.start(streamerStartResponse.streamerUrl));
+        }
 
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
         const manifestUrl = streamer.url() + manifestPaths[0];
         yield fork(sendManifestOpenRequest, renderer, publication, manifestUrl);
+        yield put(streamerActions.openPublication(publication));
     }
 }
 
@@ -104,17 +108,33 @@ export function* watchStreamManifestCloseRequest(): SagaIterator {
         const response = yield take(chan);
         const publication = response.publication;
 
-        // Get epub file from publication
+        // Remove publication from streamer
+        yield put(streamerActions.closePublication(publication));
+    }
+}
+
+export function* watchPublicationCloseRequest(): SagaIterator {
+    while (true) {
+        const action = yield take(STREAMER_PUBLICATION_CLOSE);
+        const publication = action.publication;
+
         const state: AppState =  yield select();
-        const downloads = state.publicationDownloads
-            .publicationIdentifierToDownloads[publication.identifier];
-        const epubPath = downloads[0].dstPath;
-
-        // Remove epub from streamer
         const streamer: Server = container.get("streamer") as Server;
-        console.log("## Remove publication");
-        streamer.removePublications([epubPath]);
 
-        yield put(streamerActions.stop());
+        if (state.streamer.openPublicationCounter[publication.identifier] === undefined) {
+            // Remove publication from streamer because there is no more readers
+            // open for this publication
+            // Get epub file from publication
+            const downloads = state.publicationDownloads
+                .publicationIdentifierToDownloads[publication.identifier];
+            const epubPath = downloads[0].dstPath;
+            streamer.removePublications([epubPath]);
+        }
+        if (Object.keys(state.streamer.openPublicationCounter).length === 0) {
+            // Stop server
+            console.log("# Stop r2 streamer");
+            streamer.stop();
+            yield put(streamerActions.stop());
+        }
     }
 }
