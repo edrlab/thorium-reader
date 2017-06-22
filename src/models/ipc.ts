@@ -27,5 +27,5 @@ export interface DownloadMessage {
 }
 
 export interface FilesMessage {
-     files: File[];
+     paths: string[];
 }

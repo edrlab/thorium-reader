@@ -9,8 +9,9 @@ import {
 } from "readium-desktop/events/ipc";
 
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
+import * as publicationImportActions from "readium-desktop/actions/publication-import";
 
-import { PublicationMessage, FilesMessage} from "readium-desktop/models/ipc";
+import { FilesMessage, PublicationMessage} from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
 
 function sendIPCAddDownload(msg: PublicationMessage) {
@@ -45,8 +46,8 @@ function sendIPCFileImport(msg: FilesMessage) {
 
 export function* watchPublicationUpload(): SagaIterator {
     while (true) {
-        let resp = yield take(publicationDownloadActions.PUBLICATION_FILE_IMPORT);
-        let msg: FilesMessage = { files: resp.files};
+        let resp = yield take(publicationImportActions.PUBLICATION_FILE_IMPORT);
+        let msg: FilesMessage = { paths: resp.paths};
         sendIPCFileImport(msg);
     }
 }

@@ -21,7 +21,8 @@ import {
 } from "readium-desktop/main/sagas/streamer";
 
 import {
-    waitForPublicationFileImport
+    watchPublicationImportUpdate,
+    watchRendererPublicationImportRequest,
 } from "readium-desktop/main/sagas/publication-import";
 
 export function* rootSaga() {
@@ -37,6 +38,7 @@ export function* rootSaga() {
         watchStreamManifestOpenRequest(),
         watchStreamManifestCloseRequest(),
         watchPublicationCloseRequest(),
-        waitForPublicationFileImport(),
+        watchRendererPublicationImportRequest(),
+        watchPublicationImportUpdate(),
     ];
 }
