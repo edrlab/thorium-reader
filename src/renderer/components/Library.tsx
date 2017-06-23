@@ -189,7 +189,6 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     public render(): React.ReactElement<{}>  {
         const that = this;
-        console.log(this.props.catalog);
         let listToDisplay: JSX.Element;
         if (this.props.catalog) {
             if (this.state.list) {
@@ -202,7 +201,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         }
 
         return (
-            <Dropzone onDrop={this.onDrop.bind(this)} style={{}}>
+            <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
                 <div>
                     <h1 style={styles.Library.title}>{this.__("library.heading")}</h1>
                     <IconButton
