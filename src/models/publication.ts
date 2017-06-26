@@ -13,7 +13,7 @@ export interface Publication extends Identifiable {
     description: string;
     cover?: File;
     physicalPageNb?: number;
-    language?: Language;
+    languages?: Language[];
     authors?: Contributor[];
     files?: File[];
     tags?: Tag[];
