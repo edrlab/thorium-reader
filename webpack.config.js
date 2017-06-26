@@ -26,6 +26,15 @@ let mainConfig = Object.assign({}, {
         __filename: false,
     },
 
+
+    externals: {
+        "pouchdb": "require('pouchdb')",
+    },
+
+    // externals: [
+    //     "leveldown",
+    // ],
+
     resolve: {
         // Add '.ts' as resolvable extensions.
         extensions: [".ts", ".js", ".node"],
