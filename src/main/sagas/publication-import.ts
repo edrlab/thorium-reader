@@ -14,6 +14,10 @@ from "readium-desktop/actions/publication-import";
 
 import { FilesMessage } from "readium-desktop/models/ipc";
 
+import { EpubParsePromise } from "r2-streamer-js/dist/es5/src/parser/epub";
+
+import { Publication } from "readium-desktop/models/publication";
+
 enum PublicationImportResponseType {
     Add, // Add files import
 }
@@ -35,6 +39,15 @@ export function* watchPublicationImportUpdate(): SagaIterator {
         switch (action.type) {
             case PUBLICATION_IMPORT_ADD:
                 console.log("### import : ", action.paths);
+                Promise.resolve(EpubParsePromise(action.paths[0])).then((value: any) => {
+                    let pub: Publication = {
+                        title: value.Metadata.Title,
+                        description: value.Metadata.Description,
+                        identifier: "",
+                        authors: value.Metadata.Author,
+                        language: value.Metadata.Language,
+                    };
+                });
                 break;
             default:
                 break;
@@ -66,8 +79,9 @@ export function* watchRendererPublicationImportRequest(): SagaIterator {
 
         switch (response.type) {
             case PublicationImportResponseType.Add:
-                console.log("Je suis ici mon petit :)");
+            console.log ("hello,");
                 yield put(publicationImportActions.add(response.paths));
+
                 break;
             default:
                 break;

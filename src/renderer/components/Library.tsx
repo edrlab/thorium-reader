@@ -25,6 +25,8 @@ import { PublicationCard, PublicationListElement } from "readium-desktop/rendere
 
 import * as Dropzone from "react-dropzone";
 
+import { EpubParsePromise } from "r2-streamer-js/dist/es5/src/parser/epub";
+
 interface ILibraryState {
     list: boolean;
     open: boolean;
@@ -108,11 +110,15 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         let paths: string[] = [];
         for (let file of files)
         {
+            Promise.resolve(EpubParsePromise(file.path)).then((value: any) => {
+                    console.log(value);
+            });
             console.log(files);
             paths.push(file.path);
+            this.store.dispatch(publicationimportActions.fileImport([file.path]));
         }
 
-        this.store.dispatch(publicationimportActions.fileImport(paths));
+
 
         this.snackBarMessage = this.__("library.startFileImport");
         this.setState({open: true});
