@@ -20,9 +20,9 @@ import { OPDSParser } from "readium-desktop/services/opds";
 
 import { AppState } from "readium-desktop/main/reducers";
 
-import { PublicationRepository } from "readium-desktop/main/db/publication-repository";
-
 import { container } from "readium-desktop/main/di";
+
+import { PublicationDb } from "readium-desktop/main/db/publication-db";
 
 const CATALOG_OPDS_URL = "http://www.feedbooks.com/books/top.atom?category=FBFIC019000";
 
@@ -79,8 +79,11 @@ function loadCatalog(chan: Channel<CatalogResponse>) {
 export function* watchCatalogInit(): SagaIterator {
     // Load catalog from database
     yield take(CATALOG_INIT);
-    const repository: PublicationRepository = container.get("publication-repository") as PublicationRepository;
-    repository.getAll();
+    const db: PublicationDb = container.get(
+        "publication-db") as PublicationDb;
+    db.getAll().then((result) => {
+        console.log(result);
+    });
 
     console.log("### Catalog init");
     const chan = yield call(channel);

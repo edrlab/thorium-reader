@@ -6,7 +6,7 @@ import { Publication } from "readium-desktop/models/publication";
 const ID_PREFIX = "publication_";
 
 @injectable()
-export class PublicationRepository {
+export class PublicationDb {
     private db: PouchDB.Database;
 
     public constructor(db: PouchDB.Database) {
@@ -34,7 +34,9 @@ export class PublicationRepository {
 
     public getAll(): Promise<Publication[]> {
         return this.db
-            .allDocs()
+            .allDocs({
+                include_docs: true,
+            })
             .then((result: PouchDB.Core.AllDocsResponse<any>) => {
                 return result.rows.map((row) => {
                     return this.convertToPublication(row);
@@ -46,6 +48,12 @@ export class PublicationRepository {
     }
 
     private convertToPublication(doc: PouchDB.Core.Document<any>): Publication {
-        return { ...doc, _id: undefined, _rev: undefined };
+        return  {
+            identifier: doc.doc.identifier,
+            title: doc.doc.title,
+            description: doc.doc.description,
+            authors: doc.doc.authors,
+            languages: doc.doc.languages,
+        };
     }
 }

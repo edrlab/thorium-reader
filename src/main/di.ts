@@ -21,7 +21,10 @@ import { OPDSParser } from "readium-desktop/services/opds";
 import { store } from "readium-desktop/main/store/memory";
 import { streamer } from "readium-desktop/main/streamer";
 
-import { PublicationRepository } from "readium-desktop/main/db/publication-repository";
+import { PublicationDb } from "readium-desktop/main/db/publication-db";
+import {
+    PublicationStorage,
+} from "readium-desktop/main/storage/publication-storage";
 
 let container = new Container();
 
@@ -30,13 +33,26 @@ const rootDbPath = path.join(
     app.getPath("userData"),
     "db",
 );
-fs.mkdirSync(rootDbPath);
+
+if (!fs.existsSync(rootDbPath)) {
+    fs.mkdirSync(rootDbPath);
+}
 
 // Publication db
 const publicationDb = new PouchDB(path.join(
     rootDbPath,
     "publications",
 ));
+
+// Create filesystem storage for publications
+const publicationRepositoryPath = path.join(
+    app.getPath("userData"),
+    "publications",
+);
+
+if (!fs.existsSync(publicationRepositoryPath)) {
+    fs.mkdirSync(publicationRepositoryPath);
+}
 
 // Bind services
 container.bind<Translator>("translator").to(Translator);
@@ -46,8 +62,11 @@ container.bind<OPDSParser>("opds-parser").to(OPDSParser);
 container.bind<Downloader>("downloader").toConstantValue(
     new Downloader(app.getPath("temp"), store),
 );
-container.bind<PublicationRepository>("publication-repository").toConstantValue(
-    new PublicationRepository(publicationDb),
+container.bind<PublicationDb>("publication-db").toConstantValue(
+    new PublicationDb(publicationDb),
+);
+container.bind<PublicationStorage>("publication-storage").toConstantValue(
+    new PublicationStorage(publicationRepositoryPath),
 );
 
 let {

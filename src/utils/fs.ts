@@ -1,0 +1,24 @@
+import * as fs from "fs";
+import * as path from "path";
+
+export function rmDirSync(dirPath: string): void {
+    let filenames = [];
+
+    try {
+        filenames = fs.readdirSync(dirPath);
+    } catch (err) {
+        return;
+    }
+
+    for (let filename of filenames) {
+        const filePath = path.join(dirPath, filename);
+
+        if (fs.statSync(filePath).isFile()) {
+            fs.unlinkSync(filePath);
+        } else {
+            rmDirSync(filePath);
+        }
+    }
+
+    fs.rmdirSync(dirPath);
+}

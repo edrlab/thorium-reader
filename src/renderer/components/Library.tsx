@@ -118,8 +118,6 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
             this.store.dispatch(publicationimportActions.fileImport([file.path]));
         }
 
-
-
         this.snackBarMessage = this.__("library.startFileImport");
         this.setState({open: true});
     }
