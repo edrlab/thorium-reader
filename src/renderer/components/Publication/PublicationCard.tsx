@@ -57,7 +57,7 @@ const styles = {
     },
 };
 
-export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
+export default class PublicationCard extends React.Component<IPublicationProps, IPublicationState> {
     @lazyInject("translator")
     private translator: Translator;
 

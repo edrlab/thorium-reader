@@ -21,7 +21,7 @@ import { Translator }   from "readium-desktop/i18n/translator";
 
 import { Catalog } from "readium-desktop/models/catalog";
 
-import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
+import { PublicationCardList, PublicationElementList } from "readium-desktop/renderer/components/Publication/index";
 
 import * as Dropzone from "react-dropzone";
 
@@ -83,7 +83,6 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     private  __ = this.translator.translate;
 
     private snackBarMessage: string = "";
-    // private lastTimeUpdated = new Date().getTime() / 1000;
 
     constructor(props: LibraryProps) {
         super(props);
@@ -146,61 +145,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         );
     }
 
-    public createCardList() {
-        let list: any = [];
-        for (let i = 0; i < this.props.catalog.publications.length; i++) {
-            list.push(<PublicationCard key={i}
-                publicationId={i}
-                downloadable={true}
-                publication={this.props.catalog.publications[i]}
-                downloadEPUB={this.downloadEPUB}
-                handleRead={this.props.handleRead.bind(this)}
-                cancelDownload={this.cancelDownload} />);
-        }
-        return list;
-    }
-
-    public createElementList() {
-        let list: any = [];
-        for (let i = 0; i < this.props.catalog.publications.length; i++) {
-            list.push(<PublicationListElement key={i}
-                publication={this.props.catalog.publications[i]}
-                publicationId={i}
-                downloadEPUB={this.downloadEPUB}
-                handleRead={this.props.handleRead.bind(this)}
-                cancelDownload={this.cancelDownload} />);
-        }
-        return <div style={styles.BookListElement.container}> {list} </div>;
-    }
-
-    /*public shouldComponentUpdate(nextProps: LibraryProps, nextState: ILibraryState): boolean {
-        if (nextState.open !== this.state.open
-            || nextState.list !== this.state.list) {
-                return true;
-        } else {
-            if ((new Date().getTime() / 1000) - this.lastTimeUpdated > 1 || nextState.open !== this.state.open) {
-                this.lastTimeUpdated = new Date().getTime() / 1000;
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }*/
-
     public render(): React.ReactElement<{}>  {
-        const that = this;
-        console.log(this.props.catalog);
-        let listToDisplay: JSX.Element;
-        if (this.props.catalog) {
-            if (this.state.list) {
-                listToDisplay = this.createElementList();
-            } else {
-                listToDisplay = this.createCardList();
-            }
-        } else {
-            listToDisplay = <this.Spinner/>;
-        }
-
         return (
             <Dropzone onDrop={this.onDrop.bind(this)} style={{}}>
                 <div>
@@ -208,7 +153,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                     <IconButton
                         style={styles.Library.displayButton}
                         touch={true} onClick={() => {
-                            that.setState({list: true});
+                            this.setState({list: true});
                         }}
                     >
                         <FontIcon className="fa fa-list" color={blue500} />
@@ -216,14 +161,33 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                     <IconButton
                         style={styles.Library.displayButton}
                         touch={true}  onClick={() => {
-                            that.setState({list: false});
+                            this.setState({list: false});
                         }}
                     >
                         <FontIcon className="fa fa-th-large" color={blue500} />
                     </IconButton>
                 </div >
                 <div style={styles.Library.list}>
-                    {listToDisplay}
+                    {this.props.catalog ? (
+                        <div>
+                        {this.state.list ? (
+                            <PublicationElementList
+                                catalog={this.props.catalog}
+                                downloadEPUB={this.downloadEPUB}
+                                handleRead={this.props.handleRead.bind(this)}
+                                cancelDownload={this.cancelDownload.bind(this)}/>
+                        ) : (
+                            <PublicationCardList
+                                downloadable={true}
+                                catalog={this.props.catalog}
+                                downloadEPUB={this.downloadEPUB}
+                                handleRead={this.props.handleRead.bind(this)}
+                                cancelDownload={this.cancelDownload.bind(this)}/>
+                        )}
+                        </div>
+                    ) : (
+                        <this.Spinner />
+                    )}
                 </div>
 
                 <Snackbar
