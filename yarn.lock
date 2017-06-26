@@ -3913,7 +3913,7 @@ querystringify@~1.0.0:
 
 r2-streamer-js@edrlab/r2-streamer-js-dist:
   version "0.0.1-alpha27"
-  resolved "https://codeload.github.com/edrlab/r2-streamer-js-dist/tar.gz/7606536d4fde9f57716c25990c8a012c1c2523b6"
+  resolved "https://codeload.github.com/edrlab/r2-streamer-js-dist/tar.gz/4402129c4bf08b34cc89e3bbcd9b1df98cf894e7"
   dependencies:
     css2json latest
     debug latest
