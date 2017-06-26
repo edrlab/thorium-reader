@@ -25,3 +25,7 @@ export interface PublicationMessage {
 export interface DownloadMessage {
     download: Download;
 }
+
+export interface FilesMessage {
+     paths: string[];
+}

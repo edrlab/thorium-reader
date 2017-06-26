@@ -8,6 +8,7 @@ import { blue500 }  from "material-ui/styles/colors";
 import { Store } from "redux";
 
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
+import * as publicationimportActions from "readium-desktop/actions/publication-import";
 
 import { Publication } from "readium-desktop/models/publication";
 
@@ -21,6 +22,8 @@ import { Translator }   from "readium-desktop/i18n/translator";
 import { Catalog } from "readium-desktop/models/catalog";
 
 import { PublicationCardList, PublicationElementList } from "readium-desktop/renderer/components/Publication/index";
+
+import * as Dropzone from "react-dropzone";
 
 interface ILibraryState {
     list: boolean;
@@ -94,7 +97,26 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         this.store.dispatch(windowActions.showLibrary());
     }
 
+    // Called when files are droped on the dropzone
+    public onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
+        this.importFiles(acceptedFiles);
+    }
+
     // Create the download list if it doesn't exist then start the download
+    public importFiles = (files: File[]) => {
+        let paths: string[] = [];
+        for (let file of files)
+        {
+            console.log(files);
+            paths.push(file.path);
+        }
+
+        this.store.dispatch(publicationimportActions.fileImport(paths));
+
+        this.snackBarMessage = this.__("library.startFileImport");
+        this.setState({open: true});
+    }
+
     public downloadEPUB = (newPublication: Publication, publicationId: number) => {
         this.store.dispatch(publicationDownloadActions.add(newPublication));
 
@@ -125,7 +147,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     public render(): React.ReactElement<{}>  {
         return (
-            <div>
+            <Dropzone onDrop={this.onDrop.bind(this)} style={{}}>
                 <div>
                     <h1 style={styles.Library.title}>{this.__("library.heading")}</h1>
                     <IconButton
@@ -174,7 +196,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                         autoHideDuration={4000}
                         onRequestClose={this.handleRequestClose}
                     />
-            </div>
+            </Dropzone>
         );
     }
 }

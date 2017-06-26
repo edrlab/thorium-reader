@@ -73,6 +73,9 @@
 "@types/react-lazyload@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@types/react-lazyload/-/react-lazyload-2.2.0.tgz#7365ab695ebb2b26837cc252334995118e694906"
+"@types/react-dropzone@0.0.32":
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/@types/react-dropzone/-/react-dropzone-0.0.32.tgz#0035029a938db8f80d575db280e6b241a71247ce"
   dependencies:
     "@types/react" "*"
 
@@ -328,6 +331,10 @@ async@^2.1.2:
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
+
+attr-accept@^1.0.3:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-1.1.0.tgz#b5cd35227f163935a8f1de10ed3eba16941f6be6"
 
 autoprefixer@^6.3.1:
   version "6.7.7"
@@ -3931,7 +3938,7 @@ querystringify@~1.0.0:
 
 r2-streamer-js@edrlab/r2-streamer-js-dist:
   version "0.0.1-alpha27"
-  resolved "https://codeload.github.com/edrlab/r2-streamer-js-dist/tar.gz/7606536d4fde9f57716c25990c8a012c1c2523b6"
+  resolved "https://codeload.github.com/edrlab/r2-streamer-js-dist/tar.gz/4402129c4bf08b34cc89e3bbcd9b1df98cf894e7"
   dependencies:
     css2json latest
     debug latest
@@ -4015,6 +4022,13 @@ react-dom@^15.4.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
     prop-types "~15.5.7"
+
+react-dropzone@^3.13.2:
+  version "3.13.2"
+  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-3.13.2.tgz#318745c03007ca6b948cdd4431abc009b16a6588"
+  dependencies:
+    attr-accept "^1.0.3"
+    prop-types "^15.5.7"
 
 react-event-listener@^0.4.5:
   version "0.4.5"
