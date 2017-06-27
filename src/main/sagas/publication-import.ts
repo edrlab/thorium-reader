@@ -34,6 +34,21 @@ interface PublicationImportResponse {
     error?: Error;
 }
 
+async function getPublication (path: string): Promise<Publication> {
+    const pub: any = await EpubParsePromise(path);
+
+    // Create identifier for this publication
+    let newPub: Publication = {
+        title: pub.Metadata.Title,
+        description: pub.Metadata.Description,
+        identifier: uuid.v4(),
+        authors: pub.Metadata.Author,
+        languages: pub.Metadata.Language,
+    };
+
+    return newPub;
+}
+
 export function* watchPublicationImportUpdate(): SagaIterator {
     let buffer: Buffer<any> = buffers.expanding(20);
     let chan = yield actionChannel([
@@ -50,16 +65,7 @@ export function* watchPublicationImportUpdate(): SagaIterator {
             case PUBLICATION_IMPORT_ADD:
                 for (const path of action.paths) {
                     // Parse epub and extract its metadata
-                    Promise.resolve(EpubParsePromise(path).then((value: any) => {
-                        // Create identifier for this publication
-                        let pub: Publication = {
-                            title: value.Metadata.Title,
-                            description: value.Metadata.Description,
-                            identifier: uuid.v4(),
-                            authors: value.Metadata.Author,
-                            languages: value.Metadata.Language,
-                        };
-
+                    Promise.resolve(getPublication(path).then((pub: any) => {
                         // Store publication files
                         publicationStorage.storePublication(
                             pub.identifier,

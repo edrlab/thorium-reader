@@ -5,6 +5,12 @@ import { injectable} from "inversify";
 
 import { rmDirSync } from "readium-desktop/utils/fs";
 
+import { EpubParsePromise } from "r2-streamer-js/dist/es5/src/parser/epub";
+
+import { IZip } from "r2-streamer-js/dist/es5/src/_utils/zip/zip.d";
+
+import { streamToBufferPromise } from "r2-streamer-js/dist/es6-es2015/src/_utils/stream/BufferUtils";
+
 // Store publications in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
 // publication uuid
@@ -33,6 +39,10 @@ export class PublicationStorage {
         fs.mkdirSync(pubDirPath);
         const dstPath = path.join(pubDirPath, "book.epub");
         fs.createReadStream(srcPath).pipe(fs.createWriteStream(dstPath));
+
+        Promise.resolve(this.storeCover(srcPath, pubDirPath).then((lol: any) => {
+            console.log("Cover created");
+        }));
     }
 
     public removePublication(identifier: string) {
@@ -41,5 +51,23 @@ export class PublicationStorage {
 
     private buildPublicationPath(identifier: string): string {
         return path.join(this.rootPath, identifier);
+    }
+
+    // Extract the image cover buffer then create a file on the publication folder
+    private async storeCover (srcPath: string, pubDirPath: string) {
+        const pub: any = await EpubParsePromise(srcPath);
+        const zipInternal = pub.Internal.find((i: any) => {
+        if (i.Name === "zip") {
+            return true;
+        }
+        return false;
+        });
+        const zip = zipInternal.Value as IZip;
+        const coverLink = pub.GetCover();
+        const coverType: string = coverLink.TypeLink;
+        const zipStream = await zip.entryStreamPromise(coverLink.Href);
+        const zipBuffer = await streamToBufferPromise(zipStream.stream);
+
+        fs.writeFile(path.join(pubDirPath, "cover." + coverType.split("/")[1]), zipBuffer, () => {});
     }
 }
