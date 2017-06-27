@@ -34,21 +34,6 @@ interface PublicationImportResponse {
     error?: Error;
 }
 
-async function getPublication (path: string): Promise<Publication> {
-    const pub: any = await EpubParsePromise(path);
-
-    // Create identifier for this publication
-    let newPub: Publication = {
-        title: pub.Metadata.Title,
-        description: pub.Metadata.Description,
-        identifier: uuid.v4(),
-        authors: pub.Metadata.Author,
-        languages: pub.Metadata.Language,
-    };
-
-    return newPub;
-}
-
 export function* watchPublicationImportUpdate(): SagaIterator {
     let buffer: Buffer<any> = buffers.expanding(20);
     let chan = yield actionChannel([
@@ -65,15 +50,23 @@ export function* watchPublicationImportUpdate(): SagaIterator {
             case PUBLICATION_IMPORT_ADD:
                 for (const path of action.paths) {
                     // Parse epub and extract its metadata
-                    Promise.resolve(getPublication(path).then((pub: any) => {
+                    Promise.resolve(EpubParsePromise(path).then((pub: any) => {
+
+                        let newPub: Publication = {
+                            title: pub.Metadata.Title,
+                            description: pub.Metadata.Description,
+                            identifier: uuid.v4(),
+                            authors: pub.Metadata.Author,
+                            languages: pub.Metadata.Language,
+                        };
                         // Store publication files
                         publicationStorage.storePublication(
-                            pub.identifier,
+                            newPub.identifier,
                             path,
                         );
 
                         // Store publication metadata
-                        publicationDb.put(pub);
+                        publicationDb.put(newPub);
                     }),
                     );
                 }
@@ -108,9 +101,7 @@ export function* watchRendererPublicationImportRequest(): SagaIterator {
 
         switch (response.type) {
             case PublicationImportResponseType.Add:
-            console.log ("hello,");
                 yield put(publicationImportActions.add(response.paths));
-
                 break;
             default:
                 break;

@@ -68,6 +68,6 @@ export class PublicationStorage {
         const zipStream = await zip.entryStreamPromise(coverLink.Href);
         const zipBuffer = await streamToBufferPromise(zipStream.stream);
 
-        fs.writeFile(path.join(pubDirPath, "cover." + coverType.split("/")[1]), zipBuffer, () => {});
+        fs.writeFileSync(path.join(pubDirPath, "cover." + coverType.split("/")[1]), zipBuffer);
     }
 }
