@@ -32,6 +32,17 @@ export class PublicationDb {
             });
     }
 
+    public remove(identifier: string): void {
+        this.db
+            .get(ID_PREFIX + identifier)
+            .then((result: PouchDB.Core.Document<any>) => {
+                this.db.remove(result);
+            })
+            .catch((error) => {
+                throw error;
+            });
+    }
+
     public getAll(): Promise<Publication[]> {
         return this.db
             .allDocs({

@@ -81,6 +81,9 @@ export function* watchPublicationUpdate(): SagaIterator {
                 break;
             case PUBLICATION_FILE_DELETE:
                 publicationStorage.deletePublication(action.identifier);
+
+                // Remove publication metadata
+                publicationDb.remove(action.identifier);
                 break;
             default:
                 break;
