@@ -3,9 +3,10 @@ import {
     watchMainCatalogResponse,
 } from "readium-desktop/renderer/sagas/catalog";
 import {
+    watchPublicationDelete,
     watchPublicationDownloadAdd,
     watchPublicationDownloadCancel,
-    watchPublicationUpload,
+    watchPublicationImport,
 } from "readium-desktop/renderer/sagas/publication";
 import {
     watchEpubManifestUrlResponse,
@@ -22,6 +23,7 @@ export function* rootSaga() {
         watchMainCatalogResponse(),
         watchPublicationDownloadAdd(),
         watchPublicationDownloadCancel(),
-        watchPublicationUpload(),
+        watchPublicationImport(),
+        watchPublicationDelete(),
     ];
 }

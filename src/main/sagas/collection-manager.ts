@@ -3,15 +3,19 @@ import { Buffer, buffers, channel, Channel, SagaIterator } from "redux-saga";
 import { actionChannel, call, fork, put, take } from "redux-saga/effects";
 import * as uuid from "uuid";
 
-import { PUBLICATION_FILE_IMPORT_REQUEST } from "readium-desktop/events/ipc";
+import {
+    PUBLICATION_FILE_DELETE_REQUEST,
+    PUBLICATION_FILE_IMPORT_REQUEST,
+} from "readium-desktop/events/ipc";
 
 import {
+    PUBLICATION_FILE_DELETE,
     PUBLICATION_IMPORT_ADD,
     PublicationImportAction,
-} from "readium-desktop/actions/publication-import";
+} from "readium-desktop/actions/collection-manager";
 
 import * as publicationImportActions
-from "readium-desktop/actions/publication-import";
+from "readium-desktop/actions/collection-manager";
 
 import { FilesMessage } from "readium-desktop/models/ipc";
 
@@ -26,18 +30,21 @@ import { container } from "readium-desktop/main/di";
 
 enum PublicationImportResponseType {
     Add, // Add files import
+    Delete, // Delete a file
 }
 
 interface PublicationImportResponse {
     type: PublicationImportResponseType;
-    paths: string[];
+    paths?: string[];
+    identifier?: string;
     error?: Error;
 }
 
-export function* watchPublicationImportUpdate(): SagaIterator {
+export function* watchPublicationUpdate(): SagaIterator {
     let buffer: Buffer<any> = buffers.expanding(20);
     let chan = yield actionChannel([
             PUBLICATION_IMPORT_ADD,
+            PUBLICATION_FILE_DELETE,
         ], buffer);
 
     while (true) {
@@ -46,6 +53,7 @@ export function* watchPublicationImportUpdate(): SagaIterator {
             "publication-db") as PublicationDb;
         const publicationStorage: PublicationStorage = container.get(
             "publication-storage") as PublicationStorage;
+
         switch (action.type) {
             case PUBLICATION_IMPORT_ADD:
                 for (const path of action.paths) {
@@ -71,6 +79,9 @@ export function* watchPublicationImportUpdate(): SagaIterator {
                     );
                 }
                 break;
+            case PUBLICATION_FILE_DELETE:
+                publicationStorage.deletePublication(action.identifier);
+                break;
             default:
                 break;
         }
@@ -83,7 +94,6 @@ export function waitForPublicationFileImport(
     ipcMain.on(
         PUBLICATION_FILE_IMPORT_REQUEST,
         (event: any, msg: FilesMessage) => {
-            console.log("Import file ipc");
             chan.put({
                 type: PublicationImportResponseType.Add,
                 paths: msg.paths,
@@ -91,10 +101,24 @@ export function waitForPublicationFileImport(
         });
 }
 
-export function* watchRendererPublicationImportRequest(): SagaIterator {
+export function waitForPublicationFileDelete(
+    chan: Channel<PublicationImportResponse>,
+) {
+    ipcMain.on(
+        PUBLICATION_FILE_DELETE_REQUEST,
+        (event: any, msg: FilesMessage) => {
+            chan.put({
+                type: PublicationImportResponseType.Delete,
+                identifier: msg.identifier,
+            });
+        });
+}
+
+export function* watchRendererPublicationRequest(): SagaIterator {
     const chan = yield call(channel);
 
     yield fork(waitForPublicationFileImport, chan);
+    yield fork(waitForPublicationFileDelete, chan);
 
     while (true) {
         const response: PublicationImportResponse = yield take(chan);
@@ -102,6 +126,9 @@ export function* watchRendererPublicationImportRequest(): SagaIterator {
         switch (response.type) {
             case PublicationImportResponseType.Add:
                 yield put(publicationImportActions.add(response.paths));
+                break;
+            case PublicationImportResponseType.Delete:
+                yield put(publicationImportActions.fileDelete(response.identifier));
                 break;
             default:
                 break;

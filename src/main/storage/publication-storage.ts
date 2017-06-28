@@ -45,6 +45,21 @@ export class PublicationStorage {
         }));
     }
 
+    // Delete a publication with its identifier
+    public async deletePublication (identifier: string) {
+        const pubDirPath = this.buildPublicationPath(identifier);
+
+        if (fs.existsSync(pubDirPath)) {
+            const filesName = fs.readdirSync(pubDirPath);
+            for (let fileName of filesName) {
+                fs.unlinkSync (path.join(pubDirPath, fileName));
+            }
+            fs.rmdirSync(pubDirPath);
+        } else {
+            console.log ("**Impossible to delete the folder  " + pubDirPath + " because the folder doesn't exist.");
+        }
+    }
+
     public removePublication(identifier: string) {
         rmDirSync(this.buildPublicationPath(identifier));
     }
