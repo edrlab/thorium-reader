@@ -1,12 +1,13 @@
 import * as path from "path";
 import { Store } from "redux";
 
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, protocol } from "electron";
 
 import * as catalogActions from "readium-desktop/actions/catalog";
 
 import { container } from "readium-desktop/main/di";
 import { AppState } from "readium-desktop/main/reducers";
+import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -36,6 +37,17 @@ function createWindow() {
     });
 }
 
+function registerProtocol() {
+    protocol.registerFileProtocol("store", (request, callback) => {
+        // Extract publication item relative url
+        const relativeUrl = request.url.substr(6);
+        const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
+        const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
+        console.log('###', filePath);
+        callback({ path: filePath});
+    });
+}
+
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
@@ -47,6 +59,7 @@ app.on("window-all-closed", () => {
 // Call 'createWindow()' on startup.
 app.on("ready", () => {
     createWindow();
+    registerProtocol();
 
     // Load catalog
     const store: Store<AppState> = container.get("store") as Store<AppState>;

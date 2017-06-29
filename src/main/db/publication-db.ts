@@ -58,13 +58,14 @@ export class PublicationDb {
             });
     }
 
-    private convertToPublication(doc: PouchDB.Core.Document<any>): Publication {
+    private convertToPublication(dbDoc: PouchDB.Core.Document<any>): Publication {
         return  {
-            identifier: doc.doc.identifier,
-            title: doc.doc.title,
-            description: doc.doc.description,
-            authors: doc.doc.authors,
-            languages: doc.doc.languages,
+            identifier: dbDoc.doc.identifier,
+            title: dbDoc.doc.title,
+            description: dbDoc.doc.description,
+            authors: dbDoc.doc.authors,
+            languages: dbDoc.doc.languages,
+            cover: dbDoc.doc.cover,
         };
     }
 }

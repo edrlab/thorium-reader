@@ -1,4 +1,5 @@
 import { ipcMain } from "electron";
+import { Store } from "redux";
 import { Buffer, buffers, channel, Channel, SagaIterator } from "redux-saga";
 import { actionChannel, call, fork, put, take } from "redux-saga/effects";
 import * as uuid from "uuid";
@@ -14,6 +15,7 @@ import {
     PublicationImportAction,
 } from "readium-desktop/actions/collection-manager";
 
+import * as catalogActions from "readium-desktop/actions/catalog";
 import * as publicationImportActions
 from "readium-desktop/actions/collection-manager";
 
@@ -21,9 +23,11 @@ import { FilesMessage } from "readium-desktop/models/ipc";
 
 import { EpubParsePromise } from "r2-streamer-js/dist/es5/src/parser/epub";
 
+import { File } from "readium-desktop/models/file";
 import { Publication } from "readium-desktop/models/publication";
 
 import { PublicationDb } from "readium-desktop/main/db/publication-db";
+import { AppState } from "readium-desktop/main/reducers/index";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 import { container } from "readium-desktop/main/di";
@@ -53,6 +57,8 @@ export function* watchPublicationUpdate(): SagaIterator {
             "publication-db") as PublicationDb;
         const publicationStorage: PublicationStorage = container.get(
             "publication-storage") as PublicationStorage;
+        const store: Store<AppState> = container.get("store") as Store<AppState>;
+        const db: PublicationDb = container.get("publication-db") as PublicationDb;
 
         switch (action.type) {
             case PUBLICATION_IMPORT_ADD:
@@ -68,13 +74,47 @@ export function* watchPublicationUpdate(): SagaIterator {
                             languages: pub.Metadata.Language,
                         };
                         // Store publication files
-                        publicationStorage.storePublication(
-                            newPub.identifier,
-                            path,
-                        );
+                        publicationStorage
+                            .storePublication(
+                                newPub.identifier,
+                                path,
+                            )
+                            .then((files) => {
+                                // Extract cover
+                                let coverFile: File = null;
+                                let otherFiles: File[] = [];
 
-                        // Store publication metadata
-                        publicationDb.put(newPub);
+                                for (let file of files) {
+                                    if (file.contentType.startsWith("image")) {
+                                        coverFile = file;
+                                    } else {
+                                        otherFiles.push(file);
+                                    }
+                                }
+
+                                newPub.cover = coverFile;
+                                newPub.files = otherFiles;
+
+                                // Store publication metadata
+                                publicationDb
+                                    .put(newPub)
+                                    .then((result) => {
+                                        db.getAll().then((publications) => {
+                                            store.dispatch(catalogActions.set(
+                                                {
+                                                    title: "Catalog",
+                                                    publications,
+                                                },
+                                            ));
+                                        });
+                                    })
+                                    .catch((err) => {
+                                        console.log(err);
+                                    });
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
                     }),
                     );
                 }

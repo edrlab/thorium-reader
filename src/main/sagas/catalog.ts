@@ -96,7 +96,7 @@ export function* watchCatalogInit(): SagaIterator {
     const chan = yield call(channel);
     yield fork(loadCatalogFromDb, chan);
     const catalogResponse: CatalogResponse = yield take(chan);
-
+    console.log('#', catalogResponse.catalog.publications);
     if (catalogResponse.type === CatalogResponseType.Catalog) {
         yield put(catalogActions.set(catalogResponse.catalog));
     } else {

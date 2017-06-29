@@ -22,3 +22,8 @@ export function rmDirSync(dirPath: string): void {
 
     fs.rmdirSync(dirPath);
 }
+
+export function getFileSize(path: string): number {
+    const stats = fs.statSync(path);
+    return stats.size;
+}
