@@ -66,6 +66,7 @@ export class PublicationDb {
             authors: dbDoc.doc.authors,
             languages: dbDoc.doc.languages,
             cover: dbDoc.doc.cover,
+            files: dbDoc.doc.files,
         };
     }
 }

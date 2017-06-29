@@ -43,7 +43,6 @@ function registerProtocol() {
         const relativeUrl = request.url.substr(6);
         const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
         const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
-        console.log('###', filePath);
         callback({ path: filePath});
     });
 }
