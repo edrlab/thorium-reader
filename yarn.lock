@@ -4532,9 +4532,9 @@ querystringify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
 
-r2-streamer-js@edrlab/r2-streamer-js-dist:
-  version "0.0.1-alpha27"
-  resolved "https://codeload.github.com/edrlab/r2-streamer-js-dist/tar.gz/4402129c4bf08b34cc89e3bbcd9b1df98cf894e7"
+r2-streamer-js@edrlab/r2-streamer-js-dist#master:
+  version "0.0.1-alpha30"
+  resolved "https://codeload.github.com/edrlab/r2-streamer-js-dist/tar.gz/6bf0ef5c3f9cf3c3f77448078eddd17a61a33f30"
   dependencies:
     css2json latest
     debug latest
