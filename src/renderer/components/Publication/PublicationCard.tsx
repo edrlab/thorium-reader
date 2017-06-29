@@ -87,7 +87,7 @@ export default class PublicationListElement extends React.Component<IPublication
         let author: string = "";
         let image: string = "";
 
-        if (publication.authors[0]) {
+        if (publication.authors && publication.authors.length > 0) {
             author = publication.authors[0].name;
         }
         if (publication.cover) {
