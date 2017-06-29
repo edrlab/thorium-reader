@@ -77,7 +77,7 @@
     "opds-feed-parser": "^0.0.13",
     "portfinder": "^1.0.13",
     "pouchdb": "^6.2.0",
-    "r2-streamer-js": "edrlab/r2-streamer-js-dist#master",
+    "r2-streamer-js": "edrlab/r2-streamer-js-dist#7606536d4fde9f57716c25990c8a012c1c2523b6",
     "react": "^15.4.2",
     "react-card-flip": "^0.0.4",
     "react-dom": "^15.4.2",
