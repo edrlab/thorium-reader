@@ -37,7 +37,7 @@ interface CatalogResponse {
     error?: Error;
 }
 
-function loadCatalog(chan: Channel<CatalogResponse>) {
+function loadCatalogFromOPDS(chan: Channel<CatalogResponse>) {
     request(CATALOG_OPDS_URL, (error, response, body) => {
         if (response && (
                 response.statusCode < 200 || response.statusCode > 299)) {
@@ -76,18 +76,25 @@ function loadCatalog(chan: Channel<CatalogResponse>) {
     });
 }
 
-export function* watchCatalogInit(): SagaIterator {
+function loadCatalogFromDb(chan: Channel<CatalogResponse>) {
     // Load catalog from database
-    yield take(CATALOG_INIT);
     const db: PublicationDb = container.get(
         "publication-db") as PublicationDb;
     db.getAll().then((result) => {
-        console.log(result);
+        chan.put({
+            type: CatalogResponseType.Catalog,
+            catalog: {
+                title: "Catalog",
+                publications: result,
+            },
+        });
     });
+}
 
-    console.log("### Catalog init");
+export function* watchCatalogInit(): SagaIterator {
+    yield take(CATALOG_INIT);
     const chan = yield call(channel);
-    yield fork(loadCatalog, chan);
+    yield fork(loadCatalogFromDb, chan);
     const catalogResponse: CatalogResponse = yield take(chan);
 
     if (catalogResponse.type === CatalogResponseType.Catalog) {
