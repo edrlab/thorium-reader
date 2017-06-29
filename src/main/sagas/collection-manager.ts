@@ -100,12 +100,9 @@ export function* watchPublicationUpdate(): SagaIterator {
                                     .put(newPub)
                                     .then((result) => {
                                         db.getAll().then((publications) => {
-                                            store.dispatch(catalogActions.set(
-                                                {
-                                                    title: "Catalog",
-                                                    publications,
-                                                },
-                                            ));
+                                            store.dispatch(
+                                                catalogActions.load(),
+                                            );
                                         });
                                     })
                                     .catch((err) => {
@@ -120,10 +117,14 @@ export function* watchPublicationUpdate(): SagaIterator {
                 }
                 break;
             case PUBLICATION_FILE_DELETE:
-                publicationStorage.deletePublication(action.identifier);
-
-                // Remove publication metadata
-                publicationDb.remove(action.identifier);
+                // Remove from DB
+                publicationDb
+                    .remove(action.identifier)
+                    .then((result) => {
+                        // Then remove from fs
+                        publicationStorage.removePublication(action.identifier);
+                        store.dispatch(catalogActions.load());
+                    });
                 break;
             default:
                 break;

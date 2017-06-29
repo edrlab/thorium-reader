@@ -7,6 +7,7 @@ import * as request from "request";
 import * as catalogActions from "readium-desktop/actions/catalog";
 import {
     CATALOG_INIT,
+    CATALOG_LOAD,
     CATALOG_SET,
     PUBLICATION_UPDATE,
 } from "readium-desktop/actions/catalog";
@@ -92,15 +93,18 @@ function loadCatalogFromDb(chan: Channel<CatalogResponse>) {
 }
 
 export function* watchCatalogInit(): SagaIterator {
-    yield take(CATALOG_INIT);
     const chan = yield call(channel);
-    yield fork(loadCatalogFromDb, chan);
-    const catalogResponse: CatalogResponse = yield take(chan);
-    console.log('#', catalogResponse.catalog.publications);
-    if (catalogResponse.type === CatalogResponseType.Catalog) {
-        yield put(catalogActions.set(catalogResponse.catalog));
-    } else {
-        console.error("Unable to load catalog");
+
+    while (true) {
+        yield take([CATALOG_INIT, CATALOG_LOAD]);
+        yield fork(loadCatalogFromDb, chan);
+        const catalogResponse: CatalogResponse = yield take(chan);
+
+        if (catalogResponse.type === CatalogResponseType.Catalog) {
+            yield put(catalogActions.set(catalogResponse.catalog));
+        } else {
+            console.error("Unable to load catalog");
+        }
     }
 }
 

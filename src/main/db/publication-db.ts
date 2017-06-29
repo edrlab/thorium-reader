@@ -32,8 +32,8 @@ export class PublicationDb {
             });
     }
 
-    public remove(identifier: string): void {
-        this.db
+    public remove(identifier: string): Promise<any> {
+        return this.db
             .get(ID_PREFIX + identifier)
             .then((result: PouchDB.Core.Document<any>) => {
                 this.db.remove(result);
