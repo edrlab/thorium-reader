@@ -2,7 +2,6 @@ import * as React from "react";
 
 import FontIcon     from "material-ui/FontIcon";
 import IconButton   from "material-ui/IconButton";
-import Snackbar     from "material-ui/Snackbar";
 import { blue500 }  from "material-ui/styles/colors";
 
 import { Store } from "redux";
@@ -23,8 +22,6 @@ import { Catalog } from "readium-desktop/models/catalog";
 
 import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
 
-import * as Dropzone from "react-dropzone";
-
 interface ILibraryState {
     list: boolean;
     open: boolean;
@@ -33,6 +30,7 @@ interface ILibraryState {
 interface LibraryProps {
     catalog: Catalog;
     handleRead: Function;
+    openSnackbar: Function;
 }
 
 interface IDownload {
@@ -82,7 +80,6 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     @lazyInject("store")
     private  __ = this.translator.translate;
 
-    private snackBarMessage: string = "";
 
     constructor(props: LibraryProps) {
         super(props);
@@ -97,42 +94,20 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         this.store.dispatch(windowActions.showLibrary());
     }
 
-    // Called when files are droped on the dropzone
-    public onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
-        this.importFiles(acceptedFiles);
-    }
-
-    // Create the download list if it doesn't exist then start the download
-    public importFiles = (files: File[]) => {
-        for (let file of files)
-        {
-            this.store.dispatch(publicationimportActions.fileImport([file.path]));
-        }
-
-        this.snackBarMessage = this.__("library.startFileImport");
-        this.setState({open: true});
-    }
-
     public downloadEPUB = (newPublication: Publication, publicationId: number) => {
         this.store.dispatch(publicationDownloadActions.add(newPublication));
 
-        this.snackBarMessage = this.__("library.startDownload");
-        this.setState({open: true});
+        this.props.openSnackbar("library.startDownload");
     }
 
     public cancelDownload = (publication: Publication, publicationId: number) => {
         this.store.dispatch(publicationDownloadActions.cancel(publication));
 
-        this.snackBarMessage = this.__("library.cancelDownload");
-        this.setState({open: true});
+        this.props.openSnackbar("library.cancelDownload");
     }
 
     public deletePublication = (identifier: string) => {
         this.store.dispatch(publicationimportActions.fileDelete(identifier));
-    }
-
-    public handleRequestClose = () => {
-        this.setState({ open: false });
     }
 
     public Spinner () {
@@ -187,7 +162,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         }
 
         return (
-            <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
+            <div>
                 <div>
                     <h1 style={styles.Library.title}>{this.__("library.heading")}</h1>
                     <IconButton
@@ -210,14 +185,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 <div style={styles.Library.list}>
                     {listToDisplay}
                 </div>
-
-                <Snackbar
-                        open={this.state.open}
-                        message= {this.snackBarMessage}
-                        autoHideDuration={4000}
-                        onRequestClose={this.handleRequestClose}
-                    />
-            </Dropzone>
+            </div>
         );
     }
 }
