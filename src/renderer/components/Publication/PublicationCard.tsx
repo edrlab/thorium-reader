@@ -1,9 +1,12 @@
 import * as React from "react";
 
+import * as fs from "fs";
+
 import FlatButton   from "material-ui/FlatButton";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
+import { Contributor } from "readium-desktop/models/contributor";
 import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
@@ -30,6 +33,7 @@ interface IPublicationProps {
     downloadEPUB: Function;
     handleRead: Function;
     deletePublication: Function;
+    createCover: Function;
 }
 
 const styles = {
@@ -55,12 +59,18 @@ const styles = {
         titleCard: {
             top: "320px",
         },
+        titleCover: {
+            position: "absolute",
+            top: "10px",
+        },
     },
 };
 
 export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
     @lazyInject("translator")
     private translator: Translator;
+
+    private cover: JSX.Element;
 
     constructor() {
         super();
@@ -78,17 +88,27 @@ export default class PublicationListElement extends React.Component<IPublication
         this.setState({ isFlipped: false });
     }
 
+    public componentWillMount() {
+        this.cover = this.props.createCover(this.props.publication);
+    }
+
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate;
         const publication = this.props.publication;
         let that = this;
         let id = this.props.publicationId;
 
-        let author: string = "";
+        let authors: string = "";
         let image: string = "";
 
         if (publication.authors && publication.authors.length > 0) {
-            author = publication.authors[0].name;
+            for (let author of publication.authors) {
+                let newAuthor: Contributor = author;
+                if (authors !== "") {
+                    authors += ", ";
+                }
+                authors += newAuthor.name;
+            }
         }
         if (publication.cover) {
             image = publication.cover.url;
@@ -104,9 +124,14 @@ export default class PublicationListElement extends React.Component<IPublication
                             onMouseLeave={() => {this.handleBack(); }}>
                             <ReactCardFlip isFlipped={that.state.isFlipped}>
                                 <div key="front" >
-                                    <div>
-                                        <img  style={styles.BookCard.image} src={image}/>
-                                    </div>
+                                    {publication.cover ? (
+                                        <img style={styles.BookCard.image} src={publication.cover.url}/>
+                                    ) : (
+                                        <div>
+                                            {this.props.createCover(this.props.publication)}
+                                        </div>
+                                    )}
+
                                 </div>
                                 <div key="back">
                                     <div
@@ -173,7 +198,7 @@ export default class PublicationListElement extends React.Component<IPublication
                         titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
                         subtitleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
                         title={publication.title}
-                        subtitle={author}
+                        subtitle={authors}
                     />
                 </Card>
             </div>

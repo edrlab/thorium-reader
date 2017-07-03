@@ -9,6 +9,7 @@ import { Store } from "redux";
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
 
+import { Contributor } from "readium-desktop/models/contributor";
 import { Publication } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -21,6 +22,8 @@ import { Translator }   from "readium-desktop/i18n/translator";
 import { Catalog } from "readium-desktop/models/catalog";
 
 import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
+
+import * as fs from "fs";
 
 interface ILibraryState {
     list: boolean;
@@ -65,6 +68,33 @@ const styles = {
             fontSize: "40px",
         },
     },
+    BookCard: {
+        body: {
+            display: "inline-block",
+            height: 400,
+            margin: "5px 5px",
+            textAlign: "center",
+            width: 210,
+        },
+        downloadButton: {
+            top: "50%",
+        },
+        image: {
+            height: 320,
+            width: 210,
+        },
+        title: {
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+        },
+        titleCard: {
+            top: "320px",
+        },
+        titleCover: {
+            position: "absolute",
+            top: "10px",
+        },
+    },
 };
 
 export default class Library extends React.Component<LibraryProps, ILibraryState> {
@@ -79,7 +109,6 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     @lazyInject("store")
     private  __ = this.translator.translate;
-
 
     constructor(props: LibraryProps) {
         super(props);
@@ -130,7 +159,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload.bind(this)}
-                deletePublication={this.deletePublication.bind(this)} />);
+                deletePublication={this.deletePublication.bind(this)}
+                createCover={this.createCover.bind(this)} />);
         }
         return list;
     }
@@ -146,6 +176,31 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 cancelDownload={this.cancelDownload} />);
         }
         return <div style={styles.BookListElement.container}> {list} </div>;
+    }
+
+    public createCover (publication: Publication): JSX.Element {
+        let urlTemplate = "coverTemplate/";
+
+        let authors = "";
+
+        for (let author of publication.authors) {
+            let newAuthor: Contributor = author;
+            if (authors !== "") {
+                authors += ", ";
+            }
+            authors += newAuthor.name;
+        }
+
+        let templates = fs.readdirSync("dist/" + urlTemplate);
+        let templateId = Math.floor(Math.random() * (templates.length ));
+        return (
+            <div style={{textAlign: "center"}}>
+                <p style={{position: "absolute", margin: "20px 5%", width: "90%"}}>{publication.title}</p>
+                <p style={{position: "absolute", bottom: "10px", margin: "10px 5%", width: "90%"}}>{authors}</p>
+                <img style={styles.BookCard.image} src={urlTemplate + templates[templateId]}/>
+            </div>
+        );
+
     }
 
     public render(): React.ReactElement<{}>  {

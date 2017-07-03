@@ -23,6 +23,7 @@ import { FilesMessage } from "readium-desktop/models/ipc";
 
 import { EpubParsePromise } from "r2-streamer-js/dist/es5/src/parser/epub";
 
+import { Contributor } from "readium-desktop/models/contributor";
 import { File } from "readium-desktop/models/file";
 import { Publication } from "readium-desktop/models/publication";
 
@@ -65,12 +66,20 @@ export function* watchPublicationUpdate(): SagaIterator {
                 for (const path of action.paths) {
                     // Parse epub and extract its metadata
                     Promise.resolve(EpubParsePromise(path).then((pub: any) => {
+                        let newAuthors: Contributor[] = [];
+                        for (let author of pub.Metadata.Author) {
+                            let contributor: Contributor = {
+                                name: author.Name,
+                            };
+
+                            newAuthors.push(contributor);
+                        }
 
                         let newPub: Publication = {
                             title: pub.Metadata.Title,
                             description: pub.Metadata.Description,
                             identifier: uuid.v4(),
-                            authors: pub.Metadata.Author,
+                            authors: newAuthors,
                             languages: pub.Metadata.Language,
                         };
                         // Store publication files
