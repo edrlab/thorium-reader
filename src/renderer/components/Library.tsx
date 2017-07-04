@@ -191,13 +191,14 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
             authors += newAuthor.name;
         }
 
-        let templates = fs.readdirSync("dist/" + urlTemplate);
+        let templates = fs.readdirSync(urlTemplate);
         let templateId = Math.floor(Math.random() * (templates.length ));
+
         return (
             <div style={{textAlign: "center"}}>
                 <p style={{position: "absolute", margin: "20px 5%", width: "90%"}}>{publication.title}</p>
                 <p style={{position: "absolute", bottom: "10px", margin: "10px 5%", width: "90%"}}>{authors}</p>
-                <img style={styles.BookCard.image} src={urlTemplate + templates[templateId]}/>
+                <img style={styles.BookCard.image} src={"../" + urlTemplate + templates[templateId]}/>
             </div>
         );
 
