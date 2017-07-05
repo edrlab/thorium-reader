@@ -38,7 +38,7 @@ export class PublicationStorage {
      */
     public async storePublication(
         identifier: string,
-        srcPath: string
+        srcPath: string,
     ): Promise<File[]> {
         // Create a directory whose name is equals to publication identifier
         const pubDirPath = this.buildPublicationPath(identifier);
