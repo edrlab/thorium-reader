@@ -40,7 +40,7 @@ if (!fs.existsSync(rootDbPath)) {
 
 // Publication db
 const publicationDb = new PouchDB(
-    path.join(rootDbPath, "publications")
+    path.join(rootDbPath, "publications"),
 );
 
 // Create filesystem storage for publications

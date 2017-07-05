@@ -38,6 +38,7 @@ interface CatalogResponse {
     error?: Error;
 }
 
+// tslint:disable-next-line:no-unused-variable
 function loadCatalogFromOPDS(chan: Channel<CatalogResponse>) {
     request(CATALOG_OPDS_URL, (error, response, body) => {
         if (response && (

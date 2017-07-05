@@ -26,7 +26,7 @@ In readium-desktop project
 
 ### Start application in production environment
 
-1) `yarn start` 
+1) `yarn start`
 
 ## Useful commands
 
