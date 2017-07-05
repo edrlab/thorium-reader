@@ -51,6 +51,7 @@ It's very important (required) to launch lint before pushing any code on github 
 * electron
 * reactjs
 * redux
+* saga
 * i18next
 
 ## Install
