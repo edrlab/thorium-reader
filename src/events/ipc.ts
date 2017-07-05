@@ -18,6 +18,8 @@ export const PUBLICATION_DOWNLOAD_CANCEL_REQUEST = "publication.download.cancel.
 // The renderer process request a file import to the main process
 export const PUBLICATION_FILE_IMPORT_REQUEST  = "publication.file.import.request";
 
+export const PUBLICATION_FILE_DELETE_REQUEST  = "publication.file.delete.request";
+
 export const SYNC_CATALOG_REQUEST = "sync.catalog.request";
 export const SYNC_CATALOG_RESPONSE = "sync.catalog.response";
 

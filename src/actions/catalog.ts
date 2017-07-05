@@ -8,6 +8,9 @@ export const CATALOG_INIT = "CATALOG_INIT";
 export const CATALOG_SET = "CATALOG_SET";
 export const CATALOG_CLEAN = "CATALOG_CLEAN";
 
+// Load from DB
+export const CATALOG_LOAD = "CATALOG_LOAD";
+
 // Publication action types
 export const PUBLICATION_ADD = "PUBLICATION_ADD";
 export const PUBLICATION_UPDATE = "PUBLICATION_UPDATE";
@@ -37,6 +40,12 @@ export function set(catalog: Catalog): CatalogAction {
 export function clean(): CatalogAction {
     return {
         type: CATALOG_CLEAN,
+    };
+}
+
+export function load(): CatalogAction {
+    return {
+        type: CATALOG_LOAD,
     };
 }
 

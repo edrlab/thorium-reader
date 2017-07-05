@@ -25,10 +25,11 @@ interface IPublicationState {
 interface IPublicationProps {
     publication: Publication;
     publicationId: number;
-    downloadable: boolean;
+    downloadable?: boolean;
     cancelDownload: Function;
     downloadEPUB: Function;
     handleRead: Function;
+    deletePublication: Function;
 }
 
 const styles = {
@@ -86,7 +87,7 @@ export default class PublicationListElement extends React.Component<IPublication
         let author: string = "";
         let image: string = "";
 
-        if (publication.authors[0]) {
+        if (publication.authors && publication.authors.length > 0) {
             author = publication.authors[0].name;
         }
         if (publication.cover) {
@@ -159,7 +160,8 @@ export default class PublicationListElement extends React.Component<IPublication
 
                                                 <FlatButton
                                                 style={styles.BookCard.downloadButton}
-                                                label={"Favoris"}/>
+                                                onClick={() => {this.props.deletePublication(publication.identifier); }}
+                                                label={"Supprimer"}/>
                                             </div>
                                         )}
                                     </div>

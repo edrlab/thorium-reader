@@ -1,3 +1,5 @@
+import * as path from "path";
+
 import { ipcMain } from "electron";
 import * as portfinder from "portfinder";
 
@@ -19,6 +21,7 @@ import { AppState } from "readium-desktop/main/reducers";
 
 import * as streamerActions from "readium-desktop/main/actions/streamer";
 import { STREAMER_PUBLICATION_CLOSE } from "readium-desktop/main/actions/streamer";
+import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 function waitForStreamerManifestOpenRequest(chan: Channel<any>) {
     ipcMain.on(
@@ -66,12 +69,14 @@ export function* watchStreamManifestOpenRequest(): SagaIterator {
         const renderer = ipcWaitResponse.renderer;
 
         // Get epub file from publication
-        const state: AppState =  yield select();
-        const downloads = state.publicationDownloads
-            .publicationIdentifierToDownloads[publication.identifier];
-        const epubPath = downloads[0].dstPath;
+        const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
+        const epubPath = path.join(
+            pubStorage.getRootPath(),
+            publication.files[0].url.substr(6),
+        );
 
         // Start streamer if it's not already started
+        const state: AppState =  yield select();
         const streamer: Server = container.get("streamer") as Server;
 
         if (state.streamer.baseUrl === undefined) {
@@ -120,14 +125,16 @@ export function* watchPublicationCloseRequest(): SagaIterator {
 
         const state: AppState =  yield select();
         const streamer: Server = container.get("streamer") as Server;
+        const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
 
         if (state.streamer.openPublicationCounter[publication.identifier] === undefined) {
             // Remove publication from streamer because there is no more readers
             // open for this publication
             // Get epub file from publication
-            const downloads = state.publicationDownloads
-                .publicationIdentifierToDownloads[publication.identifier];
-            const epubPath = downloads[0].dstPath;
+            const epubPath = path.join(
+                pubStorage.getRootPath(),
+                publication.files[0].url.substr(6),
+            );
             streamer.removePublications([epubPath]);
         }
         if (Object.keys(state.streamer.openPublicationCounter).length === 0) {

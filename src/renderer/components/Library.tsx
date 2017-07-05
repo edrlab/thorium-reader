@@ -7,8 +7,8 @@ import { blue500 }  from "material-ui/styles/colors";
 
 import { Store } from "redux";
 
+import * as publicationimportActions from "readium-desktop/actions/collection-manager";
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
-import * as publicationimportActions from "readium-desktop/actions/publication-import";
 
 import { Publication } from "readium-desktop/models/publication";
 
@@ -83,7 +83,6 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     private  __ = this.translator.translate;
 
     private snackBarMessage: string = "";
-    // private lastTimeUpdated = new Date().getTime() / 1000;
 
     constructor(props: LibraryProps) {
         super(props);
@@ -105,14 +104,10 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     // Create the download list if it doesn't exist then start the download
     public importFiles = (files: File[]) => {
-        let paths: string[] = [];
         for (let file of files)
         {
-            console.log(files);
-            paths.push(file.path);
+            this.store.dispatch(publicationimportActions.fileImport([file.path]));
         }
-
-        this.store.dispatch(publicationimportActions.fileImport(paths));
 
         this.snackBarMessage = this.__("library.startFileImport");
         this.setState({open: true});
@@ -130,6 +125,10 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
         this.snackBarMessage = this.__("library.cancelDownload");
         this.setState({open: true});
+    }
+
+    public deletePublication = (identifier: string) => {
+        this.store.dispatch(publicationimportActions.fileDelete(identifier));
     }
 
     public handleRequestClose = () => {
@@ -151,11 +150,12 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         for (let i = 0; i < this.props.catalog.publications.length; i++) {
             list.push(<PublicationCard key={i}
                 publicationId={i}
-                downloadable={true}
+                downloadable={false}
                 publication={this.props.catalog.publications[i]}
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
-                cancelDownload={this.cancelDownload} />);
+                cancelDownload={this.cancelDownload.bind(this)}
+                deletePublication={this.deletePublication.bind(this)} />);
         }
         return list;
     }
@@ -173,23 +173,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         return <div style={styles.BookListElement.container}> {list} </div>;
     }
 
-    /*public shouldComponentUpdate(nextProps: LibraryProps, nextState: ILibraryState): boolean {
-        if (nextState.open !== this.state.open
-            || nextState.list !== this.state.list) {
-                return true;
-        } else {
-            if ((new Date().getTime() / 1000) - this.lastTimeUpdated > 1 || nextState.open !== this.state.open) {
-                this.lastTimeUpdated = new Date().getTime() / 1000;
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }*/
-
     public render(): React.ReactElement<{}>  {
         const that = this;
-        console.log(this.props.catalog);
         let listToDisplay: JSX.Element;
         if (this.props.catalog) {
             if (this.state.list) {
@@ -202,7 +187,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         }
 
         return (
-            <Dropzone onDrop={this.onDrop.bind(this)} style={{}}>
+            <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
                 <div>
                     <h1 style={styles.Library.title}>{this.__("library.heading")}</h1>
                     <IconButton

@@ -36,6 +36,7 @@ export function streamerReducer(
             state.openPublicationCounter = {};
             return state;
         case STREAMER_STOP:
+            state.baseUrl = undefined;
             state.status = StreamerStatus.Stopped;
             state.openPublicationCounter = {};
             return state;

@@ -49,9 +49,9 @@ export class OPDSParser {
                     }
 
                     // Set language
-                    publication.language = {
+                    publication.languages = [{
                         code: entry.language,
-                    };
+                    }];
 
                     // Retrieve cover and download link
                     for (let link of entry.links) {

@@ -7,6 +7,7 @@ import * as request from "request";
 import * as catalogActions from "readium-desktop/actions/catalog";
 import {
     CATALOG_INIT,
+    CATALOG_LOAD,
     CATALOG_SET,
     PUBLICATION_UPDATE,
 } from "readium-desktop/actions/catalog";
@@ -22,6 +23,8 @@ import { AppState } from "readium-desktop/main/reducers";
 
 import { container } from "readium-desktop/main/di";
 
+import { PublicationDb } from "readium-desktop/main/db/publication-db";
+
 const CATALOG_OPDS_URL = "http://www.feedbooks.com/books/top.atom?category=FBFIC019000";
 
 enum CatalogResponseType {
@@ -35,7 +38,8 @@ interface CatalogResponse {
     error?: Error;
 }
 
-function loadCatalog(chan: Channel<CatalogResponse>) {
+// tslint:disable-next-line:no-unused-variable
+function loadCatalogFromOPDS(chan: Channel<CatalogResponse>) {
     request(CATALOG_OPDS_URL, (error, response, body) => {
         if (response && (
                 response.statusCode < 200 || response.statusCode > 299)) {
@@ -74,17 +78,39 @@ function loadCatalog(chan: Channel<CatalogResponse>) {
     });
 }
 
-export function* watchCatalogInit(): SagaIterator {
-    yield take(CATALOG_INIT);
-    console.log("### Catalog init");
-    const chan = yield call(channel);
-    yield fork(loadCatalog, chan);
-    const catalogResponse: CatalogResponse = yield take(chan);
+function loadCatalogFromDb(chan: Channel<CatalogResponse>) {
+    // Load catalog from database
+    const db: PublicationDb = container.get(
+        "publication-db") as PublicationDb;
+    db
+        .getAll()
+        .then((result) => {
+            chan.put({
+                type: CatalogResponseType.Catalog,
+                catalog: {
+                    title: "Catalog",
+                    publications: result,
+                },
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
 
-    if (catalogResponse.type === CatalogResponseType.Catalog) {
-        yield put(catalogActions.set(catalogResponse.catalog));
-    } else {
-        console.error("Unable to load catalog");
+export function* watchCatalogInit(): SagaIterator {
+    const chan = yield call(channel);
+
+    while (true) {
+        yield take([CATALOG_INIT, CATALOG_LOAD]);
+        yield fork(loadCatalogFromDb, chan);
+        const catalogResponse: CatalogResponse = yield take(chan);
+
+        if (catalogResponse.type === CatalogResponseType.Catalog) {
+            yield put(catalogActions.set(catalogResponse.catalog));
+        } else {
+            console.error("Unable to load catalog");
+        }
     }
 }
 

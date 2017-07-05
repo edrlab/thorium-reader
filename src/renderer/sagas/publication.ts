@@ -5,11 +5,12 @@ import { take } from "redux-saga/effects";
 import {
     PUBLICATION_DOWNLOAD_CANCEL_REQUEST,
     PUBLICATION_DOWNLOAD_REQUEST,
+    PUBLICATION_FILE_DELETE_REQUEST,
     PUBLICATION_FILE_IMPORT_REQUEST,
 } from "readium-desktop/events/ipc";
 
+import * as publicationImportActions from "readium-desktop/actions/collection-manager";
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
-import * as publicationImportActions from "readium-desktop/actions/publication-import";
 
 import { FilesMessage, PublicationMessage} from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
@@ -44,10 +45,22 @@ function sendIPCFileImport(msg: FilesMessage) {
     ipcRenderer.send(PUBLICATION_FILE_IMPORT_REQUEST, msg);
 }
 
-export function* watchPublicationUpload(): SagaIterator {
+export function* watchPublicationImport(): SagaIterator {
     while (true) {
         let resp = yield take(publicationImportActions.PUBLICATION_FILE_IMPORT);
         let msg: FilesMessage = { paths: resp.paths};
         sendIPCFileImport(msg);
+    }
+}
+
+function sendIPCFileDelete(msg: FilesMessage) {
+    ipcRenderer.send(PUBLICATION_FILE_DELETE_REQUEST, msg);
+}
+
+export function* watchPublicationDelete(): SagaIterator {
+    while (true) {
+        let resp = yield take(publicationImportActions.PUBLICATION_FILE_DELETE);
+        let msg: FilesMessage = { identifier: resp.identifier};
+        sendIPCFileDelete(msg);
     }
 }

@@ -21,7 +21,8 @@
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer": "webpack-dev-server",
     "start:dev:main": "webpack -d && electron .",
-    "start:dev": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:main\""
+    "start:dev": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:main\"",
+    "pouchdb:install": "yarn add -O --no-lockfile @types/pouchdb && yarn add --no-lockfile --ignore-scripts -O pouchdb && cd node_modules/pouchdb && cross-env npm_config_runtime=electron npm_config_target=53 yarn add --no-lockfile -O leveldown@latest"
   },
   "repository": {
     "type": "git",
@@ -49,6 +50,7 @@
     "@types/express": "^4.0.35",
     "@types/i18next": "^2.3.35",
     "@types/material-ui": "^0.16.57",
+    "@types/pouchdb": "^6.1.1",
     "@types/react": "^15.0.11",
     "@types/react-dom": "^0.14.23",
     "@types/react-dropzone": "0.0.32",
@@ -64,6 +66,7 @@
     "babel-core": "^6.24.1",
     "class-validator": "^0.6.8",
     "commonmark": "^0.27.0",
+    "electron-rebuild": "^1.5.11",
     "express": "^4.15.3",
     "follow-redirects": "^1.2.3",
     "font-awesome": "^4.7.0",
@@ -106,5 +109,8 @@
     "uglify-js": "git://github.com/mishoo/UglifyJS2#harmony-v2.8.22",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
+  },
+  "optionalDependencies": {
+    "pouchdb": "^6.2.0"
   }
 }
