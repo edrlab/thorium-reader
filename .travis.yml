@@ -11,10 +11,13 @@ install:
 - 'pwd && ls -als'
 before_script:
 - 'pwd && ls -als'
-- 'yarn install'
+- 'yarn install --ignore-optional --pure-lockfile'
+- 'yarn pouchdb:install'
+- 'rm -rf node_modules/prebuild'
+- 'yarn add prebuild@6.2.0'
 script:
 - 'yarn run lint'
-- 'yarn run build'
+- 'yarn run build --ignore-scripts'
 after_success:
 - 'pwd && ls -als'
 - 'ls dist'
