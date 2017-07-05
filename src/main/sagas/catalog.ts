@@ -81,15 +81,20 @@ function loadCatalogFromDb(chan: Channel<CatalogResponse>) {
     // Load catalog from database
     const db: PublicationDb = container.get(
         "publication-db") as PublicationDb;
-    db.getAll().then((result) => {
-        chan.put({
-            type: CatalogResponseType.Catalog,
-            catalog: {
-                title: "Catalog",
-                publications: result,
-            },
+    db
+        .getAll()
+        .then((result) => {
+            chan.put({
+                type: CatalogResponseType.Catalog,
+                catalog: {
+                    title: "Catalog",
+                    publications: result,
+                },
+            });
+        })
+        .catch((err) => {
+            console.log(err);
         });
-    });
 }
 
 export function* watchCatalogInit(): SagaIterator {

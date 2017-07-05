@@ -22,7 +22,7 @@
     "start:dev:renderer": "webpack-dev-server",
     "start:dev:main": "webpack -d && electron .",
     "start:dev": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:main\"",
-    "postinstall": "electron-rebuild"
+    "pouchdb:install": "yarn add --no-lockfile @types/pouchdb && yarn add --no-lockfile --ignore-scripts pouchdb && cd node_modules/pouchdb && cross-env npm_config_runtime=electron npm_config_target=53 yarn add --no-lockfile leveldown@latest"
   },
   "repository": {
     "type": "git",
@@ -77,7 +77,6 @@
     "opds-feed-parser": "^0.0.13",
     "portfinder": "^1.0.13",
     "pouchdb": "^6.2.0",
-    "pouchdb-adapter-memory": "^6.2.0",
     "r2-streamer-js": "edrlab/r2-streamer-js-dist",
     "react": "^15.4.2",
     "react-card-flip": "^0.0.4",
