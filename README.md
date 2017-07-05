@@ -17,7 +17,7 @@ In readium-desktop project
 
 ### Install readium-desktop dependencies
 
-1) `yarn install --ignore-optional` (initialize local `node_modules` packages from dependencies declared in `package.json`)
+1) `yarn install --ignore-optional --pure-lockfile` (initialize local `node_modules` packages from dependencies declared in `package.json`)
 2) `yarn pouchdb:install`
 
 ### Start application in dev environment
