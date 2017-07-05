@@ -67,6 +67,7 @@ export class PublicationDb {
             languages: dbDoc.doc.languages,
             cover: dbDoc.doc.cover,
             files: dbDoc.doc.files,
+            customCover: dbDoc.doc.customCover,
         };
     }
 }

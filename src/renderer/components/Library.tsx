@@ -23,8 +23,6 @@ import { Catalog } from "readium-desktop/models/catalog";
 
 import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
 
-import * as fs from "fs";
-
 interface ILibraryState {
     list: boolean;
     open: boolean;
@@ -93,6 +91,30 @@ const styles = {
         titleCover: {
             position: "absolute",
             top: "10px",
+        },
+    },
+    BookCover: {
+        box: {
+            border: "1px black solid",
+            width: 190,
+            height: 300,
+        },
+        title: {
+            fontSize: "18px",
+            margin: "20px 5%",
+            width: "90%",
+        },
+        author : {
+            bottom: "10px",
+            margin: "10px 5%",
+            width: "90%",
+        },
+        body : {
+            height: 300,
+            width: 190,
+            textAlign: "center",
+            backgroundImage: "linear-gradient(#d18e4b, #663e17)",
+            padding: "10px",
         },
     },
 };
@@ -179,28 +201,35 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     public createCover (publication: Publication): JSX.Element {
-        let urlTemplate = "coverTemplate/";
+        if (publication.cover === null) {
+            let authors = "";
+            let bodyCSS = {
+                    height: 300,
+                    width: 190,
+                    textAlign: "center",
+                    backgroundImage: "linear-gradient("+ publication.customCover.topColor + ", " + publication.customCover.bottomColor + ")",
+                    padding: "10px",
+                };
 
-        let authors = "";
-
-        for (let author of publication.authors) {
-            let newAuthor: Contributor = author;
-            if (authors !== "") {
-                authors += ", ";
+            for (let author of publication.authors) {
+                let newAuthor: Contributor = author;
+                if (authors !== "") {
+                    authors += ", ";
+                }
+                authors += newAuthor.name;
             }
-            authors += newAuthor.name;
+
+            return (
+                <div style={bodyCSS}>
+                    <div style={styles.BookCover.box}>
+                        <p style={styles.BookCover.title}>{publication.title}</p>
+                        <p style={styles.BookCover.author}>{authors}</p>
+                    </div>
+                </div>
+            );
+        } else {
+            return undefined;
         }
-
-        let templates = fs.readdirSync(urlTemplate);
-        let templateId = Math.floor(Math.random() * (templates.length ));
-
-        return (
-            <div style={{textAlign: "center"}}>
-                <p style={{position: "absolute", margin: "20px 5%", width: "90%"}}>{publication.title}</p>
-                <p style={{position: "absolute", bottom: "10px", margin: "10px 5%", width: "90%"}}>{authors}</p>
-                <img style={styles.BookCard.image} src={"../" + urlTemplate + templates[templateId]}/>
-            </div>
-        );
 
     }
 

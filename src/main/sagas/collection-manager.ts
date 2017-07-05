@@ -24,6 +24,7 @@ import { FilesMessage } from "readium-desktop/models/ipc";
 import { EpubParsePromise } from "r2-streamer-js/dist/es5/src/parser/epub";
 
 import { Contributor } from "readium-desktop/models/contributor";
+import { CustomCover } from "readium-desktop/models/custom-cover";
 import { File } from "readium-desktop/models/file";
 import { Publication } from "readium-desktop/models/publication";
 
@@ -44,6 +45,21 @@ interface PublicationImportResponse {
     identifier?: string;
     error?: Error;
 }
+
+let CustomCoverColors: CustomCover[] = [
+    {
+        topColor: "#d18e4b",
+        bottomColor: "#7c4c1c",
+    },
+    {
+        topColor: "#80acf2",
+        bottomColor: "#498bf4",
+    },
+    {
+        topColor: "#67a35d",
+        bottomColor: "#41a530",
+    },
+]
 
 export function* watchPublicationUpdate(): SagaIterator {
     let buffer: Buffer<any> = buffers.expanding(20);
@@ -104,6 +120,10 @@ export function* watchPublicationUpdate(): SagaIterator {
                                 newPub.cover = coverFile;
                                 newPub.files = otherFiles;
 
+                                if (coverFile === null) {
+                                    newPub.customCover = CreateCustomCover();
+                                }
+
                                 // Store publication metadata
                                 publicationDb
                                     .put(newPub)
@@ -139,6 +159,12 @@ export function* watchPublicationUpdate(): SagaIterator {
                 break;
         }
     }
+}
+
+function CreateCustomCover (): CustomCover {
+    let newColors = CustomCoverColors[Math.floor(Math.random() * CustomCoverColors.length)];
+    console.log(newColors);
+    return newColors;
 }
 
 export function waitForPublicationFileImport(

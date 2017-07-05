@@ -13,16 +13,37 @@ TravisCI, `develop` branch:
 
 ## Quick start
 
-Command line steps:
+In readium-desktop project
 
-1) `cd readium-desktop`
-2) `npm update --global` (sync NPM global packages)
-3) `yarn global upgrade` (sync Yarn global packages)
-4) `yarn install` (initialize local `node_modules` packages from dependencies declared in `package.json`)
-5) `yarn upgrade` (sync local packages)
-6) `yarn run lint` (code linting)
-7) `yarn start` (runs the app)
-8) `yarn start:dev` (runs the app in dev mode)
+### Install readium-desktop dependencies
+
+1) `yarn install --ignore-optional` (initialize local `node_modules` packages from dependencies declared in `package.json`)
+2) `yarn pouchdb:install`
+
+### Start application in dev environment
+
+1) `yarn start:dev`
+
+### Start application in production environment
+
+1) `yarn start` 
+
+## Useful commands
+
+### Upgrade global packages
+
+1) `npm update --global` (sync NPM global packages)
+2) `yarn global upgrade` (sync Yarn global packages)
+
+### Upgrade readium desktop packages
+
+1) `yarn upgrade` (sync local packages)
+
+### Lint
+
+It's very important (required) to launch lint before pushing any code on github repository
+
+1) `yarn run lint`
 
 ## Technologies
 
@@ -30,6 +51,7 @@ Command line steps:
 * electron
 * reactjs
 * redux
+* saga
 * i18next
 
 ## Install

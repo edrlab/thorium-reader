@@ -39,11 +39,8 @@ if (!fs.existsSync(rootDbPath)) {
 }
 
 // Publication db
-PouchDB.plugin(require("pouchdb-adapter-memory"));
 const publicationDb = new PouchDB(
-    //path.join(rootDbPath, "publications"),
-    "publications",
-    { adapter: "memory" },
+    path.join(rootDbPath, "publications")
 );
 
 // Create filesystem storage for publications
