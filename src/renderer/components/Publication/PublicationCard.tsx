@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import * as fs from "fs";
-
 import FlatButton   from "material-ui/FlatButton";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -21,6 +19,8 @@ import * as ReactCardFlip from "react-card-flip";
 
 import { DownloadStatus } from "readium-desktop/models/downloadable";
 
+import { Styles } from "readium-desktop/renderer/components/styles";
+
 interface IPublicationState {
     isFlipped: boolean;
 }
@@ -35,36 +35,6 @@ interface IPublicationProps {
     deletePublication: Function;
     createCover: Function;
 }
-
-const styles = {
-    BookCard: {
-        body: {
-            display: "inline-block",
-            height: 400,
-            margin: "5px 5px",
-            textAlign: "center",
-            width: 210,
-        },
-        downloadButton: {
-            top: "50%",
-        },
-        image: {
-            height: 320,
-            width: 210,
-        },
-        title: {
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-        },
-        titleCard: {
-            top: "320px",
-        },
-        titleCover: {
-            position: "absolute",
-            top: "10px",
-        },
-    },
-};
 
 export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
     @lazyInject("translator")
@@ -115,17 +85,17 @@ export default class PublicationListElement extends React.Component<IPublication
         }
 
         return (
-            <div style={styles.BookCard.body}>
-                <Card style={styles.BookCard.body}>
+            <div style={Styles.BookCard.body}>
+                <Card style={Styles.BookCard.body}>
                     <CardMedia>
                         <div
-                            style={styles.BookCard.image}
+                            style={Styles.BookCard.image}
                             onMouseEnter={() => {this.handleFront(); }}
                             onMouseLeave={() => {this.handleBack(); }}>
                             <ReactCardFlip isFlipped={that.state.isFlipped}>
                                 <div key="front" >
                                     {publication.cover ? (
-                                        <img style={styles.BookCard.image} src={publication.cover.url}/>
+                                        <img style={Styles.BookCard.image} src={publication.cover.url}/>
                                     ) : (
                                         <div>
                                             {this.props.createCover(this.props.publication)}
@@ -135,7 +105,7 @@ export default class PublicationListElement extends React.Component<IPublication
                                 </div>
                                 <div key="back">
                                     <div
-                                        style={styles.BookCard.image}
+                                        style={Styles.BookCard.image}
                                     >
                                         {this.props.downloadable ? (
                                             <div>
@@ -179,12 +149,12 @@ export default class PublicationListElement extends React.Component<IPublication
                                         ) : (
                                             <div>
                                                 <FlatButton
-                                                style={styles.BookCard.downloadButton}
+                                                style={Styles.BookCard.downloadButton}
                                                 onClick={() => {this.props.handleRead(publication); }}
                                                 label="Lire" />
 
                                                 <FlatButton
-                                                style={styles.BookCard.downloadButton}
+                                                style={Styles.BookCard.downloadButton}
                                                 onClick={() => {this.props.deletePublication(publication.identifier); }}
                                                 label={"Supprimer"}/>
                                             </div>

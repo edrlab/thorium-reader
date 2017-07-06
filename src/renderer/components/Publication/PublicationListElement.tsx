@@ -14,6 +14,8 @@ import RaisedButton from "material-ui/RaisedButton";
 
 import { DownloadStatus } from "readium-desktop/models/downloadable";
 
+import { Styles } from "readium-desktop/renderer/components/styles";
+
 interface IPublicationProps {
     publication: Publication;
     publicationId: number;
@@ -26,40 +28,6 @@ interface IDownload {
     link: string;
     progress: number;
 }
-
-const styles = {
-    BookListElement: {
-        body: {
-            boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
-            fontFamily: "Roboto, sans-serif",
-            margin: "5px 0px",
-            width: "1200px",
-        },
-        column: {
-            display: "inline-block",
-            width: "250px",
-        },
-        container: {
-            display: "inline-block",
-            maxWidth: 1200,
-            textAlign: "left",
-        },
-        description: {
-            display: "inline-block",
-            height: 140,
-            marginLeft: "5px",
-        },
-        image: {
-            display: "inline-block",
-            float: "left",
-            height: 140,
-            width: 91,
-        },
-        title: {
-            margin: "10px 0px",
-        },
-    },
-};
 
 export default class PublicationListElement extends React.Component<IPublicationProps, null> {
     @lazyInject("translator")
@@ -83,15 +51,15 @@ export default class PublicationListElement extends React.Component<IPublication
         }
 
         return (
-            <div style={styles.BookListElement.body}>
-                <img style={styles.BookListElement.image} src={image} />
-                <div style={styles.BookListElement.description}>
-                    <h4 style={styles.BookListElement.title}>{publication.title}</h4>
-                    <div style={styles.BookListElement.column}>
+            <div style={Styles.BookListElement.body}>
+                <img style={Styles.BookListElement.image} src={image} />
+                <div style={Styles.BookListElement.description}>
+                    <h4 style={Styles.BookListElement.title}>{publication.title}</h4>
+                    <div style={Styles.BookListElement.column}>
                         <p>{author}</p>
                         <p>Editeur</p>
                     </div>
-                    <div style={styles.BookListElement.column}>
+                    <div style={Styles.BookListElement.column}>
                             { !publication.download
                                 || publication.download.status === DownloadStatus.Init ? (
                                 <FlatButton

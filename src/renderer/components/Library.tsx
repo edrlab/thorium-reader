@@ -23,6 +23,8 @@ import { Catalog } from "readium-desktop/models/catalog";
 
 import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
 
+import { Styles } from "readium-desktop/renderer/components/styles";
+
 interface ILibraryState {
     list: boolean;
     open: boolean;
@@ -38,86 +40,6 @@ interface IDownload {
     link: string;
     progress: number;
 }
-
-const styles = {
-    BookListElement: {
-        container: {
-            display: "inline-block",
-            maxWidth: 1200,
-            textAlign: "left",
-        },
-    },
-    Library: {
-        addButton: {
-            float: "right",
-            marginTop: "6px",
-        },
-        displayButton: {
-            float: "right",
-        },
-        list: {
-            textAlign: "center",
-        },
-        title: {
-            display: "inline-block",
-        },
-        spinner: {
-            top: "200px",
-            fontSize: "40px",
-        },
-    },
-    BookCard: {
-        body: {
-            display: "inline-block",
-            height: 400,
-            margin: "5px 5px",
-            textAlign: "center",
-            width: 210,
-        },
-        downloadButton: {
-            top: "50%",
-        },
-        image: {
-            height: 320,
-            width: 210,
-        },
-        title: {
-            overflow: "hidden",
-            whiteSpace: "nowrap",
-        },
-        titleCard: {
-            top: "320px",
-        },
-        titleCover: {
-            position: "absolute",
-            top: "10px",
-        },
-    },
-    BookCover: {
-        box: {
-            border: "1px black solid",
-            width: 190,
-            height: 300,
-        },
-        title: {
-            fontSize: "18px",
-            margin: "20px 5%",
-            width: "90%",
-        },
-        author : {
-            bottom: "10px",
-            margin: "10px 5%",
-            width: "90%",
-        },
-        body : {
-            height: 300,
-            width: 190,
-            textAlign: "center",
-            backgroundImage: "linear-gradient(#d18e4b, #663e17)",
-            padding: "10px",
-        },
-    },
-};
 
 export default class Library extends React.Component<LibraryProps, ILibraryState> {
     public state: ILibraryState;
@@ -164,7 +86,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     public Spinner () {
         return (
             <FontIcon
-                style = {styles.Library.spinner}
+                style = {Styles.Library.spinner}
                 className="fa fa-spinner fa-spin fa-3x fa-fw"
                 color={blue500}
             />
@@ -197,7 +119,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload} />);
         }
-        return <div style={styles.BookListElement.container}> {list} </div>;
+        return <div style={Styles.BookListElement.container}> {list} </div>;
     }
 
     public createCover (publication: Publication): JSX.Element {
@@ -221,9 +143,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
             return (
                 <div style={bodyCSS}>
-                    <div style={styles.BookCover.box}>
-                        <p style={styles.BookCover.title}>{publication.title}</p>
-                        <p style={styles.BookCover.author}>{authors}</p>
+                    <div style={Styles.BookCover.box}>
+                        <p style={Styles.BookCover.title}>{publication.title}</p>
+                        <p style={Styles.BookCover.author}>{authors}</p>
                     </div>
                 </div>
             );
@@ -249,9 +171,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         return (
             <div>
                 <div>
-                    <h1 style={styles.Library.title}>{this.__("library.heading")}</h1>
+                    <h1 style={Styles.Library.title}>{this.__("library.heading")}</h1>
                     <IconButton
-                        style={styles.Library.displayButton}
+                        style={Styles.Library.displayButton}
                         touch={true} onClick={() => {
                             that.setState({list: true});
                         }}
@@ -259,7 +181,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                         <FontIcon className="fa fa-list" color={blue500} />
                     </IconButton>
                     <IconButton
-                        style={styles.Library.displayButton}
+                        style={Styles.Library.displayButton}
                         touch={true}  onClick={() => {
                             that.setState({list: false});
                         }}
@@ -267,7 +189,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                         <FontIcon className="fa fa-th-large" color={blue500} />
                     </IconButton>
                 </div >
-                <div style={styles.Library.list}>
+                <div style={Styles.Library.list}>
                     {listToDisplay}
                 </div>
             </div>
