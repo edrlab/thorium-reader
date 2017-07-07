@@ -58,10 +58,6 @@ export default class PublicationListElement extends React.Component<IPublication
         this.setState({ isFlipped: false });
     }
 
-    public componentWillMount() {
-        this.cover = this.props.createCover(this.props.publication);
-    }
-
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate;
         const publication = this.props.publication;
@@ -97,11 +93,10 @@ export default class PublicationListElement extends React.Component<IPublication
                                     {publication.cover ? (
                                         <img style={Styles.BookCard.image} src={publication.cover.url}/>
                                     ) : (
-                                        <div>
+                                        <div style={Styles.BookCard.image}>
                                             {this.props.createCover(this.props.publication)}
                                         </div>
                                     )}
-
                                 </div>
                                 <div key="back">
                                     <div

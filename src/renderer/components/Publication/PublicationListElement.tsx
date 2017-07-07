@@ -22,6 +22,7 @@ interface IPublicationProps {
     downloadEPUB: Function;
     handleRead: Function;
     cancelDownload: Function;
+    createCover: Function;
 }
 
 interface IDownload {
@@ -52,7 +53,13 @@ export default class PublicationListElement extends React.Component<IPublication
 
         return (
             <div style={Styles.BookListElement.body}>
-                <img style={Styles.BookListElement.image} src={image} />
+                {publication.cover ? (
+                    <img style={Styles.BookListElement.image} src={publication.cover.url}/>
+                ) : (
+                    <div style={Styles.BookListElement.image}>
+                        {this.props.createCover(this.props.publication)}
+                    </div>
+                )}
                 <div style={Styles.BookListElement.description}>
                     <h4 style={Styles.BookListElement.title}>{publication.title}</h4>
                     <div style={Styles.BookListElement.column}>

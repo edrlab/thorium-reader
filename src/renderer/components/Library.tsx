@@ -117,7 +117,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 publicationId={i}
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
-                cancelDownload={this.cancelDownload} />);
+                cancelDownload={this.cancelDownload}
+                createCover={this.createCover.bind(this)} />);
         }
         return <div style={Styles.BookListElement.container}> {list} </div>;
     }
@@ -125,13 +126,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     public createCover (publication: Publication): JSX.Element {
         if (publication.cover === null) {
             let authors = "";
-            let bodyCSS = {
-                    height: 300,
-                    width: 190,
-                    textAlign: "center",
-                    backgroundImage: "linear-gradient("+ publication.customCover.topColor + ", " + publication.customCover.bottomColor + ")",
-                    padding: "10px",
-                };
+            let bodyCSS = Styles.BookCover.body;
+            let colors = publication.customCover;
+            bodyCSS.backgroundImage = "linear-gradient(" + colors.topColor + ", " + colors.bottomColor + ")";
 
             for (let author of publication.authors) {
                 let newAuthor: Contributor = author;

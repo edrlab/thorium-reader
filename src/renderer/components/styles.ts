@@ -30,6 +30,7 @@ export const Styles = {
             top: "50%",
         },
         image: {
+            fontSize: "18px",
             height: 320,
             width: 210,
         },
@@ -39,10 +40,6 @@ export const Styles = {
         },
         titleCard: {
             top: "320px",
-        },
-        titleCover: {
-            position: "absolute",
-            top: "10px",
         },
     },
     BookListElement: {
@@ -67,6 +64,7 @@ export const Styles = {
             marginLeft: "5px",
         },
         image: {
+            fontSize: "9px",
             display: "inline-block",
             float: "left",
             height: 140,
@@ -79,25 +77,31 @@ export const Styles = {
     BookCover: {
         box: {
             border: "1px black solid",
-            width: 190,
-            height: 300,
+            width: "100%",
+            height: "100%",
+
         },
         title: {
-            fontSize: "18px",
-            margin: "20px 5%",
+            marginLeft: "5%",
+            marginRight: "5%",
+            marginTop: "10%",
             width: "90%",
         },
         author : {
+            fontSize: "90%",
             bottom: "10px",
             margin: "10px 5%",
             width: "90%",
         },
         body : {
-            height: 300,
-            width: 190,
+            height: "inherit",
+            width: "inherit",
             textAlign: "center",
-            backgroundImage: "linear-gradient(#d18e4b, #663e17)",
-            padding: "10px",
+            backgroundImage: "",
+            WebkitBoxSizing: "border-box",
+            MozBoxSizing: "border-box",
+            BoxSizing: "border-box",
+            padding: "5%",
         },
     },
     fileInput: {
