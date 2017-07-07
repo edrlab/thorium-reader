@@ -118,7 +118,7 @@ export default class App extends React.Component<undefined, AppState> {
             this.store.dispatch(publicationimportActions.fileImport([file.path]));
         }
 
-        this.openSnackbar("Les fichiers ont été importés avec succès.")
+        this.openSnackbar("Les fichiers ont été importés avec succès.");
     }
 
     public componentDidMount() {

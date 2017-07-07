@@ -40,8 +40,6 @@ export default class PublicationListElement extends React.Component<IPublication
     @lazyInject("translator")
     private translator: Translator;
 
-    private cover: JSX.Element;
-
     constructor() {
         super();
 

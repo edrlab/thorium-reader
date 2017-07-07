@@ -59,7 +59,7 @@ let CustomCoverColors: CustomCover[] = [
         topColor: "#67a35d",
         bottomColor: "#41a530",
     },
-]
+];
 
 export function* watchPublicationUpdate(): SagaIterator {
     let buffer: Buffer<any> = buffers.expanding(20);
