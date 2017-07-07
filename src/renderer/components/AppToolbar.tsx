@@ -21,29 +21,13 @@ import { RendererState } from "readium-desktop/renderer/reducers";
 import * as commonmark from "commonmark";
 import * as fs from "fs";
 
+import { Styles } from "readium-desktop/renderer/components/styles";
+
 interface AppToolbarState {
     locale: string;
     open: boolean;
     dialogContent: string;
 }
-
-const styles = {
-    fileInput: {
-        bottom: 0,
-        cursor: "pointer",
-        left: 0,
-        opacity: 0,
-        overflow: "hidden",
-        position: "absolute",
-        right: 0,
-        top: 0,
-        width: "100%",
-        zIndex: 100,
-    },
-    iconButton: {
-        margin: 12,
-    },
-};
 
 export default class AppToolbar extends React.Component<undefined, AppToolbarState> {
     public state: AppToolbarState;
@@ -95,7 +79,7 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
                         <IconButton touch={true}>
                             <FontIcon
                                 className="fa fa-plus-circle"
-                                style={styles.iconButton}
+                                style={Styles.iconButton}
                                 color={blue500}>
                                 <input type="file" style={{bottom: 0,
                                     cursor: "pointer",
@@ -114,7 +98,7 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
                                 <IconButton touch={true}>
                                     <FontIcon
                                         className="fa fa-ellipsis-v"
-                                        style={styles.iconButton}
+                                        style={Styles.iconButton}
                                         color={blue500} />
                                 </IconButton>
                             }

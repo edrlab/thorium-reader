@@ -14,52 +14,23 @@ import RaisedButton from "material-ui/RaisedButton";
 
 import { DownloadStatus } from "readium-desktop/models/downloadable";
 
+import { Styles } from "readium-desktop/renderer/components/styles";
+
 interface IPublicationProps {
     publication: Publication;
     publicationId: number;
+    downloadable?: boolean;
     downloadEPUB: Function;
     handleRead: Function;
     cancelDownload: Function;
+    createCover: Function;
+    deletePublication: Function;
 }
 
 interface IDownload {
     link: string;
     progress: number;
 }
-
-const styles = {
-    BookListElement: {
-        body: {
-            boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
-            fontFamily: "Roboto, sans-serif",
-            margin: "5px 0px",
-            width: "1200px",
-        },
-        column: {
-            display: "inline-block",
-            width: "250px",
-        },
-        container: {
-            display: "inline-block",
-            maxWidth: 1200,
-            textAlign: "left",
-        },
-        description: {
-            display: "inline-block",
-            height: 140,
-            marginLeft: "5px",
-        },
-        image: {
-            display: "inline-block",
-            float: "left",
-            height: 140,
-            width: 91,
-        },
-        title: {
-            margin: "10px 0px",
-        },
-    },
-};
 
 export default class PublicationListElement extends React.Component<IPublicationProps, null> {
     @lazyInject("translator")
@@ -83,51 +54,74 @@ export default class PublicationListElement extends React.Component<IPublication
         }
 
         return (
-            <div style={styles.BookListElement.body}>
-                <img style={styles.BookListElement.image} src={image} />
-                <div style={styles.BookListElement.description}>
-                    <h4 style={styles.BookListElement.title}>{publication.title}</h4>
-                    <div style={styles.BookListElement.column}>
+            <div style={Styles.BookListElement.body}>
+                {publication.cover ? (
+                    <img style={Styles.BookListElement.image} src={publication.cover.url}/>
+                ) : (
+                    <div style={Styles.BookListElement.image}>
+                        {this.props.createCover(this.props.publication)}
+                    </div>
+                )}
+                <div style={Styles.BookListElement.description}>
+                    <h4 style={Styles.BookListElement.title}>{publication.title}</h4>
+                    <div style={Styles.BookListElement.column}>
                         <p>{author}</p>
                         <p>Editeur</p>
                     </div>
-                    <div style={styles.BookListElement.column}>
-                            { !publication.download
-                                || publication.download.status === DownloadStatus.Init ? (
-                                <FlatButton
-                                    label={__("publication.downloadButton")}
-                                    onClick={() => {this.props.downloadEPUB(publication, id); }}/>
-                            ) : publication.download.status === DownloadStatus.Downloading ? (
+                    <div style={Styles.BookListElement.column}>
+                            {this.props.downloadable ? (
                                 <div>
-                                    <p>{__("publication.progressDownload")}</p>
-                                    <LinearProgress mode="determinate"
-                                        value={publication.download.progress} />
-                                    <IconButton
-                                        iconClassName="fa fa-times"
-                                        onClick={() => {this.props.cancelDownload(publication); }}/>
-                                </div>
-                            ) : publication.download.status === DownloadStatus.Downloaded ? (
-                                <div>
-                                    <p>{__("publication.endDownload")}</p>
-                                    <RaisedButton
-                                        label={__("publication.readButton")}
-                                        onClick={() => {this.props.handleRead(publication); }}/>
-                                </div>
-                            ) : publication.download.status === DownloadStatus.Failed ? (
-                                <div>
-                                    <p>{__("publication.failedDownload")}</p>
-                                    <FlatButton
-                                    label={__("publication.downloadButton")}
-                                    onClick={() => {this.props.downloadEPUB(publication, id); }}/>
+                                    {( !publication.download
+                                        || publication.download.status === DownloadStatus.Init) ? (
+                                        <FlatButton
+                                            label={__("publication.downloadButton")}
+                                            onClick={() => {this.props.downloadEPUB(publication, id); }}/>
+                                    ) : publication.download.status === DownloadStatus.Downloading ? (
+                                        <div>
+                                            <p>{__("publication.progressDownload")}</p>
+                                            <LinearProgress mode="determinate"
+                                                value={publication.download.progress} />
+                                            <IconButton
+                                                iconClassName="fa fa-times"
+                                                onClick={() => {this.props.cancelDownload(publication); }}/>
+                                        </div>
+                                    ) : publication.download.status === DownloadStatus.Downloaded ? (
+                                        <div>
+                                            <p>{__("publication.endDownload")}</p>
+                                            <RaisedButton
+                                                label={__("publication.readButton")}
+                                                onClick={() => {this.props.handleRead(publication); }}/>
+                                        </div>
+                                    ) : publication.download.status === DownloadStatus.Failed ? (
+                                        <div>
+                                            <p>{__("publication.failedDownload")}</p>
+                                            <FlatButton
+                                            label={__("publication.downloadButton")}
+                                            onClick={() => {this.props.downloadEPUB(publication, id); }}/>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <p>{__("publication.canceledDownload")}</p>
+                                            <FlatButton
+                                            label={__("publication.downloadButton")}
+                                            onClick={() => {this.props.downloadEPUB(publication, id); }}/>
+                                        </div>
+                                    )}
                                 </div>
                             ) : (
                                 <div>
-                                    <p>{__("publication.canceledDownload")}</p>
                                     <FlatButton
-                                    label={__("publication.downloadButton")}
-                                    onClick={() => {this.props.downloadEPUB(publication, id); }}/>
+                                    style={Styles.BookCard.downloadButton}
+                                    onClick={() => {this.props.handleRead(publication); }}
+                                    label="Lire" />
+
+                                    <FlatButton
+                                    style={Styles.BookCard.downloadButton}
+                                    onClick={() => {this.props.deletePublication(publication.identifier); }}
+                                    label={"Supprimer"}/>
                                 </div>
-                            )}
+                            )
+                        }
                     </div>
                 </div>
             </div>

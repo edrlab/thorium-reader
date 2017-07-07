@@ -2,7 +2,6 @@ import * as React from "react";
 
 import FontIcon     from "material-ui/FontIcon";
 import IconButton   from "material-ui/IconButton";
-import Snackbar     from "material-ui/Snackbar";
 import { blue500 }  from "material-ui/styles/colors";
 
 import { Store } from "redux";
@@ -10,6 +9,7 @@ import { Store } from "redux";
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
 
+import { Contributor } from "readium-desktop/models/contributor";
 import { Publication } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -23,7 +23,7 @@ import { Catalog } from "readium-desktop/models/catalog";
 
 import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
 
-import * as Dropzone from "react-dropzone";
+import { Styles } from "readium-desktop/renderer/components/styles";
 
 interface ILibraryState {
     list: boolean;
@@ -33,41 +33,13 @@ interface ILibraryState {
 interface LibraryProps {
     catalog: Catalog;
     handleRead: Function;
+    openSnackbar: Function;
 }
 
 interface IDownload {
     link: string;
     progress: number;
 }
-
-const styles = {
-    BookListElement: {
-        container: {
-            display: "inline-block",
-            maxWidth: 1200,
-            textAlign: "left",
-        },
-    },
-    Library: {
-        addButton: {
-            float: "right",
-            marginTop: "6px",
-        },
-        displayButton: {
-            float: "right",
-        },
-        list: {
-            textAlign: "center",
-        },
-        title: {
-            display: "inline-block",
-        },
-        spinner: {
-            top: "200px",
-            fontSize: "40px",
-        },
-    },
-};
 
 export default class Library extends React.Component<LibraryProps, ILibraryState> {
     public state: ILibraryState;
@@ -82,8 +54,6 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     @lazyInject("store")
     private  __ = this.translator.translate;
 
-    private snackBarMessage: string = "";
-
     constructor(props: LibraryProps) {
         super(props);
 
@@ -97,48 +67,26 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         this.store.dispatch(windowActions.showLibrary());
     }
 
-    // Called when files are droped on the dropzone
-    public onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
-        this.importFiles(acceptedFiles);
-    }
-
-    // Create the download list if it doesn't exist then start the download
-    public importFiles = (files: File[]) => {
-        for (let file of files)
-        {
-            this.store.dispatch(publicationimportActions.fileImport([file.path]));
-        }
-
-        this.snackBarMessage = this.__("library.startFileImport");
-        this.setState({open: true});
-    }
-
     public downloadEPUB = (newPublication: Publication, publicationId: number) => {
         this.store.dispatch(publicationDownloadActions.add(newPublication));
 
-        this.snackBarMessage = this.__("library.startDownload");
-        this.setState({open: true});
+        this.props.openSnackbar("library.startDownload");
     }
 
     public cancelDownload = (publication: Publication, publicationId: number) => {
         this.store.dispatch(publicationDownloadActions.cancel(publication));
 
-        this.snackBarMessage = this.__("library.cancelDownload");
-        this.setState({open: true});
+        this.props.openSnackbar("library.cancelDownload");
     }
 
     public deletePublication = (identifier: string) => {
         this.store.dispatch(publicationimportActions.fileDelete(identifier));
     }
 
-    public handleRequestClose = () => {
-        this.setState({ open: false });
-    }
-
     public Spinner () {
         return (
             <FontIcon
-                style = {styles.Library.spinner}
+                style = {Styles.Library.spinner}
                 className="fa fa-spinner fa-spin fa-3x fa-fw"
                 color={blue500}
             />
@@ -155,7 +103,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload.bind(this)}
-                deletePublication={this.deletePublication.bind(this)} />);
+                deletePublication={this.deletePublication.bind(this)}
+                createCover={this.createCover.bind(this)} />);
         }
         return list;
     }
@@ -166,11 +115,43 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
             list.push(<PublicationListElement key={i}
                 publication={this.props.catalog.publications[i]}
                 publicationId={i}
+                downloadable={false}
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
-                cancelDownload={this.cancelDownload} />);
+                cancelDownload={this.cancelDownload}
+                deletePublication={this.deletePublication.bind(this)}
+                createCover={this.createCover.bind(this)} />);
         }
-        return <div style={styles.BookListElement.container}> {list} </div>;
+        return <div style={Styles.BookListElement.container}> {list} </div>;
+    }
+
+    public createCover (publication: Publication): JSX.Element {
+        if (publication.cover === null) {
+            let authors = "";
+            let bodyCSS = Styles.BookCover.body;
+            let colors = publication.customCover;
+            bodyCSS.backgroundImage = "linear-gradient(" + colors.topColor + ", " + colors.bottomColor + ")";
+
+            for (let author of publication.authors) {
+                let newAuthor: Contributor = author;
+                if (authors !== "") {
+                    authors += ", ";
+                }
+                authors += newAuthor.name;
+            }
+
+            return (
+                <div style={bodyCSS}>
+                    <div style={Styles.BookCover.box}>
+                        <p style={Styles.BookCover.title}>{publication.title}</p>
+                        <p style={Styles.BookCover.author}>{authors}</p>
+                    </div>
+                </div>
+            );
+        } else {
+            return undefined;
+        }
+
     }
 
     public render(): React.ReactElement<{}>  {
@@ -187,11 +168,11 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         }
 
         return (
-            <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
+            <div>
                 <div>
-                    <h1 style={styles.Library.title}>{this.__("library.heading")}</h1>
+                    <h1 style={Styles.Library.title}>{this.__("library.heading")}</h1>
                     <IconButton
-                        style={styles.Library.displayButton}
+                        style={Styles.Library.displayButton}
                         touch={true} onClick={() => {
                             that.setState({list: true});
                         }}
@@ -199,7 +180,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                         <FontIcon className="fa fa-list" color={blue500} />
                     </IconButton>
                     <IconButton
-                        style={styles.Library.displayButton}
+                        style={Styles.Library.displayButton}
                         touch={true}  onClick={() => {
                             that.setState({list: false});
                         }}
@@ -207,17 +188,10 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                         <FontIcon className="fa fa-th-large" color={blue500} />
                     </IconButton>
                 </div >
-                <div style={styles.Library.list}>
+                <div style={Styles.Library.list}>
                     {listToDisplay}
                 </div>
-
-                <Snackbar
-                        open={this.state.open}
-                        message= {this.snackBarMessage}
-                        autoHideDuration={4000}
-                        onRequestClose={this.handleRequestClose}
-                    />
-            </Dropzone>
+            </div>
         );
     }
 }
