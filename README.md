@@ -39,6 +39,10 @@ In readium-desktop project
 
 1) `yarn upgrade` (sync local packages)
 
+After each upgrade do not forget to reinstall pouchdb:
+
+2) `yarn pouchdb:install`
+
 ### Lint
 
 It's very important (required) to launch lint before pushing any code on github repository
