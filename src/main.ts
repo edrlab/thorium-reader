@@ -18,7 +18,16 @@ let mainWindow: Electron.BrowserWindow = null;
 
 // Opens the main window, with a native menu bar.
 function createWindow() {
-    mainWindow = new BrowserWindow({ width: 800, height: 600 });
+    mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        webPreferences: {
+            nodeIntegration: true, // Required to use IPC
+            webSecurity: true,
+            allowRunningInsecureContent: false,
+        },
+    });
+
     let rendererBaseUrl = __RENDERER_BASE_URL__;
 
     if (rendererBaseUrl === "file://") {
