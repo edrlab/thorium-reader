@@ -1,3 +1,5 @@
+import * as commonmark from "commonmark";
+import * as fs from "fs";
 import * as React from "react";
 import { Store } from "redux";
 
@@ -14,12 +16,10 @@ import FlatButton from "material-ui/FlatButton";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
+import * as publicationimportActions from "readium-desktop/actions/collection-manager";
 import { setLocale } from "readium-desktop/actions/i18n";
 import { Translator } from "readium-desktop/i18n/translator";
 import { RendererState } from "readium-desktop/renderer/reducers";
-
-import * as commonmark from "commonmark";
-import * as fs from "fs";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
@@ -47,6 +47,7 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
         };
 
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
+        this.handleFileChange = this.handleFileChange.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
@@ -81,16 +82,19 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
                                 className="fa fa-plus-circle"
                                 style={Styles.iconButton}
                                 color={blue500}>
-                                <input type="file" style={{bottom: 0,
-                                    cursor: "pointer",
-                                    left: 0,
-                                    opacity: 0,
-                                    overflow: "hidden",
-                                    position: "absolute",
-                                    right: 0,
-                                    top: 0,
-                                    width: "100%",
-                                    zIndex: 100}} />
+                                <input
+                                    type="file"
+                                    onChange={this.handleFileChange}
+                                    style={{bottom: 0,
+                                        cursor: "pointer",
+                                        left: 0,
+                                        opacity: 0,
+                                        overflow: "hidden",
+                                        position: "absolute",
+                                        right: 0,
+                                        top: 0,
+                                        width: "100%",
+                                        zIndex: 100}} />
                             </FontIcon>
                         </IconButton>
                         <IconMenu
@@ -154,5 +158,17 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
     private handleLocaleChange(event: any, index: any, newLocale: string) {
         this.store.dispatch(setLocale(newLocale));
         this.setState({locale: newLocale});
+    }
+
+    private handleFileChange(event: any) {
+        const files: FileList = event.target.files;
+        let paths: string[] = [];
+        let i = 0;
+
+        while (i < files.length) {
+            paths.push(files[i++].path);
+        }
+
+        this.store.dispatch(publicationimportActions.fileImport(paths));
     }
 }
