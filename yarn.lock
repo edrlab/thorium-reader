@@ -55,8 +55,8 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.16.tgz#e3440e3ce4d4931616ac418cc4dc16cd94b80092"
 
 "@types/node@^6.0.55":
-  version "6.0.72"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.72.tgz#0f19de38555f3c33d733d678991347f7d0eefaff"
+  version "6.0.79"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.79.tgz#5efe7d4a6d8c453c7e9eaf55d931f4a22fac5169"
 
 "@types/pouchdb-adapter-fruitdown@*":
   version "6.1.1"
@@ -4184,7 +4184,7 @@ querystringify@~1.0.0:
 
 r2-streamer-js@edrlab/r2-streamer-js-dist:
   version "0.0.1-alpha32"
-  resolved "https://codeload.github.com/edrlab/r2-streamer-js-dist/tar.gz/ca35c6ed83ac19eea03fb77706e5571171f97d20"
+  resolved "https://codeload.github.com/edrlab/r2-streamer-js-dist/tar.gz/52655c39ee95d56d464f72eeadf5acbf964494e8"
   dependencies:
     css2json latest
     debug latest
@@ -4202,8 +4202,9 @@ r2-streamer-js@edrlab/r2-streamer-js-dist:
     request latest
     request-promise-native latest
     slugify latest
-    ta-json latest
+    ta-json danielweck/ta-json#dist
     tmp latest
+    tslib latest
     unzipper latest
     xmldom latest
     xpath latest
@@ -5094,9 +5095,15 @@ symbol-observable@^1.0.1, symbol-observable@^1.0.2, symbol-observable@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.4.tgz#29bf615d4aa7121bdd898b22d4b3f9bc4e2aa03d"
 
+ta-json@danielweck/ta-json#dist:
+  version "2.2.5"
+  resolved "https://codeload.github.com/danielweck/ta-json/tar.gz/fb643b87c8a10f729d429132b98485cdbb391294"
+  dependencies:
+    reflect-metadata latest
+
 ta-json@latest:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/ta-json/-/ta-json-2.2.2.tgz#ebb34ef103af7029b20ca5c7e430fc089dc78730"
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/ta-json/-/ta-json-2.2.4.tgz#3f658873e0d6aa61a20decd42da7c86a6fc64e8a"
   dependencies:
     "@types/node" "^6.0.55"
     reflect-metadata "^0.1.9"
@@ -5235,6 +5242,10 @@ trim-newlines@^1.0.0:
 trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
+
+tslib@latest:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.7.1.tgz#bc8004164691923a79fe8378bbeb3da2017538ec"
 
 tslint@^4.5.1:
   version "4.5.1"
