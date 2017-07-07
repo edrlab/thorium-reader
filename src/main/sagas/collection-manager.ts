@@ -76,72 +76,79 @@ export function* watchPublicationUpdate(): SagaIterator {
             "publication-storage") as PublicationStorage;
         const store: Store<AppState> = container.get("store") as Store<AppState>;
         const db: PublicationDb = container.get("publication-db") as PublicationDb;
-
+        console.log("#####", "Hello");
         switch (action.type) {
             case PUBLICATION_IMPORT_ADD:
                 for (const path of action.paths) {
                     // Parse epub and extract its metadata
-                    Promise.resolve(EpubParsePromise(path).then((pub: any) => {
-                        let newAuthors: Contributor[] = [];
-                        for (let author of pub.Metadata.Author) {
-                            let contributor: Contributor = {
-                                name: author.Name,
+                    Promise.resolve(
+                        EpubParsePromise(path)
+                        .then((pub: any) => {
+                            let newAuthors: Contributor[] = [];
+                            for (let author of pub.Metadata.Author) {
+                                let contributor: Contributor = {
+                                    name: author.Name,
+                                };
+
+                                newAuthors.push(contributor);
+                            }
+
+                            let newPub: Publication = {
+                                title: pub.Metadata.Title,
+                                description: pub.Metadata.Description,
+                                identifier: uuid.v4(),
+                                authors: newAuthors,
+                                languages: pub.Metadata.Language,
                             };
+                            // Store publication files
+                            publicationStorage
+                                .storePublication(
+                                    newPub.identifier,
+                                    path,
+                                )
+                                .then((files) => {
+                                    // Extract cover
+                                    let coverFile: File = null;
+                                    let otherFiles: File[] = [];
 
-                            newAuthors.push(contributor);
-                        }
-
-                        let newPub: Publication = {
-                            title: pub.Metadata.Title,
-                            description: pub.Metadata.Description,
-                            identifier: uuid.v4(),
-                            authors: newAuthors,
-                            languages: pub.Metadata.Language,
-                        };
-                        // Store publication files
-                        publicationStorage
-                            .storePublication(
-                                newPub.identifier,
-                                path,
-                            )
-                            .then((files) => {
-                                // Extract cover
-                                let coverFile: File = null;
-                                let otherFiles: File[] = [];
-
-                                for (let file of files) {
-                                    if (file.contentType.startsWith("image")) {
-                                        coverFile = file;
-                                    } else {
-                                        otherFiles.push(file);
+                                    for (let file of files) {
+                                        if (file.contentType.startsWith("image")) {
+                                            coverFile = file;
+                                        } else {
+                                            otherFiles.push(file);
+                                        }
                                     }
-                                }
 
-                                newPub.cover = coverFile;
-                                newPub.files = otherFiles;
+                                    newPub.cover = coverFile;
+                                    newPub.files = otherFiles;
 
-                                if (coverFile === null) {
-                                    newPub.customCover = CreateCustomCover();
-                                }
+                                    if (coverFile === null) {
+                                        console.log("###1");
+                                        newPub.customCover = CreateCustomCover();
+                                        console.log("###2");
+                                    }
 
-                                // Store publication metadata
-                                publicationDb
-                                    .put(newPub)
-                                    .then((result) => {
-                                        db.getAll().then((publications) => {
-                                            store.dispatch(
-                                                catalogActions.load(),
-                                            );
+                                    // Store publication metadata
+                                    publicationDb
+                                        .put(newPub)
+                                        .then((result) => {
+                                            db.getAll().then((publications) => {
+                                                store.dispatch(
+                                                    catalogActions.load(),
+                                                );
+                                            });
+                                        })
+                                        .catch((err) => {
+                                            console.log(err);
                                         });
-                                    })
-                                    .catch((err) => {
-                                        console.log(err);
-                                    });
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                            });
-                    }),
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                });
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        }),
                     );
                 }
                 break;
