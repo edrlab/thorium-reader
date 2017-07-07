@@ -84,20 +84,23 @@ export function* watchPublicationUpdate(): SagaIterator {
                     Promise.resolve(
                         EpubParsePromise(path)
                         .then((pub: any) => {
-                            let newAuthors: Contributor[] = [];
-                            for (let author of pub.Metadata.Author) {
-                                let contributor: Contributor = {
-                                    name: author.Name,
-                                };
+                            let authors: Contributor[] = [];
 
-                                newAuthors.push(contributor);
+                            if (pub.Metadata && pub.Metadata.Author) {
+                                for (let author of pub.Metadata.Author) {
+                                    let contributor: Contributor = {
+                                        name: author.Name,
+                                    };
+
+                                    authors.push(contributor);
+                                }
                             }
 
                             let newPub: Publication = {
                                 title: pub.Metadata.Title,
                                 description: pub.Metadata.Description,
                                 identifier: uuid.v4(),
-                                authors: newAuthors,
+                                authors,
                                 languages: pub.Metadata.Language,
                             };
                             // Store publication files
