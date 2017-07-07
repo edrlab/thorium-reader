@@ -22,7 +22,7 @@
     "start:dev:renderer": "webpack-dev-server",
     "start:dev:main": "webpack -d && electron .",
     "start:dev": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:main\"",
-    "pouchdb:install": "yarn add -O --no-lockfile --ignore-scripts leveldown && yarn add --no-lockfile --ignore-scripts -O pouchdb && cd node_modules/pouchdb && cross-env npm_config_runtime=electron npm_config_target=53 yarn add --no-lockfile leveldown@latest && cd ../.. && yarn remove leveldown --no-lockfile --ignore-scripts"
+    "pouchdb:install": "npm install --ignore-scripts leveldown  && npm install --ignore-scripts pouchdb && cd node_modules/pouchdb && cross-env npm_config_runtime=electron npm_config_target=53 npm install --save leveldown@latest && cd ../.. && npm remove leveldown"
   },
   "repository": {
     "type": "git",
