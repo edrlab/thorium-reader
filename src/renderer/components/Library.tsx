@@ -34,6 +34,7 @@ interface LibraryProps {
     catalog: Catalog;
     handleRead: Function;
     openSnackbar: Function;
+    openDialog: Function;
 }
 
 interface IDownload {
@@ -83,6 +84,11 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         this.store.dispatch(publicationimportActions.fileDelete(identifier));
     }
 
+    public openDeleteDialog = (identifier: string) => {
+        let message: JSX.Element = (<p>Êtes vous sûr de vouloir supprimer cette publication ?</p>);
+        this.props.openDialog(message, this.deletePublication.bind(this, identifier));
+    }
+
     public Spinner () {
         return (
             <FontIcon
@@ -103,7 +109,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload.bind(this)}
-                deletePublication={this.deletePublication.bind(this)}
+                deletePublication={this.openDeleteDialog.bind(this)}
                 createCover={this.createCover.bind(this)} />);
         }
         return list;
@@ -119,7 +125,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload}
-                deletePublication={this.deletePublication.bind(this)}
+                deletePublication={this.openDeleteDialog.bind(this)}
                 createCover={this.createCover.bind(this)} />);
         }
         return <div style={Styles.BookListElement.container}> {list} </div>;
