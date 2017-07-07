@@ -104,7 +104,7 @@ export default class App extends React.Component<undefined, AppState> {
         }
         let message = (
             <div>
-                <p>Etes vous sûr de vouloir importer ce(s) fichier(s) :</p>
+                <p>{this.translator.translate("dialog.import")}</p>
                 <ul>
                     {nameList}
                 </ul>
@@ -200,14 +200,14 @@ export default class App extends React.Component<undefined, AppState> {
     private openDialog(message: JSX.Element, positiveResponseFunction: Function) {
         this.actions = [
             <FlatButton
-                label="Oui"
+                label={this.translator.translate("dialog.yes")}
                 primary={true}
                 onTouchTap={() => {
                     positiveResponseFunction();
                     this.handleDialogClose(); }}
             />,
             <FlatButton
-                label="Non"
+                label={this.translator.translate("dialog.no")}
                 primary={true}
                 onTouchTap={() => {this.handleDialogClose(); }}
             />,

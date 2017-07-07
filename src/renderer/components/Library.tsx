@@ -85,7 +85,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     public openDeleteDialog = (identifier: string) => {
-        let message: JSX.Element = (<p>Êtes vous sûr de vouloir supprimer cette publication ?</p>);
+        let message: JSX.Element = (<p>{this.translator.translate("dialog.delete")}</p>);
         this.props.openDialog(message, this.deletePublication.bind(this, identifier));
     }
 

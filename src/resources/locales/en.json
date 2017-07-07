@@ -18,5 +18,11 @@
         "help":"Help",
         "news":"What's new?",
         "sync":"Synchronize the library"
+    },
+    "dialog": {
+      "yes": "Yes",
+      "no": "No",
+      "delete": "Do you really want to delete these publication?",
+      "import": "Do you really want to import :"
     }
 }
