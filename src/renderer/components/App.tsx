@@ -31,6 +31,8 @@ import * as publicationimportActions from "readium-desktop/actions/collection-ma
 
 import * as Dropzone from "react-dropzone";
 
+import { Styles } from "readium-desktop/renderer/components/styles"
+
 interface AppState {
     catalog: Catalog;
     readerOpen: boolean;
@@ -167,7 +169,7 @@ export default class App extends React.Component<undefined, AppState> {
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
                     {!this.state.readerOpen ? (
-                    <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{minHeight: "100vh"}}>
+                    <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{Height: "98vh"}}>
                         <AppToolbar />
                         <Library
                             catalog={this.state.catalog}
