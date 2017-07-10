@@ -21,8 +21,8 @@ export const Styles = {
             position: absolute,
             top: "130px",
             bottom: "10px",
-            left: "0",
-            right: "0",
+            left: "20px",
+            right: "20px",
         },
         title: {
             display: "inline-block",

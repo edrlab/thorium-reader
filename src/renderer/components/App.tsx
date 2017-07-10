@@ -31,8 +31,6 @@ import * as publicationimportActions from "readium-desktop/actions/collection-ma
 
 import * as Dropzone from "react-dropzone";
 
-import { Styles } from "readium-desktop/renderer/components/styles"
-
 interface AppState {
     catalog: Catalog;
     readerOpen: boolean;
