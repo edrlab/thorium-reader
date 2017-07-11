@@ -46,7 +46,6 @@
   "homepage": "https://github.com/edrlab/readium-desktop",
   "dependencies": {
     "@types/commonmark": "^0.22.29",
-    "@types/electron": "^1.4.34",
     "@types/express": "^4.0.35",
     "@types/i18next": "^2.3.35",
     "@types/material-ui": "^0.16.57",
@@ -96,7 +95,7 @@
     "cross-env": "^3.2.4",
     "css-loader": "^0.28.0",
     "eclint": "^2.1.0",
-    "electron": "^1.6.2",
+    "electron": "^1.6.11",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
     "html-webpack-plugin": "^2.28.0",
