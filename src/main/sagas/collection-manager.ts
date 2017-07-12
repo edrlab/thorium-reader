@@ -76,7 +76,6 @@ export function* watchPublicationUpdate(): SagaIterator {
             "publication-storage") as PublicationStorage;
         const store: Store<AppState> = container.get("store") as Store<AppState>;
         const db: PublicationDb = container.get("publication-db") as PublicationDb;
-        console.log("#####", "Hello");
         switch (action.type) {
             case PUBLICATION_IMPORT_ADD:
                 for (const path of action.paths) {
@@ -126,9 +125,7 @@ export function* watchPublicationUpdate(): SagaIterator {
                                     newPub.files = otherFiles;
 
                                     if (coverFile === null) {
-                                        console.log("###1");
                                         newPub.customCover = CreateCustomCover();
-                                        console.log("###2");
                                     }
 
                                     // Store publication metadata
@@ -173,7 +170,6 @@ export function* watchPublicationUpdate(): SagaIterator {
 
 function CreateCustomCover (): CustomCover {
     let newColors = CustomCoverColors[Math.floor(Math.random() * CustomCoverColors.length)];
-    console.log(newColors);
     return newColors;
 }
 

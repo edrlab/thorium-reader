@@ -25,9 +25,11 @@ import ReaderNYPL from "readium-desktop/renderer/components/ReaderNYPL";
 import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
 import { RendererState } from "readium-desktop/renderer/reducers";
+import { MessageStatus } from "readium-desktop/renderer/reducers/message";
 import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
 
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
+import * as messageAction from "readium-desktop/renderer/actions/message";
 
 import * as Dropzone from "react-dropzone";
 
@@ -117,8 +119,6 @@ export default class App extends React.Component<undefined, AppState> {
         {
             this.store.dispatch(publicationimportActions.fileImport([file.path]));
         }
-
-        this.openSnackbar("Les fichiers ont été importés avec succès.");
     }
 
     public componentDidMount() {
@@ -134,6 +134,11 @@ export default class App extends React.Component<undefined, AppState> {
                     title: "My Catalog",
                     publications: catalog.publications},
                 });
+            }
+            if (storeState.message.status === MessageStatus.Open && this.state.snackbarOpen === false) {
+                this.openSnackbar(storeState.message.messages[0]);
+
+                this.setState({ snackbarOpen: (storeState.message.status === MessageStatus.Open) });
             }
 
             this.setState({
@@ -202,8 +207,10 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     private openSnackbar(message: string) {
-        this.snackBarMessage = message;
-        this.setState({snackbarOpen: true});
+        if (!this.state.snackbarOpen) {
+            this.snackBarMessage = message;
+            this.setState({snackbarOpen: true});
+        }
     }
 
     private openDialog(message: JSX.Element) {
@@ -211,8 +218,15 @@ export default class App extends React.Component<undefined, AppState> {
         this.setState({dialogOpen: true});
     }
 
-    private handleRequestClose = () => {
-        this.setState({ snackbarOpen: false });
+    private handleRequestClose = (reason: string) => {
+        if (reason === "timeout") {
+            this.setState({ snackbarOpen: false });
+            this.store.dispatch(messageAction.purge());
+
+            if (this.store.getState().message.messages.length > 0) {
+                this.openSnackbar(this.store.getState().message.messages[0]);
+            }
+        }
     }
 
     private handleDialogClose () {

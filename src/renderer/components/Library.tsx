@@ -69,14 +69,10 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     public downloadEPUB = (newPublication: Publication, publicationId: number) => {
         this.store.dispatch(publicationDownloadActions.add(newPublication));
-
-        this.props.openSnackbar("library.startDownload");
     }
 
     public cancelDownload = (publication: Publication, publicationId: number) => {
         this.store.dispatch(publicationDownloadActions.cancel(publication));
-
-        this.props.openSnackbar("library.cancelDownload");
     }
 
     public deletePublication = (identifier: string) => {
