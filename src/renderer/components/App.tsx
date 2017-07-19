@@ -56,6 +56,8 @@ export default class App extends React.Component<undefined, AppState> {
 
     private filesToImport: File[] = [];
 
+    private actions: JSX.Element[] = [];
+
     constructor() {
         super();
         let locale = this.store.getState().i18n.locale;
@@ -102,13 +104,13 @@ export default class App extends React.Component<undefined, AppState> {
         }
         let message = (
             <div>
-                <p>Etes vous sûr de vouloir importer ce(s) fichier(s) :</p>
+                <p>{this.translator.translate("dialog.import")}</p>
                 <ul>
                     {nameList}
                 </ul>
             </div>
         );
-        this.openDialog(message);
+        this.openImportDialog(message);
     }
 
     // Create the download list if it doesn't exist then start the download
@@ -147,22 +149,6 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const actions = [
-            <FlatButton
-                label="Oui"
-                primary={true}
-                onTouchTap={() => {
-                    this.handleDialogClose();
-                    this.importFiles();
-                }}
-            />,
-            <FlatButton
-                label="Non"
-                primary={true}
-                onTouchTap={() => {this.handleDialogClose(); }}
-            />,
-        ];
-
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
@@ -172,7 +158,8 @@ export default class App extends React.Component<undefined, AppState> {
                         <Library
                             catalog={this.state.catalog}
                             handleRead={this.handleOpenPublication}
-                            openSnackbar={this.openSnackbar.bind(this)}/>
+                            openSnackbar={this.openSnackbar.bind(this)}
+                            openDialog={this.openDialog.bind(this)}/>
                         <Snackbar
                             open={this.state.snackbarOpen}
                             message= {this.snackBarMessage}
@@ -180,7 +167,7 @@ export default class App extends React.Component<undefined, AppState> {
                             onRequestClose={this.handleRequestClose}
                         />
                         <Dialog
-                            actions={actions}
+                            actions={this.actions}
                             modal={false}
                             open={this.state.dialogOpen}
                             onRequestClose={this.handleDialogClose}
@@ -206,7 +193,26 @@ export default class App extends React.Component<undefined, AppState> {
         this.setState({snackbarOpen: true});
     }
 
-    private openDialog(message: JSX.Element) {
+    private openImportDialog (message: JSX.Element) {
+        this.openDialog(message, () => {this.importFiles(); });
+    }
+
+    private openDialog(message: JSX.Element, positiveResponseFunction: Function) {
+        this.actions = [
+            <FlatButton
+                label={this.translator.translate("dialog.yes")}
+                primary={true}
+                onTouchTap={() => {
+                    positiveResponseFunction();
+                    this.handleDialogClose(); }}
+            />,
+            <FlatButton
+                label={this.translator.translate("dialog.no")}
+                primary={true}
+                onTouchTap={() => {this.handleDialogClose(); }}
+            />,
+        ];
+
         this.dialogMessage = message;
         this.setState({dialogOpen: true});
     }
