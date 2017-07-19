@@ -1,4 +1,5 @@
 let auto: "auto" = "auto";
+let fixed: "fixed" = "fixed";
 let hidden: "hidden" = "hidden";
 let absolute: "absolute" = "absolute";
 
@@ -118,19 +119,70 @@ export const Styles = {
             padding: "5%",
         },
     },
+    appToolbar: {
+        iconButton: {
+            margin: 12,
+        },
+        inputImport: {
+            bottom: 0,
+            cursor: "pointer",
+            left: 0,
+            opacity: 0,
+            overflow: hidden,
+            position: absolute,
+            right: 0,
+            top: 0,
+            width: "100%",
+            zIndex: 100,
+        },
+    },
+    OpdsList: {
+        title: {
+            margin: "10px 0px",
+        },
+        image: {
+            fontSize: "6px",
+            display: "inline-block",
+            float: "left",
+            height: 80,
+            width: 52,
+        },
+        body: {
+            boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
+            fontFamily: "Roboto, sans-serif",
+            margin: "5px 0px",
+            width: "100%",
+        },
+        column: {
+            display: "inline-block",
+            width: "250px",
+        },
+        description: {
+            display: "inline-block",
+            height: 80,
+            marginLeft: "5px",
+        },
+    },
     fileInput: {
         bottom: 0,
         cursor: "pointer",
         left: 0,
         opacity: 0,
         overflow: "hidden",
-        position: "absolute",
+        position: absolute,
         right: 0,
         top: 0,
         width: "100%",
         zIndex: 100,
     },
-    iconButton: {
-        margin: 12,
-    },
+    collectionDialog : {
+        position: fixed,
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: "white",
+        zIndex: 1000,
+        overflow: "scroll",
+    }
 };

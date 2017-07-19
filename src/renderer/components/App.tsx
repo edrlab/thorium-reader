@@ -58,7 +58,29 @@ export default class App extends React.Component<undefined, AppState> {
 
     private filesToImport: File[] = [];
 
-    private actions: JSX.Element[] = [];
+    private currentDialogAction: JSX.Element[];
+
+    private confimationAction: Function;
+
+    private defaultDialogActions = [
+        <FlatButton
+            label="Oui"
+            primary={true}
+            onTouchTap={() => {
+                this.handleDialogClose();
+                if (this.confimationAction) {
+                    this.confimationAction();
+                } else {
+                    this.importFiles();
+                }
+            }}
+        />,
+        <FlatButton
+            label="Non"
+            primary={true}
+            onTouchTap={() => {this.handleDialogClose(); }}
+        />,
+    ];
 
     constructor() {
         super();
@@ -158,8 +180,10 @@ export default class App extends React.Component<undefined, AppState> {
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
                     {!this.state.readerOpen ? (
-                    <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{Height: "98vh"}}>
-                        <AppToolbar />
+                    <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
+                        <AppToolbar
+                            openDialog={this.openDialog.bind(this)}
+                            closeDialog={this.handleDialogClose.bind(this)}/>
                         <Library
                             catalog={this.state.catalog}
                             handleRead={this.handleOpenPublication}
@@ -172,14 +196,15 @@ export default class App extends React.Component<undefined, AppState> {
                             onRequestClose={this.handleRequestClose}
                         />
                         <Dialog
-                            actions={this.actions}
+                            actions={this.currentDialogAction}
                             modal={false}
                             open={this.state.dialogOpen}
-                            onRequestClose={this.handleDialogClose}
+                            onRequestClose={this.handleDialogClose.bind(this)}
                             autoScrollBodyContent={true}
                             >
                             {this.dialogMessage}
                         </Dialog>
+
                     </Dropzone>
                     ) : (
                         <div>
@@ -201,25 +226,17 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     private openImportDialog (message: JSX.Element) {
-        this.openDialog(message, () => {this.importFiles(); });
+        this.openDialog(message);
     }
 
-    private openDialog(message: JSX.Element, positiveResponseFunction: Function) {
-        this.actions = [
-            <FlatButton
-                label={this.translator.translate("dialog.yes")}
-                primary={true}
-                onTouchTap={() => {
-                    positiveResponseFunction();
-                    this.handleDialogClose(); }}
-            />,
-            <FlatButton
-                label={this.translator.translate("dialog.no")}
-                primary={true}
-                onTouchTap={() => {this.handleDialogClose(); }}
-            />,
-        ];
+    private openDialog(message: JSX.Element, confirmationAction?: Function, actions?: JSX.Element[]) {
+        this.confimationAction = confirmationAction;
 
+        if (actions) {
+            this.currentDialogAction = actions;
+        } else {
+            this.currentDialogAction = this.defaultDialogActions;
+        }
         this.dialogMessage = message;
         this.setState({dialogOpen: true});
     }

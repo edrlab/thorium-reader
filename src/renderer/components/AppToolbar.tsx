@@ -21,15 +21,30 @@ import { setLocale } from "readium-desktop/actions/i18n";
 import { Translator } from "readium-desktop/i18n/translator";
 import { RendererState } from "readium-desktop/renderer/reducers";
 
+import CollectionDialog from "readium-desktop/renderer/components/CollectionDialog";
 import { Styles } from "readium-desktop/renderer/components/styles";
+
+import { OPDSParser } from "readium-desktop/services/opds";
+
+import { Catalog } from "readium-desktop/models/catalog";
+
+import * as request from "request";
 
 interface AppToolbarState {
     locale: string;
     open: boolean;
     dialogContent: string;
+    opdsImportOpen: boolean;
+    opdsUrl: string;
+    opdsCatalog: Catalog;
 }
 
-export default class AppToolbar extends React.Component<undefined, AppToolbarState> {
+interface AppToolbarProps {
+    openDialog: Function;
+    closeDialog: Function;
+}
+
+export default class AppToolbar extends React.Component<AppToolbarProps, AppToolbarState> {
     public state: AppToolbarState;
 
     @lazyInject("store")
@@ -38,12 +53,39 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
     @lazyInject("translator")
     private translator: Translator;
 
+    private importOPDSAction = [
+        <FlatButton
+            label="Importer"
+            primary={true}
+            onTouchTap={() => {
+                this.props.closeDialog();
+                this.downloadOPDS();
+                this.setState({opdsImportOpen: true});
+            }}
+        />,
+        <FlatButton
+            label="Annuler"
+            primary={true}
+            onTouchTap={() => {this.props.closeDialog(); }}
+        />,
+    ];
+
+    private importOPDSMessage = (
+        <div>
+            <p>Quel flux OPDS souhaitez vous importer ?</p>
+            <input type="text" onChange={this.handleOpdsUrlChange.bind(this)}/>
+        </div>
+    );
+
     constructor() {
         super();
         this.state = {
             dialogContent: undefined,
             locale: this.store.getState().i18n.locale,
             open: false,
+            opdsImportOpen: false,
+            opdsUrl: undefined,
+            opdsCatalog: undefined,
         };
 
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
@@ -77,32 +119,30 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
                         <ToolbarTitle text="Options" />
                         <FontIcon className="muidocs-icon-custom-sort" />
                         <ToolbarSeparator />
-                        <IconButton touch={true}>
-                            <FontIcon
-                                className="fa fa-plus-circle"
-                                style={Styles.iconButton}
-                                color={blue500}>
-                                <input
+                            <IconMenu
+                                iconButtonElement={<FontIcon
+                                    className="fa fa-plus-circle"
+                                    style={Styles.appToolbar.iconButton}
+                                    color={blue500}>
+                                </FontIcon>}>
+                                <MenuItem primaryText="From an epub file">
+                                    <input
                                     type="file"
                                     onChange={this.handleFileChange}
-                                    style={{bottom: 0,
-                                        cursor: "pointer",
-                                        left: 0,
-                                        opacity: 0,
-                                        overflow: "hidden",
-                                        position: "absolute",
-                                        right: 0,
-                                        top: 0,
-                                        width: "100%",
-                                        zIndex: 100}} />
-                            </FontIcon>
-                        </IconButton>
+                                    style={Styles.appToolbar.inputImport} />
+                                </MenuItem>
+                                <MenuItem
+                                    primaryText="From an opds flux"
+                                    onClick={() => {
+                                        this.props.openDialog(this.importOPDSMessage, null,  this.importOPDSAction);
+                                    }}/>
+                        </IconMenu>
                         <IconMenu
                             iconButtonElement={
                                 <IconButton touch={true}>
                                     <FontIcon
                                         className="fa fa-ellipsis-v"
-                                        style={Styles.iconButton}
+                                        style={Styles.appToolbar.iconButton}
                                         color={blue500} />
                                 </IconButton>
                             }
@@ -136,6 +176,10 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
                     >
                     <div dangerouslySetInnerHTML={{__html: this.state.dialogContent}} />
                 </Dialog>
+                <CollectionDialog
+                    open={this.state.opdsImportOpen}
+                    closeFunction={this.closeCollectionDialog.bind(this)}
+                    catalog={this.state.opdsCatalog}/>
             </div>
         );
     }
@@ -170,5 +214,39 @@ export default class AppToolbar extends React.Component<undefined, AppToolbarSta
         }
 
         this.store.dispatch(publicationimportActions.fileImport(paths));
+    }
+
+    private closeCollectionDialog () {
+        this.setState({opdsImportOpen: false});
+    }
+
+    private handleOpdsUrlChange (event: any) {
+        this.setState({opdsUrl: event.target.value});
+    }
+
+    private downloadOPDS () {
+        request(this.state.opdsUrl, (error: any, response: any, body: any) => {
+        if (response && (
+                response.statusCode < 200 || response.statusCode > 299)) {
+            // Unable to download the resource
+            console.error("Impossible de télécharger le flux OPDS HTTP ERROR");
+            return;
+        }
+
+        if (error) {
+            console.error("Impossible de télécharger le flux OPDS", error);
+            return;
+        }
+
+        // A correct response has been received
+        // So parse the feed and generate a catalog
+        console.log("### OPDS loaded");
+        const opdsParser: OPDSParser = new OPDSParser();
+        opdsParser
+            .parse(body)
+            .then((catalog: Catalog) => {
+                this.setState({opdsCatalog: catalog});
+            });
+    });
     }
 }
