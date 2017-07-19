@@ -14,11 +14,17 @@ import {
     ReaderState,
 } from "readium-desktop/renderer/reducers/reader";
 
+import {
+    messageReducer,
+    MessageState,
+} from "readium-desktop/renderer/reducers/message";
+
 export interface RendererState {
     i18n: I18NState;
     catalog: CatalogState;
     window: WindowState;
     reader: ReaderState;
+    message: MessageState;
 }
 
 export const rootReducer = combineReducers({
@@ -26,4 +32,5 @@ export const rootReducer = combineReducers({
     catalog: catalogReducer,
     window: windowReducer,
     reader: readerReducer,
+    message: messageReducer,
 });

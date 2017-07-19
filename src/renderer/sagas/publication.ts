@@ -1,6 +1,6 @@
 import { ipcRenderer } from "electron";
 import { SagaIterator } from "redux-saga";
-import { take } from "redux-saga/effects";
+import { put, take } from "redux-saga/effects";
 
 import {
     PUBLICATION_DOWNLOAD_CANCEL_REQUEST,
@@ -15,6 +15,8 @@ import * as publicationDownloadActions from "readium-desktop/actions/publication
 import { FilesMessage, PublicationMessage} from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
 
+import *  as messageActions from "readium-desktop/renderer/actions/message";
+
 function sendIPCAddDownload(msg: PublicationMessage) {
     ipcRenderer.send(PUBLICATION_DOWNLOAD_REQUEST, msg);
 }
@@ -24,6 +26,7 @@ export function* watchPublicationDownloadAdd(): SagaIterator {
         let resp = yield take(publicationDownloadActions.PUBLICATION_DOWNLOAD_ADD);
         let pub: Publication = resp.publication;
         let msg: PublicationMessage = { publication: pub};
+        yield put(messageActions.add("Le téléchargement de " + pub.title + " a commencé"));
         sendIPCAddDownload(msg);
     }
 }
@@ -37,6 +40,7 @@ export function* watchPublicationDownloadCancel(): SagaIterator {
         let resp = yield take(publicationDownloadActions.PUBLICATION_DOWNLOAD_CANCEL);
         let pub: Publication = resp.publication;
         let msg: PublicationMessage = { publication: pub};
+        yield put(messageActions.add("Le téléchargement de " + pub.title + " a bien été annulé"));
         sendIPCCancelDownload(msg);
     }
 }
@@ -49,6 +53,7 @@ export function* watchPublicationImport(): SagaIterator {
     while (true) {
         let resp = yield take(publicationImportActions.PUBLICATION_FILE_IMPORT);
         let msg: FilesMessage = { paths: resp.paths};
+        yield put(messageActions.add("Le fichier " + resp.paths + " a bien été importé"));
         sendIPCFileImport(msg);
     }
 }
@@ -61,6 +66,7 @@ export function* watchPublicationDelete(): SagaIterator {
     while (true) {
         let resp = yield take(publicationImportActions.PUBLICATION_FILE_DELETE);
         let msg: FilesMessage = { identifier: resp.identifier};
+        yield put(messageActions.add("Le fichier " + resp.identifier + " a bien été supprimé"));
         sendIPCFileDelete(msg);
     }
 }
