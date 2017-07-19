@@ -1,4 +1,11 @@
+let auto: "auto" = "auto";
+let hidden: "hidden" = "hidden";
+let absolute: "absolute" = "absolute";
+
 export const Styles = {
+    App: {
+        height: "100%",
+    },
     Library: {
         addButton: {
             float: "right",
@@ -9,6 +16,13 @@ export const Styles = {
         },
         list: {
             textAlign: "center",
+            overflowY: auto,
+            overflowX: hidden,
+            position: absolute,
+            top: "130px",
+            bottom: "10px",
+            left: "20px",
+            right: "20px",
         },
         title: {
             display: "inline-block",
@@ -47,7 +61,7 @@ export const Styles = {
             boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
             fontFamily: "Roboto, sans-serif",
             margin: "5px 0px",
-            width: "1200px",
+            width: "100%",
         },
         column: {
             display: "inline-block",
@@ -55,7 +69,7 @@ export const Styles = {
         },
         container: {
             display: "inline-block",
-            maxWidth: 1200,
+            width: "100%",
             textAlign: "left",
         },
         description: {
