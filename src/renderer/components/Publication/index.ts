@@ -1,3 +1,4 @@
+import Cover from "readium-desktop/renderer/components/Publication/Cover";
 import OpdsList from "readium-desktop/renderer/components/Publication/OpdsList";
 import OpdsListElement from "readium-desktop/renderer/components/Publication/OpdsListElement";
 import PublicationCard from "readium-desktop/renderer/components/Publication/PublicationCard";
@@ -8,4 +9,5 @@ export {
     PublicationCard,
     OpdsListElement,
     OpdsList,
+    Cover,
 };

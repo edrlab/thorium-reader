@@ -240,7 +240,6 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
 
         // A correct response has been received
         // So parse the feed and generate a catalog
-        console.log("### OPDS loaded");
         const opdsParser: OPDSParser = new OPDSParser();
         opdsParser
             .parse(body)

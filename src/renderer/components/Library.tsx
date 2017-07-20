@@ -9,7 +9,6 @@ import { Store } from "redux";
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
 
-import { Contributor } from "readium-desktop/models/contributor";
 import { Publication } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -105,8 +104,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload.bind(this)}
-                deletePublication={this.openDeleteDialog.bind(this)}
-                createCover={this.createCover.bind(this)} />);
+                deletePublication={this.openDeleteDialog.bind(this)}/>);
         }
         return list;
     }
@@ -121,39 +119,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload}
-                deletePublication={this.openDeleteDialog.bind(this)}
-                createCover={this.createCover.bind(this)} />);
+                deletePublication={this.openDeleteDialog.bind(this)}/>);
         }
         return <div style={Styles.BookListElement.container}> {list} </div>;
-    }
-
-    public createCover (publication: Publication): JSX.Element {
-        if (publication.cover === null) {
-            let authors = "";
-            let bodyCSS = Styles.BookCover.body;
-            let colors = publication.customCover;
-            bodyCSS.backgroundImage = "linear-gradient(" + colors.topColor + ", " + colors.bottomColor + ")";
-
-            for (let author of publication.authors) {
-                let newAuthor: Contributor = author;
-                if (authors !== "") {
-                    authors += ", ";
-                }
-                authors += newAuthor.name;
-            }
-
-            return (
-                <div style={bodyCSS}>
-                    <div style={Styles.BookCover.box}>
-                        <p style={Styles.BookCover.title}>{publication.title}</p>
-                        <p style={Styles.BookCover.author}>{authors}</p>
-                    </div>
-                </div>
-            );
-        } else {
-            return undefined;
-        }
-
     }
 
     public render(): React.ReactElement<{}>  {

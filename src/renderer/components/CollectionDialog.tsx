@@ -8,7 +8,6 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { Store } from "redux";
 
 import { Catalog } from "readium-desktop/models/catalog";
-import { Contributor } from "readium-desktop/models/contributor";
 import { Publication } from "readium-desktop/models/publication";
 
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
@@ -35,35 +34,6 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
         return <div> {list} </div>;
     }
 
-    public createCover (publication: Publication): JSX.Element {
-        if (publication.cover === null) {
-            let authors = "";
-            let bodyCSS = Styles.BookCover.body;
-            let colors = publication.customCover;
-            bodyCSS.backgroundImage = "linear-gradient(" + colors.topColor + ", " + colors.bottomColor + ")";
-
-            for (let author of publication.authors) {
-                let newAuthor: Contributor = author;
-                if (authors !== "") {
-                    authors += ", ";
-                }
-                authors += newAuthor.name;
-            }
-
-            return (
-                <div style={bodyCSS}>
-                    <div style={Styles.BookCover.box}>
-                        <p style={Styles.BookCover.title}>{publication.title}</p>
-                        <p style={Styles.BookCover.author}>{authors}</p>
-                    </div>
-                </div>
-            );
-        } else {
-            return undefined;
-        }
-
-    }
-
     public downloadEPUB = (newPublication: Publication) => {
         this.store.dispatch(publicationDownloadActions.add(newPublication));
     }
@@ -82,7 +52,6 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
                             <OpdsList
                                 catalog={this.props.catalog}
                                 downloadEPUB={this.downloadEPUB.bind(this)}
-                                createCover={this.createCover.bind(this)}
                                 handleCheckboxChange={this.handleOPDSCheckbox.bind(this)}/>
                         ) : (
                             <div>Pas liste :(</div>
@@ -122,7 +91,6 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
         } else {
             this.pubToDownload.splice(i, 1);
         }
-        console.log(this.pubToDownload);
     }
 
     private startDownload() {

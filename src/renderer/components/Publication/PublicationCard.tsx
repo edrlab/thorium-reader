@@ -21,6 +21,8 @@ import { DownloadStatus } from "readium-desktop/models/downloadable";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
+import { Cover } from "readium-desktop/renderer/components/Publication/index";
+
 interface IPublicationState {
     isFlipped: boolean;
 }
@@ -33,7 +35,6 @@ interface IPublicationProps {
     downloadEPUB: Function;
     handleRead: Function;
     deletePublication: Function;
-    createCover: Function;
 }
 
 export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
@@ -92,7 +93,7 @@ export default class PublicationListElement extends React.Component<IPublication
                                         <img style={Styles.BookCard.image} src={publication.cover.url}/>
                                     ) : (
                                         <div style={Styles.BookCard.image}>
-                                            {this.props.createCover(this.props.publication)}
+                                            <Cover publication={publication}/>
                                         </div>
                                     )}
                                 </div>

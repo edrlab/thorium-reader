@@ -1,27 +1,19 @@
 import * as React from "react";
 
-import { lazyInject } from "readium-desktop/renderer/di";
-
 import { Publication } from "readium-desktop/models/publication";
 
-import { Translator }   from "readium-desktop/i18n/translator";
-
 import { Styles } from "readium-desktop/renderer/components/styles";
+
+import { Cover } from "readium-desktop/renderer/components/Publication/index";
 
 interface IPublicationProps {
     publication: Publication;
     downloadEPUB: Function;
-    createCover: Function;
     handleCheckboxChange: Function;
 }
 
 export default class OpdsListElement extends React.Component<IPublicationProps, null> {
-    @lazyInject("translator")
-    private translator: Translator;
-
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
-
         const publication: Publication = this.props.publication;
 
         let image: string = "";
@@ -36,7 +28,7 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
                     <img style={Styles.OpdsList.image} src={publication.cover.url}/>
                 ) : (
                     <div style={Styles.OpdsList.image}>
-                        {this.props.createCover(this.props.publication)}
+                        <Cover publication={publication}/>
                     </div>
                 )}
                 <div style={Styles.OpdsList.description}>

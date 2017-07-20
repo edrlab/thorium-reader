@@ -184,5 +184,5 @@ export const Styles = {
         backgroundColor: "white",
         zIndex: 1000,
         overflow: "scroll",
-    }
+    },
 };

@@ -6,7 +6,6 @@ import { OpdsListElement } from "readium-desktop/renderer/components/Publication
 interface IPublicationProps {
     catalog: Catalog;
     downloadEPUB: Function;
-    createCover: Function;
     handleCheckboxChange: Function;
 }
 
@@ -17,7 +16,6 @@ export default class OpdsList extends React.Component<IPublicationProps, null> {
             list.push(<OpdsListElement key={i}
                 publication={this.props.catalog.publications[i]}
                 downloadEPUB={this.props.downloadEPUB.bind(this)}
-                createCover={this.props.createCover.bind(this)}
                 handleCheckboxChange={this.props.handleCheckboxChange} />);
         }
         return <div> {list} </div>;
