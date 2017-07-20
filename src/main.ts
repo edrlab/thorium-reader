@@ -52,7 +52,7 @@ function registerProtocol() {
         const relativeUrl = request.url.substr(6);
         const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
         const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
-        callback({ path: filePath});
+        callback(filePath);
     });
 }
 
