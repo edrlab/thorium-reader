@@ -57,8 +57,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-saga": "^0.10.5",
     "@types/reflect-metadata": "0.0.5",
-    "@types/request": "^0.0.43",
-    "@types/request-promise-native": "^1.0.5",
+    "@types/request": "^2.0.0",
     "@types/tmp": "^0.0.33",
     "@types/uuid": "^2.0.29",
     "babel-core": "^6.24.1",
@@ -84,7 +83,7 @@
     "redux": "^3.6.0",
     "redux-saga": "^0.15.3",
     "reflect-metadata": "^0.1.10",
-    "request-promise-native": "^1.0.4",
+    "request": "^2.81.0",
     "tmp": "^0.0.31",
     "uuid": "^3.0.1"
   },
