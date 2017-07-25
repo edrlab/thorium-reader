@@ -14,7 +14,7 @@
   "main": "dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cross-env BUILD_ENV=PROD webpack -p",
+    "build": "cross-env BUILD_ENV=PROD webpack --define process.env.NODE_ENV=\"production\"",
     "start": "npm run build && cross-env BUILD_ENV=PROD electron .",
     "lint:ts": "tslint './src/**/*.ts' './src/**/*.tsx'",
     "lint:editorconfig": "eclint check '**/*' '[!].vscode/**/*' '[!].git/**/*' '[!]node_modules/**/*' '[!]reader-NYPL/**/*' '[!]dist/**/*' '[!]**/.DS_Store'",
