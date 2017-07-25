@@ -11,7 +11,8 @@ install:
 - 'pwd && ls -als'
 before_script:
 - 'pwd && ls -als'
-- 'yarn install --ignore-optional --pure-lockfile'
+- 'yarn install'
+- 'yarn pouchdb:install'
 script:
 - 'yarn run lint'
 - 'yarn run build --ignore-scripts'
