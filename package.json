@@ -14,7 +14,7 @@
   "main": "dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cross-env BUILD_ENV=PROD webpack -p",
+    "build": "cross-env BUILD_ENV=PROD webpack --define process.env.NODE_ENV=\"production\"",
     "start": "npm run build && cross-env BUILD_ENV=PROD electron .",
     "lint:ts": "tslint './src/**/*.ts' './src/**/*.tsx'",
     "lint:editorconfig": "eclint check '**/*' '[!].vscode/**/*' '[!].git/**/*' '[!]node_modules/**/*' '[!]reader-NYPL/**/*' '[!]dist/**/*' '[!]**/.DS_Store'",
@@ -22,7 +22,7 @@
     "start:dev:renderer": "webpack-dev-server",
     "start:dev:main": "webpack -d && electron .",
     "start:dev": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:main\"",
-    "pouchdb:install": "npm install @types/pouchdb && npm install --ignore-scripts leveldown  && npm install --ignore-scripts pouchdb && cd node_modules/pouchdb && cross-env npm_config_runtime=electron npm_config_target=53 npm install --save leveldown@latest && cd ../.. && npm remove leveldown"
+    "pouchdb:install": "npm install @types/pouchdb && npm install --ignore-scripts leveldown  && npm install --ignore-scripts pouchdb && cd node_modules/pouchdb && cross-env npm_config_runtime=electron npm_config_target=53 npm install --save leveldown@latest && cd ../.. && npm remove leveldown && npm remove prebuild"
   },
   "repository": {
     "type": "git",
@@ -57,8 +57,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-saga": "^0.10.5",
     "@types/reflect-metadata": "0.0.5",
-    "@types/request": "^0.0.43",
-    "@types/request-promise-native": "^1.0.5",
+    "@types/request": "^2.0.0",
     "@types/tmp": "^0.0.33",
     "@types/uuid": "^2.0.29",
     "babel-core": "^6.24.1",
@@ -84,7 +83,7 @@
     "redux": "^3.6.0",
     "redux-saga": "^0.15.3",
     "reflect-metadata": "^0.1.10",
-    "request-promise-native": "^1.0.4",
+    "request": "^2.81.0",
     "tmp": "^0.0.31",
     "uuid": "^3.0.1"
   },
