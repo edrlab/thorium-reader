@@ -13,10 +13,11 @@ install:
 before_script:
 - 'pwd && ls -als'
 - 'yarn install'
+- 'ls -als node_modules/@types'
 - 'yarn pouchdb:install'
 script:
 - 'yarn run lint'
-- 'yarn run build --ignore-scripts'
+- 'yarn run build'
 after_success:
 - 'pwd && ls -als'
 - 'ls dist'
