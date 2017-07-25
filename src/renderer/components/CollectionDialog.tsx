@@ -47,7 +47,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
         return (
             <div style={style}>
                  { this.props.open ? (
-                     <div>
+                     <div style={Styles.OpdsList.parent}>
                         { this.props.catalog !== undefined ? (
                             <OpdsList
                                 catalog={this.props.catalog}
@@ -56,7 +56,9 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
                         ) : (
                             <div>Pas liste :(</div>
                         )}
+                        <div style={Styles.OpdsList.buttonContainer}>
                         <RaisedButton
+                            style={Styles.OpdsList.button}
                             label="Télécharger"
                             onClick={() => {
                                 this.startDownload();
@@ -65,6 +67,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
                         <RaisedButton
                             label="Retour"
                             onClick={() => {this.props.closeFunction(); }}/>
+                        </div>
                     </div>
                 ) : (
                     <div>

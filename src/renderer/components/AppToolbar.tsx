@@ -73,7 +73,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
     private importOPDSMessage = (
         <div>
             <p>Quel flux OPDS souhaitez vous importer ?</p>
-            <input type="text" onChange={this.handleOpdsUrlChange.bind(this)}/>
+            <input type="text" style={Styles.OpdsList.textZone} onChange={this.handleOpdsUrlChange.bind(this)}/>
         </div>
     );
 

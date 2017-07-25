@@ -3,6 +3,8 @@ import * as React from "react";
 import { Catalog } from "readium-desktop/models/catalog";
 import { OpdsListElement } from "readium-desktop/renderer/components/Publication/index";
 
+import { Styles } from "readium-desktop/renderer/components/styles";
+
 interface IPublicationProps {
     catalog: Catalog;
     downloadEPUB: Function;
@@ -18,6 +20,6 @@ export default class OpdsList extends React.Component<IPublicationProps, null> {
                 downloadEPUB={this.props.downloadEPUB.bind(this)}
                 handleCheckboxChange={this.props.handleCheckboxChange} />);
         }
-        return <div> {list} </div>;
+        return <div style={Styles.OpdsList.list}> {list} </div>;
     }
 }

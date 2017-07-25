@@ -19,6 +19,8 @@ import * as DownloaderAction from "readium-desktop/actions/downloader";
 import * as publicationDownloadActions
 from "readium-desktop/actions/publication-download";
 
+import * as CollectionManagerAction from "readium-desktop/actions/collection-manager";
+
 import { DownloadAction } from "readium-desktop/actions/downloader";
 
 import {
@@ -32,6 +34,7 @@ import {
     PUBLICATION_DOWNLOAD_REQUEST,
 } from "readium-desktop/events/ipc";
 
+import { CustomCover, CustomCoverColors } from "readium-desktop/models/custom-cover";
 import { Download } from "readium-desktop/models/download";
 import { DownloadStatus } from "readium-desktop/models/downloadable";
 import { Error } from "readium-desktop/models/error";
@@ -42,6 +45,16 @@ import { PublicationMessage } from "readium-desktop/models/ipc";
 import { AppState } from "readium-desktop/main/reducers";
 
 import { container } from "readium-desktop/main/di";
+
+import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+
+import * as uuid from "uuid";
+
+import { File } from "readium-desktop/models/file";
+
+import { PublicationDb } from "readium-desktop/main/db/publication-db";
+
+import { Store } from "redux";
 
 enum PublicationDownloadResponseType {
     Error, // Publication download error
@@ -150,6 +163,13 @@ export function* watchDownloadUpdate(): SagaIterator {
 
         const state: AppState = yield select();
 
+        const publicationStorage: PublicationStorage = container.get(
+            "publication-storage") as PublicationStorage;
+        const publicationDb: PublicationDb = container.get(
+            "publication-db") as PublicationDb;
+        const db: PublicationDb = container.get("publication-db") as PublicationDb;
+        const store: Store<AppState> = container.get("store") as Store<AppState>;
+
         // Find publication linked to this download
         const download = action.download;
         const publication = state.publicationDownloads
@@ -169,11 +189,62 @@ export function* watchDownloadUpdate(): SagaIterator {
                 yield put(publicationDownloadActions.finish(
                     publication,
                 ));
+                publicationStorage
+                    .storePublication(publication.identifier, download.dstPath)
+                    .then((files) => {
+                        let newPub: Publication = {
+                                title: publication.title,
+                                description: publication.description,
+                                identifier: uuid.v4(),
+                                authors: publication.authors,
+                                languages: publication.languages,
+                            };
+                        // Extract cover
+                        let coverFile: File = null;
+                        let otherFiles: File[] = [];
+
+                        for (let file of files) {
+                            if (file.contentType.startsWith("image")) {
+                                coverFile = file;
+                            } else {
+                                otherFiles.push(file);
+                            }
+                        }
+
+                        newPub.cover = coverFile;
+                        newPub.files = otherFiles;
+
+                        if (coverFile === null) {
+                            newPub.customCover = CreateCustomCover();
+                        }
+
+                        // Store publication metadata
+                        publicationDb
+                            .put(newPub)
+                            .then((result) => {
+                                db.getAll().then((publications) => {
+                                    store.dispatch(
+                                        catalogActions.load(),
+                                    );
+                                });
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
                 break;
             default:
                 break;
         }
     }
+}
+
+function CreateCustomCover (): CustomCover {
+    let newColors = CustomCoverColors[Math.floor(Math.random() * CustomCoverColors.length)];
+    return newColors;
 }
 
 function waitForPublicationDownloadRequest(

@@ -162,6 +162,28 @@ export const Styles = {
             height: 80,
             marginLeft: "5px",
         },
+        textZone: {
+            width : 300,
+        },
+        list: {
+            overflow: auto,
+            position: absolute,
+            top: 0,
+            bottom: 60,
+            left: 0,
+            right: 0,
+        },
+        parent: {
+            height: "100%",
+        },
+        buttonContainer : {
+            position: fixed,
+            bottom: 10,
+            right: 10,
+        },
+        button: {
+            marginRight: 10,
+        }
     },
     fileInput: {
         bottom: 0,
@@ -183,6 +205,6 @@ export const Styles = {
         right: 0,
         backgroundColor: "white",
         zIndex: 1000,
-        overflow: "scroll",
+        overflow: "hidden",
     },
 };
