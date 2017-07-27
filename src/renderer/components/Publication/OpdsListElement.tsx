@@ -8,7 +8,6 @@ import { Cover } from "readium-desktop/renderer/components/Publication/index";
 
 interface IPublicationProps {
     publication: Publication;
-    downloadEPUB: Function;
     handleCheckboxChange: Function;
 }
 

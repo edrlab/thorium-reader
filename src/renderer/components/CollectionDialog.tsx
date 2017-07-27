@@ -51,7 +51,6 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
                         { this.props.catalog !== undefined ? (
                             <OpdsList
                                 catalog={this.props.catalog}
-                                downloadEPUB={this.downloadEPUB.bind(this)}
                                 handleCheckboxChange={this.handleOPDSCheckbox.bind(this)}/>
                         ) : (
                             <div>Pas liste :(</div>
@@ -100,5 +99,6 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
         for (let pub of this.pubToDownload) {
             this.downloadEPUB(pub);
         }
+        this.pubToDownload = [];
     }
 }

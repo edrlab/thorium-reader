@@ -24,7 +24,7 @@ export default class ReaderNYPL extends React.Component<IReaderNYPLProps, null> 
 
     public render(): React.ReactElement<{}>  {
         let url = "../reader-NYPL/index.html?url=" + this.props.manifestURL;
-
+        console.log(url);
         return (
             <div >
                 <div>

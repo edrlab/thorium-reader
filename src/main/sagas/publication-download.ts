@@ -71,6 +71,7 @@ interface PublicationDownloadResponse {
 function *startPublicationDownload(publication: Publication): SagaIterator {
     const downloader: Downloader = container.get("downloader") as Downloader;
     const epubType = "application/epub+zip";
+
     let downloads: Download[] = [];
 
     for (let file of publication.files) {
@@ -147,10 +148,13 @@ export function* watchPublicationDownloadUpdate(): SagaIterator {
             default:
                 break;
         }
+        yield fork(addPublicationToDb, publication);
 
         yield put(catalogActions.updatePublication(
             publication,
         ));
+
+        yield put(catalogActions.load());
     }
 }
 
@@ -163,17 +167,12 @@ export function* watchDownloadUpdate(): SagaIterator {
 
         const state: AppState = yield select();
 
-        const publicationStorage: PublicationStorage = container.get(
-            "publication-storage") as PublicationStorage;
-        const publicationDb: PublicationDb = container.get(
-            "publication-db") as PublicationDb;
-        const db: PublicationDb = container.get("publication-db") as PublicationDb;
-        const store: Store<AppState> = container.get("store") as Store<AppState>;
-
         // Find publication linked to this download
         const download = action.download;
         const publication = state.publicationDownloads
             .downloadIdentifierToPublication[download.identifier];
+        const publicationStorage: PublicationStorage = container.get(
+            "publication-storage") as PublicationStorage;
 
         // FIXME: A publication is composed of multiple downloads
         const progress = download.progress;
@@ -189,57 +188,73 @@ export function* watchDownloadUpdate(): SagaIterator {
                 yield put(publicationDownloadActions.finish(
                     publication,
                 ));
-                publicationStorage
-                    .storePublication(publication.identifier, download.dstPath)
-                    .then((files) => {
-                        let newPub: Publication = {
-                                title: publication.title,
-                                description: publication.description,
-                                identifier: uuid.v4(),
-                                authors: publication.authors,
-                                languages: publication.languages,
-                            };
-                        // Extract cover
-                        let coverFile: File = null;
-                        let otherFiles: File[] = [];
-
-                        for (let file of files) {
-                            if (file.contentType.startsWith("image")) {
-                                coverFile = file;
-                            } else {
-                                otherFiles.push(file);
-                            }
-                        }
-
-                        newPub.cover = coverFile;
-                        newPub.files = otherFiles;
-
-                        if (coverFile === null) {
-                            newPub.customCover = CreateCustomCover();
-                        }
-
-                        // Store publication metadata
-                        publicationDb
-                            .put(newPub)
-                            .then((result) => {
-                                db.getAll().then((publications) => {
-                                    store.dispatch(
-                                        catalogActions.load(),
-                                    );
-                                });
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                            });
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
+                publicationStorage.storePublication(publication.identifier, download.dstPath).then((files) => {
+                    addPublicationToDb(publication, files);
+                });
                 break;
             default:
                 break;
         }
     }
+}
+
+function addPublicationToDb (publication: Publication, files?: File[]) {
+    const publicationDb: PublicationDb = container.get(
+            "publication-db") as PublicationDb;
+    const db: PublicationDb = container.get("publication-db") as PublicationDb;
+    const store: Store<AppState> = container.get("store") as Store<AppState>;
+
+    let oldFiles: File[];
+
+    if (files) {
+        oldFiles = files;
+    } else {
+        oldFiles = publication.files;
+    }
+
+    let newPub: Publication = {
+            title: publication.title,
+            cover: publication.cover,
+            download: publication.download,
+            description: publication.description,
+            identifier: publication.identifier,
+            authors: publication.authors,
+            languages: publication.languages,
+        };
+    // Extract cover
+    let coverFile: File = null;
+    let otherFiles: File[] = [];
+
+    for (let file of oldFiles) {
+        if (file.contentType.startsWith("image")) {
+            coverFile = file;
+        } else {
+            otherFiles.push(file);
+        }
+    }
+
+    if (coverFile !== null) {
+        newPub.cover = coverFile;
+    }
+    newPub.files = otherFiles;
+
+    if (coverFile === null && newPub.cover === null) {
+        newPub.customCover = CreateCustomCover();
+    }
+
+    // Store publication metadata
+    publicationDb
+        .putOrChange(newPub)
+        .then((result) => {
+            db.getAll().then((publications) => {
+                store.dispatch(
+                    catalogActions.load(),
+                );
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 }
 
 function CreateCustomCover (): CustomCover {
