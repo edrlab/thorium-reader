@@ -12,10 +12,16 @@ interface ICoverProps {
 
 export default class Cover extends React.Component<ICoverProps, null> {
     public render(): React.ReactElement<{}>  {
-        if (this.props.publication.cover === null) {
+        if (this.props.publication.cover === null || this.props.publication.cover === undefined) {
             let authors = "";
             let bodyCSS = Styles.BookCover.body;
             let colors = this.props.publication.customCover;
+            if (colors === undefined) {
+                colors = {
+                    topColor: "#d18e4b",
+                    bottomColor: "#7c4c1c",
+                };
+            }
             bodyCSS.backgroundImage = "linear-gradient(" + colors.topColor + ", " + colors.bottomColor + ")";
 
             for (let author of this.props.publication.authors) {
@@ -35,7 +41,7 @@ export default class Cover extends React.Component<ICoverProps, null> {
                 </div>
             );
         } else {
-            return undefined;
+            return <img src={this.props.publication.cover.url}/>;
         }
     }
 }

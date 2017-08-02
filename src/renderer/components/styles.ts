@@ -183,7 +183,7 @@ export const Styles = {
         },
         button: {
             marginRight: 10,
-        }
+        },
     },
     fileInput: {
         bottom: 0,

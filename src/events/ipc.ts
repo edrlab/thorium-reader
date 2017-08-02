@@ -23,6 +23,10 @@ export const PUBLICATION_FILE_DELETE_REQUEST  = "publication.file.delete.request
 export const SYNC_CATALOG_REQUEST = "sync.catalog.request";
 export const SYNC_CATALOG_RESPONSE = "sync.catalog.response";
 
+export const OPDS_LIST_REQUEST = "sync.opds.request";
+export const OPDS_LIST_RESPONSE = "sync.opds.response";
+export const OPDS_ADD_REQUEST = "sync.opds.add.request";
+
 // The renderer process request to the main process the manifest of an epub file
 export const STREAMER_MANIFEST_OPEN_REQUEST = "streamer.manifest.open.request";
 

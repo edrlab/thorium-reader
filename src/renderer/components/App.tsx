@@ -9,6 +9,7 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 import { Store } from "redux";
 
 import { Catalog } from "readium-desktop/models/catalog";
+import { OPDS } from "readium-desktop/models/opds";
 import { Publication } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -40,6 +41,7 @@ interface AppState {
     openPublication: Publication;
     snackbarOpen: boolean;
     dialogOpen: boolean;
+    opdsList: OPDS[];
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -99,6 +101,7 @@ export default class App extends React.Component<undefined, AppState> {
             openPublication: undefined,
             snackbarOpen: false,
             dialogOpen: false,
+            opdsList: undefined,
         };
 
         this.handleOpenPublication = this.handleOpenPublication.bind(this);
@@ -150,6 +153,7 @@ export default class App extends React.Component<undefined, AppState> {
         this.store.subscribe(() => {
             const storeState = this.store.getState();
             const catalog = storeState.catalog;
+            const opds = storeState.opds;
 
             if (catalog.publications === undefined) {
                 this.setState({catalog: undefined});
@@ -169,6 +173,7 @@ export default class App extends React.Component<undefined, AppState> {
                 readerOpen: (storeState.reader.status === ReaderStatus.Open),
                 openManifestUrl: storeState.reader.manifestUrl,
                 openPublication: storeState.reader.publication,
+                opdsList: opds.opds,
             });
 
             this.translator.setLocale(this.store.getState().i18n.locale);
@@ -183,7 +188,8 @@ export default class App extends React.Component<undefined, AppState> {
                     <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
                         <AppToolbar
                             openDialog={this.openDialog.bind(this)}
-                            closeDialog={this.handleDialogClose.bind(this)}/>
+                            closeDialog={this.handleDialogClose.bind(this)}
+                            opdsList={this.state.opdsList}/>
                         <Library
                             catalog={this.state.catalog}
                             handleRead={this.handleOpenPublication}

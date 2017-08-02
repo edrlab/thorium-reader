@@ -19,8 +19,6 @@ import * as DownloaderAction from "readium-desktop/actions/downloader";
 import * as publicationDownloadActions
 from "readium-desktop/actions/publication-download";
 
-import * as CollectionManagerAction from "readium-desktop/actions/collection-manager";
-
 import { DownloadAction } from "readium-desktop/actions/downloader";
 
 import {
@@ -47,8 +45,6 @@ import { AppState } from "readium-desktop/main/reducers";
 import { container } from "readium-desktop/main/di";
 
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-
-import * as uuid from "uuid";
 
 import { File } from "readium-desktop/models/file";
 

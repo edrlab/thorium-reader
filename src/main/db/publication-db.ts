@@ -31,7 +31,7 @@ export class PublicationDb {
                     _rev: doc._rev,
                 },
             )).catch((error) => {
-                console.log("Oh bah c'est une erreur ou je m'y connais pas");
+                console.log(error);
             });
         }).catch((err) => {
             console.error(err);

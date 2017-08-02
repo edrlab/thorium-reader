@@ -14,6 +14,12 @@ import {
     watchReaderInit,
 } from "readium-desktop/renderer/sagas/reader";
 
+import {
+    watchMainOpdsResponse,
+    watchOpdsAdd,
+    watchOpdsListInit,
+} from "readium-desktop/renderer/sagas/opds";
+
 export function* rootSaga() {
     yield [
         watchCatalogInit(),
@@ -25,5 +31,8 @@ export function* rootSaga() {
         watchPublicationDownloadCancel(),
         watchPublicationImport(),
         watchPublicationDelete(),
+        watchOpdsListInit(),
+        watchMainOpdsResponse(),
+        watchOpdsAdd(),
     ];
 }

@@ -9,8 +9,6 @@ import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
 
-import RaisedButton from "material-ui/RaisedButton";
-
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
 import IconButton from "material-ui/IconButton";
 import LinearProgress from "material-ui/LinearProgress";
