@@ -26,8 +26,6 @@ import {
 } from "readium-desktop/main/sagas/collection-manager";
 
 import {
-    watchOpdsLoad,
-    watchOpdsUpdate,
     watchRendererOpdsListRequest,
 } from "readium-desktop/main/sagas/opds";
 
@@ -47,7 +45,5 @@ export function* rootSaga() {
         watchRendererPublicationRequest(),
         watchPublicationUpdate(),
         watchRendererOpdsListRequest(),
-        watchOpdsLoad(),
-        watchOpdsUpdate(),
     ];
 }

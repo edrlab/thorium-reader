@@ -25,7 +25,9 @@ export const SYNC_CATALOG_RESPONSE = "sync.catalog.response";
 
 export const OPDS_LIST_REQUEST = "sync.opds.request";
 export const OPDS_LIST_RESPONSE = "sync.opds.response";
-export const OPDS_ADD_REQUEST = "sync.opds.add.request";
+export const OPDS_ADD_REQUEST = "opds.add.request";
+export const OPDS_REMOVE_REQUEST = "opds.remove.request";
+export const OPDS_UPDATE_REQUEST = "opds.update.request";
 
 // The renderer process request to the main process the manifest of an epub file
 export const STREAMER_MANIFEST_OPEN_REQUEST = "streamer.manifest.open.request";

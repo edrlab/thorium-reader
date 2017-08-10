@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Catalog } from "readium-desktop/models/catalog";
-import { OpdsListElement } from "readium-desktop/renderer/components/Publication/index";
+import { OpdsListElement } from "readium-desktop/renderer/components/opds/index";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 

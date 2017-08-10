@@ -168,7 +168,7 @@ export const Styles = {
         list: {
             overflow: auto,
             position: absolute,
-            top: 0,
+            top: 60,
             bottom: 60,
             left: 0,
             right: 0,
@@ -183,6 +183,17 @@ export const Styles = {
         },
         button: {
             marginRight: 10,
+        },
+        errorMessage: {
+            color: "red",
+        },
+        formElementLabel: {
+            display: "block",
+            float: "left",
+            width: 100,
+        },
+        formElement: {
+            margin : 10,
         },
     },
     fileInput: {

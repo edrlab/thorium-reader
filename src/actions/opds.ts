@@ -6,9 +6,8 @@ import { OPDS } from "readium-desktop/models/opds";
 export const OPDS_INIT = "OPDS_INIT";
 export const OPDS_SET = "OPDS_SET";
 export const OPDS_ADD = "OPDS_ADD";
-
-// Load from DB
-export const OPDS_LOAD = "OPDS_LOAD";
+export const OPDS_REMOVE = "OPDS_REMOVE";
+export const OPDS_UPDATE = "OPDS_UPDATE";
 
 export interface OpdsAction extends Action {
     opdsList?: OPDS[];
@@ -35,8 +34,16 @@ export function add(opds: OPDS): OpdsAction {
     };
 }
 
-export function load(): OpdsAction {
+export function update(opds: OPDS): OpdsAction {
     return {
-        type: OPDS_LOAD,
+        type: OPDS_UPDATE,
+        opds,
+    };
+}
+
+export function remove(opds: OPDS): OpdsAction {
+    return {
+        type: OPDS_REMOVE,
+        opds,
     };
 }

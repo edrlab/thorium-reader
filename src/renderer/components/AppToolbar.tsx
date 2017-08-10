@@ -21,17 +21,12 @@ import { setLocale } from "readium-desktop/actions/i18n";
 import { Translator } from "readium-desktop/i18n/translator";
 import { RendererState } from "readium-desktop/renderer/reducers";
 
-import CollectionDialog from "readium-desktop/renderer/components/CollectionDialog";
+import CollectionDialog from "readium-desktop/renderer/components/opds/CollectionDialog";
 import { Styles } from "readium-desktop/renderer/components/styles";
 
-import { OPDSParser } from "readium-desktop/services/opds";
-
-import { Catalog } from "readium-desktop/models/catalog";
 import { OPDS } from "readium-desktop/models/opds";
 
-import * as opdsAction from "readium-desktop/actions/opds";
-
-import * as request from "request";
+import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
 
 interface AppToolbarState {
     locale: string;
@@ -40,7 +35,7 @@ interface AppToolbarState {
     opdsImportOpen: boolean;
     opdsUrl: string;
     opdsName: string;
-    opdsCatalog: Catalog;
+    opds: OPDS;
 }
 
 interface AppToolbarProps {
@@ -58,32 +53,6 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
     @lazyInject("translator")
     private translator: Translator;
 
-    private addOPDSAction = [
-        <FlatButton
-            label="Ajouter"
-            primary={true}
-            onTouchTap={() => {
-                this.addOpds();
-                this.props.closeDialog();
-            }}
-        />,
-        <FlatButton
-            label="Annuler"
-            primary={true}
-            onTouchTap={() => {this.props.closeDialog(); }}
-        />,
-    ];
-
-    private addOPDSMessage = (
-        <div>
-            <p>Quel flux OPDS souhaitez vous ajouter ?</p>
-            <label>Nom : </label>
-            <input type="text" style={Styles.OpdsList.textZone} onChange={this.handleOpdsNameChange.bind(this)}/>
-            <label>Url : </label>
-            <input type="text" style={Styles.OpdsList.textZone} onChange={this.handleOpdsUrlChange.bind(this)}/>
-        </div>
-    );
-
     constructor() {
         super();
         this.state = {
@@ -93,7 +62,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
             opdsImportOpen: false,
             opdsUrl: undefined,
             opdsName: undefined,
-            opdsCatalog: undefined,
+            opds: undefined,
         };
 
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
@@ -117,14 +86,16 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         let listOPDS = [];
         let i = 0;
         if (this.props.opdsList !== undefined) {
-            for (let flux of this.props.opdsList) {
+            for (let newOpds of this.props.opdsList) {
                 listOPDS.push((
                     <MenuItem
                         key= {i}
-                        primaryText={flux.name}
+                        primaryText={newOpds.name}
                         onClick={() => {
-                            this.downloadOPDS(flux.url);
-                            this.setState({opdsImportOpen: true});
+                            this.setState({
+                                opdsImportOpen: true,
+                                opds: newOpds,
+                            });
                         }}
                     >
                     </MenuItem>
@@ -145,7 +116,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                     <ToolbarGroup>
                         <IconMenu
                             iconButtonElement={<FontIcon
-                                className="fa fa-plus-circle"
+                                className="fa fa-book"
                                 style={Styles.appToolbar.iconButton}
                                 color={blue500}>
                             </FontIcon>}>
@@ -153,35 +124,40 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             <MenuItem
                                 primaryText="Add OPDS Flux"
                                 onClick={() => {
-                                    this.props.openDialog(this.addOPDSMessage, null,  this.addOPDSAction);
+                                        this.props.openDialog(
+                                            <OpdsForm closeDialog={this.props.closeDialog}/>,
+                                            null,
+                                            []);
                                 }}/>
                         </IconMenu>
                         <ToolbarSeparator />
-                        <IconMenu
-                            iconButtonElement={<FontIcon
+                        <IconButton touch={true}>
+                            <FontIcon
                                 className="fa fa-plus-circle"
-                                style={Styles.appToolbar.iconButton}
                                 color={blue500}>
-                            </FontIcon>}>
-                            <MenuItem primaryText="From an epub file">
-                                <input
-                                type="file"
-                                onChange={this.handleFileChange}
-                                style={Styles.appToolbar.inputImport} />
-                            </MenuItem>
-                            <MenuItem
-                                primaryText="From an opds flux"
-                                onClick={() => {
-                                    this.props.openDialog(this.addOPDSMessage, null,  this.addOPDSAction);
-                                }}/>
-                        </IconMenu>
+                                    <input
+                                    type="file"
+                                    onChange={this.handleFileChange}
+                                    style={{bottom: 0,
+                                        cursor: "pointer",
+                                        left: 0,
+                                        opacity: 0,
+                                        overflow: "hidden",
+                                        position: "absolute",
+                                        right: 0,
+                                        top: 0,
+                                        width: "100%",
+                                        zIndex: 100}} />
+                            </FontIcon>
+                        </IconButton>
                         <IconMenu
                             iconButtonElement={
                                 <IconButton touch={true}>
                                     <FontIcon
                                         className="fa fa-ellipsis-v"
                                         style={Styles.appToolbar.iconButton}
-                                        color={blue500} />
+                                        color={blue500}>
+                                    </FontIcon>
                                 </IconButton>
                             }
                         >
@@ -214,10 +190,17 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                     >
                     <div dangerouslySetInnerHTML={{__html: this.state.dialogContent}} />
                 </Dialog>
-                <CollectionDialog
-                    open={this.state.opdsImportOpen}
-                    closeFunction={this.closeCollectionDialog.bind(this)}
-                    catalog={this.state.opdsCatalog}/>
+                {this.state.opdsImportOpen ? (
+                    <CollectionDialog
+                        open={this.state.opdsImportOpen}
+                        closeFunction={this.closeCollectionDialog.bind(this)}
+                        opds={this.state.opds}
+                        openDialog={this.props.openDialog}
+                        closeDialog={this.props.closeDialog}/>
+                ) : (
+                    <div></div>
+                )
+                }
             </div>
         );
     }
@@ -256,48 +239,5 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
 
     private closeCollectionDialog () {
         this.setState({opdsImportOpen: false});
-    }
-
-    private handleOpdsUrlChange (event: any) {
-        this.setState({opdsUrl: event.target.value});
-    }
-
-    private handleOpdsNameChange (event: any) {
-        this.setState({opdsName: event.target.value});
-    }
-
-    private downloadOPDS (url: string) {
-        request(url, (error: any, response: any, body: any) => {
-        if (response && (
-                response.statusCode < 200 || response.statusCode > 299)) {
-            // Unable to download the resource
-            console.error("Impossible de télécharger le flux OPDS HTTP ERROR");
-            return;
-        }
-
-        if (error) {
-            console.error("Impossible de télécharger le flux OPDS", error);
-            return;
-        }
-
-        // A correct response has been received
-        // So parse the feed and generate a catalog
-        const opdsParser: OPDSParser = new OPDSParser();
-        opdsParser
-            .parse(body)
-            .then((catalog: Catalog) => {
-                this.setState({opdsCatalog: catalog});
-            });
-    });
-    }
-
-    private addOpds() {
-        let opds: OPDS = {
-            identifier: "13",
-            name: this.state.opdsName,
-            url: this.state.opdsUrl,
-        };
-        console.log(opds);
-        this.store.dispatch(opdsAction.add(opds));
     }
 }

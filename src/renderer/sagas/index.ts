@@ -18,6 +18,8 @@ import {
     watchMainOpdsResponse,
     watchOpdsAdd,
     watchOpdsListInit,
+    watchOpdsRemove,
+    watchOpdsUpdate,
 } from "readium-desktop/renderer/sagas/opds";
 
 export function* rootSaga() {
@@ -34,5 +36,7 @@ export function* rootSaga() {
         watchOpdsListInit(),
         watchMainOpdsResponse(),
         watchOpdsAdd(),
+        watchOpdsUpdate(),
+        watchOpdsRemove(),
     ];
 }

@@ -14,19 +14,46 @@ import * as publicationDownloadActions from "readium-desktop/actions/publication
 
 import { RendererState } from "readium-desktop/renderer/reducers";
 
-import { OpdsList } from "readium-desktop/renderer/components/Publication/index";
+import { OpdsList } from "readium-desktop/renderer/components/opds/index";
+
+import { OPDS } from "readium-desktop/models/opds";
+
+import { OPDSParser } from "readium-desktop/services/opds";
+
+import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
+
+import * as request from "request";
+
+interface ICollectionDialogState {
+    catalog: Catalog;
+    downloadError: boolean;
+}
 
 interface ICollectiondialogProps {
     open: boolean;
     closeFunction: Function;
-    catalog: Catalog;
+    openDialog: Function;
+    closeDialog: Function;
+    opds: OPDS;
 }
 
-export default class CollectionDialog extends React.Component<ICollectiondialogProps, undefined> {
+export default class CollectionDialog extends React.Component<ICollectiondialogProps, ICollectionDialogState> {
     @lazyInject("store")
     private store: Store<RendererState>;
 
     private pubToDownload: Publication[] = [];
+
+    constructor() {
+        super();
+        this.state = {
+            catalog: undefined,
+            downloadError: false,
+        };
+    }
+
+    public componentDidMount() {
+        this.downloadCatalog();
+    }
 
     public createElementList() {
         let list: any = [];
@@ -48,14 +75,33 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
             <div style={style}>
                  { this.props.open ? (
                      <div style={Styles.OpdsList.parent}>
-                        { this.props.catalog !== undefined ? (
+                         <h2>{this.props.opds.name}</h2>
+                        { this.state.catalog !== undefined ? (
                             <OpdsList
-                                catalog={this.props.catalog}
+                                catalog={this.state.catalog}
                                 handleCheckboxChange={this.handleOPDSCheckbox.bind(this)}/>
+                        ) : this.state.downloadError ? (
+                            <div>
+                                <p>Impossible de télécharger le contenu du flux OPDS.</p>
+                                <p>veuillez verifier l'adresse du flux ou votre connexion intenet</p>
+                            </div>
                         ) : (
-                            <div>Pas liste :(</div>
+                            <div></div>
                         )}
                         <div style={Styles.OpdsList.buttonContainer}>
+                        <RaisedButton
+                            style={Styles.OpdsList.button}
+                            label="Parametre"
+                            onClick={() => {
+                                this.props.openDialog((
+                                    <OpdsForm
+                                        closeDialog={this.props.closeDialog}
+                                        closeFunction={this.props.closeFunction}
+                                        opds={this.props.opds}/>
+                                    ),
+                                    null,
+                                    []);
+                            }}/>
                         <RaisedButton
                             style={Styles.OpdsList.button}
                             label="Télécharger"
@@ -101,4 +147,30 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
         }
         this.pubToDownload = [];
     }
+
+    private downloadCatalog () {
+        request(this.props.opds.url, (error: any, response: any, body: any) => {
+        if (response && (
+                response.statusCode < 200 || response.statusCode > 299)) {
+            // Unable to download the resource
+            this.setState({downloadError: true});
+            return;
+        }
+
+        if (error) {
+            this.setState({downloadError: true});
+            return;
+        }
+
+        // A correct response has been received
+        // So parse the feed and generate a catalog
+        const opdsParser: OPDSParser = new OPDSParser();
+        opdsParser
+            .parse(body)
+            .then((newCatalog: Catalog) => {
+                this.setState({catalog: newCatalog});
+            });
+    });
+    }
+
 }

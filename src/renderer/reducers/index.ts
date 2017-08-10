@@ -19,6 +19,8 @@ import {
     MessageState,
 } from "readium-desktop/renderer/reducers/message";
 
+import { i18n, I18NState } from "readium-desktop/reducers/i18n";
+
 export interface RendererState {
     i18n: I18NState;
     catalog: CatalogState;

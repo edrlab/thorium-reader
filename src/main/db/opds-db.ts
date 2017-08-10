@@ -3,10 +3,6 @@ import * as PouchDB from "pouchdb";
 
 import { OPDS } from "readium-desktop/models/opds";
 
-import * as uuid from "uuid";
-
-const ID_PREFIX = "opds_";
-
 @injectable()
 export class OpdsDb {
     private db: PouchDB.Database;
@@ -15,17 +11,17 @@ export class OpdsDb {
         this.db = db;
     }
 
-    public put(Opds: OPDS): Promise<any> {
+    public put(opds: OPDS): Promise<any> {
         return this.db.put(Object.assign(
             {},
-            Opds,
-            { _id: uuid.v4() },
+            opds,
+            { _id: opds.identifier },
         ));
     }
 
     public get(identifier: string): Promise<OPDS> {
         return this.db
-            .get(ID_PREFIX + identifier)
+            .get(identifier)
             .then((result: PouchDB.Core.Document<any>) => {
                 return this.convertToOPDS(result);
             })
@@ -34,9 +30,27 @@ export class OpdsDb {
             });
     }
 
+    public update(opds: OPDS): Promise<any> {
+        return this.db
+            .get(opds.identifier)
+            .then((result: PouchDB.Core.Document<any>) => {
+                return this.db.put(Object.assign(
+                    {},
+                    opds,
+                    {
+                        _id: opds.identifier,
+                        _rev: result._rev,
+                    },
+                ));
+            })
+            .catch((error) => {
+                throw error;
+            });
+    }
+
     public remove(identifier: string): Promise<any> {
         return this.db
-            .get(ID_PREFIX + identifier)
+            .get(identifier)
             .then((result: PouchDB.Core.Document<any>) => {
                 this.db.remove(result);
             })

@@ -2,11 +2,18 @@ import { ipcRenderer } from "electron";
 import { channel, Channel, SagaIterator } from "redux-saga";
 import { call, fork, put, take } from "redux-saga/effects";
 
+import {
+    OPDS_ADD,
+    OPDS_REMOVE,
+    OPDS_UPDATE,
+} from "readium-desktop/actions/opds";
 import * as opdsActions from "readium-desktop/actions/opds";
 import {
     OPDS_ADD_REQUEST,
     OPDS_LIST_REQUEST,
     OPDS_LIST_RESPONSE,
+    OPDS_REMOVE_REQUEST,
+    OPDS_UPDATE_REQUEST,
 } from "readium-desktop/events/ipc";
 import { OpdsMessage } from "readium-desktop/models/ipc";
 import { OPDS } from "readium-desktop/models/opds";
@@ -24,6 +31,14 @@ function AddOpds(msg: OpdsMessage) {
     ipcRenderer.send(OPDS_ADD_REQUEST, msg);
 }
 
+function RemoveOpds(msg: OpdsMessage) {
+    ipcRenderer.send(OPDS_REMOVE_REQUEST, msg);
+}
+
+function UpdateOpds(msg: OpdsMessage) {
+    ipcRenderer.send(OPDS_UPDATE_REQUEST, msg);
+}
+
 export function* watchOpdsListInit(): SagaIterator {
     yield take(WINDOW_INIT);
     yield call(retrieveOpdsList);
@@ -31,16 +46,31 @@ export function* watchOpdsListInit(): SagaIterator {
 
 export function* watchOpdsAdd(): SagaIterator {
     while (true) {
-        let resp = yield take(opdsActions.OPDS_ADD);
+        let resp = yield take(OPDS_ADD);
         let msg: OpdsMessage = {opds: resp.opds};
         AddOpds(msg);
+    }
+}
+
+export function* watchOpdsUpdate(): SagaIterator {
+    while (true) {
+        let resp = yield take(OPDS_UPDATE);
+        let msg: OpdsMessage = {opds: resp.opds};
+        UpdateOpds(msg);
+    }
+}
+
+export function* watchOpdsRemove(): SagaIterator {
+    while (true) {
+        let resp = yield take(OPDS_REMOVE);
+        let msg: OpdsMessage = {opds: resp.opds};
+        RemoveOpds(msg);
     }
 }
 
 function waitForOpdsListResponse(chan: Channel<OPDS[]>) {
     // Wait for catalog response from main process
     ipcRenderer.on(OPDS_LIST_RESPONSE, (event: any, msg: OpdsMessage) => {
-        console.log(msg);
         chan.put(msg.opdsList);
     });
 }
