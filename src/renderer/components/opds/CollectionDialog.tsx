@@ -73,9 +73,9 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
 
         return (
             <div style={style}>
-                 { this.props.open ? (
-                     <div style={Styles.OpdsList.parent}>
-                         <h2>{this.props.opds.name}</h2>
+                { this.props.open ? (
+                    <div style={Styles.OpdsList.parent}>
+                        <h2>{this.props.opds.name}</h2>
                         { this.state.catalog !== undefined ? (
                             <OpdsList
                                 catalog={this.state.catalog}
