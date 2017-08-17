@@ -24,9 +24,12 @@ import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
 
 import * as request from "request";
 
+import { Translator }   from "readium-desktop/i18n/translator";
+
 interface ICollectionDialogState {
     catalog: Catalog;
     downloadError: boolean;
+    downloadUrl: string;
 }
 
 interface ICollectiondialogProps {
@@ -35,11 +38,15 @@ interface ICollectiondialogProps {
     openDialog: Function;
     closeDialog: Function;
     opds: OPDS;
+    updateDisplay: Function;
 }
 
 export default class CollectionDialog extends React.Component<ICollectiondialogProps, ICollectionDialogState> {
     @lazyInject("store")
     private store: Store<RendererState>;
+
+    @lazyInject("translator")
+    private translator: Translator;
 
     private pubToDownload: Publication[] = [];
 
@@ -48,11 +55,18 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
         this.state = {
             catalog: undefined,
             downloadError: false,
+            downloadUrl: "",
         };
     }
 
     public componentDidMount() {
         this.downloadCatalog();
+    }
+
+    public componentDidUpdate() {
+        if (this.state.downloadUrl !== this.props.opds.url) {
+            this.downloadCatalog();
+        }
     }
 
     public createElementList() {
@@ -66,6 +80,8 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
     }
 
     public render(): React.ReactElement<{}>  {
+        const __ = this.translator.translate;
+
         let style = {};
         if (this.props.open) {
             style = Styles.collectionDialog;
@@ -76,41 +92,41 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
                 { this.props.open ? (
                     <div style={Styles.OpdsList.parent}>
                         <h2>{this.props.opds.name}</h2>
-                        { this.state.catalog !== undefined ? (
+                        { this.state.downloadError ? (
+                            <div>
+                                <p>{__("opds.downloadError")}</p>
+                            </div>
+                        ) : this.state.catalog !== undefined ? (
                             <OpdsList
                                 catalog={this.state.catalog}
                                 handleCheckboxChange={this.handleOPDSCheckbox.bind(this)}/>
-                        ) : this.state.downloadError ? (
-                            <div>
-                                <p>Impossible de télécharger le contenu du flux OPDS.</p>
-                                <p>veuillez verifier l'adresse du flux ou votre connexion intenet</p>
-                            </div>
                         ) : (
                             <div></div>
                         )}
                         <div style={Styles.OpdsList.buttonContainer}>
                         <RaisedButton
                             style={Styles.OpdsList.button}
-                            label="Parametre"
+                            label={__("opds.settings")}
                             onClick={() => {
                                 this.props.openDialog((
                                     <OpdsForm
                                         closeDialog={this.props.closeDialog}
                                         closeFunction={this.props.closeFunction}
-                                        opds={this.props.opds}/>
+                                        opds={this.props.opds}
+                                        updateDisplay={this.props.updateDisplay}/>
                                     ),
                                     null,
                                     []);
                             }}/>
                         <RaisedButton
                             style={Styles.OpdsList.button}
-                            label="Télécharger"
+                            label={__("opds.download")}
                             onClick={() => {
                                 this.startDownload();
                                 this.props.closeFunction();
                             }}/>
                         <RaisedButton
-                            label="Retour"
+                            label={__("opds.back")}
                             onClick={() => {this.props.closeFunction(); }}/>
                         </div>
                     </div>
@@ -153,12 +169,20 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
         if (response && (
                 response.statusCode < 200 || response.statusCode > 299)) {
             // Unable to download the resource
-            this.setState({downloadError: true});
+            console.log("ERREUR");
+            this.setState({
+                downloadError: true,
+                downloadUrl: this.props.opds.url,
+            });
             return;
         }
 
         if (error) {
-            this.setState({downloadError: true});
+            console.log("ERREUR");
+            this.setState({
+                downloadError: true,
+                downloadUrl: this.props.opds.url,
+            });
             return;
         }
 
@@ -168,9 +192,13 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
         opdsParser
             .parse(body)
             .then((newCatalog: Catalog) => {
-                this.setState({catalog: newCatalog});
+                this.setState({
+                    catalog: newCatalog,
+                    downloadError: false,
+                    downloadUrl: this.props.opds.url,
+                });
             });
+        console.log("PAS ERREUR :D");
     });
     }
-
 }

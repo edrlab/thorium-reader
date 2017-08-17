@@ -146,19 +146,42 @@ export const Styles = {
             float: "left",
             height: 80,
             width: 52,
+            marginRight: 10,
         },
         body: {
             boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
             fontFamily: "Roboto, sans-serif",
             margin: "5px 0px",
             width: "100%",
+            display: "inline-block",
         },
         column: {
             display: "inline-block",
             width: "250px",
+            height: "100%",
+            float: "left",
+        },
+        checkbox: {
+            height: "100%",
+            width: 20,
+            float: "left",
+            margin: "0 15px 0 0",
+        },
+        descriptionInside: {
+            height: 80,
+            verticalAlign: "middle",
+            display: "table-cell",
+            paddingRight: "15px",
         },
         description: {
+            height: 80,
+            display: "table",
+            margin: 0,
+        },
+        descriptionContener: {
             display: "inline-block",
+        },
+        informations: {
             height: 80,
             marginLeft: "5px",
         },
@@ -170,8 +193,8 @@ export const Styles = {
             position: absolute,
             top: 60,
             bottom: 60,
-            left: 0,
-            right: 0,
+            left: 30,
+            right: 30,
         },
         parent: {
             height: "100%",

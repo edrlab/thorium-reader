@@ -16,9 +16,21 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
         const publication: Publication = this.props.publication;
 
         let image: string = "";
+        let authors = "";
 
         if (publication.cover) {
             image = publication.cover.url;
+        }
+
+        if (publication.authors) {
+            let i = 0;
+            for (let author of publication.authors) {
+                if (i > 0) {
+                    authors += " & ";
+                }
+                authors += author.name;
+                i++;
+            }
         }
 
         return (
@@ -30,13 +42,18 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
                         <Cover publication={publication}/>
                     </div>
                 )}
-                <div style={Styles.OpdsList.description}>
+                <div style={Styles.OpdsList.informations}>
                     <div style={Styles.OpdsList.column}>
                         <h4 style={Styles.OpdsList.title}>{publication.title}</h4>
+                        <p>{authors}</p>
                     </div>
-                    <div style={Styles.OpdsList.column}>
-                        <input type="checkbox" onChange={this.props.handleCheckboxChange.bind(this, publication)}/>
-                    </div>
+                    <input
+                        style={Styles.OpdsList.checkbox}
+                        type="checkbox"
+                        onChange={this.props.handleCheckboxChange.bind(this, publication)}/>
+                        <p style={Styles.OpdsList.description}>
+                            <span style={Styles.OpdsList.descriptionInside}>{publication.description}</span>
+                        </p>
                 </div>
             </div>
         );

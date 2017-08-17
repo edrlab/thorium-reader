@@ -15,10 +15,13 @@ import FlatButton from "material-ui/FlatButton";
 
 import * as uuid from "uuid";
 
+import { Translator }   from "readium-desktop/i18n/translator";
+
 interface IOpdsFormProps {
     closeDialog: Function;
     closeFunction?: Function;
     opds?: OPDS;
+    updateDisplay?: Function;
 }
 
 interface IOpdsFormState {
@@ -30,6 +33,9 @@ interface IOpdsFormState {
 export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormState> {
     @lazyInject("store")
     private store: Store<RendererState>;
+
+    @lazyInject("translator")
+    private translator: Translator;
 
     constructor() {
         super();
@@ -53,6 +59,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
     }
 
     public render(): React.ReactElement<{}>  {
+        const __ = this.translator.translate;
         let messageError = (<p style={Styles.OpdsList.errorMessage}>Veuillez remplir tous les champs</p>);
         let currentMessageError = (<div></div>);
         if (this.state.formError) {
@@ -62,9 +69,9 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
             <div>
                 {currentMessageError}
                 {this.props.opds ? (
-                    <p>Vous pouvez mettre les champs à jour</p>
+                    <p>{__("opds.updateSentence")}</p>
                 ) : (
-                    <p>Quel flux OPDS souhaitez vous ajouter ?</p>
+                    <p>{__("opds.addSentence")}</p>
                 )}
                 <div style={Styles.OpdsList.formElement}>
                     <label style={Styles.OpdsList.formElementLabel} >Nom :</label>
@@ -85,7 +92,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                 {this.props.opds ? (
                 <div>
                     <FlatButton
-                        label="Supprimer le flux"
+                        label={__("opds.delete")}
                         primary={true}
                         onTouchTap={() => {
                             this.store.dispatch(opdsActions.remove(this.props.opds));
@@ -94,7 +101,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                         }}
                     />
                     <FlatButton
-                        label="Mettre à jour"
+                        label={__("opds.update")}
                         primary={true}
                         onTouchTap={() => {
                             if (this.isFormValid()) {
@@ -103,6 +110,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                                     name: this.state.opdsName,
                                     url: this.state.opdsUrl,
                                 };
+                                this.props.updateDisplay(newOpds);
                                 this.store.dispatch(opdsActions.update(newOpds));
                                 this.props.closeDialog();
                             } else {
@@ -113,7 +121,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                 </div>
                 ) : (
                     <FlatButton
-                        label="Ajouter"
+                        label={__("opds.addButton")}
                         primary={true}
                         onTouchTap={() => {
                             if (this.isFormValid()) {
@@ -135,7 +143,6 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
     }
 
     private handleOpdsUrlChange (event: any) {
-        console.log(event.target.value);
         this.setState({opdsUrl: event.target.value}, () => {console.log(this.state.opdsUrl); });
     }
 

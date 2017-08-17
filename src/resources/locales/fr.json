@@ -1,6 +1,6 @@
 {
     "library": {
-        "heading": "Collection",
+        "heading": "Bibliothèque",
         "add": "Ajouter à la bibliothèque",
         "startDownload": "Un téléchargement a démarré.",
         "cancelDownload": "Un téléchargement a été arrété.",
@@ -24,5 +24,18 @@
       "no": "Non",
       "delete": "Êtes vous sûr de vouloir supprimer cette publication ?",
       "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) :"
+    },
+    "opds": {
+      "download": "Télécharger",
+      "settings": "Parametre",
+      "delete": "Supprimer le flux",
+      "update": "Modifier",
+      "addMenu": "Ajouter un flux OPDS",
+      "formError": "Veuillez remplir tous les champs",
+      "addButton": "Ajouter",
+      "updateSentence": "Vous pouvez mettre les champs à jour.",
+      "addSentence": "Quel flux OPDS souhaitez vous ajouter ?",
+      "downloadError": "Une erreur est survenue lors de la récupération du flux.",
+      "back": "Retour"
     }
 }
