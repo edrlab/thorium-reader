@@ -213,7 +213,7 @@ export const Styles = {
         formElementLabel: {
             display: "block",
             float: "left",
-            width: 100,
+            width: 150,
         },
         formElement: {
             margin : 10,

@@ -195,7 +195,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                 {this.state.opdsImportOpen ? (
                     <CollectionDialog
                         open={this.state.opdsImportOpen}
-                        closeFunction={this.closeCollectionDialog.bind(this)}
+                        closeList={this.closeCollectionDialog.bind(this)}
                         opds={this.state.opds}
                         openDialog={this.props.openDialog}
                         closeDialog={this.props.closeDialog}

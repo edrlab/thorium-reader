@@ -28,14 +28,22 @@
     "opds": {
       "download": "Télécharger",
       "settings": "Parametre",
-      "delete": "Supprimer le flux",
-      "update": "Modifier",
       "addMenu": "Ajouter un flux OPDS",
       "formError": "Veuillez remplir tous les champs",
-      "addButton": "Ajouter",
-      "updateSentence": "Vous pouvez mettre les champs à jour.",
-      "addSentence": "Quel flux OPDS souhaitez vous ajouter ?",
       "downloadError": "Une erreur est survenue lors de la récupération du flux.",
-      "back": "Retour"
+      "back": "Retour",
+      "addForm": {
+        "addButton": "Ajouter",
+        "updateSentence": "Vous pouvez mettre les champs à jour.",
+        "addSentence": "Quel flux OPDS souhaitez vous ajouter ?",
+        "delete": "Supprimer le flux",
+        "update": "Modifier"
+      },
+      "authentication": {
+        "username": "Nom d'utilisateur :",
+        "password": "Mot de passe :",
+        "loginButton": "Connexion",
+        "sentence": "Veuillez vous connecter pour acceder au contenu"
+      }
     }
 }

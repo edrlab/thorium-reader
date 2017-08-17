@@ -69,9 +69,9 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
             <div>
                 {currentMessageError}
                 {this.props.opds ? (
-                    <p>{__("opds.updateSentence")}</p>
+                    <p>{__("opds.addForm.updateSentence")}</p>
                 ) : (
-                    <p>{__("opds.addSentence")}</p>
+                    <p>{__("opds.addForm.addSentence")}</p>
                 )}
                 <div style={Styles.OpdsList.formElement}>
                     <label style={Styles.OpdsList.formElementLabel} >Nom :</label>
@@ -92,7 +92,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                 {this.props.opds ? (
                 <div>
                     <FlatButton
-                        label={__("opds.delete")}
+                        label={__("opds.addForm.delete")}
                         primary={true}
                         onTouchTap={() => {
                             this.store.dispatch(opdsActions.remove(this.props.opds));
@@ -101,7 +101,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                         }}
                     />
                     <FlatButton
-                        label={__("opds.update")}
+                        label={__("opds.addForm.update")}
                         primary={true}
                         onTouchTap={() => {
                             if (this.isFormValid()) {
@@ -121,7 +121,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                 </div>
                 ) : (
                     <FlatButton
-                        label={__("opds.addButton")}
+                        label={__("opds.addForm.addButton")}
                         primary={true}
                         onTouchTap={() => {
                             if (this.isFormValid()) {
@@ -143,7 +143,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
     }
 
     private handleOpdsUrlChange (event: any) {
-        this.setState({opdsUrl: event.target.value}, () => {console.log(this.state.opdsUrl); });
+        this.setState({opdsUrl: event.target.value});
     }
 
     private handleOpdsNameChange (event: any) {

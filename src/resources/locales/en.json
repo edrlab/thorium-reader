@@ -28,14 +28,22 @@
     "opds": {
       "download": "Download",
       "settings": "Settings",
-      "delete": "Delete the feed",
-      "update": "Update",
       "addMenu": "Add OPDS feed",
       "formError": "Please, fill all the fields",
-      "addButton": "Add",
-      "updateSentence": "You can update the fields.",
-      "addSentence": "What OPDS feed would you like to add?",
+      "back": "Back",
       "downloadError": "An error occurred while retrieving the feed.",
-      "back": "Back"
+      "addForm": {
+        "addButton": "Add",
+        "updateSentence": "You can update the fields.",
+        "addSentence": "What OPDS feed would you like to add?",
+        "delete": "Delete the feed",
+        "update": "Update"
+      },
+      "authentication": {
+        "username": "Username :",
+        "password": "Password :",
+        "loginButton": "Login",
+        "sentence": "Please, log in to access to the contents"
+      }
     }
 }

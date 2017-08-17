@@ -14,7 +14,10 @@ import * as publicationDownloadActions from "readium-desktop/actions/publication
 
 import { RendererState } from "readium-desktop/renderer/reducers";
 
-import { OpdsList } from "readium-desktop/renderer/components/opds/index";
+import {
+    AuthenticationForm,
+    OpdsList,
+} from "readium-desktop/renderer/components/opds/index";
 
 import { OPDS } from "readium-desktop/models/opds";
 
@@ -30,15 +33,22 @@ interface ICollectionDialogState {
     catalog: Catalog;
     downloadError: boolean;
     downloadUrl: string;
+    username: string;
+    password: string;
 }
 
 interface ICollectiondialogProps {
     open: boolean;
-    closeFunction: Function;
+    closeList: Function;
     openDialog: Function;
     closeDialog: Function;
     opds: OPDS;
     updateDisplay: Function;
+}
+
+interface User {
+    username: string;
+    password: string;
 }
 
 export default class CollectionDialog extends React.Component<ICollectiondialogProps, ICollectionDialogState> {
@@ -56,15 +66,19 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
             catalog: undefined,
             downloadError: false,
             downloadUrl: "",
+            username: "",
+            password: "",
         };
     }
 
     public componentDidMount() {
         this.downloadCatalog();
+        this.setState({downloadUrl: this.props.opds.url});
     }
 
     public componentDidUpdate() {
         if (this.state.downloadUrl !== this.props.opds.url) {
+            console.log("coucou");
             this.downloadCatalog();
         }
     }
@@ -111,7 +125,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
                                 this.props.openDialog((
                                     <OpdsForm
                                         closeDialog={this.props.closeDialog}
-                                        closeFunction={this.props.closeFunction}
+                                        closeFunction={this.props.closeList}
                                         opds={this.props.opds}
                                         updateDisplay={this.props.updateDisplay}/>
                                     ),
@@ -123,11 +137,11 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
                             label={__("opds.download")}
                             onClick={() => {
                                 this.startDownload();
-                                this.props.closeFunction();
+                                this.props.closeList();
                             }}/>
                         <RaisedButton
                             label={__("opds.back")}
-                            onClick={() => {this.props.closeFunction(); }}/>
+                            onClick={() => {this.props.closeList(); }}/>
                         </div>
                     </div>
                 ) : (
@@ -164,41 +178,56 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
         this.pubToDownload = [];
     }
 
-    private downloadCatalog () {
-        request(this.props.opds.url, (error: any, response: any, body: any) => {
-        if (response && (
-                response.statusCode < 200 || response.statusCode > 299)) {
-            // Unable to download the resource
-            console.log("ERREUR");
-            this.setState({
-                downloadError: true,
-                downloadUrl: this.props.opds.url,
-            });
-            return;
+    private downloadCatalog (user?: User) {
+        let username = "";
+        let password = "";
+
+        if (user) {
+            username = user.username;
+            password = user.password;
         }
 
-        if (error) {
-            console.log("ERREUR");
-            this.setState({
-                downloadError: true,
-                downloadUrl: this.props.opds.url,
-            });
-            return;
-        }
+        request.get(this.props.opds.url, (error: any, response: any, body: any) => {
+            if (response && response.statusCode === 401) {
+                this.props.openDialog(
+                    <AuthenticationForm
+                    closeDialog={this.props.closeDialog}
+                    downloadOPDS={this.downloadCatalog.bind(this)}
+                    closeList={this.props.closeList}/>,
+                    null, []);
+                return;
+            }
 
-        // A correct response has been received
-        // So parse the feed and generate a catalog
-        const opdsParser: OPDSParser = new OPDSParser();
-        opdsParser
-            .parse(body)
-            .then((newCatalog: Catalog) => {
+            if (response && (
+                    response.statusCode < 200 || response.statusCode > 299)) {
+                // Unable to download the resource
                 this.setState({
-                    catalog: newCatalog,
-                    downloadError: false,
+                    downloadError: true,
                     downloadUrl: this.props.opds.url,
                 });
-            });
-        console.log("PAS ERREUR :D");
-    });
+                return;
+            }
+
+            if (error) {
+                this.setState({
+                    downloadError: true,
+                    downloadUrl: this.props.opds.url,
+                });
+                return;
+            }
+
+            // A correct response has been received
+            // So parse the feed and generate a catalog
+            const opdsParser: OPDSParser = new OPDSParser();
+            opdsParser
+                .parse(body)
+                .then((newCatalog: Catalog) => {
+                    this.setState({
+                        catalog: newCatalog,
+                        downloadError: false,
+                        downloadUrl: this.props.opds.url,
+                    });
+                });
+        }).auth(username, password);
     }
 }
