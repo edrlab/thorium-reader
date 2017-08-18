@@ -1,5 +1,7 @@
 import * as React        from "react";
 
+import FontIcon from "material-ui/FontIcon";
+import IconButton from "material-ui/IconButton";
 import RaisedButton      from "material-ui/RaisedButton";
 
 import { Styles }        from "readium-desktop/renderer/components/styles";
@@ -33,8 +35,7 @@ interface ICollectionDialogState {
     catalog: Catalog;
     downloadError: boolean;
     downloadUrl: string;
-    username: string;
-    password: string;
+    userInfo: User;
 }
 
 interface ICollectiondialogProps {
@@ -66,8 +67,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
             catalog: undefined,
             downloadError: false,
             downloadUrl: "",
-            username: "",
-            password: "",
+            userInfo: undefined,
         };
     }
 
@@ -78,7 +78,6 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
 
     public componentDidUpdate() {
         if (this.state.downloadUrl !== this.props.opds.url) {
-            console.log("coucou");
             this.downloadCatalog();
         }
     }
@@ -105,7 +104,13 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
             <div style={style}>
                 { this.props.open ? (
                     <div style={Styles.OpdsList.parent}>
-                        <h2>{this.props.opds.name}</h2>
+                        <h2 style={Styles.OpdsList.title} >{this.props.opds.name}</h2>
+                        <IconButton
+                            style={Styles.OpdsList.refreshButton}
+                            tooltip="Refresh Feed"
+                            onClick={() => {this.downloadCatalog(this.state.userInfo); }}>
+                            <FontIcon className="fa fa-refresh" />
+                        </IconButton>
                         { this.state.downloadError ? (
                             <div>
                                 <p>{__("opds.downloadError")}</p>
@@ -179,15 +184,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
     }
 
     private downloadCatalog (user?: User) {
-        let username = "";
-        let password = "";
-
-        if (user) {
-            username = user.username;
-            password = user.password;
-        }
-
-        request.get(this.props.opds.url, (error: any, response: any, body: any) => {
+        let req = request.get(this.props.opds.url, (error: any, response: any, body: any) => {
             if (response && response.statusCode === 401) {
                 this.props.openDialog(
                     <AuthenticationForm
@@ -226,8 +223,12 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
                         catalog: newCatalog,
                         downloadError: false,
                         downloadUrl: this.props.opds.url,
+                        userInfo: user,
                     });
                 });
-        }).auth(username, password);
+        });
+        if (user) {
+            req.auth(user.username, user.password);
+        }
     }
 }

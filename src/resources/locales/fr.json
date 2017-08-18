@@ -37,7 +37,9 @@
         "updateSentence": "Vous pouvez mettre les champs à jour.",
         "addSentence": "Quel flux OPDS souhaitez vous ajouter ?",
         "delete": "Supprimer le flux",
-        "update": "Modifier"
+        "update": "Modifier",
+        "name": "Nom du flux :",
+        "url": "Adresse du flux :"
       },
       "authentication": {
         "username": "Nom d'utilisateur :",

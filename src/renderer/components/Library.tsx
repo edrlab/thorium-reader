@@ -96,30 +96,34 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     public createCardList() {
         let list: any = [];
-        for (let i = 0; i < this.props.catalog.publications.length; i++) {
+        let i = 0;
+        for (let pub of this.props.catalog.publications.sort(this.sort)) {
             list.push(<PublicationCard key={i}
                 publicationId={i}
                 downloadable={false}
-                publication={this.props.catalog.publications[i]}
+                publication={pub}
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload.bind(this)}
                 deletePublication={this.openDeleteDialog.bind(this)}/>);
+            i++;
         }
         return list;
     }
 
     public createElementList() {
         let list: any = [];
-        for (let i = 0; i < this.props.catalog.publications.length; i++) {
+        let i = 0;
+        for (let pub of this.props.catalog.publications.sort(this.sort)) {
             list.push(<PublicationListElement key={i}
-                publication={this.props.catalog.publications[i]}
+                publication={pub}
                 publicationId={i}
                 downloadable={false}
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload}
                 deletePublication={this.openDeleteDialog.bind(this)}/>);
+            i++;
         }
         return <div style={Styles.BookListElement.container}> {list} </div>;
     }
@@ -163,5 +167,15 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 </div>
             </div>
         );
+    }
+
+    private sort (a: Publication, b: Publication) {
+        if (a.title > b.title) {
+            return 1;
+        } else if (a.title === b.title) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
 }

@@ -74,7 +74,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                     <p>{__("opds.addForm.addSentence")}</p>
                 )}
                 <div style={Styles.OpdsList.formElement}>
-                    <label style={Styles.OpdsList.formElementLabel} >Nom :</label>
+                    <label style={Styles.OpdsList.formElementLabel} >{__("opds.addForm.name")}</label>
                         <input
                             type="text"
                             style={Styles.OpdsList.textZone}
@@ -82,7 +82,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                             onChange={this.handleOpdsNameChange}/><br/>
                 </div>
                 <div style={Styles.OpdsList.formElement}>
-                    <label style={Styles.OpdsList.formElementLabel}>Url :</label>
+                    <label style={Styles.OpdsList.formElementLabel}>{__("opds.addForm.url")}</label>
                         <input
                             type="text"
                             style={Styles.OpdsList.textZone}

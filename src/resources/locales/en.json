@@ -37,7 +37,9 @@
         "updateSentence": "You can update the fields.",
         "addSentence": "What OPDS feed would you like to add?",
         "delete": "Delete the feed",
-        "update": "Update"
+        "update": "Update",
+        "name": "Feed name :",
+        "url": "Feed link :"
       },
       "authentication": {
         "username": "Username :",

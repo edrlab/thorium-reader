@@ -137,16 +137,51 @@ export const Styles = {
         },
     },
     OpdsList: {
-        title: {
-            margin: "10px 0px",
+        Publication: {
+            title: {
+                margin: "10px 0px",
+            },
+            image: {
+                fontSize: "6px",
+                display: "inline-block",
+                float: "left",
+                height: 80,
+                width: 52,
+                marginRight: 10,
+            },
+            checkbox: {
+                height: "100%",
+                width: 20,
+                float: "left",
+                margin: "0 15px 0 0",
+            },
+            descriptionInside: {
+                height: 80,
+                verticalAlign: "middle",
+                display: "table-cell",
+                paddingRight: "15px",
+            },
+            description: {
+                height: 80,
+                display: "table",
+                margin: 0,
+            },
+            descriptionContener: {
+                display: "inline-block",
+            },
+            informations: {
+                height: 80,
+                marginLeft: "5px",
+            },
+            column: {
+                display: "inline-block",
+                width: "250px",
+                height: "100%",
+                float: "left",
+            },
         },
-        image: {
-            fontSize: "6px",
-            display: "inline-block",
+        title: {
             float: "left",
-            height: 80,
-            width: 52,
-            marginRight: 10,
         },
         body: {
             boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
@@ -154,36 +189,6 @@ export const Styles = {
             margin: "5px 0px",
             width: "100%",
             display: "inline-block",
-        },
-        column: {
-            display: "inline-block",
-            width: "250px",
-            height: "100%",
-            float: "left",
-        },
-        checkbox: {
-            height: "100%",
-            width: 20,
-            float: "left",
-            margin: "0 15px 0 0",
-        },
-        descriptionInside: {
-            height: 80,
-            verticalAlign: "middle",
-            display: "table-cell",
-            paddingRight: "15px",
-        },
-        description: {
-            height: 80,
-            display: "table",
-            margin: 0,
-        },
-        descriptionContener: {
-            display: "inline-block",
-        },
-        informations: {
-            height: 80,
-            marginLeft: "5px",
         },
         textZone: {
             width : 300,
@@ -217,6 +222,9 @@ export const Styles = {
         },
         formElement: {
             margin : 10,
+        },
+        refreshButton: {
+            float: "right",
         },
     },
     fileInput: {
