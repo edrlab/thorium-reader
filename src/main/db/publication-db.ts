@@ -21,6 +21,26 @@ export class PublicationDb {
         ));
     }
 
+    public putOrChange (publication: Publication): Promise<any> {
+        return this.db.get(ID_PREFIX + publication.identifier).then((doc) => {
+            return this.db.put(Object.assign(
+                {},
+                publication,
+                {
+                    _id: ID_PREFIX + publication.identifier,
+                    _rev: doc._rev,
+                },
+            )).catch((error) => {
+                console.log(error);
+            });
+        }).catch((err) => {
+            console.error(err);
+            if (err.error === true && err.reason === "missing") {
+                return this.put(publication);
+            }
+        });
+    }
+
     public get(identifier: string): Promise<Publication> {
         return this.db
             .get(ID_PREFIX + identifier)
@@ -63,6 +83,7 @@ export class PublicationDb {
             identifier: dbDoc.doc.identifier,
             title: dbDoc.doc.title,
             description: dbDoc.doc.description,
+            download: dbDoc.doc.download,
             authors: dbDoc.doc.authors,
             languages: dbDoc.doc.languages,
             cover: dbDoc.doc.cover,

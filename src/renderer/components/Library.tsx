@@ -9,7 +9,6 @@ import { Store } from "redux";
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
 
-import { Contributor } from "readium-desktop/models/contributor";
 import { Publication } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -97,63 +96,36 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     public createCardList() {
         let list: any = [];
-        for (let i = 0; i < this.props.catalog.publications.length; i++) {
+        let i = 0;
+        for (let pub of this.props.catalog.publications.sort(this.sort)) {
             list.push(<PublicationCard key={i}
                 publicationId={i}
                 downloadable={false}
-                publication={this.props.catalog.publications[i]}
+                publication={pub}
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload.bind(this)}
-                deletePublication={this.openDeleteDialog.bind(this)}
-                createCover={this.createCover.bind(this)} />);
+                deletePublication={this.openDeleteDialog.bind(this)}/>);
+            i++;
         }
         return list;
     }
 
     public createElementList() {
         let list: any = [];
-        for (let i = 0; i < this.props.catalog.publications.length; i++) {
+        let i = 0;
+        for (let pub of this.props.catalog.publications.sort(this.sort)) {
             list.push(<PublicationListElement key={i}
-                publication={this.props.catalog.publications[i]}
+                publication={pub}
                 publicationId={i}
                 downloadable={false}
                 downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload}
-                deletePublication={this.openDeleteDialog.bind(this)}
-                createCover={this.createCover.bind(this)} />);
+                deletePublication={this.openDeleteDialog.bind(this)}/>);
+            i++;
         }
         return <div style={Styles.BookListElement.container}> {list} </div>;
-    }
-
-    public createCover (publication: Publication): JSX.Element {
-        if (publication.cover === null) {
-            let authors = "";
-            let bodyCSS = Styles.BookCover.body;
-            let colors = publication.customCover;
-            bodyCSS.backgroundImage = "linear-gradient(" + colors.topColor + ", " + colors.bottomColor + ")";
-
-            for (let author of publication.authors) {
-                let newAuthor: Contributor = author;
-                if (authors !== "") {
-                    authors += ", ";
-                }
-                authors += newAuthor.name;
-            }
-
-            return (
-                <div style={bodyCSS}>
-                    <div style={Styles.BookCover.box}>
-                        <p style={Styles.BookCover.title}>{publication.title}</p>
-                        <p style={Styles.BookCover.author}>{authors}</p>
-                    </div>
-                </div>
-            );
-        } else {
-            return undefined;
-        }
-
     }
 
     public render(): React.ReactElement<{}>  {
@@ -195,5 +167,15 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 </div>
             </div>
         );
+    }
+
+    private sort (a: Publication, b: Publication) {
+        if (a.title > b.title) {
+            return 1;
+        } else if (a.title === b.title) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
 }

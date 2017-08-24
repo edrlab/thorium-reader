@@ -16,6 +16,8 @@ import { DownloadStatus } from "readium-desktop/models/downloadable";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
+import { Cover } from "readium-desktop/renderer/components/Publication/index";
+
 interface IPublicationProps {
     publication: Publication;
     publicationId: number;
@@ -23,7 +25,6 @@ interface IPublicationProps {
     downloadEPUB: Function;
     handleRead: Function;
     cancelDownload: Function;
-    createCover: Function;
     deletePublication: Function;
 }
 
@@ -59,7 +60,7 @@ export default class PublicationListElement extends React.Component<IPublication
                     <img style={Styles.BookListElement.image} src={publication.cover.url}/>
                 ) : (
                     <div style={Styles.BookListElement.image}>
-                        {this.props.createCover(this.props.publication)}
+                        <Cover publication={publication}/>
                     </div>
                 )}
                 <div style={Styles.BookListElement.description}>

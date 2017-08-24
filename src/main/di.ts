@@ -21,6 +21,7 @@ import { OPDSParser } from "readium-desktop/services/opds";
 import { store } from "readium-desktop/main/store/memory";
 import { streamer } from "readium-desktop/main/streamer";
 
+import { OpdsDb } from "readium-desktop/main/db/opds-db";
 import { PublicationDb } from "readium-desktop/main/db/publication-db";
 import {
     PublicationStorage,
@@ -43,6 +44,11 @@ const publicationDb = new PouchDB(
     path.join(rootDbPath, "publications"),
 );
 
+// OPDS db
+const opdsDb = new PouchDB(
+    path.join(rootDbPath, "opds"),
+);
+
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
     app.getPath("userData"),
@@ -63,6 +69,9 @@ container.bind<Downloader>("downloader").toConstantValue(
 );
 container.bind<PublicationDb>("publication-db").toConstantValue(
     new PublicationDb(publicationDb),
+);
+container.bind<OpdsDb>("opds-db").toConstantValue(
+    new OpdsDb(opdsDb),
 );
 container.bind<PublicationStorage>("publication-storage").toConstantValue(
     new PublicationStorage(publicationRepositoryPath),

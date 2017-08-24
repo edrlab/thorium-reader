@@ -9,6 +9,7 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 import { Store } from "redux";
 
 import { Catalog } from "readium-desktop/models/catalog";
+import { OPDS } from "readium-desktop/models/opds";
 import { Publication } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -40,6 +41,7 @@ interface AppState {
     openPublication: Publication;
     snackbarOpen: boolean;
     dialogOpen: boolean;
+    opdsList: OPDS[];
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -58,7 +60,29 @@ export default class App extends React.Component<undefined, AppState> {
 
     private filesToImport: File[] = [];
 
-    private actions: JSX.Element[] = [];
+    private currentDialogAction: JSX.Element[];
+
+    private confimationAction: Function;
+
+    private defaultDialogActions = [
+        <FlatButton
+            label="Oui"
+            primary={true}
+            onTouchTap={() => {
+                this.handleDialogClose();
+                if (this.confimationAction) {
+                    this.confimationAction();
+                } else {
+                    this.importFiles();
+                }
+            }}
+        />,
+        <FlatButton
+            label="Non"
+            primary={true}
+            onTouchTap={() => {this.handleDialogClose(); }}
+        />,
+    ];
 
     constructor() {
         super();
@@ -77,6 +101,7 @@ export default class App extends React.Component<undefined, AppState> {
             openPublication: undefined,
             snackbarOpen: false,
             dialogOpen: false,
+            opdsList: undefined,
         };
 
         this.handleOpenPublication = this.handleOpenPublication.bind(this);
@@ -128,6 +153,7 @@ export default class App extends React.Component<undefined, AppState> {
         this.store.subscribe(() => {
             const storeState = this.store.getState();
             const catalog = storeState.catalog;
+            const opds = storeState.opds;
 
             if (catalog.publications === undefined) {
                 this.setState({catalog: undefined});
@@ -147,6 +173,7 @@ export default class App extends React.Component<undefined, AppState> {
                 readerOpen: (storeState.reader.status === ReaderStatus.Open),
                 openManifestUrl: storeState.reader.manifestUrl,
                 openPublication: storeState.reader.publication,
+                opdsList: opds.opds,
             });
 
             this.translator.setLocale(this.store.getState().i18n.locale);
@@ -158,8 +185,11 @@ export default class App extends React.Component<undefined, AppState> {
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
                     {!this.state.readerOpen ? (
-                    <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{Height: "98vh"}}>
-                        <AppToolbar />
+                    <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
+                        <AppToolbar
+                            openDialog={this.openDialog.bind(this)}
+                            closeDialog={this.handleDialogClose.bind(this)}
+                            opdsList={this.state.opdsList}/>
                         <Library
                             catalog={this.state.catalog}
                             handleRead={this.handleOpenPublication}
@@ -172,14 +202,15 @@ export default class App extends React.Component<undefined, AppState> {
                             onRequestClose={this.handleRequestClose}
                         />
                         <Dialog
-                            actions={this.actions}
+                            actions={this.currentDialogAction}
                             modal={false}
                             open={this.state.dialogOpen}
-                            onRequestClose={this.handleDialogClose}
+                            onRequestClose={this.handleDialogClose.bind(this)}
                             autoScrollBodyContent={true}
                             >
                             {this.dialogMessage}
                         </Dialog>
+
                     </Dropzone>
                     ) : (
                         <div>
@@ -201,25 +232,17 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     private openImportDialog (message: JSX.Element) {
-        this.openDialog(message, () => {this.importFiles(); });
+        this.openDialog(message);
     }
 
-    private openDialog(message: JSX.Element, positiveResponseFunction: Function) {
-        this.actions = [
-            <FlatButton
-                label={this.translator.translate("dialog.yes")}
-                primary={true}
-                onTouchTap={() => {
-                    positiveResponseFunction();
-                    this.handleDialogClose(); }}
-            />,
-            <FlatButton
-                label={this.translator.translate("dialog.no")}
-                primary={true}
-                onTouchTap={() => {this.handleDialogClose(); }}
-            />,
-        ];
+    private openDialog(message: JSX.Element, confirmationAction?: Function, actions?: JSX.Element[]) {
+        this.confimationAction = confirmationAction;
 
+        if (actions) {
+            this.currentDialogAction = actions;
+        } else {
+            this.currentDialogAction = this.defaultDialogActions;
+        }
         this.dialogMessage = message;
         this.setState({dialogOpen: true});
     }

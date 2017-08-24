@@ -2,7 +2,7 @@
 import { combineReducers } from "redux";
 
 import { catalogReducer, CatalogState } from "readium-desktop/reducers/catalog";
-import { i18n, I18NState } from "readium-desktop/reducers/i18n";
+import { opdsReducer, OpdsState } from "readium-desktop/reducers/opds";
 
 import {
     windowReducer,
@@ -19,12 +19,15 @@ import {
     MessageState,
 } from "readium-desktop/renderer/reducers/message";
 
+import { i18n, I18NState } from "readium-desktop/reducers/i18n";
+
 export interface RendererState {
     i18n: I18NState;
     catalog: CatalogState;
     window: WindowState;
     reader: ReaderState;
     message: MessageState;
+    opds: OpdsState;
 }
 
 export const rootReducer = combineReducers({
@@ -33,4 +36,5 @@ export const rootReducer = combineReducers({
     window: windowReducer,
     reader: readerReducer,
     message: messageReducer,
+    opds: opdsReducer,
 });

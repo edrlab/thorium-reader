@@ -9,8 +9,6 @@ import { Publication } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
 
-import RaisedButton from "material-ui/RaisedButton";
-
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
 import IconButton from "material-ui/IconButton";
 import LinearProgress from "material-ui/LinearProgress";
@@ -20,6 +18,8 @@ import * as ReactCardFlip from "react-card-flip";
 import { DownloadStatus } from "readium-desktop/models/downloadable";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
+
+import { Cover } from "readium-desktop/renderer/components/Publication/index";
 
 interface IPublicationState {
     isFlipped: boolean;
@@ -33,7 +33,6 @@ interface IPublicationProps {
     downloadEPUB: Function;
     handleRead: Function;
     deletePublication: Function;
-    createCover: Function;
 }
 
 export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
@@ -92,7 +91,7 @@ export default class PublicationListElement extends React.Component<IPublication
                                         <img style={Styles.BookCard.image} src={publication.cover.url}/>
                                     ) : (
                                         <div style={Styles.BookCard.image}>
-                                            {this.props.createCover(this.props.publication)}
+                                            <Cover publication={publication}/>
                                         </div>
                                     )}
                                 </div>
@@ -100,7 +99,7 @@ export default class PublicationListElement extends React.Component<IPublication
                                     <div
                                         style={Styles.BookCard.image}
                                     >
-                                        {this.props.downloadable ? (
+                                        {this.props.publication.download ? (
                                             <div>
                                                 {( !publication.download
                                                     || publication.download.status === DownloadStatus.Init) ? (
@@ -118,10 +117,16 @@ export default class PublicationListElement extends React.Component<IPublication
                                                     </div>
                                                 ) : publication.download.status === DownloadStatus.Downloaded ? (
                                                     <div>
-                                                        <p>{__("publication.endDownload")}</p>
-                                                        <RaisedButton
+                                                        <FlatButton
+                                                            style={Styles.BookCard.downloadButton}
                                                             label={__("publication.readButton")}
                                                             onClick={() => {this.props.handleRead(publication); }}/>
+                                                        <FlatButton
+                                                            style={Styles.BookCard.downloadButton}
+                                                            label={__("Supprimer")}
+                                                            onClick={() => {
+                                                                this.props.deletePublication(publication.identifier);
+                                                            }}/>
                                                     </div>
                                                 ) : publication.download.status === DownloadStatus.Failed ? (
                                                     <div>
@@ -144,7 +149,7 @@ export default class PublicationListElement extends React.Component<IPublication
                                                 <FlatButton
                                                 style={Styles.BookCard.downloadButton}
                                                 onClick={() => {this.props.handleRead(publication); }}
-                                                label="Lire" />
+                                                label={__("publication.readButton")} />
 
                                                 <FlatButton
                                                 style={Styles.BookCard.downloadButton}

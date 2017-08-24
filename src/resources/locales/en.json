@@ -1,6 +1,6 @@
 {
     "library": {
-        "heading": "Collection",
+        "heading": "Bibliotheque",
         "add": "Add to the library",
         "startDownload": "A download started.",
         "cancelDownload": "A download canceled.",
@@ -24,5 +24,28 @@
       "no": "No",
       "delete": "Do you really want to delete these publication?",
       "import": "Do you really want to import :"
+    },
+    "opds": {
+      "download": "Download",
+      "settings": "Settings",
+      "addMenu": "Add OPDS feed",
+      "formError": "Please, fill all the fields",
+      "back": "Back",
+      "downloadError": "An error occurred while retrieving the feed.",
+      "addForm": {
+        "addButton": "Add",
+        "updateSentence": "You can update the fields.",
+        "addSentence": "What OPDS feed would you like to add?",
+        "delete": "Delete the feed",
+        "update": "Update",
+        "name": "Feed name :",
+        "url": "Feed link :"
+      },
+      "authentication": {
+        "username": "Username :",
+        "password": "Password :",
+        "loginButton": "Login",
+        "sentence": "Please, log in to access to the contents"
+      }
     }
 }
