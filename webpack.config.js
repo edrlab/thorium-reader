@@ -9,7 +9,7 @@ let buildEnv = process.env.BUILD_ENV || "DEV";
 let rendererBaseUrl = "file://";
 
 let definePlugin = new webpack.DefinePlugin({
-    __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl)
+    __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
 });
 
 let mainConfig = Object.assign({}, {
@@ -25,7 +25,6 @@ let mainConfig = Object.assign({}, {
         __dirname: false,
         __filename: false,
     },
-
 
     externals: {
         "pouchdb": "require('pouchdb')",
