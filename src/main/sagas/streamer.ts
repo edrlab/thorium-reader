@@ -6,7 +6,7 @@ import * as portfinder from "portfinder";
 import { channel, Channel, SagaIterator } from "redux-saga";
 import { call, fork, put, select, take } from "redux-saga/effects";
 
-import { Server } from "r2-streamer-js";
+import { Server } from "r2-streamer-js/dist/es6-es2015/src/http/server";
 
 import {
     STREAMER_MANIFEST_CLOSE_REQUEST,

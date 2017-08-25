@@ -21,7 +21,7 @@ from "readium-desktop/actions/collection-manager";
 
 import { FilesMessage } from "readium-desktop/models/ipc";
 
-import { EpubParsePromise } from "r2-streamer-js/dist/es5/src/parser/epub";
+import { EpubParsePromise } from "r2-streamer-js/dist/es6-es2015/src/parser/epub";
 
 import { Contributor } from "readium-desktop/models/contributor";
 import { CustomCover, CustomCoverColors } from "readium-desktop/models/custom-cover";
