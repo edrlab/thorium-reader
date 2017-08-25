@@ -84,7 +84,7 @@
     "redux-saga": "^0.15.3",
     "reflect-metadata": "^0.1.10",
     "request": "^2.81.0",
-    "tmp": "^0.0.31",
+    "tmp": "^0.0.33",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
