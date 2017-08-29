@@ -18,7 +18,6 @@ In readium-desktop project
 ### Install readium-desktop dependencies
 
 1) `yarn install` (initialize local `node_modules` packages from dependencies declared in `package.json`)
-2) `yarn pouchdb:install`
 
 ### Start application in dev environment
 
