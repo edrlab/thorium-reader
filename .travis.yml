@@ -14,10 +14,10 @@ install:
 - 'pwd && ls -als'
 before_script:
 - 'pwd && ls -als'
-- 'yarn install'
+- 'npm install'
 script:
-- 'yarn run lint'
-- 'yarn run build'
+- 'npm run lint'
+- 'npm run build'
 after_success:
 - 'pwd && ls -als'
 - 'ls dist'

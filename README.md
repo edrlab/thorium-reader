@@ -17,26 +17,25 @@ In readium-desktop project
 
 ### Install readium-desktop dependencies
 
-1) `yarn install` (initialize local `node_modules` packages from dependencies declared in `package.json`)
+1) `npm install` (initialize local `node_modules` packages from dependencies declared in `package.json`)
 
 ### Start application in dev environment
 
-1) `yarn start:dev`
+1) `npm run start:dev`
 
 ### Start application in production environment
 
-1) `yarn start`
+1) `npm start`
 
 ## Useful commands
 
 ### Upgrade global packages
 
 1) `npm update --global` (sync NPM global packages)
-2) `yarn global upgrade` (sync Yarn global packages)
 
 ### Upgrade readium desktop packages
 
-1) `yarn upgrade` (sync local packages)
+1) `npm update` (sync local packages)
 
 After each upgrade do not forget to reinstall pouchdb:
 
@@ -46,7 +45,7 @@ After each upgrade do not forget to reinstall pouchdb:
 
 It's very important (required) to launch lint before pushing any code on github repository
 
-1) `yarn run lint`
+1) `npm run lint`
 
 ## Technologies
 
@@ -57,26 +56,18 @@ It's very important (required) to launch lint before pushing any code on github 
 * saga
 * i18next
 
-## Install
-
-Install all dependencies
-
-```
-yarn install
-```
-
 ## Getting started
 
 ### Production
 
 ```
-yarn start
+npm start
 ```
 
 ### Development
 
 ```
-yarn run start:dev
+npm run start:dev
 ```
 
 This environment provides a hot loader.
