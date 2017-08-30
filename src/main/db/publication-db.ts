@@ -1,7 +1,8 @@
 import { injectable} from "inversify";
-const PouchDB = require("pouchdb");
-
 import { Publication } from "readium-desktop/models/publication";
+
+// tslint:disable-next-line:no-unused-variable no-var-requires
+const PouchDB = require("pouchdb");
 
 const ID_PREFIX = "publication_";
 

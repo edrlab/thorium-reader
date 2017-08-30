@@ -1,6 +1,8 @@
 import { injectable} from "inversify";
-const PouchDB = require("pouchdb");
 import { OPDS } from "readium-desktop/models/opds";
+
+// tslint:disable-next-line:no-unused-variable no-var-requires
+const PouchDB = require("pouchdb");
 
 @injectable()
 export class OpdsDb {

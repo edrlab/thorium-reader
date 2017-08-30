@@ -6,6 +6,7 @@ import * as path from "path";
 import { app } from "electron";
 import { Store } from "redux";
 
+// tslint:disable-next-line:no-var-requires
 const PouchDB = require("pouchdb");
 
 import { Container } from "inversify";
