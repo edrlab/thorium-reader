@@ -1,5 +1,5 @@
 import { injectable} from "inversify";
-import * as PouchDB from "pouchdb";
+const PouchDB = require("pouchdb");
 
 import { Publication } from "readium-desktop/models/publication";
 

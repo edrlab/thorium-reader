@@ -4,3 +4,8 @@ declare module "*.json" {
 }
 
 declare module "react-card-flip";
+
+declare module "pouchdb" {
+    const PouchDB: PouchDB.Static;
+    export default PouchDB;
+}

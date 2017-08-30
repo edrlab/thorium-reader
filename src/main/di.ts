@@ -6,7 +6,7 @@ import * as path from "path";
 import { app } from "electron";
 import { Store } from "redux";
 
-import * as PouchDB from "pouchdb";
+const PouchDB = require("pouchdb");
 
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
