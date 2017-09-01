@@ -31,7 +31,7 @@ let mainConfig = Object.assign({}, {
 
     // Webpack is unable to manage native modules
     externals: {
-       "leveldown": "leveldown",
+        "leveldown": "leveldown",
     },
 
     resolve: {
