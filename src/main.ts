@@ -11,6 +11,7 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
+declare const __NODE_ENV__: string;
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
@@ -39,7 +40,10 @@ function createWindow() {
     }
 
     mainWindow.loadURL(rendererBaseUrl);
-    mainWindow.webContents.openDevTools();
+
+    if (__NODE_ENV__ === "DEV") {
+        mainWindow.webContents.openDevTools();
+    }
 
     mainWindow.on("closed", () => {
         mainWindow = null;

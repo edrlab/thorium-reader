@@ -25,23 +25,25 @@ import {
     PublicationStorage,
 } from "readium-desktop/main/storage/publication-storage";
 
-//import FSDownAdapter from "readium-desktop/pouchdb/fsdown-adapter";
-import MemoryAdapter from "pouchdb-adapter-memory";
-import LevelDBAdapter from "pouchdb-adapter-leveldb";
 import * as PouchDBCore from "pouchdb-core";
+
+import * as jsondown from "jsondown";
 import * as leveldown from "leveldown";
 
+import LevelDBAdapter from "pouchdb-adapter-leveldb";
+
+// Preprocessing directive
+declare const __NODE_ENV__: string;
+
+// Create container used for dependency injection
 let container = new Container();
 
 // Create databases
-
-// tslint:disable-next-line:no-var-requires
-
 let PouchDB = (PouchDBCore as any).default;
 
 const rootDbPath = path.join(
     app.getPath("userData"),
-    "db",
+    (__NODE_ENV__ === "DEV") ? "db-dev" : "db",
 );
 
 if (!fs.existsSync(rootDbPath)) {
@@ -49,36 +51,25 @@ if (!fs.existsSync(rootDbPath)) {
 }
 
 // Load PouchDB plugins
-//PouchDB.plugin(FSDownAdapter);
-//PouchDB.plugin(MemoryAdapter);
-PouchDB.plugin(LevelDBAdapter);
-let pouchDBOpts = {
-    adapter: "leveldb",
-    db: leveldown,
-};
+PouchDB
+    .plugin(LevelDBAdapter);
 
+let dbOpts = {
+    adapter: "leveldb",
+    db: (__NODE_ENV__ === "DEV") ? jsondown : leveldown,
+};
 
 // Publication db
 const publicationDb = new PouchDB(
     path.join(rootDbPath, "publications"),
-    pouchDBOpts,
+    dbOpts,
 );
-
-// const publicationDb = new PouchDB(
-//     "publications-dev",
-//     {adapter: "memory"},
-// );
 
 // OPDS db
 const opdsDb = new PouchDB(
-    path.join(rootDbPath, "opds"),
-    pouchDBOpts,
+    path.join(rootDbPath, "opds-dev"),
+    dbOpts,
 );
-
-// const opdsDb = new PouchDB(
-//     "opds-dev",
-//     {adapter: "memory"},
-// );
 
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
