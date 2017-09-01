@@ -18,6 +18,9 @@ let mainConfig = Object.assign({}, {
     output: {
         filename: "main.js",
         path: path.join(__dirname, "dist"),
+
+        // https://github.com/webpack/webpack/issues/1114
+        libraryTarget: "commonjs2",
     },
     target: "electron-main",
 
@@ -26,13 +29,10 @@ let mainConfig = Object.assign({}, {
         __filename: false,
     },
 
+    // Webpack is unable to manage native modules
     externals: {
-        "pouchdb": "require('pouchdb')",
+       "leveldown": "leveldown",
     },
-
-    // externals: [
-    //     "leveldown",
-    // ],
 
     resolve: {
         // Add '.ts' as resolvable extensions.
@@ -60,6 +60,8 @@ let rendererConfig = Object.assign({}, {
     output: {
         filename: "renderer.js",
         path: path.join(__dirname, "dist"),
+        // https://github.com/webpack/webpack/issues/1114
+        libraryTarget: "commonjs2",
     },
     target: "electron-renderer",
 

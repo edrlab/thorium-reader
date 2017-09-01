@@ -13,8 +13,8 @@
   "main": "dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cross-env BUILD_ENV=PROD webpack",
-    "postinstall": "electron-rebuild",
+    "postinstall": "npm rebuild --runtime=electron --target=1.6.6 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --progress --profile --colors && ncp src/package.json dist/package.json",
     "start": "npm run build && cross-env BUILD_ENV=PROD electron .",
     "lint:ts": "tslint './src/**/*.ts' './src/**/*.tsx'",
     "lint:editorconfig": "eclint check '**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!reader-NYPL/**/*' '!dist/**/*' '!**/.DS_Store'",
@@ -22,7 +22,10 @@
     "start:dev:renderer": "webpack-dev-server",
     "start:dev:main": "webpack --output-pathinfo && electron .",
     "start:dev": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:main\"",
-    "pouchdb:install": "npm install @types/pouchdb@6.1.1 && npm install --ignore-scripts leveldown  && npm install --ignore-scripts pouchdb@6.2.0 && cd node_modules/pouchdb && cross-env npm_config_runtime=electron npm_config_target=53 npm install --save leveldown@latest && cd ../.. && npm remove leveldown && npm remove prebuild"
+    "package": "npm run build && build --publish never",
+    "package-win": "npm run build && build --win --x64",
+    "package-linux": "npm run build && build --linux",
+    "package-all": "npm run build && build -mwl"
   },
   "repository": {
     "type": "git",
@@ -31,6 +34,7 @@
   "author": {
     "name": "EDRLab developers",
     "organization": "EDRLab",
+    "email": "contact@edrlab.org",
     "url": "http://github.com/edrlab/"
   },
   "license": "BSD-3-Clause",
@@ -44,7 +48,86 @@
     "url": "https://github.com/edrlab/readium-desktop/issues"
   },
   "homepage": "https://github.com/edrlab/readium-desktop",
+  "bin": {
+    "electron": "./node_modules/.bin/electron"
+  },
+  "build": {
+    "productName": "ReadiumDesktop",
+    "appId": "io.github.edrlab.readium-desktop",
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "files": [
+      "node_modules/",
+      "assets/",
+      "index.html",
+      "styles.css",
+      "renderer.js",
+      "main.js",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "resources",
+      "output": "release",
+      "app": "dist"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
+      ]
+    }
+  },
   "dependencies": {
+    "babel-core": "^6.26.0",
+    "class-validator": "^0.6.8",
+    "commonmark": "^0.27.0",
+    "express": "^4.15.4",
+    "follow-redirects": "^1.2.4",
+    "font-awesome": "^4.7.0",
+    "i18next": "^7.2.3",
+    "inversify": "^3.3.0",
+    "inversify-inject-decorators": "^3.0.1",
+    "level-fsdown": "^3.2.3",
+    "leveldown": "^1.7.2",
+    "material-ui": "^0.17.4",
+    "node-pre-gyp": "^0.6.36",
+    "opds-feed-parser": "0.0.13",
+    "portfinder": "^1.0.13",
+    "pouchdb-adapter-leveldb": "^6.3.4",
+    "pouchdb-adapter-leveldb-core": "^6.3.4",
+    "pouchdb-adapter-memory": "^6.3.4",
+    "pouchdb-core": "^6.3.4",
+    "r2-streamer-js": "github:edrlab/r2-streamer-js-dist",
+    "react": "^15.6.1",
+    "react-card-flip": "0.0.4",
+    "react-dom": "^15.6.1",
+    "react-dropzone": "^3.13.4",
+    "react-redux": "^5.0.6",
+    "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.15.6",
+    "reflect-metadata": "^0.1.10",
+    "request": "^2.81.0",
+    "tmp": "0.0.33",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
     "@types/commonmark": "^0.22.29",
     "@types/express": "^4.0.37",
     "@types/i18next": "^2.3.40",
@@ -61,40 +144,16 @@
     "@types/request": "^2.0.3",
     "@types/tmp": "0.0.33",
     "@types/uuid": "^2.0.30",
-    "babel-core": "^6.26.0",
-    "class-validator": "^0.6.8",
-    "commonmark": "^0.27.0",
-    "electron-rebuild": "^1.6.0",
-    "express": "^4.15.4",
-    "follow-redirects": "^1.2.4",
-    "font-awesome": "^4.7.0",
-    "i18next": "^7.2.3",
-    "inversify": "^3.3.0",
-    "inversify-inject-decorators": "^3.0.1",
-    "material-ui": "^0.17.4",
-    "node-pre-gyp": "^0.6.36",
-    "opds-feed-parser": "0.0.13",
-    "portfinder": "^1.0.13",
-    "pouchdb": "^6.3.4",
-    "r2-streamer-js": "github:edrlab/r2-streamer-js-dist",
-    "react": "^15.6.1",
-    "react-card-flip": "0.0.4",
-    "react-dom": "^15.6.1",
-    "react-dropzone": "^3.13.4",
-    "react-redux": "^5.0.6",
-    "react-tap-event-plugin": "^2.0.1",
-    "redux": "^3.7.2",
-    "redux-saga": "^0.15.6",
-    "reflect-metadata": "^0.1.10",
-    "request": "^2.81.0",
-    "tmp": "0.0.33",
-    "uuid": "^3.1.0"
-  },
-  "devDependencies": {
+    "rimraf": "latest",
+    "cross-env": "^5.0.1",
+    "ncp": "latest",
+    "asar": "^0.13.0",
+    "electron-builder": "^19.8.0",
+    "electron-builder-http": "^19.15.0",
+    "ajv": "^5.2.2",
     "awesome-typescript-loader": "^3.1.2",
     "aws-sdk": "^2.104.0",
     "concurrently": "^3.4.0",
-    "cross-env": "^3.2.4",
     "css-loader": "^0.28.0",
     "eclint": "^2.1.0",
     "electron": "1.6.11",
@@ -108,8 +167,8 @@
     "tslint": "^4.5.1",
     "typescript": "^2.5.1",
     "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.4.1"
+    "webpack": "^3.5.0",
+    "webpack-dev-server": "^2.7.1"
   },
   "optionalDependencies": {}
 }

@@ -6,9 +6,6 @@ import * as path from "path";
 import { app } from "electron";
 import { Store } from "redux";
 
-// tslint:disable-next-line:no-var-requires
-const PouchDB = require("pouchdb");
-
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 
@@ -28,9 +25,20 @@ import {
     PublicationStorage,
 } from "readium-desktop/main/storage/publication-storage";
 
+//import FSDownAdapter from "readium-desktop/pouchdb/fsdown-adapter";
+import MemoryAdapter from "pouchdb-adapter-memory";
+import LevelDBAdapter from "pouchdb-adapter-leveldb";
+import * as PouchDBCore from "pouchdb-core";
+import * as leveldown from "leveldown";
+
 let container = new Container();
 
 // Create databases
+
+// tslint:disable-next-line:no-var-requires
+
+let PouchDB = (PouchDBCore as any).default;
+
 const rootDbPath = path.join(
     app.getPath("userData"),
     "db",
@@ -40,15 +48,37 @@ if (!fs.existsSync(rootDbPath)) {
     fs.mkdirSync(rootDbPath);
 }
 
+// Load PouchDB plugins
+//PouchDB.plugin(FSDownAdapter);
+//PouchDB.plugin(MemoryAdapter);
+PouchDB.plugin(LevelDBAdapter);
+let pouchDBOpts = {
+    adapter: "leveldb",
+    db: leveldown,
+};
+
+
 // Publication db
 const publicationDb = new PouchDB(
     path.join(rootDbPath, "publications"),
+    pouchDBOpts,
 );
+
+// const publicationDb = new PouchDB(
+//     "publications-dev",
+//     {adapter: "memory"},
+// );
 
 // OPDS db
 const opdsDb = new PouchDB(
     path.join(rootDbPath, "opds"),
+    pouchDBOpts,
 );
+
+// const opdsDb = new PouchDB(
+//     "opds-dev",
+//     {adapter: "memory"},
+// );
 
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(

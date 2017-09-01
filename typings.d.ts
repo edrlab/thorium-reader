@@ -5,7 +5,12 @@ declare module "*.json" {
 
 declare module "react-card-flip";
 
-declare module "pouchdb" {
-    const PouchDB: PouchDB.Static;
-    export default PouchDB;
-}
+declare module "leveldown";
+
+declare module "level-fsdown";
+
+declare module "pouchdb-adapter-leveldb-core";
+declare module "pouchdb-adapter-memory";
+declare module "pouchdb-adapter-leveldb";
+
+declare module "pouchdb";
