@@ -21,8 +21,7 @@ before_script:
 
 script:
 - npm run lint
-- npm run build
-- npm run dist
+- npm run package-linux
 
 after_success:
 - pwd && ls -als
