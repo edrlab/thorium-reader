@@ -148,7 +148,7 @@
     "cross-env": "^5.0.1",
     "ncp": "latest",
     "asar": "^0.13.0",
-    "electron-builder": "^19.8.0",
+    "electron-builder": "^19.27.3",
     "electron-builder-http": "^19.15.0",
     "ajv": "^5.2.2",
     "awesome-typescript-loader": "^3.1.2",
