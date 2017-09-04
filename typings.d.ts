@@ -5,8 +5,5 @@ declare module "*.json" {
 
 declare module "react-card-flip";
 
-declare module "leveldown";
-declare module "jsondown";
-
-declare module "pouchdb-adapter-leveldb-core";
 declare module "pouchdb-adapter-leveldb";
+declare module "readium-desktop/pouchdb/jsondown-adapter";

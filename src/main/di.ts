@@ -27,13 +27,10 @@ import {
 
 import * as PouchDBCore from "pouchdb-core";
 
-import * as jsondown from "jsondown";
-import * as leveldown from "leveldown";
-
-import LevelDBAdapter from "pouchdb-adapter-leveldb";
-
 // Preprocessing directive
 declare const __NODE_ENV__: string;
+declare const __POUCHDB_ADAPTER_NAME__: string;
+declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
 // Create container used for dependency injection
 let container = new Container();
@@ -50,13 +47,15 @@ if (!fs.existsSync(rootDbPath)) {
     fs.mkdirSync(rootDbPath);
 }
 
+// tslint:disable-next-line:no-var-requires
+const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
+
 // Load PouchDB plugins
 PouchDB
-    .plugin(LevelDBAdapter);
+    .plugin(pouchDbAdapter.default);
 
 let dbOpts = {
-    adapter: "leveldb",
-    db: (__NODE_ENV__ === "DEV") ? jsondown : leveldown,
+    adapter: __POUCHDB_ADAPTER_NAME__,
 };
 
 // Publication db
