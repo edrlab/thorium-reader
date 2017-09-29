@@ -81,6 +81,15 @@ npm install -g windows-build-tools
 
 ## Issues
 
+### Webpack dev server on OSX
+
+On OSX, webpack dev server has a high CPU usage.
+To prevent this install fsevents
+
+```
+npm install -g fsevents
+```
+
 ### NPM 5.4 on windows
 
 NPM 5.4 on windows does not work as expected and generates some permission issues:
@@ -116,7 +125,7 @@ We provide 2 adapaters for the database storage
 ### Jsondown
 
 Jsondown is designed for the development environment.
-It is useful if you want to use the application without instally any dev tools
+It is useful if you want to use the application without installing any dev tools
 like Visual C++
 Warning: Do not use it in production environment
 
