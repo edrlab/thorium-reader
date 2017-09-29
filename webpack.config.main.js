@@ -8,6 +8,10 @@ let pouchDbAdapterPackage = (nodeEnv === "DEV") ?
     "readium-desktop/pouchdb/jsondown-adapter" : "pouchdb-adapter-leveldb";
 let rendererBaseUrl = "file://";
 
+if (nodeEnv === "DEV") {
+    rendererBaseUrl = "http://localhost:8080/dist/";
+}
+
 let definePlugin = new webpack.DefinePlugin({
     __NODE_ENV__: JSON.stringify(nodeEnv),
     __POUCHDB_ADAPTER_NAME__: JSON.stringify(pouchDbAdapterName),
