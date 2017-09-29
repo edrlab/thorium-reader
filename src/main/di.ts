@@ -35,11 +35,18 @@ declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 // Create container used for dependency injection
 let container = new Container();
 
+// Check that user data directory is created
+const userDataPath = app.getPath("userData");
+
+if (!fs.existsSync(userDataPath)) {
+    fs.mkdirSync(userDataPath);
+}
+
 // Create databases
 let PouchDB = (PouchDBCore as any).default;
 
 const rootDbPath = path.join(
-    app.getPath("userData"),
+    userDataPath,
     (__NODE_ENV__ === "DEV") ? "db-dev" : "db",
 );
 
@@ -72,7 +79,7 @@ const opdsDb = new PouchDB(
 
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
-    app.getPath("userData"),
+    userDataPath,
     "publications",
 );
 
