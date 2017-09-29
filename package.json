@@ -156,7 +156,6 @@
     "ncp": "latest",
     "node-loader": "^0.6.0",
     "node-pre-gyp": "^0.6.36",
-    "pouchdb-adapter-leveldb": "^6.3.4",
     "react-hot-loader": "^1.3.1",
     "rimraf": "latest",
     "source-map-loader": "^0.1.6",
