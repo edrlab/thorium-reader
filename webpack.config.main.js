@@ -9,7 +9,7 @@ let pouchDbAdapterPackage = (nodeEnv === "DEV") ?
 let rendererBaseUrl = "file://";
 
 if (nodeEnv === "DEV") {
-    rendererBaseUrl = "http://localhost:8080/dist/";
+    rendererBaseUrl = "http://localhost:8080/";
 }
 
 let definePlugin = new webpack.DefinePlugin({

@@ -24,7 +24,7 @@ function createWindow() {
         height: 600,
         webPreferences: {
             nodeIntegration: true, // Required to use IPC
-            webSecurity: true,
+            webSecurity: false,
             allowRunningInsecureContent: false,
         },
     });
@@ -44,6 +44,9 @@ function createWindow() {
     if (__NODE_ENV__ === "DEV") {
         mainWindow.webContents.openDevTools();
     }
+
+    // Clear all cache to prevent weird behaviours
+    mainWindow.webContents.session.clearStorageData();
 
     mainWindow.on("closed", () => {
         mainWindow = null;

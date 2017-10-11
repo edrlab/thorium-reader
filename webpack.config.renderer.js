@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 // Default values for DEV environment
 let nodeEnv = process.env.NODE_ENV || "DEV";
@@ -61,6 +62,12 @@ let config = Object.assign({}, {
         new HtmlWebpackPlugin({
             template: "./src/index.ejs",
         }),
+        new CopyWebpackPlugin([
+            {
+                from: path.join(__dirname, "reader-NYPL", "sw.js"),
+                to: "sw.js",
+            },
+        ]),
         new ExtractTextPlugin("styles.css"),
         definePlugin,
     ],
@@ -74,12 +81,15 @@ if (nodeEnv === "DEV") {
 
         devServer: {
             contentBase: __dirname,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+            },
             hot: true,
-            watchContentBase: true
+            watchContentBase: true,
         }
     });
 
-    config.output.publicPath = "http://localhost:8080/dist/";
+    config.output.publicPath = "http://localhost:8080/";
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
 }
 
