@@ -136,7 +136,6 @@
     "@types/react-redux": "^4.4.47",
     "@types/react-tap-event-plugin": "0.0.30",
     "@types/redux": "^3.6.31",
-    "@types/redux-saga": "^0.10.5",
     "@types/reflect-metadata": "0.0.5",
     "@types/request": "^2.0.4",
     "@types/tmp": "0.0.33",
