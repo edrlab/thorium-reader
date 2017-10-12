@@ -8,32 +8,17 @@ import { call, fork, put, select, take } from "redux-saga/effects";
 
 import { Server } from "r2-streamer-js/dist/es6-es2015/src/http/server";
 
-import {
-    STREAMER_MANIFEST_CLOSE_REQUEST,
-    STREAMER_MANIFEST_OPEN_REQUEST,
-    STREAMER_MANIFEST_OPEN_RESPONSE,
-} from "readium-desktop/events/ipc";
-import { PublicationMessage } from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
 
 import { container } from "readium-desktop/main/di";
 import { AppState } from "readium-desktop/main/reducers";
 
 import * as streamerActions from "readium-desktop/main/actions/streamer";
-import { STREAMER_PUBLICATION_CLOSE } from "readium-desktop/main/actions/streamer";
+import { StreamerAction }  from "readium-desktop/main/actions/streamer";
+import {
+    STREAMER_PUBLICATION_CLOSE,
+    STREAMER_PUBLICATION_OPEN } from "readium-desktop/main/actions/streamer";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-
-function waitForStreamerManifestOpenRequest(chan: Channel<any>) {
-    ipcMain.on(
-        STREAMER_MANIFEST_OPEN_REQUEST,
-        (event: any, msg: PublicationMessage) => {
-            chan.put({
-                renderer: event.sender,
-                publication: msg.publication,
-            });
-        },
-    );
-}
 
 function startStreamer(streamer: Server, chan: Channel<any>) {
     // Find a free port on your local machine
@@ -46,27 +31,12 @@ function startStreamer(streamer: Server, chan: Channel<any>) {
     });
 }
 
-function sendManifestOpenRequest(
-    renderer: any,
-    publication: Publication,
-    manifestUrl: string,
-) {
-    renderer.send(
-        STREAMER_MANIFEST_OPEN_RESPONSE,
-        { publication, manifestUrl },
-    );
-}
-
-export function* watchStreamManifestOpenRequest(): SagaIterator {
-    const chanIpcWait = yield call(channel);
+export function* watchStreamerPublicationOpen(): SagaIterator {
     const chanStreamerStart = yield call(channel);
 
-    yield fork(waitForStreamerManifestOpenRequest, chanIpcWait);
-
     while (true) {
-        const ipcWaitResponse: any = yield take(chanIpcWait);
-        const publication = ipcWaitResponse.publication;
-        const renderer = ipcWaitResponse.renderer;
+        const action: StreamerAction = yield take(STREAMER_PUBLICATION_OPEN);
+        const publication = action.publication;
 
         // Get epub file from publication
         const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
@@ -88,37 +58,13 @@ export function* watchStreamManifestOpenRequest(): SagaIterator {
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
         const manifestUrl = streamer.url() + manifestPaths[0];
-        yield fork(sendManifestOpenRequest, renderer, publication, manifestUrl);
-        yield put(streamerActions.openPublication(publication));
+        yield put(streamerActions.openPublicationManifest(
+            publication, manifestUrl,
+        ));
     }
 }
 
-function waitForStreamerManifestCloseRequest(
-    chan: Channel<any>,
-) {
-    ipcMain.on(
-        STREAMER_MANIFEST_CLOSE_REQUEST,
-        (event: any, msg: any) => {
-            chan.put(msg);
-        },
-    );
-}
-
-export function* watchStreamManifestCloseRequest(): SagaIterator {
-    const chan = yield call(channel);
-
-    yield fork(waitForStreamerManifestCloseRequest, chan);
-
-    while (true) {
-        const response = yield take(chan);
-        const publication = response.publication;
-
-        // Remove publication from streamer
-        yield put(streamerActions.closePublication(publication));
-    }
-}
-
-export function* watchPublicationCloseRequest(): SagaIterator {
+export function* watchStreamerPublicationClose(): SagaIterator {
     while (true) {
         const action = yield take(STREAMER_PUBLICATION_CLOSE);
         const publication = action.publication;

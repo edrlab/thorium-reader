@@ -86,7 +86,7 @@ if (nodeEnv === "DEV") {
             },
             hot: true,
             watchContentBase: true,
-        }
+        },
     });
 
     config.output.publicPath = "http://localhost:8080/";

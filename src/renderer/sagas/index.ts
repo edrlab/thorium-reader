@@ -9,8 +9,6 @@ import {
     watchPublicationImport,
 } from "readium-desktop/renderer/sagas/publication";
 import {
-    watchEpubManifestUrlResponse,
-    watchReaderClose,
     watchReaderInit,
 } from "readium-desktop/renderer/sagas/reader";
 
@@ -25,9 +23,6 @@ import {
 export function* rootSaga() {
     yield [
         watchCatalogInit(),
-        watchReaderInit(),
-        watchReaderClose(),
-        watchEpubManifestUrlResponse(),
         watchMainCatalogResponse(),
         watchPublicationDownloadAdd(),
         watchPublicationDownloadCancel(),
@@ -38,5 +33,6 @@ export function* rootSaga() {
         watchOpdsAdd(),
         watchOpdsUpdate(),
         watchOpdsRemove(),
+        watchReaderInit(),
     ];
 }

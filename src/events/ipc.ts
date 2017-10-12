@@ -29,11 +29,6 @@ export const OPDS_ADD_REQUEST = "opds.add.request";
 export const OPDS_REMOVE_REQUEST = "opds.remove.request";
 export const OPDS_UPDATE_REQUEST = "opds.update.request";
 
-// The renderer process request to the main process the manifest of an epub file
-export const STREAMER_MANIFEST_OPEN_REQUEST = "streamer.manifest.open.request";
-
-export const STREAMER_MANIFEST_OPEN_RESPONSE = "streamer.manifest.open.response";
-
-export const STREAMER_MANIFEST_CLOSE_REQUEST = "streamer.manifest.close.request";
-
-export const STREAMER_MANIFEST_CLOSE_RESPONSE = "streamer.manifest.close.response";
+// The renderer process request the main process to open a new reader for
+// a given publication
+export const READER_OPEN_REQUEST = "reader.open.request";
