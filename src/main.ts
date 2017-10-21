@@ -23,6 +23,7 @@ function createWindow() {
         width: 800,
         height: 600,
         webPreferences: {
+            devTools: __NODE_ENV__ === "DEV",
             nodeIntegration: true, // Required to use IPC
             webSecurity: false,
             allowRunningInsecureContent: false,
