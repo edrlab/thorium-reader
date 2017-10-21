@@ -30,6 +30,8 @@ import {
 
 import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
+declare const __NODE_ENV__: string;
+
 const READER_BASE_URL = `file://${__dirname}/../node_modules/r2-streamer-js/dist/es6-es2015/src/electron/renderer`;
 
 function waitForReaderOpenRequest(chan: Channel<any>) {
@@ -70,7 +72,7 @@ function* openReader(publication: Publication): SagaIterator {
         webPreferences: {
             allowRunningInsecureContent: false,
             contextIsolation: false,
-            devTools: true,
+            devTools: __NODE_ENV__ === "DEV",
             nodeIntegration: true,
             nodeIntegrationInWorker: false,
             sandbox: false,
@@ -88,7 +90,10 @@ function* openReader(publication: Publication): SagaIterator {
     let readerUrl = `${READER_BASE_URL}/index.html?pub=${encodedManifestUrl}`;
 
     // Load url
-    readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
+    readerWindow.webContents.loadURL(readerUrl); // , { extraHeaders: "pragma: no-cache\n" }
+    if (__NODE_ENV__ === "DEV") {
+        readerWindow.webContents.openDevTools();
+    }
 
     // Open reader
     yield put(readerActions.openReader(reader));
