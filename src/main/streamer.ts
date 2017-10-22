@@ -1,8 +1,12 @@
 import * as express from "express";
+import * as path from "path";
+
 import { initGlobals } from "r2-streamer-js/dist/es6-es2015/src/init-globals";
 import { Server } from "r2-streamer-js/dist/es6-es2015/src/http/server";
+import { setLcpNativePluginPath } from "r2-streamer-js/dist/es6-es2015/src/parser/epub/lcp";
 
 initGlobals();
+setLcpNativePluginPath(path.join(process.cwd(), "LCP/lcp.node"));
 
 // Create readium2 streamer
 // This streamer is used to stream epub content to the renderer

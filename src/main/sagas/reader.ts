@@ -1,7 +1,7 @@
 import { streamer } from "./../streamer";
 import * as uuid from "uuid";
 
-import { app, BrowserWindow, ipcMain } from "electron";
+import { BrowserWindow, ipcMain } from "electron";
 
 import { channel, Channel, SagaIterator } from "redux-saga";
 import { call, fork, put, select, take } from "redux-saga/effects";
@@ -15,7 +15,7 @@ import { PublicationMessage } from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
 import { Reader } from "readium-desktop/models/reader";
 
-import { R2_EVENT_LINK } from "r2-streamer-js/dist/es6-es2015/src/electron/common/events";
+import { trackBrowserWindow } from "r2-streamer-js/dist/es6-es2015/src/electron/main_browser-window-tracker";
 
 import {
     READER_OPEN_REQUEST,
@@ -35,8 +35,6 @@ import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 declare const __NODE_ENV__: string;
 
 const READER_BASE_URL = `file://${__dirname}/../node_modules/r2-streamer-js/dist/es6-es2015/src/electron/renderer`;
-
-let _electronBrowserWindows: Electron.BrowserWindow[];
 
 function waitForReaderOpenRequest(chan: Channel<any>) {
     ipcMain.on(
@@ -84,17 +82,7 @@ function* openReader(publication: Publication): SagaIterator {
             webviewTag: true,
         },
     });
-    if (!_electronBrowserWindows) {
-        _electronBrowserWindows = [];
-    }
-    _electronBrowserWindows.push(readerWindow);
-    readerWindow.on("closed", () => {
-        const i = _electronBrowserWindows.indexOf(readerWindow);
-        if (i < 0) {
-            return;
-        }
-        _electronBrowserWindows.splice(i, 1);
-    });
+    trackBrowserWindow(readerWindow);
 
     const reader: Reader = {
         identifier: uuid.v4(),
@@ -171,23 +159,3 @@ export function* watchReaderClose(): SagaIterator {
         console.log("Reader close");
     }
 }
-
-app.on("web-contents-created", (_evt, wc) => {
-    if (!_electronBrowserWindows || !_electronBrowserWindows.length) {
-        return;
-    }
-    _electronBrowserWindows.forEach((win) => {
-        if (wc.hostWebContents &&
-            wc.hostWebContents.id === win.webContents.id) {
-
-            wc.on("will-navigate", (event, url) => {
-
-                const wcUrl = event.sender.getURL();
-                event.preventDefault();
-
-                // ipcMain.emit
-                win.webContents.send(R2_EVENT_LINK, url);
-            });
-        }
-    });
-});
