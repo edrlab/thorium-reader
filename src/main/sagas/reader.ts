@@ -17,6 +17,7 @@ import { Reader } from "readium-desktop/models/reader";
 
 import { Publication as StreamerPublication } from "r2-streamer-js/dist/es6-es2015/src/models/publication";
 import { trackBrowserWindow } from "r2-streamer-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
+import { deviceIDManager, launchStatusDocumentProcessing } from "r2-streamer-js/dist/es6-es2015/src/electron/main/lsd";
 
 import { container } from "readium-desktop/main/di";
 
@@ -110,16 +111,21 @@ function* openReader(publication: Publication): SagaIterator {
             console.log(err);
         }
         let lcpHint: string | undefined;
-        if (streamerPublication) {
-            if (streamerPublication.LCP) {
-                if (streamerPublication.LCP.Encryption &&
-                    streamerPublication.LCP.Encryption.UserKey &&
-                    streamerPublication.LCP.Encryption.UserKey.TextHint) {
-                    lcpHint = streamerPublication.LCP.Encryption.UserKey.TextHint;
-                }
-                if (!lcpHint) {
-                    lcpHint = "LCP passphrase";
-                }
+        if (streamerPublication && streamerPublication.LCP) {
+            try {
+                await launchStatusDocumentProcessing(streamerPublication, pathDecoded, deviceIDManager, () => {
+                    ; // NOOP
+                });
+            } catch (err) {
+                console.log(err);
+            }
+            if (streamerPublication.LCP.Encryption &&
+                streamerPublication.LCP.Encryption.UserKey &&
+                streamerPublication.LCP.Encryption.UserKey.TextHint) {
+                lcpHint = streamerPublication.LCP.Encryption.UserKey.TextHint;
+            }
+            if (!lcpHint) {
+                lcpHint = "LCP passphrase";
             }
         }
 
