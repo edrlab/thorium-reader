@@ -42,6 +42,8 @@ let config = Object.assign({}, {
     externals: {
         "leveldown": "leveldown",
         "bindings": "bindings",
+        "electron-config": "electron-config",
+        "conf": "conf",
     },
 
     resolve: {
