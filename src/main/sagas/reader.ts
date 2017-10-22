@@ -15,7 +15,7 @@ import { PublicationMessage } from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
 import { Reader } from "readium-desktop/models/reader";
 
-import { trackBrowserWindow } from "r2-streamer-js/dist/es6-es2015/src/electron/main_browser-window-tracker";
+import { trackBrowserWindow } from "r2-streamer-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
 
 import {
     READER_OPEN_REQUEST,
