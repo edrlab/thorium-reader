@@ -15,7 +15,12 @@ import { PublicationMessage } from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
 import { Reader } from "readium-desktop/models/reader";
 
+import { Publication as StreamerPublication } from "r2-streamer-js/dist/es6-es2015/src/models/publication";
 import { trackBrowserWindow } from "r2-streamer-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
+
+import { container } from "readium-desktop/main/di";
+
+import { Server } from "r2-streamer-js/dist/es6-es2015/src/http/server";
 
 import {
     READER_OPEN_REQUEST,
@@ -30,7 +35,8 @@ import {
     STREAMER_PUBLICATION_MANIFEST_OPEN,
 } from "readium-desktop/main/actions/streamer";
 
-import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
+import { encodeURIComponent_RFC3986 } from "r2-streamer-js/dist/es6-es2015/src/_utils/http/UrlUtils";
+// import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
 declare const __NODE_ENV__: string;
 
@@ -90,14 +96,45 @@ function* openReader(publication: Publication): SagaIterator {
         window: readerWindow,
     };
 
-    const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
-    let readerUrl = `${READER_BASE_URL}/index.html?pub=${encodedManifestUrl}`;
+    // tslint:disable-next-line:no-floating-promises
+    (async () => {
+        const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+        const pathDecoded = new Buffer(pathBase64, "base64").toString("utf8");
 
-    // Load url
-    readerWindow.webContents.loadURL(readerUrl); // , { extraHeaders: "pragma: no-cache\n" }
-    if (__NODE_ENV__ === "DEV") {
-        readerWindow.webContents.openDevTools();
-    }
+        const streamer: Server = container.get("streamer") as Server;
+
+        let streamerPublication: StreamerPublication | undefined;
+        try {
+            streamerPublication = await streamer.loadOrGetCachedPublication(pathDecoded);
+        } catch (err) {
+            console.log(err);
+        }
+        let lcpHint: string | undefined;
+        if (streamerPublication) {
+            if (streamerPublication.LCP) {
+                if (streamerPublication.LCP.Encryption &&
+                    streamerPublication.LCP.Encryption.UserKey &&
+                    streamerPublication.LCP.Encryption.UserKey.TextHint) {
+                    lcpHint = streamerPublication.LCP.Encryption.UserKey.TextHint;
+                }
+                if (!lcpHint) {
+                    lcpHint = "LCP passphrase";
+                }
+            }
+        }
+
+        const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
+        let readerUrl = `${READER_BASE_URL}/index.html?pub=${encodedManifestUrl}`;
+        if (lcpHint) {
+            readerUrl = readerUrl + "&lcpHint=" + encodeURIComponent_RFC3986(lcpHint);
+        }
+
+        // Load url
+        readerWindow.webContents.loadURL(readerUrl); // , { extraHeaders: "pragma: no-cache\n" }
+        if (__NODE_ENV__ === "DEV") {
+            readerWindow.webContents.openDevTools();
+        }
+    })();
 
     // Open reader
     yield put(readerActions.openReader(reader));
