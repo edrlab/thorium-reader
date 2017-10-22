@@ -5,6 +5,7 @@ import { initGlobals } from "r2-streamer-js/dist/es6-es2015/src/init-globals";
 import { Server } from "r2-streamer-js/dist/es6-es2015/src/http/server";
 import { setLcpNativePluginPath } from "r2-streamer-js/dist/es6-es2015/src/parser/epub/lcp";
 import { installLcpHandler } from "r2-streamer-js/dist/es6-es2015/src/electron/main/lcp";
+import { setupReadiumCSS } from "r2-streamer-js/dist/es6-es2015/src/electron/main/readium-css";
 
 initGlobals();
 setLcpNativePluginPath(path.join(process.cwd(), "LCP/lcp.node"));
@@ -18,20 +19,4 @@ export const streamer: Server = new Server({
 
 installLcpHandler(streamer);
 
-// https://expressjs.com/en/4x/api.html#express.static
-const staticOptions = {
-    dotfiles: "ignore",
-    etag: true,
-    fallthrough: false,
-    immutable: true,
-    index: false,
-    maxAge: "1d",
-    redirect: false,
-    // extensions: ["css", "otf"],
-    // setHeaders: function (res, path, stat) {
-    //   res.set('x-timestamp', Date.now())
-    // }
-};
-streamer.expressUse("/readium-css",
-    express.static("node_modules/r2-streamer-js/dist/ReadiumCSS",
-        staticOptions));
+setupReadiumCSS(streamer, "node_modules/r2-streamer-js/dist/ReadiumCSS");
