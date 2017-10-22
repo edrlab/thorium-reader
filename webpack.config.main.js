@@ -19,6 +19,8 @@ let definePlugin = new webpack.DefinePlugin({
     __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
 });
 
+// let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
+
 let config = Object.assign({}, {
     entry: "./src/main.ts",
     name: "main",
@@ -39,6 +41,7 @@ let config = Object.assign({}, {
     // Webpack is unable to manage native modules
     externals: {
         "leveldown": "leveldown",
+        "bindings": "bindings",
     },
 
     resolve: {
