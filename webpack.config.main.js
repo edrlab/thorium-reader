@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const { dependencies } = require("./package.json");
 
 // Default values for DEV environment
 let nodeEnv = process.env.NODE_ENV || "DEV";
@@ -21,6 +22,24 @@ let definePlugin = new webpack.DefinePlugin({
 
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
 
+
+// Webpack is unable to manage native modules
+let externals = {
+    "leveldown": "leveldown",
+    "bindings": "bindings",
+    "electron-config": "electron-config",
+    "conf": "conf",
+};
+if (nodeEnv === "DEV") {
+    console.log("WEBPACK externals (dev)");
+    const depsKeysArray = Object.keys(dependencies || {});
+    const depsKeysObj = {};
+    depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
+    externals = Object.assign(externals, depsKeysObj);
+    delete externals["pouchdb-core"];
+}
+console.log(JSON.stringify(externals, null, "  "));
+
 let config = Object.assign({}, {
     entry: "./src/main.ts",
     name: "main",
@@ -38,13 +57,7 @@ let config = Object.assign({}, {
         __filename: false,
     },
 
-    // Webpack is unable to manage native modules
-    externals: {
-        "leveldown": "leveldown",
-        "bindings": "bindings",
-        "electron-config": "electron-config",
-        "conf": "conf",
-    },
+    externals: externals,
 
     resolve: {
         // Add '.ts' as resolvable extensions.
