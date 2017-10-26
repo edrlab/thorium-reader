@@ -6,6 +6,7 @@ import { Server } from "r2-streamer-js/dist/es6-es2015/src/http/server";
 import { setLcpNativePluginPath } from "r2-streamer-js/dist/es6-es2015/src/parser/epub/lcp";
 import { installLcpHandler } from "r2-streamer-js/dist/es6-es2015/src/electron/main/lcp";
 import { setupReadiumCSS } from "r2-streamer-js/dist/es6-es2015/src/electron/main/readium-css";
+import { deviceIDManager } from "r2-streamer-js/dist/es6-es2015/src/electron/main/lsd-deviceid-manager";
 
 initGlobals();
 setLcpNativePluginPath(path.join(process.cwd(), "LCP/lcp.node"));
@@ -17,6 +18,6 @@ export const streamer: Server = new Server({
     disableReaders: true,
 });
 
-installLcpHandler(streamer);
+installLcpHandler(streamer, deviceIDManager);
 
 setupReadiumCSS(streamer, "node_modules/r2-streamer-js/dist/ReadiumCSS");

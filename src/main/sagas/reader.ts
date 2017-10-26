@@ -17,7 +17,9 @@ import { Reader } from "readium-desktop/models/reader";
 
 import { Publication as StreamerPublication } from "r2-streamer-js/dist/es6-es2015/src/models/publication";
 import { trackBrowserWindow } from "r2-streamer-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
-import { deviceIDManager, launchStatusDocumentProcessing } from "r2-streamer-js/dist/es6-es2015/src/electron/main/lsd";
+
+import { launchStatusDocumentProcessing } from "r2-streamer-js/dist/es6-es2015/src/electron/main/lsd";
+import { deviceIDManager } from "r2-streamer-js/dist/es6-es2015/src/electron/main/lsd-deviceid-manager";
 
 import { container } from "readium-desktop/main/di";
 
