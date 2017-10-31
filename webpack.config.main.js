@@ -35,6 +35,7 @@ let definePlugin = new webpack.DefinePlugin({
 
 // Webpack is unable to manage native modules
 let externals = {
+    "bindings": "bindings",
     "leveldown": "leveldown",
     "conf": "conf"
 }
@@ -42,8 +43,7 @@ let externals = {
 if (nodeEnv === "DEV") {
     console.log("WEBPACK externals (dev)");
     externals = Object.assign(externals, {
-        "bindings": "bindings",
-        "electron-config": "electron-config",
+            "electron-config": "electron-config",
         }
     );
     const depsKeysArray = Object.keys(dependencies || {});
