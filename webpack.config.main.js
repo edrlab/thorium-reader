@@ -92,7 +92,7 @@ let config = Object.assign({}, {
         new CopyWebpackPlugin([
             {
                 from: path.join(__dirname, "external-assets"),
-                to: "external-assets/lcp.node",
+                to: "external-assets",
             }
         ]),
         definePlugin
