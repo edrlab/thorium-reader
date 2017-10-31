@@ -74,6 +74,7 @@
     },
     "files": [
       "node_modules/",
+      "external-assets/",
       "assets/",
       "index.html",
       "styles.css",
