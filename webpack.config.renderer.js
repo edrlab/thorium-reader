@@ -12,14 +12,15 @@ let definePlugin = new webpack.DefinePlugin({
     __NODE_ENV__: JSON.stringify(nodeEnv),
 });
 
-let externals = {
-    "electron": "electron",
+let externals = {}
 
-    "electron-config": "electron-config",
-    "conf": "conf",
-};
 if (nodeEnv === "DEV") {
     console.log("WEBPACK externals (dev)");
+    externals = {
+        "electron": "electron",
+        "electron-config": "electron-config",
+        "conf": "conf",
+    };
     const depsKeysArray = Object.keys(dependencies || {});
     const depsKeysObj = {};
     depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
@@ -84,7 +85,7 @@ let config = Object.assign({}, {
             {
                 from: path.join(__dirname, "reader-NYPL", "sw.js"),
                 to: "sw.js",
-            },
+            }
         ]),
         new ExtractTextPlugin("styles.css"),
         definePlugin,

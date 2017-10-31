@@ -1,16 +1,25 @@
 const path = require("path");
 const webpack = require("webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { dependencies } = require("./package.json");
 
 // Default values for DEV environment
+let isPackaging = process.env.PACKAGING;
 let nodeEnv = process.env.NODE_ENV || "DEV";
 let pouchDbAdapterName = (nodeEnv === "DEV") ? "jsondown" : "leveldb";
 let pouchDbAdapterPackage = (nodeEnv === "DEV") ?
     "readium-desktop/pouchdb/jsondown-adapter" : "pouchdb-adapter-leveldb";
 let rendererBaseUrl = "file://";
 
+// Node module relative url from main
+let nodeModuleRelativeUrl = "../node_modules";
+
 if (nodeEnv === "DEV") {
     rendererBaseUrl = "http://localhost:8080/";
+}
+
+if (isPackaging) {
+    nodeModuleRelativeUrl = "node_modules"
 }
 
 let definePlugin = new webpack.DefinePlugin({
@@ -18,6 +27,7 @@ let definePlugin = new webpack.DefinePlugin({
     __POUCHDB_ADAPTER_NAME__: JSON.stringify(pouchDbAdapterName),
     __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),
     __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
+    __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
 });
 
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
@@ -26,12 +36,16 @@ let definePlugin = new webpack.DefinePlugin({
 // Webpack is unable to manage native modules
 let externals = {
     "leveldown": "leveldown",
-    "bindings": "bindings",
-    "electron-config": "electron-config",
-    "conf": "conf",
-};
+    "conf": "conf"
+}
+
 if (nodeEnv === "DEV") {
     console.log("WEBPACK externals (dev)");
+    externals = Object.assign(externals, {
+        "bindings": "bindings",
+        "electron-config": "electron-config",
+        }
+    );
     const depsKeysArray = Object.keys(dependencies || {});
     const depsKeysObj = {};
     depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
@@ -75,7 +89,13 @@ let config = Object.assign({}, {
         ],
     },
     plugins: [
-        definePlugin,
+        new CopyWebpackPlugin([
+            {
+                from: path.join(__dirname, "external-assets"),
+                to: "external-assets/lcp.node",
+            }
+        ]),
+        definePlugin
     ],
 });
 

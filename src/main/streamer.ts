@@ -9,7 +9,8 @@ import { setupReadiumCSS } from "r2-streamer-js/dist/es6-es2015/src/electron/mai
 import { deviceIDManager } from "r2-streamer-js/dist/es6-es2015/src/electron/main/lsd-deviceid-manager";
 
 initGlobals();
-setLcpNativePluginPath(path.join(process.cwd(), "LCP/lcp.node"));
+const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
+setLcpNativePluginPath(lcpNativePluginPath);
 
 // Create readium2 streamer
 // This streamer is used to stream epub content to the renderer

@@ -1,5 +1,5 @@
-import { streamer } from "./../streamer";
 import * as uuid from "uuid";
+import * as path from "path";
 
 import { BrowserWindow, ipcMain } from "electron";
 
@@ -41,9 +41,9 @@ import {
 import { encodeURIComponent_RFC3986 } from "r2-streamer-js/dist/es6-es2015/src/_utils/http/UrlUtils";
 // import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
+// Preprocessing directive
 declare const __NODE_ENV__: string;
-
-const READER_BASE_URL = `file://${__dirname}/../node_modules/r2-streamer-js/dist/es6-es2015/src/electron/renderer`;
+declare const __NODE_MODULE_RELATIVE_URL__: string;
 
 function waitForReaderOpenRequest(chan: Channel<any>) {
     ipcMain.on(
@@ -132,9 +132,15 @@ function* openReader(publication: Publication): SagaIterator {
         }
 
         const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
-        let readerUrl = `${READER_BASE_URL}/index.html?pub=${encodedManifestUrl}`;
+
+        let readerUrl = "file://" + path.normalize(path.join(
+            __dirname, __NODE_MODULE_RELATIVE_URL__,
+            "r2-streamer-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html",
+        ));
+        readerUrl += `?pub=${encodedManifestUrl}`;
+
         if (lcpHint) {
-            readerUrl = readerUrl + "&lcpHint=" + encodeURIComponent_RFC3986(lcpHint);
+            readerUrl += "&lcpHint=" + encodeURIComponent_RFC3986(lcpHint);
         }
 
         // Load url
