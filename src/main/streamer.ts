@@ -21,4 +21,4 @@ export const streamer: Server = new Server({
 
 installLcpHandler(streamer, deviceIDManager);
 
-setupReadiumCSS(streamer, "node_modules/r2-streamer-js/dist/ReadiumCSS");
+setupReadiumCSS(streamer, path.join(__dirname, "node_modules", "r2-streamer-js", "dist", "ReadiumCSS"));
