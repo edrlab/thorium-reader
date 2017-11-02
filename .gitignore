@@ -1,4 +1,6 @@
+.history
 dist
 release
 node_modules
 .DS_Store
+external-assets/*

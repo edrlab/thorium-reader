@@ -9,6 +9,8 @@ import { container } from "readium-desktop/main/di";
 import { AppState } from "readium-desktop/main/reducers";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
+import { initSessions } from "r2-streamer-js/dist/es6-es2015/src/electron/main/sessions";
+
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
 declare const __NODE_ENV__: string;
@@ -17,12 +19,15 @@ declare const __NODE_ENV__: string;
 // so the garbage collector doesn't close it.
 let mainWindow: Electron.BrowserWindow = null;
 
+initSessions();
+
 // Opens the main window, with a native menu bar.
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
+            devTools: __NODE_ENV__ === "DEV",
             nodeIntegration: true, // Required to use IPC
             webSecurity: false,
             allowRunningInsecureContent: false,
@@ -46,7 +51,9 @@ function createWindow() {
     }
 
     // Clear all cache to prevent weird behaviours
-    mainWindow.webContents.session.clearStorageData();
+    // Fully handled in r2-streamer-js / navigator initSessions();
+    // (including exit cleanup)
+    // mainWindow.webContents.session.clearStorageData();
 
     mainWindow.on("closed", () => {
         mainWindow = null;

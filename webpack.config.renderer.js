@@ -3,6 +3,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const { dependencies } = require("./package.json");
 
 // Default values for DEV environment
 let nodeEnv = process.env.NODE_ENV || "DEV";
@@ -10,6 +11,22 @@ let nodeEnv = process.env.NODE_ENV || "DEV";
 let definePlugin = new webpack.DefinePlugin({
     __NODE_ENV__: JSON.stringify(nodeEnv),
 });
+
+let externals = {}
+
+if (nodeEnv === "DEV") {
+    console.log("WEBPACK externals (dev)");
+    externals = {
+        "electron": "electron",
+        "electron-config": "electron-config",
+        "conf": "conf",
+    };
+    const depsKeysArray = Object.keys(dependencies || {});
+    const depsKeysObj = {};
+    depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
+    externals = Object.assign(externals, depsKeysObj);
+}
+console.log(JSON.stringify(externals, null, "  "));
 
 let config = Object.assign({}, {
     entry: "./src/renderer.ts",
@@ -21,6 +38,8 @@ let config = Object.assign({}, {
         libraryTarget: "commonjs2",
     },
     target: "electron-renderer",
+
+    externals: externals,
 
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx"],
@@ -66,7 +85,7 @@ let config = Object.assign({}, {
             {
                 from: path.join(__dirname, "reader-NYPL", "sw.js"),
                 to: "sw.js",
-            },
+            }
         ]),
         new ExtractTextPlugin("styles.css"),
         definePlugin,
@@ -86,7 +105,7 @@ if (nodeEnv === "DEV") {
             },
             hot: true,
             watchContentBase: true,
-        }
+        },
     });
 
     config.output.publicPath = "http://localhost:8080/";
