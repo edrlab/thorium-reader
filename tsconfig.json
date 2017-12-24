@@ -11,7 +11,22 @@
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {
-      "readium-desktop/*": ["./src/*"]
+      "readium-desktop/*": ["./src/*"],
+      "@r2-utils-js/*": [
+        "node_modules/r2-utils-js/dist/es6-es2015/src/*"
+      ],
+      "@r2-opds-js/*": [
+        "node_modules/r2-opds-js/dist/es6-es2015/src/*"
+      ],
+      "@r2-shared-js/*": [
+        "node_modules/r2-shared-js/dist/es6-es2015/src/*"
+      ],
+      "@r2-streamer-js/*": [
+        "node_modules/r2-streamer-js/dist/es6-es2015/src/*"
+      ],
+      "@r2-navigator-js/*": [
+        "node_modules/r2-navigator-js/dist/es6-es2015/src/*"
+      ]
     }
   },
   "include": [

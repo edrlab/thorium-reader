@@ -78,6 +78,12 @@ let config = Object.assign({}, {
         extensions: [".ts", ".js", ".node"],
         alias: {
             "readium-desktop": path.resolve(__dirname, "src"),
+
+            "@r2-utils-js": path.resolve(__dirname, "node_modules/r2-utils-js/dist/es6-es2015/src"),
+            "@r2-opds-js": path.resolve(__dirname, "node_modules/r2-opds-js/dist/es6-es2015/src"),
+            "@r2-shared-js": path.resolve(__dirname, "node_modules/r2-shared-js/dist/es6-es2015/src"),
+            "@r2-streamer-js": path.resolve(__dirname, "node_modules/r2-streamer-js/dist/es6-es2015/src"),
+            "@r2-navigator-js": path.resolve(__dirname, "node_modules/r2-navigator-js/dist/es6-es2015/src"),
         },
     },
 

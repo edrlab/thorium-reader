@@ -9,7 +9,7 @@ import { Store } from "redux";
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 
-import { Server } from "r2-streamer-js";
+import { Server } from "@r2-streamer-js/http/server";
 
 import { Downloader } from "readium-desktop/downloader/downloader";
 import { Translator } from "readium-desktop/i18n/translator";

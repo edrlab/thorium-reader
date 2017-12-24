@@ -15,15 +15,15 @@ import { PublicationMessage } from "readium-desktop/models/ipc";
 import { Publication } from "readium-desktop/models/publication";
 import { Reader } from "readium-desktop/models/reader";
 
-import { Publication as StreamerPublication } from "r2-streamer-js/dist/es6-es2015/src/models/publication";
-import { trackBrowserWindow } from "r2-streamer-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
+import { Publication as StreamerPublication } from "@r2-shared-js/models/publication";
+import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
 
-import { launchStatusDocumentProcessing } from "r2-streamer-js/dist/es6-es2015/src/electron/main/lsd";
-import { deviceIDManager } from "r2-streamer-js/dist/es6-es2015/src/electron/main/lsd-deviceid-manager";
+import { launchStatusDocumentProcessing } from "@r2-navigator-js/electron/main/lsd";
+import { deviceIDManager } from "@r2-navigator-js/electron/main/lsd-deviceid-manager";
 
 import { container } from "readium-desktop/main/di";
 
-import { Server } from "r2-streamer-js/dist/es6-es2015/src/http/server";
+import { Server } from "@r2-streamer-js/http/server";
 
 import {
     READER_OPEN_REQUEST,
@@ -38,7 +38,7 @@ import {
     STREAMER_PUBLICATION_MANIFEST_OPEN,
 } from "readium-desktop/main/actions/streamer";
 
-import { encodeURIComponent_RFC3986 } from "r2-streamer-js/dist/es6-es2015/src/_utils/http/UrlUtils";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 // import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
 // Preprocessing directive
@@ -135,7 +135,7 @@ function* openReader(publication: Publication): SagaIterator {
 
         let readerUrl = "file://" + path.normalize(path.join(
             __dirname, __NODE_MODULE_RELATIVE_URL__,
-            "r2-streamer-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html",
+            "r2-navigator-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html",
         ));
         readerUrl += `?pub=${encodedManifestUrl}`;
 
