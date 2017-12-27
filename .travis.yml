@@ -1,24 +1,32 @@
-esudo: false
-branches:
-  only:
-  - master
-  - develop
+#esudo: false
+#branches:
+#  only:
+#  - master
+#  - develop
+
 language: node_js
 node_js:
-- '7'
+- 7
+
 before_install:
-- 'pwd && ls -als'
+- pwd && ls -als
 - npm -g install npm@latest
+
 install:
-- 'pwd && ls -als'
+- pwd && ls -als
+
 before_script:
-- 'pwd && ls -als'
-- 'npm install'
+- pwd && ls -als
+- npm install
+
 script:
-- 'npm run lint'
-- 'npm run build'
+- npm run lint
+- npm run build
+- npm run package-linux
+
 after_success:
-- 'pwd && ls -als'
-- 'ls dist'
+- pwd && ls -als
+- ls dist
+
 after_failure:
-- 'pwd && ls -als'
+- pwd && ls -als
