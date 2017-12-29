@@ -13,7 +13,7 @@
   "main": "dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm rebuild --runtime=electron --target=1.7.9 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "postinstall": "npm rebuild --runtime=electron --target=1.7.10 --disturl=https://atom.io/download/atom-shell --build-from-source",
     "build": "cross-env NODE_ENV=PROD webpack --config webpack.config.js && ncp src/package.json dist/package.json",
     "build:dev:main": "webpack --config webpack.config.main.js",
     "start": "npm run build && electron .",
@@ -111,7 +111,7 @@
     "mime": "^1.6.0",
     "opds-feed-parser": "0.0.13",
     "portfinder": "^1.0.13",
-    "pouchdb-core": "^6.4.1",
+    "pouchdb-core": "6.3.4",
     "r2-streamer-js": "github:edrlab/r2-streamer-js-dist#df14b6340a470057cd7b3bb292d87735442825f4",
     "raw-body": "^2.3.2",
     "react": "^15.6.2",
@@ -154,7 +154,7 @@
     "cross-env": "^5.1.1",
     "css-loader": "^0.28.7",
     "eclint": "^2.5.0",
-    "electron": "^1.8.1",
+    "electron": "1.7.10",
     "electron-builder": "^19.49.2",
     "electron-builder-http": "^19.27.5",
     "extract-text-webpack-plugin": "^3.0.2",
@@ -172,10 +172,11 @@
     "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.1",
-    "webpack-dev-server": "^2.9.7"
+    "webpack-dev-server": "^2.9.7",
+    "webpack-node-externals": "^1.6.0"
   },
   "optionalDependencies": {
-    "pouchdb-adapter-leveldb": "^6.3.4",
+    "pouchdb-adapter-leveldb": "6.3.4",
     "leveldown": "^1.7.2"
   }
 }
