@@ -140,3 +140,35 @@ Leveldown is fast and is shipped in the production environment.
 ```
 http://www.feedbooks.com/books/top.atom?category=FBFIC019000
 ```
+
+## Debug in VS Code
+
+Launcher:
+
+```
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Program",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "program": "${workspaceRoot}/src/main.ts",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+      },
+      "args" : ["."],
+      "outFiles": [
+        "${workspaceRoot}/dist/main.js"
+      ],
+      "sourceMaps": true
+    }
+  ]
+}
+```
+
+Launch command: `npm run build:dev:main`
+
+Then launch debugger in vs code

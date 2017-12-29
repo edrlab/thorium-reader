@@ -111,7 +111,7 @@
     "mime": "^1.6.0",
     "opds-feed-parser": "0.0.13",
     "portfinder": "^1.0.13",
-    "pouchdb-core": "^6.4.1",
+    "pouchdb-core": "6.3.4",
     "r2-navigator-js": "github:edrlab/r2-navigator-js-dist#master",
     "r2-opds-js": "github:edrlab/r2-opds-js-dist#master",
     "r2-shared-js": "github:edrlab/r2-shared-js-dist#master",
@@ -175,10 +175,11 @@
     "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony-v2.8.22",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.1",
-    "webpack-dev-server": "^2.9.7"
+    "webpack-dev-server": "^2.9.7",
+    "webpack-node-externals": "^1.6.0"
   },
   "optionalDependencies": {
-    "pouchdb-adapter-leveldb": "^6.3.4",
+    "pouchdb-adapter-leveldb": "6.3.4",
     "leveldown": "^1.7.2"
   }
 }

@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { dependencies } = require("./package.json");
+const nodeExternals = require("webpack-node-externals");
 
 // Default values for DEV environment
 let isPackaging = process.env.PACKAGING;
@@ -19,7 +20,7 @@ if (nodeEnv === "DEV") {
 }
 
 if (isPackaging) {
-    nodeModuleRelativeUrl = "node_modules"
+    nodeModuleRelativeUrl = "node_modules";
 }
 
 let definePlugin = new webpack.DefinePlugin({
@@ -31,28 +32,6 @@ let definePlugin = new webpack.DefinePlugin({
 });
 
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
-
-
-// Webpack is unable to manage native modules
-let externals = {
-    "bindings": "bindings",
-    "leveldown": "leveldown",
-    "conf": "conf"
-}
-
-if (nodeEnv === "DEV") {
-    console.log("WEBPACK externals (dev)");
-    externals = Object.assign(externals, {
-            "electron-config": "electron-config",
-        }
-    );
-    const depsKeysArray = Object.keys(dependencies || {});
-    const depsKeysObj = {};
-    depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
-    externals = Object.assign(externals, depsKeysObj);
-    delete externals["pouchdb-core"];
-}
-console.log(JSON.stringify(externals, null, "  "));
 
 let config = Object.assign({}, {
     entry: "./src/main.ts",
@@ -71,7 +50,11 @@ let config = Object.assign({}, {
         __filename: false,
     },
 
-    externals: externals,
+    externals: {
+        "bindings": "bindings",
+        "leveldown": "leveldown",
+        "conf": "conf"
+    },
 
     resolve: {
         // Add '.ts' as resolvable extensions.
@@ -104,5 +87,20 @@ let config = Object.assign({}, {
         definePlugin
     ],
 });
+
+if (nodeEnv === "DEV") {
+    // Bundle absolute resource paths in the source-map,
+    // so VSCode can match the source file.
+    config.output.devtoolModuleFilenameTemplate = "[absolute-resource-path]";
+
+    config.devtool = "source-map";
+    config.externals = [
+        nodeExternals(
+            {
+                whitelist: ["pouchdb-core"],
+            }
+        ),
+    ];
+}
 
 module.exports = config;
