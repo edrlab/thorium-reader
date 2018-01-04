@@ -16,10 +16,11 @@ import { Publication } from "readium-desktop/models/publication";
 import { Reader } from "readium-desktop/models/reader";
 
 import { Publication as StreamerPublication } from "@r2-shared-js/models/publication";
-import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
+import { trackBrowserWindow } from "@r2-testapp-js/electron/main/browser-window-tracker";
 
-import { launchStatusDocumentProcessing } from "@r2-navigator-js/electron/main/lsd";
-import { deviceIDManager } from "@r2-navigator-js/electron/main/lsd-deviceid-manager";
+import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
+import { deviceIDManager } from "@r2-testapp-js/electron/main/lsd-deviceid-manager";
+import { lsdLcpUpdateInject } from "@r2-testapp-js/electron/main/lsd-injectlcpl";
 
 import { container } from "readium-desktop/main/di";
 
@@ -115,8 +116,19 @@ function* openReader(publication: Publication): SagaIterator {
         let lcpHint: string | undefined;
         if (streamerPublication && streamerPublication.LCP) {
             try {
-                await launchStatusDocumentProcessing(streamerPublication, pathDecoded, deviceIDManager, () => {
-                    ; // NOOP
+                await launchStatusDocumentProcessing(streamerPublication.LCP, deviceIDManager,
+                    async (licenseUpdateJson: string | undefined) => {
+                        console.log("launchStatusDocumentProcessing DONE.");
+
+                    if (licenseUpdateJson) {
+                        let res: string;
+                        try {
+                            res = await lsdLcpUpdateInject(licenseUpdateJson, streamerPublication, pathDecoded);
+                            console.log("EPUB SAVED: " + res);
+                        } catch (err) {
+                            console.log(err);
+                        }
+                    }
                 });
             } catch (err) {
                 console.log(err);
@@ -135,7 +147,7 @@ function* openReader(publication: Publication): SagaIterator {
 
         let readerUrl = "file://" + path.normalize(path.join(
             __dirname, __NODE_MODULE_RELATIVE_URL__,
-            "r2-navigator-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html",
+            "r2-testapp-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html",
         ));
         readerUrl += `?pub=${encodedManifestUrl}`;
 

@@ -9,7 +9,7 @@ import { container } from "readium-desktop/main/di";
 import { AppState } from "readium-desktop/main/reducers";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
-import { initSessions } from "@r2-navigator-js/electron/main/sessions";
+import { initSessions } from "@r2-testapp-js/electron/main/sessions";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -51,7 +51,7 @@ function createWindow() {
     }
 
     // Clear all cache to prevent weird behaviours
-    // Fully handled in r2-navigator-js / navigator initSessions();
+    // Fully handled in r2-testapp-js / navigator initSessions();
     // (including exit cleanup)
     // mainWindow.webContents.session.clearStorageData();
 
