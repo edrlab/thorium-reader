@@ -54,8 +54,8 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
     @lazyInject("translator")
     private translator: Translator;
 
-    constructor() {
-        super();
+    constructor(props: AppToolbarProps) {
+        super(props);
         this.state = {
             dialogContent: undefined,
             locale: this.store.getState().i18n.locale,
@@ -76,7 +76,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
             <FlatButton
                 label="Cancel"
                 primary={true}
-                onTouchTap={this.handleClose}
+                onClick={this.handleClose}
             />,
         ];
 
@@ -84,11 +84,11 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         const helpUrl = "./src/resources/docs/" + this.state.locale + "/help.md";
         const aboutUrl = "./src/resources/docs/" + this.state.locale + "/about.md";
 
-        let listOPDS = [];
+        let listOPDS: JSX.Element[] = [];
         let i = 0;
         if (this.props.opdsList !== undefined) {
             for (let newOpds of this.props.opdsList.sort(this.sort)) {
-                listOPDS.push((
+                listOPDS.push(
                     <MenuItem
                         key= {i}
                         primaryText={newOpds.name}
@@ -100,11 +100,32 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                         }}
                     >
                     </MenuItem>
-                ));
+                );
                 i++;
             }
         }
-
+        let allMenuItems: JSX.Element[] = [];
+        // for (let item of listOPDS) {
+        //     allMenuItems.push(item);
+        // }
+        allMenuItems.push(...listOPDS);
+        allMenuItems.push(
+            <Divider
+                key= {i}/>
+        );
+        i++;
+        allMenuItems.push(
+            <MenuItem
+                key= {i}
+                primaryText={__("opds.addMenu")}
+                onClick={() => {
+                        this.props.openDialog(
+                            <OpdsForm closeDialog={this.props.closeDialog}/>,
+                            null,
+                            []);
+                }}/>
+        );
+        i++;
         return (
             <div>
                 <Toolbar>
@@ -116,21 +137,17 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                     </ToolbarGroup>
                     <ToolbarGroup>
                         <IconMenu
-                            iconButtonElement={<FontIcon
-                                className="fa fa-book"
-                                style={Styles.appToolbar.iconButton}
-                                color={blue500}>
-                            </FontIcon>}>
-                            {listOPDS}
-                            <Divider />
-                            <MenuItem
-                                primaryText={__("opds.addMenu")}
-                                onClick={() => {
-                                        this.props.openDialog(
-                                            <OpdsForm closeDialog={this.props.closeDialog}/>,
-                                            null,
-                                            []);
-                                }}/>
+                            iconButtonElement={
+                                <IconButton touch={true}>
+                                    <FontIcon
+                                        className="fa fa-ellipsis-v"
+                                        style={Styles.appToolbar.iconButton}
+                                        color={blue500}>
+                                    </FontIcon>
+                                </IconButton>
+                            }
+                        >
+                            {allMenuItems}
                         </IconMenu>
                         <ToolbarSeparator />
                         <IconButton touch={true}>

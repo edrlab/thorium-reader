@@ -61,8 +61,8 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
 
     private pubToDownload: Publication[] = [];
 
-    constructor() {
-        super();
+    constructor(props: ICollectiondialogProps) {
+        super(props);
         this.state = {
             catalog: undefined,
             downloadError: false,

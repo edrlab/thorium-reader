@@ -39,8 +39,8 @@ export default class PublicationListElement extends React.Component<IPublication
     @lazyInject("translator")
     private translator: Translator;
 
-    constructor() {
-        super();
+    constructor(props: IPublicationProps) {
+        super(props);
 
         this.state = {
             isFlipped: false,

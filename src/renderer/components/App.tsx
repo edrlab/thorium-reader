@@ -68,7 +68,7 @@ export default class App extends React.Component<undefined, AppState> {
         <FlatButton
             label="Oui"
             primary={true}
-            onTouchTap={() => {
+            onClick={() => {
                 this.handleDialogClose();
                 if (this.confimationAction) {
                     this.confimationAction();
@@ -80,12 +80,12 @@ export default class App extends React.Component<undefined, AppState> {
         <FlatButton
             label="Non"
             primary={true}
-            onTouchTap={() => {this.handleDialogClose(); }}
+            onClick={() => {this.handleDialogClose(); }}
         />,
     ];
 
-    constructor() {
-        super();
+    constructor(props: any) {
+        super(props);
         let locale = this.store.getState().i18n.locale;
 
         if (locale == null) {
@@ -185,7 +185,7 @@ export default class App extends React.Component<undefined, AppState> {
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
                     {!this.state.readerOpen ? (
-                    <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
+                    <Dropzone.default disableClick onDrop={this.onDrop.bind(this)} style={{}}>
                         <AppToolbar
                             openDialog={this.openDialog.bind(this)}
                             closeDialog={this.handleDialogClose.bind(this)}
@@ -211,7 +211,7 @@ export default class App extends React.Component<undefined, AppState> {
                             {this.dialogMessage}
                         </Dialog>
 
-                    </Dropzone>
+                    </Dropzone.default>
                     ) : (
                         <div>
                             <ReaderNYPL
