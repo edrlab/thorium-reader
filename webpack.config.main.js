@@ -1,8 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const { dependencies } = require("./package.json");
-const nodeExternals = require("webpack-node-externals");
 
 // Default values for DEV environment
 let isPackaging = process.env.PACKAGING;
@@ -33,6 +31,53 @@ let definePlugin = new webpack.DefinePlugin({
 
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
 
+
+////// ================================
+////// EXTERNALS
+// Some modules cannot be bundled by Webpack
+// for example those that make internal use of NodeJS require() in special ways
+// in order to resolve asset paths, etc.
+// In DEBUG / DEV mode, we just external-ize as much as possible (any non-TypeScript / non-local code),
+// to minimize bundle size / bundler computations / compile times.
+
+// const nodeExternals = require("webpack-node-externals");
+const nodeExternals = require("./nodeExternals");
+
+let externals = {
+    "bindings": "bindings",
+    "leveldown": "leveldown",
+    "fsevents": "fsevents",
+    "conf": "conf"
+}
+if (nodeEnv === "DEV") {
+    // // externals = Object.assign(externals, {
+    // //         "electron-config": "electron-config",
+    // //     }
+    // // );
+    // const { dependencies } = require("./package.json");
+    // const depsKeysArray = Object.keys(dependencies || {});
+    // const depsKeysObj = {};
+    // depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
+    // externals = Object.assign(externals, depsKeysObj);
+    // delete externals["pouchdb-core"];
+
+    externals = [
+        nodeExternals(
+            {
+                processName: "MAIN"
+                // whitelist: ["pouchdb-core"],
+            }
+        ),
+    ];
+}
+
+console.log("WEBPACK externals (MAIN):");
+console.log(JSON.stringify(externals, null, "  "));
+////// EXTERNALS
+////// ================================
+
+
+
 let config = Object.assign({}, {
     entry: "./src/main.ts",
     name: "main",
@@ -50,11 +95,7 @@ let config = Object.assign({}, {
         __filename: false,
     },
 
-    externals: {
-        "bindings": "bindings",
-        "leveldown": "leveldown",
-        "conf": "conf"
-    },
+    externals: externals,
 
     resolve: {
         // Add '.ts' as resolvable extensions.
@@ -62,13 +103,21 @@ let config = Object.assign({}, {
         alias: {
             "readium-desktop": path.resolve(__dirname, "src"),
 
-            "@r2-utils-js": path.resolve(__dirname, "node_modules/r2-utils-js/dist/es6-es2015/src"),
-            "@r2-lcp-js": path.resolve(__dirname, "node_modules/r2-lcp-js/dist/es6-es2015/src"),
-            "@r2-opds-js": path.resolve(__dirname, "node_modules/r2-opds-js/dist/es6-es2015/src"),
-            "@r2-shared-js": path.resolve(__dirname, "node_modules/r2-shared-js/dist/es6-es2015/src"),
-            "@r2-streamer-js": path.resolve(__dirname, "node_modules/r2-streamer-js/dist/es6-es2015/src"),
-            "@r2-navigator-js": path.resolve(__dirname, "node_modules/r2-navigator-js/dist/es6-es2015/src"),
-            "@r2-testapp-js": path.resolve(__dirname, "node_modules/r2-testapp-js/dist/es6-es2015/src"),
+            // "@r2-utils-js": path.resolve(__dirname, "node_modules/r2-utils-js/dist/es6-es2015/src"),
+            // "@r2-lcp-js": path.resolve(__dirname, "node_modules/r2-lcp-js/dist/es6-es2015/src"),
+            // "@r2-opds-js": path.resolve(__dirname, "node_modules/r2-opds-js/dist/es6-es2015/src"),
+            // "@r2-shared-js": path.resolve(__dirname, "node_modules/r2-shared-js/dist/es6-es2015/src"),
+            // "@r2-streamer-js": path.resolve(__dirname, "node_modules/r2-streamer-js/dist/es6-es2015/src"),
+            // "@r2-navigator-js": path.resolve(__dirname, "node_modules/r2-navigator-js/dist/es6-es2015/src"),
+            // "@r2-testapp-js": path.resolve(__dirname, "node_modules/r2-testapp-js/dist/es6-es2015/src"),
+
+            // "@r2-utils-js": "r2-utils-js/dist/es6-es2015/src",
+            // "@r2-lcp-js": "r2-lcp-js/dist/es6-es2015/src",
+            // "@r2-opds-js": "r2-opds-js/dist/es6-es2015/src",
+            // "@r2-shared-js": "r2-shared-js/dist/es6-es2015/src",
+            // "@r2-streamer-js": "r2-streamer-js/dist/es6-es2015/src",
+            // "@r2-navigator-js": "r2-navigator-js/dist/es6-es2015/src",
+            // "@r2-testapp-js": "r2-testapp-js/dist/es6-es2015/src",
         },
     },
 
@@ -95,14 +144,18 @@ if (nodeEnv === "DEV") {
     // so VSCode can match the source file.
     config.output.devtoolModuleFilenameTemplate = "[absolute-resource-path]";
 
+    config.output.pathinfo = true;
+
     config.devtool = "source-map";
-    config.externals = [
-        nodeExternals(
-            {
-                whitelist: ["pouchdb-core"],
-            }
-        ),
-    ];
+
+
+    // config.externals = [
+    //     nodeExternals(
+    //         {
+    //             whitelist: ["pouchdb-core"],
+    //         }
+    //     ),
+    // ];
 }
 
 module.exports = config;
