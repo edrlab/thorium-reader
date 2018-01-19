@@ -9,7 +9,7 @@ import { container } from "readium-desktop/main/di";
 import { AppState } from "readium-desktop/main/reducers";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
-import { initSessions } from "r2-testapp-js/dist/es6-es2015/src/electron/main/sessions";
+import { initSessions } from "r2-navigator-js/dist/es6-es2015/src/electron/main/sessions";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
