@@ -16,11 +16,11 @@ import { Publication } from "readium-desktop/models/publication";
 import { Reader } from "readium-desktop/models/reader";
 
 import { Publication as StreamerPublication } from "r2-shared-js/dist/es6-es2015/src/models/publication";
-import { trackBrowserWindow } from "r2-testapp-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
+import { trackBrowserWindow } from "r2-navigator-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
 
 import { launchStatusDocumentProcessing } from "r2-lcp-js/dist/es6-es2015/src/lsd/status-document-processing";
 import { deviceIDManager } from "r2-testapp-js/dist/es6-es2015/src/electron/main/lsd-deviceid-manager";
-import { lsdLcpUpdateInject } from "r2-testapp-js/dist/es6-es2015/src/electron/main/lsd-injectlcpl";
+import { lsdLcpUpdateInject } from "r2-navigator-js/dist/es6-es2015/src/electron/main/lsd-injectlcpl";
 
 import { container } from "readium-desktop/main/di";
 
