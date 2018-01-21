@@ -86,6 +86,7 @@ module.exports = function nodeExternals(options) {
 
     options = options || {};
     var processName = options.processName || '??';
+    var alias = options.alias || {};
     var whitelist = [].concat(options.whitelist || []);
     var binaryDirs = [].concat(options.binaryDirs || ['.bin']);
     var importType = options.importType || 'commonjs';
@@ -106,7 +107,13 @@ module.exports = function nodeExternals(options) {
     // return an externals function
     return function(context, request, callback){
 
+        let forceDebug = false;
         const debug = true;
+
+        const isR2Alias = /^@r2-.+-js/.test(request); // EXTERNAL
+        if (isR2Alias) {
+            forceDebug = true;
+        }
 
         const isR2 = /^r2-.+-js/.test(request); // EXTERNAL
         const isRDesk = request.indexOf("readium-desktop/") === 0; // BUNDLE
@@ -126,18 +133,19 @@ module.exports = function nodeExternals(options) {
         }
 
         // doesn't necessarily mean that WebPack will bundle, just that it won't externalize
-        const makeBundle = !isR2 && !isRelativeInNodeModules &&
+        const makeBundle = !isR2 && !isR2Alias && !isRelativeInNodeModules &&
             (isRDesk || isRelative || isElectron || isNode ||
                 request === "xxxpouchdb-core" // No need to force-bundle, as we now fixed di.ts to test for "default" property
             );
         let makeExternal = !makeBundle;
         if (makeExternal &&
-            !isR2 && !isRelativeInNodeModules) {
+            !isR2 && !isR2Alias && !isRelativeInNodeModules) {
             const moduleName = getModuleName(request, includeAbsolutePaths);
             makeExternal = contains(nodeModules, moduleName) && !containsPattern(whitelist, request);
-            if (debug &&
+            if (forceDebug ||
+                (debug &&
                 !makeExternal &&
-                !isAlready) {
+                !isAlready)) {
                 console.log(processName + "__ LOOKUP: [" + request + "] " + context + " (" + moduleName + ")");
             }
         }
@@ -145,9 +153,10 @@ module.exports = function nodeExternals(options) {
 
         if (makeExternal) {
 
-            if (debug &&
+            if (forceDebug ||
+                (debug &&
                 !isAlready &&
-                !isR2) {
+                !isR2 && !isR2Alias)) {
                 console.log(processName + "__ EXTERNAL: [" + request + "] " + context);
             }
 
@@ -161,15 +170,28 @@ module.exports = function nodeExternals(options) {
             //     return callback(null, "commonjs2 " + request);
             // }
 
-            return callback(null, importType + " " + request);
+            let request_ = request;
+            if (isR2Alias && alias) {
+                const iSlash = request.indexOf("/");
+                const key = request.substr(0, (iSlash >= 0) ? iSlash : request.length);
+                if (alias[key]) {
+                    request_ = request.replace(key, alias[key]);
+
+                    if (forceDebug || debug) {
+                        console.log(processName + "__ ALIAS: [" + request + "] => " + request_);
+                    }
+                }
+            }
+            return callback(null, importType + " " + request_);
         };
 
 
-        if (debug &&
+        if (forceDebug ||
+            (debug &&
             !isAlready &&
             !isRDesk &&
             !isElectron &&
-            !isNode) {
+            !isNode)) {
             console.log(processName + "__ BUNDLE: [" + request + "] " + context);
         }
         callback();
