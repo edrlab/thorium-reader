@@ -148,12 +148,12 @@ let config = Object.assign({}, {
         new HtmlWebpackPlugin({
             template: "./src/index.ejs",
         }),
-        new CopyWebpackPlugin([
-            {
-                from: path.join(__dirname, "reader-NYPL", "sw.js"),
-                to: "sw.js",
-            }
-        ]),
+        // new CopyWebpackPlugin([
+        //     {
+        //         from: path.join(__dirname, "FILE.ext"),
+        //         to: "FILE.ext",
+        //     }
+        // ]),
         new ExtractTextPlugin("styles.css"),
         definePlugin,
     ],

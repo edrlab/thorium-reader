@@ -21,7 +21,6 @@ import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
 import AppToolbar from "readium-desktop/renderer/components/AppToolbar";
 import Library from "readium-desktop/renderer/components/Library";
-import ReaderNYPL from "readium-desktop/renderer/components/ReaderNYPL";
 
 import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
@@ -214,9 +213,7 @@ export default class App extends React.Component<undefined, AppState> {
                     </Dropzone.default>
                     ) : (
                         <div>
-                            <ReaderNYPL
-                                manifestURL={ encodeURIComponent_RFC3986(this.state.openManifestUrl) }
-                                handleClose={this.handleClosePublication} />
+                            <p>{ encodeURIComponent_RFC3986(this.state.openManifestUrl) }</p>
                         </div>
                     )}
                 </div>
