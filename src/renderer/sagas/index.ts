@@ -20,8 +20,10 @@ import {
     watchOpdsUpdate,
 } from "readium-desktop/renderer/sagas/opds";
 
+import { all } from 'redux-saga/effects';
+
 export function* rootSaga() {
-    yield [
+    yield all([
         watchCatalogInit(),
         watchMainCatalogResponse(),
         watchPublicationDownloadAdd(),
@@ -34,5 +36,5 @@ export function* rootSaga() {
         watchOpdsUpdate(),
         watchOpdsRemove(),
         watchReaderInit(),
-    ];
+    ]);
 }
