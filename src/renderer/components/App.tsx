@@ -35,7 +35,7 @@ import * as Dropzone from "react-dropzone";
 
 interface AppState {
     catalog: Catalog;
-    readerOpen: boolean;
+    // readerOpen: boolean;
     openManifestUrl?: string;
     openPublication: Publication;
     snackbarOpen: boolean;
@@ -95,7 +95,7 @@ export default class App extends React.Component<undefined, AppState> {
 
         this.state = {
             catalog: undefined,
-            readerOpen: false,
+            // readerOpen: false,
             openManifestUrl: undefined,
             openPublication: undefined,
             snackbarOpen: false,
@@ -169,7 +169,7 @@ export default class App extends React.Component<undefined, AppState> {
             }
 
             this.setState({
-                readerOpen: (storeState.reader.status === ReaderStatus.Open),
+                // readerOpen: (storeState.reader.status === ReaderStatus.Open),
                 openManifestUrl: storeState.reader.manifestUrl,
                 openPublication: storeState.reader.publication,
                 opdsList: opds.opds,
@@ -183,7 +183,9 @@ export default class App extends React.Component<undefined, AppState> {
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
-                    {!this.state.readerOpen ? (
+                    {
+                    // !this.state.readerOpen ?
+                    (
                     <Dropzone.default disableClick onDrop={this.onDrop.bind(this)} style={{}}>
                         <AppToolbar
                             openDialog={this.openDialog.bind(this)}
@@ -211,11 +213,13 @@ export default class App extends React.Component<undefined, AppState> {
                         </Dialog>
 
                     </Dropzone.default>
-                    ) : (
-                        <div>
-                            <p>{ encodeURIComponent_RFC3986(this.state.openManifestUrl) }</p>
-                        </div>
-                    )}
+                    )
+                    // : (
+                    //     <div>
+                    //         <p>{ encodeURIComponent_RFC3986(this.state.openManifestUrl) }</p>
+                    //     </div>
+                    // )
+                    }
                 </div>
             </MuiThemeProvider>
         );
