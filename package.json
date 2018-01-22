@@ -106,9 +106,9 @@
     "inversify-inject-decorators": "^3.1.0",
     "jsondown": "^1.0.0",
     "material-ui": "^0.20.0",
-    "opds-feed-parser": "0.0.14",
+    "opds-feed-parser": "^0.0.14",
     "portfinder": "^1.0.13",
-    "pouchdb-core": "6.4.1",
+    "pouchdb-core": "^6.4.1",
     "r2-lcp-js": "github:edrlab/r2-lcp-js-dist#master",
     "r2-navigator-js": "github:edrlab/r2-navigator-js-dist#master",
     "r2-opds-js": "github:edrlab/r2-opds-js-dist#master",
@@ -117,7 +117,7 @@
     "r2-testapp-js": "github:edrlab/r2-testapp-js-dist#master",
     "r2-utils-js": "github:edrlab/r2-utils-js-dist#master",
     "react": "^16.2.0",
-    "react-card-flip": "0.1.1",
+    "react-card-flip": "^0.1.1",
     "react-dom": "^16.2.0",
     "react-dropzone": "^4.2.7",
     "react-redux": "^5.0.6",
@@ -126,7 +126,7 @@
     "redux-saga": "^0.16.0",
     "reflect-metadata": "^0.1.12",
     "request": "^2.83.0",
-    "tmp": "0.0.33",
+    "tmp": "^0.0.33",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
@@ -136,12 +136,11 @@
     "@types/pouchdb-core": "^6.1.11",
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
-    "@types/react-dropzone": "4.2.0",
+    "@types/react-dropzone": "^4.2.0",
     "@types/react-redux": "^5.0.14",
-    "@types/react-tap-event-plugin": "0.0.30",
     "@types/redux": "^3.6.31",
     "@types/request": "^2.0.12",
-    "@types/tmp": "0.0.33",
+    "@types/tmp": "^0.0.33",
     "@types/uuid": "^3.4.3",
     "awesome-typescript-loader": "^3.4.1",
     "concurrently": "^3.5.1",
@@ -154,7 +153,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
     "html-webpack-plugin": "^2.30.1",
-    "ncp": "latest",
+    "ncp": "^2.0.0",
     "node-loader": "^0.6.0",
     "react-hot-loader": "^3.1.3",
     "style-loader": "^0.19.1",
@@ -165,7 +164,7 @@
     "webpack-node-externals": "^1.6.0"
   },
   "optionalDependencies": {
-    "pouchdb-adapter-leveldb": "6.4.1",
+    "pouchdb-adapter-leveldb": "^6.4.1",
     "leveldown": "^2.1.1"
   }
 }
