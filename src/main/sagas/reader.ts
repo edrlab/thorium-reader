@@ -1,7 +1,7 @@
 import * as uuid from "uuid";
 import * as path from "path";
 
-import { BrowserWindow, ipcMain } from "electron";
+import { BrowserWindow, ipcMain, webContents } from "electron";
 
 import { channel, Channel, SagaIterator } from "redux-saga";
 import { call, fork, put, select, take } from "redux-saga/effects";
@@ -45,6 +45,28 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 // Preprocessing directive
 declare const __NODE_ENV__: string;
 declare const __NODE_MODULE_RELATIVE_URL__: string;
+declare const __PACKAGING__: string;
+
+function openAllDevTools() {
+    for (const wc of webContents.getAllWebContents()) {
+        // if (wc.hostWebContents &&
+        //     wc.hostWebContents.id === electronBrowserWindow.webContents.id) {
+        // }
+        wc.openDevTools();
+    }
+}
+
+// function openTopLevelDevTools() {
+//     const bw = BrowserWindow.getFocusedWindow();
+//     if (bw) {
+//         bw.webContents.openDevTools();
+//     } else {
+//         const arr = BrowserWindow.getAllWindows();
+//         arr.forEach((bww) => {
+//             bww.webContents.openDevTools();
+//         });
+//     }
+// }
 
 function waitForReaderOpenRequest(chan: Channel<any>) {
     ipcMain.on(
@@ -84,7 +106,8 @@ function* openReader(publication: Publication): SagaIterator {
         webPreferences: {
             allowRunningInsecureContent: false,
             contextIsolation: false,
-            devTools: __NODE_ENV__ === "DEV",
+            devTools: __NODE_ENV__ === "DEV" ||
+                (__PACKAGING__ === "0" && process.env.NODE_ENV === "development"),
             nodeIntegration: true,
             nodeIntegrationInWorker: false,
             sandbox: false,
@@ -157,8 +180,14 @@ function* openReader(publication: Publication): SagaIterator {
 
         // Load url
         readerWindow.webContents.loadURL(readerUrl); // , { extraHeaders: "pragma: no-cache\n" }
-        if (__NODE_ENV__ === "DEV") {
+        if (__NODE_ENV__ === "DEV" ||
+            (__PACKAGING__ === "0" && process.env.NODE_ENV === "development")) {
             readerWindow.webContents.openDevTools();
+
+            // webview (preload) debug
+            setTimeout(() => {
+                openAllDevTools();
+            }, 6000);
         }
     })();
 

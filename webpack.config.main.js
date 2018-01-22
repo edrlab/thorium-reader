@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 // Default values for DEV environment
-let isPackaging = process.env.PACKAGING;
+let isPackaging = process.env.PACKAGING || "0";
 let nodeEnv = process.env.NODE_ENV || "DEV";
 let pouchDbAdapterName = (nodeEnv === "DEV") ? "jsondown" : "leveldb";
 let pouchDbAdapterPackage = (nodeEnv === "DEV") ?
@@ -17,12 +17,13 @@ if (nodeEnv === "DEV") {
     rendererBaseUrl = "http://localhost:8080/";
 }
 
-if (isPackaging) {
+if (isPackaging === "1") {
     nodeModuleRelativeUrl = "node_modules";
 }
 
 let definePlugin = new webpack.DefinePlugin({
     __NODE_ENV__: JSON.stringify(nodeEnv),
+    __PACKAGING__: JSON.stringify(isPackaging),
     __POUCHDB_ADAPTER_NAME__: JSON.stringify(pouchDbAdapterName),
     __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),
     __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
