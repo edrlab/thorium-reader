@@ -186,9 +186,6 @@ export default class App extends React.Component<undefined, AppState> {
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
-                    {
-                    // !this.state.readerOpen ?
-                    (
                     <Dropzone.default disableClick onDrop={this.onDrop.bind(this)} style={{}}>
                         <AppToolbar
                             openDialog={this.openDialog.bind(this)}
@@ -216,13 +213,6 @@ export default class App extends React.Component<undefined, AppState> {
                         </Dialog>
 
                     </Dropzone.default>
-                    )
-                    // : (
-                    //     <div>
-                    //         <p>{ encodeURIComponent_RFC3986(this.state.openManifestUrl) }</p>
-                    //     </div>
-                    // )
-                    }
                 </div>
             </MuiThemeProvider>
         );

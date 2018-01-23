@@ -190,7 +190,6 @@ function* openReader(publication: Publication): SagaIterator {
         const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
 
         let readerUrl = __RENDERER_BASE_URL__;
-        readerUrl = readerUrl.replace(":8080", ":8081");
 
         if (process.env.R2 === "new") {
             const htmlPath = "index_reader.html";
@@ -200,6 +199,7 @@ function* openReader(publication: Publication): SagaIterator {
                 readerUrl += path.normalize(path.join(__dirname, htmlPath));
             } else {
                 // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+                readerUrl = readerUrl.replace(":8080", ":8081");
                 readerUrl += htmlPath;
             }
         } else {
@@ -215,7 +215,12 @@ function* openReader(publication: Publication): SagaIterator {
             readerUrl += "&lcpHint=" + encodeURIComponent_RFC3986(lcpHint);
         }
 
-        readerWindow.webContents.loadURL(readerUrl); // , { extraHeaders: "pragma: no-cache\n" }
+        readerWindow.webContents.on("dom-ready", () => {
+            console.log("readerWindow dom-ready " + pathDecoded + " : " + manifestUrl);
+            // electronBrowserWindow.webContents.openDevTools();
+        });
+
+        readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
 
         if (__NODE_ENV__ === "DEV" ||
             (__PACKAGING__ === "0" && process.env.NODE_ENV === "development")) {

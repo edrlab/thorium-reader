@@ -6,10 +6,26 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 // Default values for DEV environment
+let isPackaging = process.env.PACKAGING || "0";
 let nodeEnv = process.env.NODE_ENV || "DEV";
+let rendererBaseUrl = "file://";
+
+// Node module relative url from main
+let nodeModuleRelativeUrl = "../node_modules";
+
+if (nodeEnv === "DEV") {
+    rendererBaseUrl = "http://localhost:8080/";
+}
+
+if (isPackaging === "1") {
+    nodeModuleRelativeUrl = "node_modules";
+}
 
 let definePlugin = new webpack.DefinePlugin({
     __NODE_ENV__: JSON.stringify(nodeEnv),
+    __PACKAGING__: JSON.stringify(isPackaging),
+    __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
+    __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
 });
 
 ////// ================================
