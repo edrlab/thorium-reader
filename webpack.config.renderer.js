@@ -173,6 +173,7 @@ if (nodeEnv === "DEV") {
             },
             hot: true,
             watchContentBase: true,
+            port: 8080
         },
     });
 

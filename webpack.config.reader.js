@@ -167,12 +167,13 @@ if (nodeEnv === "DEV") {
             },
             hot: true,
             watchContentBase: true,
+            port: 8081
         },
     });
 
     config.output.pathinfo = true;
 
-    config.output.publicPath = "http://localhost:8080/";
+    config.output.publicPath = "http://localhost:8081/";
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
 }
 

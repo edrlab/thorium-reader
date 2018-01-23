@@ -190,17 +190,21 @@ function* openReader(publication: Publication): SagaIterator {
         const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
 
         let readerUrl = __RENDERER_BASE_URL__;
+        readerUrl = readerUrl.replace(":8080", ":8081");
 
-        // const htmlPath = "index_reader.html";
-        const htmlPath = path.join(__NODE_MODULE_RELATIVE_URL__,
-            "r2-testapp-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html");
+        if (process.env.R2 === "new") {
+            const htmlPath = "index_reader.html";
 
-        if (readerUrl === "file://") {
-            // This is a local url
-            readerUrl += path.normalize(path.join(__dirname, htmlPath));
+            if (readerUrl === "file://") {
+                // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+                readerUrl += path.normalize(path.join(__dirname, htmlPath));
+            } else {
+                // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+                readerUrl += htmlPath;
+            }
         } else {
-            // This is a remote url
-            readerUrl += htmlPath;
+            readerUrl = "file://" + path.normalize(path.join(__dirname, __NODE_MODULE_RELATIVE_URL__,
+                "r2-testapp-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html"));
         }
 
         readerUrl = readerUrl.replace(/\\/g, "/");
