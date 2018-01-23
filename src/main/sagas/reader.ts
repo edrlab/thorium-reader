@@ -42,7 +42,10 @@ import {
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 // import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
+import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+
 // Preprocessing directive
+declare const __RENDERER_BASE_URL__: string;
 declare const __NODE_ENV__: string;
 declare const __NODE_MODULE_RELATIVE_URL__: string;
 declare const __PACKAGING__: string;
@@ -68,20 +71,26 @@ function openAllDevTools() {
 //     }
 // }
 
-function waitForReaderOpenRequest(chan: Channel<any>) {
+interface IReaderOpenRequest {
+    renderer: any;
+    publication: Publication;
+}
+
+function waitForReaderOpenRequest(chan: Channel<IReaderOpenRequest>) {
     ipcMain.on(
         READER_OPEN_REQUEST,
         (event: any, msg: PublicationMessage) => {
-            chan.put({
+            const obj: IReaderOpenRequest = {
                 renderer: event.sender,
                 publication: msg.publication,
-            });
+            };
+            chan.put(obj);
         },
     );
 }
 
 function waitForReaderCloseEvent(
-    chan: Channel<any>,
+    chan: Channel<Reader>,
     reader: Reader,
 ) {
     reader.window.on("close", () => {
@@ -97,7 +106,10 @@ function* openReader(publication: Publication): SagaIterator {
 
     // Get the new initialize manifest url
     const action =  yield take(STREAMER_PUBLICATION_MANIFEST_OPEN);
-    const manifestUrl = action.manifestUrl;
+    const manifestUrl = (action as streamerActions.StreamerAction).manifestUrl;
+    if ((action as streamerActions.StreamerAction).publication !== publication) {
+        console.log("StreamerAction.publication != IPC.publication ?");
+    }
 
     // Create reader window
     let readerWindow = new BrowserWindow({
@@ -117,17 +129,26 @@ function* openReader(publication: Publication): SagaIterator {
     });
     trackBrowserWindow(readerWindow);
 
+    const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+    const pathDecoded = new Buffer(pathBase64, "base64").toString("utf8");
+
+    const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
+    // const epubPath = path.join(
+    //     pubStorage.getRootPath(),
+    //     publication.files[0].url.replace("store://", "");
+    // );
+    console.log(pubStorage.getRootPath() + " +++ " + publication.files[0].url + " ===> " + pathDecoded);
+
     const reader: Reader = {
         identifier: uuid.v4(),
         publication,
+        manifestUrl,
+        filesystemPath: pathDecoded,
         window: readerWindow,
     };
 
     // tslint:disable-next-line:no-floating-promises
     (async () => {
-        const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
-        const pathDecoded = new Buffer(pathBase64, "base64").toString("utf8");
-
         const streamer: Server = container.get("streamer") as Server;
 
         let streamerPublication: StreamerPublication | undefined;
@@ -168,18 +189,30 @@ function* openReader(publication: Publication): SagaIterator {
 
         const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
 
-        let readerUrl = "file://" + path.normalize(path.join(
-            __dirname, __NODE_MODULE_RELATIVE_URL__,
-            "r2-testapp-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html",
-        ));
+        let readerUrl = __RENDERER_BASE_URL__;
+
+        // const htmlPath = "index_reader.html";
+        const htmlPath = path.join(__NODE_MODULE_RELATIVE_URL__,
+            "r2-testapp-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html");
+
+        if (readerUrl === "file://") {
+            // This is a local url
+            readerUrl += path.normalize(path.join(__dirname, htmlPath));
+        } else {
+            // This is a remote url
+            readerUrl += htmlPath;
+        }
+
+        readerUrl = readerUrl.replace(/\\/g, "/");
+
         readerUrl += `?pub=${encodedManifestUrl}`;
 
         if (lcpHint) {
             readerUrl += "&lcpHint=" + encodeURIComponent_RFC3986(lcpHint);
         }
 
-        // Load url
         readerWindow.webContents.loadURL(readerUrl); // , { extraHeaders: "pragma: no-cache\n" }
+
         if (__NODE_ENV__ === "DEV" ||
             (__PACKAGING__ === "0" && process.env.NODE_ENV === "development")) {
             readerWindow.webContents.openDevTools();
@@ -187,7 +220,7 @@ function* openReader(publication: Publication): SagaIterator {
             // webview (preload) debug
             setTimeout(() => {
                 openAllDevTools();
-            }, 6000);
+            }, 8000); // TODO: needs smarter method!
         }
     })();
 
@@ -213,41 +246,36 @@ export function* watchReaderOpenRequest(): SagaIterator {
     yield fork(waitForReaderOpenRequest, chan);
 
     while (true) {
-        const ipcWaitResponse: any = yield take(chan);
+        const ipcWaitResponse: IReaderOpenRequest = yield take(chan);
         yield fork(openReader, ipcWaitResponse.publication);
-
-        // Get epub file from publication
-        // const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
-        // const epubPath = path.join(
-        //     pubStorage.getRootPath(),
-        //     publication.files[0].url.substr(6),
-        // );
-
     }
 }
 
-export function* watchReaderInit(): SagaIterator {
-    while (true) {
-        const action = yield take(READER_INIT);
-        console.log(action);
-    }
-}
+// export function* watchReaderInit(): SagaIterator {
+//     while (true) {
+//         const action = yield take(READER_INIT);
+//         console.log("Reader init (MAIN)");
+//         console.log(action as readerActions.ReaderAction);
+//     }
+// }
 
 export function* watchReaderOpen(): SagaIterator {
     while (true) {
         const action = yield take(READER_OPEN);
-        console.log("Reader open");
+        console.log("Reader open (MAIN)");
+        console.log(action as readerActions.ReaderAction);
     }
 }
 
 export function* watchReaderClose(): SagaIterator {
     while (true) {
         const action = yield take(READER_CLOSE);
+        console.log("Reader close (MAIN)");
+        console.log(action as readerActions.ReaderAction);
 
         // Notify the streamer that a publication has been closed
         yield put(streamerActions.closePublication(
-            action.reader.publication,
+            (action as readerActions.ReaderAction).reader.publication,
         ));
-        console.log("Reader close");
     }
 }

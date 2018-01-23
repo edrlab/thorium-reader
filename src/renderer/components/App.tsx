@@ -26,7 +26,7 @@ import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
 import { RendererState } from "readium-desktop/renderer/reducers";
 import { MessageStatus } from "readium-desktop/renderer/reducers/message";
-import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
+// import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
 
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
 import * as messageAction from "readium-desktop/renderer/actions/message";
@@ -36,8 +36,8 @@ import * as Dropzone from "react-dropzone";
 interface AppState {
     catalog: Catalog;
     // readerOpen: boolean;
-    openManifestUrl?: string;
-    openPublication: Publication;
+    // openManifestUrl?: string;
+    // openPublication: Publication;
     snackbarOpen: boolean;
     dialogOpen: boolean;
     opdsList: OPDS[];
@@ -96,28 +96,28 @@ export default class App extends React.Component<undefined, AppState> {
         this.state = {
             catalog: undefined,
             // readerOpen: false,
-            openManifestUrl: undefined,
-            openPublication: undefined,
+            // openManifestUrl: undefined,
+            // openPublication: undefined,
             snackbarOpen: false,
             dialogOpen: false,
             opdsList: undefined,
         };
 
         this.handleOpenPublication = this.handleOpenPublication.bind(this);
-        this.handleClosePublication = this.handleClosePublication.bind(this);
+        // this.handleClosePublication = this.handleClosePublication.bind(this);
     }
 
     public handleOpenPublication(publication: Publication) {
         this.store.dispatch(readerActions.init(publication));
     }
 
-    public handleClosePublication() {
-        this.store.dispatch(readerActions.close(
-            this.state.openPublication,
-            this.state.openManifestUrl,
-            ),
-        );
-    }
+    // public handleClosePublication() {
+    //     this.store.dispatch(readerActions.close(
+    //         this.state.openPublication,
+    //         this.state.openManifestUrl,
+    //         ),
+    //     );
+    // }
 
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
@@ -151,6 +151,9 @@ export default class App extends React.Component<undefined, AppState> {
         this.store.dispatch(windowActions.init());
         this.store.subscribe(() => {
             const storeState = this.store.getState();
+            console.log("storeState (INDEX APP):");
+            console.log(storeState);
+
             const catalog = storeState.catalog;
             const opds = storeState.opds;
 
@@ -170,8 +173,8 @@ export default class App extends React.Component<undefined, AppState> {
 
             this.setState({
                 // readerOpen: (storeState.reader.status === ReaderStatus.Open),
-                openManifestUrl: storeState.reader.manifestUrl,
-                openPublication: storeState.reader.publication,
+                // openManifestUrl: storeState.reader.manifestUrl,
+                // openPublication: storeState.reader.publication,
                 opdsList: opds.opds,
             });
 

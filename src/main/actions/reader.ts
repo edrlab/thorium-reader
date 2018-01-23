@@ -8,16 +8,16 @@ export const READER_OPEN = "READER_OPEN";
 export const READER_CLOSE = "READER_CLOSE";
 
 export interface ReaderAction extends Action {
-    reader?: Reader;
-    publication?: Publication;
+    reader?: Reader; // for OPEN and CLOSE
+    publication?: Publication; // for INIT
 }
 
-export function initReader(publication: Publication): ReaderAction {
-    return {
-        type: READER_INIT,
-        publication,
-    };
-}
+// export function initReader(publication: Publication): ReaderAction {
+//     return {
+//         type: READER_INIT,
+//         publication,
+//     };
+// }
 
 export function openReader(reader: Reader): ReaderAction {
     return {

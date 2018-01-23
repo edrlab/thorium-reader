@@ -19,18 +19,18 @@ export function init(publication: Publication): ReaderAction {
     };
 }
 
-export function open(publication: Publication, manifestUrl: string): ReaderAction {
-    return {
-        type: READER_OPEN,
-        publication,
-        manifestUrl,
-    };
-}
+// export function open(publication: Publication, manifestUrl: string): ReaderAction {
+//     return {
+//         type: READER_OPEN,
+//         publication,
+//         manifestUrl,
+//     };
+// }
 
-export function close(publication: Publication, manifestUrl: string): ReaderAction {
-    return {
-        type: READER_CLOSE,
-        publication,
-        manifestUrl,
-    };
-}
+// export function close(publication: Publication, manifestUrl: string): ReaderAction {
+//     return {
+//         type: READER_CLOSE,
+//         publication,
+//         manifestUrl,
+//     };
+// }

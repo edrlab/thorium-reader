@@ -30,7 +30,7 @@ import {
 
 import {
     watchReaderClose,
-    watchReaderInit,
+    // watchReaderInit,
     watchReaderOpen,
     watchReaderOpenRequest,
 } from "readium-desktop/main/sagas/reader";
@@ -52,7 +52,7 @@ export function* rootSaga() {
         watchRendererPublicationRequest(),
         watchPublicationUpdate(),
         watchRendererOpdsListRequest(),
-        watchReaderInit(),
+        // watchReaderInit(),
         watchReaderOpen(),
         watchReaderClose(),
         watchReaderOpenRequest(),

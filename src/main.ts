@@ -40,11 +40,13 @@ function createWindow() {
 
     if (rendererBaseUrl === "file://") {
         // This is a local url
-        rendererBaseUrl += path.normalize(path.join(__dirname, "index.html"));
+        rendererBaseUrl += path.normalize(path.join(__dirname, "index_app.html"));
     } else {
         // This is a remote url
-        rendererBaseUrl += "index.html";
+        rendererBaseUrl += "index_app.html";
     }
+
+    rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
 
     mainWindow.loadURL(rendererBaseUrl);
 

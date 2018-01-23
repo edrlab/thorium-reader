@@ -72,17 +72,17 @@ if (nodeEnv === "DEV") {
     );
 }
 
-console.log("WEBPACK externals (RENDERER):");
+console.log("WEBPACK externals (READER):");
 console.log(JSON.stringify(externals, null, "  "));
 ////// EXTERNALS
 ////// ================================
 
 
 let config = Object.assign({}, {
-    entry: "./src/index_app.ts",
-    name: "renderer index app",
+    entry: "./src/index_reader.ts",
+    name: "renderer index reader",
     output: {
-        filename: "index_app.js",
+        filename: "index_reader.js",
         path: path.join(__dirname, "dist"),
         // https://github.com/webpack/webpack/issues/1114
         libraryTarget: "commonjs2",
@@ -146,15 +146,9 @@ let config = Object.assign({}, {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./src/index_app.ejs",
-            filename: "index_app.html",
+            template: "./src/index_reader.ejs",
+            filename: "index_reader.html",
         }),
-        // new CopyWebpackPlugin([
-        //     {
-        //         from: path.join(__dirname, "FILE.ext"),
-        //         to: "FILE.ext",
-        //     }
-        // ]),
         new ExtractTextPlugin("styles.css"),
         definePlugin,
     ],
