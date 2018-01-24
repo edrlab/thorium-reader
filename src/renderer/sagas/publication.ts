@@ -13,7 +13,7 @@ import * as publicationImportActions from "readium-desktop/actions/collection-ma
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
 
 import { FilesMessage, PublicationMessage} from "readium-desktop/models/ipc";
-import { Publication } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/models/publication";
 
 import *  as messageActions from "readium-desktop/renderer/actions/message";
 
@@ -22,11 +22,15 @@ function sendIPCAddDownload(msg: PublicationMessage) {
 }
 
 export function* watchPublicationDownloadAdd(): SagaIterator {
+
+    // TODO: should get language from view state? (user preferences)
+    const lang = "en";
+
     while (true) {
         let resp = yield take(publicationDownloadActions.PUBLICATION_DOWNLOAD_ADD);
         let pub: Publication = resp.publication;
         let msg: PublicationMessage = { publication: pub};
-        yield put(messageActions.add("Le téléchargement de " + pub.title + " a commencé"));
+        yield put(messageActions.add("Le téléchargement de " + getTitleString(pub.title, lang) + " a commencé"));
         sendIPCAddDownload(msg);
     }
 }
@@ -36,11 +40,15 @@ function sendIPCCancelDownload(msg: PublicationMessage) {
 }
 
 export function* watchPublicationDownloadCancel(): SagaIterator {
+
+    // TODO: should get language from view state? (user preferences)
+    const lang = "en";
+
     while (true) {
         let resp = yield take(publicationDownloadActions.PUBLICATION_DOWNLOAD_CANCEL);
         let pub: Publication = resp.publication;
         let msg: PublicationMessage = { publication: pub};
-        yield put(messageActions.add("Le téléchargement de " + pub.title + " a bien été annulé"));
+        yield put(messageActions.add("Le téléchargement de " + getTitleString(pub.title, lang) + " a bien été annulé"));
         sendIPCCancelDownload(msg);
     }
 }

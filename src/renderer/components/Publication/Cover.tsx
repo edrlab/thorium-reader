@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/models/publication";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
@@ -32,10 +32,13 @@ export default class Cover extends React.Component<ICoverProps, null> {
                 authors += newAuthor.name;
             }
 
+            // TODO: should get language from view state? (user preferences)
+            const lang = "en";
+
             return (
                 <div style={bodyCSS}>
                     <div style={Styles.BookCover.box}>
-                        <p style={Styles.BookCover.title}>{this.props.publication.title}</p>
+                        <p style={Styles.BookCover.title}>{getTitleString(this.props.publication.title, lang)}</p>
                         <p style={Styles.BookCover.author}>{authors}</p>
                     </div>
                 </div>

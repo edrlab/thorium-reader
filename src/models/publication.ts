@@ -6,6 +6,28 @@ import { Identifiable } from "readium-desktop/models/identifiable";
 import { Language } from "readium-desktop/models/language";
 import { Tag } from "readium-desktop/models/tag";
 
+export function getTitleString(titleObj: any, lang?: string): string {
+
+    if (!titleObj) {
+        return "";
+    }
+
+    if (typeof titleObj === "string") {
+        return titleObj;
+    }
+
+    if (lang && titleObj[lang]) {
+        return titleObj[lang];
+    }
+
+    const keys = Object.keys(titleObj);
+    if (keys && keys.length) {
+        return titleObj[keys[0]];
+    }
+
+    return "";
+}
+
 /**
  * A publication
  */

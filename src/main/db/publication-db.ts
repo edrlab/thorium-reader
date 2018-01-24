@@ -81,7 +81,7 @@ export class PublicationDb {
     private convertToPublication(dbDoc: PouchDB.Core.Document<any>): Publication {
         return  {
             identifier: dbDoc.doc.identifier,
-            title: dbDoc.doc.title,
+            title: dbDoc.doc.title, // note: can be multilingual object map (not just string)
             description: dbDoc.doc.description,
             download: dbDoc.doc.download,
             authors: dbDoc.doc.authors,

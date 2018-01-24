@@ -9,7 +9,7 @@ import { Store } from "redux";
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 import { RendererState } from "readium-desktop/renderer/reducers";
@@ -169,9 +169,15 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     private sort (a: Publication, b: Publication) {
-        if (a.title > b.title) {
+
+        // TODO: should get language from view state? (user preferences)
+        const lang = "en";
+        const atitle = getTitleString(a.title, lang);
+        const btitle = getTitleString(b.title, lang);
+
+        if (atitle > btitle) {
             return 1;
-        } else if (a.title === b.title) {
+        } else if (atitle === btitle) {
             return 0;
         } else {
             return -1;

@@ -5,7 +5,7 @@ import FlatButton   from "material-ui/FlatButton";
 import { lazyInject } from "readium-desktop/renderer/di";
 
 import { Contributor } from "readium-desktop/models/contributor";
-import { Publication } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
 
@@ -76,6 +76,9 @@ export default class PublicationListElement extends React.Component<IPublication
         if (publication.cover) {
             image = publication.cover.url;
         }
+
+        // TODO: should get language from view state? (user preferences)
+        const lang = "en";
 
         return (
             <div style={Styles.BookCard.body}>
@@ -165,7 +168,7 @@ export default class PublicationListElement extends React.Component<IPublication
                     <CardTitle
                         titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
                         subtitleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
-                        title={publication.title}
+                        title={getTitleString(publication.title, lang)}
                         subtitle={authors}
                     />
                 </Card>

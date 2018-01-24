@@ -209,7 +209,7 @@ function addPublicationToDb (publication: Publication, files?: File[]) {
     }
 
     let newPub: Publication = {
-            title: publication.title,
+            title: publication.title, // note: can be multilingual object map (not just string)
             cover: publication.cover,
             download: publication.download,
             description: publication.description,

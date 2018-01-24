@@ -81,7 +81,7 @@ export function* watchPublicationUpdate(): SagaIterator {
                             }
 
                             let newPub: Publication = {
-                                title: pub.Metadata.Title,
+                                title: pub.Metadata.Title, // note: can be multilingual object map (not just string)
                                 description: pub.Metadata.Description,
                                 identifier: uuid.v4(),
                                 authors,

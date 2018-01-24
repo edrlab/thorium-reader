@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/models/publication";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
@@ -33,6 +33,9 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
             }
         }
 
+        // TODO: should get language from view state? (user preferences)
+        const lang = "en";
+
         return (
             <div style={Styles.OpdsList.body}>
                 {publication.cover ? (
@@ -44,7 +47,7 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
                 )}
                 <div style={Styles.OpdsList.Publication.informations}>
                     <div style={Styles.OpdsList.Publication.column}>
-                        <h4 style={Styles.OpdsList.Publication.title}>{publication.title}</h4>
+                        <h4 style={Styles.OpdsList.Publication.title}>{getTitleString(publication.title, lang)}</h4>
                         <p>{authors}</p>
                     </div>
                     <input

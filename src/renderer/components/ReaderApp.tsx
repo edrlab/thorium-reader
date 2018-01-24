@@ -9,7 +9,7 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
@@ -255,15 +255,19 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             const _publication = TAJSON.deserialize<R2Publication>(_publicationJSON, R2Publication);
 
             if (_publication.Metadata && _publication.Metadata.Title) {
-                let title: string | undefined;
-                if (typeof _publication.Metadata.Title === "string") {
-                    title = _publication.Metadata.Title;
-                } else {
-                    const keys = Object.keys(_publication.Metadata.Title as IStringMap);
-                    if (keys && keys.length) {
-                        title = (_publication.Metadata.Title as IStringMap)[keys[0]];
-                    }
-                }
+                // TODO: should get language from view state? (user preferences)
+                const lang = "en";
+                const title = getTitleString( _publication.Metadata.Title, lang);
+
+                // let title: string | undefined;
+                // if (typeof _publication.Metadata.Title === "string") {
+                //     title = _publication.Metadata.Title;
+                // } else {
+                //     const keys = Object.keys(_publication.Metadata.Title as IStringMap);
+                //     if (keys && keys.length) {
+                //         title = (_publication.Metadata.Title as IStringMap)[keys[0]];
+                //     }
+                // }
 
                 if (title) {
                     console.log(title);
@@ -336,6 +340,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             console.log(storeState);
 
             this.setState({
+                title: "",
                 openManifestUrl: storeState.reader.manifestUrl,
                 openPublication: storeState.reader.publication,
             });

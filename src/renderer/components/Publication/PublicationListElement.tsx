@@ -6,7 +6,7 @@ import LinearProgress from "material-ui/LinearProgress";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
 
@@ -54,6 +54,9 @@ export default class PublicationListElement extends React.Component<IPublication
             image = publication.cover.url;
         }
 
+        // TODO: should get language from view state? (user preferences)
+        const lang = "en";
+
         return (
             <div style={Styles.BookListElement.body}>
                 {publication.cover ? (
@@ -64,7 +67,7 @@ export default class PublicationListElement extends React.Component<IPublication
                     </div>
                 )}
                 <div style={Styles.BookListElement.description}>
-                    <h4 style={Styles.BookListElement.title}>{publication.title}</h4>
+                    <h4 style={Styles.BookListElement.title}>{getTitleString(publication.title, lang)}</h4>
                     <div style={Styles.BookListElement.column}>
                         <p>{author}</p>
                         <p>Editeur</p>
