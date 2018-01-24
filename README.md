@@ -141,7 +141,15 @@ Leveldown is fast and is shipped in the production environment.
 http://www.feedbooks.com/books/top.atom?category=FBFIC019000
 ```
 
-## Debug in VS Code
+## Debug in VS Code (method 1)
+
+Note that this method does not work if the WebPack bundle(s) generated for renderer process(es)
+contain external package references (typically, using Hot Module Reload and WebPack's development server,
+combined with "externals" optimization in order to minimize bundle size and compile times).
+This is because the VSCode "launch" configuration of Electron results in invoking the Electron binary CLI
+with a single Javascript file as main parameter, instead of the "." convention (which seeks for suitable "main" in package.json or index.js).
+For some reason, the `require()` context given by Electron in renderer processes is very sensitive to this seemingly minute difference,
+and external node_module fetches simply fail. See method 2 below.
 
 Launcher:
 
@@ -163,12 +171,36 @@ Launcher:
       "outFiles": [
         "${workspaceRoot}/dist/main.js"
       ],
-      "sourceMaps": true
+      "sourceMaps": true,
+      "env": {
+        "DEBUG": "r2:*",
+        "NODE_ENV": "development"
+      }
     }
   ]
 }
 ```
 
-Launch command: `npm run build:dev:main`
+Launch command, either:
+1) `npm run build` (generates main and renderer process bundles in ./dist/)
+2) `npm run build:dev:main && npm run start:dev:renderer-reader` (generates main process bundle in ./dist/, and starts the WebPack Hot Module Reload servers for each renderer process)
+
+Then launch debugger in vs code
+
+
+## Debug in VS Code (method 2)
+
+Launcher:
+
+```
+{
+  "name": "Attach (--remote-debugging-port=25575)",
+  "type": "node",
+  "request": "attach",
+  "port": 25575
+}
+```
+
+Launch command: `npm run start:vscode`
 
 Then launch debugger in vs code
