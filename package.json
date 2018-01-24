@@ -135,7 +135,7 @@
   "devDependencies": {
     "@types/commonmark": "^0.27.0",
     "@types/i18next": "^8.4.2",
-    "@types/material-ui": "^0.20.4",
+    "@types/material-ui": "^0.20.5",
     "@types/pouchdb-core": "^6.1.11",
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
@@ -152,7 +152,7 @@
     "css-loader": "^0.28.9",
     "eclint": "^2.6.0",
     "electron": "1.7.*",
-    "electron-builder": "^19.55.1",
+    "electron-builder": "^19.55.2",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",
     "html-webpack-plugin": "^2.30.1",
