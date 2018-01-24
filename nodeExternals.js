@@ -110,11 +110,6 @@ module.exports = function nodeExternals(options) {
         let forceDebug = false;
         const debug = true;
 
-        const isR2Alias = /^@r2-.+-js/.test(request); // EXTERNAL
-        if (isR2Alias) {
-            forceDebug = true;
-        }
-
         const isR2 = /^r2-.+-js/.test(request); // EXTERNAL
         const isRDesk = request.indexOf("readium-desktop/") === 0; // BUNDLE
 
@@ -126,17 +121,28 @@ module.exports = function nodeExternals(options) {
         const isRelative = request.indexOf(".") === 0;
         const isRelativeInNodeModules = isRelative && context.indexOf("/node_modules/") >= 0;
 
+        const isWebPack = request.indexOf("webpack") >= 0 ||
+            isRelative && context.indexOf("/node_modules/webpack") >= 0;
+
+        const isCSS = request.endsWith(".css");
+
         const token = isRelative ? context + request : request;
         const isAlready = alreadyProcessed.indexOf(token) >= 0;
         if (!isAlready) {
             alreadyProcessed.push(token);
         }
 
+        const isR2Alias = /^@r2-.+-js/.test(request); // EXTERNAL
+        if (isR2Alias || isRelativeInNodeModules || isWebPack || isCSS) {
+            forceDebug = true;
+        }
+
         // doesn't necessarily mean that WebPack will bundle, just that it won't externalize
-        const makeBundle = !isR2 && !isR2Alias && !isRelativeInNodeModules &&
+        const makeBundle = isWebPack || isCSS ||
+            (!isR2 && !isR2Alias && !isRelativeInNodeModules &&
             (isRDesk || isRelative || isElectron || isNode ||
                 request === "xxxpouchdb-core" // No need to force-bundle, as we now fixed di.ts to test for "default" property
-            );
+            ));
         let makeExternal = !makeBundle;
         if (makeExternal &&
             !isR2 && !isR2Alias && !isRelativeInNodeModules) {
@@ -180,6 +186,13 @@ module.exports = function nodeExternals(options) {
                     if (forceDebug || debug) {
                         console.log(processName + "__ ALIAS: [" + request + "] => " + request_);
                     }
+                }
+            } else if (isRelativeInNodeModules) {
+                request_ = request_.replace("./", "");
+                request_ = context + "/" + request_;
+                request_ = request_.replace(/^.*?\/node_modules\//, '');
+                if (forceDebug || debug) {
+                    console.log(processName + "__ RELATIVE: [" + request + "] => " + request_);
                 }
             }
             return callback(null, importType + " " + request_);

@@ -28,6 +28,26 @@ let definePlugin = new webpack.DefinePlugin({
     __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
 });
 
+const aliases = {
+    "readium-desktop": path.resolve(__dirname, "src"),
+
+    // "@r2-utils-js": path.resolve(__dirname, "node_modules/r2-utils-js/dist/es6-es2015/src"),
+    // "@r2-lcp-js": path.resolve(__dirname, "node_modules/r2-lcp-js/dist/es6-es2015/src"),
+    // "@r2-opds-js": path.resolve(__dirname, "node_modules/r2-opds-js/dist/es6-es2015/src"),
+    // "@r2-shared-js": path.resolve(__dirname, "node_modules/r2-shared-js/dist/es6-es2015/src"),
+    // "@r2-streamer-js": path.resolve(__dirname, "node_modules/r2-streamer-js/dist/es6-es2015/src"),
+    // "@r2-navigator-js": path.resolve(__dirname, "node_modules/r2-navigator-js/dist/es6-es2015/src"),
+    // "@r2-testapp-js": path.resolve(__dirname, "node_modules/r2-testapp-js/dist/es6-es2015/src"),
+
+    "@r2-utils-js": "r2-utils-js/dist/es6-es2015/src",
+    "@r2-lcp-js": "r2-lcp-js/dist/es6-es2015/src",
+    "@r2-opds-js": "r2-opds-js/dist/es6-es2015/src",
+    "@r2-shared-js": "r2-shared-js/dist/es6-es2015/src",
+    "@r2-streamer-js": "r2-streamer-js/dist/es6-es2015/src",
+    "@r2-navigator-js": "r2-navigator-js/dist/es6-es2015/src",
+    "@r2-testapp-js": "r2-testapp-js/dist/es6-es2015/src",
+};
+
 ////// ================================
 ////// EXTERNALS
 // Some modules cannot be bundled by Webpack
@@ -37,7 +57,7 @@ let definePlugin = new webpack.DefinePlugin({
 // to minimize bundle size / bundler computations / compile times.
 
 // const nodeExternals = require("webpack-node-externals");
-// const nodeExternals = require("./nodeExternals");
+const nodeExternals = require("./nodeExternals");
 
 let externals = {
     "bindings": "bindings",
@@ -65,27 +85,38 @@ if (nodeEnv === "DEV") {
     //         }
     //     ),
     // ];
+    if (process.env.WEBPACK === "bundle-external") {
+        externals = [
+            nodeExternals(
+                {
+                    processName: "READER",
+                    alias: aliases,
+                    // whitelist: ["pouchdb-core"],
+                }
+            ),
+        ];
+    }
 
-    externals = Object.assign(externals, {
+    // externals = Object.assign(externals, {
 
-        // "react": "React",
-        // "react-dom": "ReactDOM"
-        // react: {
-        //     root: 'React',
-        //     commonjs2: 'react',
-        //     commonjs: 'react',
-        //     amd: 'react',
-        //     umd: 'react',
-        //   },
-        //   'react-dom': {
-        //     root: 'ReactDOM',
-        //     commonjs2: 'react-dom',
-        //     commonjs: 'react-dom',
-        //     amd: 'react-dom',
-        //     umd: 'react-dom',
-        //   }
-        }
-    );
+    //     // "react": "React",
+    //     // "react-dom": "ReactDOM"
+    //     // react: {
+    //     //     root: 'React',
+    //     //     commonjs2: 'react',
+    //     //     commonjs: 'react',
+    //     //     amd: 'react',
+    //     //     umd: 'react',
+    //     //   },
+    //     //   'react-dom': {
+    //     //     root: 'ReactDOM',
+    //     //     commonjs2: 'react-dom',
+    //     //     commonjs: 'react-dom',
+    //     //     amd: 'react-dom',
+    //     //     umd: 'react-dom',
+    //     //   }
+    //     }
+    // );
 }
 
 console.log("WEBPACK externals (READER):");
@@ -109,25 +140,7 @@ let config = Object.assign({}, {
 
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx"],
-        alias: {
-            "readium-desktop": path.resolve(__dirname, "src"),
-
-            // "@r2-utils-js": path.resolve(__dirname, "node_modules/r2-utils-js/dist/es6-es2015/src"),
-            // "@r2-lcp-js": path.resolve(__dirname, "node_modules/r2-lcp-js/dist/es6-es2015/src"),
-            // "@r2-opds-js": path.resolve(__dirname, "node_modules/r2-opds-js/dist/es6-es2015/src"),
-            // "@r2-shared-js": path.resolve(__dirname, "node_modules/r2-shared-js/dist/es6-es2015/src"),
-            // "@r2-streamer-js": path.resolve(__dirname, "node_modules/r2-streamer-js/dist/es6-es2015/src"),
-            // "@r2-navigator-js": path.resolve(__dirname, "node_modules/r2-navigator-js/dist/es6-es2015/src"),
-            // "@r2-testapp-js": path.resolve(__dirname, "node_modules/r2-testapp-js/dist/es6-es2015/src"),
-
-            "@r2-utils-js": "r2-utils-js/dist/es6-es2015/src",
-            "@r2-lcp-js": "r2-lcp-js/dist/es6-es2015/src",
-            "@r2-opds-js": "r2-opds-js/dist/es6-es2015/src",
-            "@r2-shared-js": "r2-shared-js/dist/es6-es2015/src",
-            "@r2-streamer-js": "r2-streamer-js/dist/es6-es2015/src",
-            "@r2-navigator-js": "r2-navigator-js/dist/es6-es2015/src",
-            "@r2-testapp-js": "r2-testapp-js/dist/es6-es2015/src",
-        },
+        alias: aliases,
     },
 
     module: {
