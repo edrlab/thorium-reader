@@ -31,7 +31,8 @@ import { MessageStatus } from "readium-desktop/renderer/reducers/message";
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
 import * as messageAction from "readium-desktop/renderer/actions/message";
 
-import * as Dropzone from "react-dropzone";
+import * as Dropzone from "react-dropzone/dist";
+// import { default as Dropzone } from "react-dropzone"; // does not work when "react-dropzone" is external to the bundle (Node require() import)
 
 interface AppState {
     catalog: Catalog;
@@ -186,7 +187,7 @@ export default class App extends React.Component<undefined, AppState> {
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
-                    <Dropzone.default disableClick onDrop={this.onDrop.bind(this)} style={{}}>
+                    <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
                         <AppToolbar
                             openDialog={this.openDialog.bind(this)}
                             closeDialog={this.handleDialogClose.bind(this)}
@@ -211,8 +212,7 @@ export default class App extends React.Component<undefined, AppState> {
                             >
                             {this.dialogMessage}
                         </Dialog>
-
-                    </Dropzone.default>
+                    </Dropzone>
                 </div>
             </MuiThemeProvider>
         );

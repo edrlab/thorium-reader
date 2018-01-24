@@ -6,6 +6,8 @@ declare module "*.json" {
 declare module "redux-electron-store";
 declare module "electron-redux";
 
+declare module "react-dropzone/dist";
+
 declare module "react-card-flip";
 
 declare module "pouchdb-adapter-leveldb";
