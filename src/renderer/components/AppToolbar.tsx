@@ -25,7 +25,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import CollectionDialog from "readium-desktop/renderer/components/opds/CollectionDialog";
 import { Styles } from "readium-desktop/renderer/components/styles";
 
-import { OPDS } from "readium-desktop/models/opds";
+import { OPDS } from "readium-desktop/common/models/opds";
 
 import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
 

@@ -20,6 +20,7 @@ import {
 } from "readium-desktop/main/redux/reducers/reader";
 
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
+import { opdsReducer } from "readium-desktop/common/redux/reducers/opds";
 
 export const rootReducer = combineReducers({
     downloader,
@@ -28,4 +29,5 @@ export const rootReducer = combineReducers({
     publicationDownloads: publicationDownloadReducer,
     reader: readerReducer,
     net: netReducer,
+    opds: opdsReducer,
 });

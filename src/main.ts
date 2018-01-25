@@ -14,7 +14,7 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 
-import { netActions } from "readium-desktop/common/redux/actions";
+import { netActions, opdsActions } from "readium-desktop/common/redux/actions";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
@@ -170,11 +170,25 @@ ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
                     break;
             }
 
+            // Send network status
             win.webContents.send(syncIpc.CHANNEL, {
                 type: syncIpc.EventType.MainAction,
                 payload: {
                     action: {
                         type: netActionType,
+                    },
+                },
+            });
+
+            // Send opds feeds
+            win.webContents.send(syncIpc.CHANNEL, {
+                type: syncIpc.EventType.MainAction,
+                payload: {
+                    action: {
+                        type: opdsActions.ActionType.SetSuccess,
+                        payload: {
+                            items: state.opds.items,
+                        },
                     },
                 },
             });

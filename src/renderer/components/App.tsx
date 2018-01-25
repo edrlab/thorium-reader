@@ -9,7 +9,7 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 import { Store } from "redux";
 
 import { Catalog } from "readium-desktop/models/catalog";
-import { OPDS } from "readium-desktop/models/opds";
+import { OPDS } from "readium-desktop/common/models/opds";
 import { Publication } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -155,7 +155,7 @@ export default class App extends React.Component<undefined, AppState> {
             console.log(storeState);
 
             const catalog = storeState.catalog;
-            const opds = storeState.opds;
+            const opdsState = storeState.opds;
 
             if (catalog.publications === undefined) {
                 this.setState({catalog: undefined});
@@ -175,7 +175,7 @@ export default class App extends React.Component<undefined, AppState> {
                 // readerOpen: (storeState.reader.status === ReaderStatus.Open),
                 // openManifestUrl: storeState.reader.manifestUrl,
                 // openPublication: storeState.reader.publication,
-                opdsList: opds.opds,
+                opdsList: opdsState.items,
             });
 
             this.translator.setLocale(this.store.getState().i18n.locale);

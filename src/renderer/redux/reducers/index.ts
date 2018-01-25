@@ -2,7 +2,6 @@
 import { combineReducers } from "redux";
 
 import { catalogReducer } from "readium-desktop/reducers/catalog";
-import { opdsReducer } from "readium-desktop/reducers/opds";
 
 import {
     windowReducer,
@@ -21,6 +20,7 @@ import { i18n } from "readium-desktop/reducers/i18n";
 import { winReducer } from "./win";
 
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
+import { opdsReducer } from "readium-desktop/common/redux/reducers/opds";
 
 export const rootReducer = combineReducers({
     i18n,

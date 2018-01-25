@@ -1,7 +1,7 @@
 import { injectable} from "inversify";
 import * as PouchDB from "pouchdb-core";
 
-import { OPDS } from "readium-desktop/models/opds";
+import { OPDS } from "readium-desktop/common/models/opds";
 
 @injectable()
 export class OpdsDb {

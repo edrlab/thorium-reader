@@ -7,9 +7,9 @@ import { Store } from "redux";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import * as opdsActions from "readium-desktop/actions/opds";
+import { opdsActions } from "readium-desktop/common/redux/actions";
 
-import { OPDS } from "readium-desktop/models/opds";
+import { OPDS } from "readium-desktop/common/models/opds";
 
 import FlatButton from "material-ui/FlatButton";
 

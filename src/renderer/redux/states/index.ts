@@ -1,11 +1,11 @@
-import { NetState } from "readium-desktop/common/redux/states/net";
-
 import {I18NState} from "readium-desktop/reducers/i18n";
 import {CatalogState} from "readium-desktop/reducers/catalog";
 import {WindowState} from "readium-desktop/renderer/reducers/window";
 import {ReaderState} from "readium-desktop/renderer/reducers/reader";
 import {MessageState} from "readium-desktop/renderer/reducers/message";
-import {OpdsState} from "readium-desktop/reducers/opds";
+
+import { NetState } from "readium-desktop/common/redux/states/net";
+import { OpdsState } from "readium-desktop/common/redux/states/opds";
 
 import { WinState } from "./win";
 

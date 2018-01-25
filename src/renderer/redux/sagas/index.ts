@@ -12,14 +12,6 @@ import {
     watchReaderInit,
 } from "readium-desktop/renderer/sagas/reader";
 
-import {
-    watchMainOpdsResponse,
-    watchOpdsAdd,
-    watchOpdsListInit,
-    watchOpdsRemove,
-    watchOpdsUpdate,
-} from "readium-desktop/renderer/sagas/opds";
-
 import { all } from 'redux-saga/effects';
 
 import { winInitWatcher } from "./win";
@@ -32,11 +24,6 @@ export function* rootSaga() {
         watchPublicationDownloadCancel(),
         watchPublicationImport(),
         watchPublicationDelete(),
-        watchOpdsListInit(),
-        watchMainOpdsResponse(),
-        watchOpdsAdd(),
-        watchOpdsUpdate(),
-        watchOpdsRemove(),
         watchReaderInit(),
         winInitWatcher(),
     ]);

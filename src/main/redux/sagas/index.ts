@@ -25,7 +25,10 @@ import {
 } from "readium-desktop/main/redux/sagas/collection-manager";
 
 import {
-    watchRendererOpdsListRequest,
+    opdsAddRequestWatcher,
+    opdsInitWatcher,
+    opdsRemoveRequestWatcher,
+    opdsUpdateRequestWatcher,
 } from "readium-desktop/main/redux/sagas/opds";
 
 import {
@@ -54,11 +57,16 @@ export function* rootSaga() {
         watchStreamerPublicationClose(),
         watchRendererPublicationRequest(),
         watchPublicationUpdate(),
-        watchRendererOpdsListRequest(),
         // watchReaderInit(),
         watchReaderOpen(),
         watchReaderClose(),
         watchReaderOpenRequest(),
+
+        opdsAddRequestWatcher(),
+        opdsInitWatcher(),
+        opdsRemoveRequestWatcher(),
+        opdsUpdateRequestWatcher(),
+
         appInitWatcher(),
         netStatusWatcher(),
     ]);
