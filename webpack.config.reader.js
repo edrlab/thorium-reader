@@ -178,7 +178,7 @@ let config = Object.assign({}, {
             template: "./src/index_reader.ejs",
             filename: "index_reader.html",
         }),
-        new ExtractTextPlugin("styles.css"),
+        new ExtractTextPlugin("styles_reader.css"),
         definePlugin,
     ],
 });

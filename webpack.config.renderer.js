@@ -176,7 +176,7 @@ let config = Object.assign({}, {
         //         to: "FILE.ext",
         //     }
         // ]),
-        new ExtractTextPlugin("styles.css"),
+        new ExtractTextPlugin("styles_app.css"),
         definePlugin,
     ],
 });
