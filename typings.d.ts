@@ -3,6 +3,9 @@ declare module "*.json" {
     export default value;
 }
 
+declare module "redux-electron-store";
+declare module "electron-redux";
+
 declare module "react-card-flip";
 
 declare module "pouchdb-adapter-leveldb";

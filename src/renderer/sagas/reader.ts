@@ -9,6 +9,7 @@ import {
 import { Publication } from "readium-desktop/models/publication";
 import {
     READER_INIT,
+    ReaderAction,
 } from "readium-desktop/renderer/actions/reader";
 
 function sendStreamerManifestOpenRequest(publication: Publication) {
@@ -22,6 +23,8 @@ function sendStreamerManifestOpenRequest(publication: Publication) {
 export function* watchReaderInit(): SagaIterator {
     while (true) {
         let resp = yield take(READER_INIT);
-        yield call(sendStreamerManifestOpenRequest, resp.publication);
+        console.log("Reader init (RENDERER)");
+        console.log(resp as ReaderAction);
+        yield call(sendStreamerManifestOpenRequest, (resp as ReaderAction).publication);
     }
 }

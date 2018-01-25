@@ -37,8 +37,8 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
     @lazyInject("translator")
     private translator: Translator;
 
-    constructor() {
-        super();
+    constructor(props: IOpdsFormProps) {
+        super(props);
         this.state = {
             opdsUrl: "",
             opdsName: "",
@@ -94,7 +94,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                     <FlatButton
                         label={__("opds.addForm.delete")}
                         primary={true}
-                        onTouchTap={() => {
+                        onClick={() => {
                             this.store.dispatch(opdsActions.remove(this.props.opds));
                             this.props.closeDialog();
                             this.props.closeFunction();
@@ -103,7 +103,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                     <FlatButton
                         label={__("opds.addForm.update")}
                         primary={true}
-                        onTouchTap={() => {
+                        onClick={() => {
                             if (this.isFormValid()) {
                                 let newOpds: OPDS = {
                                     identifier: this.props.opds.identifier,
@@ -123,7 +123,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                     <FlatButton
                         label={__("opds.addForm.addButton")}
                         primary={true}
-                        onTouchTap={() => {
+                        onClick={() => {
                             if (this.isFormValid()) {
                                 let newOpds: OPDS = {
                                     identifier: uuid.v4(),

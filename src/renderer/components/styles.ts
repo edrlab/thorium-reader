@@ -4,6 +4,18 @@ let hidden: "hidden" = "hidden";
 let absolute: "absolute" = "absolute";
 
 export const Styles = {
+    Reader: {
+        publicationViewport: {
+            overflowY: hidden,
+            overflowX: hidden,
+            position: absolute,
+            top: "100px",
+            bottom: "0px",
+            left: "0px",
+            right: "0px",
+            backgroundColor: "red",
+        },
+    },
     App: {
         height: "100%",
     },

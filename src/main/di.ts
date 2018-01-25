@@ -9,7 +9,7 @@ import { Store } from "redux";
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 
-import { Server } from "r2-streamer-js";
+import { Server } from "@r2-streamer-js/http/server";
 
 import { Downloader } from "readium-desktop/downloader/downloader";
 import { Translator } from "readium-desktop/i18n/translator";
@@ -43,7 +43,18 @@ if (!fs.existsSync(userDataPath)) {
 }
 
 // Create databases
-let PouchDB = (PouchDBCore as any).default;
+let PouchDB = (PouchDBCore as any);
+// object ready to use (no "default" property) when:
+// module.exports = PouchDB$2
+// in the CommonJS require'd "pouchdb-core" package ("main" field in package.json)
+// otherwise ("default" property) then it means:
+// export default PouchDB$2
+// in the native ECMAScript module ("jsnext:main" or "module" field in package.json)
+if (PouchDB.default) {
+    PouchDB = PouchDB.default;
+}
+// ==> this way, with process.env.NODE_ENV === DEV we can have "pouchdb-core" as an external,
+// otherwise it gets bundled and the code continues to work in production.
 
 const rootDbPath = path.join(
     userDataPath,
@@ -58,8 +69,7 @@ if (!fs.existsSync(rootDbPath)) {
 const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 
 // Load PouchDB plugins
-PouchDB
-    .plugin(pouchDbAdapter.default);
+PouchDB.plugin(pouchDbAdapter.default);
 
 let dbOpts = {
     adapter: __POUCHDB_ADAPTER_NAME__,

@@ -7,6 +7,8 @@ import { Publication } from "readium-desktop/models/publication";
  *  A reader
  */
 export interface Reader extends Identifiable {
-   publication: Publication;
-   window: BrowserWindow;
+    filesystemPath: string;
+    manifestUrl: string;
+    publication: Publication;
+    window: BrowserWindow;
 }

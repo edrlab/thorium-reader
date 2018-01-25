@@ -24,8 +24,8 @@ export default class AuthenticationForm extends React.Component<IOpdsFormProps, 
     @lazyInject("translator")
     private translator: Translator;
 
-    constructor() {
-        super();
+    constructor(props: IOpdsFormProps) {
+        super(props);
         this.state = {
             username: "",
             password: "",
@@ -67,7 +67,7 @@ export default class AuthenticationForm extends React.Component<IOpdsFormProps, 
                     <FlatButton
                         label={__("opds.authentication.loginButton")}
                         primary={true}
-                        onTouchTap={() => {
+                        onClick={() => {
                             if (this.isFormValid()) {
                                 this.props.downloadOPDS({username: this.state.username, password: this.state.password});
                                 this.props.closeDialog();
@@ -79,7 +79,7 @@ export default class AuthenticationForm extends React.Component<IOpdsFormProps, 
                     <FlatButton
                         label={__("opds.back")}
                         primary={true}
-                        onTouchTap={() => {
+                        onClick={() => {
                                 this.props.closeDialog();
                                 this.props.closeList();
                         }}

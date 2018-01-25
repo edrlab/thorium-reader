@@ -14,7 +14,7 @@ import { Publication } from "readium-desktop/models/publication";
 import { lazyInject } from "readium-desktop/renderer/di";
 import { RendererState } from "readium-desktop/renderer/reducers";
 
-import * as windowActions from "readium-desktop/renderer/actions/window";
+// import * as windowActions from "readium-desktop/renderer/actions/window";
 
 import { Translator }   from "readium-desktop/i18n/translator";
 
@@ -51,8 +51,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     @lazyInject("store")
     private store: Store<RendererState>;
 
-    @lazyInject("store")
-    private  __ = this.translator.translate;
+    private __ = this.translator.translate;
 
     constructor(props: LibraryProps) {
         super(props);
@@ -64,7 +63,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     public componentDidMount() {
-        this.store.dispatch(windowActions.showLibrary());
+        // this.store.dispatch(windowActions.showLibrary());
     }
 
     public downloadEPUB = (newPublication: Publication, publicationId: number) => {

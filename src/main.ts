@@ -9,11 +9,12 @@ import { container } from "readium-desktop/main/di";
 import { AppState } from "readium-desktop/main/reducers";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
-import { initSessions } from "r2-streamer-js/dist/es6-es2015/src/electron/main/sessions";
+import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
 declare const __NODE_ENV__: string;
+declare const __PACKAGING__: string;
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
@@ -27,7 +28,8 @@ function createWindow() {
         width: 800,
         height: 600,
         webPreferences: {
-            devTools: __NODE_ENV__ === "DEV",
+            devTools: __NODE_ENV__ === "DEV" ||
+                (__PACKAGING__ === "0" && process.env.NODE_ENV === "development"),
             nodeIntegration: true, // Required to use IPC
             webSecurity: false,
             allowRunningInsecureContent: false,
@@ -38,20 +40,23 @@ function createWindow() {
 
     if (rendererBaseUrl === "file://") {
         // This is a local url
-        rendererBaseUrl += path.normalize(path.join(__dirname, "index.html"));
+        rendererBaseUrl += path.normalize(path.join(__dirname, "index_app.html"));
     } else {
         // This is a remote url
-        rendererBaseUrl += "index.html";
+        rendererBaseUrl += "index_app.html";
     }
+
+    rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
 
     mainWindow.loadURL(rendererBaseUrl);
 
-    if (__NODE_ENV__ === "DEV") {
+    if (__NODE_ENV__ === "DEV" ||
+        (__PACKAGING__ === "0" && process.env.NODE_ENV === "development")) {
         mainWindow.webContents.openDevTools();
     }
 
     // Clear all cache to prevent weird behaviours
-    // Fully handled in r2-streamer-js / navigator initSessions();
+    // Fully handled in r2-testapp-js / navigator initSessions();
     // (including exit cleanup)
     // mainWindow.webContents.session.clearStorageData();
 

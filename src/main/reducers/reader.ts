@@ -26,12 +26,23 @@ export function readerReducer(
     ): ReaderState {
     switch (action.type) {
         case READER_INIT:
-            let winId = uuid.v4();
+            // action.publication SHOULD NOT BE NIL
+            // action.reader SHOULD BE NIL
+            // let winId = uuid.v4();
+            console.log("readerReducer INIT (MAIN)");
             return state;
         case READER_OPEN:
+            // action.publication SHOULD BE NIL
+            // action.reader SHOULD NOT BE NIL
+            // action.reader.publication SHOULD NOT BE NIL
+            console.log("readerReducer OPEN (MAIN)");
             state.readers[action.reader.identifier] = action.reader;
             return state;
         case READER_CLOSE:
+            // action.publication SHOULD BE NIL
+            // action.reader SHOULD NOT BE NIL
+            // action.reader.publication SHOULD NOT BE NIL
+            console.log("readerReducer CLOSE (MAIN)");
             delete state.readers[action.reader.identifier];
             return state;
         default:

@@ -30,13 +30,15 @@ import {
 
 import {
     watchReaderClose,
-    watchReaderInit,
+    // watchReaderInit,
     watchReaderOpen,
     watchReaderOpenRequest,
 } from "readium-desktop/main/sagas/reader";
 
+import { all } from 'redux-saga/effects';
+
 export function* rootSaga() {
-    yield [
+    yield all([
         watchCatalogInit(),
         watchCatalogUpdate(),
         watchRendererCatalogRequest(),
@@ -50,9 +52,9 @@ export function* rootSaga() {
         watchRendererPublicationRequest(),
         watchPublicationUpdate(),
         watchRendererOpdsListRequest(),
-        watchReaderInit(),
+        // watchReaderInit(),
         watchReaderOpen(),
         watchReaderClose(),
         watchReaderOpenRequest(),
-    ];
+    ]);
 }
