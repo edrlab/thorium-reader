@@ -8,7 +8,10 @@ import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
 import { deviceIDManager } from "@r2-testapp-js/electron/main/lsd-deviceid-manager";
 
 // Preprocessing directive
+declare const __RENDERER_BASE_URL__: string;
+declare const __NODE_ENV__: string;
 declare const __NODE_MODULE_RELATIVE_URL__: string;
+declare const __PACKAGING__: string;
 
 initGlobals();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
@@ -23,6 +26,15 @@ export const streamer: Server = new Server({
 
 installLcpHandler(streamer, deviceIDManager);
 
-setupReadiumCSS(streamer, path.normalize(path.join(
-    __dirname, __NODE_MODULE_RELATIVE_URL__,
-    "r2-navigator-js", "dist", "ReadiumCSS")));
+let rcssPath = "ReadiumCSS";
+if (__PACKAGING__ === "1") {
+    rcssPath = path.normalize(path.join(__dirname, rcssPath));
+} else {
+    rcssPath = "r2-navigator-js/dist/ReadiumCSS";
+    rcssPath = path.normalize(path.join(__dirname, __NODE_MODULE_RELATIVE_URL__, rcssPath));
+}
+
+rcssPath = rcssPath.replace(/\\/g, "/");
+console.log(rcssPath);
+
+setupReadiumCSS(streamer, rcssPath);
