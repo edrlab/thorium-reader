@@ -12,7 +12,7 @@ import * as publicationDownloadActions from "readium-desktop/actions/publication
 import { Publication } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
-import { RendererState } from "readium-desktop/renderer/reducers";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 // import * as windowActions from "readium-desktop/renderer/actions/window";
 
@@ -49,7 +49,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     private translator: Translator;
 
     @lazyInject("store")
-    private store: Store<RendererState>;
+    private store: Store<RootState>;
 
     private __ = this.translator.translate;
 

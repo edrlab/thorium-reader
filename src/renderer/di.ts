@@ -6,14 +6,17 @@ import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 
 import { Translator } from "readium-desktop/i18n/translator";
-import { RendererState } from "readium-desktop/renderer/reducers";
-import { store } from "readium-desktop/renderer/store/memory";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { initStore } from "readium-desktop/renderer/redux/store/memory";
 
-let container = new Container();
+const container = new Container();
 container.bind<Translator>("translator").to(Translator);
-container.bind<Store<RendererState>>("store").toConstantValue(store);
 
-let {
+// Create store
+const store = initStore();
+container.bind<Store<RootState>>("store").toConstantValue(store);
+
+const {
     lazyInject,
     lazyInjectNamed,
     lazyInjectTagged,

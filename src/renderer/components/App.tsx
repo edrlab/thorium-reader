@@ -2,7 +2,7 @@ import * as React from "react";
 
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
-import Snackbar     from "material-ui/Snackbar";
+import Snackbar from "material-ui/Snackbar";
 import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
@@ -24,7 +24,7 @@ import Library from "readium-desktop/renderer/components/Library";
 
 import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
-import { RendererState } from "readium-desktop/renderer/reducers";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { MessageStatus } from "readium-desktop/renderer/reducers/message";
 // import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
 
@@ -48,7 +48,7 @@ const defaultLocale = "fr";
 
 export default class App extends React.Component<undefined, AppState> {
     @lazyInject("store")
-    private store: Store<RendererState>;
+    private store: Store<RootState>;
 
     @lazyInject("translator")
     private translator: Translator;

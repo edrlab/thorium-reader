@@ -20,7 +20,7 @@ import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
 import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
-import { RendererState } from "readium-desktop/renderer/reducers";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
@@ -194,7 +194,7 @@ const defaultLocale = "fr";
 
 export default class ReaderApp extends React.Component<undefined, ReaderAppState> {
     @lazyInject("store")
-    private store: Store<RendererState>;
+    private store: Store<RootState>;
 
     @lazyInject("translator")
     private translator: Translator;

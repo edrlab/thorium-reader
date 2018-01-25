@@ -13,7 +13,7 @@
   "main": "dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm rebuild --runtime=electron --target=1.7.11 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "__postinstall": "npm rebuild --runtime=electron --target=1.7.11 --disturl=https://atom.io/download/atom-shell --build-from-source",
     "build": "cross-env NODE_ENV=PROD webpack --config webpack.config.js && ncp src/package.json dist/package.json",
     "build:dev:main": "webpack --config webpack.config.main.js",
     "start": "npm run build && cross-env DEBUG=r2:* NODE_ENV=development electron .",
@@ -109,6 +109,7 @@
     "jsondown": "^1.0.0",
     "material-ui": "^0.20.0",
     "opds-feed-parser": "^0.0.14",
+    "ping": "^0.2.2",
     "portfinder": "^1.0.13",
     "pouchdb-core": "^6.4.1",
     "r2-lcp-js": "github:edrlab/r2-lcp-js-dist#master",

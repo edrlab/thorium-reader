@@ -14,7 +14,7 @@ import { Publication } from "readium-desktop/models/publication";
 
 import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
 
-import { RendererState } from "readium-desktop/renderer/reducers";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 import {
     AuthenticationForm,
@@ -54,7 +54,7 @@ interface User {
 
 export default class CollectionDialog extends React.Component<ICollectiondialogProps, ICollectionDialogState> {
     @lazyInject("store")
-    private store: Store<RendererState>;
+    private store: Store<RootState>;
 
     @lazyInject("translator")
     private translator: Translator;

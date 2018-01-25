@@ -20,7 +20,7 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
 import { setLocale } from "readium-desktop/actions/i18n";
 import { Translator } from "readium-desktop/i18n/translator";
-import { RendererState } from "readium-desktop/renderer/reducers";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 import CollectionDialog from "readium-desktop/renderer/components/opds/CollectionDialog";
 import { Styles } from "readium-desktop/renderer/components/styles";
@@ -49,7 +49,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
     public state: AppToolbarState;
 
     @lazyInject("store")
-    private store: Store<RendererState>;
+    private store: Store<RootState>;
 
     @lazyInject("translator")
     private translator: Translator;

@@ -13,10 +13,11 @@ import { Server } from "@r2-streamer-js/http/server";
 
 import { Downloader } from "readium-desktop/downloader/downloader";
 import { Translator } from "readium-desktop/i18n/translator";
-import { AppState } from "readium-desktop/main/reducers";
+import { RootState } from "readium-desktop/main/redux/states";
 import { OPDSParser } from "readium-desktop/services/opds";
+import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
-import { store } from "readium-desktop/main/store/memory";
+import { initStore } from "readium-desktop/main/redux/store/memory";
 import { streamer } from "readium-desktop/main/streamer";
 
 import { OpdsDb } from "readium-desktop/main/db/opds-db";
@@ -97,9 +98,16 @@ if (!fs.existsSync(publicationRepositoryPath)) {
     fs.mkdirSync(publicationRepositoryPath);
 }
 
+// Create store
+const store = initStore();
+container.bind<Store<any>>("store").toConstantValue(store);
+
+// Create window registry
+const winRegistry = new WinRegistry();
+container.bind<WinRegistry>("win-registry").toConstantValue(winRegistry);
+
 // Bind services
 container.bind<Translator>("translator").to(Translator);
-container.bind<Store<AppState>>("store").toConstantValue(store);
 container.bind<Server>("streamer").toConstantValue(streamer);
 container.bind<OPDSParser>("opds-parser").to(OPDSParser);
 container.bind<Downloader>("downloader").toConstantValue(
