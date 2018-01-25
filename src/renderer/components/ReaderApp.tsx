@@ -6,7 +6,6 @@ import FlatButton from "material-ui/FlatButton";
 
 import Dropdown from "react-dropdown"
 import ReactDropdown = require("react-dropdown")
-import "react-dropdown/style.css"
 
 import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
@@ -339,7 +338,9 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
         let preloadPath = "preload.js";
         if (__PACKAGING__ === "1") {
-            preloadPath = path.normalize(path.join("file://", __dirname, preloadPath));
+            console.log(__dirname);
+            console.log((global as any).__dirname);
+            preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
         } else {
             preloadPath = "r2-navigator-js/dist/" +
             "es6-es2015" +
@@ -347,11 +348,13 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
             if (__RENDERER_BASE_URL__ === "file://") {
                 // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-                preloadPath = path.normalize(path.join("file://", __dirname, __NODE_MODULE_RELATIVE_URL__, preloadPath));
+                console.log(__dirname);
+                console.log((global as any).__dirname);
+                preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, __NODE_MODULE_RELATIVE_URL__, preloadPath));
             } else {
                 // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
                 // readerUrl = readerUrl.replace(":8080", ":8081");
-                preloadPath = path.normalize(path.join("file://", process.cwd(), "node_modules", preloadPath));
+                preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath));
             }
         }
 
