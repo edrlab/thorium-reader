@@ -1,3 +1,4 @@
+import * as debug_ from "debug";
 import * as path from "path";
 import { Store } from "redux";
 
@@ -10,6 +11,9 @@ import { AppState } from "readium-desktop/main/reducers";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
+
+// Logger
+const debug = debug_("readium-desktop:main");
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -52,6 +56,20 @@ function createWindow() {
 
     if (__NODE_ENV__ === "DEV" ||
         (__PACKAGING__ === "0" && process.env.NODE_ENV === "development")) {
+
+        const {
+            default: installExtension,
+            REACT_DEVELOPER_TOOLS,
+            REDUX_DEVTOOLS,
+        } = require("electron-devtools-installer");
+
+        [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+            installExtension(extension)
+                .then((name: string) => debug("Added Extension: ", name))
+                .catch((err: any) => debug("An error occurred: ", err));
+        });
+
+        // Open dev tools in development environment
         mainWindow.webContents.openDevTools();
     }
 

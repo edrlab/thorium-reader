@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const nodeExternals = require("webpack-node-externals");
 
 // Default values for DEV environment
 let isPackaging = process.env.PACKAGING || "0";
@@ -28,6 +29,7 @@ let definePlugin = new webpack.DefinePlugin({
     __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),
     __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
     __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
+    "process.env.NODE_ENV": JSON.stringify(nodeEnv),
 });
 
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
@@ -61,7 +63,7 @@ const aliases = {
 // to minimize bundle size / bundler computations / compile times.
 
 // const nodeExternals = require("webpack-node-externals");
-const nodeExternals = require("./nodeExternals");
+//const nodeExternals = require("./nodeExternals");
 
 let externals = {
     "bindings": "bindings",
@@ -146,7 +148,7 @@ if (nodeEnv === "DEV") {
     // Bundle absolute resource paths in the source-map,
     // so VSCode can match the source file.
     config.output.devtoolModuleFilenameTemplate = "[absolute-resource-path]";
-
+    config.externals = [nodeExternals()];
     config.output.pathinfo = true;
 
     config.devtool = "source-map";
