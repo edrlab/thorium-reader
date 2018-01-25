@@ -56,7 +56,7 @@ function createWindow() {
     }
 
     // Clear all cache to prevent weird behaviours
-    // Fully handled in r2-testapp-js / navigator initSessions();
+    // Fully handled in r2-navigator-js initSessions();
     // (including exit cleanup)
     // mainWindow.webContents.session.clearStorageData();
 
