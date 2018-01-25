@@ -9,7 +9,7 @@ export const Styles = {
             overflowY: hidden,
             overflowX: hidden,
             position: absolute,
-            top: "100px",
+            top: "160px",
             bottom: "0px",
             left: "0px",
             right: "0px",

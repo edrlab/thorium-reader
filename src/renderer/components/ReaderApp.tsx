@@ -4,6 +4,10 @@ import * as React from "react";
 
 import FlatButton from "material-ui/FlatButton";
 
+import Dropdown from "react-dropdown"
+import ReactDropdown = require("react-dropdown")
+import "react-dropdown/style.css"
+
 import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
@@ -203,6 +207,7 @@ interface ReaderAppState {
     r2Publication?: Publication;
     title?: string;
     lcpPass?: string;
+    spineLinks?: IStringMap;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -231,7 +236,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             r2Publication: undefined,
             title: "TITLE",
             lcpPass: "LCP pass",
+            spineLinks: { "no spine items?": "http://google.com" },
         };
+
+        this._onDropDownSelectSpineLink = this._onDropDownSelectSpineLink.bind(this);
     }
 
     private async loadPublicationIntoViewport() {
@@ -295,6 +303,11 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
         if (_publication.Spine && _publication.Spine.length) {
             console.log(_publication.Spine);
+            const links: IStringMap = {};
+            _publication.Spine.forEach((spineItemLink) => {
+                links[spineItemLink.Href] = publicationJsonUrl + "/../" + spineItemLink.Href;
+            });
+            this.setState({spineLinks: links});
         }
         if (_publication.TOC && _publication.TOC.length) {
         }
@@ -361,6 +374,11 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         setTimeout(() => {
             ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, this.state.lcpPass, false);
         }, 3000);
+    }
+
+    private _onDropDownSelectSpineLink(option: ReactDropdown.Option) {
+        const href = this.state.spineLinks[option.label];
+        handleLink(href, undefined, false);
     }
 
     public async componentDidMount() {
@@ -450,7 +468,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
-                    <span>{this.state.title}</span>
+                    <Dropdown options={Object.keys(this.state.spineLinks)} onChange={this._onDropDownSelectSpineLink} placeholder="Spine Items" />
+                    {/* <span>{this.state.title}</span> */}
                     <FlatButton
                         label="LEFT"
                         onClick={()=>{navLeftOrRight(true);}}
