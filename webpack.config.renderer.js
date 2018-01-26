@@ -7,6 +7,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 // Default values for DEV environment
 let isPackaging = process.env.PACKAGING || "0";
+let forceDebug = process.env.FORCEDEBUG || "0";
 let nodeEnv = process.env.NODE_ENV || "DEV";
 let rendererBaseUrl = "file://";
 
@@ -26,6 +27,7 @@ let definePlugin = new webpack.DefinePlugin({
     __PACKAGING__: JSON.stringify(isPackaging),
     __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
     __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
+    __FORCEDEBUG__: JSON.stringify(forceDebug),
 });
 
 const aliases = {

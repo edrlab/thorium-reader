@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 // Default values for DEV environment
 let isPackaging = process.env.PACKAGING || "0";
+let forceDebug = process.env.FORCEDEBUG || "0";
 let nodeEnv = process.env.NODE_ENV || "DEV";
 let pouchDbAdapterName = (nodeEnv === "DEV") ? "jsondown" : "leveldb";
 let pouchDbAdapterPackage = (nodeEnv === "DEV") ?
@@ -28,6 +29,7 @@ let definePlugin = new webpack.DefinePlugin({
     __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),
     __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
     __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
+    __FORCEDEBUG__: JSON.stringify(forceDebug),
 });
 
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))

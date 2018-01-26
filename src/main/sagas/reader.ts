@@ -49,8 +49,9 @@ declare const __RENDERER_BASE_URL__: string;
 declare const __NODE_ENV__: string;
 declare const __NODE_MODULE_RELATIVE_URL__: string;
 declare const __PACKAGING__: string;
+declare const __FORCEDEBUG__: string;
 
-const IS_DEV =  __NODE_ENV__ === "DEV" ||
+const IS_DEV = __FORCEDEBUG__ === "1" || __NODE_ENV__ === "DEV" ||
     __PACKAGING__ === "0" && (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 
 function openAllDevTools() {
@@ -193,7 +194,10 @@ function* openReader(publication: Publication): SagaIterator {
 
         let readerUrl = __RENDERER_BASE_URL__;
 
-        if (__PACKAGING__ === "0" && process.env.R2 === "new") {
+        if (__PACKAGING__ === "0" && process.env.NAVIGATOR === "old") {
+            readerUrl = "file://" + path.normalize(path.join(__dirname, __NODE_MODULE_RELATIVE_URL__,
+                "r2-testapp-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html"));
+        } else {
             const htmlPath = "index_reader.html";
 
             if (readerUrl === "file://") {
@@ -204,9 +208,6 @@ function* openReader(publication: Publication): SagaIterator {
                 readerUrl = readerUrl.replace(":8080", ":8081");
                 readerUrl += htmlPath;
             }
-        } else {
-            readerUrl = "file://" + path.normalize(path.join(__dirname, __NODE_MODULE_RELATIVE_URL__,
-                "r2-testapp-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html"));
         }
 
         readerUrl = readerUrl.replace(/\\/g, "/");
