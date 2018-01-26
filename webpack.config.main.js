@@ -61,7 +61,8 @@ let externals = {
     "bindings": "bindings",
     "leveldown": "leveldown",
     "fsevents": "fsevents",
-    "conf": "conf"
+    "conf": "conf",
+    "pouchdb-adapter-leveldb": "pouchdb-adapter-leveldb",
 }
 if (nodeEnv === "DEV") {
     // // externals = Object.assign(externals, {

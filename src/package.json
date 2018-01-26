@@ -34,7 +34,8 @@
   "dependencies": {
     "bindings": "^1.3.0",
     "leveldown": "^2.1.1",
-    "conf": "^1.4.0"
+    "conf": "^1.4.0",
+    "pouchdb-adapter-leveldb": "^6.4.2"
   },
   "devDependencies": {
   },

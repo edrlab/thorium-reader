@@ -69,7 +69,7 @@ if (!fs.existsSync(rootDbPath)) {
 const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 
 // Load PouchDB plugins
-PouchDB.plugin(pouchDbAdapter.default);
+PouchDB.plugin(pouchDbAdapter.default ? pouchDbAdapter.default : pouchDbAdapter);
 
 let dbOpts = {
     adapter: __POUCHDB_ADAPTER_NAME__,
