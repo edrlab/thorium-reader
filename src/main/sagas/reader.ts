@@ -50,6 +50,9 @@ declare const __NODE_ENV__: string;
 declare const __NODE_MODULE_RELATIVE_URL__: string;
 declare const __PACKAGING__: string;
 
+const IS_DEV =  __NODE_ENV__ === "DEV" ||
+    __PACKAGING__ === "0" && (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
+
 function openAllDevTools() {
     for (const wc of webContents.getAllWebContents()) {
         // if (wc.hostWebContents &&
@@ -118,8 +121,7 @@ function* openReader(publication: Publication): SagaIterator {
         webPreferences: {
             allowRunningInsecureContent: false,
             contextIsolation: false,
-            devTools: __NODE_ENV__ === "DEV" ||
-                (__PACKAGING__ === "0" && process.env.NODE_ENV === "development"),
+            devTools: IS_DEV,
             nodeIntegration: true,
             nodeIntegrationInWorker: false,
             sandbox: false,
@@ -191,7 +193,7 @@ function* openReader(publication: Publication): SagaIterator {
 
         let readerUrl = __RENDERER_BASE_URL__;
 
-        if (process.env.R2 === "new") {
+        if (__PACKAGING__ === "0" && process.env.R2 === "new") {
             const htmlPath = "index_reader.html";
 
             if (readerUrl === "file://") {
@@ -222,8 +224,7 @@ function* openReader(publication: Publication): SagaIterator {
 
         readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
 
-        if (__NODE_ENV__ === "DEV" ||
-            (__PACKAGING__ === "0" && process.env.NODE_ENV === "development")) {
+        if (IS_DEV) {
             readerWindow.webContents.openDevTools();
 
             // webview (preload) debug

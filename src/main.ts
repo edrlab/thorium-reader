@@ -16,6 +16,9 @@ declare const __RENDERER_BASE_URL__: string;
 declare const __NODE_ENV__: string;
 declare const __PACKAGING__: string;
 
+const IS_DEV =  __NODE_ENV__ === "DEV" ||
+    __PACKAGING__ === "0" && (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
+
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
 let mainWindow: Electron.BrowserWindow = null;
@@ -28,8 +31,7 @@ function createWindow() {
         width: 800,
         height: 600,
         webPreferences: {
-            devTools: __NODE_ENV__ === "DEV" ||
-                (__PACKAGING__ === "0" && process.env.NODE_ENV === "development"),
+            devTools: IS_DEV,
             nodeIntegration: true, // Required to use IPC
             webSecurity: false,
             allowRunningInsecureContent: false,
@@ -50,8 +52,7 @@ function createWindow() {
 
     mainWindow.loadURL(rendererBaseUrl);
 
-    if (__NODE_ENV__ === "DEV" ||
-        (__PACKAGING__ === "0" && process.env.NODE_ENV === "development")) {
+    if (IS_DEV) {
         mainWindow.webContents.openDevTools();
     }
 

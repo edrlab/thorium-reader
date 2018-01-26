@@ -54,8 +54,6 @@ import { initGlobals } from "@r2-shared-js/init-globals";
 import { ipcRenderer } from "electron";
 import { JSON as TAJSON } from "ta-json";
 
-const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
-
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
 declare const __NODE_ENV__: string;
