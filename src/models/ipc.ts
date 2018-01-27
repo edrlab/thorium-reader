@@ -1,6 +1,5 @@
 import { Catalog } from "readium-desktop/models/catalog";
 import { Download } from "readium-desktop/models/download";
-import { OPDS } from "readium-desktop/models/opds";
 import { Publication } from "readium-desktop/models/publication";
 
 interface LibraryImportMessage {
@@ -13,11 +12,6 @@ interface UIMessage {
 
 export interface UrlMessage {
     url: string;
-}
-
-export interface OpdsMessage {
-    opdsList?: OPDS[];
-    opds?: OPDS;
 }
 
 export interface CatalogMessage {

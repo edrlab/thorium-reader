@@ -1,15 +1,28 @@
+import * as debug_ from "debug";
 import * as path from "path";
 import { Store } from "redux";
 
-import { app, BrowserWindow, protocol } from "electron";
+import { app, BrowserWindow, ipcMain, protocol } from "electron";
 
 import * as catalogActions from "readium-desktop/actions/catalog";
 
 import { container } from "readium-desktop/main/di";
-import { AppState } from "readium-desktop/main/reducers";
+
+import { appInit } from "readium-desktop/main/redux/actions/app";
+import { RootState } from "readium-desktop/main/redux/states";
+import { WinRegistry } from "readium-desktop/main/services/win-registry";
+
+import { syncIpc, winIpc } from "readium-desktop/common/ipc";
+
+import { netActions, opdsActions } from "readium-desktop/common/redux/actions";
+import { NetStatus } from "readium-desktop/common/redux/states/net";
+
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
+
+// Logger
+const debug = debug_("readium-desktop:main");
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -26,9 +39,14 @@ const IS_DEV = __FORCEDEBUG__ === "1" || __NODE_ENV__ === "DEV" ||
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
-let mainWindow: Electron.BrowserWindow = null;
+let mainWindow: BrowserWindow = null;
 
 initSessions();
+
+// Initialize application
+function initApp() {
+    (container.get("store") as Store<any>).dispatch(appInit());
+}
 
 // Opens the main window, with a native menu bar.
 function createWindow() {
@@ -58,6 +76,19 @@ function createWindow() {
     mainWindow.loadURL(rendererBaseUrl);
 
     if (IS_DEV) {
+        const {
+            default: installExtension,
+            REACT_DEVELOPER_TOOLS,
+            REDUX_DEVTOOLS,
+        } = require("electron-devtools-installer");
+
+        [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+            installExtension(extension)
+                .then((name: string) => debug("Added Extension: ", name))
+                .catch((err: any) => debug("An error occurred: ", err));
+        });
+
+        // Open dev tools in development environment
         mainWindow.webContents.openDevTools();
     }
 
@@ -91,11 +122,13 @@ app.on("window-all-closed", () => {
 
 // Call 'createWindow()' on startup.
 app.on("ready", () => {
+    debug("ready");
+    initApp();
     createWindow();
     registerProtocol();
 
-    // Load catalog
-    const store: Store<AppState> = container.get("store") as Store<AppState>;
+    // FIXME: Load catalog from a saga
+    const store: Store<RootState> = container.get("store") as Store<RootState>;
     store.dispatch(catalogActions.init());
 });
 
@@ -104,5 +137,79 @@ app.on("ready", () => {
 app.on("activate", () => {
     if (mainWindow === null) {
         createWindow();
+    }
+});
+
+// Listen to a window that requests a new id
+ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
+    const win: BrowserWindow = event.sender;
+    const store = container.get("store") as Store<RootState>;
+    const winRegistry = container.get("win-registry") as WinRegistry;
+
+    switch (data.type) {
+        case winIpc.EventType.IdRequest:
+            const winId = winRegistry.registerWindow(win);
+
+            win.on("closed", () => {
+                winRegistry.unregisterWindow(winId);
+            });
+
+            // Send the id to the new window
+            win.webContents.send(winIpc.CHANNEL, {
+                type: winIpc.EventType.IdResponse,
+                payload: {
+                    winId,
+                },
+            });
+
+            // Init network on window
+            const state = store.getState();
+            let netActionType = null;
+
+            switch (state.net.status) {
+                case NetStatus.Online:
+                    netActionType = netActions.ActionType.Online;
+                    break;
+                case NetStatus.Online:
+                    netActionType = netActions.ActionType.Offline;
+                    break;
+            }
+
+            // Send network status
+            win.webContents.send(syncIpc.CHANNEL, {
+                type: syncIpc.EventType.MainAction,
+                payload: {
+                    action: {
+                        type: netActionType,
+                    },
+                },
+            });
+
+            // Send opds feeds
+            win.webContents.send(syncIpc.CHANNEL, {
+                type: syncIpc.EventType.MainAction,
+                payload: {
+                    action: {
+                        type: opdsActions.ActionType.SetSuccess,
+                        payload: {
+                            items: state.opds.items,
+                        },
+                    },
+                },
+            });
+
+            break;
+    }
+});
+
+// Listen to renderer action
+ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {
+    const store = container.get("store") as Store<any>;
+
+    switch (data.type) {
+        case syncIpc.EventType.RendererAction:
+            // Dispatch renderer action to main reducers
+            store.dispatch(data.payload.action);
+            break;
     }
 });

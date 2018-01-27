@@ -2,14 +2,14 @@ import * as React from "react";
 
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
-import Snackbar     from "material-ui/Snackbar";
+import Snackbar from "material-ui/Snackbar";
 import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
 import { Catalog } from "readium-desktop/models/catalog";
-import { OPDS } from "readium-desktop/models/opds";
+import { OPDS } from "readium-desktop/common/models/opds";
 import { Publication } from "readium-desktop/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -24,7 +24,7 @@ import Library from "readium-desktop/renderer/components/Library";
 
 import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
-import { RendererState } from "readium-desktop/renderer/reducers";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { MessageStatus } from "readium-desktop/renderer/reducers/message";
 // import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
 
@@ -49,7 +49,7 @@ const defaultLocale = "fr";
 
 export default class App extends React.Component<undefined, AppState> {
     @lazyInject("store")
-    private store: Store<RendererState>;
+    private store: Store<RootState>;
 
     @lazyInject("translator")
     private translator: Translator;
@@ -156,7 +156,7 @@ export default class App extends React.Component<undefined, AppState> {
             console.log(storeState);
 
             const catalog = storeState.catalog;
-            const opds = storeState.opds;
+            const opdsState = storeState.opds;
 
             if (catalog.publications === undefined) {
                 this.setState({catalog: undefined});
@@ -176,7 +176,7 @@ export default class App extends React.Component<undefined, AppState> {
                 // readerOpen: (storeState.reader.status === ReaderStatus.Open),
                 // openManifestUrl: storeState.reader.manifestUrl,
                 // openPublication: storeState.reader.publication,
-                opdsList: opds.opds,
+                opdsList: opdsState.items,
             });
 
             this.translator.setLocale(this.store.getState().i18n.locale);

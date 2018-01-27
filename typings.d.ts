@@ -3,6 +3,7 @@ declare module "*.json" {
     export default value;
 }
 
+declare module "ping";
 declare module "redux-electron-store";
 declare module "electron-redux";
 

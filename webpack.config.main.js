@@ -30,6 +30,11 @@ let definePlugin = new webpack.DefinePlugin({
     __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
     __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
     __FORCEDEBUG__: JSON.stringify(forceDebug),
+
+    // we test for *runtime* process.env.NODE_ENV when (__PACKAGING__ === "0" && __NODE_ENV__ === "PROD")
+    // so that we can debug the generated bundles (main + renderers) using the Chromium web inspector.
+    // e.g. `NODE_ENV=dev npm run start` (which is different than 'npm run start:dev' because there is no WebPack HMR server, and no externals)
+    // "process.env.NODE_ENV": JSON.stringify(nodeEnv),
 });
 
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
@@ -54,15 +59,13 @@ const aliases = {
 // In DEBUG / DEV mode, we just external-ize as much as possible (any non-TypeScript / non-local code),
 // to minimize bundle size / bundler computations / compile times.
 
-// const nodeExternals = require("webpack-node-externals");
-const nodeExternals = require("./nodeExternals");
-
 let externals = {
     "bindings": "bindings",
     "leveldown": "leveldown",
     "fsevents": "fsevents",
     "conf": "conf",
     "pouchdb-adapter-leveldb": "pouchdb-adapter-leveldb",
+    "electron-devtools-installer": "electron-devtools-installer",
 }
 if (nodeEnv === "DEV") {
     // // externals = Object.assign(externals, {
@@ -76,15 +79,22 @@ if (nodeEnv === "DEV") {
     // externals = Object.assign(externals, depsKeysObj);
     // delete externals["pouchdb-core"];
 
-    externals = [
-        nodeExternals(
-            {
-                processName: "MAIN",
-                alias: aliases,
-                // whitelist: ["pouchdb-core"],
-            }
-        ),
-    ];
+    if (process.env.WEBPACK === "bundle-external") {
+        const nodeExternals = require("./nodeExternals");
+        externals = [
+            nodeExternals(
+                {
+                    processName: "MAIN",
+                    alias: aliases,
+                    // whitelist: ["pouchdb-core"],
+                }
+            ),
+        ];
+    } else {
+        const nodeExternals = require("webpack-node-externals");
+        // electron-devtools-installer
+        externals = [nodeExternals()];
+    }
 }
 
 console.log("WEBPACK externals (MAIN):");

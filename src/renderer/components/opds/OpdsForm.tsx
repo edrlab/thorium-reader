@@ -5,11 +5,11 @@ import { Styles } from "readium-desktop/renderer/components/styles";
 import { lazyInject } from "readium-desktop/renderer/di";
 import { Store } from "redux";
 
-import { RendererState } from "readium-desktop/renderer/reducers";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
-import * as opdsActions from "readium-desktop/actions/opds";
+import { opdsActions } from "readium-desktop/common/redux/actions";
 
-import { OPDS } from "readium-desktop/models/opds";
+import { OPDS } from "readium-desktop/common/models/opds";
 
 import FlatButton from "material-ui/FlatButton";
 
@@ -32,7 +32,7 @@ interface IOpdsFormState {
 
 export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormState> {
     @lazyInject("store")
-    private store: Store<RendererState>;
+    private store: Store<RootState>;
 
     @lazyInject("translator")
     private translator: Translator;
