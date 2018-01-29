@@ -21,10 +21,16 @@ import {
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 function startStreamer(streamer: Server, chan: Channel<any>) {
+
     // Find a free port on your local machine
-    portfinder.getPort((err, port) => {
-        const streamerUrl = streamer.start(port);
+    portfinder.getPort(async (err, port) => {
+        // HTTPS, see secureSessions()
+        const streamerInfo = await streamer.start(port, true);
+        console.log(streamerInfo);
+
+        const streamerUrl = streamer.serverUrl();
         console.log("# Start r2 streamer", streamerUrl);
+
         chan.put({
             streamerUrl,
         });
@@ -57,7 +63,8 @@ export function* watchStreamerPublicationOpen(): SagaIterator {
 
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
-        const manifestUrl = streamer.url() + manifestPaths[0];
+        const manifestUrl = streamer.serverUrl() + manifestPaths[0];
+        console.log(manifestUrl);
         yield put(streamerActions.openPublicationManifest(
             publication, manifestUrl,
         ));
