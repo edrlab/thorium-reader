@@ -13,8 +13,8 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { setLocale } from "readium-desktop/actions/i18n";
-import { Translator } from "readium-desktop/i18n/translator";
+import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { Translator } from "readium-desktop/common/services/translator";
 
 import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
@@ -207,7 +207,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             this.store.dispatch(setLocale(defaultLocale));
         }
 
-        this.translator.setLocale(locale);
 
         this.state = {
             openManifestUrl: undefined,
@@ -339,8 +338,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                 openManifestUrl: storeState.reader.manifestUrl,
                 openPublication: storeState.reader.publication,
             });
-
-            this.translator.setLocale(this.store.getState().i18n.locale);
         });
 
         this.loadPublicationIntoViewport();

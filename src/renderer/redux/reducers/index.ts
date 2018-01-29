@@ -15,7 +15,7 @@ import {
     messageReducer,
 } from "readium-desktop/renderer/reducers/message";
 
-import { i18n } from "readium-desktop/reducers/i18n";
+import { i18n } from "readium-desktop/common/redux/reducers/i18n";
 
 import { winReducer } from "./win";
 

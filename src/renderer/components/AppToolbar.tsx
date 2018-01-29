@@ -18,8 +18,8 @@ import FlatButton from "material-ui/FlatButton";
 import { lazyInject } from "readium-desktop/renderer/di";
 
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
-import { setLocale } from "readium-desktop/actions/i18n";
-import { Translator } from "readium-desktop/i18n/translator";
+import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { Translator } from "readium-desktop/common/services/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
 import CollectionDialog from "readium-desktop/renderer/components/opds/CollectionDialog";
@@ -71,7 +71,8 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
     }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
+        const __ = this.translator.translate.bind(this.translator);
+
         const actions = [
             <FlatButton
                 label="Cancel"

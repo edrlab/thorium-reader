@@ -29,7 +29,7 @@ import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
 
 import * as request from "request";
 
-import { Translator } from "readium-desktop/i18n/translator";
+import { Translator } from "readium-desktop/common/services/translator";
 
 interface ICollectionDialogState {
     catalog: Catalog;
@@ -93,7 +93,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
     }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
+        const __ = this.translator.translate.bind(this.translator);
 
         let style = {};
         if (this.props.open) {

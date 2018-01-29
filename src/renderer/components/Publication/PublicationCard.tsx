@@ -7,7 +7,7 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { Contributor } from "readium-desktop/common/models/contributor";
 import { Publication } from "readium-desktop/common/models/publication";
 
-import { Translator }   from "readium-desktop/i18n/translator";
+import { Translator }   from "readium-desktop/common/services/translator";
 
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
 import IconButton from "material-ui/IconButton";
@@ -56,7 +56,7 @@ export default class PublicationListElement extends React.Component<IPublication
     }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
+        const __ = this.translator.translate.bind(this.translator);
         const publication = this.props.publication;
         let that = this;
         let id = this.props.publicationId;

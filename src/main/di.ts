@@ -12,7 +12,7 @@ import getDecorators from "inversify-inject-decorators";
 import { Server } from "@r2-streamer-js/http/server";
 
 import { Downloader } from "readium-desktop/downloader/downloader";
-import { Translator } from "readium-desktop/i18n/translator";
+import { Translator } from "readium-desktop/common/services/translator";
 import { RootState } from "readium-desktop/main/redux/states";
 import { OPDSParser } from "readium-desktop/services/opds";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
@@ -34,7 +34,7 @@ declare const __POUCHDB_ADAPTER_NAME__: string;
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
 // Create container used for dependency injection
-let container = new Container();
+const container = new Container();
 
 // Check that user data directory is created
 const userDataPath = app.getPath("userData");
@@ -72,7 +72,7 @@ const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 // Load PouchDB plugins
 PouchDB.plugin(pouchDbAdapter.default);
 
-let dbOpts = {
+const dbOpts = {
     adapter: __POUCHDB_ADAPTER_NAME__,
 };
 
@@ -106,8 +106,11 @@ container.bind<Store<any>>("store").toConstantValue(store);
 const winRegistry = new WinRegistry();
 container.bind<WinRegistry>("win-registry").toConstantValue(winRegistry);
 
+// Create translator
+const translator = new Translator();
+container.bind<Translator>("translator").toConstantValue(translator);
+
 // Bind services
-container.bind<Translator>("translator").to(Translator);
 container.bind<Server>("streamer").toConstantValue(streamer);
 container.bind<OPDSParser>("opds-parser").to(OPDSParser);
 container.bind<Downloader>("downloader").toConstantValue(

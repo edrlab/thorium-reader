@@ -16,7 +16,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 // import * as windowActions from "readium-desktop/renderer/actions/window";
 
-import { Translator } from "readium-desktop/i18n/translator";
+import { Translator } from "readium-desktop/common/services/translator";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
 
@@ -50,8 +50,6 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     @lazyInject("store")
     private store: Store<RootState>;
-
-    private __ = this.translator.translate;
 
     constructor(props: LibraryProps) {
         super(props);
@@ -128,6 +126,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     public render(): React.ReactElement<{}>  {
+        const __ = this.translator.translate.bind(this.translator);
+
         const that = this;
         let listToDisplay: JSX.Element;
         if (this.props.catalog) {
@@ -143,7 +143,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         return (
             <div>
                 <div>
-                    <h1 style={Styles.Library.title}>{this.__("library.heading")}</h1>
+                    <h1 style={Styles.Library.title}>{__("library.heading")}</h1>
                     <IconButton
                         style={Styles.Library.displayButton}
                         touch={true} onClick={() => {
@@ -168,7 +168,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         );
     }
 
-    private sort (a: Publication, b: Publication) {
+    private sort(a: Publication, b: Publication) {
         if (a.title > b.title) {
             return 1;
         } else if (a.title === b.title) {

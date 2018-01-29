@@ -6,7 +6,7 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import FlatButton from "material-ui/FlatButton";
 
-import { Translator }   from "readium-desktop/i18n/translator";
+import { Translator }   from "readium-desktop/common/services/translator";
 
 interface IOpdsFormProps {
     closeDialog: Function;
@@ -37,7 +37,7 @@ export default class AuthenticationForm extends React.Component<IOpdsFormProps, 
     }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
+        const __ = this.translator.translate.bind(this.translator);
         let messageError = (<p style={Styles.OpdsList.errorMessage}>Veuillez remplir tous les champs</p>);
         let currentMessageError = (<div></div>);
         if (this.state.formError) {

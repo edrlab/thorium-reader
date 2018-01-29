@@ -8,7 +8,7 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { Publication } from "readium-desktop/common/models/publication";
 
-import { Translator }   from "readium-desktop/i18n/translator";
+import { Translator }   from "readium-desktop/common/services/translator";
 
 import RaisedButton from "material-ui/RaisedButton";
 
@@ -38,7 +38,7 @@ export default class PublicationListElement extends React.Component<IPublication
     private translator: Translator;
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
+        const __ = this.translator.translate.bind(this.translator);
 
         const publication: Publication = this.props.publication;
 
