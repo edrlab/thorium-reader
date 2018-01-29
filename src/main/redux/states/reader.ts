@@ -1,6 +1,6 @@
 import {
     Reader,
-} from "readium-desktop/models/reader";
+} from "readium-desktop/common/models/reader";
 
 export interface ReaderState {
     // Base url of started server

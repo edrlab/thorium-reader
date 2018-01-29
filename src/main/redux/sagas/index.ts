@@ -4,12 +4,6 @@ import {
 } from "readium-desktop/sagas/downloader";
 
 import {
-    watchDownloadUpdate,
-    watchPublicationDownloadUpdate,
-    watchRendererPublicationDownloadRequest,
-} from "readium-desktop/main/redux/sagas/publication-download";
-
-import {
     watchCatalogInit,
     watchCatalogUpdate,
     watchRendererCatalogRequest,
@@ -40,6 +34,12 @@ import {
 
 import { all } from 'redux-saga/effects';
 
+import {
+    publicationDownloadAddRequestWatcher,
+    publicationDownloadCancelRequestWatcher,
+    publicationDownloadStatusWatcher,
+} from "./publication-download";
+
 import { appInitWatcher } from "./app";
 import { netStatusWatcher } from "./net";
 
@@ -48,26 +48,36 @@ export function* rootSaga() {
         watchCatalogInit(),
         watchCatalogUpdate(),
         watchRendererCatalogRequest(),
-        watchDownloadStart(),
-        watchDownloadFinish(),
-        watchRendererPublicationDownloadRequest(),
-        watchDownloadUpdate(),
-        watchPublicationDownloadUpdate(),
+
         watchStreamerPublicationOpen(),
         watchStreamerPublicationClose(),
         watchRendererPublicationRequest(),
         watchPublicationUpdate(),
+
+        // Download
+        watchDownloadFinish(),
+        watchDownloadStart(),
+
         // watchReaderInit(),
         watchReaderOpen(),
         watchReaderClose(),
         watchReaderOpenRequest(),
 
+        // Publication download
+        publicationDownloadCancelRequestWatcher(),
+        publicationDownloadAddRequestWatcher(),
+        publicationDownloadStatusWatcher(),
+
+        // OPDS
         opdsAddRequestWatcher(),
         opdsInitWatcher(),
         opdsRemoveRequestWatcher(),
         opdsUpdateRequestWatcher(),
 
+        // App
         appInitWatcher(),
+
+        // Net
         netStatusWatcher(),
     ]);
 }

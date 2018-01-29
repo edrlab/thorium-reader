@@ -6,7 +6,7 @@ import { call, fork, put, take } from "redux-saga/effects";
 import {
     READER_OPEN_REQUEST,
 } from "readium-desktop/events/ipc";
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 import {
     READER_INIT,
     ReaderAction,

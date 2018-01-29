@@ -1,7 +1,7 @@
 import { Action } from "redux";
 
-import { Publication } from "readium-desktop/models/publication";
-import { Reader } from "readium-desktop/models/reader";
+import { Publication } from "readium-desktop/common/models/publication";
+import { Reader } from "readium-desktop/common/models/reader";
 
 export const READER_INIT = "READER_INIT";
 export const READER_OPEN = "READER_OPEN";

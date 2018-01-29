@@ -7,6 +7,9 @@ import {MessageState} from "readium-desktop/renderer/reducers/message";
 import { NetState } from "readium-desktop/common/redux/states/net";
 import { OpdsState } from "readium-desktop/common/redux/states/opds";
 
+import {
+    PublicationDownloadState,
+} from "readium-desktop/common/redux/states/publication-download";
 import { WinState } from "./win";
 
 export { WinState };
@@ -20,4 +23,5 @@ export interface RootState {
     reader: ReaderState;
     message: MessageState;
     opds: OpdsState;
+    publicationDownloads: PublicationDownloadState;
 }

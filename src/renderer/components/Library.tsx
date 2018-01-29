@@ -1,24 +1,24 @@
 import * as React from "react";
 
-import FontIcon     from "material-ui/FontIcon";
-import IconButton   from "material-ui/IconButton";
-import { blue500 }  from "material-ui/styles/colors";
+import FontIcon from "material-ui/FontIcon";
+import IconButton from "material-ui/IconButton";
+import { blue500 } from "material-ui/styles/colors";
 
 import { Store } from "redux";
 
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
-import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
+import { publicationDownloadActions } from "readium-desktop/common/redux/actions";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
 // import * as windowActions from "readium-desktop/renderer/actions/window";
 
-import { Translator }   from "readium-desktop/i18n/translator";
+import { Translator } from "readium-desktop/i18n/translator";
 
-import { Catalog } from "readium-desktop/models/catalog";
+import { Catalog } from "readium-desktop/common/models/catalog";
 
 import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
 

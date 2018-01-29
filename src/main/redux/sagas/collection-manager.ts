@@ -19,14 +19,14 @@ import * as catalogActions from "readium-desktop/actions/catalog";
 import * as publicationImportActions
 from "readium-desktop/actions/collection-manager";
 
-import { FilesMessage } from "readium-desktop/models/ipc";
+import { FilesMessage } from "readium-desktop/common/models/ipc";
 
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
-import { Contributor } from "readium-desktop/models/contributor";
-import { CustomCover, CustomCoverColors } from "readium-desktop/models/custom-cover";
-import { File } from "readium-desktop/models/file";
-import { Publication } from "readium-desktop/models/publication";
+import { Contributor } from "readium-desktop/common/models/contributor";
+import { CustomCover, CustomCoverColors } from "readium-desktop/common/models/custom-cover";
+import { File } from "readium-desktop/common/models/file";
+import { Publication } from "readium-desktop/common/models/publication";
 
 import { PublicationDb } from "readium-desktop/main/db/publication-db";
 import { RootState } from "readium-desktop/main/redux/states";

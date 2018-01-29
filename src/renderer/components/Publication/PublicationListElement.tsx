@@ -6,13 +6,13 @@ import LinearProgress from "material-ui/LinearProgress";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
 
 import RaisedButton from "material-ui/RaisedButton";
 
-import { DownloadStatus } from "readium-desktop/models/downloadable";
+import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 

@@ -1,6 +1,6 @@
 import { Action } from "redux";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 export const STREAMER_START = "STREAMER_START";
 export const STREAMER_STOP = "STREAMER_STOP";

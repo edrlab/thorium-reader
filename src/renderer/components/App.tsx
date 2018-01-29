@@ -8,9 +8,9 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-import { Catalog } from "readium-desktop/models/catalog";
+import { Catalog } from "readium-desktop/common/models/catalog";
 import { OPDS } from "readium-desktop/common/models/opds";
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 

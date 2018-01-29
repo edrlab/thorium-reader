@@ -2,13 +2,19 @@ import { ipcRenderer } from "electron";
 import { Store } from "redux";
 
 import { syncIpc } from "readium-desktop/common/ipc";
-import { opdsActions } from "readium-desktop/common/redux/actions";
+import {
+    opdsActions,
+    publicationDownloadActions,
+} from "readium-desktop/common/redux/actions";
 
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
     opdsActions.ActionType.AddRequest,
     opdsActions.ActionType.UpdateRequest,
     opdsActions.ActionType.RemoveRequest,
+
+    publicationDownloadActions.ActionType.AddRequest,
+    publicationDownloadActions.ActionType.CancelRequest,
 ];
 
 export const reduxSyncMiddleware = (_0: Store<any>) => (next: any) => (action: any) => {

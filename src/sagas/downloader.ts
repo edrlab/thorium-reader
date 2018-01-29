@@ -10,7 +10,7 @@ import {
 } from "readium-desktop/downloader/constants";
 
 import * as downloaderActions from "readium-desktop/actions/downloader";
-import { Download } from "readium-desktop/models/download";
+import { Download } from "readium-desktop/common/models/download";
 
 function downloadContent(download: Download, chan: any) {
     // Do not pipe request directly to this stream to void blocking issues

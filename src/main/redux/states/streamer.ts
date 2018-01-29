@@ -1,4 +1,4 @@
-import { StreamerStatus } from "readium-desktop/models/streamer";
+import { StreamerStatus } from "readium-desktop/common/models/streamer";
 
 export interface StreamerState {
     // Base url of started server

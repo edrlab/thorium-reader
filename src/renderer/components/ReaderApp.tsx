@@ -9,7 +9,7 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 

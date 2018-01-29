@@ -21,6 +21,9 @@ import { winReducer } from "./win";
 
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { opdsReducer } from "readium-desktop/common/redux/reducers/opds";
+import {
+    publicationDownloadReducer,
+} from "readium-desktop/common/redux/reducers/publication-download";
 
 export const rootReducer = combineReducers({
     i18n,
@@ -29,6 +32,7 @@ export const rootReducer = combineReducers({
     reader: readerReducer,
     message: messageReducer,
     opds: opdsReducer,
+    publicationDownloads: publicationDownloadReducer,
     win: winReducer,
     net: netReducer,
 });

@@ -7,8 +7,8 @@ import {
     SYNC_CATALOG_REQUEST,
     SYNC_CATALOG_RESPONSE,
 } from "readium-desktop/events/ipc";
-import { Catalog } from "readium-desktop/models/catalog";
-import { CatalogMessage } from "readium-desktop/models/ipc";
+import { Catalog } from "readium-desktop/common/models/catalog";
+import { CatalogMessage } from "readium-desktop/common/models/ipc";
 
 import { WINDOW_INIT } from "readium-desktop/renderer/actions/window";
 

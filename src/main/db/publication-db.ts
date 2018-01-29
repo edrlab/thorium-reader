@@ -1,7 +1,7 @@
 import { injectable} from "inversify";
 import * as PouchDB from "pouchdb-core";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 const ID_PREFIX = "publication_";
 

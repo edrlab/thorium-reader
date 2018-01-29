@@ -4,8 +4,8 @@ import FlatButton   from "material-ui/FlatButton";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { Contributor } from "readium-desktop/models/contributor";
-import { Publication } from "readium-desktop/models/publication";
+import { Contributor } from "readium-desktop/common/models/contributor";
+import { Publication } from "readium-desktop/common/models/publication";
 
 import { Translator }   from "readium-desktop/i18n/translator";
 
@@ -15,7 +15,7 @@ import LinearProgress from "material-ui/LinearProgress";
 
 import * as ReactCardFlip from "react-card-flip";
 
-import { DownloadStatus } from "readium-desktop/models/downloadable";
+import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 

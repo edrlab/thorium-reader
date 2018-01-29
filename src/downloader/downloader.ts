@@ -6,8 +6,8 @@ import { URL } from "url";
 import * as uuid from "uuid";
 
 import * as downloadActions from "readium-desktop/actions/downloader";
-import { Download } from "readium-desktop/models/download";
-import { DownloadStatus } from "readium-desktop/models/downloadable";
+import { Download } from "readium-desktop/common/models/download";
+import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 
 @injectable()
 export class Downloader {
