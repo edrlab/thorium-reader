@@ -1,6 +1,6 @@
 import { Action } from "redux";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 // Reader action types
 export const READER_INIT = "READER_INIT";

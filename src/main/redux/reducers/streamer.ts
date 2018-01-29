@@ -8,7 +8,7 @@ import {
 } from "readium-desktop/main/redux/actions/streamer";
 
 import { StreamerState } from "readium-desktop/main/redux/states/streamer";
-import { StreamerStatus } from "readium-desktop/models/streamer";
+import { StreamerStatus } from "readium-desktop/common/models/streamer";
 
 const initialState: StreamerState = {
     // Streamer base url

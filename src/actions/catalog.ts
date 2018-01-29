@@ -1,7 +1,7 @@
 import { Action } from "redux";
 
-import { Catalog } from "readium-desktop/models/catalog";
-import { Publication } from "readium-desktop/models/publication";
+import { Catalog } from "readium-desktop/common/models/catalog";
+import { Publication } from "readium-desktop/common/models/publication";
 
 // Catalog action types
 export const CATALOG_INIT = "CATALOG_INIT";

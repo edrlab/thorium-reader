@@ -11,9 +11,9 @@ import * as streamerActions from "readium-desktop/main/redux/actions/streamer";
 
 import { RootState } from "readium-desktop/main/redux/states";
 
-import { PublicationMessage } from "readium-desktop/models/ipc";
-import { Publication } from "readium-desktop/models/publication";
-import { Reader } from "readium-desktop/models/reader";
+import { PublicationMessage } from "readium-desktop/common/models/ipc";
+import { Publication } from "readium-desktop/common/models/publication";
+import { Reader } from "readium-desktop/common/models/reader";
 
 import { Publication as StreamerPublication } from "@r2-shared-js/models/publication";
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";

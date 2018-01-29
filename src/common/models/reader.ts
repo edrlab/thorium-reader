@@ -1,7 +1,7 @@
 import { BrowserWindow } from "electron";
 
-import { Identifiable } from "readium-desktop/models/identifiable";
-import { Publication } from "readium-desktop/models/publication";
+import { Identifiable } from "./identifiable";
+import { Publication } from "./publication";
 
 /**
  *  A reader

@@ -1,7 +1,11 @@
 import { Store } from "redux";
 
 import { syncIpc } from "readium-desktop/common/ipc";
-import { netActions, opdsActions } from "readium-desktop/common/redux/actions";
+import {
+    netActions,
+    opdsActions,
+    publicationDownloadActions,
+} from "readium-desktop/common/redux/actions";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
@@ -9,12 +13,21 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 const SYNCHRONIZABLE_ACTIONS: any = [
     netActions.ActionType.Offline,
     netActions.ActionType.Online,
+
     opdsActions.ActionType.AddError,
     opdsActions.ActionType.AddSuccess,
     opdsActions.ActionType.UpdateError,
     opdsActions.ActionType.UpdateSuccess,
     opdsActions.ActionType.RemoveError,
     opdsActions.ActionType.RemoveSuccess,
+
+    publicationDownloadActions.ActionType.AddError,
+    publicationDownloadActions.ActionType.AddSuccess,
+    publicationDownloadActions.ActionType.Progress,
+    publicationDownloadActions.ActionType.Success,
+    publicationDownloadActions.ActionType.Error,
+    publicationDownloadActions.ActionType.CancelError,
+    publicationDownloadActions.ActionType.CancelSuccess,
 ];
 
 export const reduxSyncMiddleware = (_0: Store<any>) => (next: any) => (action: any) => {

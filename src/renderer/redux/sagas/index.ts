@@ -3,10 +3,8 @@ import {
     watchMainCatalogResponse,
 } from "readium-desktop/renderer/sagas/catalog";
 import {
-    watchPublicationDelete,
-    watchPublicationDownloadAdd,
-    watchPublicationDownloadCancel,
-    watchPublicationImport,
+    watchPublicationDownloadAddSuccess,
+    watchPublicationDownloadSuccess,
 } from "readium-desktop/renderer/sagas/publication";
 import {
     watchReaderInit,
@@ -20,10 +18,8 @@ export function* rootSaga() {
     yield all([
         watchCatalogInit(),
         watchMainCatalogResponse(),
-        watchPublicationDownloadAdd(),
-        watchPublicationDownloadCancel(),
-        watchPublicationImport(),
-        watchPublicationDelete(),
+        watchPublicationDownloadAddSuccess(),
+        watchPublicationDownloadSuccess(),
         watchReaderInit(),
         winInitWatcher(),
     ]);

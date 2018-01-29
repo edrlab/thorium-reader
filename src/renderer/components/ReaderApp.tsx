@@ -12,12 +12,12 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-import { Publication, getTitleString } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { setLocale } from "readium-desktop/actions/i18n";
-import { Translator } from "readium-desktop/i18n/translator";
+import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { Translator } from "readium-desktop/common/services/translator";
 
 import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
@@ -225,7 +225,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             this.store.dispatch(setLocale(defaultLocale));
         }
 
-        this.translator.setLocale(locale);
 
         this.state = {
             publicationJsonUrl: "HTTP://URL",
@@ -407,10 +406,9 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             console.log("storeState (INDEX READER):");
             console.log(storeState);
 
-            // this.setState({
-            // });
-
             this.translator.setLocale(this.store.getState().i18n.locale);
+
+            this.setState({});
         });
 
         ipcRenderer.on(R2_EVENT_TRY_LCP_PASS_RES, async (_event: any, okay: boolean, msg: string, passSha256Hex: string) => {

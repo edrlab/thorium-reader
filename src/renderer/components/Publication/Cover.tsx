@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { Publication, getTitleString } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/common/models/publication";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
-import { Contributor } from "readium-desktop/models/contributor";
+import { Contributor } from "readium-desktop/common/models/contributor";
 
 interface ICoverProps {
     publication: Publication;

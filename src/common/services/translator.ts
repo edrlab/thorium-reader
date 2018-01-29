@@ -25,10 +25,13 @@ export class Translator {
 
     public setLocale(locale: string) {
         this.locale = locale;
-        i18n.changeLanguage(this.locale);
     }
 
     public translate(message: string): string {
+        if (i18n.language !== this.locale) {
+            i18n.changeLanguage(this.locale);
+        }
+
         return i18n.t(message);
     }
 }

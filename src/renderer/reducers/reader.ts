@@ -5,7 +5,7 @@ import {
     ReaderAction,
 } from "readium-desktop/renderer/actions/reader";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 // export enum ReaderStatus {
 //     Closed,

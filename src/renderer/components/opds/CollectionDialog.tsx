@@ -1,18 +1,18 @@
-import * as React        from "react";
+import * as React from "react";
 
 import FontIcon from "material-ui/FontIcon";
 import IconButton from "material-ui/IconButton";
-import RaisedButton      from "material-ui/RaisedButton";
+import RaisedButton from "material-ui/RaisedButton";
 
-import { Styles }        from "readium-desktop/renderer/components/styles";
+import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 import { Store } from "redux";
 
-import { Catalog } from "readium-desktop/models/catalog";
-import { Publication } from "readium-desktop/models/publication";
+import { Catalog } from "readium-desktop/common/models/catalog";
+import { Publication } from "readium-desktop/common/models/publication";
 
-import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
+import { publicationDownloadActions } from "readium-desktop/common/redux/actions";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
@@ -29,7 +29,7 @@ import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
 
 import * as request from "request";
 
-import { Translator }   from "readium-desktop/i18n/translator";
+import { Translator } from "readium-desktop/common/services/translator";
 
 interface ICollectionDialogState {
     catalog: Catalog;
@@ -93,7 +93,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
     }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
+        const __ = this.translator.translate.bind(this.translator);
 
         let style = {};
         if (this.props.open) {

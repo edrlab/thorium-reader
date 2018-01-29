@@ -1,24 +1,24 @@
 import * as React from "react";
 
-import FontIcon     from "material-ui/FontIcon";
-import IconButton   from "material-ui/IconButton";
-import { blue500 }  from "material-ui/styles/colors";
+import FontIcon from "material-ui/FontIcon";
+import IconButton from "material-ui/IconButton";
+import { blue500 } from "material-ui/styles/colors";
 
 import { Store } from "redux";
 
 import * as publicationimportActions from "readium-desktop/actions/collection-manager";
-import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
+import { publicationDownloadActions } from "readium-desktop/common/redux/actions";
 
-import { Publication, getTitleString } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
 // import * as windowActions from "readium-desktop/renderer/actions/window";
 
-import { Translator }   from "readium-desktop/i18n/translator";
+import { Translator } from "readium-desktop/common/services/translator";
 
-import { Catalog } from "readium-desktop/models/catalog";
+import { Catalog } from "readium-desktop/common/models/catalog";
 
 import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
 
@@ -50,8 +50,6 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     @lazyInject("store")
     private store: Store<RootState>;
-
-    private __ = this.translator.translate;
 
     constructor(props: LibraryProps) {
         super(props);
@@ -128,6 +126,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     public render(): React.ReactElement<{}>  {
+        const __ = this.translator.translate.bind(this.translator);
+
         const that = this;
         let listToDisplay: JSX.Element;
         if (this.props.catalog) {
@@ -143,7 +143,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         return (
             <div>
                 <div>
-                    <h1 style={Styles.Library.title}>{this.__("library.heading")}</h1>
+                    <h1 style={Styles.Library.title}>{__("library.heading")}</h1>
                     <IconButton
                         style={Styles.Library.displayButton}
                         touch={true} onClick={() => {

@@ -15,8 +15,8 @@ import {
     SYNC_CATALOG_REQUEST,
     SYNC_CATALOG_RESPONSE,
 } from "readium-desktop/events/ipc";
-import { Catalog } from "readium-desktop/models/catalog";
-import { Error } from "readium-desktop/models/error";
+import { Catalog } from "readium-desktop/common/models/catalog";
+import { Error } from "readium-desktop/common/models/error";
 import { OPDSParser } from "readium-desktop/services/opds";
 
 import { RootState } from "readium-desktop/main/redux/states";

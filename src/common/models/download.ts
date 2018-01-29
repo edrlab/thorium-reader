@@ -1,5 +1,5 @@
-import { Downloadable } from "readium-desktop/models/downloadable";
-import { Identifiable } from "readium-desktop/models/identifiable";
+import { Downloadable } from "./downloadable";
+import { Identifiable } from "./identifiable";
 
 export interface Download extends Downloadable, Identifiable {
     // Url of the source file to download

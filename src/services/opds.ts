@@ -5,8 +5,8 @@ import * as uuid from "uuid";
 
 import OPDSFeedParser from "opds-feed-parser";
 import { AcquisitionFeed } from "opds-feed-parser";
-import { Catalog } from "readium-desktop/models/catalog";
-import { Publication } from "readium-desktop/models/publication";
+import { Catalog } from "readium-desktop/common/models/catalog";
+import { Publication } from "readium-desktop/common/models/publication";
 
 const REL_COVER = "http://opds-spec.org/image";
 const TYPE_EPUB = "application/epub+zip";

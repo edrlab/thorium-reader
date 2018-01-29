@@ -8,14 +8,14 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-import { Catalog } from "readium-desktop/models/catalog";
+import { Catalog } from "readium-desktop/common/models/catalog";
 import { OPDS } from "readium-desktop/common/models/opds";
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { setLocale } from "readium-desktop/actions/i18n";
-import { Translator } from "readium-desktop/i18n/translator";
+import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { Translator } from "readium-desktop/common/services/translator";
 
 import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
@@ -42,6 +42,7 @@ interface AppState {
     snackbarOpen: boolean;
     dialogOpen: boolean;
     opdsList: OPDS[];
+    locale: string;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -86,13 +87,7 @@ export default class App extends React.Component<undefined, AppState> {
 
     constructor(props: any) {
         super(props);
-        let locale = this.store.getState().i18n.locale;
-
-        if (locale == null) {
-            this.store.dispatch(setLocale(defaultLocale));
-        }
-
-        this.translator.setLocale(locale);
+        const locale = this.store.getState().i18n.locale;
 
         this.state = {
             catalog: undefined,
@@ -102,6 +97,7 @@ export default class App extends React.Component<undefined, AppState> {
             snackbarOpen: false,
             dialogOpen: false,
             opdsList: undefined,
+            locale,
         };
 
         this.handleOpenPublication = this.handleOpenPublication.bind(this);
@@ -152,11 +148,9 @@ export default class App extends React.Component<undefined, AppState> {
         this.store.dispatch(windowActions.init());
         this.store.subscribe(() => {
             const storeState = this.store.getState();
-            console.log("storeState (INDEX APP):");
-            console.log(storeState);
-
             const catalog = storeState.catalog;
             const opdsState = storeState.opds;
+            const i18nState = storeState.i18n;
 
             if (catalog.publications === undefined) {
                 this.setState({catalog: undefined});
@@ -172,14 +166,14 @@ export default class App extends React.Component<undefined, AppState> {
                 this.setState({ snackbarOpen: (storeState.message.status === MessageStatus.Open) });
             }
 
+            this.translator.setLocale(i18nState.locale);
             this.setState({
+                locale: i18nState.locale,
                 // readerOpen: (storeState.reader.status === ReaderStatus.Open),
                 // openManifestUrl: storeState.reader.manifestUrl,
                 // openPublication: storeState.reader.publication,
                 opdsList: opdsState.items,
             });
-
-            this.translator.setLocale(this.store.getState().i18n.locale);
         });
     }
 

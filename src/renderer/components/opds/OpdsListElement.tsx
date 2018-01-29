@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Publication, getTitleString } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/common/models/publication";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 

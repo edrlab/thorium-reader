@@ -8,7 +8,7 @@ import { call, fork, put, select, take } from "redux-saga/effects";
 
 import { Server } from "@r2-streamer-js/http/server";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 import { container } from "readium-desktop/main/di";
 import { RootState } from "readium-desktop/main/redux/states";

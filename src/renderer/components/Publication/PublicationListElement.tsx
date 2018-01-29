@@ -6,13 +6,13 @@ import LinearProgress from "material-ui/LinearProgress";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { Publication, getTitleString } from "readium-desktop/models/publication";
+import { Publication, getTitleString } from "readium-desktop/common/models/publication";
 
-import { Translator }   from "readium-desktop/i18n/translator";
+import { Translator }   from "readium-desktop/common/services/translator";
 
 import RaisedButton from "material-ui/RaisedButton";
 
-import { DownloadStatus } from "readium-desktop/models/downloadable";
+import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
@@ -38,7 +38,7 @@ export default class PublicationListElement extends React.Component<IPublication
     private translator: Translator;
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
+        const __ = this.translator.translate.bind(this.translator);
 
         const publication: Publication = this.props.publication;
 

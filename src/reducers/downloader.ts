@@ -8,8 +8,8 @@ import {
     DOWNLOAD_REMOVE,
     DOWNLOAD_START,
 } from "readium-desktop/downloader/constants";
-import { Download } from "readium-desktop/models/download";
-import { DownloadStatus } from "readium-desktop/models/downloadable";
+import { Download } from "readium-desktop/common/models/download";
+import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 
 export interface DownloaderState {
     downloads: { [identifier: string]: Download };
@@ -26,7 +26,7 @@ export function downloader(
     if (action.download === undefined) {
         return state;
     }
-    let identifier = action.download.identifier;
+    const identifier = action.download.identifier;
 
     switch (action.type) {
         case DOWNLOAD_ADD:

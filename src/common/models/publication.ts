@@ -1,10 +1,10 @@
-import { Contributor } from "readium-desktop/models/contributor";
-import { CustomCover } from "readium-desktop/models/custom-cover";
-import { Downloadable } from "readium-desktop/models/downloadable";
-import { File } from "readium-desktop/models/file";
-import { Identifiable } from "readium-desktop/models/identifiable";
-import { Language } from "readium-desktop/models/language";
-import { Tag } from "readium-desktop/models/tag";
+import { Contributor } from "./contributor";
+import { CustomCover } from "./custom-cover";
+import { Downloadable } from "./downloadable";
+import { File } from "./file";
+import { Identifiable } from "./identifiable";
+import { Language } from "./language";
+import { Tag } from "./tag";
 
 export function getTitleString(titleObj: any, lang?: string): string {
 
