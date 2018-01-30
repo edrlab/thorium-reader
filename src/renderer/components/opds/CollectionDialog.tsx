@@ -23,7 +23,7 @@ import {
 
 import { OPDS } from "readium-desktop/common/models/opds";
 
-import { OPDSParser } from "readium-desktop/services/opds";
+import { OPDSParser } from "readium-desktop/common/services/opds";
 
 import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
 

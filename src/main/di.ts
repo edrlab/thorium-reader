@@ -16,7 +16,7 @@ import { Downloader } from "readium-desktop/main/services/downloader";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { RootState } from "readium-desktop/main/redux/states";
-import { OPDSParser } from "readium-desktop/services/opds";
+import { OPDSParser } from "readium-desktop/common/services/opds";
 
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { streamer } from "readium-desktop/main/streamer";

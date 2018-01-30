@@ -17,7 +17,7 @@ import {
 } from "readium-desktop/events/ipc";
 import { Catalog } from "readium-desktop/common/models/catalog";
 import { Error } from "readium-desktop/common/models/error";
-import { OPDSParser } from "readium-desktop/services/opds";
+import { OPDSParser } from "readium-desktop/common/services/opds";
 
 import { RootState } from "readium-desktop/main/redux/states";
 
