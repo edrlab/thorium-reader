@@ -1,7 +1,4 @@
-import {
-    watchDownloadFinish,
-    watchDownloadStart,
-} from "readium-desktop/sagas/downloader";
+import { all } from "redux-saga/effects";
 
 import {
     watchCatalogInit,
@@ -19,20 +16,24 @@ import {
 } from "readium-desktop/main/redux/sagas/collection-manager";
 
 import {
-    opdsAddRequestWatcher,
-    opdsInitWatcher,
-    opdsRemoveRequestWatcher,
-    opdsUpdateRequestWatcher,
-} from "readium-desktop/main/redux/sagas/opds";
-
-import {
     watchReaderClose,
     // watchReaderInit,
     watchReaderOpen,
     watchReaderOpenRequest,
 } from "readium-desktop/main/redux/sagas/reader";
 
-import { all } from 'redux-saga/effects';
+
+import {
+    downloadAddRequestWatcher,
+    downloadPostProcessWatcher,
+} from "./downloader";
+
+import {
+    opdsAddRequestWatcher,
+    opdsInitWatcher,
+    opdsRemoveRequestWatcher,
+    opdsUpdateRequestWatcher,
+} from "./opds";
 
 import {
     publicationDownloadAddRequestWatcher,
@@ -55,8 +56,8 @@ export function* rootSaga() {
         watchPublicationUpdate(),
 
         // Download
-        watchDownloadFinish(),
-        watchDownloadStart(),
+        downloadAddRequestWatcher(),
+        downloadPostProcessWatcher(),
 
         // watchReaderInit(),
         watchReaderOpen(),

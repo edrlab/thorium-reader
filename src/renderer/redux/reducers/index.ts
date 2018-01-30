@@ -15,7 +15,7 @@ import {
     messageReducer,
 } from "readium-desktop/renderer/reducers/message";
 
-import { i18n } from "readium-desktop/common/redux/reducers/i18n";
+import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 
 import { winReducer } from "./win";
 
@@ -26,7 +26,7 @@ import {
 } from "readium-desktop/common/redux/reducers/publication-download";
 
 export const rootReducer = combineReducers({
-    i18n,
+    i18n: i18nReducer,
     catalog: catalogReducer,
     window: windowReducer,
     reader: readerReducer,

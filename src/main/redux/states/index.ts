@@ -4,8 +4,8 @@ import { StreamerState } from "./streamer";
 
 // FIXME
 import { CatalogState } from "readium-desktop/reducers/catalog";
-import { DownloaderState } from "readium-desktop/reducers/downloader";
 
+import { DownloaderState } from "readium-desktop/common/redux/states/downloader";
 import { NetState } from "readium-desktop/common/redux/states/net";
 import { OpdsState } from "readium-desktop/common/redux/states/opds";
 import {

@@ -6,18 +6,11 @@ import { actionChannel, call, fork, put, select, take } from "redux-saga/effects
 
 import * as catalogActions from "readium-desktop/actions/catalog";
 
-import * as DownloaderAction from "readium-desktop/actions/downloader";
-
-import {
-    DOWNLOAD_FINISH,
-    DOWNLOAD_PROGRESS,
-} from "readium-desktop/downloader/constants";
-
 import { publicationDownloadActions } from "readium-desktop/common/redux/actions";
 
-import { DownloadAction } from "readium-desktop/actions/downloader";
+import { downloaderActions } from "readium-desktop/common/redux/actions";
 
-import { Downloader } from "readium-desktop/downloader/downloader";
+import { Downloader } from "readium-desktop/main/services/downloader";
 
 import { CustomCover, CustomCoverColors } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
@@ -38,80 +31,6 @@ import { File } from "readium-desktop/common/models/file";
 import { PublicationDb } from "readium-desktop/main/db/publication-db";
 
 import { Store } from "redux";
-
-// export function* watchPublicationDownloadUpdate(): SagaIterator {
-//     let buffer: Buffer<any> = buffers.expanding(20);
-//     let chan = yield actionChannel([
-//             PUBLICATION_DOWNLOAD_ADD,
-//             PUBLICATION_DOWNLOAD_START,
-//             PUBLICATION_DOWNLOAD_CANCEL,
-//             PUBLICATION_DOWNLOAD_FINISH,
-//             PUBLICATION_DOWNLOAD_PROGRESS,
-//         ], buffer);
-//     while (true) {
-//         const action: PublicationDownloadAction = yield take(chan);
-
-//         const publication = action.publication;
-
-//         switch (action.type) {
-//             case PUBLICATION_DOWNLOAD_ADD:
-//                 console.log("### add");
-//                 publication.download = {
-//                     progress: 0,
-//                     status: DownloadStatus.Init,
-//                 };
-//                 yield fork(startPublicationDownload, publication);
-//                 break;
-//             case PUBLICATION_DOWNLOAD_START:
-//                 console.log("### start");
-//                 publication.download = {
-//                     progress: 0,
-//                     status: DownloadStatus.Downloading,
-//                 };
-//                 break;
-//             case PUBLICATION_DOWNLOAD_PROGRESS:
-//                 console.log("### progress", action.progress);
-//                 publication.download = {
-//                     progress: action.progress,
-//                     status: DownloadStatus.Downloading,
-//                 };
-//                 break;
-//             case PUBLICATION_DOWNLOAD_FINISH:
-//                 console.log("### finish");
-//                 publication.download = {
-//                     progress: 100,
-//                     status: DownloadStatus.Downloaded,
-//                 };
-//                 break;
-//             case PUBLICATION_DOWNLOAD_CANCEL:
-//                 console.log("### cancel");
-//                 const state: RootState =  yield select();
-//                 const downloads = state.publicationDownloads
-//                     .publicationIdentifierToDownloads[publication.identifier];
-
-//                 // Cancel each downloads linked to this publication
-//                 for (const download of downloads) {
-//                     yield put(DownloaderAction.cancel(download));
-//                 }
-
-//                 publication.download = {
-//                     progress: action.progress,
-//                     status: DownloadStatus.Canceled,
-//                 };
-//                 break;
-//             default:
-//                 break;
-//         }
-//         yield fork(addPublicationToDb, publication);
-
-//         yield put(catalogActions.updatePublication(
-//             publication,
-//         ));
-
-//         yield put(catalogActions.load());
-//     }
-// }
-
 
 function addPublicationToDb(publication: Publication, files?: File[]) {
     const publicationDb: PublicationDb = container.get(
@@ -172,38 +91,36 @@ function addPublicationToDb(publication: Publication, files?: File[]) {
         });
 }
 
-function CreateCustomCover (): CustomCover {
-    let newColors = CustomCoverColors[Math.floor(Math.random() * CustomCoverColors.length)];
-    return newColors;
+function CreateCustomCover(): CustomCover {
+    return CustomCoverColors[Math.floor(Math.random() * CustomCoverColors.length)];
 }
 
 export function* publicationDownloadStatusWatcher(): SagaIterator {
     while (true) {
-        const action: DownloadAction = yield take([
-            DOWNLOAD_FINISH,
-            DOWNLOAD_PROGRESS,
+        const action = yield take([
+            downloaderActions.ActionType.Success,
+            downloaderActions.ActionType.Progress,
         ]);
 
         const state: RootState = yield select();
 
         // Find publication linked to this download
-        const download = action.download;
+        const download = action.payload.download;
         const publication = state.publicationDownloads
             .downloadIdentifierToPublication[download.identifier];
         const publicationStorage: PublicationStorage = container.get(
             "publication-storage") as PublicationStorage;
 
-        // FIXME: A publication is composed of multiple downloads
-        const progress = download.progress;
-
         switch (action.type) {
-            case DOWNLOAD_PROGRESS:
+            case downloaderActions.ActionType.Progress:
+                // FIXME: A publication is composed of multiple downloads
+                const progress = action.payload.progress;
                 yield put(publicationDownloadActions.progress(
                     publication,
                     progress,
                 ));
                 break;
-            case DOWNLOAD_FINISH:
+            case downloaderActions.ActionType.Success:
                 yield put(publicationDownloadActions.finish(
                     publication,
                 ));
@@ -233,7 +150,7 @@ export function* publicationDownloadCancelRequestWatcher(): SagaIterator {
 
         // Cancel each downloads linked to this publication
         for (const download of downloads) {
-            yield put(DownloaderAction.cancel(download));
+            yield put(downloaderActions.cancel(download));
         }
 
         yield put(

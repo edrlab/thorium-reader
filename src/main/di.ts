@@ -11,11 +11,12 @@ import getDecorators from "inversify-inject-decorators";
 
 import { Server } from "@r2-streamer-js/http/server";
 
-import { Downloader } from "readium-desktop/downloader/downloader";
 import { Translator } from "readium-desktop/common/services/translator";
+import { Downloader } from "readium-desktop/main/services/downloader";
+import { WinRegistry } from "readium-desktop/main/services/win-registry";
+
 import { RootState } from "readium-desktop/main/redux/states";
 import { OPDSParser } from "readium-desktop/services/opds";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { streamer } from "readium-desktop/main/streamer";

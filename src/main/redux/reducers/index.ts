@@ -3,9 +3,6 @@ import { combineReducers } from "redux";
 import {
     catalogReducer
 } from "readium-desktop/reducers/catalog";
-import {
-    downloader
-} from "readium-desktop/reducers/downloader";
 
 import {
     streamerReducer
@@ -15,6 +12,9 @@ import {
     readerReducer
 } from "readium-desktop/main/redux/reducers/reader";
 
+import {
+    downloaderReducer,
+} from "readium-desktop/common/redux/reducers/downloader";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { opdsReducer } from "readium-desktop/common/redux/reducers/opds";
 import {
@@ -22,7 +22,7 @@ import {
 } from "readium-desktop/common/redux/reducers/publication-download";
 
 export const rootReducer = combineReducers({
-    downloader,
+    donwloader: downloaderReducer,
     streamer: streamerReducer,
     catalog: catalogReducer,
     publicationDownloads: publicationDownloadReducer,
