@@ -11,11 +11,14 @@ import getDecorators from "inversify-inject-decorators";
 
 import { Server } from "@r2-streamer-js/http/server";
 
-import { Downloader } from "readium-desktop/downloader/downloader";
 import { Translator } from "readium-desktop/common/services/translator";
-import { RootState } from "readium-desktop/main/redux/states";
-import { OPDSParser } from "readium-desktop/services/opds";
+import { CatalogService } from "readium-desktop/main/services/catalog";
+import { Downloader } from "readium-desktop/main/services/downloader";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
+
+import { RootState } from "readium-desktop/main/redux/states";
+
+import { OPDSParser } from "readium-desktop/common/services/opds";
 
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { streamer } from "readium-desktop/main/streamer";
@@ -113,6 +116,7 @@ container.bind<Translator>("translator").toConstantValue(translator);
 // Bind services
 container.bind<Server>("streamer").toConstantValue(streamer);
 container.bind<OPDSParser>("opds-parser").to(OPDSParser);
+container.bind<CatalogService>("catalog-service").to(CatalogService);
 container.bind<Downloader>("downloader").toConstantValue(
     new Downloader(app.getPath("temp"), store),
 );

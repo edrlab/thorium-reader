@@ -1,29 +1,19 @@
-import {
-    watchDownloadFinish,
-    watchDownloadStart,
-} from "readium-desktop/sagas/downloader";
+import { all } from "redux-saga/effects";
 
-import {
-    watchCatalogInit,
-    watchCatalogUpdate,
-    watchRendererCatalogRequest,
-} from "readium-desktop/main/redux/sagas/catalog";
+// import {
+//     watchCatalogInit,
+//     watchCatalogUpdate,
+//     watchRendererCatalogRequest,
+// } from "readium-desktop/main/redux/sagas/catalog";
 import {
     watchStreamerPublicationClose,
     watchStreamerPublicationOpen,
 } from "readium-desktop/main/redux/sagas/streamer";
 
-import {
-    watchPublicationUpdate,
-    watchRendererPublicationRequest,
-} from "readium-desktop/main/redux/sagas/collection-manager";
-
-import {
-    opdsAddRequestWatcher,
-    opdsInitWatcher,
-    opdsRemoveRequestWatcher,
-    opdsUpdateRequestWatcher,
-} from "readium-desktop/main/redux/sagas/opds";
+// import {
+//     watchPublicationUpdate,
+//     watchRendererPublicationRequest,
+// } from "readium-desktop/main/redux/sagas/collection-manager";
 
 import {
     watchReaderClose,
@@ -32,7 +22,18 @@ import {
     watchReaderOpenRequest,
 } from "readium-desktop/main/redux/sagas/reader";
 
-import { all } from 'redux-saga/effects';
+
+import {
+    downloadAddRequestWatcher,
+    downloadPostProcessWatcher,
+} from "./downloader";
+
+import {
+    opdsAddRequestWatcher,
+    opdsInitWatcher,
+    opdsRemoveRequestWatcher,
+    opdsUpdateRequestWatcher,
+} from "./opds";
 
 import {
     publicationDownloadAddRequestWatcher,
@@ -41,27 +42,33 @@ import {
 } from "./publication-download";
 
 import { appInitWatcher } from "./app";
+import {
+    catalogInitWatcher,
+    catalogLocalPublicationImportWatcher,
+    catalogPublicationDownloadSuccessWatcher,
+    catalogPublicationRemoveWatcher,
+} from "./catalog";
 import { netStatusWatcher } from "./net";
 
 export function* rootSaga() {
     yield all([
-        watchCatalogInit(),
-        watchCatalogUpdate(),
-        watchRendererCatalogRequest(),
-
         watchStreamerPublicationOpen(),
         watchStreamerPublicationClose(),
-        watchRendererPublicationRequest(),
-        watchPublicationUpdate(),
-
-        // Download
-        watchDownloadFinish(),
-        watchDownloadStart(),
 
         // watchReaderInit(),
         watchReaderOpen(),
         watchReaderClose(),
         watchReaderOpenRequest(),
+
+        // Catalog
+        catalogInitWatcher(),
+        catalogLocalPublicationImportWatcher(),
+        catalogPublicationDownloadSuccessWatcher(),
+        catalogPublicationRemoveWatcher(),
+
+        // Download
+        downloadAddRequestWatcher(),
+        downloadPostProcessWatcher(),
 
         // Publication download
         publicationDownloadCancelRequestWatcher(),

@@ -27,13 +27,13 @@ export class OPDSParser {
             .parse(opdsFeed)
             .then((feed: AcquisitionFeed) => {
                 // Create new catalog
-                let catalog: Catalog = {
+                const catalog: Catalog = {
                     publications: [],
                     title: feed.title,
                 };
 
-                for (let entry of feed.entries) {
-                    let publication: Publication = {
+                for (const entry of feed.entries) {
+                    const publication: Publication = {
                         identifier: uuid.v4(),
                         title: entry.title,
                         description: entry.summary.content,
@@ -42,7 +42,7 @@ export class OPDSParser {
                     };
 
                     // Fill authors
-                    for (let author of entry.authors) {
+                    for (const author of entry.authors) {
                         publication.authors.push({
                             name: author.name,
                         });
@@ -54,10 +54,10 @@ export class OPDSParser {
                     }];
 
                     // Retrieve cover and download link
-                    for (let link of entry.links) {
+                    for (const link of entry.links) {
                         if (link.rel === REL_COVER) {
                             // We found the cover
-                            let urlObj = new URL(link.href);
+                            const urlObj = new URL(link.href);
                             let extObj = path.extname(urlObj.pathname);
 
                             // Remove dot in extension
@@ -73,7 +73,7 @@ export class OPDSParser {
                         }
                         if (link.type === TYPE_EPUB) {
                             // We found the EPUB link
-                            let urlObj = new URL(link.href);
+                            const urlObj = new URL(link.href);
                             let extObj = path.extname(urlObj.pathname);
 
                             // Remove dot in extension

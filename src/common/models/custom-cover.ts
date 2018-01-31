@@ -3,7 +3,7 @@ export interface CustomCover {
     bottomColor: string;
 }
 
-export let CustomCoverColors: CustomCover[] = [
+export let RandomCustomCovers: CustomCover[] = [
     {
         topColor: "#d18e4b",
         bottomColor: "#7c4c1c",

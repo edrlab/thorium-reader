@@ -8,7 +8,7 @@ const initialState: I18NState = {
     locale: "fr",
 };
 
-export function i18n(
+export function i18nReducer(
     state: I18NState = initialState,
     action: Action,
     ): I18NState {

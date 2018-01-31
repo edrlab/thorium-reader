@@ -36,7 +36,6 @@ export function publicationDownloadReducer(
             return newState;
         case publicationDownloadActions.ActionType.Progress:
             const progress = action.payload.progress;
-            console.log(progress);
             return newState;
         default:
             return state;

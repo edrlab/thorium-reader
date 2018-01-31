@@ -4,8 +4,6 @@ import { Store } from "redux";
 
 import { app, BrowserWindow, ipcMain, protocol } from "electron";
 
-import * as catalogActions from "readium-desktop/actions/catalog";
-
 import { container } from "readium-desktop/main/di";
 
 import { appInit } from "readium-desktop/main/redux/actions/app";
@@ -14,7 +12,11 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 
-import { netActions, opdsActions } from "readium-desktop/common/redux/actions";
+import {
+    catalogActions,
+    netActions,
+    opdsActions,
+} from "readium-desktop/common/redux/actions";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
@@ -126,10 +128,6 @@ app.on("ready", () => {
     initApp();
     createWindow();
     registerProtocol();
-
-    // FIXME: Load catalog from a saga
-    const store: Store<RootState> = container.get("store") as Store<RootState>;
-    store.dispatch(catalogActions.init());
 });
 
 // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
@@ -181,6 +179,19 @@ ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
                 payload: {
                     action: {
                         type: netActionType,
+                    },
+                },
+            });
+
+            // Send catalog
+            win.webContents.send(syncIpc.CHANNEL, {
+                type: syncIpc.EventType.MainAction,
+                payload: {
+                    action: {
+                        type: catalogActions.ActionType.SetSuccess,
+                        payload: {
+                            publications: state.catalog.publications,
+                        },
                     },
                 },
             });
