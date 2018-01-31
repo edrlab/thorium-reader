@@ -2,6 +2,7 @@ import { Store } from "redux";
 
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
+    catalogActions,
     netActions,
     opdsActions,
     publicationDownloadActions,
@@ -11,6 +12,13 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
+    catalogActions.ActionType.SetSuccess,
+    catalogActions.ActionType.LocalPublicationImportSuccess,
+    catalogActions.ActionType.LocalPublicationImportError,
+    catalogActions.ActionType.PublicationAddSuccess,
+    catalogActions.ActionType.PublicationRemoveSuccess,
+    catalogActions.ActionType.PublicationRemoveError,
+
     netActions.ActionType.Offline,
     netActions.ActionType.Online,
 

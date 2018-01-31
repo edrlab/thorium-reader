@@ -1,19 +1,19 @@
 import { all } from "redux-saga/effects";
 
-import {
-    watchCatalogInit,
-    watchCatalogUpdate,
-    watchRendererCatalogRequest,
-} from "readium-desktop/main/redux/sagas/catalog";
+// import {
+//     watchCatalogInit,
+//     watchCatalogUpdate,
+//     watchRendererCatalogRequest,
+// } from "readium-desktop/main/redux/sagas/catalog";
 import {
     watchStreamerPublicationClose,
     watchStreamerPublicationOpen,
 } from "readium-desktop/main/redux/sagas/streamer";
 
-import {
-    watchPublicationUpdate,
-    watchRendererPublicationRequest,
-} from "readium-desktop/main/redux/sagas/collection-manager";
+// import {
+//     watchPublicationUpdate,
+//     watchRendererPublicationRequest,
+// } from "readium-desktop/main/redux/sagas/collection-manager";
 
 import {
     watchReaderClose,
@@ -42,27 +42,33 @@ import {
 } from "./publication-download";
 
 import { appInitWatcher } from "./app";
+import {
+    catalogInitWatcher,
+    catalogLocalPublicationImportWatcher,
+    catalogPublicationDownloadSuccessWatcher,
+    catalogPublicationRemoveWatcher,
+} from "./catalog";
 import { netStatusWatcher } from "./net";
 
 export function* rootSaga() {
     yield all([
-        watchCatalogInit(),
-        watchCatalogUpdate(),
-        watchRendererCatalogRequest(),
-
         watchStreamerPublicationOpen(),
         watchStreamerPublicationClose(),
-        watchRendererPublicationRequest(),
-        watchPublicationUpdate(),
-
-        // Download
-        downloadAddRequestWatcher(),
-        downloadPostProcessWatcher(),
 
         // watchReaderInit(),
         watchReaderOpen(),
         watchReaderClose(),
         watchReaderOpenRequest(),
+
+        // Catalog
+        catalogInitWatcher(),
+        catalogLocalPublicationImportWatcher(),
+        catalogPublicationDownloadSuccessWatcher(),
+        catalogPublicationRemoveWatcher(),
+
+        // Download
+        downloadAddRequestWatcher(),
+        downloadPostProcessWatcher(),
 
         // Publication download
         publicationDownloadCancelRequestWatcher(),

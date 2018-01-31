@@ -60,7 +60,6 @@ export default class PublicationListElement extends React.Component<IPublication
         const publication = this.props.publication;
         let that = this;
         let id = this.props.publicationId;
-
         let authors: string = "";
         let image: string = "";
 
@@ -125,7 +124,7 @@ export default class PublicationListElement extends React.Component<IPublication
                                                             style={Styles.BookCard.downloadButton}
                                                             label={__("Supprimer")}
                                                             onClick={() => {
-                                                                this.props.deletePublication(publication.identifier);
+                                                                this.props.deletePublication(publication);
                                                             }}/>
                                                     </div>
                                                 ) : publication.download.status === DownloadStatus.Failed ? (
@@ -153,7 +152,7 @@ export default class PublicationListElement extends React.Component<IPublication
 
                                                 <FlatButton
                                                 style={Styles.BookCard.downloadButton}
-                                                onClick={() => {this.props.deletePublication(publication.identifier); }}
+                                                onClick={() => {this.props.deletePublication(publication); }}
                                                 label={"Supprimer"}/>
                                             </div>
                                         )}

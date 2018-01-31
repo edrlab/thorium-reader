@@ -21,7 +21,7 @@ export class PublicationDb {
         ));
     }
 
-    public putOrChange (publication: Publication): Promise<any> {
+    public putOrChange(publication: Publication): Promise<any> {
         return this.db.get(ID_PREFIX + publication.identifier).then((doc) => {
             return this.db.put(Object.assign(
                 {},

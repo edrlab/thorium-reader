@@ -1,4 +1,3 @@
-import { Identifiable } from "./../../models/identifiable";
 import { Action, ErrorAction } from "readium-desktop/common/models/redux";
 
 import { Download } from "readium-desktop/common/models/download";

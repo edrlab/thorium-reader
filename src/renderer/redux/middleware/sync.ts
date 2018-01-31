@@ -3,12 +3,16 @@ import { Store } from "redux";
 
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
+    catalogActions,
     opdsActions,
     publicationDownloadActions,
 } from "readium-desktop/common/redux/actions";
 
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
+    catalogActions.ActionType.LocalPublicationImportRequest,
+    catalogActions.ActionType.PublicationRemoveRequest,
+
     opdsActions.ActionType.AddRequest,
     opdsActions.ActionType.UpdateRequest,
     opdsActions.ActionType.RemoveRequest,

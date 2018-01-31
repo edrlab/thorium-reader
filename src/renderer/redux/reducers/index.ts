@@ -1,8 +1,6 @@
 
 import { combineReducers } from "redux";
 
-import { catalogReducer } from "readium-desktop/reducers/catalog";
-
 import {
     windowReducer,
 } from "readium-desktop/renderer/reducers/window";
@@ -19,6 +17,7 @@ import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 
 import { winReducer } from "./win";
 
+import { catalogReducer } from "readium-desktop/common/redux/reducers/catalog";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { opdsReducer } from "readium-desktop/common/redux/reducers/opds";
 import {

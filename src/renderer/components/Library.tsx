@@ -6,8 +6,10 @@ import { blue500 } from "material-ui/styles/colors";
 
 import { Store } from "redux";
 
-import * as publicationimportActions from "readium-desktop/actions/collection-manager";
-import { publicationDownloadActions } from "readium-desktop/common/redux/actions";
+import {
+    catalogActions,
+    publicationDownloadActions,
+} from "readium-desktop/common/redux/actions";
 
 import { Publication } from "readium-desktop/common/models/publication";
 
@@ -72,16 +74,19 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         this.store.dispatch(publicationDownloadActions.cancel(publication));
     }
 
-    public deletePublication = (identifier: string) => {
-        this.store.dispatch(publicationimportActions.fileDelete(identifier));
+    public deletePublication = (publication: Publication) => {
+        this.store.dispatch(catalogActions.removePublication(publication));
     }
 
-    public openDeleteDialog = (identifier: string) => {
-        let message: JSX.Element = (<p>{this.translator.translate("dialog.delete")}</p>);
-        this.props.openDialog(message, this.deletePublication.bind(this, identifier));
+    public openDeleteDialog = (publication: Publication) => {
+        const message: JSX.Element = (<p>{this.translator.translate("dialog.delete")}</p>);
+        this.props.openDialog(
+            message,
+            this.deletePublication.bind(this, publication),
+        );
     }
 
-    public Spinner () {
+    public Spinner() {
         return (
             <FontIcon
                 style = {Styles.Library.spinner}
@@ -92,9 +97,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     public createCardList() {
-        let list: any = [];
+        const list: any = [];
         let i = 0;
-        for (let pub of this.props.catalog.publications.sort(this.sort)) {
+        for (const pub of this.props.catalog.publications.sort(this.sort)) {
             list.push(<PublicationCard key={i}
                 publicationId={i}
                 downloadable={false}
