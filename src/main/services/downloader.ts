@@ -5,9 +5,9 @@ import { tmpNameSync } from "tmp";
 import { URL } from "url";
 import * as uuid from "uuid";
 
-import * as downloadActions from "readium-desktop/actions/downloader";
 import { Download } from "readium-desktop/common/models/download";
 import { DownloadStatus } from "readium-desktop/common/models/downloadable";
+import { downloaderActions } from "readium-desktop/common/redux/actions";
 
 @injectable()
 export class Downloader {
@@ -34,7 +34,7 @@ export class Downloader {
             postfix: `${ext}.part`});
 
         // Create download
-        let download: Download = {
+        const download: Download = {
             identifier: uuid.v4(),
             srcUrl: url,
             dstPath,
@@ -43,7 +43,7 @@ export class Downloader {
         };
 
         // Append to download queue
-        this.store.dispatch(downloadActions.add(download));
+        this.store.dispatch(downloaderActions.add(download));
 
         return download;
     }

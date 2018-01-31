@@ -35,6 +35,7 @@ export class PublicationStorage {
      *
      * @param identifier Identifier of publication
      * @param srcPath Path of epub to import
+     * @return List of all stored files
      */
     public async storePublication(
         identifier: string,
@@ -49,8 +50,7 @@ export class PublicationStorage {
             identifier, srcPath);
         const coverFile: File = await this.storePublicationCover(
             identifier, srcPath);
-
-        let files: File[] = [];
+        const files: File[] = [];
         files.push(bookFile);
 
         if (coverFile != null) {
@@ -79,7 +79,7 @@ export class PublicationStorage {
         );
 
         return new Promise<File>((resolve, reject) => {
-            let writeStream = fs.createWriteStream(dstPath);
+            const writeStream = fs.createWriteStream(dstPath);
             const fileResolve = () => {
                 resolve ({
                     url: `store://${identifier}/${filename}`,

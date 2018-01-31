@@ -17,7 +17,7 @@ import FlatButton from "material-ui/FlatButton";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import * as publicationimportActions from "readium-desktop/actions/collection-manager";
+import { catalogActions } from "readium-desktop/common/redux/actions";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
@@ -85,10 +85,10 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         const helpUrl = "./src/resources/docs/" + this.state.locale + "/help.md";
         const aboutUrl = "./src/resources/docs/" + this.state.locale + "/about.md";
 
-        let listOPDS: JSX.Element[] = [];
+        const listOPDS: JSX.Element[] = [];
         let i = 0;
         if (this.props.opdsList !== undefined) {
-            for (let newOpds of this.props.opdsList.sort(this.sort)) {
+            for (const newOpds of this.props.opdsList.sort(this.sort)) {
                 listOPDS.push(
                     <MenuItem
                         key= {i}
@@ -100,19 +100,19 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             });
                         }}
                     >
-                    </MenuItem>
+                    </MenuItem>,
                 );
                 i++;
             }
         }
-        let allMenuItems: JSX.Element[] = [];
+        const allMenuItems: JSX.Element[] = [];
         // for (let item of listOPDS) {
         //     allMenuItems.push(item);
         // }
         allMenuItems.push(...listOPDS);
         allMenuItems.push(
             <Divider
-                key= {i}/>
+                key= {i}/>,
         );
         i++;
         allMenuItems.push(
@@ -124,7 +124,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             <OpdsForm closeDialog={this.props.closeDialog}/>,
                             null,
                             []);
-                }}/>
+                }}/>,
         );
         i++;
         return (
@@ -248,21 +248,17 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
 
     private handleFileChange(event: any) {
         const files: FileList = event.target.files;
-        let paths: string[] = [];
-        let i = 0;
 
-        while (i < files.length) {
-            paths.push(files[i++].path);
+        for (const file of Array.from(files)) {
+            this.store.dispatch(catalogActions.importLocalPublication(file.path));
         }
-
-        this.store.dispatch(publicationimportActions.fileImport(paths));
     }
 
-    private closeCollectionDialog () {
+    private closeCollectionDialog() {
         this.setState({opdsImportOpen: false});
     }
 
-    private sort (a: OPDS, b: OPDS) {
+    private sort(a: OPDS, b: OPDS) {
         if (a.name > b.name) {
             return 1;
         } else if (a.name === b.name) {

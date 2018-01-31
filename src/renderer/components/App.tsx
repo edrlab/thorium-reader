@@ -24,11 +24,15 @@ import Library from "readium-desktop/renderer/components/Library";
 
 import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
+
+import {
+    catalogActions,
+} from "readium-desktop/common/redux/actions";
+
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { MessageStatus } from "readium-desktop/renderer/reducers/message";
 // import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
 
-import * as publicationimportActions from "readium-desktop/actions/collection-manager";
 import * as messageAction from "readium-desktop/renderer/actions/message";
 
 import * as Dropzone from "react-dropzone/dist";
@@ -138,9 +142,9 @@ export default class App extends React.Component<undefined, AppState> {
 
     // Create the download list if it doesn't exist then start the download
     public importFiles = () => {
-        for (let file of this.filesToImport)
-        {
-            this.store.dispatch(publicationimportActions.fileImport([file.path]));
+        // FIXME: dead code
+        for (const file of this.filesToImport) {
+            this.store.dispatch(catalogActions.importLocalPublication(file.path));
         }
     }
 
@@ -219,7 +223,7 @@ export default class App extends React.Component<undefined, AppState> {
         }
     }
 
-    private openImportDialog (message: JSX.Element) {
+    private openImportDialog(message: JSX.Element) {
         this.openDialog(message);
     }
 
