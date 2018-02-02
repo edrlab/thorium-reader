@@ -22,10 +22,10 @@ import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 import AppToolbar from "readium-desktop/renderer/components/AppToolbar";
 import Library from "readium-desktop/renderer/components/Library";
 
-import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
 
 import {
+    readerActions,
     catalogActions,
 } from "readium-desktop/common/redux/actions";
 
@@ -109,7 +109,7 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     public handleOpenPublication(publication: Publication) {
-        this.store.dispatch(readerActions.init(publication));
+        this.store.dispatch(readerActions.open(publication));
     }
 
     // public handleClosePublication() {

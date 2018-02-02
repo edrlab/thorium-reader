@@ -1,28 +1,5 @@
 import { all } from "redux-saga/effects";
 
-// import {
-//     watchCatalogInit,
-//     watchCatalogUpdate,
-//     watchRendererCatalogRequest,
-// } from "readium-desktop/main/redux/sagas/catalog";
-import {
-    watchStreamerPublicationClose,
-    watchStreamerPublicationOpen,
-} from "readium-desktop/main/redux/sagas/streamer";
-
-// import {
-//     watchPublicationUpdate,
-//     watchRendererPublicationRequest,
-// } from "readium-desktop/main/redux/sagas/collection-manager";
-
-import {
-    watchReaderClose,
-    // watchReaderInit,
-    watchReaderOpen,
-    watchReaderOpenRequest,
-} from "readium-desktop/main/redux/sagas/reader";
-
-
 import {
     downloadAddRequestWatcher,
     downloadPostProcessWatcher,
@@ -49,17 +26,19 @@ import {
     catalogPublicationRemoveWatcher,
 } from "./catalog";
 import { netStatusWatcher } from "./net";
+import {
+    readerCloseRequestWatcher,
+    readerOpenRequestWatcher,
+} from "./reader";
+import {
+    streamerPublicationCloseRequestWatcher,
+    streamerPublicationOpenRequestWatcher,
+    streamerStartRequestWatcher,
+    streamerStopRequestWatcher,
+} from "./streamer";
 
 export function* rootSaga() {
     yield all([
-        watchStreamerPublicationOpen(),
-        watchStreamerPublicationClose(),
-
-        // watchReaderInit(),
-        watchReaderOpen(),
-        watchReaderClose(),
-        watchReaderOpenRequest(),
-
         // Catalog
         catalogInitWatcher(),
         catalogLocalPublicationImportWatcher(),
@@ -86,5 +65,15 @@ export function* rootSaga() {
 
         // Net
         netStatusWatcher(),
+
+        // Reader
+        readerCloseRequestWatcher(),
+        readerOpenRequestWatcher(),
+
+        // Streamer
+        streamerStopRequestWatcher(),
+        streamerStartRequestWatcher(),
+        streamerPublicationOpenRequestWatcher(),
+        streamerPublicationCloseRequestWatcher(),
     ]);
 }

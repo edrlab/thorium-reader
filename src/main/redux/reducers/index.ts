@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
 
 import {
-    streamerReducer
+    streamerReducer,
 } from "readium-desktop/main/redux/reducers/streamer";
 
 import {
-    readerReducer
-} from "readium-desktop/main/redux/reducers/reader";
+    readerReducer,
+} from "readium-desktop/common/redux/reducers/reader";
 
 import {
     catalogReducer,

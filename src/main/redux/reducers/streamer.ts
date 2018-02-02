@@ -1,18 +1,13 @@
-import { StreamerAction } from "readium-desktop/main/redux/actions/streamer";
-import {
-    STREAMER_PUBLICATION_CLOSE,
-    STREAMER_PUBLICATION_MANIFEST_OPEN,
-    STREAMER_PUBLICATION_OPEN,
-    STREAMER_START,
-    STREAMER_STOP,
-} from "readium-desktop/main/redux/actions/streamer";
+import { Action, ErrorAction } from "readium-desktop/common/models/redux";
 
-import { StreamerState } from "readium-desktop/main/redux/states/streamer";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
+
+import { streamerActions } from "readium-desktop/main/redux/actions";
+import { StreamerState } from "readium-desktop/main/redux/states/streamer";
 
 const initialState: StreamerState = {
     // Streamer base url
-    baseUrl: undefined,
+    baseUrl: null,
 
     // Streamer status
     status: StreamerStatus.Stopped,
@@ -26,43 +21,44 @@ const initialState: StreamerState = {
 
 export function streamerReducer(
     state: StreamerState = initialState,
-    action: StreamerAction,
-    ): StreamerState {
-    let pubId = undefined;
+    action: Action | ErrorAction,
+): StreamerState {
+    let pubId = null;
+    const newState = Object.assign({}, state);
 
     switch (action.type) {
-        case STREAMER_START:
-            state.status = StreamerStatus.Running;
-            state.baseUrl = action.streamerUrl;
-            state.openPublicationCounter = {};
-            state.publicationManifestUrl = {};
-            return state;
-        case STREAMER_STOP:
-            state.baseUrl = undefined;
-            state.status = StreamerStatus.Stopped;
-            state.openPublicationCounter = {};
-            state.publicationManifestUrl = {};
-            return state;
-        case STREAMER_PUBLICATION_OPEN:
-            return state;
-        case STREAMER_PUBLICATION_MANIFEST_OPEN:
-            pubId = action.publication.identifier;
-            if (state.openPublicationCounter[pubId] === undefined) {
-                state.openPublicationCounter[pubId] = 1;
-                state.publicationManifestUrl[pubId] = action.manifestUrl;
-            } else {
-                state.openPublicationCounter[pubId] = state.openPublicationCounter[pubId] + 1;
-            }
-            return state;
-        case STREAMER_PUBLICATION_CLOSE:
-            pubId = action.publication.identifier;
-            state.openPublicationCounter[pubId] = state.openPublicationCounter[pubId] - 1;
+        case streamerActions.ActionType.StartSuccess:
+            newState.status = StreamerStatus.Running;
+            newState.baseUrl = action.payload.streamerUrl;
+            newState.openPublicationCounter = {};
+            newState.publicationManifestUrl = {};
+            return newState;
+        case streamerActions.ActionType.StopSuccess:
+            newState.baseUrl = null;
+            newState.status = StreamerStatus.Stopped;
+            newState.openPublicationCounter = {};
+            newState.publicationManifestUrl = {};
+            return newState;
+        case streamerActions.ActionType.PublicationOpenSuccess:
+            pubId = action.payload.publication.identifier;
 
-            if (state.openPublicationCounter[pubId] === 0) {
-                delete state.openPublicationCounter[pubId];
-                delete state.publicationManifestUrl[pubId];
+            if (!newState.openPublicationCounter.hasOwnProperty(pubId)) {
+                newState.openPublicationCounter[pubId] = 1;
+                newState.publicationManifestUrl[pubId] = action.payload.manifestUrl;
+            } else {
+                // Increment the number of publications opened with the streamer
+                newState.openPublicationCounter[pubId] = state.openPublicationCounter[pubId] + 1;
             }
-            return state;
+            return newState;
+        case streamerActions.ActionType.PublicationCloseSuccess:
+            pubId = action.payload.publication.identifier;
+            newState.openPublicationCounter[pubId] = newState.openPublicationCounter[pubId] - 1;
+
+            if (newState.openPublicationCounter[pubId] === 0) {
+                delete newState.openPublicationCounter[pubId];
+                delete newState.publicationManifestUrl[pubId];
+            }
+            return newState;
         default:
             return state;
     }

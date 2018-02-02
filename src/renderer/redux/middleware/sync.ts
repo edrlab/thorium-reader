@@ -6,6 +6,7 @@ import {
     catalogActions,
     opdsActions,
     publicationDownloadActions,
+    readerActions,
 } from "readium-desktop/common/redux/actions";
 
 // Actions that can be synchronized
@@ -19,6 +20,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 
     publicationDownloadActions.ActionType.AddRequest,
     publicationDownloadActions.ActionType.CancelRequest,
+
+    readerActions.ActionType.OpenRequest,
 ];
 
 export const reduxSyncMiddleware = (_0: Store<any>) => (next: any) => (action: any) => {
