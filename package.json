@@ -119,7 +119,7 @@
     "opds-feed-parser": "^0.0.14",
     "ping": "^0.2.2",
     "portfinder": "^1.0.13",
-    "pouchdb-core": "^6.4.2",
+    "pouchdb-core": "^6.4.3",
     "r2-lcp-js": "github:edrlab/r2-lcp-js-dist#develop",
     "r2-navigator-js": "github:edrlab/r2-navigator-js-dist#develop",
     "r2-opds-js": "github:edrlab/r2-opds-js-dist#develop",
@@ -179,7 +179,7 @@
     "webpack-node-externals": "^1.6.0"
   },
   "optionalDependencies": {
-    "pouchdb-adapter-leveldb": "^6.4.2",
+    "pouchdb-adapter-leveldb": "^6.4.3",
     "leveldown": "2.*.*"
   }
 }
