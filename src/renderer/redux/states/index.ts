@@ -1,6 +1,5 @@
 
 import {WindowState} from "readium-desktop/renderer/reducers/window";
-import {ReaderState} from "readium-desktop/renderer/reducers/reader";
 import {MessageState} from "readium-desktop/renderer/reducers/message";
 
 import { CatalogState } from "readium-desktop/common/redux/states/catalog";
@@ -11,8 +10,9 @@ import { OpdsState } from "readium-desktop/common/redux/states/opds";
 import {
     PublicationDownloadState,
 } from "readium-desktop/common/redux/states/publication-download";
-import { WinState } from "./win";
+import { ReaderState } from "readium-desktop/common/redux/states/reader";
 
+import { WinState } from "./win";
 export { WinState };
 
 export interface RootState {
@@ -21,8 +21,8 @@ export interface RootState {
     i18n: I18NState;
     catalog: CatalogState;
     window: WindowState;
-    reader: ReaderState;
     message: MessageState;
     opds: OpdsState;
     publicationDownloads: PublicationDownloadState;
+    reader: ReaderState;
 }

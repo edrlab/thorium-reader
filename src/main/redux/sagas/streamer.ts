@@ -1,79 +1,147 @@
+import * as debug_ from "debug";
 import * as path from "path";
-
-import { ipcMain } from "electron";
 import * as portfinder from "portfinder";
-
 import { channel, Channel, SagaIterator } from "redux-saga";
 import { call, fork, put, select, take } from "redux-saga/effects";
 
 import { Server } from "@r2-streamer-js/http/server";
 
 import { Publication } from "readium-desktop/common/models/publication";
+import { StreamerStatus } from "readium-desktop/common/models/streamer";
 
 import { container } from "readium-desktop/main/di";
+import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-
-import * as streamerActions from "readium-desktop/main/redux/actions/streamer";
-import { StreamerAction } from "readium-desktop/main/redux/actions/streamer";
-import {
-    STREAMER_PUBLICATION_CLOSE,
-    STREAMER_PUBLICATION_OPEN } from "readium-desktop/main/redux/actions/streamer";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
-function startStreamer(streamer: Server, chan: Channel<any>) {
+// Logger
+const debug = debug_("readium-desktop:main:redux:sagas:streamer");
+
+function startStreamer(streamer: Server): Promise<string> {
     // Find a free port on your local machine
-    portfinder.getPort((err, port) => {
-        const streamerUrl = streamer.start(port);
-        console.log("# Start r2 streamer", streamerUrl);
-        chan.put({
-            streamerUrl,
+    return portfinder.getPortPromise()
+        .then((port) => {
+            const streamerUrl = streamer.start(port);
+            debug("Streamer started on %s", streamerUrl);
+            return streamerUrl;
         });
-    });
 }
 
-export function* watchStreamerPublicationOpen(): SagaIterator {
-    const chanStreamerStart = yield call(channel);
+function stopStreamer(streamer: Server) {
+    // Stop server
+    debug("Stop streamer");
+    streamer.stop();
+}
 
+export function* streamerStartRequestWatcher(): SagaIterator {
     while (true) {
-        const action: StreamerAction = yield take(STREAMER_PUBLICATION_OPEN);
-        const publication = action.publication;
+        const action = yield take(streamerActions.ActionType.StartRequest);
+        const streamer: Server = container.get("streamer") as Server;
+
+        try {
+            const streamerUrl = yield call(() => startStreamer(streamer));
+            yield put({
+                type: streamerActions.ActionType.StartSuccess,
+                payload: {
+                    streamerUrl,
+                },
+            });
+        } catch (error) {
+            debug("Unable to start streamer");
+            yield put({
+                type: streamerActions.ActionType.StartError,
+                payload: new Error(error),
+                error: true,
+            });
+        }
+    }
+}
+
+export function* streamerStopRequestWatcher(): SagaIterator {
+    while (true) {
+        const action = yield take(streamerActions.ActionType.StopRequest);
+        const streamer: Server = container.get("streamer") as Server;
+
+        try {
+            yield call(() => stopStreamer(streamer));
+            yield put({
+                type: streamerActions.ActionType.StopSuccess,
+            });
+        } catch (error) {
+            debug("Unable to stop streamer");
+            yield put({
+                type: streamerActions.ActionType.StopError,
+                payload: new Error(error),
+                error: true,
+            });
+        }
+    }
+}
+
+export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
+    while (true) {
+        const action = yield take(streamerActions.ActionType.PublicationOpenRequest);
+        const publication = action.payload.publication;
 
         // Get epub file from publication
-        const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
+        const pubStorage = container.get("publication-storage") as PublicationStorage;
         const epubPath = path.join(
             pubStorage.getRootPath(),
             publication.files[0].url.substr(6),
         );
+        debug("Open publication %s", epubPath);
 
         // Start streamer if it's not already started
         const state: RootState =  yield select();
         const streamer: Server = container.get("streamer") as Server;
 
-        if (state.streamer.baseUrl === undefined) {
-            yield fork(startStreamer, streamer, chanStreamerStart);
-            const streamerStartResponse: any = yield take(chanStreamerStart);
-            yield put(streamerActions.start(streamerStartResponse.streamerUrl));
+        if (state.streamer.status === StreamerStatus.Stopped) {
+            // Streamer is stopped, start it
+            yield put(streamerActions.start());
+
+            // Wait for streamer
+            const streamerStartAction = yield take([
+                streamerActions.ActionType.StartSuccess,
+                streamerActions.ActionType.StartError,
+            ]);
+
+            if (streamerStartAction.error) {
+                // Unable to start server
+                yield put({
+                    type: streamerActions.ActionType.PublicationOpenError,
+                    payload: streamerStartAction.payload,
+                    error: true,
+                    meta: {
+                        publication,
+                    },
+                });
+                continue;
+            }
         }
 
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
         const manifestUrl = streamer.url() + manifestPaths[0];
-        yield put(streamerActions.openPublicationManifest(
-            publication, manifestUrl,
-        ));
+        yield put({
+            type: streamerActions.ActionType.PublicationOpenSuccess,
+            payload: {
+                publication,
+                manifestUrl,
+            },
+        });
     }
 }
 
-export function* watchStreamerPublicationClose(): SagaIterator {
+export function* streamerPublicationCloseRequestWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(STREAMER_PUBLICATION_CLOSE);
-        const publication = action.publication;
+        const action = yield take(streamerActions.ActionType.PublicationCloseRequest);
+        const publication = action.payload.publication;
 
         const state: RootState =  yield select();
         const streamer: Server = container.get("streamer") as Server;
-        const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
+        const pubStorage = container.get("publication-storage") as PublicationStorage;
 
-        if (state.streamer.openPublicationCounter[publication.identifier] === undefined) {
+        if (!state.streamer.openPublicationCounter.hasOwnProperty(publication.identifier)) {
             // Remove publication from streamer because there is no more readers
             // open for this publication
             // Get epub file from publication
@@ -83,10 +151,8 @@ export function* watchStreamerPublicationClose(): SagaIterator {
             );
             streamer.removePublications([epubPath]);
         }
+
         if (Object.keys(state.streamer.openPublicationCounter).length === 0) {
-            // Stop server
-            console.log("# Stop r2 streamer");
-            streamer.stop();
             yield put(streamerActions.stop());
         }
     }

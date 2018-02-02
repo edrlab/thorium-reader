@@ -6,10 +6,6 @@ import {
 } from "readium-desktop/renderer/reducers/window";
 
 import {
-    readerReducer,
-} from "readium-desktop/renderer/reducers/reader";
-
-import {
     messageReducer,
 } from "readium-desktop/renderer/reducers/message";
 
@@ -23,6 +19,7 @@ import { opdsReducer } from "readium-desktop/common/redux/reducers/opds";
 import {
     publicationDownloadReducer,
 } from "readium-desktop/common/redux/reducers/publication-download";
+import { readerReducer } from "readium-desktop/common/redux/reducers/reader";
 
 export const rootReducer = combineReducers({
     i18n: i18nReducer,

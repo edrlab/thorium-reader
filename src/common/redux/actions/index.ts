@@ -5,6 +5,7 @@ import * as loggerActions from "./logger";
 import * as netActions from "./net";
 import * as opdsActions from "./opds";
 import * as publicationDownloadActions from "./publication-download";
+import * as readerActions from "./reader";
 
 export {
     catalogActions,
@@ -14,4 +15,5 @@ export {
     netActions,
     opdsActions,
     publicationDownloadActions,
+    readerActions,
 };

@@ -5,9 +5,9 @@ import { OpdsState } from "readium-desktop/common/redux/states/opds";
 import {
     PublicationDownloadState,
 } from "readium-desktop/common/redux/states/publication-download";
+import { ReaderState } from "readium-desktop/common/redux/states/reader";
 
 import { AppState } from "./app";
-import { ReaderState } from "./reader";
 import { StreamerState } from "./streamer";
 
 export interface RootState {

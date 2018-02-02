@@ -6,6 +6,7 @@ import {
     netActions,
     opdsActions,
     publicationDownloadActions,
+    readerActions,
 } from "readium-desktop/common/redux/actions";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
@@ -36,6 +37,9 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     publicationDownloadActions.ActionType.Error,
     publicationDownloadActions.ActionType.CancelError,
     publicationDownloadActions.ActionType.CancelSuccess,
+
+    readerActions.ActionType.OpenError,
+    readerActions.ActionType.OpenSuccess,
 ];
 
 export const reduxSyncMiddleware = (_0: Store<any>) => (next: any) => (action: any) => {

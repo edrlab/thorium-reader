@@ -1,53 +1,51 @@
-import { Action } from "redux";
+import { Action } from "readium-desktop/common/models/redux";
 
 import { Publication } from "readium-desktop/common/models/publication";
 
-export const STREAMER_START = "STREAMER_START";
-export const STREAMER_STOP = "STREAMER_STOP";
-export const STREAMER_PUBLICATION_OPEN = "STREAMER_PUBLICATION_OPEN";
-export const STREAMER_PUBLICATION_CLOSE = "STREAMER_PUBLICATION_CLOSE";
-export const STREAMER_PUBLICATION_MANIFEST_OPEN = "STREAMER_PUBLICATION_MANIFEST_OPEN";
+export enum ActionType {
+    StartRequest = "STREAMER_START_REQUEST",
+    StartSuccess = "STREAMER_START_SUCCESS",
+    StartError = "STEAMER_START_ERROR",
 
-export interface StreamerAction extends Action {
-    streamerUrl?: string;
-    publication?: Publication;
-    manifestUrl?: string;
+    StopRequest = "STREAMER_STOP_REQUEST",
+    StopSuccess = "STREAMER_STOP_SUCCESS",
+    StopError = "STEAMER_STOP_ERROR",
+
+    PublicationOpenRequest = "STREAMER_PUBLICATION_OPEN_REQUEST",
+    PublicationOpenSuccess = "STREAMER_PUBLICATION_OPEN_SUCCESS",
+    PublicationOpenError = "STREAMER_PUBLICATION_OPEN_ERROR",
+
+    PublicationCloseRequest = "STREAMER_PUBLICATION_CLOSE_REQUEST",
+    PublicationCloseSuccess = "STREAMER_PUBLICATION_CLOSE_SUCCESS",
+    PublicationCloseError = "STREAMER_PUBLICATION_CLOSE_ERROR",
 }
 
-export function start(streamerUrl: string): StreamerAction {
+export function start(): Action {
     return {
-        type: STREAMER_START,
-        streamerUrl,
+        type: ActionType.StartRequest,
     };
 }
 
-export function openPublication(publication: Publication): StreamerAction {
+export function openPublication(publication: Publication): Action {
     return {
-        type: STREAMER_PUBLICATION_OPEN,
-        publication,
+        type: ActionType.PublicationOpenRequest,
+        payload: {
+            publication,
+        },
     };
 }
 
-export function openPublicationManifest(
-    publication: Publication,
-    manifestUrl: string,
-): StreamerAction {
+export function closePublication(publication: Publication): Action {
     return {
-        type: STREAMER_PUBLICATION_MANIFEST_OPEN,
-        publication,
-        manifestUrl,
-    };
-}
-
-export function closePublication(publication: Publication): StreamerAction {
-    return {
-        type: STREAMER_PUBLICATION_CLOSE,
-        publication,
+        type: ActionType.PublicationCloseRequest,
+        payload: {
+            publication,
+        },
     };
 }
 
 export function stop() {
     return {
-        type: STREAMER_STOP,
+        type: ActionType.StopRequest,
     };
 }
