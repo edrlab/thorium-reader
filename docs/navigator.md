@@ -163,11 +163,15 @@ Code references:
 
 The `installLcpHandler()` function is defined in the `r2-navigator-js` package:
 
-https://github.com/edrlab/r2-navigator-js/blob/develop/src/electron/main/lcp.ts#L13
+https://github.com/edrlab/r2-navigator-js/blob/develop/src/electron/main/lcp.ts
 
-The `installLcpHandler()` function is invoked once from the main process:
+The `installLsdHandler()` function is defined in the `r2-navigator-js` package:
 
-https://github.com/edrlab/readium-desktop/blob/feature/r2-navigator-refactor/src/main/streamer.ts#L6
+https://github.com/edrlab/r2-navigator-js/blob/develop/src/electron/main/lsd.ts
+
+The `installLcpHandler()` and `installLsdHandler()` functions are invoked once from the main process:
+
+https://github.com/edrlab/readium-desktop/blob/feature/r2-navigator-refactor/src/main/streamer.ts
 
 The `R2_EVENT_*` IPC events are used from the reading activity / renderer process:
 
@@ -175,12 +179,14 @@ https://github.com/edrlab/readium-desktop/blob/feature/r2-navigator-refactor/src
 
 Summary:
 
-The `installLcpHandler()` function installs IPC Electron events to handle the flow of actions that enables passing a user passphrase (or existing stored digest of a previously-supplied passphrase) from the renderer process (user interface) into the main process (where decryption occurs). This function also installs the LSD-related interactions ("return" and "renew").
+The `installLcpHandler()` function installs IPC Electron events to handle the flow of actions that enables passing a user passphrase (or existing stored digest of a previously-supplied passphrase) from the renderer process (user interface) into the main process (where decryption occurs). The `installLsdHandler()` function installs the LSD-related interactions ("return" and "renew").
 
 Caveats / potential todos:
 
 1) The IPC events (notably, the "return" and "renew" interaction) should be abstracted / hidden from the application via an additional API layer.
 2) The passphrase asynchronous interaction should be exposed via a cleaner API, to hide the actual IPC eventing mechanism.
+
+=> in fact, the top-level application layer should implement this main/renderer process logic according to its own framework. Both "install" functions should be replaced with application-specific mechanisms, while retaining the internal logic (see their source code).
 
 ### LSD "background" activity (register and fetch+inject updated LCP license)
 
