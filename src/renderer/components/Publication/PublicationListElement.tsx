@@ -6,7 +6,9 @@ import LinearProgress from "material-ui/LinearProgress";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { Publication, getTitleString } from "readium-desktop/common/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
+
+import { getMultiLangString } from "readium-desktop/common/models/language";
 
 import { Translator }   from "readium-desktop/common/services/translator";
 
@@ -38,6 +40,9 @@ export default class PublicationListElement extends React.Component<IPublication
     private translator: Translator;
 
     public render(): React.ReactElement<{}>  {
+        // TODO: should get language from view state? (user preferences)
+        const lang = "en";
+
         const __ = this.translator.translate.bind(this.translator);
 
         const publication: Publication = this.props.publication;
@@ -48,14 +53,11 @@ export default class PublicationListElement extends React.Component<IPublication
         let id = this.props.publicationId;
 
         if (publication.authors && publication.authors.length > 0) {
-            author = publication.authors[0].name;
+            author = getMultiLangString(publication.authors[0].name, lang);
         }
         if (publication.cover) {
             image = publication.cover.url;
         }
-
-        // TODO: should get language from view state? (user preferences)
-        const lang = "en";
 
         return (
             <div style={Styles.BookListElement.body}>
@@ -67,7 +69,7 @@ export default class PublicationListElement extends React.Component<IPublication
                     </div>
                 )}
                 <div style={Styles.BookListElement.description}>
-                    <h4 style={Styles.BookListElement.title}>{getTitleString(publication.title, lang)}</h4>
+                    <h4 style={Styles.BookListElement.title}>{getMultiLangString(publication.title, lang)}</h4>
                     <div style={Styles.BookListElement.column}>
                         <p>{author}</p>
                         <p>Editeur</p>

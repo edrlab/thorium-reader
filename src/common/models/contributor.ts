@@ -2,5 +2,5 @@
  * A contributor is a person or an organization
  */
 export interface Contributor {
-    name: string;
+    name: string; // note: can be multilingual object map (not just string)
 }

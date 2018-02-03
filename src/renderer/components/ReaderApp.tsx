@@ -12,7 +12,9 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-import { Publication, getTitleString } from "readium-desktop/common/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
+
+import { getMultiLangString } from "readium-desktop/common/models/language";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
@@ -276,7 +278,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         if (_publication.Metadata && _publication.Metadata.Title) {
             // TODO: should get language from view state? (user preferences)
             const lang = "en";
-            const title = getTitleString( _publication.Metadata.Title, lang);
+            const title = getMultiLangString( _publication.Metadata.Title, lang);
 
             // let title: string | undefined;
             // if (typeof _publication.Metadata.Title === "string") {

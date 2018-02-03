@@ -11,7 +11,9 @@ import {
     publicationDownloadActions,
 } from "readium-desktop/common/redux/actions";
 
-import { Publication, getTitleString } from "readium-desktop/common/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
+
+import { getMultiLangString } from "readium-desktop/common/models/language";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
@@ -177,8 +179,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
         // TODO: should get language from view state? (user preferences)
         const lang = "en";
-        const atitle = getTitleString(a.title, lang);
-        const btitle = getTitleString(b.title, lang);
+        const atitle = getMultiLangString(a.title, lang);
+        const btitle = getMultiLangString(b.title, lang);
 
         if (atitle > btitle) {
             return 1;
