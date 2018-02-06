@@ -4,7 +4,7 @@ import FontIcon from "material-ui/FontIcon";
 import IconButton from "material-ui/IconButton";
 import RaisedButton from "material-ui/RaisedButton";
 
-import { Styles } from "readium-desktop/renderer/components/styles";
+import { Styles } from "readium-desktop/renderer/components/styles/styles";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 import { Store } from "redux";

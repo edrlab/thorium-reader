@@ -23,7 +23,7 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
 import CollectionDialog from "readium-desktop/renderer/components/opds/CollectionDialog";
-import { Styles } from "readium-desktop/renderer/components/styles";
+import { Styles } from "readium-desktop/renderer/components/styles/styles";
 
 import { OPDS } from "readium-desktop/common/models/opds";
 

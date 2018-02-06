@@ -116,13 +116,6 @@ let config = Object.assign({}, {
                 test: /\.tsx?$/,
             },
             {
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: "css-loader",
-                }),
-            },
-            {
                 loader: "file-loader?name=assets/[name].[hash].[ext]",
                 test: /\.(png|jpe?g|gif|ico)$/,
             },
@@ -169,6 +162,39 @@ if (nodeEnv === "DEV") {
 
     config.output.publicPath = "http://localhost:8080/";
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    config.module.loaders.push({
+        test: /\.css$/,
+        use: ["css-hot-loader"].concat(ExtractTextPlugin.extract({
+            use: [
+                {
+                    loader: "css-loader",
+                    options: {
+                        importLoaders: 1,
+                        modules: true,
+                    },
+                },
+                "postcss-loader",
+            ],
+        })),
+    });
+} else {
+    // Minify and uglify in production environment
+    //config.plugins.push(new UglifyJsPlugin());
+    config.module.loaders.push({
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+            use: [
+                {
+                    loader: "css-loader",
+                    options: {
+                        importLoaders: 1,
+                        modules: true,
+                    },
+                },
+                "postcss-loader",
+            ],
+        }),
+    });
 }
 
 module.exports = config;

@@ -1,18 +1,20 @@
 import * as path from "path";
 
+import * as classNames from "classnames";
+
 import * as React from "react";
 
 import FlatButton from "material-ui/FlatButton";
 
-import Dropdown from "react-dropdown"
-import ReactDropdown = require("react-dropdown")
+import Dropdown from "react-dropdown";
+import ReactDropdown = require("react-dropdown");
 
 import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-import { Publication, getTitleString } from "readium-desktop/common/models/publication";
+import { getTitleString, Publication } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
@@ -25,12 +27,13 @@ import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import { Styles } from "readium-desktop/renderer/components/styles";
+import { Styles } from "readium-desktop/renderer/components/styles/styles";
 
 // import debounce = require("debounce");
 
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+
 import {
     R2_EVENT_LCP_LSD_RENEW,
     R2_EVENT_LCP_LSD_RENEW_RES,
@@ -39,7 +42,6 @@ import {
     R2_EVENT_TRY_LCP_PASS,
     R2_EVENT_TRY_LCP_PASS_RES,
 } from "@r2-navigator-js/electron/common/events";
-import { StoreElectron } from "@r2-testapp-js/electron/common/store-electron";
 import { IStore } from "@r2-navigator-js/electron/common/store";
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
 import {
@@ -51,8 +53,11 @@ import {
     setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
 import { initGlobals } from "@r2-shared-js/init-globals";
+import { StoreElectron } from "@r2-testapp-js/electron/common/store-electron";
 import { ipcRenderer } from "electron";
 import { JSON as TAJSON } from "ta-json";
+
+import * as ReaderStyles from "readium-desktop/renderer/components/styles/readerApp.css";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -186,13 +191,13 @@ electronStore.onChanged("styling.readiumcss", (newValue: any, oldValue: any) => 
     }
 });
 
-ipcRenderer.on(R2_EVENT_LCP_LSD_RENEW_RES, (_event: any, okay: boolean, msg: string) => {
+ipcRenderer.on(R2_EVENT_LCP_LSD_RENEW_RES, (__: any, okay: boolean, msg: string) => {
     console.log("R2_EVENT_LCP_LSD_RENEW_RES");
     console.log(okay);
     console.log(msg);
 });
 
-ipcRenderer.on(R2_EVENT_LCP_LSD_RETURN_RES, (_event: any, okay: boolean, msg: string) => {
+ipcRenderer.on(R2_EVENT_LCP_LSD_RETURN_RES, (__: any, okay: boolean, msg: string) => {
     console.log("R2_EVENT_LCP_LSD_RETURN_RES");
     console.log(okay);
     console.log(msg);
@@ -219,12 +224,11 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
     constructor(props: any) {
         super(props);
-        let locale = this.store.getState().i18n.locale;
+        const locale = this.store.getState().i18n.locale;
 
         if (locale == null) {
             this.store.dispatch(setLocale(defaultLocale));
         }
-
 
         this.state = {
             publicationJsonUrl: "HTTP://URL",
@@ -238,161 +242,18 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         this._onDropDownSelectSpineLink = this._onDropDownSelectSpineLink.bind(this);
     }
 
-    private async loadPublicationIntoViewport() {
-        // // tslint:disable-next-line:no-floating-promises
-        // (async () => {
-        // })();
-
-        let response: Response;
-        try {
-            response = await fetch(publicationJsonUrl);
-        } catch (e) {
-            console.log(e);
-            return;
-        }
-        if (!response.ok) {
-            console.log("BAD RESPONSE?!");
-        }
-        // response.headers.forEach((arg0: any, arg1: any) => {
-        //     console.log(arg0 + " => " + arg1);
-        // });
-
-        let _publicationJSON: any | undefined;
-        try {
-            _publicationJSON = await response.json();
-        } catch (e) {
-            console.log(e);
-        }
-        if (!_publicationJSON) {
-            return;
-        }
-        // const pubJson = global.JSON.parse(publicationStr);
-
-        console.log(_publicationJSON);
-
-        // let _publication: Publication | undefined;
-        const _publication = TAJSON.deserialize<R2Publication>(_publicationJSON, R2Publication);
-
-        if (_publication.Metadata && _publication.Metadata.Title) {
-            // TODO: should get language from view state? (user preferences)
-            const lang = "en";
-            const title = getTitleString( _publication.Metadata.Title, lang);
-
-            // let title: string | undefined;
-            // if (typeof _publication.Metadata.Title === "string") {
-            //     title = _publication.Metadata.Title;
-            // } else {
-            //     const keys = Object.keys(_publication.Metadata.Title as IStringMap);
-            //     if (keys && keys.length) {
-            //         title = (_publication.Metadata.Title as IStringMap)[keys[0]];
-            //     }
-            // }
-
-            if (title) {
-                console.log(title);
-                window.document.title = "Readium2 [ " + title + "]";
-                this.setState({
-                    title,
-                });
-            }
-        }
-
-        if (_publication.Spine && _publication.Spine.length) {
-            console.log(_publication.Spine);
-            const links: IStringMap = {};
-            _publication.Spine.forEach((spineItemLink) => {
-                links[spineItemLink.Href] = publicationJsonUrl + "/../" + spineItemLink.Href;
-            });
-            this.setState({spineLinks: links});
-        }
-        if (_publication.TOC && _publication.TOC.length) {
-        }
-        if (_publication.PageList && _publication.PageList.length) {
-        }
-        if (_publication.Landmarks && _publication.Landmarks.length) {
-        }
-        if (_publication.LOT && _publication.LOT.length) {
-        }
-        if (_publication.LOI && _publication.LOI.length) {
-        }
-        if (_publication.LOV && _publication.LOV.length) {
-        }
-        if (_publication.LOA && _publication.LOA.length) {
-        }
-
-        const readStore = electronStore.get("readingLocation");
-        let pubDocHrefToLoad: string | undefined;
-        let pubDocSelectorToGoto: string | undefined;
-        if (readStore) {
-            const obj = readStore[pathDecoded];
-            if (obj && obj.doc) {
-                pubDocHrefToLoad = obj.doc;
-                if (obj.loc) {
-                    pubDocSelectorToGoto = obj.loc;
-                }
-            }
-        }
-
-        let preloadPath = "preload.js";
-        if (__PACKAGING__ === "1") {
-            console.log(__dirname);
-            console.log((global as any).__dirname);
-            preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
-        } else {
-            preloadPath = "r2-navigator-js/dist/" +
-            "es6-es2015" +
-            "/src/electron/renderer/webview/preload.js";
-
-            if (__RENDERER_BASE_URL__ === "file://") {
-                // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-                console.log(__dirname);
-                console.log((global as any).__dirname);
-                preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, __NODE_MODULE_RELATIVE_URL__, preloadPath));
-            } else {
-                // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-                // readerUrl = readerUrl.replace(":8080", ":8081");
-                preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath));
-            }
-        }
-
-        preloadPath = preloadPath.replace(/\\/g, "/");
-        console.log(preloadPath);
-
-        installNavigatorDOM(_publication, publicationJsonUrl,
-            "publication_viewport",
-            preloadPath,
-            pubDocHrefToLoad, pubDocSelectorToGoto);
-    }
-
-    private showLcpDialog(message?: string) {
-
-        console.log(lcpHint);
-        if (message) {
-            console.log(message);
-        }
-
-        setTimeout(() => {
-            ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, this.state.lcpPass, false);
-        }, 3000);
-    }
-
-    private _onDropDownSelectSpineLink(option: ReactDropdown.Option) {
-        const href = this.state.spineLinks[option.label];
-        handleLink(href, undefined, false);
-    }
-
     public async componentDidMount() {
         console.log(window.location.search);
         console.log(publicationJsonUrl);
         console.log(lcpHint);
 
         this.setState({
-            publicationJsonUrl: publicationJsonUrl,
+            publicationJsonUrl,
         });
 
         if (lcpHint) {
             this.setState({
-                lcpHint: lcpHint,
+                lcpHint,
                 lcpPass: this.state.lcpPass + " [" + lcpHint + "]",
             });
         }
@@ -411,7 +272,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             this.setState({});
         });
 
-        ipcRenderer.on(R2_EVENT_TRY_LCP_PASS_RES, async (_event: any, okay: boolean, msg: string, passSha256Hex: string) => {
+        ipcRenderer.on(R2_EVENT_TRY_LCP_PASS_RES,
+            async (__: any, okay: boolean, msg: string, passSha256Hex: string) => {
 
             if (!okay) {
                 setTimeout(() => {
@@ -467,37 +329,32 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
-                    <Dropdown options={Object.keys(this.state.spineLinks)} onChange={this._onDropDownSelectSpineLink} placeholder="Spine Items" />
+                    <Dropdown
+                        options={Object.keys(this.state.spineLinks)}
+                        onChange={this._onDropDownSelectSpineLink}
+                        placeholder="Spine Items" />
                     {/* <span>{this.state.title}</span> */}
                     <FlatButton
-                        label="LEFT"
-                        onClick={()=>{navLeftOrRight(true);}}
-                    />
-                    <FlatButton
-                        label="RIGHT"
-                        onClick={()=>{navLeftOrRight(false);}}
-                    />
-                    <FlatButton
                         label="ReadiumCSS"
-                        onClick={()=>{
+                        onClick={() => {
                             electronStore.set("styling.readiumcss", !electronStore.get("styling.readiumcss"));
                         }}
                     />
                     <FlatButton
                         label="Scroll/Page"
-                        onClick={()=>{
+                        onClick={() => {
                             electronStore.set("styling.paged", !electronStore.get("styling.paged"));
                         }}
                     />
                     <FlatButton
                         label="Night"
-                        onClick={()=>{
+                        onClick={() => {
                             electronStore.set("styling.night", !electronStore.get("styling.night"));
                         }}
                     />
                     <FlatButton
                         label="Open settings"
-                        onClick={()=>{
+                        onClick={() => {
                             if ((electronStore as any).reveal) {
                                 (electronStore as any).reveal();
                             }
@@ -509,22 +366,181 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             }
                         }}
                     />
-                    <input type="text" value={this.state.lcpPass} onChange={(event) => {  this.setState({lcpPass: event.target.value});}} size={40} />
+                    <input type="text"
+                    value={this.state.lcpPass}
+                    onChange={(event) => {  this.setState({lcpPass: event.target.value}); }}
+                    size={40} />
                     <FlatButton
                         label="LSD Renew"
-                        onClick={()=>{
+                        onClick={() => {
                             ipcRenderer.send(R2_EVENT_LCP_LSD_RENEW, pathDecoded, ""); // no explicit end date
                         }}
                     />
                     <FlatButton
                         label="LSD Return"
-                        onClick={()=>{
+                        onClick={() => {
                             ipcRenderer.send(R2_EVENT_LCP_LSD_RETURN, pathDecoded);
                         }}
                     />
-                    <div id="publication_viewport" style={Styles.Reader.publicationViewport}> </div>
+                    <div className={ReaderStyles.reader}>
+                        <FlatButton
+                            label="LEFT"
+                            className={ReaderStyles.readerSideButton}
+                            onClick={() => {navLeftOrRight(true); }}
+                        />
+                        <div id="publication_viewport" style={Styles.Reader.publicationViewport}> </div>
+                        <FlatButton
+                            label="RIGHT"
+                            style={Styles.Reader.rightButton}
+                            onClick={() => {navLeftOrRight(false); }}
+                        />
+                    </div>
                 </div>
             </MuiThemeProvider>
         );
+    }
+
+    private async loadPublicationIntoViewport() {
+        // // tslint:disable-next-line:no-floating-promises
+        // (async () => {
+        // })();
+
+        let response: Response;
+        try {
+            response = await fetch(publicationJsonUrl);
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+        if (!response.ok) {
+            console.log("BAD RESPONSE?!");
+        }
+        // response.headers.forEach((arg0: any, arg1: any) => {
+        //     console.log(arg0 + " => " + arg1);
+        // });
+
+        let publicationJSON: any | undefined;
+        try {
+            publicationJSON = await response.json();
+        } catch (e) {
+            console.log(e);
+        }
+        if (!publicationJSON) {
+            return;
+        }
+        // const pubJson = global.JSON.parse(publicationStr);
+
+        console.log(publicationJSON);
+
+        // let _publication: Publication | undefined;
+        const publication = TAJSON.deserialize<R2Publication>(publicationJSON, R2Publication);
+
+        if (publication.Metadata && publication.Metadata.Title) {
+            // TODO: should get language from view state? (user preferences)
+            const lang = "en";
+            const title = getTitleString( publication.Metadata.Title, lang);
+
+            // let title: string | undefined;
+            // if (typeof _publication.Metadata.Title === "string") {
+            //     title = _publication.Metadata.Title;
+            // } else {
+            //     const keys = Object.keys(_publication.Metadata.Title as IStringMap);
+            //     if (keys && keys.length) {
+            //         title = (_publication.Metadata.Title as IStringMap)[keys[0]];
+            //     }
+            // }
+
+            if (title) {
+                console.log(title);
+                window.document.title = "Readium2 [ " + title + "]";
+                this.setState({
+                    title,
+                });
+            }
+        }
+
+        if (publication.Spine && publication.Spine.length) {
+            console.log(publication.Spine);
+            const links: IStringMap = {};
+            publication.Spine.forEach((spineItemLink) => {
+                links[spineItemLink.Href] = publicationJsonUrl + "/../" + spineItemLink.Href;
+            });
+            this.setState({spineLinks: links});
+        }
+        // if (publication.TOC && publication.TOC.length) {
+        // }
+        // if (publication.PageList && publication.PageList.length) {
+        // }
+        // if (publication.Landmarks && publication.Landmarks.length) {
+        // }
+        // if (publication.LOT && publication.LOT.length) {
+        // }
+        // if (publication.LOI && publication.LOI.length) {
+        // }
+        // if (publication.LOV && publication.LOV.length) {
+        // }
+        // if (publication.LOA && publication.LOA.length) {
+        // }
+
+        const readStore = electronStore.get("readingLocation");
+        let pubDocHrefToLoad: string | undefined;
+        let pubDocSelectorToGoto: string | undefined;
+        if (readStore) {
+            const obj = readStore[pathDecoded];
+            if (obj && obj.doc) {
+                pubDocHrefToLoad = obj.doc;
+                if (obj.loc) {
+                    pubDocSelectorToGoto = obj.loc;
+                }
+            }
+        }
+
+        let preloadPath = "preload.js";
+        if (__PACKAGING__ === "1") {
+            console.log(__dirname);
+            console.log((global as any).__dirname);
+            preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
+        } else {
+            preloadPath = "r2-navigator-js/dist/" +
+            "es6-es2015" +
+            "/src/electron/renderer/webview/preload.js";
+
+            if (__RENDERER_BASE_URL__ === "file://") {
+                // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+                console.log(__dirname);
+                console.log((global as any).__dirname);
+                preloadPath = "file://" +
+                    path.normalize(path.join((global as any).__dirname, __NODE_MODULE_RELATIVE_URL__, preloadPath));
+            } else {
+                // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+                // readerUrl = readerUrl.replace(":8080", ":8081");
+                preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath));
+            }
+        }
+
+        preloadPath = preloadPath.replace(/\\/g, "/");
+        console.log(preloadPath);
+
+        installNavigatorDOM(publication, publicationJsonUrl,
+            "publication_viewport",
+            preloadPath,
+            pubDocHrefToLoad, pubDocSelectorToGoto);
+    }
+
+    private showLcpDialog(message?: string) {
+
+        console.log(lcpHint);
+        if (message) {
+            console.log(message);
+        }
+
+        setTimeout(() => {
+            ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, this.state.lcpPass, false);
+        }, 3000);
+    }
+
+    private _onDropDownSelectSpineLink(option: ReactDropdown.Option) {
+        const href = this.state.spineLinks[option.label];
+        handleLink(href, undefined, false);
     }
 }

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Styles } from "readium-desktop/renderer/components/styles";
+import { Styles } from "readium-desktop/renderer/components/styles/styles";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 

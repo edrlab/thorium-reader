@@ -24,7 +24,7 @@ import { Catalog } from "readium-desktop/common/models/catalog";
 
 import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
 
-import { Styles } from "readium-desktop/renderer/components/styles";
+import { Styles } from "readium-desktop/renderer/components/styles/styles";
 
 interface ILibraryState {
     list: boolean;

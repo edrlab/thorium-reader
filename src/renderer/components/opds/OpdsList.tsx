@@ -3,7 +3,7 @@ import * as React from "react";
 import { Catalog } from "readium-desktop/common/models/catalog";
 import { OpdsListElement } from "readium-desktop/renderer/components/opds/index";
 
-import { Styles } from "readium-desktop/renderer/components/styles";
+import { Styles } from "readium-desktop/renderer/components/styles/styles";
 
 interface IPublicationProps {
     catalog: Catalog;

@@ -1,0 +1,18 @@
+.readerSideButton {
+  z-index: 3;
+  border: 3px red solid;
+
+  &:hover {
+    background-color: rgb(130, 130, 130, 0.3);
+  }
+}
+
+.reader {
+  display: none;
+
+  position: absolute;
+  top: 160px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
