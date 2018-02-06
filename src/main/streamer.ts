@@ -6,11 +6,9 @@ import { initGlobals } from "@r2-shared-js/init-globals";
 import { Server } from "@r2-streamer-js/http/server";
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
-import { deviceIDManager } from "@r2-testapp-js/electron/main/lsd-deviceid-manager";
+
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
 
-import { installLcpHandler } from "@r2-navigator-js/electron/main/lcp";
-import { installLsdHandler } from "@r2-navigator-js/electron/main/lsd";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -35,8 +33,19 @@ app.on("ready", () => {
     secureSessions(streamer); // HTTPS
 });
 
-installLcpHandler(streamer);
-installLsdHandler(streamer, deviceIDManager);
+// FIXME: __TODO_LCP_LSD__
+
+// import { IStore } from "@r2-testapp-js/electron/common/store";
+// import { StoreElectron } from "@r2-testapp-js/electron/common/store-electron";
+// import { getDeviceIDManager } from "@r2-testapp-js/electron/main/lsd-deviceid-manager";
+// const electronStoreLSD: IStore = new StoreElectron("readium2-testapp-lsd", {});
+// const deviceIDManager = getDeviceIDManager(electronStoreLSD, "Readium2 Electron desktop app");
+
+// import { installLcpHandler } from "@r2-navigator-js/electron/main/lcp";
+// import { installLsdHandler } from "@r2-navigator-js/electron/main/lsd";
+
+// installLcpHandler(streamer);
+// installLsdHandler(streamer, deviceIDManager);
 
 let rcssPath = "ReadiumCSS";
 if (__PACKAGING__ === "1") {

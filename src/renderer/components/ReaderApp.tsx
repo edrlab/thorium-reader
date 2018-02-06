@@ -33,16 +33,10 @@ import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import {
-    R2_EVENT_LCP_LSD_RENEW,
-    R2_EVENT_LCP_LSD_RENEW_RES,
-    R2_EVENT_LCP_LSD_RETURN,
-    R2_EVENT_LCP_LSD_RETURN_RES,
-    R2_EVENT_TRY_LCP_PASS,
-    R2_EVENT_TRY_LCP_PASS_RES,
-} from "@r2-navigator-js/electron/common/events";
+
 import { StoreElectron } from "@r2-testapp-js/electron/common/store-electron";
-import { IStore } from "@r2-navigator-js/electron/common/store";
+import { IStore } from "@r2-testapp-js/electron/common/store";
+
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
 import {
     handleLink,
@@ -55,6 +49,18 @@ import {
 import { initGlobals } from "@r2-shared-js/init-globals";
 import { ipcRenderer } from "electron";
 import { JSON as TAJSON } from "ta-json";
+
+// FIXME: __TODO_LCP_LSD__
+// import {
+//     R2_EVENT_LCP_LSD_RENEW,
+//     R2_EVENT_LCP_LSD_RENEW_RES,
+//     R2_EVENT_LCP_LSD_RETURN,
+//     R2_EVENT_LCP_LSD_RETURN_RES,
+//     R2_EVENT_TRY_LCP_PASS,
+//     R2_EVENT_TRY_LCP_PASS_RES,
+// } from "@r2-navigator-js/electron/common/events";
+// const electronStoreLCP: IStore = new StoreElectron("readium2-testapp-lcp", {});
+// const electronStoreLSD: IStore = new StoreElectron("readium2-testapp-lsd", {});
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -77,10 +83,6 @@ const electronStore: IStore = new StoreElectron("readium2-testapp", {
         sepia: false,
     },
 });
-
-const electronStoreLCP: IStore = new StoreElectron("readium2-testapp-lcp", {});
-
-const electronStoreLSD: IStore = new StoreElectron("readium2-testapp-lsd", {});
 
 initGlobals();
 
@@ -145,8 +147,9 @@ const pathFileName = pathDecoded.substr(
     pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
     pathDecoded.length - 1);
 
-// tslint:disable-next-line:no-string-literal
-const lcpHint = queryParams["lcpHint"];
+// FIXME: __TODO_LCP_LSD__
+// // tslint:disable-next-line:no-string-literal
+// const lcpHint = queryParams["lcpHint"];
 
 electronStore.onChanged("styling.night", (newValue: any, oldValue: any) => {
     if (typeof newValue === "undefined" || typeof oldValue === "undefined") {
@@ -188,21 +191,26 @@ electronStore.onChanged("styling.readiumcss", (newValue: any, oldValue: any) => 
     }
 });
 
-ipcRenderer.on(R2_EVENT_LCP_LSD_RENEW_RES, (_event: any, okay: boolean, msg: string) => {
-    console.log("R2_EVENT_LCP_LSD_RENEW_RES");
-    console.log(okay);
-    console.log(msg);
-});
+// FIXME: __TODO_LCP_LSD__
 
-ipcRenderer.on(R2_EVENT_LCP_LSD_RETURN_RES, (_event: any, okay: boolean, msg: string) => {
-    console.log("R2_EVENT_LCP_LSD_RETURN_RES");
-    console.log(okay);
-    console.log(msg);
-});
+// ipcRenderer.on(R2_EVENT_LCP_LSD_RENEW_RES, (_event: any, okay: boolean, msg: string) => {
+//     console.log("R2_EVENT_LCP_LSD_RENEW_RES");
+//     console.log(okay);
+//     console.log(msg);
+// });
+
+// ipcRenderer.on(R2_EVENT_LCP_LSD_RETURN_RES, (_event: any, okay: boolean, msg: string) => {
+//     console.log("R2_EVENT_LCP_LSD_RETURN_RES");
+//     console.log(okay);
+//     console.log(msg);
+// });
 
 interface ReaderAppState {
     publicationJsonUrl?: string;
-    lcpHint?: string;
+
+    // FIXME: __TODO_LCP_LSD__
+    // lcpHint?: string;
+
     r2Publication?: Publication;
     title?: string;
     lcpPass?: string;
@@ -230,7 +238,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
         this.state = {
             publicationJsonUrl: "HTTP://URL",
-            lcpHint: "LCP hint",
+
+            // FIXME: __TODO_LCP_LSD__
+            // lcpHint: "LCP hint",
+
             r2Publication: undefined,
             title: "TITLE",
             lcpPass: "LCP pass",
@@ -366,17 +377,19 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             pubDocHrefToLoad, pubDocSelectorToGoto);
     }
 
-    private showLcpDialog(message?: string) {
+    // FIXME: __TODO_LCP_LSD__
 
-        console.log(lcpHint);
-        if (message) {
-            console.log(message);
-        }
+    //     private showLcpDialog(message?: string) {
 
-        setTimeout(() => {
-            ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, this.state.lcpPass, false);
-        }, 3000);
-    }
+    //         console.log(lcpHint);
+    //         if (message) {
+    //             console.log(message);
+    //         }
+
+    //         setTimeout(() => {
+    //             ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, this.state.lcpPass, false);
+    //         }, 3000);
+    //     }
 
     private _onDropDownSelectSpineLink(option: ReactDropdown.Option) {
         const href = this.state.spineLinks[option.label];
@@ -386,18 +399,19 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     public async componentDidMount() {
         console.log(window.location.search);
         console.log(publicationJsonUrl);
-        console.log(lcpHint);
 
         this.setState({
             publicationJsonUrl: publicationJsonUrl,
         });
 
-        if (lcpHint) {
-            this.setState({
-                lcpHint: lcpHint,
-                lcpPass: this.state.lcpPass + " [" + lcpHint + "]",
-            });
-        }
+        // FIXME: __TODO_LCP_LSD__
+        // console.log(lcpHint);
+        // if (lcpHint) {
+        //     this.setState({
+        //         lcpHint: lcpHint,
+        //         lcpPass: this.state.lcpPass + " [" + lcpHint + "]",
+        //     });
+        // }
 
         console.log(this.state);
         console.log(this.store.getState());
@@ -413,59 +427,81 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             this.setState({});
         });
 
-        ipcRenderer.on(R2_EVENT_TRY_LCP_PASS_RES, async (_event: any, okay: boolean, msg: string, passSha256Hex: string) => {
+        // FIXME: __TODO_LCP_LSD__
 
-            if (!okay) {
-                setTimeout(() => {
-                    this.showLcpDialog(msg);
-                }, 500);
+        // ipcRenderer.on(R2_EVENT_TRY_LCP_PASS_RES, async (_event: any, okay: boolean, msg: string, passSha256Hex: string) => {
 
-                return;
-            }
+        //     if (!okay) {
+        //         setTimeout(() => {
+        //             this.showLcpDialog(msg);
+        //         }, 500);
 
-            const lcpStore = electronStoreLCP.get("lcp");
-            if (!lcpStore) {
-                const lcpObj: any = {};
-                const pubLcpObj: any = lcpObj[pathDecoded] = {};
-                pubLcpObj.sha = passSha256Hex;
+        //         return;
+        //     }
 
-                electronStoreLCP.set("lcp", lcpObj);
-            } else {
-                const pubLcpStore = lcpStore[pathDecoded];
-                if (pubLcpStore) {
-                    pubLcpStore.sha = passSha256Hex;
-                } else {
-                    lcpStore[pathDecoded] = {
-                        sha: passSha256Hex,
-                    };
-                }
-                electronStoreLCP.set("lcp", lcpStore);
-            }
+        //     const lcpStore = electronStoreLCP.get("lcp");
+        //     if (!lcpStore) {
+        //         const lcpObj: any = {};
+        //         const pubLcpObj: any = lcpObj[pathDecoded] = {};
+        //         pubLcpObj.sha = passSha256Hex;
 
-            await this.loadPublicationIntoViewport();
-        });
+        //         electronStoreLCP.set("lcp", lcpObj);
+        //     } else {
+        //         const pubLcpStore = lcpStore[pathDecoded];
+        //         if (pubLcpStore) {
+        //             pubLcpStore.sha = passSha256Hex;
+        //         } else {
+        //             lcpStore[pathDecoded] = {
+        //                 sha: passSha256Hex,
+        //             };
+        //         }
+        //         electronStoreLCP.set("lcp", lcpStore);
+        //     }
 
-        if (lcpHint) {
+        //     await this.loadPublicationIntoViewport();
+        // });
 
-            let lcpPassSha256Hex: string | undefined;
-            const lcpStore = electronStoreLCP.get("lcp");
-            if (lcpStore) {
-                const pubLcpStore = lcpStore[pathDecoded];
-                if (pubLcpStore && pubLcpStore.sha) {
-                    lcpPassSha256Hex = pubLcpStore.sha;
-                }
-            }
-            if (lcpPassSha256Hex) {
-                ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, lcpPassSha256Hex, true);
-            } else {
-                this.showLcpDialog();
-            }
-        } else {
-            await this.loadPublicationIntoViewport();
-        }
+        // if (lcpHint) {
+
+        //     let lcpPassSha256Hex: string | undefined;
+        //     const lcpStore = electronStoreLCP.get("lcp");
+        //     if (lcpStore) {
+        //         const pubLcpStore = lcpStore[pathDecoded];
+        //         if (pubLcpStore && pubLcpStore.sha) {
+        //             lcpPassSha256Hex = pubLcpStore.sha;
+        //         }
+        //     }
+        //     if (lcpPassSha256Hex) {
+        //         ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, lcpPassSha256Hex, true);
+        //     } else {
+        //         this.showLcpDialog();
+        //     }
+        // } else {
+        //     await this.loadPublicationIntoViewport();
+        // }
+
+        await this.loadPublicationIntoViewport();
     }
 
     public render(): React.ReactElement<{}> {
+
+        // FIXME: __TODO_LCP_LSD__
+
+        // <input type="text" value={this.state.lcpPass} onChange={(event) =>
+        // {  this.setState({lcpPass: event.target.value});}} size={40} />
+        // <FlatButton
+        //     label="LSD Renew"
+        //     onClick={()=>{
+        //         ipcRenderer.send(R2_EVENT_LCP_LSD_RENEW, pathDecoded, ""); // no explicit end date
+        //     }}
+        // />
+        // <FlatButton
+        //     label="LSD Return"
+        //     onClick={()=>{
+        //         ipcRenderer.send(R2_EVENT_LCP_LSD_RETURN, pathDecoded);
+        //     }}
+        // />
+
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
@@ -503,25 +539,14 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             if ((electronStore as any).reveal) {
                                 (electronStore as any).reveal();
                             }
-                            if ((electronStoreLCP as any).reveal) {
-                                (electronStoreLCP as any).reveal();
-                            }
-                            if ((electronStoreLSD as any).reveal) {
-                                (electronStoreLSD as any).reveal();
-                            }
-                        }}
-                    />
-                    <input type="text" value={this.state.lcpPass} onChange={(event) => {  this.setState({lcpPass: event.target.value});}} size={40} />
-                    <FlatButton
-                        label="LSD Renew"
-                        onClick={()=>{
-                            ipcRenderer.send(R2_EVENT_LCP_LSD_RENEW, pathDecoded, ""); // no explicit end date
-                        }}
-                    />
-                    <FlatButton
-                        label="LSD Return"
-                        onClick={()=>{
-                            ipcRenderer.send(R2_EVENT_LCP_LSD_RETURN, pathDecoded);
+
+                            // FIXME: __TODO_LCP_LSD__
+                            // if ((electronStoreLCP as any).reveal) {
+                            //     (electronStoreLCP as any).reveal();
+                            // }
+                            // if ((electronStoreLSD as any).reveal) {
+                            //     (electronStoreLSD as any).reveal();
+                            // }
                         }}
                     />
                     <div id="publication_viewport" style={Styles.Reader.publicationViewport}> </div>
