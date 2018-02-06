@@ -23,6 +23,8 @@ import { Translator } from "readium-desktop/common/services/translator";
 
 import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
+import LeftIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
+
 import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
 import { RootState } from "readium-desktop/renderer/redux/states";
@@ -383,15 +385,18 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                         }}
                     />
                     <div className={ReaderStyles.reader}>
-                        <FlatButton
-                            label="LEFT"
-                            className={ReaderStyles.readerSideButton}
+                        <button
+                            className={classNames(ReaderStyles.side_button, ReaderStyles.left_button)}
                             onClick={() => {navLeftOrRight(true); }}
-                        />
+                        >
+                            <svg viewBox={LeftIcon.left_arrow}>
+                                <title>Home</title>
+                                <use xlinkHref={"#" + LeftIcon.id} />
+                            </svg>
+                        </button>
                         <div id="publication_viewport" style={Styles.Reader.publicationViewport}> </div>
-                        <FlatButton
-                            label="RIGHT"
-                            style={Styles.Reader.rightButton}
+                        <button
+                            className={classNames(ReaderStyles.side_button, ReaderStyles.right_button)}
                             onClick={() => {navLeftOrRight(false); }}
                         />
                     </div>

@@ -120,8 +120,12 @@ let config = Object.assign({}, {
                 test: /\.(png|jpe?g|gif|ico)$/,
             },
             {
+                loader: "svg-sprite-loader",
+                test: /\.svg$/,
+            },
+            {
                 loader: "file-loader?name=assets/[name].[hash].[ext]",
-                test: /\.(woff|woff2|ttf|eot|svg)$/,
+                test: /\.(woff|woff2|ttf|eot)$/,
             },
         ],
     },

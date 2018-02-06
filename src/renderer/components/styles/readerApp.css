@@ -1,14 +1,31 @@
-.readerSideButton {
+.side_button {
   z-index: 3;
-  border: 3px red solid;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  display: inline-block;
+  width: 20%;
+  background-color: rgb(0, 0, 0, 0);
+  border: none;
+  outline: none;
+  color: rgb(0, 0, 0, 0);
 
   &:hover {
     background-color: rgb(130, 130, 130, 0.3);
+    color: black;
   }
 }
 
+.left_button {
+  left: 0px;
+}
+
+.right_button {
+  right: 0px;
+}
+
 .reader {
-  display: none;
+  display: inline-box;
 
   position: absolute;
   top: 160px;

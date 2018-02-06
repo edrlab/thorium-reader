@@ -21,3 +21,11 @@ declare module "*.css" {
     const classNames: IClassNames;
     export = classNames;
 }
+
+declare module "*.svg" {
+    interface IProps {
+        [propName: string]: any
+    }
+    const props: IProps;
+    export default props;
+}
