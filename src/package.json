@@ -8,7 +8,7 @@
   ],
   "main": "./main.js",
   "scripts": {
-    "postinstall": "npm rebuild --runtime=electron --target=1.7.11 --disturl=https://atom.io/download/atom-shell --build-from-source"
+    "postinstall": "npm rebuild --runtime=electron --target=1.8.2 --disturl=https://atom.io/download/atom-shell --build-from-source"
   },
   "repository": {
     "type": "git",
