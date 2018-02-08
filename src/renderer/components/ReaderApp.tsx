@@ -24,6 +24,9 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
 import LeftIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
+import RightIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
+import NightIcon from "readium-desktop/renderer/assets/icons/night.svg";
+import SettingsIcon from "readium-desktop/renderer/assets/icons/settings.svg";
 
 import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
@@ -328,69 +331,102 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     }
 
     public render(): React.ReactElement<{}> {
+        const selectOptions = [];
+        let i = 0;
+        for (const spine in this.state.spineLinks) {
+            selectOptions.push((
+                <option key={i} value={this.state.spineLinks[spine]}>{spine}</option>
+            ));
+            i++;
+        }
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
-                <div>
-                    <Dropdown
-                        options={Object.keys(this.state.spineLinks)}
-                        onChange={this._onDropDownSelectSpineLink}
-                        placeholder="Spine Items" />
-                    {/* <span>{this.state.title}</span> */}
-                    <FlatButton
-                        label="ReadiumCSS"
-                        onClick={() => {
-                            electronStore.set("styling.readiumcss", !electronStore.get("styling.readiumcss"));
-                        }}
-                    />
-                    <FlatButton
-                        label="Scroll/Page"
-                        onClick={() => {
-                            electronStore.set("styling.paged", !electronStore.get("styling.paged"));
-                        }}
-                    />
-                    <FlatButton
-                        label="Night"
-                        onClick={() => {
-                            electronStore.set("styling.night", !electronStore.get("styling.night"));
-                        }}
-                    />
-                    <FlatButton
-                        label="Open settings"
-                        onClick={() => {
-                            if ((electronStore as any).reveal) {
-                                (electronStore as any).reveal();
-                            }
-                            if ((electronStoreLCP as any).reveal) {
-                                (electronStoreLCP as any).reveal();
-                            }
-                            if ((electronStoreLSD as any).reveal) {
-                                (electronStoreLSD as any).reveal();
-                            }
-                        }}
-                    />
-                    <input type="text"
-                    value={this.state.lcpPass}
-                    onChange={(event) => {  this.setState({lcpPass: event.target.value}); }}
-                    size={40} />
-                    <FlatButton
-                        label="LSD Renew"
-                        onClick={() => {
-                            ipcRenderer.send(R2_EVENT_LCP_LSD_RENEW, pathDecoded, ""); // no explicit end date
-                        }}
-                    />
-                    <FlatButton
-                        label="LSD Return"
-                        onClick={() => {
-                            ipcRenderer.send(R2_EVENT_LCP_LSD_RETURN, pathDecoded);
-                        }}
-                    />
+                <div className={ReaderStyles.root}>
+                    <div className={ReaderStyles.menu}>
+                        <select className={ReaderStyles.menu_select} onChange={this.onSelectSpineLink.bind(this)}>
+                            {selectOptions}
+                        </select>
+                        {/* <Dropdown
+                            options={Object.keys(this.state.spineLinks)}
+                            onChange={this._onDropDownSelectSpineLink}
+                            placeholder="Spine Items" />
+                            <span>{this.state.title}</span> */}
+                        <button
+                            className={ReaderStyles.menu_button}
+                            onClick={() => {
+                                electronStore.set("styling.readiumcss", !electronStore.get("styling.readiumcss"));
+                            }}
+                        >
+                            ReadiumCSS
+                        </button>
+                        <button
+                            className={ReaderStyles.menu_button}
+                            onClick={() => {
+                                electronStore.set("styling.paged", !electronStore.get("styling.paged"));
+                            }}
+                        >
+                            Scroll/Page
+                        </button>
+                        <button
+                            className={ReaderStyles.menu_button}
+                            onClick={() => {
+                                electronStore.set("styling.night", !electronStore.get("styling.night"));
+                            }}
+                        >
+                            <svg className={ReaderStyles.menu_svg} viewBox={NightIcon.night}>
+                                <title>Night</title>
+                                <use xlinkHref={"#" + NightIcon.id} />
+                            </svg>
+                        </button>
+                        <button
+                            className={ReaderStyles.menu_button}
+                            onClick={() => {
+                                if ((electronStore as any).reveal) {
+                                    (electronStore as any).reveal();
+                                }
+                                if ((electronStoreLCP as any).reveal) {
+                                    (electronStoreLCP as any).reveal();
+                                }
+                                if ((electronStoreLSD as any).reveal) {
+                                    (electronStoreLSD as any).reveal();
+                                }
+                            }}
+                        >
+                            <svg className={ReaderStyles.menu_svg} viewBox={SettingsIcon.settings}>
+                                <title>Settings</title>
+                                <use xlinkHref={"#" + SettingsIcon.id} />
+                            </svg>
+                        </button>
+                        <input type="text"
+                            className={ReaderStyles.menu_input}
+                            value={this.state.lcpPass}
+                            onChange={(event) => {  this.setState({lcpPass: event.target.value}); }}
+                            size={40}
+                        />
+                        <button
+                            className={ReaderStyles.menu_button}
+                            onClick={() => {
+                                ipcRenderer.send(R2_EVENT_LCP_LSD_RENEW, pathDecoded, ""); // no explicit end date
+                            }}
+                            >
+                            LSD Renew
+                        </button>
+                        <button
+                            className={ReaderStyles.menu_button}
+                            onClick={() => {
+                                ipcRenderer.send(R2_EVENT_LCP_LSD_RETURN, pathDecoded);
+                            }}
+                            >
+                            LSD Return
+                        </button>
+                    </div>
                     <div className={ReaderStyles.reader}>
                         <button
                             className={classNames(ReaderStyles.side_button, ReaderStyles.left_button)}
                             onClick={() => {navLeftOrRight(true); }}
                         >
-                            <svg viewBox={LeftIcon.left_arrow}>
-                                <title>Home</title>
+                            <svg className={ReaderStyles.side_button_svg} viewBox={LeftIcon.left_arrow}>
+                                <title>Left</title>
                                 <use xlinkHref={"#" + LeftIcon.id} />
                             </svg>
                         </button>
@@ -398,7 +434,12 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                         <button
                             className={classNames(ReaderStyles.side_button, ReaderStyles.right_button)}
                             onClick={() => {navLeftOrRight(false); }}
-                        />
+                        >
+                            <svg className={ReaderStyles.side_button_svg} viewBox={RightIcon.right_arrow}>
+                                <title>Left</title>
+                                <use xlinkHref={"#" + RightIcon.id} />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </MuiThemeProvider>
@@ -542,6 +583,11 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         setTimeout(() => {
             ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, this.state.lcpPass, false);
         }, 3000);
+    }
+
+    private onSelectSpineLink(event: any) {
+        const href = event.target.value;
+        handleLink(href, undefined, false);
     }
 
     private _onDropDownSelectSpineLink(option: ReactDropdown.Option) {
