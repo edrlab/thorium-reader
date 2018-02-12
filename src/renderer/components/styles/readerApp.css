@@ -1,39 +1,65 @@
+:root {
+  --mainColor: #4d4d4d;
+  --textColor: white;
+  --sideButtonColor: rgb(130, 130, 130, 0.5);
+}
+
 .root {
   position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
 
   overflow: hidden;
 }
+
+.content_root {
+  height: calc(100% - 51px);
+  display: flex;
+  align-items: stretch;
+}
+
+.publication_viewport {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: "red";
+}
+
+/* ========== READER ==========*/
 .side_button {
   z-index: 3;
   position: absolute;
   top: 0px;
   bottom: 0px;
   display: inline-block;
-  width: 40px;
+  width: 50px;
   background-color: rgb(0, 0, 0, 0);
   border: none;
   outline: none;
-  color: rgb(0, 0, 0, 0);
-  fill: rgb(0, 0, 0, 0);
+  fill: var(--sideButtonColor);
 
   &:hover {
-    background-color: rgb(130, 130, 130, 0.3);
-    color: black;
-    fill: black;
+    background-color: var(--sideButtonColor);
+    fill: var(--textColor);
   }
 }
 
 .side_button_svg {
-  width: 30px;
+  width: 45px;
   margin: auto;
 }
 
 .left_button {
   left: 0px;
+  transform: rotate(180deg);
 }
 
 .right_button {
@@ -42,37 +68,86 @@
 
 .reader {
   display: inline-block;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
-  height: calc(100% - 51px);
-  width: 100%;
+  flex-grow: 2;
 }
 
+/* ======= CONTENT TABLE ======*/
+
+.content_table {
+  width: 0;
+
+  border-right: 1px var(--mainColor) solid;
+  background-color: #e0e0e0;
+  overflow: auto;
+}
+
+.content_table_open {
+  animation-duration: 500ms;
+  animation-name: slidein;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.content_table ul {
+  list-style-type: none;
+  padding: 1rem;
+  margin: 0;
+
+  & li {
+    padding-top: 0.5rem;
+
+    & a {
+      text-decoration: none;
+      color: black;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@keyframes slidein {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 25%;
+  }
+}
+
+/* ========== MENU ==========*/
 .menu {
   display: flex;
   flex-directon: row;
-  background-color: #4d4d4d;
-  color: white;
+  background-color: var(--mainColor);
+  color: var(--textColor);
   padding: 0.5rem;
+
+  & input {
+    height: 1.3rem;
+    margin: auto 0;
+  }
 }
 
 .menu_button {
   background-color: rgb(0, 0, 0, 0);
   border: none;
-  color: white;
-}
-
-.menu_input {
-
+  color: var(--textColor);
 }
 
 .menu_svg {
-  height: 30px;
-  width: 30px;
-  fill: white;
+  height: 1.5rem;
+  width: 1.5rem;
+  fill: var(--textColor);
 }
 
-.menu_select {
-  background-color: #4d4d4d;
-  color: white;
+.separation {
+  width: 0.1rem;
+  height: 1.7rem;
+  margin: auto 0.5rem;
+  background-color: var(--textColor);
 }

@@ -1,21 +1,9 @@
-let auto: "auto" = "auto";
-let fixed: "fixed" = "fixed";
-let hidden: "hidden" = "hidden";
-let absolute: "absolute" = "absolute";
+const auto: "auto" = "auto";
+const fixed: "fixed" = "fixed";
+const hidden: "hidden" = "hidden";
+const absolute: "absolute" = "absolute";
 
 export const Styles = {
-    Reader: {
-        publicationViewport: {
-            overflowY: hidden,
-            overflowX: hidden,
-            position: absolute,
-            top: "160px",
-            bottom: "0px",
-            left: "0px",
-            right: "0px",
-            backgroundColor: "red",
-        },
-    },
     App: {
         height: "100%",
     },

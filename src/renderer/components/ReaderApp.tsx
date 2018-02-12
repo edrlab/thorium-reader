@@ -4,14 +4,6 @@ import * as classNames from "classnames";
 
 import * as React from "react";
 
-import FlatButton from "material-ui/FlatButton";
-
-import Dropdown from "react-dropdown";
-import ReactDropdown = require("react-dropdown");
-
-import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-
 import { Store } from "redux";
 
 import { getTitleString, Publication } from "readium-desktop/common/models/publication";
@@ -21,20 +13,12 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 
-import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
-
-import LeftIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
-import RightIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
+import ArrowIcon from "readium-desktop/renderer/assets/icons/arrow.svg";
+import ContentTableIcon from "readium-desktop/renderer/assets/icons/content-table.svg";
 import NightIcon from "readium-desktop/renderer/assets/icons/night.svg";
 import SettingsIcon from "readium-desktop/renderer/assets/icons/settings.svg";
 
-import * as readerActions from "readium-desktop/renderer/actions/reader";
-import * as windowActions from "readium-desktop/renderer/actions/window";
 import { RootState } from "readium-desktop/renderer/redux/states";
-
-import { Styles } from "readium-desktop/renderer/components/styles/styles";
-
-// import debounce = require("debounce");
 
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -215,9 +199,9 @@ interface ReaderAppState {
     title?: string;
     lcpPass?: string;
     spineLinks?: IStringMap;
+    contentTableOpen: boolean;
 }
 
-const lightMuiTheme = getMuiTheme(lightBaseTheme);
 const defaultLocale = "fr";
 
 export default class ReaderApp extends React.Component<undefined, ReaderAppState> {
@@ -241,10 +225,9 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             r2Publication: undefined,
             title: "TITLE",
             lcpPass: "LCP pass",
-            spineLinks: { "no spine items?": "http://google.com" },
+            spineLinks: { "no spine items?": "https://google.com" },
+            contentTableOpen: false,
         };
-
-        this._onDropDownSelectSpineLink = this._onDropDownSelectSpineLink.bind(this);
     }
 
     public async componentDidMount() {
@@ -263,14 +246,9 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             });
         }
 
-        console.log(this.state);
-        console.log(this.store.getState());
-
         // this.store.dispatch(windowActions.init());
         this.store.subscribe(() => {
             const storeState = this.store.getState();
-            console.log("storeState (INDEX READER):");
-            console.log(storeState);
 
             this.translator.setLocale(this.store.getState().i18n.locale);
 
@@ -331,118 +309,128 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     }
 
     public render(): React.ReactElement<{}> {
-        const selectOptions = [];
+        const contentTable = [];
         let i = 0;
         for (const spine in this.state.spineLinks) {
-            selectOptions.push((
-                <option key={i} value={this.state.spineLinks[spine]}>{spine}</option>
+            contentTable.push((
+                <li><a key={i} href={this.state.spineLinks[spine]}
+                    onClick={this._onDropDownSelectSpineLink}>
+                    {spine}
+                </a></li>
             ));
             i++;
         }
         return (
-            <MuiThemeProvider muiTheme={lightMuiTheme}>
-                <div className={ReaderStyles.root}>
-                    <div className={ReaderStyles.menu}>
-                        <select className={ReaderStyles.menu_select} onChange={this.onSelectSpineLink.bind(this)}>
-                            {selectOptions}
-                        </select>
-                        {/* <Dropdown
-                            options={Object.keys(this.state.spineLinks)}
-                            onChange={this._onDropDownSelectSpineLink}
-                            placeholder="Spine Items" />
-                            <span>{this.state.title}</span> */}
-                        <button
-                            className={ReaderStyles.menu_button}
-                            onClick={() => {
-                                electronStore.set("styling.readiumcss", !electronStore.get("styling.readiumcss"));
-                            }}
+            <div className={ReaderStyles.root}>
+                <div className={ReaderStyles.menu}>
+                    <button
+                        className={ReaderStyles.menu_button}
+                        onClick={this.handleContentTableClick.bind(this)}
+                    >
+                        <svg className={ReaderStyles.menu_svg} viewBox={ContentTableIcon.content_table}>
+                            <title>Content Table</title>
+                            <use xlinkHref={"#" + ContentTableIcon.id} />
+                        </svg>
+                    </button>
+                    <button
+                        className={ReaderStyles.menu_button}
+                        onClick={() => {
+                            electronStore.set("styling.readiumcss", !electronStore.get("styling.readiumcss"));
+                        }}
+                    >
+                        ReadiumCSS
+                    </button>
+                    <button
+                        className={ReaderStyles.menu_button}
+                        onClick={() => {
+                            electronStore.set("styling.paged", !electronStore.get("styling.paged"));
+                        }}
+                    >
+                        Scroll/Page
+                    </button>
+                    <button
+                        className={ReaderStyles.menu_button}
+                        onClick={() => {
+                            electronStore.set("styling.night", !electronStore.get("styling.night"));
+                        }}
+                    >
+                        <svg className={ReaderStyles.menu_svg} viewBox={NightIcon.night}>
+                            <title>Night</title>
+                            <use xlinkHref={"#" + NightIcon.id} />
+                        </svg>
+                    </button>
+                    <button
+                        className={ReaderStyles.menu_button}
+                        onClick={() => {
+                            if ((electronStore as any).reveal) {
+                                (electronStore as any).reveal();
+                            }
+                            if ((electronStoreLCP as any).reveal) {
+                                (electronStoreLCP as any).reveal();
+                            }
+                            if ((electronStoreLSD as any).reveal) {
+                                (electronStoreLSD as any).reveal();
+                            }
+                        }}
+                    >
+                        <svg className={ReaderStyles.menu_svg} viewBox={SettingsIcon.settings}>
+                            <title>Settings</title>
+                            <use xlinkHref={"#" + SettingsIcon.id} />
+                        </svg>
+                    </button>
+                    <div className={ReaderStyles.separation}/>
+                    <input type="text"
+                        value={this.state.lcpPass}
+                        onChange={(event) => {  this.setState({lcpPass: event.target.value}); }}
+                        size={40}
+                    />
+                    <button
+                        className={ReaderStyles.menu_button}
+                        onClick={() => {
+                            ipcRenderer.send(R2_EVENT_LCP_LSD_RENEW, pathDecoded, ""); // no explicit end date
+                        }}
                         >
-                            ReadiumCSS
-                        </button>
-                        <button
-                            className={ReaderStyles.menu_button}
-                            onClick={() => {
-                                electronStore.set("styling.paged", !electronStore.get("styling.paged"));
-                            }}
+                        LSD Renew
+                    </button>
+                    <button
+                        className={ReaderStyles.menu_button}
+                        onClick={() => {
+                            ipcRenderer.send(R2_EVENT_LCP_LSD_RETURN, pathDecoded);
+                        }}
                         >
-                            Scroll/Page
-                        </button>
-                        <button
-                            className={ReaderStyles.menu_button}
-                            onClick={() => {
-                                electronStore.set("styling.night", !electronStore.get("styling.night"));
-                            }}
-                        >
-                            <svg className={ReaderStyles.menu_svg} viewBox={NightIcon.night}>
-                                <title>Night</title>
-                                <use xlinkHref={"#" + NightIcon.id} />
-                            </svg>
-                        </button>
-                        <button
-                            className={ReaderStyles.menu_button}
-                            onClick={() => {
-                                if ((electronStore as any).reveal) {
-                                    (electronStore as any).reveal();
-                                }
-                                if ((electronStoreLCP as any).reveal) {
-                                    (electronStoreLCP as any).reveal();
-                                }
-                                if ((electronStoreLSD as any).reveal) {
-                                    (electronStoreLSD as any).reveal();
-                                }
-                            }}
-                        >
-                            <svg className={ReaderStyles.menu_svg} viewBox={SettingsIcon.settings}>
-                                <title>Settings</title>
-                                <use xlinkHref={"#" + SettingsIcon.id} />
-                            </svg>
-                        </button>
-                        <input type="text"
-                            className={ReaderStyles.menu_input}
-                            value={this.state.lcpPass}
-                            onChange={(event) => {  this.setState({lcpPass: event.target.value}); }}
-                            size={40}
-                        />
-                        <button
-                            className={ReaderStyles.menu_button}
-                            onClick={() => {
-                                ipcRenderer.send(R2_EVENT_LCP_LSD_RENEW, pathDecoded, ""); // no explicit end date
-                            }}
-                            >
-                            LSD Renew
-                        </button>
-                        <button
-                            className={ReaderStyles.menu_button}
-                            onClick={() => {
-                                ipcRenderer.send(R2_EVENT_LCP_LSD_RETURN, pathDecoded);
-                            }}
-                            >
-                            LSD Return
-                        </button>
+                        LSD Return
+                    </button>
+                </div>
+                <div className={ReaderStyles.content_root}>
+                    <div className={classNames(ReaderStyles.content_table,
+                            this.state.contentTableOpen && ReaderStyles.content_table_open)}>
+                        <ul>
+                        {contentTable}
+                        </ul>
                     </div>
                     <div className={ReaderStyles.reader}>
                         <button
                             className={classNames(ReaderStyles.side_button, ReaderStyles.left_button)}
                             onClick={() => {navLeftOrRight(true); }}
                         >
-                            <svg className={ReaderStyles.side_button_svg} viewBox={LeftIcon.left_arrow}>
+                            <svg className={ReaderStyles.side_button_svg} viewBox={ArrowIcon.arrow}>
                                 <title>Left</title>
-                                <use xlinkHref={"#" + LeftIcon.id} />
+                                <use xlinkHref={"#" + ArrowIcon.id} />
                             </svg>
                         </button>
-                        <div id="publication_viewport" style={Styles.Reader.publicationViewport}> </div>
+                        <div id="publication_viewport" className={ReaderStyles.publication_viewport}> </div>
                         <button
                             className={classNames(ReaderStyles.side_button, ReaderStyles.right_button)}
                             onClick={() => {navLeftOrRight(false); }}
                         >
-                            <svg className={ReaderStyles.side_button_svg} viewBox={RightIcon.right_arrow}>
-                                <title>Left</title>
-                                <use xlinkHref={"#" + RightIcon.id} />
+                            <svg className={ReaderStyles.side_button_svg} viewBox={ArrowIcon.arrow}>
+                                <title>Right</title>
+                                <use xlinkHref={"#" + ArrowIcon.id} />
                             </svg>
                         </button>
                     </div>
                 </div>
-            </MuiThemeProvider>
+            </div>
         );
     }
 
@@ -508,8 +496,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         if (publication.Spine && publication.Spine.length) {
             console.log(publication.Spine);
             const links: IStringMap = {};
-            publication.Spine.forEach((spineItemLink) => {
-                links[spineItemLink.Href] = publicationJsonUrl + "/../" + spineItemLink.Href;
+            publication.TOC.forEach((spineItemLink) => {
+                links[spineItemLink.Title] = publicationJsonUrl + "/../" + spineItemLink.Href;
             });
             this.setState({spineLinks: links});
         }
@@ -585,13 +573,13 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         }, 3000);
     }
 
-    private onSelectSpineLink(event: any) {
-        const href = event.target.value;
-        handleLink(href, undefined, false);
+    private handleContentTableClick() {
+        this.setState({contentTableOpen: !this.state.contentTableOpen});
     }
 
-    private _onDropDownSelectSpineLink(option: ReactDropdown.Option) {
-        const href = this.state.spineLinks[option.label];
+    private _onDropDownSelectSpineLink(event: any) {
+        const href = event.target.href;
         handleLink(href, undefined, false);
+        event.preventDefault();
     }
 }
