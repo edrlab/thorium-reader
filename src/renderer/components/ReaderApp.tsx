@@ -52,6 +52,13 @@ import { initGlobals } from "@r2-shared-js/init-globals";
 import { ipcRenderer } from "electron";
 import { JSON as TAJSON } from "ta-json";
 
+import { webFrame } from "electron";
+
+import {
+    READIUM2_ELECTRON_HTTP_PROTOCOL,
+    convertCustomSchemeToHttpUrl,
+} from "@r2-navigator-js/electron/common/sessions";
+
 // FIXME: __TODO_LCP_LSD__
 // import {
 //     R2_EVENT_LCP_LSD_RENEW,
@@ -69,6 +76,16 @@ declare const __RENDERER_BASE_URL__: string;
 declare const __NODE_ENV__: string;
 declare const __NODE_MODULE_RELATIVE_URL__: string;
 declare const __PACKAGING__: string;
+
+webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
+// webFrame.registerURLSchemeAsBypassingCSP(READIUM2_ELECTRON_HTTP_PROTOCOL);
+webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
+    allowServiceWorkers: false,
+    bypassCSP: false,
+    corsEnabled: true,
+    secure: true,
+    supportFetchAPI: true,
+});
 
 const electronStore: IStore = new StoreElectron("readium2-testapp", {
     styling: {
@@ -139,14 +156,22 @@ const queryParams = getURLQueryParams();
 
 // tslint:disable-next-line:no-string-literal
 const publicationJsonUrl = queryParams["pub"];
+console.log(publicationJsonUrl);
 
-const pathBase64 = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+const publicationJsonUrl_ = publicationJsonUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
+    convertCustomSchemeToHttpUrl(publicationJsonUrl) : publicationJsonUrl;
+console.log(publicationJsonUrl_);
+
+const pathBase64 = publicationJsonUrl_.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+console.log(pathBase64);
 
 const pathDecoded = window.atob(pathBase64);
+console.log(pathDecoded);
 
 const pathFileName = pathDecoded.substr(
     pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
     pathDecoded.length - 1);
+console.log(pathFileName);
 
 // FIXME: __TODO_LCP_LSD__
 // // tslint:disable-next-line:no-string-literal

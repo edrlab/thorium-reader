@@ -16,6 +16,8 @@ import { Reader } from "readium-desktop/common/models/reader";
 
 import { Publication as StreamerPublication } from "@r2-shared-js/models/publication";
 
+import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
+
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
 
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -132,6 +134,8 @@ function openReader(publication: Publication, manifestUrl: string) {
         window: readerWindow,
     };
 
+    // This triggers the origin-sandbox for localStorage, etc.
+    manifestUrl = convertHttpUrlToCustomScheme(manifestUrl);
 
     // Load publication in reader window
     const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
