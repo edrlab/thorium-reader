@@ -273,6 +273,27 @@ For example, the saved LCP passphrases (SHA256 digests) are currently stored in 
 }
 ```
 
+## Publication origin(s)
+
+See main documentation:
+https://github.com/edrlab/r2-streamer-js/blob/develop/docs/origin.md
+
+The `convertHttpUrlToCustomScheme()` and `convertCustomSchemeToHttpUrl()` functions are defined in the `r2-navigator-js` package:
+
+https://github.com/edrlab/r2-navigator-js/blob/develop/src/electron/common/sessions.ts
+
+The `convertHttpUrlToCustomScheme()` function is used in `readium-desktop` from the main process to ensure that the publication's "webpub manifest" JSON URL is passed to the renderer process using the correct single-origin syntax:
+
+https://github.com/edrlab/readium-desktop/blob/feature/next-latest-r2/src/main/redux/sagas/reader.ts#L138
+
+The `webFrame.registerURLSchemeAsSecure()` and `webFrame.registerURLSchemeAsPrivileged()` function are defined by the Electron framework, and they are called from the renderer process to ensure that local `fetch()` on a publication's manifest JSON URL works with the correct privileges:
+
+https://github.com/edrlab/readium-desktop/blob/feature/next-latest-r2/src/renderer/components/ReaderApp.tsx#L80
+
+The `convertCustomSchemeToHttpUrl()` function is used in `readium-desktop` from the renderer process to decode the base64 publication ID (which is its normalized absolute filesystem path):
+
+https://github.com/edrlab/readium-desktop/blob/feature/next-latest-r2/src/renderer/components/ReaderApp.tsx#L161
+
 ## Reader activity (navigator API)
 
 The following functions are defined in the `r2-navigator-js` package: `installNavigatorDOM`, `setReadingLocationSaver`, `setReadiumCssJsonGetter`, `readiumCssOnOff`, `handleLink`, `navLeftOrRight`.
