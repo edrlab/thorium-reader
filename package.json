@@ -25,7 +25,7 @@
     "start:dev:reader": "webpack-dev-server --config webpack.config.reader.js",
     "start:dev:main:electron": "cross-env DEBUG=r2:*,readium-desktop:* NODE_ENV=development electron .",
     "start:dev:main": "npm run build:dev:main && npm run start:dev:main:electron",
-    "start:devex": "WEBPACK=bundle-external npm run start:dev",
+    "start:devex": "cross-env WEBPACK=bundle-external npm run start:dev",
     "start:dev": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:reader\" \"npm run start:dev:main\"",
     "start:vscode:main:electron": "cross-env DEBUG=r2:* NODE_ENV=development electron --enable-loggingxx --inspect=25575 --debug-brk --nolazyxx .",
     "start:vscode:main": "npm run build:dev:main && npm run start:vscode:main:electron",
