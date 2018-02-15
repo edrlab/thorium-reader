@@ -73,10 +73,10 @@ export const Styles = {
             overflowY: auto,
             overflowX: hidden,
             position: absolute,
-            top: "130px",
-            bottom: "10px",
-            left: "20px",
-            right: "20px",
+            top: 130,
+            bottom: 10,
+            left: 0,
+            right: 0,
         },
         title: {
             display: "inline-block",
@@ -95,7 +95,7 @@ export const Styles = {
             width: 210,
         },
         downloadButton: {
-            top: "50%",
+            width: "100%",
         },
         image: {
             fontSize: "18px",
@@ -112,9 +112,9 @@ export const Styles = {
     },
     BookListElement: {
         body: {
-            boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
+            // boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
             fontFamily: "Roboto, sans-serif",
-            margin: "5px 0px",
+            margin: "15px 5px",
             width: "100%",
         },
         column: {

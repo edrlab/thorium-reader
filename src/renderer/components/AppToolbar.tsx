@@ -22,9 +22,10 @@ import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
+import AddIcon from "readium-desktop/renderer/assets/icons/add.svg";
 import GiftIcon from "readium-desktop/renderer/assets/icons/gift.svg";
 import MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-import PlusIcon from "readium-desktop/renderer/assets/icons/plus.svg";
+import OPDSIcon from "readium-desktop/renderer/assets/icons/opds.svg";
 import QuestionIcon from "readium-desktop/renderer/assets/icons/question.svg";
 import * as AppBarStyles from "readium-desktop/renderer/assets/styles/app-bar.css";
 
@@ -43,6 +44,7 @@ interface AppToolbarState {
     opdsUrl: string;
     opdsName: string;
     opds: OPDS;
+    localeList: any;
 }
 
 interface AppToolbarProps {
@@ -70,6 +72,10 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
             opdsUrl: undefined,
             opdsName: undefined,
             opds: undefined,
+            localeList: {
+                fr: "Français",
+                en: "English",
+            },
         };
 
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
@@ -135,41 +141,51 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         i++;
         return (
             <div>
-                <Toolbar>
-                    <ToolbarGroup firstChild={true}>
-                        <DropDownMenu value={this.state.locale} onChange={this.handleLocaleChange}>
-                            <MenuItem value="en" primaryText="English" />
-                            <MenuItem value="fr" primaryText="French" />
-                        </DropDownMenu>
-                    </ToolbarGroup>
-                    <ToolbarGroup>
+                <div className={AppBarStyles.root}>
+                    <IconMenu
+                        iconButtonElement={
+                            <button className={AppBarStyles.button}>
+                                {this.state.localeList[this.state.locale]}
+                            </button>
+                        }
+                    >
+                        <MenuItem
+                            primaryText= {__("French")}
+                            onClick={() => {this.handleLocaleChange("fr"); }}
+                        />
+                        <MenuItem
+                            primaryText= {__("English")}
+                            onClick={() => {this.handleLocaleChange("en"); }}
+                        />
+                    </IconMenu>
+                    <div className={AppBarStyles.button_group}>
                         <IconMenu
                             iconButtonElement={
                                 <button
                                     className={AppBarStyles.button}
                                 >
-                                    <svg viewBox={MenuIcon.content_table}>
+                                    <svg viewBox={OPDSIcon.content_table}>
                                         <title>Menu</title>
-                                        <use xlinkHref={"#" + MenuIcon.id} />
+                                        <use xlinkHref={"#" + OPDSIcon.id} />
                                     </svg>
                                 </button>
                             }
                         >
                             {allMenuItems}
                         </IconMenu>
-                        <ToolbarSeparator />
                         <button
                             className={AppBarStyles.button}
                         >
-                            <svg viewBox={PlusIcon.content_table}>
+                            <svg viewBox={AddIcon.content_table}>
                                 <title>Add EPUB</title>
-                                <use xlinkHref={"#" + PlusIcon.id} />
+                                <use xlinkHref={"#" + AddIcon.id} />
                             </svg>
                             <input
                                 type="file"
                                 onChange={this.handleFileChange}
                             />
                         </button>
+                        <div className={AppBarStyles.separator} />
                         <IconMenu
                             iconButtonElement={
                                 <button
@@ -205,8 +221,8 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                     </svg>
                                 } />
                         </IconMenu>
-                    </ToolbarGroup>
-                </Toolbar>
+                    </div>
+                </div>
 
                 <Dialog
                     actions={actions}
@@ -248,9 +264,9 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         this.setState({open: false});
     }
 
-    private handleLocaleChange(event: any, index: any, newLocale: string) {
-        this.store.dispatch(setLocale(newLocale));
-        this.setState({locale: newLocale});
+    private handleLocaleChange(locale: string) {
+        this.store.dispatch(setLocale(locale));
+        this.setState({locale});
     }
 
     private handleFileChange(event: any) {

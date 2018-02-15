@@ -342,9 +342,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             </button>
                             <button
                                 className={ReaderStyles.menu_button}
-                                onClick={() => {
-                                    // electronStore.set("styling.night", !electronStore.get("styling.night"));
-                                }}
+                                onClick={this.handleNightSwitch.bind(this)}
                             >
                                 <svg className={ReaderStyles.menu_svg} viewBox={NightIcon.night}>
                                     <title>Night</title>
@@ -658,6 +656,16 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         globalSettingsValues = values;
         console.log("#### save");
         readiumCssOnOff();
+    }
+
+    private handleNightSwitch() {
+        const settingsValues = this.state.settingsValues;
+
+        settingsValues.night =  !settingsValues.night;
+
+        this.setState({settingsValues});
+
+        this.handleSettingsSave();
     }
 
     private handleSettingsValueChange(event: any) {
