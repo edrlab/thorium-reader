@@ -22,6 +22,12 @@ import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
+import GiftIcon from "readium-desktop/renderer/assets/icons/gift.svg";
+import MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import PlusIcon from "readium-desktop/renderer/assets/icons/plus.svg";
+import QuestionIcon from "readium-desktop/renderer/assets/icons/question.svg";
+import * as AppBarStyles from "readium-desktop/renderer/assets/styles/AppBar.css";
+
 import CollectionDialog from "readium-desktop/renderer/components/opds/CollectionDialog";
 import { Styles } from "readium-desktop/renderer/components/styles";
 
@@ -40,8 +46,8 @@ interface AppToolbarState {
 }
 
 interface AppToolbarProps {
-    openDialog: Function;
-    closeDialog: Function;
+    openDialog: (content: JSX.Element, stuff: any, things: any[]) => void;
+    closeDialog: () => void;
     opdsList: OPDS[];
 }
 
@@ -139,64 +145,65 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                     <ToolbarGroup>
                         <IconMenu
                             iconButtonElement={
-                                <IconButton touch={true}>
-                                    <FontIcon
-                                        className="fa fa-ellipsis-v"
-                                        style={Styles.appToolbar.iconButton}
-                                        color={blue500}>
-                                    </FontIcon>
-                                </IconButton>
+                                <button
+                                    className={AppBarStyles.button}
+                                >
+                                    <svg viewBox={MenuIcon.content_table}>
+                                        <title>Menu</title>
+                                        <use xlinkHref={"#" + MenuIcon.id} />
+                                    </svg>
+                                </button>
                             }
                         >
                             {allMenuItems}
                         </IconMenu>
                         <ToolbarSeparator />
-                        <IconButton touch={true}>
-                            <FontIcon
-                                className="fa fa-plus-circle"
-                                color={blue500}>
-                                    <input
-                                    type="file"
-                                    onChange={this.handleFileChange}
-                                    style={{bottom: 0,
-                                        cursor: "pointer",
-                                        left: 0,
-                                        opacity: 0,
-                                        overflow: "hidden",
-                                        position: "absolute",
-                                        right: 0,
-                                        top: 0,
-                                        width: "100%",
-                                        zIndex: 100}} />
-                            </FontIcon>
-                        </IconButton>
+                        <button
+                            className={AppBarStyles.button}
+                        >
+                            <svg viewBox={PlusIcon.content_table}>
+                                <title>Add EPUB</title>
+                                <use xlinkHref={"#" + PlusIcon.id} />
+                            </svg>
+                            <input
+                                type="file"
+                                onChange={this.handleFileChange}
+                            />
+                        </button>
                         <IconMenu
                             iconButtonElement={
-                                <IconButton touch={true}>
-                                    <FontIcon
-                                        className="fa fa-ellipsis-v"
-                                        style={Styles.appToolbar.iconButton}
-                                        color={blue500}>
-                                    </FontIcon>
-                                </IconButton>
+                                <button
+                                    className={AppBarStyles.button}
+                                >
+                                    <svg viewBox={MenuIcon.content_table}>
+                                        <title>Menu</title>
+                                        <use xlinkHref={"#" + MenuIcon.id} />
+                                    </svg>
+                                </button>
                             }
                         >
-                        <MenuItem
-                            primaryText= {__("toolbar.help")}
-                            onClick={() => {
-                                that.handleOpen(helpUrl);
-                            }}
-                            leftIcon={<FontIcon className="fa fa-question-circle" color={blue500} />} />
-                        <MenuItem
-                            primaryText={__("toolbar.news")}
-                            onClick={() => {
-                                that.handleOpen(aboutUrl);
-                            }}
-                            leftIcon={<FontIcon className="fa fa-gift" color={blue500} />} />
-                        <MenuItem
-                            primaryText={__("toolbar.sync")}
-                            leftIcon={<FontIcon className="fa fa-refresh"
-                            color={blue500} />} />
+                            <MenuItem
+                                primaryText= {__("toolbar.help")}
+                                onClick={() => {
+                                    that.handleOpen(helpUrl);
+                                }}
+                                leftIcon={
+                                    <svg viewBox={QuestionIcon.content_table}>
+                                        <title>Help</title>
+                                        <use xlinkHref={"#" + QuestionIcon.id} />
+                                    </svg>
+                                } />
+                            <MenuItem
+                                primaryText={__("toolbar.news")}
+                                onClick={() => {
+                                    that.handleOpen(aboutUrl);
+                                }}
+                                leftIcon={
+                                    <svg viewBox={GiftIcon.content_table}>
+                                        <title>What's up</title>
+                                        <use xlinkHref={"#" + GiftIcon.id} />
+                                    </svg>
+                                } />
                         </IconMenu>
                     </ToolbarGroup>
                 </Toolbar>

@@ -172,23 +172,6 @@ export const Styles = {
             padding: "5%",
         },
     },
-    appToolbar: {
-        iconButton: {
-            margin: 12,
-        },
-        inputImport: {
-            bottom: 0,
-            cursor: "pointer",
-            left: 0,
-            opacity: 0,
-            overflow: hidden,
-            position: absolute,
-            right: 0,
-            top: 0,
-            width: "100%",
-            zIndex: 100,
-        },
-    },
     OpdsList: {
         Publication: {
             title: {
