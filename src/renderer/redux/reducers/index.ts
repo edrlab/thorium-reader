@@ -20,14 +20,11 @@ import {
     publicationDownloadReducer,
 } from "readium-desktop/common/redux/reducers/publication-download";
 import { readerReducer } from "readium-desktop/common/redux/reducers/reader";
-import { readerSettingsReducer } from "readium-desktop/common/redux/reducers/reader-settings";
-
 export const rootReducer = combineReducers({
     i18n: i18nReducer,
     catalog: catalogReducer,
     window: windowReducer,
     reader: readerReducer,
-    readerSettings: readerSettingsReducer,
     message: messageReducer,
     opds: opdsReducer,
     publicationDownloads: publicationDownloadReducer,

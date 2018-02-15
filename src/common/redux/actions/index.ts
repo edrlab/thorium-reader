@@ -6,7 +6,6 @@ import * as netActions from "./net";
 import * as opdsActions from "./opds";
 import * as publicationDownloadActions from "./publication-download";
 import * as readerActions from "./reader";
-import * as readerSettingsActions from "./reader-settings";
 
 export {
     catalogActions,
@@ -17,5 +16,4 @@ export {
     opdsActions,
     publicationDownloadActions,
     readerActions,
-    readerSettingsActions,
 };

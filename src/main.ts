@@ -16,6 +16,7 @@ import {
     catalogActions,
     netActions,
     opdsActions,
+    readerActions,
 } from "readium-desktop/common/redux/actions";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 
@@ -204,6 +205,19 @@ ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
                         type: opdsActions.ActionType.SetSuccess,
                         payload: {
                             items: state.opds.items,
+                        },
+                    },
+                },
+            });
+
+            // Send opds feeds
+            win.webContents.send(syncIpc.CHANNEL, {
+                type: syncIpc.EventType.MainAction,
+                payload: {
+                    action: {
+                        type: readerActions.ActionType.ConfigSetSuccess,
+                        payload: {
+                            config: state.reader.config,
                         },
                     },
                 },

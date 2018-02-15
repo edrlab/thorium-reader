@@ -1,32 +1,32 @@
 import { injectable} from "inversify";
 import * as PouchDB from "pouchdb-core";
 
-import { Settings } from "readium-desktop/common/models/settings";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 
 @injectable()
-export class ReaderSettingsDb {
+export class ReaderConfigDb {
     private db: PouchDB.Database;
 
     public constructor(db: PouchDB.Database) {
         this.db = db;
     }
 
-    public put(settings: Settings): Promise<any> {
-        if (settings.identifier) {
+    public put(config: ReaderConfig): Promise<any> {
+        if (config.identifier) {
             return this.db.put(Object.assign(
                 {},
-                settings,
-                { _id: settings.identifier },
+                config,
+                { _id: config.identifier },
             ));
         } else {
             return this.db.put(Object.assign(
                 {},
-                settings,
+                config,
             ));
         }
     }
 
-    public get(identifier: string): Promise<Settings> {
+    public get(identifier: string): Promise<ReaderConfig> {
         return this.db
             .get(identifier)
             .then((result: PouchDB.Core.Document<any>) => {
@@ -37,15 +37,15 @@ export class ReaderSettingsDb {
             });
     }
 
-    public update(settings: Settings): Promise<any> {
+    public update(config: ReaderConfig): Promise<any> {
         return this.db
-            .get(settings.identifier)
+            .get(config.identifier)
             .then((result: PouchDB.Core.Document<any>) => {
                 return this.db.put(Object.assign(
                     {},
-                    settings,
+                    config,
                     {
-                        _id: settings.identifier,
+                        _id: config.identifier,
                         _rev: result._rev,
                     },
                 ));
@@ -66,7 +66,7 @@ export class ReaderSettingsDb {
             });
     }
 
-    public getAll(): Promise<Settings[]> {
+    public getAll(): Promise<ReaderConfig[]> {
         return this.db
             .allDocs({
                 include_docs: true,

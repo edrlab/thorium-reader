@@ -25,7 +25,7 @@ import { streamer } from "readium-desktop/main/streamer";
 
 import { OpdsDb } from "readium-desktop/main/db/opds-db";
 import { PublicationDb } from "readium-desktop/main/db/publication-db";
-import { ReaderSettingsDb } from "readium-desktop/main/db/reader-settings-db";
+import { ReaderConfigDb } from "readium-desktop/main/db/reader-config-db";
 import {
     PublicationStorage,
 } from "readium-desktop/main/storage/publication-storage";
@@ -92,8 +92,8 @@ const opdsDb = new PouchDB(
     dbOpts,
 );
 
-const readerSettingsDb = new PouchDB(
-    path.join(rootDbPath, "reader-settings"),
+const readerConfigDb = new PouchDB(
+    path.join(rootDbPath, "reader-config"),
     dbOpts,
 );
 
@@ -132,8 +132,8 @@ container.bind<PublicationDb>("publication-db").toConstantValue(
 container.bind<OpdsDb>("opds-db").toConstantValue(
     new OpdsDb(opdsDb),
 );
-container.bind<ReaderSettingsDb>("reader-settings-db").toConstantValue(
-    new ReaderSettingsDb(readerSettingsDb),
+container.bind<ReaderConfigDb>("reader-config-db").toConstantValue(
+    new ReaderConfigDb(readerConfigDb),
 );
 container.bind<PublicationStorage>("publication-storage").toConstantValue(
     new PublicationStorage(publicationRepositoryPath),

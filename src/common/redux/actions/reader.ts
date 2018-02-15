@@ -1,6 +1,5 @@
 import { Publication } from "readium-desktop/common/models/publication";
-import { Reader } from "readium-desktop/common/models/reader";
-
+import { Reader, ReaderConfig } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 
 export enum ActionType {
@@ -11,6 +10,10 @@ export enum ActionType {
     CloseRequest = "READER_CLOSE_REQUEST",
     CloseSuccess = "READER_CLOSE_SUCCESS",
     CloseError = "READER_CLOSE_ERROR",
+
+    ConfigSetRequest = "READER_CONFIG_SET_REQUEST",
+    ConfigSetSuccess = "READER_CONFIG_SET_SUCCESS",
+    ConfigSetError = "READER_CONFIG_SET_ERROR",
 }
 
 export function open(publication: Publication): Action {
@@ -27,6 +30,15 @@ export function close(reader: Reader): Action {
         type: ActionType.CloseRequest,
         payload: {
             close,
+        },
+    };
+}
+
+export function setConfig(config: ReaderConfig): Action {
+    return {
+        type: ActionType.ConfigSetRequest,
+        payload: {
+            config,
         },
     };
 }

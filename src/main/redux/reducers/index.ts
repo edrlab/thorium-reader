@@ -9,10 +9,6 @@ import {
 } from "readium-desktop/common/redux/reducers/reader";
 
 import {
-    readerSettingsReducer,
-} from "readium-desktop/common/redux/reducers/reader-settings";
-
-import {
     catalogReducer,
 } from "readium-desktop/common/redux/reducers/catalog";
 import {
@@ -30,7 +26,6 @@ export const rootReducer = combineReducers({
     catalog: catalogReducer,
     publicationDownloads: publicationDownloadReducer,
     reader: readerReducer,
-    readerSettings: readerSettingsReducer,
     net: netReducer,
     opds: opdsReducer,
 });

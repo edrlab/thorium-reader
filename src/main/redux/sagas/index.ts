@@ -28,6 +28,8 @@ import {
 // import { netStatusWatcher } from "./net";
 import {
     readerCloseRequestWatcher,
+    readerConfigInitWatcher,
+    readerConfigSetRequestWatcher,
     readerOpenRequestWatcher,
 } from "./reader";
 import {
@@ -36,11 +38,6 @@ import {
     streamerStartRequestWatcher,
     streamerStopRequestWatcher,
 } from "./streamer";
-
-import {
-    readerSettingsRestoreRequestWatcher,
-    readerSettingsSaveRequestWatcher,
-} from "./reader-settings";
 
 export function* rootSaga() {
     yield all([
@@ -73,6 +70,8 @@ export function* rootSaga() {
 
         // Reader
         readerCloseRequestWatcher(),
+        readerConfigInitWatcher(),
+        readerConfigSetRequestWatcher(),
         readerOpenRequestWatcher(),
 
         // Streamer
@@ -80,9 +79,5 @@ export function* rootSaga() {
         streamerStartRequestWatcher(),
         streamerPublicationOpenRequestWatcher(),
         streamerPublicationCloseRequestWatcher(),
-
-        // Reader Settings
-        readerSettingsSaveRequestWatcher(),
-        readerSettingsRestoreRequestWatcher(),
     ]);
 }

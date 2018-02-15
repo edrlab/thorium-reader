@@ -7,7 +7,6 @@ import {
     opdsActions,
     publicationDownloadActions,
     readerActions,
-    readerSettingsActions,
 } from "readium-desktop/common/redux/actions";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
@@ -41,11 +40,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 
     readerActions.ActionType.OpenError,
     readerActions.ActionType.OpenSuccess,
-
-    readerSettingsActions.ActionType.SaveError,
-    readerSettingsActions.ActionType.SaveSuccess,
-    readerSettingsActions.ActionType.RestoreError,
-    readerSettingsActions.ActionType.RestoreSuccess,
+    readerActions.ActionType.ConfigSetError,
+    readerActions.ActionType.ConfigSetSuccess,
 ];
 
 export const reduxSyncMiddleware = (_0: Store<any>) => (next: any) => (action: any) => {

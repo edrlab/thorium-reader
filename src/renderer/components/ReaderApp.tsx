@@ -7,7 +7,7 @@ import * as React from "react";
 import { Store } from "redux";
 
 import { getTitleString, Publication } from "readium-desktop/common/models/publication";
-import { Settings as ReadiumCSS} from "readium-desktop/common/models/settings";
+import { ReaderConfig as ReadiumCSS} from "readium-desktop/common/models/reader";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
@@ -26,7 +26,7 @@ import SettingsIcon from "readium-desktop/renderer/assets/icons/settings.svg";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import { restore, save } from "readium-desktop/common/redux/actions/reader-settings";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -223,15 +223,13 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             });
         }
 
-        this.store.dispatch(restore());
-
         this.store.subscribe(() => {
             const storeState = this.store.getState();
-            const settings = storeState.readerSettings.settings;
+            const settings = storeState.reader.config;
             if (settings !== this.state.settingsValues) {
                 this.translator.setLocale(this.store.getState().i18n.locale);
-                this.setState({settingsValues: storeState.readerSettings.settings});
-                globalSettingsValues = storeState.readerSettings.settings;
+                this.setState({settingsValues: storeState.reader.config});
+                globalSettingsValues = storeState.reader.config;
                 readiumCssOnOff();
             }
         });
@@ -638,7 +636,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         const values = this.state.settingsValues;
         values.fontSize = values.fontSizeNum + "%";
 
-        this.store.dispatch(save(values));
+        this.store.dispatch(readerActions.setConfig(values));
         this.setState({settingsValues: values});
         this.handleSettingsClose();
 

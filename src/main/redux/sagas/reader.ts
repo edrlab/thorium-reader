@@ -7,12 +7,14 @@ import { BrowserWindow, ipcMain, webContents } from "electron";
 import { channel, Channel, SagaIterator } from "redux-saga";
 import { call, fork, put, select, take } from "redux-saga/effects";
 
-import { streamerActions } from "readium-desktop/main/redux/actions";
+import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
 
 import { RootState } from "readium-desktop/main/redux/states";
 
 import { Publication } from "readium-desktop/common/models/publication";
-import { Reader } from "readium-desktop/common/models/reader";
+import { Reader, ReaderConfig } from "readium-desktop/common/models/reader";
+
+import { ReaderConfigDb } from "readium-desktop/main/db/reader-config-db";
 
 import { Publication as StreamerPublication } from "@r2-shared-js/models/publication";
 
@@ -251,6 +253,69 @@ export function* readerCloseRequestWatcher(): SagaIterator {
             payload: {
                 reader,
             },
+        });
+    }
+}
+
+export function* readerConfigSetRequestWatcher(): SagaIterator {
+    while (true) {
+        // Wait for save request
+        const action = yield take(readerActions.ActionType.ConfigSetRequest);
+        const config: ReaderConfig = action.payload.config;
+
+        // Get Reader Settings db
+        const configDb: ReaderConfigDb = container.get(
+        "reader-config-db") as ReaderConfigDb;
+
+        try {
+            const searchResult = yield call(() => configDb.getAll());
+            if (searchResult.length > 0) {
+                config.identifier = searchResult[0].identifier;
+                yield call(() => configDb.update(config));
+            } else {
+                config.identifier = uuid.v4();
+                yield call(() => configDb.put(config));
+            }
+            yield put({
+                type: readerActions.ActionType.ConfigSetSuccess,
+                payload: {
+                    config,
+                },
+            });
+        } catch (error) {
+            yield put({ type: readerActions.ActionType.ConfigSetError, error: true });
+        }
+    }
+}
+
+export function* readerConfigInitWatcher(): SagaIterator {
+    // Wait for app initialization
+    yield take(appActions.ActionType.InitSuccess);
+
+    // Get reader config db
+    const readerConfigDb: ReaderConfigDb = container.get(
+    "reader-config-db") as ReaderConfigDb;
+
+    try {
+        const searchResult = yield call(() => readerConfigDb.getAll());
+        if (searchResult.length === 0) {
+            // Use default config
+            return;
+        }
+
+        // FIXME
+        // Returns the first reader configuration available in database
+        yield put({
+            type: readerActions.ActionType.ConfigSetSuccess,
+            payload: {
+                config: searchResult[0],
+            },
+        });
+    } catch (error) {
+        yield put({
+            type: readerActions.ActionType.ConfigSetError,
+            payload: new Error(error),
+            error: true,
         });
     }
 }
