@@ -1,6 +1,6 @@
+@import "./variable.css";
+
 :root {
-  --mainColor: #4d4d4d;
-  --textColor: white;
   --sideButtonColor: rgb(130, 130, 130, 0.5);
 }
 
@@ -48,7 +48,7 @@
 
   &:hover {
     background-color: var(--sideButtonColor);
-    fill: var(--textColor);
+    fill: var(--secondary-color);
   }
 }
 
@@ -113,7 +113,7 @@
 .content_table {
   width: 0;
 
-  border-right: 1px var(--mainColor) solid;
+  border-right: 1px var(--main-color) solid;
   background-color: #e0e0e0;
   overflow: auto;
 }
@@ -157,8 +157,8 @@
 .menu {
   display: flex;
   flex-directon: row;
-  background-color: var(--mainColor);
-  color: var(--textColor);
+  background-color: var(--main-color);
+  color: var(--secondary-color);
   padding: 0.5rem;
 
   & input {
@@ -170,18 +170,18 @@
 .menu_button {
   background-color: rgb(0, 0, 0, 0);
   border: none;
-  color: var(--textColor);
+  color: var(--secondary-color);
 }
 
 .menu_svg {
   height: 1.5rem;
   width: 1.5rem;
-  fill: var(--textColor);
+  fill: var(--secondary-color);
 }
 
 .separation {
   width: 0.1rem;
   height: 1.7rem;
   margin: auto 0.5rem;
-  background-color: var(--textColor);
+  background-color: var(--secondary-color);
 }
