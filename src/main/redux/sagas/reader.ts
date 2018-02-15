@@ -18,11 +18,9 @@ import { ReaderConfigDb } from "readium-desktop/main/db/reader-config-db";
 
 import { Publication as StreamerPublication } from "@r2-shared-js/models/publication";
 
-import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
-import { lsdLcpUpdateInject } from "@r2-navigator-js/electron/main/lsd-injectlcpl";
+import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
 
-import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
-import { deviceIDManager } from "@r2-testapp-js/electron/main/lsd-deviceid-manager";
+import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
 
 import { readerActions } from "readium-desktop/common/redux/actions";
 
@@ -47,7 +45,17 @@ declare const __FORCEDEBUG__: string;
 const IS_DEV = __FORCEDEBUG__ === "1" || __NODE_ENV__ === "DEV" ||
     __PACKAGING__ === "0" && (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 
-// FIXME: Put this code in streamer
+// FIXME: __TODO_LCP_LSD__
+
+// import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
+// import { lsdLcpUpdateInject } from "@r2-navigator-js/electron/main/lsd-injectlcpl";
+
+// import { IStore } from "@r2-testapp-js/electron/common/store";
+// import { StoreElectron } from "@r2-testapp-js/electron/common/store-electron";
+// import { getDeviceIDManager } from "@r2-testapp-js/electron/main/lsd-deviceid-manager";
+// const electronStoreLSD: IStore = new StoreElectron("readium2-testapp-lsd", {});
+// const deviceIDManager = getDeviceIDManager(electronStoreLSD, "Readium2 Electron desktop app");
+
     // (async () => {
     //     const streamer: Server = container.get("streamer") as Server;
 
@@ -128,8 +136,8 @@ function openReader(publication: Publication, manifestUrl: string) {
         window: readerWindow,
     };
 
-    // LCP
-    const lcpHint = false;
+    // This triggers the origin-sandbox for localStorage, etc.
+    manifestUrl = convertHttpUrlToCustomScheme(manifestUrl);
 
     // Load publication in reader window
     const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
@@ -155,9 +163,11 @@ function openReader(publication: Publication, manifestUrl: string) {
     readerUrl = readerUrl.replace(/\\/g, "/");
     readerUrl += `?pub=${encodedManifestUrl}`;
 
-    if (lcpHint) {
-        readerUrl += "&lcpHint=" + encodeURIComponent_RFC3986(lcpHint);
-    }
+    // FIXME: __TODO_LCP_LSD__
+    // const lcpHint = false;
+    // if (lcpHint) {
+    //     readerUrl += "&lcpHint=" + encodeURIComponent_RFC3986(lcpHint);
+    // }
 
     readerWindow.webContents.on("dom-ready", () => {
         console.log("readerWindow dom-ready " + pathDecoded + " : " + manifestUrl);

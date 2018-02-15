@@ -12,9 +12,15 @@ The `initSessions()` function is is called **once** from `main.ts`:
 
 https://github.com/edrlab/readium-desktop/blob/feature/r2-navigator-refactor/src/main.ts#L22
 
+The `secureSessions()` function is defined in the `r2-navigator-js` package:
+
+https://github.com/edrlab/r2-navigator-js/blob/develop/src/electron/main/sessions.ts
+
 Summary:
 
 The `initSessions()` function installs event handlers related to the Electron app lifecycle (`app.on("ready")` and `app.on("will-quit")`), from which both Electron's general `session.defaultSession` and the navigator-specific "webview" session (obtained via the partition mechanism `session.fromPartition(R2_SESSION_WEBVIEW)`) are managed. This consists in tearing-down temporary memory structures when the application exits. Note that cache and storage data are also cleared when the application starts.
+
+The `secureSessions()` function installs event handlers to deal with HTTPS and self-signed certificates, which naturally do not validate in the normal browser-managed chain.
 
 Caveats / potential todos:
 
@@ -83,10 +89,11 @@ Summary:
 
 A single `Server` instance is maintained during the Electron application's lifecycle. It is started when needed, and stopped when no more publications are open. Publications loaded for reading are added to the `Server` instance's own cache (i.e. publication metadata is loaded in memory). Once a given publication has no more open reader, the `Server` instance is instructed to unload it from its internal cache.
 
+Secure HTTPS is used with a self-signed certificate, see the description of `secureSessions()` in this document. Custom HTTP headers are used to limit (but not totally prevent) access from outside the application. Both the server key/certificate pair and the custom HTTP headers are renewed at each server start/stop cycle.
+
 Caveats / potential todos:
 
 1) The HTTP port is currently not randomized. A free port is automatically found, but there is currently no strategy in place to make the port less predictable.
-2) The HTTP communication is open to "outside" consumers (e.g. web browsers, command line URL fetchers). For example, no special HTTP headers are emmitted to restrict resource access to the Electron application alone. As obfuscated / encrypted content is made clear ("plain text") on the server, clients can too easily access assets that should normally be restricted.
 
 ### ReadiumCSS
 
@@ -156,11 +163,15 @@ Code references:
 
 The `installLcpHandler()` function is defined in the `r2-navigator-js` package:
 
-https://github.com/edrlab/r2-navigator-js/blob/develop/src/electron/main/lcp.ts#L13
+https://github.com/edrlab/r2-navigator-js/blob/develop/src/electron/main/lcp.ts
 
-The `installLcpHandler()` function is invoked once from the main process:
+The `installLsdHandler()` function is defined in the `r2-navigator-js` package:
 
-https://github.com/edrlab/readium-desktop/blob/feature/r2-navigator-refactor/src/main/streamer.ts#L6
+https://github.com/edrlab/r2-navigator-js/blob/develop/src/electron/main/lsd.ts
+
+The `installLcpHandler()` and `installLsdHandler()` functions are invoked once from the main process:
+
+https://github.com/edrlab/readium-desktop/blob/feature/r2-navigator-refactor/src/main/streamer.ts
 
 The `R2_EVENT_*` IPC events are used from the reading activity / renderer process:
 
@@ -168,12 +179,14 @@ https://github.com/edrlab/readium-desktop/blob/feature/r2-navigator-refactor/src
 
 Summary:
 
-The `installLcpHandler()` function installs IPC Electron events to handle the flow of actions that enables passing a user passphrase (or existing stored digest of a previously-supplied passphrase) from the renderer process (user interface) into the main process (where decryption occurs). This function also installs the LSD-related interactions ("return" and "renew").
+The `installLcpHandler()` function installs IPC Electron events to handle the flow of actions that enables passing a user passphrase (or existing stored digest of a previously-supplied passphrase) from the renderer process (user interface) into the main process (where decryption occurs). The `installLsdHandler()` function installs the LSD-related interactions ("return" and "renew").
 
 Caveats / potential todos:
 
 1) The IPC events (notably, the "return" and "renew" interaction) should be abstracted / hidden from the application via an additional API layer.
 2) The passphrase asynchronous interaction should be exposed via a cleaner API, to hide the actual IPC eventing mechanism.
+
+=> in fact, the top-level application layer should implement this main/renderer process logic according to its own framework. Both "install" functions should be replaced with application-specific mechanisms, while retaining the internal logic (see their source code).
 
 ### LSD "background" activity (register and fetch+inject updated LCP license)
 
@@ -259,6 +272,27 @@ For example, the saved LCP passphrases (SHA256 digests) are currently stored in 
 	}
 }
 ```
+
+## Publication origin(s)
+
+See main documentation:
+https://github.com/edrlab/r2-streamer-js/blob/develop/docs/origin.md
+
+The `convertHttpUrlToCustomScheme()` and `convertCustomSchemeToHttpUrl()` functions are defined in the `r2-navigator-js` package:
+
+https://github.com/edrlab/r2-navigator-js/blob/develop/src/electron/common/sessions.ts
+
+The `convertHttpUrlToCustomScheme()` function is used in `readium-desktop` from the main process to ensure that the publication's "webpub manifest" JSON URL is passed to the renderer process using the correct single-origin syntax:
+
+https://github.com/edrlab/readium-desktop/blob/feature/next-latest-r2/src/main/redux/sagas/reader.ts#L138
+
+The `webFrame.registerURLSchemeAsSecure()` and `webFrame.registerURLSchemeAsPrivileged()` function are defined by the Electron framework, and they are called from the renderer process to ensure that local `fetch()` on a publication's manifest JSON URL works with the correct privileges:
+
+https://github.com/edrlab/readium-desktop/blob/feature/next-latest-r2/src/renderer/components/ReaderApp.tsx#L80
+
+The `convertCustomSchemeToHttpUrl()` function is used in `readium-desktop` from the renderer process to decode the base64 publication ID (which is its normalized absolute filesystem path):
+
+https://github.com/edrlab/readium-desktop/blob/feature/next-latest-r2/src/renderer/components/ReaderApp.tsx#L161
 
 ## Reader activity (navigator API)
 

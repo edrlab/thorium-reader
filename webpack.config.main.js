@@ -79,22 +79,23 @@ if (nodeEnv === "DEV") {
     // externals = Object.assign(externals, depsKeysObj);
     // delete externals["pouchdb-core"];
 
-    if (process.env.WEBPACK === "bundle-external") {
-        const nodeExternals = require("./nodeExternals");
-        externals = [
-            nodeExternals(
-                {
-                    processName: "MAIN",
-                    alias: aliases,
-                    // whitelist: ["pouchdb-core"],
-                }
-            ),
-        ];
-    } else {
-        const nodeExternals = require("webpack-node-externals");
-        // electron-devtools-installer
-        externals = [nodeExternals()];
-    }
+
+    // if (process.env.WEBPACK === "bundle-external") {
+    const nodeExternals = require("./nodeExternals");
+    externals = [
+        nodeExternals(
+            {
+                processName: "MAIN",
+                alias: aliases,
+                // whitelist: ["pouchdb-core"],
+            }
+        ),
+    ];
+    // } else {
+    //     const nodeExternals = require("webpack-node-externals");
+    //     // electron-devtools-installer
+    //     externals = [nodeExternals()];
+    // }
 }
 
 console.log("WEBPACK externals (MAIN):");

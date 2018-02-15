@@ -1,6 +1,8 @@
 import * as React from "react";
 
-import { Publication, getTitleString } from "readium-desktop/common/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
+
+import { getMultiLangString } from "readium-desktop/common/models/language";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
@@ -12,6 +14,9 @@ interface ICoverProps {
 
 export default class Cover extends React.Component<ICoverProps, null> {
     public render(): React.ReactElement<{}>  {
+        // TODO: should get language from view state? (user preferences)
+        const lang = "en";
+
         if (this.props.publication.cover === null || this.props.publication.cover === undefined) {
             let authors = "";
             let bodyCSS = Styles.BookCover.body;
@@ -29,16 +34,13 @@ export default class Cover extends React.Component<ICoverProps, null> {
                 if (authors !== "") {
                     authors += ", ";
                 }
-                authors += newAuthor.name;
+                authors += getMultiLangString(newAuthor.name, lang);
             }
-
-            // TODO: should get language from view state? (user preferences)
-            const lang = "en";
 
             return (
                 <div style={bodyCSS}>
                     <div style={Styles.BookCover.box}>
-                        <p style={Styles.BookCover.title}>{getTitleString(this.props.publication.title, lang)}</p>
+                        <p style={Styles.BookCover.title}>{getMultiLangString(this.props.publication.title, lang)}</p>
                         <p style={Styles.BookCover.author}>{authors}</p>
                     </div>
                 </div>

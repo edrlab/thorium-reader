@@ -42,7 +42,7 @@ export function* catalogLocalPublicationImportWatcher(): SagaIterator {
             if (parsedEpub.Metadata && parsedEpub.Metadata.Author) {
                 for (const author of parsedEpub.Metadata.Author) {
                     const contributor: Contributor = {
-                        name: author.Name as string,
+                        name: author.Name as string, // note: can be multilingual object map (not just string)
                     };
 
                     authors.push(contributor);

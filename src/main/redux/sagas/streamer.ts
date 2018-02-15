@@ -20,9 +20,14 @@ const debug = debug_("readium-desktop:main:redux:sagas:streamer");
 function startStreamer(streamer: Server): Promise<string> {
     // Find a free port on your local machine
     return portfinder.getPortPromise()
-        .then((port) => {
-            const streamerUrl = streamer.start(port);
+        .then(async (port) => {
+            // HTTPS, see secureSessions()
+            const streamerInfo = await streamer.start(port, true);
+            debug(streamerInfo);
+
+            const streamerUrl = streamer.serverUrl();
             debug("Streamer started on %s", streamerUrl);
+
             return streamerUrl;
         });
 }
@@ -121,7 +126,8 @@ export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
 
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
-        const manifestUrl = streamer.url() + manifestPaths[0];
+        const manifestUrl = streamer.serverUrl() + manifestPaths[0];
+        debug(manifestUrl);
         yield put({
             type: streamerActions.ActionType.PublicationOpenSuccess,
             payload: {

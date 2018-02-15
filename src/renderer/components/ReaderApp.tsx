@@ -6,7 +6,8 @@ import * as React from "react";
 
 import { Store } from "redux";
 
-import { getTitleString, Publication } from "readium-desktop/common/models/publication";
+import { getMultiLangString } from "readium-desktop/common/models/language";
+import { Publication } from "readium-desktop/common/models/publication";
 import { ReaderConfig as ReadiumCSS} from "readium-desktop/common/models/reader";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -35,15 +36,8 @@ import { Dialog } from "material-ui";
 import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
-import {
-    R2_EVENT_LCP_LSD_RENEW,
-    R2_EVENT_LCP_LSD_RENEW_RES,
-    R2_EVENT_LCP_LSD_RETURN,
-    R2_EVENT_LCP_LSD_RETURN_RES,
-    R2_EVENT_TRY_LCP_PASS,
-    R2_EVENT_TRY_LCP_PASS_RES,
-} from "@r2-navigator-js/electron/common/events";
-import { IStore } from "@r2-navigator-js/electron/common/store";
+import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
+
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
 import {
     handleLink,
@@ -58,6 +52,13 @@ import { StoreElectron } from "@r2-testapp-js/electron/common/store-electron";
 import { ipcRenderer } from "electron";
 import { JSON as TAJSON } from "ta-json";
 
+import { webFrame } from "electron";
+
+import {
+    convertCustomSchemeToHttpUrl,
+    READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
+
 import * as ReaderStyles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 // Preprocessing directive
@@ -66,25 +67,35 @@ declare const __NODE_ENV__: string;
 declare const __NODE_MODULE_RELATIVE_URL__: string;
 declare const __PACKAGING__: string;
 
-const electronStore: IStore = new StoreElectron("readium2-testapp", {
-    styling: {
-        align: "left",
-        colCount: "auto",
-        dark: false,
-        font: "DEFAULT",
-        fontSize: "100%",
-        invert: false,
-        lineHeight: "1.5",
-        night: false,
-        paged: false,
-        readiumcss: false,
-        sepia: false,
-    },
+webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
+// webFrame.registerURLSchemeAsBypassingCSP(READIUM2_ELECTRON_HTTP_PROTOCOL);
+webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
+    allowServiceWorkers: false,
+    bypassCSP: false,
+    corsEnabled: true,
+    secure: true,
+    supportFetchAPI: true,
 });
 
-const electronStoreLCP: IStore = new StoreElectron("readium2-testapp-lcp", {});
+// const electronStore: IStore = new StoreElectron("readium2-testapp", {
+//     styling: {
+//         align: "left",
+//         colCount: "auto",
+//         dark: false,
+//         font: "DEFAULT",
+//         fontSize: "100%",
+//         invert: false,
+//         lineHeight: "1.5",
+//         night: false,
+//         paged: false,
+//         readiumcss: false,
+//         sepia: false,
+//     },
+// });
 
-const electronStoreLSD: IStore = new StoreElectron("readium2-testapp-lsd", {});
+// const electronStoreLCP: IStore = new StoreElectron("readium2-testapp-lcp", {});
+
+// const electronStoreLSD: IStore = new StoreElectron("readium2-testapp-lsd", {});
 
 initGlobals();
 
@@ -102,7 +113,7 @@ let globalSettingsValues: ReadiumCSS = {
     sepia: false,
 };
 
-const computeReadiumCssJsonMessage = (): string => {
+const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     if (globalSettingsValues) {
         const settings = globalSettingsValues;
         const cssJson = {
@@ -117,25 +128,25 @@ const computeReadiumCssJsonMessage = (): string => {
             paged: settings.paged,
             sepia: settings.sepia,
         };
-        const jsonMsg = { injectCSS: "yes", setCSS: cssJson };
-        return JSON.stringify(jsonMsg, null, 0);
+        const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { injectCSS: "yes", setCSS: cssJson };
+        return jsonMsg;
     } else {
         const jsonMsg = { injectCSS: "rollback", setCSS: "rollback" };
-        return JSON.stringify(jsonMsg, null, 0);
+        return { injectCSS: "rollback", setCSS: "rollback" };
     }
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
 
 const saveReadingLocation = (doc: string, loc: string) => {
-    let obj = electronStore.get("readingLocation");
-    if (!obj) {
-        obj = {};
-    }
-    obj[pathDecoded] = {
-        doc,
-        loc,
-    };
-    electronStore.set("readingLocation", obj);
+    // let obj = electronStore.get("readingLocation");
+    // if (!obj) {
+    //     obj = {};
+    // }
+    // obj[pathDecoded] = {
+    //     doc,
+    //     loc,
+    // };
+    // electronStore.set("readingLocation", obj);
 };
 setReadingLocationSaver(saveReadingLocation);
 
@@ -143,8 +154,10 @@ const queryParams = getURLQueryParams();
 
 // tslint:disable-next-line:no-string-literal
 const publicationJsonUrl = queryParams["pub"];
+const publicationJsonUrl_ = publicationJsonUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
+    convertCustomSchemeToHttpUrl(publicationJsonUrl) : publicationJsonUrl;
 
-const pathBase64 = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+const pathBase64 = publicationJsonUrl_.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
 
 const pathDecoded = window.atob(pathBase64);
 
@@ -234,57 +247,59 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             }
         });
 
-        ipcRenderer.on(R2_EVENT_TRY_LCP_PASS_RES,
-            async (__: any, okay: boolean, msg: string, passSha256Hex: string) => {
+        // ipcRenderer.on(R2_EVENT_TRY_LCP_PASS_RES,
+        //     async (__: any, okay: boolean, msg: string, passSha256Hex: string) => {
 
-            if (!okay) {
-                setTimeout(() => {
-                    this.showLcpDialog(msg);
-                }, 500);
+        //     if (!okay) {
+        //         setTimeout(() => {
+        //             this.showLcpDialog(msg);
+        //         }, 500);
 
-                return;
-            }
+        //         return;
+        //     }
 
-            const lcpStore = electronStoreLCP.get("lcp");
-            if (!lcpStore) {
-                const lcpObj: any = {};
-                const pubLcpObj: any = lcpObj[pathDecoded] = {};
-                pubLcpObj.sha = passSha256Hex;
+        //     const lcpStore = electronStoreLCP.get("lcp");
+        //     if (!lcpStore) {
+        //         const lcpObj: any = {};
+        //         const pubLcpObj: any = lcpObj[pathDecoded] = {};
+        //         pubLcpObj.sha = passSha256Hex;
 
-                electronStoreLCP.set("lcp", lcpObj);
-            } else {
-                const pubLcpStore = lcpStore[pathDecoded];
-                if (pubLcpStore) {
-                    pubLcpStore.sha = passSha256Hex;
-                } else {
-                    lcpStore[pathDecoded] = {
-                        sha: passSha256Hex,
-                    };
-                }
-                electronStoreLCP.set("lcp", lcpStore);
-            }
+        //         electronStoreLCP.set("lcp", lcpObj);
+        //     } else {
+        //         const pubLcpStore = lcpStore[pathDecoded];
+        //         if (pubLcpStore) {
+        //             pubLcpStore.sha = passSha256Hex;
+        //         } else {
+        //             lcpStore[pathDecoded] = {
+        //                 sha: passSha256Hex,
+        //             };
+        //         }
+        //         electronStoreLCP.set("lcp", lcpStore);
+        //     }
 
-            await this.loadPublicationIntoViewport();
-        });
+        //     await this.loadPublicationIntoViewport();
+        // });
 
-        if (lcpHint) {
+        // if (lcpHint) {
 
-            let lcpPassSha256Hex: string | undefined;
-            const lcpStore = electronStoreLCP.get("lcp");
-            if (lcpStore) {
-                const pubLcpStore = lcpStore[pathDecoded];
-                if (pubLcpStore && pubLcpStore.sha) {
-                    lcpPassSha256Hex = pubLcpStore.sha;
-                }
-            }
-            if (lcpPassSha256Hex) {
-                ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, lcpPassSha256Hex, true);
-            } else {
-                this.showLcpDialog();
-            }
-        } else {
-            await this.loadPublicationIntoViewport();
-        }
+        //     let lcpPassSha256Hex: string | undefined;
+        //     const lcpStore = electronStoreLCP.get("lcp");
+        //     if (lcpStore) {
+        //         const pubLcpStore = lcpStore[pathDecoded];
+        //         if (pubLcpStore && pubLcpStore.sha) {
+        //             lcpPassSha256Hex = pubLcpStore.sha;
+        //         }
+        //     }
+        //     if (lcpPassSha256Hex) {
+        //         ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, lcpPassSha256Hex, true);
+        //     } else {
+        //         this.showLcpDialog();
+        //     }
+        // } else {
+        //     await this.loadPublicationIntoViewport();
+        // }
+
+        await this.loadPublicationIntoViewport();
     }
 
     public render(): React.ReactElement<{}> {
@@ -328,7 +343,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             <button
                                 className={ReaderStyles.menu_button}
                                 onClick={() => {
-                                    electronStore.set("styling.night", !electronStore.get("styling.night"));
+                                    // electronStore.set("styling.night", !electronStore.get("styling.night"));
                                 }}
                             >
                                 <svg className={ReaderStyles.menu_svg} viewBox={NightIcon.night}>
@@ -479,7 +494,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         // // tslint:disable-next-line:no-floating-promises
         // (async () => {
         // })();
-
+        console.log("##### load publicaiton into viewport");
         let response: Response;
         try {
             response = await fetch(publicationJsonUrl);
@@ -513,7 +528,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         if (publication.Metadata && publication.Metadata.Title) {
             // TODO: should get language from view state? (user preferences)
             const lang = "en";
-            const title = getTitleString( publication.Metadata.Title, lang);
+            const title = getMultiLangString( publication.Metadata.Title, lang);
 
             // let title: string | undefined;
             // if (typeof _publication.Metadata.Title === "string") {
@@ -557,18 +572,18 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         // if (publication.LOA && publication.LOA.length) {
         // }
 
-        const readStore = electronStore.get("readingLocation");
+        // const readStore = electronStore.get("readingLocation");
         let pubDocHrefToLoad: string | undefined;
         let pubDocSelectorToGoto: string | undefined;
-        if (readStore) {
-            const obj = readStore[pathDecoded];
-            if (obj && obj.doc) {
-                pubDocHrefToLoad = obj.doc;
-                if (obj.loc) {
-                    pubDocSelectorToGoto = obj.loc;
-                }
-            }
-        }
+        // if (readStore) {
+        //     const obj = readStore[pathDecoded];
+        //     if (obj && obj.doc) {
+        //         pubDocHrefToLoad = obj.doc;
+        //         if (obj.loc) {
+        //             pubDocSelectorToGoto = obj.loc;
+        //         }
+        //     }
+        // }
 
         let preloadPath = "preload.js";
         if (__PACKAGING__ === "1") {
@@ -605,13 +620,13 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     private showLcpDialog(message?: string) {
 
         // console.log(lcpHint);
-        if (message) {
-            // console.log(message);
-        }
+        // if (message) {
+        //     // console.log(message);
+        // }
 
-        setTimeout(() => {
-            ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, this.state.lcpPass, false);
-        }, 3000);
+        // setTimeout(() => {
+        //     ipcRenderer.send(R2_EVENT_TRY_LCP_PASS, pathDecoded, this.state.lcpPass, false);
+        // }, 3000);
     }
 
     private handleContentTableClick() {
@@ -641,6 +656,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         this.handleSettingsClose();
 
         globalSettingsValues = values;
+        console.log("#### save");
         readiumCssOnOff();
     }
 

@@ -4,7 +4,9 @@ import { put, take } from "redux-saga/effects";
 
 import { publicationDownloadActions } from "readium-desktop/common/redux/actions";
 
-import { Publication, getTitleString } from "readium-desktop/common/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
+
+import { getMultiLangString } from "readium-desktop/common/models/language";
 
 import *  as messageActions from "readium-desktop/renderer/actions/message";
 
@@ -14,7 +16,7 @@ export function* publicationDownloadAddSuccessWatcher(): SagaIterator {
         const pub: Publication = action.payload.publication;
         // FIXME: translate message
         const lang = "en";
-        yield put(messageActions.add("Le téléchargement de " + getTitleString(pub.title, lang) + " a commencé"));
+        yield put(messageActions.add("Le téléchargement de " + getMultiLangString(pub.title, lang) + " a commencé"));
     }
 }
 
@@ -24,6 +26,6 @@ export function* publicationDownloadSuccessWatcher(): SagaIterator {
         const pub: Publication = action.payload.publication;
         // FIXME: translate message
         const lang = "en";
-        yield put(messageActions.add("Le téléchargement de " + getTitleString(pub.title, lang) + " est terminé"));
+        yield put(messageActions.add("Le téléchargement de " + getMultiLangString(pub.title, lang) + " est terminé"));
     }
 }
