@@ -179,9 +179,6 @@
   fill: var(--secondary-color);
 }
 
-.separation {
-  width: 0.1rem;
-  height: 1.7rem;
-  margin: auto 0.5rem;
-  background-color: var(--secondary-color);
+.menu_right_button {
+  margin-left: auto;
 }
