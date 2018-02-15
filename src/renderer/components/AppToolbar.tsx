@@ -26,7 +26,7 @@ import GiftIcon from "readium-desktop/renderer/assets/icons/gift.svg";
 import MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import PlusIcon from "readium-desktop/renderer/assets/icons/plus.svg";
 import QuestionIcon from "readium-desktop/renderer/assets/icons/question.svg";
-import * as AppBarStyles from "readium-desktop/renderer/assets/styles/AppBar.css";
+import * as AppBarStyles from "readium-desktop/renderer/assets/styles/app-bar.css";
 
 import CollectionDialog from "readium-desktop/renderer/components/opds/CollectionDialog";
 import { Styles } from "readium-desktop/renderer/components/styles";

@@ -58,7 +58,7 @@ import { StoreElectron } from "@r2-testapp-js/electron/common/store-electron";
 import { ipcRenderer } from "electron";
 import { JSON as TAJSON } from "ta-json";
 
-import * as ReaderStyles from "readium-desktop/renderer/assets/styles/readerApp.css";
+import * as ReaderStyles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
