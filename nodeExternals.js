@@ -124,7 +124,10 @@ module.exports = function nodeExternals(options) {
         const isWebPack = request.indexOf("webpack") >= 0 ||
             isRelative && context.indexOf("/node_modules/webpack") >= 0;
 
+        const isCSSLoader = request.indexOf("css-loader") >= 0 || request.indexOf("css-hot-loader") >= 0;
+
         const isCSS = request.endsWith(".css");
+        const isSVG = request.endsWith(".svg");
 
         const token = isRelative ? context + request : request;
         const isAlready = alreadyProcessed.indexOf(token) >= 0;
@@ -133,12 +136,12 @@ module.exports = function nodeExternals(options) {
         }
 
         const isR2Alias = /^@r2-.+-js/.test(request); // EXTERNAL
-        if (isR2Alias || isRelativeInNodeModules || isWebPack || isCSS) {
+        if (isR2Alias || isRelativeInNodeModules || isWebPack || isSVG || isCSS || isCSSLoader) {
             forceDebug = true;
         }
 
         // doesn't necessarily mean that WebPack will bundle, just that it won't externalize
-        const makeBundle = isWebPack || isCSS ||
+        const makeBundle = isWebPack || isSVG || isCSS || isCSSLoader ||
             (!isR2 && !isR2Alias && !isRelativeInNodeModules &&
             (isRDesk || isRelative || isElectron || isNode ||
                 request === "xxxpouchdb-core" // No need to force-bundle, as we now fixed di.ts to test for "default" property
