@@ -1,5 +1,4 @@
 import "font-awesome/css/font-awesome.css";
-import "react-dropdown/style.css";
 
 import { ipcRenderer } from "electron";
 import * as React from "react";
@@ -12,7 +11,7 @@ import { WinStatus } from "readium-desktop/renderer/redux/states/win";
 
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 
-import App from "readium-desktop/renderer/components/ReaderApp";
+import App from "readium-desktop/renderer/components/App";
 
 declare const __FORCEDEBUG__: string;
 
@@ -23,9 +22,6 @@ if (__FORCEDEBUG__ === "1") {
 // Render app
 let hasBeenRenderered = false;
 
-// Init redux store
-const store = (container.get("store") as Store<any>);
-
 // Render React App component
 function render() {
     ReactDOM.render(
@@ -33,6 +29,8 @@ function render() {
         document.getElementById("app"),
     );
 }
+// Init redux store
+const store = (container.get("store") as Store<any>);
 
 store.subscribe(() => {
     const state = store.getState();

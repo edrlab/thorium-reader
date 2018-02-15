@@ -17,7 +17,7 @@ import * as ReactCardFlip from "react-card-flip";
 
 import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 
-import { Styles } from "readium-desktop/renderer/components/styles/styles";
+import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { Cover } from "readium-desktop/renderer/components/Publication/index";
 

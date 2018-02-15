@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Publication, getTitleString } from "readium-desktop/common/models/publication";
 
-import { Styles } from "readium-desktop/renderer/components/styles/styles";
+import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { Cover } from "readium-desktop/renderer/components/Publication/index";
 

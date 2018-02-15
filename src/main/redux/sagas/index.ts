@@ -37,6 +37,11 @@ import {
     streamerStopRequestWatcher,
 } from "./streamer";
 
+import {
+    readerSettingsRestoreRequestWatcher,
+    readerSettingsSaveRequestWatcher,
+} from "./reader-settings";
+
 export function* rootSaga() {
     yield all([
         // Catalog
@@ -75,5 +80,9 @@ export function* rootSaga() {
         streamerStartRequestWatcher(),
         streamerPublicationOpenRequestWatcher(),
         streamerPublicationCloseRequestWatcher(),
+
+        // Reader Settings
+        readerSettingsSaveRequestWatcher(),
+        readerSettingsRestoreRequestWatcher(),
     ]);
 }

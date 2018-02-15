@@ -7,6 +7,7 @@ import * as React from "react";
 import { Store } from "redux";
 
 import { getTitleString, Publication } from "readium-desktop/common/models/publication";
+import { Settings as ReadiumCSS} from "readium-desktop/common/models/settings";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
@@ -15,13 +16,24 @@ import { Translator } from "readium-desktop/common/services/translator";
 
 import ArrowIcon from "readium-desktop/renderer/assets/icons/arrow.svg";
 import ContentTableIcon from "readium-desktop/renderer/assets/icons/content-table.svg";
+import ContinueIcon from "readium-desktop/renderer/assets/icons/continue.svg";
 import NightIcon from "readium-desktop/renderer/assets/icons/night.svg";
+import PageIcon from "readium-desktop/renderer/assets/icons/page.svg";
+import AlignCenterIcon from "readium-desktop/renderer/assets/icons/paragraph-center.svg";
+import AlignLeftIcon from "readium-desktop/renderer/assets/icons/paragraph-left.svg";
+import AlignRightIcon from "readium-desktop/renderer/assets/icons/paragraph-right.svg";
 import SettingsIcon from "readium-desktop/renderer/assets/icons/settings.svg";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
+import { restore, save } from "readium-desktop/common/redux/actions/reader-settings";
+
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+
+import { Dialog } from "material-ui";
+import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import {
     R2_EVENT_LCP_LSD_RENEW,
@@ -46,7 +58,7 @@ import { StoreElectron } from "@r2-testapp-js/electron/common/store-electron";
 import { ipcRenderer } from "electron";
 import { JSON as TAJSON } from "ta-json";
 
-import * as ReaderStyles from "readium-desktop/renderer/components/styles/readerApp.css";
+import * as ReaderStyles from "readium-desktop/renderer/assets/styles/readerApp.css";
 
 // Preprocessing directive
 declare const __RENDERER_BASE_URL__: string;
@@ -76,31 +88,34 @@ const electronStoreLSD: IStore = new StoreElectron("readium2-testapp-lsd", {});
 
 initGlobals();
 
-const computeReadiumCssJsonMessage = (): string => {
+let globalSettingsValues: ReadiumCSS = {
+    align: "left",
+    colCount: "auto",
+    dark: false,
+    font: "DEFAULT",
+    fontSize: "100%",
+    invert: false,
+    lineHeight: "1.5",
+    night: false,
+    paged: false,
+    readiumcss: false,
+    sepia: false,
+};
 
-    const on = electronStore.get("styling.readiumcss");
-    if (on) {
-        const align = electronStore.get("styling.align");
-        const colCount = electronStore.get("styling.colCount");
-        const dark = electronStore.get("styling.dark");
-        const font = electronStore.get("styling.font");
-        const fontSize = electronStore.get("styling.fontSize");
-        const lineHeight = electronStore.get("styling.lineHeight");
-        const invert = electronStore.get("styling.invert");
-        const night = electronStore.get("styling.night");
-        const paged = electronStore.get("styling.paged");
-        const sepia = electronStore.get("styling.sepia");
+const computeReadiumCssJsonMessage = (): string => {
+    if (globalSettingsValues) {
+        const settings = globalSettingsValues;
         const cssJson = {
-            align,
-            colCount,
-            dark,
-            font,
-            fontSize,
-            invert,
-            lineHeight,
-            night,
-            paged,
-            sepia,
+            align: settings.align,
+            colCount: settings.colCount,
+            dark: settings.dark,
+            font: settings.font,
+            fontSize: settings.fontSize,
+            invert: settings.invert,
+            lineHeight: settings.lineHeight,
+            night: settings.night,
+            paged: settings.paged,
+            sepia: settings.sepia,
         };
         const jsonMsg = { injectCSS: "yes", setCSS: cssJson };
         return JSON.stringify(jsonMsg, null, 0);
@@ -140,58 +155,6 @@ const pathFileName = pathDecoded.substr(
 // tslint:disable-next-line:no-string-literal
 const lcpHint = queryParams["lcpHint"];
 
-electronStore.onChanged("styling.night", (newValue: any, oldValue: any) => {
-    if (typeof newValue === "undefined" || typeof oldValue === "undefined") {
-        return;
-    }
-
-    readiumCssOnOff();
-});
-
-electronStore.onChanged("styling.align", (newValue: any, oldValue: any) => {
-    if (typeof newValue === "undefined" || typeof oldValue === "undefined") {
-        return;
-    }
-
-    readiumCssOnOff();
-});
-
-electronStore.onChanged("styling.paged", (newValue: any, oldValue: any) => {
-    if (typeof newValue === "undefined" || typeof oldValue === "undefined") {
-        return;
-    }
-
-    readiumCssOnOff();
-});
-
-// const readiumCssOnOff = debounce(() => {
-//     readiumCssOnOff_();
-// }, 500);
-
-electronStore.onChanged("styling.readiumcss", (newValue: any, oldValue: any) => {
-    if (typeof newValue === "undefined" || typeof oldValue === "undefined") {
-        return;
-    }
-
-    readiumCssOnOff();
-
-    if (!newValue) {
-        electronStore.set("styling.night", false);
-    }
-});
-
-ipcRenderer.on(R2_EVENT_LCP_LSD_RENEW_RES, (__: any, okay: boolean, msg: string) => {
-    console.log("R2_EVENT_LCP_LSD_RENEW_RES");
-    console.log(okay);
-    console.log(msg);
-});
-
-ipcRenderer.on(R2_EVENT_LCP_LSD_RETURN_RES, (__: any, okay: boolean, msg: string) => {
-    console.log("R2_EVENT_LCP_LSD_RETURN_RES");
-    console.log(okay);
-    console.log(msg);
-});
-
 interface ReaderAppState {
     publicationJsonUrl?: string;
     lcpHint?: string;
@@ -200,8 +163,11 @@ interface ReaderAppState {
     lcpPass?: string;
     spineLinks?: IStringMap;
     contentTableOpen: boolean;
+    settingsOpen: boolean;
+    settingsValues: ReadiumCSS;
 }
 
+const lightMuiTheme = getMuiTheme(lightBaseTheme);
 const defaultLocale = "fr";
 
 export default class ReaderApp extends React.Component<undefined, ReaderAppState> {
@@ -227,14 +193,25 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             lcpPass: "LCP pass",
             spineLinks: { "no spine items?": "https://google.com" },
             contentTableOpen: false,
+            settingsOpen: true,
+            settingsValues: {
+                align: "left",
+                colCount: "auto",
+                dark: false,
+                font: "DEFAULT",
+                fontSize: "100%",
+                fontSizeNum: 100,
+                invert: false,
+                lineHeight: "1.5",
+                night: false,
+                paged: false,
+                readiumcss: true,
+                sepia: false,
+            },
         };
     }
 
     public async componentDidMount() {
-        console.log(window.location.search);
-        console.log(publicationJsonUrl);
-        console.log(lcpHint);
-
         this.setState({
             publicationJsonUrl,
         });
@@ -246,13 +223,17 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             });
         }
 
-        // this.store.dispatch(windowActions.init());
+        this.store.dispatch(restore());
+
         this.store.subscribe(() => {
             const storeState = this.store.getState();
-
-            this.translator.setLocale(this.store.getState().i18n.locale);
-
-            this.setState({});
+            const settings = storeState.readerSettings.settings;
+            if (settings !== this.state.settingsValues) {
+                this.translator.setLocale(this.store.getState().i18n.locale);
+                this.setState({settingsValues: storeState.readerSettings.settings});
+                globalSettingsValues = storeState.readerSettings.settings;
+                readiumCssOnOff();
+            }
         });
 
         ipcRenderer.on(R2_EVENT_TRY_LCP_PASS_RES,
@@ -320,117 +301,179 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             ));
             i++;
         }
+
+        const additionalRadioProperties = (name: string, value: any) => {
+            if (this.state.settingsValues[name] === value) {
+                return {
+                    checked: true,
+                };
+            }
+
+            return null;
+        };
+
         return (
-            <div className={ReaderStyles.root}>
-                <div className={ReaderStyles.menu}>
-                    <button
-                        className={ReaderStyles.menu_button}
-                        onClick={this.handleContentTableClick.bind(this)}
-                    >
-                        <svg className={ReaderStyles.menu_svg} viewBox={ContentTableIcon.content_table}>
-                            <title>Content Table</title>
-                            <use xlinkHref={"#" + ContentTableIcon.id} />
-                        </svg>
-                    </button>
-                    <button
-                        className={ReaderStyles.menu_button}
-                        onClick={() => {
-                            electronStore.set("styling.readiumcss", !electronStore.get("styling.readiumcss"));
-                        }}
-                    >
-                        ReadiumCSS
-                    </button>
-                    <button
-                        className={ReaderStyles.menu_button}
-                        onClick={() => {
-                            electronStore.set("styling.paged", !electronStore.get("styling.paged"));
-                        }}
-                    >
-                        Scroll/Page
-                    </button>
-                    <button
-                        className={ReaderStyles.menu_button}
-                        onClick={() => {
-                            electronStore.set("styling.night", !electronStore.get("styling.night"));
-                        }}
-                    >
-                        <svg className={ReaderStyles.menu_svg} viewBox={NightIcon.night}>
-                            <title>Night</title>
-                            <use xlinkHref={"#" + NightIcon.id} />
-                        </svg>
-                    </button>
-                    <button
-                        className={ReaderStyles.menu_button}
-                        onClick={() => {
-                            if ((electronStore as any).reveal) {
-                                (electronStore as any).reveal();
-                            }
-                            if ((electronStoreLCP as any).reveal) {
-                                (electronStoreLCP as any).reveal();
-                            }
-                            if ((electronStoreLSD as any).reveal) {
-                                (electronStoreLSD as any).reveal();
-                            }
-                        }}
-                    >
-                        <svg className={ReaderStyles.menu_svg} viewBox={SettingsIcon.settings}>
-                            <title>Settings</title>
-                            <use xlinkHref={"#" + SettingsIcon.id} />
-                        </svg>
-                    </button>
-                    <div className={ReaderStyles.separation}/>
-                    <input type="text"
-                        value={this.state.lcpPass}
-                        onChange={(event) => {  this.setState({lcpPass: event.target.value}); }}
-                        size={40}
-                    />
-                    <button
-                        className={ReaderStyles.menu_button}
-                        onClick={() => {
-                            ipcRenderer.send(R2_EVENT_LCP_LSD_RENEW, pathDecoded, ""); // no explicit end date
-                        }}
-                        >
-                        LSD Renew
-                    </button>
-                    <button
-                        className={ReaderStyles.menu_button}
-                        onClick={() => {
-                            ipcRenderer.send(R2_EVENT_LCP_LSD_RETURN, pathDecoded);
-                        }}
-                        >
-                        LSD Return
-                    </button>
-                </div>
-                <div className={ReaderStyles.content_root}>
-                    <div className={classNames(ReaderStyles.content_table,
-                            this.state.contentTableOpen && ReaderStyles.content_table_open)}>
-                        <ul>
-                        {contentTable}
-                        </ul>
+            <MuiThemeProvider muiTheme={lightMuiTheme}>
+                <div>
+                    <div className={ReaderStyles.root}>
+                        <div className={ReaderStyles.menu}>
+                            <div className={ReaderStyles.separation}/>
+                            <button
+                                className={ReaderStyles.menu_button}
+                                onClick={this.handleContentTableClick.bind(this)}
+                            >
+                                <svg className={ReaderStyles.menu_svg} viewBox={ContentTableIcon.content_table}>
+                                    <title>Content Table</title>
+                                    <use xlinkHref={"#" + ContentTableIcon.id} />
+                                </svg>
+                            </button>
+                            <button
+                                className={ReaderStyles.menu_button}
+                                onClick={() => {
+                                    electronStore.set("styling.night", !electronStore.get("styling.night"));
+                                }}
+                            >
+                                <svg className={ReaderStyles.menu_svg} viewBox={NightIcon.night}>
+                                    <title>Night</title>
+                                    <use xlinkHref={"#" + NightIcon.id} />
+                                </svg>
+                            </button>
+                            <button
+                                className={ReaderStyles.menu_button}
+                                onClick={this.handleSettingsOpen.bind(this)}
+                            >
+                                <svg className={ReaderStyles.menu_svg} viewBox={SettingsIcon.settings}>
+                                    <title>Settings</title>
+                                    <use xlinkHref={"#" + SettingsIcon.id} />
+                                </svg>
+                            </button>
+                            {/*
+                            <input type="text"
+                                value={this.state.lcpPass}
+                                onChange={(event) => {  this.setState({lcpPass: event.target.value}); }}
+                                size={40}
+                            />
+                            <button
+                                className={ReaderStyles.menu_button}
+                                onClick={() => {
+                                    ipcRenderer.send(R2_EVENT_LCP_LSD_RENEW, pathDecoded, ""); // no explicit end date
+                                }}
+                                >
+                                LSD Renew
+                            </button>
+                            <button
+                                className={ReaderStyles.menu_button}
+                                onClick={() => {
+                                    ipcRenderer.send(R2_EVENT_LCP_LSD_RETURN, pathDecoded);
+                                }}
+                                >
+                                LSD Return
+                            </button> */}
+                        </div>
+                        <div className={ReaderStyles.content_root}>
+                            <div className={classNames(ReaderStyles.content_table,
+                                    this.state.contentTableOpen && ReaderStyles.content_table_open)}>
+                                <ul>
+                                {contentTable}
+                                </ul>
+                            </div>
+                            <div className={ReaderStyles.reader}>
+                                <button
+                                    className={classNames(ReaderStyles.side_button, ReaderStyles.left_button)}
+                                    onClick={() => {navLeftOrRight(true); }}
+                                >
+                                    <svg className={ReaderStyles.side_button_svg} viewBox={ArrowIcon.arrow}>
+                                        <title>Left</title>
+                                        <use xlinkHref={"#" + ArrowIcon.id} />
+                                    </svg>
+                                </button>
+                                <div id="publication_viewport" className={ReaderStyles.publication_viewport}> </div>
+                                <button
+                                    className={classNames(ReaderStyles.side_button, ReaderStyles.right_button)}
+                                    onClick={() => {navLeftOrRight(false); }}
+                                >
+                                    <svg className={ReaderStyles.side_button_svg} viewBox={ArrowIcon.arrow}>
+                                        <title>Right</title>
+                                        <use xlinkHref={"#" + ArrowIcon.id} />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div className={ReaderStyles.reader}>
-                        <button
-                            className={classNames(ReaderStyles.side_button, ReaderStyles.left_button)}
-                            onClick={() => {navLeftOrRight(true); }}
-                        >
-                            <svg className={ReaderStyles.side_button_svg} viewBox={ArrowIcon.arrow}>
-                                <title>Left</title>
-                                <use xlinkHref={"#" + ArrowIcon.id} />
-                            </svg>
-                        </button>
-                        <div id="publication_viewport" className={ReaderStyles.publication_viewport}> </div>
-                        <button
-                            className={classNames(ReaderStyles.side_button, ReaderStyles.right_button)}
-                            onClick={() => {navLeftOrRight(false); }}
-                        >
-                            <svg className={ReaderStyles.side_button_svg} viewBox={ArrowIcon.arrow}>
-                                <title>Right</title>
-                                <use xlinkHref={"#" + ArrowIcon.id} />
-                            </svg>
-                        </button>
-                    </div>
+                    <Dialog
+                        title={this.translator.translate("reader.settings.title")}
+                        open={this.state.settingsOpen}
+                        actions={[
+                            <button className={ReaderStyles.settings_action}
+                                    onClick={this.handleSettingsClose.bind(this)}>Close</button>,
+                            <button className={ReaderStyles.settings_action}
+                                onClick={this.handleSettingsSave.bind(this)}>Save Settings</button>,
+                        ]}
+                    >
+                        <div className={ReaderStyles.settings_content}>
+                            <label>Font Size: {this.state.settingsValues.fontSizeNum}%</label>
+                            <input name="fontSizeNum" type="range" min="30" max="250"
+                                value={this.state.settingsValues.fontSizeNum}
+                                onChange={this.handleSettingsValueChange.bind(this)}/>
+                            <label>Text Align:</label>
+                            <div className={ReaderStyles.settings_radios}>
+                                <label>
+                                    <input type="radio" value="left" name="align"
+                                        onChange={this.handleSettingsValueChange.bind(this)}
+                                        {...additionalRadioProperties("align", "left")}/>
+                                        <svg className={ReaderStyles.settings_icones} viewBox={AlignLeftIcon.alignLeft}>
+                                            <title>Align Left</title>
+                                            <use xlinkHref={"#" + AlignLeftIcon.id} />
+                                        </svg> Left
+                                </label>
+                                <label>
+                                    <input type="radio" value="center" name="align"
+                                        onChange={this.handleSettingsValueChange.bind(this)}
+                                        {...additionalRadioProperties("align", "center")}/>
+                                        <svg className={ReaderStyles.settings_icones}
+                                            viewBox={AlignCenterIcon.alignCenter}
+                                        >
+                                            <title>Align Center</title>
+                                            <use xlinkHref={"#" + AlignCenterIcon.id} />
+                                        </svg> Center
+                                </label>
+                                <label>
+                                    <input type="radio" value="right" name="align"
+                                        onChange={this.handleSettingsValueChange.bind(this)}
+                                        {...additionalRadioProperties("align", "right")}/>
+                                        <svg className={ReaderStyles.settings_icones}
+                                            viewBox={AlignRightIcon.alignRight}
+                                        >
+                                            <title>Align Right</title>
+                                            <use xlinkHref={"#" + AlignRightIcon.id} />
+                                        </svg> Right
+                                </label>
+                            </div>
+                            <label>Display Type:</label>
+                            <div>
+                                <label>
+                                    <input type="radio" value="true" name="paged"
+                                        onChange={this.handleSettingsValueChange.bind(this)}
+                                        {...additionalRadioProperties("paged", true)}/>
+                                        <svg className={ReaderStyles.settings_icones} viewBox={PageIcon.page}>
+                                            <title>Document</title>
+                                            <use xlinkHref={"#" + PageIcon.id} />
+                                        </svg> Document
+                                </label>
+                                <label>
+                                    <input type="radio" value="false" name="paged"
+                                        onChange={this.handleSettingsValueChange.bind(this)}
+                                        {...additionalRadioProperties("paged", false)}/>
+                                        <svg className={ReaderStyles.settings_icones} viewBox={ContinueIcon.continue}>
+                                            <title>Continue</title>
+                                            <use xlinkHref={"#" + ContinueIcon.id} />
+                                        </svg> Continue
+                                </label>
+                            </div>
+                        </div>
+                    </Dialog>
                 </div>
-            </div>
+            </MuiThemeProvider>
         );
     }
 
@@ -443,7 +486,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         try {
             response = await fetch(publicationJsonUrl);
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             return;
         }
         if (!response.ok) {
@@ -457,14 +500,14 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         try {
             publicationJSON = await response.json();
         } catch (e) {
-            console.log(e);
+            // console.log(e);
         }
         if (!publicationJSON) {
             return;
         }
         // const pubJson = global.JSON.parse(publicationStr);
 
-        console.log(publicationJSON);
+        // console.log(publicationJSON);
 
         // let _publication: Publication | undefined;
         const publication = TAJSON.deserialize<R2Publication>(publicationJSON, R2Publication);
@@ -485,7 +528,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             // }
 
             if (title) {
-                console.log(title);
+                // console.log(title);
                 window.document.title = "Readium2 [ " + title + "]";
                 this.setState({
                     title,
@@ -494,7 +537,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         }
 
         if (publication.Spine && publication.Spine.length) {
-            console.log(publication.Spine);
+            // console.log(publication.Spine);
             const links: IStringMap = {};
             publication.TOC.forEach((spineItemLink) => {
                 links[spineItemLink.Title] = publicationJsonUrl + "/../" + spineItemLink.Href;
@@ -531,8 +574,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
         let preloadPath = "preload.js";
         if (__PACKAGING__ === "1") {
-            console.log(__dirname);
-            console.log((global as any).__dirname);
+            // console.log(__dirname);
+            // console.log((global as any).__dirname);
             preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
         } else {
             preloadPath = "r2-navigator-js/dist/" +
@@ -541,8 +584,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
             if (__RENDERER_BASE_URL__ === "file://") {
                 // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-                console.log(__dirname);
-                console.log((global as any).__dirname);
+                // console.log(__dirname);
+                // console.log((global as any).__dirname);
                 preloadPath = "file://" +
                     path.normalize(path.join((global as any).__dirname, __NODE_MODULE_RELATIVE_URL__, preloadPath));
             } else {
@@ -553,7 +596,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         }
 
         preloadPath = preloadPath.replace(/\\/g, "/");
-        console.log(preloadPath);
+        // console.log(preloadPath);
 
         installNavigatorDOM(publication, publicationJsonUrl,
             "publication_viewport",
@@ -563,9 +606,9 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
     private showLcpDialog(message?: string) {
 
-        console.log(lcpHint);
+        // console.log(lcpHint);
         if (message) {
-            console.log(message);
+            // console.log(message);
         }
 
         setTimeout(() => {
@@ -581,5 +624,41 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         const href = event.target.href;
         handleLink(href, undefined, false);
         event.preventDefault();
+    }
+
+    private handleSettingsOpen() {
+        this.setState({settingsOpen: true});
+    }
+
+    private handleSettingsClose() {
+        this.setState({settingsOpen: false});
+    }
+
+    private handleSettingsSave() {
+        const values = this.state.settingsValues;
+        values.fontSize = values.fontSizeNum + "%";
+
+        this.store.dispatch(save(values));
+        this.setState({settingsValues: values});
+        this.handleSettingsClose();
+
+        globalSettingsValues = values;
+        readiumCssOnOff();
+    }
+
+    private handleSettingsValueChange(event: any) {
+        const settingsValues = this.state.settingsValues;
+        const name = event.target.name;
+        let value = event.target.value.toString();
+
+        if (value === "false") {
+            value = false;
+        } else if (value === "true") {
+            value = true;
+        }
+
+        settingsValues[name] =  value;
+
+        this.setState({settingsValues});
     }
 }

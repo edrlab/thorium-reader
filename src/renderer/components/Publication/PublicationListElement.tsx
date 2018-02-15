@@ -14,7 +14,7 @@ import RaisedButton from "material-ui/RaisedButton";
 
 import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 
-import { Styles } from "readium-desktop/renderer/components/styles/styles";
+import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { Cover } from "readium-desktop/renderer/components/Publication/index";
 

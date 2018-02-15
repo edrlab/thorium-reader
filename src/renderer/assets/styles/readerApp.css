@@ -74,6 +74,40 @@
   flex-grow: 2;
 }
 
+/* ======= Settings ======= */
+
+.settings_content {
+  display: flex;
+  flex-direction: column;
+
+  & label {
+    margin: 1rem;
+  }
+
+  & div {
+    display: flex;
+    text-align: center;
+
+    & label {
+      flex-grow: 1;
+      height: 1.5rem;
+    }
+  }
+}
+
+.settings_action {
+  background-color: rgb(0, 0, 0, 0);
+  border: 0;
+  font-size: 1rem;
+  width: 5rem;
+  height: 2.5rem;
+}
+
+.settings_icones {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 /* ======= CONTENT TABLE ======*/
 
 .content_table {

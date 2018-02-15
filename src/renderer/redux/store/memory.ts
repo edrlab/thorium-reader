@@ -4,8 +4,8 @@ import createSagaMiddleware from "redux-saga";
 
 import { reduxSyncMiddleware } from "readium-desktop/renderer/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/renderer/redux/reducers";
-import { RootState } from "readium-desktop/renderer/redux/states";
 import { rootSaga } from "readium-desktop/renderer/redux/sagas";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 export function initStore(): Store<RootState> {
     const sagaMiddleware = createSagaMiddleware();

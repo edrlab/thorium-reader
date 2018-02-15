@@ -25,18 +25,19 @@ import Library from "readium-desktop/renderer/components/Library";
 import * as windowActions from "readium-desktop/renderer/actions/window";
 
 import {
-    readerActions,
     catalogActions,
+    readerActions,
 } from "readium-desktop/common/redux/actions";
 
-import { RootState } from "readium-desktop/renderer/redux/states";
 import { MessageStatus } from "readium-desktop/renderer/reducers/message";
+import { RootState } from "readium-desktop/renderer/redux/states";
 // import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
 
 import * as messageAction from "readium-desktop/renderer/actions/message";
 
 import * as Dropzone from "react-dropzone/dist";
-// import { default as Dropzone } from "react-dropzone"; // does not work when "react-dropzone" is external to the bundle (Node require() import)
+// import { default as Dropzone } from "react-dropzone";
+// does not work when "react-dropzone" is external to the bundle (Node require() import)
 
 interface AppState {
     catalog: Catalog;
@@ -67,7 +68,7 @@ export default class App extends React.Component<undefined, AppState> {
 
     private currentDialogAction: JSX.Element[];
 
-    private confimationAction: Function;
+    private confimationAction: () => void;
 
     private defaultDialogActions = [
         <FlatButton
@@ -123,13 +124,13 @@ export default class App extends React.Component<undefined, AppState> {
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
         this.filesToImport = acceptedFiles;
-        let nameList: JSX.Element[] = [];
+        const nameList: JSX.Element[] = [];
         let i = 0;
-        for (let file of acceptedFiles) {
+        for (const file of acceptedFiles) {
             nameList.push (<li key={i}>{file.name}</li>);
             i++;
         }
-        let message = (
+        const message = (
             <div>
                 <p>{this.translator.translate("dialog.import")}</p>
                 <ul>
@@ -227,7 +228,7 @@ export default class App extends React.Component<undefined, AppState> {
         this.openDialog(message);
     }
 
-    private openDialog(message: JSX.Element, confirmationAction?: Function, actions?: JSX.Element[]) {
+    private openDialog(message: JSX.Element, confirmationAction?: () => void, actions?: JSX.Element[]) {
         this.confimationAction = confirmationAction;
 
         if (actions) {
@@ -250,7 +251,7 @@ export default class App extends React.Component<undefined, AppState> {
         }
     }
 
-    private handleDialogClose () {
+    private handleDialogClose() {
         this.setState({ dialogOpen: false });
     }
 }
