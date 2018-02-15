@@ -25,6 +25,7 @@ import { streamer } from "readium-desktop/main/streamer";
 
 import { OpdsDb } from "readium-desktop/main/db/opds-db";
 import { PublicationDb } from "readium-desktop/main/db/publication-db";
+import { ReaderSettingsDb } from "readium-desktop/main/db/reader-settings-db";
 import {
     PublicationStorage,
 } from "readium-desktop/main/storage/publication-storage";
@@ -91,6 +92,11 @@ const opdsDb = new PouchDB(
     dbOpts,
 );
 
+const readerSettingsDb = new PouchDB(
+    path.join(rootDbPath, "reader-settings"),
+    dbOpts,
+);
+
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
     userDataPath,
@@ -126,11 +132,14 @@ container.bind<PublicationDb>("publication-db").toConstantValue(
 container.bind<OpdsDb>("opds-db").toConstantValue(
     new OpdsDb(opdsDb),
 );
+container.bind<ReaderSettingsDb>("reader-settings-db").toConstantValue(
+    new ReaderSettingsDb(readerSettingsDb),
+);
 container.bind<PublicationStorage>("publication-storage").toConstantValue(
     new PublicationStorage(publicationRepositoryPath),
 );
 
-let {
+const {
     lazyInject,
     lazyInjectNamed,
     lazyInjectTagged,

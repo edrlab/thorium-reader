@@ -13,3 +13,19 @@ declare module "react-card-flip";
 
 declare module "pouchdb-adapter-leveldb";
 declare module "readium-desktop/pouchdb/jsondown-adapter";
+
+declare module "*.css" {
+    interface IClassNames {
+        [className: string]: string
+    }
+    const classNames: IClassNames;
+    export = classNames;
+}
+
+declare module "*.svg" {
+    interface IProps {
+        [propName: string]: any
+    }
+    const props: IProps;
+    export default props;
+}

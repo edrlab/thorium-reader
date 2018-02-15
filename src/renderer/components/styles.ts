@@ -1,7 +1,9 @@
-let auto: "auto" = "auto";
-let fixed: "fixed" = "fixed";
-let hidden: "hidden" = "hidden";
-let absolute: "absolute" = "absolute";
+import { relative } from "path";
+
+const auto: "auto" = "auto";
+const fixed: "fixed" = "fixed";
+const hidden: "hidden" = "hidden";
+const absolute: "absolute" = "absolute";
 
 export const Styles = {
     Reader: {
@@ -9,11 +11,50 @@ export const Styles = {
             overflowY: hidden,
             overflowX: hidden,
             position: absolute,
-            top: "160px",
+            top: "0px",
             bottom: "0px",
             left: "0px",
             right: "0px",
             backgroundColor: "red",
+        },
+        reader: {
+            display: relative,
+
+            position: absolute,
+            top: "160px",
+            bottom: "0px",
+            left: "0px",
+            right: "0px",
+        },
+        leftButton: {
+            "position": absolute,
+            "top": "0px",
+            "bottom": "0px",
+            "left": "0px",
+            "width": "20%",
+            "height": "unset",
+            "zIndex": 3,
+            "&:hover": {
+                display: "inline-block",
+            },
+        },
+        rightButton: {
+            "position": absolute,
+            "top": "0px",
+            "bottom": "0px",
+            "right": "0px",
+            "width": "20%",
+            "height": "unset",
+            "zIndex": 3,
+            "&:hover": {
+                width: "60%",
+            },
+        },
+        test: {
+            display: "none",
+        },
+        test2: {
+            display: "inline-block",
         },
     },
     App: {

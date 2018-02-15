@@ -47,5 +47,11 @@
         "loginButton": "Connexion",
         "sentence": "Veuillez vous connecter pour acceder au contenu"
       }
+    },
+    "reader": {
+      "settings": {
+        "title": "Paramètres",
+        "style": "Style"
+      }
     }
 }

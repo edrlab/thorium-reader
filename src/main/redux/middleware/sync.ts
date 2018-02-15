@@ -7,6 +7,7 @@ import {
     opdsActions,
     publicationDownloadActions,
     readerActions,
+    readerSettingsActions,
 } from "readium-desktop/common/redux/actions";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
@@ -40,6 +41,11 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 
     readerActions.ActionType.OpenError,
     readerActions.ActionType.OpenSuccess,
+
+    readerSettingsActions.ActionType.SaveError,
+    readerSettingsActions.ActionType.SaveSuccess,
+    readerSettingsActions.ActionType.RestoreError,
+    readerSettingsActions.ActionType.RestoreSuccess,
 ];
 
 export const reduxSyncMiddleware = (_0: Store<any>) => (next: any) => (action: any) => {
@@ -56,12 +62,16 @@ export const reduxSyncMiddleware = (_0: Store<any>) => (next: any) => (action: a
     for (const winId of Object.keys(windows)) {
         // Notifies renderer process
         const win = windows[winId];
+        try {
         win.webContents.send(syncIpc.CHANNEL, {
             type: syncIpc.EventType.MainAction,
             payload: {
                 action,
             },
         });
+        } catch (error) {
+            console.log("Windows does not exist", winId);
+        }
     }
 
     return next(action);
