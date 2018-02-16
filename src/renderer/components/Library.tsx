@@ -43,6 +43,7 @@ interface ILibraryState {
     open: boolean;
     lcpPass: string;
     lcpPassVisible: boolean;
+    lastCheck: number;
 }
 
 interface LibraryProps {
@@ -73,14 +74,20 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         this.state = {
             open: false,
             list: false,
-            lcpPassOpen: true,
+            lcpPassOpen: false,
             lcpPass: undefined,
             lcpPassVisible: false,
+            lastCheck: Date.now(),
         };
     }
 
     public componentDidMount() {
-        // this.store.dispatch(windowActions.showLibrary());
+        this.store.subscribe(() => {
+            const lcpStore = this.store.getState().lcp;
+            if (lcpStore.lastUserKeyCheckDate && lcpStore.lastUserKeyCheckDate !== this.state.lastCheck) {
+                this.setState({lcpPassOpen: true, lastCheck: lcpStore.lastUserKeyCheckDate});
+            }
+        });
     }
 
     public downloadEPUB = (newPublication: Publication, publicationId: number) => {
@@ -258,8 +265,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     private handleLcpPassSubmit() {
-        this.store.dispatch(lcpActions.sendPassphrase(this.state.lcpPass));
+        this.store.dispatch(lcpActions.sendPassphrase(undefined, this.state.lcpPass));
         this.handleLcpPassClose();
+        this.setState({lcpPass: undefined});
     }
 
     private handleLcpPassChange(event: any) {
