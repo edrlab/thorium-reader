@@ -134,6 +134,7 @@ export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
         const parsedEpub: Epub = yield call(() => EpubParsePromise(epubPath));
 
         if (parsedEpub.LCP) {
+            console.log("####", parsedEpub.LCP.LSDJson);
             // User key check
             yield put(lcpActions.checkUserKey(
                 publication,
@@ -147,6 +148,10 @@ export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
             ]);
 
             if (userKeyCheckAction.error) {
+                yield put({
+                    type: streamerActions.ActionType.PublicationOpenError,
+                    error: true,
+                });
                 continue;
             }
         }
