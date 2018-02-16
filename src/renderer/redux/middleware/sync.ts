@@ -4,6 +4,7 @@ import { Store } from "redux";
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
     catalogActions,
+    lcpActions,
     opdsActions,
     publicationDownloadActions,
     readerActions,
@@ -23,6 +24,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 
     readerActions.ActionType.OpenRequest,
     readerActions.ActionType.ConfigSetRequest,
+
+    lcpActions.ActionType.PassphraseSubmitRequest,
 ];
 
 export const reduxSyncMiddleware = (_0: Store<any>) => (next: any) => (action: any) => {

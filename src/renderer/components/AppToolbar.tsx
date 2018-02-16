@@ -22,6 +22,7 @@ import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
+import * as classNames from "classnames";
 import AddIcon from "readium-desktop/renderer/assets/icons/add.svg";
 import GiftIcon from "readium-desktop/renderer/assets/icons/gift.svg";
 import MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
@@ -144,13 +145,13 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                 <div className={AppBarStyles.root}>
                     <IconMenu
                         iconButtonElement={
-                            <button className={AppBarStyles.button}>
+                            <button className={classNames(AppBarStyles.button, AppBarStyles.button_text)}>
                                 {this.state.localeList[this.state.locale]}
                             </button>
                         }
                     >
                         <MenuItem
-                            primaryText= {__("French")}
+                            primaryText= {__("Français")}
                             onClick={() => {this.handleLocaleChange("fr"); }}
                         />
                         <MenuItem

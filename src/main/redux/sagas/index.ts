@@ -39,6 +39,11 @@ import {
     streamerStopRequestWatcher,
 } from "./streamer";
 
+import {
+    lcpPassphraseSubmitRequestWatcher,
+    lcpUserKeyCheckRequestWatcher,
+} from "./lcp";
+
 export function* rootSaga() {
     yield all([
         // Catalog
@@ -79,5 +84,9 @@ export function* rootSaga() {
         streamerStartRequestWatcher(),
         streamerPublicationOpenRequestWatcher(),
         streamerPublicationCloseRequestWatcher(),
+
+        // LCP
+        lcpPassphraseSubmitRequestWatcher(),
+        lcpUserKeyCheckRequestWatcher(),
     ]);
 }

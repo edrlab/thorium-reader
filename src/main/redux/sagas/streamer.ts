@@ -6,11 +6,14 @@ import { call, fork, put, select, take } from "redux-saga/effects";
 
 import { Server } from "@r2-streamer-js/http/server";
 
+import { Publication as Epub } from "@r2-shared-js/models/publication";
+import { EpubParsePromise } from "@r2-shared-js/parser/epub";
+
 import { Publication } from "readium-desktop/common/models/publication";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 
 import { container } from "readium-desktop/main/di";
-import { streamerActions } from "readium-desktop/main/redux/actions";
+import { lcpActions, streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
@@ -126,6 +129,33 @@ export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
 
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
+
+        // Test if publication contains LCP drm
+        const parsedEpub: Epub = yield call(() => EpubParsePromise(epubPath));
+
+        if (parsedEpub.LCP) {
+            console.log("####", parsedEpub.LCP.LSDJson);
+            // User key check
+            yield put(lcpActions.checkUserKey(
+                publication,
+                parsedEpub.LCP.Encryption.UserKey.TextHint,
+            ));
+
+            // Wait for success
+            const userKeyCheckAction = yield take([
+                lcpActions.ActionType.UserKeyCheckSuccess,
+                lcpActions.ActionType.UserKeyCheckError,
+            ]);
+
+            if (userKeyCheckAction.error) {
+                yield put({
+                    type: streamerActions.ActionType.PublicationOpenError,
+                    error: true,
+                });
+                continue;
+            }
+        }
+
         const manifestUrl = streamer.serverUrl() + manifestPaths[0];
         debug(manifestUrl);
         yield put({
