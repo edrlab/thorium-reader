@@ -24,6 +24,9 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 
+import { initGlobals } from "@r2-shared-js/init-globals";
+import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
+
 // Logger
 const debug = debug_("readium-desktop:main");
 
@@ -39,6 +42,10 @@ if (__FORCEDEBUG__ === "1") {
 
 const IS_DEV = __FORCEDEBUG__ === "1" || __NODE_ENV__ === "DEV" ||
     __PACKAGING__ === "0" && (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
+
+initGlobals();
+const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
+setLcpNativePluginPath(lcpNativePluginPath);
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.

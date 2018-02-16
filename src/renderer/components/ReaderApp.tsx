@@ -47,7 +47,6 @@ import {
     setReadingLocationSaver,
     setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
-import { initGlobals } from "@r2-shared-js/init-globals";
 import { StoreElectron } from "@r2-testapp-js/electron/common/store-electron";
 import { ipcRenderer } from "electron";
 import { JSON as TAJSON } from "ta-json";
@@ -96,8 +95,6 @@ webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
 // const electronStoreLCP: IStore = new StoreElectron("readium2-testapp-lcp", {});
 
 // const electronStoreLSD: IStore = new StoreElectron("readium2-testapp-lsd", {});
-
-initGlobals();
 
 let globalSettingsValues: ReadiumCSS = {
     align: "left",

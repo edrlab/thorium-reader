@@ -2,9 +2,7 @@ import * as path from "path";
 
 import { app } from "electron";
 
-import { initGlobals } from "@r2-shared-js/init-globals";
 import { Server } from "@r2-streamer-js/http/server";
-import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
 
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
@@ -15,10 +13,6 @@ declare const __RENDERER_BASE_URL__: string;
 declare const __NODE_ENV__: string;
 declare const __NODE_MODULE_RELATIVE_URL__: string;
 declare const __PACKAGING__: string;
-
-initGlobals();
-const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
-setLcpNativePluginPath(lcpNativePluginPath);
 
 // Create readium2 streamer
 // This streamer is used to stream epub content to the renderer

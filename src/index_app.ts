@@ -1,5 +1,7 @@
 import "font-awesome/css/font-awesome.css";
 
+import * as path from "path";
+
 import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -13,11 +15,18 @@ import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 
 import App from "readium-desktop/renderer/components/App";
 
+import { initGlobals } from "@r2-shared-js/init-globals";
+// import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
+
 declare const __FORCEDEBUG__: string;
 
 if (__FORCEDEBUG__ === "1") {
     process.env.DEBUG = "r2:*";
 }
+
+initGlobals();
+// const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
+// setLcpNativePluginPath(lcpNativePluginPath);
 
 // Render app
 let hasBeenRenderered = false;
