@@ -27,7 +27,7 @@ import SettingsIcon from "readium-desktop/renderer/assets/icons/settings.svg";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { lcpActions, readerActions } from "readium-desktop/common/redux/actions";
 
 import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -356,27 +356,16 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                     </svg>
                                 </button>
                             </div>
-                            {/*
-                            <input type="text"
+                            {/* <input type="text"
                                 value={this.state.lcpPass}
                                 onChange={(event) => {  this.setState({lcpPass: event.target.value}); }}
                                 size={40}
                             />
                             <button
                                 className={ReaderStyles.menu_button}
-                                onClick={() => {
-                                    ipcRenderer.send(R2_EVENT_LCP_LSD_RENEW, pathDecoded, ""); // no explicit end date
-                                }}
+                                onClick={() => {this.store.dispatch(lcpActions.sendPassphrase(this.state.lcpPass)); }}
                                 >
-                                LSD Renew
-                            </button>
-                            <button
-                                className={ReaderStyles.menu_button}
-                                onClick={() => {
-                                    ipcRenderer.send(R2_EVENT_LCP_LSD_RETURN, pathDecoded);
-                                }}
-                                >
-                                LSD Return
+                                LCD Log in
                             </button> */}
                         </div>
                         <div className={ReaderStyles.content_root}>
