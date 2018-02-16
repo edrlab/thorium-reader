@@ -151,10 +151,10 @@ const queryParams = getURLQueryParams();
 
 // tslint:disable-next-line:no-string-literal
 const publicationJsonUrl = queryParams["pub"];
-const publicationJsonUrl_ = publicationJsonUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
+const newPublicationJsonUrl = publicationJsonUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
     convertCustomSchemeToHttpUrl(publicationJsonUrl) : publicationJsonUrl;
 
-const pathBase64 = publicationJsonUrl_.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+const pathBase64 = newPublicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
 
 const pathDecoded = window.atob(pathBase64);
 
@@ -569,8 +569,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         // }
 
         // const readStore = electronStore.get("readingLocation");
-        let pubDocHrefToLoad: string | undefined;
-        let pubDocSelectorToGoto: string | undefined;
+        const pubDocHrefToLoad: string | undefined = undefined;
+        const pubDocSelectorToGoto: string | undefined = undefined;
         // if (readStore) {
         //     const obj = readStore[pathDecoded];
         //     if (obj && obj.doc) {

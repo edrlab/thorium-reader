@@ -7,30 +7,25 @@
   height: var(--library-button-size);
   width: var(--library-button-size);
   text-align: center;
-  position: relative;
-  padding: 0;
-
   border: 0;
+  padding: 0;
   background-color: rgb(0, 0, 0, 0);
-  color: var(--secondary-color);
 
   & svg {
     height: var(--library-svg-size);
     width: var(--library-svg-size);
   }
+}
 
-  & input {
-    bottom: 0;
-    color: var(--secondary-color);
-    cursor: pointer;
-    left: 0;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 100%;
-    z-index: 100;
+.display_button_disable {
+  cursor: pointer;
+
+  & svg {
+    fill: grey;
+  }
+
+  &:hover {
+    background-color: silver;
   }
 }
 
