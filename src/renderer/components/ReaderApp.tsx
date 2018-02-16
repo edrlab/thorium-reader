@@ -206,7 +206,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             lcpPass: "LCP pass",
             spineLinks: { "no spine items?": "https://google.com" },
             contentTableOpen: false,
-            settingsOpen: true,
+            settingsOpen: false,
             settingsValues: {
                 align: "left",
                 colCount: "auto",
@@ -330,7 +330,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                 <div>
                     <div className={ReaderStyles.root}>
                         <div className={ReaderStyles.menu}>
-                            <div className={ReaderStyles.separation}/>
                             <button
                                 className={ReaderStyles.menu_button}
                                 onClick={this.handleContentTableClick.bind(this)}
@@ -340,26 +339,26 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                     <use xlinkHref={"#" + ContentTableIcon.id} />
                                 </svg>
                             </button>
-                            <button
-                                className={ReaderStyles.menu_button}
-                                onClick={() => {
-                                    // electronStore.set("styling.night", !electronStore.get("styling.night"));
-                                }}
-                            >
-                                <svg className={ReaderStyles.menu_svg} viewBox={NightIcon.night}>
-                                    <title>Night</title>
-                                    <use xlinkHref={"#" + NightIcon.id} />
-                                </svg>
-                            </button>
-                            <button
-                                className={ReaderStyles.menu_button}
-                                onClick={this.handleSettingsOpen.bind(this)}
-                            >
-                                <svg className={ReaderStyles.menu_svg} viewBox={SettingsIcon.settings}>
-                                    <title>Settings</title>
-                                    <use xlinkHref={"#" + SettingsIcon.id} />
-                                </svg>
-                            </button>
+                            <div className={ReaderStyles.menu_right_button}>
+                                <button
+                                    className={ReaderStyles.menu_button}
+                                    onClick={this.handleNightSwitch.bind(this)}
+                                >
+                                    <svg className={ReaderStyles.menu_svg} viewBox={NightIcon.night}>
+                                        <title>Night</title>
+                                        <use xlinkHref={"#" + NightIcon.id} />
+                                    </svg>
+                                </button>
+                                <button
+                                    className={ReaderStyles.menu_button}
+                                    onClick={this.handleSettingsOpen.bind(this)}
+                                >
+                                    <svg className={ReaderStyles.menu_svg} viewBox={SettingsIcon.settings}>
+                                        <title>Settings</title>
+                                        <use xlinkHref={"#" + SettingsIcon.id} />
+                                    </svg>
+                                </button>
+                            </div>
                             {/*
                             <input type="text"
                                 value={this.state.lcpPass}
@@ -658,6 +657,16 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         globalSettingsValues = values;
         console.log("#### save");
         readiumCssOnOff();
+    }
+
+    private handleNightSwitch() {
+        const settingsValues = this.state.settingsValues;
+
+        settingsValues.night =  !settingsValues.night;
+
+        this.setState({settingsValues});
+
+        this.handleSettingsSave();
     }
 
     private handleSettingsValueChange(event: any) {

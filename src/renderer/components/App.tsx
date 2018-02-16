@@ -24,6 +24,8 @@ import Library from "readium-desktop/renderer/components/Library";
 
 import * as windowActions from "readium-desktop/renderer/actions/window";
 
+import * as AppStyles from "readium-desktop/renderer/assets/styles/app.css";
+
 import {
     catalogActions,
     readerActions,
@@ -185,7 +187,7 @@ export default class App extends React.Component<undefined, AppState> {
     public render(): React.ReactElement<{}> {
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
-                <div>
+                <div className={AppStyles.root}>
                     <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
                         <AppToolbar
                             openDialog={this.openDialog.bind(this)}

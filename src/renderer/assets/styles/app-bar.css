@@ -5,6 +5,15 @@
   --svg-size: 1.5rem;
 }
 
+.root {
+  display: flex;
+  flex-directon: row;
+  background-color: var(--main-color);
+  color: var(--secondary-color);
+  fill: var(--secondary-color);
+  padding: 0.5rem;
+}
+
 .button {
   height: var(--button-size);
   width: var(--button-size);
@@ -15,6 +24,7 @@
 
   border: 0;
   background-color: rgb(0, 0, 0, 0);
+  color: var(--secondary-color);
 
   & svg {
     height: var(--svg-size);
@@ -34,4 +44,16 @@
     width: 100%;
     z-index: 100;
   }
+}
+
+.separator {
+  width: 0.1rem;
+  height: 1.7rem;
+  margin: auto 0.5rem;
+  background-color: var(--secondary-color);
+}
+
+.button_group {
+  display: flex;
+  margin-left: auto;
 }

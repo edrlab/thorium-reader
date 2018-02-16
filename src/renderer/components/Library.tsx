@@ -24,6 +24,10 @@ import { Translator } from "readium-desktop/common/services/translator";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
 
+import CardIcon from "readium-desktop/renderer/assets/icons/view-card.svg";
+import ListIcon from "readium-desktop/renderer/assets/icons/view-list.svg";
+import * as LibraryStyles from "readium-desktop/renderer/assets/styles/library.css";
+
 import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
@@ -35,9 +39,9 @@ interface ILibraryState {
 
 interface LibraryProps {
     catalog: Catalog;
-    handleRead: Function;
-    openSnackbar: Function;
-    openDialog: Function;
+    handleRead: any;
+    openSnackbar: any;
+    openDialog: any;
 }
 
 interface IDownload {
@@ -116,9 +120,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     public createElementList() {
-        let list: any = [];
+        const list: any = [];
         let i = 0;
-        for (let pub of this.props.catalog.publications.sort(this.sort)) {
+        for (const pub of this.props.catalog.publications.sort(this.sort)) {
             list.push(<PublicationListElement key={i}
                 publication={pub}
                 publicationId={i}
@@ -141,7 +145,11 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
             if (this.state.list) {
                 listToDisplay = this.createElementList();
             } else {
-                listToDisplay = this.createCardList();
+                listToDisplay = (
+                    <div className={LibraryStyles.card_container}>
+                        {this.createCardList()}
+                    </div>
+                );
             }
         } else {
             listToDisplay = <this.Spinner/>;
@@ -150,23 +158,24 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         return (
             <div>
                 <div>
-                    <h1 style={Styles.Library.title}>{__("library.heading")}</h1>
-                    <IconButton
-                        style={Styles.Library.displayButton}
-                        touch={true} onClick={() => {
-                            that.setState({list: true});
-                        }}
-                    >
-                        <FontIcon className="fa fa-list" color={blue500} />
-                    </IconButton>
-                    <IconButton
-                        style={Styles.Library.displayButton}
-                        touch={true}  onClick={() => {
-                            that.setState({list: false});
-                        }}
-                    >
-                        <FontIcon className="fa fa-th-large" color={blue500} />
-                    </IconButton>
+                    <button
+                        className={LibraryStyles.display_button}
+                        onClick={() => {that.setState({list: true});
+                    }}>
+                        <svg viewBox={ListIcon.content_table}>
+                            <title>Add EPUB</title>
+                            <use xlinkHref={"#" + ListIcon.id} />
+                        </svg>
+                    </button>
+                    <button
+                        className={LibraryStyles.display_button}
+                        onClick={() => {that.setState({list: false});
+                    }}>
+                        <svg viewBox={CardIcon.content_table}>
+                            <title>Add EPUB</title>
+                            <use xlinkHref={"#" + CardIcon.id} />
+                        </svg>
+                    </button>
                 </div >
                 <div style={Styles.Library.list}>
                     {listToDisplay}
@@ -175,7 +184,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         );
     }
 
-    private sort (a: Publication, b: Publication) {
+    private sort(a: Publication, b: Publication) {
 
         // TODO: should get language from view state? (user preferences)
         const lang = "en";

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import FlatButton   from "material-ui/FlatButton";
+import FlatButton from "material-ui/FlatButton";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
@@ -10,7 +10,7 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import { getMultiLangString } from "readium-desktop/common/models/language";
 
-import { Translator }   from "readium-desktop/common/services/translator";
+import { Translator } from "readium-desktop/common/services/translator";
 
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
 import IconButton from "material-ui/IconButton";
@@ -24,6 +24,8 @@ import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { Cover } from "readium-desktop/renderer/components/Publication/index";
 
+import * as LibraryStyles from "readium-desktop/renderer/assets/styles/library.css";
+
 interface IPublicationState {
     isFlipped: boolean;
 }
@@ -32,10 +34,10 @@ interface IPublicationProps {
     publication: Publication;
     publicationId: number;
     downloadable?: boolean;
-    cancelDownload: Function;
-    downloadEPUB: Function;
-    handleRead: Function;
-    deletePublication: Function;
+    cancelDownload: any;
+    downloadEPUB: any;
+    handleRead: any;
+    deletePublication: any;
 }
 
 export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
@@ -64,14 +66,14 @@ export default class PublicationListElement extends React.Component<IPublication
 
         const __ = this.translator.translate.bind(this.translator);
         const publication = this.props.publication;
-        let that = this;
-        let id = this.props.publicationId;
+        const that = this;
+        const id = this.props.publicationId;
         let authors: string = "";
         let image: string = "";
 
         if (publication.authors && publication.authors.length > 0) {
-            for (let author of publication.authors) {
-                let newAuthor: Contributor = author;
+            for (const author of publication.authors) {
+                const newAuthor: Contributor = author;
                 if (authors !== "") {
                     authors += ", ";
                 }
@@ -84,7 +86,7 @@ export default class PublicationListElement extends React.Component<IPublication
 
 
         return (
-            <div style={Styles.BookCard.body}>
+            <div className={LibraryStyles.book_card}>
                 <Card style={Styles.BookCard.body}>
                     <CardMedia>
                         <div

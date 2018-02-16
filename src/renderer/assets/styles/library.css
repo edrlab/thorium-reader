@@ -1,0 +1,49 @@
+:root {
+  --library-button-size: 3rem;
+  --library-svg-size: 2.3rem;
+}
+
+.display_button {
+  height: var(--library-button-size);
+  width: var(--library-button-size);
+  text-align: center;
+  position: relative;
+  padding: 0;
+
+  border: 0;
+  background-color: rgb(0, 0, 0, 0);
+  color: var(--secondary-color);
+
+  & svg {
+    height: var(--library-svg-size);
+    width: var(--library-svg-size);
+  }
+
+  & input {
+    bottom: 0;
+    color: var(--secondary-color);
+    cursor: pointer;
+    left: 0;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+  }
+}
+
+.book_card {
+  display: inline-block;
+  height: 400;
+  margin: 5px 5px;
+  text-align: center;
+  width: 210;
+  flex-grow: 0;
+}
+
+.card_container {
+  display: flex;
+  flex-wrap: wrap;
+}
