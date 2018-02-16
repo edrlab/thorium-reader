@@ -18,12 +18,11 @@ import { getMultiLangString } from "readium-desktop/common/models/language";
 import { lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-// import * as windowActions from "readium-desktop/renderer/actions/window";
-
 import { Translator } from "readium-desktop/common/services/translator";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
 
+import * as classNames from "classnames";
 import CardIcon from "readium-desktop/renderer/assets/icons/view-card.svg";
 import ListIcon from "readium-desktop/renderer/assets/icons/view-list.svg";
 import * as LibraryStyles from "readium-desktop/renderer/assets/styles/library.css";
@@ -138,6 +137,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate.bind(this.translator);
+        const list = this.state.list;
 
         const that = this;
         let listToDisplay: JSX.Element;
@@ -159,7 +159,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
             <div>
                 <div>
                     <button
-                        className={LibraryStyles.display_button}
+                        className={
+                            classNames(LibraryStyles.display_button, !list && LibraryStyles.display_button_disable)
+                        }
                         onClick={() => {that.setState({list: true});
                     }}>
                         <svg viewBox={ListIcon.content_table}>
@@ -168,7 +170,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                         </svg>
                     </button>
                     <button
-                        className={LibraryStyles.display_button}
+                        className={
+                            classNames(LibraryStyles.display_button, list && LibraryStyles.display_button_disable)
+                        }
                         onClick={() => {that.setState({list: false});
                     }}>
                         <svg viewBox={CardIcon.content_table}>

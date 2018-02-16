@@ -21,6 +21,7 @@
   padding: 0.5rem;
   margin: 0 0.1rem;
   position: relative;
+  cursor: pointer;
 
   border: 0;
   background-color: rgb(0, 0, 0, 0);
@@ -44,6 +45,10 @@
     width: 100%;
     z-index: 100;
   }
+}
+
+.button_text {
+  width: 7rem;
 }
 
 .separator {

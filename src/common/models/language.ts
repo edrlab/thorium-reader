@@ -5,7 +5,7 @@ export interface Language {
     code: string; // Iso code on 2 or 3 chars
 }
 
-export function getMultiLangString(titleObj: any, lang?: string): string {
+export const getMultiLangString = (titleObj: any, lang?: string) => {
 
     if (!titleObj) {
         return "";
