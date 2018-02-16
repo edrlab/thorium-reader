@@ -14,6 +14,7 @@ import {
 import {
     downloaderReducer,
 } from "readium-desktop/common/redux/reducers/downloader";
+import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { opdsReducer } from "readium-desktop/common/redux/reducers/opds";
 import {
@@ -24,6 +25,7 @@ export const rootReducer = combineReducers({
     donwloader: downloaderReducer,
     streamer: streamerReducer,
     catalog: catalogReducer,
+    lcp: lcpReducer,
     publicationDownloads: publicationDownloadReducer,
     reader: readerReducer,
     net: netReducer,

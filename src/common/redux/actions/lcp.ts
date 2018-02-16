@@ -3,15 +3,30 @@ import { Reader, ReaderConfig } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 
 export enum ActionType {
-    PassphraseRequest = "PASSPHRASE_REQUEST",
-    PassphraseSuccess = "PASSPHRASE_SUCCESS",
-    PassphraseError = "PASSPHRASE_ERROR",
+    UserKeyCheckRequest = "LCP_USER_KEY_CHECK_REQUEST",
+    UserKeyCheckError = "LCP_USER_KEY_CHECK_ERROR",
+    UserKeyCheckSuccess = "LCP_USER_KEY_CHECK_SUCCESS",
+
+    PassphraseSubmitRequest = "LCP_PASSPHRASE_SUBMIT_REQUEST",
+    PassphraseSubmitSuccess = "LCP_PASSPHRASE_SUBMIT_SUCCESS",
+    PassphraseSubmitError = "LCP_PASSPHRASE_SUBMIT_ERROR",
 }
 
-export function sendPassphrase(passphrase: string): Action {
+export function checkUserKey(publication: Publication, hint: string): Action {
     return {
-        type: ActionType.PassphraseRequest,
+        type: ActionType.UserKeyCheckRequest,
         payload: {
+            publication,
+            hint,
+        },
+    };
+}
+
+export function sendPassphrase(publication: Publication, passphrase: string): Action {
+    return {
+        type: ActionType.PassphraseSubmitRequest,
+        payload: {
+            publication,
             passphrase,
         },
     };

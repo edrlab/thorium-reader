@@ -40,7 +40,8 @@ import {
 } from "./streamer";
 
 import {
-    lcpRequestWatcher,
+    lcpPassphraseSubmitRequestWatcher,
+    lcpUserKeyCheckRequestWatcher,
 } from "./lcp";
 
 export function* rootSaga() {
@@ -85,6 +86,7 @@ export function* rootSaga() {
         streamerPublicationCloseRequestWatcher(),
 
         // LCP
-        lcpRequestWatcher(),
+        lcpPassphraseSubmitRequestWatcher(),
+        lcpUserKeyCheckRequestWatcher(),
     ]);
 }

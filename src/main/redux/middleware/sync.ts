@@ -44,8 +44,11 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     readerActions.ActionType.ConfigSetError,
     readerActions.ActionType.ConfigSetSuccess,
 
-    lcpActions.ActionType.PassphraseSuccess,
-    lcpActions.ActionType.PassphraseError,
+    lcpActions.ActionType.UserKeyCheckRequest,
+    lcpActions.ActionType.UserKeyCheckError,
+    lcpActions.ActionType.UserKeyCheckSuccess,
+    lcpActions.ActionType.PassphraseSubmitError,
+    lcpActions.ActionType.PassphraseSubmitSuccess,
 
 ];
 

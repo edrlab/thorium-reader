@@ -1,5 +1,6 @@
 import { CatalogState } from "readium-desktop/common/redux/states/catalog";
 import { DownloaderState } from "readium-desktop/common/redux/states/downloader";
+import { LcpState } from "readium-desktop/common/redux/states/lcp";
 import { NetState } from "readium-desktop/common/redux/states/net";
 import { OpdsState } from "readium-desktop/common/redux/states/opds";
 import {
@@ -19,4 +20,5 @@ export interface RootState {
     catalog: CatalogState;
     reader: ReaderState;
     opds: OpdsState;
+    lcp: LcpState;
 }

@@ -9,11 +9,22 @@ import { OpdsDb } from "readium-desktop/main/db/opds-db";
 
 import { lcpActions } from "readium-desktop/common/redux/actions";
 
-export function* lcpRequestWatcher(): SagaIterator {
+export function* lcpPassphraseSubmitRequestWatcher(): SagaIterator {
     while (true) {
-        const requestAction = yield take(lcpActions.ActionType.PassphraseRequest);
-        const passphrase: string = requestAction.payload.passphrase;
+        const action = yield take(lcpActions.ActionType.PassphraseSubmitRequest);
+        const passphrase: string = action.payload.passphrase;
 
         console.log("LCP PASSPHRASE :", passphrase);
+    }
+}
+
+export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
+    while (true) {
+        const action = yield take(lcpActions.ActionType.UserKeyCheckRequest);
+        console.log("#### User key check", action);
+        yield put({
+            type: lcpActions.ActionType.UserKeyCheckError,
+            error: true,
+        });
     }
 }

@@ -25,7 +25,7 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     readerActions.ActionType.OpenRequest,
     readerActions.ActionType.ConfigSetRequest,
 
-    lcpActions.ActionType.PassphraseRequest,
+    lcpActions.ActionType.PassphraseSubmitRequest,
 ];
 
 export const reduxSyncMiddleware = (_0: Store<any>) => (next: any) => (action: any) => {

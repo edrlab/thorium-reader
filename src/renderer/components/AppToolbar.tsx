@@ -22,7 +22,7 @@ import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import * as classNames from "classNames";
+import * as classNames from "classnames";
 import AddIcon from "readium-desktop/renderer/assets/icons/add.svg";
 import GiftIcon from "readium-desktop/renderer/assets/icons/gift.svg";
 import MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
