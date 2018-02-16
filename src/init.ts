@@ -13,12 +13,6 @@ import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 
 import App from "readium-desktop/renderer/components/App";
 
-declare const __FORCEDEBUG__: string;
-
-if (__FORCEDEBUG__ === "1") {
-    process.env.DEBUG = "r2:*";
-}
-
 // Render app
 let hasBeenRenderered = false;
 

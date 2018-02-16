@@ -5,30 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
-// Default values for DEV environment
-let isPackaging = process.env.PACKAGING || "0";
-let forceDebug = process.env.FORCEDEBUG || "0";
-let nodeEnv = process.env.NODE_ENV || "DEV";
-let rendererBaseUrl = "file://";
-
-// Node module relative url from main
-let nodeModuleRelativeUrl = "../node_modules";
-
-if (nodeEnv === "DEV") {
-    rendererBaseUrl = "http://localhost:8080/";
-}
-
-if (isPackaging === "1") {
-    nodeModuleRelativeUrl = "node_modules";
-}
-
-let definePlugin = new webpack.DefinePlugin({
-    __NODE_ENV__: JSON.stringify(nodeEnv),
-    __PACKAGING__: JSON.stringify(isPackaging),
-    __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
-    __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
-    __FORCEDEBUG__: JSON.stringify(forceDebug),
-});
+const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
 const aliases = {
     "readium-desktop": path.resolve(__dirname, "src"),
@@ -59,7 +36,7 @@ let externals = {
     "fsevents": "fsevents",
     "conf": "conf"
 }
-if (nodeEnv === "DEV") {
+if (process.env.NODE_ENV !== "PROD") {
     // // externals = Object.assign(externals, {
     // //         "electron-config": "electron-config",
     // //     }
@@ -143,11 +120,14 @@ let config = Object.assign({}, {
             filename: "index_app.html",
         }),
         new ExtractTextPlugin("styles_app.css"),
-        definePlugin,
+        preprocessorDirectives.definePlugin,
     ],
 });
 
-if (nodeEnv === "DEV") {
+if (process.env.NODE_ENV !== "PROD") {
+    const port = parseInt(preprocessorDirectives.portApp, 10);
+    console.log("APP PORT: " + port);
+
     // Renderer config for DEV environment
     config = Object.assign({}, config, {
         // Enable sourcemaps for debugging webpack's output.
@@ -160,13 +140,13 @@ if (nodeEnv === "DEV") {
             },
             hot: true,
             watchContentBase: true,
-            port: 8080
+            port,
         },
     });
 
     config.output.pathinfo = true;
 
-    config.output.publicPath = "http://localhost:8080/";
+    config.output.publicPath = preprocessorDirectives.rendererAppBaseUrl;
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
     config.module.loaders.push({
         test: /\.css$/,
