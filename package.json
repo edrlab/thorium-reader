@@ -142,7 +142,6 @@
     "reflect-metadata": "^0.1.12",
     "request": "^2.83.0",
     "svg-sprite-loader": "^3.6.2",
-    "ta-json": "^2.3.1",
     "tmp": "^0.0.33",
     "uuid": "^3.2.1"
   },
