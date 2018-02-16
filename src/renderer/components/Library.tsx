@@ -1,13 +1,18 @@
 import * as React from "react";
 
+import Dialog from "material-ui/Dialog";
+import FlatButton from "material-ui/FlatButton";
 import FontIcon from "material-ui/FontIcon";
 import IconButton from "material-ui/IconButton";
+import RaisedButton from "material-ui/RaisedButton";
 import { blue500 } from "material-ui/styles/colors";
+import TextField from "material-ui/TextField";
 
 import { Store } from "redux";
 
 import {
     catalogActions,
+    lcpActions,
     publicationDownloadActions,
 } from "readium-desktop/common/redux/actions";
 
@@ -23,6 +28,7 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { Catalog } from "readium-desktop/common/models/catalog";
 
 import * as classNames from "classnames";
+import EyeIcon from "readium-desktop/renderer/assets/icons/eye.svg";
 import CardIcon from "readium-desktop/renderer/assets/icons/view-card.svg";
 import ListIcon from "readium-desktop/renderer/assets/icons/view-list.svg";
 import * as LibraryStyles from "readium-desktop/renderer/assets/styles/library.css";
@@ -33,7 +39,10 @@ import { Styles } from "readium-desktop/renderer/components/styles";
 
 interface ILibraryState {
     list: boolean;
+    lcpPassOpen: boolean;
     open: boolean;
+    lcpPass: string;
+    lcpPassVisible: boolean;
 }
 
 interface LibraryProps {
@@ -64,6 +73,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         this.state = {
             open: false,
             list: false,
+            lcpPassOpen: true,
+            lcpPass: undefined,
+            lcpPassVisible: false,
         };
     }
 
@@ -184,6 +196,43 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 <div style={Styles.Library.list}>
                     {listToDisplay}
                 </div>
+                <Dialog
+                    title="LCP Verification"
+                    actions={[
+                        <FlatButton
+                          label="Cancel"
+                          primary={true}
+                          onClick={this.handleLcpPassClose.bind(this)}
+                        />,
+                        <FlatButton
+                          label="Submit"
+                          primary={true}
+                          onClick={this.handleLcpPassSubmit.bind(this)}
+                        />,
+                      ]}
+                    modal={true}
+                    open={this.state.lcpPassOpen}
+                >
+                    <div className={LibraryStyles.lcp_pass_form}>
+                        This publication need a LCP password to be opened:
+                        <div>
+                            <TextField
+                                hintText="Your passphrase"
+                                type={!this.state.lcpPassVisible ? "password" : "text"}
+                                onChange={this.handleLcpPassChange.bind(this)}
+                                value={this.state.lcpPass}
+                            />
+                            <button
+                                className={LibraryStyles.eye_button}
+                                onClick={this.switchLcpPassVisibe.bind(this)}>
+                                <svg viewBox={EyeIcon.eye}>
+                                    <title>Show passphrase</title>
+                                    <use xlinkHref={"#" + EyeIcon.id} />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </Dialog>
             </div>
         );
     }
@@ -202,5 +251,23 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         } else {
             return -1;
         }
+    }
+
+    private handleLcpPassClose() {
+        this.setState({lcpPassOpen: false});
+    }
+
+    private handleLcpPassSubmit() {
+        this.store.dispatch(lcpActions.sendPassphrase(this.state.lcpPass));
+        this.handleLcpPassClose();
+    }
+
+    private handleLcpPassChange(event: any) {
+        const lcpPass = event.target.value;
+        this.setState({lcpPass});
+    }
+
+    private switchLcpPassVisibe() {
+        this.setState({lcpPassVisible: !this.state.lcpPassVisible});
     }
 }
