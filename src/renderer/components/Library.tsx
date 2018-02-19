@@ -204,15 +204,15 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                     {listToDisplay}
                 </div>
                 <Dialog
-                    title="LCP Verification"
+                    title={__("library.lcp.title")}
                     actions={[
                         <FlatButton
-                          label="Cancel"
+                          label={__("library.lcp.cancel")}
                           primary={true}
                           onClick={this.handleLcpPassClose.bind(this)}
                         />,
                         <FlatButton
-                          label="Submit"
+                          label={__("library.lcp.submit")}
                           primary={true}
                           onClick={this.handleLcpPassSubmit.bind(this)}
                         />,
@@ -220,25 +220,28 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                     modal={true}
                     open={this.state.lcpPassOpen}
                 >
-                    <div className={LibraryStyles.lcp_pass_form}>
-                        This publication need a LCP password to be opened:
-                        <div>
-                            <TextField
-                                hintText="Your passphrase"
-                                type={!this.state.lcpPassVisible ? "password" : "text"}
-                                onChange={this.handleLcpPassChange.bind(this)}
-                                value={this.state.lcpPass}
-                            />
-                            <button
-                                className={LibraryStyles.eye_button}
-                                onClick={this.switchLcpPassVisibe.bind(this)}>
-                                <svg viewBox={EyeIcon.eye}>
-                                    <title>Show passphrase</title>
-                                    <use xlinkHref={"#" + EyeIcon.id} />
-                                </svg>
-                            </button>
+                    {this.store.getState().lcp.lastUserKeyCheck && (
+                        <div className={LibraryStyles.lcp_pass_form}>
+                            <p>{__("library.lcp.sentence")}</p>
+                            <p>{__("library.lcp.hintSentence") + this.store.getState().lcp.lastUserKeyCheck.hint} </p>
+                            <div>
+                                <TextField
+                                    hintText={__("library.lcp.hint")}
+                                    type={!this.state.lcpPassVisible ? "password" : "text"}
+                                    onChange={this.handleLcpPassChange.bind(this)}
+                                    value={this.state.lcpPass}
+                                />
+                                <button
+                                    className={LibraryStyles.eye_button}
+                                    onClick={this.switchLcpPassVisibe.bind(this)}>
+                                    <svg viewBox={EyeIcon.eye}>
+                                        <title>Show passphrase</title>
+                                        <use xlinkHref={"#" + EyeIcon.id} />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </Dialog>
             </div>
         );

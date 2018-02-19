@@ -24,8 +24,8 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 
-import { initGlobals } from "@r2-shared-js/init-globals";
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
+import { initGlobals } from "@r2-shared-js/init-globals";
 
 // Logger
 const debug = debug_("readium-desktop:main");

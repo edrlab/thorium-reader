@@ -14,6 +14,7 @@ import {
 const SYNCHRONIZABLE_ACTIONS: any = [
     catalogActions.ActionType.LocalPublicationImportRequest,
     catalogActions.ActionType.PublicationRemoveRequest,
+    catalogActions.ActionType.LocalLCPImportRequest,
 
     opdsActions.ActionType.AddRequest,
     opdsActions.ActionType.UpdateRequest,

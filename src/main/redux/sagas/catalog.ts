@@ -1,4 +1,5 @@
 import { BrowserWindow, ipcMain } from "electron";
+import * as path from "path";
 import { Store } from "redux";
 import { Buffer, buffers, channel, Channel, delay, SagaIterator } from "redux-saga";
 import { actionChannel, call, fork, put, take } from "redux-saga/effects";
@@ -17,10 +18,17 @@ import { OPDSParser } from "readium-desktop/common/services/opds";
 
 import { RootState } from "readium-desktop/main/redux/states";
 
+import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+
 import { container } from "readium-desktop/main/di";
 
 import { PublicationDb } from "readium-desktop/main/db/publication-db";
 import { CatalogService } from "readium-desktop/main/services/catalog";
+
+import { injectFileInZip } from "readium-desktop/utils/zip";
+// import { injectFileInZip } from "@r2-utils-js/_utils/zip/zipInjector";
+
+import * as fs from "fs";
 
 import {
     catalogActions,
@@ -31,12 +39,12 @@ import { appActions } from "readium-desktop/main/redux/actions";
 export function* catalogLocalPublicationImportWatcher(): SagaIterator {
     while (true) {
         const action = yield take(catalogActions.ActionType.LocalPublicationImportRequest);
-        const path = action.payload.path;
+        const pubPath = action.payload.path;
         const catalogService = container.get(
             "catalog-service") as CatalogService;
 
         try {
-            const parsedEpub: Epub = yield call(() => EpubParsePromise(path));
+            const parsedEpub: Epub = yield call(() => EpubParsePromise(pubPath));
             const authors: Contributor[] = [];
 
             if (parsedEpub.Metadata && parsedEpub.Metadata.Author) {
@@ -77,6 +85,89 @@ export function* catalogLocalPublicationImportWatcher(): SagaIterator {
                 error: true,
             });
         }
+    }
+}
+
+export function* catalogLocalLCPImportWatcher(): SagaIterator {
+    while (true) {
+        let continueWaiting = true;
+
+        const contentType = "application/epub+zip";
+
+        const action = yield take(catalogActions.ActionType.LocalLCPImportRequest);
+        const lcpPath = action.payload.path;
+
+        const buffer = fs.readFileSync(lcpPath);
+        const content = JSON.parse(buffer.toString());
+
+        let epub;
+
+        // search the path of the epub file
+        if (content.links) {
+            for (const link of content.links) {
+                if (link.rel === "publication") {
+                    epub = link;
+                }
+            }
+        }
+
+        const publication: Publication = {
+            title: epub.title,
+            description: "",
+            identifier: uuid.v4(),
+            files: [
+                {
+                    url: epub.href,
+                    ext: "epub",
+                    contentType,
+                },
+            ],
+        };
+
+        // Start the download of the epub file
+        yield put({
+            type: publicationDownloadActions.ActionType.AddRequest,
+            payload: {
+                publication,
+            },
+        });
+
+        while (continueWaiting) {
+            const downloadAction = yield take(publicationDownloadActions.ActionType.Success);
+            const newPublication = downloadAction.payload.publication;
+
+            if (newPublication.identifier === publication.identifier) {
+                for (const file of newPublication.files) {
+                    const relativeUrl = file.url.substr(6);
+                    const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
+                    const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
+
+                    if (file.contentType === contentType) {
+                        injectFileInZip(filePath, filePath + ".lcp", lcpPath, "META-INF/license.lcpl", (error: any) => {
+                            console.error(error);
+                        }, () => {
+                            try {
+                                fs.unlinkSync(filePath);
+                            } catch (error) {
+                                console.log(error);
+                                return;
+                            }
+
+                            try {
+                                fs.renameSync(filePath + ".lcp", filePath);
+                            } catch (error) {
+                                console.log(error);
+                                return;
+                            }
+                        });
+                        break;
+                    }
+                }
+                continueWaiting = false;
+            }
+
+        }
+
     }
 }
 

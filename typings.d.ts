@@ -11,6 +11,9 @@ declare module "react-dropzone/dist";
 
 declare module "react-card-flip";
 
+declare module "yazl";
+declare module "yauzl";
+
 declare module "pouchdb-adapter-leveldb";
 declare module "readium-desktop/pouchdb/jsondown-adapter";
 

@@ -151,6 +151,7 @@ const queryParams = getURLQueryParams();
 
 // tslint:disable-next-line:no-string-literal
 const publicationJsonUrl = queryParams["pub"];
+// tslint:disable-next-line:variable-name
 const publicationJsonUrl_ = publicationJsonUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
     convertCustomSchemeToHttpUrl(publicationJsonUrl) : publicationJsonUrl;
 
@@ -301,6 +302,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
     public render(): React.ReactElement<{}> {
         const contentTable = [];
+        const __ = this.translator.translate.bind(this.translator);
+
         let i = 0;
         for (const spine in this.state.spineLinks) {
             contentTable.push((
@@ -399,21 +402,23 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                         </div>
                     </div>
                     <Dialog
-                        title={this.translator.translate("reader.settings.title")}
+                        title={__("reader.settings.title")}
                         open={this.state.settingsOpen}
                         actions={[
                             <button className={ReaderStyles.settings_action}
-                                    onClick={this.handleSettingsClose.bind(this)}>Close</button>,
+                                    onClick={this.handleSettingsClose.bind(this)}>
+                                        {__("reader.settings.close")}
+                                    </button>,
                             <button className={ReaderStyles.settings_action}
-                                onClick={this.handleSettingsSave.bind(this)}>Save Settings</button>,
+                                onClick={this.handleSettingsSave.bind(this)}>{__("reader.settings.save")}</button>,
                         ]}
                     >
                         <div className={ReaderStyles.settings_content}>
-                            <label>Font Size: {this.state.settingsValues.fontSizeNum}%</label>
+                            <label>{__("reader.settings.fontSize")}{this.state.settingsValues.fontSizeNum}%</label>
                             <input name="fontSizeNum" type="range" min="30" max="250"
                                 value={this.state.settingsValues.fontSizeNum}
                                 onChange={this.handleSettingsValueChange.bind(this)}/>
-                            <label>Text Align:</label>
+                            <label>{__("reader.settings.align")}</label>
                             <div className={ReaderStyles.settings_radios}>
                                 <label>
                                     <input type="radio" value="left" name="align"
@@ -422,7 +427,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <svg className={ReaderStyles.settings_icones} viewBox={AlignLeftIcon.alignLeft}>
                                             <title>Align Left</title>
                                             <use xlinkHref={"#" + AlignLeftIcon.id} />
-                                        </svg> Left
+                                        </svg> {__("reader.settings.left")}
                                 </label>
                                 <label>
                                     <input type="radio" value="center" name="align"
@@ -433,7 +438,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         >
                                             <title>Align Center</title>
                                             <use xlinkHref={"#" + AlignCenterIcon.id} />
-                                        </svg> Center
+                                        </svg> {__("reader.settings.center")}
                                 </label>
                                 <label>
                                     <input type="radio" value="right" name="align"
@@ -444,10 +449,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         >
                                             <title>Align Right</title>
                                             <use xlinkHref={"#" + AlignRightIcon.id} />
-                                        </svg> Right
+                                        </svg> {__("reader.settings.right")}
                                 </label>
                             </div>
-                            <label>Display Type:</label>
+                            <label>{__("reader.settings.display")}</label>
                             <div>
                                 <label>
                                     <input type="radio" value="true" name="paged"
@@ -456,7 +461,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <svg className={ReaderStyles.settings_icones} viewBox={PageIcon.page}>
                                             <title>Document</title>
                                             <use xlinkHref={"#" + PageIcon.id} />
-                                        </svg> Document
+                                        </svg> {__("reader.settings.document")}
                                 </label>
                                 <label>
                                     <input type="radio" value="false" name="paged"
@@ -465,7 +470,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <svg className={ReaderStyles.settings_icones} viewBox={ContinueIcon.continue}>
                                             <title>Continue</title>
                                             <use xlinkHref={"#" + ContinueIcon.id} />
-                                        </svg> Continue
+                                        </svg> {__("reader.settings.continue")}
                                 </label>
                             </div>
                         </div>
