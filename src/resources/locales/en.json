@@ -31,7 +31,8 @@
       "yes": "Yes",
       "no": "No",
       "delete": "Do you really want to delete these publication?",
-      "import": "Do you really want to import :"
+      "import": "Do you really want to import LCP files :",
+      "lcpImport": "Do you really want to import those LCP files :"
     },
     "opds": {
       "download": "Download",

@@ -67,6 +67,7 @@ export default class App extends React.Component<undefined, AppState> {
     private dialogMessage: JSX.Element;
 
     private filesToImport: File[] = [];
+    private filesLCPToImport: File[] = [];
 
     private currentDialogAction: JSX.Element[];
 
@@ -125,19 +126,41 @@ export default class App extends React.Component<undefined, AppState> {
 
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
-        this.filesToImport = acceptedFiles;
+        this.filesToImport = [];
         const nameList: JSX.Element[] = [];
+        const lcpList: JSX.Element[] = [];
         let i = 0;
         for (const file of acceptedFiles) {
-            nameList.push (<li key={i}>{file.name}</li>);
+            const nameTab = file.name.split(".");
+            const ext = nameTab[nameTab.length - 1];
+            console.log(file);
+            if  (ext === "epub") {
+                this.filesToImport.push(file);
+                nameList.push (<li key={i}>{file.name}</li>);
+            } else if (ext === "lcpl") {
+                lcpList.push (<li key={i}>{file.name}</li>);
+                this.filesLCPToImport.push(file);
+            }
             i++;
         }
         const message = (
             <div>
-                <p>{this.translator.translate("dialog.import")}</p>
-                <ul>
-                    {nameList}
-                </ul>
+                {nameList.length > 0 && (
+                    <div>
+                        <p>{this.translator.translate("dialog.import")}</p>
+                        <ul>
+                            {nameList}
+                        </ul>
+                    </div>
+                )}
+                {lcpList.length > 0 && (
+                    <div>
+                        <p>{this.translator.translate("dialog.lcpImport")}</p>
+                        <ul>
+                            {lcpList}
+                        </ul>
+                    </div>
+                )}
             </div>
         );
         this.openImportDialog(message);
@@ -148,6 +171,9 @@ export default class App extends React.Component<undefined, AppState> {
         // FIXME: dead code
         for (const file of this.filesToImport) {
             this.store.dispatch(catalogActions.importLocalPublication(file.path));
+        }
+        for (const file of this.filesLCPToImport) {
+            this.store.dispatch(catalogActions.importLocalLCPFile(file.path));
         }
     }
 
