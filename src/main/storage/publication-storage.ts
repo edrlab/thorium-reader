@@ -3,9 +3,9 @@ import * as path from "path";
 
 import { injectable} from "inversify";
 
+import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
-import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
 import { File } from "readium-desktop/common/models/file";
 import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
