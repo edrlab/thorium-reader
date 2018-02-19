@@ -4,7 +4,15 @@
         "add": "Add to the library",
         "startDownload": "A download started.",
         "cancelDownload": "A download canceled.",
-        "endDownload": "A download ended."
+        "endDownload": "A download ended.",
+        "lcp": {
+          "title": "LCP Verification",
+          "sentence": "This publication need a LCP password to be opened: ",
+          "submit": "Submit",
+          "cancel": "Cancel",
+          "hint": "Your passphrase",
+          "hintSentence": "Hint:"
+        }
     },
     "publication": {
       "downloadButton": "Download",

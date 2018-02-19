@@ -4,7 +4,15 @@
         "add": "Ajouter à la bibliothèque",
         "startDownload": "Un téléchargement a démarré.",
         "cancelDownload": "Un téléchargement a été arrété.",
-        "endDownload": "Un téléchargement est terminé."
+        "endDownload": "Un téléchargement est terminé.",
+        "lcp": {
+          "title": "Vérification LCP",
+          "sentence": "Cette publication a besoin d'un mot de passe : ",
+          "submit": "Valider",
+          "cancel": "Annuler",
+          "hint": "Votre mot de passe",
+          "hintSentence": "Indice :"
+        }
     },
     "publication": {
       "downloadButton": "Télécharger",
@@ -51,7 +59,16 @@
     "reader": {
       "settings": {
         "title": "Paramètres",
-        "style": "Style"
+        "align": "Alignement du text",
+        "left": "Gauche",
+        "center": "Centré",
+        "right": "Droite",
+        "fontSize": "Taille du texte",
+        "display": "Type d'affichage",
+        "close": "Fermer",
+        "save": "Sauvegarder",
+        "continue": "Continue",
+        "document": "Document"
       }
     }
 }
