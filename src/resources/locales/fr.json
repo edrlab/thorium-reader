@@ -31,8 +31,8 @@
       "yes": "Oui",
       "no": "Non",
       "delete": "Êtes vous sûr de vouloir supprimer cette publication ?",
-      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB:",
-      "lcpImport": "Etes vous sûr de vouloir importer ce(s) fichier(s) LCP:"
+      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
+      "lcpImport": "Etes vous sûr de vouloir importer ce(s) fichier(s) LCP :"
     },
     "opds": {
       "download": "Télécharger",
@@ -60,12 +60,12 @@
     "reader": {
       "settings": {
         "title": "Paramètres",
-        "align": "Alignement du text",
+        "align": "Alignement du text :",
         "left": "Gauche",
         "center": "Centré",
         "right": "Droite",
-        "fontSize": "Taille du texte",
-        "display": "Type d'affichage",
+        "fontSize": "Taille du texte :",
+        "display": "Type d'affichage :",
         "close": "Fermer",
         "save": "Sauvegarder",
         "continue": "Continue",

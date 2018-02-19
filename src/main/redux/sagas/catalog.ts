@@ -191,6 +191,8 @@ export function* catalogPublicationRemoveWatcher(): SagaIterator {
         const action = yield take(catalogActions.ActionType.PublicationRemoveRequest);
         const publication = action.payload.publication;
 
+        const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
+
         // Get publication db
         const publicationDb: PublicationDb = container.get(
             "publication-db") as PublicationDb;
@@ -199,6 +201,7 @@ export function* catalogPublicationRemoveWatcher(): SagaIterator {
             const result = yield call(() => publicationDb.remove(
                 publication.identifier,
             ));
+            pubStorage.removePublication(publication.identifier);
             yield put({
                 type: catalogActions.ActionType.PublicationRemoveSuccess,
                 payload: {
