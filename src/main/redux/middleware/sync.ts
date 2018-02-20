@@ -15,6 +15,7 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
     catalogActions.ActionType.SetSuccess,
+    catalogActions.ActionType.FileImportError,
     catalogActions.ActionType.LocalPublicationImportSuccess,
     catalogActions.ActionType.LocalPublicationImportError,
     catalogActions.ActionType.PublicationAddSuccess,

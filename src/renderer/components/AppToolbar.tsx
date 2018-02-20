@@ -274,7 +274,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         const files: FileList = event.target.files;
 
         for (const file of Array.from(files)) {
-            this.store.dispatch(catalogActions.importLocalPublication(file.path));
+            this.store.dispatch(catalogActions.importFile(file.path));
         }
     }
 

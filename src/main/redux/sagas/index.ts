@@ -20,6 +20,7 @@ import {
 
 import { appInitWatcher } from "./app";
 import {
+    catalogFileImportWatcher,
     catalogInitWatcher,
     catalogLocalLCPImportWatcher,
     catalogLocalPublicationImportWatcher,
@@ -53,6 +54,7 @@ export function* rootSaga() {
         catalogPublicationDownloadSuccessWatcher(),
         catalogPublicationRemoveWatcher(),
         catalogLocalLCPImportWatcher(),
+        catalogFileImportWatcher(),
 
         // Download
         downloadAddRequestWatcher(),

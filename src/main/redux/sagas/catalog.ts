@@ -36,6 +36,37 @@ import {
 } from "readium-desktop/common/redux/actions";
 import { appActions } from "readium-desktop/main/redux/actions";
 
+export function* catalogFileImportWatcher(): SagaIterator {
+    while (true) {
+        const action = yield take(catalogActions.ActionType.FileImportRequest);
+        const filePath = action.payload.path;
+
+        // Get extension of file path
+        const ext = path.extname(filePath);
+
+        if (ext === ".epub") {
+            yield put({
+                type: catalogActions.ActionType.LocalPublicationImportRequest,
+                payload: {
+                    path: filePath,
+                },
+            });
+        } else if (ext === ".lcpl") {
+            yield put({
+                type: catalogActions.ActionType.LocalLCPImportRequest,
+                payload: {
+                    path: filePath,
+                },
+            });
+        } else {
+            yield put({
+                type: catalogActions.ActionType.FileImportError,
+                error: true,
+            });
+        }
+    }
+}
+
 export function* catalogLocalPublicationImportWatcher(): SagaIterator {
     while (true) {
         const action = yield take(catalogActions.ActionType.LocalPublicationImportRequest);

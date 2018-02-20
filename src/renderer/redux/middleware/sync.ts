@@ -12,6 +12,7 @@ import {
 
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
+    catalogActions.ActionType.FileImportRequest,
     catalogActions.ActionType.LocalPublicationImportRequest,
     catalogActions.ActionType.PublicationRemoveRequest,
     catalogActions.ActionType.LocalLCPImportRequest,

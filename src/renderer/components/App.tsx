@@ -67,7 +67,6 @@ export default class App extends React.Component<undefined, AppState> {
     private dialogMessage: JSX.Element;
 
     private filesToImport: File[] = [];
-    private filesLCPToImport: File[] = [];
 
     private currentDialogAction: JSX.Element[];
 
@@ -133,14 +132,8 @@ export default class App extends React.Component<undefined, AppState> {
         for (const file of acceptedFiles) {
             const nameTab = file.name.split(".");
             const ext = nameTab[nameTab.length - 1];
-            console.log(file);
-            if  (ext === "epub") {
-                this.filesToImport.push(file);
-                nameList.push (<li key={i}>{file.name}</li>);
-            } else if (ext === "lcpl") {
-                lcpList.push (<li key={i}>{file.name}</li>);
-                this.filesLCPToImport.push(file);
-            }
+            this.filesToImport.push(file);
+            nameList.push (<li key={i}>{file.name}</li>);
             i++;
         }
         const message = (
@@ -170,10 +163,7 @@ export default class App extends React.Component<undefined, AppState> {
     public importFiles = () => {
         // FIXME: dead code
         for (const file of this.filesToImport) {
-            this.store.dispatch(catalogActions.importLocalPublication(file.path));
-        }
-        for (const file of this.filesLCPToImport) {
-            this.store.dispatch(catalogActions.importLocalLCPFile(file.path));
+            this.store.dispatch(catalogActions.importFile(file.path));
         }
     }
 
