@@ -18,14 +18,11 @@ import App from "readium-desktop/renderer/components/App";
 import { initGlobals } from "@r2-shared-js/init-globals";
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
-declare const __FORCEDEBUG__: string;
-
-if (__FORCEDEBUG__ === "1") {
-    process.env.DEBUG = "r2:*";
-}
-
 initGlobals();
-// const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
+
+// console.log(__dirname);
+// console.log((global as any).__dirname);
+// const lcpNativePluginPath = path.normalize(path.join((global as any).__dirname, "external-assets", "lcp.node"));
 // setLcpNativePluginPath(lcpNativePluginPath);
 
 // Render app

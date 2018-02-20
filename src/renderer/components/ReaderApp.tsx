@@ -60,11 +60,11 @@ import {
 
 import * as ReaderStyles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
-// Preprocessing directive
-declare const __RENDERER_BASE_URL__: string;
-declare const __NODE_ENV__: string;
-declare const __NODE_MODULE_RELATIVE_URL__: string;
-declare const __PACKAGING__: string;
+import {
+    _RENDERER_READER_BASE_URL,
+    _NODE_MODULE_RELATIVE_URL,
+    _PACKAGING,
+} from "readium-desktop/preprocessor-directives";
 
 webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
 // webFrame.registerURLSchemeAsBypassingCSP(READIUM2_ELECTRON_HTTP_PROTOCOL);
@@ -576,7 +576,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         // }
 
         let preloadPath = "preload.js";
-        if (__PACKAGING__ === "1") {
+        if (_PACKAGING === "1") {
             // console.log(__dirname);
             // console.log((global as any).__dirname);
             preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
@@ -585,15 +585,14 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             "es6-es2015" +
             "/src/electron/renderer/webview/preload.js";
 
-            if (__RENDERER_BASE_URL__ === "file://") {
+            if (_RENDERER_READER_BASE_URL === "file://") {
                 // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
                 // console.log(__dirname);
                 // console.log((global as any).__dirname);
                 preloadPath = "file://" +
-                    path.normalize(path.join((global as any).__dirname, __NODE_MODULE_RELATIVE_URL__, preloadPath));
+                    path.normalize(path.join((global as any).__dirname, _NODE_MODULE_RELATIVE_URL, preloadPath));
             } else {
                 // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-                // readerUrl = readerUrl.replace(":8080", ":8081");
                 preloadPath = "file://" + path.normalize(path.join(process.cwd(), "node_modules", preloadPath));
             }
         }

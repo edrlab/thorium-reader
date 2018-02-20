@@ -32,9 +32,11 @@ import {
 
 import * as PouchDBCore from "pouchdb-core";
 
-// Preprocessing directive
-declare const __NODE_ENV__: string;
-declare const __POUCHDB_ADAPTER_NAME__: string;
+import {
+    _NODE_ENV,
+    _POUCHDB_ADAPTER_NAME,
+    // _POUCHDB_ADAPTER_PACKAGE,
+} from "readium-desktop/preprocessor-directives";
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
 // Create container used for dependency injection
@@ -63,7 +65,7 @@ if (PouchDB.default) {
 
 const rootDbPath = path.join(
     userDataPath,
-    (__NODE_ENV__ === "DEV") ? "db-dev" : "db",
+    (_NODE_ENV === "DEV") ? "db-dev" : "db",
 );
 
 if (!fs.existsSync(rootDbPath)) {
@@ -77,7 +79,7 @@ const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 PouchDB.plugin(pouchDbAdapter.default ? pouchDbAdapter.default : pouchDbAdapter);
 
 const dbOpts = {
-    adapter: __POUCHDB_ADAPTER_NAME__,
+    adapter: _POUCHDB_ADAPTER_NAME,
 };
 
 // Publication db

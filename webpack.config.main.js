@@ -2,40 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
-// Default values for DEV environment
-let isPackaging = process.env.PACKAGING || "0";
-let forceDebug = process.env.FORCEDEBUG || "0";
-let nodeEnv = process.env.NODE_ENV || "DEV";
-let pouchDbAdapterName = (nodeEnv === "DEV") ? "jsondown" : "leveldb";
-let pouchDbAdapterPackage = (nodeEnv === "DEV") ?
-    "readium-desktop/pouchdb/jsondown-adapter" : "pouchdb-adapter-leveldb";
-let rendererBaseUrl = "file://";
-
-// Node module relative url from main
-let nodeModuleRelativeUrl = "../node_modules";
-
-if (nodeEnv === "DEV") {
-    rendererBaseUrl = "http://localhost:8080/";
-}
-
-if (isPackaging === "1") {
-    nodeModuleRelativeUrl = "node_modules";
-}
-
-let definePlugin = new webpack.DefinePlugin({
-    __NODE_ENV__: JSON.stringify(nodeEnv),
-    __PACKAGING__: JSON.stringify(isPackaging),
-    __POUCHDB_ADAPTER_NAME__: JSON.stringify(pouchDbAdapterName),
-    __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),
-    __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
-    __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
-    __FORCEDEBUG__: JSON.stringify(forceDebug),
-
-    // we test for *runtime* process.env.NODE_ENV when (__PACKAGING__ === "0" && __NODE_ENV__ === "PROD")
-    // so that we can debug the generated bundles (main + renderers) using the Chromium web inspector.
-    // e.g. `NODE_ENV=dev npm run start` (which is different than 'npm run start:dev' because there is no WebPack HMR server, and no externals)
-    // "process.env.NODE_ENV": JSON.stringify(nodeEnv),
-});
+const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
 
@@ -67,7 +34,7 @@ let externals = {
     "pouchdb-adapter-leveldb": "pouchdb-adapter-leveldb",
     "electron-devtools-installer": "electron-devtools-installer",
 }
-if (nodeEnv === "DEV") {
+if (process.env.NODE_ENV !== "PROD") {
     // // externals = Object.assign(externals, {
     // //         "electron-config": "electron-config",
     // //     }
@@ -150,11 +117,11 @@ let config = Object.assign({}, {
                 to: "ReadiumCSS",
             }
         ]),
-        definePlugin
+        preprocessorDirectives.definePlugin
     ],
 });
 
-if (nodeEnv === "DEV") {
+if (process.env.NODE_ENV !== "PROD") {
     // Bundle absolute resource paths in the source-map,
     // so VSCode can match the source file.
     config.output.devtoolModuleFilenameTemplate = "[absolute-resource-path]";

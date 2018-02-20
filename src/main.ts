@@ -27,21 +27,10 @@ import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { initGlobals } from "@r2-shared-js/init-globals";
 
+import { IS_DEV, _RENDERER_APP_BASE_URL } from "readium-desktop/preprocessor-directives";
+
 // Logger
 const debug = debug_("readium-desktop:main");
-
-// Preprocessing directive
-declare const __RENDERER_BASE_URL__: string;
-declare const __NODE_ENV__: string;
-declare const __PACKAGING__: string;
-declare const __FORCEDEBUG__: string;
-
-if (__FORCEDEBUG__ === "1") {
-    process.env.DEBUG = "r2:*";
-}
-
-const IS_DEV = __FORCEDEBUG__ === "1" || __NODE_ENV__ === "DEV" ||
-    __PACKAGING__ === "0" && (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 
 initGlobals();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
@@ -71,13 +60,13 @@ function createWindow() {
         },
     });
 
-    let rendererBaseUrl = __RENDERER_BASE_URL__;
+    let rendererBaseUrl = _RENDERER_APP_BASE_URL;
 
     if (rendererBaseUrl === "file://") {
-        // This is a local url
+        // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
         rendererBaseUrl += path.normalize(path.join(__dirname, "index_app.html"));
     } else {
-        // This is a remote url
+        // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
         rendererBaseUrl += "index_app.html";
     }
 

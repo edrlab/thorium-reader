@@ -32,18 +32,15 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
+import {
+    _NODE_MODULE_RELATIVE_URL,
+    _PACKAGING,
+    _RENDERER_READER_BASE_URL,
+    IS_DEV,
+} from "readium-desktop/preprocessor-directives";
+
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
-
-// Preprocessing directive
-declare const __RENDERER_BASE_URL__: string;
-declare const __NODE_ENV__: string;
-declare const __NODE_MODULE_RELATIVE_URL__: string;
-declare const __PACKAGING__: string;
-declare const __FORCEDEBUG__: string;
-
-const IS_DEV = __FORCEDEBUG__ === "1" || __NODE_ENV__ === "DEV" ||
-    __PACKAGING__ === "0" && (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
 
 function openAllDevTools() {
     for (const wc of webContents.getAllWebContents()) {
@@ -92,10 +89,10 @@ function openReader(publication: Publication, manifestUrl: string) {
     // Load publication in reader window
     const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
 
-    let readerUrl = __RENDERER_BASE_URL__;
+    let readerUrl = _RENDERER_READER_BASE_URL;
 
-    if (__PACKAGING__ === "0" && process.env.NAVIGATOR === "old") {
-        readerUrl = "file://" + path.normalize(path.join(__dirname, __NODE_MODULE_RELATIVE_URL__,
+    if (_PACKAGING === "0" && process.env.NAVIGATOR === "old") {
+        readerUrl = "file://" + path.normalize(path.join(__dirname, _NODE_MODULE_RELATIVE_URL,
             "r2-testapp-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html"));
     } else {
         const htmlPath = "index_reader.html";
@@ -105,7 +102,6 @@ function openReader(publication: Publication, manifestUrl: string) {
             readerUrl += path.normalize(path.join(__dirname, htmlPath));
         } else {
             // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-            readerUrl = readerUrl.replace(":8080", ":8081");
             readerUrl += htmlPath;
         }
     }
