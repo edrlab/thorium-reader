@@ -99,8 +99,8 @@
   background-color: rgb(0, 0, 0, 0);
   border: 0;
   font-size: 1rem;
-  width: 5rem;
   height: 2.5rem;
+  cursor: pointer;
 }
 
 .settings_icones {

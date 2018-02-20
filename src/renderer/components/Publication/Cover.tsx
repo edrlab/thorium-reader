@@ -19,7 +19,7 @@ export default class Cover extends React.Component<ICoverProps, null> {
 
         if (this.props.publication.cover === null || this.props.publication.cover === undefined) {
             let authors = "";
-            let bodyCSS = Styles.BookCover.body;
+            let bodyCSS = Object.assign({}, Styles.BookCover.body);
             let colors = this.props.publication.customCover;
             if (colors === undefined) {
                 colors = {

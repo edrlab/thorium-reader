@@ -143,7 +143,9 @@
     "request": "^2.83.0",
     "svg-sprite-loader": "^3.6.2",
     "tmp": "^0.0.33",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "yauzl": "^2.9.1",
+    "yazl": "^2.4.3"
   },
   "devDependencies": {
     "@types/commonmark": "^0.27.0",
