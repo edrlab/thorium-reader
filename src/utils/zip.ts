@@ -71,7 +71,19 @@ export function injectFileInZip(
     destPathFINAL: string,
     filePath: string,
     zipEntryPath: string,
-    zipError: (error: any) => void,
-    doneCallback: () => void) {
-    injectObjectInZip(destPathTMP, destPathFINAL, filePath, InjectType.FILE, zipEntryPath, zipError, doneCallback);
+): Promise<any> {
+    return new Promise((resolve, reject) => {
+        injectObjectInZip(
+            destPathTMP,
+            destPathFINAL,
+            filePath,
+            InjectType.FILE, zipEntryPath,
+            (error: any) => {
+                return reject(error);
+            },
+            () => {
+                return resolve();
+            },
+        );
+    });
 }

@@ -162,27 +162,62 @@ export function* catalogLocalLCPImportWatcher(): SagaIterator {
                     const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
                     const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
 
-                    if (file.contentType === contentType) {
-                        injectFileInZip(filePath, filePath + ".lcp", lcpPath, "META-INF/license.lcpl", (error: any) => {
-                            console.error(error);
-                        }, () => {
-                            try {
-                                fs.unlinkSync(filePath);
-                            } catch (error) {
-                                console.log(error);
-                                return;
-                            }
-
-                            try {
-                                fs.renameSync(filePath + ".lcp", filePath);
-                            } catch (error) {
-                                console.log(error);
-                                return;
-                            }
-                        });
-                        break;
+                    if (file.contentType !== contentType) {
+                        // Bad mimetype
+                        continue;
                     }
+
+                    // Inject LCPL
+                    try {
+                        yield call(
+                            () => injectFileInZip(
+                                filePath,
+                                filePath + ".lcp",
+                                lcpPath,
+                                "META-INF/license.lcpl",
+                            ),
+                        );
+                    } catch (error) {
+                        yield put({
+                            type: catalogActions.ActionType.LocalLCPImportError,
+                            error: true,
+                        });
+                    }
+
+                    // Replace epub without LCP with a new one containing LCPL
+                    try {
+                        fs.unlinkSync(filePath);
+                    } catch (error) {
+                        console.log(error);
+                        return;
+                    }
+
+                    try {
+                        fs.renameSync(filePath + ".lcp", filePath);
+                    } catch (error) {
+                        console.log(error);
+                        return;
+                    }
+
+                    // Update publication info and store them in db
+                    const publicationDb = container.get(
+                        "publication-db") as PublicationDb;
+                    const catalogService = container.get(
+                        "catalog-service") as CatalogService;
+                    const lcpPublication = yield call(
+                        () => catalogService.parseEpub(filePath),
+                    );
+                    lcpPublication.identifier = publication.identifier;
+                    publicationDb.putOrChange(lcpPublication);
+
+                    yield put({
+                        type: catalogActions.ActionType.LocalLCPImportSuccess,
+                        payload: {
+                            publication: lcpPublication,
+                        },
+                    });
                 }
+
                 continueWaiting = false;
             }
 
