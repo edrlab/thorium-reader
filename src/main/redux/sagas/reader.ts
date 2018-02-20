@@ -129,6 +129,9 @@ function openReader(publication: Publication, manifestUrl: string) {
         // setTimeout(() => {
         //         openAllDevTools();
         //     }, 8000); // TODO: needs smarter method
+    } else {
+        // Remove menu bar
+        readerWindow.setMenu(null);
     }
 
     return reader;

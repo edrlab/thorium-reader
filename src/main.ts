@@ -89,6 +89,9 @@ function createWindow() {
 
         // Open dev tools in development environment
         mainWindow.webContents.openDevTools();
+    } else {
+        // Remove menu bar
+        mainWindow.setMenu(null);
     }
 
     // Clear all cache to prevent weird behaviours
