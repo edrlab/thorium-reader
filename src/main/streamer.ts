@@ -7,12 +7,10 @@ import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
 
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
 
-
-// Preprocessing directive
-declare const __RENDERER_BASE_URL__: string;
-declare const __NODE_ENV__: string;
-declare const __NODE_MODULE_RELATIVE_URL__: string;
-declare const __PACKAGING__: string;
+import {
+    _NODE_MODULE_RELATIVE_URL,
+    _PACKAGING,
+} from "readium-desktop/preprocessor-directives";
 
 // Create readium2 streamer
 // This streamer is used to stream epub content to the renderer
@@ -42,11 +40,11 @@ app.on("ready", () => {
 // installLsdHandler(streamer, deviceIDManager);
 
 let rcssPath = "ReadiumCSS";
-if (__PACKAGING__ === "1") {
+if (_PACKAGING === "1") {
     rcssPath = path.normalize(path.join(__dirname, rcssPath));
 } else {
     rcssPath = "r2-navigator-js/dist/ReadiumCSS";
-    rcssPath = path.normalize(path.join(__dirname, __NODE_MODULE_RELATIVE_URL__, rcssPath));
+    rcssPath = path.normalize(path.join(__dirname, _NODE_MODULE_RELATIVE_URL, rcssPath));
 }
 
 rcssPath = rcssPath.replace(/\\/g, "/");
