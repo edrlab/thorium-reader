@@ -14,6 +14,7 @@ export class PublicationDb {
     }
 
     public put(publication: Publication): Promise<any> {
+        console.log("#### put", publication);
         return this.db.put(Object.assign(
             {},
             publication,
@@ -23,6 +24,7 @@ export class PublicationDb {
 
     public putOrChange(publication: Publication): Promise<any> {
         return this.db.get(ID_PREFIX + publication.identifier).then((doc) => {
+            console.log("#### put or change", publication);
             return this.db.put(Object.assign(
                 {},
                 publication,
@@ -34,7 +36,6 @@ export class PublicationDb {
                 console.log(error);
             });
         }).catch((err) => {
-            console.error(err);
             if (err.error === true && err.reason === "missing") {
                 return this.put(publication);
             }
@@ -88,6 +89,7 @@ export class PublicationDb {
             cover: dbDoc.doc.cover,
             files: dbDoc.doc.files,
             customCover: dbDoc.doc.customCover,
+            lcp: dbDoc.doc.lcp,
         };
     }
 }

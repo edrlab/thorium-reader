@@ -4,6 +4,7 @@ import { Downloadable } from "./downloadable";
 import { File } from "./file";
 import { Identifiable } from "./identifiable";
 import { Language } from "./language";
+import { LcpInfo } from "./lcp";
 import { Tag } from "./tag";
 
 /**
@@ -19,5 +20,5 @@ export interface Publication extends Identifiable {
     authors?: Contributor[];
     files?: File[];
     tags?: Tag[];
-    // lcp: boolean; // true if publication contains lcp
+    lcp?: LcpInfo;
 }

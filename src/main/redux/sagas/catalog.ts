@@ -205,13 +205,26 @@ export function* catalogLocalLCPImportWatcher(): SagaIterator {
                     const catalogService = container.get(
                         "catalog-service") as CatalogService;
                     const lcpPublication = yield call(
-                        () => catalogService.parseEpub(filePath),
+                        () => catalogService.parseEpub(
+                            filePath,
+                        ),
                     );
                     lcpPublication.identifier = publication.identifier;
-                    publicationDb.putOrChange(lcpPublication);
+                    lcpPublication.cover = newPublication.cover;
+                    lcpPublication.files = newPublication.files;
 
+                    yield call(
+                        () => publicationDb.putOrChange(lcpPublication),
+                    );
                     yield put({
                         type: catalogActions.ActionType.LocalLCPImportSuccess,
+                        payload: {
+                            publication: lcpPublication,
+                        },
+                    });
+                    // Refresh the catalog with the new LCP Publication
+                    yield put({
+                        type: catalogActions.ActionType.PublicationAddSuccess,
                         payload: {
                             publication: lcpPublication,
                         },

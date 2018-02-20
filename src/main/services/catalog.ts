@@ -13,7 +13,6 @@ import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { PublicationDb } from "readium-desktop/main/db/publication-db";
 import { container } from "readium-desktop/main/di";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import nearMe from "material-ui/svg-icons/maps/near-me";
 
 @injectable()
 export class CatalogService {
@@ -46,6 +45,32 @@ export class CatalogService {
                 (code) => { return { code };
             }),
         };
+
+        if (parsedEpub.LCP) {
+            // Add Lcp info
+            newPub.lcp = {
+                provider: parsedEpub.LCP.Provider,
+                issued: parsedEpub.LCP.Issued,
+                updated: parsedEpub.LCP.Updated,
+                rights: {
+                    copy: parsedEpub.LCP.Rights.Copy,
+                    print: parsedEpub.LCP.Rights.Print,
+                    start: parsedEpub.LCP.Rights.Start,
+                    end: parsedEpub.LCP.Rights.End,
+                },
+            };
+
+            // Search for lsd status url
+            for (const link of parsedEpub.LCP.Links) {
+                if (link.Rel === "status") {
+                    // This is the lsd status url link
+                    newPub.lcp.lsd = {
+                        statusUrl: link.Href,
+                    };
+                    break;
+                }
+            }
+        }
 
         return newPub;
     }
