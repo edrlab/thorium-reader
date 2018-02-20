@@ -27,6 +27,8 @@ import { Translator } from "readium-desktop/common/services/translator";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
 
+import { UserKeyCheckStatus } from "readium-desktop/common/models/lcp";
+
 import * as classNames from "classnames";
 import EyeIcon from "readium-desktop/renderer/assets/icons/eye.svg";
 import CardIcon from "readium-desktop/renderer/assets/icons/view-card.svg";
@@ -84,8 +86,14 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     public componentDidMount() {
         this.store.subscribe(() => {
             const lcpStore = this.store.getState().lcp;
-            if (lcpStore.lastUserKeyCheckDate && lcpStore.lastUserKeyCheckDate !== this.state.lastCheck) {
-                this.setState({lcpPassOpen: true, lastCheck: lcpStore.lastUserKeyCheckDate});
+            if (
+                lcpStore.lastUserKeyCheckDate &&
+                lcpStore.lastUserKeyCheckDate !== this.state.lastCheck
+            ) {
+                this.setState({
+                    lcpPassOpen: (lcpStore.lastUserKeyCheck.status === UserKeyCheckStatus.Error),
+                    lastCheck: lcpStore.lastUserKeyCheckDate,
+                });
             }
         });
     }
@@ -265,7 +273,12 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     private handleLcpPassSubmit() {
-        this.store.dispatch(lcpActions.sendPassphrase(undefined, this.state.lcpPass));
+        this.store.dispatch(
+            lcpActions.sendPassphrase(
+                this.store.getState().lcp.lastUserKeyCheck.publication,
+                this.state.lcpPass,
+            ),
+        );
         this.handleLcpPassClose();
         this.setState({lcpPass: undefined});
     }
