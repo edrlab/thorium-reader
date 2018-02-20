@@ -7,4 +7,10 @@ export interface PublicationDownloadState {
 
     // Publication identifiers => Download identifiers
     publicationIdentifierToDownloads: { [identifier: string]: Download[] };
+
+    // Progress of publication download
+    publicationDownloadProgress: { [identifier: string]: number };
+
+    // Last time a publication download has been updated
+    lastUpdatedDate: number;
 }

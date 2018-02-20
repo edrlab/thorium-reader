@@ -33,6 +33,17 @@ export function catalogReducer(
         case catalogActions.ActionType.PublicationAddSuccess:
         case catalogActions.ActionType.LocalPublicationImportSuccess:
             const addedPub = action.payload.publication;
+            newState.publications = [];
+
+            for (const pub of state.publications) {
+                if (pub.identifier === addedPub.identifier) {
+                    // Publication already exists
+                    continue;
+                }
+
+                newState.publications.push(pub);
+            }
+
             newState.publications.push(addedPub);
             return newState;
         default:

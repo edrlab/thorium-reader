@@ -83,7 +83,6 @@ export class PublicationDb {
             identifier: dbDoc.doc.identifier,
             title: dbDoc.doc.title, // note: can be multilingual object map (not just string)
             description: dbDoc.doc.description,
-            download: dbDoc.doc.download,
             authors: dbDoc.doc.authors,
             languages: dbDoc.doc.languages,
             cover: dbDoc.doc.cover,

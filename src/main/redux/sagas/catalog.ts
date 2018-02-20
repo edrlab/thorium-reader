@@ -44,32 +44,9 @@ export function* catalogLocalPublicationImportWatcher(): SagaIterator {
             "catalog-service") as CatalogService;
 
         try {
-            const parsedEpub: Epub = yield call(() => EpubParsePromise(pubPath));
-            const authors: Contributor[] = [];
-
-            if (parsedEpub.Metadata && parsedEpub.Metadata.Author) {
-                for (const author of parsedEpub.Metadata.Author) {
-                    const contributor: Contributor = {
-                        name: author.Name as string, // note: can be multilingual object map (not just string)
-                    };
-
-                    authors.push(contributor);
-                }
-            }
-
-            const newPub: Publication = {
-                title: parsedEpub.Metadata.Title as string, // note: can be multilingual object map (not just string)
-                description: parsedEpub.Metadata.Description,
-                identifier: uuid.v4(),
-                authors,
-                languages: parsedEpub.Metadata.Language.map(
-                    (code) => { return { code };
-                }),
-            };
-
             const storedPub = yield call(() =>
                 catalogService.addPublicationFromLocalPath(
-                    newPub,
+                    uuid.v4(),
                     action.payload.path,
             ));
             yield put({
@@ -115,6 +92,7 @@ export function* catalogLocalLCPImportWatcher(): SagaIterator {
             title: epub.title,
             description: "",
             identifier: uuid.v4(),
+            authors: [],
             files: [
                 {
                     url: epub.href,
@@ -123,6 +101,14 @@ export function* catalogLocalLCPImportWatcher(): SagaIterator {
                 },
             ],
         };
+
+        // Refresh the catalog with the new downloaded catalog
+        yield put({
+            type: catalogActions.ActionType.PublicationAddSuccess,
+            payload: {
+                publication,
+            },
+        });
 
         // Start the download of the epub file
         yield put({
@@ -137,6 +123,9 @@ export function* catalogLocalLCPImportWatcher(): SagaIterator {
             const newPublication = downloadAction.payload.publication;
 
             if (newPublication.identifier === publication.identifier) {
+                // const newPub: Publication = yield call(
+            //     () => catalogService.parseEpub(download.dstPath),
+            // );
                 for (const file of newPublication.files) {
                     const relativeUrl = file.url.substr(6);
                     const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;

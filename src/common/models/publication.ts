@@ -19,5 +19,5 @@ export interface Publication extends Identifiable {
     authors?: Contributor[];
     files?: File[];
     tags?: Tag[];
-    download?: Downloadable;
+    // lcp: boolean; // true if publication contains lcp
 }

@@ -42,10 +42,10 @@ import { Styles } from "readium-desktop/renderer/components/styles";
 interface ILibraryState {
     list: boolean;
     lcpPassOpen: boolean;
-    open: boolean;
     lcpPass: string;
     lcpPassVisible: boolean;
-    lastCheck: number;
+    lcpLastCheck: number;
+    dlLastUpdatedDate: number; // Download last updated date
 }
 
 interface LibraryProps {
@@ -74,25 +74,37 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         super(props);
 
         this.state = {
-            open: false,
             list: false,
             lcpPassOpen: false,
             lcpPass: undefined,
             lcpPassVisible: false,
-            lastCheck: Date.now(),
+            lcpLastCheck: Date.now(),
+            dlLastUpdatedDate: Date.now(),
         };
     }
 
     public componentDidMount() {
         this.store.subscribe(() => {
+            // Check lcp change
             const lcpStore = this.store.getState().lcp;
             if (
                 lcpStore.lastUserKeyCheckDate &&
-                lcpStore.lastUserKeyCheckDate !== this.state.lastCheck
+                lcpStore.lastUserKeyCheckDate !== this.state.lcpLastCheck
             ) {
                 this.setState({
                     lcpPassOpen: (lcpStore.lastUserKeyCheck.status === UserKeyCheckStatus.Error),
-                    lastCheck: lcpStore.lastUserKeyCheckDate,
+                    lcpLastCheck: lcpStore.lastUserKeyCheckDate,
+                });
+            }
+
+            // Check download change
+            const dlStore = this.store.getState().publicationDownloads;
+            if (
+                dlStore.lastUpdatedDate &&
+                dlStore.lastUpdatedDate !== this.state.dlLastUpdatedDate
+            ) {
+                this.setState({
+                    dlLastUpdatedDate: dlStore.lastUpdatedDate,
                 });
             }
         });
@@ -131,12 +143,22 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     public createCardList() {
         const list: any = [];
         let i = 0;
+        const dlStore = this.store.getState().publicationDownloads;
+
         for (const pub of this.props.catalog.publications.sort(this.sort)) {
+            let downloading = false;
+            let downloadProgress: number = null;
+
+            if (dlStore.publicationDownloadProgress[pub.identifier]) {
+                downloading = true;
+                downloadProgress = dlStore.publicationDownloadProgress[pub.identifier];
+            }
+
             list.push(<PublicationCard key={i}
                 publicationId={i}
-                downloadable={false}
+                downloading={downloading}
+                downloadProgress={downloadProgress}
                 publication={pub}
-                downloadEPUB={this.downloadEPUB}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload.bind(this)}
                 deletePublication={this.openDeleteDialog.bind(this)}/>);
@@ -148,12 +170,22 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     public createElementList() {
         const list: any = [];
         let i = 0;
+        const dlStore = this.store.getState().publicationDownloads;
+
         for (const pub of this.props.catalog.publications.sort(this.sort)) {
+            let downloading = false;
+            let downloadProgress: number = null;
+
+            if (dlStore.publicationDownloadProgress[pub.identifier]) {
+                downloading = true;
+                downloadProgress = dlStore.publicationDownloadProgress[pub.identifier];
+            }
+
             list.push(<PublicationListElement key={i}
                 publication={pub}
                 publicationId={i}
-                downloadable={false}
-                downloadEPUB={this.downloadEPUB}
+                downloading={downloading}
+                downloadProgress={downloadProgress}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload}
                 deletePublication={this.openDeleteDialog.bind(this)}/>);

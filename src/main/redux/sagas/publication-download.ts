@@ -60,7 +60,7 @@ export function* publicationDownloadStatusWatcher(): SagaIterator {
             case downloaderActions.ActionType.Success:
                 try {
                     const storedPub = yield call(() => catalogService.addPublicationFromLocalPath(
-                        publication,
+                        publication.identifier,
                         download.dstPath,
                     ));
                     yield put(publicationDownloadActions.finish(

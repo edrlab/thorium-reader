@@ -23,11 +23,11 @@ import { Cover } from "readium-desktop/renderer/components/Publication/index";
 interface IPublicationProps {
     publication: Publication;
     publicationId: number;
-    downloadable?: boolean;
-    downloadEPUB: Function;
-    handleRead: Function;
-    cancelDownload: Function;
-    deletePublication: Function;
+    downloading: boolean;
+    downloadProgress?: number;
+    handleRead: any;
+    cancelDownload: any;
+    deletePublication: any;
 }
 
 interface IDownload {
@@ -75,44 +75,16 @@ export default class PublicationListElement extends React.Component<IPublication
                         <p>Editeur</p>
                     </div>
                     <div style={Styles.BookListElement.column}>
-                            {this.props.downloadable ? (
+                            {this.props.downloading ? (
                                 <div>
-                                    {( !publication.download
-                                        || publication.download.status === DownloadStatus.Init) ? (
-                                        <FlatButton
-                                            label={__("publication.downloadButton")}
-                                            onClick={() => {this.props.downloadEPUB(publication, id); }}/>
-                                    ) : publication.download.status === DownloadStatus.Downloading ? (
-                                        <div>
-                                            <p>{__("publication.progressDownload")}</p>
-                                            <LinearProgress mode="determinate"
-                                                value={publication.download.progress} />
-                                            <IconButton
-                                                iconClassName="fa fa-times"
-                                                onClick={() => {this.props.cancelDownload(publication); }}/>
-                                        </div>
-                                    ) : publication.download.status === DownloadStatus.Downloaded ? (
-                                        <div>
-                                            <p>{__("publication.endDownload")}</p>
-                                            <RaisedButton
-                                                label={__("publication.readButton")}
-                                                onClick={() => {this.props.handleRead(publication); }}/>
-                                        </div>
-                                    ) : publication.download.status === DownloadStatus.Failed ? (
-                                        <div>
-                                            <p>{__("publication.failedDownload")}</p>
-                                            <FlatButton
-                                            label={__("publication.downloadButton")}
-                                            onClick={() => {this.props.downloadEPUB(publication, id); }}/>
-                                        </div>
-                                    ) : (
-                                        <div>
-                                            <p>{__("publication.canceledDownload")}</p>
-                                            <FlatButton
-                                            label={__("publication.downloadButton")}
-                                            onClick={() => {this.props.downloadEPUB(publication, id); }}/>
-                                        </div>
-                                    )}
+                                    <div>
+                                        <p>{__("publication.progressDownload")}</p>
+                                        <LinearProgress mode="determinate"
+                                            value={this.props.downloadProgress} />
+                                        <IconButton
+                                            iconClassName="fa fa-times"
+                                            onClick={() => {this.props.cancelDownload(publication); }}/>
+                                    </div>
                                 </div>
                             ) : (
                                 <div>
