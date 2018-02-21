@@ -18,6 +18,7 @@
       "downloadButton": "Télécharger",
       "readButton": "Voir",
       "deleteButton": "Supprimer",
+      "cancelDownloadButton": "Annuler",
       "progressDownload": "Téléchargement en cours",
       "endDownload": "Téléchargement terminé",
       "failedDownload": "Téléchargement échoué",

@@ -112,9 +112,10 @@ export default class PublicationListElement extends React.Component<IPublication
                                                     <p>{__("publication.progressDownload")}</p>
                                                     <LinearProgress mode="determinate"
                                                         value={this.props.downloadProgress} />
-                                                    <IconButton
-                                                        iconClassName="fa fa-times"
-                                                        onClick={() => {this.props.cancelDownload(publication); }}/>
+                                                    <FlatButton
+                                                        style={Styles.BookCard.downloadButton}
+                                                        onClick={() => {this.props.cancelDownload(publication); }}
+                                                        label={__("publication.cancelDownloadButton")} />
                                                 </div>
                                             </div>
                                         ) : (
