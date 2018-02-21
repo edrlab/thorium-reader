@@ -38,6 +38,7 @@ interface IPublicationProps {
     cancelDownload: any;
     handleRead: any;
     deletePublication: any;
+    openInfoDialog: (publication: Publication) => void;
 }
 
 export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
@@ -124,6 +125,13 @@ export default class PublicationListElement extends React.Component<IPublication
                                                 style={Styles.BookCard.downloadButton}
                                                 onClick={() => {this.props.handleRead(publication); }}
                                                 label={__("publication.readButton")} />
+
+                                                {publication.lcp && (
+                                                    <FlatButton
+                                                    style={Styles.BookCard.downloadButton}
+                                                    onClick={() => {this.props.openInfoDialog(publication); }}
+                                                    label={__("publication.infoButton")} />
+                                                )}
 
                                                 <FlatButton
                                                 style={Styles.BookCard.downloadButton}

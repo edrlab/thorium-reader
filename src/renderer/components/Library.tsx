@@ -41,11 +41,13 @@ import { Styles } from "readium-desktop/renderer/components/styles";
 
 interface ILibraryState {
     list: boolean;
+    currentPublication: Publication;
     lcpPassOpen: boolean;
     lcpPass: string;
     lcpPassVisible: boolean;
     lcpLastCheck: number;
     dlLastUpdatedDate: number; // Download last updated date
+    infoDialogOpen: boolean;
 }
 
 interface LibraryProps {
@@ -80,6 +82,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
             lcpPassVisible: false,
             lcpLastCheck: Date.now(),
             dlLastUpdatedDate: Date.now(),
+            infoDialogOpen: false,
+            currentPublication: undefined,
         };
     }
 
@@ -161,7 +165,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 publication={pub}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload.bind(this)}
-                deletePublication={this.openDeleteDialog.bind(this)}/>);
+                deletePublication={this.openDeleteDialog.bind(this)}
+                openInfoDialog={this.openInfoDialog.bind(this)}/>);
             i++;
         }
         return list;
@@ -188,7 +193,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 downloadProgress={downloadProgress}
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload}
-                deletePublication={this.openDeleteDialog.bind(this)}/>);
+                deletePublication={this.openDeleteDialog.bind(this)}
+                openInfoDialog={this.openInfoDialog.bind(this)}/>);
             i++;
         }
         return <div style={Styles.BookListElement.container}> {list} </div>;
@@ -197,6 +203,12 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate.bind(this.translator);
         const list = this.state.list;
+
+        let lcp;
+
+        if (this.state.currentPublication) {
+            lcp = this.state.currentPublication.lcp;
+        }
 
         const that = this;
         let listToDisplay: JSX.Element;
@@ -283,6 +295,35 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                         </div>
                     )}
                 </Dialog>
+                <Dialog
+                    title={__("library.lcp.informations.title")}
+                    actions={[
+                        <FlatButton
+                            label={__("library.lcp.informations.close")}
+                            primary={true}
+                            onClick={this.closeInfoDialog.bind(this)}
+                        />,
+                      ]}
+                    modal={true}
+                    open={this.state.infoDialogOpen}
+                >
+                    {this.state.currentPublication && (
+                        <div>
+                            <p>{__("library.lcp.informations.provider") + " " + lcp.provider}</p>
+                            <p>{__("library.lcp.informations.issued") + " " + this.dateToString(lcp.issued)}</p>
+                            {lcp.updated && (
+                                <p>{__("library.lcp.informations.updated") + " " + this.dateToString(lcp.updated)}</p>
+                            )}
+
+                            <h3>{__("library.lcp.informations.right.title")}</h3>
+                            <p>{__("library.lcp.informations.right.start") + " "
+                                + this.dateToString(lcp.rights.start)}</p>
+                            <p>{__("library.lcp.informations.right.end") + " " + this.dateToString(lcp.rights.end)}</p>
+                            <p>{__("library.lcp.informations.right.copy") + " " + lcp.rights.copy}</p>
+                            <p>{__("library.lcp.informations.right.print") + " " + lcp.rights.print}</p>
+                        </div>
+                    )}
+                </Dialog>
             </div>
         );
     }
@@ -325,5 +366,19 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     private switchLcpPassVisibe() {
         this.setState({lcpPassVisible: !this.state.lcpPassVisible});
+    }
+
+    private openInfoDialog(publication: Publication) {
+        this.setState({infoDialogOpen: true, currentPublication: publication});
+    }
+
+    private closeInfoDialog() {
+        this.setState({infoDialogOpen: false, currentPublication: undefined});
+    }
+
+    private dateToString(dateStr: Date): string {
+        const date = new Date(dateStr);
+
+        return date.toLocaleDateString() + " - " + date.getHours() + ":" + date.getMinutes();
     }
 }
