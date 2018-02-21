@@ -14,6 +14,7 @@
   & svg {
     height: var(--library-svg-size);
     width: var(--library-svg-size);
+    fill: grey;
   }
 }
 
@@ -21,7 +22,7 @@
   cursor: pointer;
 
   & svg {
-    fill: grey;
+    fill: black;
   }
 
   &:hover {
