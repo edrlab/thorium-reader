@@ -17,6 +17,7 @@
     "publication": {
       "downloadButton": "Télécharger",
       "readButton": "Voir",
+      "deleteButton": "Supprimer",
       "progressDownload": "Téléchargement en cours",
       "endDownload": "Téléchargement terminé",
       "failedDownload": "Téléchargement échoué",

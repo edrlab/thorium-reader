@@ -17,6 +17,7 @@
     "publication": {
       "downloadButton": "Download",
       "readButton": "Read",
+      "deleteButton": "Delete",
       "progressDownload": "Downloading",
       "endDownload": "Download completed",
       "failedDownload": "Download Failed",

@@ -127,7 +127,7 @@ export default class PublicationListElement extends React.Component<IPublication
                                                 <FlatButton
                                                 style={Styles.BookCard.downloadButton}
                                                 onClick={() => {this.props.deletePublication(publication); }}
-                                                label={"Supprimer"}/>
+                                                label={__("publication.deleteButton")}/>
                                             </div>
                                         )}
                                     </div>
