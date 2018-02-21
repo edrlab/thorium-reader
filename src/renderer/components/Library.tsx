@@ -315,12 +315,25 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                                 <p>{__("library.lcp.informations.updated") + " " + this.dateToString(lcp.updated)}</p>
                             )}
 
-                            <h3>{__("library.lcp.informations.right.title")}</h3>
-                            <p>{__("library.lcp.informations.right.start") + " "
-                                + this.dateToString(lcp.rights.start)}</p>
-                            <p>{__("library.lcp.informations.right.end") + " " + this.dateToString(lcp.rights.end)}</p>
-                            <p>{__("library.lcp.informations.right.copy") + " " + lcp.rights.copy}</p>
-                            <p>{__("library.lcp.informations.right.print") + " " + lcp.rights.print}</p>
+                            {lcp.rights.start && (
+                                <span>
+                                    <h3>{__("library.lcp.informations.right.title")}</h3>
+                                    <p>{__("library.lcp.informations.right.start") + " "
+                                        + this.dateToString(lcp.rights.start)}</p>
+                                </span>
+                            )}
+                            {lcp.rights.end && (
+                                <p>{__("library.lcp.informations.right.end") + " "
+                                    + this.dateToString(lcp.rights.end)}</p>
+                            )}
+                            {lcp.rights.copy && (
+                                <p>{__("library.lcp.informations.right.copy") + " "
+                                + lcp.rights.copy}</p>
+                            )}
+                            {lcp.rights.print && (
+                                <p>{__("library.lcp.informations.right.print") + " "
+                                    + lcp.rights.print}</p>
+                            )}
                         </div>
                     )}
                 </Dialog>
