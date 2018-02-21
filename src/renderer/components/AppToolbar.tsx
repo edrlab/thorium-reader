@@ -1,5 +1,4 @@
 import * as commonmark from "commonmark";
-import * as fs from "fs";
 import * as React from "react";
 import { Store } from "redux";
 
@@ -36,6 +35,9 @@ import { Styles } from "readium-desktop/renderer/components/styles";
 import { OPDS } from "readium-desktop/common/models/opds";
 
 import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
+
+import * as enDocs from "readium-desktop/resources/docs/en";
+import * as frDocs from "readium-desktop/resources/docs/fr";
 
 interface AppToolbarState {
     locale: string;
@@ -95,8 +97,16 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         ];
 
         const that = this;
-        const helpUrl = "./src/resources/docs/" + this.state.locale + "/help.md";
-        const aboutUrl = "./src/resources/docs/" + this.state.locale + "/about.md";
+
+        // Use en as default language
+        let docs = enDocs;
+
+        if (this.state.locale === "fr") {
+            docs = frDocs;
+        }
+
+        const helpContent = docs.help as any;
+        const aboutContent = docs.about as any;
 
         const listOPDS: JSX.Element[] = [];
         let i = 0;
@@ -202,7 +212,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             <MenuItem
                                 primaryText= {__("toolbar.help")}
                                 onClick={() => {
-                                    that.handleOpen(helpUrl);
+                                    that.handleOpen(helpContent);
                                 }}
                                 leftIcon={
                                     <svg viewBox={QuestionIcon.content_table}>
@@ -213,7 +223,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             <MenuItem
                                 primaryText={__("toolbar.news")}
                                 onClick={() => {
-                                    that.handleOpen(aboutUrl);
+                                    that.handleOpen(aboutContent);
                                 }}
                                 leftIcon={
                                     <svg viewBox={GiftIcon.content_table}>
@@ -250,8 +260,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         );
     }
 
-    private handleOpen = (url: string) => {
-        const content = fs.readFileSync(url).toString();
+    private handleOpen = (content: string) => {
         const reader = new commonmark.Parser();
         const writer = new commonmark.HtmlRenderer();
 

@@ -106,6 +106,18 @@ let config = Object.assign({}, {
                 loader: "file-loader?name=assets/[name].[hash].[ext]",
                 test: /\.(woff|woff2|ttf|eot|svg)$/,
             },
+            {
+                exclude: /node_modules/,
+                test: /\.md$/,
+                use: [
+                    {
+                        loader: "html-loader",
+                    },
+                    {
+                        loader: "markdown-loader",
+                    }
+                ]
+            }
         ],
     },
 
