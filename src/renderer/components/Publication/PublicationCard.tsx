@@ -38,6 +38,7 @@ interface IPublicationProps {
     cancelDownload: any;
     handleRead: any;
     deletePublication: any;
+    openInfoDialog: (publication: Publication) => void;
 }
 
 export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
@@ -112,9 +113,10 @@ export default class PublicationListElement extends React.Component<IPublication
                                                     <p>{__("publication.progressDownload")}</p>
                                                     <LinearProgress mode="determinate"
                                                         value={this.props.downloadProgress} />
-                                                    <IconButton
-                                                        iconClassName="fa fa-times"
-                                                        onClick={() => {this.props.cancelDownload(publication); }}/>
+                                                    <FlatButton
+                                                        style={Styles.BookCard.downloadButton}
+                                                        onClick={() => {this.props.cancelDownload(publication); }}
+                                                        label={__("publication.cancelDownloadButton")} />
                                                 </div>
                                             </div>
                                         ) : (
@@ -124,10 +126,17 @@ export default class PublicationListElement extends React.Component<IPublication
                                                 onClick={() => {this.props.handleRead(publication); }}
                                                 label={__("publication.readButton")} />
 
+                                                {publication.lcp && (
+                                                    <FlatButton
+                                                    style={Styles.BookCard.downloadButton}
+                                                    onClick={() => {this.props.openInfoDialog(publication); }}
+                                                    label={__("publication.infoButton")} />
+                                                )}
+
                                                 <FlatButton
                                                 style={Styles.BookCard.downloadButton}
                                                 onClick={() => {this.props.deletePublication(publication); }}
-                                                label={"Supprimer"}/>
+                                                label={__("publication.deleteButton")}/>
                                             </div>
                                         )}
                                     </div>

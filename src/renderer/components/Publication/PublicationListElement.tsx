@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import FlatButton   from "material-ui/FlatButton";
+import FlatButton from "material-ui/FlatButton";
 import IconButton from "material-ui/IconButton";
 import LinearProgress from "material-ui/LinearProgress";
 
@@ -10,7 +10,7 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import { getMultiLangString } from "readium-desktop/common/models/language";
 
-import { Translator }   from "readium-desktop/common/services/translator";
+import { Translator } from "readium-desktop/common/services/translator";
 
 import RaisedButton from "material-ui/RaisedButton";
 
@@ -28,6 +28,7 @@ interface IPublicationProps {
     handleRead: any;
     cancelDownload: any;
     deletePublication: any;
+    openInfoDialog: (publication: Publication) => void;
 }
 
 interface IDownload {
@@ -50,7 +51,7 @@ export default class PublicationListElement extends React.Component<IPublication
         let author: string = "";
         let image: string = "";
 
-        let id = this.props.publicationId;
+        const id = this.props.publicationId;
 
         if (publication.authors && publication.authors.length > 0) {
             author = getMultiLangString(publication.authors[0].name, lang);
@@ -81,9 +82,10 @@ export default class PublicationListElement extends React.Component<IPublication
                                         <p>{__("publication.progressDownload")}</p>
                                         <LinearProgress mode="determinate"
                                             value={this.props.downloadProgress} />
-                                        <IconButton
-                                            iconClassName="fa fa-times"
-                                            onClick={() => {this.props.cancelDownload(publication); }}/>
+                                        <FlatButton
+                                            style={Styles.BookCard.downloadButton}
+                                            onClick={() => {this.props.cancelDownload(publication); }}
+                                            label={__("publication.cancelDownloadButton")} />
                                     </div>
                                 </div>
                             ) : (
@@ -91,12 +93,19 @@ export default class PublicationListElement extends React.Component<IPublication
                                     <FlatButton
                                     style={Styles.BookCard.downloadButton}
                                     onClick={() => {this.props.handleRead(publication); }}
-                                    label="Lire" />
+                                    label={__("publication.readButton")} />
+
+                                    {publication.lcp && (
+                                        <FlatButton
+                                        style={Styles.BookCard.downloadButton}
+                                        onClick={() => {this.props.openInfoDialog(publication); }}
+                                        label={__("publication.infoButton")} />
+                                    )}
 
                                     <FlatButton
                                     style={Styles.BookCard.downloadButton}
                                     onClick={() => {this.props.deletePublication(publication); }}
-                                    label={"Supprimer"}/>
+                                    label={__("publication.deleteButton")}/>
                                 </div>
                             )
                         }

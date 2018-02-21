@@ -11,12 +11,29 @@
           "submit": "Valider",
           "cancel": "Annuler",
           "hint": "Votre mot de passe",
-          "hintSentence": "Indice :"
+          "hintSentence": "Indice :",
+          "informations": {
+            "title": "Informations LCP",
+            "close": "Fermer",
+            "provider": "Fournisseur :",
+            "issued": "Date de création :",
+            "updated": "Modification :",
+            "right": {
+              "title": "Droits",
+              "start": "Début :",
+              "end": "Fin :",
+              "copy": "Nombre de copie :",
+              "print": "Nombre d'impression :"
+            }
+          }
         }
     },
     "publication": {
       "downloadButton": "Télécharger",
       "readButton": "Voir",
+      "deleteButton": "Supprimer",
+      "infoButton": "Informations LCP",
+      "cancelDownloadButton": "Annuler",
       "progressDownload": "Téléchargement en cours",
       "endDownload": "Téléchargement terminé",
       "failedDownload": "Téléchargement échoué",

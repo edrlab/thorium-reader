@@ -11,12 +11,29 @@
           "submit": "Submit",
           "cancel": "Cancel",
           "hint": "Your passphrase",
-          "hintSentence": "Hint:"
+          "hintSentence": "Hint:",
+          "informations": {
+            "title": "LCP Informations",
+            "close": "Close",
+            "provider": "Provider:",
+            "issued": "Creation date:",
+            "updated": "Updated:",
+            "right": {
+              "title": "Rights",
+              "start": "Start:",
+              "end": "End:",
+              "copy": "Copy number:",
+              "print": "Print number:"
+            }
+          }
         }
     },
     "publication": {
       "downloadButton": "Download",
       "readButton": "Read",
+      "deleteButton": "Delete",
+      "infoButton": "LCP Informations",
+      "cancelDownloadButton": "Cancel",
       "progressDownload": "Downloading",
       "endDownload": "Download completed",
       "failedDownload": "Download Failed",
