@@ -23,9 +23,10 @@ import { OPDSParser } from "readium-desktop/common/services/opds";
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { streamer } from "readium-desktop/main/streamer";
 
+import { ConfigDb } from "readium-desktop/main/db/config-db";
 import { OpdsDb } from "readium-desktop/main/db/opds-db";
 import { PublicationDb } from "readium-desktop/main/db/publication-db";
-import { ReaderConfigDb } from "readium-desktop/main/db/reader-config-db";
+
 import {
     PublicationStorage,
 } from "readium-desktop/main/storage/publication-storage";
@@ -90,12 +91,12 @@ const publicationDb = new PouchDB(
 
 // OPDS db
 const opdsDb = new PouchDB(
-    path.join(rootDbPath, "opds-dev"),
+    path.join(rootDbPath, "opds"),
     dbOpts,
 );
 
-const readerConfigDb = new PouchDB(
-    path.join(rootDbPath, "reader-config"),
+const configDb = new PouchDB(
+    path.join(rootDbPath, "config"),
     dbOpts,
 );
 
@@ -134,8 +135,8 @@ container.bind<PublicationDb>("publication-db").toConstantValue(
 container.bind<OpdsDb>("opds-db").toConstantValue(
     new OpdsDb(opdsDb),
 );
-container.bind<ReaderConfigDb>("reader-config-db").toConstantValue(
-    new ReaderConfigDb(readerConfigDb),
+container.bind<ConfigDb>("config-db").toConstantValue(
+    new ConfigDb(configDb),
 );
 container.bind<PublicationStorage>("publication-storage").toConstantValue(
     new PublicationStorage(publicationRepositoryPath),

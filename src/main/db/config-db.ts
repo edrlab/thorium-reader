@@ -1,34 +1,29 @@
 import { injectable} from "inversify";
 import * as PouchDB from "pouchdb-core";
 
-import { ReaderConfig } from "readium-desktop/common/models/reader";
+const ID_PREFIX = "config_";
 
 @injectable()
-export class ReaderConfigDb {
+export class ConfigDb {
     private db: PouchDB.Database;
 
     public constructor(db: PouchDB.Database) {
         this.db = db;
     }
 
-    public put(config: ReaderConfig): Promise<any> {
-        if (config.identifier) {
-            return this.db.put(Object.assign(
-                {},
-                config,
-                { _id: config.identifier },
-            ));
-        } else {
-            return this.db.put(Object.assign(
-                {},
-                config,
-            ));
-        }
+    public put(config: any): Promise<any> {
+        const identifier = ID_PREFIX + config.identifier;
+
+        return this.db.put(Object.assign(
+            {},
+            config,
+            { _id: identifier },
+        ));
     }
 
-    public get(identifier: string): Promise<ReaderConfig> {
+    public get(identifier: string): Promise<any> {
         return this.db
-            .get(identifier)
+            .get(ID_PREFIX + identifier)
             .then((result: PouchDB.Core.Document<any>) => {
                 return result;
             })
@@ -37,15 +32,17 @@ export class ReaderConfigDb {
             });
     }
 
-    public update(config: ReaderConfig): Promise<any> {
+    public update(config: any): Promise<any> {
+        const identifier = ID_PREFIX + config.identifier;
+
         return this.db
-            .get(config.identifier)
+            .get(identifier)
             .then((result: PouchDB.Core.Document<any>) => {
                 return this.db.put(Object.assign(
                     {},
                     config,
                     {
-                        _id: config.identifier,
+                        _id: identifier,
                         _rev: result._rev,
                     },
                 ));
@@ -55,9 +52,24 @@ export class ReaderConfigDb {
             });
     }
 
+    public putOrUpdate(config: any): Promise<any> {
+        const identifier = ID_PREFIX + config.identifier;
+
+        return this.db.get(identifier).then((doc) => {
+            return this.update(config)
+            .catch((error) => {
+                console.log(error);
+            });
+        }).catch((err) => {
+            if (err.error === true && err.reason === "missing") {
+                return this.put(config);
+            }
+        });
+    }
+
     public remove(identifier: string): Promise<any> {
         return this.db
-            .get(identifier)
+            .get(ID_PREFIX + identifier)
             .then((result: PouchDB.Core.Document<any>) => {
                 this.db.remove(result);
             })
@@ -66,7 +78,7 @@ export class ReaderConfigDb {
             });
     }
 
-    public getAll(): Promise<ReaderConfig[]> {
+    public getAll(): Promise<any[]> {
         return this.db
             .allDocs({
                 include_docs: true,
