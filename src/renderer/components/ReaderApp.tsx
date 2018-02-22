@@ -61,9 +61,9 @@ import {
 import * as ReaderStyles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import {
-    _RENDERER_READER_BASE_URL,
     _NODE_MODULE_RELATIVE_URL,
     _PACKAGING,
+    _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
 webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
@@ -542,7 +542,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         if (publication.Spine && publication.Spine.length) {
             // console.log(publication.Spine);
             const links: IStringMap = {};
-            publication.TOC.forEach((spineItemLink) => {
+            publication.TOC.forEach((spineItemLink: any) => {
                 links[spineItemLink.Title] = publicationJsonUrl + "/../" + spineItemLink.Href;
             });
             this.setState({spineLinks: links});

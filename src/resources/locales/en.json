@@ -29,10 +29,15 @@
         }
     },
     "publication": {
+      "notReadableLcp": "This book can't be read because the lcp liscense is finished",
       "downloadButton": "Download",
       "readButton": "Read",
       "deleteButton": "Delete",
       "infoButton": "LCP Informations",
+      "renewButton": "Renew",
+      "renewSentence": "Are you sure you want to renew this publication?",
+      "returnButton": "Return",
+      "returnSentence": "Are you sure you want to return this publication?",
       "cancelDownloadButton": "Cancel",
       "progressDownload": "Downloading",
       "endDownload": "Download completed",
@@ -87,6 +92,14 @@
         "save": "Save",
         "continue": "Continue",
         "document": "Document"
+      }
+    },
+    "message": {
+      "download": {
+        "successFirst": "The download of ",
+        "successSecond": " is finished",
+        "startFirst": "The download of ",
+        "startSecond": " began"
       }
     }
 }

@@ -29,10 +29,15 @@
         }
     },
     "publication": {
+      "notReadableLcp": "Ce livre ne peut être lu car la licence lcp est terminée",
       "downloadButton": "Télécharger",
       "readButton": "Voir",
       "deleteButton": "Supprimer",
       "infoButton": "Informations LCP",
+      "renewButton": "Renouveler",
+      "renewSentence": "Etes vous sûr de vouloir renouveler cette publication ?",
+      "returnButton": "Retourner",
+      "returnSentence": "Etes vous sûr de vouloir retourner cette publication ?",
       "cancelDownloadButton": "Annuler",
       "progressDownload": "Téléchargement en cours",
       "endDownload": "Téléchargement terminé",
@@ -87,6 +92,14 @@
         "save": "Sauvegarder",
         "continue": "Continue",
         "document": "Document"
+      }
+    },
+    "message": {
+      "download": {
+        "successFirst": "Le téléchargement de ",
+        "successSecond": " est terminé",
+        "startFirst": "Le téléchargement de ",
+        "startSecond": " a commencé"
       }
     }
 }

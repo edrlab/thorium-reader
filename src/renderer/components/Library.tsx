@@ -48,6 +48,8 @@ interface ILibraryState {
     lcpLastCheck: number;
     dlLastUpdatedDate: number; // Download last updated date
     infoDialogOpen: boolean;
+    returnDialogOpen: boolean;
+    renewDialogOpen: boolean;
 }
 
 interface LibraryProps {
@@ -84,6 +86,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
             dlLastUpdatedDate: Date.now(),
             infoDialogOpen: false,
             currentPublication: undefined,
+            returnDialogOpen: false,
+            renewDialogOpen: false,
         };
     }
 
@@ -166,7 +170,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload.bind(this)}
                 deletePublication={this.openDeleteDialog.bind(this)}
-                openInfoDialog={this.openInfoDialog.bind(this)}/>);
+                openInfoDialog={this.openInfoDialog.bind(this)}
+                openReturnDialog={this.openReturnDialog.bind(this)}
+                openRenewDialog={this.openRenewDialog.bind(this)}/>);
             i++;
         }
         return list;
@@ -194,7 +200,9 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 handleRead={this.props.handleRead.bind(this)}
                 cancelDownload={this.cancelDownload}
                 deletePublication={this.openDeleteDialog.bind(this)}
-                openInfoDialog={this.openInfoDialog.bind(this)}/>);
+                openInfoDialog={this.openInfoDialog.bind(this)}
+                openReturnDialog={this.openReturnDialog.bind(this)}
+                openRenewDialog={this.openRenewDialog.bind(this)}/>);
             i++;
         }
         return <div style={Styles.BookListElement.container}> {list} </div>;
@@ -315,14 +323,63 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                                 <p>{__("library.lcp.informations.updated") + " " + this.dateToString(lcp.updated)}</p>
                             )}
 
-                            <h3>{__("library.lcp.informations.right.title")}</h3>
-                            <p>{__("library.lcp.informations.right.start") + " "
-                                + this.dateToString(lcp.rights.start)}</p>
-                            <p>{__("library.lcp.informations.right.end") + " " + this.dateToString(lcp.rights.end)}</p>
-                            <p>{__("library.lcp.informations.right.copy") + " " + lcp.rights.copy}</p>
-                            <p>{__("library.lcp.informations.right.print") + " " + lcp.rights.print}</p>
+                            {lcp.rights.start && (
+                                <span>
+                                    <h3>{__("library.lcp.informations.right.title")}</h3>
+                                    <p>{__("library.lcp.informations.right.start") + " "
+                                        + this.dateToString(lcp.rights.start)}</p>
+                                </span>
+                            )}
+                            {lcp.rights.end && (
+                                <p>{__("library.lcp.informations.right.end") + " "
+                                    + this.dateToString(lcp.rights.end)}</p>
+                            )}
+                            {lcp.rights.copy && (
+                                <p>{__("library.lcp.informations.right.copy") + " "
+                                + lcp.rights.copy}</p>
+                            )}
+                            {lcp.rights.print && (
+                                <p>{__("library.lcp.informations.right.print") + " "
+                                    + lcp.rights.print}</p>
+                            )}
                         </div>
                     )}
+                </Dialog>
+                <Dialog
+                    actions={[
+                        <FlatButton
+                            label={__("dialog.yes")}
+                            primary={true}
+                            onClick={this.closeReturnDialog.bind(this)}
+                        />,
+                        <FlatButton
+                            label={__("dialog.no")}
+                            primary={true}
+                            onClick={this.closeReturnDialog.bind(this)}
+                        />,
+                      ]}
+                    modal={true}
+                    open={this.state.returnDialogOpen}
+                >
+                    <p>{__("publication.returnSentence")}</p>
+                </Dialog>
+                <Dialog
+                    actions={[
+                        <FlatButton
+                            label={__("dialog.yes")}
+                            primary={true}
+                            onClick={this.closeRenewDialog.bind(this, true)}
+                        />,
+                        <FlatButton
+                            label={__("dialog.no")}
+                            primary={true}
+                            onClick={this.closeRenewDialog.bind(this)}
+                        />,
+                      ]}
+                    modal={true}
+                    open={this.state.renewDialogOpen}
+                >
+                    <p>{__("publication.renewSentence")}</p>
                 </Dialog>
             </div>
         );
@@ -374,6 +431,28 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
 
     private closeInfoDialog() {
         this.setState({infoDialogOpen: false, currentPublication: undefined});
+    }
+
+    private openRenewDialog(publication: Publication) {
+        this.setState({renewDialogOpen: true, currentPublication: publication});
+    }
+
+    private closeRenewDialog(yes?: boolean) {
+        if (yes) {
+            this.store.dispatch(lcpActions.lsdRenew(this.state.currentPublication));
+        }
+        this.setState({renewDialogOpen: false, currentPublication: undefined});
+    }
+
+    private openReturnDialog(publication: Publication) {
+        this.setState({returnDialogOpen: true, currentPublication: publication});
+    }
+
+    private closeReturnDialog(yes?: boolean) {
+        if (yes) {
+            this.store.dispatch(lcpActions.lsdReturn(this.state.currentPublication));
+        }
+        this.setState({returnDialogOpen: false, currentPublication: undefined});
     }
 
     private dateToString(dateStr: Date): string {
