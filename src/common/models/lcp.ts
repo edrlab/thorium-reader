@@ -22,3 +22,7 @@ export interface LcpInfo {
     lsd?: LsdInfo;
     rights: LcpRights;
 }
+
+export interface DeviceConfig {
+    [key: string]: any;
+}

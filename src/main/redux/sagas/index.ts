@@ -43,6 +43,8 @@ import {
 
 import {
     lcpPassphraseSubmitRequestWatcher,
+    lcpRenewRequestWatcher,
+    lcpReturnRequestWatcher,
     lcpUserKeyCheckRequestWatcher,
 } from "./lcp";
 
@@ -92,5 +94,7 @@ export function* rootSaga() {
         // LCP
         lcpPassphraseSubmitRequestWatcher(),
         lcpUserKeyCheckRequestWatcher(),
+        lcpRenewRequestWatcher(),
+        lcpRenewRequestWatcher(),
     ]);
 }

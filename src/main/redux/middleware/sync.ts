@@ -50,7 +50,10 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     lcpActions.ActionType.UserKeyCheckSuccess,
     lcpActions.ActionType.PassphraseSubmitError,
     lcpActions.ActionType.PassphraseSubmitSuccess,
-
+    lcpActions.ActionType.RenewSuccess,
+    lcpActions.ActionType.RenewError,
+    lcpActions.ActionType.ReturnSuccess,
+    lcpActions.ActionType.ReturnError,
 ];
 
 export const reduxSyncMiddleware = (_0: Store<any>) => (next: any) => (action: any) => {

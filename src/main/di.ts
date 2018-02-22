@@ -18,6 +18,8 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { RootState } from "readium-desktop/main/redux/states";
 
+import { DeviceIdManager } from "readium-desktop/main/services/lcp";
+
 import { OPDSParser } from "readium-desktop/common/services/opds";
 
 import { initStore } from "readium-desktop/main/redux/store/memory";
@@ -84,21 +86,22 @@ const dbOpts = {
 };
 
 // Publication db
-const publicationDb = new PouchDB(
+const publicationPouchDb = new PouchDB(
     path.join(rootDbPath, "publications"),
     dbOpts,
 );
 
 // OPDS db
-const opdsDb = new PouchDB(
+const opdsPouchDb = new PouchDB(
     path.join(rootDbPath, "opds"),
     dbOpts,
 );
 
-const configDb = new PouchDB(
+const configPouchDb = new PouchDB(
     path.join(rootDbPath, "config"),
     dbOpts,
 );
+const configDb = new ConfigDb(configPouchDb);
 
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
@@ -130,16 +133,19 @@ container.bind<Downloader>("downloader").toConstantValue(
     new Downloader(app.getPath("temp"), store),
 );
 container.bind<PublicationDb>("publication-db").toConstantValue(
-    new PublicationDb(publicationDb),
+    new PublicationDb(publicationPouchDb),
 );
 container.bind<OpdsDb>("opds-db").toConstantValue(
-    new OpdsDb(opdsDb),
+    new OpdsDb(opdsPouchDb),
 );
 container.bind<ConfigDb>("config-db").toConstantValue(
-    new ConfigDb(configDb),
+    configDb,
 );
 container.bind<PublicationStorage>("publication-storage").toConstantValue(
     new PublicationStorage(publicationRepositoryPath),
+);
+container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
+    new DeviceIdManager("readium-desktop", configDb),
 );
 
 const {

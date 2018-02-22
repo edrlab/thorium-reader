@@ -10,6 +10,14 @@ export enum ActionType {
     PassphraseSubmitRequest = "LCP_PASSPHRASE_SUBMIT_REQUEST",
     PassphraseSubmitSuccess = "LCP_PASSPHRASE_SUBMIT_SUCCESS",
     PassphraseSubmitError = "LCP_PASSPHRASE_SUBMIT_ERROR",
+
+    ReturnRequest = "LCP_RETURN_REQUEST",
+    ReturnSuccess = "LCP_RETURN_SUCCESS",
+    ReturnError = "LCP_RETURN_ERROR",
+
+    RenewRequest = "LCP_RENEW_REQUEST",
+    RenewSuccess = "LCP_RENEW_SUCCESS",
+    RenewError = "LCP_RENEW_ERROR",
 }
 
 export function checkUserKey(publication: Publication, hint: string): Action {
@@ -28,6 +36,24 @@ export function sendPassphrase(publication: Publication, passphrase: string): Ac
         payload: {
             publication,
             passphrase,
+        },
+    };
+}
+
+export function lsdRenew(publication: Publication): Action {
+    return {
+        type: ActionType.RenewRequest,
+        payload: {
+            publication,
+        },
+    };
+}
+
+export function lsdReturn(publication: Publication): Action {
+    return {
+        type: ActionType.ReturnRequest,
+        payload: {
+            publication,
         },
     };
 }

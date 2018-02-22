@@ -11,11 +11,14 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import { Server } from "@r2-streamer-js/http/server";
 
+import { ConfigDb } from "readium-desktop/main/db/config-db";
+
 import { container } from "readium-desktop/main/di";
 
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 import { lcpActions, readerActions } from "readium-desktop/common/redux/actions";
+import { appActions } from "readium-desktop/main/redux/actions";
 
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 
@@ -107,6 +110,9 @@ export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
 
             yield put({
                 type: lcpActions.ActionType.UserKeyCheckSuccess,
+                payload: {
+                    publication,
+                },
             });
         } catch (error) {
             yield put({
@@ -114,5 +120,31 @@ export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
                 error: true,
             });
         }
+    }
+}
+
+export function* lcpReturnRequestWatcher(): SagaIterator {
+    while (true) {
+        const action = yield take(lcpActions.ActionType.ReturnRequest);
+        const publication: Publication = action.payload.publication;
+        yield put({
+            type: lcpActions.ActionType.ReturnSuccess,
+            payload: {
+                publication,
+            },
+        });
+    }
+}
+
+export function* lcpRenewRequestWatcher(): SagaIterator {
+    while (true) {
+        const action = yield take(lcpActions.ActionType.RenewRequest);
+        const publication: Publication = action.payload.publication;
+        yield put({
+            type: lcpActions.ActionType.RenewSuccess,
+            payload: {
+                publication,
+            },
+        });
     }
 }
