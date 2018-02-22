@@ -26,7 +26,6 @@ function startStreamer(streamer: Server): Promise<string> {
         .then(async (port) => {
             // HTTPS, see secureSessions()
             const streamerInfo = await streamer.start(port, true);
-            debug(streamerInfo);
 
             const streamerUrl = streamer.serverUrl();
             debug("Streamer started on %s", streamerUrl);
