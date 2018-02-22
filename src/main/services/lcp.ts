@@ -10,7 +10,7 @@ const DEVICE_ID_KEY = "device_id";
 const DEVICE_ID_PREFIX = "device_id_";
 
 @injectable()
-export class DeviceIdManager /* implements IDeviceIDManager */ {
+export class DeviceIdManager implements IDeviceIDManager {
     // Config database
     private configDb: ConfigDb;
 
@@ -45,7 +45,7 @@ export class DeviceIdManager /* implements IDeviceIDManager */ {
         return this.deviceName;
     }
 
-    public async recordDeviceID(key: string) {
+    public async recordDeviceID(key: string): Promise<void> {
         const deviceIdKey = DEVICE_ID_PREFIX + key;
         let deviceId = await this.getDeviceConfigValue(deviceIdKey);
 
