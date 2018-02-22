@@ -6,9 +6,9 @@ import { publicationDownloadActions } from "readium-desktop/common/redux/actions
 
 import { Publication } from "readium-desktop/common/models/publication";
 
-import { Translator } from "readium-desktop/common/services/translator";
+import { container } from "readium-desktop/renderer/di";
 
-import { container } from "readium-desktop/main/di";
+import { Translator } from "readium-desktop/common/services/translator";
 
 import { getMultiLangString } from "readium-desktop/common/models/language";
 
