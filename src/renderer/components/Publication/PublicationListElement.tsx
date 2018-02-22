@@ -29,6 +29,8 @@ interface IPublicationProps {
     cancelDownload: any;
     deletePublication: any;
     openInfoDialog: (publication: Publication) => void;
+    openReturnDialog: (publication: Publication) => void;
+    openRenewDialog: (publication: Publication) => void;
 }
 
 interface IDownload {
@@ -71,14 +73,13 @@ export default class PublicationListElement extends React.Component<IPublication
                 )}
                 <div style={Styles.BookListElement.description}>
                     <h4 style={Styles.BookListElement.title}>{getMultiLangString(publication.title, lang)}</h4>
-                    <div style={Styles.BookListElement.column}>
-                        <p>{author}</p>
-                        <p>Editeur</p>
-                    </div>
-                    <div style={Styles.BookListElement.column}>
-                            {this.props.downloading ? (
-                                <div>
-                                    <div>
+                    <div style={Styles.BookListElement.content}>
+                        <div style={Styles.BookListElement.column}>
+                            <p>{author}</p>
+                        </div>
+                        <div style={Styles.BookListElement.column}>
+                                {this.props.downloading ? (
+                                    <>
                                         <p>{__("publication.progressDownload")}</p>
                                         <LinearProgress mode="determinate"
                                             value={this.props.downloadProgress} />
@@ -86,29 +87,48 @@ export default class PublicationListElement extends React.Component<IPublication
                                             style={Styles.BookCard.downloadButton}
                                             onClick={() => {this.props.cancelDownload(publication); }}
                                             label={__("publication.cancelDownloadButton")} />
-                                    </div>
-                                </div>
-                            ) : (
-                                <div>
-                                    <FlatButton
-                                    style={Styles.BookCard.downloadButton}
-                                    onClick={() => {this.props.handleRead(publication); }}
-                                    label={__("publication.readButton")} />
+                                    </>
+                                ) : (
+                                    <>
+                                        {!publication.lcp ||
+                                            (publication.lcp
+                                            && publication.lcp.rights.end
+                                            && new Date(publication.lcp.rights.end).getTime() > Date.now()) ? (
+                                            <FlatButton
+                                            style={Styles.BookCard.downloadButton}
+                                            onClick={() => {this.props.handleRead(publication); }}
+                                            label={__("publication.readButton")} />
+                                        ) : (
+                                            <p style={Styles.BookListElement.lcpSentense}>
+                                                {__("publication.notReadableLcp")}
+                                            </p>
+                                        )}
 
-                                    {publication.lcp && (
+                                        {publication.lcp && (
+                                            <>
+                                                <FlatButton
+                                                style={Styles.BookCard.downloadButton}
+                                                onClick={() => {this.props.openInfoDialog(publication); }}
+                                                label={__("publication.infoButton")} />
+                                                <FlatButton
+                                                style={Styles.BookCard.downloadButton}
+                                                onClick={() => {this.props.openRenewDialog(publication); }}
+                                                label={__("publication.renewButton")} />
+                                                <FlatButton
+                                                style={Styles.BookCard.downloadButton}
+                                                onClick={() => {this.props.openReturnDialog(publication); }}
+                                                label={__("publication.returnButton")} />
+                                            </>
+                                        )}
+
                                         <FlatButton
                                         style={Styles.BookCard.downloadButton}
-                                        onClick={() => {this.props.openInfoDialog(publication); }}
-                                        label={__("publication.infoButton")} />
-                                    )}
-
-                                    <FlatButton
-                                    style={Styles.BookCard.downloadButton}
-                                    onClick={() => {this.props.deletePublication(publication); }}
-                                    label={__("publication.deleteButton")}/>
-                                </div>
-                            )
-                        }
+                                        onClick={() => {this.props.deletePublication(publication); }}
+                                        label={__("publication.deleteButton")}/>
+                                    </>
+                                )
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

@@ -4,6 +4,8 @@ const auto: "auto" = "auto";
 const fixed: "fixed" = "fixed";
 const hidden: "hidden" = "hidden";
 const absolute: "absolute" = "absolute";
+const column: "column" = "column";
+const wrap: "wrap" = "wrap";
 
 export const Styles = {
     Reader: {
@@ -95,7 +97,8 @@ export const Styles = {
             width: 210,
         },
         downloadButton: {
-            width: "100%",
+            width: "200px",
+            flexGrow: 1,
         },
         image: {
             fontSize: "18px",
@@ -117,9 +120,17 @@ export const Styles = {
             margin: "15px 5px",
             width: "100%",
         },
+        lcpSentense: {
+            width: 250,
+        },
         column: {
-            display: "inline-block",
+            display: "flex",
             width: "250px",
+            flexDirection: column,
+            flexWrap: wrap,
+        },
+        content: {
+            display: "flex",
         },
         container: {
             display: "inline-block",
@@ -127,7 +138,8 @@ export const Styles = {
             textAlign: "left",
         },
         description: {
-            display: "inline-block",
+            display: "flex",
+            flexDirection: column,
             height: 140,
             marginLeft: "5px",
         },

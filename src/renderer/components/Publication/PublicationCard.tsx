@@ -39,6 +39,8 @@ interface IPublicationProps {
     handleRead: any;
     deletePublication: any;
     openInfoDialog: (publication: Publication) => void;
+    openReturnDialog: (publication: Publication) => void;
+    openRenewDialog: (publication: Publication) => void;
 }
 
 export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
@@ -121,16 +123,33 @@ export default class PublicationListElement extends React.Component<IPublication
                                             </div>
                                         ) : (
                                             <div>
-                                                <FlatButton
-                                                style={Styles.BookCard.downloadButton}
-                                                onClick={() => {this.props.handleRead(publication); }}
-                                                label={__("publication.readButton")} />
-
-                                                {publication.lcp && (
+                                                {!publication.lcp ||
+                                                 (publication.lcp
+                                                    && publication.lcp.rights.end
+                                                    && new Date(publication.lcp.rights.end).getTime() > Date.now()) ? (
                                                     <FlatButton
                                                     style={Styles.BookCard.downloadButton}
-                                                    onClick={() => {this.props.openInfoDialog(publication); }}
-                                                    label={__("publication.infoButton")} />
+                                                    onClick={() => {this.props.handleRead(publication); }}
+                                                    label={__("publication.readButton")} />
+                                                ) : (
+                                                    <p> {__("publication.notReadableLcp")} </p>
+                                                )}
+
+                                                {publication.lcp && (
+                                                    <>
+                                                        <FlatButton
+                                                        style={Styles.BookCard.downloadButton}
+                                                        onClick={() => {this.props.openInfoDialog(publication); }}
+                                                        label={__("publication.infoButton")} />
+                                                        <FlatButton
+                                                        style={Styles.BookCard.downloadButton}
+                                                        onClick={() => {this.props.openRenewDialog(publication); }}
+                                                        label={__("publication.renewButton")} />
+                                                        <FlatButton
+                                                        style={Styles.BookCard.downloadButton}
+                                                        onClick={() => {this.props.openReturnDialog(publication); }}
+                                                        label={__("publication.returnButton")} />
+                                                    </>
                                                 )}
 
                                                 <FlatButton
