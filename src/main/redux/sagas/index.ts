@@ -95,6 +95,6 @@ export function* rootSaga() {
         lcpPassphraseSubmitRequestWatcher(),
         lcpUserKeyCheckRequestWatcher(),
         lcpRenewRequestWatcher(),
-        lcpRenewRequestWatcher(),
+        lcpReturnRequestWatcher(),
     ]);
 }

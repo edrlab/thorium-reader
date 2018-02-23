@@ -20,7 +20,7 @@ export function* publicationDownloadAddSuccessWatcher(): SagaIterator {
         const pub: Publication = action.payload.publication;
 
         const translator: Translator = container.get(
-            "tranlator") as Translator;
+            "translator") as Translator;
 
         const lang = "en";
         yield put(messageActions.add(
@@ -36,7 +36,7 @@ export function* publicationDownloadSuccessWatcher(): SagaIterator {
         const pub: Publication = action.payload.publication;
 
         const translator: Translator = container.get(
-            "tranlator") as Translator;
+            "translator") as Translator;
 
         const lang = "en";
         yield put(messageActions.add(

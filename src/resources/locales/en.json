@@ -100,6 +100,16 @@
         "successSecond": " is finished",
         "startFirst": "The download of ",
         "startSecond": " began"
+      },
+      "lcp": {
+        "renewSuccessFirst": "The lcp license of ",
+        "renewSuccessSecond": " has been renewed",
+        "renewErrorFirst": "An error occurred when renewing the lcp license of ",
+        "renewErrorSecond": "",
+        "returnSuccessFirst": "The lcp license of ",
+        "returnSuccessSecond": " has been returned",
+        "returnErrorFirst": "An error occurred when returning the lcp license of ",
+        "returnErrorSecond": ""
       }
     }
 }
