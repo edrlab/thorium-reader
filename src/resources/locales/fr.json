@@ -100,6 +100,16 @@
         "successSecond": " est terminé",
         "startFirst": "Le téléchargement de ",
         "startSecond": " a commencé"
+      },
+      "lcp": {
+        "renewSuccessFirst": "La licence LCP de ",
+        "renewSuccessSecond": " a bien été renouvellée",
+        "renewErrorFirst": "Une erreur est survenue lors du renouvellement de ",
+        "renewErrorSecond": "",
+        "returnSuccessFirst": "La license lcp de ",
+        "returnSuccessSecond": " a bien été retorunée",
+        "returnErrorFirst": "Un erreur est survenue lors du retournement de ",
+        "returnErrorSecond": ""
       }
     }
 }

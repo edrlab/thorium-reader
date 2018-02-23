@@ -7,6 +7,13 @@ import {
     publicationDownloadSuccessWatcher,
 } from "./publication-download";
 
+import {
+    lcpRenewErrorWatcher,
+    lcpRenewSuccessWatcher,
+    lcpReturnErrorWatcher,
+    lcpReturnSuccessWatcher,
+} from "./lcp";
+
 export function* rootSaga() {
     yield all([
 
@@ -14,5 +21,10 @@ export function* rootSaga() {
 
         publicationDownloadAddSuccessWatcher(),
         publicationDownloadSuccessWatcher(),
+
+        lcpRenewErrorWatcher(),
+        lcpRenewSuccessWatcher(),
+        lcpReturnErrorWatcher(),
+        lcpReturnSuccessWatcher(),
     ]);
 }
