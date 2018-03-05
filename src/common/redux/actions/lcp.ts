@@ -18,6 +18,10 @@ export enum ActionType {
     RenewRequest = "LCP_RENEW_REQUEST",
     RenewSuccess = "LCP_RENEW_SUCCESS",
     RenewError = "LCP_RENEW_ERROR",
+
+    StatusUpdateRequest = "LCP_STATUS_UPDATE_REQUEST",
+    StatusUpdateSuccess = "LCP_STATUS_UPDATE_SUCCESS",
+    StatusUpdateError = "LCP_STATUS_UPDATE_ERROR",
 }
 
 export function checkUserKey(publication: Publication, hint: string): Action {

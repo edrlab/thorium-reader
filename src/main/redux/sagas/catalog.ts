@@ -26,7 +26,6 @@ import { PublicationDb } from "readium-desktop/main/db/publication-db";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 
 import { injectFileInZip } from "readium-desktop/utils/zip";
-// import { injectFileInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 import * as fs from "fs";
 

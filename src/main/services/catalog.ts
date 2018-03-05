@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as uuid from "uuid";
 
 import { injectable} from "inversify";
@@ -19,11 +20,11 @@ export class CatalogService {
     /**
      * Parse epub from a local path
      *
-     * @param path: local path of an epub
+     * @param pubPath: local path of an epub
      * @return: new publication
      */
-    public async parseEpub(path: string) {
-        const parsedEpub: Epub = await EpubParsePromise(path);
+    public async parseEpub(pubPath: string): Promise<Publication> {
+        const parsedEpub: Epub = await EpubParsePromise(pubPath);
         const authors: Contributor[] = [];
 
         if (parsedEpub.Metadata && parsedEpub.Metadata.Author) {
@@ -76,13 +77,41 @@ export class CatalogService {
     }
 
     /**
+     * Refresh publication metadata
+     *
+     * @param publication Publication to refresh
+     * @return: Refreshed publication
+     */
+    public async refreshPublicationMetadata(publication: Publication) {
+        const pubStorage = container.get(
+            "publication-storage") as PublicationStorage;
+        const publicationDb = container.get(
+            "publication-db") as PublicationDb;
+
+        const pubPath = path.join(
+            pubStorage.getRootPath(),
+            publication.files[0].url.substr(6),
+        );
+
+        const refreshedPublication = await this.parseEpub(pubPath);
+
+        refreshedPublication.identifier = publication.identifier;
+        refreshedPublication.cover = publication.cover;
+        refreshedPublication.files = publication.files;
+
+        // Store refreshed metadata in db
+        await publicationDb.putOrChange(refreshedPublication);
+        return refreshedPublication;
+    }
+
+    /**
      * Store publication from a local path
      *
      * @param pubId: publication identifier
-     * @param path: local path
+     * @param pubPath: local path
      * @return: new publication
      */
-    public async addPublicationFromLocalPath(pubId: string, path: string) {
+    public async addPublicationFromLocalPath(pubId: string, pubPath: string) {
         const publicationStorage = container.get(
             "publication-storage") as PublicationStorage;
         const publicationDb = container.get(
@@ -91,11 +120,11 @@ export class CatalogService {
         // Store publication on FS
         const files = await publicationStorage.storePublication(
             pubId,
-            path,
+            pubPath,
         );
 
         // Build publication object from epub file
-        const newPub: Publication = await this.parseEpub(path);
+        const newPub: Publication = await this.parseEpub(pubPath);
 
         // Keep the given publication identifier
         newPub.identifier = pubId;

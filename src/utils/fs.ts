@@ -10,7 +10,7 @@ export function rmDirSync(dirPath: string): void {
         return;
     }
 
-    for (let filename of filenames) {
+    for (const filename of filenames) {
         const filePath = path.join(dirPath, filename);
 
         if (fs.statSync(filePath).isFile()) {
@@ -23,7 +23,7 @@ export function rmDirSync(dirPath: string): void {
     fs.rmdirSync(dirPath);
 }
 
-export function getFileSize(path: string): number {
-    const stats = fs.statSync(path);
+export function getFileSize(filePath: string): number {
+    const stats = fs.statSync(filePath);
     return stats.size;
 }

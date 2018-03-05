@@ -32,7 +32,7 @@ export function* lcpRenewSuccessWatcher(): SagaIterator {
 export function* lcpRenewErrorWatcher(): SagaIterator {
     while (true) {
         const action = yield take(lcpActions.ActionType.RenewError);
-        const publication: Publication = action.payload.publication;
+        const publication: Publication = action.meta.publication;
 
         const translator: Translator = container.get(
             "translator") as Translator;
@@ -64,7 +64,7 @@ export function* lcpReturnSuccessWatcher(): SagaIterator {
 export function* lcpReturnErrorWatcher(): SagaIterator {
     while (true) {
         const action = yield take(lcpActions.ActionType.ReturnError);
-        const publication: Publication = action.payload.publication;
+        const publication: Publication = action.meta.publication;
 
         const translator: Translator = container.get(
             "translator") as Translator;

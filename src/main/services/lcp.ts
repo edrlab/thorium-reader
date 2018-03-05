@@ -29,13 +29,14 @@ export class DeviceIdManager implements IDeviceIDManager {
     public async getDeviceID(): Promise<string> {
         let deviceId = await this.getDeviceConfigValue(DEVICE_ID_KEY);
 
-        if (deviceId === null) {
+        if (!deviceId) {
             deviceId = uuid.v4();
 
-            this.configDb.putOrUpdate({
+            const config: any = {
                 identifier: "device",
-                deviceId,
-            });
+            };
+            config[DEVICE_ID_KEY] = deviceId;
+            await this.configDb.putOrUpdate(config);
         }
 
         return deviceId;
@@ -49,30 +50,24 @@ export class DeviceIdManager implements IDeviceIDManager {
         const deviceIdKey = DEVICE_ID_PREFIX + key;
         let deviceId = await this.getDeviceConfigValue(deviceIdKey);
 
-        if (deviceId === null) {
+        if (!deviceId) {
             // Create new device id
             deviceId = uuid.v4();
         }
 
-        return this.configDb.putOrUpdate(
-            Object.assign(
-                {},
-                this.getDeviceConfig(),
-                { deviceIdKey:  deviceId},
-            ),
-        );
+        const config: any = Object.assign({}, this.getDeviceConfig());
+        config[deviceIdKey] = deviceId;
+        return this.configDb.putOrUpdate(config);
     }
 
     private async getDeviceConfig(): Promise<any> {
-        const deviceConfig = await this.configDb.get("device");
-
-        if (deviceConfig === null) {
+        try {
+            return await this.configDb.get("device");
+        } catch (error) {
             return {
                 identifier: "device",
             };
         }
-
-        return deviceConfig;
     }
 
     private async getDeviceConfigValue(key: string): Promise<any> {

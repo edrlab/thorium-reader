@@ -87,3 +87,25 @@ export function injectFileInZip(
         );
     });
 }
+
+export function injectDataInZip(
+    destPathTMP: string,
+    destPathFINAL: string,
+    data: string,
+    zipEntryPath: string,
+): Promise<any> {
+    return new Promise((resolve, reject) => {
+        injectObjectInZip(
+            destPathTMP,
+            destPathFINAL,
+            Buffer.from(data, "utf8"),
+            InjectType.BUFFER, zipEntryPath,
+            (error: any) => {
+                return reject(error);
+            },
+            () => {
+                return resolve();
+            },
+        );
+    });
+}
