@@ -176,6 +176,7 @@ interface ReaderAppState {
     contentTableOpen: boolean;
     settingsOpen: boolean;
     settingsValues: ReadiumCSS;
+    shortcutEnable: boolean;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -219,6 +220,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                 readiumcss: true,
                 sepia: false,
             },
+            shortcutEnable: true,
         };
     }
 
@@ -242,6 +244,16 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                 this.setState({settingsValues: storeState.reader.config});
                 globalSettingsValues = storeState.reader.config;
                 readiumCssOnOff();
+            }
+        });
+
+        window.document.addEventListener("keydown", (ev: KeyboardEvent) => {
+            if (this.state.shortcutEnable) {
+                if (ev.keyCode === 37) { // left
+                    navLeftOrRight(true);
+                } else if (ev.keyCode === 39) { // right
+                    navLeftOrRight(false);
+                }
             }
         });
 
@@ -629,11 +641,11 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     }
 
     private handleSettingsOpen() {
-        this.setState({settingsOpen: true});
+        this.setState({settingsOpen: true, shortcutEnable: false});
     }
 
     private handleSettingsClose() {
-        this.setState({settingsOpen: false});
+        this.setState({settingsOpen: false, shortcutEnable: true});
     }
 
     private handleSettingsSave() {
