@@ -44,6 +44,7 @@ import * as frDocs from "readium-desktop/resources/docs/fr";
 interface AppToolbarState {
     locale: string;
     open: boolean;
+    aboutOpen: boolean;
     dialogContent: string;
     opdsImportOpen: boolean;
     opdsUrl: string;
@@ -80,6 +81,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
             dialogContent: undefined,
             locale: this.store.getState().i18n.locale,
             open: false,
+            aboutOpen: false,
             opdsImportOpen: false,
             opdsUrl: undefined,
             opdsName: undefined,
@@ -108,11 +110,9 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
             <FlatButton
                 label="Cancel"
                 primary={true}
-                onClick={this.handleClose}
+                onClick={this.handleClose.bind(this)}
             />,
         ];
-
-        const that = this;
 
         // Use en as default language
         let docs = enDocs;
@@ -136,6 +136,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             this.setState({
                                 opdsImportOpen: true,
                                 opds: newOpds,
+                                opdsOpen: false,
                             });
                         }}
                     >
@@ -145,25 +146,23 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
             }
         }
         const allMenuItems: JSX.Element[] = [];
-        // for (let item of listOPDS) {
-        //     allMenuItems.push(item);
-        // }
+
         allMenuItems.push(...listOPDS);
         allMenuItems.push(
-            <Divider
-                key= {i}/>,
+            <Divider key={i}/>,
         );
         i++;
         allMenuItems.push(
             <MenuItem
-                key= {i}
+                key={i}
                 primaryText={__("opds.addMenu")}
                 onClick={() => {
                         this.props.openDialog(
                             <OpdsForm closeDialog={this.props.closeDialog}/>,
                             null,
                             []);
-                }}/>,
+                }}
+            />,
         );
         i++;
         return (
@@ -246,9 +245,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             <Menu>
                                 <MenuItem
                                     primaryText= {__("toolbar.help")}
-                                    onClick={() => {
-                                        that.handleOpen(helpContent);
-                                    }}
+                                    onClick={ this.handleOpen.bind(this, helpContent) }
                                     leftIcon={
                                         <svg viewBox={QuestionIcon.content_table}>
                                             <title>Help</title>
@@ -257,12 +254,19 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                     } />
                                 <MenuItem
                                     primaryText={__("toolbar.news")}
-                                    onClick={() => {
-                                        that.handleOpen(aboutContent);
-                                    }}
+                                    onClick={ this.handleOpen.bind(this, aboutContent) }
                                     leftIcon={
                                         <svg viewBox={GiftIcon.content_table}>
                                             <title>What's up</title>
+                                            <use xlinkHref={"#" + GiftIcon.id} />
+                                        </svg>
+                                    } />
+                                <MenuItem
+                                    primaryText={__("toolbar.about")}
+                                    onClick={this.handleAboutOpen.bind(this)}
+                                    leftIcon={
+                                        <svg viewBox={GiftIcon.content_table}>
+                                            <title>About</title>
                                             <use xlinkHref={"#" + GiftIcon.id} />
                                         </svg>
                                     } />
@@ -275,10 +279,27 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                     actions={actions}
                     modal={false}
                     open={this.state.open}
-                    onRequestClose={this.handleClose}
+                    onRequestClose={this.handleClose.bind(this)}
                     autoScrollBodyContent={true}
                     >
                     <div dangerouslySetInnerHTML={{__html: this.state.dialogContent}} />
+                </Dialog>
+                <Dialog
+                    actions={[(
+                        <FlatButton
+                            label="Cancel"
+                            primary={true}
+                            onClick={this.handleAboutClose.bind(this)}
+                        />
+                    )]}
+                    modal={false}
+                    open={this.state.aboutOpen}
+                    onRequestClose={this.handleAboutClose.bind(this)}
+                    autoScrollBodyContent={true}
+                    >
+                    <>
+
+                    </>
                 </Dialog>
                 {this.state.opdsImportOpen ? (
                     <CollectionDialog
@@ -327,11 +348,19 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         const parsed = reader.parse(content);
         const result = writer.render(parsed);
         this.setState({open: true});
-        this.setState({dialogContent : result});
+        this.setState({dialogContent : result, otherOpen: false});
     }
 
     private handleClose = () => {
         this.setState({open: false});
+    }
+
+    private handleAboutOpen = (content: string) => {
+        this.setState({aboutOpen: true, otherOpen: false});
+    }
+
+    private handleAboutClose = () => {
+        this.setState({aboutOpen: false});
     }
 
     private handleLocaleChange(locale: string) {
