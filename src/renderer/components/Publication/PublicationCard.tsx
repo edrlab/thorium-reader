@@ -26,6 +26,8 @@ import { Cover } from "readium-desktop/renderer/components/Publication/index";
 
 import * as LibraryStyles from "readium-desktop/renderer/assets/styles/library.css";
 
+import { lcpReadable } from "readium-desktop/utils/publication";
+
 interface IPublicationState {
     isFlipped: boolean;
 }
@@ -123,10 +125,7 @@ export default class PublicationListElement extends React.Component<IPublication
                                             </div>
                                         ) : (
                                             <div>
-                                                {!publication.lcp ||
-                                                 (publication.lcp
-                                                    && publication.lcp.rights.end
-                                                    && new Date(publication.lcp.rights.end).getTime() > Date.now()) ? (
+                                                {lcpReadable(publication) ? (
                                                     <FlatButton
                                                     style={Styles.BookCard.downloadButton}
                                                     onClick={() => {this.props.handleRead(publication); }}

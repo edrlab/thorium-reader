@@ -20,6 +20,8 @@ import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { Cover } from "readium-desktop/renderer/components/Publication/index";
 
+import { lcpReadable } from "readium-desktop/utils/publication";
+
 interface IPublicationProps {
     publication: Publication;
     publicationId: number;
@@ -90,10 +92,7 @@ export default class PublicationListElement extends React.Component<IPublication
                                     </>
                                 ) : (
                                     <>
-                                        {!publication.lcp ||
-                                            (publication.lcp
-                                            && publication.lcp.rights.end
-                                            && new Date(publication.lcp.rights.end).getTime() > Date.now()) ? (
+                                        {lcpReadable(publication) ? (
                                             <FlatButton
                                             style={Styles.BookCard.downloadButton}
                                             onClick={() => {this.props.handleRead(publication); }}
