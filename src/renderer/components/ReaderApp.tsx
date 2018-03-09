@@ -202,7 +202,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             r2Publication: undefined,
             title: "TITLE",
             lcpPass: "LCP pass",
-            spineLinks: { "no spine items?": "https://google.com" },
+            spineLinks: { "https://google.com": "no spine items?" },
             contentTableOpen: false,
             settingsOpen: false,
             settingsValues: {
@@ -307,9 +307,9 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         let i = 0;
         for (const spine in this.state.spineLinks) {
             contentTable.push((
-                <li><a key={i} href={this.state.spineLinks[spine]}
+                <li><a key={i} href={spine}
                     onClick={this._onDropDownSelectSpineLink}>
-                    {spine}
+                    {this.state.spineLinks[spine]}
                 </a></li>
             ));
             i++;
@@ -543,7 +543,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             // console.log(publication.Spine);
             const links: IStringMap = {};
             publication.TOC.forEach((spineItemLink: any) => {
-                links[spineItemLink.Title] = publicationJsonUrl + "/../" + spineItemLink.Href;
+                links[publicationJsonUrl + "/../" + spineItemLink.Href] = spineItemLink.Title;
             });
             this.setState({spineLinks: links});
         }
