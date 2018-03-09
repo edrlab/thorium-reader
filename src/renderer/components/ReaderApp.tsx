@@ -307,7 +307,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         let i = 0;
         for (const spine in this.state.spineLinks) {
             contentTable.push((
-                <li><a key={i} href={spine}
+                <li key={i}><a href={spine}
                     onClick={this._onDropDownSelectSpineLink}>
                     {this.state.spineLinks[spine]}
                 </a></li>
