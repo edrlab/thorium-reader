@@ -461,7 +461,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <svg className={ReaderStyles.settings_icones} viewBox={PageIcon.page}>
                                             <title>Document</title>
                                             <use xlinkHref={"#" + PageIcon.id} />
-                                        </svg> {__("reader.settings.document")}
+                                        </svg> {__("reader.settings.paginated")}
                                 </label>
                                 <label>
                                     <input type="radio" value="false" name="paged"
@@ -470,7 +470,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <svg className={ReaderStyles.settings_icones} viewBox={ContinueIcon.continue}>
                                             <title>Continue</title>
                                             <use xlinkHref={"#" + ContinueIcon.id} />
-                                        </svg> {__("reader.settings.continue")}
+                                        </svg> {__("reader.settings.scrolled")}
                                 </label>
                             </div>
                         </div>

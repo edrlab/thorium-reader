@@ -90,8 +90,8 @@
         "display": "Type d'affichage :",
         "close": "Fermer",
         "save": "Sauvegarder",
-        "continue": "Continue",
-        "document": "Document"
+        "scrolled": "Défilé",
+        "paginated": "Paginé"
       }
     },
     "message": {
