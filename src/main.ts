@@ -2,7 +2,7 @@ import * as debug_ from "debug";
 import * as path from "path";
 import { Store } from "redux";
 
-import { app, BrowserWindow, ipcMain, protocol } from "electron";
+import { app, BrowserWindow, ipcMain, Menu, protocol } from "electron";
 
 import { container } from "readium-desktop/main/di";
 
@@ -73,6 +73,31 @@ function createWindow() {
     rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
 
     mainWindow.loadURL(rendererBaseUrl);
+
+    // Create the app menu on mac os to allow copy paste
+    if (process.platform === "darwin") {
+        const template: any = [
+            {
+                label: app.getName(),
+                submenu: [
+                  {role: "quit"},
+                ],
+            },
+            {
+                label: "Edit",
+                submenu: [
+                  {role: "undo"},
+                  {role: "redo"},
+                  {type: "separator"},
+                  {role: "cut"},
+                  {role: "copy"},
+                  {role: "paste"},
+                  {role: "selectall"},
+                ],
+            },
+        ];
+        Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+    }
 
     if (IS_DEV) {
         const {
