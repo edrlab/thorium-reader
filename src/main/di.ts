@@ -22,6 +22,8 @@ import { DeviceIdManager } from "readium-desktop/main/services/lcp";
 
 import { OPDSParser } from "readium-desktop/common/services/opds";
 
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
+
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { streamer } from "readium-desktop/main/streamer";
 
@@ -147,6 +149,10 @@ container.bind<PublicationStorage>("publication-storage").toConstantValue(
 container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
     new DeviceIdManager("readium-desktop", configDb),
 );
+
+// Create action serializer
+const actionSerializer = new ActionSerializer();
+container.bind<ActionSerializer>("action-serializer").toConstantValue(actionSerializer);
 
 const {
     lazyInject,

@@ -76,3 +76,20 @@ export function* lcpReturnErrorWatcher(): SagaIterator {
             translator.translate("message.lcp.returnErrorSecond")));
     }
 }
+
+export function* lcpPassphraseSubmitErrorWatcher(): SagaIterator {
+    while (true) {
+        const action = yield take(lcpActions.ActionType.PassphraseSubmitError);
+        const publication: Publication = action.meta.publication;
+
+        const translator: Translator = container.get(
+            "translator") as Translator;
+
+        const lang = "en";
+        yield put(messageActions.add(
+            translator.translate("message.lcp.passphraseError", {
+                publicationTitle: getMultiLangString(publication.title, lang),
+            }),
+        ));
+    }
+}

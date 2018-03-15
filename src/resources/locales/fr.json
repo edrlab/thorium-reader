@@ -109,7 +109,8 @@
         "returnSuccessFirst": "La license lcp de ",
         "returnSuccessSecond": " a bien été retorunée",
         "returnErrorFirst": "Un erreur est survenue lors du retournement de ",
-        "returnErrorSecond": ""
+        "returnErrorSecond": "",
+        "passphraseError": "Impossible de déverouiller la publication {{publicationTitle}}"
       }
     }
 }

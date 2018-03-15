@@ -15,6 +15,10 @@ import { SenderType } from "readium-desktop/common/models/sync";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
+import { container } from "readium-desktop/renderer/di";
+
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
+
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
     catalogActions.ActionType.FileImportRequest,
@@ -51,11 +55,14 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
         return next(action);
     }
 
+    // Get action serializer
+    const actionSerializer = container.get("action-serializer") as ActionSerializer;
+
     // Send this action to the main process
     ipcRenderer.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.RendererAction,
         payload: {
-            action,
+            action: actionSerializer.serialize(action),
         },
         sender: {
             type: SenderType.Renderer,

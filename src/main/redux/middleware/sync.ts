@@ -13,6 +13,8 @@ import {
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
+
 import { SenderType } from "readium-desktop/common/models/sync";
 
 // Actions that can be synchronized
@@ -72,6 +74,9 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
     const winRegistry = container.get("win-registry") as WinRegistry;
     const windows = winRegistry.getWindows();
 
+    // Get action serializer
+    const actionSerializer = container.get("action-serializer") as ActionSerializer;
+
     for (const winId of Object.keys(windows)) {
         // Notifies renderer process
         const win = windows[winId];
@@ -85,15 +90,15 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
         }
 
         try {
-        win.webContents.send(syncIpc.CHANNEL, {
-            type: syncIpc.EventType.MainAction,
-            payload: {
-                action,
-            },
-            sender: {
-                type: SenderType.Main,
-            },
-        });
+            win.webContents.send(syncIpc.CHANNEL, {
+                type: syncIpc.EventType.MainAction,
+                payload: {
+                    action: actionSerializer.serialize(action),
+                },
+                sender: {
+                    type: SenderType.Main,
+                },
+            });
         } catch (error) {
             console.log("Windows does not exist", winId);
         }

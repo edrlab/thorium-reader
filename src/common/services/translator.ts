@@ -27,11 +27,11 @@ export class Translator {
         this.locale = locale;
     }
 
-    public translate(message: string): string {
+    public translate(message: string, options: any = {}): string {
         if (i18n.language !== this.locale) {
             i18n.changeLanguage(this.locale);
         }
 
-        return i18n.t(message);
+        return i18n.t(message, options);
     }
 }

@@ -8,6 +8,7 @@ import {
 } from "./publication-download";
 
 import {
+    lcpPassphraseSubmitErrorWatcher,
     lcpRenewErrorWatcher,
     lcpRenewSuccessWatcher,
     lcpReturnErrorWatcher,
@@ -22,6 +23,7 @@ export function* rootSaga() {
         publicationDownloadAddSuccessWatcher(),
         publicationDownloadSuccessWatcher(),
 
+        lcpPassphraseSubmitErrorWatcher(),
         lcpRenewErrorWatcher(),
         lcpRenewSuccessWatcher(),
         lcpReturnErrorWatcher(),

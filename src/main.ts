@@ -32,6 +32,8 @@ import { _RENDERER_APP_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-dir
 
 import { SenderType } from "readium-desktop/common/models/sync";
 
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
+
 // Logger
 const debug = debug_("readium-desktop:main");
 
@@ -270,13 +272,14 @@ ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
 // Listen to renderer action
 ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {
     const store = container.get("store") as Store<any>;
+    const actionSerializer = container.get("action-serializer") as ActionSerializer;
 
     switch (data.type) {
         case syncIpc.EventType.RendererAction:
             // Dispatch renderer action to main reducers
             store.dispatch(Object.assign(
                 {},
-                data.payload.action,
+                actionSerializer.deserialize(data.payload.action),
                 {sender: data.sender},
             ));
             break;

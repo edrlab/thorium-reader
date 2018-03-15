@@ -21,6 +21,8 @@ import { initGlobals } from "@r2-shared-js/init-globals";
 
 import { SenderType } from "readium-desktop/common/models/sync";
 
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
+
 initGlobals();
 
 // console.log(__dirname);
@@ -66,12 +68,14 @@ ipcRenderer.send(winIpc.CHANNEL, {
 });
 
 ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: any) => {
+    const actionSerializer = container.get("action-serializer") as ActionSerializer;
+
     switch (data.type) {
         case syncIpc.EventType.MainAction:
             // Dispatch main action to renderer reducers
             store.dispatch(Object.assign(
                 {},
-                data.payload.action,
+                actionSerializer.deserialize(data.payload.action),
                 {sender: data.sender},
             ));
             break;

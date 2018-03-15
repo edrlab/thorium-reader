@@ -204,7 +204,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                         storeState.reader.config,
                         {
                             fontSizeNum: parseInt(
-                                storeState.reader.config.fontSize, 10
+                                storeState.reader.config.fontSize, 10,
                             ),
                         },
                     ),

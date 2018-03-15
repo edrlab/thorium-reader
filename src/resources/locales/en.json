@@ -109,7 +109,8 @@
         "returnSuccessFirst": "The lcp license of ",
         "returnSuccessSecond": " has been returned",
         "returnErrorFirst": "An error occurred when returning the lcp license of ",
-        "returnErrorSecond": ""
+        "returnErrorSecond": "",
+        "passphraseError": "Unable to unlock publication {{publicationTitle}}"
       }
     }
 }

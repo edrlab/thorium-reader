@@ -36,6 +36,8 @@ import { toSha256Hex, updateLicenseStatus } from "readium-desktop/utils/lcp";
 
 import { requestGet } from "readium-desktop/utils/http";
 
+import { CodeError } from "readium-desktop/common/errors";
+
 // List of sha256HexPassphrases, the user has tried and that rocks
 const sha256HexPassphrases: string[] = [];
 
@@ -73,10 +75,16 @@ export function* lcpPassphraseSubmitRequestWatcher(): SagaIterator {
                 sha256HexPassphrases.push(sha256HexPassphrase);
             }
         } catch (error) {
+            let payload = new CodeError(error);
+
+            if (error instanceof Error) {
+                payload = new CodeError(1);
+            }
+
             yield put({
                 type: lcpActions.ActionType.PassphraseSubmitError,
                 error: true,
-                payload: new Error(error),
+                payload,
                 meta: {
                     publication,
                 },
@@ -129,8 +137,15 @@ export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
                 },
             });
         } catch (error) {
+            let payload = new CodeError(error);
+
+            if (error instanceof Error) {
+                payload = new CodeError(1);
+            }
+
             yield put({
                 type: lcpActions.ActionType.UserKeyCheckError,
+                payload,
                 error: true,
             });
         }
