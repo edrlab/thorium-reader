@@ -14,6 +14,7 @@ import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 
 import {
     catalogActions,
+    i18nActions,
     netActions,
     opdsActions,
     readerActions,
@@ -27,7 +28,9 @@ import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { initGlobals } from "@r2-shared-js/init-globals";
 
-import { IS_DEV, _RENDERER_APP_BASE_URL } from "readium-desktop/preprocessor-directives";
+import { _RENDERER_APP_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
+
+import { SenderType } from "readium-desktop/common/models/sync";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -234,7 +237,7 @@ ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
                 },
             });
 
-            // Send opds feeds
+            // Send config
             win.webContents.send(syncIpc.CHANNEL, {
                 type: syncIpc.EventType.MainAction,
                 payload: {
@@ -242,6 +245,19 @@ ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
                         type: readerActions.ActionType.ConfigSetSuccess,
                         payload: {
                             config: state.reader.config,
+                        },
+                    },
+                },
+            });
+
+            // Send locale
+            win.webContents.send(syncIpc.CHANNEL, {
+                type: syncIpc.EventType.MainAction,
+                payload: {
+                    action: {
+                        type: i18nActions.ActionType.Set,
+                        payload: {
+                            locale: state.i18n.locale,
                         },
                     },
                 },
@@ -258,7 +274,11 @@ ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {
     switch (data.type) {
         case syncIpc.EventType.RendererAction:
             // Dispatch renderer action to main reducers
-            store.dispatch(data.payload.action);
+            store.dispatch(Object.assign(
+                {},
+                data.payload.action,
+                {sender: data.sender},
+            ));
             break;
     }
 });

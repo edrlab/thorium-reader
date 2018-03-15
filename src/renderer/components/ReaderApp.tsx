@@ -238,6 +238,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
         this.store.subscribe(() => {
             const storeState = this.store.getState();
+            this.translator.setLocale(storeState.i18n.locale);
             const settings = storeState.reader.config;
             if (settings !== this.state.settingsValues) {
                 this.translator.setLocale(this.store.getState().i18n.locale);

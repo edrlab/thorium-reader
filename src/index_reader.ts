@@ -19,6 +19,8 @@ import App from "readium-desktop/renderer/components/ReaderApp";
 import { initGlobals } from "@r2-shared-js/init-globals";
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
+import { SenderType } from "readium-desktop/common/models/sync";
+
 initGlobals();
 
 // console.log(__dirname);
@@ -67,7 +69,11 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: any) => {
     switch (data.type) {
         case syncIpc.EventType.MainAction:
             // Dispatch main action to renderer reducers
-            store.dispatch(data.payload.action);
+            store.dispatch(Object.assign(
+                {},
+                data.payload.action,
+                {sender: data.sender},
+            ));
             break;
     }
 });

@@ -1,6 +1,10 @@
 import { combineReducers } from "redux";
 
 import {
+    i18nReducer,
+} from "readium-desktop/common/redux/reducers/i18n";
+
+import {
     streamerReducer,
 } from "readium-desktop/main/redux/reducers/streamer";
 
@@ -25,6 +29,7 @@ export const rootReducer = combineReducers({
     donwloader: downloaderReducer,
     streamer: streamerReducer,
     catalog: catalogReducer,
+    i18n: i18nReducer,
     lcp: lcpReducer,
     publicationDownloads: publicationDownloadReducer,
     reader: readerReducer,
