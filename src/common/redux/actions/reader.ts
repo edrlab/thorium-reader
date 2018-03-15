@@ -1,5 +1,5 @@
 import { Publication } from "readium-desktop/common/models/publication";
-import { Reader, ReaderConfig } from "readium-desktop/common/models/reader";
+import { Bookmark, Reader, ReaderConfig } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 
 export enum ActionType {
@@ -14,6 +14,10 @@ export enum ActionType {
     ConfigSetRequest = "READER_CONFIG_SET_REQUEST",
     ConfigSetSuccess = "READER_CONFIG_SET_SUCCESS",
     ConfigSetError = "READER_CONFIG_SET_ERROR",
+
+    BookmarkSaveRequest = "READER_BOOKMARK_SAVE_REQUEST",
+    BookmarkSaveSuccess = "READER_BOOKMARK_SAVE_SUCCESS",
+    BookmarkSaveError = "READER_BOOKMARK_SAVE_ERROR",
 }
 
 export function open(publication: Publication): Action {
@@ -39,6 +43,15 @@ export function setConfig(config: ReaderConfig): Action {
         type: ActionType.ConfigSetRequest,
         payload: {
             config,
+        },
+    };
+}
+
+export function saveBookmark(bookmark: Bookmark) {
+    return {
+        type: ActionType.BookmarkSaveRequest,
+        payload: {
+            bookmark,
         },
     };
 }

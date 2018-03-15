@@ -10,7 +10,10 @@ import { container } from "readium-desktop/renderer/di";
 
 import { getMultiLangString } from "readium-desktop/common/models/language";
 import { Publication } from "readium-desktop/common/models/publication";
-import { ReaderConfig as ReadiumCSS} from "readium-desktop/common/models/reader";
+import {
+    Bookmark,
+    ReaderConfig as ReadiumCSS,
+} from "readium-desktop/common/models/reader";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
@@ -77,6 +80,8 @@ webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
     supportFetchAPI: true,
 });
 
+const queryParams = getURLQueryParams();
+
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     const store = (container.get("store") as Store<any>);
     const settings = store.getState().reader.config;
@@ -97,12 +102,20 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
 
-const saveReadingLocation = (doc: string, loc: string) => {
-    console.log("Save reading location");
+const saveReadingLocation = (docHref: string, docSelector: string) => {
+    const store = container.get("store") as Store<RootState>;
+    store.dispatch(readerActions.saveBookmark(
+        {
+            identifier: "reading-location",
+            publication: {
+                // tslint:disable-next-line:no-string-literal
+                identifier: queryParams["pubId"],
+            },
+            docHref,
+            docSelector,
+        } as Bookmark,
+    ));
 };
-setReadingLocationSaver(saveReadingLocation);
-
-const queryParams = getURLQueryParams();
 
 // tslint:disable-next-line:no-string-literal
 const publicationJsonUrl = queryParams["pub"];
@@ -225,7 +238,19 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             }
         });
 
-        await this.loadPublicationIntoViewport();
+        // tslint:disable-next-line:no-string-literal
+        let docHref: string = queryParams["docHref"];
+        // tslint:disable-next-line:no-string-literal
+        let docSelector: string = queryParams["docSelector"];
+
+        if (docHref && docSelector) {
+            // Decode base64
+            docHref = window.atob(docHref);
+            docSelector = window.atob(docSelector);
+        }
+
+        await this.loadPublicationIntoViewport(docHref, docSelector);
+        setReadingLocationSaver(saveReadingLocation);
     }
 
     public render(): React.ReactElement<{}> {
@@ -397,7 +422,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         );
     }
 
-    private async loadPublicationIntoViewport() {
+    private async loadPublicationIntoViewport(
+        docHref: string,
+        docSelector: string,
+    ) {
         let response: Response;
         try {
             response = await fetch(publicationJsonUrl);
@@ -441,9 +469,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             this.setState({spineLinks: links});
         }
 
-        const pubDocHrefToLoad: string | undefined = undefined;
-        const pubDocSelectorToGoto: string | undefined = undefined;
-
         let preloadPath = "preload.js";
         if (_PACKAGING === "1") {
             preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
@@ -464,10 +489,14 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
         preloadPath = preloadPath.replace(/\\/g, "/");
 
-        installNavigatorDOM(publication, publicationJsonUrl,
+        installNavigatorDOM(
+            publication,
+            publicationJsonUrl,
             "publication_viewport",
             preloadPath,
-            pubDocHrefToLoad, pubDocSelectorToGoto);
+            docHref,
+            docSelector,
+        );
     }
 
     private handleContentTableClick() {

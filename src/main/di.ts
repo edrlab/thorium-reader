@@ -18,6 +18,7 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { RootState } from "readium-desktop/main/redux/states";
 
+import { BookmarkManager } from "readium-desktop/main/services/bookmark";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { SecretManager } from "readium-desktop/main/services/secret";
 
@@ -152,6 +153,9 @@ container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
 );
 container.bind<SecretManager>("secret-manager").toConstantValue(
     new SecretManager(configDb),
+);
+container.bind<BookmarkManager>("bookmark-manager").toConstantValue(
+    new BookmarkManager(configDb),
 );
 // Create action serializer
 const actionSerializer = new ActionSerializer();

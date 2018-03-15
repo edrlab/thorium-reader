@@ -32,6 +32,8 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
+import { BookmarkManager } from "readium-desktop/main/services/bookmark";
+
 import {
     _NODE_MODULE_RELATIVE_URL,
     _PACKAGING,
@@ -51,7 +53,7 @@ function openAllDevTools() {
     }
 }
 
-function openReader(publication: Publication, manifestUrl: string) {
+async function openReader(publication: Publication, manifestUrl: string) {
     // Create reader window
     const readerWindow = new BrowserWindow({
         width: 800,
@@ -107,28 +109,25 @@ function openReader(publication: Publication, manifestUrl: string) {
     }
 
     readerUrl = readerUrl.replace(/\\/g, "/");
-    readerUrl += `?pub=${encodedManifestUrl}`;
+    readerUrl += `?pub=${encodedManifestUrl}&pubId=${publication.identifier}`;
 
-    // FIXME: __TODO_LCP_LSD__
-    // const lcpHint = false;
-    // if (lcpHint) {
-    //     readerUrl += "&lcpHint=" + encodeURIComponent_RFC3986(lcpHint);
-    // }
+    // Get publication last reading location
+    const bookmarkManager = container.get("bookmark-manager") as BookmarkManager;
+    const bookmark = await bookmarkManager.getBookmark(
+        publication.identifier,
+        "reading-location",
+    );
 
-    readerWindow.webContents.on("dom-ready", () => {
-        console.log("readerWindow dom-ready " + pathDecoded + " : " + manifestUrl);
-        // electronBrowserWindow.webContents.openDevTools();
-    });
+    if (bookmark) {
+        const docHref = Buffer.from(bookmark.docHref).toString("base64");
+        const docSelector = Buffer.from(bookmark.docSelector).toString("base64");
+        readerUrl += `&docHref=${docHref}&docSelector=${docSelector}`;
+    }
 
     readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
 
     if (IS_DEV) {
         readerWindow.webContents.openDevTools();
-
-        // webview (preload) debug
-        // setTimeout(() => {
-        //         openAllDevTools();
-        //     }, 8000); // TODO: needs smarter method
     } else {
         // Remove menu bar
         readerWindow.setMenu(null);
@@ -268,5 +267,32 @@ export function* readerConfigInitWatcher(): SagaIterator {
             payload: new Error(error),
             error: true,
         });
+    }
+}
+
+export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
+    while (true) {
+        // Wait for app initialization
+        const action = yield take(readerActions.ActionType.BookmarkSaveRequest);
+        const bookmark = action.payload.bookmark;
+
+        // Get bookmark manager
+        const bookmarkManager = container.get("bookmark-manager") as BookmarkManager;
+
+        try {
+            yield call(() => bookmarkManager.saveBookmark(bookmark));
+            yield put({
+                type: readerActions.ActionType.BookmarkSaveSuccess,
+                payload: {
+                    bookmark,
+                },
+            });
+        } catch (error) {
+            yield put({
+                type: readerActions.ActionType.BookmarkSaveError,
+                payload: new Error(error),
+                error: true,
+            });
+        }
     }
 }

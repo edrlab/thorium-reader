@@ -239,7 +239,7 @@ ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
                 },
             });
 
-            // Send config
+            // Send reader config
             win.webContents.send(syncIpc.CHANNEL, {
                 type: syncIpc.EventType.MainAction,
                 payload: {

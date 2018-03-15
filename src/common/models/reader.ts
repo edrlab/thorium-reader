@@ -31,3 +31,14 @@ export interface ReaderConfig {
     readiumcss: boolean;
     sepia: boolean;
 }
+
+export interface BookmarkCollection {
+    [key: string]: Bookmark;
+}
+
+export interface Bookmark {
+    identifier: string;
+    publication: Identifiable;
+    docHref: string;
+    docSelector: string;
+}

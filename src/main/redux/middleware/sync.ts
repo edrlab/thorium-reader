@@ -49,6 +49,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     readerActions.ActionType.OpenSuccess,
     readerActions.ActionType.ConfigSetError,
     readerActions.ActionType.ConfigSetSuccess,
+    readerActions.ActionType.BookmarkSaveError,
+    readerActions.ActionType.BookmarkSaveSuccess,
 
     lcpActions.ActionType.UserKeyCheckRequest,
     lcpActions.ActionType.UserKeyCheckError,
