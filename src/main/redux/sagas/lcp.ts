@@ -24,7 +24,8 @@ import { Publication as Epub } from "@r2-shared-js/models/publication";
 
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
-import { DeviceIdManager } from "readium-desktop/main/services/lcp";
+import { DeviceIdManager } from "readium-desktop/main/services/device";
+import { SecretManager } from "readium-desktop/main/services/secret";
 
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
@@ -38,8 +39,7 @@ import { requestGet } from "readium-desktop/utils/http";
 
 import { CodeError } from "readium-desktop/common/errors";
 
-// List of sha256HexPassphrases, the user has tried and that rocks
-const sha256HexPassphrases: string[] = [];
+const PASSPHRASE_CONFIG_IDENTIFIER = "passphrase-config";
 
 export function* lcpPassphraseSubmitRequestWatcher(): SagaIterator {
     while (true) {
@@ -55,7 +55,8 @@ export function* lcpPassphraseSubmitRequestWatcher(): SagaIterator {
         );
 
         // Test user passphrase
-        const streamer: Server = container.get("streamer") as Server;
+        const streamer = container.get("streamer") as Server;
+        const secretManager = container.get("secret-manager") as SecretManager;
 
         try {
             // Create sha256 in hex of passphrase
@@ -70,10 +71,8 @@ export function* lcpPassphraseSubmitRequestWatcher(): SagaIterator {
                 ),
             );
 
-            if (sha256HexPassphrases.indexOf(sha256HexPassphrase) === -1) {
-                // new passphrase that rocks
-                sha256HexPassphrases.push(sha256HexPassphrase);
-            }
+            // New secret that rocks
+            secretManager.storeSecret(sha256HexPassphrase);
         } catch (error) {
             let payload = new CodeError(error);
 
@@ -119,13 +118,16 @@ export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
 
         // Test user passphrases
         const streamer: Server = container.get("streamer") as Server;
+        const secretManager = container.get("secret-manager") as SecretManager;
 
         try {
+            const secrets = yield call(() => secretManager.getAllSecrets());
+
             yield call(() =>
                 doTryLcpPass(
                     streamer,
                     epubPath,
-                    sha256HexPassphrases,
+                    secrets,
                     true,
                 ),
             );

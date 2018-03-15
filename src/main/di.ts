@@ -18,7 +18,8 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { RootState } from "readium-desktop/main/redux/states";
 
-import { DeviceIdManager } from "readium-desktop/main/services/lcp";
+import { DeviceIdManager } from "readium-desktop/main/services/device";
+import { SecretManager } from "readium-desktop/main/services/secret";
 
 import { OPDSParser } from "readium-desktop/common/services/opds";
 
@@ -149,7 +150,9 @@ container.bind<PublicationStorage>("publication-storage").toConstantValue(
 container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
     new DeviceIdManager("readium-desktop", configDb),
 );
-
+container.bind<SecretManager>("secret-manager").toConstantValue(
+    new SecretManager(configDb),
+);
 // Create action serializer
 const actionSerializer = new ActionSerializer();
 container.bind<ActionSerializer>("action-serializer").toConstantValue(actionSerializer);
