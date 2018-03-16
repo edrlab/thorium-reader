@@ -45,6 +45,7 @@
       "canceledDownload": "Download Canceled"
     },
     "toolbar": {
+        "about": "About",
         "help":"Help",
         "news":"What's new?",
         "sync":"Synchronize the library"

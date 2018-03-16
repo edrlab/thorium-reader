@@ -8,6 +8,11 @@ declare module "*.md" {
     export default content;
 }
 
+declare module "*.png" {
+    const content: string;
+    export default content;
+}
+
 declare module "ping";
 declare module "redux-electron-store";
 declare module "electron-redux";

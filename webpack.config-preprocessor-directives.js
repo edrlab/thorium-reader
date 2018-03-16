@@ -1,5 +1,8 @@
 const webpack = require("webpack");
 
+const { version } = require("./package.json");
+var git = require("git-rev-sync");
+
 const portApp = process.env.PORT_APP || "8090";
 const portReader = process.env.PORT_READER || "8191";
 
@@ -24,13 +27,17 @@ const nodeModuleRelativeUrl = (isPackaging === "1") ?
     "node_modules" : "../node_modules";
 
 const data = {
+    __APP_VERSION__: JSON.stringify(version),
+    __GIT_BRANCH__: JSON.stringify(git.branch()),
+    __GIT_DATE__: JSON.stringify(git.date()),
+    __GIT_SHORT__: JSON.stringify(git.short()),
     __NODE_ENV__: JSON.stringify(nodeEnv),
+    __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
     __PACKAGING__: JSON.stringify(isPackaging),
     __POUCHDB_ADAPTER_NAME__: JSON.stringify(pouchDbAdapterName),
     __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),
     __RENDERER_APP_BASE_URL__: JSON.stringify(rendererAppBaseUrl),
     __RENDERER_READER_BASE_URL__: JSON.stringify(rendererReaderBaseUrl),
-    __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
 };
 
 // we do not replace "process.env.NODE_ENV" at build-time,
@@ -46,5 +53,5 @@ module.exports = {
     portApp,
     portReader,
     rendererAppBaseUrl,
-    rendererReaderBaseUrl
+    rendererReaderBaseUrl,
 };

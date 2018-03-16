@@ -2,7 +2,7 @@ import * as debug_ from "debug";
 import * as path from "path";
 import { Store } from "redux";
 
-import { app, BrowserWindow, ipcMain, Menu, protocol } from "electron";
+import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
 
 import { container } from "readium-desktop/main/di";
 
@@ -123,6 +123,19 @@ function createWindow() {
         // Remove menu bar
         mainWindow.setMenu(null);
     }
+
+    // Redirect link to an external browser
+    const handleRedirect = (event: any, url: any) => {
+        if (url === mainWindow.webContents.getURL()) {
+            return;
+        }
+
+        event.preventDefault();
+        shell.openExternal(url);
+    };
+
+    mainWindow.webContents.on("will-navigate", handleRedirect);
+    mainWindow.webContents.on("new-window", handleRedirect);
 
     // Clear all cache to prevent weird behaviours
     // Fully handled in r2-navigator-js initSessions();

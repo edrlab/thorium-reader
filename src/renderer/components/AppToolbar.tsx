@@ -1,4 +1,3 @@
-import * as commonmark from "commonmark";
 import * as React from "react";
 import { Store } from "redux";
 
@@ -28,6 +27,9 @@ import AddIcon from "readium-desktop/renderer/assets/icons/add.svg";
 import GiftIcon from "readium-desktop/renderer/assets/icons/gift.svg";
 import MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import OPDSIcon from "readium-desktop/renderer/assets/icons/opds.svg";
+
+import * as CNLLogoUrl from "readium-desktop/renderer/assets/logos/cnl.png";
+
 import QuestionIcon from "readium-desktop/renderer/assets/icons/question.svg";
 import * as AppBarStyles from "readium-desktop/renderer/assets/styles/app-bar.css";
 
@@ -40,6 +42,13 @@ import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
 
 import * as enDocs from "readium-desktop/resources/docs/en";
 import * as frDocs from "readium-desktop/resources/docs/fr";
+
+import {
+    _APP_VERSION,
+    _GIT_BRANCH,
+    _GIT_DATE,
+    _GIT_SHORT,
+} from "readium-desktop/preprocessor-directives";
 
 interface AppToolbarState {
     locale: string;
@@ -122,6 +131,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         }
 
         const helpContent = docs.help as any;
+        const newsContent = docs.news as any;
         const aboutContent = docs.about as any;
 
         const listOPDS: JSX.Element[] = [];
@@ -254,7 +264,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                     } />
                                 <MenuItem
                                     primaryText={__("toolbar.news")}
-                                    onClick={ this.handleOpen.bind(this, aboutContent) }
+                                    onClick={ this.handleOpen.bind(this, newsContent) }
                                     leftIcon={
                                         <svg viewBox={GiftIcon.content_table}>
                                             <title>What's up</title>
@@ -263,11 +273,37 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                     } />
                                 <MenuItem
                                     primaryText={__("toolbar.about")}
-                                    onClick={this.handleAboutOpen.bind(this)}
+                                    onClick={
+                                        this.handleOpen.bind(
+                                            this,
+                                            aboutContent, [
+                                                {
+                                                    from: "{{version}}",
+                                                    to: _APP_VERSION,
+                                                },
+                                                {
+                                                    from: "{{date}}",
+                                                    to: _GIT_DATE,
+                                                },
+                                                {
+                                                    from: "{{short}}",
+                                                    to: _GIT_SHORT,
+                                                },
+                                                {
+                                                    from: "{{branch}}",
+                                                    to: _GIT_BRANCH,
+                                                },
+                                                {
+                                                    from: "{{cnlLogoUrl}}",
+                                                    to: CNLLogoUrl,
+                                                },
+                                            ],
+                                        )
+                                    }
                                     leftIcon={
-                                        <svg viewBox={GiftIcon.content_table}>
+                                        <svg viewBox={QuestionIcon.content_table}>
                                             <title>About</title>
-                                            <use xlinkHref={"#" + GiftIcon.id} />
+                                            <use xlinkHref={"#" + QuestionIcon.id} />
                                         </svg>
                                     } />
                             </Menu>
@@ -289,12 +325,12 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                         <FlatButton
                             label="Cancel"
                             primary={true}
-                            onClick={this.handleAboutClose.bind(this)}
+                            onClick={this.handleClose.bind(this)}
                         />
                     )]}
                     modal={false}
                     open={this.state.aboutOpen}
-                    onRequestClose={this.handleAboutClose.bind(this)}
+                    onRequestClose={this.handleClose.bind(this)}
                     autoScrollBodyContent={true}
                     >
                     <>
@@ -341,26 +377,17 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         this.setState({otherOpen: false});
     }
 
-    private handleOpen = (content: string) => {
-        const reader = new commonmark.Parser();
-        const writer = new commonmark.HtmlRenderer();
+    private handleOpen = (content: string, replacements: any = {}) => {
+        for (const replacement of replacements) {
+            content = content.replace(replacement.from, replacement.to);
+        }
 
-        const parsed = reader.parse(content);
-        const result = writer.render(parsed);
         this.setState({open: true});
-        this.setState({dialogContent : result, otherOpen: false});
+        this.setState({dialogContent : content, otherOpen: false});
     }
 
     private handleClose = () => {
         this.setState({open: false});
-    }
-
-    private handleAboutOpen = (content: string) => {
-        this.setState({aboutOpen: true, otherOpen: false});
-    }
-
-    private handleAboutClose = () => {
-        this.setState({aboutOpen: false});
     }
 
     private handleLocaleChange(locale: string) {
