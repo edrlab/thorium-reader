@@ -21,6 +21,8 @@ import {
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { opdsReducer } from "readium-desktop/common/redux/reducers/opds";
+import { updateReducer } from "readium-desktop/common/redux/reducers/update";
+
 import {
     publicationDownloadReducer,
 } from "readium-desktop/common/redux/reducers/publication-download";
@@ -35,4 +37,5 @@ export const rootReducer = combineReducers({
     reader: readerReducer,
     net: netReducer,
     opds: opdsReducer,
+    update: updateReducer,
 });

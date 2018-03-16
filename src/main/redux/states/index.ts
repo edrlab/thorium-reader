@@ -8,6 +8,7 @@ import {
     PublicationDownloadState,
 } from "readium-desktop/common/redux/states/publication-download";
 import { ReaderState } from "readium-desktop/common/redux/states/reader";
+import { UpdateState } from "readium-desktop/common/redux/states/update";
 
 import { AppState } from "./app";
 import { StreamerState } from "./streamer";
@@ -23,4 +24,5 @@ export interface RootState {
     reader: ReaderState;
     opds: OpdsState;
     lcp: LcpState;
+    update: UpdateState;
 }

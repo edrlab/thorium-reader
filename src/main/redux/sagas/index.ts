@@ -49,6 +49,10 @@ import {
     lcpUserKeyCheckRequestWatcher,
 } from "./lcp";
 
+import {
+    updateStatusWatcher,
+} from "./update";
+
 export function* rootSaga() {
     yield all([
         // Catalog
@@ -98,5 +102,8 @@ export function* rootSaga() {
         lcpUserKeyCheckRequestWatcher(),
         lcpRenewRequestWatcher(),
         lcpReturnRequestWatcher(),
+
+        // Update checker
+        updateStatusWatcher(),
     ]);
 }

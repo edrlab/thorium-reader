@@ -9,6 +9,7 @@ import {
     opdsActions,
     publicationDownloadActions,
     readerActions,
+    updateActions,
 } from "readium-desktop/common/redux/actions";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
@@ -63,6 +64,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     lcpActions.ActionType.ReturnError,
 
     i18nActions.ActionType.Set,
+
+    updateActions.ActionType.LatestVersionSet,
 ];
 
 export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action: any) => {

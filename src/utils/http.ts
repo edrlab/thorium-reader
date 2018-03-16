@@ -5,6 +5,10 @@ export function requestGet(url: string, options: any): Promise<any> {
         const requestOptions = Object.assign(
             {},
             { url },
+            { headers: {
+                "User-Agent": "readium-desktop",
+                },
+            },
             options,
         );
 

@@ -16,6 +16,8 @@ import { winReducer } from "./win";
 import { catalogReducer } from "readium-desktop/common/redux/reducers/catalog";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { opdsReducer } from "readium-desktop/common/redux/reducers/opds";
+import { updateReducer } from "readium-desktop/common/redux/reducers/update";
+
 import {
     publicationDownloadReducer,
 } from "readium-desktop/common/redux/reducers/publication-download";
@@ -31,4 +33,5 @@ export const rootReducer = combineReducers({
     publicationDownloads: publicationDownloadReducer,
     win: winReducer,
     net: netReducer,
+    update: updateReducer,
 });

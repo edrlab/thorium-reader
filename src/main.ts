@@ -18,6 +18,7 @@ import {
     netActions,
     opdsActions,
     readerActions,
+    updateActions,
 } from "readium-desktop/common/redux/actions";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 
@@ -273,6 +274,21 @@ ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
                         type: i18nActions.ActionType.Set,
                         payload: {
                             locale: state.i18n.locale,
+                        },
+                    },
+                },
+            });
+
+            // Send locale
+            win.webContents.send(syncIpc.CHANNEL, {
+                type: syncIpc.EventType.MainAction,
+                payload: {
+                    action: {
+                        type: updateActions.ActionType.LatestVersionSet,
+                        payload: {
+                            status: state.update.status,
+                            latestVersion: state.update.latestVersion,
+                            latestVersionUrl: state.update.latestVersionUrl,
                         },
                     },
                 },

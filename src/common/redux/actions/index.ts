@@ -7,6 +7,7 @@ import * as netActions from "./net";
 import * as opdsActions from "./opds";
 import * as publicationDownloadActions from "./publication-download";
 import * as readerActions from "./reader";
+import * as updateActions from "./update";
 
 export {
     catalogActions,
@@ -18,4 +19,5 @@ export {
     publicationDownloadActions,
     readerActions,
     lcpActions,
+    updateActions,
 };
