@@ -25,20 +25,6 @@ app.on("ready", () => {
     secureSessions(streamer); // HTTPS
 });
 
-// FIXME: __TODO_LCP_LSD__
-
-// import { IStore } from "@r2-testapp-js/electron/common/store";
-// import { StoreElectron } from "@r2-testapp-js/electron/common/store-electron";
-// import { getDeviceIDManager } from "@r2-testapp-js/electron/main/lsd-deviceid-manager";
-// const electronStoreLSD: IStore = new StoreElectron("readium2-testapp-lsd", {});
-// const deviceIDManager = getDeviceIDManager(electronStoreLSD, "Readium2 Electron desktop app");
-
-// import { installLcpHandler } from "@r2-navigator-js/electron/main/lcp";
-// import { installLsdHandler } from "@r2-navigator-js/electron/main/lsd";
-
-// installLcpHandler(streamer);
-// installLsdHandler(streamer, deviceIDManager);
-
 let rcssPath = "ReadiumCSS";
 if (_PACKAGING === "1") {
     rcssPath = path.normalize(path.join(__dirname, rcssPath));

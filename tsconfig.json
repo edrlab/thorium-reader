@@ -27,9 +27,6 @@
       "@r2-navigator-js/*": [
         "node_modules/r2-navigator-js/dist/es6-es2015/src/*"
       ],
-      "@r2-testapp-js/*": [
-        "node_modules/r2-testapp-js/dist/es6-es2015/src/*"
-      ],
       "@r2-lcp-js/*": [
         "node_modules/r2-lcp-js/dist/es6-es2015/src/*"
       ]

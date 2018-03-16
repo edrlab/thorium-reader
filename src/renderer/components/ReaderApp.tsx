@@ -52,7 +52,6 @@ import {
     setReadingLocationSaver,
     setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
-import { StoreElectron } from "@r2-testapp-js/electron/common/store-electron";
 import { ipcRenderer } from "electron";
 import { JSON as TAJSON } from "ta-json";
 

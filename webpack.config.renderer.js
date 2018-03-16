@@ -16,7 +16,6 @@ const aliases = {
     "@r2-shared-js": "r2-shared-js/dist/es6-es2015/src",
     "@r2-streamer-js": "r2-streamer-js/dist/es6-es2015/src",
     "@r2-navigator-js": "r2-navigator-js/dist/es6-es2015/src",
-    "@r2-testapp-js": "r2-testapp-js/dist/es6-es2015/src",
 };
 
 ////// ================================
