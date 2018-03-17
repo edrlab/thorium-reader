@@ -171,7 +171,7 @@
     "css-loader": "^0.28.10",
     "eclint": "^2.6.0",
     "electron": "^1.8.4",
-    "electron-builder": "^20.4.1",
+    "electron-builder": "^20.5.1",
     "electron-devtools-installer": "^2.2.3",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.11",
