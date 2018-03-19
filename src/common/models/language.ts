@@ -25,4 +25,4 @@ export const getMultiLangString = (titleObj: any, lang?: string) => {
     }
 
     return "";
-}
+};

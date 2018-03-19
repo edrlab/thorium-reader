@@ -15,13 +15,13 @@ import FlatButton from "material-ui/FlatButton";
 
 import * as uuid from "uuid";
 
-import { Translator }   from "readium-desktop/common/services/translator";
+import { Translator } from "readium-desktop/common/services/translator";
 
 interface IOpdsFormProps {
-    closeDialog: Function;
-    closeFunction?: Function;
+    closeDialog: any;
+    closeFunction?: any;
     opds?: OPDS;
-    updateDisplay?: Function;
+    updateDisplay?: any;
 }
 
 interface IOpdsFormState {
@@ -60,7 +60,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
 
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate.bind(this.translator);
-        let messageError = (<p style={Styles.OpdsList.errorMessage}>Veuillez remplir tous les champs</p>);
+        const messageError = (<p style={Styles.OpdsList.errorMessage}>Veuillez remplir tous les champs</p>);
         let currentMessageError = (<div></div>);
         if (this.state.formError) {
             currentMessageError = messageError;
@@ -105,7 +105,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                         primary={true}
                         onClick={() => {
                             if (this.isFormValid()) {
-                                let newOpds: OPDS = {
+                                const newOpds: OPDS = {
                                     identifier: this.props.opds.identifier,
                                     name: this.state.opdsName,
                                     url: this.state.opdsUrl,
@@ -125,7 +125,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                         primary={true}
                         onClick={() => {
                             if (this.isFormValid()) {
-                                let newOpds: OPDS = {
+                                const newOpds: OPDS = {
                                     identifier: uuid.v4(),
                                     name: this.state.opdsName,
                                     url: this.state.opdsUrl,
@@ -142,15 +142,15 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
         );
     }
 
-    private handleOpdsUrlChange (event: any) {
+    private handleOpdsUrlChange(event: any) {
         this.setState({opdsUrl: event.target.value});
     }
 
-    private handleOpdsNameChange (event: any) {
+    private handleOpdsNameChange(event: any) {
         this.setState({opdsName: event.target.value});
     }
 
-    private isFormValid (): boolean {
+    private isFormValid(): boolean {
         if (this.state.opdsName !== "" && this.state.opdsUrl !== ""
             && this.state.opdsName !== undefined && this.state.opdsUrl !== undefined) {
             return true;

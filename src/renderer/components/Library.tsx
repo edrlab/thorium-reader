@@ -267,16 +267,16 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                     title={__("library.lcp.title")}
                     actions={[
                         <FlatButton
-                          label={__("library.lcp.cancel")}
-                          primary={true}
-                          onClick={this.handleLcpPassClose.bind(this)}
+                            label={__("library.lcp.cancel")}
+                            primary={true}
+                            onClick={this.handleLcpPassClose.bind(this)}
                         />,
                         <FlatButton
-                          label={__("library.lcp.submit")}
-                          primary={true}
-                          onClick={this.handleLcpPassSubmit.bind(this)}
+                            label={__("library.lcp.submit")}
+                            primary={true}
+                            onClick={this.handleLcpPassSubmit.bind(this)}
                         />,
-                      ]}
+                    ]}
                     modal={true}
                     open={this.state.lcpPassOpen}
                 >
@@ -311,7 +311,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                             primary={true}
                             onClick={this.closeInfoDialog.bind(this)}
                         />,
-                      ]}
+                    ]}
                     modal={true}
                     open={this.state.infoDialogOpen}
                 >
@@ -357,7 +357,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                             primary={true}
                             onClick={this.closeReturnDialog.bind(this)}
                         />,
-                      ]}
+                    ]}
                     modal={true}
                     open={this.state.returnDialogOpen}
                 >
@@ -375,7 +375,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                             primary={true}
                             onClick={this.closeRenewDialog.bind(this)}
                         />,
-                      ]}
+                    ]}
                     modal={true}
                     open={this.state.renewDialogOpen}
                 >

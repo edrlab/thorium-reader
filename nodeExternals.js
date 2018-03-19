@@ -113,10 +113,10 @@ module.exports = function nodeExternals(options) {
         const isR2 = /^r2-.+-js/.test(request); // EXTERNAL
         const isRDesk = request.indexOf("readium-desktop/") === 0; // BUNDLE
 
-         // EXTERNAL (built-ins)
+        // EXTERNAL (built-ins)
         const isElectron = request.indexOf("electron") === 0;
         const isNode = request.indexOf("fs") === 0 ||
-                       request.indexOf("path") === 0;
+            request.indexOf("path") === 0;
 
         const isRelative = request.indexOf(".") === 0;
         const isRelativeInNodeModules = isRelative && context.indexOf("/node_modules/") >= 0;

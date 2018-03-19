@@ -10,7 +10,7 @@ import { Cover } from "readium-desktop/renderer/components/Publication/index";
 
 interface IPublicationProps {
     publication: Publication;
-    handleCheckboxChange: Function;
+    handleCheckboxChange: any;
 }
 
 export default class OpdsListElement extends React.Component<IPublicationProps, null> {
@@ -29,7 +29,7 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
 
         if (publication.authors) {
             let i = 0;
-            for (let author of publication.authors) {
+            for (const author of publication.authors) {
                 if (i > 0) {
                     authors += " & ";
                 }

@@ -19,7 +19,7 @@ export default class Cover extends React.Component<ICoverProps, null> {
 
         if (this.props.publication.cover === null || this.props.publication.cover === undefined) {
             let authors = "";
-            let bodyCSS = Object.assign({}, Styles.BookCover.body);
+            const bodyCSS = Object.assign({}, Styles.BookCover.body);
             let colors = this.props.publication.customCover;
             if (colors === undefined) {
                 colors = {
@@ -29,8 +29,8 @@ export default class Cover extends React.Component<ICoverProps, null> {
             }
             bodyCSS.backgroundImage = "linear-gradient(" + colors.topColor + ", " + colors.bottomColor + ")";
 
-            for (let author of this.props.publication.authors) {
-                let newAuthor: Contributor = author;
+            for (const author of this.props.publication.authors) {
+                const newAuthor: Contributor = author;
                 if (authors !== "") {
                     authors += ", ";
                 }

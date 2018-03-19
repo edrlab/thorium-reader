@@ -3,6 +3,7 @@ import * as path from "path";
 import { app } from "electron";
 
 import { Server } from "@r2-streamer-js/http/server";
+
 import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
 
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";

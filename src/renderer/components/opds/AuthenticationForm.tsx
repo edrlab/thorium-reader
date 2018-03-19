@@ -6,12 +6,12 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import FlatButton from "material-ui/FlatButton";
 
-import { Translator }   from "readium-desktop/common/services/translator";
+import { Translator } from "readium-desktop/common/services/translator";
 
 interface IOpdsFormProps {
-    closeDialog: Function;
-    downloadOPDS: Function;
-    closeList: Function;
+    closeDialog: any;
+    downloadOPDS: any;
+    closeList: any;
 }
 
 interface IOpdsFormState {
@@ -38,7 +38,7 @@ export default class AuthenticationForm extends React.Component<IOpdsFormProps, 
 
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate.bind(this.translator);
-        let messageError = (<p style={Styles.OpdsList.errorMessage}>Veuillez remplir tous les champs</p>);
+        const messageError = (<p style={Styles.OpdsList.errorMessage}>Veuillez remplir tous les champs</p>);
         let currentMessageError = (<div></div>);
         if (this.state.formError) {
             currentMessageError = messageError;
@@ -89,15 +89,15 @@ export default class AuthenticationForm extends React.Component<IOpdsFormProps, 
         );
     }
 
-    private handleUsernameChange (event: any) {
+    private handleUsernameChange(event: any) {
         this.setState({username: event.target.value});
     }
 
-    private handlePasswordChange (event: any) {
+    private handlePasswordChange(event: any) {
         this.setState({password: event.target.value});
     }
 
-    private isFormValid (): boolean {
+    private isFormValid(): boolean {
         if (this.state.password !== "" && this.state.username !== ""
             && this.state.password !== undefined && this.state.username !== undefined) {
             return true;

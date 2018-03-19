@@ -40,11 +40,11 @@ interface ICollectionDialogState {
 
 interface ICollectiondialogProps {
     open: boolean;
-    closeList: Function;
-    openDialog: Function;
-    closeDialog: Function;
+    closeList: any;
+    openDialog: any;
+    closeDialog: any;
     opds: OPDS;
-    updateDisplay: Function;
+    updateDisplay: any;
 }
 
 interface User {
@@ -83,7 +83,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
     }
 
     public createElementList() {
-        let list: any = [];
+        const list: any = [];
 
         return <div> {list} </div>;
     }
@@ -158,11 +158,10 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
         );
     }
 
-    private handleOPDSCheckbox (publication: Publication) {
+    private handleOPDSCheckbox(publication: Publication) {
         let found = false;
         let i = 0;
-        for (let pub of this.pubToDownload)
-        {
+        for (const pub of this.pubToDownload) {
             if (pub.identifier === publication.identifier) {
                 found = true;
                 break;
@@ -177,14 +176,14 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
     }
 
     private startDownload() {
-        for (let pub of this.pubToDownload) {
+        for (const pub of this.pubToDownload) {
             this.downloadEPUB(pub);
         }
         this.pubToDownload = [];
     }
 
-    private downloadCatalog (user?: User) {
-        let req = request.get(this.props.opds.url, (error: any, response: any, body: any) => {
+    private downloadCatalog(user?: User) {
+        const req = request.get(this.props.opds.url, (error: any, response: any, body: any) => {
             if (response && response.statusCode === 401) {
                 this.props.openDialog(
                     <AuthenticationForm
