@@ -1,6 +1,5 @@
 import {
     WINDOW_INIT,
-    WindowAction,
 } from "readium-desktop/renderer/actions/window";
 
 export enum WindowStatus {
@@ -25,7 +24,7 @@ const initialState: WindowState = {
 
 export function windowReducer(
     state: WindowState = initialState,
-    action: WindowAction,
+    action: any,
     ): WindowState {
     switch (action.type) {
         case WINDOW_INIT:

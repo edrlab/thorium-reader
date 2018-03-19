@@ -1,23 +1,75 @@
 const path = require("path");
 const webpack = require("webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
-// Default values for DEV environment
-let nodeEnv = process.env.NODE_ENV || "DEV";
-let pouchDbAdapterName = (nodeEnv === "DEV") ? "jsondown" : "leveldb";
-let pouchDbAdapterPackage = (nodeEnv === "DEV") ?
-    "readium-desktop/pouchdb/jsondown-adapter" : "pouchdb-adapter-leveldb";
-let rendererBaseUrl = "file://";
+const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
-if (nodeEnv === "DEV") {
-    rendererBaseUrl = "http://localhost:8080/dist/";
+// let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
+
+const aliases = {
+    "readium-desktop": path.resolve(__dirname, "src"),
+
+    "@r2-utils-js": "r2-utils-js/dist/es6-es2015/src",
+    "@r2-lcp-js": "r2-lcp-js/dist/es6-es2015/src",
+    "@r2-opds-js": "r2-opds-js/dist/es6-es2015/src",
+    "@r2-shared-js": "r2-shared-js/dist/es6-es2015/src",
+    "@r2-streamer-js": "r2-streamer-js/dist/es6-es2015/src",
+    "@r2-navigator-js": "r2-navigator-js/dist/es6-es2015/src",
+};
+
+////// ================================
+////// EXTERNALS
+// Some modules cannot be bundled by Webpack
+// for example those that make internal use of NodeJS require() in special ways
+// in order to resolve asset paths, etc.
+// In DEBUG / DEV mode, we just external-ize as much as possible (any non-TypeScript / non-local code),
+// to minimize bundle size / bundler computations / compile times.
+
+let externals = {
+    "bindings": "bindings",
+    "leveldown": "leveldown",
+    "fsevents": "fsevents",
+    "conf": "conf",
+    "pouchdb-adapter-leveldb": "pouchdb-adapter-leveldb",
+    "electron-devtools-installer": "electron-devtools-installer",
+}
+if (process.env.NODE_ENV !== "PROD") {
+    // // externals = Object.assign(externals, {
+    // //         "electron-config": "electron-config",
+    // //     }
+    // // );
+    // const { dependencies } = require("./package.json");
+    // const depsKeysArray = Object.keys(dependencies || {});
+    // const depsKeysObj = {};
+    // depsKeysArray.forEach((depsKey) => { depsKeysObj[depsKey] = depsKey });
+    // externals = Object.assign(externals, depsKeysObj);
+    // delete externals["pouchdb-core"];
+
+
+    // if (process.env.WEBPACK === "bundle-external") {
+    const nodeExternals = require("./nodeExternals");
+    externals = [
+        nodeExternals(
+            {
+                processName: "MAIN",
+                alias: aliases,
+                // whitelist: ["pouchdb-core"],
+            }
+        ),
+    ];
+    // } else {
+    //     const nodeExternals = require("webpack-node-externals");
+    //     // electron-devtools-installer
+    //     externals = [nodeExternals()];
+    // }
 }
 
-let definePlugin = new webpack.DefinePlugin({
-    __NODE_ENV__: JSON.stringify(nodeEnv),
-    __POUCHDB_ADAPTER_NAME__: JSON.stringify(pouchDbAdapterName),
-    __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),
-    __RENDERER_BASE_URL__: JSON.stringify(rendererBaseUrl),
-});
+console.log("WEBPACK externals (MAIN):");
+console.log(JSON.stringify(externals, null, "  "));
+////// EXTERNALS
+////// ================================
+
+
 
 let config = Object.assign({}, {
     entry: "./src/main.ts",
@@ -36,17 +88,12 @@ let config = Object.assign({}, {
         __filename: false,
     },
 
-    // Webpack is unable to manage native modules
-    externals: {
-        "leveldown": "leveldown",
-    },
+    externals: externals,
 
     resolve: {
         // Add '.ts' as resolvable extensions.
         extensions: [".ts", ".js", ".node"],
-        alias: {
-            "readium-desktop": path.resolve(__dirname, "src"),
-        },
+        alias: aliases,
     },
 
     module: {
@@ -57,8 +104,30 @@ let config = Object.assign({}, {
         ],
     },
     plugins: [
-        definePlugin,
+        new CopyWebpackPlugin([
+            {
+                from: path.join(__dirname, "external-assets"),
+                to: "external-assets",
+            }
+        ]),
+        new CopyWebpackPlugin([
+            {
+                from: path.join(__dirname, "node_modules", "r2-navigator-js", "dist", "ReadiumCSS"),
+                to: "ReadiumCSS",
+            }
+        ]),
+        preprocessorDirectives.definePlugin
     ],
 });
+
+if (process.env.NODE_ENV !== "PROD") {
+    // Bundle absolute resource paths in the source-map,
+    // so VSCode can match the source file.
+    config.output.devtoolModuleFilenameTemplate = "[absolute-resource-path]";
+
+    config.output.pathinfo = true;
+
+    config.devtool = "source-map";
+}
 
 module.exports = config;

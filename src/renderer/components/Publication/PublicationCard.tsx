@@ -1,13 +1,16 @@
 import * as React from "react";
 
-import FlatButton   from "material-ui/FlatButton";
+import FlatButton from "material-ui/FlatButton";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { Contributor } from "readium-desktop/models/contributor";
-import { Publication } from "readium-desktop/models/publication";
+import { Contributor } from "readium-desktop/common/models/contributor";
 
-import { Translator }   from "readium-desktop/i18n/translator";
+import { Publication } from "readium-desktop/common/models/publication";
+
+import { getMultiLangString } from "readium-desktop/common/models/language";
+
+import { Translator } from "readium-desktop/common/services/translator";
 
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
 import IconButton from "material-ui/IconButton";
@@ -15,11 +18,15 @@ import LinearProgress from "material-ui/LinearProgress";
 
 import * as ReactCardFlip from "react-card-flip";
 
-import { DownloadStatus } from "readium-desktop/models/downloadable";
+import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { Cover } from "readium-desktop/renderer/components/Publication/index";
+
+import * as LibraryStyles from "readium-desktop/renderer/assets/styles/library.css";
+
+import { lcpReadable } from "readium-desktop/utils/publication";
 
 interface IPublicationState {
     isFlipped: boolean;
@@ -28,19 +35,22 @@ interface IPublicationState {
 interface IPublicationProps {
     publication: Publication;
     publicationId: number;
-    downloadable?: boolean;
-    cancelDownload: Function;
-    downloadEPUB: Function;
-    handleRead: Function;
-    deletePublication: Function;
+    downloading: boolean;
+    downloadProgress?: number;
+    cancelDownload: any;
+    handleRead: any;
+    deletePublication: any;
+    openInfoDialog: (publication: Publication) => void;
+    openReturnDialog: (publication: Publication) => void;
+    openRenewDialog: (publication: Publication) => void;
 }
 
 export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
     @lazyInject("translator")
     private translator: Translator;
 
-    constructor() {
-        super();
+    constructor(props: IPublicationProps) {
+        super(props);
 
         this.state = {
             isFlipped: false,
@@ -56,21 +66,23 @@ export default class PublicationListElement extends React.Component<IPublication
     }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
-        const publication = this.props.publication;
-        let that = this;
-        let id = this.props.publicationId;
+        // TODO: should get language from view state? (user preferences)
+        const lang = "en";
 
+        const __ = this.translator.translate.bind(this.translator);
+        const publication = this.props.publication;
+        const that = this;
+        const id = this.props.publicationId;
         let authors: string = "";
         let image: string = "";
 
         if (publication.authors && publication.authors.length > 0) {
-            for (let author of publication.authors) {
-                let newAuthor: Contributor = author;
+            for (const author of publication.authors) {
+                const newAuthor: Contributor = author;
                 if (authors !== "") {
                     authors += ", ";
                 }
-                authors += newAuthor.name;
+                authors += getMultiLangString(newAuthor.name, lang);
             }
         }
         if (publication.cover) {
@@ -78,7 +90,7 @@ export default class PublicationListElement extends React.Component<IPublication
         }
 
         return (
-            <div style={Styles.BookCard.body}>
+            <div className={LibraryStyles.book_card}>
                 <Card style={Styles.BookCard.body}>
                     <CardMedia>
                         <div
@@ -99,62 +111,50 @@ export default class PublicationListElement extends React.Component<IPublication
                                     <div
                                         style={Styles.BookCard.image}
                                     >
-                                        {this.props.publication.download ? (
+                                        {this.props.downloading ? (
                                             <div>
-                                                {( !publication.download
-                                                    || publication.download.status === DownloadStatus.Init) ? (
+                                                <div>
+                                                    <p>{__("publication.progressDownload")}</p>
+                                                    <LinearProgress mode="determinate"
+                                                        value={this.props.downloadProgress} />
                                                     <FlatButton
-                                                        label={__("publication.downloadButton")}
-                                                        onClick={() => {this.props.downloadEPUB(publication, id); }}/>
-                                                ) : publication.download.status === DownloadStatus.Downloading ? (
-                                                    <div>
-                                                        <p>{__("publication.progressDownload")}</p>
-                                                        <LinearProgress mode="determinate"
-                                                            value={publication.download.progress} />
-                                                        <IconButton
-                                                            iconClassName="fa fa-times"
-                                                            onClick={() => {this.props.cancelDownload(publication); }}/>
-                                                    </div>
-                                                ) : publication.download.status === DownloadStatus.Downloaded ? (
-                                                    <div>
-                                                        <FlatButton
-                                                            style={Styles.BookCard.downloadButton}
-                                                            label={__("publication.readButton")}
-                                                            onClick={() => {this.props.handleRead(publication); }}/>
-                                                        <FlatButton
-                                                            style={Styles.BookCard.downloadButton}
-                                                            label={__("Supprimer")}
-                                                            onClick={() => {
-                                                                this.props.deletePublication(publication.identifier);
-                                                            }}/>
-                                                    </div>
-                                                ) : publication.download.status === DownloadStatus.Failed ? (
-                                                    <div>
-                                                        <p>{__("publication.failedDownload")}</p>
-                                                        <FlatButton
-                                                        label={__("publication.downloadButton")}
-                                                        onClick={() => {this.props.downloadEPUB(publication, id); }}/>
-                                                    </div>
-                                                ) : (
-                                                    <div>
-                                                        <p>{__("publication.canceledDownload")}</p>
-                                                        <FlatButton
-                                                        label={__("publication.downloadButton")}
-                                                        onClick={() => {this.props.downloadEPUB(publication, id); }}/>
-                                                    </div>
-                                                )}
+                                                        style={Styles.BookCard.downloadButton}
+                                                        onClick={() => {this.props.cancelDownload(publication); }}
+                                                        label={__("publication.cancelDownloadButton")} />
+                                                </div>
                                             </div>
                                         ) : (
                                             <div>
-                                                <FlatButton
-                                                style={Styles.BookCard.downloadButton}
-                                                onClick={() => {this.props.handleRead(publication); }}
-                                                label={__("publication.readButton")} />
+                                                {lcpReadable(publication) ? (
+                                                    <FlatButton
+                                                    style={Styles.BookCard.downloadButton}
+                                                    onClick={() => {this.props.handleRead(publication); }}
+                                                    label={__("publication.readButton")} />
+                                                ) : (
+                                                    <p> {__("publication.notReadableLcp")} </p>
+                                                )}
+
+                                                {publication.lcp && (
+                                                    <>
+                                                        <FlatButton
+                                                        style={Styles.BookCard.downloadButton}
+                                                        onClick={() => {this.props.openInfoDialog(publication); }}
+                                                        label={__("publication.infoButton")} />
+                                                        <FlatButton
+                                                        style={Styles.BookCard.downloadButton}
+                                                        onClick={() => {this.props.openRenewDialog(publication); }}
+                                                        label={__("publication.renewButton")} />
+                                                        <FlatButton
+                                                        style={Styles.BookCard.downloadButton}
+                                                        onClick={() => {this.props.openReturnDialog(publication); }}
+                                                        label={__("publication.returnButton")} />
+                                                    </>
+                                                )}
 
                                                 <FlatButton
                                                 style={Styles.BookCard.downloadButton}
-                                                onClick={() => {this.props.deletePublication(publication.identifier); }}
-                                                label={"Supprimer"}/>
+                                                onClick={() => {this.props.deletePublication(publication); }}
+                                                label={__("publication.deleteButton")}/>
                                             </div>
                                         )}
                                     </div>
@@ -165,7 +165,7 @@ export default class PublicationListElement extends React.Component<IPublication
                     <CardTitle
                         titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
                         subtitleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
-                        title={publication.title}
+                        title={getMultiLangString(publication.title, lang)}
                         subtitle={authors}
                     />
                 </Card>

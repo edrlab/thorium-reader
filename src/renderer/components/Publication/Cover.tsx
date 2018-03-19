@@ -1,10 +1,12 @@
 import * as React from "react";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
+
+import { getMultiLangString } from "readium-desktop/common/models/language";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
-import { Contributor } from "readium-desktop/models/contributor";
+import { Contributor } from "readium-desktop/common/models/contributor";
 
 interface ICoverProps {
     publication: Publication;
@@ -12,9 +14,12 @@ interface ICoverProps {
 
 export default class Cover extends React.Component<ICoverProps, null> {
     public render(): React.ReactElement<{}>  {
+        // TODO: should get language from view state? (user preferences)
+        const lang = "en";
+
         if (this.props.publication.cover === null || this.props.publication.cover === undefined) {
             let authors = "";
-            let bodyCSS = Styles.BookCover.body;
+            const bodyCSS = Object.assign({}, Styles.BookCover.body);
             let colors = this.props.publication.customCover;
             if (colors === undefined) {
                 colors = {
@@ -24,18 +29,18 @@ export default class Cover extends React.Component<ICoverProps, null> {
             }
             bodyCSS.backgroundImage = "linear-gradient(" + colors.topColor + ", " + colors.bottomColor + ")";
 
-            for (let author of this.props.publication.authors) {
-                let newAuthor: Contributor = author;
+            for (const author of this.props.publication.authors) {
+                const newAuthor: Contributor = author;
                 if (authors !== "") {
                     authors += ", ";
                 }
-                authors += newAuthor.name;
+                authors += getMultiLangString(newAuthor.name, lang);
             }
 
             return (
                 <div style={bodyCSS}>
                     <div style={Styles.BookCover.box}>
-                        <p style={Styles.BookCover.title}>{this.props.publication.title}</p>
+                        <p style={Styles.BookCover.title}>{getMultiLangString(this.props.publication.title, lang)}</p>
                         <p style={Styles.BookCover.author}>{authors}</p>
                     </div>
                 </div>

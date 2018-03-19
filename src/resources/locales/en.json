@@ -1,29 +1,64 @@
 {
     "library": {
-        "heading": "Bibliotheque",
+        "heading": "Library",
         "add": "Add to the library",
         "startDownload": "A download started.",
         "cancelDownload": "A download canceled.",
-        "endDownload": "A download ended."
+        "endDownload": "A download ended.",
+        "lcp": {
+          "title": "LCP Verification",
+          "sentence": "This publication need a LCP password to be opened: ",
+          "submit": "Submit",
+          "cancel": "Cancel",
+          "hint": "Your passphrase",
+          "hintSentence": "Hint:",
+          "informations": {
+            "title": "LCP Informations",
+            "close": "Close",
+            "provider": "Provider:",
+            "issued": "Creation date:",
+            "updated": "Updated:",
+            "right": {
+              "title": "Rights",
+              "start": "Start:",
+              "end": "End:",
+              "copy": "Copy number:",
+              "print": "Print number:"
+            }
+          }
+        }
     },
     "publication": {
+      "notReadableLcp": "This book can't be read because the lcp liscense is finished",
       "downloadButton": "Download",
       "readButton": "Read",
+      "deleteButton": "Delete",
+      "infoButton": "LCP Informations",
+      "renewButton": "Renew",
+      "renewSentence": "Are you sure you want to renew this publication?",
+      "returnButton": "Return",
+      "returnSentence": "Are you sure you want to return this publication?",
+      "cancelDownloadButton": "Cancel",
       "progressDownload": "Downloading",
       "endDownload": "Download completed",
       "failedDownload": "Download Failed",
       "canceledDownload": "Download Canceled"
     },
     "toolbar": {
+        "about": "About",
         "help":"Help",
         "news":"What's new?",
         "sync":"Synchronize the library"
+    },
+    "update": {
+        "available": "Update available!"
     },
     "dialog": {
       "yes": "Yes",
       "no": "No",
       "delete": "Do you really want to delete these publication?",
-      "import": "Do you really want to import :"
+      "import": "Do you really want to import LCP files :",
+      "lcpImport": "Do you really want to import those LCP files :"
     },
     "opds": {
       "download": "Download",
@@ -46,6 +81,40 @@
         "password": "Password :",
         "loginButton": "Login",
         "sentence": "Please, log in to access to the contents"
+      }
+    },
+    "reader": {
+      "settings": {
+        "title": "Settings",
+        "align": "Text Alignement:",
+        "left": "Left",
+        "center": "Center",
+        "right": "Right",
+        "fontSize": "Font Size:",
+        "display": "Display Type:",
+        "close": "Close",
+        "save": "Save",
+        "scrolled": "Scrolled",
+        "paginated": "Paginated"
+      }
+    },
+    "message": {
+      "download": {
+        "successFirst": "The download of ",
+        "successSecond": " is finished",
+        "startFirst": "The download of ",
+        "startSecond": " began"
+      },
+      "lcp": {
+        "renewSuccessFirst": "The lcp license of ",
+        "renewSuccessSecond": " has been renewed",
+        "renewErrorFirst": "An error occurred when renewing the lcp license of ",
+        "renewErrorSecond": "",
+        "returnSuccessFirst": "The lcp license of ",
+        "returnSuccessSecond": " has been returned",
+        "returnErrorFirst": "An error occurred when returning the lcp license of ",
+        "returnErrorSecond": "",
+        "passphraseError": "Unable to unlock publication {{publicationTitle}}"
       }
     }
 }

@@ -1,0 +1,59 @@
+import * as ping from "ping";
+import { delay, SagaIterator } from "redux-saga";
+import { call, put, select, take } from "redux-saga/effects";
+
+import { NetStatus } from "readium-desktop/common/redux/states/net";
+import { appActions, netActions } from "readium-desktop/main/redux/actions";
+
+const PING_CONFIG = {
+    timeout: 5,
+};
+
+const PINGABLE_HOST = "8.8.8.8";
+
+function pingHost() {
+    return ping.promise.probe(PINGABLE_HOST, PING_CONFIG);
+}
+
+function getNetStatus(state: any): NetStatus {
+    return state.net.status;
+}
+
+export function* netStatusWatcher(): SagaIterator {
+    // Wait for win init success
+    yield take(appActions.ActionType.InitSuccess);
+
+    while (true) {
+        // Ping every 5 seconds
+        let actionType = null;
+
+        try {
+            const result = yield call(pingHost);
+            const online = result.alive;
+            actionType = online ?
+                netActions.ActionType.Online :
+                netActions.ActionType.Offline;
+        } catch (error) {
+            actionType = netActions.ActionType.Offline;
+        }
+
+        const netStatus = yield select(getNetStatus);
+
+        if (
+            netStatus === NetStatus.Unknown ||
+            (
+                actionType === netActions.ActionType.Offline &&
+                netStatus === NetStatus.Online
+            ) ||
+            (
+                actionType === netActions.ActionType.Online &&
+                netStatus === NetStatus.Offline
+            )
+        ) {
+            // Only update status if status change
+            yield put({ type: actionType });
+        }
+
+        yield call(delay, 5000);
+    }
+}

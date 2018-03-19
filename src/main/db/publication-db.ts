@@ -1,7 +1,7 @@
 import { injectable} from "inversify";
 import * as PouchDB from "pouchdb-core";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 const ID_PREFIX = "publication_";
 
@@ -21,7 +21,7 @@ export class PublicationDb {
         ));
     }
 
-    public putOrChange (publication: Publication): Promise<any> {
+    public putOrChange(publication: Publication): Promise<any> {
         return this.db.get(ID_PREFIX + publication.identifier).then((doc) => {
             return this.db.put(Object.assign(
                 {},
@@ -34,7 +34,6 @@ export class PublicationDb {
                 console.log(error);
             });
         }).catch((err) => {
-            console.error(err);
             if (err.error === true && err.reason === "missing") {
                 return this.put(publication);
             }
@@ -81,14 +80,14 @@ export class PublicationDb {
     private convertToPublication(dbDoc: PouchDB.Core.Document<any>): Publication {
         return  {
             identifier: dbDoc.doc.identifier,
-            title: dbDoc.doc.title,
+            title: dbDoc.doc.title, // note: can be multilingual object map (not just string)
             description: dbDoc.doc.description,
-            download: dbDoc.doc.download,
             authors: dbDoc.doc.authors,
             languages: dbDoc.doc.languages,
             cover: dbDoc.doc.cover,
             files: dbDoc.doc.files,
             customCover: dbDoc.doc.customCover,
+            lcp: dbDoc.doc.lcp,
         };
     }
 }

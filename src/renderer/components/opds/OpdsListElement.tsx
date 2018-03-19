@@ -1,6 +1,8 @@
 import * as React from "react";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
+
+import { getMultiLangString } from "readium-desktop/common/models/language";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
@@ -8,11 +10,14 @@ import { Cover } from "readium-desktop/renderer/components/Publication/index";
 
 interface IPublicationProps {
     publication: Publication;
-    handleCheckboxChange: Function;
+    handleCheckboxChange: any;
 }
 
 export default class OpdsListElement extends React.Component<IPublicationProps, null> {
     public render(): React.ReactElement<{}>  {
+        // TODO: should get language from view state? (user preferences)
+        const lang = "en";
+
         const publication: Publication = this.props.publication;
 
         let image: string = "";
@@ -24,11 +29,11 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
 
         if (publication.authors) {
             let i = 0;
-            for (let author of publication.authors) {
+            for (const author of publication.authors) {
                 if (i > 0) {
                     authors += " & ";
                 }
-                authors += author.name;
+                authors += getMultiLangString(author.name, lang);
                 i++;
             }
         }
@@ -44,7 +49,7 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
                 )}
                 <div style={Styles.OpdsList.Publication.informations}>
                     <div style={Styles.OpdsList.Publication.column}>
-                        <h4 style={Styles.OpdsList.Publication.title}>{publication.title}</h4>
+                        <h4 style={Styles.OpdsList.Publication.title}>{getMultiLangString(publication.title, lang)}</h4>
                         <p>{authors}</p>
                     </div>
                     <input

@@ -1,35 +1,35 @@
-import * as React        from "react";
+import * as React from "react";
 
 import FontIcon from "material-ui/FontIcon";
 import IconButton from "material-ui/IconButton";
-import RaisedButton      from "material-ui/RaisedButton";
+import RaisedButton from "material-ui/RaisedButton";
 
-import { Styles }        from "readium-desktop/renderer/components/styles";
+import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 import { Store } from "redux";
 
-import { Catalog } from "readium-desktop/models/catalog";
-import { Publication } from "readium-desktop/models/publication";
+import { Catalog } from "readium-desktop/common/models/catalog";
+import { Publication } from "readium-desktop/common/models/publication";
 
-import * as publicationDownloadActions from "readium-desktop/actions/publication-download";
+import { publicationDownloadActions } from "readium-desktop/common/redux/actions";
 
-import { RendererState } from "readium-desktop/renderer/reducers";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 import {
     AuthenticationForm,
     OpdsList,
 } from "readium-desktop/renderer/components/opds/index";
 
-import { OPDS } from "readium-desktop/models/opds";
+import { OPDS } from "readium-desktop/common/models/opds";
 
-import { OPDSParser } from "readium-desktop/services/opds";
+import { OPDSParser } from "readium-desktop/common/services/opds";
 
 import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
 
 import * as request from "request";
 
-import { Translator }   from "readium-desktop/i18n/translator";
+import { Translator } from "readium-desktop/common/services/translator";
 
 interface ICollectionDialogState {
     catalog: Catalog;
@@ -40,11 +40,11 @@ interface ICollectionDialogState {
 
 interface ICollectiondialogProps {
     open: boolean;
-    closeList: Function;
-    openDialog: Function;
-    closeDialog: Function;
+    closeList: any;
+    openDialog: any;
+    closeDialog: any;
     opds: OPDS;
-    updateDisplay: Function;
+    updateDisplay: any;
 }
 
 interface User {
@@ -54,15 +54,15 @@ interface User {
 
 export default class CollectionDialog extends React.Component<ICollectiondialogProps, ICollectionDialogState> {
     @lazyInject("store")
-    private store: Store<RendererState>;
+    private store: Store<RootState>;
 
     @lazyInject("translator")
     private translator: Translator;
 
     private pubToDownload: Publication[] = [];
 
-    constructor() {
-        super();
+    constructor(props: ICollectiondialogProps) {
+        super(props);
         this.state = {
             catalog: undefined,
             downloadError: false,
@@ -83,7 +83,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
     }
 
     public createElementList() {
-        let list: any = [];
+        const list: any = [];
 
         return <div> {list} </div>;
     }
@@ -93,7 +93,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
     }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
+        const __ = this.translator.translate.bind(this.translator);
 
         let style = {};
         if (this.props.open) {
@@ -158,11 +158,10 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
         );
     }
 
-    private handleOPDSCheckbox (publication: Publication) {
+    private handleOPDSCheckbox(publication: Publication) {
         let found = false;
         let i = 0;
-        for (let pub of this.pubToDownload)
-        {
+        for (const pub of this.pubToDownload) {
             if (pub.identifier === publication.identifier) {
                 found = true;
                 break;
@@ -177,14 +176,14 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
     }
 
     private startDownload() {
-        for (let pub of this.pubToDownload) {
+        for (const pub of this.pubToDownload) {
             this.downloadEPUB(pub);
         }
         this.pubToDownload = [];
     }
 
-    private downloadCatalog (user?: User) {
-        let req = request.get(this.props.opds.url, (error: any, response: any, body: any) => {
+    private downloadCatalog(user?: User) {
+        const req = request.get(this.props.opds.url, (error: any, response: any, body: any) => {
             if (response && response.statusCode === 401) {
                 this.props.openDialog(
                     <AuthenticationForm

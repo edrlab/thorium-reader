@@ -5,23 +5,23 @@ import { Styles } from "readium-desktop/renderer/components/styles";
 import { lazyInject } from "readium-desktop/renderer/di";
 import { Store } from "redux";
 
-import { RendererState } from "readium-desktop/renderer/reducers";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
-import * as opdsActions from "readium-desktop/actions/opds";
+import { opdsActions } from "readium-desktop/common/redux/actions";
 
-import { OPDS } from "readium-desktop/models/opds";
+import { OPDS } from "readium-desktop/common/models/opds";
 
 import FlatButton from "material-ui/FlatButton";
 
 import * as uuid from "uuid";
 
-import { Translator }   from "readium-desktop/i18n/translator";
+import { Translator } from "readium-desktop/common/services/translator";
 
 interface IOpdsFormProps {
-    closeDialog: Function;
-    closeFunction?: Function;
+    closeDialog: any;
+    closeFunction?: any;
     opds?: OPDS;
-    updateDisplay?: Function;
+    updateDisplay?: any;
 }
 
 interface IOpdsFormState {
@@ -32,13 +32,13 @@ interface IOpdsFormState {
 
 export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormState> {
     @lazyInject("store")
-    private store: Store<RendererState>;
+    private store: Store<RootState>;
 
     @lazyInject("translator")
     private translator: Translator;
 
-    constructor() {
-        super();
+    constructor(props: IOpdsFormProps) {
+        super(props);
         this.state = {
             opdsUrl: "",
             opdsName: "",
@@ -59,8 +59,8 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
     }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate;
-        let messageError = (<p style={Styles.OpdsList.errorMessage}>Veuillez remplir tous les champs</p>);
+        const __ = this.translator.translate.bind(this.translator);
+        const messageError = (<p style={Styles.OpdsList.errorMessage}>Veuillez remplir tous les champs</p>);
         let currentMessageError = (<div></div>);
         if (this.state.formError) {
             currentMessageError = messageError;
@@ -94,7 +94,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                     <FlatButton
                         label={__("opds.addForm.delete")}
                         primary={true}
-                        onTouchTap={() => {
+                        onClick={() => {
                             this.store.dispatch(opdsActions.remove(this.props.opds));
                             this.props.closeDialog();
                             this.props.closeFunction();
@@ -103,9 +103,9 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                     <FlatButton
                         label={__("opds.addForm.update")}
                         primary={true}
-                        onTouchTap={() => {
+                        onClick={() => {
                             if (this.isFormValid()) {
-                                let newOpds: OPDS = {
+                                const newOpds: OPDS = {
                                     identifier: this.props.opds.identifier,
                                     name: this.state.opdsName,
                                     url: this.state.opdsUrl,
@@ -123,9 +123,9 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                     <FlatButton
                         label={__("opds.addForm.addButton")}
                         primary={true}
-                        onTouchTap={() => {
+                        onClick={() => {
                             if (this.isFormValid()) {
-                                let newOpds: OPDS = {
+                                const newOpds: OPDS = {
                                     identifier: uuid.v4(),
                                     name: this.state.opdsName,
                                     url: this.state.opdsUrl,
@@ -142,15 +142,15 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
         );
     }
 
-    private handleOpdsUrlChange (event: any) {
+    private handleOpdsUrlChange(event: any) {
         this.setState({opdsUrl: event.target.value});
     }
 
-    private handleOpdsNameChange (event: any) {
+    private handleOpdsNameChange(event: any) {
         this.setState({opdsName: event.target.value});
     }
 
-    private isFormValid (): boolean {
+    private isFormValid(): boolean {
         if (this.state.opdsName !== "" && this.state.opdsUrl !== ""
             && this.state.opdsName !== undefined && this.state.opdsUrl !== undefined) {
             return true;
