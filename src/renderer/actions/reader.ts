@@ -1,6 +1,6 @@
 import { Action } from "redux";
 
-import { Publication } from "readium-desktop/models/publication";
+import { Publication } from "readium-desktop/common/models/publication";
 
 // Reader action types
 export const READER_INIT = "READER_INIT";
@@ -19,18 +19,18 @@ export function init(publication: Publication): ReaderAction {
     };
 }
 
-export function open(publication: Publication, manifestUrl: string): ReaderAction {
-    return {
-        type: READER_OPEN,
-        publication,
-        manifestUrl,
-    };
-}
+// export function open(publication: Publication, manifestUrl: string): ReaderAction {
+//     return {
+//         type: READER_OPEN,
+//         publication,
+//         manifestUrl,
+//     };
+// }
 
-export function close(publication: Publication, manifestUrl: string): ReaderAction {
-    return {
-        type: READER_CLOSE,
-        publication,
-        manifestUrl,
-    };
-}
+// export function close(publication: Publication, manifestUrl: string): ReaderAction {
+//     return {
+//         type: READER_CLOSE,
+//         publication,
+//         manifestUrl,
+//     };
+// }

@@ -1,9 +1,64 @@
-let auto: "auto" = "auto";
-let fixed: "fixed" = "fixed";
-let hidden: "hidden" = "hidden";
-let absolute: "absolute" = "absolute";
+import { relative } from "path";
+
+const auto: "auto" = "auto";
+const fixed: "fixed" = "fixed";
+const hidden: "hidden" = "hidden";
+const absolute: "absolute" = "absolute";
+const column: "column" = "column";
+const wrap: "wrap" = "wrap";
 
 export const Styles = {
+    Reader: {
+        publicationViewport: {
+            overflowY: hidden,
+            overflowX: hidden,
+            position: absolute,
+            top: "0px",
+            bottom: "0px",
+            left: "0px",
+            right: "0px",
+            backgroundColor: "red",
+        },
+        reader: {
+            display: relative,
+
+            position: absolute,
+            top: "160px",
+            bottom: "0px",
+            left: "0px",
+            right: "0px",
+        },
+        leftButton: {
+            "position": absolute,
+            "top": "0px",
+            "bottom": "0px",
+            "left": "0px",
+            "width": "20%",
+            "height": "unset",
+            "zIndex": 3,
+            "&:hover": {
+                display: "inline-block",
+            },
+        },
+        rightButton: {
+            "position": absolute,
+            "top": "0px",
+            "bottom": "0px",
+            "right": "0px",
+            "width": "20%",
+            "height": "unset",
+            "zIndex": 3,
+            "&:hover": {
+                width: "60%",
+            },
+        },
+        test: {
+            display: "none",
+        },
+        test2: {
+            display: "inline-block",
+        },
+    },
     App: {
         height: "100%",
     },
@@ -20,10 +75,10 @@ export const Styles = {
             overflowY: auto,
             overflowX: hidden,
             position: absolute,
-            top: "130px",
-            bottom: "10px",
-            left: "20px",
-            right: "20px",
+            top: 130,
+            bottom: 10,
+            left: 0,
+            right: 0,
         },
         title: {
             display: "inline-block",
@@ -42,7 +97,8 @@ export const Styles = {
             width: 210,
         },
         downloadButton: {
-            top: "50%",
+            width: "200px",
+            flexGrow: 1,
         },
         image: {
             fontSize: "18px",
@@ -59,14 +115,22 @@ export const Styles = {
     },
     BookListElement: {
         body: {
-            boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
+            // boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
             fontFamily: "Roboto, sans-serif",
-            margin: "5px 0px",
+            margin: "15px 5px",
             width: "100%",
         },
+        lcpSentense: {
+            width: 250,
+        },
         column: {
-            display: "inline-block",
+            display: "flex",
             width: "250px",
+            flexDirection: column,
+            flexWrap: wrap,
+        },
+        content: {
+            display: "flex",
         },
         container: {
             display: "inline-block",
@@ -74,7 +138,8 @@ export const Styles = {
             textAlign: "left",
         },
         description: {
-            display: "inline-block",
+            display: "flex",
+            flexDirection: column,
             height: 140,
             marginLeft: "5px",
         },
@@ -117,23 +182,6 @@ export const Styles = {
             MozBoxSizing: "border-box",
             BoxSizing: "border-box",
             padding: "5%",
-        },
-    },
-    appToolbar: {
-        iconButton: {
-            margin: 12,
-        },
-        inputImport: {
-            bottom: 0,
-            cursor: "pointer",
-            left: 0,
-            opacity: 0,
-            overflow: hidden,
-            position: absolute,
-            right: 0,
-            top: 0,
-            width: "100%",
-            zIndex: 100,
         },
     },
     OpdsList: {

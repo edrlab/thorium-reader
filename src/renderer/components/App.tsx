@@ -2,46 +2,54 @@ import * as React from "react";
 
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
-import Snackbar     from "material-ui/Snackbar";
+import Snackbar from "material-ui/Snackbar";
 import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
 
-import { Catalog } from "readium-desktop/models/catalog";
-import { OPDS } from "readium-desktop/models/opds";
-import { Publication } from "readium-desktop/models/publication";
+import { Catalog } from "readium-desktop/common/models/catalog";
+import { OPDS } from "readium-desktop/common/models/opds";
+import { Publication } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { setLocale } from "readium-desktop/actions/i18n";
-import { Translator } from "readium-desktop/i18n/translator";
+import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { Translator } from "readium-desktop/common/services/translator";
 
 import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
 import AppToolbar from "readium-desktop/renderer/components/AppToolbar";
 import Library from "readium-desktop/renderer/components/Library";
-import ReaderNYPL from "readium-desktop/renderer/components/ReaderNYPL";
 
-import * as readerActions from "readium-desktop/renderer/actions/reader";
 import * as windowActions from "readium-desktop/renderer/actions/window";
-import { RendererState } from "readium-desktop/renderer/reducers";
-import { MessageStatus } from "readium-desktop/renderer/reducers/message";
-import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
 
-import * as publicationimportActions from "readium-desktop/actions/collection-manager";
+import * as AppStyles from "readium-desktop/renderer/assets/styles/app.css";
+
+import {
+    catalogActions,
+    readerActions,
+} from "readium-desktop/common/redux/actions";
+
+import { MessageStatus } from "readium-desktop/renderer/reducers/message";
+import { RootState } from "readium-desktop/renderer/redux/states";
+// import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
+
 import * as messageAction from "readium-desktop/renderer/actions/message";
 
-import * as Dropzone from "react-dropzone";
+import * as Dropzone from "react-dropzone/dist";
+// import { default as Dropzone } from "react-dropzone";
+// does not work when "react-dropzone" is external to the bundle (Node require() import)
 
 interface AppState {
     catalog: Catalog;
-    readerOpen: boolean;
-    openManifestUrl?: string;
-    openPublication: Publication;
+    // readerOpen: boolean;
+    // openManifestUrl?: string;
+    // openPublication: Publication;
     snackbarOpen: boolean;
     dialogOpen: boolean;
     opdsList: OPDS[];
+    locale: string;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -49,7 +57,7 @@ const defaultLocale = "fr";
 
 export default class App extends React.Component<undefined, AppState> {
     @lazyInject("store")
-    private store: Store<RendererState>;
+    private store: Store<RootState>;
 
     @lazyInject("translator")
     private translator: Translator;
@@ -62,13 +70,13 @@ export default class App extends React.Component<undefined, AppState> {
 
     private currentDialogAction: JSX.Element[];
 
-    private confimationAction: Function;
+    private confimationAction: () => void;
 
     private defaultDialogActions = [
         <FlatButton
             label="Oui"
             primary={true}
-            onTouchTap={() => {
+            onClick={() => {
                 this.handleDialogClose();
                 if (this.confimationAction) {
                     this.confimationAction();
@@ -80,61 +88,72 @@ export default class App extends React.Component<undefined, AppState> {
         <FlatButton
             label="Non"
             primary={true}
-            onTouchTap={() => {this.handleDialogClose(); }}
+            onClick={() => {this.handleDialogClose(); }}
         />,
     ];
 
-    constructor() {
-        super();
-        let locale = this.store.getState().i18n.locale;
-
-        if (locale == null) {
-            this.store.dispatch(setLocale(defaultLocale));
-        }
-
-        this.translator.setLocale(locale);
+    constructor(props: any) {
+        super(props);
+        const locale = this.store.getState().i18n.locale;
 
         this.state = {
             catalog: undefined,
-            readerOpen: false,
-            openManifestUrl: undefined,
-            openPublication: undefined,
+            // readerOpen: false,
+            // openManifestUrl: undefined,
+            // openPublication: undefined,
             snackbarOpen: false,
             dialogOpen: false,
             opdsList: undefined,
+            locale,
         };
 
         this.handleOpenPublication = this.handleOpenPublication.bind(this);
-        this.handleClosePublication = this.handleClosePublication.bind(this);
+        // this.handleClosePublication = this.handleClosePublication.bind(this);
     }
 
     public handleOpenPublication(publication: Publication) {
-        this.store.dispatch(readerActions.init(publication));
+        this.store.dispatch(readerActions.open(publication));
     }
 
-    public handleClosePublication() {
-        this.store.dispatch(readerActions.close(
-            this.state.openPublication,
-            this.state.openManifestUrl,
-            ),
-        );
-    }
+    // public handleClosePublication() {
+    //     this.store.dispatch(readerActions.close(
+    //         this.state.openPublication,
+    //         this.state.openManifestUrl,
+    //         ),
+    //     );
+    // }
 
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
-        this.filesToImport = acceptedFiles;
-        let nameList: JSX.Element[] = [];
+        this.filesToImport = [];
+        const nameList: JSX.Element[] = [];
+        const lcpList: JSX.Element[] = [];
         let i = 0;
-        for (let file of acceptedFiles) {
+        for (const file of acceptedFiles) {
+            const nameTab = file.name.split(".");
+            const ext = nameTab[nameTab.length - 1];
+            this.filesToImport.push(file);
             nameList.push (<li key={i}>{file.name}</li>);
             i++;
         }
-        let message = (
+        const message = (
             <div>
-                <p>{this.translator.translate("dialog.import")}</p>
-                <ul>
-                    {nameList}
-                </ul>
+                {nameList.length > 0 && (
+                    <div>
+                        <p>{this.translator.translate("dialog.import")}</p>
+                        <ul>
+                            {nameList}
+                        </ul>
+                    </div>
+                )}
+                {lcpList.length > 0 && (
+                    <div>
+                        <p>{this.translator.translate("dialog.lcpImport")}</p>
+                        <ul>
+                            {lcpList}
+                        </ul>
+                    </div>
+                )}
             </div>
         );
         this.openImportDialog(message);
@@ -142,9 +161,9 @@ export default class App extends React.Component<undefined, AppState> {
 
     // Create the download list if it doesn't exist then start the download
     public importFiles = () => {
-        for (let file of this.filesToImport)
-        {
-            this.store.dispatch(publicationimportActions.fileImport([file.path]));
+        // FIXME: dead code
+        for (const file of this.filesToImport) {
+            this.store.dispatch(catalogActions.importFile(file.path));
         }
     }
 
@@ -153,7 +172,8 @@ export default class App extends React.Component<undefined, AppState> {
         this.store.subscribe(() => {
             const storeState = this.store.getState();
             const catalog = storeState.catalog;
-            const opds = storeState.opds;
+            const opdsState = storeState.opds;
+            const i18nState = storeState.i18n;
 
             if (catalog.publications === undefined) {
                 this.setState({catalog: undefined});
@@ -169,22 +189,21 @@ export default class App extends React.Component<undefined, AppState> {
                 this.setState({ snackbarOpen: (storeState.message.status === MessageStatus.Open) });
             }
 
+            this.translator.setLocale(i18nState.locale);
             this.setState({
-                readerOpen: (storeState.reader.status === ReaderStatus.Open),
-                openManifestUrl: storeState.reader.manifestUrl,
-                openPublication: storeState.reader.publication,
-                opdsList: opds.opds,
+                locale: i18nState.locale,
+                // readerOpen: (storeState.reader.status === ReaderStatus.Open),
+                // openManifestUrl: storeState.reader.manifestUrl,
+                // openPublication: storeState.reader.publication,
+                opdsList: opdsState.items,
             });
-
-            this.translator.setLocale(this.store.getState().i18n.locale);
         });
     }
 
     public render(): React.ReactElement<{}> {
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
-                <div>
-                    {!this.state.readerOpen ? (
+                <div className={AppStyles.root}>
                     <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
                         <AppToolbar
                             openDialog={this.openDialog.bind(this)}
@@ -210,15 +229,7 @@ export default class App extends React.Component<undefined, AppState> {
                             >
                             {this.dialogMessage}
                         </Dialog>
-
                     </Dropzone>
-                    ) : (
-                        <div>
-                            <ReaderNYPL
-                                manifestURL={ encodeURIComponent_RFC3986(this.state.openManifestUrl) }
-                                handleClose={this.handleClosePublication} />
-                        </div>
-                    )}
                 </div>
             </MuiThemeProvider>
         );
@@ -231,11 +242,11 @@ export default class App extends React.Component<undefined, AppState> {
         }
     }
 
-    private openImportDialog (message: JSX.Element) {
+    private openImportDialog(message: JSX.Element) {
         this.openDialog(message);
     }
 
-    private openDialog(message: JSX.Element, confirmationAction?: Function, actions?: JSX.Element[]) {
+    private openDialog(message: JSX.Element, confirmationAction?: () => void, actions?: JSX.Element[]) {
         this.confimationAction = confirmationAction;
 
         if (actions) {
@@ -258,7 +269,7 @@ export default class App extends React.Component<undefined, AppState> {
         }
     }
 
-    private handleDialogClose () {
+    private handleDialogClose() {
         this.setState({ dialogOpen: false });
     }
 }

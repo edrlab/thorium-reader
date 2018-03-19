@@ -4,26 +4,61 @@
         "add": "Ajouter à la bibliothèque",
         "startDownload": "Un téléchargement a démarré.",
         "cancelDownload": "Un téléchargement a été arrété.",
-        "endDownload": "Un téléchargement est terminé."
+        "endDownload": "Un téléchargement est terminé.",
+        "lcp": {
+          "title": "Vérification LCP",
+          "sentence": "Cette publication a besoin d'un mot de passe : ",
+          "submit": "Valider",
+          "cancel": "Annuler",
+          "hint": "Votre mot de passe",
+          "hintSentence": "Indice :",
+          "informations": {
+            "title": "Informations LCP",
+            "close": "Fermer",
+            "provider": "Fournisseur :",
+            "issued": "Date de création :",
+            "updated": "Modification :",
+            "right": {
+              "title": "Droits",
+              "start": "Début :",
+              "end": "Fin :",
+              "copy": "Nombre de copie :",
+              "print": "Nombre d'impression :"
+            }
+          }
+        }
     },
     "publication": {
+      "notReadableLcp": "Ce livre ne peut être lu car la licence lcp est terminée",
       "downloadButton": "Télécharger",
       "readButton": "Voir",
+      "deleteButton": "Supprimer",
+      "infoButton": "Informations LCP",
+      "renewButton": "Renouveler",
+      "renewSentence": "Etes vous sûr de vouloir renouveler cette publication ?",
+      "returnButton": "Retourner",
+      "returnSentence": "Etes vous sûr de vouloir retourner cette publication ?",
+      "cancelDownloadButton": "Annuler",
       "progressDownload": "Téléchargement en cours",
       "endDownload": "Téléchargement terminé",
       "failedDownload": "Téléchargement échoué",
       "canceledDownload": "Téléchargement annulé"
     },
     "toolbar": {
+        "about": "A propos",
         "help":"Aide",
         "news":"Quoi de neuf ?",
         "sync":"Synchroniser la bibliothèque"
+    },
+    "update": {
+        "available": "Nouvelle version !"
     },
     "dialog": {
       "yes": "Oui",
       "no": "Non",
       "delete": "Êtes vous sûr de vouloir supprimer cette publication ?",
-      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) :"
+      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
+      "lcpImport": "Etes vous sûr de vouloir importer ce(s) fichier(s) LCP :"
     },
     "opds": {
       "download": "Télécharger",
@@ -46,6 +81,40 @@
         "password": "Mot de passe :",
         "loginButton": "Connexion",
         "sentence": "Veuillez vous connecter pour acceder au contenu"
+      }
+    },
+    "reader": {
+      "settings": {
+        "title": "Paramètres",
+        "align": "Alignement du text :",
+        "left": "Gauche",
+        "center": "Centré",
+        "right": "Droite",
+        "fontSize": "Taille du texte :",
+        "display": "Type d'affichage :",
+        "close": "Fermer",
+        "save": "Sauvegarder",
+        "scrolled": "Défilé",
+        "paginated": "Paginé"
+      }
+    },
+    "message": {
+      "download": {
+        "successFirst": "Le téléchargement de ",
+        "successSecond": " est terminé",
+        "startFirst": "Le téléchargement de ",
+        "startSecond": " a commencé"
+      },
+      "lcp": {
+        "renewSuccessFirst": "La licence LCP de ",
+        "renewSuccessSecond": " a bien été renouvellée",
+        "renewErrorFirst": "Une erreur est survenue lors du renouvellement de ",
+        "renewErrorSecond": "",
+        "returnSuccessFirst": "La license lcp de ",
+        "returnSuccessSecond": " a bien été retorunée",
+        "returnErrorFirst": "Un erreur est survenue lors du retournement de ",
+        "returnErrorSecond": "",
+        "passphraseError": "Impossible de déverouiller la publication {{publicationTitle}}"
       }
     }
 }

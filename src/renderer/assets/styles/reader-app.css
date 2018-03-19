@@ -1,0 +1,184 @@
+@import "./variable.css";
+
+:root {
+  --sideButtonColor: rgb(130, 130, 130, 0.5);
+}
+
+.root {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+.content_root {
+  height: calc(100% - 51px);
+  display: flex;
+  align-items: stretch;
+}
+
+.publication_viewport {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: "red";
+}
+
+/* ========== READER ==========*/
+.side_button {
+  z-index: 3;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  display: inline-block;
+  width: 50px;
+  background-color: rgb(0, 0, 0, 0);
+  border: none;
+  outline: none;
+  fill: var(--sideButtonColor);
+
+  &:hover {
+    background-color: var(--sideButtonColor);
+    fill: var(--secondary-color);
+  }
+}
+
+.side_button_svg {
+  width: 45px;
+  margin: auto;
+}
+
+.left_button {
+  left: 0px;
+  transform: rotate(180deg);
+}
+
+.right_button {
+  right: 0px;
+}
+
+.reader {
+  display: inline-block;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  flex-grow: 2;
+}
+
+/* ======= Settings ======= */
+
+.settings_content {
+  display: flex;
+  flex-direction: column;
+
+  & label {
+    margin: 1rem;
+  }
+
+  & div {
+    display: flex;
+    text-align: center;
+
+    & label {
+      flex-grow: 1;
+      height: 1.5rem;
+    }
+  }
+}
+
+.settings_action {
+  background-color: rgb(0, 0, 0, 0);
+  border: 0;
+  font-size: 1rem;
+  height: 2.5rem;
+  cursor: pointer;
+}
+
+.settings_icones {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* ======= CONTENT TABLE ======*/
+
+.content_table {
+  width: 0;
+
+  border-right: 1px var(--main-color) solid;
+  background-color: #e0e0e0;
+  overflow: auto;
+}
+
+.content_table_open {
+  animation-duration: 500ms;
+  animation-name: slidein;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.content_table ul {
+  list-style-type: none;
+  padding: 1rem;
+  margin: 0;
+
+  & li {
+    padding-top: 0.5rem;
+
+    & a {
+      text-decoration: none;
+      color: black;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@keyframes slidein {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 25%;
+  }
+}
+
+/* ========== MENU ==========*/
+.menu {
+  display: flex;
+  flex-directon: row;
+  background-color: var(--main-color);
+  color: var(--secondary-color);
+  padding: 0.5rem;
+
+  & input {
+    height: 1.3rem;
+    margin: auto 0;
+  }
+}
+
+.menu_button {
+  background-color: rgb(0, 0, 0, 0);
+  border: none;
+  color: var(--secondary-color);
+}
+
+.menu_svg {
+  height: 1.5rem;
+  width: 1.5rem;
+  fill: var(--secondary-color);
+}
+
+.menu_right_button {
+  margin-left: auto;
+}

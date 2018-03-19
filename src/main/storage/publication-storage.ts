@@ -3,11 +3,11 @@ import * as path from "path";
 
 import { injectable} from "inversify";
 
-import { streamToBufferPromise } from "r2-streamer-js/dist/es6-es2015/src/_utils/stream/BufferUtils";
-import { IZip } from "r2-streamer-js/dist/es6-es2015/src/_utils/zip/zip.d";
-import { EpubParsePromise } from "r2-streamer-js/dist/es6-es2015/src/parser/epub";
+import { EpubParsePromise } from "@r2-shared-js/parser/epub";
+import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
+import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
 
-import { File } from "readium-desktop/models/file";
+import { File } from "readium-desktop/common/models/file";
 import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
 
 // Store publications in a repository on filesystem
@@ -35,6 +35,7 @@ export class PublicationStorage {
      *
      * @param identifier Identifier of publication
      * @param srcPath Path of epub to import
+     * @return List of all stored files
      */
     public async storePublication(
         identifier: string,
@@ -49,8 +50,7 @@ export class PublicationStorage {
             identifier, srcPath);
         const coverFile: File = await this.storePublicationCover(
             identifier, srcPath);
-
-        let files: File[] = [];
+        const files: File[] = [];
         files.push(bookFile);
 
         if (coverFile != null) {
@@ -79,7 +79,7 @@ export class PublicationStorage {
         );
 
         return new Promise<File>((resolve, reject) => {
-            let writeStream = fs.createWriteStream(dstPath);
+            const writeStream = fs.createWriteStream(dstPath);
             const fileResolve = () => {
                 resolve ({
                     url: `store://${identifier}/${filename}`,
