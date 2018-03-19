@@ -62,3 +62,26 @@
   display: flex;
   margin-left: auto;
 }
+
+.update {
+  text-decoration: none;
+  color: #fff;
+
+  display: inline-block;
+  margin-top: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  height: 1rem;
+  font-size: 0.9rem;
+  font-family: "Roboto, sans-serif";
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  background: #73AD21;
+
+  & :link,
+  &: active,
+  &: visited {
+    color: #fff;
+  }
+}

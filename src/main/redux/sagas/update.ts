@@ -7,7 +7,12 @@ import { appActions } from "readium-desktop/main/redux/actions";
 
 import { updateActions } from "readium-desktop/common/redux/actions";
 
+import {
+    _APP_VERSION,
+} from "readium-desktop/preprocessor-directives";
+
 const LATEST_VERSION_URL = "https://api.github.com/repos/edrlab/readium-desktop/releases/latest";
+const CURRENT_VERSION = "v" + _APP_VERSION;
 
 export function* updateStatusWatcher(): SagaIterator {
     // Wait for app init success
@@ -24,10 +29,14 @@ export function* updateStatusWatcher(): SagaIterator {
                 const jsonObj = JSON.parse(result.response.body);
 
                 if (jsonObj.id && jsonObj.html_url) {
-                    yield put(updateActions.setLatestVersion(
-                        jsonObj.tag_name,
-                        jsonObj.html_url,
-                    ));
+                    const latestVersion = jsonObj.tag_name;
+
+                    if (latestVersion > CURRENT_VERSION) {
+                        yield put(updateActions.setLatestVersion(
+                            jsonObj.tag_name,
+                            jsonObj.html_url,
+                        ));
+                    }
                 }
             }
         } catch (error) {

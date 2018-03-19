@@ -16,7 +16,7 @@ export function updateReducer(
     switch (action.type) {
         case updateActions.ActionType.LatestVersionSet:
             return Object.assign({}, state, {
-                status: UpdateStatus.Update,
+                status: action.payload.status,
                 latestVersion: action.payload.latestVersion,
                 latestVersionUrl: action.payload.latestVersionUrl,
             });

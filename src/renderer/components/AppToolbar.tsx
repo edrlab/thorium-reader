@@ -22,15 +22,18 @@ import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
+import { UpdateStatus } from "readium-desktop/common/redux/states/update";
+
 import * as classNames from "classnames";
 import AddIcon from "readium-desktop/renderer/assets/icons/add.svg";
 import GiftIcon from "readium-desktop/renderer/assets/icons/gift.svg";
+import InfoIcon from "readium-desktop/renderer/assets/icons/info.svg";
 import MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import OPDSIcon from "readium-desktop/renderer/assets/icons/opds.svg";
+import QuestionIcon from "readium-desktop/renderer/assets/icons/question.svg";
 
 import * as CNLLogoUrl from "readium-desktop/renderer/assets/logos/cnl.png";
 
-import QuestionIcon from "readium-desktop/renderer/assets/icons/question.svg";
 import * as AppBarStyles from "readium-desktop/renderer/assets/styles/app-bar.css";
 
 import CollectionDialog from "readium-desktop/renderer/components/opds/CollectionDialog";
@@ -51,6 +54,8 @@ import {
 } from "readium-desktop/preprocessor-directives";
 
 interface AppToolbarState {
+    update: boolean;
+    latestVersionUrl: string;
     locale: string;
     open: boolean;
     aboutOpen: boolean;
@@ -87,6 +92,8 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
     constructor(props: AppToolbarProps) {
         super(props);
         this.state = {
+            update: false,
+            latestVersionUrl: null,
             dialogContent: undefined,
             locale: this.store.getState().i18n.locale,
             open: false,
@@ -110,6 +117,22 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
 
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
+    }
+
+    public componentDidMount() {
+        this.store.subscribe(() => {
+            const storeState = this.store.getState();
+
+            if (
+                storeState.update.status === UpdateStatus.Update ||
+                storeState.update.status === UpdateStatus.SecurityUpdate
+            ) {
+                this.setState({
+                    update: true,
+                    latestVersionUrl: storeState.update.latestVersionUrl,
+                });
+            }
+        });
     }
 
     public render(): React.ReactElement<{}>  {
@@ -203,6 +226,17 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                         </Menu>
                     </Popover>
                     <div className={AppBarStyles.button_group}>
+                        {this.state.update && (
+                                <React.Fragment>
+                                    <a
+                                        href="{this.state.latestVersionUrl}"
+                                        className={AppBarStyles.update}>
+                                        {__("update.available")}
+                                    </a>
+                                    <div className={AppBarStyles.separator} />
+                                </React.Fragment>
+                            )
+                        }
                         <button
                             className={AppBarStyles.button}
                             onClick={this.handleOpdsOpen.bind(this)}
@@ -255,7 +289,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             <Menu>
                                 <MenuItem
                                     primaryText= {__("toolbar.help")}
-                                    onClick={ this.handleOpen.bind(this, helpContent) }
+                                    onClick={ this.handleOpen.bind(this, helpContent, []) }
                                     leftIcon={
                                         <svg viewBox={QuestionIcon.content_table}>
                                             <title>Help</title>
@@ -264,7 +298,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                     } />
                                 <MenuItem
                                     primaryText={__("toolbar.news")}
-                                    onClick={ this.handleOpen.bind(this, newsContent) }
+                                    onClick={ this.handleOpen.bind(this, newsContent, []) }
                                     leftIcon={
                                         <svg viewBox={GiftIcon.content_table}>
                                             <title>What's up</title>
@@ -301,9 +335,9 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                         )
                                     }
                                     leftIcon={
-                                        <svg viewBox={QuestionIcon.content_table}>
+                                        <svg viewBox={InfoIcon.content_table}>
                                             <title>About</title>
-                                            <use xlinkHref={"#" + QuestionIcon.id} />
+                                            <use xlinkHref={"#" + InfoIcon.id} />
                                         </svg>
                                     } />
                             </Menu>
@@ -377,7 +411,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         this.setState({otherOpen: false});
     }
 
-    private handleOpen = (content: string, replacements: any = {}) => {
+    private handleOpen = (content: string, replacements: any) => {
         for (const replacement of replacements) {
             content = content.replace(replacement.from, replacement.to);
         }

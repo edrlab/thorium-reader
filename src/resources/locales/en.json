@@ -50,6 +50,9 @@
         "news":"What's new?",
         "sync":"Synchronize the library"
     },
+    "update": {
+        "available": "Update available!"
+    },
     "dialog": {
       "yes": "Yes",
       "no": "No",
