@@ -251,7 +251,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                         onClick={() => {that.setState({list: true});
                     }}>
                         <svg viewBox={ListIcon.content_table}>
-                            <title>Add EPUB</title>
+                            <title>{__("library.svg.list")}</title>
                             <use xlinkHref={"#" + ListIcon.id} />
                         </svg>
                     </button>
@@ -262,7 +262,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                         onClick={() => {that.setState({list: false});
                     }}>
                         <svg viewBox={CardIcon.content_table}>
-                            <title>Add EPUB</title>
+                            <title>{__("library.svg.card")}</title>
                             <use xlinkHref={"#" + CardIcon.id} />
                         </svg>
                     </button>
@@ -302,7 +302,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                                     className={LibraryStyles.eye_button}
                                     onClick={this.switchLcpPassVisibe.bind(this)}>
                                     <svg viewBox={EyeIcon.eye}>
-                                        <title>Show passphrase</title>
+                                        <title>{__("library.svg.showParaphrase")}</title>
                                         <use xlinkHref={"#" + EyeIcon.id} />
                                     </svg>
                                 </button>

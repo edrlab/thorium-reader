@@ -275,7 +275,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             className={AppBarStyles.button}
                         >
                             <svg viewBox={AddIcon.content_table}>
-                                <title>Add EPUB</title>
+                                <title>{__("opds.svg.addEpub")}</title>
                                 <use xlinkHref={"#" + AddIcon.id} />
                             </svg>
                             <input
@@ -289,7 +289,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             onClick={this.handleOtherOpen.bind(this)}
                         >
                             <svg viewBox={MenuIcon.content_table}>
-                                <title>Menu</title>
+                                <title>{__("opds.svg.menu")}</title>
                                 <use xlinkHref={"#" + MenuIcon.id} />
                             </svg>
                         </button>
@@ -306,7 +306,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                     onClick={ this.handleOpen.bind(this, helpContent, []) }
                                     leftIcon={
                                         <svg viewBox={QuestionIcon.content_table}>
-                                            <title>Help</title>
+                                            <title>{__("opds.svg.help")}</title>
                                             <use xlinkHref={"#" + QuestionIcon.id} />
                                         </svg>
                                     } />
@@ -315,7 +315,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                     onClick={ this.handleOpen.bind(this, newsContent, []) }
                                     leftIcon={
                                         <svg viewBox={GiftIcon.content_table}>
-                                            <title>What's up</title>
+                                            <title>{__("opds.svg.news")}</title>
                                             <use xlinkHref={"#" + GiftIcon.id} />
                                         </svg>
                                     } />
@@ -350,7 +350,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                     }
                                     leftIcon={
                                         <svg viewBox={InfoIcon.content_table}>
-                                            <title>About</title>
+                                            <title>{__("opds.svg.about")}</title>
                                             <use xlinkHref={"#" + InfoIcon.id} />
                                         </svg>
                                     } />

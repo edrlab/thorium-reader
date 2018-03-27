@@ -294,7 +294,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                 onClick={this.handleContentTableClick.bind(this)}
                             >
                                 <svg className={ReaderStyles.menu_svg} viewBox={ContentTableIcon.content_table}>
-                                    <title>Content Table</title>
+                                    <title>{__("reader.svg.contentTable")}</title>
                                     <use xlinkHref={"#" + ContentTableIcon.id} />
                                 </svg>
                             </button>
@@ -304,7 +304,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                     onClick={this.handleNightSwitch.bind(this)}
                                 >
                                     <svg className={ReaderStyles.menu_svg} viewBox={NightIcon.night}>
-                                        <title>Night</title>
+                                        <title>{__("reader.svg.night")}</title>
                                         <use xlinkHref={"#" + NightIcon.id} />
                                     </svg>
                                 </button>
@@ -313,7 +313,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                     onClick={this.handleSettingsOpen.bind(this)}
                                 >
                                     <svg className={ReaderStyles.menu_svg} viewBox={SettingsIcon.settings}>
-                                        <title>Settings</title>
+                                        <title>{__("reader.svg.settings")}</title>
                                         <use xlinkHref={"#" + SettingsIcon.id} />
                                     </svg>
                                 </button>
@@ -332,7 +332,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                     onClick={() => {navLeftOrRight(true); }}
                                 >
                                     <svg className={ReaderStyles.side_button_svg} viewBox={ArrowIcon.arrow}>
-                                        <title>Left</title>
+                                        <title>{__("reader.svg.left")}</title>
                                         <use xlinkHref={"#" + ArrowIcon.id} />
                                     </svg>
                                 </button>
@@ -342,7 +342,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                     onClick={() => {navLeftOrRight(false); }}
                                 >
                                     <svg className={ReaderStyles.side_button_svg} viewBox={ArrowIcon.arrow}>
-                                        <title>Right</title>
+                                        <title>{__("reader.svg.right")}</title>
                                         <use xlinkHref={"#" + ArrowIcon.id} />
                                     </svg>
                                 </button>
@@ -373,7 +373,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         onChange={this.handleSettingsValueChange.bind(this)}
                                         {...additionalRadioProperties("align", "left")}/>
                                         <svg className={ReaderStyles.settings_icones} viewBox={AlignLeftIcon.alignLeft}>
-                                            <title>Align Left</title>
+                                            <title>{__("reader.svg.alignLeft")}</title>
                                             <use xlinkHref={"#" + AlignLeftIcon.id} />
                                         </svg> {__("reader.settings.left")}
                                 </label>
@@ -384,7 +384,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <svg className={ReaderStyles.settings_icones}
                                             viewBox={AlignCenterIcon.alignCenter}
                                         >
-                                            <title>Align Center</title>
+                                            <title>{__("reader.svg.alignCenter")}</title>
                                             <use xlinkHref={"#" + AlignCenterIcon.id} />
                                         </svg> {__("reader.settings.center")}
                                 </label>
@@ -395,7 +395,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <svg className={ReaderStyles.settings_icones}
                                             viewBox={AlignRightIcon.alignRight}
                                         >
-                                            <title>Align Right</title>
+                                            <title>{__("reader.svg.alignRight")}</title>
                                             <use xlinkHref={"#" + AlignRightIcon.id} />
                                         </svg> {__("reader.settings.right")}
                                 </label>
@@ -407,7 +407,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         onChange={this.handleSettingsValueChange.bind(this)}
                                         {...additionalRadioProperties("paged", true)}/>
                                         <svg className={ReaderStyles.settings_icones} viewBox={PageIcon.page}>
-                                            <title>Document</title>
+                                            <title>{__("reader.svg.document")}</title>
                                             <use xlinkHref={"#" + PageIcon.id} />
                                         </svg> {__("reader.settings.paginated")}
                                 </label>
@@ -416,7 +416,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         onChange={this.handleSettingsValueChange.bind(this)}
                                         {...additionalRadioProperties("paged", false)}/>
                                         <svg className={ReaderStyles.settings_icones} viewBox={ContinueIcon.continue}>
-                                            <title>Continue</title>
+                                            <title>{__("reader.svg.continue")}</title>
                                             <use xlinkHref={"#" + ContinueIcon.id} />
                                         </svg> {__("reader.settings.scrolled")}
                                 </label>

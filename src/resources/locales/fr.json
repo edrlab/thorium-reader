@@ -5,6 +5,11 @@
         "startDownload": "Un téléchargement a démarré.",
         "cancelDownload": "Un téléchargement a été arrété.",
         "endDownload": "Un téléchargement est terminé.",
+        "svg" : {
+          "list": "Liste",
+          "card": "Cartes",
+          "showParaphrase": "Montrer la paraphrase"
+        },
         "lcp": {
           "title": "Vérification LCP",
           "sentence": "Cette publication a besoin d'un mot de passe : ",
@@ -67,6 +72,12 @@
       "formError": "Veuillez remplir tous les champs",
       "downloadError": "Une erreur est survenue lors de la récupération du flux.",
       "back": "Retour",
+      "svg": {
+        "addEpub": "Ajouter un EPUB",
+        "menu": "Menu",
+        "help": "Aide",
+        "news": "Nouvelles"
+      },
       "addForm": {
         "addButton": "Ajouter",
         "updateSentence": "Vous pouvez mettre les champs à jour.",
@@ -96,6 +107,18 @@
         "save": "Sauvegarder",
         "scrolled": "Défilé",
         "paginated": "Paginé"
+      },
+      "svg": {
+        "contentTable": "Table des matières",
+        "night": "Mode Nuit",
+        "settings": "Parametres",
+        "left": "Gauche",
+        "right": "Droite",
+        "alignLeft": "Aligner à gauche",
+        "alignCenter": "Aligner au centre",
+        "alignRight": "Aligner à droite",
+        "document": "Paginé",
+        "continue": "Défilé"
       }
     },
     "message": {
