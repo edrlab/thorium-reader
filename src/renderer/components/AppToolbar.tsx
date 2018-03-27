@@ -44,7 +44,6 @@ import * as CNLLogoUrl from "readium-desktop/renderer/assets/logos/cnl.png";
 import * as AppBarStyles from "readium-desktop/renderer/assets/styles/app-bar.css";
 
 import CollectionDialog from "readium-desktop/renderer/components/opds/CollectionDialog";
-import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { OPDS } from "readium-desktop/common/models/opds";
 

@@ -18,11 +18,15 @@ import { opdsActions } from "readium-desktop/common/redux/actions";
 
 import { OPDS } from "readium-desktop/common/models/opds";
 
+import * as AppStyle from "readium-desktop/renderer/assets/styles/app.css";
+
 import FlatButton from "material-ui/FlatButton";
 
 import * as uuid from "uuid";
 
 import { Translator } from "readium-desktop/common/services/translator";
+
+import * as classNames from "classnames";
 
 interface IOpdsFormProps {
     closeDialog: any;
@@ -98,18 +102,18 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                 </div>
                 {this.props.opds ? (
                 <div>
-                    <FlatButton
-                        label={__("opds.addForm.delete")}
-                        primary={true}
+                    <button
+                        className={classNames(AppStyle.commonButton, AppStyle.primary)}
                         onClick={() => {
                             this.store.dispatch(opdsActions.remove(this.props.opds));
                             this.props.closeDialog();
                             this.props.closeFunction();
                         }}
-                    />
-                    <FlatButton
-                        label={__("opds.addForm.update")}
-                        primary={true}
+                    >
+                        {__("opds.addForm.delete")}
+                    </button>
+                    <button
+                        className={classNames(AppStyle.commonButton, AppStyle.primary)}
                         onClick={() => {
                             if (this.isFormValid()) {
                                 const newOpds: OPDS = {
@@ -124,12 +128,13 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                                 this.setState({formError: true});
                             }
                         }}
-                    />
+                    >
+                        {__("opds.addForm.update")}
+                    </button>
                 </div>
                 ) : (
-                    <FlatButton
-                        label={__("opds.addForm.addButton")}
-                        primary={true}
+                    <button
+                        className={classNames(AppStyle.commonButton, AppStyle.primary)}
                         onClick={() => {
                             if (this.isFormValid()) {
                                 const newOpds: OPDS = {
@@ -143,7 +148,9 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                                 this.setState({formError: true});
                             }
                         }}
-                    />
+                    >
+                        {__("opds.addForm.addButton")}
+                    </button>
                 )}
             </div>
         );
