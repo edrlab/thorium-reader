@@ -200,10 +200,11 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                 key={i}
                 primaryText={__("opds.addMenu")}
                 onClick={() => {
-                        this.props.openDialog(
-                            <OpdsForm closeDialog={this.props.closeDialog}/>,
-                            null,
-                            []);
+                    this.handleOpdsClose();
+                    this.props.openDialog(
+                        <OpdsForm closeDialog={this.props.closeDialog}/>,
+                        null,
+                        []);
                 }}
             />,
         );
