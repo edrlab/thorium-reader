@@ -293,6 +293,11 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                             <p>{__("library.lcp.hintSentence") + this.store.getState().lcp.lastUserKeyCheck.hint} </p>
                             <div>
                                 <TextField
+                                    ref={(input) => {
+                                        if (input) {
+                                            input.focus();
+                                        }
+                                    }}
                                     hintText={__("library.lcp.hint")}
                                     type={!this.state.lcpPassVisible ? "password" : "text"}
                                     onChange={this.handleLcpPassChange.bind(this)}
