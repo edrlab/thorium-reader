@@ -173,6 +173,7 @@ export const Styles = {
             marginRight: "5%",
             marginTop: "10%",
             width: "90%",
+            wordBreak: "break-all",
         },
         author : {
             fontSize: "90%",
@@ -194,45 +195,40 @@ export const Styles = {
     OpdsList: {
         Publication: {
             title: {
-                margin: "10px 0px",
+                fontSize: "1rem",
+                fontWeight: "bold" as "bold",
+                marginBottom: 0,
+            },
+            primaryInformations: {
+                flex: 15,
+                display: "flex",
+                flexDirection: "column" as "column",
+
+                overflow: "hidden" as "hidden",
             },
             image: {
                 fontSize: "6px",
                 display: "inline-block",
                 float: "left",
-                height: 80,
+                height: "100%",
                 width: 52,
                 marginRight: 10,
             },
             checkbox: {
-                height: "100%",
                 width: 20,
                 float: "left",
-                margin: "0 15px 0 0",
-            },
-            descriptionInside: {
-                height: 80,
-                verticalAlign: "middle",
-                display: "table-cell",
-                paddingRight: "15px",
+                margin: "auto 15px auto 0",
             },
             description: {
-                height: 80,
-                display: "table",
+                flex: 60,
                 margin: 0,
-            },
-            descriptionContener: {
-                display: "inline-block",
+                padding: "10px 0",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                overflow: "hidden" as "hidden",
             },
             informations: {
-                height: 80,
                 marginLeft: "5px",
-            },
-            column: {
-                display: "inline-block",
-                width: "250px",
-                height: "100%",
-                float: "left",
             },
         },
         title: {
@@ -243,7 +239,8 @@ export const Styles = {
             fontFamily: "Roboto, sans-serif",
             margin: "5px 0px",
             width: "100%",
-            display: "inline-block",
+            height: 80,
+            display: "flex",
         },
         textZone: {
             width : 300,

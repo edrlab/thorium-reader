@@ -54,19 +54,18 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
                         <Cover publication={publication}/>
                     </div>
                 )}
-                <div style={Styles.OpdsList.Publication.informations}>
-                    <div style={Styles.OpdsList.Publication.column}>
-                        <h4 style={Styles.OpdsList.Publication.title}>{getMultiLangString(publication.title, lang)}</h4>
-                        <p>{authors}</p>
-                    </div>
-                    <input
-                        style={Styles.OpdsList.Publication.checkbox}
-                        type="checkbox"
-                        onChange={this.props.handleCheckboxChange.bind(this, publication)}/>
-                        <p style={Styles.OpdsList.Publication.description}>
-                            <span style={Styles.OpdsList.Publication.descriptionInside}>{publication.description}</span>
-                        </p>
+                <div style={Styles.OpdsList.Publication.primaryInformations}>
+                    <p style={Styles.OpdsList.Publication.title}>{getMultiLangString(publication.title, lang)}</p>
+                    <p>{authors}</p>
                 </div>
+                <input
+                    style={Styles.OpdsList.Publication.checkbox}
+                    type="checkbox"
+                    onChange={this.props.handleCheckboxChange.bind(this, publication)}
+                />
+                <p style={Styles.OpdsList.Publication.description}>
+                    {publication.description}
+                </p>
             </div>
         );
     }
