@@ -53,7 +53,14 @@
         "about": "A propos",
         "help":"Aide",
         "news":"Quoi de neuf ?",
-        "sync":"Synchroniser la bibliothèque"
+        "sync":"Synchroniser la bibliothèque",
+        "svg": {
+          "help": "Aide",
+          "news": "Nouvelles",
+          "addEpub": "Ajouter un EPUB",
+          "opds": "Opds",
+          "others": "Autres"
+        }
     },
     "update": {
         "available": "Nouvelle version !"
@@ -73,10 +80,7 @@
       "downloadError": "Une erreur est survenue lors de la récupération du flux.",
       "back": "Retour",
       "svg": {
-        "addEpub": "Ajouter un EPUB",
-        "menu": "Menu",
-        "help": "Aide",
-        "news": "Nouvelles"
+        "opds": "Opds"
       },
       "addForm": {
         "addButton": "Ajouter",

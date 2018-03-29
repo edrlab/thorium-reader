@@ -53,7 +53,14 @@
         "about": "About",
         "help":"Help",
         "news":"What's new?",
-        "sync":"Synchronize the library"
+        "sync":"Synchronize the library",
+        "svg": {
+          "help": "Help",
+          "news": "News",
+          "addEpub": "Add an EPUB",
+          "opds": "Opds",
+          "others": "Others"
+        }
     },
     "update": {
         "available": "Update available!"
@@ -73,10 +80,7 @@
       "back": "Back",
       "downloadError": "An error occurred while retrieving the feed.",
       "svg": {
-        "addEpub": "Add an EPUB",
-        "menu": "Menu",
-        "help": "Help",
-        "news": "News"
+        "opds": "Opds"
       },
       "addForm": {
         "addButton": "Add",
