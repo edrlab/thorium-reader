@@ -30,7 +30,7 @@ export interface ReaderConfig {
     colCount: string;
     dark: false;
     font: string;
-    fontSize: any;
+    fontSize: string;
     invert: boolean;
     lineHeight: string;
     night: boolean;

@@ -140,6 +140,20 @@ const pathFileName = pathDecoded.substr(
 // tslint:disable-next-line:no-string-literal
 const lcpHint = queryParams["lcpHint"];
 
+const fontSizes: string[] = [
+    "75%",
+    "87.5%",
+    "100%",
+    "112.5%",
+    "137.5%",
+    "150%",
+    "162.5%",
+    "175%",
+    "200%",
+    "225%",
+    "250%",
+];
+
 interface ReaderAppState {
     publicationJsonUrl?: string;
     lcpHint?: string;
@@ -151,6 +165,7 @@ interface ReaderAppState {
     settingsOpen: boolean;
     settingsValues: ReadiumCSS;
     shortcutEnable: boolean;
+    fontSizeIndex: number;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -186,7 +201,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                 dark: false,
                 font: "DEFAULT",
                 fontSize: "100%",
-                fontSizeNum: 100,
                 invert: false,
                 lineHeight: "1.5",
                 night: false,
@@ -195,6 +209,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                 sepia: false,
             },
             shortcutEnable: true,
+            fontSizeIndex: 3,
         };
     }
 
@@ -217,17 +232,14 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             if (settings !== this.state.settingsValues) {
                 this.translator.setLocale(this.store.getState().i18n.locale);
 
-                this.setState({
-                    settingsValues: Object.assign(
-                        {},
-                        storeState.reader.config,
-                        {
-                            fontSizeNum: parseInt(
-                                storeState.reader.config.fontSize, 10,
-                            ),
-                        },
-                    ),
-                });
+                console.log(settings);
+                let i = 0;
+                for (const size of fontSizes) {
+                    if (settings.fontSize === size) {
+                        this.setState({fontSizeIndex: i});
+                    }
+                    i++;
+                }
 
                 // Push reader config to navigator
                 readiumCssOnOff();
@@ -362,10 +374,12 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                         ]}
                     >
                         <div className={ReaderStyles.settings_content}>
-                            <label>{__("reader.settings.fontSize")}{this.state.settingsValues.fontSizeNum}%</label>
-                            <input name="fontSizeNum" type="range" min="30" max="250"
-                                value={this.state.settingsValues.fontSizeNum}
-                                onChange={this.handleSettingsValueChange.bind(this)}/>
+                            <label>{__("reader.settings.fontSize")}{fontSizes[this.state.fontSizeIndex]}</label>
+                            <input name="fontSize" type="range" min="0" max="10"
+                                value={this.state.fontSizeIndex}
+                                onChange={this.handleSettingsValueChange.bind(this)}
+                                step="1"
+                            />
                             <label>{__("reader.settings.align")}</label>
                             <div className={ReaderStyles.settings_radios}>
                                 <label>
@@ -525,7 +539,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
     private handleSettingsSave() {
         const values = this.state.settingsValues;
-        values.fontSize = values.fontSizeNum + "%";
 
         this.store.dispatch(readerActions.setConfig(values));
         this.setState({settingsValues: values});
@@ -554,6 +567,11 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             value = false;
         } else if (value === "true") {
             value = true;
+        }
+
+        if (name === "fontSize") {
+            this.setState({fontSizeIndex: value});
+            value = fontSizes[value];
         }
 
         settingsValues[name] =  value;
