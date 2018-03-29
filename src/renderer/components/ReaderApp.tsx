@@ -232,7 +232,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             if (settings !== this.state.settingsValues) {
                 this.translator.setLocale(this.store.getState().i18n.locale);
 
-                console.log(settings);
                 let i = 0;
                 for (const size of fontSizes) {
                     if (settings.fontSize === size) {
@@ -332,12 +331,14 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             </div>
                         </div>
                         <div className={ReaderStyles.content_root}>
+                            {this.state.contentTableOpen && (
                             <div className={classNames(ReaderStyles.content_table,
                                     this.state.contentTableOpen && ReaderStyles.content_table_open)}>
                                 <ul>
                                 {contentTable}
                                 </ul>
                             </div>
+                            )}
                             <div className={ReaderStyles.reader}>
                                 <button
                                     className={classNames(ReaderStyles.side_button, ReaderStyles.left_button)}
