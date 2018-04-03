@@ -349,7 +349,9 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <use xlinkHref={"#" + ArrowIcon.id} />
                                     </svg>
                                 </button>
-                                <div id="publication_viewport" className={ReaderStyles.publication_viewport}> </div>
+                                <div className={ReaderStyles.publication_viewport_container}>
+                                    <div id="publication_viewport" className={ReaderStyles.publication_viewport}> </div>
+                                </div>
                                 <button
                                     className={classNames(ReaderStyles.side_button, ReaderStyles.right_button)}
                                     onClick={() => {navLeftOrRight(false); }}

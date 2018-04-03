@@ -23,22 +23,19 @@
   align-items: stretch;
 }
 
+/* ========== READER ==========*/
+
 .publication_viewport {
     overflow: hidden;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: "red";
 }
 
-/* ========== READER ==========*/
+.publication_viewport_container {
+  position: relative;
+  flex: 1;
+}
+
 .side_button {
   z-index: 3;
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
   display: inline-block;
   width: 50px;
   background-color: rgb(0, 0, 0, 0);
@@ -58,19 +55,13 @@
 }
 
 .left_button {
-  left: 0px;
   transform: rotate(180deg);
 }
 
-.right_button {
-  right: 0px;
-}
-
 .reader {
-  display: inline-block;
+  display: flex;
   overflow-y: auto;
   overflow-x: hidden;
-  position: relative;
   flex-grow: 2;
 }
 
