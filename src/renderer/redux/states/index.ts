@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-
 import {MessageState} from "readium-desktop/renderer/reducers/message";
 import {WindowState} from "readium-desktop/renderer/reducers/window";
 
