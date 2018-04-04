@@ -67,7 +67,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
 
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate.bind(this.translator);
-        const messageError = (<p style={Styles.OpdsList.errorMessage}>Veuillez remplir tous les champs</p>);
+        const messageError = (<p style={Styles.OpdsList.errorMessage}>{__("opds.formError")}</p>);
         let currentMessageError = (<div></div>);
         if (this.state.formError) {
             currentMessageError = messageError;

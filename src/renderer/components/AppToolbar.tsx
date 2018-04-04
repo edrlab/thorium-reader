@@ -50,6 +50,7 @@ import { OPDS } from "readium-desktop/common/models/opds";
 
 import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
 
+import * as deDocs from "readium-desktop/resources/docs/de";
 import * as enDocs from "readium-desktop/resources/docs/en";
 import * as frDocs from "readium-desktop/resources/docs/fr";
 
@@ -112,6 +113,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
             localeList: {
                 fr: "Français",
                 en: "English",
+                de: "Deutsch",
             },
 
             localeOpen: false,
@@ -155,9 +157,10 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
 
         // Use en as default language
         let docs = enDocs;
-
         if (this.state.locale === "fr") {
             docs = frDocs;
+        } else if (this.state.locale === "de") {
+            docs = deDocs;
         }
 
         const helpContent = docs.help as any;
@@ -229,6 +232,10 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             <MenuItem
                                 primaryText= {__("English")}
                                 onClick={() => {this.handleLocaleChange("en"); }}
+                            />
+                            <MenuItem
+                                primaryText= {__("Deutsch")}
+                                onClick={() => {this.handleLocaleChange("de"); }}
                             />
                         </Menu>
                     </Popover>
