@@ -7,7 +7,7 @@
         "endDownload": "A download ended.",
         "lcp": {
           "title": "LCP Verification",
-          "sentence": "This publication need a LCP password to be opened: ",
+          "sentence": "This publication needs a LCP password to be opened: ",
           "submit": "Submit",
           "cancel": "Cancel",
           "hint": "Your passphrase",
@@ -29,7 +29,7 @@
         }
     },
     "publication": {
-      "notReadableLcp": "This book can't be read because the lcp liscense is finished",
+      "notReadableLcp": "This book can't be read because the LCP license is expired",
       "downloadButton": "Download",
       "readButton": "Read",
       "deleteButton": "Delete",
@@ -56,8 +56,8 @@
     "dialog": {
       "yes": "Yes",
       "no": "No",
-      "delete": "Do you really want to delete these publication?",
-      "import": "Do you really want to import LCP files :",
+      "delete": "Do you really want to delete this publication?",
+      "import": "Do you really want to import those EPUB files :",
       "lcpImport": "Do you really want to import those LCP files :"
     },
     "opds": {
@@ -106,13 +106,13 @@
         "startSecond": " began"
       },
       "lcp": {
-        "renewSuccessFirst": "The lcp license of ",
+        "renewSuccessFirst": "The LCP license of ",
         "renewSuccessSecond": " has been renewed",
-        "renewErrorFirst": "An error occurred when renewing the lcp license of ",
+        "renewErrorFirst": "An error occurred when renewing the LCP license of ",
         "renewErrorSecond": "",
-        "returnSuccessFirst": "The lcp license of ",
+        "returnSuccessFirst": "The LCP license of ",
         "returnSuccessSecond": " has been returned",
-        "returnErrorFirst": "An error occurred when returning the lcp license of ",
+        "returnErrorFirst": "An error occurred when returning the LCP license of ",
         "returnErrorSecond": "",
         "passphraseError": "Unable to unlock publication {{publicationTitle}}"
       }
