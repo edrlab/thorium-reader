@@ -1,6 +1,7 @@
 import * as i18n from "i18next";
 import { injectable} from "inversify";
 
+import * as deCatalog from "readium-desktop/resources/locales/de.json";
 import * as enCatalog from "readium-desktop/resources/locales/en.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
 
@@ -11,6 +12,9 @@ i18n.init({
         },
         fr: {
             translation: frCatalog,
+        },
+        de: {
+            translation: deCatalog,
         },
     },
 });

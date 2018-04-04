@@ -1,0 +1,120 @@
+{
+    "library": {
+        "heading": "Bibliothek",
+        "add": "Zur Bibliothek hinzufügen",
+        "startDownload": "Ein Download wurde gestartet.",
+        "cancelDownload": "Ein Download wurde abgebrochen.",
+        "endDownload": "Ein Download wurde beendet.",
+        "lcp": {
+          "title": "LCP-Verifikation",
+          "sentence": "Diese Publikation benötigt zum Öffnen ein LCP-Password: ",
+          "submit": "Absenden",
+          "cancel": "Abbrechen",
+          "hint": "Dein Kennwort",
+          "hintSentence": "Hinweis:",
+          "informations": {
+            "title": "LCP-Informationen",
+            "close": "Schließen",
+            "provider": "Aussteller:",
+            "issued": "Ausstellungsdatum:",
+            "updated": "Aktualisiert:",
+            "right": {
+              "title": "Rechte",
+              "start": "Start:",
+              "end": "Ende:",
+              "copy": "Nummer der Kopie:",
+              "print": "Nummer des gedruckten Werks:"
+            }
+          }
+        }
+    },
+    "publication": {
+      "notReadableLcp": "Dieses Buch kann nicht gelesen werden, das die LCP-Lizenz abgelaufen ist.",
+      "downloadButton": "Download",
+      "readButton": "Lesen",
+      "deleteButton": "Löschen",
+      "infoButton": "LCP-Informationen",
+      "renewButton": "Verlängern",
+      "renewSentence": "Bist du sicher, dass die Publikation verlängert werden soll?",
+      "returnButton": "Zurückgeben",
+      "returnSentence": "Bist du sicher, dass die Publikation zurückgegeben werden soll?",
+      "cancelDownloadButton": "Abbrechen",
+      "progressDownload": "Download läuft",
+      "endDownload": "Download abgeschlossen",
+      "failedDownload": "Download fehlerhaft",
+      "canceledDownload": "Download abgebrochen"
+    },
+    "toolbar": {
+        "about": "Über",
+        "help":"Hilfe",
+        "news":"Neuerungen",
+        "sync":"Synchronisiere die Bibliothek"
+    },
+    "update": {
+        "available": "Update verfügbar!"
+    },
+    "dialog": {
+      "yes": "Ja",
+      "no": "Nein",
+      "delete": "Willst du diese Publikation wirklich löschen?",
+      "import": "Willst du diese EPUB-Dateien wirklich importieren?",
+      "lcpImport": "Willst du diese LCP-Dateien wirklich importieren?"
+    },
+    "opds": {
+      "download": "Download",
+      "settings": "Einstellungen",
+      "addMenu": "OPDS-Feed hinzufügen",
+      "formError": "Bitte fülle alle Felder aus",
+      "back": "Zurück",
+      "downloadError": "Beim Abrufen des Feeds trat ein Fehler auf.",
+      "addForm": {
+        "addButton": "Hinzufügen",
+        "updateSentence": "Du kannst die Felder aktualisieren.",
+        "addSentence": "Welchen ODPS-Feed willst du hinzufügen?",
+        "delete": "Feed löschen",
+        "update": "Aktualisieren",
+        "name": "Feed-Name:",
+        "url": "Feed-Link:"
+      },
+      "authentication": {
+        "username": "Benutzername:",
+        "password": "Passwort:",
+        "loginButton": "Login",
+        "sentence": "Bitte logge dich ein, um auf die Inhalte zuzugreifen"
+      }
+    },
+    "reader": {
+      "settings": {
+        "title": "Einstellungen",
+        "align": "Textausrichtung:",
+        "left": "Linksbündig",
+        "center": "Zentriert",
+        "right": "Rechtsbündig",
+        "fontSize": "Schriftgröße:",
+        "display": "Lesefluss:",
+        "close": "Schließen",
+        "save": "Speichern",
+        "scrolled": "Fortlaufend",
+        "paginated": "Seitendarstellung"
+      }
+    },
+    "message": {
+      "download": {
+        "successFirst": "Der Download von ",
+        "successSecond": " wurde abgeschlossen",
+        "startFirst": "Der Download von ",
+        "startSecond": " hat begonnen"
+      },
+      "lcp": {
+        "renewSuccessFirst": "Die LCP-Lizenz von ",
+        "renewSuccessSecond": " wurde verlängert",
+        "renewErrorFirst": "Beim Verlängern der LCP-Lizenz von ",
+        "renewErrorSecond": " trat ein Fehler auf",
+        "returnSuccessFirst": "Die LCP-Lizenz von ",
+        "returnSuccessSecond": " wurde zurückgegeben",
+        "returnErrorFirst": "Beim Zurückgeben der LCP-Lizenz von ",
+        "returnErrorSecond": " trat ein Fehler auf",
+        "passphraseError": "Konnte die Publikation {{publicationTitle}} nicht entsperren"
+      }
+    }
+}
