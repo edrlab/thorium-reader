@@ -101,15 +101,15 @@ export default class PublicationListElement extends React.Component<IPublication
                 <Card style={Styles.BookCard.body}>
                     <CardMedia>
                         <div
-                            style={Styles.BookCard.image}
+                            style={Styles.BookCard.cover}
                             onMouseEnter={() => {this.handleFront(); }}
                             onMouseLeave={() => {this.handleBack(); }}>
                             <ReactCardFlip isFlipped={that.state.isFlipped}>
-                                <div key="front" >
+                                <div key="front" style={Styles.BookCard.image_container}>
                                     {publication.cover ? (
                                         <img style={Styles.BookCard.image} src={publication.cover.url}/>
                                     ) : (
-                                        <div style={Styles.BookCard.image}>
+                                        <div style={Styles.BookCard.custom_cover}>
                                             <Cover publication={publication}/>
                                         </div>
                                     )}

@@ -108,9 +108,26 @@ export const Styles = {
             flexGrow: 1,
         },
         image: {
+            maxWidth: "100%",
+            maxHeight: "100%",
+            display: "inline-block",
+            margin: "0 auto",
+            verticalAlign: "middle",
+        },
+        cover: {
+            display: "inline-block",
             fontSize: "18px",
             height: 320,
             width: 210,
+        },
+        image_container: {
+            lineHeight: "320px",
+        },
+        custom_cover: {
+            fontSize: "18px",
+            height: 320,
+            width: 210,
+            lineHeight: "initial",
         },
         title: {
             overflow: "hidden",
@@ -149,8 +166,17 @@ export const Styles = {
             flexDirection: column,
             height: 140,
             marginLeft: "5px",
+            paddingLeft: "15px",
         },
         image: {
+            maxWidth: "100%",
+            maxHeight: "100%",
+            display: "inline-block",
+            margin: "0 auto",
+            verticalAlign: "middle",
+        },
+        custom_cover: {
+            lineHeight: "initial",
             fontSize: "9px",
             display: "inline-block",
             float: "left",
@@ -160,13 +186,21 @@ export const Styles = {
         title: {
             margin: "10px 0px",
         },
+        image_container: {
+            fontSize: "9px",
+            display: "inline-block",
+            float: "left",
+            height: 140,
+            width: 91,
+            lineHeight: "140px",
+        },
     },
     BookCover: {
         box: {
             border: "1px black solid",
             width: "100%",
             height: "100%",
-
+            lineHeight: "inital",
         },
         title: {
             marginLeft: "5%",

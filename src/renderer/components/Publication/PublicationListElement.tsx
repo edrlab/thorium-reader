@@ -73,13 +73,15 @@ export default class PublicationListElement extends React.Component<IPublication
 
         return (
             <div style={Styles.BookListElement.body}>
-                {publication.cover ? (
-                    <img style={Styles.BookListElement.image} src={publication.cover.url}/>
-                ) : (
-                    <div style={Styles.BookListElement.image}>
-                        <Cover publication={publication}/>
-                    </div>
-                )}
+                <div style={Styles.BookListElement.image_container}>
+                    {publication.cover ? (
+                        <img style={Styles.BookListElement.image} src={publication.cover.url}/>
+                    ) : (
+                        <div style={Styles.BookListElement.custom_cover}>
+                            <Cover publication={publication}/>
+                        </div>
+                    )}
+                </div>
                 <div style={Styles.BookListElement.description}>
                     <h4 style={Styles.BookListElement.title}>{getMultiLangString(publication.title, lang)}</h4>
                     <div style={Styles.BookListElement.content}>
