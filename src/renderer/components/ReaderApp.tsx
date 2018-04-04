@@ -77,6 +77,8 @@ import {
     _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
+import FocusLock from "react-focus-lock";
+
 webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
 webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
     allowServiceWorkers: false,
@@ -367,78 +369,88 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                     <Dialog
                         title={__("reader.settings.title")}
                         open={this.state.settingsOpen}
-                        actions={[
-                            <button className={ReaderStyles.settings_action}
-                                    onClick={this.handleSettingsClose.bind(this)}>
-                                        {__("reader.settings.close")}
-                                    </button>,
-                            <button className={ReaderStyles.settings_action}
-                                onClick={this.handleSettingsSave.bind(this)}>{__("reader.settings.save")}</button>,
-                        ]}
                     >
-                        <div className={ReaderStyles.settings_content}>
-                            <label>{__("reader.settings.fontSize")}{fontSizes[this.state.fontSizeIndex]}</label>
-                            <input name="fontSize" type="range" min="0" max="10"
-                                value={this.state.fontSizeIndex}
-                                onChange={this.handleSettingsValueChange.bind(this)}
-                                step="1"
-                            />
-                            <label>{__("reader.settings.align")}</label>
-                            <div className={ReaderStyles.settings_radios}>
-                                <label>
-                                    <input type="radio" value="left" name="align"
-                                        onChange={this.handleSettingsValueChange.bind(this)}
-                                        {...additionalRadioProperties("align", "left")}/>
-                                        <svg className={ReaderStyles.settings_icones} viewBox={AlignLeftIcon.alignLeft}>
-                                            <title>{__("reader.svg.alignLeft")}</title>
-                                            <use xlinkHref={"#" + AlignLeftIcon.id} />
-                                        </svg> {__("reader.settings.left")}
-                                </label>
-                                <label>
-                                    <input type="radio" value="center" name="align"
-                                        onChange={this.handleSettingsValueChange.bind(this)}
-                                        {...additionalRadioProperties("align", "center")}/>
-                                        <svg className={ReaderStyles.settings_icones}
-                                            viewBox={AlignCenterIcon.alignCenter}
-                                        >
-                                            <title>{__("reader.svg.alignCenter")}</title>
-                                            <use xlinkHref={"#" + AlignCenterIcon.id} />
-                                        </svg> {__("reader.settings.center")}
-                                </label>
-                                <label>
-                                    <input type="radio" value="right" name="align"
-                                        onChange={this.handleSettingsValueChange.bind(this)}
-                                        {...additionalRadioProperties("align", "right")}/>
-                                        <svg className={ReaderStyles.settings_icones}
-                                            viewBox={AlignRightIcon.alignRight}
-                                        >
-                                            <title>{__("reader.svg.alignRight")}</title>
-                                            <use xlinkHref={"#" + AlignRightIcon.id} />
-                                        </svg> {__("reader.settings.right")}
-                                </label>
-                            </div>
-                            <label>{__("reader.settings.display")}</label>
+                        <FocusLock>
                             <div>
-                                <label>
-                                    <input type="radio" value="true" name="paged"
+                                <div className={ReaderStyles.settings_content}>
+                                    <label>{__("reader.settings.fontSize")}{fontSizes[this.state.fontSizeIndex]}</label>
+                                    <input name="fontSize" type="range" min="0" max="10"
+                                        value={this.state.fontSizeIndex}
                                         onChange={this.handleSettingsValueChange.bind(this)}
-                                        {...additionalRadioProperties("paged", true)}/>
-                                        <svg className={ReaderStyles.settings_icones} viewBox={PageIcon.page}>
-                                            <title>{__("reader.svg.document")}</title>
-                                            <use xlinkHref={"#" + PageIcon.id} />
-                                        </svg> {__("reader.settings.paginated")}
-                                </label>
-                                <label>
-                                    <input type="radio" value="false" name="paged"
-                                        onChange={this.handleSettingsValueChange.bind(this)}
-                                        {...additionalRadioProperties("paged", false)}/>
-                                        <svg className={ReaderStyles.settings_icones} viewBox={ContinueIcon.continue}>
-                                            <title>{__("reader.svg.continue")}</title>
-                                            <use xlinkHref={"#" + ContinueIcon.id} />
-                                        </svg> {__("reader.settings.scrolled")}
-                                </label>
+                                        step="1"
+                                    />
+                                    <label>{__("reader.settings.align")}</label>
+                                    <div className={ReaderStyles.settings_radios}>
+                                        <label>
+                                            <input type="radio" value="left" name="align"
+                                                onChange={this.handleSettingsValueChange.bind(this)}
+                                                {...additionalRadioProperties("align", "left")}/>
+                                                <svg
+                                                    className={ReaderStyles.settings_icones}
+                                                    viewBox={AlignLeftIcon.alignLeft}
+                                                >
+                                                    <title>{__("reader.svg.alignLeft")}</title>
+                                                    <use xlinkHref={"#" + AlignLeftIcon.id} />
+                                                </svg> {__("reader.settings.left")}
+                                        </label>
+                                        <label>
+                                            <input type="radio" value="center" name="align"
+                                                onChange={this.handleSettingsValueChange.bind(this)}
+                                                {...additionalRadioProperties("align", "center")}/>
+                                                <svg className={ReaderStyles.settings_icones}
+                                                    viewBox={AlignCenterIcon.alignCenter}
+                                                >
+                                                    <title>{__("reader.svg.alignCenter")}</title>
+                                                    <use xlinkHref={"#" + AlignCenterIcon.id} />
+                                                </svg> {__("reader.settings.center")}
+                                        </label>
+                                        <label>
+                                            <input type="radio" value="right" name="align"
+                                                onChange={this.handleSettingsValueChange.bind(this)}
+                                                {...additionalRadioProperties("align", "right")}/>
+                                                <svg className={ReaderStyles.settings_icones}
+                                                    viewBox={AlignRightIcon.alignRight}
+                                                >
+                                                    <title>{__("reader.svg.alignRight")}</title>
+                                                    <use xlinkHref={"#" + AlignRightIcon.id} />
+                                                </svg> {__("reader.settings.right")}
+                                        </label>
+                                    </div>
+                                    <label>{__("reader.settings.display")}</label>
+                                    <div>
+                                        <label>
+                                            <input type="radio" value="true" name="paged"
+                                                onChange={this.handleSettingsValueChange.bind(this)}
+                                                {...additionalRadioProperties("paged", true)}/>
+                                                <svg className={ReaderStyles.settings_icones} viewBox={PageIcon.page}>
+                                                    <title>{__("reader.svg.document")}</title>
+                                                    <use xlinkHref={"#" + PageIcon.id} />
+                                                </svg> {__("reader.settings.paginated")}
+                                        </label>
+                                        <label>
+                                            <input type="radio" value="false" name="paged"
+                                                onChange={this.handleSettingsValueChange.bind(this)}
+                                                {...additionalRadioProperties("paged", false)}/>
+                                                <svg
+                                                    className={ReaderStyles.settings_icones}
+                                                    viewBox={ContinueIcon.continue}
+                                                >
+                                                    <title>{__("reader.svg.continue")}</title>
+                                                    <use xlinkHref={"#" + ContinueIcon.id} />
+                                                </svg> {__("reader.settings.scrolled")}
+                                        </label>
+                                    </div>
+                                </div>
+                                    <button className={ReaderStyles.settings_action}
+                                        onClick={this.handleSettingsClose.bind(this)}>
+                                            {__("reader.settings.close")}
+                                    </button>
+                                    <button className={ReaderStyles.settings_action}
+                                        onClick={this.handleSettingsSave.bind(this)}>
+                                            {__("reader.settings.save")}
+                                    </button>
                             </div>
-                        </div>
+                        </FocusLock>
                     </Dialog>
                 </div>
             </MuiThemeProvider>
