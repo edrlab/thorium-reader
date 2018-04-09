@@ -112,6 +112,14 @@
         "scrolled": "Scrolled",
         "paginated": "Paginated"
       },
+      "landmarks": {
+        "landmarks": "Landmarks",
+        "illustrations": "Illustrations",
+        "videos": "Videos",
+        "tables": "Tables",
+        "audio": "Audio",
+        "pages": "Pages"
+      },
       "svg": {
         "contentTable": "Content Table",
         "night": "Night",
@@ -122,7 +130,8 @@
         "alignCenter": "Center align",
         "alignRight": "Right align",
         "document": "Paginated",
-        "continue": "Scrolled"
+        "continue": "Scrolled",
+        "landmark": "Landmark"
       }
     },
     "message": {

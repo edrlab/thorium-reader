@@ -112,6 +112,14 @@
         "scrolled": "Défilé",
         "paginated": "Paginé"
       },
+      "landmarks": {
+        "landmarks": "Marques",
+        "illustrations": "Illustrations",
+        "videos": "Vidéos",
+        "tables": "Tablaux",
+        "audio": "Audio",
+        "pages": "Pages"
+      },
       "svg": {
         "contentTable": "Table des matières",
         "night": "Mode Nuit",
@@ -122,7 +130,8 @@
         "alignCenter": "Aligner au centre",
         "alignRight": "Aligner à droite",
         "document": "Paginé",
-        "continue": "Défilé"
+        "continue": "Défilé",
+        "landmark": "Point de repère"
       }
     },
     "message": {

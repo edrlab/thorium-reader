@@ -30,6 +30,7 @@ import { Translator } from "readium-desktop/common/services/translator";
 import ArrowIcon from "readium-desktop/renderer/assets/icons/arrow.svg";
 import ContentTableIcon from "readium-desktop/renderer/assets/icons/content-table.svg";
 import ContinueIcon from "readium-desktop/renderer/assets/icons/continue.svg";
+import LandmarkIcon from "readium-desktop/renderer/assets/icons/landmark.svg";
 import NightIcon from "readium-desktop/renderer/assets/icons/night.svg";
 import PageIcon from "readium-desktop/renderer/assets/icons/page.svg";
 import AlignCenterIcon from "readium-desktop/renderer/assets/icons/paragraph-center.svg";
@@ -168,6 +169,8 @@ interface ReaderAppState {
     settingsValues: ReadiumCSS;
     shortcutEnable: boolean;
     fontSizeIndex: number;
+    landmarksOpen: boolean;
+    landmarkTabOpen: number;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -179,6 +182,9 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
     @lazyInject("translator")
     private translator: Translator;
+
+    private landmarksData: any[];
+    private publication: R2Publication;
 
     constructor(props: any) {
         super(props);
@@ -212,10 +218,13 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             },
             shortcutEnable: true,
             fontSizeIndex: 3,
+            landmarksOpen: false,
+            landmarkTabOpen: 0,
         };
     }
 
     public async componentDidMount() {
+        const __ = this.translator.translate;
         this.setState({
             publicationJsonUrl,
         });
@@ -268,13 +277,14 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             docSelector = window.atob(docSelector);
         }
 
-        await this.loadPublicationIntoViewport(docHref, docSelector);
+        this.publication = await this.loadPublicationIntoViewport(docHref, docSelector);
         setReadingLocationSaver(saveReadingLocation);
     }
 
     public render(): React.ReactElement<{}> {
         const contentTable = [];
         const __ = this.translator.translate.bind(this.translator);
+        const tabOpen = this.state.landmarkTabOpen;
 
         let i = 0;
         for (const spine in this.state.spineLinks) {
@@ -296,6 +306,51 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
             return null;
         };
+
+        if (!this.landmarksData && this.publication) {
+            const landmarksData: any[] = [];
+            if (this.publication.Landmarks && this.publication.Landmarks.length) {
+                landmarksData.push({
+                    label: __("reader.landmarks.landmarks"),
+                    links: this.publication.Landmarks,
+                });
+            }
+            if (this.publication.LOT && this.publication.LOT.length) {
+                landmarksData.push({
+                    label: __("reader.landmarks.tables"),
+                    links: this.publication.LOT,
+                });
+            }
+            if (this.publication.LOI && this.publication.LOI.length) {
+                landmarksData.push({
+                    label: __("reader.landmarks.illusatrations"),
+                    links: this.publication.LOI,
+                });
+            }
+            if (this.publication.LOV && this.publication.LOV.length) {
+                landmarksData.push({
+                    label: __("reader.landmarks.videos"),
+                    links: this.publication.LOV,
+                });
+            }
+            if (this.publication.LOA && this.publication.LOA.length) {
+                landmarksData.push({
+                    label: __("reader.landmarks.audio"),
+                    links: this.publication.LOA,
+                });
+            }
+            if (this.publication.PageList && this.publication.PageList.length) {
+                landmarksData.push({
+                    label: __("reader.landmarks.pages"),
+                    links: this.publication.PageList,
+                });
+            }
+
+            this.landmarksData = landmarksData;
+        }
+
+        let landmarkTabKeys = 0;
+        let landmarkListKey = 0;
 
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
@@ -330,6 +385,16 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <use xlinkHref={"#" + SettingsIcon.id} />
                                     </svg>
                                 </button>
+                                    <button
+                                    className={ReaderStyles.menu_button}
+                                    onClick={this.handleLandmarksClick.bind(this)}
+                                    disabled={!this.landmarksData || !this.landmarksData.length ? true : false}
+                                    >
+                                        <svg className={ReaderStyles.menu_svg} viewBox={ContentTableIcon.LandmarkIcon}>
+                                            <title>{__("reader.svg.landmarks")}</title>
+                                            <use xlinkHref={"#" + LandmarkIcon.id} />
+                                        </svg>
+                                    </button>
                             </div>
                         </div>
                         <div className={ReaderStyles.content_root}>
@@ -337,7 +402,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             <div className={classNames(ReaderStyles.content_table,
                                     this.state.contentTableOpen && ReaderStyles.content_table_open)}>
                                 <ul>
-                                {contentTable}
+                                    {contentTable}
                                 </ul>
                             </div>
                             )}
@@ -364,6 +429,38 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                     </svg>
                                 </button>
                             </div>
+                            {this.state.landmarksOpen && (
+                                <div className={classNames(ReaderStyles.content_table,
+                                        this.state.landmarksOpen && ReaderStyles.content_table_open)}>
+                                    <div className={ReaderStyles.landmarks_tabs}>
+                                        {this.landmarksData.map((data: any) => {
+                                            const button = (
+                                                <button
+                                                    key={landmarkTabKeys}
+                                                    className={ReaderStyles.landmarks_tabs_button}
+                                                    onClick={this.handleTabChange.bind( this, landmarkTabKeys )}
+                                                >
+                                                    {data.label}
+                                                </button>
+                                            );
+                                            landmarkTabKeys ++;
+                                            return button;
+                                        })}
+                                    </div>
+                                    <div>
+                                        <ul>
+                                            {this.landmarksData[tabOpen].links.map((data: any) => {
+                                                landmarkListKey++;
+                                                return (
+                                                    <li key={landmarkListKey}>
+                                                        {data.Title}
+                                                    </li>
+                                                );
+                                            })}
+                                        </ul>
+                                        </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <Dialog
@@ -460,7 +557,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     private async loadPublicationIntoViewport(
         docHref: string,
         docSelector: string,
-    ) {
+    ): Promise<R2Publication> {
         let response: Response;
         try {
             response = await fetch(publicationJsonUrl);
@@ -482,6 +579,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             return;
         }
         const publication = TAJSON.deserialize<R2Publication>(publicationJSON, R2Publication);
+
+        console.log(publication);
 
         if (publication.Metadata && publication.Metadata.Title) {
             // TODO: should get language from view state? (user preferences)
@@ -532,10 +631,16 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             docHref,
             docSelector,
         );
+
+        return publication;
     }
 
     private handleContentTableClick() {
         this.setState({contentTableOpen: !this.state.contentTableOpen});
+    }
+
+    private handleLandmarksClick() {
+        this.setState({landmarksOpen: !this.state.landmarksOpen});
     }
 
     private _onDropDownSelectSpineLink(event: any) {
@@ -571,6 +676,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         this.setState({settingsValues});
 
         this.handleSettingsSave();
+    }
+
+    private handleTabChange(key: number) {
+        this.setState({landmarkTabOpen: key});
     }
 
     private handleSettingsValueChange(event: any) {

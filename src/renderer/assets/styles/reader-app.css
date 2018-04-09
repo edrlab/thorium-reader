@@ -135,6 +135,26 @@
   }
 }
 
+.landmarks_tabs {
+  background-color: black;
+}
+
+.landmarks_tabs_button {
+  padding: 8px 16px;
+  width: auto;
+  border: none;
+  display: inline-block;
+  background-color: transparent;
+  outline: 0;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    color: black;
+    background-color: rgba(255, 255, 255, 0.600);
+  }
+}
+
 @keyframes slidein {
   0% {
     width: 0%;
@@ -162,6 +182,12 @@
   background-color: rgb(0, 0, 0, 0);
   border: none;
   color: var(--secondary-color);
+  cursor: pointer;
+
+  &[disabled] .menu_svg{
+    fill: rgb(255, 255, 255, 0.4);
+    cursor: not-allowed;
+  }
 }
 
 .menu_svg {
