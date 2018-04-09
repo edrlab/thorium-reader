@@ -71,14 +71,14 @@ export const Styles = {
     },
     Library: {
         addButton: {
-            float: "right",
+            float: "right" as "right",
             marginTop: "6px",
         },
         displayButton: {
-            float: "right",
+            float: "right" as "right",
         },
         list: {
-            textAlign: "center",
+            textAlign: "center" as "center",
             overflowY: auto,
             overflowX: hidden,
             position: absolute,
@@ -100,7 +100,7 @@ export const Styles = {
             display: "inline-block",
             height: 400,
             margin: "5px 5px",
-            textAlign: "center",
+            textAlign: "center" as "center",
             width: 210,
         },
         downloadButton: {
@@ -159,7 +159,7 @@ export const Styles = {
         container: {
             display: "inline-block",
             width: "100%",
-            textAlign: "left",
+            textAlign: "left" as "left",
         },
         description: {
             display: "flex",
@@ -179,7 +179,7 @@ export const Styles = {
             lineHeight: "initial",
             fontSize: "9px",
             display: "inline-block",
-            float: "left",
+            float: "left" as "left",
             height: 140,
             width: 91,
         },
@@ -189,7 +189,7 @@ export const Styles = {
         image_container: {
             fontSize: "9px",
             display: "inline-block",
-            float: "left",
+            float: "left" as "left",
             height: 140,
             width: 91,
             lineHeight: "140px",
@@ -207,7 +207,7 @@ export const Styles = {
             marginRight: "5%",
             marginTop: "10%",
             width: "90%",
-            wordBreak: "break-all",
+            wordBreak: "break-all" as "break-all",
         },
         author : {
             fontSize: "90%",
@@ -218,7 +218,7 @@ export const Styles = {
         body : {
             height: "inherit",
             width: "inherit",
-            textAlign: "center",
+            textAlign: "center" as "center",
             backgroundImage: "",
             WebkitBoxSizing: "border-box",
             MozBoxSizing: "border-box",
@@ -243,14 +243,14 @@ export const Styles = {
             image: {
                 fontSize: "6px",
                 display: "inline-block",
-                float: "left",
+                float: "left" as "left",
                 height: "100%",
                 width: 52,
                 marginRight: 10,
             },
             checkbox: {
                 width: 20,
-                float: "left",
+                float: "left" as "left",
                 margin: "auto 15px auto 0",
             },
             description: {
@@ -258,7 +258,7 @@ export const Styles = {
                 margin: 0,
                 padding: "10px 0",
                 textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
+                whiteSpace: "nowrap" as "nowrap",
                 overflow: "hidden" as "hidden",
             },
             informations: {
@@ -266,7 +266,7 @@ export const Styles = {
             },
         },
         title: {
-            float: "left",
+            float: "left" as "left",
         },
         body: {
             boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
@@ -303,14 +303,14 @@ export const Styles = {
         },
         formElementLabel: {
             display: "block",
-            float: "left",
+            float: "left" as "left",
             width: 150,
         },
         formElement: {
             margin : 10,
         },
         refreshButton: {
-            float: "right",
+            float: "right" as "right",
         },
     },
     fileInput: {
