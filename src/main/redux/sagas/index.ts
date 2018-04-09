@@ -34,7 +34,7 @@ import {
     catalogPublicationDownloadSuccessWatcher,
     catalogPublicationRemoveWatcher,
 } from "./catalog";
-// import { netStatusWatcher } from "./net";
+import { netStatusWatcher } from "./net";
 import {
     readerBookmarkSaveRequestWatcher,
     readerCloseRequestWatcher,
@@ -89,7 +89,7 @@ export function* rootSaga() {
         appInitWatcher(),
 
         // Net
-        // netStatusWatcher(),
+        netStatusWatcher(),
 
         // Reader
         readerBookmarkSaveRequestWatcher(),
