@@ -465,6 +465,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                     </div>
                     <Dialog
                         title={__("reader.settings.title")}
+                        onRequestClose={this.handleSettingsClose.bind(this)}
                         open={this.state.settingsOpen}
                     >
                         <FocusLock>
