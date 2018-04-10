@@ -105,6 +105,7 @@
         "left": "Gauche",
         "center": "Centré",
         "right": "Droite",
+        "font": "Police",
         "fontSize": "Taille du texte :",
         "display": "Type d'affichage :",
         "close": "Fermer",

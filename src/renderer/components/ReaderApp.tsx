@@ -22,6 +22,9 @@ import {
     ReaderConfig as ReadiumCSS,
 } from "readium-desktop/common/models/reader";
 
+import { Font } from "readium-desktop/common/models/font";
+import fontList from "readium-desktop/utils/fontList";
+
 import { lazyInject } from "readium-desktop/renderer/di";
 
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
@@ -251,6 +254,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                     i++;
                 }
 
+                this.setState({settingsValues: settings});
+
                 // Push reader config to navigator
                 readiumCssOnOff();
             }
@@ -476,6 +481,18 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                         <FocusLock>
                             <div>
                                 <div className={ReaderStyles.settings_content}>
+                                    <label>{__("reader.settings.font")}</label>
+                                    <select
+                                        onChange={this.handleSettingsValueChange.bind(this)}
+                                        value={this.state.settingsValues.font}
+                                        name="font"
+                                    >
+                                        {fontList.map((font: Font, id: number) => {
+                                            return (
+                                                <option key={id} value={font.id}>{font.label}</option>
+                                            );
+                                        })}
+                                    </select>
                                     <label>{__("reader.settings.fontSize")}{fontSizes[this.state.fontSizeIndex]}</label>
                                     <input name="fontSize" type="range" min="0" max="10"
                                         value={this.state.fontSizeIndex}
@@ -487,36 +504,39 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <label>
                                             <input type="radio" value="left" name="align"
                                                 onChange={this.handleSettingsValueChange.bind(this)}
-                                                {...additionalRadioProperties("align", "left")}/>
-                                                <svg
-                                                    className={ReaderStyles.settings_icones}
-                                                    viewBox={AlignLeftIcon.alignLeft}
-                                                >
-                                                    <title>{__("reader.svg.alignLeft")}</title>
-                                                    <use xlinkHref={"#" + AlignLeftIcon.id} />
-                                                </svg> {__("reader.settings.left")}
+                                                {...additionalRadioProperties("align", "left")}
+                                            />
+                                            <svg
+                                                className={ReaderStyles.settings_icones}
+                                                viewBox={AlignLeftIcon.alignLeft}
+                                            >
+                                                <title>{__("reader.svg.alignLeft")}</title>
+                                                <use xlinkHref={"#" + AlignLeftIcon.id} />
+                                            </svg> {__("reader.settings.left")}
                                         </label>
                                         <label>
                                             <input type="radio" value="center" name="align"
                                                 onChange={this.handleSettingsValueChange.bind(this)}
-                                                {...additionalRadioProperties("align", "center")}/>
-                                                <svg className={ReaderStyles.settings_icones}
-                                                    viewBox={AlignCenterIcon.alignCenter}
-                                                >
-                                                    <title>{__("reader.svg.alignCenter")}</title>
-                                                    <use xlinkHref={"#" + AlignCenterIcon.id} />
-                                                </svg> {__("reader.settings.center")}
+                                                {...additionalRadioProperties("align", "center")}
+                                            />
+                                            <svg className={ReaderStyles.settings_icones}
+                                                viewBox={AlignCenterIcon.alignCenter}
+                                            >
+                                                <title>{__("reader.svg.alignCenter")}</title>
+                                                <use xlinkHref={"#" + AlignCenterIcon.id} />
+                                            </svg> {__("reader.settings.center")}
                                         </label>
                                         <label>
                                             <input type="radio" value="right" name="align"
                                                 onChange={this.handleSettingsValueChange.bind(this)}
-                                                {...additionalRadioProperties("align", "right")}/>
-                                                <svg className={ReaderStyles.settings_icones}
-                                                    viewBox={AlignRightIcon.alignRight}
-                                                >
-                                                    <title>{__("reader.svg.alignRight")}</title>
-                                                    <use xlinkHref={"#" + AlignRightIcon.id} />
-                                                </svg> {__("reader.settings.right")}
+                                                {...additionalRadioProperties("align", "right")}
+                                            />
+                                            <svg className={ReaderStyles.settings_icones}
+                                                viewBox={AlignRightIcon.alignRight}
+                                            >
+                                                <title>{__("reader.svg.alignRight")}</title>
+                                                <use xlinkHref={"#" + AlignRightIcon.id} />
+                                            </svg> {__("reader.settings.right")}
                                         </label>
                                     </div>
                                     <label>{__("reader.settings.display")}</label>
@@ -524,23 +544,25 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <label>
                                             <input type="radio" value="true" name="paged"
                                                 onChange={this.handleSettingsValueChange.bind(this)}
-                                                {...additionalRadioProperties("paged", true)}/>
-                                                <svg className={ReaderStyles.settings_icones} viewBox={PageIcon.page}>
-                                                    <title>{__("reader.svg.document")}</title>
-                                                    <use xlinkHref={"#" + PageIcon.id} />
-                                                </svg> {__("reader.settings.paginated")}
+                                                {...additionalRadioProperties("paged", true)}
+                                            />
+                                            <svg className={ReaderStyles.settings_icones} viewBox={PageIcon.page}>
+                                                <title>{__("reader.svg.document")}</title>
+                                                <use xlinkHref={"#" + PageIcon.id} />
+                                            </svg> {__("reader.settings.paginated")}
                                         </label>
                                         <label>
                                             <input type="radio" value="false" name="paged"
                                                 onChange={this.handleSettingsValueChange.bind(this)}
-                                                {...additionalRadioProperties("paged", false)}/>
-                                                <svg
-                                                    className={ReaderStyles.settings_icones}
-                                                    viewBox={ContinueIcon.continue}
-                                                >
-                                                    <title>{__("reader.svg.continue")}</title>
-                                                    <use xlinkHref={"#" + ContinueIcon.id} />
-                                                </svg> {__("reader.settings.scrolled")}
+                                                {...additionalRadioProperties("paged", false)}
+                                            />
+                                            <svg
+                                                className={ReaderStyles.settings_icones}
+                                                viewBox={ContinueIcon.continue}
+                                            >
+                                                <title>{__("reader.svg.continue")}</title>
+                                                <use xlinkHref={"#" + ContinueIcon.id} />
+                                            </svg> {__("reader.settings.scrolled")}
                                         </label>
                                     </div>
                                 </div>
@@ -585,8 +607,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             return;
         }
         const publication = TAJSON.deserialize<R2Publication>(publicationJSON, R2Publication);
-
-        console.log(publication);
 
         if (publication.Metadata && publication.Metadata.Title) {
             // TODO: should get language from view state? (user preferences)
@@ -669,7 +689,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         this.store.dispatch(readerActions.setConfig(values));
         this.setState({settingsValues: values});
         this.handleSettingsClose();
-
         // Push reader config to navigator
         readiumCssOnOff();
     }
