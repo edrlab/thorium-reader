@@ -174,6 +174,7 @@ interface ReaderAppState {
     fontSizeIndex: number;
     landmarksOpen: boolean;
     landmarkTabOpen: number;
+    publication: R2Publication;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -223,6 +224,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             fontSizeIndex: 3,
             landmarksOpen: false,
             landmarkTabOpen: 0,
+            publication: undefined,
         };
     }
 
@@ -282,7 +284,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             docSelector = window.atob(docSelector);
         }
 
-        this.publication = await this.loadPublicationIntoViewport(docHref, docSelector);
+        const publication = await this.loadPublicationIntoViewport(docHref, docSelector);
+        this.setState({publication});
         setReadingLocationSaver(saveReadingLocation);
     }
 
@@ -290,6 +293,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         const contentTable = [];
         const __ = this.translator.translate.bind(this.translator);
         const tabOpen = this.state.landmarkTabOpen;
+        const publication = this.state.publication;
 
         let i = 0;
         for (const spine in this.state.spineLinks) {
@@ -312,42 +316,42 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             return null;
         };
 
-        if (!this.landmarksData && this.publication) {
+        if (!this.landmarksData && publication) {
             const landmarksData: any[] = [];
-            if (this.publication.Landmarks && this.publication.Landmarks.length) {
+            if (publication.Landmarks && publication.Landmarks.length) {
                 landmarksData.push({
                     label: __("reader.landmarks.landmarks"),
-                    links: this.publication.Landmarks,
+                    links: publication.Landmarks,
                 });
             }
-            if (this.publication.LOT && this.publication.LOT.length) {
+            if (publication.LOT && publication.LOT.length) {
                 landmarksData.push({
                     label: __("reader.landmarks.tables"),
-                    links: this.publication.LOT,
+                    links: publication.LOT,
                 });
             }
-            if (this.publication.LOI && this.publication.LOI.length) {
+            if (publication.LOI && publication.LOI.length) {
                 landmarksData.push({
                     label: __("reader.landmarks.illusatrations"),
-                    links: this.publication.LOI,
+                    links: publication.LOI,
                 });
             }
-            if (this.publication.LOV && this.publication.LOV.length) {
+            if (publication.LOV && publication.LOV.length) {
                 landmarksData.push({
                     label: __("reader.landmarks.videos"),
-                    links: this.publication.LOV,
+                    links: publication.LOV,
                 });
             }
-            if (this.publication.LOA && this.publication.LOA.length) {
+            if (publication.LOA && publication.LOA.length) {
                 landmarksData.push({
                     label: __("reader.landmarks.audio"),
-                    links: this.publication.LOA,
+                    links: publication.LOA,
                 });
             }
-            if (this.publication.PageList && this.publication.PageList.length) {
+            if (publication.PageList && publication.PageList.length) {
                 landmarksData.push({
                     label: __("reader.landmarks.pages"),
-                    links: this.publication.PageList,
+                    links: publication.PageList,
                 });
             }
 
@@ -390,16 +394,16 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         <use xlinkHref={"#" + SettingsIcon.id} />
                                     </svg>
                                 </button>
-                                    <button
-                                    className={ReaderStyles.menu_button}
-                                    onClick={this.handleLandmarksClick.bind(this)}
-                                    disabled={!this.landmarksData || !this.landmarksData.length ? true : false}
-                                    >
-                                        <svg className={ReaderStyles.menu_svg} viewBox={ContentTableIcon.LandmarkIcon}>
-                                            <title>{__("reader.svg.landmarks")}</title>
-                                            <use xlinkHref={"#" + LandmarkIcon.id} />
-                                        </svg>
-                                    </button>
+                                <button
+                                className={ReaderStyles.menu_button}
+                                onClick={this.handleLandmarksClick.bind(this)}
+                                disabled={!this.landmarksData || !this.landmarksData.length ? true : false}
+                                >
+                                    <svg className={ReaderStyles.menu_svg} viewBox={ContentTableIcon.LandmarkIcon}>
+                                        <title>{__("reader.svg.landmarks")}</title>
+                                        <use xlinkHref={"#" + LandmarkIcon.id} />
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                         <div className={ReaderStyles.content_root}>
