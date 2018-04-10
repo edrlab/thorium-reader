@@ -125,6 +125,8 @@ export default class PublicationListElement extends React.Component<IPublication
                                                     <LinearProgress mode="determinate"
                                                         value={this.props.downloadProgress} />
                                                     <FlatButton
+                                                        onFocus={this.handleFront.bind(this)}
+                                                        onBlur={this.handleBack.bind(this)}
                                                         style={Styles.BookCard.downloadButton}
                                                         onClick={() => {this.props.cancelDownload(publication); }}
                                                         label={__("publication.cancelDownloadButton")} />
@@ -134,6 +136,8 @@ export default class PublicationListElement extends React.Component<IPublication
                                             <div>
                                                 {lcpReadable(publication) ? (
                                                     <FlatButton
+                                                    onFocus={this.handleFront.bind(this)}
+                                                    onBlur={this.handleBack.bind(this)}
                                                     style={Styles.BookCard.downloadButton}
                                                     onClick={() => {this.props.handleRead(publication); }}
                                                     label={__("publication.readButton")} />
@@ -144,14 +148,20 @@ export default class PublicationListElement extends React.Component<IPublication
                                                 {publication.lcp && (
                                                     <>
                                                         <FlatButton
+                                                        onFocus={this.handleFront.bind(this)}
+                                                        onBlur={this.handleBack.bind(this)}
                                                         style={Styles.BookCard.downloadButton}
                                                         onClick={() => {this.props.openInfoDialog(publication); }}
                                                         label={__("publication.infoButton")} />
                                                         <FlatButton
+                                                        onFocus={this.handleFront.bind(this)}
+                                                        onBlur={this.handleBack.bind(this)}
                                                         style={Styles.BookCard.downloadButton}
                                                         onClick={() => {this.props.openRenewDialog(publication); }}
                                                         label={__("publication.renewButton")} />
                                                         <FlatButton
+                                                        onFocus={this.handleFront.bind(this)}
+                                                        onBlur={this.handleBack.bind(this)}
                                                         style={Styles.BookCard.downloadButton}
                                                         onClick={() => {this.props.openReturnDialog(publication); }}
                                                         label={__("publication.returnButton")} />
@@ -159,6 +169,8 @@ export default class PublicationListElement extends React.Component<IPublication
                                                 )}
 
                                                 <FlatButton
+                                                onFocus={this.handleFront.bind(this)}
+                                                onBlur={this.handleBack.bind(this)}
                                                 style={Styles.BookCard.downloadButton}
                                                 onClick={() => {this.props.deletePublication(publication); }}
                                                 label={__("publication.deleteButton")}/>
