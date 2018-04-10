@@ -96,6 +96,8 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
     @lazyInject("translator")
     private translator: Translator;
 
+    private addEpubInput: any;
+
     constructor(props: AppToolbarProps) {
         super(props);
         this.state = {
@@ -273,12 +275,14 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                         </Popover>
                         <button
                             className={AppBarStyles.button}
+                            onClick={() => this.addEpubInput.click()}
                         >
                             <svg viewBox={AddIcon.content_table}>
                                 <title>{__("toolbar.svg.addEpub")}</title>
                                 <use xlinkHref={"#" + AddIcon.id} />
                             </svg>
                             <input
+                                ref={(element: any) => this.addEpubInput = element}
                                 type="file"
                                 onChange={this.handleFileChange}
                             />
