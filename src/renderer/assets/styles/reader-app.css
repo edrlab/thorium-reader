@@ -47,6 +47,10 @@
     background-color: var(--sideButtonColor);
     fill: var(--secondary-color);
   }
+
+  &:focus {
+    outline: 1pt dashed #999;
+  }
 }
 
 .side_button_svg {
