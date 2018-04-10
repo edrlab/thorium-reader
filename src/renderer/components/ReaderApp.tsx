@@ -453,7 +453,12 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                                 landmarkListKey++;
                                                 return (
                                                     <li key={landmarkListKey}>
-                                                        {data.Title}
+                                                        <a
+                                                            href={publicationJsonUrl + "/../" + data.Href}
+                                                            onClick={this._onDropDownSelectSpineLink}
+                                                        >
+                                                            {data.Title}
+                                                        </a>
                                                     </li>
                                                 );
                                             })}
