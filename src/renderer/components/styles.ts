@@ -220,8 +220,6 @@ export const Styles = {
             width: "inherit",
             textAlign: "center" as "center",
             backgroundImage: "",
-            WebkitBoxSizing: "border-box",
-            MozBoxSizing: "border-box",
             BoxSizing: "border-box",
             padding: "5%",
         },
