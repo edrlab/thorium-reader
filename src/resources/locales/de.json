@@ -100,20 +100,14 @@
     },
     "message": {
       "download": {
-        "successFirst": "Der Download von ",
-        "successSecond": " wurde abgeschlossen",
-        "startFirst": "Der Download von ",
-        "startSecond": " hat begonnen"
+        "success": "Der Download von {{title}} wurde abgeschlossen",
+        "start": "Der Download von {{title}} hat begonnen"
       },
       "lcp": {
-        "renewSuccessFirst": "Die LCP-Lizenz von ",
-        "renewSuccessSecond": " wurde verlängert",
-        "renewErrorFirst": "Beim Verlängern der LCP-Lizenz von ",
-        "renewErrorSecond": " trat ein Fehler auf",
-        "returnSuccessFirst": "Die LCP-Lizenz von ",
-        "returnSuccessSecond": " wurde zurückgegeben",
-        "returnErrorFirst": "Beim Zurückgeben der LCP-Lizenz von ",
-        "returnErrorSecond": " trat ein Fehler auf",
+        "renewSuccess": "Die LCP-Lizenz von {{title}} wurde verlängert",
+        "renewError": "Beim Verlängern der LCP-Lizenz von {{title}} trat ein Fehler auf",
+        "returnSuccess": "Die LCP-Lizenz von {{title}} wurde zurückgegeben",
+        "returnError": "Beim Zurückgeben der LCP-Lizenz von {{title}} trat ein Fehler auf",
         "passphraseError": "Konnte die Publikation {{publicationTitle}} nicht entsperren"
       }
     }
