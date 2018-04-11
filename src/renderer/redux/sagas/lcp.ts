@@ -30,9 +30,8 @@ export function* lcpRenewSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.renewSuccessFirst") +
-            getMultiLangString(publication.title, lang) +
-            translator.translate("message.lcp.renewSuccessSecond")));
+            translator.translate("message.lcp.renewSuccess", { title: getMultiLangString(publication.title, lang) }),
+        ));
     }
 }
 
@@ -46,9 +45,8 @@ export function* lcpRenewErrorWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.renewErrorFirst") +
-            getMultiLangString(publication.title, lang) +
-            translator.translate("message.lcp.renewErrorSecond")));
+            translator.translate("message.lcp.renewError", { title: getMultiLangString(publication.title, lang) }),
+        ));
     }
 }
 
@@ -62,9 +60,8 @@ export function* lcpReturnSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.returnSuccessFirst") +
-            getMultiLangString(publication.title, lang) +
-            translator.translate("message.lcp.returnSuccessSecond")));
+            translator.translate("message.lcp.returnSuccess", { title: getMultiLangString(publication.title, lang) }),
+        ));
     }
 }
 
@@ -78,9 +75,8 @@ export function* lcpReturnErrorWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.returnErrorFirst") +
-            getMultiLangString(publication.title, lang) +
-            translator.translate("message.lcp.returnErrorSecond")));
+            translator.translate("message.lcp.returnError", { title: getMultiLangString(publication.title, lang) }),
+        ));
     }
 }
 

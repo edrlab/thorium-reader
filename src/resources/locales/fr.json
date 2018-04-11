@@ -137,20 +137,14 @@
     },
     "message": {
       "download": {
-        "successFirst": "Le téléchargement de ",
-        "successSecond": " est terminé",
-        "startFirst": "Le téléchargement de ",
-        "startSecond": " a commencé"
+        "success": "Le téléchargement de {{title}} est terminé.",
+        "start": "Le téléchargement de {{title}} a commencé."
       },
       "lcp": {
-        "renewSuccessFirst": "La licence LCP de ",
-        "renewSuccessSecond": " a bien été renouvellée",
-        "renewErrorFirst": "Une erreur est survenue lors du renouvellement de ",
-        "renewErrorSecond": "",
-        "returnSuccessFirst": "La license lcp de ",
-        "returnSuccessSecond": " a bien été retorunée",
-        "returnErrorFirst": "Un erreur est survenue lors du retournement de ",
-        "returnErrorSecond": "",
+        "renewSuccessFirst": "La licence LCP de {{title}} a bien été renouvellée",
+        "renewErrorFirst": "Une erreur est survenue lors du renouvellement de {{title}}.",
+        "returnSuccessFirst": "La license lcp de {{title}} a bien été retorunée",
+        "returnErrorFirst": "Un erreur est survenue lors du retournement de {{title}}.",
         "passphraseError": "Impossible de déverouiller la publication {{publicationTitle}}"
       }
     }

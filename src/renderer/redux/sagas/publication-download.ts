@@ -31,9 +31,8 @@ export function* publicationDownloadAddSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.download.startFirst") +
-            getMultiLangString(pub.title, lang) +
-            translator.translate("message.download.startSecond")));
+            translator.translate("message.download.start", {title: getMultiLangString(pub.title, lang)}),
+        ));
     }
 }
 
@@ -47,8 +46,7 @@ export function* publicationDownloadSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.download.successFirst") +
-            getMultiLangString(pub.title, lang) +
-            translator.translate("message.download.successSecond")));
+            translator.translate("message.download.success", {title: getMultiLangString(pub.title, lang)}),
+        ));
     }
 }
