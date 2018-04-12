@@ -284,8 +284,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                                 onClick={this.handleLcpPassSubmit.bind(this)}
                             />,
                         ]}
-                        modal={true}
                         open={this.state.lcpPassOpen}
+                        onRequestClose={this.handleLcpPassClose.bind(this)}
                     >
                         {this.store.getState().lcp.lastUserKeyCheck && (
                             <div className={LibraryStyles.lcp_pass_form}>
