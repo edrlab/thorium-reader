@@ -15,8 +15,6 @@ import { Contributor } from "readium-desktop/common/models/contributor";
 
 import { Publication } from "readium-desktop/common/models/publication";
 
-import { getMultiLangString } from "readium-desktop/common/models/language";
-
 import { Translator } from "readium-desktop/common/services/translator";
 
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
@@ -73,9 +71,6 @@ export default class PublicationListElement extends React.Component<IPublication
     }
 
     public render(): React.ReactElement<{}>  {
-        // TODO: should get language from view state? (user preferences)
-        const lang = "en";
-
         const __ = this.translator.translate.bind(this.translator);
         const publication = this.props.publication;
         const that = this;
@@ -89,7 +84,7 @@ export default class PublicationListElement extends React.Component<IPublication
                 if (authors !== "") {
                     authors += ", ";
                 }
-                authors += getMultiLangString(newAuthor.name, lang);
+                authors += this.translator.translateContentField(newAuthor.name);
             }
         }
         if (publication.cover) {
@@ -184,7 +179,9 @@ export default class PublicationListElement extends React.Component<IPublication
                     <CardTitle
                         titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
                         subtitleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
-                        title={getMultiLangString(publication.title, lang)}
+                        title={
+                            this.translator.translateContentField(publication.title)
+                        }
                         subtitle={authors}
                     />
                 </Card>

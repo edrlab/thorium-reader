@@ -17,8 +17,6 @@ import { container } from "readium-desktop/renderer/di";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import { getMultiLangString } from "readium-desktop/common/models/language";
-
 import * as messageActions from "readium-desktop/renderer/actions/message";
 
 export function* publicationDownloadAddSuccessWatcher(): SagaIterator {
@@ -31,7 +29,7 @@ export function* publicationDownloadAddSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.download.start", {title: getMultiLangString(pub.title, lang)}),
+            translator.translate("message.download.start", {title: translator.translateContentField(pub.title)}),
         ));
     }
 }
@@ -46,7 +44,7 @@ export function* publicationDownloadSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.download.success", {title: getMultiLangString(pub.title, lang)}),
+            translator.translate("message.download.success", {title: translator.translateContentField(pub.title)}),
         ));
     }
 }

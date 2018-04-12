@@ -14,8 +14,6 @@ import { container } from "readium-desktop/renderer/di";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import { getMultiLangString } from "readium-desktop/common/models/language";
-
 import { lcpActions } from "readium-desktop/common/redux/actions";
 
 import * as messageActions from "readium-desktop/renderer/actions/message";
@@ -30,7 +28,7 @@ export function* lcpRenewSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.renewSuccess", { title: getMultiLangString(publication.title, lang) }),
+            translator.translate("message.lcp.renewSuccess", { title: translator.translateContentField(publication.title) }),
         ));
     }
 }
@@ -45,7 +43,7 @@ export function* lcpRenewErrorWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.renewError", { title: getMultiLangString(publication.title, lang) }),
+            translator.translate("message.lcp.renewError", { title: translator.translateContentField(publication.title) }),
         ));
     }
 }
@@ -60,7 +58,7 @@ export function* lcpReturnSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.returnSuccess", { title: getMultiLangString(publication.title, lang) }),
+            translator.translate("message.lcp.returnSuccess", { title: translator.translateContentField(publication.title) }),
         ));
     }
 }
@@ -75,7 +73,7 @@ export function* lcpReturnErrorWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.returnError", { title: getMultiLangString(publication.title, lang) }),
+            translator.translate("message.lcp.returnError", { title: translator.translateContentField(publication.title) }),
         ));
     }
 }
@@ -91,7 +89,7 @@ export function* lcpPassphraseSubmitErrorWatcher(): SagaIterator {
         const lang = "en";
         yield put(messageActions.add(
             translator.translate("message.lcp.passphraseError", {
-                publicationTitle: getMultiLangString(publication.title, lang),
+                publicationTitle: translator.translateContentField(publication.title),
             }),
         ));
     }

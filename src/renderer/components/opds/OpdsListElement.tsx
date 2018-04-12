@@ -9,7 +9,9 @@ import * as React from "react";
 
 import { Publication } from "readium-desktop/common/models/publication";
 
-import { getMultiLangString } from "readium-desktop/common/models/language";
+import { lazyInject } from "readium-desktop/renderer/di";
+
+import { Translator } from "readium-desktop/common/services/translator";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
@@ -21,10 +23,10 @@ interface IPublicationProps {
 }
 
 export default class OpdsListElement extends React.Component<IPublicationProps, null> {
-    public render(): React.ReactElement<{}>  {
-        // TODO: should get language from view state? (user preferences)
-        const lang = "en";
+    @lazyInject("translator")
+    private translator: Translator;
 
+    public render(): React.ReactElement<{}>  {
         const publication: Publication = this.props.publication;
 
         let image: string = "";
@@ -40,7 +42,7 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
                 if (i > 0) {
                     authors += " & ";
                 }
-                authors += getMultiLangString(author.name, lang);
+                authors += this.translator.translateContentField(author.name);
                 i++;
             }
         }
@@ -55,7 +57,9 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
                     </div>
                 )}
                 <div style={Styles.OpdsList.Publication.primaryInformations}>
-                    <p style={Styles.OpdsList.Publication.title}>{getMultiLangString(publication.title, lang)}</p>
+                    <p style={Styles.OpdsList.Publication.title}>{
+                        this.translator.translateContentField(publication.title)
+                    }</p>
                     <p>{authors}</p>
                 </div>
                 <input

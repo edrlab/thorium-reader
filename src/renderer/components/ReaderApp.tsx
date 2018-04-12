@@ -14,8 +14,6 @@ import * as React from "react";
 import { Store } from "redux";
 
 import { container } from "readium-desktop/renderer/di";
-
-import { getMultiLangString } from "readium-desktop/common/models/language";
 import { Publication } from "readium-desktop/common/models/publication";
 import {
     Bookmark,
@@ -613,9 +611,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         const publication = TAJSON.deserialize<R2Publication>(publicationJSON, R2Publication);
 
         if (publication.Metadata && publication.Metadata.Title) {
-            // TODO: should get language from view state? (user preferences)
-            const lang = "en";
-            const title = getMultiLangString( publication.Metadata.Title, lang);
+            const title = this.translator.translateContentField(publication.Metadata.Title);
 
             if (title) {
                 window.document.title = "Readium2 [ " + title + "]";

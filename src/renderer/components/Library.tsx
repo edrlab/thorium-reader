@@ -25,8 +25,6 @@ import {
 
 import { Publication } from "readium-desktop/common/models/publication";
 
-import { getMultiLangString } from "readium-desktop/common/models/language";
-
 import { lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
@@ -162,7 +160,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         let i = 0;
         const dlStore = this.store.getState().publicationDownloads;
 
-        for (const pub of this.props.catalog.publications.sort(this.sort)) {
+        for (const pub of this.props.catalog.publications.sort(this.sort.bind(this))) {
             let downloading = false;
             let downloadProgress: number = null;
 
@@ -402,11 +400,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
     }
 
     private sort(a: Publication, b: Publication) {
-
-        // TODO: should get language from view state? (user preferences)
-        const lang = "en";
-        const atitle = getMultiLangString(a.title, lang);
-        const btitle = getMultiLangString(b.title, lang);
+        const atitle = this.translator.translateContentField(a.title);
+        const btitle = this.translator.translateContentField(b.title);
 
         if (atitle > btitle) {
             return 1;
