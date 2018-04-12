@@ -13,9 +13,9 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import { Styles } from "readium-desktop/renderer/components/styles";
-
 import { Cover } from "readium-desktop/renderer/components/Publication/index";
+
+import * as OpdsStyles from "readium-desktop/renderer/assets/styles/opds_element.css";
 
 interface IPublicationProps {
     publication: Publication;
@@ -48,28 +48,28 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
         }
 
         return (
-            <div style={Styles.OpdsList.body}>
+            <div className={OpdsStyles.body}>
                 {publication.cover ? (
-                    <img style={Styles.OpdsList.Publication.image} src={publication.cover.url}/>
+                    <img className={OpdsStyles.image} src={publication.cover.url}/>
                 ) : (
-                    <div style={Styles.OpdsList.Publication.image}>
+                    <div className={OpdsStyles.image}>
                         <Cover publication={publication}/>
                     </div>
                 )}
-                <div style={Styles.OpdsList.Publication.primaryInformations}>
-                    <p style={Styles.OpdsList.Publication.title}>{
-                        this.translator.translateContentField(publication.title)
-                    }</p>
-                    <p>{authors}</p>
+                <div className={OpdsStyles.primary_informations}>
+                    <p className={OpdsStyles.title}>{this.translator.translateContentField(publication.title)}</p>
+                    <p className={OpdsStyles.author}>{authors}</p>
                 </div>
                 <input
-                    style={Styles.OpdsList.Publication.checkbox}
+                    className={OpdsStyles.checkbox}
                     type="checkbox"
                     onChange={this.props.handleCheckboxChange.bind(this, publication)}
                 />
-                <p style={Styles.OpdsList.Publication.description}>
-                    {publication.description}
-                </p>
+                <div className={OpdsStyles.description}>
+                    <p>
+                        {publication.description}
+                    </p>
+                </div>
             </div>
         );
     }

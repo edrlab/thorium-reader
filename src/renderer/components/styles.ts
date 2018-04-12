@@ -225,44 +225,6 @@ export const Styles = {
         },
     },
     OpdsList: {
-        Publication: {
-            title: {
-                fontSize: "1rem",
-                fontWeight: "bold" as "bold",
-                marginBottom: 0,
-            },
-            primaryInformations: {
-                flex: 15,
-                display: "flex",
-                flexDirection: "column" as "column",
-
-                overflow: "hidden" as "hidden",
-            },
-            image: {
-                fontSize: "6px",
-                display: "inline-block",
-                float: "left" as "left",
-                height: "100%",
-                width: 52,
-                marginRight: 10,
-            },
-            checkbox: {
-                width: 20,
-                float: "left" as "left",
-                margin: "auto 15px auto 0",
-            },
-            description: {
-                flex: 60,
-                margin: 0,
-                padding: "10px 0",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap" as "nowrap",
-                overflow: "hidden" as "hidden",
-            },
-            informations: {
-                marginLeft: "5px",
-            },
-        },
         title: {
             float: "left" as "left",
         },
