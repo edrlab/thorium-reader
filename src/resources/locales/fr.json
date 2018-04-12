@@ -141,10 +141,10 @@
         "start": "Le téléchargement de {{title}} a commencé."
       },
       "lcp": {
-        "renewSuccessFirst": "La licence LCP de {{title}} a bien été renouvellée",
-        "renewErrorFirst": "Une erreur est survenue lors du renouvellement de {{title}}.",
-        "returnSuccessFirst": "La license lcp de {{title}} a bien été retorunée",
-        "returnErrorFirst": "Un erreur est survenue lors du retournement de {{title}}.",
+        "renewSuccess": "La licence LCP de {{title}} a bien été renouvellée.",
+        "renewError": "Une erreur est survenue lors du renouvellement de {{title}}.",
+        "returnSuccess": "La license lcp de {{title}} a bien été retorunée.",
+        "returnError": "Un erreur est survenue lors du retournement de {{title}}.",
         "passphraseError": "Impossible de déverouiller la publication {{publicationTitle}}"
       }
     }
