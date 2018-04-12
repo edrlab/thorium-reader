@@ -480,6 +480,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                         title={__("reader.settings.title")}
                         onRequestClose={this.handleSettingsClose.bind(this)}
                         open={this.state.settingsOpen}
+                        autoScrollBodyContent={true}
                     >
                         <FocusLock>
                             <div>
@@ -496,7 +497,9 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                             );
                                         })}
                                     </select>
-                                    <label>{__("reader.settings.fontSize")}{fontSizes[this.state.fontSizeIndex]}</label>
+                                    <label>
+                                        {__("reader.settings.fontSize")}{fontSizes[this.state.fontSizeIndex]}
+                                    </label>
                                     <input name="fontSize" type="range" min="0" max="10"
                                         value={this.state.fontSizeIndex}
                                         onChange={this.handleSettingsValueChange.bind(this)}
