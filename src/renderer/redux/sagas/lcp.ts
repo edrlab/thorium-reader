@@ -28,7 +28,11 @@ export function* lcpRenewSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.renewSuccess", { title: translator.translateContentField(publication.title) }),
+            translator.translate(
+                "message.lcp.renewSuccess", {
+                    title: translator.translateContentField(publication.title),
+                },
+            ),
         ));
     }
 }
@@ -43,7 +47,12 @@ export function* lcpRenewErrorWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.renewError", { title: translator.translateContentField(publication.title) }),
+            translator.translate(
+                "message.lcp.renewError",
+                {
+                    title: translator.translateContentField(publication.title),
+                },
+            ),
         ));
     }
 }
@@ -58,7 +67,11 @@ export function* lcpReturnSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.returnSuccess", { title: translator.translateContentField(publication.title) }),
+            translator.translate(
+                "message.lcp.returnSuccess", {
+                    title: translator.translateContentField(publication.title),
+                },
+            ),
         ));
     }
 }
@@ -73,7 +86,11 @@ export function* lcpReturnErrorWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.returnError", { title: translator.translateContentField(publication.title) }),
+            translator.translate(
+                "message.lcp.returnError", {
+                    title: translator.translateContentField(publication.title),
+                },
+            ),
         ));
     }
 }
@@ -88,8 +105,11 @@ export function* lcpPassphraseSubmitErrorWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.passphraseError", {
-                publicationTitle: translator.translateContentField(publication.title),
+            translator.translate(
+                "message.lcp.passphraseError", {
+                publicationTitle: translator.translateContentField(
+                    publication.title,
+                ),
             }),
         ));
     }

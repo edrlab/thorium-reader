@@ -14,6 +14,7 @@ import * as React from "react";
 import { Store } from "redux";
 
 import { container } from "readium-desktop/renderer/di";
+
 import { Publication } from "readium-desktop/common/models/publication";
 import {
     Bookmark,
