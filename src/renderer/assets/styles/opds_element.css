@@ -50,6 +50,10 @@
     .primary_informations {
         flex: 25;
     }
+
+    .author {
+        display: none;
+    }
 }
 
 @media screen and (min-width: 640px) and (max-width: 768px) {
