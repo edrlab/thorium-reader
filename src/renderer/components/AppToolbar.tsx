@@ -44,7 +44,6 @@ import * as CNLLogoUrl from "readium-desktop/renderer/assets/logos/cnl.png";
 import * as AppBarStyles from "readium-desktop/renderer/assets/styles/app-bar.css";
 
 import CollectionDialog from "readium-desktop/renderer/components/opds/CollectionDialog";
-import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { OPDS } from "readium-desktop/common/models/opds";
 
@@ -96,6 +95,8 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
 
     @lazyInject("translator")
     private translator: Translator;
+
+    private addEpubInput: any;
 
     constructor(props: AppToolbarProps) {
         super(props);
@@ -200,10 +201,11 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                 key={i}
                 primaryText={__("opds.addMenu")}
                 onClick={() => {
-                        this.props.openDialog(
-                            <OpdsForm closeDialog={this.props.closeDialog}/>,
-                            null,
-                            []);
+                    this.handleOpdsClose();
+                    this.props.openDialog(
+                        <OpdsForm closeDialog={this.props.closeDialog}/>,
+                        null,
+                        []);
                 }}
             />,
         );
@@ -256,7 +258,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             onClick={this.handleOpdsOpen.bind(this)}
                         >
                             <svg viewBox={OPDSIcon.content_table}>
-                                <title>Menu</title>
+                                <title>{__("toolbar.svg.opds")}</title>
                                 <use xlinkHref={"#" + OPDSIcon.id} />
                             </svg>
                         </button>
@@ -273,12 +275,14 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                         </Popover>
                         <button
                             className={AppBarStyles.button}
+                            onClick={() => this.addEpubInput.click()}
                         >
                             <svg viewBox={AddIcon.content_table}>
-                                <title>Add EPUB</title>
+                                <title>{__("toolbar.svg.addEpub")}</title>
                                 <use xlinkHref={"#" + AddIcon.id} />
                             </svg>
                             <input
+                                ref={(element: any) => this.addEpubInput = element}
                                 type="file"
                                 onChange={this.handleFileChange}
                             />
@@ -289,7 +293,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                             onClick={this.handleOtherOpen.bind(this)}
                         >
                             <svg viewBox={MenuIcon.content_table}>
-                                <title>Menu</title>
+                                <title>{__("toolbar.svg.others")}</title>
                                 <use xlinkHref={"#" + MenuIcon.id} />
                             </svg>
                         </button>
@@ -306,7 +310,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                     onClick={ this.handleOpen.bind(this, helpContent, []) }
                                     leftIcon={
                                         <svg viewBox={QuestionIcon.content_table}>
-                                            <title>Help</title>
+                                            <title>{__("toolbar.svg.help")}</title>
                                             <use xlinkHref={"#" + QuestionIcon.id} />
                                         </svg>
                                     } />
@@ -315,7 +319,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                     onClick={ this.handleOpen.bind(this, newsContent, []) }
                                     leftIcon={
                                         <svg viewBox={GiftIcon.content_table}>
-                                            <title>What's up</title>
+                                            <title>{__("toolbar.svg.news")}</title>
                                             <use xlinkHref={"#" + GiftIcon.id} />
                                         </svg>
                                     } />
@@ -350,7 +354,7 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
                                     }
                                     leftIcon={
                                         <svg viewBox={InfoIcon.content_table}>
-                                            <title>About</title>
+                                            <title>{__("toolbar.svg.about")}</title>
                                             <use xlinkHref={"#" + InfoIcon.id} />
                                         </svg>
                                     } />

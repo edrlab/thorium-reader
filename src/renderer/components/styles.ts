@@ -71,14 +71,14 @@ export const Styles = {
     },
     Library: {
         addButton: {
-            float: "right",
+            float: "right" as "right",
             marginTop: "6px",
         },
         displayButton: {
-            float: "right",
+            float: "right" as "right",
         },
         list: {
-            textAlign: "center",
+            textAlign: "center" as "center",
             overflowY: auto,
             overflowX: hidden,
             position: absolute,
@@ -100,7 +100,7 @@ export const Styles = {
             display: "inline-block",
             height: 400,
             margin: "5px 5px",
-            textAlign: "center",
+            textAlign: "center" as "center",
             width: 210,
         },
         downloadButton: {
@@ -108,9 +108,26 @@ export const Styles = {
             flexGrow: 1,
         },
         image: {
+            maxWidth: "100%",
+            maxHeight: "100%",
+            display: "inline-block",
+            margin: "0 auto",
+            verticalAlign: "middle",
+        },
+        cover: {
+            display: "inline-block",
             fontSize: "18px",
             height: 320,
             width: 210,
+        },
+        image_container: {
+            lineHeight: "320px",
+        },
+        custom_cover: {
+            fontSize: "18px",
+            height: 320,
+            width: 210,
+            lineHeight: "initial",
         },
         title: {
             overflow: "hidden",
@@ -142,23 +159,40 @@ export const Styles = {
         container: {
             display: "inline-block",
             width: "100%",
-            textAlign: "left",
+            textAlign: "left" as "left",
         },
         description: {
             display: "flex",
             flexDirection: column,
             height: 140,
             marginLeft: "5px",
+            paddingLeft: "15px",
         },
         image: {
+            maxWidth: "100%",
+            maxHeight: "100%",
+            display: "inline-block",
+            margin: "0 auto",
+            verticalAlign: "middle",
+        },
+        custom_cover: {
+            lineHeight: "initial",
             fontSize: "9px",
             display: "inline-block",
-            float: "left",
+            float: "left" as "left",
             height: 140,
             width: 91,
         },
         title: {
             margin: "10px 0px",
+        },
+        image_container: {
+            fontSize: "9px",
+            display: "inline-block",
+            float: "left" as "left",
+            height: 140,
+            width: 91,
+            lineHeight: "140px",
         },
     },
     BookCover: {
@@ -166,13 +200,14 @@ export const Styles = {
             border: "1px black solid",
             width: "100%",
             height: "100%",
-
+            lineHeight: "inital",
         },
         title: {
             marginLeft: "5%",
             marginRight: "5%",
             marginTop: "10%",
             width: "90%",
+            wordBreak: "break-all" as "break-all",
         },
         author : {
             fontSize: "90%",
@@ -183,67 +218,23 @@ export const Styles = {
         body : {
             height: "inherit",
             width: "inherit",
-            textAlign: "center",
+            textAlign: "center" as "center",
             backgroundImage: "",
-            WebkitBoxSizing: "border-box",
-            MozBoxSizing: "border-box",
             BoxSizing: "border-box",
             padding: "5%",
         },
     },
     OpdsList: {
-        Publication: {
-            title: {
-                margin: "10px 0px",
-            },
-            image: {
-                fontSize: "6px",
-                display: "inline-block",
-                float: "left",
-                height: 80,
-                width: 52,
-                marginRight: 10,
-            },
-            checkbox: {
-                height: "100%",
-                width: 20,
-                float: "left",
-                margin: "0 15px 0 0",
-            },
-            descriptionInside: {
-                height: 80,
-                verticalAlign: "middle",
-                display: "table-cell",
-                paddingRight: "15px",
-            },
-            description: {
-                height: 80,
-                display: "table",
-                margin: 0,
-            },
-            descriptionContener: {
-                display: "inline-block",
-            },
-            informations: {
-                height: 80,
-                marginLeft: "5px",
-            },
-            column: {
-                display: "inline-block",
-                width: "250px",
-                height: "100%",
-                float: "left",
-            },
-        },
         title: {
-            float: "left",
+            float: "left" as "left",
         },
         body: {
             boxShadow: "rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px",
             fontFamily: "Roboto, sans-serif",
             margin: "5px 0px",
             width: "100%",
-            display: "inline-block",
+            height: 80,
+            display: "flex",
         },
         textZone: {
             width : 300,
@@ -272,14 +263,14 @@ export const Styles = {
         },
         formElementLabel: {
             display: "block",
-            float: "left",
+            float: "left" as "left",
             width: 150,
         },
         formElement: {
             margin : 10,
         },
         refreshButton: {
-            float: "right",
+            float: "right" as "right",
         },
     },
     fileInput: {

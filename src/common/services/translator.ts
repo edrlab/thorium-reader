@@ -45,4 +45,33 @@ export class Translator {
 
         return i18n.t(message, options);
     }
+
+    /**
+     * Translate content field that is not provided
+     * by an i18n catalog
+     * Field could be a string or an array
+     *
+     * @param text
+     */
+    public translateContentField(field: any) {
+        if (!field) {
+            return "";
+        }
+
+        if (typeof field === "string") {
+            return field;
+        }
+
+        if (field[this.locale]) {
+            return field[this.locale];
+        }
+
+        const keys = Object.keys(field);
+
+        if (keys && keys.length) {
+            return field[keys[0]];
+        }
+
+        return "";
+    }
 }

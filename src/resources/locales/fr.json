@@ -5,6 +5,11 @@
         "startDownload": "Un téléchargement a démarré.",
         "cancelDownload": "Un téléchargement a été arrété.",
         "endDownload": "Un téléchargement est terminé.",
+        "svg" : {
+          "list": "Liste",
+          "card": "Cartes",
+          "showParaphrase": "Montrer la paraphrase"
+        },
         "lcp": {
           "title": "Vérification LCP",
           "sentence": "Cette publication a besoin d'un mot de passe : ",
@@ -48,7 +53,14 @@
         "about": "A propos",
         "help":"Aide",
         "news":"Quoi de neuf ?",
-        "sync":"Synchroniser la bibliothèque"
+        "sync":"Synchroniser la bibliothèque",
+        "svg": {
+          "help": "Aide",
+          "news": "Nouvelles",
+          "addEpub": "Ajouter un EPUB",
+          "opds": "Opds",
+          "others": "Autres"
+        }
     },
     "update": {
         "available": "Nouvelle version !"
@@ -67,6 +79,9 @@
       "formError": "Veuillez remplir tous les champs",
       "downloadError": "Une erreur est survenue lors de la récupération du flux.",
       "back": "Retour",
+      "svg": {
+        "opds": "Opds"
+      },
       "addForm": {
         "addButton": "Ajouter",
         "updateSentence": "Vous pouvez mettre les champs à jour.",
@@ -90,30 +105,46 @@
         "left": "Gauche",
         "center": "Centré",
         "right": "Droite",
+        "font": "Police",
         "fontSize": "Taille du texte :",
         "display": "Type d'affichage :",
         "close": "Fermer",
         "save": "Sauvegarder",
         "scrolled": "Défilé",
         "paginated": "Paginé"
+      },
+      "landmarks": {
+        "landmarks": "Repères",
+        "illustrations": "Illustrations",
+        "videos": "Vidéos",
+        "tables": "Tablaux",
+        "audio": "Audio",
+        "pages": "Pages"
+      },
+      "svg": {
+        "contentTable": "Table des matières",
+        "night": "Mode Nuit",
+        "settings": "Parametres",
+        "left": "Gauche",
+        "right": "Droite",
+        "alignLeft": "Aligner à gauche",
+        "alignCenter": "Aligner au centre",
+        "alignRight": "Aligner à droite",
+        "document": "Paginé",
+        "continue": "Défilé",
+        "landmark": "Point de repère"
       }
     },
     "message": {
       "download": {
-        "successFirst": "Le téléchargement de ",
-        "successSecond": " est terminé",
-        "startFirst": "Le téléchargement de ",
-        "startSecond": " a commencé"
+        "success": "Le téléchargement de {{title}} est terminé.",
+        "start": "Le téléchargement de {{title}} a commencé."
       },
       "lcp": {
-        "renewSuccessFirst": "La licence LCP de ",
-        "renewSuccessSecond": " a bien été renouvellée",
-        "renewErrorFirst": "Une erreur est survenue lors du renouvellement de ",
-        "renewErrorSecond": "",
-        "returnSuccessFirst": "La license lcp de ",
-        "returnSuccessSecond": " a bien été retorunée",
-        "returnErrorFirst": "Un erreur est survenue lors du retournement de ",
-        "returnErrorSecond": "",
+        "renewSuccess": "La licence LCP de {{title}} a bien été renouvellée.",
+        "renewError": "Une erreur est survenue lors du renouvellement de {{title}}.",
+        "returnSuccess": "La license lcp de {{title}} a bien été retorunée.",
+        "returnError": "Un erreur est survenue lors du retournement de {{title}}.",
         "passphraseError": "Impossible de déverouiller la publication {{publicationTitle}}"
       }
     }

@@ -15,8 +15,6 @@ import { Contributor } from "readium-desktop/common/models/contributor";
 
 import { Publication } from "readium-desktop/common/models/publication";
 
-import { getMultiLangString } from "readium-desktop/common/models/language";
-
 import { Translator } from "readium-desktop/common/services/translator";
 
 import { Card, CardMedia, CardTitle} from "material-ui/Card";
@@ -73,9 +71,6 @@ export default class PublicationListElement extends React.Component<IPublication
     }
 
     public render(): React.ReactElement<{}>  {
-        // TODO: should get language from view state? (user preferences)
-        const lang = "en";
-
         const __ = this.translator.translate.bind(this.translator);
         const publication = this.props.publication;
         const that = this;
@@ -89,7 +84,7 @@ export default class PublicationListElement extends React.Component<IPublication
                 if (authors !== "") {
                     authors += ", ";
                 }
-                authors += getMultiLangString(newAuthor.name, lang);
+                authors += this.translator.translateContentField(newAuthor.name);
             }
         }
         if (publication.cover) {
@@ -101,15 +96,15 @@ export default class PublicationListElement extends React.Component<IPublication
                 <Card style={Styles.BookCard.body}>
                     <CardMedia>
                         <div
-                            style={Styles.BookCard.image}
+                            style={Styles.BookCard.cover}
                             onMouseEnter={() => {this.handleFront(); }}
                             onMouseLeave={() => {this.handleBack(); }}>
                             <ReactCardFlip isFlipped={that.state.isFlipped}>
-                                <div key="front" >
+                                <div key="front" style={Styles.BookCard.image_container}>
                                     {publication.cover ? (
                                         <img style={Styles.BookCard.image} src={publication.cover.url}/>
                                     ) : (
-                                        <div style={Styles.BookCard.image}>
+                                        <div style={Styles.BookCard.custom_cover}>
                                             <Cover publication={publication}/>
                                         </div>
                                     )}
@@ -125,6 +120,8 @@ export default class PublicationListElement extends React.Component<IPublication
                                                     <LinearProgress mode="determinate"
                                                         value={this.props.downloadProgress} />
                                                     <FlatButton
+                                                        onFocus={this.handleFront.bind(this)}
+                                                        onBlur={this.handleBack.bind(this)}
                                                         style={Styles.BookCard.downloadButton}
                                                         onClick={() => {this.props.cancelDownload(publication); }}
                                                         label={__("publication.cancelDownloadButton")} />
@@ -134,6 +131,8 @@ export default class PublicationListElement extends React.Component<IPublication
                                             <div>
                                                 {lcpReadable(publication) ? (
                                                     <FlatButton
+                                                    onFocus={this.handleFront.bind(this)}
+                                                    onBlur={this.handleBack.bind(this)}
                                                     style={Styles.BookCard.downloadButton}
                                                     onClick={() => {this.props.handleRead(publication); }}
                                                     label={__("publication.readButton")} />
@@ -144,14 +143,20 @@ export default class PublicationListElement extends React.Component<IPublication
                                                 {publication.lcp && (
                                                     <>
                                                         <FlatButton
+                                                        onFocus={this.handleFront.bind(this)}
+                                                        onBlur={this.handleBack.bind(this)}
                                                         style={Styles.BookCard.downloadButton}
                                                         onClick={() => {this.props.openInfoDialog(publication); }}
                                                         label={__("publication.infoButton")} />
                                                         <FlatButton
+                                                        onFocus={this.handleFront.bind(this)}
+                                                        onBlur={this.handleBack.bind(this)}
                                                         style={Styles.BookCard.downloadButton}
                                                         onClick={() => {this.props.openRenewDialog(publication); }}
                                                         label={__("publication.renewButton")} />
                                                         <FlatButton
+                                                        onFocus={this.handleFront.bind(this)}
+                                                        onBlur={this.handleBack.bind(this)}
                                                         style={Styles.BookCard.downloadButton}
                                                         onClick={() => {this.props.openReturnDialog(publication); }}
                                                         label={__("publication.returnButton")} />
@@ -159,6 +164,8 @@ export default class PublicationListElement extends React.Component<IPublication
                                                 )}
 
                                                 <FlatButton
+                                                onFocus={this.handleFront.bind(this)}
+                                                onBlur={this.handleBack.bind(this)}
                                                 style={Styles.BookCard.downloadButton}
                                                 onClick={() => {this.props.deletePublication(publication); }}
                                                 label={__("publication.deleteButton")}/>
@@ -172,7 +179,9 @@ export default class PublicationListElement extends React.Component<IPublication
                     <CardTitle
                         titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
                         subtitleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
-                        title={getMultiLangString(publication.title, lang)}
+                        title={
+                            this.translator.translateContentField(publication.title)
+                        }
                         subtitle={authors}
                     />
                 </Card>
