@@ -18,7 +18,7 @@ import {
     _APP_VERSION,
 } from "readium-desktop/preprocessor-directives";
 
-const LATEST_VERSION_URL = "https://api.github.com/repos/edrlab/readium-desktop/releases/latest";
+const LATEST_VERSION_URL = "https://api.github.com/repos/readium/readium-desktop/releases/latest";
 const CURRENT_VERSION = "v" + _APP_VERSION;
 
 export function* updateStatusWatcher(): SagaIterator {
