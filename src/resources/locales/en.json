@@ -5,6 +5,11 @@
         "startDownload": "A download started.",
         "cancelDownload": "A download canceled.",
         "endDownload": "A download ended.",
+        "svg" : {
+          "list": "List",
+          "card": "Cards",
+          "showParaphrase": "Show paraphrase"
+        },
         "lcp": {
           "title": "LCP Verification",
           "sentence": "This publication needs a LCP password to be opened: ",
@@ -48,7 +53,14 @@
         "about": "About",
         "help":"Help",
         "news":"What's new?",
-        "sync":"Synchronize the library"
+        "sync":"Synchronize the library",
+        "svg": {
+          "help": "Help",
+          "news": "News",
+          "addEpub": "Add an EPUB",
+          "opds": "Opds",
+          "others": "Others"
+        }
     },
     "update": {
         "available": "Update available!"
@@ -67,6 +79,9 @@
       "formError": "Please, fill all the fields",
       "back": "Back",
       "downloadError": "An error occurred while retrieving the feed.",
+      "svg": {
+        "opds": "Opds"
+      },
       "addForm": {
         "addButton": "Add",
         "updateSentence": "You can update the fields.",
@@ -90,30 +105,46 @@
         "left": "Left",
         "center": "Center",
         "right": "Right",
+        "font": "Font",
         "fontSize": "Font Size:",
         "display": "Display Type:",
         "close": "Close",
         "save": "Save",
         "scrolled": "Scrolled",
         "paginated": "Paginated"
+      },
+      "landmarks": {
+        "landmarks": "Landmarks",
+        "illustrations": "Illustrations",
+        "videos": "Videos",
+        "tables": "Tables",
+        "audio": "Audio",
+        "pages": "Pages"
+      },
+      "svg": {
+        "contentTable": "Content Table",
+        "night": "Night",
+        "settings": "Settings",
+        "left": "Left",
+        "right": "Right",
+        "alignLeft": "Left align",
+        "alignCenter": "Center align",
+        "alignRight": "Right align",
+        "document": "Paginated",
+        "continue": "Scrolled",
+        "landmark": "Landmark"
       }
     },
     "message": {
       "download": {
-        "successFirst": "The download of ",
-        "successSecond": " is finished",
-        "startFirst": "The download of ",
-        "startSecond": " began"
+        "success": "The download of {{title}} is finished.",
+        "start": "The download of {{title}} began."
       },
       "lcp": {
-        "renewSuccessFirst": "The LCP license of ",
-        "renewSuccessSecond": " has been renewed",
-        "renewErrorFirst": "An error occurred when renewing the LCP license of ",
-        "renewErrorSecond": "",
-        "returnSuccessFirst": "The LCP license of ",
-        "returnSuccessSecond": " has been returned",
-        "returnErrorFirst": "An error occurred when returning the LCP license of ",
-        "returnErrorSecond": "",
+        "renewSuccess": "The LCP license of {{title}} has been renewed.",
+        "renewError": "An error occurred when renewing the LCP license of {{title}}.",
+        "returnSuccess": "The LCP license of {{title}} has been returned",
+        "returnError": "An error occurred when returning the LCP license of {{title}}.",
         "passphraseError": "Unable to unlock publication {{publicationTitle}}"
       }
     }

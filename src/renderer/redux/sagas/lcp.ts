@@ -1,3 +1,10 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 import { SagaIterator } from "redux-saga";
 import { call, fork, put, take } from "redux-saga/effects";
 
@@ -6,8 +13,6 @@ import { Publication } from "readium-desktop/common/models/publication";
 import { container } from "readium-desktop/renderer/di";
 
 import { Translator } from "readium-desktop/common/services/translator";
-
-import { getMultiLangString } from "readium-desktop/common/models/language";
 
 import { lcpActions } from "readium-desktop/common/redux/actions";
 
@@ -23,9 +28,12 @@ export function* lcpRenewSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.renewSuccessFirst") +
-            getMultiLangString(publication.title, lang) +
-            translator.translate("message.lcp.renewSuccessSecond")));
+            translator.translate(
+                "message.lcp.renewSuccess", {
+                    title: translator.translateContentField(publication.title),
+                },
+            ),
+        ));
     }
 }
 
@@ -39,9 +47,13 @@ export function* lcpRenewErrorWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.renewErrorFirst") +
-            getMultiLangString(publication.title, lang) +
-            translator.translate("message.lcp.renewErrorSecond")));
+            translator.translate(
+                "message.lcp.renewError",
+                {
+                    title: translator.translateContentField(publication.title),
+                },
+            ),
+        ));
     }
 }
 
@@ -55,9 +67,12 @@ export function* lcpReturnSuccessWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.returnSuccessFirst") +
-            getMultiLangString(publication.title, lang) +
-            translator.translate("message.lcp.returnSuccessSecond")));
+            translator.translate(
+                "message.lcp.returnSuccess", {
+                    title: translator.translateContentField(publication.title),
+                },
+            ),
+        ));
     }
 }
 
@@ -71,9 +86,12 @@ export function* lcpReturnErrorWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.returnErrorFirst") +
-            getMultiLangString(publication.title, lang) +
-            translator.translate("message.lcp.returnErrorSecond")));
+            translator.translate(
+                "message.lcp.returnError", {
+                    title: translator.translateContentField(publication.title),
+                },
+            ),
+        ));
     }
 }
 
@@ -87,8 +105,11 @@ export function* lcpPassphraseSubmitErrorWatcher(): SagaIterator {
 
         const lang = "en";
         yield put(messageActions.add(
-            translator.translate("message.lcp.passphraseError", {
-                publicationTitle: getMultiLangString(publication.title, lang),
+            translator.translate(
+                "message.lcp.passphraseError", {
+                publicationTitle: translator.translateContentField(
+                    publication.title,
+                ),
             }),
         ));
     }

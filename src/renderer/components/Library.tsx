@@ -1,3 +1,10 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 import * as React from "react";
 
 import Dialog from "material-ui/Dialog";
@@ -18,8 +25,6 @@ import {
 
 import { Publication } from "readium-desktop/common/models/publication";
 
-import { getMultiLangString } from "readium-desktop/common/models/language";
-
 import { lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
@@ -36,6 +41,8 @@ import ListIcon from "readium-desktop/renderer/assets/icons/view-list.svg";
 import * as LibraryStyles from "readium-desktop/renderer/assets/styles/library.css";
 
 import { PublicationCard, PublicationListElement } from "readium-desktop/renderer/components/Publication/index";
+
+import FocusLock from "react-focus-lock";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
 
@@ -153,7 +160,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
         let i = 0;
         const dlStore = this.store.getState().publicationDownloads;
 
-        for (const pub of this.props.catalog.publications.sort(this.sort)) {
+        for (const pub of this.props.catalog.publications.sort(this.sort.bind(this))) {
             let downloading = false;
             let downloadProgress: number = null;
 
@@ -244,7 +251,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                         onClick={() => {that.setState({list: true});
                     }}>
                         <svg viewBox={ListIcon.content_table}>
-                            <title>Add EPUB</title>
+                            <title>{__("library.svg.list")}</title>
                             <use xlinkHref={"#" + ListIcon.id} />
                         </svg>
                     </button>
@@ -255,7 +262,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                         onClick={() => {that.setState({list: false});
                     }}>
                         <svg viewBox={CardIcon.content_table}>
-                            <title>Add EPUB</title>
+                            <title>{__("library.svg.card")}</title>
                             <use xlinkHref={"#" + CardIcon.id} />
                         </svg>
                     </button>
@@ -263,134 +270,138 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 <div style={Styles.Library.list}>
                     {listToDisplay}
                 </div>
-                <Dialog
-                    title={__("library.lcp.title")}
-                    actions={[
-                        <FlatButton
-                            label={__("library.lcp.cancel")}
-                            primary={true}
-                            onClick={this.handleLcpPassClose.bind(this)}
-                        />,
-                        <FlatButton
-                            label={__("library.lcp.submit")}
-                            primary={true}
-                            onClick={this.handleLcpPassSubmit.bind(this)}
-                        />,
-                    ]}
-                    modal={true}
-                    open={this.state.lcpPassOpen}
-                >
-                    {this.store.getState().lcp.lastUserKeyCheck && (
-                        <div className={LibraryStyles.lcp_pass_form}>
-                            <p>{__("library.lcp.sentence")}</p>
-                            <p>{__("library.lcp.hintSentence") + this.store.getState().lcp.lastUserKeyCheck.hint} </p>
-                            <div>
-                                <TextField
-                                    hintText={__("library.lcp.hint")}
-                                    type={!this.state.lcpPassVisible ? "password" : "text"}
-                                    onChange={this.handleLcpPassChange.bind(this)}
-                                    value={this.state.lcpPass}
-                                />
-                                <button
-                                    className={LibraryStyles.eye_button}
-                                    onClick={this.switchLcpPassVisibe.bind(this)}>
-                                    <svg viewBox={EyeIcon.eye}>
-                                        <title>Show passphrase</title>
-                                        <use xlinkHref={"#" + EyeIcon.id} />
-                                    </svg>
-                                </button>
+                    <Dialog
+                        title={__("library.lcp.title")}
+                        actions={[
+                            <FlatButton
+                                label={__("library.lcp.cancel")}
+                                primary={true}
+                                onClick={this.handleLcpPassClose.bind(this)}
+                            />,
+                            <FlatButton
+                                label={__("library.lcp.submit")}
+                                primary={true}
+                                onClick={this.handleLcpPassSubmit.bind(this)}
+                            />,
+                        ]}
+                        open={this.state.lcpPassOpen}
+                        onRequestClose={this.handleLcpPassClose.bind(this)}
+                    >
+                        {this.store.getState().lcp.lastUserKeyCheck && (
+                            <div className={LibraryStyles.lcp_pass_form}>
+                                <p>{__("library.lcp.sentence")}</p>
+                                <p>{__("library.lcp.hintSentence")
+                                    + this.store.getState().lcp.lastUserKeyCheck.hint} </p>
+                                <div>
+                                    <TextField
+                                        ref={(input) => {
+                                            if (input) {
+                                                input.focus();
+                                            }
+                                        }}
+                                        hintText={__("library.lcp.hint")}
+                                        type={!this.state.lcpPassVisible ? "password" : "text"}
+                                        onChange={this.handleLcpPassChange.bind(this)}
+                                        value={this.state.lcpPass}
+                                    />
+                                    <button
+                                        className={LibraryStyles.eye_button}
+                                        onClick={this.switchLcpPassVisibe.bind(this)}>
+                                        <svg viewBox={EyeIcon.eye}>
+                                            <title>{__("library.svg.showParaphrase")}</title>
+                                            <use xlinkHref={"#" + EyeIcon.id} />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </Dialog>
-                <Dialog
-                    title={__("library.lcp.informations.title")}
-                    actions={[
-                        <FlatButton
-                            label={__("library.lcp.informations.close")}
-                            primary={true}
-                            onClick={this.closeInfoDialog.bind(this)}
-                        />,
-                    ]}
-                    modal={true}
-                    open={this.state.infoDialogOpen}
-                >
-                    {this.state.currentPublication && (
-                        <div>
-                            <p>{__("library.lcp.informations.provider") + " " + lcp.provider}</p>
-                            <p>{__("library.lcp.informations.issued") + " " + this.dateToString(lcp.issued)}</p>
-                            {lcp.updated && (
-                                <p>{__("library.lcp.informations.updated") + " " + this.dateToString(lcp.updated)}</p>
-                            )}
+                        )}
+                    </Dialog>
+                    <Dialog
+                        title={__("library.lcp.informations.title")}
+                        actions={[
+                            <FlatButton
+                                label={__("library.lcp.informations.close")}
+                                primary={true}
+                                onClick={this.closeInfoDialog.bind(this)}
+                            />,
+                        ]}
+                        modal={true}
+                        open={this.state.infoDialogOpen}
+                    >
+                        {this.state.currentPublication && (
+                            <div>
+                                <p>{__("library.lcp.informations.provider") + " " + lcp.provider}</p>
+                                <p>{__("library.lcp.informations.issued") + " " + this.dateToString(lcp.issued)}</p>
+                                {lcp.updated && (
+                                    <p>{__("library.lcp.informations.updated")
+                                        + " " + this.dateToString(lcp.updated)}</p>
+                                )}
 
-                            {lcp.rights.start && (
-                                <span>
-                                    <h3>{__("library.lcp.informations.right.title")}</h3>
-                                    <p>{__("library.lcp.informations.right.start") + " "
-                                        + this.dateToString(lcp.rights.start)}</p>
-                                </span>
-                            )}
-                            {lcp.rights.end && (
-                                <p>{__("library.lcp.informations.right.end") + " "
-                                    + this.dateToString(lcp.rights.end)}</p>
-                            )}
-                            {lcp.rights.copy && (
-                                <p>{__("library.lcp.informations.right.copy") + " "
-                                + lcp.rights.copy}</p>
-                            )}
-                            {lcp.rights.print && (
-                                <p>{__("library.lcp.informations.right.print") + " "
-                                    + lcp.rights.print}</p>
-                            )}
-                        </div>
-                    )}
-                </Dialog>
-                <Dialog
-                    actions={[
-                        <FlatButton
-                            label={__("dialog.yes")}
-                            primary={true}
-                            onClick={this.closeReturnDialog.bind(this)}
-                        />,
-                        <FlatButton
-                            label={__("dialog.no")}
-                            primary={true}
-                            onClick={this.closeReturnDialog.bind(this)}
-                        />,
-                    ]}
-                    modal={true}
-                    open={this.state.returnDialogOpen}
-                >
-                    <p>{__("publication.returnSentence")}</p>
-                </Dialog>
-                <Dialog
-                    actions={[
-                        <FlatButton
-                            label={__("dialog.yes")}
-                            primary={true}
-                            onClick={this.closeRenewDialog.bind(this, true)}
-                        />,
-                        <FlatButton
-                            label={__("dialog.no")}
-                            primary={true}
-                            onClick={this.closeRenewDialog.bind(this)}
-                        />,
-                    ]}
-                    modal={true}
-                    open={this.state.renewDialogOpen}
-                >
-                    <p>{__("publication.renewSentence")}</p>
-                </Dialog>
+                                {lcp.rights.start && (
+                                    <span>
+                                        <h3>{__("library.lcp.informations.right.title")}</h3>
+                                        <p>{__("library.lcp.informations.right.start") + " "
+                                            + this.dateToString(lcp.rights.start)}</p>
+                                    </span>
+                                )}
+                                {lcp.rights.end && (
+                                    <p>{__("library.lcp.informations.right.end") + " "
+                                        + this.dateToString(lcp.rights.end)}</p>
+                                )}
+                                {lcp.rights.copy && (
+                                    <p>{__("library.lcp.informations.right.copy") + " "
+                                    + lcp.rights.copy}</p>
+                                )}
+                                {lcp.rights.print && (
+                                    <p>{__("library.lcp.informations.right.print") + " "
+                                        + lcp.rights.print}</p>
+                                )}
+                            </div>
+                        )}
+                    </Dialog>
+                    <Dialog
+                        actions={[
+                            <FlatButton
+                                label={__("dialog.yes")}
+                                primary={true}
+                                onClick={this.closeReturnDialog.bind(this)}
+                            />,
+                            <FlatButton
+                                label={__("dialog.no")}
+                                primary={true}
+                                onClick={this.closeReturnDialog.bind(this)}
+                            />,
+                        ]}
+                        modal={true}
+                        open={this.state.returnDialogOpen}
+                    >
+                        <p>{__("publication.returnSentence")}</p>
+                    </Dialog>
+                    <Dialog
+                        actions={[
+                            <FlatButton
+                                label={__("dialog.yes")}
+                                primary={true}
+                                onClick={this.closeRenewDialog.bind(this, true)}
+                            />,
+                            <FlatButton
+                                label={__("dialog.no")}
+                                primary={true}
+                                onClick={this.closeRenewDialog.bind(this)}
+                            />,
+                        ]}
+                        modal={true}
+                        open={this.state.renewDialogOpen}
+                    >
+                        <p>{__("publication.renewSentence")}</p>
+                    </Dialog>
             </div>
         );
     }
 
     private sort(a: Publication, b: Publication) {
-
-        // TODO: should get language from view state? (user preferences)
-        const lang = "en";
-        const atitle = getMultiLangString(a.title, lang);
-        const btitle = getMultiLangString(b.title, lang);
+        const atitle = this.translator.translateContentField(a.title);
+        const btitle = this.translator.translateContentField(b.title);
 
         if (atitle > btitle) {
             return 1;
