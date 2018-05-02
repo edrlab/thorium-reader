@@ -82,6 +82,13 @@ import {
 
 import FocusLock from "react-focus-lock";
 
+import { setEpubReadingSystemJsonGetter } from "@r2-navigator-js/electron/renderer/index";
+import { INameVersion } from "@r2-navigator-js/electron/renderer/webview/epubReadingSystem";
+
+import {
+    _APP_VERSION,
+} from "readium-desktop/preprocessor-directives";
+
 webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
 webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
     allowServiceWorkers: false,
@@ -286,6 +293,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         const publication = await this.loadPublicationIntoViewport(docHref, docSelector);
         this.setState({publication});
         setReadingLocationSaver(saveReadingLocation);
+
+        setEpubReadingSystemJsonGetter(this.getEpubReadingSystem);
     }
 
     public render(): React.ReactElement<{}> {
@@ -730,5 +739,9 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         settingsValues[name] =  value;
 
         this.setState({settingsValues});
+    }
+
+    private getEpubReadingSystem: () => INameVersion = () => {
+        return { name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION };
     }
 }
