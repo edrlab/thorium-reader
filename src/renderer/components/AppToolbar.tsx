@@ -453,6 +453,8 @@ export default class AppToolbar extends React.Component<AppToolbarProps, AppTool
         for (const file of Array.from(files)) {
             this.store.dispatch(catalogActions.importFile(file.path));
         }
+
+        this.addEpubInput.value = "";
     }
 
     private closeCollectionDialog() {
