@@ -27,6 +27,7 @@ export class ActionSerializer {
 
     public deserialize(json: any): any {
         if (json.error &&
+            json.payload &&
             json.payload.class &&
             json.payload.class === "CodeError"
         ) {
