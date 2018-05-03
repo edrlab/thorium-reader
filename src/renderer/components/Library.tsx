@@ -96,6 +96,8 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
             returnDialogOpen: false,
             renewDialogOpen: false,
         };
+
+        this.sort = this.sort.bind(this);
     }
 
     public componentDidMount() {
