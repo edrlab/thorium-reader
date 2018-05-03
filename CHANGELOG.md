@@ -1,3 +1,6 @@
+# Change from v1.0.0-alpha.2 to v1.0.0-alpha.3
+
+
 # Change from v1.0.0-alpha.1 to v1.0.0-alpha.2
 
 [Detailed view of all changes](https://github.com/edrlab/readium-desktop/projects/2)
@@ -7,7 +10,7 @@
 * Add license header to all source files [#105](https://github.com/edrlab/readium-desktop/issues/105)
 * Add changelog [#106](https://github.com/edrlab/readium-desktop/issues/106)
 
-## Enhancements 
+## Enhancements
 
 * Support for EPUB3 `navigator.epubReadiumSystem` [#120](https://github.com/edrlab/readium-desktop/issues/120)
 * Font size chooser is stepped rather than continuous [#67](https://github.com/edrlab/readium-desktop/issues/67)
