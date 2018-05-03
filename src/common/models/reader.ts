@@ -1,3 +1,10 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 import { BrowserWindow } from "electron";
 
 import { Identifiable } from "./identifiable";
@@ -23,7 +30,7 @@ export interface ReaderConfig {
     colCount: string;
     dark: false;
     font: string;
-    fontSize: any;
+    fontSize: string;
     invert: boolean;
     lineHeight: string;
     night: boolean;

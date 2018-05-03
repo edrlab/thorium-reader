@@ -1,12 +1,21 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 import * as React from "react";
 
 import { Publication } from "readium-desktop/common/models/publication";
 
-import { getMultiLangString } from "readium-desktop/common/models/language";
+import { lazyInject } from "readium-desktop/renderer/di";
 
-import { Styles } from "readium-desktop/renderer/components/styles";
+import { Translator } from "readium-desktop/common/services/translator";
 
 import { Cover } from "readium-desktop/renderer/components/Publication/index";
+
+import * as OpdsStyles from "readium-desktop/renderer/assets/styles/opds_element.css";
 
 interface IPublicationProps {
     publication: Publication;
@@ -14,10 +23,10 @@ interface IPublicationProps {
 }
 
 export default class OpdsListElement extends React.Component<IPublicationProps, null> {
-    public render(): React.ReactElement<{}>  {
-        // TODO: should get language from view state? (user preferences)
-        const lang = "en";
+    @lazyInject("translator")
+    private translator: Translator;
 
+    public render(): React.ReactElement<{}>  {
         const publication: Publication = this.props.publication;
 
         let image: string = "";
@@ -33,32 +42,33 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
                 if (i > 0) {
                     authors += " & ";
                 }
-                authors += getMultiLangString(author.name, lang);
+                authors += this.translator.translateContentField(author.name);
                 i++;
             }
         }
 
         return (
-            <div style={Styles.OpdsList.body}>
+            <div className={OpdsStyles.body}>
                 {publication.cover ? (
-                    <img style={Styles.OpdsList.Publication.image} src={publication.cover.url}/>
+                    <img className={OpdsStyles.image} src={publication.cover.url}/>
                 ) : (
-                    <div style={Styles.OpdsList.Publication.image}>
+                    <div className={OpdsStyles.image}>
                         <Cover publication={publication}/>
                     </div>
                 )}
-                <div style={Styles.OpdsList.Publication.informations}>
-                    <div style={Styles.OpdsList.Publication.column}>
-                        <h4 style={Styles.OpdsList.Publication.title}>{getMultiLangString(publication.title, lang)}</h4>
-                        <p>{authors}</p>
-                    </div>
-                    <input
-                        style={Styles.OpdsList.Publication.checkbox}
-                        type="checkbox"
-                        onChange={this.props.handleCheckboxChange.bind(this, publication)}/>
-                        <p style={Styles.OpdsList.Publication.description}>
-                            <span style={Styles.OpdsList.Publication.descriptionInside}>{publication.description}</span>
-                        </p>
+                <div className={OpdsStyles.primary_informations}>
+                    <p className={OpdsStyles.title}>{this.translator.translateContentField(publication.title)}</p>
+                    <p className={OpdsStyles.author}>{authors}</p>
+                </div>
+                <input
+                    className={OpdsStyles.checkbox}
+                    type="checkbox"
+                    onChange={this.props.handleCheckboxChange.bind(this, publication)}
+                />
+                <div className={OpdsStyles.description}>
+                    <p>
+                        {publication.description}
+                    </p>
                 </div>
             </div>
         );

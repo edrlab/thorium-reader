@@ -1,3 +1,10 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 import * as React from "react";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
@@ -11,11 +18,17 @@ import { opdsActions } from "readium-desktop/common/redux/actions";
 
 import { OPDS } from "readium-desktop/common/models/opds";
 
+import * as AppStyle from "readium-desktop/renderer/assets/styles/app.css";
+
 import FlatButton from "material-ui/FlatButton";
 
 import * as uuid from "uuid";
 
 import { Translator } from "readium-desktop/common/services/translator";
+
+import FocusLock from "react-focus-lock";
+
+import * as classNames from "classnames";
 
 interface IOpdsFormProps {
     closeDialog: any;
@@ -60,84 +73,89 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
 
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate.bind(this.translator);
-        const messageError = (<p style={Styles.OpdsList.errorMessage}>Veuillez remplir tous les champs</p>);
+        const messageError = (<p style={Styles.OpdsList.errorMessage}>{__("opds.formError")}</p>);
         let currentMessageError = (<div></div>);
         if (this.state.formError) {
             currentMessageError = messageError;
         }
         return (
             <div>
-                {currentMessageError}
-                {this.props.opds ? (
-                    <p>{__("opds.addForm.updateSentence")}</p>
-                ) : (
-                    <p>{__("opds.addForm.addSentence")}</p>
-                )}
-                <div style={Styles.OpdsList.formElement}>
-                    <label style={Styles.OpdsList.formElementLabel} >{__("opds.addForm.name")}</label>
-                        <input
-                            type="text"
-                            style={Styles.OpdsList.textZone}
-                            value={this.state.opdsName}
-                            onChange={this.handleOpdsNameChange}/><br/>
-                </div>
-                <div style={Styles.OpdsList.formElement}>
-                    <label style={Styles.OpdsList.formElementLabel}>{__("opds.addForm.url")}</label>
-                        <input
-                            type="text"
-                            style={Styles.OpdsList.textZone}
-                            value={this.state.opdsUrl}
-                            onChange={this.handleOpdsUrlChange}/><br/>
-                </div>
-                {this.props.opds ? (
-                <div>
-                    <FlatButton
-                        label={__("opds.addForm.delete")}
-                        primary={true}
-                        onClick={() => {
-                            this.store.dispatch(opdsActions.remove(this.props.opds));
-                            this.props.closeDialog();
-                            this.props.closeFunction();
-                        }}
-                    />
-                    <FlatButton
-                        label={__("opds.addForm.update")}
-                        primary={true}
-                        onClick={() => {
-                            if (this.isFormValid()) {
-                                const newOpds: OPDS = {
-                                    identifier: this.props.opds.identifier,
-                                    name: this.state.opdsName,
-                                    url: this.state.opdsUrl,
-                                };
-                                this.props.updateDisplay(newOpds);
-                                this.store.dispatch(opdsActions.update(newOpds));
+                <FocusLock>
+                    {currentMessageError}
+                    {this.props.opds ? (
+                        <p>{__("opds.addForm.updateSentence")}</p>
+                    ) : (
+                        <p>{__("opds.addForm.addSentence")}</p>
+                    )}
+                    <div style={Styles.OpdsList.formElement}>
+                        <label style={Styles.OpdsList.formElementLabel} >{__("opds.addForm.name")}</label>
+                            <input
+                                type="text"
+                                style={Styles.OpdsList.textZone}
+                                value={this.state.opdsName}
+                                onChange={this.handleOpdsNameChange}/><br/>
+                    </div>
+                    <div style={Styles.OpdsList.formElement}>
+                        <label style={Styles.OpdsList.formElementLabel}>{__("opds.addForm.url")}</label>
+                            <input
+                                type="text"
+                                style={Styles.OpdsList.textZone}
+                                value={this.state.opdsUrl}
+                                onChange={this.handleOpdsUrlChange}/><br/>
+                    </div>
+                    {this.props.opds ? (
+                    <div>
+                        <button
+                            className={classNames(AppStyle.commonButton, AppStyle.primary)}
+                            onClick={() => {
+                                this.store.dispatch(opdsActions.remove(this.props.opds));
                                 this.props.closeDialog();
-                            } else {
-                                this.setState({formError: true});
-                            }
-                        }}
-                    />
-                </div>
-                ) : (
-                    <FlatButton
-                        label={__("opds.addForm.addButton")}
-                        primary={true}
-                        onClick={() => {
-                            if (this.isFormValid()) {
-                                const newOpds: OPDS = {
-                                    identifier: uuid.v4(),
-                                    name: this.state.opdsName,
-                                    url: this.state.opdsUrl,
-                                };
-                                this.store.dispatch(opdsActions.add(newOpds));
-                                this.props.closeDialog();
-                            } else {
-                                this.setState({formError: true});
-                            }
-                        }}
-                    />
-                )}
+                                this.props.closeFunction();
+                            }}
+                        >
+                            {__("opds.addForm.delete")}
+                        </button>
+                        <button
+                            className={classNames(AppStyle.commonButton, AppStyle.primary)}
+                            onClick={() => {
+                                if (this.isFormValid()) {
+                                    const newOpds: OPDS = {
+                                        identifier: this.props.opds.identifier,
+                                        name: this.state.opdsName,
+                                        url: this.state.opdsUrl,
+                                    };
+                                    this.props.updateDisplay(newOpds);
+                                    this.store.dispatch(opdsActions.update(newOpds));
+                                    this.props.closeDialog();
+                                } else {
+                                    this.setState({formError: true});
+                                }
+                            }}
+                        >
+                            {__("opds.addForm.update")}
+                        </button>
+                    </div>
+                    ) : (
+                        <button
+                            className={classNames(AppStyle.commonButton, AppStyle.primary)}
+                            onClick={() => {
+                                if (this.isFormValid()) {
+                                    const newOpds: OPDS = {
+                                        identifier: uuid.v4(),
+                                        name: this.state.opdsName,
+                                        url: this.state.opdsUrl,
+                                    };
+                                    this.store.dispatch(opdsActions.add(newOpds));
+                                    this.props.closeDialog();
+                                } else {
+                                    this.setState({formError: true});
+                                }
+                            }}
+                        >
+                            {__("opds.addForm.addButton")}
+                        </button>
+                    )}
+                </FocusLock>
             </div>
         );
     }
