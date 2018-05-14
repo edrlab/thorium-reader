@@ -6,6 +6,15 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+
+import { _RENDERER_APP_BASE_URL, IS_DEV, _PACKAGING } from "readium-desktop/preprocessor-directives";
+
+if (_PACKAGING != "0") {
+    // Disable debug in packaged app
+    delete process.env.DEBUG;
+    debug_.disable();
+}
+
 import * as path from "path";
 import { Store } from "redux";
 
@@ -35,8 +44,6 @@ import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { initGlobals } from "@r2-shared-js/init-globals";
-
-import { _RENDERER_APP_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
 
 import { SenderType } from "readium-desktop/common/models/sync";
 
