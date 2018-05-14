@@ -103,7 +103,10 @@
       "target": [
         "deb",
         "AppImage"
-      ]
+      ],
+      "desktop": {
+        "MimeType": "application/epub+zip"
+      }
     }
   },
   "dependencies": {
