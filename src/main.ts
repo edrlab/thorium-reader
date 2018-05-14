@@ -196,6 +196,15 @@ app.on("activate", () => {
     }
 });
 
+app.on("open-url", (event: any, url: any) => {
+    event.preventDefault();
+    // Process url: import or open?
+});
+app.on("open-file", (event: any, url: any) => {
+    event.preventDefault();
+    // Process file: import or open?
+});
+
 // Listen to a window that requests a new id
 ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
     const win: BrowserWindow = event.sender;

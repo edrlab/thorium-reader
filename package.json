@@ -96,6 +96,9 @@
       "output": "release",
       "app": "dist"
     },
+    "fileAssociations": {
+      "ext": ["epub"]
+    },
     "win": {
       "target": "nsis"
     },
