@@ -7,9 +7,9 @@
 
 import * as debug_ from "debug";
 
-import { _RENDERER_APP_BASE_URL, IS_DEV, _PACKAGING } from "readium-desktop/preprocessor-directives";
+import { _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
 
-if (_PACKAGING != "0") {
+if (_PACKAGING !== "0") {
     // Disable debug in packaged app
     delete process.env.DEBUG;
     debug_.disable();
