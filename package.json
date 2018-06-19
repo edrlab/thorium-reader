@@ -153,6 +153,7 @@
     "reflect-metadata": "^0.1.12",
     "request": "^2.87.0",
     "svg-sprite-loader": "^3.8.0",
+    "ta-json": "github:danielweck/ta-json#dist",
     "tmp": "^0.0.33",
     "uuid": "^3.2.1",
     "yauzl": "^2.9.2",
