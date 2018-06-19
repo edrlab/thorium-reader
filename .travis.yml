@@ -5,15 +5,16 @@ branches:
   - develop
 language: node_js
 node_js:
-- '7'
+- '8'
 before_install:
 - 'pwd && ls -als'
-- npm -g install npm@latest
+- npm -g install npm@6.*.*
 install:
 - 'pwd && ls -als'
 before_script:
 - 'pwd && ls -als'
-- 'npm install'
+- 'npm ci'
+# - 'npm run __postinstall'
 script:
 - 'npm run lint'
 - 'npm run build'
