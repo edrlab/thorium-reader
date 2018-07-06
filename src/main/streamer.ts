@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
+
 import * as path from "path";
 
 import { app } from "electron";
@@ -19,6 +21,8 @@ import {
     _NODE_MODULE_RELATIVE_URL,
     _PACKAGING,
 } from "readium-desktop/preprocessor-directives";
+
+const debug = debug_("readium-desktop:main#streamer");
 
 // Create readium2 streamer
 // This streamer is used to stream epub content to the renderer
@@ -42,6 +46,6 @@ if (_PACKAGING === "1") {
 }
 
 rcssPath = rcssPath.replace(/\\/g, "/");
-console.log(rcssPath);
+debug("readium css path:", rcssPath);
 
 setupReadiumCSS(streamer, rcssPath);

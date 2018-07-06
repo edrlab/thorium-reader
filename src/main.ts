@@ -6,6 +6,15 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+
+import { _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
+
+if (_PACKAGING !== "0") {
+    // Disable debug in packaged app
+    delete process.env.DEBUG;
+    debug_.disable();
+}
+
 import * as path from "path";
 import { Store } from "redux";
 
@@ -35,8 +44,6 @@ import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { initGlobals } from "@r2-shared-js/init-globals";
-
-import { _RENDERER_APP_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
 
 import { SenderType } from "readium-desktop/common/models/sync";
 
@@ -187,6 +194,15 @@ app.on("activate", () => {
     if (mainWindow === null) {
         createWindow();
     }
+});
+
+app.on("open-url", (event: any, url: any) => {
+    event.preventDefault();
+    // Process url: import or open?
+});
+app.on("open-file", (event: any, url: any) => {
+    event.preventDefault();
+    // Process file: import or open?
 });
 
 // Listen to a window that requests a new id
