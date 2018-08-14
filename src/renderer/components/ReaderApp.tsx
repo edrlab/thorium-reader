@@ -52,8 +52,8 @@ import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import {
-    IEventPayload_R2_EVENT_READIUMCSS,
     IEventPayload_R2_EVENT_READING_LOCATION,
+    IEventPayload_R2_EVENT_READIUMCSS,
 } from "@r2-navigator-js/electron/common/events";
 
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
