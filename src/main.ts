@@ -43,7 +43,15 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
-import { initGlobals } from "@r2-shared-js/init-globals";
+
+import {
+    initGlobalConverters_GENERIC,
+    initGlobalConverters_SHARED,
+} from "@r2-shared-js/init-globals";
+
+import {
+    initGlobalConverters_OPDS,
+} from "@r2-opds-js/opds/init-globals";
 
 import { SenderType } from "readium-desktop/common/models/sync";
 
@@ -52,7 +60,10 @@ import { ActionSerializer } from "readium-desktop/common/services/serializer";
 // Logger
 const debug = debug_("readium-desktop:main");
 
-initGlobals();
+initGlobalConverters_OPDS();
+initGlobalConverters_SHARED();
+initGlobalConverters_GENERIC();
+
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 

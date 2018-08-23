@@ -22,14 +22,24 @@ import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 
 import App from "readium-desktop/renderer/components/App";
 
-import { initGlobals } from "@r2-shared-js/init-globals";
+import {
+    initGlobalConverters_GENERIC,
+    initGlobalConverters_SHARED,
+} from "@r2-shared-js/init-globals";
+
+import {
+    initGlobalConverters_OPDS,
+} from "@r2-opds-js/opds/init-globals";
+
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
 import { SenderType } from "readium-desktop/common/models/sync";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
-initGlobals();
+initGlobalConverters_OPDS();
+initGlobalConverters_SHARED();
+initGlobalConverters_GENERIC();
 
 // console.log(__dirname);
 // console.log((global as any).__dirname);
