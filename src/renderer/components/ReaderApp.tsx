@@ -51,7 +51,10 @@ import { Dialog } from "material-ui";
 import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
-import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
+import {
+    IEventPayload_R2_EVENT_READING_LOCATION,
+    IEventPayload_R2_EVENT_READIUMCSS,
+} from "@r2-navigator-js/electron/common/events";
 
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
 import {
@@ -120,7 +123,7 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
 
-const saveReadingLocation = (docHref: string, docSelector: string) => {
+const saveReadingLocation = (docHref: string, locator: IEventPayload_R2_EVENT_READING_LOCATION) => {
     const store = container.get("store") as Store<RootState>;
     store.dispatch(readerActions.saveBookmark(
         {
@@ -130,7 +133,9 @@ const saveReadingLocation = (docHref: string, docSelector: string) => {
                 identifier: queryParams["pubId"],
             },
             docHref,
-            docSelector,
+
+            // TODO: support for save+restore locator.cfi (see IEventPayload_R2_EVENT_READING_LOCATION type)
+            docSelector: locator.cssSelector,
         } as Bookmark,
     ));
 };
@@ -277,6 +282,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
         // tslint:disable-next-line:no-string-literal
         let docHref: string = queryParams["docHref"];
+
+        // TODO: see IEventPayload_R2_EVENT_READING_LOCATION object below
         // tslint:disable-next-line:no-string-literal
         let docSelector: string = queryParams["docSelector"];
 
@@ -286,7 +293,13 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             docSelector = window.atob(docSelector);
         }
 
-        const publication = await this.loadPublicationIntoViewport(docHref, docSelector);
+        // TODO: save+restore .cfi (not just .cssSelector)
+        const docLocation: IEventPayload_R2_EVENT_READING_LOCATION = {
+            cfi: undefined,
+            cssSelector: docSelector,
+        };
+
+        const publication = await this.loadPublicationIntoViewport(docHref, docLocation);
         this.setState({publication});
         setReadingLocationSaver(saveReadingLocation);
 
@@ -589,7 +602,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
     private async loadPublicationIntoViewport(
         docHref: string,
-        docSelector: string,
+        docLocation: IEventPayload_R2_EVENT_READING_LOCATION,
     ): Promise<R2Publication> {
         let response: Response;
         try {
@@ -650,7 +663,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             "publication_viewport",
             preloadPath,
             docHref,
-            docSelector,
+            docLocation,
         );
 
         return publication;
