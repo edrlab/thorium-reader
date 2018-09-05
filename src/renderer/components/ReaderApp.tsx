@@ -169,10 +169,8 @@ const fontSizes: string[] = [
 interface ReaderAppState {
     publicationJsonUrl?: string;
     lcpHint?: string;
-    r2Publication?: Publication;
     title?: string;
     lcpPass?: string;
-    spineLinks?: IStringMap;
     contentTableOpen: boolean;
     settingsOpen: boolean;
     settingsValues: ReadiumCSS;
@@ -194,7 +192,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     private translator: Translator;
 
     private landmarksData: any[];
-    private publication: R2Publication;
+    private tocRendererList: JSX.Element[];
 
     constructor(props: any) {
         super(props);
@@ -207,10 +205,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         this.state = {
             publicationJsonUrl: "HTTP://URL",
             lcpHint: "LCP hint",
-            r2Publication: undefined,
             title: "TITLE",
             lcpPass: "LCP pass",
-            spineLinks: { "https://google.com": "no spine items?" },
             contentTableOpen: false,
             settingsOpen: false,
             settingsValues: {
@@ -297,22 +293,16 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         setEpubReadingSystemJsonGetter(this.getEpubReadingSystem);
     }
 
+    public componentWillUpdate(__: any, newState: ReaderAppState) {
+        if (!this.tocRendererList && newState.publication) {
+            this.tocRendererList = this.createTOCRenderList(newState.publication.TOC);
+        }
+    }
+
     public render(): React.ReactElement<{}> {
-        const contentTable = [];
         const __ = this.translator.translate.bind(this.translator);
         const tabOpen = this.state.landmarkTabOpen;
         const publication = this.state.publication;
-
-        let i = 0;
-        for (const spine in this.state.spineLinks) {
-            contentTable.push((
-                <li key={i}><a href={spine}
-                    onClick={this._onDropDownSelectSpineLink}>
-                    {this.state.spineLinks[spine]}
-                </a></li>
-            ));
-            i++;
-        }
 
         const additionalRadioProperties = (name: string, value: any) => {
             if (this.state.settingsValues[name] === value) {
@@ -419,7 +409,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             <div className={classNames(ReaderStyles.content_table,
                                     this.state.contentTableOpen && ReaderStyles.content_table_open)}>
                                 <ul>
-                                    {contentTable}
+                                    {this.tocRendererList}
                                 </ul>
                             </div>
                             )}
@@ -634,14 +624,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             }
         }
 
-        if (publication.Spine && publication.Spine.length) {
-            const links: IStringMap = {};
-            publication.TOC.forEach((spineItemLink: any) => {
-                links[publicationJsonUrl + "/../" + spineItemLink.Href] = spineItemLink.Title;
-            });
-            this.setState({spineLinks: links});
-        }
-
         let preloadPath = "preload.js";
         if (_PACKAGING === "1") {
             preloadPath = "file://" + path.normalize(path.join((global as any).__dirname, preloadPath));
@@ -743,5 +725,25 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
     private getEpubReadingSystem: () => INameVersion = () => {
         return { name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION };
+    }
+
+    private createTOCRenderList(TOC: any[]): JSX.Element[] {
+        const list = [];
+        let i = 0;
+        for (const content of TOC) {
+            list.push((
+                <li key={i}>
+                    <a
+                        href={publicationJsonUrl + "/../" + content.Href}
+                        onClick={this._onDropDownSelectSpineLink}
+                    >
+                        {content.Title}
+                    </a>
+                    { content.Children && <ul>{this.createTOCRenderList(content.Children)}</ul>}
+                </li>
+            ));
+            i++;
+        }
+        return list;
     }
 }
