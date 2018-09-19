@@ -27,6 +27,9 @@ declare module "yauzl";
 declare module "pouchdb-adapter-leveldb";
 declare module "readium-desktop/pouchdb/jsondown-adapter";
 
+declare module "debug/node";
+declare module "debug/src/browser";
+
 declare module "*.css" {
     interface IClassNames {
         [className: string]: string
