@@ -144,7 +144,7 @@
     "react-dom": "^16.5.2",
     "react-dropdown": "^1.6.2",
     "react-dropzone": "4.2.11",
-    "react-focus-lock": "1.11.*",
+    "react-focus-lock": "^1.13.2",
     "react-redux": "^5.0.7",
     "react-tap-event-plugin": "^3.0.3",
     "redux": "3.*.*",
