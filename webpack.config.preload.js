@@ -2,10 +2,6 @@ var fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
 
-const aliases = {
-    "debug": "debug/src",
-};
-
 let config = Object.assign({}, {
     entry: "./node_modules/r2-navigator-js/dist/es6-es2015/src/electron/renderer/webview/preload.js",
     name: "renderer webview preload",
@@ -18,8 +14,7 @@ let config = Object.assign({}, {
     target: "electron-renderer",
 
     resolve: {
-        extensions: [".js"],
-        alias: aliases
+        extensions: [".js"]
     }
 });
 
