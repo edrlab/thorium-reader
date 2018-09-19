@@ -176,7 +176,7 @@
     "@types/tmp": "^0.0.33",
     "@types/uuid": "^3.4.3",
     "awesome-typescript-loader": "3.*.*",
-    "concurrently": "^3.6.1",
+    "concurrently": "^4.0.1",
     "copy-webpack-plugin": "^4.5.2",
     "cross-env": "^5.2.0",
     "css-hot-loader": "^1.4.2",
