@@ -66,7 +66,7 @@ import {
     setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
 import { ipcRenderer } from "electron";
-import { JSON as TAJSON } from "ta-json";
+import { JSON as TAJSON } from "ta-json-x";
 
 import { webFrame } from "electron";
 
