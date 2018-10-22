@@ -30,6 +30,7 @@ import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 
 import ArrowIcon from "readium-desktop/renderer/assets/icons/arrow.svg";
+import ArrowBack from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
 import ContentTableIcon from "readium-desktop/renderer/assets/icons/content-table.svg";
 import ContinueIcon from "readium-desktop/renderer/assets/icons/continue.svg";
 import LandmarkIcon from "readium-desktop/renderer/assets/icons/landmark.svg";
@@ -75,7 +76,7 @@ import {
     READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
 
-import * as ReaderStyles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import {
     _NODE_MODULE_RELATIVE_URL,
@@ -91,6 +92,7 @@ import { INameVersion } from "@r2-navigator-js/electron/renderer/webview/epubRea
 import {
     _APP_VERSION,
 } from "readium-desktop/preprocessor-directives";
+import ReaderMenu from "readium-desktop/renderer/components/ReaderMenu";
 
 webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
 webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
@@ -184,6 +186,7 @@ interface ReaderAppState {
     landmarksOpen: boolean;
     landmarkTabOpen: number;
     publication: R2Publication;
+    menuOpen: boolean;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -197,7 +200,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     private translator: Translator;
 
     private landmarksData: any[];
-    private tocRendererList: JSX.Element[];
 
     constructor(props: any) {
         super(props);
@@ -232,6 +234,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             landmarksOpen: false,
             landmarkTabOpen: 0,
             publication: undefined,
+            menuOpen: false,
         };
     }
 
@@ -306,12 +309,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         setEpubReadingSystemJsonGetter(this.getEpubReadingSystem);
     }
 
-    public componentWillUpdate(__: any, newState: ReaderAppState) {
-        if (!this.tocRendererList && newState.publication) {
-            this.tocRendererList = this.createTOCRenderList(newState.publication.TOC);
-        }
-    }
-
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
         const tabOpen = this.state.landmarkTabOpen;
@@ -366,6 +363,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                 });
             }
 
+            console.log(landmarksData);
+
             this.landmarksData = landmarksData;
         }
 
@@ -375,89 +374,163 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         return (
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
-                    <div className={ReaderStyles.root}>
-                        <div className={ReaderStyles.menu}>
+                    <div className={styles.root}>
+                        <nav className={styles.main_navigation} role="navigation" aria-label="Menu principal">
+                            <ul>
+                                <li>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.handleContentTableClick.bind(this)}
+                                    >
+                                        <img src="src/renderer/assets/icons/baseline-arrow_back-24px-grey.svg"
+                                        alt="retour à l'accueil"/>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.handleLandmarksClick.bind(this)}
+                                    >
+                                        <img src="src/renderer/assets/icons/outline-info-24px.svg"
+                                        alt="retour à l'accueil"/>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.handleContentTableClick.bind(this)}
+                                    >
+                                        <img src="src/renderer/assets/icons/outline-flip_to_front-24px.svg"
+                                        alt="retour à l'accueil"/>
+                                    </button>
+                                </li>
+                                <li  className={styles.right + " " + styles.blue}>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.handleContentTableClick.bind(this)}
+                                    >
+                                        <img src="src/renderer/assets/icons/sharp-crop_free-24px.svg"
+                                        alt="retour à l'accueil"/>
+                                    </button>
+                                </li>
+                                <li className={styles.right}>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.handleMenuButtonClick.bind(this)}
+                                    >
+                                        <img src="src/renderer/assets/icons/open_book.svg"
+                                        alt="open menu"/>
+                                    </button>
+                                </li>
+                                <li className={styles.right}>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.handleContentTableClick.bind(this)}
+                                    >
+                                        <img src="src/renderer/assets/icons/outline-bookmark_border-24px.svg"
+                                        alt="retour à l'accueil"/>
+                                    </button>
+                                </li>
+                                <li className={styles.right}>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.handleContentTableClick.bind(this)}
+                                    >
+                                        <img src="src/renderer/assets/icons/font-size.svg"
+                                        alt="retour à l'accueil"/>
+                                    </button>
+                                </li>
+                                <li className={styles.right}>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.handleContentTableClick.bind(this)}
+                                    >
+                                        <img src="src/renderer/assets/icons/baseline-volume_up-24px.svg"
+                                        alt="retour à l'accueil"/>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                        <ReaderMenu
+                            open={this.state.menuOpen}
+                            publicationJsonUrl={publicationJsonUrl}
+                            publication={this.state.publication}
+                            handleLinkClick={this.handleLinkClick.bind(this)}
+                        />
+                        {/* <div className={styles.menu}>
                             <button
-                                className={ReaderStyles.menu_button}
+                                className={styles.menu_button}
                                 onClick={this.handleContentTableClick.bind(this)}
                             >
-                                <svg className={ReaderStyles.menu_svg} viewBox={ContentTableIcon.content_table}>
+                                <svg className={styles.menu_svg} viewBox={ContentTableIcon.content_table}>
                                     <title>{__("reader.svg.contentTable")}</title>
                                     <use xlinkHref={"#" + ContentTableIcon.id} />
                                 </svg>
                             </button>
-                            <div className={ReaderStyles.menu_right_button}>
+                            <div className={styles.menu_right_button}>
                                 <button
-                                    className={ReaderStyles.menu_button}
+                                    className={styles.menu_button}
                                     onClick={this.handleNightSwitch.bind(this)}
                                 >
-                                    <svg className={ReaderStyles.menu_svg} viewBox={NightIcon.night}>
+                                    <svg className={styles.menu_svg} viewBox={NightIcon.night}>
                                         <title>{__("reader.svg.night")}</title>
                                         <use xlinkHref={"#" + NightIcon.id} />
                                     </svg>
                                 </button>
                                 <button
-                                    className={ReaderStyles.menu_button}
+                                    className={styles.menu_button}
                                     onClick={this.handleSettingsOpen.bind(this)}
                                 >
-                                    <svg className={ReaderStyles.menu_svg} viewBox={SettingsIcon.settings}>
+                                    <svg className={styles.menu_svg} viewBox={SettingsIcon.settings}>
                                         <title>{__("reader.svg.settings")}</title>
                                         <use xlinkHref={"#" + SettingsIcon.id} />
                                     </svg>
                                 </button>
                                 <button
-                                className={ReaderStyles.menu_button}
+                                className={styles.menu_button}
                                 onClick={this.handleLandmarksClick.bind(this)}
                                 disabled={!this.landmarksData || !this.landmarksData.length ? true : false}
                                 >
-                                    <svg className={ReaderStyles.menu_svg} viewBox={ContentTableIcon.LandmarkIcon}>
+                                    <svg className={styles.menu_svg} viewBox={ContentTableIcon.LandmarkIcon}>
                                         <title>{__("reader.svg.landmarks")}</title>
                                         <use xlinkHref={"#" + LandmarkIcon.id} />
                                     </svg>
                                 </button>
                             </div>
-                        </div>
-                        <div className={ReaderStyles.content_root}>
-                            {this.state.contentTableOpen && (
-                            <div className={classNames(ReaderStyles.content_table,
-                                    this.state.contentTableOpen && ReaderStyles.content_table_open)}>
-                                <ul>
-                                    {this.tocRendererList}
-                                </ul>
-                            </div>
-                            )}
-                            <div className={ReaderStyles.reader}>
+                        </div> */}
+                        <div className={styles.content_root}>
+                            <div className={styles.reader}>
                                 <button
-                                    className={classNames(ReaderStyles.side_button, ReaderStyles.left_button)}
+                                    className={classNames(styles.side_button, styles.left_button)}
                                     onClick={() => {navLeftOrRight(true); }}
                                 >
-                                    <svg className={ReaderStyles.side_button_svg} viewBox={ArrowIcon.arrow}>
+                                    <svg className={styles.side_button_svg} viewBox={ArrowIcon.arrow}>
                                         <title>{__("reader.svg.left")}</title>
                                         <use xlinkHref={"#" + ArrowIcon.id} />
                                     </svg>
                                 </button>
-                                <div className={ReaderStyles.publication_viewport_container}>
-                                    <div id="publication_viewport" className={ReaderStyles.publication_viewport}> </div>
+                                <div className={styles.publication_viewport_container}>
+                                    <div id="publication_viewport" className={styles.publication_viewport}> </div>
                                 </div>
                                 <button
-                                    className={classNames(ReaderStyles.side_button, ReaderStyles.right_button)}
+                                    className={classNames(styles.side_button, styles.right_button)}
                                     onClick={() => {navLeftOrRight(false); }}
                                 >
-                                    <svg className={ReaderStyles.side_button_svg} viewBox={ArrowIcon.arrow}>
+                                    <svg className={styles.side_button_svg} viewBox={ArrowIcon.arrow}>
                                         <title>{__("reader.svg.right")}</title>
                                         <use xlinkHref={"#" + ArrowIcon.id} />
                                     </svg>
                                 </button>
                             </div>
                             {this.state.landmarksOpen && (
-                                <div className={classNames(ReaderStyles.content_table,
-                                        this.state.landmarksOpen && ReaderStyles.content_table_open)}>
-                                    <div className={ReaderStyles.landmarks_tabs}>
+                                <div className={classNames(styles.content_table,
+                                        this.state.landmarksOpen && styles.content_table_open)}>
+                                    <div className={styles.landmarks_tabs}>
                                         {this.landmarksData.map((data: any) => {
                                             const button = (
                                                 <button
                                                     key={landmarkTabKeys}
-                                                    className={ReaderStyles.landmarks_tabs_button}
+                                                    className={styles.landmarks_tabs_button}
                                                     onClick={this.handleTabChange.bind( this, landmarkTabKeys )}
                                                 >
                                                     {data.label}
@@ -469,7 +542,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                     </div>
                                     <div>
                                         <ul>
-                                            {this.landmarksData[tabOpen].links.map((data: any) => {
+                                            {this.landmarksData[tabOpen]
+                                            && this.landmarksData[tabOpen].links.map((data: any) => {
                                                 landmarkListKey++;
                                                 return (
                                                     <li key={landmarkListKey}>
@@ -496,7 +570,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                     >
                         <FocusLock>
                             <div>
-                                <div className={ReaderStyles.settings_content}>
+                                <div className={styles.settings_content}>
                                     <label>{__("reader.settings.font")}</label>
                                     <select
                                         onChange={this.handleSettingsValueChange.bind(this)}
@@ -518,14 +592,14 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         step="1"
                                     />
                                     <label>{__("reader.settings.align")}</label>
-                                    <div className={ReaderStyles.settings_radios}>
+                                    <div className={styles.settings_radios}>
                                         <label>
                                             <input type="radio" value="left" name="align"
                                                 onChange={this.handleSettingsValueChange.bind(this)}
                                                 {...additionalRadioProperties("align", "left")}
                                             />
                                             <svg
-                                                className={ReaderStyles.settings_icones}
+                                                className={styles.settings_icones}
                                                 viewBox={AlignLeftIcon.alignLeft}
                                             >
                                                 <title>{__("reader.svg.alignLeft")}</title>
@@ -537,7 +611,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                                 onChange={this.handleSettingsValueChange.bind(this)}
                                                 {...additionalRadioProperties("align", "center")}
                                             />
-                                            <svg className={ReaderStyles.settings_icones}
+                                            <svg className={styles.settings_icones}
                                                 viewBox={AlignCenterIcon.alignCenter}
                                             >
                                                 <title>{__("reader.svg.alignCenter")}</title>
@@ -549,7 +623,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                                 onChange={this.handleSettingsValueChange.bind(this)}
                                                 {...additionalRadioProperties("align", "right")}
                                             />
-                                            <svg className={ReaderStyles.settings_icones}
+                                            <svg className={styles.settings_icones}
                                                 viewBox={AlignRightIcon.alignRight}
                                             >
                                                 <title>{__("reader.svg.alignRight")}</title>
@@ -564,7 +638,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                                 onChange={this.handleSettingsValueChange.bind(this)}
                                                 {...additionalRadioProperties("paged", true)}
                                             />
-                                            <svg className={ReaderStyles.settings_icones} viewBox={PageIcon.page}>
+                                            <svg className={styles.settings_icones} viewBox={PageIcon.page}>
                                                 <title>{__("reader.svg.document")}</title>
                                                 <use xlinkHref={"#" + PageIcon.id} />
                                             </svg> {__("reader.settings.paginated")}
@@ -575,7 +649,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                                 {...additionalRadioProperties("paged", false)}
                                             />
                                             <svg
-                                                className={ReaderStyles.settings_icones}
+                                                className={styles.settings_icones}
                                                 viewBox={ContinueIcon.continue}
                                             >
                                                 <title>{__("reader.svg.continue")}</title>
@@ -584,11 +658,11 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         </label>
                                     </div>
                                 </div>
-                                    <button className={ReaderStyles.settings_action}
+                                    <button className={styles.settings_action}
                                         onClick={this.handleSettingsClose.bind(this)}>
                                             {__("reader.settings.close")}
                                     </button>
-                                    <button className={ReaderStyles.settings_action}
+                                    <button className={styles.settings_action}
                                         onClick={this.handleSettingsSave.bind(this)}>
                                             {__("reader.settings.save")}
                                     </button>
@@ -673,14 +747,23 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         this.setState({contentTableOpen: !this.state.contentTableOpen});
     }
 
+    private handleMenuButtonClick() {
+        this.setState({menuOpen: !this.state.menuOpen});
+    }
+
     private handleLandmarksClick() {
         this.setState({landmarksOpen: !this.state.landmarksOpen});
     }
 
     private _onDropDownSelectSpineLink(event: any) {
+        event.preventDefault();
         const href = event.target.href;
         handleLink(href, undefined, false);
+    }
+
+    private handleLinkClick(event: any, url: string) {
         event.preventDefault();
+        handleLink(url, undefined, false);
     }
 
     private handleSettingsOpen() {
@@ -738,25 +821,5 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
     private getEpubReadingSystem: () => INameVersion = () => {
         return { name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION };
-    }
-
-    private createTOCRenderList(TOC: any[]): JSX.Element[] {
-        const list = [];
-        let i = 0;
-        for (const content of TOC) {
-            list.push((
-                <li key={i}>
-                    <a
-                        href={publicationJsonUrl + "/../" + content.Href}
-                        onClick={this._onDropDownSelectSpineLink}
-                    >
-                        {content.Title}
-                    </a>
-                    { content.Children && <ul>{this.createTOCRenderList(content.Children)}</ul>}
-                </li>
-            ));
-            i++;
-        }
-        return list;
     }
 }
