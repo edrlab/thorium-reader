@@ -113,13 +113,11 @@
         "scrolled": "Scrolled",
         "paginated": "Paginated"
       },
-      "landmarks": {
+      "marks": {
         "landmarks": "Landmarks",
         "illustrations": "Illustrations",
-        "videos": "Videos",
-        "tables": "Tables",
-        "audio": "Audio",
-        "pages": "Pages"
+        "toc": "Table of content",
+        "annotations": "Annotations"
       },
       "svg": {
         "contentTable": "Content Table",

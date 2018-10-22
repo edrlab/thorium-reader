@@ -113,13 +113,11 @@
         "scrolled": "Défilé",
         "paginated": "Paginé"
       },
-      "landmarks": {
-        "landmarks": "Repères",
+      "marks": {
+        "landmarks": "Signets",
         "illustrations": "Illustrations",
-        "videos": "Vidéos",
-        "tables": "Tablaux",
-        "audio": "Audio",
-        "pages": "Pages"
+        "toc": "Table des matières ",
+        "annotations": "Annotations"
       },
       "svg": {
         "contentTable": "Table des matières",

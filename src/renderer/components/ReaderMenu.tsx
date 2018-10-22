@@ -4,6 +4,9 @@ import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
+import { Translator } from "readium-desktop/common/services/translator";
+import { lazyInject } from "readium-desktop/renderer/di";
+
 interface Props {
     open: boolean;
     publicationJsonUrl: string;
@@ -19,6 +22,9 @@ export default class ReaderMenu extends React.Component<Props, State> {
     private sectionRefList: any = [];
     private tocRendererList: any;
     private clickableList: boolean[] = [];
+
+    @lazyInject("translator")
+    private translator: Translator;
 
     public constructor(props: Props) {
         super(props);
@@ -52,6 +58,8 @@ export default class ReaderMenu extends React.Component<Props, State> {
     public render(): React.ReactElement<{}> {
         const pub = this.props.publication;
 
+        const __ = this.translator.translate.bind(this.translator);
+
         return (
             <div style={{display: this.props.open ? "initial" : "none"}} className={styles.chapters_settings}>
                 <ul className={styles.chapter_settings_list}>
@@ -59,7 +67,7 @@ export default class ReaderMenu extends React.Component<Props, State> {
                         onClick={this.handleClickSection.bind(this, 0)}
                         className={!this.clickableList[0] && styles.tab_not_clickable}
                     >
-                        Table des matières
+                        {__("reader.marks.toc")}
                     </li>
                     <div style={this.getSectionStyle(0)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[0]} className={styles.line_tab_content}>
@@ -72,7 +80,7 @@ export default class ReaderMenu extends React.Component<Props, State> {
                         onClick={this.handleClickSection.bind(this, 1)}
                         className={!this.clickableList[1] && styles.tab_not_clickable}
                     >
-                        Illustrations
+                        {__("reader.marks.illustrations")}
                     </li>
                     <div style={this.getSectionStyle(1)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[1]} className={styles.line_tab_content}>
@@ -82,7 +90,7 @@ export default class ReaderMenu extends React.Component<Props, State> {
                         onClick={this.handleClickSection.bind(this, 2)}
                         className={!this.clickableList[2] && styles.tab_not_clickable}
                     >
-                        Signets
+                        {__("reader.marks.landmarks")}
                     </li>
                     <div style={this.getSectionStyle(2)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[2]} className={styles.line_tab_content}>
@@ -120,7 +128,7 @@ export default class ReaderMenu extends React.Component<Props, State> {
                         onClick={this.handleClickSection.bind(this, 3)}
                         className={!this.clickableList[3] && styles.tab_not_clickable}
                     >
-                        Annotations
+                        {__("reader.marks.annotations")}
                     </li>
                     <div style={this.getSectionStyle(3)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[3]} className={styles.line_tab_content}>
@@ -212,19 +220,21 @@ export default class ReaderMenu extends React.Component<Props, State> {
     }
 
     private createLandmarkList(): JSX.Element[] {
-        return this.props.publication.Landmarks.map((content, i: number) => {
-            // const url = this.props.publicationJsonUrl + "/../" + content.Href;
-            return (
-                <div className={styles.bookmarks_line}>
-                    <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
-                    <div className={styles.chapter_marker}>
-                        Chapitre 1
-                    <div className={styles.gauge}>
-                        <div className={styles.fill}></div>
+        if (this.props.publication && this.props.publication.Landmarks) {
+            return this.props.publication.Landmarks.map((content, i: number) => {
+                // const url = this.props.publicationJsonUrl + "/../" + content.Href;
+                return (
+                    <div className={styles.bookmarks_line}>
+                        <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
+                        <div className={styles.chapter_marker}>
+                            Chapitre 1
+                        <div className={styles.gauge}>
+                            <div className={styles.fill}></div>
+                        </div>
+                        </div>
                     </div>
-                    </div>
-                </div>
-            );
-        });
+                );
+            });
+        }
     }
 }
