@@ -7,8 +7,18 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Font } from "readium-desktop/common/models/font";
 import fontList from "readium-desktop/utils/fontList";
 
+import * as AutoIcon from "readium-desktop/renderer/assets/icons/auto.svg";
+import * as ColumnIcon from "readium-desktop/renderer/assets/icons/colonne.svg";
+import * as Column2Icon from "readium-desktop/renderer/assets/icons/colonne2.svg";
+import * as DefileIcon from "readium-desktop/renderer/assets/icons/defile.svg";
+import * as LeftIcon from "readium-desktop/renderer/assets/icons/gauche.svg";
+import * as JustifyIcon from "readium-desktop/renderer/assets/icons/justifie.svg";
+import * as PagineIcon from "readium-desktop/renderer/assets/icons/pagine.svg";
+
 import { Translator } from "readium-desktop/common/services/translator";
 import { lazyInject } from "readium-desktop/renderer/di";
+
+import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 interface Props {
     open: boolean;
@@ -153,14 +163,14 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         id={styles.scroll_option} role="link"
                                         onClick={(e) => this.props.handleSettingChange(e, "paged", "false")}
                                     >
-                                        <img src="src/renderer/assets/icons/defile.svg" alt=""/>
+                                        <SVG svg={DefileIcon} title={__("reader.settings.scrolled")}/>
                                         {__("reader.settings.scrolled")}
                                     </button>
                                     <button
                                         id={styles.page_option} role="link"
                                         onClick={(e) => this.props.handleSettingChange(e, "paged", "true")}
                                     >
-                                        <img src="src/renderer/assets/icons/pagine.svg" alt=""/>
+                                        <SVG svg={PagineIcon} title={__("reader.settings.paginated")}/>
                                         {__("reader.settings.paginated")}
                                     </button>
                                 </div>
@@ -172,14 +182,14 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         id={styles.option_gauche} role="link"
                                         onClick={(e) => this.props.handleSettingChange(e, "align", "left")}
                                     >
-                                        <img src="src/renderer/assets/icons/gauche.svg" alt=""/>
+                                        <SVG svg={LeftIcon} title={__("reader.settings.left")}/>
                                         {__("reader.settings.left")}
                                     </button>
                                     <button
                                         id={styles.option_justif} role="link"
                                         onClick={(e) => this.props.handleSettingChange(e, "align", "justify")}
                                     >
-                                        <img src="src/renderer/assets/icons/justifie.svg" alt=""/>
+                                        <SVG svg={JustifyIcon} title={__("reader.settings.justify")}/>
                                         {__("reader.settings.justify")}
                                     </button>
                                 </div>
@@ -189,26 +199,29 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                 <div className={styles.center_in_tab}>
                                     <button
                                         id={styles.option_colonne}
+                                        {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
                                         role="link"
                                         onClick={(e) => this.props.handleSettingChange(e, "colCount", "auto")}
                                     >
-                                        <img src="src/renderer/assets/icons/auto.svg" alt=""/>
+                                        <SVG svg={AutoIcon} title={__("reader.settings.column.auto")}/>
                                         {__("reader.settings.column.auto")}
                                     </button>
                                     <button
+                                        {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
                                         id={styles.option_colonne1}
                                         role="link"
                                         onClick={(e) => this.props.handleSettingChange(e, "colCount", "1")}
                                     >
-                                        <img src="src/renderer/assets/icons/colonne.svg" alt=""/>
+                                        <SVG svg={ColumnIcon} title={__("reader.settings.column.one")}/>
                                         {__("reader.settings.column.one")}
                                     </button>
                                     <button
                                         id={styles.option_colonne2}
+                                        {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
                                         role="link"
                                         onClick={(e) => this.props.handleSettingChange(e, "colCount", "2")}
                                     >
-                                        <img src="src/renderer/assets/icons/colonne2.svg" alt=""/>
+                                        <SVG svg={Column2Icon} title={__("reader.settings.column.two")}/>
                                         {__("reader.settings.column.two")}
                                     </button>
                                 </div>
@@ -306,11 +319,11 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                 <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
                                 <div className={styles.center_in_tab}>
                                     <div id={styles.page_option} role="link">
-                                        <img src="src/renderer/assets/icons/pagine.svg" alt=""/>
+                                        <SVG svg={PagineIcon} title={__("reader.settings.disposition.with")}/>
                                         {__("reader.settings.disposition.with")}
                                     </div>
                                     <div id={styles.page_option} role="link">
-                                        <img src="src/renderer/assets/icons/pagine.svg" alt=""/>
+                                        <SVG svg={PagineIcon} title={__("reader.settings.disposition.without")}/>
                                         {__("reader.settings.disposition.without")}
                                     </div>
                                 </div>

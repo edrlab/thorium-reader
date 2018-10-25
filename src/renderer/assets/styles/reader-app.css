@@ -488,18 +488,6 @@ p.chapters_description {
 	background-color: white;
 }
 
-#scroll_option, #page_option, 
-#option_gauche, #option_justif, 
-#option_colonne, #option_colonne1, #option_colonne2 {
-	display: inline-block;
-	text-align: center;
-	margin-right:10px;
-	margin-left:10px;
-	line-height: 2rem;
-	cursor: pointer;
-	vertical-align: baseline;
-}
-
 .center_in_tab {
   position: relative;
 	text-align: center;
@@ -516,10 +504,35 @@ p.chapters_description {
     -webkit-transform: translateX(-50%) translateY(0%);
   }
 
+  & svg {
+    width: 40px;
+    height: 47px;
+    display: block;
+    margin: auto;
+  }
+
   & button {
     border: 0;
+    cursor: pointer;
     background-color: transparent;
   }
+
+  & .disable {
+    fill: grey;
+    color: grey;
+    cursor: default;
+  }
+}
+
+#scroll_option, #page_option, 
+#option_gauche, #option_justif, 
+#option_colonne, #option_colonne1, #option_colonne2 {
+	display: inline-block;
+	text-align: center;
+	margin-right:10px;
+	margin-left:10px;
+	line-height: 2rem;
+	vertical-align: baseline;
 }
 
 .separateur {
