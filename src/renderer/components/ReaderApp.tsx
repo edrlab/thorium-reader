@@ -353,7 +353,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         alt="retour à l'accueil"/>
                                     </button>
                                 </li>
-                                <li className={styles.right}>
+                                <li
+                                    className={styles.right}
+                                    {...(this.state.menuOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                                >
                                     <button
                                         className={styles.menu_button}
                                         onClick={this.handleMenuButtonClick.bind(this)}
@@ -371,7 +374,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                         alt="retour à l'accueil"/>
                                     </button>
                                 </li>
-                                <li className={styles.right}>
+                                <li
+                                    className={styles.right}
+                                    {...(this.state.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                                >
                                     <button
                                         className={styles.menu_button}
                                         onClick={this.handleSettingsClick.bind(this)}
@@ -530,7 +536,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     }
 
     private handleMenuButtonClick() {
-        this.setState({menuOpen: !this.state.menuOpen});
+        this.setState({
+            menuOpen: !this.state.menuOpen,
+            settingsOpen: false,
+        });
     }
 
     private handleLandmarksClick() {
@@ -543,7 +552,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     }
 
     private handleSettingsClick() {
-        this.setState({settingsOpen: !this.state.settingsOpen});
+        this.setState({
+            settingsOpen: !this.state.settingsOpen,
+            menuOpen: false,
+        });
     }
 
     private handleSettingsSave() {

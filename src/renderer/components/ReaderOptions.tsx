@@ -58,7 +58,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
         const __ = this.translator.translate.bind(this.translator);
 
         return (
-            <div style={{display: this.props.open ? "initial" : "none"}} className={styles.read_settings}>
+            <div style={{visibility: this.props.open ? "visible" : "hidden"}} className={styles.read_settings}>
                 <ul id={styles.read_settings_list}>
                     <li onClick={this.handleClickSection.bind(this, 0)}>{__("reader.settings.theme.title")}</li>
                     <div style={this.getSectionStyle(0)} className={styles.tab_content}>

@@ -60,7 +60,7 @@ export default class ReaderMenu extends React.Component<Props, State> {
         const __ = this.translator.translate.bind(this.translator);
 
         return (
-            <div style={{display: this.props.open ? "initial" : "none"}} className={styles.chapters_settings}>
+            <div style={{visibility: this.props.open ? "visible" : "hidden"}} className={styles.chapters_settings}>
                 <ul id={styles.chapter_settings_list}>
                     <li
                         onClick={this.handleClickSection.bind(this, 0)}
