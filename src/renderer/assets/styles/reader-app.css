@@ -234,7 +234,7 @@
 
 /* ========== MENU ========== */
 
-.chapters_settings {
+.chapters_settings, .read_settings{
 	width: 40%;
 	border-left: 1px solid #e5e5e5;
 	position: fixed;
@@ -288,11 +288,6 @@
 			font-weight: 600;
 			text-align: left;
 		}
-
-    & .subheading {
-      background-color: #EDEDED;
-	    padding:20px;
-    }
 	}
 }
 
@@ -312,12 +307,12 @@
   height:35px;
   outline: inherit;
   color:black;
-  font-size: 0.9rem;
+  font-size: 1rem;
   width:calc(100% - 35px);
 }
 
 #book_search::placeholder {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 300;
   color:#c1c1c1;
   overflow: visible;
@@ -335,7 +330,7 @@
 	position: relative;
 	left:15%;
 	width:70%;
-	font-size: 0.9rem;
+	font-size: 1rem;
 	margin-top: 10px;
 	margin-bottom: 30px;
 }
@@ -347,7 +342,7 @@
 	border-radius: 0;
 	width:50px;
 	padding:10px;
-	font-size: 0.9rem;
+	font-size: 1rem;
 	text-align: center;
 }
 
@@ -374,7 +369,7 @@
   }
 }
 
-.chapter_settings_list {
+#chapter_settings_list {
   & .subheading {
     background-color: #EDEDED;
     padding:20px;
@@ -390,14 +385,14 @@
     position: relative;
     text-align: left;
     padding:20px 0 20px 0;
-    font-size: 0.9rem;
+    font-size: 1rem;
     border-bottom: 1px solid #e5e5e5;
   }
 }
 
 .chapters_content .line {
 	text-align: left;
-	font-size: 0.8rem;
+	font-size: 0.9rem;
 	padding-top:10px;
   display: block;
   cursor: pointer;
@@ -405,10 +400,6 @@
 	color:#c1c1c1;
 	padding-bottom:20px;
 	border-bottom: 1px solid #e5e5e5;
-}
-
-.chapters_content .line:hover {
-	
 }
 
 .chapters_content .line:last-child {
@@ -429,7 +420,7 @@ p.chapters_description {
 	position: relative;
 	text-align: left;
 	padding:20px 0 20px 0;
-	font-size: 0.9rem;
+	font-size: 1rem;
 	border-bottom: 1px solid #e5e5e5;
 }
 
@@ -445,7 +436,7 @@ p.chapters_description {
 	display: inline-block;
 	width:auto;
 	height:auto;
-	font-size: 0.8rem;
+	font-size: 0.9rem;
 }
 
 .chapter_marker .gauge {
@@ -466,4 +457,134 @@ p.chapters_description {
 	display: inline-block;
 	vertical-align: top;
 	margin-top:5px;
+}
+
+// ============= SETTINGS MENU ===================
+
+#read_settings_list li {
+	padding:20px 20px 20px 20px;
+	border-bottom: 1px solid #e5e5e5;
+	font-size: 1rem;
+	font-weight: 600;
+	background-color: white;
+	cursor: pointer;
+}
+
+#read_settings_list .tab_content > div {
+	padding: 0;
+  border-bottom: none;
+}
+
+.read_settings {
+  width: 40%;
+  z-index: 10;
+	border-left: 1px solid #e5e5e5;
+	position: fixed;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch; 
+	top:60px;
+	right:0;
+	height: calc(100vh - 60px);
+	background-color: white;
+}
+
+#scroll_option, #page_option, 
+#option_gauche, #option_justif, 
+#option_colonne, #option_colonne1, #option_colonne2 {
+	display: inline-block;
+	text-align: center;
+	margin-right:10px;
+	margin-left:10px;
+	line-height: 2rem;
+	cursor: pointer;
+	vertical-align: baseline;
+}
+
+.center_in_tab {
+  position: relative;
+	text-align: center;
+	font-size: 0.9rem;
+
+  & img {
+    position: relative;
+    left:50%;
+    width:40px;
+    height: 47px;
+    display: block;
+    text-align: center;
+    transform: translateX(-50%) translateY(0%);
+    -webkit-transform: translateX(-50%) translateY(0%);
+  }
+
+  & button {
+    border: 0;
+    background-color: transparent;
+  }
+}
+
+.separateur {
+	margin-top:20px;
+	margin-bottom:20px;
+	border-bottom:1px solid #c1c1c1;
+	width:100%;
+	height:1px;
+}
+
+.lire_creertheme {
+	position: relative;
+	width:auto;
+	padding:5px 20px 5px 20px;
+	font-size: 1rem;
+	background-color: white;
+	border:1px solid #c1c1c1;
+  text-decoration: none;
+  color: black;
+}
+
+input[type=number] {
+	padding:10px;
+	margin-top:10px;
+	background-color: white;
+	outline:none;
+	border:1px solid #c1c1c1;
+	border-radius: 5px;
+	text-align: center;
+}
+
+input[type=radio] + label {
+	display: inline-block;
+}
+
+#read_settings_list .line_tab_content {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    height: auto;
+    padding: 20px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.line_tab_content label, .line_tab_content .subheading {
+	display: block;
+	font-size: 1rem;
+	font-weight: 600;
+	text-align: left;
+}
+
+.line_tab_content select {
+	background-color: white;
+	border-radius: none;
+	outline:none;
+	width:40%;
+	text-align: center;
+	text-align-last: center;
+	font-size: 0.8rem;
+	height:30px;
+}
+
+.out_of_screen {
+	float:left;
+	width:0px;
+	height:3px;
+	overflow: hidden;
 }

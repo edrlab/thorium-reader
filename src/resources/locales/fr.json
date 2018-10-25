@@ -101,15 +101,37 @@
     "reader": {
       "settings": {
         "title": "Paramètres",
-        "align": "Alignement du text :",
+        "theme": {
+          "title": "Thème",
+          "predefined": "Thèmes prédéfinis",
+          "myTheme": "Mes thèmes",
+          "create": "Créer un thème"
+        },
+        "text": "Texte",
         "left": "Gauche",
-        "center": "Centré",
+        "justify": "Justifié",
+        "column": {
+          "title": "Colonne",
+          "auto": "Automatique",
+          "one": "Une colonne",
+          "two": "Deux colonnes"
+        },
+        "spacing": "Espacement",
+        "margin": "Marge",
+        "wordSpacing": "Espacement des mots",
+        "lineSpacing": "Espacement des lignes",
+        "letterSpacing": "Espacement des lettres",
+        "accessibility": "Accessibilité",
+        "disposition": {
+          "title": "Disposition",
+          "with": "Avec",
+          "without": "Sans"
+        },
         "right": "Droite",
         "font": "Police",
-        "fontSize": "Taille du texte :",
-        "display": "Type d'affichage :",
-        "close": "Fermer",
-        "save": "Sauvegarder",
+        "fontSize": "Taille du texte",
+        "display": "Affichage",
+        "justification": "Justification",
         "scrolled": "Défilé",
         "paginated": "Paginé"
       },

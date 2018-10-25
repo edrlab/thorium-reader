@@ -43,7 +43,6 @@ export default class ReaderMenu extends React.Component<Props, State> {
 
     public componentWillReceiveProps(newProps: Props) {
         if (!this.props.publication && newProps.publication) {
-            console.log(newProps.publication);
             const pub: R2Publication = newProps.publication;
             this.tocRendererList = this.createTOCRenderList(pub.TOC);
 
@@ -62,7 +61,7 @@ export default class ReaderMenu extends React.Component<Props, State> {
 
         return (
             <div style={{display: this.props.open ? "initial" : "none"}} className={styles.chapters_settings}>
-                <ul className={styles.chapter_settings_list}>
+                <ul id={styles.chapter_settings_list}>
                     <li
                         onClick={this.handleClickSection.bind(this, 0)}
                         className={!this.clickableList[0] && styles.tab_not_clickable}
@@ -170,7 +169,6 @@ export default class ReaderMenu extends React.Component<Props, State> {
     }
 
     private handleClickSection(id: number) {
-        console.log(id, this.clickableList[id]);
         if (this.clickableList[id]) {
             const { sectionOpenList } = this.state;
             sectionOpenList[id] = !sectionOpenList[id];
