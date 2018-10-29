@@ -15,7 +15,6 @@ import { Store } from "redux";
 
 import { container } from "readium-desktop/renderer/di";
 
-import { Publication } from "readium-desktop/common/models/publication";
 import {
     Bookmark,
     ReaderConfig as ReadiumCSS,
@@ -27,25 +26,13 @@ import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 
 import ArrowIcon from "readium-desktop/renderer/assets/icons/arrow.svg";
-import ArrowBack from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
-import ContentTableIcon from "readium-desktop/renderer/assets/icons/content-table.svg";
-import ContinueIcon from "readium-desktop/renderer/assets/icons/continue.svg";
-import LandmarkIcon from "readium-desktop/renderer/assets/icons/landmark.svg";
-import NightIcon from "readium-desktop/renderer/assets/icons/night.svg";
-import PageIcon from "readium-desktop/renderer/assets/icons/page.svg";
-import AlignCenterIcon from "readium-desktop/renderer/assets/icons/paragraph-center.svg";
-import AlignLeftIcon from "readium-desktop/renderer/assets/icons/paragraph-left.svg";
-import AlignRightIcon from "readium-desktop/renderer/assets/icons/paragraph-right.svg";
-import SettingsIcon from "readium-desktop/renderer/assets/icons/settings.svg";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import { lcpActions, readerActions } from "readium-desktop/common/redux/actions";
+import { readerActions } from "readium-desktop/common/redux/actions";
 
-import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import { Dialog } from "material-ui";
 import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
@@ -81,8 +68,6 @@ import {
     _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
-import FocusLock from "react-focus-lock";
-
 import { setEpubReadingSystemJsonGetter } from "@r2-navigator-js/electron/renderer/index";
 import { INameVersion } from "@r2-navigator-js/electron/renderer/webview/epubReadingSystem";
 
@@ -90,6 +75,7 @@ import {
     _APP_VERSION,
 } from "readium-desktop/preprocessor-directives";
 
+import ReaderHeader from "readium-desktop/renderer/components/ReaderHeader";
 import ReaderMenu from "readium-desktop/renderer/components/ReaderMenu";
 import ReaderOptions from "readium-desktop/renderer/components/ReaderOptions";
 
@@ -235,10 +221,12 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             publication: undefined,
             menuOpen: false,
         };
+
+        this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
+        this.handleSettingsClick = this.handleSettingsClick.bind(this);
     }
 
     public async componentDidMount() {
-        const __ = this.translator.translate;
         this.setState({
             publicationJsonUrl,
         });
@@ -315,88 +303,12 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
                     <div className={styles.root}>
-                        <nav className={styles.main_navigation} role="navigation" aria-label="Menu principal">
-                            <ul>
-                                <li>
-                                    <button
-                                        className={styles.menu_button}
-                                        onClick={this.handleContentTableClick.bind(this)}
-                                    >
-                                        <img src="src/renderer/assets/icons/baseline-arrow_back-24px-grey.svg"
-                                        alt="retour à l'accueil"/>
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        className={styles.menu_button}
-                                        onClick={this.handleLandmarksClick.bind(this)}
-                                    >
-                                        <img src="src/renderer/assets/icons/outline-info-24px.svg"
-                                        alt="retour à l'accueil"/>
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        className={styles.menu_button}
-                                        onClick={this.handleContentTableClick.bind(this)}
-                                    >
-                                        <img src="src/renderer/assets/icons/outline-flip_to_front-24px.svg"
-                                        alt="retour à l'accueil"/>
-                                    </button>
-                                </li>
-                                <li  className={styles.right + " " + styles.blue}>
-                                    <button
-                                        className={styles.menu_button}
-                                        onClick={this.handleContentTableClick.bind(this)}
-                                    >
-                                        <img src="src/renderer/assets/icons/sharp-crop_free-24px.svg"
-                                        alt="retour à l'accueil"/>
-                                    </button>
-                                </li>
-                                <li
-                                    className={styles.right}
-                                    {...(this.state.menuOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
-                                >
-                                    <button
-                                        className={styles.menu_button}
-                                        onClick={this.handleMenuButtonClick.bind(this)}
-                                    >
-                                        <img src="src/renderer/assets/icons/open_book.svg"
-                                        alt="open menu"/>
-                                    </button>
-                                </li>
-                                <li className={styles.right}>
-                                    <button
-                                        className={styles.menu_button}
-                                        onClick={this.handleContentTableClick.bind(this)}
-                                    >
-                                        <img src="src/renderer/assets/icons/outline-bookmark_border-24px.svg"
-                                        alt="retour à l'accueil"/>
-                                    </button>
-                                </li>
-                                <li
-                                    className={styles.right}
-                                    {...(this.state.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
-                                >
-                                    <button
-                                        className={styles.menu_button}
-                                        onClick={this.handleSettingsClick.bind(this)}
-                                    >
-                                        <img src="src/renderer/assets/icons/font-size.svg"
-                                        alt="settings"/>
-                                    </button>
-                                </li>
-                                <li className={styles.right}>
-                                    <button
-                                        className={styles.menu_button}
-                                        onClick={this.handleContentTableClick.bind(this)}
-                                    >
-                                        <img src="src/renderer/assets/icons/baseline-volume_up-24px.svg"
-                                        alt="retour à l'accueil"/>
-                                    </button>
-                                </li>
-                            </ul>
-                        </nav>
+                        <ReaderHeader
+                            menuOpen={this.state.menuOpen}
+                            settingsOpen={this.state.settingsOpen}
+                            handleMenuClick={this.handleMenuButtonClick}
+                            handleSettingsClick={this.handleSettingsClick}
+                        />
                         <ReaderMenu
                             open={this.state.menuOpen}
                             publicationJsonUrl={publicationJsonUrl}
@@ -410,17 +322,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             handleLinkClick={this.handleLinkClick.bind(this)}
                             handleSettingChange={this.handleSettingsValueChange.bind(this)}
                         />
-                        {/* <div className={styles.menu}>
-                            <button
-                                className={styles.menu_button}
-                                onClick={this.handleContentTableClick.bind(this)}
-                            >
-                                <svg className={styles.menu_svg} viewBox={ContentTableIcon.content_table}>
-                                    <title>{__("reader.svg.contentTable")}</title>
-                                    <use xlinkHref={"#" + ContentTableIcon.id} />
-                                </svg>
-                            </button>
-                        </div> */}
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
                                 <button
@@ -447,16 +348,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             </div>
                         </div>
                     </div>
-                    {/*<FocusLock>
-                            <div>
-                                <div className={styles.settings_content}>
-                                    <label>{__("reader.settings.font")}</label>
-                                    <label>
-                                        {__("reader.settings.fontSize")}{fontSizes[this.state.fontSizeIndex]}
-                                    </label>
-                                    <label>{__("reader.settings.align")}</label>
-                                    <label>{__("reader.settings.display")}</label>
-                        </FocusLock>*/}
                 </div>
             </MuiThemeProvider>
         );
@@ -470,7 +361,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         try {
             response = await fetch(publicationJsonUrl);
         } catch (e) {
-            // console.log(e);
             return;
         }
         if (!response.ok) {
@@ -531,19 +421,11 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         return publication;
     }
 
-    private handleContentTableClick() {
-        this.setState({contentTableOpen: !this.state.contentTableOpen});
-    }
-
     private handleMenuButtonClick() {
         this.setState({
             menuOpen: !this.state.menuOpen,
             settingsOpen: false,
         });
-    }
-
-    private handleLandmarksClick() {
-        this.setState({landmarksOpen: !this.state.landmarksOpen});
     }
 
     private handleLinkClick(event: any, url: string) {
