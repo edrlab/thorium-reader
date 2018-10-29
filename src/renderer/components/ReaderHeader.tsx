@@ -12,7 +12,7 @@ interface Props {
     handleSettingsClick: () => void;
 }
 
-export default class ReaderMenu extends React.Component<Props, undefined> {
+export default class ReaderHeader extends React.Component<Props, undefined> {
 
     @lazyInject("translator")
     private translator: Translator;

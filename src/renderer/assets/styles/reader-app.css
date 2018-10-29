@@ -22,6 +22,7 @@
   display: flex;
   align-items: stretch;
   margin-top: 63px;
+  margin-bottom: 63px;
 }
 
 /* ========== READER ==========*/
@@ -459,7 +460,7 @@ p.chapters_description {
 	margin-top:5px;
 }
 
-// ============= SETTINGS MENU ===================
+/* ============= SETTINGS MENU =================== */
 
 #read_settings_list li {
 	padding:20px 20px 20px 20px;
@@ -600,4 +601,130 @@ input[type=radio] + label {
 	width:0px;
 	height:3px;
 	overflow: hidden;
+}
+
+/* ========= FOOTER ========= */
+
+.reader_footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    & .arrows {
+      float: right;
+      margin-bottom: 2rem;
+      margin-right: 5rem;
+
+      & button {
+        border: 0;
+        cursor: pointer;
+        padding: 0;
+        background-color: transparent;
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    & .track_reading_wrapper {
+          background-color: white;
+          padding: 1rem 5rem;
+          bottom: 0;
+          margin-top: 2rem;
+    }
+}
+
+#track_reading {
+	position: relative;
+	width:100%;
+	height:10px;
+	background-color: #c1c1c1;
+}
+
+#track_reading + span {
+	font-style: italic;
+	font-size: 0.8rem;
+	padding-bottom: 10px;
+	cursor: pointer;
+}
+
+#current {
+	position: relative;
+	width:30%;
+	height:100%;
+	background-color: #3C3C3C;
+}
+
+#chapters_markers {
+	display: none;
+	position: absolute;
+	width:100%;
+	height:15px;
+	margin-top:-2.5px;
+	top:0;
+}
+
+#chapters_markers span {
+	border-right:1px solid black;
+	flex-grow:1;
+}
+
+#chapters_markers span:last-child{
+	border-right:none;
+}
+
+#arrow_box {
+	display: none;
+	position: absolute;
+	width: auto;
+	height: auto;
+	padding: 10px 0 10px 0;
+	margin: -150px 0 0 0;
+	left:50%;
+	background: white;
+	font-size: 16px;
+	color: black;
+	text-align: center;
+	-webkit-box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
+	-moz-box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
+	box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
+	transform: translateX(-50%) translateY(0%);
+	-webkit-transform: translateX(-50%) translateY(0%);
+}
+
+#arrow_box:after, #arrow_box:before {
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border: solid rgba(0, 0, 0, 0);
+}
+#arrow_box:after {
+  border-color: rgba(0, 0, 0, 0);
+  border-width: 9px;
+  bottom: -18px;
+  border-top-color: white;
+  left: 50%;
+  margin-left: -9px;
+}
+#arrow_box:before {
+  border-color: rgba(255, 255, 255, 0);
+  border-width: 10px;
+  bottom: -20px;
+  border-top-color: none;
+  left: 50%;
+  margin-left: -10px;
+}
+
+#arrow_box span {
+	display: block;
+	padding:0 20px 10px 20px;
+	border-bottom:1px solid #c1c1c1;
+}
+
+#arrow_box p {
+	margin:10px 0 0 0;
+	font-size: 0.8rem;
+	padding:0 20px 10px 20px;
 }

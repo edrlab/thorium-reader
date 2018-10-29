@@ -71,10 +71,9 @@ import {
 import { setEpubReadingSystemJsonGetter } from "@r2-navigator-js/electron/renderer/index";
 import { INameVersion } from "@r2-navigator-js/electron/renderer/webview/epubReadingSystem";
 
-import {
-    _APP_VERSION,
-} from "readium-desktop/preprocessor-directives";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
+import ReaderFooter from "readium-desktop/renderer/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/ReaderHeader";
 import ReaderMenu from "readium-desktop/renderer/components/ReaderMenu";
 import ReaderOptions from "readium-desktop/renderer/components/ReaderOptions";
@@ -183,8 +182,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
     @lazyInject("translator")
     private translator: Translator;
-
-    // private landmarksData: any[];
 
     constructor(props: any) {
         super(props);
@@ -324,29 +321,12 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
-                                <button
-                                    className={classNames(styles.side_button, styles.left_button)}
-                                    onClick={() => {navLeftOrRight(true); }}
-                                >
-                                    <svg className={styles.side_button_svg} viewBox={ArrowIcon.arrow}>
-                                        <title>{__("reader.svg.left")}</title>
-                                        <use xlinkHref={"#" + ArrowIcon.id} />
-                                    </svg>
-                                </button>
                                 <div className={styles.publication_viewport_container}>
                                     <div id="publication_viewport" className={styles.publication_viewport}> </div>
                                 </div>
-                                <button
-                                    className={classNames(styles.side_button, styles.right_button)}
-                                    onClick={() => {navLeftOrRight(false); }}
-                                >
-                                    <svg className={styles.side_button_svg} viewBox={ArrowIcon.arrow}>
-                                        <title>{__("reader.svg.right")}</title>
-                                        <use xlinkHref={"#" + ArrowIcon.id} />
-                                    </svg>
-                                </button>
                             </div>
                         </div>
+                        <ReaderFooter navLeftOrRight={navLeftOrRight}/>
                     </div>
                 </div>
             </MuiThemeProvider>
