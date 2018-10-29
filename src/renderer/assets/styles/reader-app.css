@@ -69,7 +69,7 @@
   height: 100%;
   display: flex;
   align-items: stretch;
-  margin-top: 63px;
+  margin-top: 6rem;
   margin-bottom: 6rem;
 }
 
@@ -255,7 +255,7 @@
         border: none;
         cursor: pointer;
 
-        & img {
+        & svg {
           width:30px;
           padding:0;
           margin: 0 auto;

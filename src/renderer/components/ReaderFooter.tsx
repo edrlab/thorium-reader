@@ -12,6 +12,7 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 interface Props {
     navLeftOrRight: (left: boolean) => void;
+    fullscreen: boolean;
 }
 
 interface States {
@@ -36,7 +37,7 @@ export default class ReaderFooter extends React.Component<Props, States> {
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
 
-        return (
+        return !this.props.fullscreen && (
             <div className={styles.reader_footer}>
                 <div className={styles.arrows}>
                     <button onClick={() => this.props.navLeftOrRight(true)}>

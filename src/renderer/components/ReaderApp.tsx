@@ -171,6 +171,7 @@ interface ReaderAppState {
     landmarkTabOpen: number;
     publication: R2Publication;
     menuOpen: boolean;
+    fullscreen: boolean;
 }
 
 const lightMuiTheme = getMuiTheme(lightBaseTheme);
@@ -217,10 +218,12 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             landmarkTabOpen: 0,
             publication: undefined,
             menuOpen: false,
+            fullscreen: false,
         };
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
+        this.handleFullscreenClick = this.handleFullscreenClick.bind(this);
     }
 
     public async componentDidMount() {
@@ -305,6 +308,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             settingsOpen={this.state.settingsOpen}
                             handleMenuClick={this.handleMenuButtonClick}
                             handleSettingsClick={this.handleSettingsClick}
+                            fullscreen={this.state.fullscreen}
+                            handleFullscreenClick={this.handleFullscreenClick}
                         />
                         <ReaderMenu
                             open={this.state.menuOpen}
@@ -326,7 +331,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                                 </div>
                             </div>
                         </div>
-                        <ReaderFooter navLeftOrRight={navLeftOrRight}/>
+                        <ReaderFooter
+                            navLeftOrRight={navLeftOrRight}
+                            fullscreen={this.state.fullscreen}
+                        />
                     </div>
                 </div>
             </MuiThemeProvider>
@@ -411,6 +419,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     private handleLinkClick(event: any, url: string) {
         event.preventDefault();
         handleLink(url, undefined, false);
+    }
+
+    private handleFullscreenClick() {
+        this.setState({fullscreen: !this.state.fullscreen});
     }
 
     private handleSettingsClick() {
