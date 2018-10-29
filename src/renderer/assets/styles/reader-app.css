@@ -66,11 +66,11 @@
 }
 
 .content_root {
-  height: calc(100% - 51px);
+  height: 100%;
   display: flex;
   align-items: stretch;
   margin-top: 63px;
-  margin-bottom: 63px;
+  margin-bottom: 6rem;
 }
 
 /* ========== READER ==========*/
