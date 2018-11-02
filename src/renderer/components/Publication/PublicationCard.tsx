@@ -75,13 +75,19 @@ export default class PublicationListElement extends React.Component<IPublication
                 aria-controls="dialog"
             >
                 <div className={styles.image_wrapper}>
-                    <div onClick={(e) => this.props.handleRead(this.props.publication)}>
+                    <a onClick={(e) => this.handleBookClick(e, this.props.publication)}>
                         <Cover publication={publication} />
-                    </div>
+                    </a>
                 </div>
-                <div onClick={(e) => this.props.handleRead(this.props.publication)} className={styles.legend}>
-                    <p className={styles.book_title} aria-label="Titre du livre">{publication.title}</p>
-                    <p className={styles.book_author} aria-label="Auteur du livre">{authors}</p>
+                <div className={styles.legend}>
+                    <a onClick={(e) => this.handleBookClick(e, this.props.publication)}>
+                        <p className={styles.book_title} aria-label="Titre du livre">
+                            {publication.title}
+                        </p>
+                        <p className={styles.book_author} aria-label="Auteur du livre">
+                            {authors}
+                        </p>
+                    </a>
                     <button
                         type="button"
                         aria-haspopup="dialog"
@@ -101,5 +107,10 @@ export default class PublicationListElement extends React.Component<IPublication
                 </div>
             </div>
         );
+    }
+
+    private handleBookClick(e: any, publication: Publication) {
+        e.preventDefault();
+        this.props.handleRead(this.props.publication)
     }
 }
