@@ -1,0 +1,43 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.content {
+    display: flex;
+
+    & > div {
+        display: flex;
+        flex: 1;
+    }
+}
+
+.content_wrapper {
+    overflow: hidden;
+    flex: 1;
+}
+
+button {
+    padding: 0;
+    background: none;
+    border: 0;
+    height: 30px;
+    width: 30px;
+    fill: black;
+    opacity: 0.75;
+    margin: 3px;
+    cursor: pointer;
+}
+
+.button_substitute {
+    height: 36px;
+    width: 36px;
+}
+
+.button:hover {
+    opacity: 1;
+}
+
+.back {
+    transform: rotateY(180deg);
+}

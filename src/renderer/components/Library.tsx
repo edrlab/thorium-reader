@@ -171,17 +171,7 @@ export default class Library extends React.Component<LibraryProps, ILibraryState
                 downloadProgress = dlStore.publicationDownloadProgress[pub.identifier];
             }
 
-            list.push(<PublicationCard key={i}
-                publicationId={i}
-                downloading={downloading}
-                downloadProgress={downloadProgress}
-                publication={pub}
-                handleRead={this.props.handleRead.bind(this)}
-                cancelDownload={this.cancelDownload.bind(this)}
-                deletePublication={this.openDeleteDialog.bind(this)}
-                openInfoDialog={this.openInfoDialog.bind(this)}
-                openReturnDialog={this.openReturnDialog.bind(this)}
-                openRenewDialog={this.openRenewDialog.bind(this)}/>);
+            // list.push(<PublicationCard key={i} publication={pub}/>);
             i++;
         }
         return list;

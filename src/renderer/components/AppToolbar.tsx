@@ -10,15 +10,9 @@ import { Store } from "redux";
 
 import Dialog from "material-ui/Dialog";
 import Divider from "material-ui/Divider";
-import DropDownMenu from "material-ui/DropDownMenu";
-import FontIcon from "material-ui/FontIcon";
-import IconButton from "material-ui/IconButton";
-import IconMenu from "material-ui/IconMenu";
 import Menu from "material-ui/Menu";
 import MenuItem from "material-ui/MenuItem";
 import Popover from "material-ui/Popover";
-import { blue500 } from "material-ui/styles/colors";
-import { Toolbar, ToolbarGroup, ToolbarSeparator } from "material-ui/Toolbar";
 
 import FlatButton from "material-ui/FlatButton";
 
