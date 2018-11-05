@@ -20,11 +20,13 @@ import * as styles from "readium-desktop/renderer/assets/styles/publication.css"
 
 interface IPublicationState {
     isFlipped: boolean;
+    menu: boolean;
 }
 
 interface IPublicationProps {
     publication: Publication;
     handleRead: (publication: Publication) => void;
+    handleMenuClick: (el: React.RefObject<any>, publication: Publication) => void;
     // openInfoDialog: (publication: Publication) => void;
     // openReturnDialog: (publication: Publication) => void;
     // openRenewDialog: (publication: Publication) => void;
@@ -34,12 +36,17 @@ export default class PublicationListElement extends React.Component<IPublication
     @lazyInject("translator")
     private translator: Translator;
 
+    private menuButton: React.RefObject<any>;
+
     constructor(props: IPublicationProps) {
         super(props);
 
         this.state = {
             isFlipped: false,
+            menu: false,
         };
+
+        this.menuButton = React.createRef();
     }
 
     public handleFront = () => {
@@ -54,7 +61,6 @@ export default class PublicationListElement extends React.Component<IPublication
         const __ = this.translator.translate.bind(this.translator);
         const publication = this.props.publication;
         let authors: string = "";
-        let image: string = "";
 
         if (publication.authors && publication.authors.length > 0) {
             for (const author of publication.authors) {
@@ -64,9 +70,6 @@ export default class PublicationListElement extends React.Component<IPublication
                 }
                 authors += this.translator.translateContentField(newAuthor.name);
             }
-        }
-        if (publication.cover) {
-            image = publication.cover.url;
         }
 
         return (
@@ -89,10 +92,12 @@ export default class PublicationListElement extends React.Component<IPublication
                         </p>
                     </a>
                     <button
+                        ref={this.menuButton}
                         type="button"
                         aria-haspopup="dialog"
                         aria-controls="dialog"
                         title="Voir plus"
+                        onClick={() => this.props.handleMenuClick(this.menuButton, publication)}
                     >
                     <svg role="link" className={styles.icon_seemore}>
                         <g aria-hidden="true">
@@ -103,7 +108,6 @@ export default class PublicationListElement extends React.Component<IPublication
                         </g>
                     </svg>
                     </button>
-
                 </div>
             </div>
         );
@@ -111,6 +115,6 @@ export default class PublicationListElement extends React.Component<IPublication
 
     private handleBookClick(e: any, publication: Publication) {
         e.preventDefault();
-        this.props.handleRead(this.props.publication)
+        this.props.handleRead(this.props.publication);
     }
 }

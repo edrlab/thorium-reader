@@ -1,4 +1,5 @@
 import * as React from "react";
+import ReactDOM = require("react-dom");
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
@@ -28,10 +29,13 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 
 interface Props {
     catalog: Catalog;
-
 }
 
-export class MyBooks extends React.Component<Props, undefined> {
+interface States {
+    menuInfos: {open: boolean, el: React.RefObject<any>, publication: Publication};
+}
+
+export class MyBooks extends React.Component<Props, States> {
 
     @lazyInject("translator")
     private translator: Translator;
@@ -39,8 +43,42 @@ export class MyBooks extends React.Component<Props, undefined> {
     @lazyInject("store")
     private store: Store<RootState>;
 
+    private menuRef: React.RefObject<any>;
+
+    public constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            menuInfos: {
+                open: false,
+                el: undefined,
+                publication: undefined,
+            },
+        };
+
+        this.menuRef = React.createRef();
+
+        this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
+    }
+
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
+
+        let menuStyle = {
+            position: "absolute" as "absolute",
+            top: 0,
+            left: 0,
+        };
+        if (this.state.menuInfos.el) {
+            const el = this.state.menuInfos.el.current;
+            const position = el.getBoundingClientRect();
+            menuStyle = {
+                position: "absolute",
+                top: position.top + el.offsetHeight + 5,
+                left: position.left - this.menuRef.current.offsetWidth + (el.offsetWidth / 2),
+            };
+        }
+
         return (
             <>
                 <SecondaryHeader>
@@ -75,18 +113,45 @@ export class MyBooks extends React.Component<Props, undefined> {
                                         key={index}
                                         publication={pub}
                                         handleRead={this.handleRead.bind(this)}
+                                        handleMenuClick={this.handleMenuClick.bind(this)}
                                     />,
                                 )}
                             />
                         }
                     </section>
                 </main>
+                <div
+                    ref={this.menuRef}
+                    style={menuStyle}
+                    className={(this.state.menuInfos.open ? styles.menu_active + " " : "") + styles.menu}
+                >
+                    <a tabIndex={1} onBlur={this.handleOnBlurMenu}>Fiche livre</a>
+                    <a tabIndex={2} onBlur={this.handleOnBlurMenu}>Retirer de la séléction</a>
+                    <a tabIndex={3} onBlur={this.handleOnBlurMenu}>Supprimer définitivement</a>
+                </div>
             </>
         );
     }
 
     private handleRead(publication: Publication) {
         this.store.dispatch(readerActions.open(publication));
+    }
+
+    private handleMenuClick(el: React.RefObject<any>, publication: Publication) {
+        this.setState({menuInfos: {
+            open: el === this.state.menuInfos.el ? !this.state.menuInfos.open : true,
+            el,
+            publication,
+        }});
+        this.menuRef.current.children[0].focus();
+    }
+
+    private handleOnBlurMenu(e: any) {
+        if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== this.menuRef.current)) {
+            const { menuInfos } = this.state;
+            menuInfos.open = false;
+            this.setState({ menuInfos });
+        }
     }
 }
 
