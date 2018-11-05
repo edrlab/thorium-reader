@@ -43,7 +43,6 @@
 
 .block_book {
     flex: 1;
-    margin-right: 30px;
 
     & .image_wrapper {
         width: 100%;

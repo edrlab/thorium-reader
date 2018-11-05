@@ -82,12 +82,12 @@ export default class Slider extends React.Component<Props, States> {
             secondaryList.push(el);
             if (i === content.length && i % this.props.displayQty !== 0) {
                 for (let j = 0; j < this.props.displayQty - (i % this.props.displayQty); j++) {
-                    secondaryList.push(<div style={{flex: 1}}></div>);
+                    secondaryList.push(<div key={j} style={{flex: 1}}></div>);
                 }
             }
             if (i % this.props.displayQty === 0 || i === content.length) {
                 list.push(
-                    <div>{secondaryList}</div>,
+                    <div key={i}>{secondaryList}</div>,
                 );
                 secondaryList = [];
             }
