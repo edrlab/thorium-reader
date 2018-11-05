@@ -1,5 +1,4 @@
 import * as React from "react";
-import ReactDOM = require("react-dom");
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
@@ -15,6 +14,7 @@ import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
 import Slider from "readium-desktop/renderer/components/utils/Slider";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
+import BookDetailsDialog from "readium-desktop/renderer/components/BookDetailsDialog";
 import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
@@ -33,6 +33,7 @@ interface Props {
 
 interface States {
     menuInfos: {open: boolean, el: React.RefObject<any>, publication: Publication};
+    dialogInfos: {open: boolean, publication: Publication};
 }
 
 export class MyBooks extends React.Component<Props, States> {
@@ -54,15 +55,24 @@ export class MyBooks extends React.Component<Props, States> {
                 el: undefined,
                 publication: undefined,
             },
+            dialogInfos: {
+                open: false,
+                publication: undefined,
+            },
         };
 
         this.menuRef = React.createRef();
 
         this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
+        this.closeDialog = this.closeDialog.bind(this);
+        this.handleRead = this.handleRead.bind(this);
+        this.handleMenuClick = this.handleMenuClick.bind(this);
+        this.openDialog = this.openDialog.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
+        const dialogOpen = this.state.dialogInfos.open;
 
         let menuStyle = {
             position: "absolute" as "absolute",
@@ -81,7 +91,7 @@ export class MyBooks extends React.Component<Props, States> {
 
         return (
             <>
-                <SecondaryHeader>
+                <SecondaryHeader style={this.getDialogBlur()}>
                     <a>
                         <SVG svg={GridIcon} title="Présenter les couvertures de livres en grille"/>
                     </a>
@@ -100,7 +110,7 @@ export class MyBooks extends React.Component<Props, States> {
                         </button>
                     </form>
                 </SecondaryHeader>
-                <main id={styles.main} role="main">
+                <main style={this.getDialogBlur()} id={styles.main} role="main">
                     <a id="contenu" tabIndex={-1}></a>
                     <section>
                         <h1>Derniers ajouts</h1>
@@ -112,8 +122,8 @@ export class MyBooks extends React.Component<Props, States> {
                                     <PublicationCard
                                         key={index}
                                         publication={pub}
-                                        handleRead={this.handleRead.bind(this)}
-                                        handleMenuClick={this.handleMenuClick.bind(this)}
+                                        handleRead={this.handleRead}
+                                        handleMenuClick={this.handleMenuClick}
                                     />,
                                 )}
                             />
@@ -125,10 +135,15 @@ export class MyBooks extends React.Component<Props, States> {
                     style={menuStyle}
                     className={(this.state.menuInfos.open ? styles.menu_active + " " : "") + styles.menu}
                 >
-                    <a tabIndex={1} onBlur={this.handleOnBlurMenu}>Fiche livre</a>
+                    <a tabIndex={1} onClick={this.openDialog} onBlur={this.handleOnBlurMenu}>Fiche livre</a>
                     <a tabIndex={2} onBlur={this.handleOnBlurMenu}>Retirer de la séléction</a>
                     <a tabIndex={3} onBlur={this.handleOnBlurMenu}>Supprimer définitivement</a>
                 </div>
+                <BookDetailsDialog
+                    open={this.state.dialogInfos.open}
+                    publication={this.state.dialogInfos.publication}
+                    closeDialog={this.closeDialog}
+                />
             </>
         );
     }
@@ -152,6 +167,18 @@ export class MyBooks extends React.Component<Props, States> {
             menuInfos.open = false;
             this.setState({ menuInfos });
         }
+    }
+
+    private closeDialog() {
+        this.setState({dialogInfos: {open: false, publication: undefined}});
+    }
+
+    private openDialog() {
+        this.setState({dialogInfos: {open: true, publication: this.state.menuInfos.publication}});
+    }
+
+    private getDialogBlur() {
+        return this.state.dialogInfos.open ? {filter: "blur(2px)"} : {};
     }
 }
 

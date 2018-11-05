@@ -2,10 +2,19 @@ import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 
-export default class SecondaryHeader extends React.Component<{}, undefined> {
+interface Props {
+    style?: {};
+}
+
+export default class SecondaryHeader extends React.Component<Props, undefined> {
     public render(): React.ReactElement<{}> {
         return (
-            <nav className={styles.nav_secondary} role="navigation" aria-label="Menu principal">
+            <nav
+                style={this.props.style}
+                className={styles.nav_secondary}
+                role="navigation"
+                aria-label="Menu principal"
+            >
                 {this.props.children}
             </nav>
         );
