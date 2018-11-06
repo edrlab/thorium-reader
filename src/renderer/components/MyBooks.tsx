@@ -143,6 +143,7 @@ export class MyBooks extends React.Component<Props, States> {
                     open={this.state.dialogInfos.open}
                     publication={this.state.dialogInfos.publication}
                     closeDialog={this.closeDialog}
+                    readPublication={this.handleRead}
                 />
             </>
         );

@@ -21,25 +21,42 @@ interface Props {
     publication: Publication;
     open: boolean;
     closeDialog: () => void;
+    readPublication: (publication: Publication) => void;
 }
 
 export default class BookDetailsDialog extends React.Component<Props, undefined> {
-
     @lazyInject("translator")
     private translator: Translator;
+
+    public constructor(props: Props) {
+        super(props);
+
+        this.handleRead = this.handleRead.bind(this);
+    }
 
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
         const { publication } = this.props;
 
+        console.log(publication);
+
         let authors: string = "";
         if (publication && publication.authors && publication.authors.length > 0) {
             for (const author of publication.authors) {
-                const newAuthor: Contributor = author;
                 if (authors !== "") {
                     authors += ", ";
                 }
-                authors += this.translator.translateContentField(newAuthor.name);
+                authors += author.name;
+            }
+        }
+
+        let languages: string = "";
+        if (publication && publication.languages && publication.languages.length > 0) {
+            for (const language of publication.languages) {
+                if (languages !== "") {
+                    languages += ", ";
+                }
+                languages += language.code;
             }
         }
 
@@ -58,8 +75,12 @@ export default class BookDetailsDialog extends React.Component<Props, undefined>
                 <div role="document" className={styles.c_dialog__box}>
                     { publication ? <>
                         <div className={styles.dialog_left}>
-                            <Cover publication={publication} />
-                            <a href="lire.html" className={styles.lire}>Lire</a>
+                            <div className={styles.image_wrapper}>
+                                <div>
+                                    <Cover publication={publication} />
+                                </div>
+                            </div>
+                            <a  onClick={this.handleRead} className={styles.lire}>Lire</a>
                             <ul className={styles.liens}>
                             <li><a href=""><SVG svg={ExportIcon} />Gérer mon emprunt</a></li>
                             <li><a href=""><SVG svg={RestoreIcon} />Exporter</a></li>
@@ -74,50 +95,56 @@ export default class BookDetailsDialog extends React.Component<Props, undefined>
                         <div className={styles.dialog_right}>
                             <h2>{publication.title}</h2>
                             <div>
-                                <p>{authors}</p>
+                                <p className={styles.author}>{authors}</p>
                                 <p><span>Publié le</span> 12/03/2018</p>
-                                <div className={styles.tags}><span>Tags</span>
-                                    <ul>
-                                    {/* <!-- Un ensemble "tag" --> */}
-                                    <li>Science-fiction
-                                        <a href="#">
-                                            <SVG svg={CrossIcon} title="supprimer le tag" />
-                                        </a>
-                                    </li>
-                                    {/* <!-- Un ensemble "tag" --> */}
-                                    <li>Pour le bac
-                                        <a href="#">
-                                            <SVG svg={CrossIcon} title="supprimer le tag" />
-                                        </a>
-                                    </li>
-                                    {/* <!-- Un ensemble "tag" --> */}
-                                    <li>Favoris
-                                        <a href="#">
-                                            <SVG svg={CrossIcon} title="supprimer le tag" />
-                                        </a>
-                                    </li>
-                                    </ul>
+                                <div className={styles.tags}>
+                                    <div className={styles.tag_list}>
+                                        <span>Tags</span>
+                                        <div>
+                                            <ul>
+                                                {/* <!-- Un ensemble "tag" --> */}
+                                                <li>Science-fiction
+                                                    <a href="#">
+                                                        <SVG svg={CrossIcon} title="supprimer le tag" />
+                                                    </a>
+                                                </li>
+                                                {/* <!-- Un ensemble "tag" --> */}
+                                                <li>Pour le bac
+                                                    <a href="#">
+                                                        <SVG svg={CrossIcon} title="supprimer le tag" />
+                                                    </a>
+                                                </li>
+                                                {/* <!-- Un ensemble "tag" --> */}
+                                                <li>Favoris
+                                                    <a href="#">
+                                                        <SVG svg={CrossIcon} title="supprimer le tag" />
+                                                    </a>
+                                                </li>
+                                            </ul>
 
-                                    {/* <!-- Formulaire de recherche --> */}
-                                    <form id={styles.flux_search}>
-                                    <input
-                                        type="text"
-                                        className={styles.tag_inputs}
-                                        title="ajouter un tag"
-                                        placeholder="Ajouter un tag"
-                                    />
-                                    </form>
+                                            {/* <!-- Formulaire de recherche --> */}
+                                            <form id={styles.flux_search}>
+                                                <input
+                                                    type="text"
+                                                    className={styles.tag_inputs}
+                                                    title="ajouter un tag"
+                                                    placeholder="Ajouter un tag"
+                                                />
+                                            </form>
+                                        </div>
+                                    </div>
 
-                                    <h3>Description</h3>
-
-                                    <p>{publication.description}</p>
+                                    {publication.description && <>
+                                        <h3>Description</h3>
+                                        <p className={styles.description}>{publication.description}</p>
+                                    </>}
 
                                     <h3>Plus d'informations</h3>
 
                                     <p>
-                                    <span>Éditeur</span> Laroche <br/>
-                                    <span>Langue</span> Anglais <br/>
-                                    <span>Identifiant</span> 12344872 <br/>
+                                        <span>Éditeur</span> Laroche <br/>
+                                        <span>Langue</span> {languages} <br/>
+                                        <span>Identifiant</span> {publication.identifier} <br/>
                                     </p>
                                 </div>
                             </div>
@@ -135,5 +162,11 @@ export default class BookDetailsDialog extends React.Component<Props, undefined>
                 </div>
             </div>
         );
+    }
+
+    public handleRead(e: any) {
+        e.preventDefault();
+
+        this.props.readPublication(this.props.publication);
     }
 }
