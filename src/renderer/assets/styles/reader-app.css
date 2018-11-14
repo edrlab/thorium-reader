@@ -672,6 +672,10 @@ input[type=radio] + label {
         width: 40px;
         height: 40px;
       }
+
+      & svg {
+        fill: #C1C1C1;
+      }
     }
 
     & .track_reading_wrapper {

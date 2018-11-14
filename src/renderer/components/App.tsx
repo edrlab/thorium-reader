@@ -10,7 +10,7 @@ import * as React from "react";
 import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import Snackbar from "material-ui/Snackbar";
-import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
+import { lightBaseTheme } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
 import { Store } from "redux";
@@ -21,10 +21,7 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
-
-import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 
 import AppToolbar from "readium-desktop/renderer/components/AppToolbar";
 import Library from "readium-desktop/renderer/components/Library";
@@ -45,7 +42,11 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import * as messageAction from "readium-desktop/renderer/actions/message";
 
 import * as Dropzone from "react-dropzone/dist";
-// import { default as Dropzone } from "react-dropzone";
+
+import PageManager from "readium-desktop/renderer/components/PageManager";
+
+import { Provider } from "react-redux";
+
 // does not work when "react-dropzone" is external to the bundle (Node require() import)
 
 interface AppState {
@@ -209,10 +210,11 @@ export default class App extends React.Component<undefined, AppState> {
 
     public render(): React.ReactElement<{}> {
         return (
-            <MuiThemeProvider muiTheme={lightMuiTheme}>
+            <Provider store={this.store}>
                 <div className={AppStyles.root}>
                     <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
-                        <AppToolbar
+                        <PageManager/>
+                        {/* <AppToolbar
                             openDialog={this.openDialog.bind(this)}
                             closeDialog={this.handleDialogClose.bind(this)}
                             opdsList={this.state.opdsList}/>
@@ -220,8 +222,8 @@ export default class App extends React.Component<undefined, AppState> {
                             catalog={this.state.catalog}
                             handleRead={this.handleOpenPublication}
                             openSnackbar={this.openSnackbar.bind(this)}
-                            openDialog={this.openDialog.bind(this)}/>
-                        <Snackbar
+                            openDialog={this.openDialog.bind(this)}/> */}
+                        {/* <Snackbar
                             open={this.state.snackbarOpen}
                             message= {this.snackBarMessage}
                             autoHideDuration={4000}
@@ -235,10 +237,10 @@ export default class App extends React.Component<undefined, AppState> {
                             autoScrollBodyContent={true}
                             >
                             {this.dialogMessage}
-                        </Dialog>
+                        </Dialog> */}
                     </Dropzone>
                 </div>
-            </MuiThemeProvider>
+            </Provider>
         );
     }
 

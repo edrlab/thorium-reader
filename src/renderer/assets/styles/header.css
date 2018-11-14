@@ -1,0 +1,112 @@
+.main_navigation {
+	position: fixed;
+	z-index:102;
+	width:100%;
+	top:0;
+	padding-top:0;
+	padding-bottom:0;
+	height:auto;
+	background-color: white;
+	-webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
+	-moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
+	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
+	min-width: 600px;
+}
+
+.main_navigation ul {
+	padding-left:60px;
+	padding-right:60px;
+    margin: 0;
+}
+
+.main_navigation ul a {
+	text-decoration: none;
+	color:inherit;
+	padding:18px 0 18px 0;
+}
+
+.main_navigation ul li {
+	display: inline-block;
+	padding-bottom:18px;
+	padding-top:18px;
+	font-weight: 600;
+	color:#c1c1c1;
+	cursor: pointer;
+}
+
+.main_navigation ul li:nth-child(2) {
+	margin-left:60px;
+}
+
+.main_navigation ul li.active {
+	color:black;
+	border-bottom:3px solid black;
+	padding-bottom:15px;
+}
+
+.preferences {
+	position: relative;
+	float:right;
+}
+
+/* ============ BARRE DE NAV SECONDAIRE ===============*/
+
+.nav_secondary {
+	position: fixed;
+	width:100%;
+	height:auto;
+	padding-top:0;
+	padding-bottom:10px;
+	z-index:100;
+	top:60px;
+	background-color: white;
+	min-width: 600px;
+	padding-left:60px;
+	padding-right:60px;
+
+	& form {
+		display: inline-block;
+		border-bottom: 1px solid #c1c1c1;
+		margin-left:40px;
+		height:auto;
+	}
+
+	& input[type=search] {
+		position: relative;
+		width:300px;
+		border-radius: 0;
+		border:none;
+		height:35px;
+		outline: inherit;
+		background-color: transparent;
+		color:black;
+		font-size: 0.9rem;
+	}
+
+	& input[type=search]::placeholder {
+		font-size: 0.9rem;
+		font-weight: 300;
+		color:#c1c1c1;
+	}
+		
+	& form button{
+		position: relative;
+		width:35px;
+		border: 0;
+		background-color: transparent;
+	}
+}
+
+
+.nav_secondary svg {
+	display: inline-block;
+	position: relative;
+	top:15px;
+	width:35px;
+	height:35px;
+	margin-left:-5px;
+}
+
+.nav_secondary svg:nth-child(2) {
+	margin-left:20px;
+}

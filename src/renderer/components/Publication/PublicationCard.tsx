@@ -7,59 +7,46 @@
 
 import * as React from "react";
 
-import FlatButton from "material-ui/FlatButton";
-
 import { lazyInject } from "readium-desktop/renderer/di";
 
 import { Contributor } from "readium-desktop/common/models/contributor";
-
 import { Publication } from "readium-desktop/common/models/publication";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import { Card, CardMedia, CardTitle} from "material-ui/Card";
-import IconButton from "material-ui/IconButton";
-import LinearProgress from "material-ui/LinearProgress";
+import Cover from "readium-desktop/renderer/components/Publication/Cover";
 
-import * as ReactCardFlip from "react-card-flip";
-
-import { DownloadStatus } from "readium-desktop/common/models/downloadable";
-
-import { Styles } from "readium-desktop/renderer/components/styles";
-
-import { Cover } from "readium-desktop/renderer/components/Publication/index";
-
-import * as LibraryStyles from "readium-desktop/renderer/assets/styles/library.css";
-
-import { lcpReadable } from "readium-desktop/utils/publication";
+import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
 interface IPublicationState {
     isFlipped: boolean;
+    menu: boolean;
 }
 
 interface IPublicationProps {
     publication: Publication;
-    publicationId: number;
-    downloading: boolean;
-    downloadProgress?: number;
-    cancelDownload: any;
-    handleRead: any;
-    deletePublication: any;
-    openInfoDialog: (publication: Publication) => void;
-    openReturnDialog: (publication: Publication) => void;
-    openRenewDialog: (publication: Publication) => void;
+    handleRead: (publication: Publication) => void;
+    handleMenuClick: (el: React.RefObject<any>, publication: Publication) => void;
+    // openInfoDialog: (publication: Publication) => void;
+    // openReturnDialog: (publication: Publication) => void;
+    // openRenewDialog: (publication: Publication) => void;
 }
 
 export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
     @lazyInject("translator")
     private translator: Translator;
 
+    private menuButton: React.RefObject<any>;
+
     constructor(props: IPublicationProps) {
         super(props);
 
         this.state = {
             isFlipped: false,
+            menu: false,
         };
+
+        this.menuButton = React.createRef();
     }
 
     public handleFront = () => {
@@ -73,10 +60,7 @@ export default class PublicationListElement extends React.Component<IPublication
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate.bind(this.translator);
         const publication = this.props.publication;
-        const that = this;
-        const id = this.props.publicationId;
         let authors: string = "";
-        let image: string = "";
 
         if (publication.authors && publication.authors.length > 0) {
             for (const author of publication.authors) {
@@ -87,105 +71,50 @@ export default class PublicationListElement extends React.Component<IPublication
                 authors += this.translator.translateContentField(newAuthor.name);
             }
         }
-        if (publication.cover) {
-            image = publication.cover.url;
-        }
 
         return (
-            <div className={LibraryStyles.book_card}>
-                <Card style={Styles.BookCard.body}>
-                    <CardMedia>
-                        <div
-                            style={Styles.BookCard.cover}
-                            onMouseEnter={() => {this.handleFront(); }}
-                            onMouseLeave={() => {this.handleBack(); }}>
-                            <ReactCardFlip isFlipped={that.state.isFlipped}>
-                                <div key="front" style={Styles.BookCard.image_container}>
-                                    {publication.cover ? (
-                                        <img style={Styles.BookCard.image} src={publication.cover.url}/>
-                                    ) : (
-                                        <div style={Styles.BookCard.custom_cover}>
-                                            <Cover publication={publication}/>
-                                        </div>
-                                    )}
-                                </div>
-                                <div key="back">
-                                    <div
-                                        style={Styles.BookCard.image}
-                                    >
-                                        {this.props.downloading ? (
-                                            <div>
-                                                <div>
-                                                    <p>{__("publication.progressDownload")}</p>
-                                                    <LinearProgress mode="determinate"
-                                                        value={this.props.downloadProgress} />
-                                                    <FlatButton
-                                                        onFocus={this.handleFront.bind(this)}
-                                                        onBlur={this.handleBack.bind(this)}
-                                                        style={Styles.BookCard.downloadButton}
-                                                        onClick={() => {this.props.cancelDownload(publication); }}
-                                                        label={__("publication.cancelDownloadButton")} />
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <div>
-                                                {lcpReadable(publication) ? (
-                                                    <FlatButton
-                                                    onFocus={this.handleFront.bind(this)}
-                                                    onBlur={this.handleBack.bind(this)}
-                                                    style={Styles.BookCard.downloadButton}
-                                                    onClick={() => {this.props.handleRead(publication); }}
-                                                    label={__("publication.readButton")} />
-                                                ) : (
-                                                    <p> {__("publication.notReadableLcp")} </p>
-                                                )}
-
-                                                {publication.lcp && (
-                                                    <>
-                                                        <FlatButton
-                                                        onFocus={this.handleFront.bind(this)}
-                                                        onBlur={this.handleBack.bind(this)}
-                                                        style={Styles.BookCard.downloadButton}
-                                                        onClick={() => {this.props.openInfoDialog(publication); }}
-                                                        label={__("publication.infoButton")} />
-                                                        <FlatButton
-                                                        onFocus={this.handleFront.bind(this)}
-                                                        onBlur={this.handleBack.bind(this)}
-                                                        style={Styles.BookCard.downloadButton}
-                                                        onClick={() => {this.props.openRenewDialog(publication); }}
-                                                        label={__("publication.renewButton")} />
-                                                        <FlatButton
-                                                        onFocus={this.handleFront.bind(this)}
-                                                        onBlur={this.handleBack.bind(this)}
-                                                        style={Styles.BookCard.downloadButton}
-                                                        onClick={() => {this.props.openReturnDialog(publication); }}
-                                                        label={__("publication.returnButton")} />
-                                                    </>
-                                                )}
-
-                                                <FlatButton
-                                                onFocus={this.handleFront.bind(this)}
-                                                onBlur={this.handleBack.bind(this)}
-                                                style={Styles.BookCard.downloadButton}
-                                                onClick={() => {this.props.deletePublication(publication); }}
-                                                label={__("publication.deleteButton")}/>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </ReactCardFlip>
-                        </div>
-                    </CardMedia>
-                    <CardTitle
-                        titleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
-                        subtitleStyle={{whiteSpace: "nowrap", overflow: "hidden"}}
-                        title={
-                            this.translator.translateContentField(publication.title)
-                        }
-                        subtitle={authors}
-                    />
-                </Card>
+            <div className={styles.block_book}
+                aria-haspopup="dialog"
+                aria-controls="dialog"
+            >
+                <div className={styles.image_wrapper}>
+                    <a onClick={(e) => this.handleBookClick(e, this.props.publication)}>
+                        <Cover publication={publication} />
+                    </a>
+                </div>
+                <div className={styles.legend}>
+                    <a onClick={(e) => this.handleBookClick(e, this.props.publication)}>
+                        <p className={styles.book_title} aria-label="Titre du livre">
+                            {publication.title}
+                        </p>
+                        <p className={styles.book_author} aria-label="Auteur du livre">
+                            {authors}
+                        </p>
+                    </a>
+                    <button
+                        ref={this.menuButton}
+                        type="button"
+                        aria-haspopup="dialog"
+                        aria-controls="dialog"
+                        title="Voir plus"
+                        onClick={() => this.props.handleMenuClick(this.menuButton, publication)}
+                    >
+                    <svg role="link" className={styles.icon_seemore}>
+                        <g aria-hidden="true">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2
+                            2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1
+                            0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                        </g>
+                    </svg>
+                    </button>
+                </div>
             </div>
         );
+    }
+
+    private handleBookClick(e: any, publication: Publication) {
+        e.preventDefault();
+        this.props.handleRead(this.props.publication);
     }
 }

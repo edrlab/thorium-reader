@@ -1,0 +1,49 @@
+#main {
+    position: relative;
+    margin-top: 120px;
+    left: 0;
+    height: auto;
+    width: calc(100% - 120px);
+    padding-left: 60px;
+    padding-right: 60px;
+
+    & h1 {
+        display: block;
+        position: relative;
+        padding-top: 40px;
+        padding-bottom: 35px;
+        font-weight: 700;
+    }
+}
+
+.slider {
+    margin: 0 -36px;
+}
+
+.menu {
+    height: 0px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    font-size: 0.8rem;
+    box-shadow: 0px 0px 10px 0px #cfcfcf;
+    overflow: hidden;
+    & a {
+        text-decoration: none;
+        color: black;
+        flex: 1;
+        padding: 0.5rem;
+        text-align: center;
+        cursor: pointer;                    
+    }
+    & a:not(:last-child) {
+        border-bottom: 1px solid #E5E3E3;
+    }
+    & a:hover {
+        background-color: #CECECE;
+    }
+}
+
+.menu_active {
+    height: 100px;
+}
