@@ -14,7 +14,7 @@ let config = Object.assign({}, {
     target: "electron-renderer",
 
     resolve: {
-        extensions: [".js"],
+        extensions: [".js"]
     }
 });
 

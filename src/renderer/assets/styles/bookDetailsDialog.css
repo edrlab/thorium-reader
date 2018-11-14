@@ -1,0 +1,192 @@
+.c_dialog {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    padding: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: rgba(0,0,0,0.5);
+    transition: .2s;
+    min-width: 700px;
+}
+
+.c_dialog_background {
+    position: fixed;
+    z-index: 101;
+    top: 0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    filter: blur(2px);
+}
+
+.c_dialog__box {
+    z-index: 102;
+    display: flex;
+    width:90%;
+    margin: 100px 5% 20px 5%;
+    padding: 60px;
+    background-color: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-content: flex-start;
+    color: #3B3B3B;
+}
+
+.c_dialog__box button {
+	position: absolute;
+	top:110px;
+	right:calc(5% + 10px);
+	height:50px;
+	float:right;
+	display: block;
+	width:50px;
+	cursor: pointer;
+}
+
+.c_dialog__box button svg {
+	width: 80%;
+}
+
+.dialog_left {
+	position: relative;
+	width:33%;
+	height:auto;
+}
+
+.dialog_left img {
+	width: 100%;
+    box-shadow: 0px 0px 20px 0px #cfcfcf;
+}
+
+.dialog_left .liens {
+	list-style: none;
+    padding: 0;
+}
+
+.dialog_left a {
+	text-decoration: none;
+    color: inherit;
+}
+
+.dialog_left .liens li {
+	font-size: 0.9rem;
+	font-weight: 600;
+	margin-top:3px;
+	margin-bottom:3px;
+}
+
+.dialog_left .liens li svg {
+	display: inline-block;
+	vertical-align: top;
+	width:20px;
+	height:20px;
+	margin-right:3px;
+}
+
+.dialog_left a.lire {
+	display: block;
+    text-align: center;
+    padding: 5px 10px 5px 10px;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    border: 2px solid #c1c1c1;
+    margin-bottom: 20px;
+    font-weight: bold;
+    border-radius: 2px;
+    box-shadow: 0px 6px 5px -5px #cfcfcf;
+}
+
+.dialog_right {
+	width:77%;
+	padding:0 30px 0 30px;
+}
+
+.dialog_right h2 {
+	font-weight: 600;
+}
+
+.c_dialog[aria-hidden="true"] {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.dialog_right p {
+	margin-top:20px;
+	margin-bottom:20px;
+	font-weight: 300;
+	font-size: 0.9rem;
+}
+
+.dialog_right span {
+	font-weight: 600;
+}
+
+.dialog_right .tags {
+	font-size: 0.9rem;
+}
+
+.dialog_right .tags span {
+	font-weight: 600;
+}
+
+.dialog_right .tags ul {
+	display: inline-block;
+}
+
+.dialog_right .tags li {
+	display: inline-block;
+	background-color: #E7F1FB;
+	padding: 1px 5px 1px 5px;
+	font-size: 0.8rem;
+	border-radius: 3px;
+	border: 1px solid #67A3E0;
+	color: #67A3E0;
+	margin-left: 10px;
+}
+
+.dialog_right .tags li svg {
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	vertical-align: top;
+}
+
+.dialog_right h3 {
+	font-weight: 600;
+	margin-top: 30px;
+}
+
+.dialog_right h2 {
+	margin-bottom: 0px;
+}
+
+.dialog_right #flux_search {
+	margin-bottom:0;
+    border-bottom: 1px solid #c1c1c1;
+    margin-left: 0;
+    height: auto;
+    width: fit-content;
+}
+
+.tag_inputs {
+	position: relative;
+	width:300px;
+	border-radius: 0;
+	border:none;
+	height:35px;
+	outline: inherit;
+	background-color: transparent;
+	color:black;
+	font-size: 0.9rem;
+}
+
+.tag_inputs::placeholder {
+	font-size: 0.9rem;
+	font-weight: 300;
+	color:#c1c1c1;
+}

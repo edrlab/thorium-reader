@@ -6,6 +6,15 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+
+import { _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
+
+if (_PACKAGING !== "0") {
+    // Disable debug in packaged app
+    delete process.env.DEBUG;
+    debug_.disable();
+}
+
 import * as path from "path";
 import { Store } from "redux";
 
@@ -34,9 +43,15 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
-import { initGlobals } from "@r2-shared-js/init-globals";
 
-import { _RENDERER_APP_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
+import {
+    initGlobalConverters_GENERIC,
+    initGlobalConverters_SHARED,
+} from "@r2-shared-js/init-globals";
+
+import {
+    initGlobalConverters_OPDS,
+} from "@r2-opds-js/opds/init-globals";
 
 import { SenderType } from "readium-desktop/common/models/sync";
 
@@ -45,7 +60,10 @@ import { ActionSerializer } from "readium-desktop/common/services/serializer";
 // Logger
 const debug = debug_("readium-desktop:main");
 
-initGlobals();
+initGlobalConverters_OPDS();
+initGlobalConverters_SHARED();
+initGlobalConverters_GENERIC();
+
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
@@ -187,6 +205,15 @@ app.on("activate", () => {
     if (mainWindow === null) {
         createWindow();
     }
+});
+
+app.on("open-url", (event: any, url: any) => {
+    event.preventDefault();
+    // Process url: import or open?
+});
+app.on("open-file", (event: any, url: any) => {
+    event.preventDefault();
+    // Process file: import or open?
 });
 
 // Listen to a window that requests a new id

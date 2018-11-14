@@ -100,19 +100,14 @@ async function openReader(publication: Publication, manifestUrl: string) {
 
     let readerUrl = _RENDERER_READER_BASE_URL;
 
-    if (_PACKAGING === "0" && process.env.NAVIGATOR === "old") {
-        readerUrl = "file://" + path.normalize(path.join(__dirname, _NODE_MODULE_RELATIVE_URL,
-            "r2-testapp-js", "dist", "es6-es2015", "src", "electron", "renderer", "index.html"));
-    } else {
-        const htmlPath = "index_reader.html";
+    const htmlPath = "index_reader.html";
 
-        if (readerUrl === "file://") {
-            // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-            readerUrl += path.normalize(path.join(__dirname, htmlPath));
-        } else {
-            // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-            readerUrl += htmlPath;
-        }
+    if (readerUrl === "file://") {
+        // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
+        readerUrl += path.normalize(path.join(__dirname, htmlPath));
+    } else {
+        // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
+        readerUrl += htmlPath;
     }
 
     readerUrl = readerUrl.replace(/\\/g, "/");
