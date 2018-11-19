@@ -38,8 +38,6 @@ export default class BookDetailsDialog extends React.Component<Props, undefined>
         const __ = this.translator.translate.bind(this.translator);
         const { publication } = this.props;
 
-        console.log(publication);
-
         let authors: string = "";
         if (publication && publication.authors && publication.authors.length > 0) {
             for (const author of publication.authors) {

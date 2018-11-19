@@ -6,10 +6,9 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { HashRouter  } from "react-router-dom";
 
-import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
-import Snackbar from "material-ui/Snackbar";
 import { lightBaseTheme } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
@@ -23,9 +22,6 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import AppToolbar from "readium-desktop/renderer/components/AppToolbar";
-import Library from "readium-desktop/renderer/components/Library";
-
 import * as windowActions from "readium-desktop/renderer/actions/window";
 
 import * as AppStyles from "readium-desktop/renderer/assets/styles/app.css";
@@ -37,7 +33,6 @@ import {
 
 import { MessageStatus } from "readium-desktop/renderer/reducers/message";
 import { RootState } from "readium-desktop/renderer/redux/states";
-// import { ReaderStatus } from "readium-desktop/renderer/reducers/reader";
 
 import * as messageAction from "readium-desktop/renderer/actions/message";
 
@@ -70,13 +65,7 @@ export default class App extends React.Component<undefined, AppState> {
     @lazyInject("translator")
     private translator: Translator;
 
-    private snackBarMessage: string = "";
-
-    private dialogMessage: JSX.Element;
-
     private filesToImport: File[] = [];
-
-    private currentDialogAction: JSX.Element[];
 
     private confimationAction: () => void;
 
@@ -164,7 +153,6 @@ export default class App extends React.Component<undefined, AppState> {
                 )}
             </div>
         );
-        this.openImportDialog(message);
     }
 
     // Create the download list if it doesn't exist then start the download
@@ -191,11 +179,6 @@ export default class App extends React.Component<undefined, AppState> {
                     publications: catalog.publications},
                 });
             }
-            if (storeState.message.status === MessageStatus.Open && this.state.snackbarOpen === false) {
-                this.openSnackbar(storeState.message.messages[0]);
-
-                this.setState({ snackbarOpen: (storeState.message.status === MessageStatus.Open) });
-            }
 
             this.translator.setLocale(i18nState.locale);
             this.setState({
@@ -211,71 +194,39 @@ export default class App extends React.Component<undefined, AppState> {
     public render(): React.ReactElement<{}> {
         return (
             <Provider store={this.store}>
-                <div className={AppStyles.root}>
-                    <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
-                        <PageManager/>
-                        {/* <AppToolbar
-                            openDialog={this.openDialog.bind(this)}
-                            closeDialog={this.handleDialogClose.bind(this)}
-                            opdsList={this.state.opdsList}/>
-                        <Library
-                            catalog={this.state.catalog}
-                            handleRead={this.handleOpenPublication}
-                            openSnackbar={this.openSnackbar.bind(this)}
-                            openDialog={this.openDialog.bind(this)}/> */}
-                        {/* <Snackbar
-                            open={this.state.snackbarOpen}
-                            message= {this.snackBarMessage}
-                            autoHideDuration={4000}
-                            onRequestClose={this.handleRequestClose}
-                        />
-                        <Dialog
-                            actions={this.currentDialogAction}
-                            modal={false}
-                            open={this.state.dialogOpen}
-                            onRequestClose={this.handleDialogClose.bind(this)}
-                            autoScrollBodyContent={true}
-                            >
-                            {this.dialogMessage}
-                        </Dialog> */}
-                    </Dropzone>
-                </div>
+                <HashRouter >
+                    <div className={AppStyles.root}>
+                        <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
+                            <PageManager/>
+                            {/* <AppToolbar
+                                openDialog={this.openDialog.bind(this)}
+                                closeDialog={this.handleDialogClose.bind(this)}
+                                opdsList={this.state.opdsList}/>
+                            <Library
+                                catalog={this.state.catalog}
+                                handleRead={this.handleOpenPublication}
+                                openSnackbar={this.openSnackbar.bind(this)}
+                                openDialog={this.openDialog.bind(this)}/> */}
+                            {/* <Snackbar
+                                open={this.state.snackbarOpen}
+                                message= {this.snackBarMessage}
+                                autoHideDuration={4000}
+                                onRequestClose={this.handleRequestClose}
+                            />
+                            <Dialog
+                                actions={this.currentDialogAction}
+                                modal={false}
+                                open={this.state.dialogOpen}
+                                onRequestClose={this.handleDialogClose.bind(this)}
+                                autoScrollBodyContent={true}
+                                >
+                                {this.dialogMessage}
+                            </Dialog> */}
+                        </Dropzone>
+                    </div>
+                </HashRouter >
             </Provider>
         );
-    }
-
-    private openSnackbar(message: string) {
-        if (!this.state.snackbarOpen) {
-            this.snackBarMessage = message;
-            this.setState({snackbarOpen: true});
-        }
-    }
-
-    private openImportDialog(message: JSX.Element) {
-        this.openDialog(message);
-    }
-
-    private openDialog(message: JSX.Element, confirmationAction?: () => void, actions?: JSX.Element[]) {
-        this.confimationAction = confirmationAction;
-
-        if (actions) {
-            this.currentDialogAction = actions;
-        } else {
-            this.currentDialogAction = this.defaultDialogActions;
-        }
-        this.dialogMessage = message;
-        this.setState({dialogOpen: true});
-    }
-
-    private handleRequestClose = (reason: string) => {
-        if (reason === "timeout") {
-            this.setState({ snackbarOpen: false });
-            this.store.dispatch(messageAction.purge());
-
-            if (this.store.getState().message.messages.length > 0) {
-                this.openSnackbar(this.store.getState().message.messages[0]);
-            }
-        }
     }
 
     private handleDialogClose() {

@@ -1,14 +1,15 @@
 import * as React from "react";
-
-import * as styles from "readium-desktop/renderer/assets/styles/library.css";
+import { StaticRouter as Router } from "react-router";
+import { Route, Switch } from "react-router-dom";
 
 import { Translator } from "readium-desktop/common/services/translator";
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import Header from "readium-desktop/renderer/components/Header";
-import MyBooks from "readium-desktop/renderer/components/MyBooks";
+import { routes } from "readium-desktop/renderer/routing";
 
-import { Publication } from "readium-desktop/common/models/publication";
+import Header from "readium-desktop/renderer/components/Header";
+import MyBooksCard from "readium-desktop/renderer/components/MyBooksCard";
+import MyBooksList from "readium-desktop/renderer/components/MyBooksList";
 
 interface States {
     activePage: number;
@@ -33,16 +34,18 @@ export default class PageManager extends React.Component<{}, States> {
         const __ = this.translator.translate.bind(this.translator);
         const activePage = this.state.activePage;
         return (
-            <>
-            <Header activePage={activePage} handlePageClick={this.handlePageClick}/>
-            { this.state.activePage === 0 ?
-                <MyBooks/>
-            : this.state.activePage === 1 ?
-                <div>Catalogues</div>
-            :
-                <div>Préférences</div>
-            }
-            </>
+            <Switch>
+                {Object.keys(routes).map((path: string) => {
+                    const route = (routes as any)[path];
+                    return (
+                        <Route
+                            key={path}
+                            exact={route.exact}
+                            path={route.path}
+                            component={route.component} />
+                    );
+                })}
+            </Switch>
         );
     }
 
