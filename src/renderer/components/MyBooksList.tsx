@@ -25,7 +25,7 @@ interface Props {
 }
 
 interface States {
-    menuInfos: {open: boolean, el: React.RefObject<any>, publication: Publication};
+    menuInfos: {open: number, publication: Publication};
     dialogInfos: {open: boolean, publication: Publication};
 }
 
@@ -44,8 +44,7 @@ export class MyBooksList extends React.Component<Props, States> {
 
         this.state = {
             menuInfos: {
-                open: false,
-                el: undefined,
+                open: null,
                 publication: undefined,
             },
             dialogInfos: {
@@ -54,9 +53,6 @@ export class MyBooksList extends React.Component<Props, States> {
             },
         };
 
-        this.menuRef = React.createRef();
-
-        this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
         this.handleRead = this.handleRead.bind(this);
         this.handleMenuClick = this.handleMenuClick.bind(this);
@@ -66,21 +62,7 @@ export class MyBooksList extends React.Component<Props, States> {
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
         const dialogOpen = this.state.dialogInfos.open;
-
-        let menuStyle = {
-            position: "absolute" as "absolute",
-            top: 0,
-            left: 0,
-        };
-        if (this.state.menuInfos.el) {
-            const el = this.state.menuInfos.el.current;
-            const position = el.getBoundingClientRect();
-            menuStyle = {
-                position: "absolute",
-                top: position.top + el.offsetHeight + 5,
-                left: position.left - this.menuRef.current.offsetWidth + (el.offsetWidth / 2),
-            };
-        }
+        const menuOpen = this.state.menuInfos.open;
 
         return (
             <>
@@ -94,7 +76,11 @@ export class MyBooksList extends React.Component<Props, States> {
                             { this.props.catalog && this.props.catalog.publications
                                 && this.props.catalog.publications.map((pub: Publication, i: number) => {
                                 return (
-                                    <li key={i} className={styles.block_book_list}>
+                                    <li
+                                        key={i}
+                                        className={styles.block_book_list +
+                                            (menuOpen === i ? " " + styles.menuOpen : "")}
+                                    >
                                         <div className={styles.list_book_title}>
                                         <p className={styles.book_title} aria-label="Titre du livre">{pub.title}</p>
                                         <p
@@ -110,7 +96,9 @@ export class MyBooksList extends React.Component<Props, States> {
                                             type="button"
                                             aria-haspopup="dialog"
                                             aria-controls="dialog"
-                                            title="Voir plus">
+                                            title="Voir plus"
+                                            onClick={this.handleMenuClick.bind(this, i)}
+                                        >
                                             <svg role="link" className={styles.icon_seemore}>
                                                 <g aria-hidden="true">
                                                 <path d="M0 0h24v24H0z" fill="none"/>
@@ -120,23 +108,19 @@ export class MyBooksList extends React.Component<Props, States> {
                                                 </g>
                                             </svg>
                                         </button>
+                                        <div className={styles.listMenu}>
+                                            <a onClick={this.openDialog} >Fiche livre</a>
+                                            <a>Retirer de la séléction</a>
+                                            <a>Supprimer définitivement</a>
+                                        </div>
                                     </li>
                                 );
                             })}
                         </ul>
                     </section>
                 </main>
-                <div
-                    ref={this.menuRef}
-                    style={menuStyle}
-                    className={(this.state.menuInfos.open ? styles.menu_active + " " : "") + styles.menu}
-                >
-                    <a tabIndex={1} onClick={this.openDialog} onBlur={this.handleOnBlurMenu}>Fiche livre</a>
-                    <a tabIndex={2} onBlur={this.handleOnBlurMenu}>Retirer de la séléction</a>
-                    <a tabIndex={3} onBlur={this.handleOnBlurMenu}>Supprimer définitivement</a>
-                </div>
                 <BookDetailsDialog
-                    open={this.state.dialogInfos.open}
+                    open={dialogOpen}
                     publication={this.state.dialogInfos.publication}
                     closeDialog={this.closeDialog}
                     readPublication={this.handleRead}
@@ -149,21 +133,11 @@ export class MyBooksList extends React.Component<Props, States> {
         this.store.dispatch(readerActions.open(publication));
     }
 
-    private handleMenuClick(el: React.RefObject<any>, publication: Publication) {
+    private handleMenuClick(id: number) {
         this.setState({menuInfos: {
-            open: el === this.state.menuInfos.el ? !this.state.menuInfos.open : true,
-            el,
-            publication,
+            open: this.state.menuInfos.open !== id ? id : null,
+            publication: this.props.catalog.publications[id],
         }});
-        this.menuRef.current.children[0].focus();
-    }
-
-    private handleOnBlurMenu(e: any) {
-        if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== this.menuRef.current)) {
-            const { menuInfos } = this.state;
-            menuInfos.open = false;
-            this.setState({ menuInfos });
-        }
     }
 
     private closeDialog() {

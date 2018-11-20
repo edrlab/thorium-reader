@@ -65,6 +65,12 @@
 	padding: 0px 50px;
 	min-width: 600px;
 	font-size: 0.8rem;
+    overflow: hidden;
+    transition: height 0.5s;
+}
+
+.menuOpen{
+	height: 75px;
 }
 
 .block_book_list button {
@@ -125,4 +131,15 @@
 	display: inline-block;
 	vertical-align: top;
 	margin-top:40px;
+}
+
+.listMenu {
+    margin-left: 10px;
+    & a {
+        border: 1px solid black;
+        margin-right: 5px;
+        padding: 3px;
+        display: inline-block;
+        cursor: pointer;
+    }
 }
