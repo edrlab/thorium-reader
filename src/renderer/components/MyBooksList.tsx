@@ -19,6 +19,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { PublicationListElement } from "readium-desktop/renderer/components/Publication";
 
 interface Props {
     catalog: Catalog;
@@ -76,44 +77,14 @@ export class MyBooksList extends React.Component<Props, States> {
                             { this.props.catalog && this.props.catalog.publications
                                 && this.props.catalog.publications.map((pub: Publication, i: number) => {
                                 return (
-                                    <li
+                                    <PublicationListElement
                                         key={i}
-                                        className={styles.block_book_list +
-                                            (menuOpen === i ? " " + styles.menuOpen : "")}
-                                    >
-                                        <div className={styles.list_book_title}>
-                                        <p className={styles.book_title} aria-label="Titre du livre">{pub.title}</p>
-                                        <p
-                                            className={`${styles.book_author} ${styles.lightgrey}`}
-                                            aria-label="Auteur du livre"
-                                        >
-                                            {pub.authors.map((author) => author.name).join(", ")}
-                                        </p>
-                                        </div>
-                                        <p className={styles.infos_sup} aria-label="Date de sortie du livre">2017</p>
-                                        <p className={styles.infos_sup} aria-label="Éditeur du livre">Larousse</p>
-                                        <button
-                                            type="button"
-                                            aria-haspopup="dialog"
-                                            aria-controls="dialog"
-                                            title="Voir plus"
-                                            onClick={this.handleMenuClick.bind(this, i)}
-                                        >
-                                            <svg role="link" className={styles.icon_seemore}>
-                                                <g aria-hidden="true">
-                                                <path d="M0 0h24v24H0z" fill="none"/>
-                                                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2
-                                                    2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1
-                                                    0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                                                </g>
-                                            </svg>
-                                        </button>
-                                        <div className={styles.listMenu}>
-                                            <a onClick={this.openDialog} >Fiche livre</a>
-                                            <a>Retirer de la séléction</a>
-                                            <a>Supprimer définitivement</a>
-                                        </div>
-                                    </li>
+                                        publication={pub}
+                                        id={i}
+                                        handleMenuClick={this.handleMenuClick.bind(this)}
+                                        openDialog={this.openDialog}
+                                        menuOpen={menuOpen === i}
+                                    />
                                 );
                             })}
                         </ul>

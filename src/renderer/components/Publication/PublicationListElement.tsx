@@ -7,42 +7,28 @@
 
 import * as React from "react";
 
-import FlatButton from "material-ui/FlatButton";
-import IconButton from "material-ui/IconButton";
-import LinearProgress from "material-ui/LinearProgress";
-
 import { lazyInject } from "readium-desktop/renderer/di";
 
 import { Publication } from "readium-desktop/common/models/publication";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import RaisedButton from "material-ui/RaisedButton";
-
-import { DownloadStatus } from "readium-desktop/common/models/downloadable";
-
-import { Styles } from "readium-desktop/renderer/components/styles";
-
-import { Cover } from "readium-desktop/renderer/components/Publication/index";
-
-import { lcpReadable } from "readium-desktop/utils/publication";
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 interface IPublicationProps {
     publication: Publication;
-    publicationId: number;
-    downloading: boolean;
-    downloadProgress?: number;
-    handleRead: any;
-    cancelDownload: any;
-    deletePublication: any;
-    openInfoDialog: (publication: Publication) => void;
-    openReturnDialog: (publication: Publication) => void;
-    openRenewDialog: (publication: Publication) => void;
-}
-
-interface IDownload {
-    link: string;
-    progress: number;
+    id: number;
+    handleMenuClick: (id: number) => void;
+    openDialog: () => void;
+    menuOpen: boolean;
+    // downloading: boolean;
+    // downloadProgress?: number;
+    // handleRead: any;
+    // cancelDownload: any;
+    // deletePublication: any;
+    // openInfoDialog: (publication: Publication) => void;
+    // openReturnDialog: (publication: Publication) => void;
+    // openRenewDialog: (publication: Publication) => void;
 }
 
 export default class PublicationListElement extends React.Component<IPublicationProps, null> {
@@ -52,91 +38,48 @@ export default class PublicationListElement extends React.Component<IPublication
     public render(): React.ReactElement<{}>  {
         const __ = this.translator.translate.bind(this.translator);
 
-        const publication: Publication = this.props.publication;
-
-        let author: string = "";
-        let image: string = "";
-
-        const id = this.props.publicationId;
-
-        if (publication.authors && publication.authors.length > 0) {
-            author = this.translator.translateContentField(publication.authors[0].name);
-        }
-        if (publication.cover) {
-            image = publication.cover.url;
-        }
+        const i = this.props.id;
+        const pub = this.props.publication;
 
         return (
-            <div style={Styles.BookListElement.body}>
-                <div style={Styles.BookListElement.image_container}>
-                    {publication.cover ? (
-                        <img style={Styles.BookListElement.image} src={publication.cover.url}/>
-                    ) : (
-                        <div style={Styles.BookListElement.custom_cover}>
-                            <Cover publication={publication}/>
-                        </div>
-                    )}
+            <li
+                key={i}
+                className={styles.block_book_list +
+                    (this.props.menuOpen ? " " + styles.menuOpen : "")}
+            >
+                <div className={styles.list_book_title}>
+                <p className={styles.book_title} aria-label="Titre du livre">{pub.title}</p>
+                <p
+                    className={`${styles.book_author} ${styles.lightgrey}`}
+                    aria-label="Auteur du livre"
+                >
+                    {pub.authors.map((author) => author.name).join(", ")}
+                </p>
                 </div>
-                <div style={Styles.BookListElement.description}>
-                    <h4 style={Styles.BookListElement.title}>
-                    {this.translator.translateContentField(publication.title)}
-                    </h4>
-                    <div style={Styles.BookListElement.content}>
-                        <div style={Styles.BookListElement.column}>
-                            <p>{author}</p>
-                        </div>
-                        <div style={Styles.BookListElement.column}>
-                                {this.props.downloading ? (
-                                    <>
-                                        <p>{__("publication.progressDownload")}</p>
-                                        <LinearProgress mode="determinate"
-                                            value={this.props.downloadProgress} />
-                                        <FlatButton
-                                            style={Styles.BookCard.downloadButton}
-                                            onClick={() => {this.props.cancelDownload(publication); }}
-                                            label={__("publication.cancelDownloadButton")} />
-                                    </>
-                                ) : (
-                                    <>
-                                        {lcpReadable(publication) ? (
-                                            <FlatButton
-                                            style={Styles.BookCard.downloadButton}
-                                            onClick={() => {this.props.handleRead(publication); }}
-                                            label={__("publication.readButton")} />
-                                        ) : (
-                                            <p style={Styles.BookListElement.lcpSentense}>
-                                                {__("publication.notReadableLcp")}
-                                            </p>
-                                        )}
-
-                                        {publication.lcp && (
-                                            <>
-                                                <FlatButton
-                                                style={Styles.BookCard.downloadButton}
-                                                onClick={() => {this.props.openInfoDialog(publication); }}
-                                                label={__("publication.infoButton")} />
-                                                <FlatButton
-                                                style={Styles.BookCard.downloadButton}
-                                                onClick={() => {this.props.openRenewDialog(publication); }}
-                                                label={__("publication.renewButton")} />
-                                                <FlatButton
-                                                style={Styles.BookCard.downloadButton}
-                                                onClick={() => {this.props.openReturnDialog(publication); }}
-                                                label={__("publication.returnButton")} />
-                                            </>
-                                        )}
-
-                                        <FlatButton
-                                        style={Styles.BookCard.downloadButton}
-                                        onClick={() => {this.props.deletePublication(publication); }}
-                                        label={__("publication.deleteButton")}/>
-                                    </>
-                                )
-                            }
-                        </div>
-                    </div>
+                <p className={styles.infos_sup} aria-label="Date de sortie du livre">2017</p>
+                <p className={styles.infos_sup} aria-label="Éditeur du livre">Larousse</p>
+                <button
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-controls="dialog"
+                    title="Voir plus"
+                    onClick={() => this.props.handleMenuClick(i)}
+                >
+                    <svg role="link" className={styles.icon_seemore}>
+                        <g aria-hidden="true">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2
+                            2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1
+                            0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                        </g>
+                    </svg>
+                </button>
+                <div className={styles.listMenu}>
+                    <a onClick={this.props.openDialog} >Fiche livre</a>
+                    <a>Retirer de la séléction</a>
+                    <a>Supprimer définitivement</a>
                 </div>
-            </div>
+            </li>
         );
     }
 }
