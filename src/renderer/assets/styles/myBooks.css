@@ -69,6 +69,8 @@
 
 .block_book_list button {
 	float:left;
+    display: flex;
+    justify-content: center;
 }
 
 .block_book_list:nth-child(odd){
@@ -79,8 +81,8 @@
 	position: relative;
 	float:left;
 	display: inline-block;
-	width:20px;
-	height:30px;
+	height: 24px;
+    width: 24px;
 	margin: 5px;
 }
 
