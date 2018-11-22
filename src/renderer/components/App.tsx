@@ -8,7 +8,6 @@
 import * as React from "react";
 import { HashRouter  } from "react-router-dom";
 
-import FlatButton from "material-ui/FlatButton";
 import { lightBaseTheme } from "material-ui/styles";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 
@@ -31,16 +30,15 @@ import {
     readerActions,
 } from "readium-desktop/common/redux/actions";
 
-import { MessageStatus } from "readium-desktop/renderer/reducers/message";
 import { RootState } from "readium-desktop/renderer/redux/states";
-
-import * as messageAction from "readium-desktop/renderer/actions/message";
 
 import * as Dropzone from "react-dropzone/dist";
 
 import PageManager from "readium-desktop/renderer/components/PageManager";
 
 import { Provider } from "react-redux";
+
+import Dialog from "readium-desktop/renderer/components/utils/Dialog";
 
 // does not work when "react-dropzone" is external to the bundle (Node require() import)
 
@@ -69,25 +67,7 @@ export default class App extends React.Component<undefined, AppState> {
 
     private confimationAction: () => void;
 
-    private defaultDialogActions = [
-        <FlatButton
-            label="Oui"
-            primary={true}
-            onClick={() => {
-                this.handleDialogClose();
-                if (this.confimationAction) {
-                    this.confimationAction();
-                } else {
-                    this.importFiles();
-                }
-            }}
-        />,
-        <FlatButton
-            label="Non"
-            primary={true}
-            onClick={() => {this.handleDialogClose(); }}
-        />,
-    ];
+    private dialogMessage: JSX.Element;
 
     constructor(props: any) {
         super(props);
@@ -151,8 +131,24 @@ export default class App extends React.Component<undefined, AppState> {
                         </ul>
                     </div>
                 )}
+                <button
+                    onClick={() => {
+                        this.handleDialogClose();
+                        if (this.confimationAction) {
+                            this.confimationAction();
+                        } else {
+                            this.importFiles();
+                        }
+                    }}
+                > Oui </button>
+                <button
+                    onClick={() => {this.handleDialogClose(); }}
+                > Non </button>
             </div>
         );
+
+        this.dialogMessage = message;
+        this.setState({dialogOpen: true});
     }
 
     // Create the download list if it doesn't exist then start the download
@@ -192,11 +188,18 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     public render(): React.ReactElement<{}> {
+        console.log(this.state.dialogOpen);
         return (
             <Provider store={this.store}>
                 <HashRouter >
                     <div className={AppStyles.root}>
-                        <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{}}>
+                        <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{
+                            position: "absolute",
+                            top: 0,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                        }}>
                             <PageManager/>
                             {/* <AppToolbar
                                 openDialog={this.openDialog.bind(this)}
@@ -212,16 +215,13 @@ export default class App extends React.Component<undefined, AppState> {
                                 message= {this.snackBarMessage}
                                 autoHideDuration={4000}
                                 onRequestClose={this.handleRequestClose}
-                            />
+                            />*/}
                             <Dialog
-                                actions={this.currentDialogAction}
-                                modal={false}
                                 open={this.state.dialogOpen}
-                                onRequestClose={this.handleDialogClose.bind(this)}
-                                autoScrollBodyContent={true}
-                                >
+                                close={this.handleDialogClose}
+                            >
                                 {this.dialogMessage}
-                            </Dialog> */}
+                            </Dialog>
                         </Dropzone>
                     </div>
                 </HashRouter >

@@ -1,0 +1,55 @@
+.c_dialog {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    padding: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: rgba(0,0,0,0.5);
+    transition: .2s;
+    min-width: 700px;
+}
+
+.c_dialog_background {
+    position: fixed;
+    z-index: 101;
+    top: 0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    filter: blur(2px);
+}
+
+.c_dialog__box {
+    z-index: 102;
+    display: flex;
+    width:90%;
+    max-width: 92rem;
+    margin: 100px auto 20px auto;
+    padding: 60px;
+    background-color: white;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-content: flex-start;
+    color: #3B3B3B;
+    position: relative;
+}
+
+.c_dialog__box .close_button {
+	position: absolute;
+    top: 15px;
+    right: 15px;
+    height: 50px;
+    display: block;
+    width: 50px;
+    cursor: pointer;
+    fill: #3B3B3B;
+}
+
+.c_dialog__box button svg {
+	width: 80%;
+}

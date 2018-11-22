@@ -68,7 +68,7 @@ export class MyBooksList extends React.Component<Props, States> {
         return (
             <>
                 <Header activePage={0}/>
-                <MyBooksHeader list={true} dialogOpen={this.state.dialogInfos.open}/>
+                <MyBooksHeader list={true} dialogOpen={dialogOpen}/>
                 <main style={this.getDialogBlur()} id={styles.main} role="main">
                     <a id="contenu" tabIndex={-1}></a>
                     <section>
