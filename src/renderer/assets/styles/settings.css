@@ -80,3 +80,87 @@
 		color:white;
 	}
 }
+
+/* TAGS */
+
+#draggable_list { 
+	width: 50%;
+	list-style-type: none; 
+	font-size: 0.8rem;
+	min-width: 400px;
+	margin-bottom: 20px;
+
+	& li { 
+		cursor: move;
+		margin: 0 3px 3px 3px; 
+		padding: 5px 10px 5px 10px; 
+		font-size: 1.25em; 
+		height: 24px; 
+		background: #e5e5e5;
+		display: flex;
+		align-items: center;
+
+		& span {
+			font-size: 0.8rem;
+			color:grey;
+			margin-left:8px;
+			flex: 1;
+		}
+
+		& svg {
+			height: 24px;
+			width: 24px;
+		}
+	}
+
+
+	& .up, ul .down { float: left; }
+	& .up:before { content: "\f077"; }
+	& .down:before { content: "\f078"; }
+}
+
+
+form#tag_add {
+	margin-left:0;
+	height:auto;
+	margin-bottom:0;
+	display: inline-block;
+}
+
+input.pref_tag_inputs {
+	position: relative;
+	width:300px;
+	border-radius: 0;
+	border:none;
+	border-bottom: 1px solid #c1c1c1;
+	height:35px;
+	outline: inherit;
+	background-color: transparent;
+	color:black;
+	font-size: 0.9rem;
+	margin-right:30px;
+}
+
+input.pref_tag_inputs::placeholder {
+	font-size: 0.9rem;
+	font-weight: 300;
+	color:#c1c1c1;
+}
+
+	
+#tag_add svg{
+	position: absolute;
+	width:35px;
+	left:320px;
+	color: #c1c1c1;
+	vertical-align: top;
+}
+
+#tag_add input[type="submit"]{
+	cursor:pointer;
+	background-color: white;
+	border-radius: 5px;
+	font-size: 0.8rem;
+	padding: 5px 30px 5px 30px;
+	border:1px solid #c1c1c1;
+}

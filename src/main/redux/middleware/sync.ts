@@ -34,6 +34,12 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     catalogActions.ActionType.PublicationAddSuccess,
     catalogActions.ActionType.PublicationRemoveSuccess,
     catalogActions.ActionType.PublicationRemoveError,
+    catalogActions.ActionType.TagAddSuccess,
+    catalogActions.ActionType.TagAddError,
+    catalogActions.ActionType.TagEditSuccess,
+    catalogActions.ActionType.TagEditError,
+    catalogActions.ActionType.TagRemoveSuccess,
+    catalogActions.ActionType.TagRemoveError,
 
     netActions.ActionType.Offline,
     netActions.ActionType.Online,
