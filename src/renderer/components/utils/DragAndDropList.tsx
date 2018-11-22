@@ -10,6 +10,7 @@ interface Props {
     className?: string;
     elementClassName?: string;
     id?: string;
+    onChange: (list: any) => void;
 }
 
 interface State {
@@ -46,10 +47,10 @@ export default class DragAndDropList extends React.Component<Props, State> {
                                 {(provided2: any) => {
                                     return (
                                     <li
-                                        className={elementClassName ? elementClassName : ""}
                                         ref={provided2.innerRef}
                                         {...provided2.draggableProps}
                                         {...provided2.dragHandleProps}
+                                        className={elementClassName ? elementClassName : ""}
                                     >
                                         {this.props.elementContent(item)}
                                     </li>
@@ -76,11 +77,12 @@ export default class DragAndDropList extends React.Component<Props, State> {
             result.source.index,
             result.destination.index,
         );
-        console.log(items);
 
         this.setState({
             items,
         });
+
+        this.props.onChange(items);
     }
 
     private reorder(list: any[], startIndex: number, endIndex: number) {

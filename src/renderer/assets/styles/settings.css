@@ -90,7 +90,7 @@
 	min-width: 400px;
 	margin-bottom: 20px;
 
-	& li { 
+	& .dnd_element { 
 		cursor: move;
 		margin: 0 3px 3px 3px; 
 		padding: 5px 10px 5px 10px; 

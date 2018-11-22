@@ -73,8 +73,10 @@ export class SettingsTags extends React.Component<Props, States> {
                                 <SVG svg={DeleteIcon}/>
                             </>
                         }
+                        elementClassName={styles.dnd_element}
                         list={this.props.tagList}
                         id={styles.draggable_list}
+                        onChange={this.handleListOrderChange}
                     />
                     <form onSubmit={this.handleAddSubmit} id={styles.tag_add}>
                         <input
@@ -94,6 +96,7 @@ export class SettingsTags extends React.Component<Props, States> {
                             placeholder="Tag à renommer"
                             title="Tag à renommer"
                             onChange={this.handleEditIdChange}
+                            value={this.state.editTagId}
                         />
                         <SVG svg={SearchIcon}/>
                         <input
@@ -102,6 +105,7 @@ export class SettingsTags extends React.Component<Props, States> {
                             placeholder="Nouveau nom"
                             title="nouveau nom"
                             onChange={this.handleEditNameChange}
+                            value={this.state.editTagName}
                         />
                         <input type="submit" title="Confirmer" />
                     </form>
@@ -136,6 +140,10 @@ export class SettingsTags extends React.Component<Props, States> {
     private handleEditSubmit(e: any) {
         e.preventDefault();
         this.props.addTag(this.state.addTagName);
+    }
+
+    private handleListOrderChange(list: Tag[]) {
+        console.log(list);
     }
 }
 
