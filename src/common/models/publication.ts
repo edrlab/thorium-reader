@@ -29,3 +29,8 @@ export interface Publication extends Identifiable {
     tags?: Tag[];
     lcp?: LcpInfo;
 }
+
+export interface Tag {
+    name: string;
+    count: number;
+}

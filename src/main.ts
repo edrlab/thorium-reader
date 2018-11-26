@@ -269,6 +269,7 @@ ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
                         type: catalogActions.ActionType.SetSuccess,
                         payload: {
                             publications: state.catalog.publications,
+                            tagList: state.catalog.tagList,
                         },
                     },
                 },

@@ -9,8 +9,9 @@
     & > div {
         display: flex;
         flex: 1;
-        & > *:not(:last-child) {
-            margin-right: 30px;
+        & > * {
+            margin: 0 15px;
+            flex: 1;
         }
     }
 }

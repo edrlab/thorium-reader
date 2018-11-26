@@ -42,8 +42,7 @@
 }
 
 .block_book {
-    flex: 1;
-
+    width: 1px;
     & .image_wrapper {
         width: 100%;
         position: relative;
