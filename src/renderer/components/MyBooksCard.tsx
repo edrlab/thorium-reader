@@ -97,9 +97,9 @@ export class MyBooksCard extends React.Component<Props, States> {
                             <Slider
                                 className={styles.slider}
                                 displayQty={6}
-                                content={this.props.catalog.publications.map((pub, index: number) =>
+                                content={this.props.catalog.publications.map((pub) =>
                                     <PublicationCard
-                                        key={index}
+                                        key={pub.identifier}
                                         publication={pub}
                                         handleRead={this.handleRead}
                                         handleMenuClick={this.handleMenuClick}
