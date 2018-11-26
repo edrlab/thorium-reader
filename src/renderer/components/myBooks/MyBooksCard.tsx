@@ -11,7 +11,7 @@ import Slider from "readium-desktop/renderer/components/utils/Slider";
 
 import BookDetailsDialog from "readium-desktop/renderer/components/BookDetailsDialog";
 import Header from "readium-desktop/renderer/components/Header";
-import MyBooksHeader from "readium-desktop/renderer/components/MyBooksHeader";
+import MyBooksHeader from "readium-desktop/renderer/components/myBooks/MyBooksHeader";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
 import { PublicationCard } from "readium-desktop/renderer/components/Publication";

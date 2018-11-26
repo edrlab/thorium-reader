@@ -25,8 +25,6 @@ export default class BookDetailsDialog extends React.Component<Props, undefined>
         const content = this.props.children;
         const className = this.props.className;
 
-        console.log(this.props.id);
-
         return (
             <div
                 id="dialog"

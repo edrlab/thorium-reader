@@ -21,7 +21,7 @@ import { WinStatus } from "readium-desktop/renderer/redux/states/win";
 
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 
-import App from "readium-desktop/renderer/components/ReaderApp";
+import App from "readium-desktop/renderer/components/reader/ReaderApp";
 
 import {
     initGlobalConverters_GENERIC,

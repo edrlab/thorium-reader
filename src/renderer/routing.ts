@@ -1,5 +1,5 @@
-import MyBooksCard from "readium-desktop/renderer/components/MyBooksCard";
-import MyBooksList from "readium-desktop/renderer/components/MyBooksList";
+import MyBooksCard from "readium-desktop/renderer/components/myBooks/MyBooksCard";
+import MyBooksList from "readium-desktop/renderer/components/myBooks/MyBooksList";
 import SettingsLanguages from "readium-desktop/renderer/components/settings/SettingsLanguages";
 import SettingsTags from "readium-desktop/renderer/components/settings/SettingsTags";
 

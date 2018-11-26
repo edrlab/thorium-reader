@@ -73,10 +73,10 @@ import { INameVersion } from "@r2-navigator-js/electron/renderer/webview/epubRea
 
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 
-import ReaderFooter from "readium-desktop/renderer/components/ReaderFooter";
-import ReaderHeader from "readium-desktop/renderer/components/ReaderHeader";
-import ReaderMenu from "readium-desktop/renderer/components/ReaderMenu";
-import ReaderOptions from "readium-desktop/renderer/components/ReaderOptions";
+import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
+import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
+import ReaderMenu from "readium-desktop/renderer/components/reader/ReaderMenu";
+import ReaderOptions from "readium-desktop/renderer/components/reader/ReaderOptions";
 
 webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
 webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {

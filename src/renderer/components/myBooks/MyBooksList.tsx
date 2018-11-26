@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 
 import BookDetailsDialog from "readium-desktop/renderer/components/BookDetailsDialog";
 import Header from "readium-desktop/renderer/components/Header";
-import MyBooksHeader from "readium-desktop/renderer/components/MyBooksHeader";
+import MyBooksHeader from "readium-desktop/renderer/components/myBooks/MyBooksHeader";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
 

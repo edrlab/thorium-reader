@@ -8,8 +8,8 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { routes } from "readium-desktop/renderer/routing";
 
 import Header from "readium-desktop/renderer/components/Header";
-import MyBooksCard from "readium-desktop/renderer/components/MyBooksCard";
-import MyBooksList from "readium-desktop/renderer/components/MyBooksList";
+import MyBooksCard from "readium-desktop/renderer/components/myBooks/MyBooksCard";
+import MyBooksList from "readium-desktop/renderer/components/myBooks/MyBooksList";
 
 interface States {
     activePage: number;
