@@ -85,7 +85,7 @@ export default class App extends React.Component<undefined, AppState> {
         };
 
         this.handleOpenPublication = this.handleOpenPublication.bind(this);
-        // this.handleClosePublication = this.handleClosePublication.bind(this);
+        this.handleDialogClose = this.handleDialogClose.bind(this);
     }
 
     public handleOpenPublication(publication: Publication) {
