@@ -32,6 +32,9 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     catalogActions.ActionType.LocalPublicationImportRequest,
     catalogActions.ActionType.PublicationRemoveRequest,
     catalogActions.ActionType.LocalLCPImportRequest,
+    catalogActions.ActionType.TagAddRequest,
+    catalogActions.ActionType.TagEditRequest,
+    catalogActions.ActionType.TagRemoveRequest,
 
     opdsActions.ActionType.AddRequest,
     opdsActions.ActionType.UpdateRequest,

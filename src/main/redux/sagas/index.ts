@@ -27,12 +27,15 @@ import {
 
 import { appInitWatcher } from "./app";
 import {
+    addTagWatcher,
     catalogFileImportWatcher,
     catalogInitWatcher,
     catalogLocalLCPImportWatcher,
     catalogLocalPublicationImportWatcher,
     catalogPublicationDownloadSuccessWatcher,
     catalogPublicationRemoveWatcher,
+    editTagWatcher,
+    removeTagWatcher,
 } from "./catalog";
 import { netStatusWatcher } from "./net";
 import {
@@ -69,6 +72,9 @@ export function* rootSaga() {
         catalogPublicationRemoveWatcher(),
         catalogLocalLCPImportWatcher(),
         catalogFileImportWatcher(),
+        editTagWatcher(),
+        removeTagWatcher(),
+        addTagWatcher(),
 
         // Download
         downloadAddRequestWatcher(),

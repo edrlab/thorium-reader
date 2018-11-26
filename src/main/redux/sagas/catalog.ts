@@ -306,9 +306,47 @@ export function* catalogInitWatcher(): SagaIterator {
             type: catalogActions.ActionType.SetSuccess,
             payload: {
                 publications: result,
+                tagList: [
+                    {
+                        name: "Science Fiction",
+                        count: 12,
+                    },
+                    {
+                        name: "Fantasy",
+                        count: 9,
+                    },
+                    {
+                        name: "Manga",
+                        count: 845,
+                    },
+                ],
             },
         });
     } catch (error) {
         yield put({ type: catalogActions.ActionType.SetError, error: true });
     }
+}
+
+export function* addTagWatcher(): SagaIterator {
+    yield take(catalogActions.ActionType.TagAddRequest);
+
+    yield put({
+        type: catalogActions.ActionType.TagAddSuccess,
+    });
+}
+
+export function* editTagWatcher(): SagaIterator {
+    yield take(catalogActions.ActionType.TagEditRequest);
+
+    yield put({
+        type: catalogActions.ActionType.TagEditSuccess,
+    });
+}
+
+export function* removeTagWatcher(): SagaIterator {
+    yield take(catalogActions.ActionType.TagRemoveRequest);
+
+    yield put({
+        type: catalogActions.ActionType.TagRemoveSuccess,
+    });
 }

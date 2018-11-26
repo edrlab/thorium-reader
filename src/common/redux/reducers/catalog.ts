@@ -13,6 +13,7 @@ import { CatalogState } from "readium-desktop/common/redux/states/catalog";
 
 const initialState: CatalogState = {
     publications: undefined,
+    tagList: undefined,
 };
 
 export function catalogReducer(
@@ -24,6 +25,7 @@ export function catalogReducer(
     switch (action.type) {
         case catalogActions.ActionType.SetSuccess:
             newState.publications = action.payload.publications;
+            newState.tagList = action.payload.tagList;
             return newState;
         case catalogActions.ActionType.PublicationRemoveSuccess:
             const removedPub = action.payload.publication;
@@ -52,6 +54,9 @@ export function catalogReducer(
             }
 
             newState.publications.push(addedPub);
+            return newState;
+        case catalogActions.ActionType.TagListSuccess:
+            newState.tagList = action.payload.tagList;
             return newState;
         default:
             return state;

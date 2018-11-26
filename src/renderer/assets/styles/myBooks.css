@@ -13,6 +13,13 @@
         padding-top: 40px;
         padding-bottom: 35px;
         font-weight: 700;
+        margin: 0;
+        font-size: 1.3rem;
+    }
+
+    & section ul {
+        padding: 0;
+        margin: 0;
     }
 }
 
@@ -46,4 +53,93 @@
 
 .menu_active {
     height: 100px;
+}
+
+/* LIST MY BOOKS */
+
+
+.block_book_list {
+	display: block;
+	margin: 0 -60px;
+	height: 40px;
+	padding: 0px 50px;
+	min-width: 600px;
+	font-size: 0.8rem;
+    overflow: hidden;
+    transition: height 0.5s;
+}
+
+.menuOpen{
+	height: 75px;
+}
+
+.block_book_list button {
+	float:left;
+    display: flex;
+    justify-content: center;
+}
+
+.block_book_list:nth-child(odd){
+	background-color: #f3f3f3;
+}
+
+.block_book_list .icon_seemore {
+	position: relative;
+	float:left;
+	display: inline-block;
+	height: 24px;
+    width: 24px;
+	margin: 5px;
+}
+
+.block_book_list .book_title {
+	display: inline-block;
+	font-weight: 600;
+}
+
+.block_book_list .book_author {
+	display: inline-block;
+    margin-left: 10px;
+}
+
+.block_book_list .infos_sup {
+	display: inline-block;
+	width:15%;
+	color:grey;
+}
+
+.list_book_title {
+	display: inline-block;
+	width: calc(70% - 50px);
+}
+
+.titre_selection {
+	display: inline-block;
+	position: relative;
+	padding-top:40px;
+	padding-bottom: 35px;
+	font-weight: 700;
+}
+
+.icon_edit {
+	position: relative;
+	top:0;
+	height:30px;
+	width:20px;
+	margin:0;
+	margin-left:10px;
+	display: inline-block;
+	vertical-align: top;
+	margin-top:40px;
+}
+
+.listMenu {
+    margin-left: 10px;
+    & a {
+        border: 1px solid black;
+        margin-right: 5px;
+        padding: 3px;
+        display: inline-block;
+        cursor: pointer;
+    }
 }

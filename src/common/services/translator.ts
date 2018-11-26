@@ -26,6 +26,12 @@ i18n.init({
     },
 });
 
+export enum AvailableLanguages {
+    en = "English",
+    fr = "Français",
+    de = "Deutch",
+}
+
 @injectable()
 export class Translator {
     private locale: string = "en";

@@ -7,15 +7,11 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { connect } from "react-redux";
 
-import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
-import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
-
 import Slider from "readium-desktop/renderer/components/utils/Slider";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import BookDetailsDialog from "readium-desktop/renderer/components/BookDetailsDialog";
-import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
+import Header from "readium-desktop/renderer/components/Header";
+import MyBooksHeader from "readium-desktop/renderer/components/myBooks/MyBooksHeader";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
 import { PublicationCard } from "readium-desktop/renderer/components/Publication";
@@ -36,7 +32,7 @@ interface States {
     dialogInfos: {open: boolean, publication: Publication};
 }
 
-export class MyBooks extends React.Component<Props, States> {
+export class MyBooksCard extends React.Component<Props, States> {
 
     @lazyInject("translator")
     private translator: Translator;
@@ -91,25 +87,8 @@ export class MyBooks extends React.Component<Props, States> {
 
         return (
             <>
-                <SecondaryHeader style={this.getDialogBlur()}>
-                    <a>
-                        <SVG svg={GridIcon} title="Présenter les couvertures de livres en grille"/>
-                    </a>
-                    <a>
-                        <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
-                    </a>
-                    <form role="search">
-                        <input
-                            type="search"
-                            id="menu_search"
-                            aria-label="Rechercher un livre, un tag, ou un type de littérature"
-                            placeholder="Rechercher"
-                        />
-                        <button>
-                            <SVG svg={SearchIcon} title="Lancer la recherche"/>
-                        </button>
-                    </form>
-                </SecondaryHeader>
+                <Header activePage={0}/>
+                <MyBooksHeader dialogOpen={this.state.dialogInfos.open}/>
                 <main style={this.getDialogBlur()} id={styles.main} role="main">
                     <a id="contenu" tabIndex={-1}></a>
                     <section>
@@ -118,9 +97,9 @@ export class MyBooks extends React.Component<Props, States> {
                             <Slider
                                 className={styles.slider}
                                 displayQty={6}
-                                content={this.props.catalog.publications.map((pub, index: number) =>
+                                content={this.props.catalog.publications.map((pub) =>
                                     <PublicationCard
-                                        key={index}
+                                        key={pub.identifier}
                                         publication={pub}
                                         handleRead={this.handleRead}
                                         handleMenuClick={this.handleMenuClick}
@@ -143,6 +122,7 @@ export class MyBooks extends React.Component<Props, States> {
                     open={this.state.dialogInfos.open}
                     publication={this.state.dialogInfos.publication}
                     closeDialog={this.closeDialog}
+                    readPublication={this.handleRead}
                 />
             </>
         );
@@ -191,4 +171,4 @@ const mapStateToProps = (state: any) => {
     };
 };
 
-export default connect(mapStateToProps)(MyBooks);
+export default connect(mapStateToProps)(MyBooksCard);
