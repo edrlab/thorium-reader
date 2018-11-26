@@ -12,6 +12,8 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 interface Props {
     open: boolean;
     close: () => void;
+    className?: string;
+    id?: string;
 }
 
 export default class BookDetailsDialog extends React.Component<Props, undefined> {
@@ -21,6 +23,9 @@ export default class BookDetailsDialog extends React.Component<Props, undefined>
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
         const content = this.props.children;
+        const className = this.props.className;
+
+        console.log(this.props.id);
 
         return (
             <div
@@ -35,7 +40,11 @@ export default class BookDetailsDialog extends React.Component<Props, undefined>
                 style={{visibility: this.props.open ? "visible" : "hidden"}}
             >
                 <div onClick={this.props.close} className={styles.c_dialog_background} />
-                <div role="document" className={styles.c_dialog__box}>
+                <div
+                    role="document"
+                    id={this.props.id}
+                    className={(className ? className + " " : "") + styles.c_dialog__box}
+                >
                     { content && <>
                         { content }
                     </>}

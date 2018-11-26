@@ -23,7 +23,7 @@ import { Translator } from "readium-desktop/common/services/translator";
 
 import * as windowActions from "readium-desktop/renderer/actions/window";
 
-import * as AppStyles from "readium-desktop/renderer/assets/styles/app.css";
+import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 import {
     catalogActions,
@@ -64,8 +64,6 @@ export default class App extends React.Component<undefined, AppState> {
     private translator: Translator;
 
     private filesToImport: File[] = [];
-
-    private confimationAction: () => void;
 
     private dialogMessage: JSX.Element;
 
@@ -115,35 +113,35 @@ export default class App extends React.Component<undefined, AppState> {
         }
         const message = (
             <div>
-                {nameList.length > 0 && (
-                    <div>
-                        <p>{this.translator.translate("dialog.import")}</p>
-                        <ul>
-                            {nameList}
-                        </ul>
-                    </div>
-                )}
-                {lcpList.length > 0 && (
-                    <div>
-                        <p>{this.translator.translate("dialog.lcpImport")}</p>
-                        <ul>
-                            {lcpList}
-                        </ul>
-                    </div>
-                )}
-                <button
-                    onClick={() => {
-                        this.handleDialogClose();
-                        if (this.confimationAction) {
-                            this.confimationAction();
-                        } else {
+                <div className={styles.add_dialog_content}>
+                    {nameList.length > 0 && (
+                        <div>
+                            <p>{this.translator.translate("dialog.import")}</p>
+                            <ul>
+                                {nameList}
+                            </ul>
+                        </div>
+                    )}
+                    {lcpList.length > 0 && (
+                        <div>
+                            <p>{this.translator.translate("dialog.lcpImport")}</p>
+                            <ul>
+                                {lcpList}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+                <div className={styles.add_dialog_choices}>
+                    <button
+                        onClick={() => {this.handleDialogClose(); }}
+                    > Non </button>
+                    <button
+                        onClick={() => {
+                            this.handleDialogClose();
                             this.importFiles();
-                        }
-                    }}
-                > Oui </button>
-                <button
-                    onClick={() => {this.handleDialogClose(); }}
-                > Non </button>
+                        }}
+                    > Oui </button>
+                </div>
             </div>
         );
 
@@ -191,7 +189,7 @@ export default class App extends React.Component<undefined, AppState> {
         return (
             <Provider store={this.store}>
                 <HashRouter >
-                    <div className={AppStyles.root}>
+                    <div className={styles.root}>
                         <Dropzone disableClick onDrop={this.onDrop.bind(this)} style={{
                             position: "absolute",
                             top: 0,
@@ -218,6 +216,7 @@ export default class App extends React.Component<undefined, AppState> {
                             <Dialog
                                 open={this.state.dialogOpen}
                                 close={this.handleDialogClose}
+                                id={styles.add_dialog}
                             >
                                 {this.dialogMessage}
                             </Dialog>
