@@ -188,7 +188,6 @@ export default class App extends React.Component<undefined, AppState> {
     }
 
     public render(): React.ReactElement<{}> {
-        console.log(this.state.dialogOpen);
         return (
             <Provider store={this.store}>
                 <HashRouter >
