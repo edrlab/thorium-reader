@@ -27,7 +27,7 @@ export default class Header extends React.Component<Props, undefined> {
                             Mes Livres
                         </Link>
                     </li>
-                    <li {...(activePage === 1 && {className: styles.active})}>
+                    <li style={{display: "none"}} {...(activePage === 1 && {className: styles.active})}>
                         <Link to={"/catalog"} replace={true}>
                             Catalogues
                         </Link>
