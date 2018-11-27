@@ -15,7 +15,6 @@ import { Store } from "redux";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
-import { Publication } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
@@ -39,6 +38,8 @@ import PageManager from "readium-desktop/renderer/components/PageManager";
 import { Provider } from "react-redux";
 
 import Dialog from "readium-desktop/renderer/components/utils/Dialog";
+
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 // does not work when "react-dropzone" is external to the bundle (Node require() import)
 
@@ -86,7 +87,7 @@ export default class App extends React.Component<undefined, AppState> {
         this.handleDialogClose = this.handleDialogClose.bind(this);
     }
 
-    public handleOpenPublication(publication: Publication) {
+    public handleOpenPublication(publication: PublicationView) {
         this.store.dispatch(readerActions.open(publication));
     }
 

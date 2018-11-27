@@ -17,8 +17,10 @@ import { Styles } from "readium-desktop/renderer/components/styles";
 
 import { Contributor } from "readium-desktop/common/models/contributor";
 
+import { PublicationView } from "readium-desktop/common/views/publication";
+
 interface ICoverProps {
-    publication: Publication;
+    publication: PublicationView;
 }
 
 export default class Cover extends React.Component<ICoverProps, null> {
@@ -40,13 +42,13 @@ export default class Cover extends React.Component<ICoverProps, null> {
                 };
             }
             bodyCSS.backgroundImage = "linear-gradient(" + colors.topColor + ", " + colors.bottomColor + ")";
-
+            console.log(this.props.publication);
             for (const author of this.props.publication.authors) {
-                const newAuthor: Contributor = author;
+                const newAuthor = author;
                 if (authors !== "") {
                     authors += ", ";
                 }
-                authors += this.translator.translateContentField(newAuthor.name);
+                authors += this.translator.translateContentField(newAuthor);
             }
 
             return (

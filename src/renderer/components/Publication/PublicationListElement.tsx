@@ -15,12 +15,12 @@ import { Translator } from "readium-desktop/common/services/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
+import { PublicationView } from "readium-desktop/common/views/publication";
+
 interface IPublicationProps {
-    publication: Publication;
+    publication: PublicationView;
     id: number;
-    handleMenuClick: (id: number) => void;
     openDialog: () => void;
-    menuOpen: boolean;
     // downloading: boolean;
     // downloadProgress?: number;
     // handleRead: any;
@@ -45,7 +45,7 @@ export default class PublicationListElement extends React.Component<IPublication
             <li
                 key={i}
                 className={styles.block_book_list +
-                    (this.props.menuOpen ? " " + styles.menuOpen : "")}
+                    (false ? " " + styles.menuOpen : "")}
             >
                 <div className={styles.list_book_title}>
                 <p className={styles.book_title} aria-label="Titre du livre">{pub.title}</p>
@@ -53,17 +53,16 @@ export default class PublicationListElement extends React.Component<IPublication
                     className={`${styles.book_author} ${styles.lightgrey}`}
                     aria-label="Auteur du livre"
                 >
-                    {pub.authors.map((author) => author.name).join(", ")}
+                    {pub.authors.map((author) => author).join(", ")}
                 </p>
                 </div>
-                <p className={styles.infos_sup} aria-label="Date de sortie du livre">2017</p>
-                <p className={styles.infos_sup} aria-label="Éditeur du livre">Larousse</p>
+                <p className={styles.infos_sup} aria-label="Date de sortie du livre">{pub.publishedAt}</p>
+                <p className={styles.infos_sup} aria-label="Éditeur du livre">{pub.editor}</p>
                 <button
                     type="button"
                     aria-haspopup="dialog"
                     aria-controls="dialog"
                     title="Voir plus"
-                    onClick={() => this.props.handleMenuClick(i)}
                 >
                     <svg role="link" className={styles.icon_seemore}>
                         <g aria-hidden="true">

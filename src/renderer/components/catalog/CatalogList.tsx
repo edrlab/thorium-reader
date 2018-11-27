@@ -9,28 +9,34 @@ import { connect } from "react-redux";
 
 import BookDetailsDialog from "readium-desktop/renderer/components/BookDetailsDialog";
 import Header from "readium-desktop/renderer/components/Header";
-import MyBooksHeader from "readium-desktop/renderer/components/myBooks/MyBooksHeader";
+import MyBooksHeader from "readium-desktop/renderer/components/catalog/CatalogHeader";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
-
-import { Publication } from "readium-desktop/common/models/publication";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { readerActions, apiActions } from "readium-desktop/common/redux/actions";
 import { PublicationListElement } from "readium-desktop/renderer/components/Publication";
 
+import { PublicationView } from "readium-desktop/common/views/publication";
+import uuid = require("uuid");
+import { CatalogView } from "readium-desktop/common/views/catalog";
+import CatalogEntry from "readium-desktop/renderer/components/catalog/CatalogEntrie";
+
 interface Props {
-    catalog: Catalog;
+    apiRequestId?: string;
+    catalog?: CatalogView;
+    requestCatalog?: any;
+    cleanData?: any;
 }
 
 interface States {
-    menuInfos: {open: number, publication: Publication};
-    dialogInfos: {open: boolean, publication: Publication};
+    menuInfos: {open: number, publication: PublicationView};
+    dialogInfos: {open: boolean, publication: PublicationView};
 }
 
-export class MyBooksList extends React.Component<Props, States> {
+export class CatalogList extends React.Component<Props, States> {
 
     @lazyInject("translator")
     private translator: Translator;
@@ -56,14 +62,12 @@ export class MyBooksList extends React.Component<Props, States> {
 
         this.closeDialog = this.closeDialog.bind(this);
         this.handleRead = this.handleRead.bind(this);
-        this.handleMenuClick = this.handleMenuClick.bind(this);
         this.openDialog = this.openDialog.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
         const dialogOpen = this.state.dialogInfos.open;
-        const menuOpen = this.state.menuInfos.open;
 
         return (
             <>
@@ -71,24 +75,15 @@ export class MyBooksList extends React.Component<Props, States> {
                 <MyBooksHeader list={true} dialogOpen={dialogOpen}/>
                 <main style={this.getDialogBlur()} id={styles.main} role="main">
                     <a id="contenu" tabIndex={-1}></a>
-                    <section>
-                        <h1>Reprendre la lecture</h1>
-                        <ul>
-                            { this.props.catalog && this.props.catalog.publications
-                                && this.props.catalog.publications.map((pub: Publication, i: number) => {
-                                return (
-                                    <PublicationListElement
-                                        key={i}
-                                        publication={pub}
-                                        id={i}
-                                        handleMenuClick={this.handleMenuClick.bind(this)}
-                                        openDialog={this.openDialog}
-                                        menuOpen={menuOpen === i}
-                                    />
-                                );
-                            })}
-                        </ul>
-                    </section>
+                    { this.props.catalog && this.props.catalog.entries.map((entry) =>
+                        <CatalogEntry
+                            entry={entry}
+                            openDialog={this.openDialog}
+                            handleRead={this.handleRead}
+                            handleMenuClick={this.handleRead}
+                            list={true}
+                        />
+                    )}
                 </main>
                 <BookDetailsDialog
                     open={dialogOpen}
@@ -100,15 +95,8 @@ export class MyBooksList extends React.Component<Props, States> {
         );
     }
 
-    private handleRead(publication: Publication) {
+    private handleRead(publication: PublicationView) {
         this.store.dispatch(readerActions.open(publication));
-    }
-
-    private handleMenuClick(id: number) {
-        this.setState({menuInfos: {
-            open: this.state.menuInfos.open !== id ? id : null,
-            publication: this.props.catalog.publications[id],
-        }});
     }
 
     private closeDialog() {
@@ -124,13 +112,46 @@ export class MyBooksList extends React.Component<Props, States> {
     }
 }
 
-const mapStateToProps = (state: any) => {
+const mapDispatchToProps = (dispatch: any, ownProps: Props) => {
+    const { apiRequestId } = ownProps;
+
     return {
-        catalog: {
-            title: "My Books",
-            publications: state.catalog.publications,
+        requestCatalog: () => {
+            dispatch(
+                apiActions.buildRequestAction(
+                    apiRequestId,
+                    "catalog",
+                    "get",
+                ),
+            );
+        },
+        cleanData: () => {
+            dispatch(
+                apiActions.clean(apiRequestId),
+            );
         },
     };
 };
 
-export default connect(mapStateToProps)(MyBooksList);
+const mapStateToProps = (state: any, ownProps: Props): any => {
+    const { apiRequestId } = ownProps;
+
+    let catalog = null;
+
+    if (apiRequestId in state.api.data) {
+        catalog = state.api.data[apiRequestId].result;
+    }
+
+    return {
+        catalog,
+    };
+
+};
+
+const Catalog = connect(mapStateToProps, mapDispatchToProps)(CatalogList);
+
+(Catalog as any).defaultProps = {
+    apiRequestId: uuid.v4(),
+};
+
+export default Catalog;

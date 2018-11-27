@@ -18,25 +18,29 @@ import Cover from "readium-desktop/renderer/components/Publication/Cover";
 
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
+import { PublicationView } from "readium-desktop/common/views/publication";
+
 interface IPublicationState {
     isFlipped: boolean;
     menu: boolean;
 }
 
 interface IPublicationProps {
-    publication: Publication;
-    handleRead: (publication: Publication) => void;
-    handleMenuClick: (el: React.RefObject<any>, publication: Publication) => void;
-    // openInfoDialog: (publication: Publication) => void;
+    publication: PublicationView;
+    handleRead: (publication: PublicationView) => void;
+    handleMenuClick: (el: React.RefObject<any>, publication: PublicationView) => void;
+    openDialog: (publication: PublicationView) => void;
     // openReturnDialog: (publication: Publication) => void;
     // openRenewDialog: (publication: Publication) => void;
 }
 
-export default class PublicationListElement extends React.Component<IPublicationProps, IPublicationState> {
+export default class PublicationCard extends React.Component<IPublicationProps, IPublicationState> {
     @lazyInject("translator")
     private translator: Translator;
 
     private menuButton: React.RefObject<any>;
+
+    private menuRef: any;
 
     constructor(props: IPublicationProps) {
         super(props);
@@ -46,7 +50,10 @@ export default class PublicationListElement extends React.Component<IPublication
             menu: false,
         };
 
-        this.menuButton = React.createRef();
+        this.menuRef = React.createRef();
+
+        this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
+        this.handleMenuClick = this.handleMenuClick.bind(this);        
     }
 
     public handleFront = () => {
@@ -64,11 +71,11 @@ export default class PublicationListElement extends React.Component<IPublication
 
         if (publication.authors && publication.authors.length > 0) {
             for (const author of publication.authors) {
-                const newAuthor: Contributor = author;
+                const newAuthor = author;
                 if (authors !== "") {
                     authors += ", ";
                 }
-                authors += this.translator.translateContentField(newAuthor.name);
+                authors += this.translator.translateContentField(newAuthor);
             }
         }
 
@@ -78,12 +85,12 @@ export default class PublicationListElement extends React.Component<IPublication
                 aria-controls="dialog"
             >
                 <div className={styles.image_wrapper}>
-                    <a onClick={(e) => this.handleBookClick(e, this.props.publication)}>
+                    <a onClick={(e) => this.handleBookClick(e)}>
                         <Cover publication={publication} />
                     </a>
                 </div>
                 <div className={styles.legend}>
-                    <a onClick={(e) => this.handleBookClick(e, this.props.publication)}>
+                    <a onClick={(e) => this.handleBookClick(e)}>
                         <p className={styles.book_title} aria-label="Titre du livre">
                             {publication.title}
                         </p>
@@ -97,7 +104,7 @@ export default class PublicationListElement extends React.Component<IPublication
                         aria-haspopup="dialog"
                         aria-controls="dialog"
                         title="Voir plus"
-                        onClick={() => this.props.handleMenuClick(this.menuButton, publication)}
+                        onClick={this.handleMenuClick}
                     >
                     <svg role="link" className={styles.icon_seemore}>
                         <g aria-hidden="true">
@@ -109,11 +116,34 @@ export default class PublicationListElement extends React.Component<IPublication
                     </svg>
                     </button>
                 </div>
+                <div
+                    className={(this.state.menu ? styles.menu_active + " " : "") + styles.menu}
+                    ref={this.menuRef}
+                >
+                    <a
+                        tabIndex={1}
+                        onClick={() => this.props.openDialog(this.props.publication)}
+                        onBlur={this.handleOnBlurMenu}
+                    > Fiche livre </a>
+                    <a tabIndex={2} onBlur={this.handleOnBlurMenu}> Retirer de la séléction </a>
+                    <a tabIndex={3} onBlur={this.handleOnBlurMenu}> Supprimer définitivement </a>
+                </div>
             </div>
         );
     }
 
-    private handleBookClick(e: any, publication: Publication) {
+    private handleOnBlurMenu(e: any) {
+        console.log();
+        if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== e.target.parentElement)) {
+            this.setState({ menu: false});
+        }
+    }
+
+    private handleMenuClick() {
+        this.setState({menu: !this.state.menu});
+    }
+
+    private handleBookClick(e: any) {
         e.preventDefault();
         this.props.handleRead(this.props.publication);
     }

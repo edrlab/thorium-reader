@@ -1,9 +1,7 @@
-import MyBooksCard from "readium-desktop/renderer/components/myBooks/MyBooksCard";
-import MyBooksList from "readium-desktop/renderer/components/myBooks/MyBooksList";
+import CatalogCard from "readium-desktop/renderer/components/catalog/CatalogCard";
+import CatalogList from "readium-desktop/renderer/components/catalog/CatalogList";
 import SettingsLanguages from "readium-desktop/renderer/components/settings/SettingsLanguages";
 import SettingsTags from "readium-desktop/renderer/components/settings/SettingsTags";
-
-import Catalog from "readium-desktop/renderer/components/catalog/Catalog";
 
 interface Route {
     path: string;
@@ -22,7 +20,7 @@ export const routes: RouteList = {
         path: "/myBooks/list",
         exact: false,
         title: "MyBooksList",
-        component: Catalog,
+        component: CatalogList,
     },
     "/settings/tags": {
         path: "/settings/tags",
@@ -46,6 +44,6 @@ export const routes: RouteList = {
         path: "/",
         exact: false,
         title: "Home",
-        component: Catalog,
+        component: CatalogCard,
     },
 };

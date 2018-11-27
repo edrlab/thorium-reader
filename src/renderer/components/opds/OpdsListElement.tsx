@@ -53,7 +53,7 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
                     <img className={OpdsStyles.image} src={publication.cover.url}/>
                 ) : (
                     <div className={OpdsStyles.image}>
-                        <Cover publication={publication}/>
+                        {/*<Cover publication={publication}/>*/}
                     </div>
                 )}
                 <div className={OpdsStyles.primary_informations}>

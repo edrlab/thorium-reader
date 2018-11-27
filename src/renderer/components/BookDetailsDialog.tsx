@@ -15,13 +15,13 @@ import Cover from "readium-desktop/renderer/components/Publication/Cover";
 import Dialog from "readium-desktop/renderer/components/utils/Dialog";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import { Publication } from "readium-desktop/common/models/publication";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 interface Props {
-    publication: Publication;
+    publication: PublicationView;
     open: boolean;
     closeDialog: () => void;
-    readPublication: (publication: Publication) => void;
+    readPublication: (publication: PublicationView) => void;
 }
 
 export default class BookDetailsDialog extends React.Component<Props, undefined> {
@@ -44,7 +44,7 @@ export default class BookDetailsDialog extends React.Component<Props, undefined>
                 if (authors !== "") {
                     authors += ", ";
                 }
-                authors += author.name;
+                authors += author;
             }
         }
 
@@ -54,7 +54,7 @@ export default class BookDetailsDialog extends React.Component<Props, undefined>
                 if (languages !== "") {
                     languages += ", ";
                 }
-                languages += language.code;
+                languages += language;
             }
         }
 

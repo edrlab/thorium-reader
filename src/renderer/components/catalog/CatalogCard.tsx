@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import * as uuid from "uuid";
+
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import { Translator } from "readium-desktop/common/services/translator";
@@ -7,34 +9,37 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { connect } from "react-redux";
 
-import Slider from "readium-desktop/renderer/components/utils/Slider";
-
 import BookDetailsDialog from "readium-desktop/renderer/components/BookDetailsDialog";
 import Header from "readium-desktop/renderer/components/Header";
-import MyBooksHeader from "readium-desktop/renderer/components/myBooks/MyBooksHeader";
+import MyBooksHeader from "readium-desktop/renderer/components/catalog/CatalogHeader";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
-import { PublicationCard } from "readium-desktop/renderer/components/Publication";
-
-import { Publication } from "readium-desktop/common/models/publication";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 
-import { catalogActions } from "readium-desktop/common/redux/actions";
+import { apiActions } from "readium-desktop/common/redux/actions";
 
 import { readerActions } from "readium-desktop/common/redux/actions";
 
+import { CatalogView } from "readium-desktop/common/views/catalog";
+
+import { PublicationView } from "readium-desktop/common/views/publication";
+import CatalogEntry from "readium-desktop/renderer/components/catalog/CatalogEntrie";
+
 interface Props {
-    catalog: Catalog;
+    apiRequestId?: string;
+    catalog?: CatalogView;
+    requestCatalog?: any;
+    cleanData?: any;
 }
 
 interface States {
-    menuInfos: {open: boolean, el: React.RefObject<any>, publication: Publication};
-    dialogInfos: {open: boolean, publication: Publication};
+    menuInfos: {open: boolean, el: React.RefObject<any>, publication: PublicationView};
+    dialogInfos: {open: boolean, publication: PublicationView};
 }
 
-export class MyBooksCard extends React.Component<Props, States> {
+export class CatalogCard extends React.Component<Props, States> {
 
     @lazyInject("translator")
     private translator: Translator;
@@ -61,11 +66,17 @@ export class MyBooksCard extends React.Component<Props, States> {
 
         this.menuRef = React.createRef();
 
-        this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
         this.handleRead = this.handleRead.bind(this);
-        this.handleMenuClick = this.handleMenuClick.bind(this);
         this.openDialog = this.openDialog.bind(this);
+    }
+
+    public componentDidMount() {
+        this.props.requestCatalog();
+    }
+
+    public componentWillUnmount() {
+        this.props.cleanData();
     }
 
     public render(): React.ReactElement<{}> {
@@ -93,33 +104,15 @@ export class MyBooksCard extends React.Component<Props, States> {
                 <MyBooksHeader dialogOpen={this.state.dialogInfos.open}/>
                 <main style={this.getDialogBlur()} id={styles.main} role="main">
                     <a id="contenu" tabIndex={-1}></a>
-                    <section>
-                        <h1>Derniers ajouts</h1>
-                        { this.props.catalog && this.props.catalog.publications &&
-                            <Slider
-                                className={styles.slider}
-                                displayQty={6}
-                                content={this.props.catalog.publications.map((pub) =>
-                                    <PublicationCard
-                                        key={pub.identifier}
-                                        publication={pub}
-                                        handleRead={this.handleRead}
-                                        handleMenuClick={this.handleMenuClick}
-                                    />,
-                                )}
-                            />
-                        }
-                    </section>
+                    { this.props.catalog && this.props.catalog.entries.map((entry) =>
+                        <CatalogEntry
+                            entry={entry}
+                            handleRead={this.handleRead}
+                            handleMenuClick={this.handleRead}
+                            openDialog={this.openDialog}
+                        />
+                    )}
                 </main>
-                <div
-                    ref={this.menuRef}
-                    style={menuStyle}
-                    className={(this.state.menuInfos.open ? styles.menu_active + " " : "") + styles.menu}
-                >
-                    <a tabIndex={1} onClick={this.openDialog} onBlur={this.handleOnBlurMenu}>Fiche livre</a>
-                    <a tabIndex={2} onBlur={this.handleOnBlurMenu}>Retirer de la séléction</a>
-                    <a tabIndex={3} onBlur={this.handleOnBlurMenu}>Supprimer définitivement</a>
-                </div>
                 <BookDetailsDialog
                     open={this.state.dialogInfos.open}
                     publication={this.state.dialogInfos.publication}
@@ -130,25 +123,8 @@ export class MyBooksCard extends React.Component<Props, States> {
         );
     }
 
-    private handleRead(publication: Publication) {
+    private handleRead(publication: PublicationView) {
         this.store.dispatch(readerActions.open(publication));
-    }
-
-    private handleMenuClick(el: React.RefObject<any>, publication: Publication) {
-        this.setState({menuInfos: {
-            open: el === this.state.menuInfos.el ? !this.state.menuInfos.open : true,
-            el,
-            publication,
-        }});
-        this.menuRef.current.children[0].focus();
-    }
-
-    private handleOnBlurMenu(e: any) {
-        if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== this.menuRef.current)) {
-            const { menuInfos } = this.state;
-            menuInfos.open = false;
-            this.setState({ menuInfos });
-        }
     }
 
     private closeDialog() {
@@ -164,13 +140,46 @@ export class MyBooksCard extends React.Component<Props, States> {
     }
 }
 
-const mapStateToProps = (state: any) => {
+const mapDispatchToProps = (dispatch: any, ownProps: Props) => {
+    const { apiRequestId } = ownProps;
+
     return {
-        catalog: {
-            title: "My Books",
-            publications: state.catalog.publications,
+        requestCatalog: () => {
+            dispatch(
+                apiActions.buildRequestAction(
+                    apiRequestId,
+                    "catalog",
+                    "get",
+                ),
+            );
+        },
+        cleanData: () => {
+            dispatch(
+                apiActions.clean(apiRequestId),
+            );
         },
     };
 };
 
-export default connect(mapStateToProps)(MyBooksCard);
+const mapStateToProps = (state: any, ownProps: Props): any => {
+    const { apiRequestId } = ownProps;
+
+    let catalog = null;
+
+    if (apiRequestId in state.api.data) {
+        catalog = state.api.data[apiRequestId].result;
+    }
+
+    return {
+        catalog,
+    };
+
+};
+
+const Catalog = connect(mapStateToProps, mapDispatchToProps)(CatalogCard);
+
+(Catalog as any).defaultProps = {
+    apiRequestId: uuid.v4(),
+};
+
+export default Catalog;

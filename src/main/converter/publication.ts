@@ -14,7 +14,7 @@ export class PublicationViewConverter {
             cover: {
                 url: document.coverFile.url,
             },
-            customCover: document.customCover
+            customCover: document.customCover,
         };
     }
 }
