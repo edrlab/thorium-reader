@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://readium.org/webpub-manifest/schema/contributor.schema.json",
+  "title": "Contributor",
+  "anyOf": [
+    {
+      "type": "string"
+    },
+    {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "$ref": "contributor-object.schema.json"
+          }
+        ]
+      }
+    },
+    {
+      "type": "object",
+      "$ref": "contributor-object.schema.json"
+    }
+  ]
+}

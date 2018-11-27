@@ -11,6 +11,7 @@ import { Store } from "redux";
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
     catalogActions,
+    apiActions,
     i18nActions,
     lcpActions,
     opdsActions,
@@ -29,12 +30,13 @@ import { ActionSerializer } from "readium-desktop/common/services/serializer";
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
     catalogActions.ActionType.FileImportRequest,
-    catalogActions.ActionType.LocalPublicationImportRequest,
     catalogActions.ActionType.PublicationRemoveRequest,
-    catalogActions.ActionType.LocalLCPImportRequest,
+
     catalogActions.ActionType.TagAddRequest,
     catalogActions.ActionType.TagEditRequest,
     catalogActions.ActionType.TagRemoveRequest,
+
+    apiActions.ActionType.Request,
 
     opdsActions.ActionType.AddRequest,
     opdsActions.ActionType.UpdateRequest,

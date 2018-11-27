@@ -3,6 +3,8 @@ import MyBooksList from "readium-desktop/renderer/components/myBooks/MyBooksList
 import SettingsLanguages from "readium-desktop/renderer/components/settings/SettingsLanguages";
 import SettingsTags from "readium-desktop/renderer/components/settings/SettingsTags";
 
+import Catalog from "readium-desktop/renderer/components/catalog/Catalog";
+
 interface Route {
     path: string;
     exact: boolean;
@@ -20,7 +22,7 @@ export const routes: RouteList = {
         path: "/myBooks/list",
         exact: false,
         title: "MyBooksList",
-        component: MyBooksList,
+        component: Catalog,
     },
     "/settings/tags": {
         path: "/settings/tags",
@@ -44,6 +46,6 @@ export const routes: RouteList = {
         path: "/",
         exact: false,
         title: "Home",
-        component: MyBooksCard,
+        component: Catalog,
     },
 };

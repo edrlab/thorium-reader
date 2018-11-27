@@ -18,6 +18,7 @@ import {
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { winReducer } from "./win";
+import { apiReducer } from "./api";
 
 import { catalogReducer } from "readium-desktop/common/redux/reducers/catalog";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
@@ -40,4 +41,5 @@ export const rootReducer = combineReducers({
     win: winReducer,
     net: netReducer,
     update: updateReducer,
+    api: apiReducer,
 });

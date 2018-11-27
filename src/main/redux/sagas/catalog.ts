@@ -29,7 +29,7 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 
 import { container } from "readium-desktop/main/di";
 
-import { PublicationDb } from "readium-desktop/main/db/publication-db";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 
 import { injectFileInZip } from "readium-desktop/utils/zip";
@@ -45,49 +45,13 @@ import { appActions } from "readium-desktop/main/redux/actions";
 export function* catalogFileImportWatcher(): SagaIterator {
     while (true) {
         const action = yield take(catalogActions.ActionType.FileImportRequest);
-        const filePath = action.payload.path;
-
-        // Get extension of file path
-        const ext = path.extname(filePath);
-
-        if (ext === ".epub") {
-            yield put({
-                type: catalogActions.ActionType.LocalPublicationImportRequest,
-                payload: {
-                    path: filePath,
-                },
-            });
-        } else if (ext === ".lcpl") {
-            yield put({
-                type: catalogActions.ActionType.LocalLCPImportRequest,
-                payload: {
-                    path: filePath,
-                },
-            });
-        } else {
-            yield put({
-                type: catalogActions.ActionType.FileImportError,
-                error: true,
-            });
-        }
-    }
-}
-
-export function* catalogLocalPublicationImportWatcher(): SagaIterator {
-    while (true) {
-        const action = yield take(catalogActions.ActionType.LocalPublicationImportRequest);
-        const pubPath = action.payload.path;
-        const catalogService = container.get(
-            "catalog-service") as CatalogService;
+        const catalogService = container.get("catalog") as CatalogService;
 
         try {
             const storedPub = yield call(() =>
-                catalogService.addPublicationFromLocalPath(
-                    uuid.v4(),
-                    action.payload.path,
-            ));
+                catalogService.importFile(action.payload.path));
             yield put({
-                type: catalogActions.ActionType.LocalPublicationImportSuccess,
+                type: catalogActions.ActionType.FileImportSuccess,
                 payload: {
                     publication: storedPub,
                 },
@@ -95,153 +59,10 @@ export function* catalogLocalPublicationImportWatcher(): SagaIterator {
         } catch (error) {
             // FIXME: send error and message
             yield put({
-                type: catalogActions.ActionType.LocalPublicationImportError,
+                type: catalogActions.ActionType.FileImportError,
                 error: true,
             });
         }
-    }
-}
-
-export function* catalogLocalLCPImportWatcher(): SagaIterator {
-    while (true) {
-        let continueWaiting = true;
-
-        const contentType = "application/epub+zip";
-
-        const action = yield take(catalogActions.ActionType.LocalLCPImportRequest);
-        const lcpPath = action.payload.path;
-
-        const buffer = fs.readFileSync(lcpPath);
-        const content = JSON.parse(buffer.toString());
-
-        let epub;
-
-        // search the path of the epub file
-        if (content.links) {
-            for (const link of content.links) {
-                if (link.rel === "publication") {
-                    epub = link;
-                }
-            }
-        }
-
-        const publication: Publication = {
-            title: epub.title,
-            description: "",
-            identifier: uuid.v4(),
-            authors: [],
-            files: [
-                {
-                    url: epub.href,
-                    ext: "epub",
-                    contentType,
-                },
-            ],
-        };
-
-        // Refresh the catalog with the new downloaded catalog
-        yield put({
-            type: catalogActions.ActionType.PublicationAddSuccess,
-            payload: {
-                publication,
-            },
-        });
-
-        // Start the download of the epub file
-        yield put({
-            type: publicationDownloadActions.ActionType.AddRequest,
-            payload: {
-                publication,
-            },
-        });
-
-        while (continueWaiting) {
-            const downloadAction = yield take(publicationDownloadActions.ActionType.Success);
-            const newPublication = downloadAction.payload.publication;
-
-            if (newPublication.identifier === publication.identifier) {
-                // const newPub: Publication = yield call(
-            //     () => catalogService.parseEpub(download.dstPath),
-            // );
-                for (const file of newPublication.files) {
-                    const relativeUrl = file.url.substr(6);
-                    const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
-                    const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
-
-                    if (file.contentType !== contentType) {
-                        // Bad mimetype
-                        continue;
-                    }
-
-                    // Inject LCPL
-                    try {
-                        yield call(
-                            () => injectFileInZip(
-                                filePath,
-                                filePath + ".lcp",
-                                lcpPath,
-                                "META-INF/license.lcpl",
-                            ),
-                        );
-                    } catch (error) {
-                        yield put({
-                            type: catalogActions.ActionType.LocalLCPImportError,
-                            error: true,
-                        });
-                    }
-
-                    // Replace epub without LCP with a new one containing LCPL
-                    try {
-                        fs.unlinkSync(filePath);
-                    } catch (error) {
-                        console.log(error);
-                        return;
-                    }
-
-                    try {
-                        fs.renameSync(filePath + ".lcp", filePath);
-                    } catch (error) {
-                        console.log(error);
-                        return;
-                    }
-
-                    // Update publication info and store them in db
-                    const publicationDb = container.get(
-                        "publication-db") as PublicationDb;
-                    const catalogService = container.get(
-                        "catalog-service") as CatalogService;
-                    const lcpPublication = yield call(
-                        () => catalogService.parseEpub(
-                            filePath,
-                        ),
-                    );
-                    lcpPublication.identifier = publication.identifier;
-                    lcpPublication.cover = newPublication.cover;
-                    lcpPublication.files = newPublication.files;
-
-                    yield call(
-                        () => publicationDb.putOrChange(lcpPublication),
-                    );
-                    yield put({
-                        type: catalogActions.ActionType.LocalLCPImportSuccess,
-                        payload: {
-                            publication: lcpPublication,
-                        },
-                    });
-                    // Refresh the catalog with the new LCP Publication
-                    yield put({
-                        type: catalogActions.ActionType.PublicationAddSuccess,
-                        payload: {
-                            publication: lcpPublication,
-                        },
-                    });
-                }
-
-                continueWaiting = false;
-            }
-
-        }
-
     }
 }
 
@@ -265,17 +86,13 @@ export function* catalogPublicationRemoveWatcher(): SagaIterator {
         const action = yield take(catalogActions.ActionType.PublicationRemoveRequest);
         const publication = action.payload.publication;
 
-        const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
+        const catalogService = container.get("catalog") as CatalogService;
 
-        // Get publication db
-        const publicationDb: PublicationDb = container.get(
-            "publication-db") as PublicationDb;
         // Remove publication from catalog
         try {
-            const result = yield call(() => publicationDb.remove(
+            const result = yield call(() => catalogService.deletePublication(
                 publication.identifier,
             ));
-            pubStorage.removePublication(publication.identifier);
             yield put({
                 type: catalogActions.ActionType.PublicationRemoveSuccess,
                 payload: {
@@ -289,41 +106,6 @@ export function* catalogPublicationRemoveWatcher(): SagaIterator {
                 error: true,
             });
         }
-    }
-}
-
-export function* catalogInitWatcher(): SagaIterator {
-    yield take(appActions.ActionType.InitSuccess);
-
-    // Get publication db
-    const publicationDb: PublicationDb = container.get(
-        "publication-db") as PublicationDb;
-
-    // Init catalog store
-    try {
-        const result = yield call(() => publicationDb.getAll());
-        yield put({
-            type: catalogActions.ActionType.SetSuccess,
-            payload: {
-                publications: result,
-                tagList: [
-                    {
-                        name: "Science Fiction",
-                        count: 12,
-                    },
-                    {
-                        name: "Fantasy",
-                        count: 9,
-                    },
-                    {
-                        name: "Manga",
-                        count: 845,
-                    },
-                ],
-            },
-        });
-    } catch (error) {
-        yield put({ type: catalogActions.ActionType.SetError, error: true });
     }
 }
 

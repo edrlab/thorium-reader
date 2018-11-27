@@ -20,18 +20,13 @@ import {
 } from "./opds";
 
 import {
-    publicationDownloadAddRequestWatcher,
-    publicationDownloadCancelRequestWatcher,
-    publicationDownloadStatusWatcher,
+    publicationDownloadCancelRequestWatcher
 } from "./publication-download";
 
 import { appInitWatcher } from "./app";
 import {
     addTagWatcher,
     catalogFileImportWatcher,
-    catalogInitWatcher,
-    catalogLocalLCPImportWatcher,
-    catalogLocalPublicationImportWatcher,
     catalogPublicationDownloadSuccessWatcher,
     catalogPublicationRemoveWatcher,
     editTagWatcher,
@@ -52,12 +47,14 @@ import {
     streamerStopRequestWatcher,
 } from "./streamer";
 
-import {
-    lcpPassphraseSubmitRequestWatcher,
-    lcpRenewRequestWatcher,
-    lcpReturnRequestWatcher,
-    lcpUserKeyCheckRequestWatcher,
-} from "./lcp";
+import * as api from "./api";
+
+// import {
+//     lcpPassphraseSubmitRequestWatcher,
+//     lcpRenewRequestWatcher,
+//     lcpReturnRequestWatcher,
+//     lcpUserKeyCheckRequestWatcher,
+// } from "./lcp";
 
 import {
     updateStatusWatcher,
@@ -65,12 +62,11 @@ import {
 
 export function* rootSaga() {
     yield all([
+        api.watchers(),
+
         // Catalog
-        catalogInitWatcher(),
-        catalogLocalPublicationImportWatcher(),
         catalogPublicationDownloadSuccessWatcher(),
         catalogPublicationRemoveWatcher(),
-        catalogLocalLCPImportWatcher(),
         catalogFileImportWatcher(),
         editTagWatcher(),
         removeTagWatcher(),
@@ -82,8 +78,6 @@ export function* rootSaga() {
 
         // Publication download
         publicationDownloadCancelRequestWatcher(),
-        publicationDownloadAddRequestWatcher(),
-        publicationDownloadStatusWatcher(),
 
         // OPDS
         opdsAddRequestWatcher(),
@@ -111,10 +105,10 @@ export function* rootSaga() {
         streamerPublicationCloseRequestWatcher(),
 
         // LCP
-        lcpPassphraseSubmitRequestWatcher(),
-        lcpUserKeyCheckRequestWatcher(),
-        lcpRenewRequestWatcher(),
-        lcpReturnRequestWatcher(),
+        // lcpPassphraseSubmitRequestWatcher(),
+        // lcpUserKeyCheckRequestWatcher(),
+        // lcpRenewRequestWatcher(),
+        // lcpReturnRequestWatcher(),
 
         // Update checker
         updateStatusWatcher(),

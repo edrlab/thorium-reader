@@ -14,7 +14,7 @@ import getMuiTheme from "material-ui/styles/getMuiTheme";
 import { Store } from "redux";
 
 import { Catalog } from "readium-desktop/common/models/catalog";
-import { OPDS } from "readium-desktop/common/models/opds";
+import { OpdsFeed } from "readium-desktop/common/models/opds";
 import { Publication } from "readium-desktop/common/models/publication";
 
 import { lazyInject } from "readium-desktop/renderer/di";
@@ -49,7 +49,7 @@ interface AppState {
     // openPublication: Publication;
     snackbarOpen: boolean;
     dialogOpen: boolean;
-    opdsList: OPDS[];
+    opdsList: OpdsFeed[];
     locale: string;
 }
 
@@ -111,7 +111,8 @@ export default class App extends React.Component<undefined, AppState> {
             nameList.push (<li key={i}>{file.name}</li>);
             i++;
         }
-        const message = (
+        this.importFiles();
+        /*const message = (
             <div>
                 <div className={styles.add_dialog_content}>
                     {nameList.length > 0 && (
@@ -147,6 +148,8 @@ export default class App extends React.Component<undefined, AppState> {
 
         this.dialogMessage = message;
         this.setState({dialogOpen: true});
+
+        this.openImportDialog(message);*/
     }
 
     // Create the download list if it doesn't exist then start the download

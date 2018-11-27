@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as catalogActions from "./catalog";
+import * as apiActions from "./api";
 import * as downloaderActions from "./downloader";
 import * as i18nActions from "./i18n";
 import * as lcpActions from "./lcp";
@@ -18,6 +19,7 @@ import * as updateActions from "./update";
 
 export {
     catalogActions,
+    apiActions,
     downloaderActions,
     i18nActions,
     loggerActions,

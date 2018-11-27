@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action, ErrorAction } from "readium-desktop/common/models/redux";
+import { Action } from "readium-desktop/common/models/redux";
 
 import { Download } from "readium-desktop/common/models/download";
 import { DownloadStatus } from "readium-desktop/common/models/downloadable";
@@ -19,7 +19,7 @@ const initialState: DownloaderState = {
 
 export function downloaderReducer(
     state: DownloaderState = initialState,
-    action: Action | ErrorAction,
+    action: Action,
 ): DownloaderState {
     const newState = Object.assign({}, state);
     let download = null;
@@ -43,7 +43,7 @@ export function downloaderReducer(
             newState.downloads[identifier].status = DownloadStatus.Canceled;
             return newState;
         case downloaderActions.ActionType.Error:
-            download = (action as ErrorAction).meta.download;
+            download = action.meta.download;
             identifier = download.identifier;
             newState.downloads[identifier].status = DownloadStatus.Failed;
             return newState;

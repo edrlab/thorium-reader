@@ -7,7 +7,7 @@
 
 import * as uuid from "uuid";
 
-import { Action, ErrorAction } from "readium-desktop/common/models/redux";
+import { Action } from "readium-desktop/common/models/redux";
 
 import { UserKeyCheckStatus } from "readium-desktop/common/models/lcp";
 
@@ -19,7 +19,7 @@ const initialState: LcpState = {
 
 export function lcpReducer(
     state: LcpState = initialState,
-    action: Action | ErrorAction,
+    action: Action,
 ): LcpState {
     const newState = Object.assign({}, state);
 

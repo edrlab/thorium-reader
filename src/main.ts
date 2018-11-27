@@ -7,6 +7,8 @@
 
 import * as debug_ from "debug";
 
+import * as yargs from "yargs";
+
 import { _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
 
 if (_PACKAGING !== "0") {
@@ -57,8 +59,14 @@ import { SenderType } from "readium-desktop/common/models/sync";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
+import { CatalogService } from "readium-desktop/main/services/catalog";
+
 // Logger
 const debug = debug_("readium-desktop:main");
+
+
+// Parse command line
+const processArgs = yargs.argv
 
 initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();
@@ -195,8 +203,12 @@ app.on("window-all-closed", () => {
 app.on("ready", () => {
     debug("ready");
     initApp();
-    createWindow();
-    registerProtocol();
+
+    if (!processCommandLine()) {
+        // Do not open window if electron is launched as a command line
+        createWindow();
+        registerProtocol();
+    }
 });
 
 // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
@@ -257,33 +269,6 @@ ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
                 payload: {
                     action: {
                         type: netActionType,
-                    },
-                },
-            });
-
-            // Send catalog
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: catalogActions.ActionType.SetSuccess,
-                        payload: {
-                            publications: state.catalog.publications,
-                            tagList: state.catalog.tagList,
-                        },
-                    },
-                },
-            });
-
-            // Send opds feeds
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: opdsActions.ActionType.SetSuccess,
-                        payload: {
-                            items: state.opds.items,
-                        },
                     },
                 },
             });
@@ -349,3 +334,27 @@ ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {
             break;
     }
 });
+
+function processCommandLine() {
+    let promise = null;
+
+    if ("importFile" in processArgs) {
+        const catalogService = container.get("catalog-service") as CatalogService;
+        promise = catalogService.importFile(processArgs["importFile"]);
+    }
+
+    if (promise == null) {
+        return false;
+    }
+
+    promise.then((result: any) => {
+        debug("Command processed");
+        app.quit();
+    })
+    .catch((error) => {
+        debug("Command failed", error);
+        app.quit();
+    });
+
+    return true;
+}

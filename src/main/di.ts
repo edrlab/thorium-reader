@@ -25,20 +25,17 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { RootState } from "readium-desktop/main/redux/states";
 
-import { BookmarkManager } from "readium-desktop/main/services/bookmark";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
-import { SecretManager } from "readium-desktop/main/services/secret";
-
-import { OPDSParser } from "readium-desktop/common/services/opds";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { streamer } from "readium-desktop/main/streamer";
 
-import { ConfigDb } from "readium-desktop/main/db/config-db";
-import { OpdsDb } from "readium-desktop/main/db/opds-db";
-import { PublicationDb } from "readium-desktop/main/db/publication-db";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
+import { OpdsRepository } from "readium-desktop/main/db/repository/opds";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 
 import {
     PublicationStorage,
@@ -91,28 +88,39 @@ const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 
 // Load PouchDB plugins
 PouchDB.plugin(pouchDbAdapter.default ? pouchDbAdapter.default : pouchDbAdapter);
+PouchDB.plugin(require("pouchdb-find"));
 
 const dbOpts = {
     adapter: _POUCHDB_ADAPTER_NAME,
 };
 
 // Publication db
-const publicationPouchDb = new PouchDB(
-    path.join(rootDbPath, "publications"),
+const publicationDb = new PouchDB(
+    path.join(rootDbPath, "publication"),
     dbOpts,
 );
+const publicationRepository = new PublicationRepository(publicationDb);
 
 // OPDS db
-const opdsPouchDb = new PouchDB(
+const opdsDb = new PouchDB(
     path.join(rootDbPath, "opds"),
     dbOpts,
 );
+const opdsRepository = new OpdsRepository(opdsDb);
 
-const configPouchDb = new PouchDB(
+// Config db
+const configDb = new PouchDB(
     path.join(rootDbPath, "config"),
     dbOpts,
 );
-const configDb = new ConfigDb(configPouchDb);
+const configRepository = new ConfigRepository(configDb);
+
+// Locator db
+const locatorDb = new PouchDB(
+    path.join(rootDbPath, "locator"),
+    dbOpts,
+);
+const locatorRepository = new LocatorRepository(locatorDb);
 
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
@@ -136,34 +144,39 @@ container.bind<WinRegistry>("win-registry").toConstantValue(winRegistry);
 const translator = new Translator();
 container.bind<Translator>("translator").toConstantValue(translator);
 
-// Bind services
-container.bind<Server>("streamer").toConstantValue(streamer);
-container.bind<OPDSParser>("opds-parser").to(OPDSParser);
-container.bind<CatalogService>("catalog-service").to(CatalogService);
-container.bind<Downloader>("downloader").toConstantValue(
-    new Downloader(app.getPath("temp"), store),
+// Create downloader
+const downloader = new Downloader(app.getPath("temp"));
+container.bind<Downloader>("downloader").toConstantValue(downloader);
+
+// Create repositories
+container.bind<PublicationRepository>("publication-repository").toConstantValue(
+    publicationRepository,
 );
-container.bind<PublicationDb>("publication-db").toConstantValue(
-    new PublicationDb(publicationPouchDb),
+container.bind<OpdsRepository>("opds-repository").toConstantValue(
+    opdsRepository,
 );
-container.bind<OpdsDb>("opds-db").toConstantValue(
-    new OpdsDb(opdsPouchDb),
+container.bind<LocatorRepository>("locator-repository").toConstantValue(
+    locatorRepository,
 );
-container.bind<ConfigDb>("config-db").toConstantValue(
+container.bind<ConfigRepository>("config-repository").toConstantValue(
     configDb,
 );
+
+// Storage
+const publicationStorage = new PublicationStorage(publicationRepositoryPath);
 container.bind<PublicationStorage>("publication-storage").toConstantValue(
-    new PublicationStorage(publicationRepositoryPath),
+    publicationStorage,
+);
+
+// Bind services
+container.bind<Server>("streamer").toConstantValue(streamer);
+container.bind<CatalogService>("catalog-service").toConstantValue(
+    new CatalogService(publicationRepository, publicationStorage, downloader),
 );
 container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
-    new DeviceIdManager("readium-desktop", configDb),
+    new DeviceIdManager("readium-desktop", configRepository),
 );
-container.bind<SecretManager>("secret-manager").toConstantValue(
-    new SecretManager(configDb),
-);
-container.bind<BookmarkManager>("bookmark-manager").toConstantValue(
-    new BookmarkManager(configDb),
-);
+
 // Create action serializer
 const actionSerializer = new ActionSerializer();
 container.bind<ActionSerializer>("action-serializer").toConstantValue(actionSerializer);

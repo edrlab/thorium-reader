@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action, ErrorAction } from "readium-desktop/common/models/redux";
+import { Action } from "readium-desktop/common/models/redux";
 
 import { Download } from "readium-desktop/common/models/download";
 import { Publication } from "readium-desktop/common/models/publication";
@@ -22,7 +22,7 @@ const initialState: PublicationDownloadState = {
 
 export function publicationDownloadReducer(
     state: PublicationDownloadState = initialState,
-    action: Action | ErrorAction,
+    action: Action,
     ): PublicationDownloadState {
     const newState = Object.assign({}, state);
     let publication: Publication = null;
@@ -52,7 +52,7 @@ export function publicationDownloadReducer(
         case publicationDownloadActions.ActionType.CancelSuccess:
         case publicationDownloadActions.ActionType.Success:
         case publicationDownloadActions.ActionType.Error:
-            if ((action as ErrorAction).error) {
+            if (action.error) {
                 publication = action.meta.publication;
             } else {
                 publication = action.payload.publication;

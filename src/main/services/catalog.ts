@@ -5,8 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Store } from "redux";
+
+import * as debug_ from "debug";
+import * as fs from "fs";
 import * as path from "path";
 import * as uuid from "uuid";
+import { JSON as TAJSON } from "ta-json-x";
 
 import { injectable} from "inversify";
 
@@ -15,72 +20,98 @@ import { CustomCover, RandomCustomCovers } from "readium-desktop/common/models/c
 import { File } from "readium-desktop/common/models/file";
 import { Publication } from "readium-desktop/common/models/publication";
 
+import * as publicationDownloadActions from "readium-desktop/common/redux/actions/downloader";
+
 import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
-import { PublicationDb } from "readium-desktop/main/db/publication-db";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+
 import { container } from "readium-desktop/main/di";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { RootState } from "readium-desktop/main/redux/states";
+
+import { Downloader } from "readium-desktop/main/services/downloader";
+import { Download } from "readium-desktop/common/models/download";
+
+// Logger
+const debug = debug_("readium-desktop:main#services/catalog");
 
 @injectable()
 export class CatalogService {
-    /**
-     * Parse epub from a local path
-     *
-     * @param pubPath: local path of an epub
-     * @return: new publication
-     */
-    public async parseEpub(pubPath: string): Promise<Publication> {
-        const parsedEpub: Epub = await EpubParsePromise(pubPath);
-        const authors: Contributor[] = [];
+    private downloader: Downloader;
+    private publicationStorage: PublicationStorage;
+    private publicationRepository: PublicationRepository;
 
-        if (parsedEpub.Metadata && parsedEpub.Metadata.Author) {
-            for (const author of parsedEpub.Metadata.Author) {
-                const contributor: Contributor = {
-                    name: author.Name as string, // note: can be multilingual object map (not just string)
-                };
+    public constructor(
+        publicationRepository: PublicationRepository,
+        publicationStorage: PublicationStorage,
+        downloader: Downloader
+    ) {
+        this.publicationRepository = publicationRepository;
+        this.publicationStorage = publicationStorage;
+        this.downloader = downloader;
+    }
 
-                authors.push(contributor);
-            }
+    public async importFile(filePath: string): Promise<PublicationDocument> {
+        const ext = path.extname(filePath);
+
+        if (ext === ".epub") {
+            return this.importEpubFile(filePath);
+        } else if (ext === ".lcpl") {
+            return this.importLcplFile(filePath);
         }
 
-        const newPub: Publication = {
-            title: parsedEpub.Metadata.Title as string, // note: can be multilingual object map (not just string)
-            description: parsedEpub.Metadata.Description,
-            identifier: uuid.v4(),
-            authors,
-            languages: parsedEpub.Metadata.Language.map(
-                (code) => { return { code };
-            }),
-        };
+        return null;
+    }
 
-        if (parsedEpub.LCP) {
-            // Add Lcp info
-            newPub.lcp = {
-                provider: parsedEpub.LCP.Provider,
-                issued: parsedEpub.LCP.Issued,
-                updated: parsedEpub.LCP.Updated,
-                rights: {
-                    copy: parsedEpub.LCP.Rights.Copy,
-                    print: parsedEpub.LCP.Rights.Print,
-                    start: parsedEpub.LCP.Rights.Start,
-                    end: parsedEpub.LCP.Rights.End,
-                },
-            };
+    private async importLcplFile(filePath: string): Promise<PublicationDocument> {
+        const buffer = fs.readFileSync(filePath);
+        const content = JSON.parse(buffer.toString());
+        const contentType = "application/epub+zip";
+        let epub;
 
-            // Search for lsd status url
-            for (const link of parsedEpub.LCP.Links) {
-                if (link.Rel === "status") {
-                    // This is the lsd status url link
-                    newPub.lcp.lsd = {
-                        statusUrl: link.Href,
-                    };
-                    break;
+        // search the path of the epub file
+        let download: Download = null;
+
+        if (content.links) {
+            for (const link of content.links) {
+                if (link.rel === "publication") {
+                    download = this.downloader.addDownload(link.href);
                 }
             }
         }
 
-        return newPub;
+        if (download == null) {
+            throw new Error("Unable to publication in lcpl file");
+        }
+
+        debug("[START] Download publication", filePath);
+        const newDownload = await this.downloader.processDownload(
+            download.identifier,
+            {
+                onProgress: (download: Download) => {
+                    debug("[PROGRESS] Downloading publication", download.progress);
+                },
+            }
+        );
+        debug("[END] Download publication", filePath, newDownload);
+
+        // Import downloaded publication
+        return this.importEpubFile(download.dstPath);
+    }
+
+    public async importFromOpdsEntry(): Promise<PublicationDocument> {
+        return null;
+    }
+
+    public async deletePublication(publicationIdentifier: string) {
+        // Remove from database
+        await this.publicationRepository.delete(publicationIdentifier);
+
+        // Remove from storage
+        await this.publicationStorage.removePublication(publicationIdentifier);
     }
 
     /**
@@ -90,80 +121,72 @@ export class CatalogService {
      * @return: Refreshed publication
      */
     public async refreshPublicationMetadata(publication: Publication) {
-        const pubStorage = container.get(
-            "publication-storage") as PublicationStorage;
-        const publicationDb = container.get(
-            "publication-db") as PublicationDb;
-
         const pubPath = path.join(
-            pubStorage.getRootPath(),
+            this.publicationStorage.getRootPath(),
             publication.files[0].url.substr(6),
         );
 
-        const refreshedPublication = await this.parseEpub(pubPath);
-
-        refreshedPublication.identifier = publication.identifier;
-        refreshedPublication.cover = publication.cover;
-        refreshedPublication.files = publication.files;
-
-        // Store refreshed metadata in db
-        await publicationDb.putOrChange(refreshedPublication);
-        return refreshedPublication;
-    }
-
-    /**
-     * Store publication from a local path
-     *
-     * @param pubId: publication identifier
-     * @param pubPath: local path
-     * @return: new publication
-     */
-    public async addPublicationFromLocalPath(pubId: string, pubPath: string) {
-        const publicationStorage = container.get(
-            "publication-storage") as PublicationStorage;
-        const publicationDb = container.get(
-            "publication-db") as PublicationDb;
-
-        // Store publication on FS
-        const files = await publicationStorage.storePublication(
-            pubId,
-            pubPath,
+        const parsedPub = await EpubParsePromise(pubPath);
+        const origPub = await this.publicationRepository.get(publication.identifier)
+        const newPub = Object.assign(
+            {},
+            origPub,
+            { publication: parsedPub }
         );
 
-        // Build publication object from epub file
-        const newPub: Publication = await this.parseEpub(pubPath);
+        // Store refreshed metadata in db
+        return await this.publicationRepository.save(newPub);
+    }
 
-        // Keep the given publication identifier
-        newPub.identifier = pubId;
+    private async importEpubFile(filePath: string): Promise<PublicationDocument> {
+        debug("Parse publication - START", filePath);
+        const parsedPublication: Epub = await EpubParsePromise(filePath);
+        debug("Parse publication - END", filePath);
 
-        // Extract cover
-        let coverFile: File = null;
-        const otherFiles: File[] = [];
+        // FIXME: Title could be an array instead of a simple string
+        // Store publication in db
+        const pubDocument = {
+            identifier: uuid.v4(),
+            publication: TAJSON.serialize(parsedPublication),
+            opdsPublication: null,
+            title: parsedPublication.Metadata.Title,
+            tags: [],
+            files: [],
+            coverFile: null,
+            customCover: null,
+        } as PublicationDocument;
+
+        // Store publication on filesystem
+        debug("[START] Store publication on filesystem", filePath);
+        const files = await this.publicationStorage.storePublication(
+            pubDocument.identifier, filePath
+        );
+        debug("[END] Store publication on filesystem - END", filePath);
+
+        // Add extracted files to document
 
         for (const file of files) {
             if (file.contentType.startsWith("image")) {
-                coverFile = file;
+                pubDocument.coverFile = file;
             } else {
-                otherFiles.push(file);
+                pubDocument.files.push(file);
             }
         }
 
-        if (coverFile !== null) {
-            newPub.cover = coverFile;
-        }
-
-        newPub.files = otherFiles;
-
-        if (coverFile === null && newPub.cover === null) {
+        if (pubDocument.coverFile === null) {
+            debug("No cover found, generate custom one", filePath);
             // No cover file found
             // Generate a random custom cover
-            newPub.customCover = RandomCustomCovers[
+            pubDocument.customCover = RandomCustomCovers[
                 Math.floor(Math.random() * RandomCustomCovers.length)
             ];
         }
 
-        // Store publication in db
-        await publicationDb.put(newPub);
-        return newPub;
+        debug("[START] Store publication in database", filePath);
+        const newPubDocument = await this.publicationRepository.save(pubDocument);
+        debug("[END] Store publication in database", filePath);
+
+        debug("Publication imported", filePath);
+        return newPubDocument;
     }
 }

@@ -9,7 +9,7 @@ import * as uuid from "uuid";
 
 import { injectable} from "inversify";
 
-import { ConfigDb } from "readium-desktop/main/db/config-db";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 
 import { IDeviceIDManager } from "@r2-lcp-js/lsd/deviceid-manager";
 
@@ -18,14 +18,14 @@ const DEVICE_ID_PREFIX = "device_id_";
 
 @injectable()
 export class DeviceIdManager implements IDeviceIDManager {
-    // Config database
-    private configDb: ConfigDb;
+    // Config repository
+    private configRepository: ConfigRepository;
 
     private deviceName: string;
 
-    public constructor(deviceName: string, configDb: ConfigDb) {
+    public constructor(deviceName: string, configDb: ConfigRepository) {
         this.deviceName = deviceName;
-        this.configDb = configDb;
+        this.configRepository = this.configRepository;
     }
 
     public async checkDeviceID(key: string): Promise<string | undefined> {
@@ -43,7 +43,7 @@ export class DeviceIdManager implements IDeviceIDManager {
                 identifier: "device",
             };
             config[DEVICE_ID_KEY] = deviceId;
-            await this.configDb.putOrUpdate(config);
+            await this.configRepository.save(config);
         }
 
         return deviceId;
@@ -64,12 +64,12 @@ export class DeviceIdManager implements IDeviceIDManager {
 
         const config: any = Object.assign({}, this.getDeviceConfig());
         config[deviceIdKey] = deviceId;
-        return this.configDb.putOrUpdate(config);
+        await this.configRepository.save(config);
     }
 
     private async getDeviceConfig(): Promise<any> {
         try {
-            return await this.configDb.get("device");
+            return await this.configRepository.get("device");
         } catch (error) {
             return {
                 identifier: "device",
@@ -79,6 +79,6 @@ export class DeviceIdManager implements IDeviceIDManager {
 
     private async getDeviceConfigValue(key: string): Promise<any> {
         const deviceConfig = await this.getDeviceConfig();
-        return deviceConfig[key];
+        return deviceConfig.value[key];
     }
 }

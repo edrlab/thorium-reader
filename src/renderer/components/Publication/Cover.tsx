@@ -29,7 +29,7 @@ export default class Cover extends React.Component<ICoverProps, null> {
         // TODO: should get language from view state? (user preferences)
         const lang = "en";
 
-        if (this.props.publication.cover === null || this.props.publication.cover === undefined) {
+        if (this.props.publication.cover == null) {
             let authors = "";
             const bodyCSS = Object.assign({}, Styles.BookCover.body);
             let colors = this.props.publication.customCover;

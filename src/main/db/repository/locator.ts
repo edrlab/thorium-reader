@@ -1,0 +1,67 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
+import { injectable} from "inversify";
+import * as PouchDB from "pouchdb-core";
+
+import { Locator } from "readium-desktop/common/models/locator";
+
+import { LocatorDocument } from "readium-desktop/main/db/document/locator";
+
+import { BaseRepository } from "./base";
+
+const PUBLICATION_INDEX = "publication_index"
+const LOCATOR_TYPE_INDEX = "locator_type_index"
+
+@injectable()
+export class LocatorRepository extends BaseRepository<LocatorDocument> {
+    public constructor(db: PouchDB.Database) {
+        const indexes = [
+            {
+                fields: ["publicationIdentifier"],
+                name: PUBLICATION_INDEX,
+            },
+            {
+                fields: ["locatorType"],
+                name: LOCATOR_TYPE_INDEX,
+            }
+        ];
+
+        super(db, "locator", indexes);
+    }
+
+    public async findByPublicationIdentifierAndLocatorType(
+        publicationIdentifier: string,
+        locatorType: string,
+    ): Promise<LocatorDocument[]> {
+        return this.findBy({ publicationIdentifier, locatorType });
+    }
+
+    public async findByPublicationIdentifier(
+        publicationIdentifier: string,
+    ): Promise<LocatorDocument[]> {
+        return this.findBy({ publicationIdentifier });
+    }
+
+    public async findByLocatorType(
+        locatorType: string,
+    ): Promise<LocatorDocument[]> {
+        return this.findBy({ locatorType });
+    }
+
+    protected convertToDocument(dbDoc: any): LocatorDocument {
+        return Object.assign(
+            {},
+            super.convertToMinimalDocument(dbDoc),
+            {
+                locator: dbDoc.locator,
+                locatorType: dbDoc.locatorType,
+                publicationIdentifier: dbDoc.publicationIdentifier,
+            }
+        );
+    }
+}

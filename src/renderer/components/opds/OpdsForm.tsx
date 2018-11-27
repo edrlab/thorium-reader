@@ -16,7 +16,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 import { opdsActions } from "readium-desktop/common/redux/actions";
 
-import { OPDS } from "readium-desktop/common/models/opds";
+import { OpdsFeed } from "readium-desktop/common/models/opds";
 
 import * as AppStyle from "readium-desktop/renderer/assets/styles/app.css";
 
@@ -33,7 +33,7 @@ import * as classNames from "classnames";
 interface IOpdsFormProps {
     closeDialog: any;
     closeFunction?: any;
-    opds?: OPDS;
+    opds?: OpdsFeed;
     updateDisplay?: any;
 }
 
@@ -119,7 +119,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                             className={classNames(AppStyle.commonButton, AppStyle.primary)}
                             onClick={() => {
                                 if (this.isFormValid()) {
-                                    const newOpds: OPDS = {
+                                    const newOpds: OpdsFeed = {
                                         identifier: this.props.opds.identifier,
                                         name: this.state.opdsName,
                                         url: this.state.opdsUrl,
@@ -140,7 +140,7 @@ export default class OpdsForm extends React.Component<IOpdsFormProps, IOpdsFormS
                             className={classNames(AppStyle.commonButton, AppStyle.primary)}
                             onClick={() => {
                                 if (this.isFormValid()) {
-                                    const newOpds: OPDS = {
+                                    const newOpds: OpdsFeed = {
                                         identifier: uuid.v4(),
                                         name: this.state.opdsName,
                                         url: this.state.opdsUrl,

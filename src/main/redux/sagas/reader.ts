@@ -19,9 +19,9 @@ import { appActions, streamerActions } from "readium-desktop/main/redux/actions"
 import { RootState } from "readium-desktop/main/redux/states";
 
 import { Publication } from "readium-desktop/common/models/publication";
-import { Reader, ReaderConfig } from "readium-desktop/common/models/reader";
+import { Reader, ReaderConfig, Bookmark } from "readium-desktop/common/models/reader";
 
-import { ConfigDb } from "readium-desktop/main/db/config-db";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 
 import { Publication as StreamerPublication } from "@r2-shared-js/models/publication";
 
@@ -39,7 +39,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
-import { BookmarkManager } from "readium-desktop/main/services/bookmark";
+import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 
 import {
     _NODE_MODULE_RELATIVE_URL,
@@ -47,6 +47,7 @@ import {
     _RENDERER_READER_BASE_URL,
     IS_DEV,
 } from "readium-desktop/preprocessor-directives";
+import { LocatorType, LocatorDocument } from "readium-desktop/main/db/document/locator";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -114,15 +115,18 @@ async function openReader(publication: Publication, manifestUrl: string) {
     readerUrl += `?pub=${encodedManifestUrl}&pubId=${publication.identifier}`;
 
     // Get publication last reading location
-    const bookmarkManager = container.get("bookmark-manager") as BookmarkManager;
-    const bookmark = await bookmarkManager.getBookmark(
+    const locatorRepository = container
+            .get("locator-repository") as LocatorRepository;
+    const locators = await locatorRepository
+        .findByPublicationIdentifierAndLocatorType(
         publication.identifier,
-        "reading-location",
+        LocatorType.LastReadingLocation
     );
 
-    if (bookmark) {
-        const docHref = Buffer.from(bookmark.docHref).toString("base64");
-        const docSelector = Buffer.from(bookmark.docSelector).toString("base64");
+    if (locators.length > 0) {
+        const locator = locators[0];
+        const docHref = Buffer.from(locator.locator.href).toString("base64");
+        const docSelector = Buffer.from(locator.locator.locations.cssSelector).toString("base64");
         readerUrl += `&docHref=${docHref}&docSelector=${docSelector}`;
     }
 
@@ -222,14 +226,18 @@ export function* readerConfigSetRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for save request
         const action = yield take(readerActions.ActionType.ConfigSetRequest);
-        const config: ReaderConfig = action.payload.config;
-        config.identifier = "reader";
+        const configValue: ReaderConfig = action.payload.config;
+        const config = {
+            identifier: "reader",
+            value: configValue,
+        };
 
-        // Get Reader Settings db
-        const configDb = container.get("config-db") as ConfigDb;
+        // Get reader settings
+        const configRepository = container
+            .get("config-repository") as ConfigRepository;
 
         try {
-            yield call(() => configDb.putOrUpdate(config));
+            yield call(() => configRepository.save(config));
             yield put({
                 type: readerActions.ActionType.ConfigSetSuccess,
                 payload: {
@@ -246,16 +254,12 @@ export function* readerConfigInitWatcher(): SagaIterator {
     // Wait for app initialization
     yield take(appActions.ActionType.InitSuccess);
 
-    // Get config db
-    const configDb: ConfigDb = container.get(
-    "config-db") as ConfigDb;
+    const configRepository: ConfigRepository = container
+        .get("config-repository") as ConfigRepository;
 
     try {
-        const readerConfig = yield call(() => configDb.get("reader"));
-        delete readerConfig._id;
-        delete readerConfig._rev;
+        const readerConfig = yield call(() => configRepository.get("reader"));
 
-        // FIXME
         // Returns the first reader configuration available in database
         yield put({
             type: readerActions.ActionType.ConfigSetSuccess,
@@ -276,13 +280,24 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for app initialization
         const action = yield take(readerActions.ActionType.BookmarkSaveRequest);
-        const bookmark = action.payload.bookmark;
+        const bookmark = action.payload.bookmark as Bookmark;
 
         // Get bookmark manager
-        const bookmarkManager = container.get("bookmark-manager") as BookmarkManager;
+        const locatorRepository = container
+            .get("locator-repository") as LocatorRepository;
 
         try {
-            yield call(() => bookmarkManager.saveBookmark(bookmark));
+            const locator = {
+                locator: {
+                    href: bookmark.docHref,
+                    locations: {
+                        cssSelector: bookmark.docSelector
+                    }
+                },
+                publicationIdentifier: bookmark.publication.identifier,
+                locatorType: LocatorType.LastReadingLocation,
+            }
+            yield call(() => locatorRepository.save(locator));
             yield put({
                 type: readerActions.ActionType.BookmarkSaveSuccess,
                 payload: {

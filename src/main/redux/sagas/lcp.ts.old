@@ -13,13 +13,9 @@ import { call, fork, put, take } from "redux-saga/effects";
 
 import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
 
-import { OPDS } from "readium-desktop/common/models/opds";
-
 import { Publication } from "readium-desktop/common/models/publication";
 
 import { Server } from "@r2-streamer-js/http/server";
-
-import { ConfigDb } from "readium-desktop/main/db/config-db";
 
 import { container } from "readium-desktop/main/di";
 

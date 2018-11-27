@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action, ErrorAction } from "readium-desktop/common/models/redux";
+import { Action } from "readium-desktop/common/models/redux";
 
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 
@@ -28,7 +28,7 @@ const initialState: StreamerState = {
 
 export function streamerReducer(
     state: StreamerState = initialState,
-    action: Action | ErrorAction,
+    action: Action,
 ): StreamerState {
     let pubId = null;
     const newState = Object.assign({}, state);

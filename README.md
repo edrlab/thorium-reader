@@ -79,6 +79,12 @@ To do it, launch the powershell as an administrator and type:
 npm install -g windows-build-tools
 ```
 
+## Import file from command line
+
+```
+npm run build:dev:main && npm run start:dev:main:electron -- --import-file=<path to epub or lcpl file>
+```
+
 ## Issues
 
 ### Webpack dev server on OSX

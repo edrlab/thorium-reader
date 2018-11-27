@@ -21,6 +21,8 @@ import { Publication } from "readium-desktop/common/models/publication";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 
+import { catalogActions } from "readium-desktop/common/redux/actions";
+
 import { readerActions } from "readium-desktop/common/redux/actions";
 
 interface Props {

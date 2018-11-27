@@ -28,7 +28,7 @@ import {
     OpdsList,
 } from "readium-desktop/renderer/components/opds/index";
 
-import { OPDS } from "readium-desktop/common/models/opds";
+import { OpdsFeed } from "readium-desktop/common/models/opds";
 
 import { OPDSParser } from "readium-desktop/common/services/opds";
 
@@ -50,7 +50,7 @@ interface ICollectiondialogProps {
     closeList: any;
     openDialog: any;
     closeDialog: any;
-    opds: OPDS;
+    opds: OpdsFeed;
     updateDisplay: any;
 }
 

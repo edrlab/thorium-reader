@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { Download } from "readium-desktop/common/models/download";
-import { Action, ErrorAction } from "readium-desktop/common/models/redux";
+import { Action } from "readium-desktop/common/models/redux";
 
 export enum ActionType {
     AddRequest = "DOWNLOAD_ADD_REQUEST",
@@ -56,7 +56,7 @@ export function finish(download: Download): Action {
     };
 }
 
-export function fail(download: Download, errorMsg: string): ErrorAction {
+export function fail(download: Download, errorMsg: string): Action {
     const error = new Error(errorMsg);
     return {
         type: ActionType.Error,
