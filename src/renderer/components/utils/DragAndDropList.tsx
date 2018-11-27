@@ -34,6 +34,11 @@ export default class DragAndDropList extends React.Component<Props, State> {
 
     public render() {
         const { className, elementClassName, id } = this.props;
+
+        if (!this.state.items) {
+            return (<></>);
+        }
+
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
