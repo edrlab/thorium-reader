@@ -16,32 +16,18 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 export function* processRequest(requestAction: apiActions.ApiAction): SagaIterator {
     const { api } = requestAction.meta;
 
-    if (api.module == "catalog" && api.methodId == "get") {
-        const publicationRepository = container.get("publication-repository") as PublicationRepository;
+    if (api.moduleId == "catalog" && api.methodId == "get") {
+        const apiModule: any = container
+            .get(`${api.moduleId}-api`);
+        const apiMethod = apiModule[api.methodId].bind(apiModule);
 
         try {
             const result = yield call(
-                () => publicationRepository.findAll()
+                apiMethod,
+                requestAction.payload,
             );
 
-            const publications: any = result.map((pub: PublicationDocument) => {
-                return {
-                    title: pub.title,
-                    tags: [] as any,
-                }
-            });
-
-            const payload = {
-                entries: [
-                    {
-                        title: "Deniers ajouts",
-                        publications,
-                    },
-                ],
-            }
-            console.log("##main", payload);
-
-            yield put(apiActions.buildSuccessAction(requestAction, payload));
+            yield put(apiActions.buildSuccessAction(requestAction, result));
         } catch (error) {
             yield put(apiActions.buildErrorAction(requestAction, error.message));
         }

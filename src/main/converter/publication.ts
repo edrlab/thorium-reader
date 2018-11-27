@@ -8,6 +8,7 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 export class PublicationViewConverter {
     public convertDocumentToView(document: PublicationDocument): PublicationView {
         return {
+            identifier: document.identifier,
             title: document.title,
             authors: [],
             cover: {

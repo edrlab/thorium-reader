@@ -9,7 +9,7 @@ export enum ActionType {
 
 export interface ApiMeta {
     requestId: string;
-    module: string;
+    moduleId: string;
     methodId: string;
 }
 
@@ -42,7 +42,7 @@ export function buildSuccessAction(
         meta: {
             api: {
                 requestId: requestAction.meta.api.requestId,
-                module: requestAction.meta.api.module,
+                moduleId: requestAction.meta.api.moduleId,
                 methodId: requestAction.meta.api.methodId,
             }
         },
@@ -59,7 +59,7 @@ export function buildErrorAction(
         meta: {
             api: {
                 requestId: requestAction.meta.api.requestId,
-                module: requestAction.meta.api.module,
+                moduleId: requestAction.meta.api.moduleId,
                 methodId: requestAction.meta.api.methodId,
             }
         },
@@ -73,7 +73,7 @@ export function buildErrorAction(
  */
 export function buildRequestAction(
     apiRequestId: string,
-    apiModule: string,
+    apiModuleId: string,
     apiMethodId: string,
     payload?: any,
 ): ApiAction {
@@ -83,7 +83,7 @@ export function buildRequestAction(
         meta: {
             api: {
                 requestId: apiRequestId,
-                module: apiModule,
+                moduleId: apiModuleId,
                 methodId: apiMethodId,
             },
         },

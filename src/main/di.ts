@@ -37,6 +37,10 @@ import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { OpdsRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+
+import { CatalogApi } from "readium-desktop/main/api/catalog";
+
 import {
     PublicationStorage,
 } from "readium-desktop/main/storage/publication-storage";
@@ -160,6 +164,22 @@ container.bind<LocatorRepository>("locator-repository").toConstantValue(
 );
 container.bind<ConfigRepository>("config-repository").toConstantValue(
     configDb,
+);
+
+// Create converters
+const publicationViewConverter = new PublicationViewConverter();
+container.bind<PublicationViewConverter>("publication-view-converter").toConstantValue(
+    publicationViewConverter,
+);
+
+// API
+container.bind<CatalogApi>("catalog-api").toConstantValue(
+    new CatalogApi(
+        publicationRepository,
+        configRepository,
+        publicationViewConverter,
+        translator,
+    ),
 );
 
 // Storage

@@ -1,4 +1,10 @@
 {
+    "catalog": {
+      "entry": {
+        "continueReading": "Continue reading",
+        "lastAdditions": "Last additions"
+      }
+    },
     "library": {
         "heading": "Library",
         "add": "Add to the library",

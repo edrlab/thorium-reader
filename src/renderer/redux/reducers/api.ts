@@ -17,7 +17,7 @@ export function apiReducer(
             data[action.meta.api.requestId] = {
                 result: action.payload,
                 requestId: action.meta.api.requestId,
-                module: action.meta.api.module,
+                moduleId: action.meta.api.moduleId,
                 methodId: action.meta.api.methodId,
                 date: moment.now(),
             };

@@ -10,6 +10,7 @@ export interface CustomCoverView {
 }
 
 export interface PublicationView {
+    identifier: string;
     title: string;
     authors: string[];
     editor?: string;
