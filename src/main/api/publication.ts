@@ -19,9 +19,28 @@ export class PublicationApi {
         this.publicationViewConverter = publicationViewConverter;
     }
 
-    public async get(): Promise<PublicationView> {
-        const publications = await this.publicationRepository.findAll();
-        const doc = publications[0];
+    public async get(data: any): Promise<PublicationView> {
+        const { identifier } = data;
+        const doc = await this.publicationRepository.get(identifier);
         return this.publicationViewConverter.convertDocumentToView(doc);
+    }
+
+    public async findAll(): Promise<PublicationView[]> {
+        const docs = await this.publicationRepository.findAll();
+        return docs.map((doc) => {
+            return this.publicationViewConverter.convertDocumentToView(doc);
+        });
+    }
+
+    public async updateTags(data: any): Promise<PublicationView>  {
+        const { identifier, tags } = data;
+        const doc = await this.publicationRepository.get(identifier);
+        const newDoc = Object.assign(
+            {},
+            doc,
+            { tags },
+        );
+        this.publicationRepository.save(newDoc);
+        return this.get({ identifier });
     }
 }
