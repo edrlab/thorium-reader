@@ -52,6 +52,24 @@ export class CatalogApi {
         };
     }
 
+    public async addEntry(data: any): Promise<CatalogEntryView[]> {
+        const entryView = data.entry as CatalogEntryView;
+        const config = await this.configRepository.get(CATALOG_CONFIG_ID);
+        const catalog = config.value as CatalogConfig;
+        const entries = catalog.entries;
+
+        entries.push({
+            title: entryView.title,
+            tag: entryView.tag,
+        });
+
+        await this.configRepository.save({
+            identifier: CATALOG_CONFIG_ID,
+            value: { entries },
+        });
+        return this.getEntries();
+    }
+
     /**
      * Returns entries without publications
      */
@@ -69,7 +87,8 @@ export class CatalogApi {
         return entryViews;
     }
 
-    public async updateEntries(entryViews: CatalogEntryView[]): Promise<CatalogEntryView[]> {
+    public async updateEntries(data: any): Promise<CatalogEntryView[]> {
+        const entryViews = data.entries as CatalogEntryView[];
         const entries = entryViews.map((view) => {
             return {
                 title: view.title,
@@ -80,7 +99,10 @@ export class CatalogApi {
             entries,
         };
 
-        await this.configRepository.save(CATALOG_CONFIG_ID);
-        return entryViews;
+        await this.configRepository.save({
+            identifier: CATALOG_CONFIG_ID,
+            value: catalogConfig,
+        });
+        return this.getEntries();
     }
 }
