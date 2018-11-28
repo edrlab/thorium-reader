@@ -24,6 +24,7 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 interface PublicationInfoProps {
+    publicationIdentifier: string;
     publication?: PublicationView;
     openReader?: any;
 }
@@ -148,12 +149,19 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationInfoProps) => {
     };
 };
 
+const buildRequestData = (props: PublicationInfoProps) => {
+    return {
+        identifier: props.publicationIdentifier,
+    }
+};
+
 export default withApi(
     PublicationInfo,
     {
         moduleId: "publication",
         methodId: "get",
         dstProp: "publication",
+        buildRequestData,
         mapDispatchToProps,
     }
 );

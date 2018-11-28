@@ -11,6 +11,7 @@ import PublicationInfo from "./PublicationInfo";
 interface PublicationInfoDialogProps {
     open?: boolean;
     closeDialog?: any;
+    publicationIdentifier?: any;
 }
 
 export class PublicationInfoDialog extends React.Component<PublicationInfoDialogProps, undefined> {
@@ -21,9 +22,14 @@ export class PublicationInfoDialog extends React.Component<PublicationInfoDialog
     }
 
     public render(): React.ReactElement<{}> {
+        if (!this.props.publicationIdentifier) {
+            return (<></>);
+        }
         return (
             <Dialog open={this.props.open} close={this.props.closeDialog}>
-                <PublicationInfo />
+                <PublicationInfo
+                    publicationIdentifier={ this.props.publicationIdentifier }
+                />
             </Dialog>
         );
     }
@@ -37,8 +43,15 @@ export class PublicationInfoDialog extends React.Component<PublicationInfoDialog
 
 const mapStateToProps = (state: any, ownProps: PublicationInfoDialogProps) => {
     const publication = state.library.publicationInfo.publication
-    let open = (publication != null && publication.identifier != null);
-    return { open };
+    let publicationIdentifier: any = null;
+    let open = false;
+
+    if (publication && publication.identifier) {
+        publicationIdentifier = publication.identifier;
+        open = true;
+    }
+
+    return { open, publicationIdentifier };
 };
 
 const mapDispatchToProps = (dispatch: any, __1: PublicationInfoDialogProps) => {
