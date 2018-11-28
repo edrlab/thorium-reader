@@ -22,7 +22,7 @@ export default class SettingsHeader extends React.Component<Props, undefined> {
         const __ = this.translator.translate.bind(this.translator);
 
         return (
-            <SecondaryHeader className={styles.settings_header}>
+            <SecondaryHeader id={styles.settings_header}>
                 <ul>
                     <li {...(this.props.section === 0 && {className: styles.active})}>
                         <Link to="/settings/tags">

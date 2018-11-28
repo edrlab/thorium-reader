@@ -23,7 +23,7 @@
 
 /* HEADER */
 
-.settings_header {
+#settings_header {
 	z-index: 100;
 	top: 57px;
 	background-color: #EDEDED;
