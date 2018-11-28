@@ -95,8 +95,7 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
                         onClick={this.displayPublicationInfo }
                         onBlur={this.handleOnBlurMenu}
                     > Fiche livre </a>
-                    <a tabIndex={2} onBlur={this.handleOnBlurMenu}> Retirer de la séléction </a>
-                    <a tabIndex={3} onBlur={this.handleOnBlurMenu}> Supprimer définitivement </a>
+                    <a tabIndex={2} onBlur={this.handleOnBlurMenu}> Supprimer définitivement </a>
                 </div>
             </div>
         );

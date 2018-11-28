@@ -72,7 +72,6 @@ export class PublicationListElement extends React.Component<PublicationListEleme
                 </button>
                 <div className={(this.state.menuOpen ? styles.menu_open + " " : "") + styles.list_menu}>
                     <a onClick={this.displayPublicationInfo} >Fiche livre</a>
-                    <a>Retirer de la séléction</a>
                     <a>Supprimer définitivement</a>
                 </div>
             </>
