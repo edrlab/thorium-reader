@@ -1,5 +1,7 @@
 import * as uuid from "uuid";
 
+import * as qs from "query-string";
+
 import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
@@ -25,6 +27,7 @@ import PublicationInfoDialog from "readium-desktop/renderer/components/publicati
 
 import Header, { DisplayType } from "./Header";
 
+import GridView from "./GridView";
 import ListView from "./ListView";
 
 interface CatalogProps extends TranslatorProps, RouteComponentProps {
@@ -38,11 +41,23 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
             return (<></>);
         }
 
+        let DisplayView: any = GridView;
+        let displayType = DisplayType.Grid;
+
+        if (this.props.location) {
+            const parsedResult = qs.parse(this.props.location.search);
+
+            if (parsedResult.displayType == DisplayType.List) {
+                DisplayView = ListView;
+                displayType = DisplayType.List;
+            }
+        }
+
         return (
             <LibraryLayout>
                 <div style={ this.props.blur ? {filter: "blur(2px)"} : {} }>
-                    <Header displayType={ DisplayType.Grid } />
-                    <ListView catalogEntries={ this.props.catalog.entries } />
+                    <Header displayType={ displayType } />
+                    <DisplayView catalogEntries={ this.props.catalog.entries } />
                 </div>
                 <PublicationInfoDialog />
             </LibraryLayout>
