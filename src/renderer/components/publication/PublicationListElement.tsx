@@ -90,9 +90,14 @@ export class PublicationListElement extends React.Component<PublicationListEleme
 const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => {
     return {
         displayPublicationInfo: (publication: PublicationView) => {
-            dispatch(
-                libraryActions.ActionType.PublicationInfoDisplayRequest,
-            );
+            dispatch({
+                type: libraryActions.ActionType.PublicationInfoDisplayRequest,
+                payload: {
+                    publication: {
+                        identifier: publication.identifier,
+                    },
+                },
+            });
         },
     };
 };
