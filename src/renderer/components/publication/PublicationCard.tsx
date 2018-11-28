@@ -7,77 +7,47 @@
 
 import * as React from "react";
 
-import { lazyInject } from "readium-desktop/renderer/di";
+import { connect } from "react-redux";
 
 import { Contributor } from "readium-desktop/common/models/contributor";
+
 import { Publication } from "readium-desktop/common/models/publication";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import Cover from "readium-desktop/renderer/components/Publication/Cover";
+import { libraryActions } from "readium-desktop/renderer/redux/actions";
 
-import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import Cover from "readium-desktop/renderer/components/publication/Cover";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-interface IPublicationState {
-    isFlipped: boolean;
-    menu: boolean;
-}
+import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
-interface IPublicationProps {
+interface PublicationCardProps {
     publication: PublicationView;
-    handleRead: (publication: PublicationView) => void;
-    handleMenuClick: (el: React.RefObject<any>, publication: PublicationView) => void;
-    openDialog: (publication: PublicationView) => void;
-    // openReturnDialog: (publication: Publication) => void;
-    // openRenewDialog: (publication: Publication) => void;
+    displayPublicationInfo?: any;
+    openReader?: any;
 }
 
-export default class PublicationCard extends React.Component<IPublicationProps, IPublicationState> {
-    @lazyInject("translator")
-    private translator: Translator;
+interface PublicationCardState {
+    menuOpen: boolean;
+}
 
-    private menuButton: React.RefObject<any>;
-
-    private menuRef: any;
-
-    constructor(props: IPublicationProps) {
+export class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
+    constructor(props: any) {
         super(props);
 
         this.state = {
-            isFlipped: false,
-            menu: false,
+            menuOpen: false,
         };
 
-        this.menuRef = React.createRef();
-
+        this.handleMenuClick = this.handleMenuClick.bind(this);
         this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
-        this.handleMenuClick = this.handleMenuClick.bind(this);        
-    }
-
-    public handleFront = () => {
-        this.setState({ isFlipped: true });
-    }
-
-    public handleBack = () => {
-        this.setState({ isFlipped: false });
+        this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate.bind(this.translator);
-        const publication = this.props.publication;
-        let authors: string = "";
-
-        if (publication.authors && publication.authors.length > 0) {
-            for (const author of publication.authors) {
-                const newAuthor = author;
-                if (authors !== "") {
-                    authors += ", ";
-                }
-                authors += this.translator.translateContentField(newAuthor);
-            }
-        }
+        const authors = this.props.publication.authors.join(", ");
 
         return (
             <div className={styles.block_book}
@@ -86,20 +56,19 @@ export default class PublicationCard extends React.Component<IPublicationProps, 
             >
                 <div className={styles.image_wrapper}>
                     <a onClick={(e) => this.handleBookClick(e)}>
-                        <Cover publication={publication} />
+                        <Cover publication={ this.props.publication } />
                     </a>
                 </div>
                 <div className={styles.legend}>
                     <a onClick={(e) => this.handleBookClick(e)}>
                         <p className={styles.book_title} aria-label="Titre du livre">
-                            {publication.title}
+                            { this.props.publication.title }
                         </p>
                         <p className={styles.book_author} aria-label="Auteur du livre">
                             {authors}
                         </p>
                     </a>
                     <button
-                        ref={this.menuButton}
                         type="button"
                         aria-haspopup="dialog"
                         aria-controls="dialog"
@@ -117,12 +86,11 @@ export default class PublicationCard extends React.Component<IPublicationProps, 
                     </button>
                 </div>
                 <div
-                    className={(this.state.menu ? styles.menu_active + " " : "") + styles.menu}
-                    ref={this.menuRef}
+                    className={(this.state.menuOpen ? styles.menu_active + " " : "") + styles.menu}
                 >
                     <a
                         tabIndex={1}
-                        onClick={() => this.props.openDialog(this.props.publication)}
+                        onClick={this.displayPublicationInfo }
                         onBlur={this.handleOnBlurMenu}
                     > Fiche livre </a>
                     <a tabIndex={2} onBlur={this.handleOnBlurMenu}> Retirer de la séléction </a>
@@ -133,18 +101,42 @@ export default class PublicationCard extends React.Component<IPublicationProps, 
     }
 
     private handleOnBlurMenu(e: any) {
-        console.log();
         if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== e.target.parentElement)) {
-            this.setState({ menu: false});
+            this.setState({ menuOpen: false});
         }
     }
 
     private handleMenuClick() {
-        this.setState({menu: !this.state.menu});
+        this.setState({menuOpen: !this.state.menuOpen});
     }
 
     private handleBookClick(e: any) {
         e.preventDefault();
-        this.props.handleRead(this.props.publication);
+        this.props.openReader(this.props.publication);
+    }
+
+    private displayPublicationInfo(e: any) {
+        e.preventDefault();
+        this.props.displayPublicationInfo(this.props.publication);
     }
 }
+
+const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
+    return {
+        openReader: (publication: PublicationView) => {
+
+        },
+        displayPublicationInfo: (publication: PublicationView) => {
+            dispatch({
+                type: libraryActions.ActionType.PublicationInfoDisplayRequest,
+                payload: {
+                    publication: {
+                        identifier: publication.identifier,
+                    },
+                },
+            });
+        },
+    };
+};
+
+export default connect(undefined, mapDispatchToProps)(PublicationCard);

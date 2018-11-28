@@ -13,7 +13,7 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import { Cover } from "readium-desktop/renderer/components/Publication/index";
+import { Cover } from "readium-desktop/renderer/components/publication/index";
 
 import * as OpdsStyles from "readium-desktop/renderer/assets/styles/opds_element.css";
 

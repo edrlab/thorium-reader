@@ -5,20 +5,12 @@ import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import { Translator } from "readium-desktop/common/services/translator";
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { Link } from "react-router-dom";
+import { Link, HashRouterProps } from "react-router-dom";
 
-interface Props {
-    activePage: number;
-}
-
-export default class Header extends React.Component<Props, undefined> {
-
-    @lazyInject("translator")
-    private translator: Translator;
-
+export default class Header extends React.Component<HashRouterProps, undefined> {
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
-        const activePage = this.props.activePage;
+        const activePage = 0 as number;
+
         return (
             <nav className={styles.main_navigation} role="navigation" aria-label="Menu principal">
                 <ul>
@@ -27,11 +19,11 @@ export default class Header extends React.Component<Props, undefined> {
                             Mes Livres
                         </Link>
                     </li>
-                    <li style={{display: "none"}} {...(activePage === 1 && {className: styles.active})}>
+                    {/* <li  {...(activePage === 1 && {className: styles.active})}>
                         <Link to={"/catalog"} replace={true}>
                             Catalogues
                         </Link>
-                    </li>
+                    </li> */}
                     <li className={styles.preferences + (activePage === 2 ? " " + styles.active : "")}>
                         <Link to={"/settings"} replace={true}>
                             Préférences

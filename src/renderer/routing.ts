@@ -1,7 +1,7 @@
-import CatalogCard from "readium-desktop/renderer/components/catalog/CatalogCard";
-import CatalogList from "readium-desktop/renderer/components/catalog/CatalogList";
-import SettingsLanguages from "readium-desktop/renderer/components/settings/SettingsLanguages";
-import SettingsTags from "readium-desktop/renderer/components/settings/SettingsTags";
+import LanguageSettings from "readium-desktop/renderer/components/settings/LanguageSettings";
+import TagSettings from "readium-desktop/renderer/components/settings/TagSettings";
+
+import Catalog from "readium-desktop/renderer/components/catalog/Catalog";
 
 interface Route {
     path: string;
@@ -16,34 +16,40 @@ interface RouteList {
 }
 
 export const routes: RouteList = {
-    "/myBooks/list": {
-        path: "/myBooks/list",
-        exact: false,
-        title: "MyBooksList",
-        component: CatalogList,
-    },
+    // "/myBooks/list": {
+    //     path: "/myBooks/list",
+    //     exact: false,
+    //     title: "MyBooksList",
+    //     component: CatalogList,
+    // },
     "/settings/tags": {
         path: "/settings/tags",
         exact: false,
         title: "Settings: Tags",
-        component: SettingsTags,
+        component: TagSettings,
     },
     "/settings/languages": {
         path: "/settings/languages",
         exact: false,
         title: "Settings: Languages",
-        component: SettingsLanguages,
+        component: LanguageSettings,
     },
     "/settings": {
         path: "/settings",
         exact: false,
         title: "Settings: Tags",
-        component: SettingsTags,
+        component: TagSettings,
     },
     "/": {
         path: "/",
         exact: false,
         title: "Home",
-        component: CatalogCard,
+        component: Catalog,
+    },
+    "/library": {
+        path: "/library",
+        exact: false,
+        title: "Library",
+        component: Catalog,
     },
 };

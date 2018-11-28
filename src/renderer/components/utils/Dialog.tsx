@@ -16,12 +16,8 @@ interface Props {
     id?: string;
 }
 
-export default class BookDetailsDialog extends React.Component<Props, undefined> {
-    @lazyInject("translator")
-    private translator: Translator;
-
+export default class Dialog extends React.Component<Props, undefined> {
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
         const content = this.props.children;
         const className = this.props.className;
 

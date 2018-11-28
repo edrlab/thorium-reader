@@ -7,14 +7,16 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { connect } from "react-redux";
 
-import Header from "readium-desktop/renderer/components/Header";
-import SettingsHeader from "readium-desktop/renderer/components/settings/SettingsHeader";
 import DragAndDropList from "readium-desktop/renderer/components/utils/DragAndDropList";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { Tag } from "readium-desktop/common/models/tag";
 
 import { addTagRequest, editTagRequest, removeTagRequest } from "readium-desktop/common/redux/actions/catalog";
+
+import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+
+import Header from "./Header";
 
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as DragableIcon from "readium-desktop/renderer/assets/icons/baseline-drag_handle-24px.svg";
@@ -33,7 +35,7 @@ interface States {
     editTagName: string;
 }
 
-export class SettingsTags extends React.Component<Props, States> {
+export class TagSettings extends React.Component<Props, States> {
 
     @lazyInject("translator")
     private translator: Translator;
@@ -59,10 +61,8 @@ export class SettingsTags extends React.Component<Props, States> {
 
         return (
             <>
-                <Header activePage={2}/>
-                <SettingsHeader section={0} />
-                <main id={styles.main} role="main">
-                    <a id={styles.contenu} tabIndex={-1}></a>
+                <LibraryLayout>
+                    <Header section={0} />
                     <div className={styles.section_title}>Disposition sur l'écran d'accueil</div>
                     <DragAndDropList
                         elementContent={(tag: Tag) =>
@@ -109,7 +109,7 @@ export class SettingsTags extends React.Component<Props, States> {
                         />
                         <input type="submit" title="Confirmer" />
                     </form>
-                </main>
+                </LibraryLayout>
             </>
         );
     }
@@ -161,4 +161,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsTags);
+export default connect(mapStateToProps, mapDispatchToProps)(TagSettings);

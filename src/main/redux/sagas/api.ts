@@ -16,21 +16,19 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 export function* processRequest(requestAction: apiActions.ApiAction): SagaIterator {
     const { api } = requestAction.meta;
 
-    if (api.moduleId == "catalog" && api.methodId == "get") {
-        const apiModule: any = container
-            .get(`${api.moduleId}-api`);
-        const apiMethod = apiModule[api.methodId].bind(apiModule);
+    const apiModule: any = container
+        .get(`${api.moduleId}-api`);
+    const apiMethod = apiModule[api.methodId].bind(apiModule);
 
-        try {
-            const result = yield call(
-                apiMethod,
-                requestAction.payload,
-            );
+    try {
+        const result = yield call(
+            apiMethod,
+            requestAction.payload,
+        );
 
-            yield put(apiActions.buildSuccessAction(requestAction, result));
-        } catch (error) {
-            yield put(apiActions.buildErrorAction(requestAction, error.message));
-        }
+        yield put(apiActions.buildSuccessAction(requestAction, result));
+    } catch (error) {
+        yield put(apiActions.buildErrorAction(requestAction, error.message));
     }
 }
 

@@ -6,7 +6,7 @@ const initialState: any = {
     data: {},
 };
 
-// The auth reducer.
+// The api reducer.
 export function apiReducer(
     state: any = initialState,
     action: ApiAction,

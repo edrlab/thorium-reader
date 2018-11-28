@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { lazyInject } from "readium-desktop/renderer/di";
+import { connect } from "react-redux";
 
 import { Publication } from "readium-desktop/common/models/publication";
 
@@ -15,38 +15,27 @@ import { Translator } from "readium-desktop/common/services/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
+import { libraryActions } from "readium-desktop/renderer/redux/actions";
+
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-interface IPublicationProps {
+interface PublicationListElementProps {
     publication: PublicationView;
-    id: number;
-    openDialog: () => void;
-    // downloading: boolean;
-    // downloadProgress?: number;
-    // handleRead: any;
-    // cancelDownload: any;
-    // deletePublication: any;
-    // openInfoDialog: (publication: Publication) => void;
-    // openReturnDialog: (publication: Publication) => void;
-    // openRenewDialog: (publication: Publication) => void;
+    displayPublicationInfo?: any;
 }
 
-export default class PublicationListElement extends React.Component<IPublicationProps, null> {
-    @lazyInject("translator")
-    private translator: Translator;
+export class PublicationListElement extends React.Component<PublicationListElementProps, undefined> {
+    constructor(props: any) {
+        super(props);
+
+        this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
+    }
 
     public render(): React.ReactElement<{}>  {
-        const __ = this.translator.translate.bind(this.translator);
-
-        const i = this.props.id;
         const pub = this.props.publication;
 
         return (
-            <li
-                key={i}
-                className={styles.block_book_list +
-                    (false ? " " + styles.menuOpen : "")}
-            >
+            <>
                 <div className={styles.list_book_title}>
                 <p className={styles.book_title} aria-label="Titre du livre">{pub.title}</p>
                 <p
@@ -74,11 +63,28 @@ export default class PublicationListElement extends React.Component<IPublication
                     </svg>
                 </button>
                 <div className={styles.listMenu}>
-                    <a onClick={this.props.openDialog} >Fiche livre</a>
+                    <a onClick={this.displayPublicationInfo} >Fiche livre</a>
                     <a>Retirer de la séléction</a>
                     <a>Supprimer définitivement</a>
                 </div>
-            </li>
+            </>
         );
     }
+
+    private displayPublicationInfo(e: any) {
+        e.preventDefault();
+        this.props.displayPublicationInfo(this.props.publication);
+    }
 }
+
+const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => {
+    return {
+        displayPublicationInfo: (publication: PublicationView) => {
+            dispatch(
+                libraryActions.ActionType.PublicationInfoDisplayRequest,
+            );
+        },
+    };
+};
+
+export default connect(undefined, mapDispatchToProps)(PublicationListElement);

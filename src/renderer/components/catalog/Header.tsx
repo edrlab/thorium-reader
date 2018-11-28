@@ -13,25 +13,29 @@ import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader
 
 import { Link } from "react-router-dom";
 
-interface Props {
-    dialogOpen: boolean;
-    list?: boolean;
+export enum DisplayType {
+    Grid = "grid",
+    List = "list",
 }
 
-export default class MyBooksHeader extends React.Component<Props, undefined> {
+interface Props {
+    displayType: DisplayType;
+}
 
-    @lazyInject("translator")
-    private translator: Translator;
-
+export default class Header extends React.Component<Props, undefined> {
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
-
         return (
-            <SecondaryHeader style={this.getDialogBlur()}>
-                <Link to="/" style={this.props.list ? {fill: "grey"} : {}}>
+            <SecondaryHeader>
+                <Link
+                    to="/library?displayType=grid"
+                    style={(this.props.displayType != DisplayType.Grid) ? {fill: "grey"} : {}}
+                >
                     <SVG svg={GridIcon} title="Présenter les couvertures de livres en grille"/>
                 </Link>
-                <Link to="/myBooks/list" style={!this.props.list ? {fill: "grey"} : {}}>
+                <Link
+                    to="/library?displayType=list"
+                    style={this.props.displayType != DisplayType.List ? {fill: "grey"} : {}}
+                >
                     <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
                 </Link>
                 <form role="search">
@@ -49,7 +53,4 @@ export default class MyBooksHeader extends React.Component<Props, undefined> {
         );
     }
 
-    private getDialogBlur() {
-        return this.props.dialogOpen ? {filter: "blur(2px)"} : {};
-    }
 }

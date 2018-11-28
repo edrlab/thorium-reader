@@ -40,6 +40,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
 import { CatalogApi } from "readium-desktop/main/api/catalog";
+import { PublicationApi } from "readium-desktop/main/api/publication";
 
 import {
     PublicationStorage,
@@ -179,6 +180,12 @@ container.bind<CatalogApi>("catalog-api").toConstantValue(
         configRepository,
         publicationViewConverter,
         translator,
+    ),
+);
+container.bind<PublicationApi>("publication-api").toConstantValue(
+    new PublicationApi(
+        publicationRepository,
+        publicationViewConverter,
     ),
 );
 

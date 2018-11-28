@@ -11,6 +11,7 @@ export class PublicationViewConverter {
             identifier: document.identifier,
             title: document.title,
             authors: [],
+            languages: [],
             cover: {
                 url: document.coverFile.url,
             },

@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import * as winActions from "./win";
+import * as libraryActions from "./library";
 
 export {
+    libraryActions,
     winActions,
 };

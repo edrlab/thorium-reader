@@ -14,39 +14,63 @@ export interface ApiQueryConfig {
     moduleId: string;
     methodId: string;
     dstProp: string;
+    mapStateToProps?: any;
+    mapDispatchToProps?: any;
 }
 
 export interface ApiProps {
-    requestId: any;
-    data: any;
-    requestData: any;
-    cleanData: any;
+    requestId?: any;
+    data?: any;
+    requestData?: any;
+    cleanData?: any;
 }
 
 export function withApi(WrappedComponent: any, queryConfig: ApiQueryConfig) {
     const mapDispatchToProps = (dispatch: any, ownProps: ApiProps) => {
         const { requestId } = ownProps;
 
-        return {
-            requestData: () => {
-                dispatch(
-                    apiActions.buildRequestAction(
-                        requestId,
-                        queryConfig.moduleId,
-                        queryConfig.methodId,
-                    ),
-                );
-            },
-            cleanData: () => {
-                dispatch(
-                    apiActions.clean(requestId),
-                );
-            },
-        };
+        let dispatchToPropsResult = {};
+
+        if (queryConfig.mapDispatchToProps != null) {
+            dispatchToPropsResult = queryConfig.mapDispatchToProps(
+                dispatch,
+                ownProps,
+            );
+        }
+
+        return Object.assign(
+            {},
+            dispatchToPropsResult,
+            {
+                requestData: () => {
+                    dispatch(
+                        apiActions.buildRequestAction(
+                            requestId,
+                            queryConfig.moduleId,
+                            queryConfig.methodId,
+                        ),
+                    );
+                },
+                cleanData: () => {
+                    dispatch(
+                        apiActions.clean(requestId),
+                    );
+                },
+            }
+        );
     };
 
     const mapStateToProps = (state: any, ownProps: ApiProps) => {
         const { requestId } = ownProps;
+
+        let stateToPropsResult = {};
+
+        if (queryConfig.mapStateToProps != null) {
+            stateToPropsResult = queryConfig.mapStateToProps(
+                state,
+                ownProps,
+            );
+        }
 
         let data: any;
 
@@ -54,7 +78,11 @@ export function withApi(WrappedComponent: any, queryConfig: ApiQueryConfig) {
             data = state.api.data[requestId].result;
         }
 
-        return { data };
+        return Object.assign(
+            {},
+            stateToPropsResult,
+            { data }
+        );
     };
 
 

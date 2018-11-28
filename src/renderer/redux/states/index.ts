@@ -22,6 +22,8 @@ import { UpdateState } from "readium-desktop/common/redux/states/update";
 
 import { WinState } from "./win";
 import { ApiState } from "./api";
+import { LibraryState } from "./library";
+
 export { WinState };
 
 export interface RootState {
@@ -37,4 +39,5 @@ export interface RootState {
     reader: ReaderState;
     update: UpdateState;
     api: ApiState;
+    library: LibraryState;
 }

@@ -6,10 +6,13 @@ import { AvailableLanguages, Translator } from "readium-desktop/common/services/
 import { lazyInject } from "readium-desktop/renderer/di";
 
 import { connect } from "react-redux";
-import Header from "readium-desktop/renderer/components/Header";
-import SettingsHeader from "readium-desktop/renderer/components/settings/SettingsHeader";
+
+import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+
+import Header from "./Header";
 
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { libraryActions } from "readium-desktop/renderer/redux/actions";
 
 interface Props {
     locale: string;
@@ -20,11 +23,7 @@ interface States {
     placeholder: any;
 }
 
-export class SettingsLanguages extends React.Component<Props, States> {
-
-    @lazyInject("translator")
-    private translator: Translator;
-
+export class LanguageSettings extends React.Component<Props, States> {
     public constructor(props: Props) {
         super(props);
 
@@ -34,14 +33,10 @@ export class SettingsLanguages extends React.Component<Props, States> {
     }
 
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
-
         return (
             <>
-                <Header activePage={2}/>
-                <SettingsHeader section={2} />
-                <main id={styles.main} role="main">
-                    <a id="contenu" tabIndex={-1}></a>
+                <LibraryLayout>
+                    <Header section={2}/>
                     <div className={styles.section_title}>Choix de la langue</div>
                     <ul className={styles.languages_list}>
                         { Object.keys(AvailableLanguages).map((lang: string, i: number) =>
@@ -55,7 +50,7 @@ export class SettingsLanguages extends React.Component<Props, States> {
                             </li>,
                         )}
                     </ul>
-                </main>
+                </LibraryLayout>
             </>
         );
     }
@@ -73,4 +68,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsLanguages);
+export default connect(mapStateToProps, mapDispatchToProps)(LanguageSettings);

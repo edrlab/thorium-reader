@@ -9,6 +9,8 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { connect } from "react-redux";
 
+import { RouteComponentProps } from "react-router-dom";
+
 import { apiActions } from "readium-desktop/common/redux/actions";
 
 import { CatalogView, CatalogEntryView } from "readium-desktop/common/views/catalog";
@@ -17,35 +19,39 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
-import CatalogEntry from "./CatalogEntry";
+import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 
-interface CatalogProps extends TranslatorProps {
+import PublicationInfoDialog from "readium-desktop/renderer/components/publication/PublicationInfoDialog";
+
+import Header, { DisplayType } from "./Header";
+
+import GridView from "./GridView";
+
+interface CatalogProps extends TranslatorProps, RouteComponentProps {
     catalog?: CatalogView;
+    blur: boolean;
 }
 
-export class BaseCatalog extends React.Component<CatalogProps, undefined> {
+export class Catalog extends React.Component<CatalogProps, undefined> {
     public render(): React.ReactElement<{}> {
         if (!this.props.catalog) {
             return (<></>);
         }
 
         return (
-            <>
-                <main id={styles.main} role="main">
-                    <a id="contenu" tabIndex={-1}></a>
-                    {
-                        this.props.catalog.entries.map((entry: CatalogEntryView) => {
-                            return (<CatalogEntry entry={ entry } />)
-                        })
-                    }
-                </main>
-            </>
+            <LibraryLayout>
+                <div style={ this.props.blur ? {filter: "blur(2px)"} : {} }>
+                    <Header displayType={ DisplayType.Grid } />
+                    <GridView catalogEntries={ this.props.catalog.entries } />
+                </div>
+                <PublicationInfoDialog />
+            </LibraryLayout>
         );
     }
 }
 
 export default withApi(
-    BaseCatalog,
+    Catalog,
     {
         moduleId: "catalog",
         methodId: "get",

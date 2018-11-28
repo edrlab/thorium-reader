@@ -17,8 +17,6 @@ import {
 
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
-import { winReducer } from "./win";
-import { apiReducer } from "./api";
 
 import { catalogReducer } from "readium-desktop/common/redux/reducers/catalog";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
@@ -29,6 +27,11 @@ import {
     publicationDownloadReducer,
 } from "readium-desktop/common/redux/reducers/publication-download";
 import { readerReducer } from "readium-desktop/common/redux/reducers/reader";
+
+import { winReducer } from "./win";
+import { apiReducer } from "./api";
+import { libraryReducer } from "./library";
+
 export const rootReducer = combineReducers({
     i18n: i18nReducer,
     catalog: catalogReducer,
@@ -42,4 +45,5 @@ export const rootReducer = combineReducers({
     net: netReducer,
     update: updateReducer,
     api: apiReducer,
+    library: libraryReducer,
 });

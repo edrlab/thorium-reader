@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import Cover from "readium-desktop/renderer/components/Publication/Cover";
-import PublicationCard from "readium-desktop/renderer/components/Publication/PublicationCard";
-import PublicationListElement from "readium-desktop/renderer/components/Publication/PublicationListElement";
+import Cover from "./Cover";
+import PublicationCard from "./PublicationCard";
+import PublicationListElement from "./PublicationListElement";
 
 export {
     PublicationListElement,
