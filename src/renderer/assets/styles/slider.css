@@ -4,20 +4,16 @@
 }
 
 .content {
-    display: flex;
+    display: inline-flex;
 
-    & > div {
-        display: flex;
-        flex: 1;
-        & > * {
-            margin: 0 15px;
-            flex: 1;
-        }
+    & > * {
+        margin: 0 15px;
     }
 }
 
 .content_wrapper {
     flex: 1;
+    overflow: hidden;
 }
 
 button {
