@@ -15,9 +15,9 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
         return (
             <>
             {
-                this.props.catalogEntries.map((entry) => {
+                this.props.catalogEntries.map((entry, entryIndex: number) => {
                     return (
-                        <section>
+                        <section key={ entryIndex }>
                             <h1>{ entry.title }</h1>
                             <ul>
                                 { entry.publications.map((pub, i: number) => {
