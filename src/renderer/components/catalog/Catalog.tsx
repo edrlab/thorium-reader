@@ -25,7 +25,7 @@ import PublicationInfoDialog from "readium-desktop/renderer/components/publicati
 
 import Header, { DisplayType } from "./Header";
 
-import GridView from "./GridView";
+import ListView from "./ListView";
 
 interface CatalogProps extends TranslatorProps, RouteComponentProps {
     catalog?: CatalogView;
@@ -42,7 +42,7 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
             <LibraryLayout>
                 <div style={ this.props.blur ? {filter: "blur(2px)"} : {} }>
                     <Header displayType={ DisplayType.Grid } />
-                    <GridView catalogEntries={ this.props.catalog.entries } />
+                    <ListView catalogEntries={ this.props.catalog.entries } />
                 </div>
                 <PublicationInfoDialog />
             </LibraryLayout>
