@@ -42,7 +42,7 @@
 }
 
 .block_book {
-    width: 1px;
+    width: 175px;
     & .image_wrapper {
         width: 100%;
         position: relative;
@@ -142,4 +142,18 @@
 .menu_active {
     height: 120px;
     width: 170px;
+}
+
+@media screen 
+  and (min-width: 1200px){
+      .block_book {
+          width: 300px;
+      }
+}
+
+@media screen
+  and (max-width: 1200px) {
+      .block_book {
+          width: 175px;
+      }
 }

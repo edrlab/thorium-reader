@@ -33,7 +33,7 @@
 .block_book_list {
 	display: block;
 	margin: 0 -60px;
-	height: 40px;
+	min-height: 40px;
 	padding: 0px 50px;
 	min-width: 600px;
 	font-size: 0.8rem;
@@ -41,14 +41,13 @@
     transition: height 0.5s;
 }
 
-.menuOpen{
-	height: 75px;
-}
-
 .block_book_list button {
 	float:left;
     display: flex;
     justify-content: center;
+	border: none;
+    background: none;
+    cursor: pointer;
 }
 
 .block_book_list:nth-child(odd){
@@ -105,7 +104,9 @@
 	margin-top:40px;
 }
 
-.listMenu {
+.list_menu {
+	height: 0px;
+	transition: height 0.5s;
     margin-left: 10px;
     & a {
         border: 1px solid black;
@@ -114,4 +115,8 @@
         display: inline-block;
         cursor: pointer;
     }
+}
+
+.menu_open{
+	height: 30px;
 }

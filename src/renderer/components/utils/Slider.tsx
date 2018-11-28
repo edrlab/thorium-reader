@@ -8,7 +8,6 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 interface Props {
     content: JSX.Element[];
-    displayQty: number;
     className?: string;
 }
 
@@ -17,40 +16,49 @@ interface States {
 }
 
 export default class Slider extends React.Component<Props, States> {
+    private contentRef: any;
+    private wrapperRef: any;
+
     public constructor(props: Props) {
         super(props);
 
         this.state = {
             position: 0,
         };
+
+        this.contentRef = React.createRef();
+        this.wrapperRef = React.createRef();
     }
 
     public render(): React.ReactElement<{}>  {
         const className = this.props.className;
 
         const list = this.createBoxes();
+        let max = 0;
+        if (this.contentRef.current && this.wrapperRef.current) {
+            max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
+        }
 
         const varStyle = {
-            transform: "translateX(-" + 100 / list.length * this.state.position + "%)",
+            transform: "translateX(" + this.state.position + "px)",
             transition: "transform 0.5s",
-            width: list.length * 100 + "%",
         };
 
         return (
             <div className={(className ? className + " " : "") + styles.wrapper}>
-                {this.state.position > 0 ?
-                    <button className={styles.back} onClick={this.handleMove.bind(this, -1, list.length - 1)}>
+                {this.state.position < 0 ?
+                    <button className={styles.back} onClick={this.handleMove.bind(this, false)}>
                         <SVG svg={ArrowRightIcon} title=""/>
                     </button>
                 : <div className={styles.button_substitute}/>
                 }
-                <div className={styles.content_wrapper}>
-                    <div className={styles.content} style={varStyle}>
+                <div ref={this.wrapperRef} className={styles.content_wrapper}>
+                    <div ref={this.contentRef} className={styles.content} style={varStyle}>
                         {list}
                     </div>
                 </div>
-                {this.state.position < list.length - 1 ?
-                    <button onClick={this.handleMove.bind(this, 1, list.length - 1)}>
+                {this.state.position > max ?
+                    <button onClick={this.handleMove.bind(this, true)}>
                         <SVG svg={ArrowRightIcon} title=""/>
                     </button>
                 : <div className={styles.button_substitute}/>
@@ -59,42 +67,25 @@ export default class Slider extends React.Component<Props, States> {
         );
     }
 
-    private handleMove(step: number, max: number) {
-
-        let position = this.state.position + step;
-        if (position < 0) {
-            position = 0;
-        } else if (position > max) {
-            position = max;
-        } else {
-            this.setState({position});
+    private handleMove(moveRight: number) {
+        let  step = this.wrapperRef.current.offsetWidth/2;
+        if (moveRight) {
+            step = -step;
         }
+        const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
+        let position = this.state.position + step;
+        if (position > 0) {
+            position = 0;
+        } else if (position < max) {
+            position = max;
+        }
+        
+        this.setState({position});
     }
 
     private createBoxes(): JSX.Element[] {
         const content = this.props.content;
 
-        const list: JSX.Element[] = [];
-        let secondaryList = [];
-
-        let i = 1;
-        for (const el of content) {
-            secondaryList.push(el);
-            if (i === content.length && i % this.props.displayQty !== 0) {
-                for (let j = 0; j < this.props.displayQty - (i % this.props.displayQty); j++) {
-                    secondaryList.push(<div key={j} style={{flex: 1}}></div>);
-                }
-            }
-            if (i % this.props.displayQty === 0 || i === content.length) {
-                list.push(
-                    <div key={i}>{secondaryList}</div>,
-                );
-                secondaryList = [];
-            }
-
-            i++;
-        }
-
-        return list;
+        return content.map((el) => el);
     }
 }

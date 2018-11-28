@@ -9,10 +9,6 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { Publication } from "readium-desktop/common/models/publication";
-
-import { Translator } from "readium-desktop/common/services/translator";
-
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import { libraryActions } from "readium-desktop/renderer/redux/actions";
@@ -24,11 +20,20 @@ interface PublicationListElementProps {
     displayPublicationInfo?: any;
 }
 
-export class PublicationListElement extends React.Component<PublicationListElementProps, undefined> {
+interface PublicationListElementState {
+    menuOpen: boolean;
+}
+
+export class PublicationListElement extends React.Component<PublicationListElementProps, PublicationListElementState> {
     constructor(props: any) {
         super(props);
 
+        this.state = {
+            menuOpen: false,
+        }
+
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
+        this.switchMenu = this.switchMenu.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
@@ -52,6 +57,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
                     aria-haspopup="dialog"
                     aria-controls="dialog"
                     title="Voir plus"
+                    onClick={this.switchMenu}
                 >
                     <svg role="link" className={styles.icon_seemore}>
                         <g aria-hidden="true">
@@ -62,7 +68,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
                         </g>
                     </svg>
                 </button>
-                <div className={styles.listMenu}>
+                <div className={(this.state.menuOpen ? styles.menu_open + " " : "") + styles.list_menu}>
                     <a onClick={this.displayPublicationInfo} >Fiche livre</a>
                     <a>Retirer de la séléction</a>
                     <a>Supprimer définitivement</a>
@@ -74,6 +80,10 @@ export class PublicationListElement extends React.Component<PublicationListEleme
     private displayPublicationInfo(e: any) {
         e.preventDefault();
         this.props.displayPublicationInfo(this.props.publication);
+    }
+
+    private switchMenu() {
+        this.setState({menuOpen: !this.state.menuOpen});
     }
 }
 

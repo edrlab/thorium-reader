@@ -31,7 +31,6 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                             <h1>{ entry.title }</h1>
                             <Slider
                                 className={styles.slider}
-                                displayQty={6}
                                 content={entry.publications.map((pub) =>
                                     <PublicationCard
                                         key={pub.identifier}
