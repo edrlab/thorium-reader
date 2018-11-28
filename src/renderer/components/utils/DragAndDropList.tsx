@@ -6,7 +6,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 interface Props {
     list: any[];
-    elementContent: (item: any) => any;
+    elementContent: (item: any, index: number) => any;
     className?: string;
     elementClassName?: string;
     id?: string;
@@ -57,7 +57,7 @@ export default class DragAndDropList extends React.Component<Props, State> {
                                         {...provided2.dragHandleProps}
                                         className={elementClassName ? elementClassName : ""}
                                     >
-                                        {this.props.elementContent(item)}
+                                        {this.props.elementContent(item, index)}
                                     </li>
                                 );
                                 }}

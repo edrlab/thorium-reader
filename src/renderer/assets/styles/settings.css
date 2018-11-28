@@ -107,6 +107,16 @@
 			flex: 1;
 		}
 
+		& button {
+			background: none;
+			border: none;
+			cursor: pointer;
+		}
+
+		& input {
+			font-size: inherit;
+		}
+
 		& svg {
 			height: 24px;
 			width: 24px;
