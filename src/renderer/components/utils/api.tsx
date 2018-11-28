@@ -14,6 +14,7 @@ export interface ApiQueryConfig {
     moduleId: string;
     methodId: string;
     dstProp: string;
+    buildRequestData?: any;
     mapStateToProps?: any;
     mapDispatchToProps?: any;
 }
@@ -26,7 +27,7 @@ export interface ApiProps {
 }
 
 export function withApi(WrappedComponent: any, queryConfig: ApiQueryConfig) {
-    const mapDispatchToProps = (dispatch: any, ownProps: ApiProps) => {
+    const mapDispatchToProps = (dispatch: any, ownProps: any) => {
         const { requestId } = ownProps;
 
         let dispatchToPropsResult = {};
@@ -38,16 +39,23 @@ export function withApi(WrappedComponent: any, queryConfig: ApiQueryConfig) {
             );
         }
 
+        let requestData: any = null;
+
+        if (queryConfig.buildRequestData != null) {
+            requestData = queryConfig.buildRequestData(ownProps);
+        }
+
         return Object.assign(
             {},
             dispatchToPropsResult,
             {
-                requestData: () => {
+                requestData: (data: any) => {
                     dispatch(
                         apiActions.buildRequestAction(
                             requestId,
                             queryConfig.moduleId,
                             queryConfig.methodId,
+                            requestData,
                         ),
                     );
                 },
@@ -60,7 +68,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiQueryConfig) {
         );
     };
 
-    const mapStateToProps = (state: any, ownProps: ApiProps) => {
+    const mapStateToProps = (state: any, ownProps: any) => {
         const { requestId } = ownProps;
 
         let stateToPropsResult = {};
