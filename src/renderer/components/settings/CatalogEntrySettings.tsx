@@ -73,34 +73,59 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
             <>
                 <LibraryLayout>
                     <Header section={0} />
-                    <div className={styles.section_title}>Disposition sur l'écran d'accueil</div>
-                    <DragAndDropList
-                        elementContent={(entry: CatalogEntryView, index: number) =>
-                            <>
-                                <SVG title="ce bloc est déplacable au clic" svg={DragableIcon}/>
-                                { this.state.entryToUpdate && this.state.entryToUpdate.id === index ? (
-                                    <form onSubmit={this.submitEntryEdit}>
-                                        <input
-                                            value={this.state.entryToUpdate.name}
-                                            onChange={this.changeEditedEntryName}
-                                            onBlur={this.closeEdit} ref={this.inputRef}
-                                            type="text"
-                                        />
-                                    </form>
-                                ) : entry.title}
-                                <span>{entry.totalCount}</span>
-                                <button onClick={this.editClick.bind(this, entry, index)}>
-                                    <SVG svg={EditIcon}/>
-                                </button>
-                                <SVG svg={DeleteIcon}/>
-                            </>
-                        }
-                        elementClassName={styles.dnd_element}
-                        list={this.state.entryList}
-                        id={styles.draggable_list}
-                        onChange={this.handleListOrderChange}
-                    />
+                    { this.buildDragAndDropList() }
                 </LibraryLayout>
+            </>
+        );
+    }
+
+    private buildDragAndDropList() {
+        if (this.props.entries && this.props.entries.length == 0) {
+            return (
+                <p>
+                    Aucune sélection existante
+                </p>
+            );
+        }
+
+        return (
+            <>
+                <div className={styles.section_title}>
+                    Disposition sur l'écran d'accueil
+                </div>
+                <DragAndDropList
+                    elementContent={
+                        (entry: CatalogEntryView, index: number) =>
+                            this.buildDragAndDropListItem(entry, index)
+                    }
+                    elementClassName={styles.dnd_element}
+                    list={this.state.entryList}
+                    id={styles.draggable_list}
+                    onChange={this.handleListOrderChange}
+                />
+            </>
+        );
+    }
+
+    private buildDragAndDropListItem(entry: any, index: number) {
+        return (
+            <>
+                <SVG title="ce bloc est déplacable au clic" svg={DragableIcon}/>
+                { this.state.entryToUpdate && this.state.entryToUpdate.id === index ? (
+                    <form onSubmit={this.submitEntryEdit}>
+                        <input
+                            value={this.state.entryToUpdate.name}
+                            onChange={this.changeEditedEntryName}
+                            onBlur={this.closeEdit} ref={this.inputRef}
+                            type="text"
+                        />
+                    </form>
+                ) : entry.title}
+                <span>{entry.totalCount}</span>
+                <button onClick={this.editClick.bind(this, entry, index)}>
+                    <SVG svg={EditIcon}/>
+                </button>
+                <SVG svg={DeleteIcon}/>
             </>
         );
     }
