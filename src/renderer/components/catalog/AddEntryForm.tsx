@@ -6,30 +6,31 @@ import SVG from "readium-desktop/renderer/components/utils/SVG"
 
 import * as AddIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as RemoveIcon from "readium-desktop/renderer/assets/icons/baseline-remove-24px.svg";
-import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 interface AddEntryFormProps {
-    addEntry?: (name: string) => void;
+    addEntry?: (entry: any) => void;
+    tags?: string[];
 }
 
 interface AddEntryFormState {
-    name: string;
-    open: boolean
+    open: boolean;
 }
 
 export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFormState> {
+    private selectRef: any;
     public constructor(props: any) {
         super(props);
 
         this.state = {
             open: false,
-            name: "",
         }
 
+        this.selectRef = React.createRef();
+
         this.submit = this.submit.bind(this);
-        this.nameChange = this.nameChange.bind(this);
         this.switchForm = this.switchForm.bind(this);
     }
 
@@ -45,9 +46,13 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
                     <span>Ajouter une sélection</span>
                 </button>
                 <form onSubmit={this.submit} style={{display: this.state.open ? "inline-block" : "none"}} id={styles.tag_search}>  
-                    <input onChange={this.nameChange} type="search" className={styles.tag_inputs} id={styles.tag_inputs} placeholder="Rechercher un tag" title="rechercher un tag"/>
-                    <button className={styles.launch}>
-                        <SVG svg={SearchIcon} title="lancer la recherche de tag" />
+                    <select ref={this.selectRef} className={styles.tag_inputs} id={styles.tag_inputs} placeholder="Rechercher un tag" title="rechercher un tag">
+                        { this.props.tags && this.props.tags.map((tag: string, index: number) =>
+                            <option key={index} value={tag}>{tag}</option>
+                        )}
+                    </select>
+                    <button onClick={this.submit} className={styles.launch}>
+                        <SVG svg={AddIcon} title="Créer la séléction" />
                     </button>
                 </form>
             </section>
@@ -56,11 +61,12 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
 
     private submit(e: any) {
         e.preventDefault();
-        this.props.addEntry(this.state.name);
-    }
-
-    private nameChange(e: any) {
-        this.setState({name: e.target.value});
+        this.props.addEntry({
+            entry: {
+                    title: this.selectRef.current.value,
+                    tag: this.selectRef.current.value,
+                },
+            });
     }
 
     private switchForm() {
@@ -68,9 +74,21 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-    };
-};
-
-export default connect(undefined, mapDispatchToProps)(AddEntryForm as any);
+export default withApi(
+    AddEntryForm,
+    {
+        operations: [
+            {
+                moduleId: "publication",
+                methodId: "getAllTags",
+                resultProp: "tags",
+                onLoad: true,
+            },
+            {
+                moduleId: "catalog",
+                methodId: "addEntry",
+                callProp: "addEntry",
+            }
+        ],
+    },
+);
