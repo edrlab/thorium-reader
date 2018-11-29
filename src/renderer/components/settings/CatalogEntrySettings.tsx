@@ -5,14 +5,8 @@ import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import { Translator } from "readium-desktop/common/services/translator";
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { connect } from "react-redux";
-
 import DragAndDropList from "readium-desktop/renderer/components/utils/DragAndDropList";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-
-import { Tag } from "readium-desktop/common/models/tag";
-
-import { addTagRequest, editTagRequest, removeTagRequest } from "readium-desktop/common/redux/actions/catalog";
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 

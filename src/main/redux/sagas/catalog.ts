@@ -84,29 +84,3 @@ export function* catalogPublicationRemoveWatcher(): SagaIterator {
         }
     }
 }
-
-export function* addTagWatcher(): SagaIterator {
-    yield take(catalogActions.ActionType.TagAddRequest);
-
-    console.log("Tag BLABLABLA BLA BLA BLA BLABLABLABLABLABLABLABLABLABLABLA")
-
-    yield put({
-        type: catalogActions.ActionType.TagAddSuccess,
-    });
-}
-
-export function* editTagWatcher(): SagaIterator {
-    yield take(catalogActions.ActionType.TagEditRequest);
-
-    yield put({
-        type: catalogActions.ActionType.TagEditSuccess,
-    });
-}
-
-export function* removeTagWatcher(): SagaIterator {
-    yield take(catalogActions.ActionType.TagRemoveRequest);
-
-    yield put({
-        type: catalogActions.ActionType.TagRemoveSuccess,
-    });
-}

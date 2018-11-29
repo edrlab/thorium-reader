@@ -2,8 +2,6 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { addTagRequest } from "readium-desktop/common/redux/actions/catalog";
-
 import SVG from "readium-desktop/renderer/components/utils/SVG"
 
 import * as AddIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
@@ -72,7 +70,6 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-      addEntry: (name: string) => dispatch(addTagRequest(name)),
     };
 };
 

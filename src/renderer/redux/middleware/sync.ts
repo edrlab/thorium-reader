@@ -32,10 +32,6 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     catalogActions.ActionType.FileImportRequest,
     catalogActions.ActionType.PublicationRemoveRequest,
 
-    catalogActions.ActionType.TagAddRequest,
-    catalogActions.ActionType.TagEditRequest,
-    catalogActions.ActionType.TagRemoveRequest,
-
     apiActions.ActionType.Request,
 
     opdsActions.ActionType.AddRequest,
