@@ -23,6 +23,8 @@ import { container } from "readium-desktop/main/di";
 import { lcpActions, streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
@@ -47,7 +49,7 @@ function stopStreamer(streamer: Server) {
     streamer.stop();
 }
 
-export function* streamerStartRequestWatcher(): SagaIterator {
+export function* startRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield take(streamerActions.ActionType.StartRequest);
         const streamer: Server = container.get("streamer") as Server;
@@ -71,7 +73,7 @@ export function* streamerStartRequestWatcher(): SagaIterator {
     }
 }
 
-export function* streamerStopRequestWatcher(): SagaIterator {
+export function* stopRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield take(streamerActions.ActionType.StopRequest);
         const streamer: Server = container.get("streamer") as Server;
@@ -92,10 +94,22 @@ export function* streamerStopRequestWatcher(): SagaIterator {
     }
 }
 
-export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
+export function* publicationOpenRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield take(streamerActions.ActionType.PublicationOpenRequest);
-        const publication = action.payload.publication;
+        const publicationRepository = container.get("publication-repository") as PublicationRepository;
+
+        // Get publication
+        let publication: PublicationDocument = null;
+
+        try {
+            publication = yield call(
+                publicationRepository.get.bind(publicationRepository),
+                action.payload.publication.identifier
+            );
+        } catch (error) {
+            continue;
+        }
 
         // Get epub file from publication
         const pubStorage = container.get("publication-storage") as PublicationStorage;
@@ -135,9 +149,9 @@ export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
 
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
-
+        console.log("###", manifestPaths);
         // Test if publication contains LCP drm
-        const parsedEpub = yield call(
+        /*const parsedEpub = yield call(
             () => streamer.loadOrGetCachedPublication(epubPath),
         );
 
@@ -161,7 +175,7 @@ export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
                 });
                 continue;
             }
-        }
+        }*/
 
         const manifestUrl = streamer.serverUrl() + manifestPaths[0];
         debug(manifestUrl);
@@ -175,10 +189,22 @@ export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
     }
 }
 
-export function* streamerPublicationCloseRequestWatcher(): SagaIterator {
+export function* publicationCloseRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield take(streamerActions.ActionType.PublicationCloseRequest);
-        const publication = action.payload.publication;
+        const publicationRepository = container.get("publication-repository") as PublicationRepository;
+
+        // Get publication
+        let publication: PublicationDocument = null;
+
+        try {
+            publication = yield call(
+                publicationRepository.get.bind(publicationRepository),
+                action.payload.publication.identifier
+            );
+        } catch (error) {
+            continue;
+        }
 
         const state: RootState =  yield select();
         const streamer: Server = container.get("streamer") as Server;
@@ -199,4 +225,13 @@ export function* streamerPublicationCloseRequestWatcher(): SagaIterator {
             yield put(streamerActions.stop());
         }
     }
+}
+
+export function* watchers() {
+    yield [
+        stopRequestWatcher(),
+        startRequestWatcher(),
+        publicationOpenRequestWatcher(),
+        publicationCloseRequestWatcher(),
+    ];
 }

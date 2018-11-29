@@ -40,14 +40,10 @@ import {
     readerConfigSetRequestWatcher,
     readerOpenRequestWatcher,
 } from "./reader";
-import {
-    streamerPublicationCloseRequestWatcher,
-    streamerPublicationOpenRequestWatcher,
-    streamerStartRequestWatcher,
-    streamerStopRequestWatcher,
-} from "./streamer";
 
 import * as api from "./api";
+
+import * as streamer from "./streamer";
 
 // import {
 //     lcpPassphraseSubmitRequestWatcher,
@@ -99,10 +95,7 @@ export function* rootSaga() {
         readerOpenRequestWatcher(),
 
         // Streamer
-        streamerStopRequestWatcher(),
-        streamerStartRequestWatcher(),
-        streamerPublicationOpenRequestWatcher(),
-        streamerPublicationCloseRequestWatcher(),
+        streamer.watchers(),
 
         // LCP
         // lcpPassphraseSubmitRequestWatcher(),
