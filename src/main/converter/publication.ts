@@ -12,7 +12,7 @@ export class PublicationViewConverter {
             title: document.title,
             authors: [],
             languages: [],
-            tags: document.tags.filter((tag) => tag).map((tag) => tag.name ),
+            tags: document.tags,
             cover: {
                 url: document.coverFile.url,
             },
