@@ -9,6 +9,7 @@ import {MessageState} from "readium-desktop/renderer/reducers/message";
 import {WindowState} from "readium-desktop/renderer/reducers/window";
 
 import { CatalogState } from "readium-desktop/common/redux/states/catalog";
+import { DialogState } from "readium-desktop/common/redux/states/dialog";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { LcpState } from "readium-desktop/common/redux/states/lcp";
 import { NetState } from "readium-desktop/common/redux/states/net";
@@ -22,7 +23,6 @@ import { UpdateState } from "readium-desktop/common/redux/states/update";
 
 import { WinState } from "./win";
 import { ApiState } from "./api";
-import { LibraryState } from "./library";
 
 export { WinState };
 
@@ -39,5 +39,5 @@ export interface RootState {
     reader: ReaderState;
     update: UpdateState;
     api: ApiState;
-    library: LibraryState;
+    dialog: DialogState;
 }

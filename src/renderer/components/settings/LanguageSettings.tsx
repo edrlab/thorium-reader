@@ -12,7 +12,6 @@ import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLay
 import Header from "./Header";
 
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
-import { libraryActions } from "readium-desktop/renderer/redux/actions";
 
 interface Props {
     locale: string;

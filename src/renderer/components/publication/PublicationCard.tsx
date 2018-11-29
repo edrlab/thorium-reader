@@ -15,7 +15,9 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import { libraryActions } from "readium-desktop/renderer/redux/actions";
+import { DialogType } from "readium-desktop/common/models/dialog";
+
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import Cover from "readium-desktop/renderer/components/publication/Cover";
 
@@ -127,14 +129,14 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
 
         },
         displayPublicationInfo: (publication: PublicationView) => {
-            dispatch({
-                type: libraryActions.ActionType.PublicationInfoDisplayRequest,
-                payload: {
+            dispatch(dialogActions.open(
+                DialogType.PublicationInfo,
+                {
                     publication: {
                         identifier: publication.identifier,
                     },
                 },
-            });
+            ));
         },
     };
 };

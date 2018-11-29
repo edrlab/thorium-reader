@@ -168,7 +168,7 @@
     "react-card-flip": "^0.2.1",
     "react-dom": "^16.5.2",
     "react-dropdown": "^1.6.2",
-    "react-dropzone": "4.2.11",
+    "react-dropzone": "^7.0.1",
     "react-focus-lock": "^1.14.1",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",

@@ -11,7 +11,9 @@ import { connect } from "react-redux";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import { libraryActions } from "readium-desktop/renderer/redux/actions";
+import { DialogType } from "readium-desktop/common/models/dialog";
+
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -89,15 +91,18 @@ export class PublicationListElement extends React.Component<PublicationListEleme
 
 const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => {
     return {
+        openReader: (publication: PublicationView) => {
+
+        },
         displayPublicationInfo: (publication: PublicationView) => {
-            dispatch({
-                type: libraryActions.ActionType.PublicationInfoDisplayRequest,
-                payload: {
+            dispatch(dialogActions.open(
+                DialogType.PublicationInfo,
+                {
                     publication: {
                         identifier: publication.identifier,
                     },
                 },
-            });
+            ));
         },
     };
 };

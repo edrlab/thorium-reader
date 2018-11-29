@@ -23,8 +23,6 @@ import { TranslatorProps } from "readium-desktop/renderer/components/utils/trans
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 
-import PublicationInfoDialog from "readium-desktop/renderer/components/publication/PublicationInfoDialog";
-
 import Header, { DisplayType } from "./Header";
 
 import GridView from "./GridView";
@@ -59,7 +57,6 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
                     <Header displayType={ displayType } />
                     <DisplayView catalogEntries={ this.props.catalog.entries } />
                 </div>
-                <PublicationInfoDialog />
             </LibraryLayout>
         );
     }

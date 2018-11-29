@@ -15,8 +15,6 @@ import Cover from "readium-desktop/renderer/components/publication/Cover";
 import Dialog from "readium-desktop/renderer/components/utils/Dialog";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import { libraryActions } from "readium-desktop/renderer/redux/actions";
-
 import { readerActions } from "readium-desktop/common/redux/actions";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
