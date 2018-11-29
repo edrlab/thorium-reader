@@ -38,7 +38,7 @@ export class PublicationApi {
         const newDoc = Object.assign(
             {},
             doc,
-            { tags },
+            { tags: tags.map((name: string) => {return {name}}) },
         );
         await this.publicationRepository.save(newDoc);
         return this.get({ identifier });

@@ -43,7 +43,6 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
     }
 
     public render(): React.ReactElement<{}> {
-        console.log(this.props.tags, this.props.updatedPublication);
         return (
             <div>
                 <ul>
