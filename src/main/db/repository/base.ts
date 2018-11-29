@@ -99,7 +99,11 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
     }
 
     public async findAll(): Promise<D[]> {
-        const result = await this.db.allDocs({ include_docs: true });
+        const result = await this.db.allDocs({
+            include_docs: true,
+            startkey: this.idPrefix + "_",
+            endkey: this.idPrefix + "_\ufff0",
+        });
         return result.rows.map((row) => {
             return this.convertToDocument(row.doc);
         });

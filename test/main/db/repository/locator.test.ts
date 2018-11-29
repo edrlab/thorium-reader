@@ -34,7 +34,7 @@ const dbDoc1 = {
 const dbDocIdentifier2 = "bookmark-2";
 const dbDoc2 = {
     identifier: dbDocIdentifier2,
-    _id: "config_" + dbDocIdentifier2,
+    _id: "locator_" + dbDocIdentifier2,
     locatorType: LocatorType.Bookmark,
     publicationIdentifier: "pub-2",
     locator: {
