@@ -38,24 +38,36 @@ export class CatalogApi {
         const publicationViews = publications.map((doc) => {
             return this.publicationViewConverter.convertDocumentToView(doc);
         });
+        
+        // Dynamic entries
+        let entries: CatalogEntryView[] = [
+            {
+                title: __("catalog.entry.lastAdditions"),
+                totalCount: publicationViews.length,
+                publications: publicationViews,
+            },
+        ];
 
-        // FIXME: Currently only returns one entry
+        // Concat user entries
+        const userEntries = await this.getEntries();
+        entries = entries.concat(userEntries);
+        
         return {
-            entries: [
-                {
-                    title: __("catalog.entry.lastAdditions"),
-                    totalCount: publicationViews.length,
-                    publications: publicationViews,
-                },
-            ],
+            entries,
         };
     }
 
     public async addEntry(data: any): Promise<CatalogEntryView[]> {
         const entryView = data.entry as CatalogEntryView;
-        const config = await this.configRepository.get(CATALOG_CONFIG_ID);
-        const catalog = config.value as CatalogConfig;
-        const entries = catalog.entries;
+        let entries: any = [];
+
+        try {
+            const config = await this.configRepository.get(CATALOG_CONFIG_ID);
+            const catalog = config.value as CatalogConfig;
+            entries = catalog.entries;
+        } catch (error) {
+            // New configuration
+        }
 
         entries.push({
             title: entryView.title,
@@ -82,13 +94,22 @@ export class CatalogApi {
         }
 
         const catalog = config.value as CatalogConfig;
-        const entryViews: CatalogEntryView[] = catalog.entries.map((entry: any) => {
-            return {
-                title: entry.title,
-                tag: entry.tag,
-                totalCount: 2,
-            };
-        });
+        const entryViews: CatalogEntryView[] = [];
+        
+        for (const entry of catalog.entries) {
+            const publications = await this.publicationRepository.findByTag(entry.tag);
+            const publicationViews = publications.map((doc) => {
+                return this.publicationViewConverter.convertDocumentToView(doc);
+            });
+            entryViews.push(
+                {
+                    title: entry.title,
+                    tag: entry.tag,
+                    publications: publicationViews,
+                    totalCount: publicationViews.length,
+                }
+            );
+        };
 
         return entryViews;
     }
