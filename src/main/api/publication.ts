@@ -32,6 +32,14 @@ export class PublicationApi {
         });
     }
 
+    public async findByTag(data: any): Promise<PublicationView[]> {
+        const { tag } = data;
+        const docs = await this.publicationRepository.findByTag(tag);
+        return docs.map((doc) => {
+            return this.publicationViewConverter.convertDocumentToView(doc);
+        });
+    }
+
     public async updateTags(data: any): Promise<PublicationView>  {
         const { identifier, tags } = data;
         const doc = await this.publicationRepository.get(identifier);
