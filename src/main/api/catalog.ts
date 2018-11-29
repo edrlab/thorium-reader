@@ -11,7 +11,6 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 
-
 export const CATALOG_CONFIG_ID = "catalog";
 
 @injectable()

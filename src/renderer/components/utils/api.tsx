@@ -2,11 +2,15 @@ import * as uuid from "uuid";
 
 import * as React from "react";
 
+import { Store } from "redux";
+
 import { connect } from "react-redux";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
 import { container } from "readium-desktop/renderer/di";
+
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 
@@ -15,7 +19,7 @@ export interface ApiOperationDefinition {
     moduleId: string;
     methodId: string;
     callProp?: string;
-    resultProp: string;
+    resultProp?: string;
     buildRequestData?: any;
     onLoad?: boolean; // Load in component did mount, default true
 }
@@ -41,12 +45,35 @@ export interface ApiProps {
 export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
     // Create operationRequests
     const operationRequests: ApiOperationRequest[] = [];
+    const store = container.get("store") as Store<RootState>;
 
     for (const operation of queryConfig.operations) {
+        const requestId = uuid.v4();
+
         // Create call method
+        const caller = (props: any) => {
+            return (requestData?: any) => {
+                const buildRequestData = operation.buildRequestData;
+
+                if (!requestData && buildRequestData) {
+                    requestData = buildRequestData(props);
+                }
+
+                store.dispatch(
+                    apiActions.buildRequestAction(
+                        requestId,
+                        operation.moduleId,
+                        operation.methodId,
+                        requestData,
+                    ),
+                );
+            };
+        };
+
         operationRequests.push(
             {
-                id: uuid.v4(),
+                id: requestId,
+                caller,
                 definition: Object.assign(
                     {},
                     {
@@ -74,24 +101,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
         for (const operationRequest of operationRequests) {
             // Generate the method to call
             if (!operationRequest.caller) {
-                operationRequest.caller = () => {
-                    let requestData: any = null;
-                    const def = operationRequest.definition;
-                    const buildRequestData = def.buildRequestData;
 
-                    if (buildRequestData) {
-                        requestData = buildRequestData(ownProps);
-                    }
-
-                    dispatch(
-                        apiActions.buildRequestAction(
-                            operationRequest.id,
-                            def.moduleId,
-                            def.methodId,
-                            requestData,
-                        ),
-                    );
-                };
             }
         }
 
@@ -102,7 +112,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
                 requestOnLoadData: (data: any) => {
                     for (const operationRequest of operationRequests) {
                         if (operationRequest.definition.onLoad) {
-                            operationRequest.caller();
+                            operationRequest.caller(ownProps)();
                         }
                     }
                 },
@@ -176,6 +186,11 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
                 for (const key in newProps.operationResults) {
                     newProps[key] = newProps.operationResults[key];
                 }
+            }
+
+            for (const operationRequest of operationRequests) {
+                const def = operationRequest.definition;
+                newProps[def.callProp] = operationRequest.caller(this.props);
             }
 
             return (<WrappedComponent { ...newProps } />);

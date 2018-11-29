@@ -43,4 +43,12 @@ export class PublicationApi {
         this.publicationRepository.save(newDoc);
         return this.get({ identifier });
     }
+
+
+    public async import(data: any): Promise<PublicationView[]> {
+        const { paths } = data;
+        console.log("#### import", paths);
+        // returns all publications linked to this import
+        return [];
+    }
 }
