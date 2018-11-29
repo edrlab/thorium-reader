@@ -140,25 +140,16 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
     }
 }
 
-const mapStateToProps = (state: any) => {
-    return {
-        tagList: state.catalog.tagList,
-    };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-      updateEntries: (data: any) => dispatch(editTagRequest("", "")),
-    };
-};
-
 export default withApi(
     CatalogEntrySettings,
     {
-        moduleId: "catalog",
-        methodId: "getEntries",
-        dstProp: "entries",
-        mapDispatchToProps,
-        mapStateToProps,
+        operations: [
+            {
+                moduleId: "catalog",
+                methodId: "getEntries",
+                resultProp: "entries",
+                onLoad: true,
+            },
+        ],
     }
 );
