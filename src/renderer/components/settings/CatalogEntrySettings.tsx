@@ -22,15 +22,17 @@ import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-2
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as DragableIcon from "readium-desktop/renderer/assets/icons/baseline-drag_handle-24px.svg";
 
+import { withApi } from "readium-desktop/renderer/components/utils/api";
+
+import { CatalogEntryView } from "readium-desktop/common/views/catalog";
+
 interface Props {
-    tagList: Tag[];
-    addTag: (name: string) => void;
-    removeTag: (id: string) => void;
-    editTag: (id: string, name: string) => void;
+    entries?: CatalogEntryView[];
+    updateEntries?: (data: any) => void;
 }
 
 interface States {
-    tagList: Tag[],
+    entryList: CatalogEntryView[],
     entryToUpdate: {
         id: number,
         name: string,
@@ -48,12 +50,7 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
         super(props);
 
         this.state = {
-            tagList: [
-                {name: "Manga", count: 857},
-                {name: "SF", count: 4},
-                {name: "Heroic Fantasy", count: 22},
-                {name: "Informatique", count: 13}
-            ],
+            entryList: undefined,
             entryToUpdate: undefined,
         };
 
@@ -66,8 +63,8 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
     }
 
     public componentDidUpdate() {
-        if (!this.state.tagList && this.props.tagList) {
-            this.setState({tagList: this.props.tagList});
+        if (!this.state.entryList && this.props.entries) {
+            this.setState({entryList: this.props.entries});
         }
 
         if (this.state.entryToUpdate) {
@@ -84,7 +81,7 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
                     <Header section={0} />
                     <div className={styles.section_title}>Disposition sur l'écran d'accueil</div>
                     <DragAndDropList
-                        elementContent={(tag: Tag, index: number) =>
+                        elementContent={(entry: CatalogEntryView, index: number) =>
                             <>
                                 <SVG title="ce bloc est déplacable au clic" svg={DragableIcon}/>
                                 { this.state.entryToUpdate && this.state.entryToUpdate.id === index ? (
@@ -96,16 +93,16 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
                                             type="text"
                                         />
                                     </form>
-                                ) : tag.name}
-                                <span>{tag.count}</span>
-                                <button onClick={this.editClick.bind(this, tag, index)}>
+                                ) : entry.title}
+                                <span>{entry.totalCount}</span>
+                                <button onClick={this.editClick.bind(this, entry, index)}>
                                     <SVG svg={EditIcon}/>
                                 </button>
                                 <SVG svg={DeleteIcon}/>
                             </>
                         }
                         elementClassName={styles.dnd_element}
-                        list={this.state.tagList}
+                        list={this.state.entryList}
                         id={styles.draggable_list}
                         onChange={this.handleListOrderChange}
                     />
@@ -114,15 +111,15 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
         );
     }
 
-    private handleListOrderChange(list: Tag[]) {
-        this.setState({tagList: list});
+    private handleListOrderChange(list: CatalogEntryView[]) {
+        this.setState({entryList: list});
         this.closeEdit()
     }
 
-    private editClick(entry: Tag, id: number) {
+    private editClick(entry: CatalogEntryView, id: number) {
         this.setState({entryToUpdate: {
             id,
-            name: entry.name,
+            name: entry.title,
         }})
     }
 
@@ -133,6 +130,7 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
     private submitEntryEdit(e: any) {
         e.preventDefault();
         this.closeEdit();
+        this.props.updateEntries(this.state.entryList);
     }
 
     private changeEditedEntryName(e: any) {
@@ -150,10 +148,17 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-      addTag: (name: string) => dispatch(addTagRequest(name)),
-      removeTag: (id: string) => dispatch(removeTagRequest(id)),
-      editTag: (id: string, name: string) => dispatch(editTagRequest(id, name)),
+      updateEntries: (data: any) => dispatch(editTagRequest("", "")),
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CatalogEntrySettings);
+export default withApi(
+    CatalogEntrySettings,
+    {
+        moduleId: "catalog",
+        methodId: "getEntries",
+        dstProp: "entries",
+        mapDispatchToProps,
+        mapStateToProps,
+    }
+);

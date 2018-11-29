@@ -16,6 +16,8 @@ import Slider from "readium-desktop/renderer/components/utils/Slider";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
+import AddEntryForm from "./AddEntryForm";
+
 interface GridViewProps {
     catalogEntries: CatalogEntryView[];
 }
@@ -24,24 +26,25 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
     public render(): React.ReactElement<{}> {
         return (
             <>
-            {
-                this.props.catalogEntries.map((entry, i: number) => {
-                    return (
-                        <section key={ i }>
-                            <h1>{ entry.title }</h1>
-                            <Slider
-                                className={styles.slider}
-                                content={entry.publications.map((pub) =>
-                                    <PublicationCard
-                                        key={pub.identifier}
-                                        publication={pub}
-                                    />,
-                                )}
-                            />
-                        </section>
-                    );
-            })
-            }
+                {
+                    this.props.catalogEntries.map((entry, i: number) => {
+                        return (
+                            <section key={ i }>
+                                <h1>{ entry.title }</h1>
+                                <Slider
+                                    className={styles.slider}
+                                    content={entry.publications.map((pub) =>
+                                        <PublicationCard
+                                            key={pub.identifier}
+                                            publication={pub}
+                                        />,
+                                    )}
+                                />
+                            </section>
+                        );
+                })
+                }
+                <AddEntryForm/>
             </>
         );
     }

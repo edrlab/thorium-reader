@@ -73,7 +73,14 @@ export class CatalogApi {
      * Returns entries without publications
      */
     public async getEntries(): Promise<CatalogEntryView[]> {
-        const config = await this.configRepository.get(CATALOG_CONFIG_ID);
+        let config = null;
+
+        try {
+            config = await this.configRepository.get(CATALOG_CONFIG_ID);
+        } catch (error) {
+            return [];
+        }
+
         const catalog = config.value as CatalogConfig;
         const entryViews: CatalogEntryView[] = catalog.entries.map((entry: any) => {
             return {

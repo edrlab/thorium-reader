@@ -1,4 +1,4 @@
-#main {
+main {
     position: relative;
     margin-top: 120px;
     left: 0;
@@ -119,4 +119,63 @@
 
 .menu_open{
 	height: 30px;
+}
+
+/* ENTRY FORM */
+
+.tag_add_button {
+	display: flex;
+	align-items: center;
+    font-weight: 700;
+    margin-top: 40px;
+	margin-bottom: 35px;
+    font-size: 1.3rem;
+	width: auto;
+	background: none;
+	border: none;
+
+	& svg {
+		height: 25px;
+		display: inline-block;
+	}
+}
+
+#tag_search {
+	border-bottom: 1px solid #c1c1c1;
+	margin-left:0;
+	height:auto;
+	margin-bottom:50px;
+	display: none;
+}
+
+#tag_inputs {
+	position: relative;
+	width:300px;
+	border-radius: 0;
+	border:none;
+	height:35px;
+	outline: inherit;
+	background-color: transparent;
+	color:black;
+	font-size: 0.9rem;
+}
+
+.tag_inputs {
+	position: relative;
+	width:300px;
+	border-radius: 0;
+	border:none;
+	height:35px;
+	outline: inherit;
+	background-color: transparent;
+	color:black;
+	font-size: 0.9rem;
+}
+
+#tag_search .launch{
+	position: relative;
+	width:35px;
+	vertical-align: top;
+	background: none;
+	border: none;
 }

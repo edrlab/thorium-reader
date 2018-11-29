@@ -6,6 +6,8 @@ import PublicationListElement from "readium-desktop/renderer/components/publicat
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
+import AddEntryForm from "./AddEntryForm";
+
 interface ListViewProps {
     catalogEntries: CatalogEntryView[];
 }
@@ -35,6 +37,7 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                     );
             })
             }
+            <AddEntryForm />
             </>
         );
     }
