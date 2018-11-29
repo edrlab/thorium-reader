@@ -40,7 +40,7 @@ export class PublicationApi {
             doc,
             { tags },
         );
-        this.publicationRepository.save(newDoc);
+        await this.publicationRepository.save(newDoc);
         return this.get({ identifier });
     }
 
