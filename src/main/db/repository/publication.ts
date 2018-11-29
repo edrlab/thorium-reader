@@ -26,6 +26,10 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                 fields: ["title"],
                 name: TITLE_INDEX,
             },
+            {
+                fields: ["tags"],
+                name: TAG_INDEX,
+            },
         ];
         super(db, "publication", indexes);
     }
@@ -49,6 +53,34 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
         return dbDocs.rows.map((dbDoc: any) => {
             return this.convertToDocument(dbDoc);
         });
+    }
+
+    /** Returns all publication tags */
+    public async getAllTags(): Promise<string[]> {
+        await this.checkIndexes();
+        const dbResponse = await this.db.find({
+            selector: {
+                tags: {
+                    "$exists": true
+                }
+            },
+            fields: ["tags"]
+        });
+        const tags: string[] = [];
+
+        for (const doc of dbResponse.docs) {
+            for (const tag of (doc as any).tags) {
+                if (tags.indexOf(tag) >= 0) {
+                    continue;
+                }
+
+                tags.push(tag);
+            }
+        }
+
+        // Sort asc
+        tags.sort();
+        return tags;
     }
 
     protected convertToDocument(dbDoc: PouchDB.Core.Document<any>): PublicationDocument {

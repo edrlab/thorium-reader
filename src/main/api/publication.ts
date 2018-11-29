@@ -44,6 +44,13 @@ export class PublicationApi {
         return this.get({ identifier });
     }
 
+    /**
+     * List all tags defined in all publications
+     *
+     */
+    public async getAllTags(): Promise<string[]> {
+        return this.publicationRepository.getAllTags();
+    }
 
     public async import(data: any): Promise<PublicationView[]> {
         const { paths } = data;

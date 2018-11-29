@@ -12,7 +12,7 @@
   },
   "main": "dist/main.js",
   "scripts": {
-    "test": "jest --verbose",
+    "test": "jest --verbose --runInBand",
     "__postinstall": "npm rebuild --runtime=electron --target=1.8.7 --disturl=https://atom.io/download/atom-shell --build-from-source",
     "build": "cross-env NODE_ENV=PROD webpack --config webpack.config.js && ncp src/package.json dist/package.json",
     "build:dev:main": "webpack --config webpack.config.main.js",

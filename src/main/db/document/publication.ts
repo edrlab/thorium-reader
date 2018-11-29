@@ -8,7 +8,7 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     publication: any;
     opdsPublication: any;
     title: string;
-    tags?: Tag[];
+    tags?: string[];
     files?: File[];
     coverFile?: File;
     customCover?: CustomCover;

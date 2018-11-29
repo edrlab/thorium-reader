@@ -100,6 +100,15 @@ test("repository.searchByTitle - found", async () => {
     expect(result.length).toBe(1);
 });
 
+test("repository.getAllTags", async () => {
+    let tags = await repository.getAllTags();
+    expect(tags.length).toBe(3);
+    expect(tags).toContain("computer");
+    expect(tags).toContain("node");
+    expect(tags).toContain("science");
+});
+
+
 test("repository.get - found", async () => {
     const result = await repository.get("pub-1");
     expect(result.identifier).toBe("pub-1");
