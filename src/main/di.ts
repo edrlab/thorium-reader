@@ -164,7 +164,7 @@ container.bind<LocatorRepository>("locator-repository").toConstantValue(
     locatorRepository,
 );
 container.bind<ConfigRepository>("config-repository").toConstantValue(
-    configDb,
+    configRepository,
 );
 
 // Create converters
