@@ -17,6 +17,10 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+
 interface PublicationListElementProps {
     publication: PublicationView;
     displayPublicationInfo?: any;
@@ -61,14 +65,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
                     title="Voir plus"
                     onClick={this.switchMenu}
                 >
-                    <svg role="link" className={styles.icon_seemore}>
-                        <g aria-hidden="true">
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2
-                            2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1
-                            0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                        </g>
-                    </svg>
+                    <SVG svg={MenuIcon}/>
                 </button>
                 <div className={(this.state.menuOpen ? styles.menu_open + " " : "") + styles.list_menu}>
                     <a onClick={this.displayPublicationInfo} >Fiche livre</a>

@@ -9,12 +9,6 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { Contributor } from "readium-desktop/common/models/contributor";
-
-import { Publication } from "readium-desktop/common/models/publication";
-
-import { Translator } from "readium-desktop/common/services/translator";
-
 import { DialogType } from "readium-desktop/common/models/dialog";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
@@ -22,6 +16,11 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
+
+import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
@@ -70,32 +69,25 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
                             {authors}
                         </p>
                     </a>
-                    <button
-                        type="button"
-                        aria-haspopup="dialog"
-                        aria-controls="dialog"
-                        title="Voir plus"
-                        onClick={this.handleMenuClick}
-                    >
-                    <svg role="link" className={styles.icon_seemore}>
-                        <g aria-hidden="true">
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2
-                            2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1
-                            0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                        </g>
-                    </svg>
-                    </button>
-                </div>
-                <div
-                    className={(this.state.menuOpen ? styles.menu_active + " " : "") + styles.menu}
-                >
-                    <a
-                        tabIndex={1}
-                        onClick={this.displayPublicationInfo }
-                        onBlur={this.handleOnBlurMenu}
-                    > Fiche livre </a>
-                    <a tabIndex={2} onBlur={this.handleOnBlurMenu}> Supprimer définitivement </a>
+                    <Menu
+                        button={(
+                            <SVG svg={MenuIcon}/>
+                        )}
+                        content={(
+                            <div className={styles.menu}>
+                                <a
+                                    tabIndex={1}
+                                    onClick={this.displayPublicationInfo }
+                                    onBlur={this.handleOnBlurMenu}
+                                >
+                                    Fiche livre
+                                </a>
+                                <a tabIndex={2} onBlur={this.handleOnBlurMenu}> Supprimer définitivement </a>
+                            </div>
+                        )}
+                        open={false}
+                        dir="right"
+                    />
                 </div>
             </div>
         );

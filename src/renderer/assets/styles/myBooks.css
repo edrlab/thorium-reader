@@ -54,10 +54,9 @@ main {
 	background-color: #f3f3f3;
 }
 
-.block_book_list .icon_seemore {
+.block_book_list button svg {
 	position: relative;
 	float:left;
-	display: inline-block;
 	height: 24px;
     width: 24px;
 	margin: 5px;
