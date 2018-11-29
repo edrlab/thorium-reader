@@ -162,7 +162,8 @@
 }
 
 .dialog_right .tags li {
-	display: inline-block;
+	display: inline-flex;
+    align-items: center;
 	background-color: #E7F1FB;
 	padding: 2px 6px;
 	font-size: 1.1rem;

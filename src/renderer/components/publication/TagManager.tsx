@@ -48,7 +48,7 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
             <div>
                 <ul>
                     {this.state.tags.map((tag: string, index: number) =>
-                        <li> {tag}
+                        <li key={index}> {tag}
                             <button onClick={() => this.deleteTag(index)}>
                                 <SVG svg={CrossIcon} title="supprimer le tag" />
                             </button>
