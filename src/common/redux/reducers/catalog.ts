@@ -51,9 +51,6 @@ export function catalogReducer(
 
             newState.publications.push(addedPub);
             return newState;
-        case catalogActions.ActionType.TagListSuccess:
-            newState.tagList = action.payload.tagList;
-            return newState;
         default:
             return state;
     }

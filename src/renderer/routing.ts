@@ -1,5 +1,5 @@
 import LanguageSettings from "readium-desktop/renderer/components/settings/LanguageSettings";
-import TagSettings from "readium-desktop/renderer/components/settings/TagSettings";
+import CatalogEntrySettings from "readium-desktop/renderer/components/settings/CatalogEntrySettings";
 
 import Catalog from "readium-desktop/renderer/components/catalog/Catalog";
 
@@ -26,7 +26,7 @@ export const routes: RouteList = {
         path: "/settings/tags",
         exact: false,
         title: "Settings: Tags",
-        component: TagSettings,
+        component: CatalogEntrySettings,
     },
     "/settings/languages": {
         path: "/settings/languages",
@@ -38,7 +38,7 @@ export const routes: RouteList = {
         path: "/settings",
         exact: false,
         title: "Settings: Tags",
-        component: TagSettings,
+        component: CatalogEntrySettings,
     },
     "/": {
         path: "/",

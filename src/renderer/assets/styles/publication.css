@@ -115,14 +115,14 @@
 }
 
 .menu {
-    height: 0px;
+    height: 90px;
+    width: 170px;
     display: flex;
     flex-direction: column;
     background-color: white;
     font-size: 0.8rem;
     box-shadow: 0px 0px 10px 0px #cfcfcf;
     overflow: hidden;
-    position: absolute;
     & a {
         text-decoration: none;
         color: black;
@@ -137,11 +137,6 @@
     & a:hover {
         background-color: #CECECE;
     }
-}
-
-.menu_active {
-    height: 120px;
-    width: 170px;
 }
 
 @media screen 

@@ -5,36 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { BrowserWindow, ipcMain } from "electron";
-import * as path from "path";
-import { Store } from "redux";
-import { Buffer, buffers, channel, Channel, delay, SagaIterator } from "redux-saga";
-import { actionChannel, call, fork, put, take } from "redux-saga/effects";
-import * as request from "request";
-import * as uuid from "uuid";
-
-import { Publication as Epub } from "@r2-shared-js/models/publication";
-import { EpubParsePromise } from "@r2-shared-js/parser/epub";
-
-import { Catalog } from "readium-desktop/common/models/catalog";
-import { Contributor } from "readium-desktop/common/models/contributor";
-import { Error } from "readium-desktop/common/models/error";
-import { Publication } from "readium-desktop/common/models/publication";
-
-import { OPDSParser } from "readium-desktop/common/services/opds";
-
-import { RootState } from "readium-desktop/main/redux/states";
-
-import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { SagaIterator } from "redux-saga";
+import { call, put, take } from "redux-saga/effects";
 
 import { container } from "readium-desktop/main/di";
 
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { CatalogService } from "readium-desktop/main/services/catalog";
-
-import { injectFileInZip } from "readium-desktop/utils/zip";
-
-import * as fs from "fs";
 
 import {
     catalogActions,
@@ -107,28 +83,4 @@ export function* catalogPublicationRemoveWatcher(): SagaIterator {
             });
         }
     }
-}
-
-export function* addTagWatcher(): SagaIterator {
-    yield take(catalogActions.ActionType.TagAddRequest);
-
-    yield put({
-        type: catalogActions.ActionType.TagAddSuccess,
-    });
-}
-
-export function* editTagWatcher(): SagaIterator {
-    yield take(catalogActions.ActionType.TagEditRequest);
-
-    yield put({
-        type: catalogActions.ActionType.TagEditSuccess,
-    });
-}
-
-export function* removeTagWatcher(): SagaIterator {
-    yield take(catalogActions.ActionType.TagRemoveRequest);
-
-    yield put({
-        type: catalogActions.ActionType.TagRemoveSuccess,
-    });
 }
