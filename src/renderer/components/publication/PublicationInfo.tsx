@@ -156,10 +156,15 @@ const buildRequestData = (props: PublicationInfoProps) => {
 export default withApi(
     PublicationInfo,
     {
-        moduleId: "publication",
-        methodId: "get",
-        dstProp: "publication",
-        buildRequestData,
+        operations: [
+            {
+                moduleId: "publication",
+                methodId: "get",
+                resultProp: "publication",
+                buildRequestData,
+                onLoad: true,
+            }
+        ],
         mapDispatchToProps,
     }
 );

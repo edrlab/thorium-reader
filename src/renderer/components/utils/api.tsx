@@ -10,26 +10,57 @@ import { container } from "readium-desktop/renderer/di";
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 
-export interface ApiQueryConfig {
+
+export interface ApiOperationDefinition {
     moduleId: string;
     methodId: string;
-    dstProp: string;
+    callProp?: string;
+    resultProp: string;
     buildRequestData?: any;
+    onLoad?: boolean; // Load in component did mount, default true
+}
+
+export interface ApiConfig {
+    operations: ApiOperationDefinition[];
     mapStateToProps?: any;
     mapDispatchToProps?: any;
 }
 
+export interface ApiOperationRequest {
+    id: string;
+    caller?: any;
+    definition: ApiOperationDefinition;
+}
+
 export interface ApiProps {
-    requestId?: any;
-    data?: any;
-    requestData?: any;
+    operationResults: any;
+    requestOnLoadData?: any;
     cleanData?: any;
 }
 
-export function withApi(WrappedComponent: any, queryConfig: ApiQueryConfig) {
-    const mapDispatchToProps = (dispatch: any, ownProps: any) => {
-        const { requestId } = ownProps;
+export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
+    // Create operationRequests
+    const operationRequests: ApiOperationRequest[] = [];
 
+    for (const operation of queryConfig.operations) {
+        // Create call method
+        operationRequests.push(
+            {
+                id: uuid.v4(),
+                definition: Object.assign(
+                    {},
+                    {
+                        callProp: uuid.v4(),
+                        resultProp: uuid.v4(),
+                        onLoad: false,
+                    },
+                    operation,
+                ),
+            }
+        )
+    }
+
+    const mapDispatchToProps = (dispatch: any, ownProps: any) => {
         let dispatchToPropsResult = {};
 
         if (queryConfig.mapDispatchToProps != null) {
@@ -39,38 +70,54 @@ export function withApi(WrappedComponent: any, queryConfig: ApiQueryConfig) {
             );
         }
 
-        let requestData: any = null;
+        // Create all dispatch methods
+        for (const operationRequest of operationRequests) {
+            // Generate the method to call
+            if (!operationRequest.caller) {
+                operationRequest.caller = () => {
+                    let requestData: any = null;
+                    const def = operationRequest.definition;
+                    const buildRequestData = def.buildRequestData;
 
-        if (queryConfig.buildRequestData != null) {
-            requestData = queryConfig.buildRequestData(ownProps);
+                    if (buildRequestData) {
+                        requestData = buildRequestData(ownProps);
+                    }
+
+                    dispatch(
+                        apiActions.buildRequestAction(
+                            operationRequest.id,
+                            def.moduleId,
+                            def.methodId,
+                            requestData,
+                        ),
+                    );
+                };
+            }
         }
 
         return Object.assign(
             {},
             dispatchToPropsResult,
             {
-                requestData: (data: any) => {
-                    dispatch(
-                        apiActions.buildRequestAction(
-                            requestId,
-                            queryConfig.moduleId,
-                            queryConfig.methodId,
-                            requestData,
-                        ),
-                    );
+                requestOnLoadData: (data: any) => {
+                    for (const operationRequest of operationRequests) {
+                        if (operationRequest.definition.onLoad) {
+                            operationRequest.caller();
+                        }
+                    }
                 },
                 cleanData: () => {
-                    dispatch(
-                        apiActions.clean(requestId),
-                    );
+                    for (const operationRequest of operationRequests) {
+                        dispatch(
+                            apiActions.clean(operationRequest.id),
+                        );
+                    }
                 },
             }
         );
     };
 
     const mapStateToProps = (state: any, ownProps: any) => {
-        const { requestId } = ownProps;
-
         let stateToPropsResult = {};
 
         if (queryConfig.mapStateToProps != null) {
@@ -80,16 +127,21 @@ export function withApi(WrappedComponent: any, queryConfig: ApiQueryConfig) {
             );
         }
 
-        let data: any;
+        let operationResults: any = {};
 
-        if (requestId in state.api.data) {
-            data = state.api.data[requestId].result;
+        for (const operationRequest of operationRequests) {
+
+            if (operationRequest.id in state.api.data) {
+                const result = state.api.data[operationRequest.id].result;
+                const resultProp = operationRequest.definition.resultProp;
+                operationResults[resultProp] = result;
+            }
         }
 
         return Object.assign(
             {},
             stateToPropsResult,
-            { data }
+            operationResults,
         );
     };
 
@@ -100,7 +152,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiQueryConfig) {
         }
 
         componentDidMount() {
-            this.props.requestData();
+            this.props.requestOnLoadData();
         }
 
         componentWillUnmount() {
@@ -120,19 +172,15 @@ export function withApi(WrappedComponent: any, queryConfig: ApiQueryConfig) {
                 },
             );
 
-            newProps[queryConfig.dstProp] = newProps.data;
+            if (newProps.operationResults) {
+                for (const key in newProps.operationResults) {
+                    newProps[key] = newProps.operationResults[key];
+                }
+            }
+
             return (<WrappedComponent { ...newProps } />);
         }
     };
 
-    const WrapperComponent = connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )(BaseWrapperComponent);
-
-    (WrapperComponent as any).defaultProps = {
-        requestId: uuid.v4(),
-    };
-
-    return WrapperComponent;
+    return connect(mapStateToProps, mapDispatchToProps)(BaseWrapperComponent);
 }

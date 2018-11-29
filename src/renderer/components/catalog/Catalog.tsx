@@ -65,8 +65,13 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
 export default withApi(
     Catalog,
     {
-        moduleId: "catalog",
-        methodId: "get",
-        dstProp: "catalog",
+        operations: [
+            {
+                moduleId: "catalog",
+                methodId: "get",
+                resultProp: "catalog",
+                onLoad: true,
+            },
+        ],
     }
 );
