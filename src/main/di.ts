@@ -173,6 +173,23 @@ container.bind<PublicationViewConverter>("publication-view-converter").toConstan
     publicationViewConverter,
 );
 
+// Storage
+const publicationStorage = new PublicationStorage(publicationRepositoryPath);
+container.bind<PublicationStorage>("publication-storage").toConstantValue(
+    publicationStorage,
+);
+
+// Bind services
+container.bind<Server>("streamer").toConstantValue(streamer);
+
+const catalogService = new CatalogService(publicationRepository, publicationStorage, downloader);
+container.bind<CatalogService>("catalog-service").toConstantValue(
+    catalogService,
+);
+container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
+    new DeviceIdManager("readium-desktop", configRepository),
+);
+
 // API
 container.bind<CatalogApi>("catalog-api").toConstantValue(
     new CatalogApi(
@@ -186,22 +203,8 @@ container.bind<PublicationApi>("publication-api").toConstantValue(
     new PublicationApi(
         publicationRepository,
         publicationViewConverter,
+        catalogService,
     ),
-);
-
-// Storage
-const publicationStorage = new PublicationStorage(publicationRepositoryPath);
-container.bind<PublicationStorage>("publication-storage").toConstantValue(
-    publicationStorage,
-);
-
-// Bind services
-container.bind<Server>("streamer").toConstantValue(streamer);
-container.bind<CatalogService>("catalog-service").toConstantValue(
-    new CatalogService(publicationRepository, publicationStorage, downloader),
-);
-container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
-    new DeviceIdManager("readium-desktop", configRepository),
 );
 
 // Create action serializer

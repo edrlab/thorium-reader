@@ -50,7 +50,14 @@ export default class App extends React.Component<any, undefined> {
         this.store.dispatch(
             dialogActions.open(
                 DialogType.FileImport,
-                { files: acceptedFiles },
+                {
+                    files: acceptedFiles.map((file) => {
+                        return {
+                            name: file.name,
+                            path: file.path,
+                        }
+                    })
+                },
         ));
     }
 

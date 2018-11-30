@@ -2,6 +2,8 @@ import { injectable} from "inversify";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
+import { CatalogService } from "readium-desktop/main/services/catalog";
+
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
@@ -10,13 +12,16 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 export class PublicationApi {
     private publicationRepository: PublicationRepository;
     private publicationViewConverter: PublicationViewConverter;
+    private catalogService: CatalogService;
 
     constructor(
         publicationRepository: PublicationRepository,
         publicationViewConverter: PublicationViewConverter,
+        catalogService: CatalogService,
     ) {
         this.publicationRepository = publicationRepository;
         this.publicationViewConverter = publicationViewConverter;
+        this.catalogService = catalogService;
     }
 
     public async get(data: any): Promise<PublicationView> {
@@ -63,8 +68,17 @@ export class PublicationApi {
 
     public async import(data: any): Promise<PublicationView[]> {
         const { paths } = data;
-        console.log("#### import", paths);
+
         // returns all publications linked to this import
-        return [];
+        const newDocs = [];
+
+        for (const path of paths) {
+            const newDoc = await this.catalogService.importFile(path);
+            newDocs.push(newDoc);
+        }
+
+        return newDocs.map((doc) => {
+            return this.publicationViewConverter.convertDocumentToView(doc);
+        });
     }
 }

@@ -49,10 +49,14 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
     }
 
     private buildBasicFileImportList() {
-        const basicFiles = this.props.files.filter((file: File) => {
+        const basicFiles = this.props.files.filter((file: any) => {
             const fileParts = file.name.split(".");
             return (fileParts.length > 1 && fileParts[1] != "lcp")
         });
+
+        if (basicFiles.length == 0) {
+            return (<></>);
+        }
 
         return (
             <div>
@@ -72,10 +76,14 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
     }
 
     private buildLcpFileImportList() {
-        const lcpFiles = this.props.files.filter((file: File) => {
+        const lcpFiles = this.props.files.filter((file: any) => {
             const fileParts = file.name.split(".");
             return (fileParts.length > 1 && fileParts[1] == "lcp")
         });
+
+        if (lcpFiles.length == 0) {
+            return (<></>);
+        }
 
         return (
             <div>
