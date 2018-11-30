@@ -1,8 +1,5 @@
 import * as React from "react";
 
-import { Translator } from "readium-desktop/common/services/translator";
-import { lazyInject } from "readium-desktop/renderer/di";
-
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";

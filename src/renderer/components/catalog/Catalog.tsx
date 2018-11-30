@@ -6,9 +6,6 @@ import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import { Translator } from "readium-desktop/common/services/translator";
-import { lazyInject } from "readium-desktop/renderer/di";
-
 import { connect } from "react-redux";
 
 import { RouteComponentProps } from "react-router-dom";
