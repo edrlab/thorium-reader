@@ -13,11 +13,12 @@ export interface PublicationView {
     identifier: string;
     title: string;
     authors: string[];
-    editor?: string;
+    publishers?: string[];
+    workIdentifier?: string;
     description?: string;
     tags?: string[];
     languages?: string[];
-    publishedAt?: number;
+    publishedAt?: string; // ISO8601
     cover?: CoverView;
     customCover?: CustomCoverView;
 }

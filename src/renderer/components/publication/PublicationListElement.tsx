@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as moment from "moment";
+
 import * as React from "react";
 
 import { connect } from "react-redux";
@@ -44,11 +46,13 @@ export class PublicationListElement extends React.Component<PublicationListEleme
 
     public render(): React.ReactElement<{}>  {
         const pub = this.props.publication;
+        const formatedPublishers = pub.publishers.join(", ");
+        const formatedPublishedYear = moment(pub.publishedAt).year();
 
         return (
             <>
                 <div className={styles.list_book_title}>
-                <p className={styles.book_title} aria-label="Titre du livre">{pub.title}</p>
+                <p className={styles.book_title} aria-label="Titre du livre">{ pub.title }</p>
                 <p
                     className={`${styles.book_author} ${styles.lightgrey}`}
                     aria-label="Auteur du livre"
@@ -56,8 +60,8 @@ export class PublicationListElement extends React.Component<PublicationListEleme
                     {pub.authors.map((author) => author).join(", ")}
                 </p>
                 </div>
-                <p className={styles.infos_sup} aria-label="Date de sortie du livre">{pub.publishedAt}</p>
-                <p className={styles.infos_sup} aria-label="Éditeur du livre">{pub.editor}</p>
+                <p className={styles.infos_sup} aria-label="Date de sortie du livre">{ formatedPublishedYear}</p>
+                <p className={styles.infos_sup} aria-label="Éditeur du livre">{ formatedPublishers }</p>
                 <button
                     type="button"
                     aria-haspopup="dialog"

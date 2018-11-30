@@ -1,3 +1,5 @@
+import * as moment from "moment";
+
 import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
@@ -37,8 +39,10 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
             return (<></>);
         }
 
-        const authors = publication.authors.join(", ");
-        const languages = publication.languages.join(", ");
+        const formatedAuthors = publication.authors.join(", ");
+        const formatedLanguages = publication.languages.join(", ");
+        const formatedPublishers = publication.publishers.join(", ");
+        const formatedPublishedDate = moment(publication.publishedAt).format("L");
 
         return (
             <>
@@ -63,8 +67,8 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
             <div className={styles.dialog_right}>
                 <h2>{publication.title}</h2>
                 <div>
-                    <p className={styles.author}>{authors}</p>
-                    <p><span>Publié le</span> 12/03/2018</p>
+                    <p className={styles.author}>{formatedAuthors}</p>
+                    <p><span>Publié le</span> { formatedPublishedDate }</p>
                     <div className={styles.tags}>
                         <div className={styles.tag_list}>
                             <span>Tags</span>
@@ -82,9 +86,9 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
                         <h3>Plus d'informations</h3>
 
                         <p>
-                            <span>Éditeur</span> { publication.editor } <br/>
-                            <span>Langue</span> { languages } <br/>
-                            <span>Identifiant</span> { publication.identifier } <br/>
+                            <span>Éditeur</span> { formatedPublishers } <br/>
+                            <span>Langue</span> { formatedLanguages } <br/>
+                            <span>Identifiant</span> { publication.workIdentifier } <br/>
                         </p>
                     </div>
                 </div>
