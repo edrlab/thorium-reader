@@ -9,17 +9,16 @@ import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-import { Contributor } from "opds-feed-parser";
 
 @injectable()
 export class PublicationViewConverter {
     public convertDocumentToView(document: PublicationDocument): PublicationView {
         const epub = TAJSON.deserialize(document.publication, Epub) as Epub;
         const publishers = this.convertContibutorArrayToStringArray(
-            epub.Metadata.Publisher
+            epub.Metadata.Publisher,
         );
         const authors = this.convertContibutorArrayToStringArray(
-            epub.Metadata.Author
+            epub.Metadata.Author,
         );
         let publishedAt = null;
 
@@ -38,9 +37,9 @@ export class PublicationViewConverter {
         return {
             identifier: document.identifier,
             title: document.title,
-            authors: authors,
+            authors,
             languages: epub.Metadata.Language,
-            publishers: publishers,
+            publishers,
             workIdentifier: epub.Metadata.Identifier,
             publishedAt,
             tags: document.tags,

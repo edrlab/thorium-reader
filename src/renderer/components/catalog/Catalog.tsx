@@ -50,7 +50,7 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
 
-            if (parsedResult.displayType == DisplayType.List) {
+            if (parsedResult.displayType === DisplayType.List) {
                 DisplayView = ListView;
                 displayType = DisplayType.List;
             }

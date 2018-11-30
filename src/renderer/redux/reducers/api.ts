@@ -27,7 +27,7 @@ export function apiReducer(
                 {
                     data,
                     lastSuccessAction: action,
-                }
+                },
             );
         case ActionType.Clean:
             const newState = Object.assign({}, state);

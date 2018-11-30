@@ -14,7 +14,6 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 
-
 export interface ApiOperationDefinition {
     moduleId: string;
     methodId: string;
@@ -152,15 +151,15 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
             super(props);
         }
 
-        componentDidMount() {
+        public componentDidMount() {
             this.props.requestOnLoadData();
         }
 
-        componentWillUnmount() {
+        public componentWillUnmount() {
             this.props.cleanData();
         }
 
-        render() {
+        public render() {
             const translator = container.get("translator") as Translator;
             const translate = translator.translate.bind(translator);
 
@@ -168,7 +167,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
                 {},
                 this.props,
                 {
-                    "__": translate,
+                    __: translate,
                     translator,
                 },
             );
