@@ -42,7 +42,11 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
         const formatedAuthors = publication.authors.join(", ");
         const formatedLanguages = publication.languages.join(", ");
         const formatedPublishers = publication.publishers.join(", ");
-        const formatedPublishedDate = moment(publication.publishedAt).format("L");
+        let formatedPublishedDate = null;
+
+        if (publication.publishedAt) {
+            formatedPublishedDate = moment(publication.publishedAt).format("L");
+        }
 
         return (
             <>
@@ -68,7 +72,11 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
                 <h2>{publication.title}</h2>
                 <div>
                     <p className={styles.author}>{formatedAuthors}</p>
-                    <p><span>Publié le</span> { formatedPublishedDate }</p>
+
+                    {
+                        (formatedPublishedDate) ?
+                        (<p><span>Publié le</span> { formatedPublishedDate }</p>) : (<></>)
+                    }
                     <div className={styles.tags}>
                         <div className={styles.tag_list}>
                             <span>Tags</span>

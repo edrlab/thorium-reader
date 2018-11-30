@@ -47,7 +47,11 @@ export class PublicationListElement extends React.Component<PublicationListEleme
     public render(): React.ReactElement<{}>  {
         const pub = this.props.publication;
         const formatedPublishers = pub.publishers.join(", ");
-        const formatedPublishedYear = moment(pub.publishedAt).year();
+        let formatedPublishedYear = "";
+
+        if (pub.publishedAt) {
+            formatedPublishedYear = "" + moment(pub.publishedAt).year();
+        }
 
         return (
             <>

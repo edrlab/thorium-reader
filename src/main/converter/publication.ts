@@ -21,6 +21,19 @@ export class PublicationViewConverter {
         const authors = this.convertContibutorArrayToStringArray(
             epub.Metadata.Author
         );
+        let publishedAt = null;
+
+        if (epub.Metadata.PublicationDate) {
+            publishedAt = moment(epub.Metadata.PublicationDate).toISOString()
+        }
+
+        let cover = null;
+
+        if (document.coverFile) {
+            cover = {
+                url: document.coverFile.url,
+            };
+        }
 
         return {
             identifier: document.identifier,
@@ -29,16 +42,18 @@ export class PublicationViewConverter {
             languages: epub.Metadata.Language,
             publishers: publishers,
             workIdentifier: epub.Metadata.Identifier,
-            publishedAt: moment(epub.Metadata.PublicationDate).toISOString(),
+            publishedAt,
             tags: document.tags,
-            cover: {
-                url: document.coverFile.url,
-            },
+            cover,
             customCover: document.customCover,
         };
     }
 
     private convertContibutorArrayToStringArray(items: any): string[] {
+        if (!items) {
+            return  [];
+        }
+
         const itemParts = items.map((item: any) => {
             if (typeof(item.Name) == "object") {
                 return Object.values(item.Name);
