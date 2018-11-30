@@ -163,8 +163,8 @@
     "r2-shared-js": "^1.0.0-alpha.5",
     "r2-streamer-js": "^1.0.0-alpha.5",
     "r2-utils-js": "^1.0.0-alpha.6",
-    "react": "^16.5.2",
-    "react-beautiful-dnd": "^10.0.2",
+    "react": "^16.6.3",
+    "react-beautiful-dnd": "^9.0.2",
     "react-card-flip": "^0.2.1",
     "react-dom": "^16.5.2",
     "react-dropdown": "^1.6.2",
@@ -242,7 +242,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "optionalDependencies": {
-    "leveldown": "2.*.*",
-    "pouchdb-adapter-leveldb": "6.*.*"
+    "leveldown": "4.*.*",
+    "pouchdb-adapter-leveldb": "7.*.*"
   }
 }
