@@ -30,6 +30,11 @@ export class PublicationApi {
         return this.publicationViewConverter.convertDocumentToView(doc);
     }
 
+    public async delete(data: any): Promise<void> {
+        const { identifier } = data;
+        await this.publicationRepository.delete(identifier);
+    }
+
     public async findAll(): Promise<PublicationView[]> {
         const docs = await this.publicationRepository.findAll();
         return docs.map((doc) => {

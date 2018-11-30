@@ -17,8 +17,12 @@ import Cover from "readium-desktop/renderer/components/publication/Cover";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
+import { readerActions } from "readium-desktop/common/redux/actions";
+
 import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+
+import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 
@@ -27,6 +31,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/publication.css"
 interface PublicationCardProps {
     publication: PublicationView;
     displayPublicationInfo?: any;
+    deletePublication?: any;
     openReader?: any;
 }
 
@@ -44,6 +49,7 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
 
         this.handleMenuClick = this.handleMenuClick.bind(this);
         this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
+        this.deletePublication = this.deletePublication.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
@@ -76,13 +82,16 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
                         content={(
                             <div className={styles.menu}>
                                 <a
-                                    tabIndex={1}
                                     onClick={this.displayPublicationInfo }
                                     onBlur={this.handleOnBlurMenu}
                                 >
                                     Fiche livre
                                 </a>
-                                <a tabIndex={2} onBlur={this.handleOnBlurMenu}> Supprimer définitivement </a>
+                                <a
+                                    onClick={ this.deletePublication }
+                                    onBlur={this.handleOnBlurMenu}>
+                                    Supprimer définitivement
+                                </a>
                             </div>
                         )}
                         open={false}
@@ -91,6 +100,13 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
                 </div>
             </div>
         );
+    }
+
+    private deletePublication(e: any) {
+        e.preventDefault();
+        this.props.deletePublication({
+            identifier: this.props.publication.identifier,
+        });
     }
 
     private handleOnBlurMenu(e: any) {
@@ -117,7 +133,14 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
 const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
     return {
         openReader: (publication: PublicationView) => {
-
+            dispatch({
+                type: readerActions.ActionType.OpenRequest,
+                payload: {
+                    publication: {
+                        identifier: publication.identifier,
+                    },
+                },
+            });
         },
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open(
@@ -132,4 +155,16 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(PublicationCard);
+export default withApi(
+    PublicationCard,
+    {
+        operations: [
+            {
+                moduleId: "publication",
+                methodId: "delete",
+                callProp: "deletePublication",
+            },
+        ],
+        mapDispatchToProps,
+    },
+);

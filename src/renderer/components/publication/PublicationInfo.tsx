@@ -8,6 +8,8 @@ import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-clos
 import * as ExportIcon from "readium-desktop/renderer/assets/icons/outline-exit_to_app-24px.svg";
 import * as RestoreIcon from "readium-desktop/renderer/assets/icons/outline-restore-24px.svg";
 
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+
 import Cover from "readium-desktop/renderer/components/publication/Cover";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
@@ -22,7 +24,9 @@ import TagManager from "./TagManager";
 interface PublicationInfoProps {
     publicationIdentifier: string;
     publication?: PublicationView;
+    deletePublication?: any;
     openReader?: any;
+    closeDialog?: any;
 }
 
 export class PublicationInfo extends React.Component<PublicationInfoProps, undefined> {
@@ -30,6 +34,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
         super(props);
 
         this.handleRead = this.handleRead.bind(this);
+        this.deletePublication = this.deletePublication.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -61,7 +66,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
                 {/* <li><a href=""><SVG svg={ExportIcon} />Gérer mon emprunt</a></li>
                 <li><a href=""><SVG svg={RestoreIcon} />Exporter</a></li> */}
                 <li>
-                    <a href="">
+                    <a onClick={ this.deletePublication }>
                         <SVG svg={DeleteIcon} />
                         Supprimer de la bibliothèque
                     </a>
@@ -105,7 +110,15 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
         );
     }
 
-    public handleRead(e: any) {
+    private deletePublication(e: any) {
+        e.preventDefault();
+        this.props.deletePublication({
+            identifier: this.props.publication.identifier,
+        });
+        this.props.closeDialog();
+    }
+
+    private handleRead(e: any) {
         e.preventDefault();
 
         this.props.openReader(this.props.publication);
@@ -124,13 +137,18 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationInfoProps) => {
                 },
             });
         },
+        closeDialog: (data: any) => {
+            dispatch(
+                dialogActions.close(),
+            );
+        },
     };
 };
 
 const buildRequestData = (props: PublicationInfoProps) => {
     return {
         identifier: props.publicationIdentifier,
-    }
+    };
 };
 
 export default withApi(
@@ -143,8 +161,13 @@ export default withApi(
                 resultProp: "publication",
                 buildRequestData,
                 onLoad: true,
-            }
+            },
+            {
+                moduleId: "publication",
+                methodId: "delete",
+                callProp: "deletePublication",
+            },
         ],
         mapDispatchToProps,
-    }
+    },
 );
