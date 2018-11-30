@@ -21,7 +21,14 @@ export function apiReducer(
                 methodId: action.meta.api.methodId,
                 date: moment.now(),
             };
-            return Object.assign({}, state, { data });
+            return Object.assign(
+                {},
+                state,
+                {
+                    data,
+                    lastSuccessAction: action,
+                }
+            );
         case ActionType.Clean:
             const newState = Object.assign({}, state);
             delete newState.data[action.payload.requestId];

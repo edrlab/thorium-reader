@@ -19,5 +19,6 @@ export interface ApiDataState {
 }
 
 export interface ApiState {
+    lastSuccessAction: ApiAction;
     data: ApiDataState;
 }
