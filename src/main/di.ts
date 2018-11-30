@@ -91,9 +91,12 @@ if (!fs.existsSync(rootDbPath)) {
 // tslint:disable-next-line:no-var-requires
 const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 
+// tslint:disable-next-line:no-var-requires
+const pouchDbFind = require("pouchdb-find");
+
 // Load PouchDB plugins
 PouchDB.plugin(pouchDbAdapter.default ? pouchDbAdapter.default : pouchDbAdapter);
-PouchDB.plugin(require("pouchdb-find"));
+PouchDB.plugin(pouchDbFind.default ? pouchDbFind.default : pouchDbFind);
 
 const dbOpts = {
     adapter: _POUCHDB_ADAPTER_NAME,
