@@ -50,8 +50,8 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
                 </div>
                 <a  onClick={this.handleRead} className={styles.lire}>Lire</a>
                 <ul className={styles.liens}>
-                <li><a href=""><SVG svg={ExportIcon} />Gérer mon emprunt</a></li>
-                <li><a href=""><SVG svg={RestoreIcon} />Exporter</a></li>
+                {/* <li><a href=""><SVG svg={ExportIcon} />Gérer mon emprunt</a></li>
+                <li><a href=""><SVG svg={RestoreIcon} />Exporter</a></li> */}
                 <li>
                     <a href="">
                         <SVG svg={DeleteIcon} />
