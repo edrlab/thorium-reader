@@ -42,7 +42,7 @@ export default class Cover extends React.Component<ICoverProps, null> {
                 };
             }
             bodyCSS.backgroundImage = "linear-gradient(" + colors.topColor + ", " + colors.bottomColor + ")";
-            console.log(this.props.publication);
+
             for (const author of this.props.publication.authors) {
                 const newAuthor = author;
                 if (authors !== "") {

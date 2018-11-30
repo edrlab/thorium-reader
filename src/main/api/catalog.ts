@@ -38,7 +38,7 @@ export class CatalogApi {
         const publicationViews = publications.map((doc) => {
             return this.publicationViewConverter.convertDocumentToView(doc);
         });
-        
+
         // Dynamic entries
         let entries: CatalogEntryView[] = [
             {
@@ -51,7 +51,7 @@ export class CatalogApi {
         // Concat user entries
         const userEntries = await this.getEntries();
         entries = entries.concat(userEntries);
-        
+
         return {
             entries,
         };
@@ -95,7 +95,7 @@ export class CatalogApi {
 
         const catalog = config.value as CatalogConfig;
         const entryViews: CatalogEntryView[] = [];
-        
+
         for (const entry of catalog.entries) {
             const publications = await this.publicationRepository.findByTag(entry.tag);
             const publicationViews = publications.map((doc) => {
@@ -125,7 +125,6 @@ export class CatalogApi {
         const catalogConfig: CatalogConfig = {
             entries,
         };
-
         await this.configRepository.save({
             identifier: CATALOG_CONFIG_ID,
             value: catalogConfig,

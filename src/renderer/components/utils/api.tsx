@@ -97,14 +97,6 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
             );
         }
 
-        // Create all dispatch methods
-        for (const operationRequest of operationRequests) {
-            // Generate the method to call
-            if (!operationRequest.caller) {
-
-            }
-        }
-
         return Object.assign(
             {},
             dispatchToPropsResult,
@@ -140,7 +132,6 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
         let operationResults: any = {};
 
         for (const operationRequest of operationRequests) {
-
             if (operationRequest.id in state.api.data) {
                 const result = state.api.data[operationRequest.id].result;
                 const resultProp = operationRequest.definition.resultProp;

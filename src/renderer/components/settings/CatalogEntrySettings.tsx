@@ -26,10 +26,10 @@ interface Props {
 }
 
 interface States {
-    entryList: CatalogEntryView[],
+    entries: any,
     entryToUpdate: {
         id: number,
-        name: string,
+        title: string,
     }
 }
 
@@ -44,7 +44,7 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
         super(props);
 
         this.state = {
-            entryList: undefined,
+            entries: undefined,
             entryToUpdate: undefined,
         };
 
@@ -53,12 +53,20 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
         this.handleListOrderChange = this.handleListOrderChange.bind(this);
         this.closeEdit = this.closeEdit.bind(this);
         this.submitEntryEdit = this.submitEntryEdit.bind(this);
-        this.changeEditedEntryName = this.changeEditedEntryName.bind(this);
+        this.changeEditedEntryTitle = this.changeEditedEntryTitle.bind(this);
     }
 
     public componentDidUpdate() {
-        if (!this.state.entryList && this.props.entries) {
-            this.setState({entryList: this.props.entries});
+        if (!this.state.entries && this.props.entries) {
+            this.setState({
+                entries : this.props.entries.map((entry, id: number) => {
+                    return {
+                        id,
+                        title: entry.title,
+                        tag: entry.tag,
+                    };
+                })
+            });
         }
 
         if (this.state.entryToUpdate) {
@@ -99,7 +107,7 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
                             this.buildDragAndDropListItem(entry, index)
                     }
                     elementClassName={styles.dnd_element}
-                    list={this.state.entryList}
+                    list={this.state.entries}
                     id={styles.draggable_list}
                     onChange={this.handleListOrderChange}
                 />
@@ -114,15 +122,15 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
                 { this.state.entryToUpdate && this.state.entryToUpdate.id === index ? (
                     <form onSubmit={this.submitEntryEdit}>
                         <input
-                            value={this.state.entryToUpdate.name}
-                            onChange={this.changeEditedEntryName}
+                            value={this.state.entryToUpdate.title}
+                            onChange={this.changeEditedEntryTitle}
                             onBlur={this.closeEdit} ref={this.inputRef}
                             type="text"
                         />
                     </form>
                 ) : entry.title}
                 <span>{entry.totalCount}</span>
-                <button onClick={this.editClick.bind(this, entry, index)}>
+                <button onClick={this.editClick.bind(this, entry, entry.id)}>
                     <SVG svg={EditIcon}/>
                 </button>
                 <SVG svg={DeleteIcon}/>
@@ -130,15 +138,16 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
         );
     }
 
-    private handleListOrderChange(list: CatalogEntryView[]) {
-        this.setState({entryList: list});
+    private handleListOrderChange(entries: CatalogEntryView[]) {
+        this.setState({entries});
         this.closeEdit()
     }
 
     private editClick(entry: CatalogEntryView, id: number) {
         this.setState({entryToUpdate: {
             id,
-            name: entry.title,
+            title: entry.title,
+            tag: entry.tag,
         }})
     }
 
@@ -149,13 +158,30 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
     private submitEntryEdit(e: any) {
         e.preventDefault();
         this.closeEdit();
-        this.props.updateEntries(this.state.entryList);
+
+        // Update entries
+        const updatedEntries = [];
+
+        for (const entry of this.state.entries) {
+            let updatedEntry = entry;
+
+            if (this.state.entryToUpdate.id == entry.id) {
+                updatedEntry = this.state.entryToUpdate;
+            }
+            updatedEntries.push(updatedEntry);
+        }
+
+        this.props.updateEntries({
+            entries: updatedEntries
+        });
     }
 
-    private changeEditedEntryName(e: any) {
+    private changeEditedEntryTitle(e: any) {
         const editedEntry = this.state.entryToUpdate;
-        editedEntry.name = e.target.value;
-        this.setState({entryToUpdate: editedEntry});
+        editedEntry.title = e.target.value;
+        this.setState({
+            entryToUpdate: editedEntry
+        });
     }
 }
 
@@ -168,6 +194,12 @@ export default withApi(
                 methodId: "getEntries",
                 resultProp: "entries",
                 onLoad: true,
+            },
+            {
+                moduleId: "catalog",
+                methodId: "updateEntries",
+                callProp: "updateEntries",
+                resultProp: "entries",
             },
         ],
     }
