@@ -2,9 +2,6 @@ import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 
-import { Translator } from "readium-desktop/common/services/translator";
-import { lazyInject } from "readium-desktop/renderer/di";
-
 import DragAndDropList from "readium-desktop/renderer/components/utils/DragAndDropList";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
@@ -28,7 +25,6 @@ interface CatalogEntrySettingsProps {
 }
 
 interface CatalogEntrySettingStates {
-    entries: any;
     entryToUpdate: {
         id: number,
         title: string,
@@ -36,40 +32,35 @@ interface CatalogEntrySettingStates {
 }
 
 export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsProps, CatalogEntrySettingStates> {
-
-    @lazyInject("translator")
-    private translator: Translator;
-
     private inputRef: any;
 
     public constructor(props: any) {
         super(props);
 
         this.state = {
-            entries: undefined,
             entryToUpdate: undefined,
         };
 
         this.inputRef = React.createRef();
 
         this.handleListOrderChange = this.handleListOrderChange.bind(this);
+        this.editEntry = this.editEntry.bind(this);
+        this.deleteEntry = this.deleteEntry.bind(this);
         this.closeEdit = this.closeEdit.bind(this);
         this.submitEntryEdit = this.submitEntryEdit.bind(this);
         this.changeEditedEntryTitle = this.changeEditedEntryTitle.bind(this);
+        // this.compareEntries = this.compareEntries.bind(this);
     }
 
     public componentDidUpdate() {
-        if (!this.state.entries && this.props.entries) {
-            this.setState({
-                entries : this.props.entries.map((entry, id: number) => {
-                    return {
-                        id,
-                        title: entry.title,
-                        tag: entry.tag,
-                    };
-                }),
-            });
-        }
+        // if (
+        //     this.props.entries &&
+        //     !this.compareEntries(this.state.entries, this.props.entries)
+        // ) {
+        //     this.setState({
+        //         entries: this.props.entries,
+        //     });
+        // }
 
         if (this.state.entryToUpdate) {
             this.inputRef.current.focus();
@@ -77,8 +68,7 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
     }
 
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
-
+        console.log("###", this.props.entries);
         return (
             <>
                 <LibraryLayout>
@@ -109,7 +99,7 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
                             this.buildDragAndDropListItem(entry, index)
                     }
                     elementClassName={styles.dnd_element}
-                    list={this.state.entries}
+                    items={this.props.entries}
                     id={styles.draggable_list}
                     onChange={this.handleListOrderChange}
                 />
@@ -132,25 +122,63 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
                     </form>
                 ) : entry.title}
                 <span>{entry.totalCount}</span>
-                <button onClick={this.editClick.bind(this, entry, entry.id)}>
-                    <SVG svg={EditIcon}/>
+                <button onClick={() => this.editEntry(entry, index)}>
+                    <SVG svg={EditIcon} />
                 </button>
-                <SVG svg={DeleteIcon}/>
+                <button onClick={() => this.deleteEntry(index)}>
+                    <SVG svg={DeleteIcon} />
+                </button>
             </>
         );
     }
 
+    // Compare 2 list of entries
+    // Returns false if there is a difference otherwise true
+    // private compareEntries(entryList1: CatalogEntryView[], entryList2: CatalogEntryView[]) {
+    //     if (entryList1.length !== entryList2.length) {
+    //         return false;
+    //     }
+
+    //     for (const index in entryList1) {
+    //         const entry1 = entryList1[index];
+    //         const entry2 = entryList2[index];
+
+    //         if (entry1.title !== entry2.title) {
+    //             return false;
+    //         }
+    //     }
+
+    //     return true;
+    // }
+
     private handleListOrderChange(entries: CatalogEntryView[]) {
-        this.setState({entries});
+        this.props.updateEntries({
+            entries,
+        });
         this.closeEdit();
     }
 
-    private editClick(entry: CatalogEntryView, id: number) {
+    private editEntry(entry: CatalogEntryView, id: number) {
         this.setState({entryToUpdate: {
             id,
             title: entry.title,
             tag: entry.tag,
         }});
+    }
+
+    private deleteEntry(id: number) {
+        // Delete an entry
+        const updatedEntries: any = [];
+
+        this.props.entries.forEach((entry, index: number) => {
+            if (id !== index) {
+                updatedEntries.push(entry);
+            }
+        });
+
+        this.props.updateEntries({
+            entries: updatedEntries,
+        });
     }
 
     private closeEdit() {
@@ -162,16 +190,16 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
         this.closeEdit();
 
         // Update entries
-        const updatedEntries = [];
+        const updatedEntries: any = [];
 
-        for (const entry of this.state.entries) {
+        this.props.entries.forEach((entry, index: number) => {
             let updatedEntry = entry;
 
-            if (this.state.entryToUpdate.id === entry.id) {
+            if (this.state.entryToUpdate.id === index) {
                 updatedEntry = this.state.entryToUpdate;
             }
             updatedEntries.push(updatedEntry);
-        }
+        });
 
         this.props.updateEntries({
             entries: updatedEntries,
@@ -201,7 +229,12 @@ export default withApi(
                 moduleId: "catalog",
                 methodId: "updateEntries",
                 callProp: "updateEntries",
-                resultProp: "entries",
+            },
+        ],
+        refreshTriggers: [
+            {
+                moduleId: "catalog",
+                methodId: "updateEntries",
             },
         ],
     },

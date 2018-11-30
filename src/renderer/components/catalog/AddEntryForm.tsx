@@ -38,14 +38,14 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
         return (
             <section >
                 <button onClick={this.switchForm} className={styles.tag_add_button}>
-                    { this.state.open ? 
+                    { this.state.open ?
                         <SVG svg={RemoveIcon} />
                         :
                         <SVG svg={AddIcon} />
                     }
                     <span>Ajouter une sélection</span>
                 </button>
-                <form onSubmit={this.submit} style={{display: this.state.open ? "inline-block" : "none"}} id={styles.tag_search}>  
+                <form onSubmit={this.submit} style={{display: this.state.open ? "inline-block" : "none"}} id={styles.tag_search}>
                     <select ref={this.selectRef} className={styles.tag_inputs} id={styles.tag_inputs} placeholder="Rechercher un tag" title="rechercher un tag">
                         { this.props.tags && this.props.tags.map((tag: string, index: number) =>
                             <option key={index} value={tag}>{tag}</option>
@@ -88,7 +88,13 @@ export default withApi(
                 moduleId: "catalog",
                 methodId: "addEntry",
                 callProp: "addEntry",
-            }
+            },
+        ],
+        refreshTriggers: [
+            {
+                moduleId: "publication",
+                methodId: "updateTags",
+            },
         ],
     },
 );

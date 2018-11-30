@@ -14,6 +14,8 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 
+import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
+
 export interface ApiOperationDefinition {
     moduleId: string;
     methodId: string;
@@ -25,6 +27,7 @@ export interface ApiOperationDefinition {
 
 export interface ApiConfig {
     operations: ApiOperationDefinition[];
+    refreshTriggers?: any; // Api operation that triggers a new refresh
     mapStateToProps?: any;
     mapDispatchToProps?: any;
 }
@@ -146,15 +149,31 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
     };
 
     const BaseWrapperComponent = class extends React.Component<ApiProps, undefined> {
+        private lastSuccess: ApiLastSuccess;
+        private store: Store<RootState>;
+        private stateUpdateUnsubscribe: any;
+
         constructor(props: any) {
             super(props);
+
+            this.lastSuccess = null;
+            this.handleStateUpdate = this.handleStateUpdate.bind(this);
         }
 
         public componentDidMount() {
             this.props.requestOnLoadData();
+            this.store = container.get("store") as Store<RootState>;
+
+            if (queryConfig.refreshTriggers) {
+                this.stateUpdateUnsubscribe = this.store.subscribe(this.handleStateUpdate);
+            }
         }
 
         public componentWillUnmount() {
+            if (this.stateUpdateUnsubscribe) {
+                this.stateUpdateUnsubscribe();
+            }
+
             this.props.cleanData();
         }
 
@@ -183,6 +202,47 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
             }
 
             return (<WrappedComponent { ...newProps } />);
+        }
+
+        private handleStateUpdate() {
+            const state = this.store.getState();
+            const apiLastSuccess = state.api.lastSuccess;
+
+            if (!apiLastSuccess) {
+                return;
+            }
+
+            const lastSuccessDate = (this.lastSuccess && this.lastSuccess.date) || 0;
+
+            if (apiLastSuccess.date <= lastSuccessDate) {
+                return;
+            }
+
+            // New api success
+            this.lastSuccess = apiLastSuccess;
+
+            // Need to refresh the component
+            const meta = apiLastSuccess.action.meta.api;
+
+            const lastAction = {
+                moduleId: meta.moduleId,
+                methodId: meta.methodId,
+            };
+
+            let refresh = false;
+
+            for (const triggerAction of queryConfig.refreshTriggers) {
+                if (
+                    triggerAction.moduleId === lastAction.moduleId
+                    && triggerAction.methodId === lastAction.methodId
+                ) {
+                    refresh = true;
+                    break;
+                }
+            }
+            if (refresh) {
+                this.props.requestOnLoadData();
+            }
         }
     };
 

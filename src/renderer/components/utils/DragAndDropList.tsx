@@ -4,8 +4,8 @@ import * as styles from "readium-desktop/renderer/assets/styles/dragAndDropList.
 
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-interface Props {
-    list: any[];
+interface DragAndDropListProps {
+    items: any[];
     elementContent: (item: any, index: number) => any;
     className?: string;
     elementClassName?: string;
@@ -13,29 +13,17 @@ interface Props {
     onChange: (list: any) => void;
 }
 
-interface State {
-    items: any[];
-}
-
-export default class DragAndDropList extends React.Component<Props, State> {
-    public constructor(props: Props) {
+export default class DragAndDropList extends React.Component<DragAndDropListProps, undefined> {
+    public constructor(props: any) {
         super(props);
-        this.state = {
-            items: undefined,
-        };
-        this.onDragEnd = this.onDragEnd.bind(this);
-    }
 
-    public componentWillReceiveProps(newProps: Props) {
-        if (!this.state.items && newProps.list) {
-            this.setState({items: newProps.list});
-        }
+        this.onDragEnd = this.onDragEnd.bind(this);
     }
 
     public render() {
         const { className, elementClassName, id } = this.props;
 
-        if (!this.state.items) {
+        if (!this.props.items) {
             return (<></>);
         }
 
@@ -47,7 +35,7 @@ export default class DragAndDropList extends React.Component<Props, State> {
                         className={className ? className : ""}
                         id={id}
                         ref={provided.innerRef} >
-                        {this.state.items && this.state.items.map((item, index) => (
+                        {this.props.items && this.props.items.map((item, index) => (
                             <Draggable key={index} draggableId={index.toString()} index={index}>
                                 {(provided2: any) => {
                                     return (
@@ -78,14 +66,10 @@ export default class DragAndDropList extends React.Component<Props, State> {
         }
 
         const items = this.reorder(
-            this.state.items,
+            this.props.items,
             result.source.index,
             result.destination.index,
         );
-
-        this.setState({
-            items,
-        });
 
         this.props.onChange(items);
     }

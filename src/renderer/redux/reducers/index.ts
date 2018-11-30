@@ -30,6 +30,7 @@ import {
 import { readerReducer } from "readium-desktop/common/redux/reducers/reader";
 
 import { winReducer } from "./win";
+
 import { apiReducer } from "./api";
 
 export const rootReducer = combineReducers({

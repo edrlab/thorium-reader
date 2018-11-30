@@ -18,7 +18,12 @@ export interface ApiDataState {
     [id: string]: ApiDataResponse<any>;
 }
 
+export interface ApiLastSuccess {
+    action: ApiAction;
+    date: number;
+}
+
 export interface ApiState {
-    lastSuccessAction: ApiAction;
+    lastSuccess: ApiLastSuccess;
     data: ApiDataState;
 }

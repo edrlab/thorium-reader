@@ -4,6 +4,7 @@ import { ActionType, ApiAction } from "readium-desktop/common/redux/actions/api"
 
 const initialState: any = {
     data: {},
+    lastSuccess: null,
 };
 
 // The api reducer.
@@ -14,19 +15,23 @@ export function apiReducer(
     switch (action.type) {
         case ActionType.Success:
             const data = state.data;
+            const now = moment.now();
             data[action.meta.api.requestId] = {
                 result: action.payload,
                 requestId: action.meta.api.requestId,
                 moduleId: action.meta.api.moduleId,
                 methodId: action.meta.api.methodId,
-                date: moment.now(),
+                date: now,
             };
             return Object.assign(
                 {},
                 state,
                 {
                     data,
-                    lastSuccessAction: action,
+                    lastSuccess: {
+                        action,
+                        date: now,
+                    },
                 },
             );
         case ActionType.Clean:

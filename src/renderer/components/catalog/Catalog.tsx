@@ -14,7 +14,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 
-import { CatalogView, CatalogEntryView } from "readium-desktop/common/views/catalog";
+import { CatalogView } from "readium-desktop/common/views/catalog";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
@@ -29,22 +29,11 @@ import ListView from "./ListView";
 
 interface CatalogProps extends TranslatorProps, RouteComponentProps {
     catalog?: CatalogView;
-    refresh?: boolean;
     blur: boolean;
     requestCatalog: any;
 }
 
 export class Catalog extends React.Component<CatalogProps, undefined> {
-    public shouldComponentUpdate(nextProps: any, nextState: any, nextContext: any): boolean {
-        console.log("####", nextProps);
-        if (nextProps.refresh) {
-            this.props.requestCatalog();
-            return false;
-        }
-
-        return true;
-    }
-
     public render(): React.ReactElement<{}> {
         if (!this.props.catalog) {
             return (<></>);
@@ -73,48 +62,6 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
     }
 }
 
-const refreshTriggerActions = [
-    {
-        moduleId: "publication",
-        methodId: "import",
-    },
-    {
-        moduleId: "publication",
-        methodId: "delete",
-    },
-    {
-        moduleId: "catalog",
-        methodId: "addEntry",
-    },
-];
-
-const mapStateToProps = (state: RootState, ownProps: any) => {
-    let refresh = false;
-
-    if (state.api.lastSuccessAction) {
-        const meta = state.api.lastSuccessAction.meta.api;
-
-        const lastAction = {
-            moduleId: meta.moduleId,
-            methodId: meta.methodId,
-        };
-
-        for (const triggerAction of refreshTriggerActions) {
-            if (
-                triggerAction.moduleId == lastAction.moduleId
-                && triggerAction.methodId == lastAction.methodId
-            ) {
-                refresh = true;
-                break;
-            }
-        }
-    }
-
-    return {
-        refresh,
-    };
-};
-
 export default withApi(
     Catalog,
     {
@@ -127,6 +74,19 @@ export default withApi(
                 onLoad: true,
             },
         ],
-        mapStateToProps,
+        refreshTriggers: [
+            {
+                moduleId: "publication",
+                methodId: "import",
+            },
+            {
+                moduleId: "publication",
+                methodId: "delete",
+            },
+            {
+                moduleId: "catalog",
+                methodId: "addEntry",
+            },
+        ],
     },
 );

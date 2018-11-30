@@ -85,7 +85,7 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
     private sendTags(tags: string[]) {
         this.props.updateTags({
             identifier: this.props.publicationIdentifier,
-            tags: tags,
+            tags,
         });
     }
 
@@ -103,7 +103,7 @@ export default withApi(
                 methodId: "updateTags",
                 resultProp: "updatedPublication",
                 callProp: "updateTags",
-            }
+            },
         ],
-    }
+    },
 );
