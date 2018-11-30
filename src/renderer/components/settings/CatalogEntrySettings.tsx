@@ -13,34 +13,36 @@ import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLay
 import Header from "./Header";
 
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
+
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+
 import * as DragableIcon from "readium-desktop/renderer/assets/icons/baseline-drag_handle-24px.svg";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 
-interface Props {
+interface CatalogEntrySettingsProps {
     entries?: CatalogEntryView[];
     updateEntries?: (data: any) => void;
 }
 
-interface States {
-    entries: any,
+interface CatalogEntrySettingStates {
+    entries: any;
     entryToUpdate: {
         id: number,
         title: string,
-    }
+    };
 }
 
-export class CatalogEntrySettings extends React.Component<Props, States> {
+export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsProps, CatalogEntrySettingStates> {
 
     @lazyInject("translator")
     private translator: Translator;
 
     private inputRef: any;
 
-    public constructor(props: Props) {
+    public constructor(props: any) {
         super(props);
 
         this.state = {
@@ -65,7 +67,7 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
                         title: entry.title,
                         tag: entry.tag,
                     };
-                })
+                }),
             });
         }
 
@@ -88,7 +90,7 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
     }
 
     private buildDragAndDropList() {
-        if (this.props.entries && this.props.entries.length == 0) {
+        if (this.props.entries && this.props.entries.length === 0) {
             return (
                 <p>
                     Aucune sélection existante
@@ -140,7 +142,7 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
 
     private handleListOrderChange(entries: CatalogEntryView[]) {
         this.setState({entries});
-        this.closeEdit()
+        this.closeEdit();
     }
 
     private editClick(entry: CatalogEntryView, id: number) {
@@ -148,11 +150,11 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
             id,
             title: entry.title,
             tag: entry.tag,
-        }})
+        }});
     }
 
     private closeEdit() {
-        this.setState({entryToUpdate: undefined})
+        this.setState({entryToUpdate: undefined});
     }
 
     private submitEntryEdit(e: any) {
@@ -165,14 +167,14 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
         for (const entry of this.state.entries) {
             let updatedEntry = entry;
 
-            if (this.state.entryToUpdate.id == entry.id) {
+            if (this.state.entryToUpdate.id === entry.id) {
                 updatedEntry = this.state.entryToUpdate;
             }
             updatedEntries.push(updatedEntry);
         }
 
         this.props.updateEntries({
-            entries: updatedEntries
+            entries: updatedEntries,
         });
     }
 
@@ -180,7 +182,7 @@ export class CatalogEntrySettings extends React.Component<Props, States> {
         const editedEntry = this.state.entryToUpdate;
         editedEntry.title = e.target.value;
         this.setState({
-            entryToUpdate: editedEntry
+            entryToUpdate: editedEntry,
         });
     }
 }
@@ -202,5 +204,5 @@ export default withApi(
                 resultProp: "entries",
             },
         ],
-    }
+    },
 );

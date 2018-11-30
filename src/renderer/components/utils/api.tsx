@@ -82,8 +82,8 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
                     },
                     operation,
                 ),
-            }
-        )
+            },
+        );
     }
 
     const mapDispatchToProps = (dispatch: any, ownProps: any) => {
@@ -114,7 +114,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
                         );
                     }
                 },
-            }
+            },
         );
     };
 
@@ -128,7 +128,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
             );
         }
 
-        let operationResults: any = {};
+        const operationResults: any = {};
 
         for (const operationRequest of operationRequests) {
             if (operationRequest.id in state.api.data) {
@@ -144,7 +144,6 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
             operationResults,
         );
     };
-
 
     const BaseWrapperComponent = class extends React.Component<ApiProps, undefined> {
         constructor(props: any) {

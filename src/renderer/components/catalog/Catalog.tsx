@@ -35,11 +35,17 @@ interface CatalogProps extends TranslatorProps, RouteComponentProps {
 }
 
 export class Catalog extends React.Component<CatalogProps, undefined> {
-    public render(): React.ReactElement<{}> {
-        if (this.props.refresh) {
+    public shouldComponentUpdate(nextProps: any, nextState: any, nextContext: any): boolean {
+        console.log("####", nextProps);
+        if (nextProps.refresh) {
             this.props.requestCatalog();
+            return false;
         }
 
+        return true;
+    }
+
+    public render(): React.ReactElement<{}> {
         if (!this.props.catalog) {
             return (<></>);
         }

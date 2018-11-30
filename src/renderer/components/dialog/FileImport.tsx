@@ -51,10 +51,10 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
     private buildBasicFileImportList() {
         const basicFiles = this.props.files.filter((file: any) => {
             const fileParts = file.name.split(".");
-            return (fileParts.length > 1 && fileParts[1] != "lcp")
+            return (fileParts.length > 1 && fileParts[1] !== "lcp");
         });
 
-        if (basicFiles.length == 0) {
+        if (basicFiles.length === 0) {
             return (<></>);
         }
 
@@ -78,10 +78,10 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
     private buildLcpFileImportList() {
         const lcpFiles = this.props.files.filter((file: any) => {
             const fileParts = file.name.split(".");
-            return (fileParts.length > 1 && fileParts[1] == "lcp")
+            return (fileParts.length > 1 && fileParts[1] === "lcp");
         });
 
-        if (lcpFiles.length == 0) {
+        if (lcpFiles.length === 0) {
             return (<></>);
         }
 
@@ -107,7 +107,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
     return {
         closeDialog: (data: any) => {
             dispatch(
-                dialogActions.close()
+                dialogActions.close(),
             );
         },
     };
@@ -124,5 +124,5 @@ export default withApi(
             },
         ],
         mapDispatchToProps,
-    }
-)
+    },
+);
