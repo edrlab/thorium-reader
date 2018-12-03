@@ -24,13 +24,13 @@ export default class Header extends React.Component<Props, undefined> {
         return (
             <SecondaryHeader>
                 <Link
-                    to="/library?displayType=grid"
+                    to={{search: "displayType=grid"}}
                     style={(this.props.displayType != DisplayType.Grid) ? {fill: "grey"} : {}}
                 >
                     <SVG svg={GridIcon} title="Présenter les couvertures de livres en grille"/>
                 </Link>
                 <Link
-                    to="/library?displayType=list"
+                    to={{search: "displayType=list"}}
                     style={this.props.displayType != DisplayType.List ? {fill: "grey"} : {}}
                 >
                     <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
