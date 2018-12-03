@@ -86,6 +86,10 @@ export default withApi(
                 moduleId: "catalog",
                 methodId: "addEntry",
             },
+            {
+                moduleId: "publication",
+                methodId: "updateTags",
+            },
         ],
     },
 );
