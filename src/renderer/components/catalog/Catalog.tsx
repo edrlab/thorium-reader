@@ -29,7 +29,6 @@ import ListView from "./ListView";
 
 interface CatalogProps extends TranslatorProps, RouteComponentProps {
     catalog?: CatalogView;
-    blur: boolean;
     requestCatalog: any;
 }
 
@@ -53,7 +52,7 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
 
         return (
             <LibraryLayout>
-                <div style={ this.props.blur ? {filter: "blur(2px)"} : {} }>
+                <div>
                     <Header displayType={ displayType } />
                     <DisplayView catalogEntries={ this.props.catalog.entries } />
                 </div>
@@ -86,6 +85,10 @@ export default withApi(
             {
                 moduleId: "catalog",
                 methodId: "addEntry",
+            },
+            {
+                moduleId: "publication",
+                methodId: "updateTags",
             },
         ],
     },

@@ -12,6 +12,8 @@
     background-color: rgba(0,0,0,0.5);
     transition: .2s;
     min-width: 700px;
+    display: flex;
+    align-items: center;
 }
 
 .c_dialog_background {
@@ -28,8 +30,8 @@
     z-index: 102;
     display: flex;
     width:90%;
-    max-width: 92rem;
-    margin: 100px auto 20px auto;
+    max-width: 60rem;
+    margin: 0 auto;
     padding: 60px;
     background-color: white;
     overflow-y: auto;
@@ -37,6 +39,8 @@
     align-content: flex-start;
     color: #3B3B3B;
     position: relative;
+    height: fit-content;
+    max-height: 90%;
 }
 
 .c_dialog__box .close_button {

@@ -138,17 +138,3 @@
         background-color: #CECECE;
     }
 }
-
-@media screen 
-  and (min-width: 1200px){
-      .block_book {
-          width: 300px;
-      }
-}
-
-@media screen
-  and (max-width: 1200px) {
-      .block_book {
-          width: 175px;
-      }
-}
