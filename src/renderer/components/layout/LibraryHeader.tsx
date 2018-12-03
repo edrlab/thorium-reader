@@ -61,7 +61,7 @@ export class Header extends React.Component<HeaderProps, undefined> {
             }
         }
 
-        styleClasses.concat(item.styles);
+        styleClasses = styleClasses.concat(item.styles);
 
         return (
             <li className={classNames(...styleClasses)} key={ index }>
