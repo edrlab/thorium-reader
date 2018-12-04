@@ -43,7 +43,6 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
     }
 
     public async searchByTitle(title: string): Promise<PublicationDocument[]> {
-        console.log("###", title);
         const dbDocs = await (this.db as any).search({
             query: title,
             fields: ["title"],

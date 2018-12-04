@@ -14,8 +14,6 @@ interface GridViewProps extends RouteComponentProps {
 
 export default class GridView extends React.Component<GridViewProps, undefined> {
     public render(): React.ReactElement<{}> {
-        const subsituteList: any = [];
-
         return (
             <div className={styles.card_wrapper}>
                 {this.props.publications.map((pub) =>
@@ -24,9 +22,9 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                         publication={pub}
                     />,
                 )}
-                {() => { for (let i = 0 ; i < 6 ; i++) {
-                    subsituteList.push(<div className={styles.card_substitute}></div>);
-                }}}
+                {[...Array(6).keys()].map((__, index) => {
+                    return <div key={index} className={styles.card_substitute}></div>;
+                })}
             </div>
         );
     }
