@@ -8,9 +8,9 @@ import Slider from "readium-desktop/renderer/components/utils/Slider";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg"
+import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 
-import { RouteComponentProps, Link } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
@@ -27,9 +27,11 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                             <section key={ i }>
                                 <div className={styles.title}>
                                     <h1>{ entry.title }</h1>
-                                    <Link to={{pathname: "/library/search", search: entry.tag ? "?tag=" + entry.tag : ""}}>
-                                        Tous les livres
-                                        <SVG svg={ArrowIcon} />
+                                    <Link to={{
+                                        pathname: "/library/search",
+                                        search: entry.tag ? "?tag=" + entry.tag : "",
+                                    }}>
+                                        Tous les livres <SVG svg={ArrowIcon} />
                                     </Link>
                                 </div>
                                 <Slider
@@ -46,12 +48,5 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                 })}
             </>
         );
-    }
-
-    private allBooksClick(e: any, entryTag: string) {
-        e.preventDefault();
-        console.log(this.props);
-        this.props.history.push("/library/search?tag="  + entryTag);
-        console.log(this.props);
     }
 }
