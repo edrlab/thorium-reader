@@ -17,50 +17,18 @@ import ListView from "readium-desktop/renderer/components/searchResult/ListView"
 
 import { Publication } from "readium-desktop/common/models/publication";
 
-import * as styles from "readium-desktop/renderer/assets/styles/searchResult.css";
+import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
-import SVG from "../utils/SVG";
-
-interface SearchResultProps extends TranslatorProps, RouteComponentProps {
+interface TextSearchResultProps extends TranslatorProps, RouteComponentProps {
     publications?: Publication[];
-    requestCatalog: any;
-    findPublicationsByTag?: (data: any) => void;
-    findAllPublications?: () => void;
-    findPublicationsByTitle?: (data: any) => void;
 }
 
-interface SearResultState {
-    title: string;
-}
-
-export class SearchResult extends React.Component<SearchResultProps, SearResultState> {
-    public constructor(props: SearchResultProps) {
-        super(props);
-
-        const parsedResult = qs.parse(this.props.location.search);
-        let title: any;
-
-        if (parsedResult.tag) {
-            title = parsedResult.tag;
-            this.props.findPublicationsByTag({tag: title});
-        } else if (parsedResult.search) {
-            title = parsedResult.search;
-            console.log("search of ", title);
-            this.props.findPublicationsByTitle(title);
-        } else {
-            this.props.findAllPublications();
-            title = "Tous mes livres";
-        }
-
-        this.state = {
-            title,
-        };
-    }
-
+export class TextSearchResult extends React.Component<TextSearchResultProps, undefined> {
     public render(): React.ReactElement<{}> {
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
+
+        const title = (this.props.match.params as any).value;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
@@ -75,13 +43,10 @@ export class SearchResult extends React.Component<SearchResultProps, SearResultS
             <LibraryLayout>
                 <div>
                     <Header displayType={ displayType } />
-                    <div className={styles.breadcrumb}>
-                        <Link to={{pathname: "/library", search: this.props.location.search}}>
-                            <SVG svg={ArrowIcon}/>
-                        </Link>
-                        <Link to={{pathname: "/library", search: this.props.location.search}}>Mes livres</Link>
-                        /<span>{this.state.title}</span>
-                    </div>
+                    <BreadCrumb
+                        search={this.props.location.search}
+                        breadcrumb={[{name: "Mes livres", path: "/library"}, {name: title as string}]}
+                    />
                     { this.props.publications ?
                         <DisplayView publications={ this.props.publications } />
                     : <></>}
@@ -91,27 +56,22 @@ export class SearchResult extends React.Component<SearchResultProps, SearResultS
     }
 }
 
+const buildSearchRequestData = (props: TextSearchResultProps): any => {
+    return {
+        text: (props.match.params as any).value,
+    };
+};
+
 export default withApi(
-    SearchResult,
+    TextSearchResult,
     {
         operations: [
             {
                 moduleId: "publication",
-                methodId: "findByTag",
-                callProp: "findPublicationsByTag",
-                resultProp: "publications",
-            },
-            {
-                moduleId: "publication",
-                methodId: "findAll",
-                callProp: "findAllPublications",
-                resultProp: "publications",
-            },
-            {
-                moduleId: "publication",
                 methodId: "search",
-                callProp: "findPublicationsByTitle",
+                buildRequestData: buildSearchRequestData,
                 resultProp: "publications",
+                onLoad: true,
             },
         ],
         refreshTriggers: [

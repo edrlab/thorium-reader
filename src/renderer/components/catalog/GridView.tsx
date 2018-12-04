@@ -14,6 +14,8 @@ import { Link, RouteComponentProps } from "react-router-dom";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
+import AddEntryForm from "./AddEntryForm";
+
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
 }
@@ -28,8 +30,8 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                                 <div className={styles.title}>
                                     <h1>{ entry.title }</h1>
                                     <Link to={{
-                                        pathname: "/library/search",
-                                        search: entry.tag ? "?tag=" + entry.tag : "",
+                                        pathname: entry.tag ? "/library/search/tag/" + entry.tag
+                                            : "/library/search/all",
                                     }}>
                                         Tous les livres <SVG svg={ArrowIcon} />
                                     </Link>
@@ -46,6 +48,7 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                             </section>
                         );
                 })}
+                <AddEntryForm />
             </>
         );
     }
