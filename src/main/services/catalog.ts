@@ -126,12 +126,24 @@ export class CatalogService {
             publication.files[0].url.substr(6),
         );
 
-        const parsedPub = await EpubParsePromise(pubPath);
+        const parsedPublication = await EpubParsePromise(pubPath);
+
+        // Searialized parsed epub
+        const jsonParsedPublication = TAJSON.serialize(parsedPublication);
+        const b64ParsedPublication = Buffer
+            .from(JSON.stringify(jsonParsedPublication))
+            .toString("base-64");
+
+        // Merge with the original publication
         const origPub = await this.publicationRepository.get(publication.identifier)
         const newPub = Object.assign(
             {},
             origPub,
-            { publication: parsedPub }
+            {
+                resources: {
+                    filePublication: b64ParsedPublication,
+                },
+            },
         );
 
         // Store refreshed metadata in db
@@ -145,10 +157,17 @@ export class CatalogService {
 
         // FIXME: Title could be an array instead of a simple string
         // Store publication in db
+        const jsonParsedPublication = TAJSON.serialize(parsedPublication);
+        const b64ParsedPublication = Buffer
+            .from(JSON.stringify(jsonParsedPublication))
+            .toString("base64");
+
         const pubDocument = {
             identifier: uuid.v4(),
-            publication: TAJSON.serialize(parsedPublication),
-            opdsPublication: null,
+            resources: {
+                filePublication: b64ParsedPublication,
+                opdsPublication: null,
+            },
             title: parsedPublication.Metadata.Title,
             tags: [],
             files: [],

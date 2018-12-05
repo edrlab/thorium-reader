@@ -13,7 +13,12 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 @injectable()
 export class PublicationViewConverter {
     public convertDocumentToView(document: PublicationDocument): PublicationView {
-        const epub = TAJSON.deserialize(document.publication, Epub) as Epub;
+        const b64ParsedPublication = document.resources.filePublication;
+        const jsonParsedPublication = Buffer
+            .from(b64ParsedPublication, "base64")
+            .toString("utf-8");
+        const parsedPublication = JSON.parse(jsonParsedPublication);
+        const epub = TAJSON.deserialize(parsedPublication, Epub) as Epub;
         const publishers = this.convertContibutorArrayToStringArray(
             epub.Metadata.Publisher,
         );
@@ -30,7 +35,7 @@ export class PublicationViewConverter {
 
         if (document.coverFile) {
             cover = {
-                url: document.coverFile.url,
+                url : document.coverFile.url,
             };
         }
 

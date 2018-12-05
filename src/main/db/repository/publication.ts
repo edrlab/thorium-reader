@@ -88,7 +88,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
             {},
             super.convertToMinimalDocument(dbDoc),
             {
-                publication: dbDoc.publication,
+                resources: dbDoc.resources,
                 opdsPublication: dbDoc.opdsPublication,
                 title: dbDoc.title,
                 tags: dbDoc.tags,
