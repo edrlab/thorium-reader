@@ -51,7 +51,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
         });
 
         return dbDocs.rows.map((dbDoc: any) => {
-            return this.convertToDocument(dbDoc);
+            return this.convertToDocument(dbDoc.doc);
         });
     }
 
