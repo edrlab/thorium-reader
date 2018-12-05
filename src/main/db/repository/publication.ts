@@ -35,11 +35,11 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
     }
 
     public async findByTag(tag: string): Promise<PublicationDocument[]> {
-        return this.findBy({ tags: { "$elemMatch": { "$eq": tag }}});
+        return this.findBy({ tags: { $elemMatch: { $eq: tag }}});
     }
 
     public async findByTitle(title: string): Promise<PublicationDocument[]> {
-        return this.findBy({ title: { "$eq": title }});
+        return this.findBy({ title: { $eq: title }});
     }
 
     public async searchByTitle(title: string): Promise<PublicationDocument[]> {
@@ -47,7 +47,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
             query: title,
             fields: ["title"],
             include_docs: true,
-            highlighting: true
+            highlighting: false,
         });
 
         return dbDocs.rows.map((dbDoc: any) => {
@@ -61,10 +61,10 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
         const dbResponse = await this.db.find({
             selector: {
                 tags: {
-                    "$exists": true
-                }
+                    $exists: true,
+                },
             },
-            fields: ["tags"]
+            fields: ["tags"],
         });
         const tags: string[] = [];
 
@@ -95,7 +95,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                 files: dbDoc.files,
                 coverFile: dbDoc.coverFile,
                 customCover: dbDoc.customCover,
-            }
+            },
         );
     }
 }

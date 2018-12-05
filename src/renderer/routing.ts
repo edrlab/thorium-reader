@@ -1,7 +1,10 @@
-import LanguageSettings from "readium-desktop/renderer/components/settings/LanguageSettings";
 import CatalogEntrySettings from "readium-desktop/renderer/components/settings/CatalogEntrySettings";
+import LanguageSettings from "readium-desktop/renderer/components/settings/LanguageSettings";
 
 import Catalog from "readium-desktop/renderer/components/catalog/Catalog";
+import AllPublicationPage from "./components/searchResult/AllPublicationPage";
+import TagSearchResult from "./components/searchResult/TagSearchResult";
+import TextSearchResult from "./components/searchResult/TextSearchResult";
 
 interface Route {
     path: string;
@@ -40,16 +43,34 @@ export const routes: RouteList = {
         title: "Settings: Tags",
         component: CatalogEntrySettings,
     },
+    "/library/search/text": {
+        path: "/library/search/text/:value",
+        exact: true,
+        title: "Library",
+        component: TextSearchResult,
+    },
+    "/library/search/tag": {
+        path: "/library/search/tag/:value",
+        exact: true,
+        title: "Library",
+        component: TagSearchResult,
+    },
+    "/library/search/all": {
+        path: "/library/search/all",
+        exact: true,
+        title: "Library",
+        component: AllPublicationPage,
+    },
+    "/library": {
+        path: "/library",
+        exact: true,
+        title: "Library",
+        component: Catalog,
+    },
     "/": {
         path: "/",
         exact: false,
         title: "Home",
-        component: Catalog,
-    },
-    "/library": {
-        path: "/library",
-        exact: false,
-        title: "Library",
         component: Catalog,
     },
 };

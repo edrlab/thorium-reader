@@ -86,4 +86,12 @@ export class PublicationApi {
             return this.publicationViewConverter.convertDocumentToView(doc);
         });
     }
+
+    public async search(data: any): Promise<PublicationView[]> {
+        const { text } = data;
+        const docs = await this.publicationRepository.searchByTitle(text);
+        return docs.map((doc) => {
+            return this.publicationViewConverter.convertDocumentToView(doc);
+        });
+    }
 }

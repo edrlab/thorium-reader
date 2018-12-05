@@ -6,16 +6,37 @@ main {
     width: calc(100% - 120px);
     padding-left: 60px;
     padding-right: 60px;
+	& .title {
+		display: flex;
+		justify-content: space-between;
+		padding-top: 40px;
+		padding-bottom: 35px;
 
-    & h1 {
-        display: block;
-        position: relative;
-        padding-top: 40px;
-        padding-bottom: 35px;
-        font-weight: 700;
-        margin: 0;
-        font-size: 1.3rem;
-    }
+		& a {
+			display: flex;
+    		align-items: center;
+
+			color: black;
+			text-decoration: none;
+			border-radius: 2px;
+			border: 1px solid black;
+			font-size: 0.8rem;
+			padding: 2px 8px 2px 8px;
+
+			& svg {
+				height: 15px;
+				margin-left: 4px;
+			}
+		}
+
+		& h1 {
+			display: inline-block;
+			position: relative;
+			font-weight: 700;
+			margin: 0;
+			font-size: 1.3rem;
+		}
+	}
 
     & section ul {
         padding: 0;

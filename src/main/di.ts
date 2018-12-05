@@ -94,9 +94,13 @@ const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 // tslint:disable-next-line:no-var-requires
 const pouchDbFind = require("pouchdb-find");
 
+// tslint:disable-next-line:no-var-requires
+const pouchDbSearch = require("pouchdb-quick-search");
+
 // Load PouchDB plugins
 PouchDB.plugin(pouchDbAdapter.default ? pouchDbAdapter.default : pouchDbAdapter);
 PouchDB.plugin(pouchDbFind.default ? pouchDbFind.default : pouchDbFind);
+PouchDB.plugin(pouchDbSearch.default ? pouchDbSearch.default : pouchDbSearch);
 
 const dbOpts = {
     adapter: _POUCHDB_ADAPTER_NAME,

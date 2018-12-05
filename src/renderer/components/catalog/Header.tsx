@@ -8,46 +8,39 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
 
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+
+import SearchForm from "./SearchForm";
 
 export enum DisplayType {
     Grid = "grid",
     List = "list",
 }
 
-interface Props {
+interface Props extends RouteComponentProps {
     displayType: DisplayType;
 }
 
-export default class Header extends React.Component<Props, undefined> {
+export class Header extends React.Component<Props, undefined> {
     public render(): React.ReactElement<{}> {
         return (
             <SecondaryHeader>
                 <Link
-                    to="/library?displayType=grid"
-                    style={(this.props.displayType != DisplayType.Grid) ? {fill: "grey"} : {}}
+                    to={{search: "displayType=grid"}}
+                    style={(this.props.displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
                 >
                     <SVG svg={GridIcon} title="Présenter les couvertures de livres en grille"/>
                 </Link>
                 <Link
-                    to="/library?displayType=list"
-                    style={this.props.displayType != DisplayType.List ? {fill: "grey"} : {}}
+                    to={{search: "displayType=list"}}
+                    style={this.props.displayType !== DisplayType.List ? {fill: "grey"} : {}}
                 >
                     <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
                 </Link>
-                <form role="search">
-                    <input
-                        type="search"
-                        id="menu_search"
-                        aria-label="Rechercher un livre, un tag, ou un type de littérature"
-                        placeholder="Rechercher"
-                    />
-                    <button>
-                        <SVG svg={SearchIcon} title="Lancer la recherche"/>
-                    </button>
-                </form>
+                <SearchForm />
             </SecondaryHeader>
         );
     }
-
 }
+
+export default withRouter(Header);

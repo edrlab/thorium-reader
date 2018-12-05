@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 import { RouteComponentProps } from "react-router-dom";
 
-import { withTranslator, TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 
@@ -24,10 +24,10 @@ const headerNav = [
         label: "Préférences",
         matchRoutes: ["/settings"],
         styles: [styles.preferences],
-    }
+    },
 ];
 
-export interface HeaderProps extends RouteComponentProps, TranslatorProps { };
+export interface HeaderProps extends RouteComponentProps, TranslatorProps { }
 
 export class Header extends React.Component<HeaderProps, undefined> {
     public render(): React.ReactElement<{}> {
@@ -54,7 +54,7 @@ export class Header extends React.Component<HeaderProps, undefined> {
         const pathname = this.props.match.path;
 
         for (const matchRoute of item.matchRoutes) {
-            if (pathname == item.route) {
+            if (pathname === item.route) {
                 active = true;
                 styleClasses.push(styles.active);
                 break;
