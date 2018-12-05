@@ -7,24 +7,64 @@
 
 import * as React from "react";
 
-import { Catalog } from "readium-desktop/common/models/catalog";
-import { OpdsListElement } from "readium-desktop/renderer/components/opds/index";
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
-import { Styles } from "readium-desktop/renderer/components/styles";
+import { Link } from "react-router-dom";
 
-interface IPublicationProps {
-    catalog: Catalog;
-    handleCheckboxChange: any;
+import { withApi } from "readium-desktop/renderer/components/utils/api";
+
+interface OpdsListProps {
+    data: any;
 }
 
-export default class OpdsList extends React.Component<IPublicationProps, null> {
+const data = [
+    {
+        name: "FeedBooks",
+        path: "test/path/feedbooks",
+    },
+    {
+        name: "Flux 1",
+        path: "test/path/feedbooks",
+    },
+    {
+        name: "Flux 2",
+        path: "test/path/feedbooks",
+    },
+    {
+        name: "Flux 3",
+        path: "test/path/feedbooks",
+    },
+];
+
+export class OpdsList extends React.Component<{}, null> {
     public render(): React.ReactElement<{}>  {
-        const list: any = [];
-        for (let i = 0; i < this.props.catalog.publications.length; i++) {
-            list.push(<OpdsListElement key={i}
-                publication={this.props.catalog.publications[i]}
-                handleCheckboxChange={this.props.handleCheckboxChange} />);
+        if (!data) {
+            return <></>;
         }
-        return <div style={Styles.OpdsList.list}> {list} </div>;
+        return (
+            <section className={styles.opds_list}>
+                { data.map((item) =>
+                    <Link to={"/catalogs/" + item.name}>
+                        <div>
+                            <p>{ item.name }</p>
+                        </div>
+                    </Link>,
+                )}
+            </section>
+        );
     }
 }
+
+export default withApi(
+    OpdsList,
+    {
+        operations: [
+            // {
+            //     moduleId: "opds",
+            //     methodId: "findAll",
+            //     resultProp: "data",
+            //     onLoad: true,
+            // },
+        ],
+    },
+);

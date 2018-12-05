@@ -23,16 +23,13 @@ import { publicationDownloadActions } from "readium-desktop/common/redux/actions
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import {
-    AuthenticationForm,
-    OpdsList,
-} from "readium-desktop/renderer/components/opds/index";
+import AddOpdsForm from "readium-desktop/renderer/components/opds/AddOpdsForm";
+import AuthenticationForm from "readium-desktop/renderer/components/opds/AuthenticationForm";
+import Opds from "readium-desktop/renderer/components/opds/Opds";
 
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 
 import { OPDSParser } from "readium-desktop/common/services/opds";
-
-import { OpdsForm } from "readium-desktop/renderer/components/opds/index";
 
 import * as request from "request";
 
@@ -123,9 +120,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
                                 <p>{__("opds.downloadError")}</p>
                             </div>
                         ) : this.state.catalog !== undefined ? (
-                            <OpdsList
-                                catalog={this.state.catalog}
-                                handleCheckboxChange={this.handleOPDSCheckbox.bind(this)}/>
+                            <Opds/>
                         ) : (
                             <div></div>
                         )}
@@ -135,11 +130,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
                             label={__("opds.settings")}
                             onClick={() => {
                                 this.props.openDialog((
-                                    <OpdsForm
-                                        closeDialog={this.props.closeDialog}
-                                        closeFunction={this.props.closeList}
-                                        opds={this.props.opds}
-                                        updateDisplay={this.props.updateDisplay}/>
+                                    <AddOpdsForm/>
                                     ),
                                     null,
                                     []);
