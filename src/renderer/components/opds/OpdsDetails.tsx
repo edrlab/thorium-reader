@@ -15,18 +15,28 @@ import Header from "./Header";
 
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
-import { Link, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import BreadCrumb from "../layout/BreadCrumb";
 
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG";
+import OpdsEntry from "./OpdsEntry";
 
 const data = {
     content: [
         {
             name: "Entry 1",
             count: 56,
+        },
+        {
+            name: "Entry 2",
+            count: 38,
+        },
+        {
+            name: "Entry 3",
+            count: 5,
+        },
+        {
+            name: "Entry 4",
+            count: 1503,
         },
     ],
     name: "Nom du flux",
@@ -45,14 +55,10 @@ export class OpdsDetails extends React.Component<RouteComponentProps, null> {
                 <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search}/>
                 <section id={styles.flux_list}>
                     <ul>
-                        { data.content.map((item) =>
-                            <Link to={"catalogs/" + (this.props.match.params as any).opdsId + "/" + item.name}>
-                                <li className={styles.flux_element}>
-                                    <span className={styles.flux_title}>{item.name}</span>
-                                    <span className={styles.flux_subtitle}>{item.count} livres</span>
-                                    <SVG svg={ArrowIcon} aria-hidden="true"/>
-                                </li>
-                            </Link>,
+                        { data.content.map((entry) =>
+                            <li>
+                                <OpdsEntry entry={entry} match={this.props.match}/>
+                            </li>,
                         )}
                     </ul>
                 </section>
