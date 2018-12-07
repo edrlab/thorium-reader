@@ -20,6 +20,12 @@ const headerNav = [
         styles: [],
     },
     {
+        route: "/catalogs",
+        label: "Catalogues",
+        matchRoutes: ["/catalogs"],
+        styles: [],
+    },
+    {
         route: "/settings",
         label: "Préférences",
         matchRoutes: ["/settings"],

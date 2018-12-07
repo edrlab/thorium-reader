@@ -1,10 +1,13 @@
-import CatalogEntrySettings from "readium-desktop/renderer/components/settings/CatalogEntrySettings";
-import LanguageSettings from "readium-desktop/renderer/components/settings/LanguageSettings";
+import CatalogEntrySettings from "./components/settings/CatalogEntrySettings";
+import LanguageSettings from "./components/settings/LanguageSettings";
 
-import Catalog from "readium-desktop/renderer/components/catalog/Catalog";
+import Catalog from "./components/catalog/Catalog";
 import AllPublicationPage from "./components/searchResult/AllPublicationPage";
 import TagSearchResult from "./components/searchResult/TagSearchResult";
 import TextSearchResult from "./components/searchResult/TextSearchResult";
+
+import Opds from "./components/opds/Opds";
+import OpdsDetails from "./components/opds/OpdsDetails";
 
 interface Route {
     path: string;
@@ -19,12 +22,18 @@ interface RouteList {
 }
 
 export const routes: RouteList = {
-    // "/myBooks/list": {
-    //     path: "/myBooks/list",
-    //     exact: false,
-    //     title: "MyBooksList",
-    //     component: CatalogList,
-    // },
+    "/catalogs": {
+        path: "/catalogs",
+        exact: true,
+        title: "Catalogues",
+        component: Opds,
+    },
+    "/catalogs/": {
+        path: "/catalogs/:opdsId",
+        exact: true,
+        title: "Catalogues",
+        component: OpdsDetails,
+    },
     "/settings/tags": {
         path: "/settings/tags",
         exact: false,
