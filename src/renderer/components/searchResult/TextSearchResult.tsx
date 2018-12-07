@@ -20,10 +20,24 @@ import { Publication } from "readium-desktop/common/models/publication";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 
 interface TextSearchResultProps extends TranslatorProps, RouteComponentProps {
+    searchPublications: any;
     publications?: Publication[];
 }
 
 export class TextSearchResult extends React.Component<TextSearchResultProps, undefined> {
+    public componentDidUpdate(prevProps: any, prevState: any, snapshot?: any): boolean {
+        const text = (this.props.match.params as any).value;
+        const prevText = (prevProps.match.params as any).value;
+
+        if (text !== prevText) {
+            // Refresh searched publications
+            this.props.searchPublications({
+                text,
+            });
+        }
+        return true;
+    }
+
     public render(): React.ReactElement<{}> {
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
@@ -70,6 +84,7 @@ export default withApi(
                 moduleId: "publication",
                 methodId: "search",
                 buildRequestData: buildSearchRequestData,
+                callProp: "searchPublications",
                 resultProp: "publications",
                 onLoad: true,
             },
