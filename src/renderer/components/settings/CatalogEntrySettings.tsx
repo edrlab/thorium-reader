@@ -68,7 +68,6 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
     }
 
     public render(): React.ReactElement<{}> {
-        console.log("###", this.props.entries);
         return (
             <>
                 <LibraryLayout>
