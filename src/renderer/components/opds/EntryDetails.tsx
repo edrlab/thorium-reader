@@ -10,7 +10,7 @@ import { TranslatorProps } from "readium-desktop/renderer/components/utils/trans
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 
-import Header, { DisplayType } from "../catalog/Header";
+import Header, { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 
 import GridView from "readium-desktop/renderer/components/utils/GridView";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
@@ -19,16 +19,14 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 
-interface AllPublicationPageProps extends TranslatorProps, RouteComponentProps {
+interface TextSearchResultProps extends TranslatorProps, RouteComponentProps {
     publications?: Publication[];
 }
 
-export class AllPublicationPage extends React.Component<AllPublicationPageProps, undefined> {
+export class TagSearchResult extends React.Component<TextSearchResultProps, undefined> {
     public render(): React.ReactElement<{}> {
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
-
-        const title = "Tous mes livres";
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
@@ -45,7 +43,11 @@ export class AllPublicationPage extends React.Component<AllPublicationPageProps,
                     <Header displayType={ displayType } />
                     <BreadCrumb
                         search={this.props.location.search}
-                        breadcrumb={[{name: "Mes livres", path: "/library"}, {name: title as string}]}
+                        breadcrumb={[
+                            {name: "Mes livres", path: "/library"},
+                            {name: "Feedbooks", path: "/catalogs/Feedbooks"},
+                            {name: "Entry 1"},
+                        ]}
                     />
                     { this.props.publications ?
                         <DisplayView publications={ this.props.publications } />
@@ -57,7 +59,7 @@ export class AllPublicationPage extends React.Component<AllPublicationPageProps,
 }
 
 export default withApi(
-    AllPublicationPage,
+    TagSearchResult,
     {
         operations: [
             {

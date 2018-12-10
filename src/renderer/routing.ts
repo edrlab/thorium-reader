@@ -6,6 +6,7 @@ import AllPublicationPage from "./components/searchResult/AllPublicationPage";
 import TagSearchResult from "./components/searchResult/TagSearchResult";
 import TextSearchResult from "./components/searchResult/TextSearchResult";
 
+import OpdsEntryDetails from "./components/opds/EntryDetails";
 import Opds from "./components/opds/Opds";
 import OpdsDetails from "./components/opds/OpdsDetails";
 
@@ -33,6 +34,12 @@ export const routes: RouteList = {
         exact: true,
         title: "Catalogues",
         component: OpdsDetails,
+    },
+    "/catalogs/opdsId/": {
+        path: "/catalogs/:opdsId/:entryId",
+        exact: false,
+        title: "Catalogues",
+        component: OpdsEntryDetails,
     },
     "/settings/tags": {
         path: "/settings/tags",

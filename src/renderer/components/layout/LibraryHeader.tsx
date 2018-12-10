@@ -14,7 +14,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 
 const headerNav = [
     {
-        route: "/",
+        route: "/library",
         label: "Mes livres",
         matchRoutes: ["/", "/library"],
         styles: [],
@@ -60,7 +60,10 @@ export class Header extends React.Component<HeaderProps, undefined> {
         const pathname = this.props.match.path;
 
         for (const matchRoute of item.matchRoutes) {
-            if (pathname === matchRoute) {
+            if (pathname.startsWith(matchRoute)
+            && ((pathname === "/" && matchRoute === pathname) || matchRoute !== "/")) {
+                console.log("pathname", pathname);
+                console.log("matchRoute", matchRoute);
                 active = true;
                 styleClasses.push(styles.active);
                 break;
