@@ -63,17 +63,19 @@ export class OpdsDetails extends React.Component<OpdsEntryProps, OpdsEntryState>
                             <SVG svg={ArrowIcon} aria-hidden="true"/>
                     </Link>
                 </div>
-                <Slider
-                    content={
-                        publications.map((pub) =>
-                            <PublicationCard
-                                key={pub.identifier}
-                                publication={pub}
-                            />,
-                        )
-                    }
-                    className={classNames(styles.flux_slider, this.state.isExtended && styles.extended)}
-                />
+                { this.state.isExtended &&
+                    <Slider
+                        content={
+                            publications.map((pub) =>
+                                <PublicationCard
+                                    key={pub.identifier}
+                                    publication={pub}
+                                />,
+                            )
+                        }
+                        className={styles.flux_slider}
+                    />
+                }
             </>
         );
     }
