@@ -12,8 +12,8 @@ import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLay
 
 import Header, { DisplayType } from "../catalog/Header";
 
-import GridView from "readium-desktop/renderer/components/searchResult/GridView";
-import ListView from "readium-desktop/renderer/components/searchResult/ListView";
+import GridView from "readium-desktop/renderer/components/utils/GridView";
+import ListView from "readium-desktop/renderer/components/utils/ListView";
 
 import { Publication } from "readium-desktop/common/models/publication";
 

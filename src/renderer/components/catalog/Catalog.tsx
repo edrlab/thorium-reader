@@ -52,10 +52,8 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
 
         return (
             <LibraryLayout>
-                <div>
                     <Header displayType={ displayType } />
                     <DisplayView catalogEntries={ this.props.catalog.entries } />
-                </div>
             </LibraryLayout>
         );
     }
