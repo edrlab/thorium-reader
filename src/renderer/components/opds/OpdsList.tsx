@@ -43,8 +43,8 @@ export class OpdsList extends React.Component<{}, null> {
         }
         return (
             <section className={styles.opds_list}>
-                { data.map((item) =>
-                    <Link to={"/catalogs/" + item.name}>
+                { data.map((item, index) =>
+                    <Link to={"/catalogs/" + item.name} key={index}>
                         <div>
                             <p>{ item.name }</p>
                         </div>

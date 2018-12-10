@@ -29,7 +29,7 @@ export default class Slider extends React.Component<Props, States> {
         this.contentRef = React.createRef();
         this.wrapperRef = React.createRef();
 
-        window.addEventListener('resize', () => this.forceUpdate());
+        window.addEventListener("resize", () => this.forceUpdate());
     }
 
     public componentDidMount() {

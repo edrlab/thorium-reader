@@ -55,8 +55,8 @@ export class OpdsDetails extends React.Component<RouteComponentProps, null> {
                 <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search}/>
                 <section id={styles.flux_list}>
                     <ul>
-                        { data.content.map((entry) =>
-                            <li>
+                        { data.content.map((entry, index) =>
+                            <li key={index}>
                                 <OpdsEntry entry={entry} match={this.props.match}/>
                             </li>,
                         )}
