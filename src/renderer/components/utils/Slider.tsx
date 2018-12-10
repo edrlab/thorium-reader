@@ -74,7 +74,7 @@ export default class Slider extends React.Component<Props, States> {
     }
 
     private handleMove(moveRight: number) {
-        let  step = this.wrapperRef.current.offsetWidth/2;
+        let  step = this.wrapperRef.current.offsetWidth / 2;
         if (moveRight) {
             step = -step;
         }
@@ -85,7 +85,7 @@ export default class Slider extends React.Component<Props, States> {
         } else if (position < max) {
             position = max;
         }
-        
+
         this.setState({position});
     }
 
