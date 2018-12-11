@@ -18,6 +18,8 @@ import OpdsFeedAddForm from "./OpdsFeedAddForm";
 
 import PublicationInfo from "readium-desktop/renderer/components/publication/PublicationInfo";
 
+import DeletePublicationConfirm from "./DeletePublicationConfirm";
+
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 interface DialogManagerProps  {
@@ -42,8 +44,10 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 return this.buildFileImportDialog();
             case DialogType.PublicationInfo:
                 return this.buildPublicationShowDialog();
-                case DialogType.OpdsFeedAddForm:
+            case DialogType.OpdsFeedAddForm:
                 return this.buildOpdsFeedAddFormDialog();
+            case DialogType.DeletePublicationConfirm:
+                return this.buildDeletePublicationConfirmDialog();
             default:
                 return (<></>);
         }
@@ -88,6 +92,20 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
           </Dialog>
         );
     }
+
+    private buildDeletePublicationConfirmDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+                id={styles.delete_publication_dialog}
+            >
+                <DeletePublicationConfirm
+                    publication={ this.props.dialog.data.publication }
+                />
+          </Dialog>
+        );
+    }
 }
 
 const mapDispatchToProps = (dispatch: any, ownProps: any) => {
@@ -100,7 +118,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
     };
 };
 
-const mapStateToProps = (state: RootState, ownProps: any) => {
+const mapStateToProps = (state: RootState, __: any) => {
     return {
         dialog: state.dialog,
     };

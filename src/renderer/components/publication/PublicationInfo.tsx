@@ -5,8 +5,6 @@ import * as React from "react";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as ExportIcon from "readium-desktop/renderer/assets/icons/outline-exit_to_app-24px.svg";
-import * as RestoreIcon from "readium-desktop/renderer/assets/icons/outline-restore-24px.svg";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
@@ -21,12 +19,15 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 
 import TagManager from "./TagManager";
 
+import { DialogType } from "readium-desktop/common/models/dialog";
+
 interface PublicationInfoProps {
     publicationIdentifier: string;
     publication?: PublicationView;
     deletePublication?: any;
     openReader?: any;
     closeDialog?: any;
+    openDeleteDialog: any;
 }
 
 export class PublicationInfo extends React.Component<PublicationInfoProps, undefined> {
@@ -112,10 +113,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
 
     private deletePublication(e: any) {
         e.preventDefault();
-        this.props.deletePublication({
-            identifier: this.props.publication.identifier,
-        });
-        this.props.closeDialog();
+        this.props.openDeleteDialog(this.props.publication);
     }
 
     private handleRead(e: any) {
@@ -125,7 +123,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: PublicationInfoProps) => {
+const mapDispatchToProps = (dispatch: any, __: PublicationInfoProps) => {
     return {
         openReader: (publication: PublicationView) => {
             dispatch({
@@ -137,10 +135,18 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationInfoProps) => {
                 },
             });
         },
-        closeDialog: (data: any) => {
+        closeDialog: () => {
             dispatch(
                 dialogActions.close(),
             );
+        },
+        openDeleteDialog: (publication: string) => {
+            dispatch(dialogActions.open(
+                DialogType.DeletePublicationConfirm,
+                {
+                    publication,
+                },
+            ));
         },
     };
 };
@@ -161,11 +167,6 @@ export default withApi(
                 resultProp: "publication",
                 buildRequestData,
                 onLoad: true,
-            },
-            {
-                moduleId: "publication",
-                methodId: "delete",
-                callProp: "deletePublication",
             },
         ],
         mapDispatchToProps,

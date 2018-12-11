@@ -48,3 +48,21 @@ body {
       }
     }
 }
+
+/* DELETE PUBLICATION DIALOG */
+
+#delete_publication_dialog {
+    & > div {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      & > div {
+        align-self: flex-end;
+        & button {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+      }
+    }
+}
