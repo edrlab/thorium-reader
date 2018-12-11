@@ -34,10 +34,6 @@ interface CatalogProps extends TranslatorProps, RouteComponentProps {
 
 export class Catalog extends React.Component<CatalogProps, undefined> {
     public render(): React.ReactElement<{}> {
-        if (!this.props.catalog) {
-            return (<></>);
-        }
-
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
 
@@ -53,7 +49,9 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
         return (
             <LibraryLayout>
                     <Header displayType={ displayType } />
-                    <DisplayView catalogEntries={ this.props.catalog.entries } />
+                    { this.props.catalog &&
+                        <DisplayView catalogEntries={ this.props.catalog.entries } />
+                    }
             </LibraryLayout>
         );
     }
