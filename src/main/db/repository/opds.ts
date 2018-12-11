@@ -8,24 +8,24 @@
 import { injectable} from "inversify";
 import * as PouchDB from "pouchdb-core";
 
-import { OpdsDocument } from "readium-desktop/main/db/document/opds";
+import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 
 import { BaseRepository } from "./base";
 
 @injectable()
-export class OpdsRepository extends BaseRepository<OpdsDocument> {
+export class OpdsFeedRepository extends BaseRepository<OpdsFeedDocument> {
     public constructor(db: PouchDB.Database) {
-        super(db, "opds")
+        super(db, "opds-feed");
     }
 
-    protected convertToDocument(dbDoc: PouchDB.Core.Document<any>): OpdsDocument {
+    protected convertToDocument(dbDoc: PouchDB.Core.Document<any>): OpdsFeedDocument {
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
             {
-                name: dbDoc.name,
+                title: dbDoc.title,
                 url: dbDoc.url,
-            }
+            },
         );
     }
 }

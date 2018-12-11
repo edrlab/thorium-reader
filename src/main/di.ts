@@ -34,12 +34,14 @@ import { streamer } from "readium-desktop/main/streamer";
 
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-import { OpdsRepository } from "readium-desktop/main/db/repository/opds";
+import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 
+import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
 import { CatalogApi } from "readium-desktop/main/api/catalog";
+import { OpdsApi } from "readium-desktop/main/api/opds";
 import { PublicationApi } from "readium-desktop/main/api/publication";
 
 import {
@@ -118,7 +120,7 @@ const opdsDb = new PouchDB(
     path.join(rootDbPath, "opds"),
     dbOpts,
 );
-const opdsRepository = new OpdsRepository(opdsDb);
+const opdsFeedRepository = new OpdsFeedRepository(opdsDb);
 
 // Config db
 const configDb = new PouchDB(
@@ -164,8 +166,8 @@ container.bind<Downloader>("downloader").toConstantValue(downloader);
 container.bind<PublicationRepository>("publication-repository").toConstantValue(
     publicationRepository,
 );
-container.bind<OpdsRepository>("opds-repository").toConstantValue(
-    opdsRepository,
+container.bind<OpdsFeedRepository>("opds-feed-repository").toConstantValue(
+    opdsFeedRepository,
 );
 container.bind<LocatorRepository>("locator-repository").toConstantValue(
     locatorRepository,
@@ -178,6 +180,10 @@ container.bind<ConfigRepository>("config-repository").toConstantValue(
 const publicationViewConverter = new PublicationViewConverter();
 container.bind<PublicationViewConverter>("publication-view-converter").toConstantValue(
     publicationViewConverter,
+);
+const opdsFeedViewConverter = new OpdsFeedViewConverter();
+container.bind<OpdsFeedViewConverter>("opds-feed-view-converter").toConstantValue(
+    opdsFeedViewConverter,
 );
 
 // Storage
@@ -211,6 +217,12 @@ container.bind<PublicationApi>("publication-api").toConstantValue(
         publicationRepository,
         publicationViewConverter,
         catalogService,
+    ),
+);
+container.bind<OpdsApi>("opds-api").toConstantValue(
+    new OpdsApi(
+        opdsFeedRepository,
+        opdsFeedViewConverter,
     ),
 );
 

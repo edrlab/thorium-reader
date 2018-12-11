@@ -13,13 +13,6 @@ import {
 } from "./downloader";
 
 import {
-    opdsAddRequestWatcher,
-    opdsInitWatcher,
-    opdsRemoveRequestWatcher,
-    opdsUpdateRequestWatcher,
-} from "./opds";
-
-import {
     publicationDownloadCancelRequestWatcher
 } from "./publication-download";
 
@@ -68,12 +61,6 @@ export function* rootSaga() {
 
         // Publication download
         publicationDownloadCancelRequestWatcher(),
-
-        // OPDS
-        opdsAddRequestWatcher(),
-        opdsInitWatcher(),
-        opdsRemoveRequestWatcher(),
-        opdsUpdateRequestWatcher(),
 
         // App
         appInitWatcher(),
