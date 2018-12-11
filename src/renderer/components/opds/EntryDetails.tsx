@@ -19,6 +19,8 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+
 interface TextSearchResultProps extends TranslatorProps, RouteComponentProps {
     publications?: Publication[];
 }
@@ -42,6 +44,7 @@ export class TagSearchResult extends React.Component<TextSearchResultProps, unde
                 <div>
                     <Header displayType={ displayType } />
                     <BreadCrumb
+                        className={styles.entry_details}
                         search={this.props.location.search}
                         breadcrumb={[
                             {name: "Mes livres", path: "/library"},
