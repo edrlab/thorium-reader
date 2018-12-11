@@ -14,6 +14,8 @@ import Dialog from "./Dialog";
 
 import FileImport from "./FileImport";
 
+import OpdsFeedAddForm from "./OpdsFeedAddForm";
+
 import PublicationInfo from "readium-desktop/renderer/components/publication/PublicationInfo";
 
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
@@ -35,14 +37,29 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             return (<></>);
         }
 
-        switch(dialog.type) {
+        switch (dialog.type) {
             case DialogType.FileImport:
                 return this.buildFileImportDialog();
             case DialogType.PublicationInfo:
                 return this.buildPublicationShowDialog();
+                case DialogType.OpdsFeedAddForm:
+                return this.buildOpdsFeedAddFormDialog();
             default:
                 return (<></>);
         }
+    }
+
+    private buildOpdsFeedAddFormDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+            >
+                <OpdsFeedAddForm
+                    url={ this.props.dialog.data.opds.url }
+                />
+          </Dialog>
+        );
     }
 
     private buildPublicationShowDialog() {
@@ -77,7 +94,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
     return {
         closeDialog: (data: any) => {
             dispatch(
-                dialogActions.close()
+                dialogActions.close(),
             );
         },
     };

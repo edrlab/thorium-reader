@@ -7,21 +7,25 @@
 
 import * as React from "react";
 
+import { connect } from "react-redux";
+
+import { DialogType } from "readium-desktop/common/models/dialog";
+
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
-import { withApi } from "../utils/api";
-
-interface AddOpdsFormProps {
-    addOpds?: (data: any) => void;
+interface OpdsAddFormProps {
+    openOpdsFeedAddForm?: any;
 }
 
-export class AddOpdsForm extends React.Component<AddOpdsFormProps, undefined> {
-    private pathRef: any;
+export class OpdsAddForm extends React.Component<OpdsAddFormProps, undefined> {
+    private urlRef: any;
 
     public constructor(props: any) {
         super(props);
 
-        this.pathRef = React.createRef();
+        this.urlRef = React.createRef();
 
         this.add = this.add.bind(this);
     }
@@ -31,7 +35,7 @@ export class AddOpdsForm extends React.Component<AddOpdsFormProps, undefined> {
                 <p>Ajouter un flux</p>
                 <form onSubmit={this.add}>
                     <input
-                        ref={this.pathRef}
+                        ref={this.urlRef}
                         type="text"
                         placeholder="Coller l'URL d'un flux"
                         title="Coller l'URL d'un flux"
@@ -43,21 +47,22 @@ export class AddOpdsForm extends React.Component<AddOpdsFormProps, undefined> {
 
     private add(e: any) {
         e.preventDefault();
-        const newOpds = {path: this.pathRef.current.value};
-        console.log("Add new OPDS : ", newOpds);
-        this.props.addOpds(newOpds);
+        const url = this.urlRef.current.value;
+        this.props.openOpdsFeedAddForm(url);
     }
 }
 
-export default withApi(
-    AddOpdsForm,
-    {
-        operations: [
-            {
-                moduleId: "opds",
-                methodId: "add",
-                callProp: "addOpds",
-            },
-        ],
-    },
-);
+const mapDispatchToProps = (dispatch: any, __1: any) => {
+    return {
+        openOpdsFeedAddForm: (url: string) => {
+            dispatch(dialogActions.open(
+                DialogType.OpdsFeedAddForm,
+                {
+                    opds: { url },
+                },
+            ));
+        },
+    };
+};
+
+export default connect(undefined, mapDispatchToProps)(OpdsAddForm);

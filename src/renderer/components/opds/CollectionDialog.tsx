@@ -23,8 +23,10 @@ import { publicationDownloadActions } from "readium-desktop/common/redux/actions
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import AddOpdsForm from "readium-desktop/renderer/components/opds/AddOpdsForm";
+import OpdsAddForm from "readium-desktop/renderer/components/opds/OpdsAddForm";
+
 import AuthenticationForm from "readium-desktop/renderer/components/opds/AuthenticationForm";
+
 import Opds from "readium-desktop/renderer/components/opds/Opds";
 
 import { OpdsFeed } from "readium-desktop/common/models/opds";
@@ -130,7 +132,7 @@ export default class CollectionDialog extends React.Component<ICollectiondialogP
                             label={__("opds.settings")}
                             onClick={() => {
                                 this.props.openDialog((
-                                    <AddOpdsForm/>
+                                    <OpdsAddForm/>
                                     ),
                                     null,
                                     []);

@@ -13,40 +13,24 @@ import { Link } from "react-router-dom";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
+import { OpdsFeedView } from "readium-desktop/common/views/opds";
+
 interface OpdsListProps {
-    data: any;
+    feeds?: any;
 }
 
-const data = [
-    {
-        name: "FeedBooks",
-        path: "test/path/feedbooks",
-    },
-    {
-        name: "Flux 1",
-        path: "test/path/feedbooks",
-    },
-    {
-        name: "Flux 2",
-        path: "test/path/feedbooks",
-    },
-    {
-        name: "Flux 3",
-        path: "test/path/feedbooks",
-    },
-];
-
-export class OpdsList extends React.Component<{}, null> {
+export class OpdsList extends React.Component<OpdsListProps, null> {
     public render(): React.ReactElement<{}>  {
-        if (!data) {
+        if (!this.props.feeds) {
             return <></>;
         }
+
         return (
             <section className={styles.opds_list}>
-                { data.map((item) =>
-                    <Link to={"/catalogs/" + item.name}>
+                { this.props.feeds.map((item: OpdsFeedView) =>
+                    <Link to={"/catalogs/" + item.identifier}>
                         <div>
-                            <p>{ item.name }</p>
+                            <p>{ item.title }</p>
                         </div>
                     </Link>,
                 )}
@@ -59,12 +43,12 @@ export default withApi(
     OpdsList,
     {
         operations: [
-            // {
-            //     moduleId: "opds",
-            //     methodId: "findAll",
-            //     resultProp: "data",
-            //     onLoad: true,
-            // },
+            {
+                moduleId: "opds",
+                methodId: "findAllFeeds",
+                resultProp: "feeds",
+                onLoad: true,
+            },
         ],
     },
 );
