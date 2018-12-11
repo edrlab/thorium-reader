@@ -20,46 +20,31 @@ import BreadCrumb from "../layout/BreadCrumb";
 
 import OpdsEntry from "./OpdsEntry";
 
-const data = {
-    content: [
-        {
-            name: "Entry 1",
-            count: 56,
-        },
-        {
-            name: "Entry 2",
-            count: 38,
-        },
-        {
-            name: "Entry 3",
-            count: 5,
-        },
-        {
-            name: "Entry 4",
-            count: 1503,
-        },
-    ],
-    name: "Nom du flux",
-};
+import { OpdsFeedView } from "readium-desktop/common/views/opds";
 
-export class OpdsDetails extends React.Component<RouteComponentProps, null> {
+interface FeedDetailsProps extends RouteComponentProps {
+    feed: OpdsFeedView;
+}
+
+export class FeedDetails extends React.Component<FeedDetailsProps, null> {
     public render(): React.ReactElement<{}>  {
-        if (!data) {
+        const { feed } = this.props;
+        if (!feed) {
             return <></>;
         }
 
-        const breadcrumb = [{ name: "Catalogues", path: "/catalogs" }, { name: data.name }];
+        const breadcrumb = [{ name: "Catalogues", path: "/catalogs" }, { name: feed.title }];
         return (
             <LibraryLayout>
                 <Header/>
                 <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search}/>
                 <section id={styles.flux_list}>
                     <ul>
-                        { data.content.map((entry, index) =>
+                        {/* { feed.content.map((entry, index) =>
                             <li key={index}>
                                 <OpdsEntry entry={entry} match={this.props.match}/>
                             </li>,
-                        )}
+                        )} */}
                     </ul>
                 </section>
             </LibraryLayout>
@@ -67,16 +52,22 @@ export class OpdsDetails extends React.Component<RouteComponentProps, null> {
     }
 }
 
+const buildRequestData = (props: FeedDetailsProps) => {
+    return {
+        identifier: (props.match.params as any).opdsId,
+    };
+};
+
 export default withApi(
-    OpdsDetails,
+    FeedDetails,
     {
         operations: [
-            // {
-            //     moduleId: "opds",
-            //     methodId: "findAll",
-            //     resultProp: "data",
-            //     onLoad: true,
-            // },
+            {
+                moduleId: "opds",
+                methodId: "getFeed",
+                resultProp: "feed",
+                onLoad: true,
+            },
         ],
     },
 );
