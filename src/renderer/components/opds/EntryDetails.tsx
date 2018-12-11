@@ -1,20 +1,8 @@
-import * as uuid from "uuid";
-
 import * as qs from "query-string";
 
 import * as React from "react";
 
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
-import { connect } from "react-redux";
-
 import { RouteComponentProps } from "react-router-dom";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
-import { apiActions } from "readium-desktop/common/redux/actions";
-
-import { CatalogView } from "readium-desktop/common/views/catalog";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
@@ -22,17 +10,22 @@ import { TranslatorProps } from "readium-desktop/renderer/components/utils/trans
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 
-import Header, { DisplayType } from "./Header";
+import Header, { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 
-import GridView from "./GridView";
-import ListView from "./ListView";
+import GridView from "readium-desktop/renderer/components/utils/GridView";
+import ListView from "readium-desktop/renderer/components/utils/ListView";
 
-interface CatalogProps extends TranslatorProps, RouteComponentProps {
-    catalog?: CatalogView;
-    requestCatalog: any;
+import { Publication } from "readium-desktop/common/models/publication";
+
+import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
+
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+
+interface TextSearchResultProps extends TranslatorProps, RouteComponentProps {
+    publications?: Publication[];
 }
 
-export class Catalog extends React.Component<CatalogProps, undefined> {
+export class TagSearchResult extends React.Component<TextSearchResultProps, undefined> {
     public render(): React.ReactElement<{}> {
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
@@ -48,24 +41,34 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
 
         return (
             <LibraryLayout>
+                <div>
                     <Header displayType={ displayType } />
-                    { this.props.catalog &&
-                        <DisplayView catalogEntries={ this.props.catalog.entries } />
-                    }
+                    <BreadCrumb
+                        className={styles.entry_details}
+                        search={this.props.location.search}
+                        breadcrumb={[
+                            {name: "Mes livres", path: "/library"},
+                            {name: "Feedbooks", path: "/catalogs/Feedbooks"},
+                            {name: "Entry 1"},
+                        ]}
+                    />
+                    { this.props.publications ?
+                        <DisplayView publications={ this.props.publications } />
+                    : <></>}
+                </div>
             </LibraryLayout>
         );
     }
 }
 
 export default withApi(
-    Catalog,
+    TagSearchResult,
     {
         operations: [
             {
-                moduleId: "catalog",
-                methodId: "get",
-                callProp: "requestCatalog",
-                resultProp: "catalog",
+                moduleId: "publication",
+                methodId: "findAll",
+                resultProp: "publications",
                 onLoad: true,
             },
         ],

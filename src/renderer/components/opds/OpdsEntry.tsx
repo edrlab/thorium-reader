@@ -23,8 +23,6 @@ import Slider from "readium-desktop/renderer/components/utils/Slider";
 
 import { PublicationCard } from "readium-desktop/renderer/components/publication";
 
-import classNames = require("classnames");
-
 interface OpdsEntryProps extends RouteComponentProps {
     entry?: any;
     publications?: PublicationView[];
@@ -58,22 +56,24 @@ export class OpdsDetails extends React.Component<OpdsEntryProps, OpdsEntryState>
                     </button>
                     <Link
                         className={styles.flux_image}
-                        to={"catalogs/" + (this.props.match.params as any).opdsId + "/" + entry.name}
+                        to={"/catalogs/" + (this.props.match.params as any).opdsId + "/" + entry.name}
                         >
                             <SVG svg={ArrowIcon} aria-hidden="true"/>
                     </Link>
                 </div>
-                <Slider
-                    content={
-                        publications.map((pub) =>
-                            <PublicationCard
-                                key={pub.identifier}
-                                publication={pub}
-                            />,
-                        )
-                    }
-                    className={classNames(styles.flux_slider, this.state.isExtended && styles.extended)}
-                />
+                { this.state.isExtended &&
+                    <Slider
+                        content={
+                            publications.map((pub) =>
+                                <PublicationCard
+                                    key={pub.identifier}
+                                    publication={pub}
+                                />,
+                            )
+                        }
+                        className={styles.flux_slider}
+                    />
+                }
             </>
         );
     }

@@ -2,7 +2,7 @@ import * as React from "react";
 
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 
-import * as styles from "readium-desktop/renderer/assets/styles/searchResult.css";
+import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
 
 import { RouteComponentProps} from "react-router-dom";
 

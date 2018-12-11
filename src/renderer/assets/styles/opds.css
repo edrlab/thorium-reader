@@ -113,11 +113,15 @@
     }
 
     & .flux_slider {
-        display: none;
         margin: 20px -36px 0 -36px;
     }
+}
 
-    & .extended {
-        display: flex;
-    }
+/* ENTRY DETAILS */
+
+.entry_details {
+    border-bottom: 2px solid rgb(219, 219, 219);;
+    margin: 0 -60px;
+    padding: 30px 60px;
+    margin-bottom: 20px;
 }

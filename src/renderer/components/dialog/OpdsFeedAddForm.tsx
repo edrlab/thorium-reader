@@ -66,9 +66,9 @@ export class OpdsFeedAddForm extends React.Component<OpdsFeedAddFormProps, undef
 
     public add(e: any) {
         e.preventDefault();
-        const name = this.nameRef.current.value;
+        const title = this.nameRef.current.value;
         const url = this.urlRef.current.value;
-        this.props.addFeed({ name, url});
+        this.props.addFeed({ title, url});
         this.props.closeDialog();
     }
 }

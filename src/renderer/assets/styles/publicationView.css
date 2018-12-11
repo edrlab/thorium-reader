@@ -1,0 +1,14 @@
+.card_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    & .card_substitute {
+        width: 175px;
+        height: 0px;
+    }
+
+    & > * {
+        margin-right: 10px;
+    }
+}

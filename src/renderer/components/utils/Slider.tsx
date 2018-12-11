@@ -29,7 +29,7 @@ export default class Slider extends React.Component<Props, States> {
         this.contentRef = React.createRef();
         this.wrapperRef = React.createRef();
 
-        window.addEventListener('resize', () => this.forceUpdate());
+        window.addEventListener("resize", () => this.forceUpdate());
     }
 
     public componentDidMount() {
@@ -74,7 +74,7 @@ export default class Slider extends React.Component<Props, States> {
     }
 
     private handleMove(moveRight: number) {
-        let  step = this.wrapperRef.current.offsetWidth/2;
+        let  step = this.wrapperRef.current.offsetWidth / 2;
         if (moveRight) {
             step = -step;
         }
@@ -85,7 +85,7 @@ export default class Slider extends React.Component<Props, States> {
         } else if (position < max) {
             position = max;
         }
-        
+
         this.setState({position});
     }
 
