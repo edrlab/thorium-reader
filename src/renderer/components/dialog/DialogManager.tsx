@@ -54,10 +54,12 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
     }
 
     private buildOpdsFeedAddFormDialog() {
+        console.log(styles);
         return (
             <Dialog
                 open={ true }
                 close={ this.props.closeDialog }
+                id={ styles.opds_form_dialog }
             >
                 <OpdsFeedAddForm
                     url={ this.props.dialog.data.opds.url }
