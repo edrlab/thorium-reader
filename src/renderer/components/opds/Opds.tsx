@@ -10,14 +10,14 @@ import * as React from "react";
 import OpdsAddForm from "./OpdsAddForm";
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import OpdsList from "./OpdsList";
+import FeedList from "./FeedList";
 
 export default class Opds extends React.Component<{}, null> {
     public render(): React.ReactElement<{}>  {
         return (
             <LibraryLayout>
                 <OpdsAddForm />
-                <OpdsList />
+                <FeedList />
             </LibraryLayout>
         );
     }

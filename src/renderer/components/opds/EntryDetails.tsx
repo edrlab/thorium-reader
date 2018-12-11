@@ -44,7 +44,10 @@ export class TagSearchResult extends React.Component<TextSearchResultProps, unde
                 <div>
                     <Header displayType={ displayType } />
                     <BreadCrumb
+<<<<<<< HEAD
                         className={styles.entry_details}
+=======
+>>>>>>> c8bc16a7b2db98419f4cdf99d4dc3225895e4e7b
                         search={this.props.location.search}
                         breadcrumb={[
                             {name: "Mes livres", path: "/library"},
