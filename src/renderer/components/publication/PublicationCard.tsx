@@ -7,8 +7,6 @@
 
 import * as React from "react";
 
-import { connect } from "react-redux";
-
 import { DialogType } from "readium-desktop/common/models/dialog";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
@@ -33,6 +31,7 @@ interface PublicationCardProps {
     displayPublicationInfo?: any;
     deletePublication?: any;
     openReader?: any;
+    openDeleteDialog?: any;
 }
 
 interface PublicationCardState {
@@ -104,9 +103,7 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
 
     private deletePublication(e: any) {
         e.preventDefault();
-        this.props.deletePublication({
-            identifier: this.props.publication.identifier,
-        });
+        this.props.openDeleteDialog(this.props.publication);
     }
 
     private handleOnBlurMenu(e: any) {
@@ -149,6 +146,14 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
                     publication: {
                         identifier: publication.identifier,
                     },
+                },
+            ));
+        },
+        openDeleteDialog: (publication: string) => {
+            dispatch(dialogActions.open(
+                DialogType.DeletePublicationConfirm,
+                {
+                    publication,
                 },
             ));
         },
