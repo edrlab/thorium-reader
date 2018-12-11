@@ -62,8 +62,6 @@ export class Header extends React.Component<HeaderProps, undefined> {
         for (const matchRoute of item.matchRoutes) {
             if (pathname.startsWith(matchRoute)
             && ((pathname === "/" && matchRoute === pathname) || matchRoute !== "/")) {
-                console.log("pathname", pathname);
-                console.log("matchRoute", matchRoute);
                 active = true;
                 styleClasses.push(styles.active);
                 break;
