@@ -29,34 +29,25 @@ interface FeedDetailsProps extends RouteComponentProps {
 export class FeedDetails extends React.Component<FeedDetailsProps, null> {
     public render(): React.ReactElement<{}>  {
         const { feed } = this.props;
-        if (!feed) {
-            return <></>;
-        }
 
-        const breadcrumb = [{ name: "Catalogues", path: "/catalogs" }, { name: feed.title }];
+        const breadcrumb = [{ name: "Catalogues", path: "/catalogs" }, { name: feed && feed.title }];
         return (
             <LibraryLayout>
                 <Header/>
                 <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search}/>
                 <section id={styles.flux_list}>
                     <ul>
-                        {/* { feed.content.map((entry, index) =>
+                        { feed && (feed as any).content.map((entry: any, index: any) =>
                             <li key={index}>
                                 <OpdsEntry entry={entry} match={this.props.match}/>
                             </li>,
-                        )} */}
+                        )}
                     </ul>
                 </section>
             </LibraryLayout>
         );
     }
 }
-
-const buildRequestData = (props: FeedDetailsProps) => {
-    return {
-        identifier: (props.match.params as any).opdsId,
-    };
-};
 
 export default withApi(
     FeedDetails,
