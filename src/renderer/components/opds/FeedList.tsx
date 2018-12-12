@@ -16,7 +16,7 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
 
 interface OpdsListProps {
-    feeds?: any;
+    feeds?: OpdsFeedView[];
 }
 
 export class FeedList extends React.Component<OpdsListProps, null> {
@@ -27,8 +27,8 @@ export class FeedList extends React.Component<OpdsListProps, null> {
 
         return (
             <section className={styles.opds_list}>
-                { this.props.feeds.map((item: OpdsFeedView) =>
-                    <Link to={"/catalogs/" + item.identifier}>
+                { this.props.feeds.map((item, index) =>
+                    <Link key={index} to={"/catalogs/" + item.identifier}>
                         <div>
                             <p>{ item.title }</p>
                         </div>
