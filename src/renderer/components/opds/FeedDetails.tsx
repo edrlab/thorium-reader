@@ -7,6 +7,8 @@
 
 import * as React from "react";
 
+import * as qs from "query-string";
+
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
@@ -49,14 +51,19 @@ export class FeedDetails extends React.Component<FeedDetailsProps, null> {
     }
 }
 
+const buildOpdsRequestData = (props: FeedDetailsProps) => {
+    return qs.parse(props.location.search);
+};
+
 export default withApi(
     FeedDetails,
     {
         operations: [
             {
                 moduleId: "opds",
-                methodId: "getFeed",
-                resultProp: "feed",
+                methodId: "browse",
+                resultProp: "opdsResult",
+                buildRequestData: buildOpdsRequestData,
                 onLoad: true,
             },
         ],

@@ -28,7 +28,7 @@ export class FeedList extends React.Component<OpdsListProps, null> {
         return (
             <section className={styles.opds_list}>
                 { this.props.feeds.map((item, index) =>
-                    <Link key={index} to={"/catalogs/" + item.identifier}>
+                    <Link key={index} to={"/opds/" + item.identifier + `/browse?url=${encodeURIComponent(item.url)}`}>
                         <div>
                             <p>{ item.title }</p>
                         </div>

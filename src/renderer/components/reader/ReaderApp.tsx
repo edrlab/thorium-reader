@@ -5,73 +5,68 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as path from "path";
-
 import * as React from "react";
-
-import { Store } from "redux";
-
-import { container } from "readium-desktop/renderer/di";
+import * as classNames from "classnames";
+import * as path from "path";
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import {
     Bookmark,
     ReaderConfig as ReadiumCSS,
 } from "readium-desktop/common/models/reader";
-
-import { lazyInject } from "readium-desktop/renderer/di";
-
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
-import { Translator } from "readium-desktop/common/services/translator";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
-import { readerActions } from "readium-desktop/common/redux/actions";
-
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-
-import { lightBaseTheme, MuiThemeProvider } from "material-ui/styles";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-
 import {
-    IEventPayload_R2_EVENT_READING_LOCATION,
-    IEventPayload_R2_EVENT_READIUMCSS,
-} from "@r2-navigator-js/electron/common/events";
-
-import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
+    IReadiumCSS,
+    colCountEnum,
+    readiumCSSDefaults,
+    textAlignEnum,
+} from "@r2-navigator-js/electron/common/readium-css-settings";
 import {
-    handleLink,
+    LocatorExtended,
+    getCurrentReadingLocation,
+    handleLinkLocator,
+    handleLinkUrl,
     installNavigatorDOM,
     navLeftOrRight,
     readiumCssOnOff,
     setReadingLocationSaver,
     setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
-import { JSON as TAJSON } from "ta-json-x";
-
-import { webFrame } from "electron";
-
+import { MuiThemeProvider, lightBaseTheme } from "material-ui/styles";
 import {
-    convertCustomSchemeToHttpUrl,
     READIUM2_ELECTRON_HTTP_PROTOCOL,
+    convertCustomSchemeToHttpUrl,
 } from "@r2-navigator-js/electron/common/sessions";
-
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-
 import {
     _NODE_MODULE_RELATIVE_URL,
     _PACKAGING,
     _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
-import { setEpubReadingSystemJsonGetter } from "@r2-navigator-js/electron/renderer/index";
+import ArrowIcon from "readium-desktop/renderer/assets/icons/arrow.svg";
+import {
+    IEventPayload_R2_EVENT_READIUMCSS,
+} from "@r2-navigator-js/electron/common/events";
 import { INameVersion } from "@r2-navigator-js/electron/renderer/webview/epubReadingSystem";
-
-import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
-
+import { Locator } from "@r2-shared-js/models/locator";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
 import ReaderMenu from "readium-desktop/renderer/components/reader/ReaderMenu";
 import ReaderOptions from "readium-desktop/renderer/components/reader/ReaderOptions";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { Store } from "redux";
+import { JSON as TAJSON } from "ta-json-x";
+import { Translator } from "readium-desktop/common/services/translator";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { container } from "readium-desktop/renderer/di";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
+import { ipcRenderer } from "electron";
+import { lazyInject } from "readium-desktop/renderer/di";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { setEpubReadingSystemJsonGetter } from "@r2-navigator-js/electron/renderer/index";
+import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { webFrame } from "electron";
 
 webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
 webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
@@ -86,41 +81,83 @@ const queryParams = getURLQueryParams();
 
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     const store = (container.get("store") as Store<any>);
-    const settings = store.getState().reader.config.value;
-    const cssJson = {
-        align: settings.align,
-        colCount: settings.colCount,
-        dark: settings.dark,
+    const settings = store.getState().reader.config;
+
+    // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
+    const cssJson: IReadiumCSS = {
+
+        a11yNormalize: readiumCSSDefaults.a11yNormalize,
+
+        backgroundColor: readiumCSSDefaults.backgroundColor,
+
+        bodyHyphens: readiumCSSDefaults.bodyHyphens,
+
+        colCount: settings.colCount === "1" ? colCountEnum.one :
+            (settings.colCount === "2" ? colCountEnum.two : colCountEnum.auto),
+
+        darken: settings.dark,
+
         font: settings.font,
+
         fontSize: settings.fontSize,
+
         invert: settings.invert,
+
+        letterSpacing: readiumCSSDefaults.letterSpacing,
+
+        ligatures: readiumCSSDefaults.ligatures,
+
         lineHeight: settings.lineHeight,
+
         night: settings.night,
+
+        pageMargins: readiumCSSDefaults.pageMargins,
+
         paged: settings.paged,
+
+        paraIndent: readiumCSSDefaults.paraIndent,
+
+        paraSpacing: readiumCSSDefaults.paraSpacing,
+
         sepia: settings.sepia,
+
+        textAlign: settings.align === "left" ? textAlignEnum.left :
+            (settings.align === "right" ? textAlignEnum.right :
+            (settings.align === "justify" ? textAlignEnum.justify : textAlignEnum.start)),
+
+        textColor: readiumCSSDefaults.textColor,
+
+        typeScale: readiumCSSDefaults.typeScale,
+
+        wordSpacing: readiumCSSDefaults.wordSpacing,
     };
-    const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { injectCSS: "yes", setCSS: cssJson };
+    const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
     return jsonMsg;
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
 
-const saveReadingLocation = (docHref: string, locator: IEventPayload_R2_EVENT_READING_LOCATION) => {
+const saveReadingLocation = (loc: LocatorExtended) => {
+
     const store = container.get("store") as Store<RootState>;
     store.dispatch(readerActions.saveBookmark(
         {
             identifier: "reading-location",
             publication: {
-                identifier: queryParams.pubId,
+                // tslint:disable-next-line:no-string-literal
+                identifier: queryParams["pubId"],
             },
-            docHref,
+            docHref: loc.locator.href,
 
-            // TODO: support for save+restore locator.cfi (see IEventPayload_R2_EVENT_READING_LOCATION type)
-            docSelector: locator.cssSelector,
+            // TODO? Also save loc.locator.locations.position|progression|cfi
+            // (not really used internally by navigator at this stage, only CSS Selector,
+            // but progression useful to display per-document percentage progress)
+            docSelector: loc.locator.locations.cssSelector,
         } as Bookmark,
     ));
 };
 
-const publicationJsonUrl = queryParams.pub;
+// tslint:disable-next-line:no-string-literal
+const publicationJsonUrl = queryParams["pub"];
 // tslint:disable-next-line:variable-name
 const publicationJsonUrl_ = publicationJsonUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
     convertCustomSchemeToHttpUrl(publicationJsonUrl) : publicationJsonUrl;
@@ -133,7 +170,8 @@ const pathFileName = pathDecoded.substr(
     pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
     pathDecoded.length - 1);
 
-const lcpHint = queryParams.lcpHint;
+// tslint:disable-next-line:no-string-literal
+const lcpHint = queryParams["lcpHint"];
 
 const fontSizes: string[] = [
     "75%",
@@ -239,13 +277,13 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
                 let i = 0;
                 for (const size of fontSizes) {
-                    if (settings.value.fontSize === size) {
+                    if (settings.fontSize === size) {
                         this.setState({fontSizeIndex: i});
                     }
                     i++;
                 }
 
-                this.setState({settingsValues: settings.value});
+                this.setState({settingsValues: settings});
 
                 // Push reader config to navigator
                 readiumCssOnOff();
@@ -262,10 +300,11 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             }
         });
 
-        let docHref: string = queryParams.docHref;
+        // tslint:disable-next-line:no-string-literal
+        let docHref: string = queryParams["docHref"];
 
-        // TODO: see IEventPayload_R2_EVENT_READING_LOCATION object below
-        let docSelector: string = queryParams.docSelector;
+        // tslint:disable-next-line:no-string-literal
+        let docSelector: string = queryParams["docSelector"];
 
         if (docHref && docSelector) {
             // Decode base64
@@ -273,13 +312,19 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             docSelector = window.atob(docSelector);
         }
 
-        // TODO: save+restore .cfi (not just .cssSelector)
-        const docLocation: IEventPayload_R2_EVENT_READING_LOCATION = {
-            cfi: undefined,
-            cssSelector: docSelector,
+        // Note that CFI, etc. can optionally be restored too,
+        // but navigator currently uses cssSelector as the primary
+        const locator: Locator = {
+            href: docHref,
+            locations: {
+                cfi: undefined,
+                cssSelector: docSelector,
+                position: undefined,
+                progression: undefined,
+            }
         };
 
-        const publication = await this.loadPublicationIntoViewport(docHref, docLocation);
+        const publication = await this.loadPublicationIntoViewport(locator);
         this.setState({publication});
         setReadingLocationSaver(saveReadingLocation);
 
@@ -331,10 +376,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         );
     }
 
-    private async loadPublicationIntoViewport(
-        docHref: string,
-        docLocation: IEventPayload_R2_EVENT_READING_LOCATION,
-    ): Promise<R2Publication> {
+    private async loadPublicationIntoViewport(locator: Locator): Promise<R2Publication> {
         let response: Response;
         try {
             response = await fetch(publicationJsonUrl);
@@ -392,8 +434,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             publicationJsonUrl,
             "publication_viewport",
             preloadPath,
-            docHref,
-            docLocation,
+            locator,
         );
 
         return publication;
@@ -408,7 +449,31 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
     private handleLinkClick(event: any, url: string) {
         event.preventDefault();
-        handleLink(url, undefined, false);
+
+        handleLinkUrl(url);
+
+        // Example to pass a specific cssSelector:
+        // (for example to restore a bookmark)
+        // const locator: Locator = {
+        //     href: url,
+        //     locations: {
+        //         cfi: undefined,
+        //         cssSelector: CSSSELECTOR,
+        //         position: undefined,
+        //         progression: undefined,
+        //     }
+        // };
+        // handleLinkLocator(locator);
+
+        // Example to save a bookmark:
+        // const loc: LocatorExtended = getCurrentReadingLocation();
+        // Note: there is additional useful info about pagination
+        // which can be used to report progress info to the user
+        // if (loc.paginationInfo !== null) =>
+        // loc.paginationInfo.totalColumns (N = 1+)
+        // loc.paginationInfo.currentColumn [0, (N-1)]
+        // loc.paginationInfo.isTwoPageSpread (true|false)
+        // loc.paginationInfo.spreadIndex [0, (N/2)]
     }
 
     private handleFullscreenClick() {

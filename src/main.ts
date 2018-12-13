@@ -24,6 +24,8 @@ import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
 
 import { container } from "readium-desktop/main/di";
 
+import { OpdsApi } from "readium-desktop/main/api/opds";
+
 import { appInit } from "readium-desktop/main/redux/actions/app";
 import { RootState } from "readium-desktop/main/redux/states";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
@@ -31,10 +33,8 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 
 import {
-    catalogActions,
     i18nActions,
     netActions,
-    opdsActions,
     readerActions,
     updateActions,
 } from "readium-desktop/common/redux/actions";
@@ -64,9 +64,8 @@ import { CatalogService } from "readium-desktop/main/services/catalog";
 // Logger
 const debug = debug_("readium-desktop:main");
 
-
 // Parse command line
-const processArgs = yargs.argv
+const processArgs = yargs.argv;
 
 initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();
@@ -342,7 +341,7 @@ function processCommandLine() {
 
     if ("importFile" in processArgs) {
         const catalogService = container.get("catalog-service") as CatalogService;
-        promise = catalogService.importFile(processArgs["importFile"]);
+        promise = catalogService.importFile(processArgs.importFile);
     }
 
     if (promise == null) {
