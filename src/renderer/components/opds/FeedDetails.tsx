@@ -7,6 +7,8 @@
 
 import * as React from "react";
 
+import * as qs from "query-string";
+
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
@@ -29,22 +31,19 @@ interface FeedDetailsProps extends RouteComponentProps {
 export class FeedDetails extends React.Component<FeedDetailsProps, null> {
     public render(): React.ReactElement<{}>  {
         const { feed } = this.props;
-        if (!feed) {
-            return <></>;
-        }
 
-        const breadcrumb = [{ name: "Catalogues", path: "/catalogs" }, { name: feed.title }];
+        const breadcrumb = [{ name: "Catalogues", path: "/catalogs" }, { name: feed && feed.title }];
         return (
             <LibraryLayout>
                 <Header/>
                 <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search}/>
                 <section id={styles.flux_list}>
                     <ul>
-                        {/* { feed.content.map((entry, index) =>
+                        { feed && (feed as any).content.map((entry: any, index: any) =>
                             <li key={index}>
                                 <OpdsEntry entry={entry} match={this.props.match}/>
                             </li>,
-                        )} */}
+                        )}
                     </ul>
                 </section>
             </LibraryLayout>
@@ -52,10 +51,8 @@ export class FeedDetails extends React.Component<FeedDetailsProps, null> {
     }
 }
 
-const buildRequestData = (props: FeedDetailsProps) => {
-    return {
-        identifier: (props.match.params as any).opdsId,
-    };
+const buildOpdsRequestData = (props: FeedDetailsProps) => {
+    return qs.parse(props.location.search);
 };
 
 export default withApi(
@@ -64,8 +61,9 @@ export default withApi(
         operations: [
             {
                 moduleId: "opds",
-                methodId: "getFeed",
-                resultProp: "feed",
+                methodId: "browse",
+                resultProp: "opdsResult",
+                buildRequestData: buildOpdsRequestData,
                 onLoad: true,
             },
         ],

@@ -30,14 +30,14 @@ interface RouteList {
 }
 
 export const routes: RouteList = {
-    "/catalogs": {
-        path: "/catalogs",
+    "/opds": {
+        path: "/opds",
         exact: true,
         title: "Catalogues",
         component: Opds,
     },
-    "/catalogs/": {
-        path: "/catalogs/:opdsId",
+    "/opds/browse": {
+        path: "/opds/:opdsId/browse",
         exact: true,
         title: "Catalogues",
         component: FeedDetails,

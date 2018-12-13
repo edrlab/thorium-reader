@@ -7,11 +7,30 @@
 
 import { injectable} from "inversify";
 
+import * as request from "request";
+
+import * as xmldom from "xmldom";
+
+import {
+    convertOpds1ToOpds2,
+    convertOpds1ToOpds2_EntryToPublication,
+} from "@r2-opds-js/opds/converter";
+
+import { OPDS } from "@r2-opds-js/opds/opds1/opds";
+import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
+
+import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
+import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
+import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
+
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
 
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
+
+import { httpGet } from "readium-desktop/common/utils";
+import { OpdsParsingError } from "../exceptions/opds";
 
 @injectable()
 export class OpdsApi {
@@ -52,5 +71,37 @@ export class OpdsApi {
     public async updateFeed(data: any): Promise<OpdsFeedView> {
         const doc = await this.opdsFeedRepository.save(data);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
+    }
+
+    public async browse(data: any): Promise<any> {
+        const { url } = data;
+        const opdsFeedData = await httpGet(url) as string;
+        let opds2Publication: OPDSPublication = null;
+        let opds2Feed: OPDSFeed = null;
+
+        if (opdsFeedData.startsWith("<?xml")) {
+            // This is an opds feed in version 1
+            // Convert to opds version 2
+            const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData);
+
+            if (!xmlDom || !xmlDom.documentElement) {
+                throw new OpdsParsingError(`Unable to parse ${url}`);
+            }
+
+            const isEntry = xmlDom.documentElement.localName === "entry";
+            console.log("#### is entry", isEntry);
+            if (isEntry) {
+                const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
+                console.log("####", opds1Entry);
+
+                opds2Publication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
+            } else {
+                const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
+                console.log("####", opds1Feed);
+                opds2Feed = convertOpds1ToOpds2(opds1Feed);
+            }
+        }
+
+        console.log("#### opds2 feed", opds2Publication, opds2Feed);
     }
 }

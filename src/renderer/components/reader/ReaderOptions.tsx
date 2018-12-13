@@ -64,6 +64,12 @@ export default class ReaderOptions extends React.Component<Props, State> {
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
 
+        if (!this.props.settings) {
+            return <></>;
+        }
+
+        console.log(this.props);
+
         return (
             <div style={{visibility: this.props.open ? "visible" : "hidden"}} className={styles.read_settings}>
                 <ul id={styles.read_settings_list}>

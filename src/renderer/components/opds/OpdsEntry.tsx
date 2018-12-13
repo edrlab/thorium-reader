@@ -28,20 +28,7 @@ interface OpdsEntryProps extends RouteComponentProps {
     publications?: PublicationView[];
 }
 
-interface OpdsEntryState {
-    isExtended: boolean;
-}
-
-export class OpdsDetails extends React.Component<OpdsEntryProps, OpdsEntryState> {
-    public constructor(props: any) {
-        super(props);
-
-        this.state = {
-            isExtended: false,
-        };
-
-        this.extendButtonClick = this.extendButtonClick.bind(this);
-    }
+export class OpdsDetails extends React.Component<OpdsEntryProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { entry, publications } = this.props;
         if (!entry || !publications) {
@@ -50,36 +37,27 @@ export class OpdsDetails extends React.Component<OpdsEntryProps, OpdsEntryState>
         return (
             <>
                 <div className={styles.flux_infos}>
-                    <button onClick={this.extendButtonClick}>
-                        <span className={styles.flux_title}>{entry.name}</span>
-                        <span className={styles.flux_subtitle}>{entry.count} livres</span>
-                    </button>
                     <Link
                         className={styles.flux_image}
                         to={"/catalogs/" + (this.props.match.params as any).opdsId + "/" + entry.name}
                         >
-                            <SVG svg={ArrowIcon} aria-hidden="true"/>
+                            <span className={styles.flux_title}>{entry.name}</span>
+                            <span className={styles.flux_subtitle}>{entry.count} livres</span>
                     </Link>
                 </div>
-                { this.state.isExtended &&
-                    <Slider
-                        content={
-                            publications.map((pub) =>
-                                <PublicationCard
-                                    key={pub.identifier}
-                                    publication={pub}
-                                />,
-                            )
-                        }
-                        className={styles.flux_slider}
-                    />
-                }
+                <Slider
+                    content={
+                        publications.map((pub) =>
+                            <PublicationCard
+                                key={pub.identifier}
+                                publication={pub}
+                            />,
+                        )
+                    }
+                    className={styles.flux_slider}
+                />
             </>
         );
-    }
-
-    private extendButtonClick() {
-        this.setState({isExtended: !this.state.isExtended});
     }
 }
 

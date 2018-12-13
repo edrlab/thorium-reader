@@ -17,7 +17,6 @@ import { apiActions } from "readium-desktop/common/redux/actions";
 
 export function* processRequest(requestAction: apiActions.ApiAction): SagaIterator {
     const { api } = requestAction.meta;
-    console.log("####", requestAction);
     const apiModule: any = container
         .get(`${api.moduleId}-api`);
     const apiMethod = apiModule[api.methodId].bind(apiModule);

@@ -5,12 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export class BaseError {
-    public message: string;
-
-    constructor(message: string) {
-        this.message = message;
-    }
-}
+import { BaseError } from "readium-desktop/main/exceptions/base";
 
 export class NotFoundError extends BaseError { }

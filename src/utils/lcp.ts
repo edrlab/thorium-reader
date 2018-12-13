@@ -111,7 +111,7 @@ export async function updateLicenseStatus(publication: Publication) {
     const deviceId = await deviceIdManager.getDeviceID();
 
     try {
-        await launchStatusDocumentProcessing(
+        /*await launchStatusDocumentProcessing(
                 parsedEpub.LCP, deviceIdManager,
             async (licenseUpdateJson: string | undefined) => {
                 debug("launchStatusDocumentProcessing DONE.");
@@ -123,7 +123,7 @@ export async function updateLicenseStatus(publication: Publication) {
                         debug(err);
                     }
                 }
-            });
+            });*/
     } catch (err) {
         debug(err);
     }

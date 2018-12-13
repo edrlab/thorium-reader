@@ -9,15 +9,9 @@ import * as React from "react";
 
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
-import * as AddIcon from "readium-desktop/renderer/assets/icons/add.svg";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 interface OpdsFeedAddFormProps extends TranslatorProps {
     url?: any;
@@ -41,9 +35,10 @@ export class OpdsFeedAddForm extends React.Component<OpdsFeedAddFormProps, undef
     public render(): React.ReactElement<{}> {
         return (
             <div>
+                <h2>Ajout d'un flux OPDS</h2>
                 <form onSubmit={ this.add }>
                     <div>
-                        <label>Nom</label>
+                        <label>Nom : </label>
                         <input
                             ref={ this.nameRef }
                             type="text"
@@ -53,7 +48,7 @@ export class OpdsFeedAddForm extends React.Component<OpdsFeedAddFormProps, undef
                         />
                     </div>
                     <div>
-                        <label>Nom</label>
+                        <label>Lien : </label>
                         <input
                             ref={ this.urlRef }
                             type="text"

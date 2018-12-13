@@ -27,8 +27,11 @@ export class OpdsList extends React.Component<OpdsListProps, null> {
 
         return (
             <section className={styles.opds_list}>
-                { this.props.feeds.map((item: OpdsFeedView) =>
-                    <Link to={"/catalogs/" + item.identifier}>
+                { this.props.feeds.map((item: OpdsFeedView, id: number) =>
+                    <Link
+                        key={ id }
+                        to={"/opds/" + item.identifier + `/browse?url=${encodeURIComponent(item.url)}`}
+                    >
                         <div>
                             <p>{ item.title }</p>
                         </div>

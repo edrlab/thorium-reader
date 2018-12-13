@@ -31,6 +31,7 @@ interface PublicationListElementProps {
     publication: PublicationView;
     deletePublication?: any;
     displayPublicationInfo?: any;
+    openDeleteDialog?: any;
 }
 
 interface PublicationListElementState {
@@ -91,9 +92,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
 
     private deletePublication(e: any) {
         e.preventDefault();
-        this.props.deletePublication({
-            identifier: this.props.publication.identifier,
-        });
+        this.props.openDeleteDialog(this.props.publication);
     }
 
     private displayPublicationInfo(e: any) {
@@ -125,6 +124,14 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => 
                     publication: {
                         identifier: publication.identifier,
                     },
+                },
+            ));
+        },
+        openDeleteDialog: (publication: string) => {
+            dispatch(dialogActions.open(
+                DialogType.DeletePublicationConfirm,
+                {
+                    publication,
                 },
             ));
         },
