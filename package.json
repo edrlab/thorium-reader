@@ -182,6 +182,7 @@
     "ta-json-x": "^2.5.0",
     "tmp": "^0.0.33",
     "uuid": "^3.3.2",
+    "xmldom": "^0.1.27",
     "yargs": "^12.0.2",
     "yauzl": "^2.10.0",
     "yazl": "^2.4.3"
@@ -206,6 +207,7 @@
     "@types/request": "^2.47.1",
     "@types/tmp": "^0.0.33",
     "@types/uuid": "^3.4.4",
+    "@types/xmldom": "^0.1.29",
     "@types/yargs": "^12.0.1",
     "awesome-typescript-loader": "3.*.*",
     "concurrently": "^4.0.1",

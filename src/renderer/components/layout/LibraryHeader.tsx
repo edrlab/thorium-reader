@@ -20,9 +20,9 @@ const headerNav = [
         styles: [],
     },
     {
-        route: "/catalogs",
+        route: "/opds",
         label: "Catalogues",
-        matchRoutes: ["/catalogs"],
+        matchRoutes: ["/opds"],
         styles: [],
     },
     {

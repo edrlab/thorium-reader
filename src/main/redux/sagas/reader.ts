@@ -9,21 +9,17 @@ import * as debug_ from "debug";
 import * as path from "path";
 import * as uuid from "uuid";
 
-import { BrowserWindow, ipcMain, webContents } from "electron";
+import { BrowserWindow, webContents } from "electron";
 
-import { channel, Channel, SagaIterator } from "redux-saga";
-import { call, fork, put, select, take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
+import { call, put, take } from "redux-saga/effects";
 
 import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
 
-import { RootState } from "readium-desktop/main/redux/states";
-
 import { Publication } from "readium-desktop/common/models/publication";
-import { Reader, ReaderConfig, Bookmark } from "readium-desktop/common/models/reader";
+import { Bookmark, Reader, ReaderConfig } from "readium-desktop/common/models/reader";
 
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-
-import { Publication as StreamerPublication } from "@r2-shared-js/models/publication";
 
 import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
 
@@ -33,11 +29,7 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 
 import { container } from "readium-desktop/main/di";
 
-import { Server } from "@r2-streamer-js/http/server";
-
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-
-import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 
@@ -47,7 +39,8 @@ import {
     _RENDERER_READER_BASE_URL,
     IS_DEV,
 } from "readium-desktop/preprocessor-directives";
-import { LocatorType, LocatorDocument } from "readium-desktop/main/db/document/locator";
+
+import { LocatorType } from "readium-desktop/main/db/document/locator";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -120,7 +113,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
     const locators = await locatorRepository
         .findByPublicationIdentifierAndLocatorType(
         publication.identifier,
-        LocatorType.LastReadingLocation
+        LocatorType.LastReadingLocation,
     );
 
     if (locators.length > 0) {
@@ -291,12 +284,12 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
                 locator: {
                     href: bookmark.docHref,
                     locations: {
-                        cssSelector: bookmark.docSelector
-                    }
+                        cssSelector: bookmark.docSelector,
+                    },
                 },
                 publicationIdentifier: bookmark.publication.identifier,
                 locatorType: LocatorType.LastReadingLocation,
-            }
+            };
             yield call(() => locatorRepository.save(locator));
             yield put({
                 type: readerActions.ActionType.BookmarkSaveSuccess,
