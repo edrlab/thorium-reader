@@ -2,8 +2,6 @@ import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-
 import { Font } from "readium-desktop/common/models/font";
 import fontList from "readium-desktop/utils/fontList";
 
@@ -19,6 +17,13 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { lazyInject } from "readium-desktop/renderer/di";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+
+import {
+    colCountEnum,
+    IReadiumCSS,
+    readiumCSSDefaults,
+    textAlignEnum,
+} from "@r2-navigator-js/electron/common/readium-css-settings";
 
 interface Props {
     open: boolean;
@@ -60,8 +65,6 @@ export default class ReaderOptions extends React.Component<Props, State> {
         if (!this.props.settings) {
             return <></>;
         }
-
-        console.log(this.props);
 
         return (
             <div style={{visibility: this.props.open ? "visible" : "hidden"}} className={styles.read_settings}>
@@ -207,7 +210,8 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         id={styles.option_colonne}
                                         {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
                                         role="link"
-                                        onClick={(e) => this.props.handleSettingChange(e, "colCount", "auto")}
+                                        onClick={(e) =>
+                                            this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
                                     >
                                         <SVG svg={AutoIcon} title={__("reader.settings.column.auto")}/>
                                         {__("reader.settings.column.auto")}
@@ -216,7 +220,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
                                         id={styles.option_colonne1}
                                         role="link"
-                                        onClick={(e) => this.props.handleSettingChange(e, "colCount", "1")}
+                                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
                                     >
                                         <SVG svg={ColumnIcon} title={__("reader.settings.column.one")}/>
                                         {__("reader.settings.column.one")}
@@ -225,7 +229,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         id={styles.option_colonne2}
                                         {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
                                         role="link"
-                                        onClick={(e) => this.props.handleSettingChange(e, "colCount", "2")}
+                                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
                                     >
                                         <SVG svg={Column2Icon} title={__("reader.settings.column.two")}/>
                                         {__("reader.settings.column.two")}
@@ -264,9 +268,11 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     placeholder="par défaut"
                                     title="Valeur des marges"
                                     id="margin_input"
-                                    step="5"
-                                    min="30"
+                                    step="1"
+                                    min="0"
                                     max="100"
+                                    onChange={(e) =>
+                                        this.props.handleSettingChange(e, "pageMargins")}
                                     // value="50"
                                 /> pt
                             </div>
@@ -280,9 +286,11 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     placeholder="par défaut"
                                     title="Valeur de l'espacement des mots"
                                     id="wordspacing_input"
-                                    step="1"
+                                    step="0.05"
                                     min="0"
-                                    max="50"
+                                    max="1"
+                                    onChange={(e) =>
+                                        this.props.handleSettingChange(e, "wordSpacing", e.target.value + "rem")}
                                     // value="0"
                                 /> pt
                             </div>
@@ -295,9 +303,11 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     placeholder="par défaut"
                                     title="Valeur de l'espacement des lettres"
                                     id="letterspacing_input"
-                                    step="0.5"
+                                    step="0.05"
                                     min="0"
-                                    max="8"
+                                    max="1"
+                                    onChange={(e) =>
+                                        this.props.handleSettingChange(e, "letterSpacing", e.target.value + "rem")}
                                     // value="0"
                                 /> pt
                             </div>
@@ -310,9 +320,11 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     placeholder="par défaut"
                                     title="Valeur de l'espacement des lignes"
                                     id="lineheight_input"
-                                    step="1"
-                                    min="15"
-                                    max="40"
+                                    step="0.05"
+                                    min="0"
+                                    max="1"
+                                    onChange={(e) =>
+                                        this.props.handleSettingChange(e, "paraSpacing", e.target.value + "rem")}
                                     // value="18"
                                 /> pt
                             </div>
