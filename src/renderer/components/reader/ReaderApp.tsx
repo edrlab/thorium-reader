@@ -5,36 +5,35 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-import * as classNames from "classnames";
 import * as path from "path";
+import * as React from "react";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import {
     Bookmark,
     ReaderConfig as ReadiumCSS,
 } from "readium-desktop/common/models/reader";
+
 import {
-    IReadiumCSS,
     colCountEnum,
+    IReadiumCSS,
     readiumCSSDefaults,
     textAlignEnum,
 } from "@r2-navigator-js/electron/common/readium-css-settings";
 import {
-    LocatorExtended,
-    getCurrentReadingLocation,
-    handleLinkLocator,
     handleLinkUrl,
     installNavigatorDOM,
+    LocatorExtended,
     navLeftOrRight,
     readiumCssOnOff,
     setReadingLocationSaver,
     setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
-import { MuiThemeProvider, lightBaseTheme } from "material-ui/styles";
+import { lightBaseTheme, MuiThemeProvider} from "material-ui/styles";
+
 import {
-    READIUM2_ELECTRON_HTTP_PROTOCOL,
     convertCustomSchemeToHttpUrl,
+    READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
 import {
     _NODE_MODULE_RELATIVE_URL,
@@ -42,31 +41,27 @@ import {
     _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 
-import ArrowIcon from "readium-desktop/renderer/assets/icons/arrow.svg";
 import {
     IEventPayload_R2_EVENT_READIUMCSS,
 } from "@r2-navigator-js/electron/common/events";
+import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
+import { setEpubReadingSystemJsonGetter } from "@r2-navigator-js/electron/renderer/index";
 import { INameVersion } from "@r2-navigator-js/electron/renderer/webview/epubReadingSystem";
 import { Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { webFrame } from "electron";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { Translator } from "readium-desktop/common/services/translator";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
 import ReaderMenu from "readium-desktop/renderer/components/reader/ReaderMenu";
 import ReaderOptions from "readium-desktop/renderer/components/reader/ReaderOptions";
+import { container, lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
-import { Translator } from "readium-desktop/common/services/translator";
-import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
-import { container } from "readium-desktop/renderer/di";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
-import { ipcRenderer } from "electron";
-import { lazyInject } from "readium-desktop/renderer/di";
-import { readerActions } from "readium-desktop/common/redux/actions";
-import { setEpubReadingSystemJsonGetter } from "@r2-navigator-js/electron/renderer/index";
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
-import { webFrame } from "electron";
 
 webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
 webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
@@ -81,7 +76,7 @@ const queryParams = getURLQueryParams();
 
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     const store = (container.get("store") as Store<any>);
-    const settings = store.getState().reader.config;
+    const settings = store.getState().reader.config.value;
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {
@@ -103,7 +98,7 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 
         invert: settings.invert,
 
-        letterSpacing: readiumCSSDefaults.letterSpacing,
+        letterSpacing: settings.letterSpacing,
 
         ligatures: readiumCSSDefaults.ligatures,
 
@@ -111,13 +106,13 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 
         night: settings.night,
 
-        pageMargins: readiumCSSDefaults.pageMargins,
+        pageMargins: settings.pageMargins,
 
         paged: settings.paged,
 
         paraIndent: readiumCSSDefaults.paraIndent,
 
-        paraSpacing: readiumCSSDefaults.paraSpacing,
+        paraSpacing: settings.paraSpacing,
 
         sepia: settings.sepia,
 
@@ -129,9 +124,11 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 
         typeScale: readiumCSSDefaults.typeScale,
 
-        wordSpacing: readiumCSSDefaults.wordSpacing,
+        wordSpacing: settings.wordSpacing,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
+
+    console.log(cssJson);
     return jsonMsg;
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
@@ -204,7 +201,6 @@ interface ReaderAppState {
     fullscreen: boolean;
 }
 
-const lightMuiTheme = getMuiTheme(lightBaseTheme);
 const defaultLocale = "fr";
 
 export default class ReaderApp extends React.Component<undefined, ReaderAppState> {
@@ -241,6 +237,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                 paged: false,
                 readiumcss: true,
                 sepia: false,
+                wordSpacing: undefined,
+                paraSpacing: undefined,
+                letterSpacing: undefined,
+                pageMargins: undefined,
             },
             shortcutEnable: true,
             fontSizeIndex: 3,
@@ -271,7 +271,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         this.store.subscribe(() => {
             const storeState = this.store.getState();
             this.translator.setLocale(storeState.i18n.locale);
-            const settings = storeState.reader.config;
+            const settings = storeState.reader.config.value;
             if (settings !== this.state.settingsValues) {
                 this.translator.setLocale(this.store.getState().i18n.locale);
 
@@ -321,7 +321,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                 cssSelector: docSelector,
                 position: undefined,
                 progression: undefined,
-            }
+            },
         };
 
         const publication = await this.loadPublicationIntoViewport(locator);
@@ -335,7 +335,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         const __ = this.translator.translate.bind(this.translator);
 
         return (
-            <MuiThemeProvider muiTheme={lightMuiTheme}>
                 <div>
                     <div className={styles.root}>
                         <ReaderHeader
@@ -372,7 +371,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                         />
                     </div>
                 </div>
-            </MuiThemeProvider>
         );
     }
 
