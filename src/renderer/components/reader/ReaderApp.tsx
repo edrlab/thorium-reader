@@ -7,8 +7,6 @@
 
 import * as path from "path";
 
-import * as classNames from "classnames";
-
 import * as React from "react";
 
 import { Store } from "redux";
@@ -24,8 +22,6 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
-
-import ArrowIcon from "readium-desktop/renderer/assets/icons/arrow.svg";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
@@ -50,7 +46,6 @@ import {
     setReadingLocationSaver,
     setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
-import { ipcRenderer } from "electron";
 import { JSON as TAJSON } from "ta-json-x";
 
 import { webFrame } from "electron";
@@ -91,7 +86,7 @@ const queryParams = getURLQueryParams();
 
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     const store = (container.get("store") as Store<any>);
-    const settings = store.getState().reader.config;
+    const settings = store.getState().reader.config.value;
     const cssJson = {
         align: settings.align,
         colCount: settings.colCount,
@@ -115,8 +110,7 @@ const saveReadingLocation = (docHref: string, locator: IEventPayload_R2_EVENT_RE
         {
             identifier: "reading-location",
             publication: {
-                // tslint:disable-next-line:no-string-literal
-                identifier: queryParams["pubId"],
+                identifier: queryParams.pubId,
             },
             docHref,
 
@@ -126,8 +120,7 @@ const saveReadingLocation = (docHref: string, locator: IEventPayload_R2_EVENT_RE
     ));
 };
 
-// tslint:disable-next-line:no-string-literal
-const publicationJsonUrl = queryParams["pub"];
+const publicationJsonUrl = queryParams.pub;
 // tslint:disable-next-line:variable-name
 const publicationJsonUrl_ = publicationJsonUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
     convertCustomSchemeToHttpUrl(publicationJsonUrl) : publicationJsonUrl;
@@ -140,8 +133,7 @@ const pathFileName = pathDecoded.substr(
     pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
     pathDecoded.length - 1);
 
-// tslint:disable-next-line:no-string-literal
-const lcpHint = queryParams["lcpHint"];
+const lcpHint = queryParams.lcpHint;
 
 const fontSizes: string[] = [
     "75%",
@@ -247,13 +239,13 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
                 let i = 0;
                 for (const size of fontSizes) {
-                    if (settings.fontSize === size) {
+                    if (settings.value.fontSize === size) {
                         this.setState({fontSizeIndex: i});
                     }
                     i++;
                 }
 
-                this.setState({settingsValues: settings});
+                this.setState({settingsValues: settings.value});
 
                 // Push reader config to navigator
                 readiumCssOnOff();
@@ -270,12 +262,10 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             }
         });
 
-        // tslint:disable-next-line:no-string-literal
-        let docHref: string = queryParams["docHref"];
+        let docHref: string = queryParams.docHref;
 
         // TODO: see IEventPayload_R2_EVENT_READING_LOCATION object below
-        // tslint:disable-next-line:no-string-literal
-        let docSelector: string = queryParams["docSelector"];
+        let docSelector: string = queryParams.docSelector;
 
         if (docHref && docSelector) {
             // Decode base64
