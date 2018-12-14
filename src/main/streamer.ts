@@ -6,21 +6,17 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-
 import * as path from "path";
-
-import { app } from "electron";
-
-import { Server } from "@r2-streamer-js/http/server";
-
-import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
-
-import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
 
 import {
     _NODE_MODULE_RELATIVE_URL,
     _PACKAGING,
 } from "readium-desktop/preprocessor-directives";
+
+import { Server } from "@r2-streamer-js/http/server";
+import { app } from "electron";
+import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
+import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
 
 const debug = debug_("readium-desktop:main#streamer");
 
@@ -48,4 +44,4 @@ if (_PACKAGING === "1") {
 rcssPath = rcssPath.replace(/\\/g, "/");
 debug("readium css path:", rcssPath);
 
-setupReadiumCSS(streamer, rcssPath);
+setupReadiumCSS(streamer, rcssPath, undefined);
