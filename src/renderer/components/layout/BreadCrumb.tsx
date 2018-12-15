@@ -12,6 +12,7 @@ import * as classNames from "classnames";
 export interface BreadCrumbItem {
     name: string;
     path?: string;
+    state?: any;
 }
 
 interface BreadCrumbProps {
@@ -32,7 +33,11 @@ export default class BreadCrumb extends React.Component<BreadCrumbProps, undefin
                 }
                 {this.props.breadcrumb && this.props.breadcrumb.map((item, index) =>
                     item.path ?
-                        <Link key={index} to={{pathname: item.path, search: this.props.search}}>{ item.name } /</Link>
+                        <Link key={index} to={{
+                            pathname: item.path,
+                            search: this.props.search,
+                            state: item.state,
+                        }}>{ item.name } /</Link>
                     :
                         <span key={index} >{ item.name }</span>,
                 )}

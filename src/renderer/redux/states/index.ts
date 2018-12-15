@@ -13,7 +13,6 @@ import { DialogState } from "readium-desktop/common/redux/states/dialog";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { LcpState } from "readium-desktop/common/redux/states/lcp";
 import { NetState } from "readium-desktop/common/redux/states/net";
-import { OpdsState } from "readium-desktop/common/redux/states/opds";
 
 import {
     PublicationDownloadState,
@@ -21,8 +20,11 @@ import {
 import { ReaderState } from "readium-desktop/common/redux/states/reader";
 import { UpdateState } from "readium-desktop/common/redux/states/update";
 
-import { WinState } from "./win";
 import { ApiState } from "./api";
+
+import { WinState } from "./win";
+
+import { OpdsState } from "./opds";
 
 export { WinState };
 
