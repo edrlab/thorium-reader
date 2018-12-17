@@ -48,4 +48,4 @@ if (_PACKAGING === "1") {
 rcssPath = rcssPath.replace(/\\/g, "/");
 debug("readium css path:", rcssPath);
 
-setupReadiumCSS(streamer, rcssPath);
+setupReadiumCSS(streamer, rcssPath, undefined);
