@@ -7,8 +7,6 @@
 
 import * as React from "react";
 
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-
 import { Link } from "react-router-dom";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
@@ -19,8 +17,15 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+
+import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+
 interface OpdsListProps extends TranslatorProps {
     feeds?: OpdsFeedView[];
+    deleteFeed?: any;
 }
 
 export class FeedList extends React.Component<OpdsListProps, null> {
@@ -44,6 +49,11 @@ export class FeedList extends React.Component<OpdsListProps, null> {
                             }}
                         >
                             <div>
+                            <button
+                                    onClick={(e) => this.deleteFeed(e, item.identifier)}
+                                >
+                                    <SVG svg={DeleteIcon} />
+                                </button>
                                 <p>{ item.title }</p>
                             </div>
                         </Link>
@@ -51,6 +61,11 @@ export class FeedList extends React.Component<OpdsListProps, null> {
                 })}
             </section>
         );
+    }
+
+    private deleteFeed(event: any, identifier: string) {
+        event.preventDefault();
+        this.props.deleteFeed({ identifier });
     }
 }
 
@@ -63,6 +78,21 @@ export default withApi(
                 methodId: "findAllFeeds",
                 resultProp: "feeds",
                 onLoad: true,
+            },
+            {
+                moduleId: "opds",
+                methodId: "deleteFeed",
+                callProp: "deleteFeed",
+            },
+        ],
+        refreshTriggers: [
+            {
+                moduleId: "opds",
+                methodId: "addFeed",
+            },
+            {
+                moduleId: "opds",
+                methodId: "deleteFeed",
             },
         ],
     },
