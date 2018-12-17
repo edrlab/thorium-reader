@@ -143,9 +143,7 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
             dispatch(dialogActions.open(
                 DialogType.PublicationInfo,
                 {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
+                    publication,
                 },
             ));
         },
