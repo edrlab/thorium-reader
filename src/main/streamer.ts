@@ -73,8 +73,12 @@ function isFixedLayout(publication: Publication, link: Link | undefined): boolea
 }
 function computeReadiumCssJsonMessage(publication: Publication, link: Link | undefined):
     IEventPayload_R2_EVENT_READIUMCSS {
-    const store = (container.get("store") as Store<any>);
-    const settings = store.getState().reader.config;
+    const store = (container.get("store") as Store<RootState>);
+    let settings = store.getState().reader.config;
+    debug(settings);
+    if (settings.value) {
+        settings = settings.value;
+    }
     debug(settings);
 
     if (isFixedLayout(publication, link)) {
@@ -103,7 +107,7 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
 
         invert: settings.invert,
 
-        letterSpacing: readiumCSSDefaults.letterSpacing,
+        letterSpacing: settings.letterSpacing,
 
         ligatures: readiumCSSDefaults.ligatures,
 
@@ -111,30 +115,32 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
 
         night: settings.night,
 
-        pageMargins: readiumCSSDefaults.pageMargins,
+        pageMargins: settings.pageMargins,
 
         paged: settings.paged,
 
         paraIndent: readiumCSSDefaults.paraIndent,
 
-        paraSpacing: readiumCSSDefaults.paraSpacing,
+        paraSpacing: settings.paraSpacing,
 
         sepia: settings.sepia,
 
         textAlign: settings.align === "left" ? textAlignEnum.left :
             (settings.align === "right" ? textAlignEnum.right :
-            (settings.align === "justify" ? textAlignEnum.justify : textAlignEnum.start)),
+            ((settings.align as string) === "justify" ? textAlignEnum.justify : textAlignEnum.start)),
 
         textColor: readiumCSSDefaults.textColor,
 
         typeScale: readiumCSSDefaults.typeScale,
 
-        wordSpacing: readiumCSSDefaults.wordSpacing,
+        wordSpacing: settings.wordSpacing,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = {
         setCSS: cssJson,
         urlRoot: pubServerRoot,
     };
+    console.log("jsonMsg MAIN");
+    console.log(jsonMsg);
     return jsonMsg;
 }
 
