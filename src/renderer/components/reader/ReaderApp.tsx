@@ -63,6 +63,8 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 
+import optionsValues from "./optionsValues";
+
 webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
 webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
     allowServiceWorkers: false,
@@ -127,8 +129,6 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         wordSpacing: settings.wordSpacing,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
-
-    console.log(cssJson);
     return jsonMsg;
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
@@ -169,20 +169,6 @@ const pathFileName = pathDecoded.substr(
 // tslint:disable-next-line:no-string-literal
 const lcpHint = queryParams["lcpHint"];
 
-const fontSizes: string[] = [
-    "75%",
-    "87.5%",
-    "100%",
-    "112.5%",
-    "137.5%",
-    "150%",
-    "162.5%",
-    "175%",
-    "200%",
-    "225%",
-    "250%",
-];
-
 interface ReaderAppState {
     publicationJsonUrl?: string;
     lcpHint?: string;
@@ -198,6 +184,7 @@ interface ReaderAppState {
     publication: R2Publication;
     menuOpen: boolean;
     fullscreen: boolean;
+    indexes: any;
 }
 
 const defaultLocale = "fr";
@@ -242,6 +229,9 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                 pageMargins: undefined,
             },
             shortcutEnable: true,
+            indexes: {
+                fontSize: 0, pageMargins: 0, wordSpacing: 0, letterSpacing: 0, paraSpacing: 0,
+            },
             fontSizeIndex: 3,
             landmarksOpen: false,
             landmarkTabOpen: 0,
@@ -271,18 +261,21 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             const storeState = this.store.getState();
             this.translator.setLocale(storeState.i18n.locale);
             const settings = storeState.reader.config.value;
-            if (settings !== this.state.settingsValues) {
+            if (settings && settings !== this.state.settingsValues) {
                 this.translator.setLocale(this.store.getState().i18n.locale);
 
-                let i = 0;
-                for (const size of fontSizes) {
-                    if (settings.fontSize === size) {
-                        this.setState({fontSizeIndex: i});
+                const indexes = this.state.indexes;
+                for (const name of Object.keys(this.state.indexes)) {
+                    let i = 0;
+                    for (const value of optionsValues[name]) {
+                        if (settings[name] === value) {
+                            indexes[name] = i;
+                        }
+                        i++;
                     }
-                    i++;
                 }
 
-                this.setState({settingsValues: settings});
+                this.setState({settingsValues: settings, indexes});
 
                 // Push reader config to navigator
                 readiumCssOnOff();
@@ -352,10 +345,11 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                         />
                         <ReaderOptions
                             open={this.state.settingsOpen}
-                            fontSizeIndex={this.state.fontSizeIndex}
+                            indexes={this.state.indexes}
                             settings={this.state.settingsValues}
                             handleLinkClick={this.handleLinkClick.bind(this)}
                             handleSettingChange={this.handleSettingsValueChange.bind(this)}
+                            handleIndexChange={this.handleIndexValueChange.bind(this)}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
@@ -506,16 +500,27 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             value = true;
         }
 
-        if (name === "fontSize") {
-            this.setState({fontSizeIndex: value});
-            value = fontSizes[value];
-        }
-
         settingsValues[name] =  value;
 
         this.setState({settingsValues});
 
         this.handleSettingsSave();
+    }
+
+    private handleIndexValueChange(event: any, name: string) {
+        const indexes = this.state.indexes;
+        const settingsValues = this.state.settingsValues;
+
+        const value = event.target.value.toString();
+
+        indexes[name] =  value;
+        this.setState({ indexes });
+
+        settingsValues[name] = optionsValues[name][value];
+        this.setState({ settingsValues });
+
+        this.handleSettingsSave();
+        console.log(value, indexes, settingsValues);
     }
 
     private getEpubReadingSystem: () => INameVersion = () => {
