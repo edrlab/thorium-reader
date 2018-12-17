@@ -7,7 +7,7 @@
 
 import { injectable} from "inversify";
 
-import * as request from "request";
+import { JSON as TAJSON } from "ta-json-x";
 
 import * as xmldom from "xmldom";
 
@@ -99,8 +99,12 @@ export class OpdsApi {
                 opds2Feed = convertOpds1ToOpds2(opds1Feed);
                 return this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
             }
+        } else {
+            opds2Feed = TAJSON.deserialize<OPDSFeed>(
+                JSON.parse(opdsFeedData),
+                OPDSFeed,
+            );
+            return this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
         }
-
-        console.log("#### opds2 feed", opds2Publication, opds2Feed);
     }
 }
