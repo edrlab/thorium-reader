@@ -11,7 +11,7 @@ export interface TranslatorProps {
 
 export function withTranslator(WrappedComponent: any) {
     const WrapperComponent = class extends React.Component<any, undefined> {
-        render() {
+        public render() {
             const translator = container.get("translator") as Translator;
             const translate = translator.translate.bind(translator);
 
@@ -19,7 +19,7 @@ export function withTranslator(WrappedComponent: any) {
                 {},
                 this.props,
                 {
-                    "__": translate,
+                    __: translate,
                     translator,
                 },
             );

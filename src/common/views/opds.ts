@@ -1,6 +1,5 @@
 import { CoverView } from "./publication";
 
-
 export interface OpdsFeedView {
     identifier: string;
     title: string;
