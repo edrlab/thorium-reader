@@ -16,9 +16,9 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
     public render(): React.ReactElement<{}> {
         return (
             <div className={styles.card_wrapper}>
-                {this.props.publications.map((pub) =>
+                {this.props.publications.map((pub, index) =>
                     <PublicationCard
-                        key={pub.identifier}
+                        key={-index }
                         publication={pub}
                     />,
                 )}

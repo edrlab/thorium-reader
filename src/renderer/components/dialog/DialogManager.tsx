@@ -75,7 +75,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 close={ this.props.closeDialog }
             >
                 <PublicationInfo
-                    publicationIdentifier={ this.props.dialog.data.publication.identifier }
+                    publication={ this.props.dialog.data.publication }
                 />
           </Dialog>
         );

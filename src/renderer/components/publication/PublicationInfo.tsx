@@ -28,6 +28,7 @@ interface PublicationInfoProps {
     openReader?: any;
     closeDialog?: any;
     openDeleteDialog: any;
+    getPublicationFromId?: any;
 }
 
 export class PublicationInfo extends React.Component<PublicationInfoProps, undefined> {
@@ -36,6 +37,12 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
 
         this.handleRead = this.handleRead.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
+    }
+
+    public componentDidMount() {
+        if (this.props.publicationIdentifier) {
+            this.props.getPublicationFromId();
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -165,8 +172,8 @@ export default withApi(
                 moduleId: "publication",
                 methodId: "get",
                 resultProp: "publication",
+                callProp: "getPublicationFromId",
                 buildRequestData,
-                onLoad: true,
             },
         ],
         mapDispatchToProps,
