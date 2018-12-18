@@ -35,7 +35,7 @@ export class EntryPublicationList extends React.Component<EntryPublicationListPr
             <div>
                 <Header displayType={ displayType } />
                 { this.props.publications ?
-                    <DisplayView publications={ this.props.publications } />
+                    <DisplayView publications={ this.props.publications } isOpdsView={true}/>
                 : <></>}
             </div>
         );

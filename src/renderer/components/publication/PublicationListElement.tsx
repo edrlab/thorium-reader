@@ -32,6 +32,7 @@ interface PublicationListElementProps {
     deletePublication?: any;
     displayPublicationInfo?: any;
     openDeleteDialog?: any;
+    menuContent: any;
 }
 
 interface PublicationListElementState {
@@ -60,6 +61,8 @@ export class PublicationListElement extends React.Component<PublicationListEleme
             formatedPublishedYear = "" + moment(pub.publishedAt).year();
         }
 
+        console.log(this.props.menuContent);
+
         return (
             <>
                 <div className={styles.list_book_title}>
@@ -83,8 +86,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
                     <SVG svg={MenuIcon}/>
                 </button>
                 <div className={(this.state.menuOpen ? styles.menu_open + " " : "") + styles.list_menu}>
-                    <a onClick={ this.displayPublicationInfo }>Fiche livre</a>
-                    <a onClick={ this.deletePublication }>Supprimer définitivement</a>
+                    {this.props.menuContent}
                 </div>
             </>
         );

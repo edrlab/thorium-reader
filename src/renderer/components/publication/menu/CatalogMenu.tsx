@@ -11,28 +11,15 @@ import { DialogType } from "readium-desktop/common/models/dialog";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
-import Cover from "readium-desktop/renderer/components/publication/Cover";
-
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-import { readerActions } from "readium-desktop/common/redux/actions";
-
-import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
 import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-
-import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
 interface PublicationCardProps {
     publication: PublicationView;
     displayPublicationInfo?: any;
     deletePublication?: any;
-    openReader?: any;
     openDeleteDialog?: any;
-    menuContent: any;
 }
 
 interface PublicationCardState {
@@ -47,7 +34,6 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
             menuOpen: false,
         };
 
-        this.handleMenuClick = this.handleMenuClick.bind(this);
         this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
@@ -57,38 +43,19 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
         const authors = this.props.publication.authors.join(", ");
 
         return (
-            <div className={styles.block_book}
-                aria-haspopup="dialog"
-                aria-controls="dialog"
-            >
-                <div className={styles.image_wrapper}>
-                    <a onClick={(e) => this.handleBookClick(e)}>
-                        <Cover publication={ this.props.publication } />
-                    </a>
-                </div>
-                <div className={styles.legend}>
-                    <a onClick={(e) => this.handleBookClick(e)}>
-                        <p className={styles.book_title} aria-label="Titre du livre">
-                            { this.props.publication.title }
-                        </p>
-                        <p className={styles.book_author} aria-label="Auteur du livre">
-                            {authors}
-                        </p>
-                    </a>
-                    <Menu
-                        button={(
-                            <SVG svg={MenuIcon}/>
-                        )}
-                        content={(
-                            <div className={styles.menu}>
-                                {this.props.menuContent}
-                            </div>
-                        )}
-                        open={false}
-                        dir="right"
-                    />
-                </div>
-            </div>
+            <>
+                <a
+                    onClick={this.displayPublicationInfo }
+                    onBlur={this.handleOnBlurMenu}
+                >
+                    Fiche livre
+                </a>
+                <a
+                    onClick={ this.deletePublication }
+                    onBlur={this.handleOnBlurMenu}>
+                    Supprimer définitivement
+                </a>
+            </>
         );
     }
 
@@ -103,15 +70,6 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
         }
     }
 
-    private handleMenuClick() {
-        this.setState({menuOpen: !this.state.menuOpen});
-    }
-
-    private handleBookClick(e: any) {
-        e.preventDefault();
-        this.props.openReader(this.props.publication);
-    }
-
     private displayPublicationInfo(e: any) {
         e.preventDefault();
         this.props.displayPublicationInfo(this.props.publication);
@@ -120,16 +78,6 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
 
 const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
     return {
-        openReader: (publication: PublicationView) => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
-                },
-            });
-        },
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open(
                 DialogType.PublicationInfo,

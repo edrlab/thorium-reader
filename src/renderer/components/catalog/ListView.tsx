@@ -2,11 +2,12 @@ import * as React from "react";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 
+import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import PublicationListElement from "readium-desktop/renderer/components/publication/PublicationListElement";
 
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
 import AddEntryForm from "./AddEntryForm";
+
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 interface ListViewProps {
     catalogEntries: CatalogEntryView[];
@@ -29,6 +30,7 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                                         <li className={styles.block_book_list} key={ i }>
                                             <PublicationListElement
                                                 publication={pub}
+                                                menuContent={<CatalogMenu publication={pub}/>}
                                             />
                                         </li>
                                     );
