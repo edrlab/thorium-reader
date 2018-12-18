@@ -29,7 +29,7 @@ import { Server } from "@r2-streamer-js/http/server";
 import { Store } from "redux";
 
 import { app } from "electron";
-import { container } from "readium-desktop/renderer/di";
+import { container } from "readium-desktop/main/di";
 
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
 
