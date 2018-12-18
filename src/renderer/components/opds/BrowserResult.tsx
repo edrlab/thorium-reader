@@ -21,7 +21,7 @@ import { TranslatorProps } from "readium-desktop/renderer/components/utils/trans
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import Loader from "readium-desktop/renderer/components/utils/Loader";
 
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
@@ -41,7 +41,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
 
     public render(): React.ReactElement<{}>  {
         const { result } = this.props;
-        let content = (<></>);
+        let content = (<Loader/>);
 
         if (result) {
             switch (result.type) {

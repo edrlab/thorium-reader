@@ -1,0 +1,6 @@
+.loader {
+    text-align: center;
+    & svg {
+        width: 5rem;
+    }
+}
