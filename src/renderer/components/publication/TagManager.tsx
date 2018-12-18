@@ -36,7 +36,7 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
         this.state = {
             tags: props.tags ? props.tags : [],
             nameNewTag: "",
-        }
+        };
 
         this.deleteTag = this.deleteTag.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
@@ -44,7 +44,8 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
     }
 
     public componentDidUpdate() {
-        if (this.props.updatedPublication && this.props.updatedPublication.tags && this.state.tags !== this.props.updatedPublication.tags) {
+        if (this.props.updatedPublication && this.props.updatedPublication.tags
+            && this.state.tags !== this.props.updatedPublication.tags) {
             this.setState({tags: this.props.updatedPublication.tags});
         }
     }
@@ -58,7 +59,7 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
                             <button onClick={() => this.deleteTag(index)}>
                                 <SVG svg={CrossIcon} title="supprimer le tag" />
                             </button>
-                        </li>
+                        </li>,
                     )}
                 </ul>
                 <form onSubmit={this.addTag} id={styles.flux_search}>

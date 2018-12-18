@@ -39,7 +39,7 @@
   	height: auto;
   	justify-content: space-between;
 
-    & a {
+    & > a {
         text-decoration: none;
         color: black;
 
@@ -48,17 +48,24 @@
             height: 300px;
             margin-bottom:30px;
             background-color: grey;
+            display: flex;
+            flex-direction: column;
 
             & p {
-                position: relative;
-                top:50%;
                 text-align: center;
                 color:white;
                 font-size: 1.5rem;
-                transform: translateX(0%) translateY(-50%);
-                -webkit-transform: translateX(0%) translateY(-50%);
+                margin-top: calc(50% - 30px - 1.4rem);
+            }
+
+            & button {
+                align-self: flex-end;
             }
         }
+    }
+
+    & > div {
+        width: 300px;
     }
 }
 

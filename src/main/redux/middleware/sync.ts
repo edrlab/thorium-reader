@@ -9,8 +9,8 @@ import { Store } from "redux";
 
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
-    catalogActions,
     apiActions,
+    catalogActions,
     i18nActions,
     lcpActions,
     netActions,

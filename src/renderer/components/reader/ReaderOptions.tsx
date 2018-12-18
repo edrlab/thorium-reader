@@ -9,8 +9,6 @@ import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-
 import { Font } from "readium-desktop/common/models/font";
 import fontList from "readium-desktop/utils/fontList";
 
@@ -27,12 +25,17 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
+import { colCountEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
+
+import optionsValues from "./optionsValues";
+
 interface Props {
     open: boolean;
     settings: any;
-    fontSizeIndex: number;
+    indexes: {fontSize: number, pageMargins: number, wordSpacing: number, letterSpacing: number, paraSpacing: number};
     handleLinkClick: (event: any, url: string) => void;
     handleSettingChange: (event: any, name: string, value?: any) => void;
+    handleIndexChange: (event: any, name: string, value?: any) => void;
 }
 
 interface State {
@@ -67,8 +70,6 @@ export default class ReaderOptions extends React.Component<Props, State> {
         if (!this.props.settings) {
             return <></>;
         }
-
-        console.log(this.props);
 
         return (
             <div style={{visibility: this.props.open ? "visible" : "hidden"}} className={styles.read_settings}>
@@ -117,15 +118,15 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                 <div className={styles.center_in_tab}>
                                     <span className={styles.slider_marker} >a</span>
                                     <input type="range"
-                                        onChange={(e) => this.props.handleSettingChange(e, "fontSize")}
+                                        onChange={(e) => this.props.handleIndexChange(e, "fontSize")}
                                         id="taille_texte"
-                                        min="1"
-                                        max="10"
-                                        value={this.props.fontSizeIndex}
-                                        step="1"
-                                        aria-valuemin={1}
-                                        aria-valuemax={10}
-                                        aria-valuenow={this.props.fontSizeIndex}
+                                        min={0}
+                                        max={optionsValues.fontSize.length - 1}
+                                        value={this.props.indexes.fontSize}
+                                        step={1}
+                                        aria-valuemin={0}
+                                        aria-valuemax={optionsValues.fontSize.length - 1}
+                                        aria-valuenow={this.props.indexes.fontSize}
                                     />
                                     <output id={styles.valeur_taille} className={styles.out_of_screen}>14</output>
                                     <span className={styles.slider_marker} style={{fontSize: "250%"}}>a</span>
@@ -137,12 +138,12 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     <select
                                         id={styles.police_texte}
                                         onChange={(e) => this.props.handleSettingChange(e, "font")}
+                                        value={this.props.settings.font}
                                     >
                                         {fontList.map((font: Font, id: number) => {
                                             return (
                                                 <option
                                                     key={id}
-                                                    {...(font.id === this.props.settings.font && {selected: true})}
                                                     value={font.id}
                                                 >
                                                     {font.label}
@@ -214,7 +215,8 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         id={styles.option_colonne}
                                         {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
                                         role="link"
-                                        onClick={(e) => this.props.handleSettingChange(e, "colCount", "auto")}
+                                        onClick={(e) =>
+                                            this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
                                     >
                                         <SVG svg={AutoIcon} title={__("reader.settings.column.auto")}/>
                                         {__("reader.settings.column.auto")}
@@ -223,7 +225,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
                                         id={styles.option_colonne1}
                                         role="link"
-                                        onClick={(e) => this.props.handleSettingChange(e, "colCount", "1")}
+                                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
                                     >
                                         <SVG svg={ColumnIcon} title={__("reader.settings.column.one")}/>
                                         {__("reader.settings.column.one")}
@@ -232,7 +234,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         id={styles.option_colonne2}
                                         {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
                                         role="link"
-                                        onClick={(e) => this.props.handleSettingChange(e, "colCount", "2")}
+                                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
                                     >
                                         <SVG svg={Column2Icon} title={__("reader.settings.column.two")}/>
                                         {__("reader.settings.column.two")}
@@ -267,61 +269,84 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     {__("reader.settings.margin")}
                                 </div>
                                 <input
-                                    type="number"
-                                    placeholder="par défaut"
+                                    type="range"
+                                    onChange={(e) => this.props.handleIndexChange(e, "pageMargins")}
                                     title="Valeur des marges"
-                                    id="margin_input"
-                                    step="5"
-                                    min="30"
-                                    max="100"
-                                    // value="50"
-                                /> pt
+                                    id="taille_texte"
+                                    min={0}
+                                    max={optionsValues.pageMargins.length - 1}
+                                    value={this.props.indexes.pageMargins}
+                                    step={1}
+                                    aria-valuemin={0}
+                                    aria-valuemax={optionsValues.pageMargins.length - 1}
+                                    aria-valuenow={this.props.indexes.pageMargins}
+                                />
+                                <span className={styles.reader_settings_value}>
+                                    {this.roundRemValue(this.props.settings.pageMargins)}
+                                </span>
                             </div>
                             <div className={styles.line_tab_content}>
                                 <div className={styles.subheading}>
                                     {__("reader.settings.wordSpacing")}
                                 </div>
-
                                 <input
-                                    type="number"
-                                    placeholder="par défaut"
-                                    title="Valeur de l'espacement des mots"
-                                    id="wordspacing_input"
-                                    step="1"
-                                    min="0"
-                                    max="50"
-                                    // value="0"
-                                /> pt
+                                    type="range"
+                                    onChange={(e) => this.props.handleIndexChange(e, "wordSpacing")}
+                                    title="Valeur des marges"
+                                    id="taille_texte"
+                                    min={0}
+                                    max={optionsValues.wordSpacing.length - 1}
+                                    value={this.props.indexes.wordSpacing}
+                                    step={1}
+                                    aria-valuemin={0}
+                                    aria-valuemax={optionsValues.wordSpacing.length - 1}
+                                    aria-valuenow={this.props.indexes.wordSpacing}
+                                />
+                                <span className={styles.reader_settings_value}>
+                                    {this.roundRemValue(this.props.settings.wordSpacing)}
+                                </span>
                             </div>
                             <div className={styles.line_tab_content}>
                                 <div className={styles.subheading}>
                                     {__("reader.settings.letterSpacing")}
                                 </div>
                                 <input
-                                    type="number"
-                                    placeholder="par défaut"
-                                    title="Valeur de l'espacement des lettres"
-                                    id="letterspacing_input"
-                                    step="0.5"
-                                    min="0"
-                                    max="8"
-                                    // value="0"
-                                /> pt
+                                    type="range"
+                                    onChange={(e) => this.props.handleIndexChange(e, "letterSpacing")}
+                                    title="Valeur des marges"
+                                    id="taille_texte"
+                                    min={0}
+                                    max={optionsValues.letterSpacing.length - 1}
+                                    value={this.props.indexes.letterSpacing}
+                                    step={1}
+                                    aria-valuemin={0}
+                                    aria-valuemax={optionsValues.letterSpacing.length - 1}
+                                    aria-valuenow={this.props.indexes.letterSpacing}
+                                />
+                                <span className={styles.reader_settings_value}>
+                                    {this.roundRemValue(this.props.settings.letterSpacing)}
+                                </span>
                             </div>
                             <div className={styles.line_tab_content}>
                                 <div className={styles.subheading}>
                                     {__("reader.settings.lineSpacing")}
                                 </div>
                                 <input
-                                    type="number"
-                                    placeholder="par défaut"
-                                    title="Valeur de l'espacement des lignes"
-                                    id="lineheight_input"
-                                    step="1"
-                                    min="15"
-                                    max="40"
-                                    // value="18"
-                                /> pt
+                                    type="range"
+                                    onChange={(e) => this.props.handleIndexChange(e, "paraSpacing")}
+                                    title="Valeur des marges"
+                                    id="taille_texte"
+                                    min={0}
+                                    max={optionsValues.paraSpacing.length - 1}
+                                    value={this.props.indexes.paraSpacing}
+                                    step={1}
+                                    aria-valuemin={0}
+                                    aria-valuemax={optionsValues.paraSpacing.length - 1}
+                                    aria-valuenow={this.props.indexes.paraSpacing}
+                                />
+                                <span className={styles.reader_settings_value}>
+                                    {this.roundRemValue(this.props.settings.paraSpacing)}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -352,6 +377,17 @@ export default class ReaderOptions extends React.Component<Props, State> {
         const { sectionOpenList } = this.state;
         sectionOpenList[id] = !sectionOpenList[id];
         this.setState({ sectionOpenList });
+    }
+
+    // round the value to the hundredth
+    private roundRemValue(value: string) {
+        if (!value) {
+            return "";
+        }
+
+        const nbr = parseFloat(value.replace("rem", ""));
+        const roundNumber = (Math.round(nbr * 100) / 100);
+        return roundNumber + " rem";
     }
 
     private getSectionStyle(id: number): any {

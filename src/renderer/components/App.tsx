@@ -23,15 +23,9 @@ import PageManager from "readium-desktop/renderer/components/PageManager";
 
 import { Provider } from "react-redux";
 
-import Dialog from "readium-desktop/renderer/components/utils/Dialog";
-
-import FileImport from "readium-desktop/renderer/components/dialog/FileImport";
-
 import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { DialogType } from "readium-desktop/common/models/dialog";
 
@@ -60,8 +54,8 @@ export default class App extends React.Component<any, undefined> {
                         return {
                             name: file.name,
                             path: file.path,
-                        }
-                    })
+                        };
+                    }),
                 },
         ));
     }

@@ -9,8 +9,8 @@ import * as debug_ from "debug";
 import * as path from "path";
 
 import {
-    IReadiumCSS,
     colCountEnum,
+    IReadiumCSS,
     readiumCSSDefaults,
     textAlignEnum,
 } from "@r2-navigator-js/electron/common/readium-css-settings";
@@ -21,13 +21,18 @@ import {
 
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
 import { Link } from "@r2-shared-js/models/publication-link";
+
 import { Publication } from "@r2-shared-js/models/publication";
 import { RootState } from "readium-desktop/main/redux/states";
+
 import { Server } from "@r2-streamer-js/http/server";
 import { Store } from "redux";
+
 import { app } from "electron";
-import { container } from "readium-desktop/renderer/di";
+import { container } from "readium-desktop/main/di";
+
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
+
 import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
 
 const debug = debug_("readium-desktop:main#streamer");

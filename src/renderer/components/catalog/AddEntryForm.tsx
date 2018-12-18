@@ -7,9 +7,7 @@
 
 import * as React from "react";
 
-import { connect } from "react-redux";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG"
+import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import * as AddIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as RemoveIcon from "readium-desktop/renderer/assets/icons/baseline-remove-24px.svg";
@@ -33,7 +31,7 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
 
         this.state = {
             open: false,
-        }
+        };
 
         this.selectRef = React.createRef();
 
@@ -52,10 +50,20 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
                     }
                     <span>Ajouter une sélection</span>
                 </button>
-                <form onSubmit={this.submit} style={{display: this.state.open ? "inline-block" : "none"}} id={styles.tag_search}>
-                    <select ref={this.selectRef} className={styles.tag_inputs} id={styles.tag_inputs} placeholder="Rechercher un tag" title="rechercher un tag">
+                <form
+                    onSubmit={this.submit}
+                    style={{display: this.state.open ? "inline-block" : "none"}}
+                    id={styles.tag_search}
+                >
+                    <select
+                        ref={this.selectRef}
+                        className={styles.tag_inputs}
+                        id={styles.tag_inputs}
+                        placeholder="Rechercher un tag"
+                        title="rechercher un tag"
+                    >
                         { this.props.tags && this.props.tags.map((tag: string, index: number) =>
-                            <option key={index} value={tag}>{tag}</option>
+                            <option key={index} value={tag}>{tag}</option>,
                         )}
                     </select>
                     <button onClick={this.submit} className={styles.launch}>
@@ -77,7 +85,7 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
     }
 
     private switchForm() {
-        this.setState({open: !this.state.open})
+        this.setState({open: !this.state.open});
     }
 }
 

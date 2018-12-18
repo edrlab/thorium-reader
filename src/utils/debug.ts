@@ -15,7 +15,7 @@ export function dump(obj: any) {
             showHidden: false,
             depth: 10,
             colors: true,
-            customInspect: true
-        }
+            customInspect: true,
+        },
     );
 }

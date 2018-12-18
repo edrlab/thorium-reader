@@ -51,7 +51,7 @@ export function buildSuccessAction(
                 requestId: requestAction.meta.api.requestId,
                 moduleId: requestAction.meta.api.moduleId,
                 methodId: requestAction.meta.api.methodId,
-            }
+            },
         },
     };
 }
@@ -68,7 +68,7 @@ export function buildErrorAction(
                 requestId: requestAction.meta.api.requestId,
                 moduleId: requestAction.meta.api.moduleId,
                 methodId: requestAction.meta.api.methodId,
-            }
+            },
         },
         error: true,
     };

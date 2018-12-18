@@ -5,35 +5,27 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Store } from "redux";
-
 import * as debug_ from "debug";
 import * as fs from "fs";
 import * as path from "path";
-import * as uuid from "uuid";
 import { JSON as TAJSON } from "ta-json-x";
+import * as uuid from "uuid";
 
 import { injectable} from "inversify";
 
-import { Contributor } from "readium-desktop/common/models/contributor";
-import { CustomCover, RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
-import { File } from "readium-desktop/common/models/file";
+import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Publication } from "readium-desktop/common/models/publication";
-
-import * as publicationDownloadActions from "readium-desktop/common/redux/actions/downloader";
 
 import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 
-import { container } from "readium-desktop/main/di";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { RootState } from "readium-desktop/main/redux/states";
 
-import { Downloader } from "readium-desktop/main/services/downloader";
 import { Download } from "readium-desktop/common/models/download";
+import { Downloader } from "readium-desktop/main/services/downloader";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -47,7 +39,7 @@ export class CatalogService {
     public constructor(
         publicationRepository: PublicationRepository,
         publicationStorage: PublicationStorage,
-        downloader: Downloader
+        downloader: Downloader,
     ) {
         this.publicationRepository = publicationRepository;
         this.publicationStorage = publicationStorage;
@@ -64,42 +56,6 @@ export class CatalogService {
         }
 
         return null;
-    }
-
-    private async importLcplFile(filePath: string): Promise<PublicationDocument> {
-        const buffer = fs.readFileSync(filePath);
-        const content = JSON.parse(buffer.toString());
-        const contentType = "application/epub+zip";
-        let epub;
-
-        // search the path of the epub file
-        let download: Download = null;
-
-        if (content.links) {
-            for (const link of content.links) {
-                if (link.rel === "publication") {
-                    download = this.downloader.addDownload(link.href);
-                }
-            }
-        }
-
-        if (download == null) {
-            throw new Error("Unable to publication in lcpl file");
-        }
-
-        debug("[START] Download publication", filePath);
-        const newDownload = await this.downloader.processDownload(
-            download.identifier,
-            {
-                onProgress: (download: Download) => {
-                    debug("[PROGRESS] Downloading publication", download.progress);
-                },
-            }
-        );
-        debug("[END] Download publication", filePath, newDownload);
-
-        // Import downloaded publication
-        return this.importEpubFile(download.dstPath);
     }
 
     public async importFromOpdsEntry(): Promise<PublicationDocument> {
@@ -135,7 +91,7 @@ export class CatalogService {
             .toString("base-64");
 
         // Merge with the original publication
-        const origPub = await this.publicationRepository.get(publication.identifier)
+        const origPub = await this.publicationRepository.get(publication.identifier);
         const newPub = Object.assign(
             {},
             origPub,
@@ -148,6 +104,40 @@ export class CatalogService {
 
         // Store refreshed metadata in db
         return await this.publicationRepository.save(newPub);
+    }
+
+    private async importLcplFile(filePath: string): Promise<PublicationDocument> {
+        const buffer = fs.readFileSync(filePath);
+        const content = JSON.parse(buffer.toString());
+
+        // search the path of the epub file
+        let download: Download = null;
+
+        if (content.links) {
+            for (const link of content.links) {
+                if (link.rel === "publication") {
+                    download = this.downloader.addDownload(link.href);
+                }
+            }
+        }
+
+        if (download == null) {
+            throw new Error("Unable to publication in lcpl file");
+        }
+
+        debug("[START] Download publication", filePath);
+        const newDownload = await this.downloader.processDownload(
+            download.identifier,
+            {
+                onProgress: (dl: Download) => {
+                    debug("[PROGRESS] Downloading publication", dl.progress);
+                },
+            },
+        );
+        debug("[END] Download publication", filePath, newDownload);
+
+        // Import downloaded publication
+        return this.importEpubFile(download.dstPath);
     }
 
     private async importEpubFile(filePath: string): Promise<PublicationDocument> {
@@ -178,7 +168,7 @@ export class CatalogService {
         // Store publication on filesystem
         debug("[START] Store publication on filesystem", filePath);
         const files = await this.publicationStorage.storePublication(
-            pubDocument.identifier, filePath
+            pubDocument.identifier, filePath,
         );
         debug("[END] Store publication on filesystem - END", filePath);
 

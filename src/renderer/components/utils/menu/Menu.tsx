@@ -11,7 +11,6 @@ import * as uuid from "uuid";
 
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
-import { NONAME } from "dns";
 
 interface ContentStyle {
     [key: string]: any;
@@ -86,7 +85,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
     public render(): React.ReactElement<{}> {
         const { open } = this.state;
         const contentStyle = Object.assign({}, this.state.contentStyle);
-        
+
         if (open) {
             contentStyle.display = "block";
         }
@@ -133,9 +132,6 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
 
         if (buttonElement.contains(targetElement)) {
             const contentStyle = Object.assign({}, this.state.contentStyle);
-            
-            // Find button position
-            const buttonElement = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
 
             // Refresh position of menu content
             const buttonClientRect = buttonElement.getBoundingClientRect();

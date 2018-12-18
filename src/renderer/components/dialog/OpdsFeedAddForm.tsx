@@ -59,7 +59,7 @@ export class OpdsFeedAddForm extends React.Component<OpdsFeedAddFormProps, undef
                         />
                     </div>
                     <button>
-                       Ajouter
+                        Ajouter
                     </button>
                 </form>
             </div>

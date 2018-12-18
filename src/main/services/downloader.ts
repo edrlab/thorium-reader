@@ -71,7 +71,7 @@ export class Downloader {
 
     public async processDownload(
         identifier: string,
-        progressListener?: DownloadProgressListener
+        progressListener?: DownloadProgressListener,
     ): Promise<Download> {
         // Retrieve download
         const download = this.downloads[identifier];
@@ -94,7 +94,7 @@ export class Downloader {
                 if (response.statusCode < 200 || response.statusCode > 299) {
                     // Unable to download the resource
                     download.status = DownloadStatus.Failed;
-                    debug("Error while downloading resource", download, response.statusCode)
+                    debug("Error while downloading resource", download, response.statusCode);
                     outputStream.end(null, null, () => {
                         reject("Error while downloading resource");
                     });

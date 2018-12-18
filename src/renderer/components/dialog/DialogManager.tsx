@@ -61,7 +61,6 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
     }
 
     private buildOpdsFeedAddFormDialog() {
-        console.log(styles);
         return (
             <Dialog
                 open={ true }
@@ -71,7 +70,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 <OpdsFeedAddForm
                     url={ this.props.dialog.data.opds.url }
                 />
-          </Dialog>
+            </Dialog>
         );
     }
 
@@ -82,9 +81,9 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 close={ this.props.closeDialog }
             >
                 <PublicationInfo
-                    publicationIdentifier={ this.props.dialog.data.publication.identifier }
+                    publication={ this.props.dialog.data.publication }
                 />
-          </Dialog>
+            </Dialog>
         );
     }
 
@@ -98,7 +97,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 <FileImport
                     files={ this.props.dialog.data.files }
                 />
-          </Dialog>
+            </Dialog>
         );
     }
 
@@ -112,7 +111,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 <DeletePublicationConfirm
                     publication={ this.props.dialog.data.publication }
                 />
-          </Dialog>
+            </Dialog>
         );
     }
 }
