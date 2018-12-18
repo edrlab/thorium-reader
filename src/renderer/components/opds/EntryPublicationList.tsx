@@ -15,10 +15,9 @@ import Header, { DisplayType } from "readium-desktop/renderer/components/opds/He
 
 import GridView from "readium-desktop/renderer/components/utils/GridView";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
+import Loader from "readium-desktop/renderer/components/utils/Loader";
 
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
 interface EntryPublicationListProps extends RouteComponentProps {
     publications: OpdsPublicationView[];
@@ -43,7 +42,7 @@ export class EntryPublicationList extends React.Component<EntryPublicationListPr
                 <Header displayType={ displayType } />
                 { this.props.publications ?
                     <DisplayView publications={ this.props.publications } isOpdsView={true}/>
-                : <></>}
+                : <Loader/>}
             </div>
         );
     }
