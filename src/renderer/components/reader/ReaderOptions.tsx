@@ -281,7 +281,9 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     aria-valuemax={optionsValues.pageMargins.length - 1}
                                     aria-valuenow={this.props.indexes.pageMargins}
                                 />
-                                {/* {this.props.settings.pageMargins} */}
+                                <span className={styles.reader_settings_value}>
+                                    {this.roundRemValue(this.props.settings.pageMargins)}
+                                </span>
                             </div>
                             <div className={styles.line_tab_content}>
                                 <div className={styles.subheading}>
@@ -300,7 +302,9 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     aria-valuemax={optionsValues.wordSpacing.length - 1}
                                     aria-valuenow={this.props.indexes.wordSpacing}
                                 />
-                                {/* {this.props.settings.wordSpacing} */}
+                                <span className={styles.reader_settings_value}>
+                                    {this.roundRemValue(this.props.settings.wordSpacing)}
+                                </span>
                             </div>
                             <div className={styles.line_tab_content}>
                                 <div className={styles.subheading}>
@@ -319,7 +323,9 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     aria-valuemax={optionsValues.letterSpacing.length - 1}
                                     aria-valuenow={this.props.indexes.letterSpacing}
                                 />
-                                {/* {this.props.settings.letterSpacing} */}
+                                <span className={styles.reader_settings_value}>
+                                    {this.roundRemValue(this.props.settings.letterSpacing)}
+                                </span>
                             </div>
                             <div className={styles.line_tab_content}>
                                 <div className={styles.subheading}>
@@ -338,7 +344,9 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     aria-valuemax={optionsValues.paraSpacing.length - 1}
                                     aria-valuenow={this.props.indexes.paraSpacing}
                                 />
-                                {/* {this.props.settings.paraSpacing} */}
+                                <span className={styles.reader_settings_value}>
+                                    {this.roundRemValue(this.props.settings.paraSpacing)}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -369,6 +377,17 @@ export default class ReaderOptions extends React.Component<Props, State> {
         const { sectionOpenList } = this.state;
         sectionOpenList[id] = !sectionOpenList[id];
         this.setState({ sectionOpenList });
+    }
+
+    // round the value to the hundredth
+    private roundRemValue(value: string) {
+        if (!value) {
+            return "";
+        }
+
+        const nbr = parseFloat(value.replace("rem", ""));
+        const roundNumber = (Math.round(nbr * 100) / 100);
+        return roundNumber + " rem";
     }
 
     private getSectionStyle(id: number): any {

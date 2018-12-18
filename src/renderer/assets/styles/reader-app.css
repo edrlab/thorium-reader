@@ -153,6 +153,11 @@
   height: 1.5rem;
 }
 
+.reader_settings_value {
+  width: 5rem;
+  display: inline-block;
+}
+
 /* ======= CONTENT TABLE ======*/
 
 .content_table {
