@@ -23,6 +23,8 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import AddEntryForm from "./AddEntryForm";
 
+import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
+
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
 }
@@ -49,6 +51,7 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                                         <PublicationCard
                                             key={pub.identifier}
                                             publication={pub}
+                                            menuContent={<CatalogMenu publication={pub}/>}
                                         />,
                                     )}
                                 />
