@@ -49,7 +49,7 @@ export class FeedList extends React.Component<OpdsListProps, null> {
                             }}
                         >
                             <div>
-                            <button
+                                <button
                                     onClick={(e) => this.deleteFeed(e, item.identifier)}
                                 >
                                     <SVG svg={DeleteIcon} />
@@ -58,6 +58,9 @@ export class FeedList extends React.Component<OpdsListProps, null> {
                             </div>
                         </Link>
                     );
+                })}
+                {[...Array(6).keys()].map((__, index) => {
+                    return <div key={-index}></div>;
                 })}
             </section>
         );
