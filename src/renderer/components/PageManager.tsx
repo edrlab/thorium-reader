@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { StaticRouter as Router } from "react-router";
+
 import { Route, Switch } from "react-router-dom";
 
 import { Translator } from "readium-desktop/common/services/translator";

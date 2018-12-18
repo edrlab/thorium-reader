@@ -9,17 +9,24 @@ import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
 
+import { connectRouter, routerMiddleware } from "connected-react-router";
+
+import { History } from "history";
 import { reduxSyncMiddleware } from "readium-desktop/renderer/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/renderer/redux/reducers";
 import { rootSaga } from "readium-desktop/renderer/redux/sagas";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-export function initStore(): Store<RootState> {
+export function initStore(history: History): Store<RootState> {
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(
-        rootReducer,
+        connectRouter(history)(rootReducer),
         composeWithDevTools(
-            applyMiddleware(reduxSyncMiddleware, sagaMiddleware),
+            applyMiddleware(
+                routerMiddleware(history),
+                reduxSyncMiddleware,
+                sagaMiddleware,
+            ),
         ),
     );
     sagaMiddleware.run(rootSaga);

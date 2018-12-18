@@ -102,7 +102,8 @@
         "password": "Mot de passe :",
         "loginButton": "Connexion",
         "sentence": "Veuillez vous connecter pour acceder au contenu"
-      }
+      },
+      "breadcrumbRoot": "Catalogues"
     },
     "reader": {
       "settings": {

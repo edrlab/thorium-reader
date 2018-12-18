@@ -9,7 +9,9 @@ import * as React from "react";
 
 import { Store } from "redux";
 
-import { HashRouter  } from "react-router-dom";
+import { History } from "history";
+
+import { ConnectedRouter } from "connected-react-router";
 
 import Dropzone from "react-dropzone";
 
@@ -37,7 +39,10 @@ import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 export default class App extends React.Component<any, undefined> {
     @lazyInject("store")
-    private store: Store<RootState>
+    private store: Store<RootState>;
+
+    @lazyInject("history")
+    private history: History;
 
     constructor(props: any) {
         super(props);
@@ -64,7 +69,7 @@ export default class App extends React.Component<any, undefined> {
     public render(): React.ReactElement<{}> {
         return (
             <Provider store={ this.store }>
-                <HashRouter >
+                <ConnectedRouter history={ this.history }>
                     <div className={styles.root}>
                         <Dropzone disableClick onDrop={ this.onDrop } style={{
                             position: "absolute",
@@ -77,7 +82,7 @@ export default class App extends React.Component<any, undefined> {
                         <DialogManager />
                         </Dropzone>
                     </div>
-                </HashRouter >
+                </ConnectedRouter>
             </Provider>
         );
     }

@@ -9,21 +9,16 @@ import { injectable} from "inversify";
 
 import * as debug_ from "debug";
 import * as moment from "moment";
-import * as PouchDB from "pouchdb-core";
-import * as util from "util";
 import * as uuid from "uuid";
 
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
-import { dump } from "readium-desktop/utils/debug";
 
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
 
-const debug = debug_("readium-desktop:main#db");
-
 interface Index  {
-    name: string,
-    fields: string[]
+    name: string;
+    fields: string[];
 }
 
 export abstract class BaseRepository<D extends Identifiable & Timestampable> {
@@ -51,13 +46,13 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         );
 
         if (document.identifier == null) {
-            document.identifier = this.buildId(uuid.v4());
+            document.identifier = uuid.v4();
         }
 
         // Search if there is an existing document with the same identifier
         try {
             const origDbDoc = await this.db.get(
-                this.buildId(document.identifier)
+                this.buildId(document.identifier),
             ) as any;
 
             dbDoc = Object.assign(
@@ -80,7 +75,7 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
             );
         }
 
-        await this.db.put(dbDoc)
+        await this.db.put(dbDoc);
         return this.get(document.identifier);
     }
 
@@ -136,11 +131,10 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
             await this.db.createIndex({
                 index: {
                     fields: index.fields,
-                    name: index.name
+                    name: index.name,
                 },
             });
-        }
-        catch (error) {
+        } catch (error) {
             throw error;
         }
     }

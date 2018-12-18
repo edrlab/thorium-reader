@@ -139,6 +139,7 @@
     "@types/react-beautiful-dnd": "^7.1.2",
     "classnames": "^2.2.6",
     "commonmark": "^0.28.1",
+    "connected-react-router": "^4.4.1",
     "debug": "^4.0.1",
     "font-awesome": "^4.7.0",
     "html-loader": "^0.5.5",

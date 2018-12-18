@@ -11,7 +11,7 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
-import { Link, RouteComponentProps } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 
@@ -23,29 +23,53 @@ import Slider from "readium-desktop/renderer/components/utils/Slider";
 
 import { PublicationCard } from "readium-desktop/renderer/components/publication";
 
-interface OpdsEntryProps extends RouteComponentProps {
-    entry?: any;
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
+
+interface EntryProps extends RouteComponentProps {
+    level: number;
+    entry: any;
     publications?: PublicationView[];
 }
 
-export class OpdsDetails extends React.Component<OpdsEntryProps, undefined> {
+export class OpdsDetails extends React.Component<EntryProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { entry, publications } = this.props;
+
         if (!entry || !publications) {
             return <></>;
         }
+
+        // Build feedBreadcrumb
+        const { level, match } = this.props;
+        const matchParams = match.params as any;
+        const rootFeedIdentifier = matchParams.opdsId;
+        const route = buildOpdsBrowserRoute(
+            rootFeedIdentifier,
+            entry.title,
+            entry.url,
+            level,
+        );
+
         return (
             <>
                 <div className={styles.flux_infos}>
                     <Link
                         className={styles.flux_image}
-                        to={"/catalogs/" + (this.props.match.params as any).opdsId + "/" + entry.name}
-                        >
-                            <span className={styles.flux_title}>{entry.name}</span>
-                            <span className={styles.flux_subtitle}>{entry.count} livres</span>
+                        to={ route }
+                    >
+                        <span className={styles.flux_title}>{entry.title}</span>
+                        {
+                            (entry.publicationCount) ?
+                                (
+                                    <span className={styles.flux_subtitle}>
+                                        {entry.publicationCount} livres
+                                    </span>
+                                ) :
+                                (<></>)
+                        }
                     </Link>
                 </div>
-                <Slider
+                {/* <Slider
                     content={
                         publications.map((pub) =>
                             <PublicationCard
@@ -55,14 +79,14 @@ export class OpdsDetails extends React.Component<OpdsEntryProps, undefined> {
                         )
                     }
                     className={styles.flux_slider}
-                />
+                /> */}
             </>
         );
     }
 }
 
 export default withApi(
-    OpdsDetails,
+    withRouter(OpdsDetails),
     {
         operations: [
             {

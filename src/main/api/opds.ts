@@ -89,16 +89,15 @@ export class OpdsApi {
             }
 
             const isEntry = xmlDom.documentElement.localName === "entry";
-            console.log("#### is entry", isEntry);
+
             if (isEntry) {
                 const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
-                console.log("####", opds1Entry);
-
                 opds2Publication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
+                console.log("####", opds2Publication);
             } else {
                 const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
-                console.log("####", opds1Feed);
                 opds2Feed = convertOpds1ToOpds2(opds1Feed);
+                return this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
             }
         }
 

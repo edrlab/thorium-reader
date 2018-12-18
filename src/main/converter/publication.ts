@@ -15,6 +15,10 @@ import { Publication as Epub } from "@r2-shared-js/models/publication";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
+import {
+    convertContributorArrayToStringArray,
+} from "readium-desktop/common/utils";
+
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 @injectable()
@@ -26,16 +30,16 @@ export class PublicationViewConverter {
             .toString("utf-8");
         const parsedPublication = JSON.parse(jsonParsedPublication);
         const epub = TAJSON.deserialize(parsedPublication, Epub) as Epub;
-        const publishers = this.convertContibutorArrayToStringArray(
+        const publishers = convertContributorArrayToStringArray(
             epub.Metadata.Publisher,
         );
-        const authors = this.convertContibutorArrayToStringArray(
+        const authors = convertContributorArrayToStringArray(
             epub.Metadata.Author,
         );
         let publishedAt = null;
 
         if (epub.Metadata.PublicationDate) {
-            publishedAt = moment(epub.Metadata.PublicationDate).toISOString()
+            publishedAt = moment(epub.Metadata.PublicationDate).toISOString();
         }
 
         let cover = null;
@@ -58,27 +62,5 @@ export class PublicationViewConverter {
             cover,
             customCover: document.customCover,
         };
-    }
-
-    private convertContibutorArrayToStringArray(items: any): string[] {
-        if (!items) {
-            return  [];
-        }
-
-        const itemParts = items.map((item: any) => {
-            if (typeof(item.Name) == "object") {
-                return Object.values(item.Name);
-            }
-
-            return [item.Name];
-        });
-
-        let newItems: any = [];
-
-        for (const itemPart of itemParts) {
-            newItems = newItems.concat(itemPart);
-        }
-
-        return newItems;
     }
 }

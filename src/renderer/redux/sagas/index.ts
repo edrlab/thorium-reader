@@ -22,8 +22,11 @@ import {
     lcpReturnSuccessWatcher,
 } from "./lcp";
 
+import * as opds from "./opds";
+
 export function* rootSaga() {
     yield all([
+        opds.watchers(),
 
         winInitWatcher(),
 

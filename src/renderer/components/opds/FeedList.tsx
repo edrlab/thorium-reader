@@ -15,7 +15,11 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
 
-interface OpdsListProps {
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
+
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+
+interface OpdsListProps extends TranslatorProps {
     feeds?: OpdsFeedView[];
 }
 
@@ -27,13 +31,24 @@ export class FeedList extends React.Component<OpdsListProps, null> {
 
         return (
             <section className={styles.opds_list}>
-                { this.props.feeds.map((item, index) =>
-                    <Link key={index} to={"/opds/" + item.identifier + `/browse?url=${encodeURIComponent(item.url)}`}>
-                        <div>
-                            <p>{ item.title }</p>
-                        </div>
-                    </Link>,
-                )}
+                { this.props.feeds.map((item, index) => {
+                    return (
+                        <Link
+                            key={index}
+                            to={{
+                                pathname: buildOpdsBrowserRoute(
+                                    item.identifier,
+                                    item.title,
+                                    item.url,
+                                ),
+                            }}
+                        >
+                            <div>
+                                <p>{ item.title }</p>
+                            </div>
+                        </Link>
+                    );
+                })}
             </section>
         );
     }

@@ -102,7 +102,8 @@
         "password": "Password :",
         "loginButton": "Login",
         "sentence": "Please, log in to access to the contents"
-      }
+      },
+      "breadcrumbRoot": "Catalogs"
     },
     "reader": {
       "settings": {
