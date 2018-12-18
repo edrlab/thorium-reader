@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { RouterState } from "connected-react-router";
+
 import {MessageState} from "readium-desktop/renderer/reducers/message";
 import {WindowState} from "readium-desktop/renderer/reducers/window";
 
@@ -42,4 +44,5 @@ export interface RootState {
     update: UpdateState;
     api: ApiState;
     dialog: DialogState;
+    router: RouterState;
 }
