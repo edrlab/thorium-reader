@@ -25,7 +25,7 @@ export class ConfigRepository extends BaseRepository<ConfigDocument> {
             super.convertToMinimalDocument(dbDoc),
             {
                 value: dbDoc.value,
-            }
+            },
         );
     }
 }

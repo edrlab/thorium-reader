@@ -10,8 +10,8 @@ import { Store } from "redux";
 
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
-    catalogActions,
     apiActions,
+    catalogActions,
     i18nActions,
     lcpActions,
     opdsActions,
@@ -20,8 +20,6 @@ import {
 } from "readium-desktop/common/redux/actions";
 
 import { SenderType } from "readium-desktop/common/models/sync";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
 
 import { container } from "readium-desktop/renderer/di";
 

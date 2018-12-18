@@ -11,7 +11,7 @@ import { Timestampable } from "readium-desktop/common/models/timestampable";
 
 export enum LocatorType {
     LastReadingLocation = "last-reading-location",
-    Bookmark = "bookmark"
+    Bookmark = "bookmark",
 }
 
 export interface LocatorDocument extends Identifiable, Timestampable {

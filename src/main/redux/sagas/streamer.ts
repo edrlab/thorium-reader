@@ -8,23 +8,18 @@
 import * as debug_ from "debug";
 import * as path from "path";
 import * as portfinder from "portfinder";
-import { channel, Channel, SagaIterator } from "redux-saga";
-import { call, fork, put, select, take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
+import { call, put, select, take } from "redux-saga/effects";
 
 import { Server } from "@r2-streamer-js/http/server";
-
-import { Publication as Epub } from "@r2-shared-js/models/publication";
-import { EpubParsePromise } from "@r2-shared-js/parser/epub";
-
-import { Publication } from "readium-desktop/common/models/publication";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { container } from "readium-desktop/main/di";
-import { lcpActions, streamerActions } from "readium-desktop/main/redux/actions";
+import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
@@ -105,7 +100,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
         try {
             publication = yield call(
                 publicationRepository.get.bind(publicationRepository),
-                action.payload.publication.identifier
+                action.payload.publication.identifier,
             );
         } catch (error) {
             continue;
@@ -200,7 +195,7 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
         try {
             publication = yield call(
                 publicationRepository.get.bind(publicationRepository),
-                action.payload.publication.identifier
+                action.payload.publication.identifier,
             );
         } catch (error) {
             continue;

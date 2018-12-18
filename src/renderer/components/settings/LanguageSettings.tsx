@@ -51,7 +51,7 @@ export class LanguageSettings extends React.Component<Props, States> {
                                 lang={lang}
                                 onClick={() => this.props.setLocale(lang)}
                                 {...(this.props.locale === lang && {className: styles.active})}
-                                >
+                            >
                                 { (AvailableLanguages as any)[lang] }
                             </li>,
                         )}
@@ -70,7 +70,7 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-      setLocale: (locale: string) => dispatch(setLocale(locale)),
+        setLocale: (locale: string) => dispatch(setLocale(locale)),
     };
 };
 

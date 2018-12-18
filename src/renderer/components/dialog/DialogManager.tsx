@@ -70,7 +70,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 <OpdsFeedAddForm
                     url={ this.props.dialog.data.opds.url }
                 />
-          </Dialog>
+            </Dialog>
         );
     }
 
@@ -83,7 +83,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 <PublicationInfo
                     publication={ this.props.dialog.data.publication }
                 />
-          </Dialog>
+            </Dialog>
         );
     }
 
@@ -97,7 +97,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 <FileImport
                     files={ this.props.dialog.data.files }
                 />
-          </Dialog>
+            </Dialog>
         );
     }
 
@@ -111,7 +111,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 <DeletePublicationConfirm
                     publication={ this.props.dialog.data.publication }
                 />
-          </Dialog>
+            </Dialog>
         );
     }
 }

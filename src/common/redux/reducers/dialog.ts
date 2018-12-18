@@ -29,7 +29,7 @@ export function dialogReducer(
                     open: true,
                     type: action.payload.type,
                     data: action.payload.data,
-                }
+                },
             );
         case ActionType.CloseRequest:
             return Object.assign(

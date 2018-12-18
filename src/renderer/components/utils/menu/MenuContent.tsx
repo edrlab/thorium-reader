@@ -35,15 +35,13 @@ export default class MenuContent extends React.Component<MenuContentProps, undef
     }
 
     public render() {
-        let menuClassName = null;
-
         return ReactDOM.createPortal(
             (
                 <div
                     style={this.props.menuStyle}
                     id={this.props.menuId}
                     aria-hidden={!this.props.menuOpen}
-                    className={menuClassName}
+                    className={null}
                 >
                     {this.props.children}
                 </div>

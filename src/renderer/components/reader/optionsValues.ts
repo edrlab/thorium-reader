@@ -14,12 +14,12 @@ export const fontSize: string[] = [
 
 export const pageMargins: string[] = [
     "0.5",
-     "0.75",
-     "1",
-     "1.25",
-     "1.5",
-     "1.75",
-     "2",
+    "0.75",
+    "1",
+    "1.25",
+    "1.5",
+    "1.75",
+    "2",
 ];
 
 export const wordSpacing: string[] = [

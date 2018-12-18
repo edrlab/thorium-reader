@@ -7,7 +7,7 @@
 
 import { injectable} from "inversify";
 
-import { CatalogView, CatalogEntryView } from "readium-desktop/common/views/catalog";
+import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
@@ -15,8 +15,8 @@ import { CatalogConfig } from "readium-desktop/main/db/document/config";
 
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
@@ -114,9 +114,9 @@ export class CatalogApi {
                     tag: entry.tag,
                     publications: publicationViews,
                     totalCount: publicationViews.length,
-                }
+                },
             );
-        };
+        }
 
         return entryViews;
     }

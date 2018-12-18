@@ -13,7 +13,7 @@ import {
 } from "./downloader";
 
 import {
-    publicationDownloadCancelRequestWatcher
+    publicationDownloadCancelRequestWatcher,
 } from "./publication-download";
 
 import { appInitWatcher } from "./app";

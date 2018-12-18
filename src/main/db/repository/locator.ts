@@ -8,14 +8,12 @@
 import { injectable} from "inversify";
 import * as PouchDB from "pouchdb-core";
 
-import { Locator } from "readium-desktop/common/models/locator";
-
 import { LocatorDocument } from "readium-desktop/main/db/document/locator";
 
 import { BaseRepository } from "./base";
 
-const PUBLICATION_INDEX = "publication_index"
-const LOCATOR_TYPE_INDEX = "locator_type_index"
+const PUBLICATION_INDEX = "publication_index";
+const LOCATOR_TYPE_INDEX = "locator_type_index";
 
 @injectable()
 export class LocatorRepository extends BaseRepository<LocatorDocument> {
@@ -28,7 +26,7 @@ export class LocatorRepository extends BaseRepository<LocatorDocument> {
             {
                 fields: ["locatorType"],
                 name: LOCATOR_TYPE_INDEX,
-            }
+            },
         ];
 
         super(db, "locator", indexes);
@@ -61,7 +59,7 @@ export class LocatorRepository extends BaseRepository<LocatorDocument> {
                 locator: dbDoc.locator,
                 locatorType: dbDoc.locatorType,
                 publicationIdentifier: dbDoc.publicationIdentifier,
-            }
+            },
         );
     }
 }
