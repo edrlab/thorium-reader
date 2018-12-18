@@ -161,9 +161,8 @@ const publicationJsonUrl = queryParams["pub"];
 // tslint:disable-next-line:variable-name
 const publicationJsonUrl_ = publicationJsonUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
     convertCustomSchemeToHttpUrl(publicationJsonUrl) : publicationJsonUrl;
-
-const pathBase64 = publicationJsonUrl_.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
-
+const pathBase64Raw = publicationJsonUrl_.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+const pathBase64 = decodeURIComponent(pathBase64Raw);
 const pathDecoded = window.atob(pathBase64);
 
 const pathFileName = pathDecoded.substr(

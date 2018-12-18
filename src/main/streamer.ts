@@ -22,6 +22,7 @@ import {
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { Publication } from "@r2-shared-js/models/publication";
+import { RootState } from "readium-desktop/main/redux/states";
 import { Server } from "@r2-streamer-js/http/server";
 import { Store } from "redux";
 import { app } from "electron";
