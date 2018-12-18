@@ -9,9 +9,13 @@ import * as qs from "query-string";
 
 import * as React from "react";
 
+import { connect } from "react-redux";
+
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import Header, { DisplayType } from "readium-desktop/renderer/components/opds/Header";
+
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 import GridView from "readium-desktop/renderer/components/utils/GridView";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
@@ -49,4 +53,10 @@ export class EntryPublicationList extends React.Component<EntryPublicationListPr
     }
 }
 
-export default withRouter(EntryPublicationList);
+const mapStateToProps = (state: RootState, __: any) => {
+    return {
+        location: state.router.location,
+    };
+};
+
+export default withRouter(connect(mapStateToProps, undefined)(EntryPublicationList));
