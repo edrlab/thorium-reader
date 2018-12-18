@@ -15,8 +15,33 @@ export function buildOpdsBrowserRoute(
         level = 1;
     }
     const route = `/opds/${rootFeedIdentifier}/browse/` + level
-        + `/${btoa(title)}/${btoa(url)}`;
+        + `/${encodeB64(title)}/${encodeB64(url)}`;
     return route;
+}
+
+// Encode without padding
+// And apply RFC 4648
+export function encodeB64(data: any) {
+    let encoded = btoa(data);
+
+    // RFC 4648
+    encoded = encoded.replace(/\//g, "_");
+    encoded = encoded.replace(/\[+]/g, "-");
+
+    // Remove padding
+    encoded = encoded.replace(/=/g, "");
+    return encoded;
+}
+
+export function decodeB64(data: any) {
+    let decoded = data;
+    decoded = decoded.replace(/_/g, "/");
+    decoded = decoded.replace(/-/g, "+");
+
+    // Add padding
+    const paddingLength = (3 - (decoded.length % 3)) % 3;
+    decoded = atob(decoded);
+    return decoded;
 }
 
 export function parseOpdsBrowserRoute(route: string) {
@@ -31,8 +56,8 @@ export function parseOpdsBrowserRoute(route: string) {
 
     const rootFeedIdentifier = match[1];
     const level = parseInt(match[2], 10);
-    const title = atob(match[3]);
-    const url = atob(match[4]);
+    const title = decodeB64(match[3]);
+    const url = decodeB64(match[4]);
 
     return {
         rootFeedIdentifier,
