@@ -28,14 +28,13 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 interface EntryProps extends RouteComponentProps {
     level: number;
     entry: any;
-    publications?: PublicationView[];
 }
 
-export class OpdsDetails extends React.Component<EntryProps, undefined> {
+export class Entry extends React.Component<EntryProps, undefined> {
     public render(): React.ReactElement<{}>  {
-        const { entry, publications } = this.props;
+        const { entry } = this.props;
 
-        if (!entry || !publications) {
+        if (!entry) {
             return <></>;
         }
 
@@ -85,16 +84,4 @@ export class OpdsDetails extends React.Component<EntryProps, undefined> {
     }
 }
 
-export default withApi(
-    withRouter(OpdsDetails),
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "findAll",
-                resultProp: "publications",
-                onLoad: true,
-            },
-        ],
-    },
-);
+export default withRouter(Entry);
