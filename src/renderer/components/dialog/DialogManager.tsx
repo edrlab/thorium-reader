@@ -61,7 +61,6 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
     }
 
     private buildOpdsFeedAddFormDialog() {
-        console.log(styles);
         return (
             <Dialog
                 open={ true }

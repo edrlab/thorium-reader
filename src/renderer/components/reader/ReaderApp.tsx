@@ -520,7 +520,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         this.setState({ settingsValues });
 
         this.handleSettingsSave();
-        console.log(value, indexes, settingsValues);
     }
 
     private getEpubReadingSystem: () => INameVersion = () => {

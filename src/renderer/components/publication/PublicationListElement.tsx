@@ -61,8 +61,6 @@ export class PublicationListElement extends React.Component<PublicationListEleme
             formatedPublishedYear = "" + moment(pub.publishedAt).year();
         }
 
-        console.log(this.props.menuContent);
-
         return (
             <>
                 <div className={styles.list_book_title}>
