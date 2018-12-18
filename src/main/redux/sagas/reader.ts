@@ -9,38 +9,27 @@ import * as debug_ from "debug";
 import * as path from "path";
 import * as uuid from "uuid";
 
-import { BrowserWindow, webContents } from "electron";
-
-import { SagaIterator } from "redux-saga";
-import { call, put, take } from "redux-saga/effects";
-
-import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
-
-import { Publication } from "readium-desktop/common/models/publication";
 import { Bookmark, Reader, ReaderConfig } from "readium-desktop/common/models/reader";
-
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-
-import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
-
-import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
-
-import { readerActions } from "readium-desktop/common/redux/actions";
-
-import { container } from "readium-desktop/main/di";
-
-import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-
+import { BrowserWindow, webContents } from "electron";
 import {
+    IS_DEV,
     _NODE_MODULE_RELATIVE_URL,
     _PACKAGING,
     _RENDERER_READER_BASE_URL,
-    IS_DEV,
 } from "readium-desktop/preprocessor-directives";
+import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
+import { call, put, take } from "redux-saga/effects";
 
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { LocatorType } from "readium-desktop/main/db/document/locator";
+import { Publication } from "readium-desktop/common/models/publication";
+import { SagaIterator } from "redux-saga";
+import { container } from "readium-desktop/main/di";
+import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -75,7 +64,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
     trackBrowserWindow(readerWindow);
 
     const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
-    const pathDecoded = new Buffer(pathBase64, "base64").toString("utf8");
+    const pathDecoded = new Buffer(decodeURIComponent(pathBase64), "base64").toString("utf8");
 
     // Create reader object
     const reader: Reader = {
@@ -118,8 +107,9 @@ async function openReader(publication: Publication, manifestUrl: string) {
 
     if (locators.length > 0) {
         const locator = locators[0];
-        const docHref = Buffer.from(locator.locator.href).toString("base64");
-        const docSelector = Buffer.from(locator.locator.locations.cssSelector).toString("base64");
+        const docHref = encodeURIComponent_RFC3986(Buffer.from(locator.locator.href).toString("base64"));
+        const docSelector =
+            encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.cssSelector).toString("base64"));
         readerUrl += `&docHref=${docHref}&docSelector=${docSelector}`;
     }
 
