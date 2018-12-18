@@ -12,7 +12,7 @@ import { Store } from "redux";
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 
-import { createBrowserHistory, History } from "history";
+import { createHashHistory, History } from "history";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
@@ -22,7 +22,7 @@ import { initStore } from "readium-desktop/renderer/redux/store/memory";
 const container = new Container();
 
 // Create store
-const history: History = createBrowserHistory();
+const history: History = createHashHistory();
 container.bind<History>("history").toConstantValue(history);
 
 const store = initStore(history);
