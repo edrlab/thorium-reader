@@ -23,7 +23,6 @@ import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/com
 import { Link } from "@r2-shared-js/models/publication-link";
 
 import { Publication } from "@r2-shared-js/models/publication";
-import { RootState } from "readium-desktop/main/redux/states";
 
 import { Server } from "@r2-streamer-js/http/server";
 import { Store } from "redux";
@@ -61,37 +60,18 @@ if (_PACKAGING === "1") {
 rcssPath = rcssPath.replace(/\\/g, "/");
 debug("readium css path:", rcssPath);
 
-function isFixedLayout(publication: Publication, link: Link | undefined): boolean {
-    if (link && link.Properties) {
-        if (link.Properties.Layout === "fixed") {
-            return true;
-        }
-        if (typeof link.Properties.Layout !== "undefined") {
-            return false;
-        }
-    }
-    if (publication &&
-        publication.Metadata &&
-        publication.Metadata.Rendition) {
-        return publication.Metadata.Rendition.Layout === "fixed";
-    }
-    return false;
-}
+// TODO: centralize this code, currently duplicated
+// see src/renderer/components/reader/ReaderApp.jsx
 function computeReadiumCssJsonMessage(publication: Publication, link: Link | undefined):
     IEventPayload_R2_EVENT_READIUMCSS {
-    const store = (container.get("store") as Store<RootState>);
+    const store = (container.get("store") as Store<any>);
     let settings = store.getState().reader.config;
-    debug(settings);
-    if (settings.value) {
+    if (!settings.value) {
+        debug("!settings.value? (MAIN)");
+    } else {
         settings = settings.value;
     }
     debug(settings);
-
-    if (isFixedLayout(publication, link)) {
-        return { setCSS: undefined, isFixedLayout: true };
-    }
-
-    const pubServerRoot = streamer.serverUrl() as string;
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {
@@ -133,7 +113,7 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
 
         textAlign: settings.align === "left" ? textAlignEnum.left :
             (settings.align === "right" ? textAlignEnum.right :
-            ((settings.align as string) === "justify" ? textAlignEnum.justify : textAlignEnum.start)),
+            (settings.align === "justify" ? textAlignEnum.justify : textAlignEnum.start)),
 
         textColor: readiumCSSDefaults.textColor,
 
@@ -141,10 +121,7 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
 
         wordSpacing: settings.wordSpacing,
     };
-    const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = {
-        setCSS: cssJson,
-        urlRoot: pubServerRoot,
-    };
+    const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
     console.log("jsonMsg MAIN");
     console.log(jsonMsg);
     return jsonMsg;

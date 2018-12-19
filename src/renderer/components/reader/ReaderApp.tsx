@@ -45,7 +45,7 @@ import {
     IEventPayload_R2_EVENT_READIUMCSS,
 } from "@r2-navigator-js/electron/common/events";
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
-import { setEpubReadingSystemJsonGetter } from "@r2-navigator-js/electron/renderer/index";
+import { setEpubReadingSystemInfo } from "@r2-navigator-js/electron/renderer/index";
 import { INameVersion } from "@r2-navigator-js/electron/renderer/webview/epubReadingSystem";
 import { Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -76,9 +76,17 @@ webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
 
 const queryParams = getURLQueryParams();
 
+// TODO: centralize this code, currently duplicated
+// see src/main/streamer.js
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     const store = (container.get("store") as Store<any>);
-    const settings = store.getState().reader.config.value;
+    let settings = store.getState().reader.config;
+    if (!settings.value) {
+        console.log("!settings.value? (RENDERER)");
+    } else {
+        settings = settings.value;
+    }
+    console.log(settings);
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {
@@ -129,6 +137,8 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         wordSpacing: settings.wordSpacing,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
+    console.log("jsonMsg RENDERER");
+    console.log(jsonMsg);
     return jsonMsg;
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
@@ -320,7 +330,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         this.setState({publication});
         setReadingLocationSaver(saveReadingLocation);
 
-        setEpubReadingSystemJsonGetter(this.getEpubReadingSystem);
+        setEpubReadingSystemInfo({ name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION });
     }
 
     public render(): React.ReactElement<{}> {
@@ -520,9 +530,5 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         this.setState({ settingsValues });
 
         this.handleSettingsSave();
-    }
-
-    private getEpubReadingSystem: () => INameVersion = () => {
-        return { name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION };
     }
 }
