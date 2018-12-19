@@ -19,10 +19,6 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-import Slider from "readium-desktop/renderer/components/utils/Slider";
-
-import { PublicationCard } from "readium-desktop/renderer/components/publication";
-
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 interface EntryProps extends RouteComponentProps {
@@ -51,9 +47,9 @@ export class Entry extends React.Component<EntryProps, undefined> {
 
         return (
             <>
-                <div className={styles.flux_infos}>
+                <div>
                     <Link
-                        className={styles.flux_image}
+                        className={styles.flux_infos}
                         to={ route }
                     >
                         <span className={styles.flux_title}>{entry.title}</span>
@@ -66,6 +62,9 @@ export class Entry extends React.Component<EntryProps, undefined> {
                                 ) :
                                 (<></>)
                         }
+                        <div className={styles.flux_image}>
+                            <SVG svg={ArrowIcon} />
+                        </div>
                     </Link>
                 </div>
                 {/* <Slider
