@@ -84,6 +84,7 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
                 DialogType.PublicationInfo,
                 {
                     publication,
+                    isOpds: true,
                 },
             ));
         },
