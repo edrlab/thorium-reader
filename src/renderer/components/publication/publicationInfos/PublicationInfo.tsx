@@ -9,43 +9,30 @@ import * as moment from "moment";
 
 import * as React from "react";
 
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-
-import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import Cover from "readium-desktop/renderer/components/publication/Cover";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
-import { readerActions } from "readium-desktop/common/redux/actions";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-import TagManager from "./TagManager";
+import TagManager from "readium-desktop/renderer/components/publication/TagManager";
 
-import { DialogType } from "readium-desktop/common/models/dialog";
+import CatalogControls from "./catalogControls";
+import OpdsControls from "./opdsControls";
+
+import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
 interface PublicationInfoProps {
     publicationIdentifier: string;
+    isOpds?: boolean;
     publication?: PublicationView;
-    deletePublication?: any;
-    openReader?: any;
     closeDialog?: any;
-    openDeleteDialog: any;
     getPublicationFromId?: any;
 }
 
 export class PublicationInfo extends React.Component<PublicationInfoProps, undefined> {
-    public constructor(props: any) {
-        super(props);
-
-        this.handleRead = this.handleRead.bind(this);
-        this.deletePublication = this.deletePublication.bind(this);
-    }
-
     public componentDidMount() {
         if (this.props.publicationIdentifier) {
             this.props.getPublicationFromId();
@@ -64,6 +51,11 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
         const formatedPublishers = publication.publishers.join(", ");
         let formatedPublishedDate = null;
 
+        let Controls = CatalogControls;
+        if (this.props.isOpds) {
+            Controls = OpdsControls;
+        }
+
         if (publication.publishedAt) {
             formatedPublishedDate = moment(publication.publishedAt).format("L");
         }
@@ -76,17 +68,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
                         <Cover publication={publication} />
                     </div>
                 </div>
-                <a  onClick={this.handleRead} className={styles.lire}>Lire</a>
-                <ul className={styles.liens}>
-                {/* <li><a href=""><SVG svg={ExportIcon} />Gérer mon emprunt</a></li>
-                <li><a href=""><SVG svg={RestoreIcon} />Exporter</a></li> */}
-                <li>
-                    <a onClick={ this.deletePublication }>
-                        <SVG svg={DeleteIcon} />
-                        Supprimer de la bibliothèque
-                    </a>
-                </li>
-                </ul>
+                <Controls publication={this.props.publication}/>
             </div>
             <div className={styles.dialog_right}>
                 <h2>{publication.title}</h2>
@@ -103,6 +85,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
                             <TagManager
                                 publicationIdentifier={this.props.publication.identifier}
                                 tags={this.props.publication.tags}
+                                canModifyTag={!this.props.isOpds}
                             />
                         </div>
 
@@ -124,43 +107,14 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
             </>
         );
     }
-
-    private deletePublication(e: any) {
-        e.preventDefault();
-        this.props.openDeleteDialog(this.props.publication);
-    }
-
-    private handleRead(e: any) {
-        e.preventDefault();
-
-        this.props.openReader(this.props.publication);
-    }
 }
 
 const mapDispatchToProps = (dispatch: any, __: PublicationInfoProps) => {
     return {
-        openReader: (publication: PublicationView) => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
-                },
-            });
-        },
         closeDialog: () => {
             dispatch(
                 dialogActions.close(),
             );
-        },
-        openDeleteDialog: (publication: string) => {
-            dispatch(dialogActions.open(
-                DialogType.DeletePublicationConfirm,
-                {
-                    publication,
-                },
-            ));
         },
     };
 };

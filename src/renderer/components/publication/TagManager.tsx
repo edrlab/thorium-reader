@@ -22,6 +22,7 @@ interface TagManagerProps {
     tags: string[];
     updatedPublication?: PublicationView;
     updateTags?: (data: {identifier: string, tags: string[]}) => void;
+    canModifyTag?: boolean;
 }
 
 interface TagManagerState {
@@ -56,22 +57,26 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
                 <ul>
                     {this.state.tags.map((tag: string, index: number) =>
                         <li key={index}> {tag}
-                            <button onClick={() => this.deleteTag(index)}>
-                                <SVG svg={CrossIcon} title="supprimer le tag" />
-                            </button>
+                            {this.props.canModifyTag &&
+                                <button onClick={() => this.deleteTag(index)}>
+                                    <SVG svg={CrossIcon} title="supprimer le tag" />
+                                </button>
+                            }
                         </li>,
                     )}
                 </ul>
-                <form onSubmit={this.addTag} id={styles.flux_search}>
-                    <input
-                        type="text"
-                        className={styles.tag_inputs}
-                        title="ajouter un tag"
-                        placeholder="Ajouter un tag"
-                        onChange={this.handleChangeName}
-                        value={this.state.nameNewTag}
-                    />
-                </form>
+                {this.props.canModifyTag &&
+                    <form onSubmit={this.addTag} id={styles.flux_search}>
+                        <input
+                            type="text"
+                            className={styles.tag_inputs}
+                            title="ajouter un tag"
+                            placeholder="Ajouter un tag"
+                            onChange={this.handleChangeName}
+                            value={this.state.nameNewTag}
+                        />
+                    </form>
+                }
             </div>
         );
     }
