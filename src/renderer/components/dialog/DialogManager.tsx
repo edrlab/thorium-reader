@@ -23,7 +23,7 @@ import FileImport from "./FileImport";
 
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
 
-import PublicationInfo from "readium-desktop/renderer/components/publication/PublicationInfo";
+import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
 
 import DeletePublicationConfirm from "./DeletePublicationConfirm";
 
@@ -82,6 +82,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             >
                 <PublicationInfo
                     publication={ this.props.dialog.data.publication }
+                    isOpds={ this.props.dialog.data.isOpds }
                 />
             </Dialog>
         );

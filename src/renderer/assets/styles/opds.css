@@ -85,26 +85,17 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            & button {
-                width: auto;
-                height: auto;
-                margin: 0;
-                opacity: 1;
-                text-decoration: none;
-                color: black;
-                font-size: 1rem;
-                cursor: pointer;
-
-                & .flux_title {
-                    font-weight: 600;
-                }
-                & span {
-                    display: inline-block;
-                }
-                & .flux_subtitle {
-                    font-size: 0.8rem;
-                    margin-left:10px;
-                }
+            text-decoration: none;
+            color: black;
+            & .flux_title {
+                font-weight: 600;
+            }
+            & span {
+                display: inline-block;
+            }
+            & .flux_subtitle {
+                font-size: 0.8rem;
+                margin-left:10px;
             }
             & .flux_image {
                 flex: 1;
