@@ -49,6 +49,7 @@ export class OpdsAddForm extends React.Component<OpdsAddFormProps, undefined> {
         e.preventDefault();
         const url = this.urlRef.current.value;
         this.props.openOpdsFeedAddForm(url);
+        this.urlRef.current.value = "";
     }
 }
 
