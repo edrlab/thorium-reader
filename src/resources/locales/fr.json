@@ -120,8 +120,8 @@
         "column": {
           "title": "Colonne",
           "auto": "Automatique",
-          "one": "Une colonne",
-          "two": "Deux colonnes"
+          "one": "1 colonne",
+          "two": "2 colonnes"
         },
         "spacing": "Espacement",
         "margin": "Marge",
@@ -138,7 +138,7 @@
         "font": "Police",
         "fontSize": "Taille du texte",
         "display": "Affichage",
-        "justification": "Justification",
+        "justification": "Alignement",
         "scrolled": "Défilé",
         "paginated": "Paginé"
       },
