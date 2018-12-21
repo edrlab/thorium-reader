@@ -14,6 +14,7 @@
 .content_wrapper {
     flex: 1;
     overflow-x: hidden;
+    overflow-y:hidden;
 }
 
 button {
@@ -25,6 +26,7 @@ button {
     fill: black;
     opacity: 0.75;
     margin: 3px;
+    margin-bottom: 50px;
     cursor: pointer;
 }
 
