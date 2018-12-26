@@ -84,18 +84,20 @@ export default class ReaderHeader extends React.Component<Props, undefined> {
                         </li>
                         <li
                             className={styles.right}
+                        >
+                            <button
+                                className={styles.menu_button}
+                            >
+                                <SVG svg={MarkIcon} title="Marquer la page"/>
+                            </button>
+                        </li>
+                        <li
+                            className={styles.right}
                             {...(this.props.menuOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                         >
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleMenuClick.bind(this)}
-                            >
-                                <SVG svg={MarkIcon} title="Marquer la page"/>
-                            </button>
-                        </li>
-                        <li className={styles.right}>
-                            <button
-                                className={styles.menu_button}
                             >
                                 <SVG svg={TOCIcon} title="Ouvrir table des matieres"/>
                             </button>
