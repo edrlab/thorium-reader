@@ -47,8 +47,8 @@ interface State {
 }
 
 enum themeType {
+    Without,
     Sepia,
-    Darken,
     Night,
 }
 
@@ -98,19 +98,20 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     <input
                                         type="radio"
                                         name="theme"
-                                        onChange={() => this.handleChooseTheme(themeType.Sepia)}
-                                        {...(this.props.settings.sepia && {checked: true})}
+                                        onChange={() => this.handleChooseTheme(themeType.Without)}
+                                        {...(!this.props.settings.sepia && !this.props.settings.night
+                                            && {checked: true})}
                                     />
-                                    <label>Sepia</label>
+                                    <label>Without</label>
                                 </div>
                                 <div className={styles.theme_choices}>
                                     <input
                                         type="radio"
                                         name="theme"
-                                        onChange={() => this.handleChooseTheme(themeType.Darken)}
-                                        {...(this.props.settings.darken && {checked: true})}
+                                        onChange={() => this.handleChooseTheme(themeType.Sepia)}
+                                        {...(this.props.settings.sepia && {checked: true})}
                                     />
-                                    <label>Dark</label>
+                                    <label>Sepia</label>
                                 </div>
                                 <div className={styles.theme_choices}>
                                     <input
@@ -422,12 +423,8 @@ export default class ReaderOptions extends React.Component<Props, State> {
         const values = this.props.settings;
         let sepia = false;
         let night = false;
-        let darken = false;
 
         switch (theme) {
-            case themeType.Darken:
-                darken = true;
-                break;
             case themeType.Night:
                 night = true;
                 break;
@@ -436,7 +433,6 @@ export default class ReaderOptions extends React.Component<Props, State> {
                 break;
         }
 
-        values.darken = darken;
         values.sepia = sepia;
         values.night = night;
 
