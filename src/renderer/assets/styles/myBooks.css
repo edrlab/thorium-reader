@@ -57,7 +57,7 @@ main {
 	min-height: 40px;
 	padding: 0px 50px;
 	min-width: 600px;
-	font-size: 0.8rem;
+	font-size: 0.95rem;
     overflow: hidden;
     transition: height 0.5s;
 }
