@@ -94,24 +94,24 @@
 	width: 100%;
 	position: relative;
     cursor: pointer;
-}
 
-.legend p.book_title {
-	position: relative;
-	padding-top:10px;
-	width: calc(100% - 22px);
-	font-size: 0.7rem;
-	font-weight: 600;
-    overflow: hidden;
-}
+    & p {
+        position: relative;
+        width: calc(100% - 22px);
+        font-size: 0.9rem;
+        overflow: hidden;
+        margin: 0;
 
-.legend p.book_author {
-	position: relative;
-	width: calc(100% - 22px);
-	font-size: 0.7rem;
-	font-weight: 300;
-	color:#c1c1c1;
-    overflow: hidden;
+        &.book_title {
+            padding-top:10px;
+            font-weight: 600;
+        }
+
+        &.book_author {
+            font-weight: 300;
+            color:#616161;
+        }
+    }
 }
 
 .menu {
