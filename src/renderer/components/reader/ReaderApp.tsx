@@ -100,7 +100,7 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         colCount: settings.colCount === "1" ? colCountEnum.one :
             (settings.colCount === "2" ? colCountEnum.two : colCountEnum.auto),
 
-        darken: settings.dark,
+        darken: settings.darken,
 
         font: settings.font,
 
@@ -137,8 +137,7 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         wordSpacing: settings.wordSpacing,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
-    console.log("jsonMsg RENDERER");
-    console.log(jsonMsg);
+
     return jsonMsg;
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
@@ -253,6 +252,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleFullscreenClick = this.handleFullscreenClick.bind(this);
+        this.setSettings = this.setSettings.bind(this);
     }
 
     public async componentDidMount() {
@@ -360,6 +360,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             handleLinkClick={this.handleLinkClick.bind(this)}
                             handleSettingChange={this.handleSettingsValueChange.bind(this)}
                             handleIndexChange={this.handleIndexValueChange.bind(this)}
+                            setSettings={this.setSettings}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
@@ -431,7 +432,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         preloadPath = preloadPath.replace(/\\/g, "/");
 
         installNavigatorDOM(
-            publication,
+            publication as any,
             publicationJsonUrl,
             "publication_viewport",
             preloadPath,
@@ -497,10 +498,14 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     }
 
     private handleSettingsValueChange(event: any, name: string, givenValue?: any) {
+        if ((givenValue === null || givenValue === undefined) && !event) {
+            return;
+        }
+
         const settingsValues = this.state.settingsValues;
         let value = givenValue;
 
-        if (!value) {
+        if (givenValue === null || givenValue === undefined) {
             value = event.target.value.toString();
         }
 
@@ -511,6 +516,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         }
 
         settingsValues[name] =  value;
+        console.log(settingsValues);
 
         this.setState({settingsValues});
 
@@ -529,6 +535,15 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         settingsValues[name] = optionsValues[name][value];
         this.setState({ settingsValues });
 
+        this.handleSettingsSave();
+    }
+
+    private setSettings(settingsValues: ReadiumCSS) {
+        if (!settingsValues) {
+            return;
+        }
+
+        this.setState({ settingsValues });
         this.handleSettingsSave();
     }
 }

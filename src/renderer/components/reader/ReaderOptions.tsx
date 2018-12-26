@@ -39,10 +39,17 @@ interface Props {
     handleLinkClick: (event: any, url: string) => void;
     handleSettingChange: (event: any, name: string, value?: any) => void;
     handleIndexChange: (event: any, name: string, value?: any) => void;
+    setSettings: (settings: any) => void;
 }
 
 interface State {
     sectionOpenList: boolean[];
+}
+
+enum themeType {
+    Sepia,
+    Darken,
+    Night,
 }
 
 export default class ReaderOptions extends React.Component<Props, State> {
@@ -65,6 +72,8 @@ export default class ReaderOptions extends React.Component<Props, State> {
             React.createRef(),
             React.createRef(),
         ];
+
+        this.handleChooseTheme = this.handleChooseTheme.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -86,16 +95,31 @@ export default class ReaderOptions extends React.Component<Props, State> {
                             <div ref={this.sectionRefList[0]} className={styles.line_tab_content}>
                                 <div className={styles.subheading}>{__("reader.settings.theme.predefined")}</div>
                                 <div className={styles.theme_choices}>
-                                    <input type="radio" id="theme1" name="theme" value="theme1" />
-                                    <label>Thème 1</label>
+                                    <input
+                                        type="radio"
+                                        name="theme"
+                                        onChange={() => this.handleChooseTheme(themeType.Sepia)}
+                                        {...(this.props.settings.sepia && {checked: true})}
+                                    />
+                                    <label>Sepia</label>
                                 </div>
                                 <div className={styles.theme_choices}>
-                                    <input type="radio" id="theme2" name="theme" value="theme2" />
-                                    <label>Thème 2</label>
+                                    <input
+                                        type="radio"
+                                        name="theme"
+                                        onChange={() => this.handleChooseTheme(themeType.Darken)}
+                                        {...(this.props.settings.darken && {checked: true})}
+                                    />
+                                    <label>Dark</label>
                                 </div>
                                 <div className={styles.theme_choices}>
-                                    <input type="radio" id="theme3" name="theme" value="theme3" />
-                                    <label>Thème 3</label>
+                                    <input
+                                        type="radio"
+                                        name="theme"
+                                        onChange={() => this.handleChooseTheme(themeType.Night)}
+                                        {...(this.props.settings.night && {checked: true})}
+                                    />
+                                    <label>Night</label>
                                 </div>
                             </div>
                         </div>
@@ -394,6 +418,31 @@ export default class ReaderOptions extends React.Component<Props, State> {
         this.setState({ sectionOpenList });
     }
 
+    private handleChooseTheme(theme: themeType) {
+        const values = this.props.settings;
+        let sepia = false;
+        let night = false;
+        let darken = false;
+
+        switch (theme) {
+            case themeType.Darken:
+                darken = true;
+                break;
+            case themeType.Night:
+                night = true;
+                break;
+            case themeType.Sepia:
+                sepia = true;
+                break;
+        }
+
+        values.darken = darken;
+        values.sepia = sepia;
+        values.night = night;
+
+        this.props.setSettings(values);
+    }
+
     // round the value to the hundredth
     private roundRemValue(value: string) {
         if (!value) {
@@ -424,7 +473,6 @@ export default class ReaderOptions extends React.Component<Props, State> {
         if (property === value) {
             classname = styles.active;
         }
-        console.log(property, value, classname);
         return classNames(classname, additionalClassName);
     }
 }

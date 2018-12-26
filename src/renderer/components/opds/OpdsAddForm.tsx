@@ -50,11 +50,7 @@ export class OpdsAddForm extends React.Component<OpdsAddFormProps, undefined> {
         e.preventDefault();
         const url = this.formRef.current.url.value;
         this.props.openOpdsFeedAddForm(url);
-<<<<<<< HEAD
-        this.urlRef.current.value = "";
-=======
         this.formRef.current.url.value = "";
->>>>>>> reset odpsAddForm when it's submit
     }
 }
 
