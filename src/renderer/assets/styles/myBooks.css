@@ -130,15 +130,15 @@ main {
     margin-left: 10px;
     & a {
         border: 1px solid black;
-        margin-right: 5px;
-        padding: 3px;
-        display: inline-block;
-        cursor: pointer;
+		padding: 4px;
+		display: inline-block;
+		cursor: pointer;
+		margin: 0.6rem 0.5rem 0 0;
     }
 }
 
 .menu_open{
-	height: 30px;
+	height: 3.5rem;
 }
 
 /* ENTRY FORM */
