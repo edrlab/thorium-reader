@@ -7,6 +7,7 @@
 
 import { container } from "readium-desktop/main/di";
 
+import * as debug_ from "debug";
 import * as moment from "moment";
 
 import { SagaIterator } from "redux-saga";
@@ -14,6 +15,9 @@ import { SagaIterator } from "redux-saga";
 import { call, fork, put, select, take } from "redux-saga/effects";
 
 import { apiActions } from "readium-desktop/common/redux/actions";
+
+// Logger
+const debug = debug_("readium-desktop:main#redux/sagas/api");
 
 export function* processRequest(requestAction: apiActions.ApiAction): SagaIterator {
     const { api } = requestAction.meta;
@@ -29,6 +33,7 @@ export function* processRequest(requestAction: apiActions.ApiAction): SagaIterat
 
         yield put(apiActions.buildSuccessAction(requestAction, result));
     } catch (error) {
+        debug(error);
         yield put(apiActions.buildErrorAction(requestAction, error.message));
     }
 }
