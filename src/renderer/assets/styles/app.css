@@ -30,9 +30,14 @@ button {
     opacity: 0.75;
     margin: 3px;
     cursor: pointer;
-}
-button:hover {
-    opacity: 1;
+
+    &:focus {
+      outline: 0;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
 }
 
 .primary {
