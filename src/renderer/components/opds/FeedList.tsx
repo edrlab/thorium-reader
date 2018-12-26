@@ -19,6 +19,9 @@ import { TranslatorProps } from "readium-desktop/renderer/components/utils/trans
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
+import { DialogType } from "readium-desktop/common/models/dialog";
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
@@ -26,6 +29,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 interface OpdsListProps extends TranslatorProps {
     feeds?: OpdsFeedView[];
     deleteFeed?: any;
+    openDeleteDialog?: any;
 }
 
 export class FeedList extends React.Component<OpdsListProps, null> {
@@ -50,7 +54,7 @@ export class FeedList extends React.Component<OpdsListProps, null> {
                         >
                             <div>
                                 <button
-                                    onClick={(e) => this.deleteFeed(e, item.identifier)}
+                                    onClick={(e) => this.deleteFeed(e, item)}
                                 >
                                     <SVG svg={DeleteIcon} />
                                 </button>
@@ -66,11 +70,24 @@ export class FeedList extends React.Component<OpdsListProps, null> {
         );
     }
 
-    private deleteFeed(event: any, identifier: string) {
+    private deleteFeed(event: any, feed: OpdsFeedView) {
         event.preventDefault();
-        this.props.deleteFeed({ identifier });
+        this.props.openDeleteDialog(feed);
     }
 }
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        openDeleteDialog: (feed: string) => {
+            dispatch(dialogActions.open(
+                DialogType.DeleteOpdsFeedConfirm,
+                {
+                    feed,
+                },
+            ));
+        },
+    };
+};
 
 export default withApi(
     FeedList,
@@ -81,11 +98,6 @@ export default withApi(
                 methodId: "findAllFeeds",
                 resultProp: "feeds",
                 onLoad: true,
-            },
-            {
-                moduleId: "opds",
-                methodId: "deleteFeed",
-                callProp: "deleteFeed",
             },
         ],
         refreshTriggers: [
@@ -98,5 +110,6 @@ export default withApi(
                 methodId: "deleteFeed",
             },
         ],
+        mapDispatchToProps,
     },
 );
