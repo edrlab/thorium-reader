@@ -69,6 +69,7 @@ main {
 	border: none;
     background: none;
     cursor: pointer;
+	margin-top: 0.5rem;
 }
 
 .block_book_list:nth-child(odd){
