@@ -80,13 +80,11 @@
         position: absolute;
         top:10px;
         right:0;
-        width:20px;
-        height:21px;
-    }
+        width:24px;
 
-    & .icon_seemore {
-        width:20px;
-        height:21px;
+        & svg {
+            fill: rgb(107, 107, 107)
+        }
     }
 }
 
@@ -96,11 +94,11 @@
     cursor: pointer;
 
     & p {
-        position: relative;
-        width: calc(100% - 22px);
-        font-size: 0.9rem;
-        overflow: hidden;
-        margin: 0;
+            position: relative;
+            width: calc(100% - 24px);
+            font-size: 0.9rem;
+            overflow: hidden;
+            margin: 0;
 
         &.book_title {
             padding-top:10px;
