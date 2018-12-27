@@ -137,7 +137,6 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         wordSpacing: settings.wordSpacing,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
-
     return jsonMsg;
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
@@ -516,7 +515,6 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         }
 
         settingsValues[name] =  value;
-        console.log(settingsValues);
 
         this.setState({settingsValues});
 
