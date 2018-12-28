@@ -31,6 +31,8 @@ interface Props {
     handleSettingsClick: () => void;
     fullscreen: boolean;
     handleFullscreenClick: () => void;
+    toggleBookmark: any;
+    isOnBookmark: boolean;
 }
 
 export default class ReaderHeader extends React.Component<Props, undefined> {
@@ -87,6 +89,8 @@ export default class ReaderHeader extends React.Component<Props, undefined> {
                         >
                             <button
                                 className={styles.menu_button}
+                                onClick={this.props.toggleBookmark}
+                                {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                             >
                                 <SVG svg={MarkIcon} title="Marquer la page"/>
                             </button>

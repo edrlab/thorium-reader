@@ -55,6 +55,7 @@ import {
     _POUCHDB_ADAPTER_NAME,
     // _POUCHDB_ADAPTER_PACKAGE,
 } from "readium-desktop/preprocessor-directives";
+import { ReaderApi } from "./api/reader";
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
 // Create container used for dependency injection
@@ -224,6 +225,10 @@ container.bind<OpdsApi>("opds-api").toConstantValue(
         opdsFeedRepository,
         opdsFeedViewConverter,
     ),
+);
+
+container.bind<ReaderApi>("reader-api").toConstantValue(
+    new ReaderApi(),
 );
 
 // Create action serializer

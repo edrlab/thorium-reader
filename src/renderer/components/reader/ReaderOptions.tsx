@@ -239,7 +239,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     <button
                                         id={styles.option_colonne}
                                         className={this.getButtonClassName("colCount",
-                                        !settings.paged ? colCountEnum.disable : colCountEnum.auto,
+                                        !settings.paged ? null : colCountEnum.auto,
                                         !settings.paged && styles.disable)}
                                         {...(!settings.paged && {disabled: true})}
                                         role="link"
@@ -251,7 +251,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     </button>
                                     <button
                                         className={this.getButtonClassName("colCount",
-                                        !settings.paged ? colCountEnum.disable : colCountEnum.one,
+                                        !settings.paged ? null : colCountEnum.one,
                                         !settings.paged && styles.disable)}
                                         {...(!settings.paged && { disabled: true })}
                                         id={styles.option_colonne1}
@@ -263,7 +263,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     </button>
                                     <button
                                         className={this.getButtonClassName("colCount",
-                                        !settings.paged ? colCountEnum.disable : colCountEnum.two,
+                                        !settings.paged ? null : colCountEnum.two,
                                         !settings.paged && styles.disable)}
                                         id={styles.option_colonne2}
                                         {...(!settings.paged && { disabled: true })}
