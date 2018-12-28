@@ -14,18 +14,30 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Translator } from "readium-desktop/common/services/translator";
 import { lazyInject } from "readium-desktop/renderer/di";
 
+import { withApi } from "readium-desktop/renderer/components/utils/api";
+
+import * as queryString from "query-string";
+
+import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+
+import { Locator } from "r2-shared-js/dist/es6-es2015/src/models/locator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+
 interface Props {
     open: boolean;
     publicationJsonUrl: string;
     publication: R2Publication;
     handleLinkClick: (event: any, url: string) => void;
+    bookmarkList: Locator[];
+    handleBookmarkClick: (locator: Locator) => void;
+    removeBookmark: (data: any) => void;
 }
 
 interface State {
     sectionOpenList: boolean[];
 }
 
-export default class ReaderMenu extends React.Component<Props, State> {
+export class ReaderMenu extends React.Component<Props, State> {
     private sectionRefList: any = [];
     private tocRendererList: any;
     private clickableList: boolean[] = [];
@@ -56,15 +68,15 @@ export default class ReaderMenu extends React.Component<Props, State> {
             this.clickableList = [
                 pub.TOC && pub.TOC.length > 0,
                 pub.LOI && pub.LOI.length > 0,
-                false,
+                newProps.bookmarkList && newProps.bookmarkList.length > 0,
                 false,
             ];
         }
     }
     public render(): React.ReactElement<{}> {
-        const pub = this.props.publication;
-
         const __ = this.translator.translate.bind(this.translator);
+
+        this.clickableList[2] = this.props.bookmarkList && this.props.bookmarkList.length > 0;
 
         return (
             <div style={{visibility: this.props.open ? "visible" : "hidden"}} className={styles.chapters_settings}>
@@ -98,36 +110,12 @@ export default class ReaderMenu extends React.Component<Props, State> {
                     >
                         {__("reader.marks.landmarks")}
                     </li>
-                    <div style={this.getSectionStyle(2)} className={styles.tab_content}>
+                    <div
+                        style={this.getSectionStyle(2, this.props.bookmarkList && this.props.bookmarkList.length > 0)}
+                        className={styles.tab_content}
+                    >
                         <div ref={this.sectionRefList[2]} className={styles.line_tab_content}>
                             {this.createLandmarkList()}
-                            <div className={styles.bookmarks_line}>
-                                <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
-                                <div className={styles.chapter_marker}>
-                                    Chapitre 1
-                                    <div className={styles.gauge}>
-                                        <div className={styles.fill}></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={styles.bookmarks_line}>
-                                <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
-                                <div className={styles.chapter_marker}>
-                                Chapitre 1
-                                <div className={styles.gauge}>
-                                    <div className={styles.fill}></div>
-                                </div>
-                                </div>
-                            </div>
-                            <div className={styles.bookmarks_line}>
-                                <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
-                                <div className={styles.chapter_marker}>
-                                    Chapitre 1
-                                    <div className={styles.gauge}>
-                                        <div className={styles.fill}></div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <li
@@ -183,7 +171,11 @@ export default class ReaderMenu extends React.Component<Props, State> {
         }
     }
 
-    private getSectionStyle(id: number): any {
+    private getSectionStyle(id: number, bool?: boolean): any {
+        if (bool === false) {
+            return {maxHeight: 0};
+        }
+
         const el = this.sectionRefList[id];
         let height = 0;
         if (el.current) {
@@ -225,21 +217,68 @@ export default class ReaderMenu extends React.Component<Props, State> {
     }
 
     private createLandmarkList(): JSX.Element[] {
-        if (this.props.publication && this.props.publication.Landmarks) {
-            return this.props.publication.Landmarks.map((content, i: number) => {
-                // const url = this.props.publicationJsonUrl + "/../" + content.Href;
+        if (this.props.publication && this.props.bookmarkList) {
+            return this.props.bookmarkList.map((bookmark, i: number) => {
                 return (
-                    <div className={styles.bookmarks_line}>
+                    <div
+                        className={styles.bookmarks_line}
+                        key={i}
+                    >
                         <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
-                        <div className={styles.chapter_marker}>
-                            Chapitre 1
-                        <div className={styles.gauge}>
-                            <div className={styles.fill}></div>
+                        <div
+                            className={styles.chapter_marker}
+                            onClick={() => this.props.handleBookmarkClick(bookmark)}
+                        >
+                            Bookmark {i}
+                            <div className={styles.gauge}>
+                                <div className={styles.fill}></div>
+                            </div>
                         </div>
-                        </div>
+                        <button
+                            onClick={() => this.props.removeBookmark({
+                                publicationId: queryString.parse(location.search).pubId,
+                                locator: bookmark,
+                            })}
+                        >
+                            <SVG svg={ DeleteIcon }/>
+                        </button>
                     </div>
                 );
             });
         }
     }
 }
+
+const buildBookmarkRequestData = () => {
+    return { publicationId: queryString.parse(location.search).pubId as string };
+};
+
+export default withApi(
+    ReaderMenu,
+    {
+        operations: [
+            {
+                moduleId: "reader",
+                methodId: "findAllBookmark",
+                resultProp: "bookmarkList",
+                buildRequestData: buildBookmarkRequestData,
+                onLoad: true,
+            },
+            {
+                moduleId: "reader",
+                methodId: "removeBookmark",
+                callProp: "removeBookmark",
+            },
+        ],
+        refreshTriggers: [
+            {
+                moduleId: "reader",
+                methodId: "setBookmark",
+            },
+            {
+                moduleId: "reader",
+                methodId: "removeBookmark",
+            },
+        ],
+    },
+);

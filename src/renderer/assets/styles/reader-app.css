@@ -477,6 +477,16 @@ p.chapters_description {
 	padding:20px 0 20px 0;
 	font-size: 1rem;
 	border-bottom: 1px solid #e5e5e5;
+  cursor: pointer;
+
+  & > button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    & svg {
+      width: 24px;
+    }
+  }
 }
 
 .bookmarks_line img {
