@@ -20,7 +20,9 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { Publication } from "readium-desktop/common/models/publication";
 import { Bookmark, Reader, ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { LocatorType } from "readium-desktop/main/db/document/locator";
+
+import { LocatorType } from "readium-desktop/common/models/locator";
+
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { container } from "readium-desktop/main/di";

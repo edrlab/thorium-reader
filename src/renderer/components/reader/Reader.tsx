@@ -182,10 +182,11 @@ interface ReaderState {
 }
 
 interface ReaderProps {
-    removeBookmark?: (data: { publicationId: any, locator: Locator }) => void;
-    setBookmark?: (data: { publicationId: any, locator: Locator }) => void;
-    findAllBookmark: (data: { publicationId: any }) => void;
-    bookmarkList?: Locator[];
+    deleteBookmark?: any;
+    addBookmark?: any;
+    findBookmarks: any;
+    setLastReadingLocation: any;
+    bookmarks?: Locator[];
 }
 
 const defaultLocale = "fr";
@@ -459,37 +460,31 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private saveReadingLocation(loc: LocatorExtended) {
-        const store = container.get("store") as Store<RootState>;
-        store.dispatch(readerActions.saveBookmark(
+        this.props.setLastReadingLocation(
             {
-                identifier: "reading-location",
                 publication: {
                     // tslint:disable-next-line:no-string-literal
                     identifier: queryParams["pubId"],
                 },
-                docHref: loc.locator.href,
-                // TODO? Also save loc.locator.locations.position|progression|cfi
-                // (not really used internally by navigator at this stage, only CSS Selector,
-                // but progression useful to display per-document percentage progress)
-                docSelector: loc.locator.locations.cssSelector,
-            } as Bookmark,
-        ));
+                locator: loc.locator,
+            },
+        );
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
-        await this.props.findAllBookmark({publicationId: this.pubId});
+        // await this.props.findAllBookmarks({publicationId: this.pubId});
         this.saveReadingLocation(loc);
-        await this.checkBookmarks();
+        // await this.checkBookmarks();
     }
 
     // check if a bookmark is on the screen
     private async checkBookmarks() {
-        if (!this.props.bookmarkList) {
+        if (!this.props.bookmarks) {
             return;
         }
-        console.log("list :", this.props.bookmarkList);
+        console.log("list :", this.props.bookmarks);
         const visibleBookmarkList = [];
-        for (const bookmark of this.props.bookmarkList) {
+        for (const bookmark of this.props.bookmarks) {
             if (await isLocatorVisible(bookmark)) {
                 visibleBookmarkList.push(bookmark);
             }
@@ -532,10 +527,15 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         await this.checkBookmarks();
         if (this.state.visibleBookmarkList.length > 0) {
             for (const bookmark of this.state.visibleBookmarkList) {
-                this.props.removeBookmark({ publicationId: this.pubId, locator: bookmark });
+                this.props.deleteBookmark({ publicationId: this.pubId, locator: bookmark });
             }
         } else {
-            this.props.setBookmark({ publicationId: this.pubId, locator });
+            this.props.addBookmark({
+                publication: {
+                    identifier: this.pubId,
+                },
+                locator,
+            });
         }
         await this.checkBookmarks();
     }
@@ -610,7 +610,11 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 }
 
 const buildBookmarkRequestData = () => {
-    return { publicationId: queryString.parse(location.search).pubId as string };
+    return {
+        publication: {
+            identifier: queryString.parse(location.search).pubId as string,
+        },
+    };
 };
 
 export default withApi(
@@ -619,29 +623,32 @@ export default withApi(
         operations: [
             {
                 moduleId: "reader",
-                methodId: "findAllBookmark",
-                resultProp: "bookmarkList",
-                callProp: "findAllBookmark",
+                methodId: "findBookmarks",
+                resultProp: "bookmarks",
+                callProp: "findBookmarks",
                 buildRequestData: buildBookmarkRequestData,
                 onLoad: true,
             },
             {
                 moduleId: "reader",
-                methodId: "setBookmark",
-                resultProp: "bookmarkList",
-                callProp: "setBookmark",
+                methodId: "addBookmark",
+                callProp: "addBookmark",
             },
             {
                 moduleId: "reader",
-                methodId: "removeBookmark",
-                resultProp: "bookmarkList",
-                callProp: "removeBookmark",
+                methodId: "deleteBookmark",
+                callProp: "deleteBookmark",
+            },
+            {
+                moduleId: "reader",
+                methodId: "setLastReadingLocation",
+                callProp: "setLastReadingLocation",
             },
         ],
         refreshTriggers: [
             {
                 moduleId: "reader",
-                methodId: "setBookmark",
+                methodId: "addBookmark",
             },
             {
                 moduleId: "reader",

@@ -37,6 +37,7 @@ import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 
+import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
@@ -182,6 +183,10 @@ const publicationViewConverter = new PublicationViewConverter();
 container.bind<PublicationViewConverter>("publication-view-converter").toConstantValue(
     publicationViewConverter,
 );
+const locatorViewConverter = new LocatorViewConverter();
+container.bind<LocatorViewConverter>("locator-view-converter").toConstantValue(
+    locatorViewConverter,
+);
 const opdsFeedViewConverter = new OpdsFeedViewConverter();
 container.bind<OpdsFeedViewConverter>("opds-feed-view-converter").toConstantValue(
     opdsFeedViewConverter,
@@ -228,7 +233,10 @@ container.bind<OpdsApi>("opds-api").toConstantValue(
 );
 
 container.bind<ReaderApi>("reader-api").toConstantValue(
-    new ReaderApi(),
+    new ReaderApi(
+        locatorRepository,
+        locatorViewConverter,
+    ),
 );
 
 // Create action serializer

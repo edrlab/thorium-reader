@@ -18,9 +18,10 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import * as queryString from "query-string";
 
+import { LocatorView } from "readium-desktop/common/views/locator";
+
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 
-import { Locator } from "r2-shared-js/dist/es6-es2015/src/models/locator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 interface Props {
@@ -28,9 +29,9 @@ interface Props {
     publicationJsonUrl: string;
     publication: R2Publication;
     handleLinkClick: (event: any, url: string) => void;
-    bookmarkList: Locator[];
-    handleBookmarkClick: (locator: Locator) => void;
-    removeBookmark: (data: any) => void;
+    bookmarks: LocatorView[];
+    handleBookmarkClick: (locator: any) => void;
+    deleteBookmark?: any;
 }
 
 interface State {
@@ -68,7 +69,7 @@ export class ReaderMenu extends React.Component<Props, State> {
             this.clickableList = [
                 pub.TOC && pub.TOC.length > 0,
                 pub.LOI && pub.LOI.length > 0,
-                newProps.bookmarkList && newProps.bookmarkList.length > 0,
+                newProps.bookmarks && newProps.bookmarks.length > 0,
                 false,
             ];
         }
@@ -76,7 +77,7 @@ export class ReaderMenu extends React.Component<Props, State> {
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
 
-        this.clickableList[2] = this.props.bookmarkList && this.props.bookmarkList.length > 0;
+        this.clickableList[2] = this.props.bookmarks && this.props.bookmarks.length > 0;
 
         return (
             <div style={{visibility: this.props.open ? "visible" : "hidden"}} className={styles.chapters_settings}>
@@ -111,7 +112,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                         {__("reader.marks.landmarks")}
                     </li>
                     <div
-                        style={this.getSectionStyle(2, this.props.bookmarkList && this.props.bookmarkList.length > 0)}
+                        style={this.getSectionStyle(2, this.props.bookmarks && this.props.bookmarks.length > 0)}
                         className={styles.tab_content}
                     >
                         <div ref={this.sectionRefList[2]} className={styles.line_tab_content}>
@@ -217,8 +218,8 @@ export class ReaderMenu extends React.Component<Props, State> {
     }
 
     private createLandmarkList(): JSX.Element[] {
-        if (this.props.publication && this.props.bookmarkList) {
-            return this.props.bookmarkList.map((bookmark, i: number) => {
+        if (this.props.publication && this.props.bookmarks) {
+            return this.props.bookmarks.map((bookmark, i: number) => {
                 return (
                     <div
                         className={styles.bookmarks_line}
@@ -235,9 +236,8 @@ export class ReaderMenu extends React.Component<Props, State> {
                             </div>
                         </div>
                         <button
-                            onClick={() => this.props.removeBookmark({
-                                publicationId: queryString.parse(location.search).pubId,
-                                locator: bookmark,
+                            onClick={() => this.props.deleteBookmark({
+                                identifier: bookmark.identifier,
                             })}
                         >
                             <SVG svg={ DeleteIcon }/>
@@ -250,7 +250,7 @@ export class ReaderMenu extends React.Component<Props, State> {
 }
 
 const buildBookmarkRequestData = () => {
-    return { publicationId: queryString.parse(location.search).pubId as string };
+    return { publication: { identifier: queryString.parse(location.search).pubId as string } };
 };
 
 export default withApi(
@@ -259,25 +259,25 @@ export default withApi(
         operations: [
             {
                 moduleId: "reader",
-                methodId: "findAllBookmark",
-                resultProp: "bookmarkList",
+                methodId: "findBookmarks",
+                resultProp: "bookmarks",
                 buildRequestData: buildBookmarkRequestData,
                 onLoad: true,
             },
             {
                 moduleId: "reader",
-                methodId: "removeBookmark",
-                callProp: "removeBookmark",
+                methodId: "deleteBookmark",
+                callProp: "deleteBookmark",
             },
         ],
         refreshTriggers: [
             {
                 moduleId: "reader",
-                methodId: "setBookmark",
+                methodId: "addBookmark",
             },
             {
                 moduleId: "reader",
-                methodId: "removeBookmark",
+                methodId: "deleteBookmark",
             },
         ],
     },

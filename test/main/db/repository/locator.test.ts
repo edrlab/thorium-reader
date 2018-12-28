@@ -3,8 +3,11 @@ import "reflect-metadata";
 import * as moment from "moment";
 import * as PouchDB from "pouchdb-core";
 
+import { LocatorType } from "readium-desktop/common/models/locator";
+
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-import { LocatorDocument, LocatorType } from "readium-desktop/main/db/document/locator";
+
+import { LocatorDocument } from "readium-desktop/main/db/document/locator";
 
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
 
@@ -24,7 +27,7 @@ const dbDoc1 = {
         href: "/spines/spine-1",
         title: "Bookmark 1",
         locations: {
-            position: 12
+            position: 12,
         },
     },
     createdAt: now,
@@ -41,7 +44,7 @@ const dbDoc2 = {
         href: "/spines/spine-2",
         title: "Bookmark 2",
         locations: {
-            position: 38
+            position: 38,
         },
     },
     createdAt: now,
@@ -94,7 +97,7 @@ test("repository.findByLocatorType - not found", async () => {
 
 test("repository.findByPublicationIdentifer - found", async () => {
     const result = await repository.findByPublicationIdentifierAndLocatorType(
-        "pub-1", LocatorType.Bookmark
+        "pub-1", LocatorType.Bookmark,
     );
     expect(result.length).toBe(1);
     const locator = result[0];
@@ -107,7 +110,7 @@ test("repository.findByPublicationIdentifer - found", async () => {
 
 test("repository.findByPublicationIdentifer - not found", async () => {
     const result = await repository.findByPublicationIdentifierAndLocatorType(
-        "pub-1", LocatorType.LastReadingLocation
+        "pub-1", LocatorType.LastReadingLocation,
     );
     expect(result.length).toBe(0);
 });
@@ -140,9 +143,9 @@ test("repository.save create", async () => {
         locator: {
             href: "/spines/spine-3",
             locations: {
-                position: 138
+                position: 138,
             },
-        }
+        },
     };
     const result = await repository.save(dbDoc);
     expect(result.identifier).toBe("new-bookmark");
@@ -164,9 +167,9 @@ test("repository.save update", async () => {
             href: "/spines/spine-1",
             title: "New bookmark",
             locations: {
-                position: 12
+                position: 12,
             },
-        }
+        },
     };
     const result = await repository.save(dbDoc);
     expect(result.identifier).toBe("bookmark-1");
@@ -181,7 +184,7 @@ test("repository.save update", async () => {
 });
 
 test("repository.delete", async () => {
-    let result = await db.get("locator_bookmark-1") as any;
+    const result = await db.get("locator_bookmark-1") as any;
     expect(result.identifier).toBe("bookmark-1");
 
     // Delete locator 1
