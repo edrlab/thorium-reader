@@ -33,6 +33,8 @@ interface PublicationCardProps {
     openReader?: any;
     openDeleteDialog?: any;
     menuContent: any;
+    isOpds: boolean;
+    openInfosDialog: any;
 }
 
 interface PublicationCardState {
@@ -109,7 +111,11 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
 
     private handleBookClick(e: any) {
         e.preventDefault();
-        this.props.openReader(this.props.publication);
+        if (!this.props.isOpds) {
+            this.props.openReader(this.props.publication);
+        } else {
+            this.props.openInfosDialog(this.props.publication);
+        }
     }
 
     private displayPublicationInfo(e: any) {
@@ -141,6 +147,14 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
         openDeleteDialog: (publication: string) => {
             dispatch(dialogActions.open(
                 DialogType.DeletePublicationConfirm,
+                {
+                    publication,
+                },
+            ));
+        },
+        openInfosDialog: (publication: string) => {
+            dispatch(dialogActions.open(
+                DialogType.PublicationInfo,
                 {
                     publication,
                 },

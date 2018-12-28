@@ -20,6 +20,7 @@
     position: relative;
     -webkit-appearance: none;
     width: 50%;
+    background-color: transparent;
   }
   & input[type=range]:focus {
     outline: none;
@@ -289,7 +290,7 @@
 /* ========== MENU ========== */
 
 .chapters_settings, .read_settings{
-	width: 40%;
+	width: 20rem;
 	border-left: 1px solid #e5e5e5;
 	position: fixed;
 	overflow-y: scroll;
@@ -518,10 +519,25 @@ p.chapters_description {
 #read_settings_list li {
 	padding:20px 20px 20px 20px;
 	border-bottom: 1px solid #e5e5e5;
-	font-size: 1rem;
+	font-size: 1.1rem;
 	font-weight: 600;
 	background-color: white;
 	cursor: pointer;
+  display:flex;
+
+  & > span {
+    flex: 1;
+  }
+  & > svg {
+    height: 20px;
+    fill: rgb(59, 59, 59);
+  }
+
+  &.active {
+    & > svg {
+      transform: rotate(-90deg);
+    }
+  }
 }
 
 #read_settings_list .tab_content > div {
@@ -530,7 +546,7 @@ p.chapters_description {
 }
 
 .read_settings {
-  width: 40%;
+  width: 21rem;
   z-index: 10;
 	border-left: 1px solid #e5e5e5;
 	position: fixed;
@@ -540,35 +556,39 @@ p.chapters_description {
 	right:0;
 	height: calc(100vh - 60px);
 	background-color: white;
+  color: rgb(59, 59, 59);
 }
 
 .center_in_tab {
   position: relative;
 	text-align: center;
+  display: flex;
 	font-size: 0.9rem;
-
-  & img {
-    position: relative;
-    left:50%;
-    width:40px;
-    height: 47px;
-    display: block;
-    text-align: center;
-    transform: translateX(-50%) translateY(0%);
-    -webkit-transform: translateX(-50%) translateY(0%);
-  }
+  justify-content: center;
+  align-items: center;
 
   & svg {
-    width: 40px;
-    height: 47px;
+    width: 63px;
+    height: 70px;
     display: block;
     margin: auto;
+    fill: grey;
   }
 
   & button {
     border: 0;
     cursor: pointer;
     background-color: transparent;
+    white-space: nowrap;
+    color: grey;
+  }
+
+  & .active {
+    color: rgb(59, 59, 59);;
+
+    & svg {
+      fill: rgb(59, 59, 59);;
+    }
   }
 
   & .disable {
@@ -624,18 +644,19 @@ input[type=radio] + label {
 
 #read_settings_list .line_tab_content {
     position: relative;
-    width: 100%;
     text-align: center;
     height: auto;
     padding: 20px;
     border-bottom: 1px solid #e5e5e5;
 }
 
-.line_tab_content label, .line_tab_content .subheading {
+.line_tab_content .subheading {
 	display: block;
-	font-size: 1rem;
+	font-size: 0.9rem;
 	font-weight: 600;
 	text-align: left;
+  margin-bottom: 1rem;
+  color: rgb(59, 59, 59);
 }
 
 .line_tab_content select {

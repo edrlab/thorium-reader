@@ -21,15 +21,17 @@ import {
     textAlignEnum,
 } from "@r2-navigator-js/electron/common/readium-css-settings";
 import {
+    getCurrentReadingLocation,
     handleLinkUrl,
     installNavigatorDOM,
+    isLocatorVisible,
     LocatorExtended,
     navLeftOrRight,
     readiumCssOnOff,
+    setEpubReadingSystemInfo,
     setReadingLocationSaver,
     setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
-import { lightBaseTheme, MuiThemeProvider} from "material-ui/styles";
 
 import {
     convertCustomSchemeToHttpUrl,
@@ -45,11 +47,9 @@ import {
     IEventPayload_R2_EVENT_READIUMCSS,
 } from "@r2-navigator-js/electron/common/events";
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
-import { setEpubReadingSystemInfo } from "@r2-navigator-js/electron/renderer/index";
-import { INameVersion } from "@r2-navigator-js/electron/renderer/webview/epubReadingSystem";
 import { Locator } from "@r2-shared-js/models/locator";
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { webFrame } from "electron";
+import { Publication as R2Publication } from "r2-shared-js/dist/es6-es2015/src/models/publication";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
@@ -63,7 +63,11 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 
-import optionsValues from "./optionsValues";
+import optionsValues from "./options-values";
+
+import { withApi } from "readium-desktop/renderer/components/utils/api";
+
+import * as queryString from "query-string";
 
 webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
 webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
@@ -100,7 +104,7 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         colCount: settings.colCount === "1" ? colCountEnum.one :
             (settings.colCount === "2" ? colCountEnum.two : colCountEnum.auto),
 
-        darken: settings.dark,
+        darken: settings.darken,
 
         font: settings.font,
 
@@ -137,31 +141,9 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         wordSpacing: settings.wordSpacing,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
-    console.log("jsonMsg RENDERER");
-    console.log(jsonMsg);
     return jsonMsg;
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
-
-const saveReadingLocation = (loc: LocatorExtended) => {
-
-    const store = container.get("store") as Store<RootState>;
-    store.dispatch(readerActions.saveBookmark(
-        {
-            identifier: "reading-location",
-            publication: {
-                // tslint:disable-next-line:no-string-literal
-                identifier: queryParams["pubId"],
-            },
-            docHref: loc.locator.href,
-
-            // TODO? Also save loc.locator.locations.position|progression|cfi
-            // (not really used internally by navigator at this stage, only CSS Selector,
-            // but progression useful to display per-document percentage progress)
-            docSelector: loc.locator.locations.cssSelector,
-        } as Bookmark,
-    ));
-};
 
 // tslint:disable-next-line:no-string-literal
 const publicationJsonUrl = queryParams["pub"];
@@ -179,7 +161,7 @@ const pathFileName = pathDecoded.substr(
 // tslint:disable-next-line:no-string-literal
 const lcpHint = queryParams["lcpHint"];
 
-interface ReaderAppState {
+interface ReaderState {
     publicationJsonUrl?: string;
     lcpHint?: string;
     title?: string;
@@ -195,16 +177,28 @@ interface ReaderAppState {
     menuOpen: boolean;
     fullscreen: boolean;
     indexes: any;
+    visibleBookmarkList: Locator[];
+}
+
+interface ReaderProps {
+    removeBookmark?: (data: { publicationId: any, locator: Locator }) => void;
+    setBookmark?: (data: { publicationId: any, locator: Locator }) => void;
+    findAllBookmark: (data: { publicationId: any }) => void;
+    bookmarkList?: Locator[];
 }
 
 const defaultLocale = "fr";
 
-export default class ReaderApp extends React.Component<undefined, ReaderAppState> {
+export class Reader extends React.Component<ReaderProps, ReaderState> {
     @lazyInject("store")
     private store: Store<RootState>;
 
     @lazyInject("translator")
     private translator: Translator;
+
+    private lastLocator: any;
+
+    private pubId: string;
 
     constructor(props: any) {
         super(props);
@@ -248,11 +242,17 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             publication: undefined,
             menuOpen: false,
             fullscreen: false,
+            visibleBookmarkList: [],
         };
+
+        this.pubId = queryString.parse(location.search).pubId as string;
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleFullscreenClick = this.handleFullscreenClick.bind(this);
+        this.setSettings = this.setSettings.bind(this);
+        this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
+        this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
     }
 
     public async componentDidMount() {
@@ -328,7 +328,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
         const publication = await this.loadPublicationIntoViewport(locator);
         this.setState({publication});
-        setReadingLocationSaver(saveReadingLocation);
+        setReadingLocationSaver(this.handleReadingLocationChange);
 
         setEpubReadingSystemInfo({ name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION });
     }
@@ -346,6 +346,8 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             handleSettingsClick={this.handleSettingsClick}
                             fullscreen={this.state.fullscreen}
                             handleFullscreenClick={this.handleFullscreenClick}
+                            toggleBookmark={ this.handleToggleBookmark }
+                            isOnBookmark={this.state.visibleBookmarkList.length > 0}
                         />
                         <ReaderMenu
                             open={this.state.menuOpen}
@@ -360,6 +362,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
                             handleLinkClick={this.handleLinkClick.bind(this)}
                             handleSettingChange={this.handleSettingsValueChange.bind(this)}
                             handleIndexChange={this.handleIndexValueChange.bind(this)}
+                            setSettings={this.setSettings}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
@@ -431,7 +434,7 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         preloadPath = preloadPath.replace(/\\/g, "/");
 
         installNavigatorDOM(
-            publication,
+            publication as any,
             publicationJsonUrl,
             "publication_viewport",
             preloadPath,
@@ -446,6 +449,46 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
             menuOpen: !this.state.menuOpen,
             settingsOpen: false,
         });
+    }
+
+    private saveReadingLocation(loc: LocatorExtended) {
+        const store = container.get("store") as Store<RootState>;
+        store.dispatch(readerActions.saveBookmark(
+            {
+                identifier: "reading-location",
+                publication: {
+                    // tslint:disable-next-line:no-string-literal
+                    identifier: queryParams["pubId"],
+                },
+                docHref: loc.locator.href,
+                // TODO? Also save loc.locator.locations.position|progression|cfi
+                // (not really used internally by navigator at this stage, only CSS Selector,
+                // but progression useful to display per-document percentage progress)
+                docSelector: loc.locator.locations.cssSelector,
+            } as Bookmark,
+        ));
+    }
+
+    private async handleReadingLocationChange(loc: LocatorExtended) {
+        await this.props.findAllBookmark({publicationId: this.pubId});
+        this.saveReadingLocation(loc);
+        await this.checkBookmarks();
+    }
+
+    // check if a bookmark is on the screen
+    private async checkBookmarks() {
+        if (!this.props.bookmarkList) {
+            return;
+        }
+        console.log("list :", this.props.bookmarkList);
+        const visibleBookmarkList = [];
+        for (const bookmark of this.props.bookmarkList) {
+            if (await isLocatorVisible(bookmark)) {
+                visibleBookmarkList.push(bookmark);
+            }
+        }
+        console.log("visible", visibleBookmarkList);
+        this.setState({visibleBookmarkList});
     }
 
     private handleLinkClick(event: any, url: string) {
@@ -477,6 +520,19 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
         // loc.paginationInfo.spreadIndex [0, (N/2)]
     }
 
+    private async handleToggleBookmark() {
+        const locator = getCurrentReadingLocation().locator;
+        await this.checkBookmarks();
+        if (this.state.visibleBookmarkList.length > 0) {
+            for (const bookmark of this.state.visibleBookmarkList) {
+                this.props.removeBookmark({ publicationId: this.pubId, locator: bookmark });
+            }
+        } else {
+            this.props.setBookmark({ publicationId: this.pubId, locator });
+        }
+        await this.checkBookmarks();
+    }
+
     private handleFullscreenClick() {
         this.setState({fullscreen: !this.state.fullscreen});
     }
@@ -497,10 +553,14 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
     }
 
     private handleSettingsValueChange(event: any, name: string, givenValue?: any) {
+        if ((givenValue === null || givenValue === undefined) && !event) {
+            return;
+        }
+
         const settingsValues = this.state.settingsValues;
         let value = givenValue;
 
-        if (!value) {
+        if (givenValue === null || givenValue === undefined) {
             value = event.target.value.toString();
         }
 
@@ -531,4 +591,55 @@ export default class ReaderApp extends React.Component<undefined, ReaderAppState
 
         this.handleSettingsSave();
     }
+
+    private setSettings(settingsValues: ReadiumCSS) {
+        if (!settingsValues) {
+            return;
+        }
+
+        this.setState({ settingsValues });
+        this.handleSettingsSave();
+    }
 }
+
+const buildBookmarkRequestData = () => {
+    return { publicationId: queryString.parse(location.search).pubId as string };
+};
+
+export default withApi(
+    Reader,
+    {
+        operations: [
+            {
+                moduleId: "reader",
+                methodId: "findAllBookmark",
+                resultProp: "bookmarkList",
+                callProp: "findAllBookmark",
+                buildRequestData: buildBookmarkRequestData,
+                onLoad: true,
+            },
+            {
+                moduleId: "reader",
+                methodId: "setBookmark",
+                resultProp: "bookmarkList",
+                callProp: "setBookmark",
+            },
+            {
+                moduleId: "reader",
+                methodId: "removeBookmark",
+                resultProp: "bookmarkList",
+                callProp: "removeBookmark",
+            },
+        ],
+        refreshTriggers: [
+            {
+                moduleId: "reader",
+                methodId: "setBookmark",
+            },
+            {
+                moduleId: "reader",
+                methodId: "removeBookmark",
+            },
+        ],
+    },
+);

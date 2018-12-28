@@ -1,6 +1,10 @@
 .wrapper {
     display: flex;
     align-items: center;
+
+    & > button {
+        margin-bottom: 50px;
+    }
 }
 
 .content {
@@ -14,18 +18,7 @@
 .content_wrapper {
     flex: 1;
     overflow-x: hidden;
-}
-
-button {
-    padding: 0;
-    background: none;
-    border: 0;
-    height: 30px;
-    width: 30px;
-    fill: black;
-    opacity: 0.75;
-    margin: 3px;
-    cursor: pointer;
+    overflow-y:hidden;
 }
 
 .button_substitute {
@@ -33,9 +26,7 @@ button {
     width: 36px;
 }
 
-.button:hover {
-    opacity: 1;
-}
+
 
 .back {
     transform: rotateY(180deg);

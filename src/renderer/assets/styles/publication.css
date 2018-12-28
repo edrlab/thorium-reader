@@ -80,13 +80,11 @@
         position: absolute;
         top:10px;
         right:0;
-        width:20px;
-        height:21px;
-    }
+        width:24px;
 
-    & .icon_seemore {
-        width:20px;
-        height:21px;
+        & svg {
+            fill: rgb(107, 107, 107)
+        }
     }
 }
 
@@ -94,33 +92,33 @@
 	width: 100%;
 	position: relative;
     cursor: pointer;
-}
 
-.legend p.book_title {
-	position: relative;
-	padding-top:10px;
-	width: calc(100% - 22px);
-	font-size: 0.7rem;
-	font-weight: 600;
-    overflow: hidden;
-}
+    & p {
+            position: relative;
+            width: calc(100% - 24px);
+            font-size: 0.9rem;
+            overflow: hidden;
+            margin: 0;
 
-.legend p.book_author {
-	position: relative;
-	width: calc(100% - 22px);
-	font-size: 0.7rem;
-	font-weight: 300;
-	color:#c1c1c1;
-    overflow: hidden;
+        &.book_title {
+            padding-top:10px;
+            font-weight: 600;
+        }
+
+        &.book_author {
+            font-weight: 300;
+            color:#616161;
+        }
+    }
 }
 
 .menu {
     height: 90px;
-    width: 170px;
+    width: 180px;
     display: flex;
     flex-direction: column;
     background-color: white;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     box-shadow: 0px 0px 10px 0px #cfcfcf;
     overflow: hidden;
     & a {
@@ -129,7 +127,10 @@
         flex: 1;
         padding: 0.5rem;
         text-align: center;
-        cursor: pointer;                    
+        cursor: pointer;    
+        display: flex;
+        align-items: center;
+        justify-content: center;                
     }
     & a:not(:last-child) {
         border-bottom: 1px solid #E5E3E3;

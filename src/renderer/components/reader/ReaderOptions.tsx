@@ -7,12 +7,11 @@
 
 import * as React from "react";
 
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-
 import { Font } from "readium-desktop/common/models/font";
 import fontList from "readium-desktop/utils/fontList";
 
 import * as AutoIcon from "readium-desktop/renderer/assets/icons/auto.svg";
+import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ColumnIcon from "readium-desktop/renderer/assets/icons/colonne.svg";
 import * as Column2Icon from "readium-desktop/renderer/assets/icons/colonne2.svg";
 import * as DefileIcon from "readium-desktop/renderer/assets/icons/defile.svg";
@@ -27,7 +26,11 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { colCountEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 
-import optionsValues from "./optionsValues";
+import optionsValues from "./options-values";
+
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+
+import classNames = require("classnames");
 
 interface Props {
     open: boolean;
@@ -36,10 +39,17 @@ interface Props {
     handleLinkClick: (event: any, url: string) => void;
     handleSettingChange: (event: any, name: string, value?: any) => void;
     handleIndexChange: (event: any, name: string, value?: any) => void;
+    setSettings: (settings: any) => void;
 }
 
 interface State {
     sectionOpenList: boolean[];
+}
+
+enum themeType {
+    Without,
+    Sepia,
+    Night,
 }
 
 export default class ReaderOptions extends React.Component<Props, State> {
@@ -62,59 +72,67 @@ export default class ReaderOptions extends React.Component<Props, State> {
             React.createRef(),
             React.createRef(),
         ];
+
+        this.handleChooseTheme = this.handleChooseTheme.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
-
-        if (!this.props.settings) {
+        const { settings } = this.props;
+        if (!settings) {
             return <></>;
         }
 
         return (
             <div style={{visibility: this.props.open ? "visible" : "hidden"}} className={styles.read_settings}>
                 <ul id={styles.read_settings_list}>
-                    <li onClick={this.handleClickSection.bind(this, 0)}>{__("reader.settings.theme.title")}</li>
+                    <li onClick={this.handleClickSection.bind(this, 0)} className={this.getSectionClassName(0)}>
+                        <span>{__("reader.settings.theme.title")}</span>
+                        <SVG svg={ArrowIcon} />
+                    </li>
                     <div style={this.getSectionStyle(0)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[0]}>
                             <div ref={this.sectionRefList[0]} className={styles.line_tab_content}>
                                 <div className={styles.subheading}>{__("reader.settings.theme.predefined")}</div>
                                 <div className={styles.theme_choices}>
-                                    <input type="radio" id="theme1" name="theme" value="theme1" />
-                                    <label>Thème 1</label>
+                                    <input
+                                        type="radio"
+                                        name="theme"
+                                        onChange={() => this.handleChooseTheme(themeType.Without)}
+                                        {...(!this.props.settings.sepia && !this.props.settings.night
+                                            && {checked: true})}
+                                    />
+                                    <label>Without</label>
                                 </div>
                                 <div className={styles.theme_choices}>
-                                    <input type="radio" id="theme2" name="theme" value="theme2" />
-                                    <label>Thème 2</label>
+                                    <input
+                                        type="radio"
+                                        name="theme"
+                                        onChange={() => this.handleChooseTheme(themeType.Sepia)}
+                                        {...(this.props.settings.sepia && {checked: true})}
+                                    />
+                                    <label>Sepia</label>
                                 </div>
                                 <div className={styles.theme_choices}>
-                                    <input type="radio" id="theme3" name="theme" value="theme3" />
-                                    <label>Thème 3</label>
+                                    <input
+                                        type="radio"
+                                        name="theme"
+                                        onChange={() => this.handleChooseTheme(themeType.Night)}
+                                        {...(this.props.settings.night && {checked: true})}
+                                    />
+                                    <label>Night</label>
                                 </div>
-                                <div className={styles.separateur}></div>
-                                <div className={styles.subheading}>{__("reader.settings.theme.myTheme")}</div>
-                                <div className={styles.theme_choices}>
-                                    <input type="radio" id="theme4" name="theme" value="theme4" />
-                                    <label>Thème 4</label>
-                                </div>
-                                <div className={styles.theme_choices}>
-                                    <input type="radio" id="theme5" name="theme" value="theme5" />
-                                    <label>Thème 5</label>
-                                </div>
-
-                                <div className={styles.separateur}></div>
-
-                                <a className={styles.lire_creertheme} href="preferences_2.html">
-                                    {__("reader.settings.theme.create")}
-                                </a>
                             </div>
                         </div>
                     </div>
-                    <li onClick={this.handleClickSection.bind(this, 1)}>{__("reader.settings.text")}</li>
+                    <li onClick={this.handleClickSection.bind(this, 1)} className={this.getSectionClassName(1)}>
+                        <span>{__("reader.settings.text")}</span>
+                        <SVG svg={ArrowIcon} />
+                    </li>
                     <div style={this.getSectionStyle(1)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[1]}>
                             <div className={styles.line_tab_content}>
-                                <label>{__("reader.settings.fontSize")}</label>
+                                <div className={styles.subheading}>{__("reader.settings.fontSize")}</div>
                                 <div className={styles.center_in_tab}>
                                     <span className={styles.slider_marker} >a</span>
                                     <input type="range"
@@ -133,12 +151,12 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                 </div>
                             </div>
                             <div className={styles.line_tab_content}>
-                                <label >{__("reader.settings.font")}</label>
+                                <div className={styles.subheading}>{__("reader.settings.font")}</div>
                                 <div className={styles.center_in_tab}>
                                     <select
                                         id={styles.police_texte}
                                         onChange={(e) => this.props.handleSettingChange(e, "font")}
-                                        value={this.props.settings.font}
+                                        value={settings.font}
                                     >
                                         {fontList.map((font: Font, id: number) => {
                                             return (
@@ -167,7 +185,10 @@ export default class ReaderOptions extends React.Component<Props, State> {
                             </div> */}
                         </div>
                     </div>
-                    <li onClick={this.handleClickSection.bind(this, 2)}>{__("reader.settings.display")}</li>
+                    <li onClick={this.handleClickSection.bind(this, 2)} className={this.getSectionClassName(2)}>
+                        <span>{__("reader.settings.display")}</span>
+                        <SVG svg={ArrowIcon} />
+                    </li>
                     <div style={this.getSectionStyle(2)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[2]}>
                             <div className={styles.line_tab_content}>
@@ -175,6 +196,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                 <div className={styles.center_in_tab}>
                                     <button
                                         id={styles.scroll_option} role="link"
+                                        className={this.getButtonClassName("paged", false)}
                                         onClick={(e) => this.props.handleSettingChange(e, "paged", "false")}
                                     >
                                         <SVG svg={DefileIcon} title={__("reader.settings.scrolled")}/>
@@ -182,6 +204,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     </button>
                                     <button
                                         id={styles.page_option} role="link"
+                                        className={this.getButtonClassName("paged", true)}
                                         onClick={(e) => this.props.handleSettingChange(e, "paged", "true")}
                                     >
                                         <SVG svg={PagineIcon} title={__("reader.settings.paginated")}/>
@@ -194,6 +217,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                 <div className={styles.center_in_tab}>
                                     <button
                                         id={styles.option_gauche} role="link"
+                                        className={this.getButtonClassName("align", "left")}
                                         onClick={(e) => this.props.handleSettingChange(e, "align", "left")}
                                     >
                                         <SVG svg={LeftIcon} title={__("reader.settings.left")}/>
@@ -201,6 +225,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     </button>
                                     <button
                                         id={styles.option_justif} role="link"
+                                        className={this.getButtonClassName("align", "justify")}
                                         onClick={(e) => this.props.handleSettingChange(e, "align", "justify")}
                                     >
                                         <SVG svg={JustifyIcon} title={__("reader.settings.justify")}/>
@@ -213,7 +238,10 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                 <div className={styles.center_in_tab}>
                                     <button
                                         id={styles.option_colonne}
-                                        {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
+                                        className={this.getButtonClassName("colCount",
+                                        !settings.paged ? null : colCountEnum.auto,
+                                        !settings.paged && styles.disable)}
+                                        {...(!settings.paged && {disabled: true})}
                                         role="link"
                                         onClick={(e) =>
                                             this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
@@ -222,7 +250,10 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         {__("reader.settings.column.auto")}
                                     </button>
                                     <button
-                                        {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
+                                        className={this.getButtonClassName("colCount",
+                                        !settings.paged ? null : colCountEnum.one,
+                                        !settings.paged && styles.disable)}
+                                        {...(!settings.paged && { disabled: true })}
                                         id={styles.option_colonne1}
                                         role="link"
                                         onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
@@ -231,8 +262,11 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         {__("reader.settings.column.one")}
                                     </button>
                                     <button
+                                        className={this.getButtonClassName("colCount",
+                                        !settings.paged ? null : colCountEnum.two,
+                                        !settings.paged && styles.disable)}
                                         id={styles.option_colonne2}
-                                        {...(!this.props.settings.paged && {className: styles.disable, disabled: true})}
+                                        {...(!settings.paged && { disabled: true })}
                                         role="link"
                                         onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
                                     >
@@ -261,7 +295,10 @@ export default class ReaderOptions extends React.Component<Props, State> {
                             </div> */}
                         </div>
                     </div>
-                    <li onClick={this.handleClickSection.bind(this, 3)}>{__("reader.settings.spacing")}</li>
+                    <li onClick={this.handleClickSection.bind(this, 3)} className={this.getSectionClassName(3)}>
+                        <span>{__("reader.settings.spacing")}</span>
+                        <SVG svg={ArrowIcon} />
+                    </li>
                     <div style={this.getSectionStyle(3)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[3]}>
                             <div className={styles.line_tab_content}>
@@ -282,7 +319,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     aria-valuenow={this.props.indexes.pageMargins}
                                 />
                                 <span className={styles.reader_settings_value}>
-                                    {this.roundRemValue(this.props.settings.pageMargins)}
+                                    {this.roundRemValue(settings.pageMargins)}
                                 </span>
                             </div>
                             <div className={styles.line_tab_content}>
@@ -303,7 +340,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     aria-valuenow={this.props.indexes.wordSpacing}
                                 />
                                 <span className={styles.reader_settings_value}>
-                                    {this.roundRemValue(this.props.settings.wordSpacing)}
+                                    {this.roundRemValue(settings.wordSpacing)}
                                 </span>
                             </div>
                             <div className={styles.line_tab_content}>
@@ -324,7 +361,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     aria-valuenow={this.props.indexes.letterSpacing}
                                 />
                                 <span className={styles.reader_settings_value}>
-                                    {this.roundRemValue(this.props.settings.letterSpacing)}
+                                    {this.roundRemValue(settings.letterSpacing)}
                                 </span>
                             </div>
                             <div className={styles.line_tab_content}>
@@ -345,12 +382,15 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                     aria-valuenow={this.props.indexes.paraSpacing}
                                 />
                                 <span className={styles.reader_settings_value}>
-                                    {this.roundRemValue(this.props.settings.paraSpacing)}
+                                    {this.roundRemValue(settings.paraSpacing)}
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <li onClick={this.handleClickSection.bind(this, 4)}>{__("reader.settings.accessibility")}</li>
+                    {/*<li onClick={this.handleClickSection.bind(this, 4)} className={this.getSectionClassName(4)}>
+                        <span>{__("reader.settings.accessibility")}</span>
+                        <SVG svg={ArrowIcon} />
+                    </li>
                     <div style={this.getSectionStyle(4)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[4]}>
                             <div className={styles.line_tab_content}>
@@ -367,7 +407,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>*/}
                 </ul>
             </div>
         );
@@ -377,6 +417,26 @@ export default class ReaderOptions extends React.Component<Props, State> {
         const { sectionOpenList } = this.state;
         sectionOpenList[id] = !sectionOpenList[id];
         this.setState({ sectionOpenList });
+    }
+
+    private handleChooseTheme(theme: themeType) {
+        const values = this.props.settings;
+        let sepia = false;
+        let night = false;
+
+        switch (theme) {
+            case themeType.Night:
+                night = true;
+                break;
+            case themeType.Sepia:
+                sepia = true;
+                break;
+        }
+
+        values.sepia = sepia;
+        values.night = night;
+
+        this.props.setSettings(values);
     }
 
     // round the value to the hundredth
@@ -397,5 +457,18 @@ export default class ReaderOptions extends React.Component<Props, State> {
             height = el.current.offsetHeight;
         }
         return {maxHeight: this.state.sectionOpenList[id] ? height : 0};
+    }
+
+    private getSectionClassName(id: number): any {
+        return this.state.sectionOpenList[id] && styles.active;
+    }
+
+    private getButtonClassName(propertyName: string, value: any, additionalClassName?: string): string {
+        const property = this.props.settings[propertyName];
+        let classname = "";
+        if (property === value) {
+            classname = styles.active;
+        }
+        return classNames(classname, additionalClassName);
     }
 }

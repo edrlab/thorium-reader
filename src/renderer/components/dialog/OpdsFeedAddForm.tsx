@@ -32,6 +32,10 @@ export class OpdsFeedAddForm extends React.Component<OpdsFeedAddFormProps, undef
         this.add = this.add.bind(this);
     }
 
+    public componentDidMount() {
+        this.urlRef.current.value = this.props.url;
+    }
+
     public render(): React.ReactElement<{}> {
         return (
             <div>
@@ -55,7 +59,6 @@ export class OpdsFeedAddForm extends React.Component<OpdsFeedAddFormProps, undef
                             aria-label="Url du flux OPDS"
                             placeholder="Url"
                             size={255}
-                            value={ this.props.url }
                         />
                     </div>
                     <button>

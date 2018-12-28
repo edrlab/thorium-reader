@@ -37,6 +37,7 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                         key={-index }
                         publication={pub}
                         menuContent={<MenuContent publication={pub}/>}
+                        isOpds={this.props.isOpdsView}
                     />,
                 )}
                 {[...Array(6).keys()].map((__, index) => {

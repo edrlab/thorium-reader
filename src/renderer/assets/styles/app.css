@@ -20,6 +20,26 @@ body {
   }
 }
 
+button {
+    padding: 0;
+    background: none;
+    border: 0;
+    height: 30px;
+    width: 30px;
+    fill: black;
+    opacity: 0.75;
+    margin: 3px;
+    cursor: pointer;
+
+    &:focus {
+      outline: 0;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+}
+
 .primary {
   color: rgb(0, 188, 212);
 }

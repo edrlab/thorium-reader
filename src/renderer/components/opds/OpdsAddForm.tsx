@@ -20,25 +20,26 @@ interface OpdsAddFormProps {
 }
 
 export class OpdsAddForm extends React.Component<OpdsAddFormProps, undefined> {
-    private urlRef: any;
+    private formRef: any;
 
     public constructor(props: any) {
         super(props);
 
-        this.urlRef = React.createRef();
+        this.formRef = React.createRef();
 
         this.add = this.add.bind(this);
     }
     public render(): React.ReactElement<{}>  {
         return (
-            <section className={styles.opds_form}>
+            <section className={ styles.opds_form }>
                 <p>Ajouter un flux</p>
-                <form onSubmit={this.add}>
+                <form ref={this.formRef} onSubmit={ this.add }>
                     <input
-                        ref={this.urlRef}
+                        name="url"
                         type="text"
                         placeholder="Coller l'URL d'un flux"
                         title="Coller l'URL d'un flux"
+                        defaultValue=""
                     />
                 </form>
             </section>
@@ -47,8 +48,9 @@ export class OpdsAddForm extends React.Component<OpdsAddFormProps, undefined> {
 
     private add(e: any) {
         e.preventDefault();
-        const url = this.urlRef.current.value;
+        const url = this.formRef.current.url.value;
         this.props.openOpdsFeedAddForm(url);
+        this.formRef.current.url.value = "";
     }
 }
 

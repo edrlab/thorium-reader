@@ -57,7 +57,7 @@ main {
 	min-height: 40px;
 	padding: 0px 50px;
 	min-width: 600px;
-	font-size: 0.8rem;
+	font-size: 0.95rem;
     overflow: hidden;
     transition: height 0.5s;
 }
@@ -69,6 +69,7 @@ main {
 	border: none;
     background: none;
     cursor: pointer;
+	margin-top: 0.5rem;
 }
 
 .block_book_list:nth-child(odd){
@@ -130,15 +131,15 @@ main {
     margin-left: 10px;
     & a {
         border: 1px solid black;
-        margin-right: 5px;
-        padding: 3px;
-        display: inline-block;
-        cursor: pointer;
+		padding: 4px;
+		display: inline-block;
+		cursor: pointer;
+		margin: 0.6rem 0.5rem 0 0;
     }
 }
 
 .menu_open{
-	height: 30px;
+	height: 3.5rem;
 }
 
 /* ENTRY FORM */
