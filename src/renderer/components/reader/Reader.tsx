@@ -22,6 +22,7 @@ import {
 } from "@r2-navigator-js/electron/common/readium-css-settings";
 import {
     getCurrentReadingLocation,
+    handleLinkLocator,
     handleLinkUrl,
     installNavigatorDOM,
     isLocatorVisible,
@@ -253,6 +254,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.setSettings = this.setSettings.bind(this);
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
+        this.goToLocator = this.goToLocator.bind(this);
     }
 
     public async componentDidMount() {
@@ -354,6 +356,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                             publicationJsonUrl={publicationJsonUrl}
                             publication={this.state.publication}
                             handleLinkClick={this.handleLinkClick.bind(this)}
+                            handleBookmarkClick={this.goToLocator}
                         />
                         <ReaderOptions
                             open={this.state.settingsOpen}
@@ -378,6 +381,10 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                     </div>
                 </div>
         );
+    }
+
+    private goToLocator(locator: Locator) {
+        handleLinkLocator(locator);
     }
 
     private async loadPublicationIntoViewport(locator: Locator): Promise<R2Publication> {
