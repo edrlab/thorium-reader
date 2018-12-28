@@ -341,7 +341,7 @@ function processCommandLine() {
 
     if ("importFile" in processArgs) {
         const catalogService = container.get("catalog-service") as CatalogService;
-        promise = catalogService.importFile(processArgs.importFile);
+        promise = catalogService.importFile(processArgs.importFile as string);
     }
 
     if (promise == null) {
