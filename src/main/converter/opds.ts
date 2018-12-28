@@ -73,6 +73,18 @@ export class OpdsFeedViewConverter {
             };
         }
 
+        // Get odps entry
+        let url = null;
+        const links = publication.Links.filter(
+            (link: any) => {
+                return (link.TypeLink.indexOf(";type=entry;profile=opds-catalog") > 0);
+            },
+        );
+
+        if (links.length > 0) {
+            url = links[0].Href;
+        }
+
         return  {
             title,
             authors,
@@ -83,10 +95,12 @@ export class OpdsFeedViewConverter {
             languages: metadata.Language,
             publishedAt,
             cover,
+            url,
         };
     }
 
     public convertOpdsFeedToView(feed: OPDSFeed): OpdsResultView {
+        console.log("### 2", feed.Metadata);
         const title = convertMultiLangStringToString(feed.Metadata.Title);
         let type = OpdsResultType.NavigationFeed;
         let navigation = null;

@@ -30,7 +30,7 @@ import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 
 import { httpGet } from "readium-desktop/common/utils";
-import { OpdsParsingError } from "../exceptions/opds";
+import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 
 @injectable()
 export class OpdsApi {

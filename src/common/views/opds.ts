@@ -22,6 +22,7 @@ export interface OpdsPublicationView {
     tags?: string[];
     languages?: string[];
     publishedAt?: string; // ISO8601
+    url?: string;
     cover?: CoverView;
 }
 

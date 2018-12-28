@@ -19,6 +19,7 @@ interface PublicationCardProps {
     publication: PublicationView;
     displayPublicationInfo?: any;
     deletePublication?: any;
+    importOpdsEntry?: any;
     openDeleteDialog?: any;
 }
 
@@ -62,7 +63,11 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
 
     private addToCatalog(e: any) {
         e.preventDefault();
-        console.log("add to catalog: ", this.props.publication);
+        this.props.importOpdsEntry(
+            {
+                url: (this.props.publication as any).url,
+            },
+        );
     }
 
     private handleOnBlurMenu(e: any) {
@@ -99,6 +104,11 @@ export default withApi(
                 moduleId: "publication",
                 methodId: "delete",
                 callProp: "deletePublication",
+            },
+            {
+                moduleId: "publication",
+                methodId: "importOpdsEntry",
+                callProp: "importOpdsEntry",
             },
         ],
         mapDispatchToProps,

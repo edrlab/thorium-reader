@@ -8,8 +8,16 @@
 import * as debug_ from "debug";
 import * as fs from "fs";
 import * as path from "path";
+
 import { JSON as TAJSON } from "ta-json-x";
+
+import * as xmldom from "xmldom";
+
 import * as uuid from "uuid";
+
+import {
+    convertOpds1ToOpds2_EntryToPublication,
+} from "@r2-opds-js/opds/converter";
 
 import { injectable} from "inversify";
 
@@ -19,6 +27,10 @@ import { Publication } from "readium-desktop/common/models/publication";
 import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
+import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
+
+import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
+
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 
@@ -26,6 +38,9 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 
 import { Download } from "readium-desktop/common/models/download";
 import { Downloader } from "readium-desktop/main/services/downloader";
+
+import { httpGet } from "readium-desktop/common/utils";
+import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -58,7 +73,29 @@ export class CatalogService {
         return null;
     }
 
-    public async importFromOpdsEntry(): Promise<PublicationDocument> {
+    public async importOpdsEntry(url: string): Promise<PublicationDocument> {
+        console.log("####", url);
+        const opdsFeedData = await httpGet(url) as string;
+
+        if (opdsFeedData.startsWith("<?xml")) {
+            // This is an opds feed in version 1
+            // Convert to opds version 2
+            const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData);
+
+            if (!xmlDom || !xmlDom.documentElement) {
+                throw new OpdsParsingError(`Unable to parse ${url}`);
+            }
+
+            const isEntry = xmlDom.documentElement.localName === "entry";
+
+            if (!isEntry) {
+                throw new OpdsParsingError(`This is not an OPDS entry ${url}`);
+            }
+            const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
+            const opds2Publication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
+            console.log("Import pub", opds2Publication);
+        }
+
         return null;
     }
 

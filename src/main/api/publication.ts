@@ -78,6 +78,17 @@ export class PublicationApi {
         return this.publicationRepository.getAllTags();
     }
 
+    public async importOpdsEntry(data: any): Promise<PublicationView[]> {
+        const { url } = data;
+
+        const newDoc = await this.catalogService.importOpdsEntry(url);
+
+        // return newDocs.map((doc) => {
+        //     return this.publicationViewConverter.convertDocumentToView(doc);
+        // });
+        return null;
+    }
+
     public async import(data: any): Promise<PublicationView[]> {
         const { paths } = data;
 
