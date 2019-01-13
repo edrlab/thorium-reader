@@ -42,6 +42,10 @@ import { Downloader } from "readium-desktop/main/services/downloader";
 import { httpGet } from "readium-desktop/common/utils";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 
+import {
+    convertMultiLangStringToString,
+} from "readium-desktop/common/utils";
+
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
 
@@ -195,7 +199,7 @@ export class CatalogService {
                 filePublication: b64ParsedPublication,
                 opdsPublication: null,
             },
-            title: parsedPublication.Metadata.Title,
+            title: convertMultiLangStringToString(parsedPublication.Metadata.Title),
             tags: [],
             files: [],
             coverFile: null,
