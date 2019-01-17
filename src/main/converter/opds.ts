@@ -57,7 +57,7 @@ export class OpdsFeedViewConverter {
         const title = convertMultiLangStringToString(metadata.Title);
         const authors = convertContributorArrayToStringArray(metadata.Author);
         const publishers = convertContributorArrayToStringArray(metadata.Publisher);
-        const tags = metadata.Subject.map((subject) => subject.Name);
+        const tags = metadata.Subject.map((subject) => subject.Name as string);
 
         let publishedAt = null;
 

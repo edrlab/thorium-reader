@@ -23,12 +23,15 @@ import FileImport from "./FileImport";
 
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
 
-import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
-
 import DeletePublicationConfirm from "./DeletePublicationConfirm";
 
-import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
+
+import LCPAuthentication from "./LCPAuthentication";
+
+import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
+
+import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 interface DialogManagerProps  {
     dialog?: DialogState;
@@ -58,6 +61,8 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 return this.buildDeletePublicationConfirmDialog();
             case DialogType.DeleteOpdsFeedConfirm:
                 return this.buildDeleteOpdsFeedConfirmDialog();
+            case DialogType.LCPAuthentication:
+                return this.buildLCPAuthenticationDialog();
             default:
                 return (<></>);
         }
@@ -128,6 +133,22 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             >
                 <DeleteOpdsFeedConfirm
                     feed={ this.props.dialog.data.feed }
+                />
+            </Dialog>
+        );
+    }
+
+    private buildLCPAuthenticationDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+                id={styles.opds_form_dialog}
+                hideArrow={true}
+            >
+                <LCPAuthentication
+                    publication={ this.props.dialog.data.publication }
+                    hint={ this.props.dialog.data.hint }
                 />
             </Dialog>
         );

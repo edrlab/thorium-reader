@@ -5,9 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Publication } from "readium-desktop/common/models/publication";
-import { Reader, ReaderConfig } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 export enum ActionType {
     UserKeyCheckRequest = "LCP_USER_KEY_CHECK_REQUEST",
@@ -31,7 +30,7 @@ export enum ActionType {
     StatusUpdateError = "LCP_STATUS_UPDATE_ERROR",
 }
 
-export function checkUserKey(publication: Publication, hint: string): Action {
+export function checkUserKey(publication: PublicationDocument, hint: string): Action {
     return {
         type: ActionType.UserKeyCheckRequest,
         payload: {
@@ -41,7 +40,7 @@ export function checkUserKey(publication: Publication, hint: string): Action {
     };
 }
 
-export function sendPassphrase(publication: Publication, passphrase: string): Action {
+export function sendPassphrase(publication: PublicationDocument, passphrase: string): Action {
     return {
         type: ActionType.PassphraseSubmitRequest,
         payload: {
@@ -51,7 +50,7 @@ export function sendPassphrase(publication: Publication, passphrase: string): Ac
     };
 }
 
-export function lsdRenew(publication: Publication): Action {
+export function lsdRenew(publication: PublicationDocument): Action {
     return {
         type: ActionType.RenewRequest,
         payload: {
@@ -60,7 +59,7 @@ export function lsdRenew(publication: Publication): Action {
     };
 }
 
-export function lsdReturn(publication: Publication): Action {
+export function lsdReturn(publication: PublicationDocument): Action {
     return {
         type: ActionType.ReturnRequest,
         payload: {

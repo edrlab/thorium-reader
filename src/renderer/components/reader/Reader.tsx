@@ -131,6 +131,8 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 
         sepia: settings.sepia,
 
+        noFootnotes: settings.noFootnotes,
+
         textAlign: settings.align === "left" ? textAlignEnum.left :
             (settings.align === "right" ? textAlignEnum.right :
             (settings.align === "justify" ? textAlignEnum.justify : textAlignEnum.start)),

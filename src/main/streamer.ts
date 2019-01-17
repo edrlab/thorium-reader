@@ -111,6 +111,8 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
 
         sepia: settings.sepia,
 
+        noFootnotes: settings.noFootnotes,
+
         textAlign: settings.align === "left" ? textAlignEnum.left :
             (settings.align === "right" ? textAlignEnum.right :
             (settings.align === "justify" ? textAlignEnum.justify : textAlignEnum.start)),

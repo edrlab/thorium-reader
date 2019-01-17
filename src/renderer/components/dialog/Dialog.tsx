@@ -21,6 +21,7 @@ interface Props {
     close: () => void;
     className?: string;
     id?: string;
+    hideArrow?: boolean;
 }
 
 export default class Dialog extends React.Component<Props, undefined> {
@@ -40,7 +41,7 @@ export default class Dialog extends React.Component<Props, undefined> {
                 className={styles.c_dialog}
                 style={{visibility: this.props.open ? "visible" : "hidden"}}
             >
-                <div onClick={this.props.close} className={styles.c_dialog_background} />
+                {!this.props.hideArrow && <div onClick={this.props.close} className={styles.c_dialog_background} />}
                 <div
                     role="document"
                     id={this.props.id}
@@ -49,7 +50,7 @@ export default class Dialog extends React.Component<Props, undefined> {
                     { content && <>
                         { content }
                     </>}
-                    <button
+                    {!this.props.hideArrow && <button
                         className={styles.close_button}
                         type="button"
                         aria-label="Fermer"
@@ -58,7 +59,7 @@ export default class Dialog extends React.Component<Props, undefined> {
                         onClick={this.props.close}
                     >
                         <SVG svg={QuitIcon}/>
-                    </button>
+                    </button>}
                 </div>
             </div>
         );

@@ -20,6 +20,7 @@ import {
     lcpRenewSuccessWatcher,
     lcpReturnErrorWatcher,
     lcpReturnSuccessWatcher,
+    lcpUserKeyCheckRequestWatcher,
 } from "./lcp";
 
 import * as opds from "./opds";
@@ -38,5 +39,6 @@ export function* rootSaga() {
         lcpRenewSuccessWatcher(),
         lcpReturnErrorWatcher(),
         lcpReturnSuccessWatcher(),
+        lcpUserKeyCheckRequestWatcher(),
     ]);
 }

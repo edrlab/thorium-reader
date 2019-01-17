@@ -6,10 +6,9 @@
 // ==LICENSE-END==
 
 import * as path from "path";
-import * as request from "request";
 
 import { SagaIterator } from "redux-saga";
-import { call, fork, put, take } from "redux-saga/effects";
+import { call, put, take } from "redux-saga/effects";
 
 import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
 
@@ -23,18 +22,10 @@ import { IDeviceIDManager } from "@r2-lcp-js/lsd/deviceid-manager";
 import { lsdRenew } from "@r2-lcp-js/lsd/renew";
 import { lsdReturn } from "@r2-lcp-js/lsd/return";
 
-import { Publication as Epub } from "@r2-shared-js/models/publication";
-
-import { EpubParsePromise } from "@r2-shared-js/parser/epub";
-
-import { DeviceIdManager } from "readium-desktop/main/services/device";
-import { SecretManager } from "readium-desktop/main/services/secret";
-
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 import { catalogActions, lcpActions, readerActions } from "readium-desktop/common/redux/actions";
-import { appActions } from "readium-desktop/main/redux/actions";
 
 import { toSha256Hex, updateLicenseStatus } from "readium-desktop/utils/lcp";
 
@@ -42,24 +33,20 @@ import { requestGet } from "readium-desktop/utils/http";
 
 import { CodeError } from "readium-desktop/common/errors";
 
-const PASSPHRASE_CONFIG_IDENTIFIER = "passphrase-config";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 export function* lcpPassphraseSubmitRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield take(lcpActions.ActionType.PassphraseSubmitRequest);
         const passphrase: string = action.payload.passphrase;
-        const publication: Publication = action.payload.publication;
+        const publication: PublicationView = action.payload.publication;
 
         // Get epub file from publication
         const pubStorage = container.get("publication-storage") as PublicationStorage;
-        const epubPath = path.join(
-            pubStorage.getRootPath(),
-            publication.files[0].url.substr(6),
-        );
+        const epubPath = pubStorage.getPublicationEpubPath(publication.identifier);
 
         // Test user passphrase
         const streamer = container.get("streamer") as Server;
-        const secretManager = container.get("secret-manager") as SecretManager;
 
         try {
             // Create sha256 in hex of passphrase
@@ -75,7 +62,7 @@ export function* lcpPassphraseSubmitRequestWatcher(): SagaIterator {
             );
 
             // New secret that rocks
-            secretManager.storeSecret(sha256HexPassphrase);
+            // secretManager.storeSecret(sha256HexPassphrase);
         } catch (error) {
             let payload = new CodeError(error);
 
@@ -95,67 +82,64 @@ export function* lcpPassphraseSubmitRequestWatcher(): SagaIterator {
         }
 
         yield put({
-            type: lcpActions.ActionType.PassphraseSubmitSuccess,
+            type: lcpActions.ActionType.UserKeyCheckSuccess,
             payload: {
                 publication,
             },
         });
-
-        // Open reader
-        yield put(readerActions.open(publication));
     }
 }
 
-export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
-    while (true) {
-        const action = yield take(lcpActions.ActionType.UserKeyCheckRequest);
+// export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
+//     while (true) {
+//         const action = yield take(lcpActions.ActionType.UserKeyCheckRequest);
 
-        const publication: Publication = action.payload.publication;
+//         const publication: Publication = action.payload.publication;
 
-        // Get epub file from publication
-        const pubStorage = container.get("publication-storage") as PublicationStorage;
-        const epubPath = path.join(
-            pubStorage.getRootPath(),
-            publication.files[0].url.substr(6),
-        );
+//         // Get epub file from publication
+//         const pubStorage = container.get("publication-storage") as PublicationStorage;
+//         console.log("==================================", action.payload.hint);
+//         const epubPath = path.join(
+//             pubStorage.getRootPath(),
+//             publication.files[0].url.substr(6),
+//         );
 
-        // Test user passphrases
-        const streamer: Server = container.get("streamer") as Server;
-        const secretManager = container.get("secret-manager") as SecretManager;
+//         // Test user passphrases
+//         const streamer: Server = container.get("streamer") as Server;
 
-        try {
-            const secrets = yield call(() => secretManager.getAllSecrets());
+//         try {
+//             // const secret = yield take(lcpActions.ActionType.)
+//             const sha256HexPassphrase = toSha256Hex("test");
+//             yield call(() =>
+//                 doTryLcpPass(
+//                     streamer,
+//                     epubPath,
+//                     [ sha256HexPassphrase ],
+//                     true,
+//                 ),
+//             );
 
-            yield call(() =>
-                doTryLcpPass(
-                    streamer,
-                    epubPath,
-                    secrets,
-                    true,
-                ),
-            );
+//             yield put({
+//                 type: lcpActions.ActionType.UserKeyCheckSuccess,
+//                 payload: {
+//                     publication,
+//                 },
+//             });
+//         } catch (error) {
+//             let payload = new CodeError(error);
 
-            yield put({
-                type: lcpActions.ActionType.UserKeyCheckSuccess,
-                payload: {
-                    publication,
-                },
-            });
-        } catch (error) {
-            let payload = new CodeError(error);
+//             if (error instanceof Error) {
+//                 payload = new CodeError(1);
+//             }
 
-            if (error instanceof Error) {
-                payload = new CodeError(1);
-            }
-
-            yield put({
-                type: lcpActions.ActionType.UserKeyCheckError,
-                payload,
-                error: true,
-            });
-        }
-    }
-}
+//             yield put({
+//                 type: lcpActions.ActionType.UserKeyCheckError,
+//                 payload,
+//                 error: true,
+//             });
+//         }
+//     }
+// }
 
 export function* lcpStatusUpdateRequestWatcher(): SagaIterator {
     while (true) {

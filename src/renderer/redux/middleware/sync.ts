@@ -44,6 +44,7 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     readerActions.ActionType.BookmarkSaveRequest,
 
     lcpActions.ActionType.PassphraseSubmitRequest,
+    lcpActions.ActionType.UserKeyCheckError,
     lcpActions.ActionType.RenewRequest,
     lcpActions.ActionType.ReturnRequest,
 
