@@ -133,6 +133,8 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 
         paraSpacing: settings.paraSpacing,
 
+        reduceMotion: readiumCSSDefaults.reduceMotion,
+
         sepia: settings.sepia,
 
         textAlign: settings.align === "left" ? textAlignEnum.left :

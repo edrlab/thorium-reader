@@ -111,6 +111,8 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
 
         paraSpacing: settings.paraSpacing,
 
+        reduceMotion: readiumCSSDefaults.reduceMotion,
+
         sepia: settings.sepia,
 
         textAlign: settings.align === "left" ? textAlignEnum.left :
