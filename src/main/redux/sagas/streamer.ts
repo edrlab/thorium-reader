@@ -144,7 +144,6 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
 
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
-        console.log("###", manifestPaths);
         // Test if publication contains LCP drm
         const parsedEpub = yield call(
             () => streamer.loadOrGetCachedPublication(epubPath),
@@ -157,15 +156,11 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                 parsedEpub.LCP.Encryption.UserKey.TextHint,
             ));
 
-            console.log("===================================================");
-
             // Wait for success
             const userKeyCheckAction = yield take([
                 lcpActions.ActionType.UserKeyCheckSuccess,
                 lcpActions.ActionType.UserKeyCheckError,
             ]);
-            console.log("=========================CA PASSE==========================", userKeyCheckAction);
-            console.log("===================================================");
 
             if (userKeyCheckAction.error) {
                 yield put({

@@ -115,7 +115,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             <Dialog
                 open={ true }
                 close={ this.props.closeDialog }
-                id={styles.delete_publication_dialog}
+                id={styles.choice_dialog}
             >
                 <DeletePublicationConfirm
                     publication={ this.props.dialog.data.publication }
@@ -129,7 +129,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             <Dialog
                 open={ true }
                 close={ this.props.closeDialog }
-                id={styles.delete_publication_dialog}
+                id={styles.choice_dialog}
             >
                 <DeleteOpdsFeedConfirm
                     feed={ this.props.dialog.data.feed }
@@ -143,7 +143,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             <Dialog
                 open={ true }
                 close={ this.props.closeDialog }
-                id={styles.opds_form_dialog}
+                id={styles.choice_dialog}
                 hideArrow={true}
             >
                 <LCPAuthentication

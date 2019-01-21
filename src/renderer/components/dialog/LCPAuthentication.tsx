@@ -45,12 +45,14 @@ export class LCPAuthentication extends React.Component<DeleteOpdsFeedConfirmProp
 
         return (
             <div>
-                <p>{ __("library.lcp.sentence", this.props.publication.title) }</p>
-                <p>{ __("library.lcp.hint", this.props.hint) }</p>
-                <input ref={this.passphraseRef} type="text" />
+                <p>{ __("library.lcp.sentence") }</p>
+                <p>{ __("library.lcp.hint", { hint: this.props.hint }) }</p>
+                <form onSubmit={ this.submite }>
+                    <input type="password" ref={ this.passphraseRef } />
+                </form>
                 <div>
-                    <button onClick={ this.submite }>{__("library.lcp.submit")}</button>
-                    <button onClick={ this.close }>{__("library.lcp.cancel")}</button>
+                    <button onClick={ this.submite }>{ __("library.lcp.submit") }</button>
+                    <button onClick={ this.close }>{ __("library.lcp.cancel") }</button>
                 </div>
             </div>
         );

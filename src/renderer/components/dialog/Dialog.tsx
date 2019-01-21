@@ -9,9 +9,6 @@ import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 
-import { Translator } from "readium-desktop/common/services/translator";
-import { lazyInject } from "readium-desktop/renderer/di";
-
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";

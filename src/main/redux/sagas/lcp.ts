@@ -71,7 +71,7 @@ export function* lcpPassphraseSubmitRequestWatcher(): SagaIterator {
             }
 
             yield put({
-                type: lcpActions.ActionType.PassphraseSubmitError,
+                type: lcpActions.ActionType.UserKeyCheckError,
                 error: true,
                 payload,
                 meta: {

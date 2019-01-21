@@ -71,15 +71,25 @@ button {
 
 /* DELETE PUBLICATION DIALOG */
 
-#delete_publication_dialog {
+#choice_dialog {
     & > div {
       display: flex;
       flex-direction: column;
       width: 100%;
 
+      & > input {
+        font-size: 1rem;
+        padding-bottom: 5px;
+        padding-left: 0.3rem;
+        border: none;
+        border-bottom: 1px solid grey;
+        width: 40rem;
+      }
+
       & > div {
         align-self: flex-end;
         & button {
+            width: fit-content;
             margin-right: 1rem;
             font-size: 1.2rem;
         }
