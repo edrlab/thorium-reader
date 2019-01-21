@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
@@ -41,14 +41,16 @@ export class LCPAuthentication extends React.Component<DeleteOpdsFeedConfirmProp
             return <></>;
         }
 
+        const { __ } = this.props;
+
         return (
             <div>
-                <p>Veuillez entrer le mot de passe pour decrypter le fichier : { this.props.publication.title } ?</p>
-                <p>Indice : { this.props.hint }</p>
+                <p>{ __("library.lcp.sentence", this.props.publication.title) }</p>
+                <p>{ __("library.lcp.hint", this.props.hint) }</p>
                 <input ref={this.passphraseRef} type="text" />
                 <div>
-                    <button onClick={ this.submite }>Valider</button>
-                    <button onClick={ this.close }>Fermer</button>
+                    <button onClick={ this.submite }>{__("library.lcp.submit")}</button>
+                    <button onClick={ this.close }>{__("library.lcp.cancel")}</button>
                 </div>
             </div>
         );
@@ -89,7 +91,7 @@ const mapDispatchToProps = (dispatch: any) => {
 };
 
 export default withApi(
-    LCPAuthentication,
+    withTranslator(LCPAuthentication),
     {
         operations: [],
         mapDispatchToProps,
