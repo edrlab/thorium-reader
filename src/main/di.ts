@@ -26,6 +26,7 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { RootState } from "readium-desktop/main/redux/states";
 
 import { DeviceIdManager } from "readium-desktop/main/services/device";
+import { LcpManager } from "readium-desktop/main/services/lcp";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
@@ -201,12 +202,27 @@ container.bind<PublicationStorage>("publication-storage").toConstantValue(
 // Bind services
 container.bind<Server>("streamer").toConstantValue(streamer);
 
-const catalogService = new CatalogService(publicationRepository, publicationStorage, downloader);
+const deviceIdManager = new DeviceIdManager("readium-desktop", configRepository);
+container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
+    deviceIdManager,
+);
+
+// Create lcp manager
+const lcpManager = new LcpManager(
+    publicationRepository,
+    publicationStorage,
+    deviceIdManager,
+);
+container.bind<LcpManager>("lcp-manager").toConstantValue(lcpManager);
+
+const catalogService = new CatalogService(
+    publicationRepository,
+    publicationStorage,
+    downloader,
+    lcpManager,
+);
 container.bind<CatalogService>("catalog-service").toConstantValue(
     catalogService,
-);
-container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
-    new DeviceIdManager("readium-desktop", configRepository),
 );
 
 // API

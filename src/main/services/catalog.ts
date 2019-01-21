@@ -37,10 +37,12 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 import { Download } from "readium-desktop/common/models/download";
-import { Downloader } from "readium-desktop/main/services/downloader";
 
 import { httpGet } from "readium-desktop/common/utils";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
+
+import { Downloader } from "./downloader";
+import { LcpManager } from "./lcp";
 
 import {
     convertMultiLangStringToString,
@@ -52,6 +54,7 @@ const debug = debug_("readium-desktop:main#services/catalog");
 @injectable()
 export class CatalogService {
     private downloader: Downloader;
+    private lcpManager: LcpManager;
     private publicationStorage: PublicationStorage;
     private publicationRepository: PublicationRepository;
 
@@ -59,10 +62,12 @@ export class CatalogService {
         publicationRepository: PublicationRepository,
         publicationStorage: PublicationStorage,
         downloader: Downloader,
+        lcpManager: LcpManager,
     ) {
         this.publicationRepository = publicationRepository;
         this.publicationStorage = publicationStorage;
         this.downloader = downloader;
+        this.lcpManager = lcpManager;
     }
 
     public async importFile(filePath: string): Promise<PublicationDocument> {
@@ -149,13 +154,13 @@ export class CatalogService {
 
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {
         const buffer = fs.readFileSync(filePath);
-        const content = JSON.parse(buffer.toString());
+        const lcpl = JSON.parse(buffer.toString());
 
         // search the path of the epub file
         let download: Download = null;
 
-        if (content.links) {
-            for (const link of content.links) {
+        if (lcpl.links) {
+            for (const link of lcpl.links) {
                 if (link.rel === "publication") {
                     download = this.downloader.addDownload(link.href);
                 }
@@ -178,7 +183,8 @@ export class CatalogService {
         debug("[END] Download publication", filePath, newDownload);
 
         // Import downloaded publication
-        return this.importEpubFile(download.dstPath);
+        const publicationDocument = await this.importEpubFile(download.dstPath);
+        return this.lcpManager.injectLcpl(publicationDocument, lcpl);
     }
 
     private async importEpubFile(filePath: string): Promise<PublicationDocument> {

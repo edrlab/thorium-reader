@@ -71,6 +71,13 @@ export class PublicationStorage {
         rmDirSync(this.buildPublicationPath(identifier));
     }
 
+    public getPublicationEpubPath(identifier: string): string {
+        return path.join(
+            this.buildPublicationPath(identifier),
+            "book.epub",
+        );
+    }
+
     private buildPublicationPath(identifier: string): string {
         return path.join(this.rootPath, identifier);
     }
