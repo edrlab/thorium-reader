@@ -16,6 +16,8 @@ import { injectable} from "inversify";
 import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
+import { LcpInfo } from "readium-desktop/common/models/lcp";
+
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 import { injectDataInZip } from "readium-desktop/utils/zip";
@@ -75,6 +77,33 @@ export class LcpManager {
 
         debug("Parse publication - START", epubPath);
         const parsedPublication: Epub = await EpubParsePromise(epubPath);
+        let lcpInfo: LcpInfo = null;
+
+        if (parsedPublication.LCP) {
+            // Add Lcp info
+            lcpInfo = {
+                provider: parsedPublication.LCP.Provider,
+                issued: parsedPublication.LCP.Issued,
+                updated: parsedPublication.LCP.Updated,
+                rights: {
+                    copy: parsedPublication.LCP.Rights.Copy,
+                    print: parsedPublication.LCP.Rights.Print,
+                    start: parsedPublication.LCP.Rights.Start,
+                    end: parsedPublication.LCP.Rights.End,
+                },
+            };
+
+            // Search for lsd status url
+            for (const link of parsedPublication.LCP.Links) {
+                if (link.Rel === "status") {
+                    // This is the lsd status url link
+                    lcpInfo.lsd = {
+                        statusUrl: link.Href,
+                    };
+                    break;
+                }
+            }
+        }
         debug("Parse publication - END", epubPath);
 
         // FIXME: Title could be an array instead of a simple string
@@ -91,6 +120,7 @@ export class LcpManager {
                     filePublication: b64ParsedPublication,
                     opdsPublication: publicationDocument.resources.opdsPublication,
                 },
+                lcp: lcpInfo,
             },
         );
         return this.publicationRepository.save(newPublicationDocument);

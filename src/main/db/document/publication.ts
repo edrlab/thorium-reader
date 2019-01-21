@@ -8,6 +8,7 @@
 import { CustomCover } from "readium-desktop/common/models/custom-cover";
 import { File } from "readium-desktop/common/models/file";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
+import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 
 interface Resources {
@@ -23,4 +24,5 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     files?: File[];
     coverFile?: File;
     customCover?: CustomCover;
+    lcp?: LcpInfo;
 }
