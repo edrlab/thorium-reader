@@ -61,6 +61,7 @@ export class PublicationViewConverter {
             tags: document.tags,
             cover,
             customCover: document.customCover,
+            lcp: document.lcp,
         };
     }
 }
