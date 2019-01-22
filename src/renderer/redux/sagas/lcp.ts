@@ -125,6 +125,6 @@ export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
 
         const { hint, publication } = action.payload;
 
-        yield put(open(DialogType.LCPAuthentication, {publication, hint}));
+        yield put(open(DialogType.LcpAuthentication, {publication, hint}));
     }
 }

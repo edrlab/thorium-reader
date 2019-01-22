@@ -11,5 +11,7 @@ export enum DialogType {
     OpdsFeedAddForm = "opds-feed-add-form",
     DeletePublicationConfirm = "delete-publication-confirm",
     DeleteOpdsFeedConfirm = "delete-opds-feed-confirm",
-    LCPAuthentication = "lcp-authentication",
+    LcpAuthentication = "lcp-authentication",
+    LsdReturnConfirm = "lsd-return-confirm",
+    LsdRenewConfirm = "lsd-renew-confirm",
 }

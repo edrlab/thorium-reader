@@ -29,6 +29,10 @@ import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
 
 import LCPAuthentication from "./LCPAuthentication";
 
+import ReturnLSDConfirm from "./ReturnLSDConfirm";
+
+import RenewLSDConfirm from "./RenewLSDConfirm";
+
 import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
 
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
@@ -61,8 +65,12 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 return this.buildDeletePublicationConfirmDialog();
             case DialogType.DeleteOpdsFeedConfirm:
                 return this.buildDeleteOpdsFeedConfirmDialog();
-            case DialogType.LCPAuthentication:
+            case DialogType.LcpAuthentication:
                 return this.buildLCPAuthenticationDialog();
+            case DialogType.LsdRenewConfirm:
+                return this.buildLsdRenewConfirmDialog();
+            case DialogType.LsdReturnConfirm:
+                return this.buildLsdReturnConfirmDialog();
             default:
                 return (<></>);
         }
@@ -149,6 +157,34 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 <LCPAuthentication
                     publication={ this.props.dialog.data.publication }
                     hint={ this.props.dialog.data.hint }
+                />
+            </Dialog>
+        );
+    }
+
+    private buildLsdRenewConfirmDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+                id={styles.choice_dialog}
+            >
+                <RenewLSDConfirm
+                    publication={ this.props.dialog.data.publication }
+                />
+            </Dialog>
+        );
+    }
+
+    private buildLsdReturnConfirmDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+                id={styles.choice_dialog}
+            >
+                <ReturnLSDConfirm
+                    publication={ this.props.dialog.data.publication }
                 />
             </Dialog>
         );

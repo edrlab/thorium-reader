@@ -25,6 +25,7 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import { lcpReadable } from "readium-desktop/utils/publication";
 
 interface PublicationCardProps {
     publication: PublicationView;
@@ -111,10 +112,11 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
 
     private handleBookClick(e: any) {
         e.preventDefault();
-        if (!this.props.isOpds) {
-            this.props.openReader(this.props.publication);
+        const { publication } = this.props;
+        if (!this.props.isOpds && lcpReadable(publication)) {
+            this.props.openReader(publication);
         } else {
-            this.props.openInfosDialog(this.props.publication);
+            this.props.openInfosDialog(publication);
         }
     }
 
