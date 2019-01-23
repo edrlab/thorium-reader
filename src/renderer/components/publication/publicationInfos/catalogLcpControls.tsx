@@ -9,7 +9,9 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
+import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
@@ -60,13 +62,13 @@ export class CatalogLcpControls extends React.Component<CatalogLcpControlsProps,
                     { publication.lcp.rights.end && <>
                         <li>
                             <a onClick={ this.props.openRenewDialog }>
-                                <SVG svg={DeleteIcon} />
+                                <SVG svg={LoopIcon} />
                                 Renew
                             </a>
                         </li>
                         <li>
                             <a onClick={ this.props.openReturnDialog }>
-                                <SVG svg={DeleteIcon} />
+                                <SVG svg={ArrowIcon} />
                                 Return
                             </a>
                         </li>
