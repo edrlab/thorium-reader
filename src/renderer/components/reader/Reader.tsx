@@ -131,8 +131,6 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 
         paraSpacing: settings.paraSpacing,
 
-        reduceMotion: readiumCSSDefaults.reduceMotion,
-
         sepia: settings.sepia,
 
         noFootnotes: settings.noFootnotes,
@@ -146,6 +144,8 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         typeScale: readiumCSSDefaults.typeScale,
 
         wordSpacing: settings.wordSpacing,
+
+        reduceMotion: readiumCSSDefaults.reduceMotion,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
     return jsonMsg;
