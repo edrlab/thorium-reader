@@ -21,8 +21,7 @@
           "sentence": "Cette publication a besoin d'un mot de passe : ",
           "submit": "Valider",
           "cancel": "Annuler",
-          "hint": "Votre mot de passe",
-          "hintSentence": "Indice :",
+          "hint": "Indice : {{hint}}",
           "informations": {
             "title": "Informations LCP",
             "close": "Fermer",

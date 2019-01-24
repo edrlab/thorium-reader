@@ -9,9 +9,6 @@ import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 
-import { Translator } from "readium-desktop/common/services/translator";
-import { lazyInject } from "readium-desktop/renderer/di";
-
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
@@ -21,6 +18,7 @@ interface Props {
     close: () => void;
     className?: string;
     id?: string;
+    hideArrow?: boolean;
 }
 
 export default class Dialog extends React.Component<Props, undefined> {
@@ -40,7 +38,7 @@ export default class Dialog extends React.Component<Props, undefined> {
                 className={styles.c_dialog}
                 style={{visibility: this.props.open ? "visible" : "hidden"}}
             >
-                <div onClick={this.props.close} className={styles.c_dialog_background} />
+                {!this.props.hideArrow && <div onClick={this.props.close} className={styles.c_dialog_background} />}
                 <div
                     role="document"
                     id={this.props.id}
@@ -49,7 +47,7 @@ export default class Dialog extends React.Component<Props, undefined> {
                     { content && <>
                         { content }
                     </>}
-                    <button
+                    {!this.props.hideArrow && <button
                         className={styles.close_button}
                         type="button"
                         aria-label="Fermer"
@@ -58,7 +56,7 @@ export default class Dialog extends React.Component<Props, undefined> {
                         onClick={this.props.close}
                     >
                         <SVG svg={QuitIcon}/>
-                    </button>
+                    </button>}
                 </div>
             </div>
         );

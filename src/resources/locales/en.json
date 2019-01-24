@@ -21,8 +21,7 @@
           "sentence": "This publication needs a LCP password to be opened: ",
           "submit": "Submit",
           "cancel": "Cancel",
-          "hint": "Your passphrase",
-          "hintSentence": "Hint:",
+          "hint": "Hint : {{hint}}",
           "informations": {
             "title": "LCP Informations",
             "close": "Close",
