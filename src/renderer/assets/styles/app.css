@@ -72,6 +72,8 @@ button {
 /* DELETE PUBLICATION DIALOG */
 
 #choice_dialog {
+    width: fit-content;
+    padding: 60px 60px 10px 60px;
     & > div {
       display: flex;
       flex-direction: column;
@@ -87,6 +89,7 @@ button {
       }
 
       & > div {
+        margin-top: 25px;
         align-self: flex-end;
         & button {
             width: fit-content;
