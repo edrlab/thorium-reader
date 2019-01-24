@@ -101,8 +101,6 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
 
         night: settings.night,
 
-        noFootnotes: readiumCSSDefaults.noFootnotes,
-
         pageMargins: settings.pageMargins,
 
         paged: settings.paged,
@@ -126,8 +124,6 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
         typeScale: readiumCSSDefaults.typeScale,
 
         wordSpacing: settings.wordSpacing,
-
-        reduceMotion: readiumCSSDefaults.reduceMotion,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
     console.log("jsonMsg MAIN");

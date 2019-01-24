@@ -123,8 +123,6 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 
         night: settings.night,
 
-        noFootnotes: readiumCSSDefaults.noFootnotes,
-
         pageMargins: settings.pageMargins,
 
         paged: settings.paged,
@@ -148,8 +146,6 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         typeScale: readiumCSSDefaults.typeScale,
 
         wordSpacing: settings.wordSpacing,
-
-        reduceMotion: readiumCSSDefaults.reduceMotion,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
     return jsonMsg;
