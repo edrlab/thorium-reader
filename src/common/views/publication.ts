@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { CustomCover } from "readium-desktop/common/models/custom-cover";
-
 export interface CoverView {
     url: string;
 }
@@ -28,4 +26,5 @@ export interface PublicationView {
     publishedAt?: string; // ISO8601
     cover?: CoverView;
     customCover?: CustomCoverView;
+    lcp: any;
 }

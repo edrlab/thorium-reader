@@ -18,6 +18,10 @@ import { lcpActions } from "readium-desktop/common/redux/actions";
 
 import * as messageActions from "readium-desktop/renderer/actions/message";
 
+import { open } from "readium-desktop/common/redux/actions/dialog";
+
+import { DialogType } from "readium-desktop/common/models/dialog";
+
 export function* lcpRenewSuccessWatcher(): SagaIterator {
     while (true) {
         const action = yield take(lcpActions.ActionType.RenewSuccess);
@@ -112,5 +116,15 @@ export function* lcpPassphraseSubmitErrorWatcher(): SagaIterator {
                 ),
             }),
         ));
+    }
+}
+
+export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
+    while (true) {
+        const action = yield take(lcpActions.ActionType.UserKeyCheckRequest);
+
+        const { hint, publication } = action.payload;
+
+        yield put(open(DialogType.LcpAuthentication, {publication, hint}));
     }
 }

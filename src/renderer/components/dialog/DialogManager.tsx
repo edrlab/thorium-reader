@@ -23,12 +23,19 @@ import FileImport from "./FileImport";
 
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
 
-import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
-
 import DeletePublicationConfirm from "./DeletePublicationConfirm";
 
-import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
+
+import LcpAuthentication from "./LcpAuthentication";
+
+import ReturnLsdConfirm from "./ReturnLsdConfirm";
+
+import RenewLsdConfirm from "./RenewLsdConfirm";
+
+import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
+
+import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 interface DialogManagerProps  {
     dialog?: DialogState;
@@ -58,6 +65,12 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 return this.buildDeletePublicationConfirmDialog();
             case DialogType.DeleteOpdsFeedConfirm:
                 return this.buildDeleteOpdsFeedConfirmDialog();
+            case DialogType.LcpAuthentication:
+                return this.buildLcpAuthenticationDialog();
+            case DialogType.LsdRenewConfirm:
+                return this.buildLsdRenewConfirmDialog();
+            case DialogType.LsdReturnConfirm:
+                return this.buildLsdReturnConfirmDialog();
             default:
                 return (<></>);
         }
@@ -110,7 +123,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             <Dialog
                 open={ true }
                 close={ this.props.closeDialog }
-                id={styles.delete_publication_dialog}
+                id={styles.choice_dialog}
             >
                 <DeletePublicationConfirm
                     publication={ this.props.dialog.data.publication }
@@ -124,10 +137,54 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             <Dialog
                 open={ true }
                 close={ this.props.closeDialog }
-                id={styles.delete_publication_dialog}
+                id={styles.choice_dialog}
             >
                 <DeleteOpdsFeedConfirm
                     feed={ this.props.dialog.data.feed }
+                />
+            </Dialog>
+        );
+    }
+
+    private buildLcpAuthenticationDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+                id={styles.choice_dialog}
+                hideArrow={true}
+            >
+                <LcpAuthentication
+                    publication={ this.props.dialog.data.publication }
+                    hint={ this.props.dialog.data.hint }
+                />
+            </Dialog>
+        );
+    }
+
+    private buildLsdRenewConfirmDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+                id={styles.choice_dialog}
+            >
+                <RenewLsdConfirm
+                    publication={ this.props.dialog.data.publication }
+                />
+            </Dialog>
+        );
+    }
+
+    private buildLsdReturnConfirmDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+                id={styles.choice_dialog}
+            >
+                <ReturnLsdConfirm
+                    publication={ this.props.dialog.data.publication }
                 />
             </Dialog>
         );

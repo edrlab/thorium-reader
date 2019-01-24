@@ -20,6 +20,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import TagManager from "readium-desktop/renderer/components/publication/TagManager";
 
 import CatalogControls from "./catalogControls";
+import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
@@ -54,6 +55,9 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
         let Controls = CatalogControls;
         if (this.props.isOpds) {
             Controls = OpdsControls;
+        }
+        if (publication.lcp) {
+            Controls = CatalogLcpControls;
         }
 
         if (publication.publishedAt) {

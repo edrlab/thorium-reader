@@ -115,6 +115,8 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
 
         sepia: settings.sepia,
 
+        noFootnotes: settings.noFootnotes,
+
         textAlign: settings.align === "left" ? textAlignEnum.left :
             (settings.align === "right" ? textAlignEnum.right :
             (settings.align === "justify" ? textAlignEnum.justify : textAlignEnum.start)),
@@ -124,6 +126,8 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
         typeScale: readiumCSSDefaults.typeScale,
 
         wordSpacing: settings.wordSpacing,
+
+        reduceMotion: readiumCSSDefaults.reduceMotion,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
     console.log("jsonMsg MAIN");

@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Publication } from "readium-desktop/common/models/publication";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
-export function lcpReadable(publication: Publication): boolean {
+export function lcpReadable(publication: PublicationView): boolean {
     return (!publication.lcp ||
         (publication.lcp && !publication.lcp.rights.end) ||
         (publication.lcp && publication.lcp.rights.end && new Date(publication.lcp.rights.end).getTime() > Date.now()));
