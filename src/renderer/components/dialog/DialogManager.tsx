@@ -27,11 +27,11 @@ import DeletePublicationConfirm from "./DeletePublicationConfirm";
 
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
 
-import LCPAuthentication from "./LCPAuthentication";
+import LcpAuthentication from "./LcpAuthentication";
 
-import ReturnLSDConfirm from "./ReturnLSDConfirm";
+import ReturnLsdConfirm from "./ReturnLsdConfirm";
 
-import RenewLSDConfirm from "./RenewLSDConfirm";
+import RenewLsdConfirm from "./RenewLsdConfirm";
 
 import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
 
@@ -66,7 +66,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             case DialogType.DeleteOpdsFeedConfirm:
                 return this.buildDeleteOpdsFeedConfirmDialog();
             case DialogType.LcpAuthentication:
-                return this.buildLCPAuthenticationDialog();
+                return this.buildLcpAuthenticationDialog();
             case DialogType.LsdRenewConfirm:
                 return this.buildLsdRenewConfirmDialog();
             case DialogType.LsdReturnConfirm:
@@ -146,7 +146,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
         );
     }
 
-    private buildLCPAuthenticationDialog() {
+    private buildLcpAuthenticationDialog() {
         return (
             <Dialog
                 open={ true }
@@ -154,7 +154,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 id={styles.choice_dialog}
                 hideArrow={true}
             >
-                <LCPAuthentication
+                <LcpAuthentication
                     publication={ this.props.dialog.data.publication }
                     hint={ this.props.dialog.data.hint }
                 />
@@ -169,7 +169,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 close={ this.props.closeDialog }
                 id={styles.choice_dialog}
             >
-                <RenewLSDConfirm
+                <RenewLsdConfirm
                     publication={ this.props.dialog.data.publication }
                 />
             </Dialog>
@@ -183,7 +183,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 close={ this.props.closeDialog }
                 id={styles.choice_dialog}
             >
-                <ReturnLSDConfirm
+                <ReturnLsdConfirm
                     publication={ this.props.dialog.data.publication }
                 />
             </Dialog>

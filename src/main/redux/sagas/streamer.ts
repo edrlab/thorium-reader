@@ -152,7 +152,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
         if (parsedEpub.LCP) {
             // User key check
             yield put(lcpActions.checkUserKey(
-                publication,
+                publication as any,
                 parsedEpub.LCP.Encryption.UserKey.TextHint,
             ));
 
