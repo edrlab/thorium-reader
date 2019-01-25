@@ -23,9 +23,9 @@ export class DeviceIdManager implements IDeviceIDManager {
 
     private deviceName: string;
 
-    public constructor(deviceName: string, configDb: ConfigRepository) {
+    public constructor(deviceName: string, configRepository: ConfigRepository) {
         this.deviceName = deviceName;
-        this.configRepository = this.configRepository;
+        this.configRepository = configRepository;
     }
 
     public async checkDeviceID(key: string): Promise<string | undefined> {
@@ -41,8 +41,9 @@ export class DeviceIdManager implements IDeviceIDManager {
 
             const config: any = {
                 identifier: "device",
+                value: {},
             };
-            config[DEVICE_ID_KEY] = deviceId;
+            config.value[DEVICE_ID_KEY] = deviceId;
             await this.configRepository.save(config);
         }
 
@@ -62,8 +63,9 @@ export class DeviceIdManager implements IDeviceIDManager {
             deviceId = uuid.v4();
         }
 
-        const config: any = Object.assign({}, this.getDeviceConfig());
-        config[deviceIdKey] = deviceId;
+        const deviceConfig = await this.getDeviceConfig();
+        const config: any = Object.assign({}, deviceConfig);
+        config.value[deviceIdKey] = deviceId;
         await this.configRepository.save(config);
     }
 
@@ -73,6 +75,7 @@ export class DeviceIdManager implements IDeviceIDManager {
         } catch (error) {
             return {
                 identifier: "device",
+                value: {},
             };
         }
     }
