@@ -32,6 +32,15 @@ import {
     setEpubReadingSystemInfo,
     setReadingLocationSaver,
     setReadiumCssJsonGetter,
+    ttsClickEnable,
+    ttsListen,
+    ttsNext,
+    ttsPause,
+    ttsPlay,
+    ttsPrevious,
+    ttsResume,
+    TTSStateEnum,
+    ttsStop,
 } from "@r2-navigator-js/electron/renderer/index";
 
 import {
@@ -183,6 +192,7 @@ interface ReaderState {
     publication: R2Publication;
     menuOpen: boolean;
     fullscreen: boolean;
+    ttsState: TTSStateEnum;
     indexes: any;
     visibleBookmarkList: Locator[];
 }
@@ -215,6 +225,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         if (locale == null) {
             this.store.dispatch(setLocale(defaultLocale));
         }
+
 
         this.state = {
             publicationJsonUrl: "HTTP://URL",
@@ -250,11 +261,23 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             publication: undefined,
             menuOpen: false,
             fullscreen: false,
+            ttsState: TTSStateEnum.STOPPED,
             visibleBookmarkList: [],
         };
 
+        ttsListen((ttsstater: TTSStateEnum) => {
+            console.log(ttsstater);
+            this.setState({ttsState: ttsstater});
+        });
+
         this.pubId = queryString.parse(location.search).pubId as string;
 
+        this.handleAudioClick = this.handleAudioClick.bind(this);
+        this.handlePauseClick = this.handlePauseClick.bind(this);
+        this.handleStopClick = this.handleStopClick.bind(this);
+        this.handlePlayClick = this.handlePlayClick.bind(this);
+        this.handleSkipPreviousClick = this.handleSkipPreviousClick.bind(this);
+        this.handleSkipNextClick = this.handleSkipNextClick.bind(this);
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleFullscreenClick = this.handleFullscreenClick.bind(this);
@@ -342,6 +365,11 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         setEpubReadingSystemInfo({ name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION });
     }
 
+    public setTTSState(newTtsState: TTSStateEnum) {
+        console.log("set tts state was called");
+        this.setState({ttsState : newTtsState});
+    }
+
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
 
@@ -351,11 +379,18 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                         <ReaderHeader
                             menuOpen={this.state.menuOpen}
                             settingsOpen={this.state.settingsOpen}
+                            handleAudioClick={this.handleAudioClick}
+                            handlePlayClick={this.handlePlayClick}
+                            handleStopClick={this.handleStopClick}
+                            handleSkipPreviousClick={this.handleSkipPreviousClick}
+                            handleSkipNextClick={this.handleSkipNextClick}
+                            handlePauseClick={this.handlePauseClick}
                             handleMenuClick={this.handleMenuButtonClick}
                             handleSettingsClick={this.handleSettingsClick}
                             fullscreen={this.state.fullscreen}
                             handleFullscreenClick={this.handleFullscreenClick}
                             toggleBookmark={ this.handleToggleBookmark }
+                            ttsState={this.state.ttsState}
                             isOnBookmark={this.state.visibleBookmarkList.length > 0}
                         />
                         <ReaderMenu
@@ -558,6 +593,25 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             settingsOpen: !this.state.settingsOpen,
             menuOpen: false,
         });
+    }
+
+    private handleAudioClick() {
+        ttsPlay();
+    }
+    private handlePauseClick() {
+        ttsPause();
+    }
+    private handleStopClick() {
+        ttsStop();
+    }
+    private handlePlayClick() {
+        ttsResume();
+    }
+    private handleSkipNextClick() {
+        ttsNext();
+    }
+    private handleSkipPreviousClick() {
+        ttsPrevious();
     }
 
     private handleSettingsSave() {

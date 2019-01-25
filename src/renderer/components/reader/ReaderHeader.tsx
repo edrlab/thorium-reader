@@ -12,7 +12,14 @@ import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import { Translator } from "readium-desktop/common/services/translator";
 import { lazyInject } from "readium-desktop/renderer/di";
 
+import { TTSStateEnum } from "@r2-navigator-js/electron/renderer/index";
+
 import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
+import * as PauseIcon from "readium-desktop/renderer/assets/icons/baseline-pause-24px.svg";
+import * as PlayIcon from "readium-desktop/renderer/assets/icons/baseline-play_arrow-24px.svg";
+import * as SkipNext from "readium-desktop/renderer/assets/icons/baseline-skip_next-24px.svg";
+import * as SkipPrevious from "readium-desktop/renderer/assets/icons/baseline-skip_previous-24px.svg";
+import * as StopIcon from "readium-desktop/renderer/assets/icons/baseline-stop-24px.svg";
 import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volume_up-24px.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/font-size.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
@@ -27,10 +34,17 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 interface Props {
     menuOpen: boolean;
     settingsOpen: boolean;
+    handleAudioClick: () => void;
+    handlePauseClick: () => void;
+    handleStopClick: () => void;
+    handleSkipPreviousClick: () => void;
+    handleSkipNextClick: () => void;
+    handlePlayClick: () => void;
     handleMenuClick: () => void;
     handleSettingsClick: () => void;
     fullscreen: boolean;
     handleFullscreenClick: () => void;
+    ttsState: TTSStateEnum;
     toggleBookmark: any;
     isOnBookmark: boolean;
 }
@@ -117,13 +131,60 @@ export default class ReaderHeader extends React.Component<Props, undefined> {
                                 <SVG svg={SettingsIcon} title="Settings"/>
                             </button>
                         </li>
-                        <li className={styles.right}>
-                            <button
-                                className={styles.menu_button}
-                            >
-                                <SVG svg={AudioIcon} title="Lancer la lecture du livre"/>
-                            </button>
-                        </li>
+                            { this.props.ttsState !== TTSStateEnum.STOPPED ? <>
+                                <li className={styles.right}>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.props.handleSkipNextClick.bind(this)}
+                                    >
+                                        <SVG svg={SkipNext} title="Passer au precedent"/>
+                                    </button>
+                                </li>
+                                <li className={styles.right}>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.props.handleStopClick.bind(this)}
+                                    >
+                                        <SVG svg={StopIcon} title="Arrete la lecture du livre"/>
+                                    </button>
+                                </li>
+                                { this.props.ttsState === TTSStateEnum.PLAYING  ?
+                                <li className={styles.right}>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.props.handlePauseClick.bind(this)}
+                                    >
+                                        <SVG svg={PauseIcon} title="Arrete la lecture du livre"/>
+                                    </button>
+                                </li>
+                                :
+                                <li className={styles.right}>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.props.handlePlayClick.bind(this)}
+                                    >
+                                        <SVG svg={PlayIcon} title="Commence la lecture du livre"/>
+                                    </button>
+                                </li>
+                                }
+                                <li className={styles.right}>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.props.handleSkipPreviousClick.bind(this)}
+                                    >
+                                        <SVG svg={SkipPrevious} title="Passer au precedent"/>
+                                    </button>
+                                </li>
+                                </> :
+                                <li className={styles.right}>
+                                    <button
+                                        className={styles.menu_button}
+                                        onClick={this.props.handleAudioClick.bind(this)}
+                                    >
+                                        <SVG svg={AudioIcon} title="Lancer la lecture du livre"/>
+                                    </button>
+                                </li>
+                            }
                     </> :
                     <li  className={styles.right}>
                         <button
