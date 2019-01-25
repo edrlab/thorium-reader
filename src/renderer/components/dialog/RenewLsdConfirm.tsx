@@ -19,7 +19,7 @@ import { lcpActions } from "readium-desktop/common/redux/actions";
 
 interface DeletePublicationConfirmProps extends TranslatorProps {
     publication?: PublicationView;
-    renew?: any;
+    renewPublicationLicense?: any;
     closeDialog?: any;
 }
 
@@ -38,7 +38,7 @@ export class RenewLsdConfirm extends React.Component<DeletePublicationConfirmPro
 
         return (
             <div>
-                <p>Êtes vous sûr de vouloir renew ce livre : {this.props.publication.title} ?</p>
+                <p>Êtes vous sûr de vouloir renouveler la licence pour ce livre : {this.props.publication.title} ?</p>
                 <div>
                     <button onClick={this.renew}>Oui</button>
                     <button onClick={this.props.closeDialog}>Non</button>
@@ -49,7 +49,11 @@ export class RenewLsdConfirm extends React.Component<DeletePublicationConfirmPro
 
     public renew(e: any) {
         e.preventDefault();
-        this.props.renew({ identifier: this.props.publication.identifier });
+        this.props.renewPublicationLicense({
+            publication: {
+                identifier: this.props.publication.identifier,
+            },
+        });
         this.props.closeDialog();
     }
 }
@@ -61,18 +65,19 @@ const mapDispatchToProps = (dispatch: any, props: any) => {
                 dialogActions.close(),
             );
         },
-        renewLsd: () => {
-            dispatch(
-                lcpActions.lsdRenew(props.publication),
-            );
-        },
     };
 };
 
 export default withApi(
     RenewLsdConfirm,
     {
-        operations: [],
+        operations: [
+            {
+                moduleId: "lcp",
+                methodId: "renewPublicationLicense",
+                callProp: "renewPublicationLicense",
+            },
+        ],
         mapDispatchToProps,
     },
 );

@@ -18,7 +18,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 
 interface LsdReturnConfirmProps extends TranslatorProps {
     publication?: PublicationView;
-    returnLsd?: any;
+    returnPublication?: any;
     closeDialog?: any;
 }
 
@@ -48,7 +48,11 @@ export class LsdReturnConfirm extends React.Component<LsdReturnConfirmProps, und
 
     public remove(e: any) {
         e.preventDefault();
-        this.props.returnLsd({ identifier: this.props.publication.identifier });
+        this.props.returnPublication({
+            publication: {
+                identifier: this.props.publication.identifier,
+            },
+        });
         this.props.closeDialog();
     }
 }
@@ -60,18 +64,19 @@ const mapDispatchToProps = (dispatch: any, props: any) => {
                 dialogActions.close(),
             );
         },
-        returnLsd: () => {
-            dispatch(
-                lcpActions.lsdReturn(props.publication),
-            );
-        },
     };
 };
 
 export default withApi(
     LsdReturnConfirm,
     {
-        operations: [],
+        operations: [
+            {
+                moduleId: "lcp",
+                methodId: "returnPublication",
+                callProp: "returnPublication",
+            },
+        ],
         mapDispatchToProps,
     },
 );
