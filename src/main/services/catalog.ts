@@ -44,6 +44,8 @@ import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
 
+import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
+
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
 
@@ -79,8 +81,9 @@ export class CatalogService {
     }
 
     public async importOpdsEntry(url: string): Promise<PublicationDocument> {
-        console.log("####", url);
+        debug("Import OPDS publication", url);
         const opdsFeedData = await httpGet(url) as string;
+        let opdsPublication: OPDSPublication = null;
 
         if (opdsFeedData.startsWith("<?xml")) {
             // This is an opds feed in version 1
@@ -97,11 +100,73 @@ export class CatalogService {
                 throw new OpdsParsingError(`This is not an OPDS entry ${url}`);
             }
             const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
-            const opds2Publication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
-            console.log("Import pub", opds2Publication);
+            opdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
+        } else {
+            opdsPublication = TAJSON.deserialize<OPDSPublication>(
+                JSON.parse(opdsFeedData),
+                OPDSPublication,
+            );
         }
 
-        return null;
+        if (opdsPublication == null) {
+            debug("Unable to retrieve opds publication", opdsPublication);
+            throw new Error("Unable to retrieve opds publication");
+        }
+
+        // Retrieve the download (acquisition) url
+        let downloadUrl = null;
+
+        for (const link of opdsPublication.Links) {
+            if (
+                link.TypeLink === "application/epub+zip"
+                && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition"
+            ) {
+                downloadUrl = link.Href;
+                break;
+            }
+        }
+
+        if (downloadUrl == null) {
+            debug("Unable to get an acquisition url from opds publication", opdsPublication.Links);
+            throw new Error("Unable to get acquisition url from opds publication");
+        }
+
+        // Download publication
+        const download: Download = this.downloader.addDownload(downloadUrl);
+
+        debug("[START] Download publication", downloadUrl);
+        const newDownload = await this.downloader.processDownload(
+            download.identifier,
+            {
+                onProgress: (dl: Download) => {
+                    debug("[PROGRESS] Downloading publication", dl.progress);
+                },
+            },
+        );
+        debug("[END] Download publication", downloadUrl, newDownload);
+
+        // Import downloaded publication in catalog
+        let publicationDocument = await this.importEpubFile(download.dstPath);
+
+        // Add opds publication serialization to resources
+        const jsonOpdsPublication = TAJSON.serialize(opdsPublication);
+        const b64OpdsPublication = Buffer
+            .from(JSON.stringify(jsonOpdsPublication))
+            .toString("base-64");
+
+        // Merge with the original publication
+        publicationDocument = Object.assign(
+            {},
+            publicationDocument,
+            {
+                resources: {
+                    filePublication: publicationDocument.resources.filePublication,
+                    opdsPublication: b64OpdsPublication,
+                },
+            },
+        );
+
+        return this.publicationRepository.save(publicationDocument);
     }
 
     public async deletePublication(publicationIdentifier: string) {

@@ -57,7 +57,11 @@ export class OpdsFeedViewConverter {
         const title = convertMultiLangStringToString(metadata.Title);
         const authors = convertContributorArrayToStringArray(metadata.Author);
         const publishers = convertContributorArrayToStringArray(metadata.Publisher);
-        const tags = metadata.Subject.map((subject) => convertMultiLangStringToString(subject.Name));
+        let tags: string[] = [];
+
+        if (metadata.Subject) {
+            tags = metadata.Subject.map((subject) => convertMultiLangStringToString(subject.Name));
+        }
 
         let publishedAt = null;
 
@@ -100,7 +104,6 @@ export class OpdsFeedViewConverter {
     }
 
     public convertOpdsFeedToView(feed: OPDSFeed): OpdsResultView {
-        console.log("### 2", feed.Metadata);
         const title = convertMultiLangStringToString(feed.Metadata.Title);
         let type = OpdsResultType.NavigationFeed;
         let navigation = null;
