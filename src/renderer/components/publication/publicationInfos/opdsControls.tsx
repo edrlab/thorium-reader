@@ -33,7 +33,7 @@ export class OpdsControls extends React.Component<CatalogControlsProps, undefine
 
         return (
             <>
-                <a  onClick={this.handleImport} className={styles.lire}>Télécharger</a>
+                <a  onClick={this.handleImport} className={styles.lire}>Ajouter à la bibliothèque</a>
             </>
         );
     }
