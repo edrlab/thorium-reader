@@ -13,8 +13,15 @@ import { JSON as TAJSON } from "ta-json-x";
 
 import { injectable} from "inversify";
 
+import { lsdRenew } from "@r2-lcp-js/lsd/renew";
+import { lsdReturn } from "@r2-lcp-js/lsd/return";
+
+import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
+
 import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
+
+import { httpGet } from "readium-desktop/common/utils";
 
 import { LcpInfo } from "readium-desktop/common/models/lcp";
 
@@ -61,6 +68,7 @@ export class LcpManager {
         const epubPath = this.publicationStorage.getPublicationEpubPath(
             publicationDocument.identifier,
         );
+
         // Inject lcpl in a temporary zip
         debug("Inject LCPL - START", epubPath);
         await injectDataInZip(
@@ -124,5 +132,137 @@ export class LcpManager {
             },
         );
         return this.publicationRepository.save(newPublicationDocument);
+    }
+
+    public async renewPublicationLicense(
+        publicationDocument: PublicationDocument,
+    ): Promise<PublicationDocument> {
+        // Update lsd status
+        let lsdStatus = await this.getLsdStatus(publicationDocument);
+        let newPublicationDocument = await this.updateLsdStatus(
+            publicationDocument,
+            lsdStatus,
+        );
+
+        // Renew
+        await lsdRenew(
+            undefined,
+            lsdStatus,
+            this.deviceIdManager,
+        );
+
+        // Update again lsd status
+        lsdStatus = await this.getLsdStatus(newPublicationDocument);
+        newPublicationDocument = await this.updateLsdStatus(
+            publicationDocument,
+            lsdStatus,
+        );
+
+        return this.publicationRepository.get(publicationDocument.identifier);
+    }
+
+    public async returnPublicationLicense(
+        publicationDocument: PublicationDocument,
+    ): Promise<PublicationDocument> {
+        // Update lsd status
+        let lsdStatus = await this.getLsdStatus(publicationDocument);
+        let newPublicationDocument = await this.updateLsdStatus(
+            publicationDocument,
+            lsdStatus,
+        );
+
+        // Renew
+        await lsdReturn(
+            lsdStatus,
+            this.deviceIdManager,
+        );
+
+        // Update again lsd status
+        lsdStatus = await this.getLsdStatus(newPublicationDocument);
+        newPublicationDocument = await this.updateLsdStatus(
+            publicationDocument,
+            lsdStatus,
+        );
+
+        return this.publicationRepository.get(publicationDocument.identifier);
+    }
+
+    public async getLsdStatus(publicationDocument: PublicationDocument): Promise<any> {
+        // Get lsd status
+        const lsdStatusBodyResponse = await httpGet(
+            publicationDocument.lcp.lsd.statusUrl,
+        ) as string;
+
+        return JSON.parse(lsdStatusBodyResponse);
+    }
+
+    public async updateLsdStatus(
+        publicationDocument: PublicationDocument,
+        lsdStatus: any,
+    ): Promise<PublicationDocument> {
+        // Search LCPL license url
+        let lcplUrl: string = null;
+
+        for (const link of lsdStatus.links) {
+            if (link.rel === "license") {
+                // This is the lsd status url link
+                lcplUrl = link.href;
+                break;
+            }
+        }
+
+        if (!lcplUrl) {
+            throw new Error("No lcpl file");
+        }
+
+        // Download and inject new lcpl file
+        const lcplResponse = await httpGet(lcplUrl);
+        const lcpl = JSON.parse(lcplResponse);
+        let newPublicationDocument = await this.injectLcpl(
+            publicationDocument,
+            lcpl,
+        );
+
+        // Update status document
+        const updatedLicense = await this.processStatusDocument(
+            newPublicationDocument,
+        );
+
+        if (updatedLicense) {
+            newPublicationDocument = await this.injectLcpl(
+                newPublicationDocument,
+                updatedLicense,
+            );
+        }
+
+        return newPublicationDocument;
+    }
+
+    private async processStatusDocument(
+        publicationDocument: PublicationDocument,
+    ): Promise<PublicationDocument> {
+        // Get lcpl information
+        const epubPath = this.publicationStorage.getPublicationEpubPath(
+            publicationDocument.identifier,
+        );
+        const parsedPublication: Epub = await EpubParsePromise(epubPath);
+
+        return new Promise((resolve: any, reject: any) => {
+            try {
+                launchStatusDocumentProcessing(
+                    parsedPublication.LCP,
+                    this.deviceIdManager,
+                    async (licenseUpdateJson: string | undefined) => {
+                        debug("launchStatusDocumentProcessing DONE.");
+                        debug("new license", licenseUpdateJson);
+                        resolve(licenseUpdateJson);
+                    },
+                );
+                console.log("status document processed")
+            } catch (err) {
+                debug(err);
+                reject(err);
+            }
+        });
     }
 }

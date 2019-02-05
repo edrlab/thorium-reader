@@ -93,7 +93,6 @@ export class OpdsApi {
             if (isEntry) {
                 const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
                 opds2Publication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
-                console.log("####", opds2Publication);
             } else {
                 const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
                 opds2Feed = convertOpds1ToOpds2(opds1Feed);
