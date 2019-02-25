@@ -39,6 +39,9 @@ export default class SettingsHeader extends React.Component<Props, undefined> {
                     <li {...(this.props.section === 2 && {className: styles.active})}>
                         <Link to="/settings/languages">Langue de l'interface</Link>
                     </li>
+                    <li {...(this.props.section === 3 && {className: styles.active})}>
+                        <Link to="/settings/information">Informations</Link>
+                    </li>
                 </ul>
             </SecondaryHeader>
         );
