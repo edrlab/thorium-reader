@@ -38,7 +38,7 @@ interface Props {
 }
 
 interface State {
-    sectionOpenList: boolean[];
+    openedSection: number;
 }
 
 export class ReaderMenu extends React.Component<Props, State> {
@@ -53,7 +53,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            sectionOpenList: [],
+            openedSection: undefined,
         };
 
         this.sectionRefList = [
@@ -173,9 +173,14 @@ export class ReaderMenu extends React.Component<Props, State> {
 
     private handleClickSection(id: number) {
         if (this.clickableList[id]) {
-            const { sectionOpenList } = this.state;
-            sectionOpenList[id] = !sectionOpenList[id];
-            this.setState({ sectionOpenList });
+            let { openedSection } = this.state;
+            if (openedSection === id) {
+                openedSection = undefined;
+            } else {
+                openedSection = id;
+            }
+
+            this.setState({ openedSection });
         }
     }
 
@@ -189,12 +194,12 @@ export class ReaderMenu extends React.Component<Props, State> {
         if (el.current) {
             height = el.current.offsetHeight;
         }
-        return {maxHeight: this.state.sectionOpenList[id] ? height : 0};
+        return {maxHeight: this.state.openedSection === id ? height : 0};
     }
 
     private getSectionClassName(id: number): any {
         return classnames([
-            this.state.sectionOpenList[id] && styles.active,
+            this.state.openedSection === id && styles.active,
             !this.clickableList[id] && styles.tab_not_clickable,
         ]);
     }
