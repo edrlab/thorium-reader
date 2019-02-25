@@ -313,6 +313,9 @@
     & > .tab_not_clickable {
       color: grey;
       cursor: auto;
+      & svg {
+        display: none;
+      }
     }
 
     & > li {
@@ -526,7 +529,7 @@ p.chapters_description {
 
 /* ============= SETTINGS MENU =================== */
 
-#read_settings_list li {
+#read_settings_list > li, #chapter_settings_list > li{
 	padding:20px 20px 20px 20px;
 	border-bottom: 1px solid #e5e5e5;
 	font-size: 1.1rem;
@@ -545,7 +548,7 @@ p.chapters_description {
 
   &.active {
     & > svg {
-      transform: rotate(-90deg);
+      transform: rotate(90deg);
     }
   }
 }

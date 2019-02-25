@@ -7,8 +7,6 @@
 
 import * as React from "react";
 
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { Translator } from "readium-desktop/common/services/translator";
@@ -20,9 +18,14 @@ import * as queryString from "query-string";
 
 import { LocatorView } from "readium-desktop/common/views/locator";
 
+import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+
+import classnames from "classnames";
+
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 interface Props {
     open: boolean;
@@ -84,9 +87,10 @@ export class ReaderMenu extends React.Component<Props, State> {
                 <ul id={styles.chapter_settings_list}>
                     <li
                         onClick={this.handleClickSection.bind(this, 0)}
-                        className={!this.clickableList[0] && styles.tab_not_clickable}
+                        className={this.getSectionClassName(0)}
                     >
-                        {__("reader.marks.toc")}
+                        <span>{__("reader.marks.toc")}</span>
+                        <SVG svg={ArrowIcon} />
                     </li>
                     <div style={this.getSectionStyle(0)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[0]} className={styles.line_tab_content}>
@@ -97,9 +101,10 @@ export class ReaderMenu extends React.Component<Props, State> {
                     </div>
                     <li
                         onClick={this.handleClickSection.bind(this, 1)}
-                        className={!this.clickableList[1] && styles.tab_not_clickable}
+                        className={this.getSectionClassName(1)}
                     >
-                        {__("reader.marks.illustrations")}
+                        <span>{__("reader.marks.illustrations")}</span>
+                        <SVG svg={ArrowIcon} />
                     </li>
                     <div style={this.getSectionStyle(1)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[1]} className={styles.line_tab_content}>
@@ -107,9 +112,10 @@ export class ReaderMenu extends React.Component<Props, State> {
                     </div>
                     <li
                         onClick={this.handleClickSection.bind(this, 2)}
-                        className={!this.clickableList[2] && styles.tab_not_clickable}
+                        className={this.getSectionClassName(2)}
                     >
-                        {__("reader.marks.landmarks")}
+                        <span>{__("reader.marks.landmarks")}</span>
+                        <SVG svg={ArrowIcon} />
                     </li>
                     <div
                         style={this.getSectionStyle(2, this.props.bookmarks && this.props.bookmarks.length > 0)}
@@ -121,9 +127,10 @@ export class ReaderMenu extends React.Component<Props, State> {
                     </div>
                     <li
                         onClick={this.handleClickSection.bind(this, 3)}
-                        className={!this.clickableList[3] && styles.tab_not_clickable}
+                        className={this.getSectionClassName(3)}
                     >
-                        {__("reader.marks.annotations")}
+                        <span>{__("reader.marks.annotations")}</span>
+                        <SVG svg={ArrowIcon} />
                     </li>
                     <div style={this.getSectionStyle(3)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[3]} className={styles.line_tab_content}>
@@ -183,6 +190,13 @@ export class ReaderMenu extends React.Component<Props, State> {
             height = el.current.offsetHeight;
         }
         return {maxHeight: this.state.sectionOpenList[id] ? height : 0};
+    }
+
+    private getSectionClassName(id: number): any {
+        return classnames([
+            this.state.sectionOpenList[id] && styles.active,
+            !this.clickableList[id] && styles.tab_not_clickable,
+        ]);
     }
 
     private createTOCRenderList(TOC: any[]): JSX.Element[] {
