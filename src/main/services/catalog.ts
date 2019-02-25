@@ -44,6 +44,10 @@ import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
 
+import {
+    convertMultiLangStringToString,
+} from "readium-desktop/common/utils";
+
 import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
 
 // Logger
@@ -266,7 +270,7 @@ export class CatalogService {
                 filePublication: b64ParsedPublication,
                 opdsPublication: null,
             },
-            title: parsedPublication.Metadata.Title,
+            title: convertMultiLangStringToString(parsedPublication.Metadata.Title),
             tags: [],
             files: [],
             coverFile: null,

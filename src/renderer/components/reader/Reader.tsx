@@ -49,7 +49,6 @@ import {
 } from "@r2-navigator-js/electron/common/events";
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
 import { Locator } from "@r2-shared-js/models/locator";
-import { webFrame } from "electron";
 import { Publication as R2Publication } from "r2-shared-js/dist/es6-es2015/src/models/publication";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
@@ -70,14 +69,17 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import * as queryString from "query-string";
 
-webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
-webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
-    allowServiceWorkers: false,
-    bypassCSP: false,
-    corsEnabled: true,
-    secure: true,
-    supportFetchAPI: true,
-});
+// import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
+// registerProtocol();
+// import { webFrame } from "electron";
+// webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
+// webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
+//     allowServiceWorkers: false,
+//     bypassCSP: false,
+//     corsEnabled: true,
+//     secure: true,
+//     supportFetchAPI: true,
+// });
 
 const queryParams = getURLQueryParams();
 
@@ -395,7 +397,10 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     private async loadPublicationIntoViewport(locator: Locator): Promise<R2Publication> {
         let response: Response;
         try {
-            response = await fetch(publicationJsonUrl);
+            // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webframe
+            // publicationJsonUrl is READIUM2_ELECTRON_HTTP_PROTOCOL (see convertCustomSchemeToHttpUrl)
+            // publicationJsonUrl_ is https://127.0.0.1:PORT
+            response = await fetch(publicationJsonUrl_);
         } catch (e) {
             return;
         }
