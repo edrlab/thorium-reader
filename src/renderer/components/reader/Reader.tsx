@@ -88,12 +88,9 @@ const queryParams = getURLQueryParams();
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     const store = (container.get("store") as Store<any>);
     let settings = store.getState().reader.config;
-    if (!settings.value) {
-        console.log("!settings.value? (RENDERER)");
-    } else {
+    if (settings.value) {
         settings = settings.value;
     }
-    console.log(settings);
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {
@@ -184,7 +181,7 @@ interface ReaderState {
     menuOpen: boolean;
     fullscreen: boolean;
     indexes: any;
-    visibleBookmarkList: Locator[];
+    visibleBookmarkList: any[];
 }
 
 interface ReaderProps {
@@ -192,7 +189,7 @@ interface ReaderProps {
     addBookmark?: any;
     findBookmarks: any;
     setLastReadingLocation: any;
-    bookmarks?: Locator[];
+    bookmarks?: any[];
 }
 
 const defaultLocale = "fr";
@@ -342,6 +339,12 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         setEpubReadingSystemInfo({ name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION });
     }
 
+    public componentDidUpdate(oldProps: ReaderProps) {
+        if (oldProps.bookmarks !== this.props.bookmarks) {
+            this.checkBookmarks();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
 
@@ -481,9 +484,9 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
-        // await this.props.findAllBookmarks({publicationId: this.pubId});
+        await this.props.findBookmarks({publication: {identifier: this.pubId}});
         this.saveReadingLocation(loc);
-        // await this.checkBookmarks();
+        await this.checkBookmarks();
     }
 
     // check if a bookmark is on the screen
@@ -491,14 +494,13 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         if (!this.props.bookmarks) {
             return;
         }
-        console.log("list :", this.props.bookmarks);
         const visibleBookmarkList = [];
         for (const bookmark of this.props.bookmarks) {
-            if (await isLocatorVisible(bookmark)) {
+            const isVisible = await isLocatorVisible(bookmark.locator);
+            if ( isVisible ) {
                 visibleBookmarkList.push(bookmark);
             }
         }
-        console.log("visible", visibleBookmarkList);
         this.setState({visibleBookmarkList});
     }
 
@@ -532,13 +534,15 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private async handleToggleBookmark() {
-        const locator = getCurrentReadingLocation().locator;
         await this.checkBookmarks();
         if (this.state.visibleBookmarkList.length > 0) {
             for (const bookmark of this.state.visibleBookmarkList) {
-                this.props.deleteBookmark({ publicationId: this.pubId, locator: bookmark });
+                this.props.deleteBookmark({
+                    identifier: bookmark.identifier,
+                });
             }
         } else {
+            const locator = getCurrentReadingLocation().locator;
             this.props.addBookmark({
                 publication: {
                     identifier: this.pubId,
@@ -661,7 +665,7 @@ export default withApi(
             },
             {
                 moduleId: "reader",
-                methodId: "removeBookmark",
+                methodId: "deleteBookmark",
             },
         ],
     },

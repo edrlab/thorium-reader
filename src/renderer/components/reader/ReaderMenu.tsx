@@ -247,7 +247,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                         <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
                         <div
                             className={styles.chapter_marker}
-                            onClick={() => this.props.handleBookmarkClick(bookmark)}
+                            onClick={() => this.props.handleBookmarkClick(bookmark.locator)}
                         >
                             Bookmark {i}
                             <div className={styles.gauge}>
