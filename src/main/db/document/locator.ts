@@ -13,4 +13,5 @@ export interface LocatorDocument extends Identifiable, Timestampable {
     locator: Locator;
     locatorType: LocatorType;
     publicationIdentifier: string;
+    name: string;
 }

@@ -445,6 +445,7 @@
     padding:20px 0 20px 0;
     font-size: 1rem;
     border-bottom: 1px solid #e5e5e5;
+    display: flex;
   }
 }
 
@@ -486,25 +487,34 @@ p.chapters_description {
     border: none;
     background-color: transparent;
     cursor: pointer;
+    padding: 0;
+
     & svg {
       width: 24px;
     }
   }
-}
 
-.bookmarks_line img {
-	width:30px;
-	display: inline-block;
-	vertical-align: top;
-}
+  & img {
+    width:30px;
+    height:30px;
+    display: inline-block;
+    vertical-align: top;
+  }
 
-.bookmarks_line .chapter_marker {
-	vertical-align: top;
-	position: relative;
-	display: inline-block;
-	width:auto;
-	height:auto;
-	font-size: 0.9rem;
+  & .chapter_marker {
+    vertical-align: top;
+    position: relative;
+    display: inline-block;
+    flex:1;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+  }
+
+  & span {
+    display: inline-block;
+    vertical-align: top;
+    margin-top:5px;
+  }
 }
 
 .chapter_marker .gauge {
@@ -512,19 +522,13 @@ p.chapters_description {
 	margin-top:2px;
 	height:4px;
 	background-color: #ECECEC;
-}
-
-.chapter_marker .gauge .fill {
-	height:100%;
-	position: relative;
-	width:50%;
-	background-color: #3B3B3B;
-}
-
-.bookmarks_line span {
-	display: inline-block;
-	vertical-align: top;
-	margin-top:5px;
+  
+  & .fill {
+    height:100%;
+    position: relative;
+    width:63%;
+    background-color: #3B3B3B;
+  }
 }
 
 /* ============= SETTINGS MENU =================== */

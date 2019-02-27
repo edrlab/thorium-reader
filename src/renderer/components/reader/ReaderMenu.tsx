@@ -20,10 +20,13 @@ import { LocatorView } from "readium-desktop/common/views/locator";
 
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import classnames from "classnames";
+
+import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
@@ -35,15 +38,17 @@ interface Props {
     bookmarks: LocatorView[];
     handleBookmarkClick: (locator: any) => void;
     deleteBookmark?: any;
+    updateBookmark?: any;
 }
 
 interface State {
     openedSection: number;
+    bookmarkToUpdate: number;
 }
 
 export class ReaderMenu extends React.Component<Props, State> {
     private sectionRefList: any = [];
-    private tocRendererList: any;
+    // private tocRendererList: any;
     private clickableList: boolean[] = [];
 
     @lazyInject("translator")
@@ -54,6 +59,7 @@ export class ReaderMenu extends React.Component<Props, State> {
 
         this.state = {
             openedSection: undefined,
+            bookmarkToUpdate: undefined,
         };
 
         this.sectionRefList = [
@@ -62,12 +68,14 @@ export class ReaderMenu extends React.Component<Props, State> {
             React.createRef(),
             React.createRef(),
         ];
+
+        this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
     }
 
     public componentWillReceiveProps(newProps: Props) {
         if (!this.props.publication && newProps.publication) {
             const pub: R2Publication = newProps.publication;
-            this.tocRendererList = this.createTOCRenderList(pub.TOC);
+            // this.tocRendererList = this.createTOCRenderList(pub.TOC);
 
             this.clickableList = [
                 pub.TOC && pub.TOC.length > 0,
@@ -238,7 +246,8 @@ export class ReaderMenu extends React.Component<Props, State> {
 
     private createLandmarkList(): JSX.Element[] {
         if (this.props.publication && this.props.bookmarks) {
-            return this.props.bookmarks.map((bookmark, i: number) => {
+            const { bookmarkToUpdate } = this.state;
+            return this.props.bookmarks.map((bookmark, i) => {
                 return (
                     <div
                         className={styles.bookmarks_line}
@@ -249,22 +258,34 @@ export class ReaderMenu extends React.Component<Props, State> {
                             className={styles.chapter_marker}
                             onClick={() => this.props.handleBookmarkClick(bookmark.locator)}
                         >
-                            Bookmark {i}
+                            { bookmarkToUpdate === i ?
+                                <UpdateBookmarkForm
+                                    close={ this.closeBookarkEditForm }
+                                    bookmark={ bookmark }
+                                />
+                            :
+                                bookmark.name ? bookmark.name : <>Bookmark {i}</>
+                            }
                             <div className={styles.gauge}>
                                 <div className={styles.fill}></div>
                             </div>
                         </div>
-                        <button
-                            onClick={() => this.props.deleteBookmark({
-                                identifier: bookmark.identifier,
-                            })}
-                        >
+                        <button onClick={() => this.setState({bookmarkToUpdate: i})}>
+                            <SVG svg={ EditIcon }/>
+                        </button>
+                        <button onClick={() => this.props.deleteBookmark({
+                            identifier: bookmark.identifier,
+                        })}>
                             <SVG svg={ DeleteIcon }/>
                         </button>
                     </div>
                 );
             });
         }
+    }
+
+    private closeBookarkEditForm() {
+        this.setState({ bookmarkToUpdate: undefined });
     }
 }
 
@@ -297,6 +318,10 @@ export default withApi(
             {
                 moduleId: "reader",
                 methodId: "deleteBookmark",
+            },
+            {
+                moduleId: "reader",
+                methodId: "updateBookmark",
             },
         ],
     },
