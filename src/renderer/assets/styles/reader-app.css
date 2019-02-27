@@ -690,6 +690,41 @@ input[type=radio] + label {
 	overflow: hidden;
 }
 
+.theme_choices {
+  text-align: left;
+  margin-left: 2rem;
+
+  & > input {
+    z-index: 5000;
+    opacity: 0;
+    position: absolute;
+    margin: 2px 0 0 0;
+    cursor: pointer;
+  }
+
+  & > label {
+    position: relative;
+    padding-left: 25px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left:0; top: 2px;
+      width: 11px;
+      height: 11px;
+      border: 1px solid black;
+    }
+  }
+
+  & > [type="radio"]:checked + label:before {
+    background-color: black;
+  }
+
+  & > [type="radio"]:focus + label:before {
+    outline: 1px #ecb13f solid;
+  }
+}
+
 /* ========= FOOTER ========= */
 
 .reader_footer {
