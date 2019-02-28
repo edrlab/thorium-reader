@@ -9,9 +9,6 @@ import * as React from "react";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import { Translator } from "readium-desktop/common/services/translator";
-import { lazyInject } from "readium-desktop/renderer/di";
-
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import * as queryString from "query-string";
@@ -28,9 +25,11 @@ import classnames from "classnames";
 
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
-interface Props {
+interface Props extends TranslatorProps {
     open: boolean;
     publicationJsonUrl: string;
     publication: R2Publication;
@@ -48,11 +47,7 @@ interface State {
 
 export class ReaderMenu extends React.Component<Props, State> {
     private sectionRefList: any = [];
-    // private tocRendererList: any;
     private clickableList: boolean[] = [];
-
-    @lazyInject("translator")
-    private translator: Translator;
 
     public constructor(props: Props) {
         super(props);
@@ -86,7 +81,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         }
     }
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
+        const { __ } = this.props;
 
         this.clickableList[2] = this.props.bookmarks && this.props.bookmarks.length > 0;
 
@@ -294,7 +289,7 @@ const buildBookmarkRequestData = () => {
 };
 
 export default withApi(
-    ReaderMenu,
+    withTranslator(ReaderMenu),
     {
         operations: [
             {
