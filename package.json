@@ -136,6 +136,7 @@
     ]
   },
   "dependencies": {
+    "@types/react-autosuggest": "^9.3.7",
     "@types/react-beautiful-dnd": "^7.1.2",
     "classnames": "^2.2.6",
     "commonmark": "^0.28.1",
@@ -164,6 +165,7 @@
     "r2-streamer-js": "^1.0.7",
     "r2-utils-js": "^1.0.5",
     "react": "^16.6.3",
+    "react-autosuggest": "^9.4.3",
     "react-beautiful-dnd": "^9.0.2",
     "react-card-flip": "^0.2.1",
     "react-dom": "^16.5.2",

@@ -12,6 +12,8 @@ import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import PublicationListElement from "readium-desktop/renderer/components/publication/PublicationListElement";
 
+import { Link } from "react-router-dom";
+
 import AddEntryForm from "./AddEntryForm";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
@@ -48,7 +50,13 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                     );
             })
             }
-            <AddEntryForm />
+             <button className={styles.tag_add_button}>
+                <span>
+                    <Link to="/settings/tags" style={{color: "#1a1a1a"}}>
+                        Gérer les selections
+                    </Link>
+                </span>
+            </button>
             </>
         );
     }

@@ -21,8 +21,6 @@ import { Link, RouteComponentProps } from "react-router-dom";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import AddEntryForm from "./AddEntryForm";
-
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 
 interface GridViewProps extends RouteComponentProps {
@@ -58,7 +56,13 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                             </section>
                         );
                 })}
-                <AddEntryForm />
+            <button className={styles.tag_add_button}>
+                <span>
+                    <Link to="/settings/tags" style={{color: "#1a1a1a"}}>
+                        Gérer les selections
+                    </Link>
+                </span>
+            </button>
             </>
         );
     }

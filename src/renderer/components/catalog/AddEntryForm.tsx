@@ -15,13 +15,20 @@ import * as RemoveIcon from "readium-desktop/renderer/assets/icons/baseline-remo
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
+import { CatalogEntryView } from "readium-desktop/common/views/catalog";
+import * as SearchContainer from "./SearchTag";
+
+//import SearchTag from "./SearchTag";
+
 interface AddEntryFormProps {
     addEntry?: (entry: any) => void;
+    getentry?: CatalogEntryView[];
     tags?: string[];
 }
 
 interface AddEntryFormState {
-    open: boolean;
+    tag: string;
+    tabTags: string[];
 }
 
 export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFormState> {
@@ -30,63 +37,81 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
         super(props);
 
         this.state = {
-            open: false,
+            tag: "",
+            tabTags: [],
         };
-
+        const tabTags: string[] = [];
         this.selectRef = React.createRef();
-
+        this.updateTagValue = this.updateTagValue.bind(this);
         this.submit = this.submit.bind(this);
-        this.switchForm = this.switchForm.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
         return (
             <section >
-                <button onClick={this.switchForm} className={styles.tag_add_button}>
-                    { this.state.open ?
-                        <SVG svg={RemoveIcon} />
-                        :
-                        <SVG svg={AddIcon} />
-                    }
-                    <span>Ajouter une sélection</span>
-                </button>
-                <form
-                    onSubmit={this.submit}
-                    style={{display: this.state.open ? "inline-block" : "none"}}
-                    id={styles.tag_search}
-                >
-                    <select
-                        ref={this.selectRef}
-                        className={styles.tag_inputs}
-                        id={styles.tag_inputs}
-                        placeholder="Rechercher un tag"
-                        title="rechercher un tag"
-                    >
-                        { this.props.tags && this.props.tags.map((tag: string, index: number) =>
-                            <option key={index} value={tag}>{tag}</option>,
-                        )}
-                    </select>
-                    <button onClick={this.submit} className={styles.launch}>
-                        <SVG svg={AddIcon} title="Créer la séléction" />
+                <div>
+                    <button className={styles.tag_add_button}>
+                        <span>Ajouter une sélection</span>
                     </button>
-                </form>
+                </div>
+                <div>
+                    <form
+                        onSubmit={this.submit}
+                        style={{display: "inline-block"}}
+                        id={styles.tag_search}
+                    >
+                    <input type="text"
+                    style={{border: "6px", margin: "5px 5px 5px 5px"}}
+                    placeholder="Indiquez votre #tag"
+                    value={this.state.tag}
+                    onChange={this.updateTagValue}
+                    >
+                    </input>
+                    <SearchContainer
+                    tagTags = {this.getTags}>
+
+                    </SearchContainer>
+
+                    <button type="submit"
+                    style={{border: "6px", margin: "5px 5px 5px 5px", textAlign: "left"}}
+                    onClick={this.submit}>
+                            Valider
+                    </button>
+                    </form>
+                </div>
             </section>
         );
     }
 
-    private submit(e: any) {
-        e.preventDefault();
-        this.props.addEntry({
-            entry: {
-                    title: this.selectRef.current.value,
-                    tag: this.selectRef.current.value,
-                },
-            });
+    private getTags(tab: string[]): string[] {
+        this.props.tags.map((tag: string, index: number) =>
+        tab.push(tag));
+        this.setState({
+            tabTags: tab,
+        });
+        return (this.state.tabTags);
     }
 
-    private switchForm() {
-        this.setState({open: !this.state.open});
+    private updateTagValue(e: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+              tag: e.target.value,
+          });
     }
+
+    private submit(e: any) {
+        e.preventDefault();
+        console.log("props" + this.props);
+        console.log("tag state:" + this.state.tag);
+        this.props.addEntry({
+            entry: {
+                    title: "L'outsider",
+                    tag: this.state.tag,
+                },
+            });
+        console.log("getentry: " + this.props.getentry.length);
+        console.log("addentry: " + this.props.addEntry.length);
+    }
+
 }
 
 export default withApi(
@@ -103,6 +128,11 @@ export default withApi(
                 moduleId: "catalog",
                 methodId: "addEntry",
                 callProp: "addEntry",
+            },
+            {
+                moduleId: "catalog",
+                methodId: "getEntries",
+                callProp: "getentry",
             },
         ],
         refreshTriggers: [

@@ -25,6 +25,7 @@ import * as DragableIcon from "readium-desktop/renderer/assets/icons/baseline-dr
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
+import AddEntryForm from "../catalog/AddEntryForm";
 
 interface CatalogEntrySettingsProps {
     entries?: CatalogEntryView[];
@@ -80,6 +81,7 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
                 <LibraryLayout>
                     <Header section={0} />
                     { this.buildDragAndDropList() }
+                    <AddEntryForm/>
                 </LibraryLayout>
             </>
         );
