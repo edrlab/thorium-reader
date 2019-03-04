@@ -7,19 +7,24 @@
 
 import * as React from "react";
 
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-
 import { Translator } from "readium-desktop/common/services/translator";
 import { lazyInject } from "readium-desktop/renderer/di";
 
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 
+import { Publication } from "r2-shared-js/dist/es6-es2015/src/models/publication";
+
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+
+import * as classnames from "classnames";
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 interface Props {
     navLeftOrRight: (left: boolean) => void;
     fullscreen: boolean;
+    currentLocation: any;
+    publication: Publication;
 }
 
 interface States {
@@ -43,6 +48,15 @@ export default class ReaderFooter extends React.Component<Props, States> {
 
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
+        const { currentLocation, publication } = this.props;
+        const { moreInfo } = this.state;
+
+        let spineItemId: number;
+        if (currentLocation) {
+            spineItemId = publication.TOC.findIndex((value) => value.Href === currentLocation.locator.href);
+        }
+
+        let afterCurrentLocation = false;
 
         return !this.props.fullscreen && (
             <div className={styles.reader_footer}>
@@ -55,41 +69,84 @@ export default class ReaderFooter extends React.Component<Props, States> {
                     </button>
                 </div>
                 <div className={styles.track_reading_wrapper}>
-                    <div id={styles.track_reading} aria-hidden="true">
-                        <div id={styles.current}></div>
-
-                        <div id={styles.chapters_markers}>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                    { currentLocation &&
+                        <div id={styles.track_reading}>
+                            <div id={styles.current}></div>
+                                <div id={styles.chapters_markers} className={moreInfo && styles.more_information}>
+                                    { publication && publication.TOC.map((value, index) => {
+                                        const atCurrentLocation = currentLocation.locator.href === value.Href;
+                                        if (atCurrentLocation) {
+                                            afterCurrentLocation = true;
+                                        }
+                                        return <span key={index}>
+                                            { atCurrentLocation ? <span style={this.getProgressionStyle()}></span>
+                                            : !afterCurrentLocation && <span></span>}
+                                        </span>;
+                                    })}
+                                </div>
+                                { moreInfo &&
+                                    <div id={styles.arrow_box} style={this.getArrowBoxStyle()}>
+                                        <span>{ spineItemId !== undefined && publication.TOC[spineItemId].Title}</span>
+                                        <p>
+                                            { this.getProgression() }
+                                        </p>
+                                    </div>
+                                }
                         </div>
-                    </div>
+                    }
 
                     <span
                         onClick={this.handleMoreInfoClick}
-                        aria-hidden="true"
                         id={styles.more_info_chapters}
                     >
-                        {this.state.moreInfo ? "Moins d'informations" : "Plus d'informations"}
+                        {moreInfo ? "Moins d'informations" : "Plus d'informations"}
                     </span>
-
-                    <div style={{display: this.state.moreInfo ? "initial" : "none"}} id={styles.arrow_box}>
-                        <span>Chapitre 5</span>
-                        <p>Nom du chapitre 23/453</p>
-                    </div>
                 </div>
             </div>
         );
     }
 
+    private getProgressionStyle() {
+        const { currentLocation } = this.props;
+        if (!currentLocation) {
+            return {};
+        }
+
+        return {
+            width: currentLocation.locator.locations.progression * 100 + "%",
+        };
+    }
+
+    private getArrowBoxStyle() {
+        const { currentLocation, publication } = this.props;
+        if (!currentLocation) {
+            return {};
+        }
+
+        let spineItemId = 0;
+        if (currentLocation) {
+            spineItemId = publication.TOC.findIndex((value) => value.Href === currentLocation.locator.href);
+        }
+        const onePourcent = 100 / publication.TOC.length;
+        const progression = currentLocation.locator.locations.progression;
+        const passedItemWidth = onePourcent * spineItemId;
+        return {
+            left: ((passedItemWidth) + (onePourcent * progression)) + "%",
+        };
+    }
+
+    private getProgression(): string {
+        const { currentLocation } = this.props;
+        const { paginationInfo } = currentLocation;
+
+        if (paginationInfo) {
+            return `Page ${paginationInfo.currentColumn + 1} / ${paginationInfo.totalColumns}`;
+        } else {
+            return `${Math.round(currentLocation.locator.locations.progression * 100)}%`;
+        }
+    }
+
     private handleMoreInfoClick() {
-        this.setState({moreInfo: !this.state.moreInfo});
+        this.setState({ moreInfo: !this.state.moreInfo });
     }
 }

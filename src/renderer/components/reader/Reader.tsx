@@ -10,7 +10,6 @@ import * as React from "react";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import {
-    Bookmark,
     ReaderConfig as ReadiumCSS,
 } from "readium-desktop/common/models/reader";
 
@@ -182,6 +181,7 @@ interface ReaderState {
     fullscreen: boolean;
     indexes: any;
     visibleBookmarkList: any[];
+    currentLocation: any;
 }
 
 interface ReaderProps {
@@ -200,8 +200,6 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 
     @lazyInject("translator")
     private translator: Translator;
-
-    private lastLocator: any;
 
     private pubId: string;
 
@@ -248,6 +246,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             menuOpen: false,
             fullscreen: false,
             visibleBookmarkList: [],
+            currentLocation: undefined,
         };
 
         this.pubId = queryString.parse(location.search).pubId as string;
@@ -387,6 +386,8 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                         <ReaderFooter
                             navLeftOrRight={navLeftOrRight}
                             fullscreen={this.state.fullscreen}
+                            currentLocation={this.state.currentLocation}
+                            publication={this.state.publication}
                         />
                     </div>
                 </div>
@@ -487,6 +488,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         await this.props.findBookmarks({publication: {identifier: this.pubId}});
         this.saveReadingLocation(loc);
         await this.checkBookmarks();
+        this.setState({currentLocation: getCurrentReadingLocation()});
     }
 
     // check if a bookmark is on the screen
@@ -542,7 +544,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                 });
             }
         } else {
-            const locator = getCurrentReadingLocation().locator;
+            const locator = this.state.currentLocation.locator;
             this.props.addBookmark({
                 publication: {
                     identifier: this.pubId,

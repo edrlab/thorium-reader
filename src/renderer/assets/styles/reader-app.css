@@ -71,7 +71,7 @@
   display: flex;
   align-items: stretch;
   margin-top: 6rem;
-  margin-bottom: 6rem;
+  margin-bottom: 7.7rem;
 }
 
 /* ========== READER ==========*/
@@ -780,36 +780,43 @@ input[type=radio] + label {
 
 #current {
 	position: relative;
-	width:30%;
-	height:100%;
-	background-color: #3C3C3C;
 }
 
 #chapters_markers {
-	display: none;
+	display: flex;
 	position: absolute;
 	width:100%;
 	height:15px;
 	margin-top:-2.5px;
 	top:0;
-}
 
-#chapters_markers span {
-	border-right:1px solid black;
-	flex-grow:1;
-}
+  &.more_information > span {
+    border-right: 1px solid #929292;
+  }
 
-#chapters_markers span:last-child{
-	border-right:none;
+  & > span {
+    flex-grow: 1;
+    padding: 2.5px 0;
+
+    & > span {
+      display: block;
+      background-color: grey;
+      width: 100%;
+      height: 100%;
+    }
+
+    &:last-child{
+      border-right:none;
+    }
+  }
 }
 
 #arrow_box {
-	display: none;
 	position: absolute;
 	width: auto;
 	height: auto;
-	padding: 10px 0 10px 0;
-	margin: -150px 0 0 0;
+	padding: 10px 0 5px 0;
+	margin: -76px 0 0 0;
 	left:50%;
 	background: white;
 	font-size: 16px;
@@ -849,12 +856,12 @@ input[type=radio] + label {
 
 #arrow_box span {
 	display: block;
-	padding:0 20px 10px 20px;
+	padding:0 20px 5px 20px;
 	border-bottom:1px solid #c1c1c1;
 }
 
 #arrow_box p {
 	margin:10px 0 0 0;
 	font-size: 0.8rem;
-	padding:0 20px 10px 20px;
+	padding:0 20px 0px 20px;
 }
