@@ -16,7 +16,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-import * as SearchContainer from "./SearchTag";
+import { SearchContainer } from "./SearchTag";
 
 //import SearchTag from "./SearchTag";
 
@@ -40,7 +40,8 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
             tag: "",
             tabTags: [],
         };
-        const tabTags: string[] = [];
+        console.log("tags add entry form: " + this.props.tags);
+        //this.getTags = this.getTags.bind(this);
         this.selectRef = React.createRef();
         this.updateTagValue = this.updateTagValue.bind(this);
         this.submit = this.submit.bind(this);
@@ -56,22 +57,19 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
                 </div>
                 <div>
                     <form
-                        onSubmit={this.submit}
-                        style={{display: "inline-block"}}
-                        id={styles.tag_search}
+                    onSubmit={this.submit}
+                    style={{display: "inline-block"}}
+                    id={styles.tag_search}
                     >
-                    <input type="text"
+                    {/*<input type="text"
                     style={{border: "6px", margin: "5px 5px 5px 5px"}}
                     placeholder="Indiquez votre #tag"
                     value={this.state.tag}
                     onChange={this.updateTagValue}
                     >
-                    </input>
+                    </input>*/}
                     <SearchContainer
-                    tagTags = {this.getTags}>
-
-                    </SearchContainer>
-
+                    tagTabs={this.props.tags}/>
                     <button type="submit"
                     style={{border: "6px", margin: "5px 5px 5px 5px", textAlign: "left"}}
                     onClick={this.submit}>
@@ -81,15 +79,6 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
                 </div>
             </section>
         );
-    }
-
-    private getTags(tab: string[]): string[] {
-        this.props.tags.map((tag: string, index: number) =>
-        tab.push(tag));
-        this.setState({
-            tabTags: tab,
-        });
-        return (this.state.tabTags);
     }
 
     private updateTagValue(e: React.ChangeEvent<HTMLInputElement>) {
@@ -102,12 +91,16 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
         e.preventDefault();
         console.log("props" + this.props);
         console.log("tag state:" + this.state.tag);
-        this.props.addEntry({
+        for (const element of this.props.tags) {
+            console.log(element);
+        }
+        /*this.props.addEntry({
             entry: {
                     title: "L'outsider",
                     tag: this.state.tag,
                 },
-            });
+            });*/
+
         console.log("getentry: " + this.props.getentry.length);
         console.log("addentry: " + this.props.addEntry.length);
     }
