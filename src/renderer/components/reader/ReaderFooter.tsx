@@ -50,6 +50,7 @@ export default class ReaderFooter extends React.Component<Props, States> {
         const __ = this.translator.translate.bind(this.translator);
         const { currentLocation, publication } = this.props;
         const { moreInfo } = this.state;
+        const arrowBoxPosition = this.getArrowBoxPosition();
 
         let spineItemId: number;
         if (currentLocation) {
@@ -85,11 +86,18 @@ export default class ReaderFooter extends React.Component<Props, States> {
                                     })}
                                 </div>
                                 { moreInfo &&
-                                    <div id={styles.arrow_box} style={this.getArrowBoxStyle()}>
+                                    <div
+                                        id={styles.arrow_box}
+                                        style={this.getArrowBoxStyle()}
+                                    >
                                         <span>{ spineItemId !== undefined && publication.TOC[spineItemId].Title}</span>
                                         <p>
                                             { this.getProgression() }
                                         </p>
+                                        <span
+                                            style={this.getArrowStyle()}
+                                            className={styles.after}
+                                        />
                                     </div>
                                 }
                         </div>
@@ -117,10 +125,10 @@ export default class ReaderFooter extends React.Component<Props, States> {
         };
     }
 
-    private getArrowBoxStyle() {
+    private getArrowBoxPosition() {
         const { currentLocation, publication } = this.props;
         if (!currentLocation) {
-            return {};
+            return undefined;
         }
 
         let spineItemId = 0;
@@ -129,10 +137,7 @@ export default class ReaderFooter extends React.Component<Props, States> {
         }
         const onePourcent = 100 / publication.TOC.length;
         const progression = currentLocation.locator.locations.progression;
-        const passedItemWidth = onePourcent * spineItemId;
-        return {
-            left: ((passedItemWidth) + (onePourcent * progression)) + "%",
-        };
+        return ((onePourcent * spineItemId) + (onePourcent * progression));
     }
 
     private getProgression(): string {
@@ -144,6 +149,34 @@ export default class ReaderFooter extends React.Component<Props, States> {
         } else {
             return `${Math.round(currentLocation.locator.locations.progression * 100)}%`;
         }
+    }
+
+    private getArrowBoxStyle() {
+        const arrowBoxPosition = this.getArrowBoxPosition();
+        let multiplicator = 1;
+        const rest = Math.abs(arrowBoxPosition - 50);
+
+        if (arrowBoxPosition > 50) {
+            multiplicator = -1;
+        }
+        const style = {
+            left: `calc(${arrowBoxPosition}% + ${(multiplicator * (190 * (rest / 100) - 30 * rest / 100))}px)`,
+        };
+        return style;
+    }
+
+    private getArrowStyle() {
+        const arrowBoxPosition = this.getArrowBoxPosition();
+        let multiplicator = 1;
+        const rest = Math.abs(arrowBoxPosition - 50);
+
+        if (arrowBoxPosition > 50) {
+            multiplicator = -1;
+        }
+        const style = {
+            left: `calc(${arrowBoxPosition}% + ${multiplicator * 30 * rest / 100}px)`,
+        };
+        return style;
     }
 
     private handleMoreInfoClick() {
