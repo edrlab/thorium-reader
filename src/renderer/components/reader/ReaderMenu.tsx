@@ -31,13 +31,11 @@ import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 interface Props extends TranslatorProps {
     open: boolean;
-    publicationJsonUrl: string;
     publication: R2Publication;
     handleLinkClick: (event: any, url: string) => void;
     bookmarks: LocatorView[];
     handleBookmarkClick: (locator: any) => void;
     deleteBookmark?: any;
-    updateBookmark?: any;
 }
 
 interface State {
@@ -209,14 +207,13 @@ export class ReaderMenu extends React.Component<Props, State> {
 
     private createTOCRenderList(TOC: any[]): JSX.Element[] {
         return TOC.map((content, i: number) => {
-            const url = this.props.publicationJsonUrl + "/../" + content.Href;
             return (
                 <li key={i}>
                     {content.Children ? (
                         <>
                             <a
                                 className={styles.subheading}
-                                onClick={(e) => this.props.handleLinkClick(e, url)}
+                                onClick={(e) => this.props.handleLinkClick(e, content.Href)}
                             >
                                 {content.Title}
                             </a>
@@ -229,7 +226,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                     ) : (
                         <a
                             className={styles.line + " " + styles.active}
-                            onClick={(e) => this.props.handleLinkClick(e, url)}
+                            onClick={(e) => this.props.handleLinkClick(e, content.Href)}
                         >
                             {content.Title}
                         </a>

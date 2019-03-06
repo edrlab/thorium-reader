@@ -36,7 +36,6 @@ interface Props {
     open: boolean;
     settings: any;
     indexes: {fontSize: number, pageMargins: number, wordSpacing: number, letterSpacing: number, paraSpacing: number};
-    handleLinkClick: (event: any, url: string) => void;
     handleSettingChange: (event: any, name: string, value?: any) => void;
     handleIndexChange: (event: any, name: string, value?: any) => void;
     setSettings: (settings: any) => void;

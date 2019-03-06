@@ -258,6 +258,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
+        this.handleLinkClick = this.handleLinkClick.bind(this);
     }
 
     public async componentDidMount() {
@@ -362,16 +363,14 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                         />
                         <ReaderMenu
                             open={this.state.menuOpen}
-                            publicationJsonUrl={publicationJsonUrl}
                             publication={this.state.publication}
-                            handleLinkClick={this.handleLinkClick.bind(this)}
+                            handleLinkClick={this.handleLinkClick}
                             handleBookmarkClick={this.goToLocator}
                         />
                         <ReaderOptions
                             open={this.state.settingsOpen}
                             indexes={this.state.indexes}
                             settings={this.state.settingsValues}
-                            handleLinkClick={this.handleLinkClick.bind(this)}
                             handleSettingChange={this.handleSettingsValueChange.bind(this)}
                             handleIndexChange={this.handleIndexValueChange.bind(this)}
                             setSettings={this.setSettings}
@@ -388,6 +387,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                             fullscreen={this.state.fullscreen}
                             currentLocation={this.state.currentLocation}
                             publication={this.state.publication}
+                            handleLinkClick={this.handleLinkClick}
                         />
                     </div>
                 </div>
@@ -508,8 +508,8 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 
     private handleLinkClick(event: any, url: string) {
         event.preventDefault();
-
-        handleLinkUrl(url);
+        const newUrl = publicationJsonUrl + "/../" + url;
+        handleLinkUrl(newUrl);
 
         // Example to pass a specific cssSelector:
         // (for example to restore a bookmark)

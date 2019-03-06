@@ -25,6 +25,7 @@ interface Props {
     fullscreen: boolean;
     currentLocation: any;
     publication: Publication;
+    handleLinkClick: any;
 }
 
 interface States {
@@ -79,10 +80,15 @@ export default class ReaderFooter extends React.Component<Props, States> {
                                         if (atCurrentLocation) {
                                             afterCurrentLocation = true;
                                         }
-                                        return <span key={index}>
-                                            { atCurrentLocation ? <span style={this.getProgressionStyle()}></span>
-                                            : !afterCurrentLocation && <span></span>}
-                                        </span>;
+                                        return (
+                                            <span
+                                                onClick={(e) => this.props.handleLinkClick(e, value.Href)}
+                                                key={index}
+                                            >
+                                                { atCurrentLocation ? <span style={this.getProgressionStyle()}></span>
+                                                : !afterCurrentLocation && <span></span>}
+                                            </span>
+                                        );
                                     })}
                                 </div>
                                 { moreInfo &&
