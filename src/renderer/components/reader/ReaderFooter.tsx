@@ -17,15 +17,16 @@ import { Publication } from "r2-shared-js/dist/es6-es2015/src/models/publication
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import * as classnames from "classnames";
+import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 interface Props {
     navLeftOrRight: (left: boolean) => void;
     fullscreen: boolean;
-    currentLocation: any;
+    currentLocation: LocatorExtended;
     publication: Publication;
-    handleLinkClick: any;
+    handleLinkClick: (event: any, url: string) => void;
 }
 
 interface States {

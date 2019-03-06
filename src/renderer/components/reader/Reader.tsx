@@ -7,7 +7,6 @@
 
 import * as path from "path";
 import * as React from "react";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import {
     ReaderConfig as ReadiumCSS,
@@ -67,6 +66,10 @@ import optionsValues from "./options-values";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import * as queryString from "query-string";
+
+import { LocatorView } from "readium-desktop/common/views/locator";
+
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
@@ -180,8 +183,8 @@ interface ReaderState {
     menuOpen: boolean;
     fullscreen: boolean;
     indexes: any;
-    visibleBookmarkList: any[];
-    currentLocation: any;
+    visibleBookmarkList: LocatorView[];
+    currentLocation: LocatorExtended;
 }
 
 interface ReaderProps {
@@ -189,7 +192,7 @@ interface ReaderProps {
     addBookmark?: any;
     findBookmarks: any;
     setLastReadingLocation: any;
-    bookmarks?: any[];
+    bookmarks?: LocatorView[];
 }
 
 const defaultLocale = "fr";
@@ -498,6 +501,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         }
         const visibleBookmarkList = [];
         for (const bookmark of this.props.bookmarks) {
+            console.log(bookmark);
             const isVisible = await isLocatorVisible(bookmark.locator);
             if ( isVisible ) {
                 visibleBookmarkList.push(bookmark);
