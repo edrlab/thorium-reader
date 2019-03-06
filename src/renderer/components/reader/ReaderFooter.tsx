@@ -88,14 +88,14 @@ export default class ReaderFooter extends React.Component<Props, States> {
                                 { moreInfo &&
                                     <div
                                         id={styles.arrow_box}
-                                        style={this.getArrowBoxStyle()}
+                                        style={this.getStyle(this.getArrowBoxStyle)}
                                     >
                                         <span>{ spineItemId !== undefined && publication.TOC[spineItemId].Title}</span>
                                         <p>
                                             { this.getProgression() }
                                         </p>
                                         <span
-                                            style={this.getArrowStyle()}
+                                            style={this.getStyle(this.getArrowStyle)}
                                             className={styles.after}
                                         />
                                     </div>
@@ -151,7 +151,9 @@ export default class ReaderFooter extends React.Component<Props, States> {
         }
     }
 
-    private getArrowBoxStyle() {
+    // Get the style of the differents element of the arrow box
+    // Take a function returning the good left css property
+    private getStyle(func: any) {
         const arrowBoxPosition = this.getArrowBoxPosition();
         let multiplicator = 1;
         const rest = Math.abs(arrowBoxPosition - 50);
@@ -160,23 +162,17 @@ export default class ReaderFooter extends React.Component<Props, States> {
             multiplicator = -1;
         }
         const style = {
-            left: `calc(${arrowBoxPosition}% + ${(multiplicator * (190 * (rest / 100) - 30 * rest / 100))}px)`,
+            left: func(arrowBoxPosition, multiplicator, rest),
         };
         return style;
     }
 
-    private getArrowStyle() {
-        const arrowBoxPosition = this.getArrowBoxPosition();
-        let multiplicator = 1;
-        const rest = Math.abs(arrowBoxPosition - 50);
+    private getArrowBoxStyle(arrowBoxPosition: number, multiplicator: number, rest: number) {
+        return `calc(${arrowBoxPosition}% + ${(multiplicator * (190 * (rest / 100) - 30 * rest / 100))}px)`;
+    }
 
-        if (arrowBoxPosition > 50) {
-            multiplicator = -1;
-        }
-        const style = {
-            left: `calc(${arrowBoxPosition}% + ${multiplicator * 30 * rest / 100}px)`,
-        };
-        return style;
+    private getArrowStyle(arrowBoxPosition: number, multiplicator: number, rest: number) {
+        return `calc(${arrowBoxPosition}% + ${multiplicator * 30 * rest / 100}px)`;
     }
 
     private handleMoreInfoClick() {
