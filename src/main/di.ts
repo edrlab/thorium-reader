@@ -25,20 +25,27 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { RootState } from "readium-desktop/main/redux/states";
 
-import { BookmarkManager } from "readium-desktop/main/services/bookmark";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
-import { SecretManager } from "readium-desktop/main/services/secret";
-
-import { OPDSParser } from "readium-desktop/common/services/opds";
+import { LcpManager } from "readium-desktop/main/services/lcp";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { streamer } from "readium-desktop/main/streamer";
 
-import { ConfigDb } from "readium-desktop/main/db/config-db";
-import { OpdsDb } from "readium-desktop/main/db/opds-db";
-import { PublicationDb } from "readium-desktop/main/db/publication-db";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
+import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+
+import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
+import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+
+import { CatalogApi } from "readium-desktop/main/api/catalog";
+import { LcpApi } from "readium-desktop/main/api/lcp";
+import { OpdsApi } from "readium-desktop/main/api/opds";
+import { PublicationApi } from "readium-desktop/main/api/publication";
 
 import {
     PublicationStorage,
@@ -51,6 +58,7 @@ import {
     _POUCHDB_ADAPTER_NAME,
     // _POUCHDB_ADAPTER_PACKAGE,
 } from "readium-desktop/preprocessor-directives";
+import { ReaderApi } from "./api/reader";
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
 // Create container used for dependency injection
@@ -89,30 +97,48 @@ if (!fs.existsSync(rootDbPath)) {
 // tslint:disable-next-line:no-var-requires
 const pouchDbAdapter = require(__POUCHDB_ADAPTER_PACKAGE__);
 
+// tslint:disable-next-line:no-var-requires
+const pouchDbFind = require("pouchdb-find");
+
+// tslint:disable-next-line:no-var-requires
+const pouchDbSearch = require("pouchdb-quick-search");
+
 // Load PouchDB plugins
 PouchDB.plugin(pouchDbAdapter.default ? pouchDbAdapter.default : pouchDbAdapter);
+PouchDB.plugin(pouchDbFind.default ? pouchDbFind.default : pouchDbFind);
+PouchDB.plugin(pouchDbSearch.default ? pouchDbSearch.default : pouchDbSearch);
 
 const dbOpts = {
     adapter: _POUCHDB_ADAPTER_NAME,
 };
 
 // Publication db
-const publicationPouchDb = new PouchDB(
-    path.join(rootDbPath, "publications"),
+const publicationDb = new PouchDB(
+    path.join(rootDbPath, "publication"),
     dbOpts,
 );
+const publicationRepository = new PublicationRepository(publicationDb);
 
 // OPDS db
-const opdsPouchDb = new PouchDB(
+const opdsDb = new PouchDB(
     path.join(rootDbPath, "opds"),
     dbOpts,
 );
+const opdsFeedRepository = new OpdsFeedRepository(opdsDb);
 
-const configPouchDb = new PouchDB(
+// Config db
+const configDb = new PouchDB(
     path.join(rootDbPath, "config"),
     dbOpts,
 );
-const configDb = new ConfigDb(configPouchDb);
+const configRepository = new ConfigRepository(configDb);
+
+// Locator db
+const locatorDb = new PouchDB(
+    path.join(rootDbPath, "locator"),
+    dbOpts,
+);
+const locatorRepository = new LocatorRepository(locatorDb);
 
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
@@ -136,34 +162,104 @@ container.bind<WinRegistry>("win-registry").toConstantValue(winRegistry);
 const translator = new Translator();
 container.bind<Translator>("translator").toConstantValue(translator);
 
+// Create downloader
+const downloader = new Downloader(app.getPath("temp"));
+container.bind<Downloader>("downloader").toConstantValue(downloader);
+
+// Create repositories
+container.bind<PublicationRepository>("publication-repository").toConstantValue(
+    publicationRepository,
+);
+container.bind<OpdsFeedRepository>("opds-feed-repository").toConstantValue(
+    opdsFeedRepository,
+);
+container.bind<LocatorRepository>("locator-repository").toConstantValue(
+    locatorRepository,
+);
+container.bind<ConfigRepository>("config-repository").toConstantValue(
+    configRepository,
+);
+
+// Create converters
+const publicationViewConverter = new PublicationViewConverter();
+container.bind<PublicationViewConverter>("publication-view-converter").toConstantValue(
+    publicationViewConverter,
+);
+const locatorViewConverter = new LocatorViewConverter();
+container.bind<LocatorViewConverter>("locator-view-converter").toConstantValue(
+    locatorViewConverter,
+);
+const opdsFeedViewConverter = new OpdsFeedViewConverter();
+container.bind<OpdsFeedViewConverter>("opds-feed-view-converter").toConstantValue(
+    opdsFeedViewConverter,
+);
+
+// Storage
+const publicationStorage = new PublicationStorage(publicationRepositoryPath);
+container.bind<PublicationStorage>("publication-storage").toConstantValue(
+    publicationStorage,
+);
+
 // Bind services
 container.bind<Server>("streamer").toConstantValue(streamer);
-container.bind<OPDSParser>("opds-parser").to(OPDSParser);
-container.bind<CatalogService>("catalog-service").to(CatalogService);
-container.bind<Downloader>("downloader").toConstantValue(
-    new Downloader(app.getPath("temp"), store),
-);
-container.bind<PublicationDb>("publication-db").toConstantValue(
-    new PublicationDb(publicationPouchDb),
-);
-container.bind<OpdsDb>("opds-db").toConstantValue(
-    new OpdsDb(opdsPouchDb),
-);
-container.bind<ConfigDb>("config-db").toConstantValue(
-    configDb,
-);
-container.bind<PublicationStorage>("publication-storage").toConstantValue(
-    new PublicationStorage(publicationRepositoryPath),
-);
+
+const deviceIdManager = new DeviceIdManager("readium-desktop", configRepository);
 container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
-    new DeviceIdManager("readium-desktop", configDb),
+    deviceIdManager,
 );
-container.bind<SecretManager>("secret-manager").toConstantValue(
-    new SecretManager(configDb),
+
+// Create lcp manager
+const lcpManager = new LcpManager(
+    publicationRepository,
+    publicationStorage,
+    deviceIdManager,
 );
-container.bind<BookmarkManager>("bookmark-manager").toConstantValue(
-    new BookmarkManager(configDb),
+container.bind<LcpManager>("lcp-manager").toConstantValue(lcpManager);
+
+const catalogService = new CatalogService(
+    publicationRepository,
+    publicationStorage,
+    downloader,
+    lcpManager,
 );
+container.bind<CatalogService>("catalog-service").toConstantValue(
+    catalogService,
+);
+
+// API
+container.bind<CatalogApi>("catalog-api").toConstantValue(
+    new CatalogApi(
+        publicationRepository,
+        configRepository,
+        publicationViewConverter,
+        translator,
+    ),
+);
+container.bind<PublicationApi>("publication-api").toConstantValue(
+    new PublicationApi(
+        publicationRepository,
+        publicationViewConverter,
+        catalogService,
+    ),
+);
+container.bind<OpdsApi>("opds-api").toConstantValue(
+    new OpdsApi(
+        opdsFeedRepository,
+        opdsFeedViewConverter,
+    ),
+);
+
+container.bind<LcpApi>("lcp-api").toConstantValue(
+    new LcpApi(publicationRepository, lcpManager),
+);
+
+container.bind<ReaderApi>("reader-api").toConstantValue(
+    new ReaderApi(
+        locatorRepository,
+        locatorViewConverter,
+    ),
+);
+
 // Create action serializer
 const actionSerializer = new ActionSerializer();
 container.bind<ActionSerializer>("action-serializer").toConstantValue(actionSerializer);

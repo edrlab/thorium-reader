@@ -71,6 +71,13 @@ export class PublicationStorage {
         rmDirSync(this.buildPublicationPath(identifier));
     }
 
+    public getPublicationEpubPath(identifier: string): string {
+        return path.join(
+            this.buildPublicationPath(identifier),
+            "book.epub",
+        );
+    }
+
     private buildPublicationPath(identifier: string): string {
         return path.join(this.rootPath, identifier);
     }
@@ -124,7 +131,9 @@ export class PublicationStorage {
         const coverType: string = coverLink.TypeLink;
         const zipStream = await zip.entryStreamPromise(coverLink.Href);
         const zipBuffer = await streamToBufferPromise(zipStream.stream);
-        const coverExt = coverType.split("/")[1];
+
+        // Remove start dot in extensoion
+        const coverExt = path.extname(coverLink.Href).slice(1);
         const coverFilename = "cover." + coverExt;
         const coverDstPath = path.join(
             this.buildPublicationPath(identifier),

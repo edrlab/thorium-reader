@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Publication } from "readium-desktop/common/models/publication";
 import { Bookmark, Reader, ReaderConfig } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 export enum ActionType {
     OpenRequest = "READER_OPEN_REQUEST",
@@ -27,7 +27,7 @@ export enum ActionType {
     BookmarkSaveError = "READER_BOOKMARK_SAVE_ERROR",
 }
 
-export function open(publication: Publication): Action {
+export function open(publication: PublicationView): Action {
     return {
         type: ActionType.OpenRequest,
         payload: {

@@ -35,60 +35,60 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 
 import { File } from "readium-desktop/common/models/file";
 
-import { PublicationDb } from "readium-desktop/main/db/publication-db";
+// import { PublicationDb } from "readium-desktop/main/db/publication-db";
 
 import { Store } from "redux";
 
-export function* publicationDownloadStatusWatcher(): SagaIterator {
-    while (true) {
-        const action = yield take([
-            downloaderActions.ActionType.Success,
-            downloaderActions.ActionType.Progress,
-        ]);
+// export function* publicationDownloadStatusWatcher(): SagaIterator {
+//     while (true) {
+//         const action = yield take([
+//             downloaderActions.ActionType.Success,
+//             downloaderActions.ActionType.Progress,
+//         ]);
 
-        const state: RootState = yield select();
+//         const state: RootState = yield select();
 
-        // Find publication linked to this download
-        const download = action.payload.download;
-        const publication = state.publicationDownloads
-            .downloadIdentifierToPublication[download.identifier];
-        const catalogService = container.get(
-            "catalog-service") as CatalogService;
+//         // Find publication linked to this download
+//         const download = action.payload.download;
+//         const publication = state.publicationDownloads
+//             .downloadIdentifierToPublication[download.identifier];
+//         const catalogService = container.get(
+//             "catalog-service") as CatalogService;
 
-        switch (action.type) {
-            case downloaderActions.ActionType.Progress:
-                // FIXME: A publication is composed of multiple downloads
-                const progress = action.payload.progress;
-                yield put(publicationDownloadActions.progress(
-                    publication,
-                    progress,
-                ));
-                break;
-            case downloaderActions.ActionType.Success:
-                try {
-                    const storedPub = yield call(() => catalogService.addPublicationFromLocalPath(
-                        publication.identifier,
-                        download.dstPath,
-                    ));
-                    yield put(publicationDownloadActions.finish(
-                        storedPub,
-                    ));
-                } catch (error) {
-                    yield put({
-                        type: publicationDownloadActions.ActionType.Error,
-                        error: true,
-                        payload: new Error(error),
-                        meta: {
-                            publication,
-                        },
-                    });
-                }
-                break;
-            default:
-                break;
-        }
-    }
-}
+//         switch (action.type) {
+//             case downloaderActions.ActionType.Progress:
+//                 // FIXME: A publication is composed of multiple downloads
+//                 const progress = action.payload.progress;
+//                 yield put(publicationDownloadActions.progress(
+//                     publication,
+//                     progress,
+//                 ));
+//                 break;
+//             case downloaderActions.ActionType.Success:
+//                 try {
+//                     const storedPub = yield call(() => catalogService.addPublicationFromLocalPath(
+//                         publication.identifier,
+//                         download.dstPath,
+//                     ));
+//                     yield put(publicationDownloadActions.finish(
+//                         storedPub,
+//                     ));
+//                 } catch (error) {
+//                     yield put({
+//                         type: publicationDownloadActions.ActionType.Error,
+//                         error: true,
+//                         payload: new Error(error),
+//                         meta: {
+//                             publication,
+//                         },
+//                     });
+//                 }
+//                 break;
+//             default:
+//                 break;
+//         }
+//     }
+// }
 
 export function* publicationDownloadCancelRequestWatcher(): SagaIterator {
     while (true) {
@@ -117,28 +117,5 @@ export function* publicationDownloadCancelRequestWatcher(): SagaIterator {
                 },
             },
         );
-    }
-}
-
-export function* publicationDownloadAddRequestWatcher(): SagaIterator {
-    while (true) {
-        const action = yield take(
-            publicationDownloadActions.ActionType.AddRequest,
-        );
-        const publication = action.payload.publication;
-        const downloader: Downloader = container.get("downloader") as Downloader;
-        const epubType = "application/epub+zip";
-
-        const downloads: Download[] = [];
-
-        for (const file of publication.files) {
-            if (file.contentType !== epubType) {
-                continue;
-            }
-            const download = downloader.download(file.url);
-            downloads.push(download);
-        }
-
-        yield put(publicationDownloadActions.start(publication, downloads));
     }
 }

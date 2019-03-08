@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://readium.org/webpub-manifest/schema/subcollection.schema.json",
+  "title": "Subcollection",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "object"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "link.schema.json"
+          }
+        },
+        "additionalProperties": {
+          "$ref": "subcollection.schema.json"
+        }
+      },
+      "required": [
+        "metadata",
+        "links"
+      ]
+    },
+    {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "link.schema.json"
+          },
+          {
+            "properties": {
+              "metadata": {
+                "type": "object"
+              },
+              "links": {
+                "type": "array",
+                "items": {
+                  "$ref": "link.schema.json"
+                }
+              }
+            },
+            "additionalProperties": {
+              "$ref": "subcollection.schema.json"
+            },
+            "required": [
+              "metadata",
+              "links"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

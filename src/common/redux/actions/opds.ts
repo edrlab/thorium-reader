@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { OPDS } from "readium-desktop/common/models/opds";
+import { OpdsFeed } from "readium-desktop/common/models/opds";
 
 import { Action } from "readium-desktop/common/models/redux";
 
@@ -24,7 +24,7 @@ export enum ActionType {
     UpdateSuccess = "OPDS_UPDATE_SUCCESS",
 }
 
-export function add(opds: OPDS): Action {
+export function add(opds: OpdsFeed): Action {
     return {
         type: ActionType.AddRequest,
         payload: {
@@ -33,7 +33,7 @@ export function add(opds: OPDS): Action {
     };
 }
 
-export function update(opds: OPDS): Action {
+export function update(opds: OpdsFeed): Action {
     return {
         type: ActionType.UpdateRequest,
         payload: {
@@ -42,7 +42,7 @@ export function update(opds: OPDS): Action {
     };
 }
 
-export function remove(opds: OPDS): Action {
+export function remove(opds: OpdsFeed): Action {
     return {
         type: ActionType.RemoveRequest,
         payload: {

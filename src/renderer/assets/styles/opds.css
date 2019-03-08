@@ -1,0 +1,125 @@
+/* FORM */
+
+.opds_form {
+    & p {
+        display: block;
+        position: relative;
+        padding-top: 0;
+        padding-bottom: 10px;
+        font-weight: 700;
+    }
+
+    & form {
+        border-bottom: 1px solid #c1c1c1;
+        margin-left:0;
+        height:auto;
+        margin-bottom:50px;
+        display: inline-block;
+
+        & input {
+            position: relative;
+            width: 300px;
+            border-radius: 0;
+            border: none;
+            height: 35px;
+            outline: inherit;
+            background-color: transparent;
+            color: black;
+            font-size: 0.9rem;
+        }
+    }
+}
+
+/* LIST */
+
+.opds_list {
+    display: flex;
+   	width:100%;
+  	flex-flow: row wrap;
+  	height: auto;
+  	justify-content: space-between;
+
+    & > a {
+        text-decoration: none;
+        color: black;
+
+        & div {
+            width: 300px; 
+            height: 300px;
+            margin-bottom:30px;
+            background-color: grey;
+            display: flex;
+            flex-direction: column;
+
+            & p {
+                text-align: center;
+                color:white;
+                font-size: 1.5rem;
+                margin-top: calc(50% - 30px - 1.4rem);
+            }
+
+            & button {
+                align-self: flex-end;
+            }
+        }
+    }
+
+    & > div {
+        width: 300px;
+    }
+}
+
+/* ELEMENT */
+
+#flux_list {
+	width: calc(100% + 120px);
+	margin-left:-60px;
+	border-top:1px solid #c1c1c1;
+    
+    & li {
+        padding:20px 60px 20px 60px;
+        border-bottom: 1px solid #c1c1c1;
+        
+        & .flux_infos {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            text-decoration: none;
+            color: black;
+            & .flux_title {
+                font-weight: 600;
+            }
+            & span {
+                display: inline-block;
+            }
+            & .flux_subtitle {
+                font-size: 0.8rem;
+                margin-left:10px;
+            }
+            & .flux_image {
+                flex: 1;
+                max-width: 80%;
+                height: fit-content;
+                display: flex;
+                align-items: center;
+                & svg {
+                    width:15px;
+                }
+            }
+        }
+    }
+
+    & .flux_slider {
+        margin: 20px -36px 0 -36px;
+    }
+}
+
+/* ENTRY DETAILS */
+
+.entry_details {
+    border-bottom: 2px solid rgb(219, 219, 219);;
+    margin: 0 -60px;
+    padding: 30px 60px;
+    margin-bottom: 20px;
+}

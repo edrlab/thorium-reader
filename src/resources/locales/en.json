@@ -1,4 +1,10 @@
 {
+    "catalog": {
+      "entry": {
+        "continueReading": "Continue reading",
+        "lastAdditions": "Last additions"
+      }
+    },
     "library": {
         "heading": "Library",
         "add": "Add to the library",
@@ -15,8 +21,7 @@
           "sentence": "This publication needs a LCP password to be opened: ",
           "submit": "Submit",
           "cancel": "Cancel",
-          "hint": "Your passphrase",
-          "hintSentence": "Hint:",
+          "hint": "Hint : {{hint}}",
           "informations": {
             "title": "LCP Informations",
             "close": "Close",
@@ -96,30 +101,51 @@
         "password": "Password :",
         "loginButton": "Login",
         "sentence": "Please, log in to access to the contents"
-      }
+      },
+      "breadcrumbRoot": "Catalogs"
     },
     "reader": {
       "settings": {
         "title": "Settings",
-        "align": "Text Alignement:",
+        "theme": {
+          "title": "Theme",
+          "predefined": "Predifined themes",
+          "myTheme": "My themes",
+          "create": "Create a theme"
+        },
+        "text": "Text",
         "left": "Left",
-        "center": "Center",
+        "justify": "Justify",
+        "column": {
+          "title": "Column",
+          "auto": "Automatic",
+          "one": "1 column",
+          "two": "2 column"
+        },
+        "spacing": "Spacing",
+        "margin": "Margin",
+        "wordSpacing": "Words spacing",
+        "lineSpacing": "Line spacing",
+        "letterSpacing": "Letters spacing",
+        "accessibility": "Accessibility",
+        "disposition": {
+          "title": "Disposition",
+          "with": "With",
+          "without": "Without"
+        },
         "right": "Right",
         "font": "Font",
-        "fontSize": "Font Size:",
-        "display": "Display Type:",
-        "close": "Close",
-        "save": "Save",
-        "scrolled": "Scrolled",
+        "fontSize": "Font size",
+        "display": "Display",
+        "justification": "Alignement",
+        "scrolled": "Scrollable",
         "paginated": "Paginated"
       },
-      "landmarks": {
+      "marks": {
         "landmarks": "Landmarks",
         "illustrations": "Illustrations",
-        "videos": "Videos",
-        "tables": "Tables",
-        "audio": "Audio",
-        "pages": "Pages"
+        "toc": "Table of content",
+        "annotations": "Annotations"
       },
       "svg": {
         "contentTable": "Content Table",

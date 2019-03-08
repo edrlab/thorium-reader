@@ -7,6 +7,8 @@
 
 import * as debug_ from "debug";
 
+import * as yargs from "yargs";
+
 import { _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
 
 if (_PACKAGING !== "0") {
@@ -22,6 +24,8 @@ import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
 
 import { container } from "readium-desktop/main/di";
 
+import { OpdsApi } from "readium-desktop/main/api/opds";
+
 import { appInit } from "readium-desktop/main/redux/actions/app";
 import { RootState } from "readium-desktop/main/redux/states";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
@@ -29,10 +33,8 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 
 import {
-    catalogActions,
     i18nActions,
     netActions,
-    opdsActions,
     readerActions,
     updateActions,
 } from "readium-desktop/common/redux/actions";
@@ -57,8 +59,13 @@ import { SenderType } from "readium-desktop/common/models/sync";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
+import { CatalogService } from "readium-desktop/main/services/catalog";
+
 // Logger
 const debug = debug_("readium-desktop:main");
+
+// Parse command line
+const processArgs = yargs.argv;
 
 initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();
@@ -83,6 +90,8 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        minWidth: 800,
+        minHeight: 600,
         webPreferences: {
             devTools: IS_DEV,
             nodeIntegration: true, // Required to use IPC
@@ -195,8 +204,12 @@ app.on("window-all-closed", () => {
 app.on("ready", () => {
     debug("ready");
     initApp();
-    createWindow();
-    registerProtocol();
+
+    if (!processCommandLine()) {
+        // Do not open window if electron is launched as a command line
+        createWindow();
+        registerProtocol();
+    }
 });
 
 // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
@@ -257,32 +270,6 @@ ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
                 payload: {
                     action: {
                         type: netActionType,
-                    },
-                },
-            });
-
-            // Send catalog
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: catalogActions.ActionType.SetSuccess,
-                        payload: {
-                            publications: state.catalog.publications,
-                        },
-                    },
-                },
-            });
-
-            // Send opds feeds
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: opdsActions.ActionType.SetSuccess,
-                        payload: {
-                            items: state.opds.items,
-                        },
                     },
                 },
             });
@@ -348,3 +335,27 @@ ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {
             break;
     }
 });
+
+function processCommandLine() {
+    let promise = null;
+
+    if ("importFile" in processArgs) {
+        const catalogService = container.get("catalog-service") as CatalogService;
+        promise = catalogService.importFile(processArgs.importFile as string);
+    }
+
+    if (promise == null) {
+        return false;
+    }
+
+    promise.then((result: any) => {
+        debug("Command processed");
+        app.quit();
+    })
+    .catch((error) => {
+        debug("Command failed", error);
+        app.quit();
+    });
+
+    return true;
+}

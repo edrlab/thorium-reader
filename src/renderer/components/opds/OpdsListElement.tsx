@@ -13,7 +13,7 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import { Cover } from "readium-desktop/renderer/components/Publication/index";
+import { Cover } from "readium-desktop/renderer/components/publication/index";
 
 import * as OpdsStyles from "readium-desktop/renderer/assets/styles/opds_element.css";
 
@@ -53,7 +53,7 @@ export default class OpdsListElement extends React.Component<IPublicationProps, 
                     <img className={OpdsStyles.image} src={publication.cover.url}/>
                 ) : (
                     <div className={OpdsStyles.image}>
-                        <Cover publication={publication}/>
+                        {/*<Cover publication={publication}/>*/}
                     </div>
                 )}
                 <div className={OpdsStyles.primary_informations}>

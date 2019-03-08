@@ -1,0 +1,210 @@
+main {
+    position: relative;
+    margin-top: 120px;
+    left: 0;
+    height: auto;
+    width: calc(100% - 120px);
+    padding-left: 60px;
+    padding-right: 60px;
+	& .title {
+		display: flex;
+		justify-content: space-between;
+		padding-top: 40px;
+		padding-bottom: 35px;
+
+		& a {
+			display: flex;
+    		align-items: center;
+
+			color: black;
+			text-decoration: none;
+			border-radius: 2px;
+			border: 1px solid black;
+			font-size: 0.8rem;
+			padding: 2px 8px 2px 8px;
+
+			& svg {
+				height: 15px;
+				margin-left: 4px;
+			}
+		}
+
+		& h1 {
+			display: inline-block;
+			position: relative;
+			font-weight: 700;
+			margin: 0;
+			font-size: 1.3rem;
+		}
+	}
+
+    & section ul {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.slider {
+    margin: 0 -36px;
+}
+
+/* HEADER */
+
+#catalog_header {
+	& > *:first-child {
+		margin-right: 1rem;
+	}
+}
+
+/* LIST MY BOOKS */
+
+
+.block_book_list {
+	display: block;
+	margin: 0 -60px;
+	min-height: 40px;
+	padding: 0px 50px;
+	min-width: 600px;
+	font-size: 0.95rem;
+    overflow: hidden;
+    transition: height 0.5s;
+}
+
+.block_book_list button {
+	float:left;
+    display: flex;
+    justify-content: center;
+	border: none;
+    background: none;
+    cursor: pointer;
+	margin-top: 0.5rem;
+}
+
+.block_book_list:nth-child(odd){
+	background-color: #f3f3f3;
+}
+
+.block_book_list button svg {
+	position: relative;
+	float:left;
+	height: 24px;
+    width: 24px;
+	margin: 5px;
+}
+
+.block_book_list .book_title {
+	display: inline-block;
+	font-weight: 600;
+}
+
+.block_book_list .book_author {
+	display: inline-block;
+    margin-left: 10px;
+}
+
+.block_book_list .infos_sup {
+	display: inline-block;
+	width:15%;
+	color:grey;
+}
+
+.list_book_title {
+	display: inline-block;
+	width: calc(70% - 50px);
+}
+
+.titre_selection {
+	display: inline-block;
+	position: relative;
+	padding-top:40px;
+	padding-bottom: 35px;
+	font-weight: 700;
+}
+
+.icon_edit {
+	position: relative;
+	top:0;
+	height:30px;
+	width:20px;
+	margin:0;
+	margin-left:10px;
+	display: inline-block;
+	vertical-align: top;
+	margin-top:40px;
+}
+
+.list_menu {
+	height: 0px;
+	transition: height 0.5s;
+    margin-left: 10px;
+    & a {
+        border: 1px solid black;
+		padding: 4px;
+		display: inline-block;
+		cursor: pointer;
+		margin: 0.6rem 0.5rem 0 0;
+    }
+}
+
+.menu_open{
+	height: 3.5rem;
+}
+
+/* ENTRY FORM */
+
+.tag_add_button {
+	display: flex;
+	align-items: center;
+    font-weight: 700;
+    margin-top: 40px;
+	margin-bottom: 35px;
+    font-size: 1.3rem;
+	width: auto;
+	background: none;
+	border: none;
+
+	& svg {
+		height: 25px;
+		display: inline-block;
+	}
+}
+
+#tag_search {
+	border-bottom: 1px solid #c1c1c1;
+	margin-left:0;
+	height:auto;
+	margin-bottom:50px;
+	display: none;
+}
+
+#tag_inputs {
+	position: relative;
+	width:300px;
+	border-radius: 0;
+	border:none;
+	height:35px;
+	outline: inherit;
+	background-color: transparent;
+	color:black;
+	font-size: 0.9rem;
+}
+
+.tag_inputs {
+	position: relative;
+	width:300px;
+	border-radius: 0;
+	border:none;
+	height:35px;
+	outline: inherit;
+	background-color: transparent;
+	color:black;
+	font-size: 0.9rem;
+}
+
+#tag_search .launch{
+	position: relative;
+	width:35px;
+	vertical-align: top;
+	background: none;
+	border: none;
+}

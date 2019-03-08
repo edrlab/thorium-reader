@@ -216,8 +216,8 @@ export const Styles = {
             width: "90%",
         },
         body : {
-            height: "inherit",
-            width: "inherit",
+            height: "100%",
+            width: "100%",
             textAlign: "center" as "center",
             backgroundImage: "",
             boxSizing: "border-box" as "border-box",

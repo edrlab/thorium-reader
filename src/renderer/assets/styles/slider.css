@@ -1,0 +1,33 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+
+    & > button {
+        margin-bottom: 50px;
+    }
+}
+
+.content {
+    display: inline-flex;
+
+    & > * {
+        margin: 0 15px;
+    }
+}
+
+.content_wrapper {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y:hidden;
+}
+
+.button_substitute {
+    height: 36px;
+    width: 36px;
+}
+
+
+
+.back {
+    transform: rotateY(180deg);
+}

@@ -7,7 +7,7 @@
 
 import * as uuid from "uuid";
 
-import { Action, ErrorAction } from "readium-desktop/common/models/redux";
+import { Action } from "readium-desktop/common/models/redux";
 
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { ReaderState } from "readium-desktop/common/redux/states/reader";
@@ -31,7 +31,7 @@ const initialState: ReaderState = {
 
 export function readerReducer(
     state: ReaderState = initialState,
-    action: Action | ErrorAction,
+    action: Action,
 ): ReaderState {
     const newState = Object.assign({}, state);
 

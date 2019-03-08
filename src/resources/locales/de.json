@@ -1,4 +1,10 @@
 {
+    "catalog": {
+      "entry": {
+        "continueReading": "Continue reading",
+        "lastAdditions": "Last additions"
+      }
+    },
     "library": {
         "heading": "Bibliothek",
         "add": "Zur Bibliothek hinzufügen",

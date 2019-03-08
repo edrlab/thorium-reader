@@ -8,17 +8,14 @@
 import * as debug_ from "debug";
 import * as path from "path";
 import * as portfinder from "portfinder";
-import { channel, Channel, SagaIterator } from "redux-saga";
-import { call, fork, put, select, take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
+import { call, put, select, take } from "redux-saga/effects";
 
 import { Server } from "@r2-streamer-js/http/server";
-
-import { Publication as Epub } from "@r2-shared-js/models/publication";
-import { EpubParsePromise } from "@r2-shared-js/parser/epub";
-
-import { Publication } from "readium-desktop/common/models/publication";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { container } from "readium-desktop/main/di";
 import { lcpActions, streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -47,7 +44,7 @@ function stopStreamer(streamer: Server) {
     streamer.stop();
 }
 
-export function* streamerStartRequestWatcher(): SagaIterator {
+export function* startRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield take(streamerActions.ActionType.StartRequest);
         const streamer: Server = container.get("streamer") as Server;
@@ -71,7 +68,7 @@ export function* streamerStartRequestWatcher(): SagaIterator {
     }
 }
 
-export function* streamerStopRequestWatcher(): SagaIterator {
+export function* stopRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield take(streamerActions.ActionType.StopRequest);
         const streamer: Server = container.get("streamer") as Server;
@@ -92,10 +89,22 @@ export function* streamerStopRequestWatcher(): SagaIterator {
     }
 }
 
-export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
+export function* publicationOpenRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield take(streamerActions.ActionType.PublicationOpenRequest);
-        const publication = action.payload.publication;
+        const publicationRepository = container.get("publication-repository") as PublicationRepository;
+
+        // Get publication
+        let publication: PublicationDocument = null;
+
+        try {
+            publication = yield call(
+                publicationRepository.get.bind(publicationRepository),
+                action.payload.publication.identifier,
+            );
+        } catch (error) {
+            continue;
+        }
 
         // Get epub file from publication
         const pubStorage = container.get("publication-storage") as PublicationStorage;
@@ -135,7 +144,6 @@ export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
 
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
-
         // Test if publication contains LCP drm
         const parsedEpub = yield call(
             () => streamer.loadOrGetCachedPublication(epubPath),
@@ -144,7 +152,7 @@ export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
         if (parsedEpub.LCP) {
             // User key check
             yield put(lcpActions.checkUserKey(
-                publication,
+                publication as any,
                 parsedEpub.LCP.Encryption.UserKey.TextHint,
             ));
 
@@ -175,10 +183,22 @@ export function* streamerPublicationOpenRequestWatcher(): SagaIterator {
     }
 }
 
-export function* streamerPublicationCloseRequestWatcher(): SagaIterator {
+export function* publicationCloseRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield take(streamerActions.ActionType.PublicationCloseRequest);
-        const publication = action.payload.publication;
+        const publicationRepository = container.get("publication-repository") as PublicationRepository;
+
+        // Get publication
+        let publication: PublicationDocument = null;
+
+        try {
+            publication = yield call(
+                publicationRepository.get.bind(publicationRepository),
+                action.payload.publication.identifier,
+            );
+        } catch (error) {
+            continue;
+        }
 
         const state: RootState =  yield select();
         const streamer: Server = container.get("streamer") as Server;
@@ -199,4 +219,13 @@ export function* streamerPublicationCloseRequestWatcher(): SagaIterator {
             yield put(streamerActions.stop());
         }
     }
+}
+
+export function* watchers() {
+    yield [
+        stopRequestWatcher(),
+        startRequestWatcher(),
+        publicationOpenRequestWatcher(),
+        publicationCloseRequestWatcher(),
+    ];
 }

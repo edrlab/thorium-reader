@@ -15,5 +15,6 @@ export enum DownloadStatus {
 
 export interface Downloadable {
     status: DownloadStatus;
+    downloadedSize: number;
     progress: number; // Positive and non float number between 0 and 100
 }

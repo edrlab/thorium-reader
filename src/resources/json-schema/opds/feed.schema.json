@@ -1,0 +1,133 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://drafts.opds.io/schema/feed.schema.json",
+  "title": "OPDS Feed",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "description": "Contains feed-level metadata such as title or number of items",
+      "$ref": "feed-metadata.schema.json"
+    },
+    "links": {
+      "description": "Feed-level links such as search or pagination",
+      "type": "array",
+      "items": {
+        "$ref": "link.schema.json"
+      },
+      "contains": {
+        "properties": {
+          "rel": {
+            "anyOf": [
+              {
+                "type": "string",
+                "const": "self"
+              },
+              {
+                "type": "array",
+                "contains": {
+                  "const": "self"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "publications": {
+      "description": "A list of publications that can be acquired",
+      "type": "array",
+      "items": {
+        "$ref": "publication.schema.json"
+      }
+    },
+    "navigation": {
+      "description": "Navigation for the catalog using links",
+      "type": "array",
+      "items": {
+        "$ref": "link.schema.json"
+      },
+      "allOf": [
+        {
+          "description": "Each Link Object in a navigation collection must contain a title",
+          "items": {
+            "required": [
+              "title"
+            ]
+          }
+        }
+      ]
+    },
+    "facets": {
+      "description": "Facets are meant to re-order or obtain a subset for the current list of publications",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "$ref": "feed-metadata.schema.json"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "link.schema.json"
+            }
+          }
+        }
+      }
+    },
+    "groups": {
+      "description": "Groups provide a curated experience, grouping publications or navigation links together",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "$ref": "feed-metadata.schema.json"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "link.schema.json"
+            }
+          },
+          "publications": {
+            "type": "array",
+            "items": {
+              "$ref": "publication.schema.json"
+            }
+          },
+          "navigation": {
+            "type": "array",
+            "items": {
+              "$ref": "link.schema.json"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "metadata",
+    "links"
+  ],
+  "additionalProperties": {
+    "$ref": "https://readium.org/webpub-manifest/schema/subcollection.schema.json"
+  },
+  "anyOf": [
+    {
+      "required": [
+        "publications"
+      ]
+    },
+    {
+      "required": [
+        "navigation"
+      ]
+    },
+    {
+      "required": [
+        "groups"
+      ]
+    }
+  ]
+}

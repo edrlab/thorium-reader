@@ -4,7 +4,7 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "commonjs",
-    "lib": ["es6", "dom"],
+    "lib": ["es2017", "es6", "dom"],
     "target": "es6",
     "jsx": "react",
     "experimentalDecorators": true,
@@ -12,6 +12,7 @@
     "baseUrl": ".",
     "paths": {
       "readium-desktop/*": ["./src/*"],
+      "test/*": ["./test/*"],
       "@r2-utils-js/*": [
         "node_modules/r2-utils-js/dist/es6-es2015/src/*"
       ],
@@ -33,7 +34,8 @@
     }
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "./test/**/*",
   ],
   "exclude": [
     "node_modules"

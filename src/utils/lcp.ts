@@ -39,11 +39,7 @@ export async function injectLcpl(publication: Publication, lcpl: string) {
     // FIXME: do not use services in utils
     // Get epub file from publication
     const pubStorage = container.get("publication-storage") as PublicationStorage;
-    const epubPath = path.join(
-        pubStorage.getRootPath(),
-        publication.files[0].url.substr(6),
-    );
-
+    const epubPath = pubStorage.getPublicationEpubPath(publication.identifier);
     // Inject lcpl in a temporary zip
     await injectDataInZip(
             epubPath,
@@ -92,10 +88,7 @@ export async function updateLicenseStatus(publication: Publication) {
     // Get epub file from publication
     // FIXME: do not use services in utils
     const pubStorage = container.get("publication-storage") as PublicationStorage;
-    const epubPath = path.join(
-        pubStorage.getRootPath(),
-        publication.files[0].url.substr(6),
-    );
+    const epubPath = pubStorage.getPublicationEpubPath(publication.identifier);
 
     // Get lcpl information
     let parsedEpub: Epub = null;
@@ -111,7 +104,7 @@ export async function updateLicenseStatus(publication: Publication) {
     const deviceId = await deviceIdManager.getDeviceID();
 
     try {
-        await launchStatusDocumentProcessing(
+        /* await launchStatusDocumentProcessing(
                 parsedEpub.LCP, deviceIdManager,
             async (licenseUpdateJson: string | undefined) => {
                 debug("launchStatusDocumentProcessing DONE.");
@@ -120,10 +113,11 @@ export async function updateLicenseStatus(publication: Publication) {
                     try {
                         await injectLcpl(publication, licenseUpdateJson);
                     } catch (err) {
+                        console.log("1.5.error");
                         debug(err);
                     }
                 }
-            });
+            });*/
     } catch (err) {
         debug(err);
     }

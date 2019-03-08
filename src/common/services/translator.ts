@@ -12,7 +12,7 @@ import * as deCatalog from "readium-desktop/resources/locales/de.json";
 import * as enCatalog from "readium-desktop/resources/locales/en.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
 
-i18n.init({
+const initI18n = i18n.init({
     resources: {
         en: {
             translation: enCatalog,
@@ -25,6 +25,12 @@ i18n.init({
         },
     },
 });
+
+export enum AvailableLanguages {
+    en = "English",
+    fr = "Français",
+    de = "Deutch",
+}
 
 @injectable()
 export class Translator {
@@ -39,11 +45,11 @@ export class Translator {
     }
 
     public translate(message: string, options: any = {}): string {
-        if (i18n.language !== this.locale) {
-            i18n.changeLanguage(this.locale);
+        if (initI18n.language !== this.locale) {
+            initI18n.changeLanguage(this.locale);
         }
 
-        return i18n.t(message, options);
+        return initI18n.t(message, options);
     }
 
     /**

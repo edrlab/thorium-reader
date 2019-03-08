@@ -28,6 +28,7 @@ const aliases = {
 let externals = {
     "bindings": "bindings",
     "leveldown": "leveldown",
+    "yargs": "yargs",
     "fsevents": "fsevents",
     "conf": "conf",
     "pouchdb-adapter-leveldb": "pouchdb-adapter-leveldb",

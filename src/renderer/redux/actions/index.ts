@@ -5,8 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as opdsActions from "./opds";
 import * as winActions from "./win";
 
 export {
+    opdsActions,
     winActions,
 };

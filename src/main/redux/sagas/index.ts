@@ -13,24 +13,12 @@ import {
 } from "./downloader";
 
 import {
-    opdsAddRequestWatcher,
-    opdsInitWatcher,
-    opdsRemoveRequestWatcher,
-    opdsUpdateRequestWatcher,
-} from "./opds";
-
-import {
-    publicationDownloadAddRequestWatcher,
     publicationDownloadCancelRequestWatcher,
-    publicationDownloadStatusWatcher,
 } from "./publication-download";
 
 import { appInitWatcher } from "./app";
 import {
     catalogFileImportWatcher,
-    catalogInitWatcher,
-    catalogLocalLCPImportWatcher,
-    catalogLocalPublicationImportWatcher,
     catalogPublicationDownloadSuccessWatcher,
     catalogPublicationRemoveWatcher,
 } from "./catalog";
@@ -42,18 +30,16 @@ import {
     readerConfigSetRequestWatcher,
     readerOpenRequestWatcher,
 } from "./reader";
-import {
-    streamerPublicationCloseRequestWatcher,
-    streamerPublicationOpenRequestWatcher,
-    streamerStartRequestWatcher,
-    streamerStopRequestWatcher,
-} from "./streamer";
+
+import * as api from "./api";
+
+import * as streamer from "./streamer";
 
 import {
     lcpPassphraseSubmitRequestWatcher,
     lcpRenewRequestWatcher,
     lcpReturnRequestWatcher,
-    lcpUserKeyCheckRequestWatcher,
+    // lcpUserKeyCheckRequestWatcher,
 } from "./lcp";
 
 import {
@@ -62,12 +48,11 @@ import {
 
 export function* rootSaga() {
     yield all([
+        api.watchers(),
+
         // Catalog
-        catalogInitWatcher(),
-        catalogLocalPublicationImportWatcher(),
         catalogPublicationDownloadSuccessWatcher(),
         catalogPublicationRemoveWatcher(),
-        catalogLocalLCPImportWatcher(),
         catalogFileImportWatcher(),
 
         // Download
@@ -76,14 +61,6 @@ export function* rootSaga() {
 
         // Publication download
         publicationDownloadCancelRequestWatcher(),
-        publicationDownloadAddRequestWatcher(),
-        publicationDownloadStatusWatcher(),
-
-        // OPDS
-        opdsAddRequestWatcher(),
-        opdsInitWatcher(),
-        opdsRemoveRequestWatcher(),
-        opdsUpdateRequestWatcher(),
 
         // App
         appInitWatcher(),
@@ -99,14 +76,11 @@ export function* rootSaga() {
         readerOpenRequestWatcher(),
 
         // Streamer
-        streamerStopRequestWatcher(),
-        streamerStartRequestWatcher(),
-        streamerPublicationOpenRequestWatcher(),
-        streamerPublicationCloseRequestWatcher(),
+        streamer.watchers(),
 
         // LCP
         lcpPassphraseSubmitRequestWatcher(),
-        lcpUserKeyCheckRequestWatcher(),
+        // lcpUserKeyCheckRequestWatcher(),
         lcpRenewRequestWatcher(),
         lcpReturnRequestWatcher(),
 

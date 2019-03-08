@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { OPDS } from "readium-desktop/common/models/opds";
+import { OpdsFeed } from "readium-desktop/common/models/opds";
 
 export interface OpdsState {
-    items: OPDS[];
+    items: OpdsFeed[];
 }

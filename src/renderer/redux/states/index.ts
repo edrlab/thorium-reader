@@ -5,14 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { RouterState } from "connected-react-router";
+
 import {MessageState} from "readium-desktop/renderer/reducers/message";
 import {WindowState} from "readium-desktop/renderer/reducers/window";
 
 import { CatalogState } from "readium-desktop/common/redux/states/catalog";
+import { DialogState } from "readium-desktop/common/redux/states/dialog";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { LcpState } from "readium-desktop/common/redux/states/lcp";
 import { NetState } from "readium-desktop/common/redux/states/net";
-import { OpdsState } from "readium-desktop/common/redux/states/opds";
 
 import {
     PublicationDownloadState,
@@ -20,7 +22,12 @@ import {
 import { ReaderState } from "readium-desktop/common/redux/states/reader";
 import { UpdateState } from "readium-desktop/common/redux/states/update";
 
+import { ApiState } from "./api";
+
 import { WinState } from "./win";
+
+import { OpdsState } from "./opds";
+
 export { WinState };
 
 export interface RootState {
@@ -35,4 +42,7 @@ export interface RootState {
     publicationDownloads: PublicationDownloadState;
     reader: ReaderState;
     update: UpdateState;
+    api: ApiState;
+    dialog: DialogState;
+    router: RouterState;
 }
