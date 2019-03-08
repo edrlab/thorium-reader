@@ -49,16 +49,19 @@ export default class ReaderFooter extends React.Component<Props, States> {
     }
 
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
         const { currentLocation, publication } = this.props;
-        const { moreInfo } = this.state;
-        const arrowBoxPosition = this.getArrowBoxPosition();
 
-        let spineItemId: number;
-        if (currentLocation) {
-            spineItemId = publication.TOC.findIndex((value) => value.Href === currentLocation.locator.href);
+        if (!publication || !currentLocation) {
+            return (<></>);
         }
 
+        const __ = this.translator.translate.bind(this.translator);
+        const { moreInfo } = this.state;
+
+        const spineIndex = publication.Spine.findIndex(
+            (value) => value.Href === currentLocation.locator.href,
+        );
+        const spineTitle = currentLocation.locator.title;
         let afterCurrentLocation = false;
 
         return !this.props.fullscreen && (
@@ -75,8 +78,9 @@ export default class ReaderFooter extends React.Component<Props, States> {
                     { currentLocation &&
                         <div id={styles.track_reading}>
                             <div id={styles.current}></div>
-                                <div id={styles.chapters_markers} className={moreInfo && styles.more_information}>
-                                    { publication && publication.TOC.map((value, index) => {
+                                <div id={styles.chapters_markers}
+                                     className={moreInfo && styles.more_information}>
+                                    { publication.Spine.map((value, index) => {
                                         const atCurrentLocation = currentLocation.locator.href === value.Href;
                                         if (atCurrentLocation) {
                                             afterCurrentLocation = true;
@@ -97,7 +101,7 @@ export default class ReaderFooter extends React.Component<Props, States> {
                                         id={styles.arrow_box}
                                         style={this.getStyle(this.getArrowBoxStyle)}
                                     >
-                                        <span>{ spineItemId !== undefined && publication.TOC[spineItemId].Title}</span>
+                                        <span>{ spineTitle }</span>
                                         <p>
                                             { this.getProgression() }
                                         </p>
@@ -140,9 +144,9 @@ export default class ReaderFooter extends React.Component<Props, States> {
 
         let spineItemId = 0;
         if (currentLocation) {
-            spineItemId = publication.TOC.findIndex((value) => value.Href === currentLocation.locator.href);
+            spineItemId = publication.Spine.findIndex((value) => value.Href === currentLocation.locator.href);
         }
-        const onePourcent = 100 / publication.TOC.length;
+        const onePourcent = 100 / publication.Spine.length;
         const progression = currentLocation.locator.locations.progression;
         return ((onePourcent * spineItemId) + (onePourcent * progression));
     }
