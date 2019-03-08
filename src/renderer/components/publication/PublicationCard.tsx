@@ -126,7 +126,7 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
+const mapDispatchToProps = (dispatch: any, props: PublicationCardProps) => {
     return {
         openReader: (publication: PublicationView) => {
             dispatch({
@@ -159,6 +159,7 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
                 DialogType.PublicationInfo,
                 {
                     publication,
+                    isOpds: props.isOpds,
                 },
             ));
         },

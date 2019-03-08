@@ -18,6 +18,8 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
 import SearchForm from "./SearchForm";
 
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+
 export enum DisplayType {
     Grid = "grid",
     List = "list",
@@ -30,7 +32,7 @@ interface Props extends RouteComponentProps {
 export class Header extends React.Component<Props, undefined> {
     public render(): React.ReactElement<{}> {
         return (
-            <SecondaryHeader>
+            <SecondaryHeader id={styles.catalog_header}>
                 <Link
                     to={{search: "displayType=grid"}}
                     style={(this.props.displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}

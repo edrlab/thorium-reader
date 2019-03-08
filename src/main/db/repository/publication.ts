@@ -18,6 +18,10 @@ const TAG_INDEX = "tag_index";
 
 const TITLE_INDEX = "title_index";
 
+import {
+    convertMultiLangStringToString,
+} from "readium-desktop/common/utils";
+
 @injectable()
 export class PublicationRepository extends BaseRepository<PublicationDocument> {
     public constructor(db: PouchDB.Database) {
@@ -90,7 +94,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
             {
                 resources: dbDoc.resources,
                 opdsPublication: dbDoc.opdsPublication,
-                title: dbDoc.title,
+                title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
                 tags: dbDoc.tags,
                 files: dbDoc.files,
                 coverFile: dbDoc.coverFile,

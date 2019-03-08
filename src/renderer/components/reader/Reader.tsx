@@ -7,10 +7,8 @@
 
 import * as path from "path";
 import * as React from "react";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import {
-    Bookmark,
     ReaderConfig as ReadiumCSS,
 } from "readium-desktop/common/models/reader";
 
@@ -49,7 +47,6 @@ import {
 } from "@r2-navigator-js/electron/common/events";
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
 import { Locator } from "@r2-shared-js/models/locator";
-import { webFrame } from "electron";
 import { Publication as R2Publication } from "r2-shared-js/dist/es6-es2015/src/models/publication";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
@@ -70,14 +67,21 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import * as queryString from "query-string";
 
-webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
-webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
-    allowServiceWorkers: false,
-    bypassCSP: false,
-    corsEnabled: true,
-    secure: true,
-    supportFetchAPI: true,
-});
+import { LocatorView } from "readium-desktop/common/views/locator";
+
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+
+// import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
+// registerProtocol();
+// import { webFrame } from "electron";
+// webFrame.registerURLSchemeAsSecure(READIUM2_ELECTRON_HTTP_PROTOCOL);
+// webFrame.registerURLSchemeAsPrivileged(READIUM2_ELECTRON_HTTP_PROTOCOL, {
+//     allowServiceWorkers: false,
+//     bypassCSP: false,
+//     corsEnabled: true,
+//     secure: true,
+//     supportFetchAPI: true,
+// });
 
 const queryParams = getURLQueryParams();
 
@@ -86,12 +90,9 @@ const queryParams = getURLQueryParams();
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     const store = (container.get("store") as Store<any>);
     let settings = store.getState().reader.config;
-    if (!settings.value) {
-        console.log("!settings.value? (RENDERER)");
-    } else {
+    if (settings.value) {
         settings = settings.value;
     }
-    console.log(settings);
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {
@@ -182,7 +183,8 @@ interface ReaderState {
     menuOpen: boolean;
     fullscreen: boolean;
     indexes: any;
-    visibleBookmarkList: Locator[];
+    visibleBookmarkList: LocatorView[];
+    currentLocation: LocatorExtended;
 }
 
 interface ReaderProps {
@@ -190,7 +192,7 @@ interface ReaderProps {
     addBookmark?: any;
     findBookmarks: any;
     setLastReadingLocation: any;
-    bookmarks?: Locator[];
+    bookmarks?: LocatorView[];
 }
 
 const defaultLocale = "fr";
@@ -201,8 +203,6 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 
     @lazyInject("translator")
     private translator: Translator;
-
-    private lastLocator: any;
 
     private pubId: string;
 
@@ -249,6 +249,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             menuOpen: false,
             fullscreen: false,
             visibleBookmarkList: [],
+            currentLocation: undefined,
         };
 
         this.pubId = queryString.parse(location.search).pubId as string;
@@ -260,6 +261,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
+        this.handleLinkClick = this.handleLinkClick.bind(this);
     }
 
     public async componentDidMount() {
@@ -340,6 +342,12 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         setEpubReadingSystemInfo({ name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION });
     }
 
+    public componentDidUpdate(oldProps: ReaderProps) {
+        if (oldProps.bookmarks !== this.props.bookmarks) {
+            this.checkBookmarks();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
 
@@ -358,16 +366,14 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                         />
                         <ReaderMenu
                             open={this.state.menuOpen}
-                            publicationJsonUrl={publicationJsonUrl}
                             publication={this.state.publication}
-                            handleLinkClick={this.handleLinkClick.bind(this)}
+                            handleLinkClick={this.handleLinkClick}
                             handleBookmarkClick={this.goToLocator}
                         />
                         <ReaderOptions
                             open={this.state.settingsOpen}
                             indexes={this.state.indexes}
                             settings={this.state.settingsValues}
-                            handleLinkClick={this.handleLinkClick.bind(this)}
                             handleSettingChange={this.handleSettingsValueChange.bind(this)}
                             handleIndexChange={this.handleIndexValueChange.bind(this)}
                             setSettings={this.setSettings}
@@ -382,6 +388,9 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                         <ReaderFooter
                             navLeftOrRight={navLeftOrRight}
                             fullscreen={this.state.fullscreen}
+                            currentLocation={this.state.currentLocation}
+                            publication={this.state.publication}
+                            handleLinkClick={this.handleLinkClick}
                         />
                     </div>
                 </div>
@@ -395,7 +404,10 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     private async loadPublicationIntoViewport(locator: Locator): Promise<R2Publication> {
         let response: Response;
         try {
-            response = await fetch(publicationJsonUrl);
+            // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webframe
+            // publicationJsonUrl is READIUM2_ELECTRON_HTTP_PROTOCOL (see convertCustomSchemeToHttpUrl)
+            // publicationJsonUrl_ is https://127.0.0.1:PORT
+            response = await fetch(publicationJsonUrl_);
         } catch (e) {
             return;
         }
@@ -476,9 +488,10 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
-        // await this.props.findAllBookmarks({publicationId: this.pubId});
+        await this.props.findBookmarks({publication: {identifier: this.pubId}});
         this.saveReadingLocation(loc);
-        // await this.checkBookmarks();
+        await this.checkBookmarks();
+        this.setState({currentLocation: getCurrentReadingLocation()});
     }
 
     // check if a bookmark is on the screen
@@ -486,21 +499,21 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         if (!this.props.bookmarks) {
             return;
         }
-        console.log("list :", this.props.bookmarks);
         const visibleBookmarkList = [];
         for (const bookmark of this.props.bookmarks) {
-            if (await isLocatorVisible(bookmark)) {
+            console.log(bookmark);
+            const isVisible = await isLocatorVisible(bookmark.locator);
+            if ( isVisible ) {
                 visibleBookmarkList.push(bookmark);
             }
         }
-        console.log("visible", visibleBookmarkList);
         this.setState({visibleBookmarkList});
     }
 
     private handleLinkClick(event: any, url: string) {
         event.preventDefault();
-
-        handleLinkUrl(url);
+        const newUrl = publicationJsonUrl + "/../" + url;
+        handleLinkUrl(newUrl);
 
         // Example to pass a specific cssSelector:
         // (for example to restore a bookmark)
@@ -527,13 +540,15 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private async handleToggleBookmark() {
-        const locator = getCurrentReadingLocation().locator;
         await this.checkBookmarks();
         if (this.state.visibleBookmarkList.length > 0) {
             for (const bookmark of this.state.visibleBookmarkList) {
-                this.props.deleteBookmark({ publicationId: this.pubId, locator: bookmark });
+                this.props.deleteBookmark({
+                    identifier: bookmark.identifier,
+                });
             }
         } else {
+            const locator = this.state.currentLocation.locator;
             this.props.addBookmark({
                 publication: {
                     identifier: this.pubId,
@@ -656,7 +671,7 @@ export default withApi(
             },
             {
                 moduleId: "reader",
-                methodId: "removeBookmark",
+                methodId: "deleteBookmark",
             },
         ],
     },

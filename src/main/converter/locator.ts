@@ -21,6 +21,7 @@ export class LocatorViewConverter {
             publication: {
                 identifier: doc.publicationIdentifier,
             },
+            name: doc.name,
         };
     }
 }

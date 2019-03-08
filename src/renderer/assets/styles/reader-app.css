@@ -71,7 +71,7 @@
   display: flex;
   align-items: stretch;
   margin-top: 6rem;
-  margin-bottom: 6rem;
+  margin-bottom: 7.7rem;
 }
 
 /* ========== READER ==========*/
@@ -313,6 +313,9 @@
     & > .tab_not_clickable {
       color: grey;
       cursor: auto;
+      & svg {
+        display: none;
+      }
     }
 
     & > li {
@@ -442,6 +445,7 @@
     padding:20px 0 20px 0;
     font-size: 1rem;
     border-bottom: 1px solid #e5e5e5;
+    display: flex;
   }
 }
 
@@ -483,25 +487,34 @@ p.chapters_description {
     border: none;
     background-color: transparent;
     cursor: pointer;
+    padding: 0;
+
     & svg {
       width: 24px;
     }
   }
-}
 
-.bookmarks_line img {
-	width:30px;
-	display: inline-block;
-	vertical-align: top;
-}
+  & img {
+    width:30px;
+    height:30px;
+    display: inline-block;
+    vertical-align: top;
+  }
 
-.bookmarks_line .chapter_marker {
-	vertical-align: top;
-	position: relative;
-	display: inline-block;
-	width:auto;
-	height:auto;
-	font-size: 0.9rem;
+  & .chapter_marker {
+    vertical-align: top;
+    position: relative;
+    display: inline-block;
+    flex:1;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+  }
+
+  & span {
+    display: inline-block;
+    vertical-align: top;
+    margin-top:5px;
+  }
 }
 
 .chapter_marker .gauge {
@@ -509,24 +522,18 @@ p.chapters_description {
 	margin-top:2px;
 	height:4px;
 	background-color: #ECECEC;
-}
-
-.chapter_marker .gauge .fill {
-	height:100%;
-	position: relative;
-	width:50%;
-	background-color: #3B3B3B;
-}
-
-.bookmarks_line span {
-	display: inline-block;
-	vertical-align: top;
-	margin-top:5px;
+  
+  & .fill {
+    height:100%;
+    position: relative;
+    width:63%;
+    background-color: #3B3B3B;
+  }
 }
 
 /* ============= SETTINGS MENU =================== */
 
-#read_settings_list li {
+#read_settings_list > li, #chapter_settings_list > li{
 	padding:20px 20px 20px 20px;
 	border-bottom: 1px solid #e5e5e5;
 	font-size: 1.1rem;
@@ -545,7 +552,7 @@ p.chapters_description {
 
   &.active {
     & > svg {
-      transform: rotate(-90deg);
+      transform: rotate(90deg);
     }
   }
 }
@@ -687,6 +694,41 @@ input[type=radio] + label {
 	overflow: hidden;
 }
 
+.theme_choices {
+  text-align: left;
+  margin-left: 2rem;
+
+  & > input {
+    z-index: 5000;
+    opacity: 0;
+    position: absolute;
+    margin: 2px 0 0 0;
+    cursor: pointer;
+  }
+
+  & > label {
+    position: relative;
+    padding-left: 25px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left:0; top: 2px;
+      width: 11px;
+      height: 11px;
+      border: 1px solid black;
+    }
+  }
+
+  & > [type="radio"]:checked + label:before {
+    background-color: black;
+  }
+
+  & > [type="radio"]:focus + label:before {
+    outline: 1px #ecb13f solid;
+  }
+}
+
 /* ========= FOOTER ========= */
 
 .reader_footer {
@@ -697,8 +739,8 @@ input[type=radio] + label {
 
     & .arrows {
       float: right;
-      margin-bottom: 2rem;
-      margin-right: 5rem;
+      margin-top: 1rem;
+      margin-right: 2rem;
 
       & button {
         border: 0;
@@ -716,7 +758,7 @@ input[type=radio] + label {
 
     & .track_reading_wrapper {
           background-color: white;
-          padding: 1rem 5rem;
+          padding: 1rem 8rem 1rem 5rem;
           bottom: 0;
           margin-top: 2rem;
     }
@@ -738,36 +780,43 @@ input[type=radio] + label {
 
 #current {
 	position: relative;
-	width:30%;
-	height:100%;
-	background-color: #3C3C3C;
 }
 
 #chapters_markers {
-	display: none;
+	display: flex;
 	position: absolute;
 	width:100%;
 	height:15px;
 	margin-top:-2.5px;
 	top:0;
-}
 
-#chapters_markers span {
-	border-right:1px solid black;
-	flex-grow:1;
-}
+  &.more_information > span {
+    border-right: 1px solid #929292;
+  }
 
-#chapters_markers span:last-child{
-	border-right:none;
+  & > span {
+    flex-grow: 1;
+    padding: 2.5px 0;
+
+    & > span {
+      display: block;
+      background-color: grey;
+      width: 100%;
+      height: 100%;
+    }
+
+    &:last-child{
+      border-right:none;
+    }
+  }
 }
 
 #arrow_box {
-	display: none;
 	position: absolute;
-	width: auto;
+  width: 190px;
 	height: auto;
-	padding: 10px 0 10px 0;
-	margin: -150px 0 0 0;
+	padding: 10px 0 5px 0;
+	margin: -76px 0 0 0;
 	left:50%;
 	background: white;
 	font-size: 16px;
@@ -778,41 +827,34 @@ input[type=radio] + label {
 	box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
 	transform: translateX(-50%) translateY(0%);
 	-webkit-transform: translateX(-50%) translateY(0%);
-}
 
-#arrow_box:after, #arrow_box:before {
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-  border: solid rgba(0, 0, 0, 0);
-}
-#arrow_box:after {
-  border-color: rgba(0, 0, 0, 0);
-  border-width: 9px;
-  bottom: -18px;
-  border-top-color: white;
-  left: 50%;
-  margin-left: -9px;
-}
-#arrow_box:before {
-  border-color: rgba(255, 255, 255, 0);
-  border-width: 10px;
-  bottom: -20px;
-  border-top-color: none;
-  left: 50%;
-  margin-left: -10px;
-}
+  & .after {
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border: solid rgba(0, 0, 0, 0);
+    top: 59px;
+    border-color: rgba(0, 0, 0, 0);
+    border-width: 9px;
+    border-top-color: white;
+    left: 50%;
+    margin-left: -9px;
+  }
 
-#arrow_box span {
-	display: block;
-	padding:0 20px 10px 20px;
-	border-bottom:1px solid #c1c1c1;
-}
+  & span {
+    display: block;
+    margin:0 20px 5px 20px;
+    border-bottom:1px solid #c1c1c1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-#arrow_box p {
-	margin:10px 0 0 0;
-	font-size: 0.8rem;
-	padding:0 20px 10px 20px;
+  & p {
+    margin:10px 0 0 0;
+    font-size: 0.8rem;
+    padding:0 20px 0px 20px;
+  }
 }
