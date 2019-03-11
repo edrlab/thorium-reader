@@ -21,6 +21,75 @@
 	font-weight: 700;
 }
 
+.icon {
+	position: absolute;
+  	top: 13px;
+  	left: 10px;
+  	width: 10px;
+  	height: 10px;
+}
+
+/* SearchTag */
+
+#selection_title {
+	margin-top: 50px;
+	margin-bottom: 15px;
+	font-size: 1.3rem;
+}
+
+.selection_add {
+	margin-left: 0;
+	margin-bottom: 0;
+	margin-top: 20px;
+	display: inline;
+}
+
+#tag_input input {
+	position: relative;
+	width: 300px;
+	border-radius: 0;
+  border: none;
+  border-bottom: 1px solid #c1c1c1;
+  height: 35px;
+  outline: inherit;
+  background-color: transparent;
+  color: black;
+  font-size: 0.9rem;
+	margin-right: 0;	
+	display: inline;
+}
+
+#tag_input img {
+	position: relative;
+	right: 35px;
+	width: 40px;
+	height: 40px;
+	vertical-align: -webkit-baseline-middle;
+}
+
+#value_input span{
+	margin-top: 5px;
+	left: 40px;
+}
+
+#tag_add_button{
+	position: relative;
+	display: inline;	
+  font-weight: 400;
+  margin-top: 40px;
+	margin-bottom: 35px;
+  font-size: 0.8rem;
+	width: auto;
+	background: none;
+	border: 1px solid #c1c1c1;
+	padding: 5px 30px 5px 30px;
+	border-radius: 5px;
+}
+
+#search div {
+	display: inline;
+  }
+
 /* HEADER */
 
 #settings_header {

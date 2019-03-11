@@ -12,13 +12,12 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as RemoveIcon from "readium-desktop/renderer/assets/icons/baseline-remove-24px.svg";
 
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+//import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import { SearchContainer } from "./SearchTag";
-
-//import SearchTag from "./SearchTag";
 
 interface AddEntryFormProps {
     addEntry?: (entry: any) => void;
@@ -40,66 +39,58 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
             tag: "",
             tabTags: [],
         };
-        console.log("tags add entry form: " + this.props.tags);
-        //this.getTags = this.getTags.bind(this);
         this.selectRef = React.createRef();
-        this.updateTagValue = this.updateTagValue.bind(this);
         this.submit = this.submit.bind(this);
+        this.getValue = this.getValue.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
         return (
             <section >
-                <div>
-                    <button className={styles.tag_add_button}>
-                        <span>Ajouter une sélection</span>
-                    </button>
+                <div id={styles.selection_title}>
+                        Ajouter une sélection
                 </div>
-                <div>
-                    <form
-                    onSubmit={this.submit}
-                    style={{display: "inline-block"}}
-                    id={styles.tag_search}
-                    >
-                    {/*<input type="text"
-                    style={{border: "6px", margin: "5px 5px 5px 5px"}}
-                    placeholder="Indiquez votre #tag"
-                    value={this.state.tag}
-                    onChange={this.updateTagValue}
-                    >
-                    </input>*/}
-                    <SearchContainer
-                    tagTabs={this.props.tags}/>
-                    <button type="submit"
-                    style={{border: "6px", margin: "5px 5px 5px 5px", textAlign: "left"}}
-                    onClick={this.submit}>
+                <form
+                onSubmit={this.submit}
+                id={styles.selection_add}
+                >
+                    <span id={styles.search}>
+                        <SearchContainer
+                        tagTabs={this.props.tags}
+                        onChange={this.getValue}
+                        />
+                        <button type="submit"
+                            id={styles.tag_add_button}
+                            onClick={this.submit}>
                             Valider
-                    </button>
-                    </form>
-                </div>
+                        </button>
+                    </span>
+                </form>
             </section>
         );
     }
 
-    private updateTagValue(e: React.ChangeEvent<HTMLInputElement>) {
+    private getValue(val: string) {
+        console.log("value: " + val);
         this.setState({
-              tag: e.target.value,
-          });
+            tag: val,
+        });
+        console.log("tag: " + this.state.tag);
     }
-
     private submit(e: any) {
         e.preventDefault();
         console.log("props" + this.props);
         console.log("tag state:" + this.state.tag);
+        console.log("input value:" + e.target.value);
         for (const element of this.props.tags) {
             console.log(element);
         }
-        /*this.props.addEntry({
+        this.props.addEntry({
             entry: {
-                    title: "L'outsider",
+                    title: this.state.tag,
                     tag: this.state.tag,
                 },
-            });*/
+            });
 
         console.log("getentry: " + this.props.getentry.length);
         console.log("addentry: " + this.props.addEntry.length);
