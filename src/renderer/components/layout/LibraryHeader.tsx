@@ -22,19 +22,19 @@ import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 const headerNav = [
     {
         route: "/library",
-        label: "Mes livres",
+        label: "header.myBooks",
         matchRoutes: ["/", "/library"],
         styles: [],
     },
     {
         route: "/opds",
-        label: "Catalogues",
+        label: "header.catalogs",
         matchRoutes: ["/opds"],
         styles: [],
     },
     {
         route: "/settings",
-        label: "Préférences",
+        label: "header.mySettings",
         matchRoutes: ["/settings"],
         styles: [styles.preferences],
     },

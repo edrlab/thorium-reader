@@ -15,32 +15,37 @@ import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader
 import { Link } from "react-router-dom";
 
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface Props {
+export interface Props extends TranslatorProps {
     section: number;
 }
 
-export default class SettingsHeader extends React.Component<Props, undefined> {
+export class SettingsHeader extends React.Component<Props, undefined> {
 
-    @lazyInject("translator")
-    private translator: Translator;
+    /*@lazyInject("translator")
+    private translator: Translator;*/
 
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
+        //const __ = this.translator.translate.bind(this.translator);
 
         return (
             <SecondaryHeader id={styles.settings_header}>
                 <ul>
                     <li {...(this.props.section === 0 && {className: styles.active})}>
                         <Link to="/settings/tags">
-                            Gérer mes tags
+                            {this.props.__("settings.manageTags")}
                         </Link>
                     </li>
                     <li {...(this.props.section === 2 && {className: styles.active})}>
-                        <Link to="/settings/languages">Langue de l'interface</Link>
+                        <Link to="/settings/languages">
+                            {this.props.__("settings.language")}
+                        </Link>
                     </li>
                 </ul>
             </SecondaryHeader>
         );
     }
 }
+
+export default withTranslator(SettingsHeader);

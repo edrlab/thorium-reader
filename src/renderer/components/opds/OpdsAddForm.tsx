@@ -14,8 +14,9 @@ import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface OpdsAddFormProps {
+export interface OpdsAddFormProps extends TranslatorProps {
     openOpdsFeedAddForm?: any;
 }
 
@@ -32,13 +33,13 @@ export class OpdsAddForm extends React.Component<OpdsAddFormProps, undefined> {
     public render(): React.ReactElement<{}>  {
         return (
             <section className={ styles.opds_form }>
-                <p>Ajouter un flux</p>
+                <p>{this.props.__("catalog.addFeed")}</p>
                 <form ref={this.formRef} onSubmit={ this.add }>
                     <input
                         name="url"
                         type="text"
-                        placeholder="Coller l'URL d'un flux"
-                        title="Coller l'URL d'un flux"
+                        placeholder={this.props.__("catalog.feedPlaceholder")}
+                        title={this.props.__("catalog.feedPlaceholder")}
                         defaultValue=""
                     />
                 </form>
@@ -67,4 +68,4 @@ const mapDispatchToProps = (dispatch: any, __1: any) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(OpdsAddForm);
+export default withTranslator(connect(undefined, mapDispatchToProps)(OpdsAddForm));

@@ -17,12 +17,13 @@ import { Link } from "react-router-dom";
 import AddEntryForm from "./AddEntryForm";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface ListViewProps {
+export interface ListViewProps extends TranslatorProps{
     catalogEntries: CatalogEntryView[];
 }
 
-export default class ListView extends React.Component<ListViewProps, undefined> {
+export class ListView extends React.Component<ListViewProps, undefined> {
     public render(): React.ReactElement<{}> {
         return (
             <>
@@ -53,7 +54,7 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
              <button className={styles.tag_add_button}>
                 <span>
                     <Link to="/settings/tags" style={{color: "#1a1a1a"}}>
-                        Gérer les selections
+                    {this.props.__("catalog.Selection")}
                     </Link>
                 </span>
             </button>
@@ -61,3 +62,5 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
         );
     }
 }
+
+export default withTranslator(ListView);

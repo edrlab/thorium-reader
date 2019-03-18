@@ -6,24 +6,19 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import * as Autosuggest from "react-autosuggest";
-import SVG from "../utils/SVG";
-
-import { withApi } from "../utils/api";
-import { AddEntryForm } from "./AddEntryForm";
-
-interface SearchContainerProps {
-    tagTabs?: string[];
-    onChange?: (value: string) => void;
-}
 
 interface SearchContainerState {
     value: string;
     suggestions: string[];
+}
+
+export interface SearchContainerProps extends TranslatorProps {
+    tagTabs?: string[];
+    onChange?: (value: string) => void;
 }
 
 export class SearchContainer extends React.Component<SearchContainerProps, SearchContainerState> {
@@ -49,7 +44,7 @@ export class SearchContainer extends React.Component<SearchContainerProps, Searc
             );
         }
         const inputProps = {
-            placeholder: "Indiquez votre #tag",
+            placeholder: this.props.__("settings.placeholderTag"), // "indiquez votre tag",
             value: this.state.value,
             onChange: this.updateTagValue,
         };
@@ -125,14 +120,10 @@ export class SearchContainer extends React.Component<SearchContainerProps, Searc
 
     /**
      * Call every time suggestion is selected by mouse
+     * @param suggestion is value selected suggestion
      */
 
     private onSuggestionSelected(e: React.ChangeEvent<HTMLInputElement>, {suggestion}: any) {
-        console.log("input value: " + e.target.value);
-        console.log("state value: " + this.state.value);
-        console.log("selected suggestion: " + suggestion);
-        //e.target.value = suggestion;
-
         this.setState({
             value: suggestion,
         });
@@ -183,15 +174,4 @@ export class SearchContainer extends React.Component<SearchContainerProps, Searc
     }
 }
 
-export default withApi(
-    AddEntryForm,
-    {
-        operations: [
-            {
-                moduleId: "catalog",
-                methodId: "addEntry",
-                callProp: "addEntry",
-            },
-        ],
-    },
-);
+export default withTranslator(SearchContainer);

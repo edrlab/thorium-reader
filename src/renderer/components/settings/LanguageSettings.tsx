@@ -19,8 +19,9 @@ import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLay
 import Header from "./Header";
 
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface Props {
+export interface Props extends TranslatorProps {
     locale: string;
     setLocale: (locale: string) => void;
 }
@@ -43,7 +44,7 @@ export class LanguageSettings extends React.Component<Props, States> {
             <>
                 <LibraryLayout>
                     <Header section={2}/>
-                    <div className={styles.section_title}>Choix de la langue</div>
+                    <div className={styles.section_title}>{this.props.__("settings.languageChoice")}</div>
                     <ul className={styles.languages_list}>
                         { Object.keys(AvailableLanguages).map((lang: string, i: number) =>
                             <li
@@ -74,4 +75,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageSettings);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LanguageSettings));

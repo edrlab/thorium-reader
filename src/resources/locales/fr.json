@@ -3,7 +3,12 @@
       "entry": {
         "continueReading": "Reprendre la lecture",
         "lastAdditions": "Derniers ajouts"
-      }
+      },
+      "allBooks": "tous les livres",
+      "Selection": "Gérer mes sélection",
+      "searchPlaceholder": "rechercher",
+      "addFeed": "ajouter un flux",
+      "feedPlaceholder": "Collez l'Url d'un flux"
     },
     "library": {
         "heading": "Bibliothèque",
@@ -173,5 +178,22 @@
         "returnError": "Un erreur est survenue lors du retournement de {{title}}.",
         "passphraseError": "Impossible de déverouiller la publication {{publicationTitle}}"
       }
-    }
+    },
+    "settings": {
+      "noSelection": "Aucune sélection existante",
+      "addNewTag": "Créer une nouvelle sélection",
+      "placeholderTag": "indiquez votre #tag",
+      "layoutPreview": "dispostion sur l'écran d'acceuil",
+      "manageTags": "Gérer mes tags",
+      "language": "langue de l'interface",
+      "languageChoice": "Language selection",
+      "English": "Anglais",
+      "Deutsch": "Allemand",
+      "French": "Français"
+  },
+  "header": {
+    "myBooks": "Mes livres",
+    "catalogs": "Catalogues",
+    "mySettings": "Préférences"
+  }
 }

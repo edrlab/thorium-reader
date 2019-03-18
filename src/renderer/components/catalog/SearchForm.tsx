@@ -12,9 +12,15 @@ import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-sear
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { lazyInject } from "readium-desktop/renderer/di";
+
+import { Translator } from "readium-desktop/common/services/translator";
 
 export class Search extends React.Component<RouteComponentProps, undefined> {
     private inputRef: any;
+
+    @lazyInject("translator")
+    private translator: Translator;
 
     public constructor(props: any) {
         super(props);
@@ -24,6 +30,7 @@ export class Search extends React.Component<RouteComponentProps, undefined> {
         this.search = this.search.bind(this);
     }
     public render(): React.ReactElement<{}> {
+        const __ = this.translator.translate.bind(this.translator);
         return (
             <form onSubmit={this.search} role="search">
                 <input
@@ -31,7 +38,7 @@ export class Search extends React.Component<RouteComponentProps, undefined> {
                     type="search"
                     id="menu_search"
                     aria-label="Rechercher un livre, un tag, ou un type de littérature"
-                    placeholder="Rechercher"
+                    placeholder={__("catalog.searchPlaceholder")}
                 />
                 <button>
                     <SVG svg={SearchIcon} title="Lancer la recherche"/>

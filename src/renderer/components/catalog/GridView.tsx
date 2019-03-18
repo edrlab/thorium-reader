@@ -22,12 +22,13 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface GridViewProps extends RouteComponentProps {
+export interface GridViewProps extends TranslatorProps {
     catalogEntries: CatalogEntryView[];
 }
 
-export default class GridView extends React.Component<GridViewProps, undefined> {
+export class GridView extends React.Component<GridViewProps, undefined> {
     public render(): React.ReactElement<{}> {
         return (
             <>
@@ -40,7 +41,7 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                                         pathname: entry.tag ? "/library/search/tag/" + entry.tag
                                             : "/library/search/all",
                                     }}>
-                                        Tous les livres <SVG svg={ArrowIcon} />
+                                        {this.props.__("catalog.allBooks")}<SVG svg={ArrowIcon} />
                                     </Link>
                                 </div>
                                 <Slider
@@ -59,7 +60,7 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
             <button className={styles.tag_add_button}>
                 <span>
                     <Link to="/settings/tags" style={{color: "#1a1a1a"}}>
-                        Gérer les selections
+                       {this.props.__("catalog.Selection")}
                     </Link>
                 </span>
             </button>
@@ -67,3 +68,5 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
         );
     }
 }
+
+export default withTranslator(GridView);

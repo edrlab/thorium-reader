@@ -3,7 +3,12 @@
       "entry": {
         "continueReading": "Continue reading",
         "lastAdditions": "Last additions"
-      }
+      },
+      "allBooks": "all books",
+      "Selection": "manage selections",
+      "searchPlaceholder": "Search...",
+      "addFeed": "add content",
+      "feedPlaceholder": "paste the url of a feed"
     },
     "library": {
         "heading": "Library",
@@ -173,5 +178,24 @@
         "returnError": "An error occurred when returning the LCP license of {{title}}.",
         "passphraseError": "Unable to unlock publication {{publicationTitle}}"
       }
+    },
+    "settings": {
+      "noSelection": "no selection",
+      "addNewTag": "Create a new reading list",
+      "placeholderTag": "enter your tag",
+      "layoutPreview": "Display of the home screen layout",
+      "manageTags": "Manage my tags",
+      "language": "Languages",
+      "ConfirmAddTag": "Confirm",
+      "languageChoice": "Language selection",
+      "English": "English",
+      "Deutsch": "Deutsch",
+      "French": "French"
+    },
+    "header": {
+      "myBooks": "My books",
+      "catalogs": "Index",
+      "mySettings": "Settings"
     }
+
 }

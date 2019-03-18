@@ -17,17 +17,19 @@ import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-import { SearchContainer } from "./SearchTag";
+import SearchContainer from "./SearchTag";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface AddEntryFormProps {
-    addEntry?: (entry: any) => void;
-    getentry?: CatalogEntryView[];
-    tags?: string[];
-}
 
 interface AddEntryFormState {
     tag: string;
     tabTags: string[];
+}
+
+export interface AddEntryFormProps extends TranslatorProps {
+    addEntry?: (entry: any) => void;
+    getentry?: CatalogEntryView[];
+    tags?: string[];
 }
 
 export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFormState> {
@@ -46,15 +48,15 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
 
     public render(): React.ReactElement<{}> {
         return (
-            <section >
-                <div id={styles.selection_title}>
-                        Ajouter une sélection
-                </div>
+            <section>
+                <p id={styles.selection_title}>
+                        {this.props.__("settings.addNewTag")}
+                </p>
                 <form
                 onSubmit={this.submit}
                 id={styles.selection_add}
                 >
-                    <span id={styles.search}>
+                    <div id={styles.entry}>
                         <SearchContainer
                         tagTabs={this.props.tags}
                         onChange={this.getValue}
@@ -62,13 +64,18 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
                         <button type="submit"
                             id={styles.tag_add_button}
                             onClick={this.submit}>
-                            Valider
+                            {this.props.__("settings.ConfirmAddTag")}
                         </button>
-                    </span>
+                    </div>
                 </form>
             </section>
         );
     }
+
+    /**
+     * Get value enter in the Autosuggest input
+     * @param val is the value of tag to add in the layout preview list (DragAndDropList)
+     */
 
     private getValue(val: string) {
         console.log("value: " + val);
@@ -78,6 +85,11 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
         console.log("tag: " + this.state.tag);
     }
     private submit(e: any) {
+
+        if (this.state.tag === "") {
+            alert("tag input is empty.");
+            return;
+        }
         e.preventDefault();
         console.log("props" + this.props);
         console.log("tag state:" + this.state.tag);
@@ -91,7 +103,9 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
                     tag: this.state.tag,
                 },
             });
-
+        this.setState({
+            tag: "",
+        });
         console.log("getentry: " + this.props.getentry.length);
         console.log("addentry: " + this.props.addEntry.length);
     }
@@ -121,9 +135,11 @@ export default withApi(
         ],
         refreshTriggers: [
             {
-                moduleId: "publication",
-                methodId: "updateTags",
+                moduleId: "catalog",
+                methodId: "updateEntries",
             },
         ],
     },
 );
+
+export const translate = withTranslator(AddEntryForm);

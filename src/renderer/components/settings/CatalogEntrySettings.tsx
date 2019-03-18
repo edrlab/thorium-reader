@@ -14,7 +14,7 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 
-import Header from "./Header";
+import SettingsHeader from "./Header";
 
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 
@@ -26,8 +26,9 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import AddEntryForm from "../catalog/AddEntryForm";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface CatalogEntrySettingsProps {
+export interface CatalogEntrySettingsProps extends TranslatorProps {
     entries?: CatalogEntryView[];
     updateEntries?: (data: any) => void;
 }
@@ -79,7 +80,7 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
         return (
             <>
                 <LibraryLayout>
-                    <Header section={0} />
+                    <SettingsHeader section={0} />
                     { this.buildDragAndDropList() }
                     <AddEntryForm/>
                 </LibraryLayout>
@@ -91,7 +92,7 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
         if (this.props.entries && this.props.entries.length === 0) {
             return (
                 <p>
-                    Aucune sélection existante
+                    {this.props.__("settings.noSelection")}
                 </p>
             );
         }
@@ -99,7 +100,7 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
         return (
             <>
                 <div className={styles.section_title}>
-                    Disposition sur l'écran d'accueil
+                    {this.props.__("settings.layoutPreview")}
                 </div>
                 <DragAndDropList
                     elementContent={
@@ -247,3 +248,5 @@ export default withApi(
         ],
     },
 );
+
+export const translate = withTranslator(CatalogEntrySettings);

@@ -44,6 +44,15 @@
 	display: inline;
 }
 
+div.selection_add div {
+	display: inline;
+}
+
+.search {
+	float: left;
+	display: inline;
+}
+
 #tag_input input {
 	position: relative;
 	width: 300px;
@@ -86,9 +95,22 @@
 	border-radius: 5px;
 }
 
-#search div {
+#entry{
+	width: 150px;
 	display: inline;
-  }
+	}
+
+#entry div {
+	display: inline;
+}
+#entry div ~ div {
+	display: inline;	
+	}
+	
+#entry div div ~ ul {
+	display: inline;
+	background-color: aqua;
+}
 
 /* HEADER */
 

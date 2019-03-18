@@ -3,7 +3,8 @@
       "entry": {
         "continueReading": "Continue reading",
         "lastAdditions": "Last additions"
-      }
+      },
+      "allBooks": "tous les livres"
     },
     "library": {
         "heading": "Bibliothek",
@@ -116,5 +117,22 @@
         "returnError": "Beim Zurückgeben der LCP-Lizenz von {{title}} trat ein Fehler auf",
         "passphraseError": "Konnte die Publikation {{publicationTitle}} nicht entsperren"
       }
+    },
+    "settings": {
+      "noSelection": "no selection",
+      "addNewTag": "Create a new reading list",
+      "placeholderTag": "find your #tag",
+      "layoutPreview": "Preview of the home screen layout",
+      "manageTags": "Manage my tags",
+      "language": "Language of the interface",
+      "languageChoice": "Language selection",
+      "English": "Englisch",
+      "Deutsch": "Deutsch",
+      "French": "Französisch"
+    },
+    "header": {
+      "myBooks": "My books",
+      "catalogs": "Index",
+      "mySettings": "Settings"
     }
 }
