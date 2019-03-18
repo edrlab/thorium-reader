@@ -12,14 +12,13 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as RemoveIcon from "readium-desktop/renderer/assets/icons/baseline-remove-24px.svg";
 
-//import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import SearchContainer from "./SearchTag";
-import { TranslatorProps, withTranslator } from "../utils/translator";
 
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
 interface AddEntryFormState {
     tag: string;

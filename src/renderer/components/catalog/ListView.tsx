@@ -14,12 +14,10 @@ import PublicationListElement from "readium-desktop/renderer/components/publicat
 
 import { Link } from "react-router-dom";
 
-import AddEntryForm from "./AddEntryForm";
-
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
-export interface ListViewProps extends TranslatorProps{
+export interface ListViewProps extends TranslatorProps {
     catalogEntries: CatalogEntryView[];
 }
 
