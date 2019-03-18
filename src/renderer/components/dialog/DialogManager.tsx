@@ -59,6 +59,8 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 return this.buildFileImportDialog();
             case DialogType.PublicationInfo:
                 return this.buildPublicationShowDialog();
+            case DialogType.PublicationInfoReader:
+                return this.buildReaderPublicationShowDialog();
             case DialogType.OpdsFeedAddForm:
                 return this.buildOpdsFeedAddFormDialog();
             case DialogType.DeletePublicationConfirm:
@@ -99,6 +101,20 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 <PublicationInfo
                     publication={ this.props.dialog.data.publication }
                     isOpds={ this.props.dialog.data.isOpds }
+                />
+            </Dialog>
+        );
+    }
+
+    private buildReaderPublicationShowDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+            >
+                <PublicationInfo
+                    publication={ this.props.dialog.data.publication }
+                    hideControls={ true }
                 />
             </Dialog>
         );
