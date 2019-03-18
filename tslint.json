@@ -12,6 +12,7 @@
     "interface-name": [false],
     "no-unused-variable": [true],
     "no-console": [false],
-    "forin": false
+    "forin": false,
+    "prefer-for-of": false
   }
 }
