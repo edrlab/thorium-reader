@@ -42,6 +42,9 @@ export class SettingsHeader extends React.Component<Props, undefined> {
                             {this.props.__("settings.language")}
                         </Link>
                     </li>
+                    <li {...(this.props.section === 3 && {className: styles.active})}>
+                        <Link to="/settings/information">Informations</Link>
+                    </li>
                 </ul>
             </SecondaryHeader>
         );

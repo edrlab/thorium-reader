@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import CatalogEntrySettings from "./components/settings/CatalogEntrySettings";
+import Information from "./components/settings/Information";
 import LanguageSettings from "./components/settings/LanguageSettings";
 
 import Catalog from "./components/catalog/Catalog";
@@ -53,6 +54,12 @@ export const routes: RouteList = {
         exact: false,
         title: "Settings: Languages",
         component: LanguageSettings,
+    },
+    "/settings/information": {
+        path: "/settings/information",
+        exact: false,
+        title: "Information",
+        component: Information,
     },
     "/settings": {
         path: "/settings",

@@ -56,7 +56,7 @@ export class CatalogLcpControls extends React.Component<CatalogLcpControlsProps,
                 { lcpReadable(publication) ?
                     <a  onClick={this.handleRead} className={styles.lire}>Lire</a>
                 :
-                    <p>Impossible de lire ce document. Veuillez renouveler la liscence.</p>
+                    <p style={{color: "red"}}>Impossible de lire ce document. Veuillez renouveler la liscence.</p>
                 }
                 <ul className={styles.liens}>
                     { publication.lcp.rights.end && <>

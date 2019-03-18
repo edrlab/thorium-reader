@@ -7,12 +7,7 @@
 
 import * as React from "react";
 
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-
-import { Translator } from "readium-desktop/common/services/translator";
-import { lazyInject } from "readium-desktop/renderer/di";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
@@ -20,13 +15,22 @@ import * as queryString from "query-string";
 
 import { LocatorView } from "readium-desktop/common/views/locator";
 
+import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-interface Props {
+import classnames from "classnames";
+
+import UpdateBookmarkForm from "./UpdateBookmarkForm";
+
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+
+interface Props extends TranslatorProps {
     open: boolean;
-    publicationJsonUrl: string;
     publication: R2Publication;
     handleLinkClick: (event: any, url: string) => void;
     bookmarks: LocatorView[];
@@ -35,22 +39,20 @@ interface Props {
 }
 
 interface State {
-    sectionOpenList: boolean[];
+    openedSection: number;
+    bookmarkToUpdate: number;
 }
 
 export class ReaderMenu extends React.Component<Props, State> {
     private sectionRefList: any = [];
-    private tocRendererList: any;
     private clickableList: boolean[] = [];
-
-    @lazyInject("translator")
-    private translator: Translator;
 
     public constructor(props: Props) {
         super(props);
 
         this.state = {
-            sectionOpenList: [],
+            openedSection: undefined,
+            bookmarkToUpdate: undefined,
         };
 
         this.sectionRefList = [
@@ -59,12 +61,14 @@ export class ReaderMenu extends React.Component<Props, State> {
             React.createRef(),
             React.createRef(),
         ];
+
+        this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
     }
 
     public componentWillReceiveProps(newProps: Props) {
         if (!this.props.publication && newProps.publication) {
             const pub: R2Publication = newProps.publication;
-            this.tocRendererList = this.createTOCRenderList(pub.TOC);
+            // this.tocRendererList = this.createTOCRenderList(pub.TOC);
 
             this.clickableList = [
                 pub.TOC && pub.TOC.length > 0,
@@ -75,7 +79,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         }
     }
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
+        const { __ } = this.props;
 
         this.clickableList[2] = this.props.bookmarks && this.props.bookmarks.length > 0;
 
@@ -84,9 +88,10 @@ export class ReaderMenu extends React.Component<Props, State> {
                 <ul id={styles.chapter_settings_list}>
                     <li
                         onClick={this.handleClickSection.bind(this, 0)}
-                        className={!this.clickableList[0] && styles.tab_not_clickable}
+                        className={this.getSectionClassName(0)}
                     >
-                        {__("reader.marks.toc")}
+                        <span>{__("reader.marks.toc")}</span>
+                        <SVG svg={ArrowIcon} />
                     </li>
                     <div style={this.getSectionStyle(0)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[0]} className={styles.line_tab_content}>
@@ -97,9 +102,10 @@ export class ReaderMenu extends React.Component<Props, State> {
                     </div>
                     <li
                         onClick={this.handleClickSection.bind(this, 1)}
-                        className={!this.clickableList[1] && styles.tab_not_clickable}
+                        className={this.getSectionClassName(1)}
                     >
-                        {__("reader.marks.illustrations")}
+                        <span>{__("reader.marks.illustrations")}</span>
+                        <SVG svg={ArrowIcon} />
                     </li>
                     <div style={this.getSectionStyle(1)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[1]} className={styles.line_tab_content}>
@@ -107,9 +113,10 @@ export class ReaderMenu extends React.Component<Props, State> {
                     </div>
                     <li
                         onClick={this.handleClickSection.bind(this, 2)}
-                        className={!this.clickableList[2] && styles.tab_not_clickable}
+                        className={this.getSectionClassName(2)}
                     >
-                        {__("reader.marks.landmarks")}
+                        <span>{__("reader.marks.landmarks")}</span>
+                        <SVG svg={ArrowIcon} />
                     </li>
                     <div
                         style={this.getSectionStyle(2, this.props.bookmarks && this.props.bookmarks.length > 0)}
@@ -121,9 +128,10 @@ export class ReaderMenu extends React.Component<Props, State> {
                     </div>
                     <li
                         onClick={this.handleClickSection.bind(this, 3)}
-                        className={!this.clickableList[3] && styles.tab_not_clickable}
+                        className={this.getSectionClassName(3)}
                     >
-                        {__("reader.marks.annotations")}
+                        <span>{__("reader.marks.annotations")}</span>
+                        <SVG svg={ArrowIcon} />
                     </li>
                     <div style={this.getSectionStyle(3)} className={styles.tab_content}>
                         <div ref={this.sectionRefList[3]} className={styles.line_tab_content}>
@@ -166,9 +174,14 @@ export class ReaderMenu extends React.Component<Props, State> {
 
     private handleClickSection(id: number) {
         if (this.clickableList[id]) {
-            const { sectionOpenList } = this.state;
-            sectionOpenList[id] = !sectionOpenList[id];
-            this.setState({ sectionOpenList });
+            let { openedSection } = this.state;
+            if (openedSection === id) {
+                openedSection = undefined;
+            } else {
+                openedSection = id;
+            }
+
+            this.setState({ openedSection });
         }
     }
 
@@ -182,19 +195,25 @@ export class ReaderMenu extends React.Component<Props, State> {
         if (el.current) {
             height = el.current.offsetHeight;
         }
-        return {maxHeight: this.state.sectionOpenList[id] ? height : 0};
+        return {maxHeight: this.state.openedSection === id ? height : 0};
+    }
+
+    private getSectionClassName(id: number): any {
+        return classnames([
+            this.state.openedSection === id && styles.active,
+            !this.clickableList[id] && styles.tab_not_clickable,
+        ]);
     }
 
     private createTOCRenderList(TOC: any[]): JSX.Element[] {
         return TOC.map((content, i: number) => {
-            const url = this.props.publicationJsonUrl + "/../" + content.Href;
             return (
                 <li key={i}>
                     {content.Children ? (
                         <>
                             <a
                                 className={styles.subheading}
-                                onClick={(e) => this.props.handleLinkClick(e, url)}
+                                onClick={(e) => this.props.handleLinkClick(e, content.Href)}
                             >
                                 {content.Title}
                             </a>
@@ -207,7 +226,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                     ) : (
                         <a
                             className={styles.line + " " + styles.active}
-                            onClick={(e) => this.props.handleLinkClick(e, url)}
+                            onClick={(e) => this.props.handleLinkClick(e, content.Href)}
                         >
                             {content.Title}
                         </a>
@@ -219,7 +238,8 @@ export class ReaderMenu extends React.Component<Props, State> {
 
     private createLandmarkList(): JSX.Element[] {
         if (this.props.publication && this.props.bookmarks) {
-            return this.props.bookmarks.map((bookmark, i: number) => {
+            const { bookmarkToUpdate } = this.state;
+            return this.props.bookmarks.map((bookmark, i) => {
                 return (
                     <div
                         className={styles.bookmarks_line}
@@ -228,24 +248,36 @@ export class ReaderMenu extends React.Component<Props, State> {
                         <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
                         <div
                             className={styles.chapter_marker}
-                            onClick={() => this.props.handleBookmarkClick(bookmark)}
+                            onClick={() => this.props.handleBookmarkClick(bookmark.locator)}
                         >
-                            Bookmark {i}
+                            { bookmarkToUpdate === i ?
+                                <UpdateBookmarkForm
+                                    close={ this.closeBookarkEditForm }
+                                    bookmark={ bookmark }
+                                />
+                            :
+                                bookmark.name ? bookmark.name : <>Bookmark {i}</>
+                            }
                             <div className={styles.gauge}>
                                 <div className={styles.fill}></div>
                             </div>
                         </div>
-                        <button
-                            onClick={() => this.props.deleteBookmark({
-                                identifier: bookmark.identifier,
-                            })}
-                        >
+                        <button onClick={() => this.setState({bookmarkToUpdate: i})}>
+                            <SVG svg={ EditIcon }/>
+                        </button>
+                        <button onClick={() => this.props.deleteBookmark({
+                            identifier: bookmark.identifier,
+                        })}>
                             <SVG svg={ DeleteIcon }/>
                         </button>
                     </div>
                 );
             });
         }
+    }
+
+    private closeBookarkEditForm() {
+        this.setState({ bookmarkToUpdate: undefined });
     }
 }
 
@@ -254,7 +286,7 @@ const buildBookmarkRequestData = () => {
 };
 
 export default withApi(
-    ReaderMenu,
+    withTranslator(ReaderMenu),
     {
         operations: [
             {
@@ -278,6 +310,10 @@ export default withApi(
             {
                 moduleId: "reader",
                 methodId: "deleteBookmark",
+            },
+            {
+                moduleId: "reader",
+                methodId: "updateBookmark",
             },
         ],
     },

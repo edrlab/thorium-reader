@@ -7,4 +7,5 @@ export interface LocatorView {
     locator: Locator;
     locatorType: LocatorType;
     publication: IdentifiableView;
+    name: string;
 }
