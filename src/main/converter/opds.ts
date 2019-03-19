@@ -87,7 +87,8 @@ export class OpdsFeedViewConverter {
         );
         const sampleLinks = publication.Links.filter(
             (link: any) => {
-                return (link.Rel[0] === "http://opds-spec.org/acquisition/sample");
+                return (link.Rel[0] === "http://opds-spec.org/acquisition/sample"
+                    || link.Rel[0] === "http://opds-spec.org/acquisition/preview");
             },
         );
 
@@ -101,7 +102,8 @@ export class OpdsFeedViewConverter {
 
         const isFree = publication.Links.filter(
             (link: any) => {
-                return (link.Rel[0] === "http://opds-spec.org/acquisition");
+                return (link.Rel[0] === "http://opds-spec.org/acquisition"
+                    || link.Rel[0] === "http://opds-spec.org/acquisition/open-access");
             },
         ).length > 0;
 
