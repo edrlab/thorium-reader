@@ -19,7 +19,7 @@ interface CatalogControlsProps {
 }
 
 export class OpdsControls extends React.Component<CatalogControlsProps, undefined> {
-     public render(): React.ReactElement<{}> {
+    public render(): React.ReactElement<{}> {
         const { publication, importOpdsEntry } = this.props;
 
         if (!publication) {
