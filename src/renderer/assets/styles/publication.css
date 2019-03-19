@@ -113,7 +113,7 @@
 }
 
 .menu {
-    height: 90px;
+    height: fit-content;
     width: 180px;
     display: flex;
     flex-direction: column;
@@ -127,10 +127,11 @@
         flex: 1;
         padding: 0.5rem;
         text-align: center;
-        cursor: pointer;    
+        cursor: pointer;
         display: flex;
         align-items: center;
-        justify-content: center;                
+        justify-content: center;
+        height: 40px;
     }
     & a:not(:last-child) {
         border-bottom: 1px solid #E5E3E3;
