@@ -29,7 +29,7 @@
     display: flex;
     width:90%;
     max-width: 92rem;
-    margin: 100px auto 20px auto;
+    margin: 100px auto 20px 5rem;
     padding: 60px;
     background-color: white;
     overflow-y: auto;
@@ -111,6 +111,7 @@
 
 .dialog_right .author {
     font-size: 1.3rem;
+    margin-bottom: 30px;
 }
 
 .dialog_right h2 {
@@ -126,7 +127,7 @@
 
 .dialog_right p {
 	margin-top: 0px;
-    margin-bottom: 30px;
+    margin-bottom: 3px;
     font-weight: 300;
     font-size: 1.1rem;
 }
@@ -158,7 +159,14 @@
     }
     & > span {
         align-self: flex-start;
+        margin-top: 8px;
 	    font-weight: 600;
+    }
+
+    & button {
+        width: 20px;
+        height: 20px;
+        margin-left: 1rem;
     }
 }
 

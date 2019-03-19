@@ -54,7 +54,7 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
     public render(): React.ReactElement<{}> {
         return (
             <div>
-                <ul>
+                { this.state.tags.length > 0 && <ul>
                     {this.state.tags.map((tag: string, index: number) =>
                         <li key={index}> {tag}
                             {this.props.canModifyTag &&
@@ -64,7 +64,7 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
                             }
                         </li>,
                     )}
-                </ul>
+                </ul>}
                 {this.props.canModifyTag &&
                     <form onSubmit={this.addTag} id={styles.flux_search}>
                         <input
