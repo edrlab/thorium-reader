@@ -84,7 +84,7 @@ export class CatalogService {
         return null;
     }
 
-    public async importOpdsEntry(url: string): Promise<PublicationDocument> {
+    public async importOpdsEntry(url: string, downloadSample: boolean): Promise<PublicationDocument> {
         debug("Import OPDS publication", url);
         const opdsFeedData = await httpGet(url) as string;
         let opdsPublication: OPDSPublication = null;
@@ -121,7 +121,11 @@ export class CatalogService {
         let downloadUrl = null;
 
         for (const link of opdsPublication.Links) {
-            if (
+            if (downloadSample && link.TypeLink === "application/epub+zip"
+                && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition/sample"
+            ) {
+                downloadUrl = link.Href;
+            } else if (
                 link.TypeLink === "application/epub+zip"
                 && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition"
             ) {
@@ -130,6 +134,7 @@ export class CatalogService {
             }
         }
 
+        console.log(downloadUrl);
         if (downloadUrl == null) {
             debug("Unable to get an acquisition url from opds publication", opdsPublication.Links);
             throw new Error("Unable to get acquisition url from opds publication");

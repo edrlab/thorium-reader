@@ -79,13 +79,9 @@ export class PublicationApi {
     }
 
     public async importOpdsEntry(data: any): Promise<PublicationView[]> {
-        const { url } = data;
+        const { url, downloadSample } = data;
 
-        const newDoc = await this.catalogService.importOpdsEntry(url);
-
-        // return newDocs.map((doc) => {
-        //     return this.publicationViewConverter.convertDocumentToView(doc);
-        // });
+        await this.catalogService.importOpdsEntry(url, downloadSample);
         return null;
     }
 

@@ -79,15 +79,31 @@ export class OpdsFeedViewConverter {
 
         // Get odps entry
         let url = null;
+        let sampleUrl = null;
         const links = publication.Links.filter(
             (link: any) => {
                 return (link.TypeLink.indexOf(";type=entry;profile=opds-catalog") > 0);
             },
         );
+        const sampleLinks = publication.Links.filter(
+            (link: any) => {
+                return (link.Rel[0] === "http://opds-spec.org/acquisition/sample");
+            },
+        );
+
+        if (sampleLinks.length > 0) {
+            sampleUrl = sampleLinks[0].Href;
+        }
 
         if (links.length > 0) {
             url = links[0].Href;
         }
+
+        const isFree = publication.Links.filter(
+            (link: any) => {
+                return (link.Rel[0] === "http://opds-spec.org/acquisition");
+            },
+        ).length > 0;
 
         return  {
             title,
@@ -100,6 +116,8 @@ export class OpdsFeedViewConverter {
             publishedAt,
             cover,
             url,
+            hasSample: sampleUrl && true ,
+            isFree,
         };
     }
 
