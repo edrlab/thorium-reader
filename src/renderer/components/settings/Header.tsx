@@ -21,25 +21,25 @@ export interface Props extends TranslatorProps {
     section: number;
 }
 
-export class SettingsHeader extends React.Component<Props, undefined> {
+export default class SettingsHeader extends React.Component<Props, undefined> {
 
-    /*@lazyInject("translator")
-    private translator: Translator;*/
+    @lazyInject("translator")
+    private translator: Translator;
 
     public render(): React.ReactElement<{}> {
-        //const __ = this.translator.translate.bind(this.translator);
+        const __ = this.translator.translate.bind(this.translator);
 
         return (
             <SecondaryHeader id={styles.settings_header}>
                 <ul>
                     <li {...(this.props.section === 0 && {className: styles.active})}>
                         <Link to="/settings/tags">
-                            {this.props.__("settings.manageTags")}
+                            {__("settings.manageTags")}
                         </Link>
                     </li>
                     <li {...(this.props.section === 2 && {className: styles.active})}>
                         <Link to="/settings/languages">
-                            {this.props.__("settings.language")}
+                            {__("settings.language")}
                         </Link>
                     </li>
                     <li {...(this.props.section === 3 && {className: styles.active})}>
@@ -51,4 +51,4 @@ export class SettingsHeader extends React.Component<Props, undefined> {
     }
 }
 
-export default withTranslator(SettingsHeader);
+//export default withTranslator(SettingsHeader);

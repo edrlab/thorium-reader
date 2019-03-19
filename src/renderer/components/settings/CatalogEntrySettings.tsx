@@ -28,6 +28,10 @@ import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import AddEntryForm from "../catalog/AddEntryForm";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
+import { lazyInject } from "readium-desktop/renderer/di";
+
+import { Translator } from "readium-desktop/common/services/translator";
+
 export interface CatalogEntrySettingsProps extends TranslatorProps {
     entries?: CatalogEntryView[];
     updateEntries?: (data: any) => void;
@@ -42,6 +46,10 @@ interface CatalogEntrySettingStates {
 
 export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsProps, CatalogEntrySettingStates> {
     private inputRef: any;
+
+    // How to translate temporarily
+    @lazyInject("translator")
+    private translator: Translator;
 
     public constructor(props: any) {
         super(props);
@@ -77,6 +85,7 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
     }
 
     public render(): React.ReactElement<{}> {
+
         return (
             <>
                 <LibraryLayout>
@@ -89,10 +98,12 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
     }
 
     private buildDragAndDropList() {
+        // How to translate temporarily
+        const __ = this.translator.translate.bind(this.translator);
         if (this.props.entries && this.props.entries.length === 0) {
             return (
                 <p>
-                    {this.props.__("settings.noSelection")}
+                    {__("settings.noSelection")}
                 </p>
             );
         }
@@ -100,7 +111,7 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
         return (
             <>
                 <div className={styles.section_title}>
-                    {this.props.__("settings.layoutPreview")}
+                    {__("settings.layoutPreview")}
                 </div>
                 <DragAndDropList
                     elementContent={
@@ -249,4 +260,4 @@ export default withApi(
     },
 );
 
-export const translate = withTranslator(CatalogEntrySettings);
+//export const translate = withTranslator(CatalogEntrySettings);

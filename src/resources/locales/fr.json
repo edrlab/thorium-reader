@@ -194,6 +194,7 @@
   "header": {
     "myBooks": "Mes livres",
     "catalogs": "Catalogues",
-    "mySettings": "Préférences"
+    "mySettings": "Préférences",
+    "information": "Informations"
   }
 }

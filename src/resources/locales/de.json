@@ -131,8 +131,9 @@
       "French": "Französisch"
     },
     "header": {
-      "myBooks": "My books",
-      "catalogs": "Index",
-      "mySettings": "Settings"
+      "myBooks": "Meine Bücher",
+      "catalogs": "Katalog",
+      "mySettings": "Setting",
+      "information": "Informationen"
     }
 }

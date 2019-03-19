@@ -7,18 +7,16 @@
 
 import * as React from "react";
 
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
-import * as AddIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
-import * as RemoveIcon from "readium-desktop/renderer/assets/icons/baseline-remove-24px.svg";
-
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-import SearchContainer from "./SearchTag";
+import SearchContainer from "./SearchContainer";
 
 import { TranslatorProps, withTranslator } from "../utils/translator";
+
+import { lazyInject } from "readium-desktop/renderer/di";
+import { Translator } from "readium-desktop/common/services/translator";
 
 interface AddEntryFormState {
     tag: string;
@@ -33,6 +31,9 @@ export interface AddEntryFormProps extends TranslatorProps {
 
 export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFormState> {
     private selectRef: any;
+    // How to translate temporarily
+    @lazyInject("translator")
+    private translator: Translator;
     public constructor(props: any) {
         super(props);
 
@@ -46,10 +47,12 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
     }
 
     public render(): React.ReactElement<{}> {
+        // How to translate temporarily
+        const __ = this.translator.translate.bind(this.translator);
         return (
             <section>
                 <p id={styles.selection_title}>
-                        {this.props.__("settings.addNewTag")}
+                        {__("settings.addNewTag")}
                 </p>
                 <form
                 onSubmit={this.submit}
@@ -63,7 +66,7 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
                         <button type="submit"
                             id={styles.tag_add_button}
                             onClick={this.submit}>
-                            {this.props.__("settings.ConfirmAddTag")}
+                            {__("settings.ConfirmAddTag")}
                         </button>
                     </div>
                 </form>
