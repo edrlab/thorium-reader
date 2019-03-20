@@ -118,7 +118,7 @@ export default class SearchContainer extends React.Component<SearchContainerProp
         });
         console.log("getvaluesuggestion state: " + this.state.value);
         this.props.onChange(suggestion);
-         // put addEntry() here in order to add new tag into the home screen layout
+        // put addEntry() here in order to add new tag into the home screen layout
         return (suggestion);
     }
 
@@ -181,8 +181,8 @@ export default class SearchContainer extends React.Component<SearchContainerProp
      */
     private updateTagValue(e: React.ChangeEvent<HTMLInputElement>) {
         this.setState({
-              value: e.target.value,
-          });
+                value: e.target.value,
+            });
     }
 }
 

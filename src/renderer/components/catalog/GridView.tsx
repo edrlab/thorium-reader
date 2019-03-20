@@ -61,7 +61,7 @@ export class GridView extends React.Component<GridViewProps, undefined> {
             <button className={styles.tag_add_button}>
                 <span>
                     <Link to="/settings/tags" style={{color: "#1a1a1a"}}>
-                       {this.props.__("catalog.Selection")}
+                        {this.props.__("catalog.Selection")}
                     </Link>
                 </span>
             </button>

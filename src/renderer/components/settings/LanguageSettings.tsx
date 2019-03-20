@@ -31,9 +31,9 @@ interface States {
 }
 
 export class LanguageSettings extends React.Component<Props, States> {
-      // How to translate temporarily
-      @lazyInject("translator")
-      private translator: Translator;
+        // How to translate temporarily
+        @lazyInject("translator")
+        private translator: Translator;
 
     public constructor(props: Props) {
         super(props);

@@ -56,7 +56,7 @@ export class ListView extends React.Component<ListViewProps, undefined> {
                     );
             })
             }
-             <button className={styles.tag_add_button}>
+            <button className={styles.tag_add_button}>
                 <span>
                     <Link to="/settings/tags" style={{color: "#1a1a1a"}}>
                     {this.props.__("catalog.Selection")}
