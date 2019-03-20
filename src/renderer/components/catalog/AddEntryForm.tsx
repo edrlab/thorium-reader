@@ -16,6 +16,7 @@ import SearchContainer from "./SearchContainer";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
 import { lazyInject } from "readium-desktop/renderer/di";
+
 import { Translator } from "readium-desktop/common/services/translator";
 
 interface AddEntryFormState {

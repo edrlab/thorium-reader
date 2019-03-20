@@ -51,4 +51,4 @@ export default class SettingsHeader extends React.Component<Props, undefined> {
     }
 }
 
-//export default withTranslator(SettingsHeader);
+// export default withTranslator(SettingsHeader);

@@ -186,4 +186,4 @@ export default class SearchContainer extends React.Component<SearchContainerProp
     }
 }
 
-//export default withTranslator(SearchContainer as any);
+// export default withTranslator(SearchContainer as any);

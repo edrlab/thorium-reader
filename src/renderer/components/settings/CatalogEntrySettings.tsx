@@ -260,4 +260,4 @@ export default withApi(
     },
 );
 
-//export const translate = withTranslator(CatalogEntrySettings);
+// export const translate = withTranslator(CatalogEntrySettings);
