@@ -35,7 +35,7 @@ import classNames = require("classnames");
 interface Props {
     open: boolean;
     settings: any;
-    indexes: {fontSize: number, pageMargins: number, wordSpacing: number, letterSpacing: number, paraSpacing: number};
+    indexes: {fontSize: number, pageMargins: number, wordSpacing: number, letterSpacing: number, lineHeight: number};
     handleSettingChange: (event: any, name: string, value?: any) => void;
     handleIndexChange: (event: any, name: string, value?: any) => void;
     setSettings: (settings: any) => void;
@@ -369,19 +369,19 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                 </div>
                                 <input
                                     type="range"
-                                    onChange={(e) => this.props.handleIndexChange(e, "paraSpacing")}
+                                    onChange={(e) => this.props.handleIndexChange(e, "lineHeight")}
                                     title="Valeur des marges"
                                     id="taille_texte"
                                     min={0}
-                                    max={optionsValues.paraSpacing.length - 1}
-                                    value={this.props.indexes.paraSpacing}
+                                    max={optionsValues.lineHeight.length - 1}
+                                    value={this.props.indexes.lineHeight}
                                     step={1}
                                     aria-valuemin={0}
-                                    aria-valuemax={optionsValues.paraSpacing.length - 1}
-                                    aria-valuenow={this.props.indexes.paraSpacing}
+                                    aria-valuemax={optionsValues.lineHeight.length - 1}
+                                    aria-valuenow={this.props.indexes.lineHeight}
                                 />
                                 <span className={styles.reader_settings_value}>
-                                    {this.roundRemValue(settings.paraSpacing)}
+                                    {this.roundRemValue(settings.lineHeight)}
                                 </span>
                             </div>
                         </div>

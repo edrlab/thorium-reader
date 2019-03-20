@@ -620,10 +620,11 @@ p.chapters_description {
 #option_colonne, #option_colonne1, #option_colonne2 {
 	display: inline-block;
 	text-align: center;
-	margin-right:10px;
-	margin-left:10px;
+  margin: 0 10px 20px 10px;
 	line-height: 2rem;
 	vertical-align: baseline;
+  height: 70px;
+  width: 63px;
 }
 
 .separateur {
