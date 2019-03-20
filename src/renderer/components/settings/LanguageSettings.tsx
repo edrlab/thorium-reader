@@ -31,6 +31,10 @@ interface States {
 }
 
 export class LanguageSettings extends React.Component<Props, States> {
+      // How to translate temporarily
+      @lazyInject("translator")
+      private translator: Translator;
+
     public constructor(props: Props) {
         super(props);
 
@@ -40,11 +44,14 @@ export class LanguageSettings extends React.Component<Props, States> {
     }
 
     public render(): React.ReactElement<{}> {
+        // How to translate temporarily
+        const __ = this.translator.translate.bind(this.translator);
+        const l = "settings.";
         return (
             <>
                 <LibraryLayout>
                     <Header section={2}/>
-                    <div className={styles.section_title}>{this.props.__("settings.languageChoice")}</div>
+                    <div className={styles.section_title}>{__("settings.languageChoice")}</div>
                     <ul className={styles.languages_list}>
                         { Object.keys(AvailableLanguages).map((lang: string, i: number) =>
                             <li
@@ -53,7 +60,7 @@ export class LanguageSettings extends React.Component<Props, States> {
                                 onClick={() => this.props.setLocale(lang)}
                                 {...(this.props.locale === lang && {className: styles.active})}
                             >
-                                { (AvailableLanguages as any)[lang] }
+                                { __(l.concat((AvailableLanguages as any)[lang])) }
                             </li>,
                         )}
                     </ul>
@@ -75,4 +82,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LanguageSettings));
+export default connect(mapStateToProps, mapDispatchToProps)(LanguageSettings);

@@ -17,12 +17,18 @@ import { Link } from "react-router-dom";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
+import { lazyInject } from "readium-desktop/renderer/di";
+
+import { Translator } from "readium-desktop/common/services/translator";
+
 export interface ListViewProps extends TranslatorProps {
     catalogEntries: CatalogEntryView[];
 }
 
 export class ListView extends React.Component<ListViewProps, undefined> {
+
     public render(): React.ReactElement<{}> {
+
         return (
             <>
             {
@@ -30,7 +36,8 @@ export class ListView extends React.Component<ListViewProps, undefined> {
                     return (
                         <section key={ entryIndex }>
                             <div className={styles.title}>
-                                <h1>{ entry.title }</h1>
+                                <h1>{(entry.title === "Last additions" ?
+                                    this.props.__("catalog.entry.lastAdditions") : entry.title)}</h1>
                             </div>
                             <ul>
                                 { entry.publications.map((pub, i: number) => {
