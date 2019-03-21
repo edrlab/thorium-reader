@@ -7,10 +7,8 @@
 
 import * as path from "path";
 import * as React from "react";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import {
-    Bookmark,
     ReaderConfig as ReadiumCSS,
 } from "readium-desktop/common/models/reader";
 
@@ -78,6 +76,10 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import * as queryString from "query-string";
 
+import { LocatorView } from "readium-desktop/common/views/locator";
+
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
 // import { webFrame } from "electron";
@@ -97,12 +99,9 @@ const queryParams = getURLQueryParams();
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     const store = (container.get("store") as Store<any>);
     let settings = store.getState().reader.config;
-    if (!settings.value) {
-        console.log("!settings.value? (RENDERER)");
-    } else {
+    if (settings.value) {
         settings = settings.value;
     }
-    console.log(settings);
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {
@@ -146,6 +145,8 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 
         sepia: settings.sepia,
 
+        noFootnotes: settings.noFootnotes,
+
         textAlign: settings.align === "left" ? textAlignEnum.left :
             (settings.align === "right" ? textAlignEnum.right :
             (settings.align === "justify" ? textAlignEnum.justify : textAlignEnum.start)),
@@ -155,6 +156,8 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         typeScale: readiumCSSDefaults.typeScale,
 
         wordSpacing: settings.wordSpacing,
+
+        reduceMotion: readiumCSSDefaults.reduceMotion,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
     return jsonMsg;
@@ -194,7 +197,8 @@ interface ReaderState {
     fullscreen: boolean;
     ttsState: TTSStateEnum;
     indexes: any;
-    visibleBookmarkList: Locator[];
+    visibleBookmarkList: LocatorView[];
+    currentLocation: LocatorExtended;
 }
 
 interface ReaderProps {
@@ -202,7 +206,7 @@ interface ReaderProps {
     addBookmark?: any;
     findBookmarks: any;
     setLastReadingLocation: any;
-    bookmarks?: Locator[];
+    bookmarks?: LocatorView[];
 }
 
 const defaultLocale = "fr";
@@ -213,8 +217,6 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 
     @lazyInject("translator")
     private translator: Translator;
-
-    private lastLocator: any;
 
     private pubId: string;
 
@@ -263,6 +265,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             fullscreen: false,
             ttsState: TTSStateEnum.STOPPED,
             visibleBookmarkList: [],
+            currentLocation: undefined,
         };
 
         ttsListen((ttsstater: TTSStateEnum) => {
@@ -285,6 +288,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
+        this.handleLinkClick = this.handleLinkClick.bind(this);
     }
 
     public async componentDidMount() {
@@ -369,6 +373,11 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         console.log("set tts state was called");
         this.setState({ttsState : newTtsState});
     }
+    public componentDidUpdate(oldProps: ReaderProps) {
+        if (oldProps.bookmarks !== this.props.bookmarks) {
+            this.checkBookmarks();
+        }
+    }
 
     public render(): React.ReactElement<{}> {
         const __ = this.translator.translate.bind(this.translator);
@@ -395,16 +404,14 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                         />
                         <ReaderMenu
                             open={this.state.menuOpen}
-                            publicationJsonUrl={publicationJsonUrl}
                             publication={this.state.publication}
-                            handleLinkClick={this.handleLinkClick.bind(this)}
+                            handleLinkClick={this.handleLinkClick}
                             handleBookmarkClick={this.goToLocator}
                         />
                         <ReaderOptions
                             open={this.state.settingsOpen}
                             indexes={this.state.indexes}
                             settings={this.state.settingsValues}
-                            handleLinkClick={this.handleLinkClick.bind(this)}
                             handleSettingChange={this.handleSettingsValueChange.bind(this)}
                             handleIndexChange={this.handleIndexValueChange.bind(this)}
                             setSettings={this.setSettings}
@@ -419,6 +426,9 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                         <ReaderFooter
                             navLeftOrRight={navLeftOrRight}
                             fullscreen={this.state.fullscreen}
+                            currentLocation={this.state.currentLocation}
+                            publication={this.state.publication}
+                            handleLinkClick={this.handleLinkClick}
                         />
                     </div>
                 </div>
@@ -516,9 +526,10 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
-        // await this.props.findAllBookmarks({publicationId: this.pubId});
+        await this.props.findBookmarks({publication: {identifier: this.pubId}});
         this.saveReadingLocation(loc);
-        // await this.checkBookmarks();
+        await this.checkBookmarks();
+        this.setState({currentLocation: getCurrentReadingLocation()});
     }
 
     // check if a bookmark is on the screen
@@ -526,21 +537,21 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         if (!this.props.bookmarks) {
             return;
         }
-        console.log("list :", this.props.bookmarks);
         const visibleBookmarkList = [];
         for (const bookmark of this.props.bookmarks) {
-            if (await isLocatorVisible(bookmark)) {
+            console.log(bookmark);
+            const isVisible = await isLocatorVisible(bookmark.locator);
+            if ( isVisible ) {
                 visibleBookmarkList.push(bookmark);
             }
         }
-        console.log("visible", visibleBookmarkList);
         this.setState({visibleBookmarkList});
     }
 
     private handleLinkClick(event: any, url: string) {
         event.preventDefault();
-
-        handleLinkUrl(url);
+        const newUrl = publicationJsonUrl + "/../" + url;
+        handleLinkUrl(newUrl);
 
         // Example to pass a specific cssSelector:
         // (for example to restore a bookmark)
@@ -567,13 +578,15 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private async handleToggleBookmark() {
-        const locator = getCurrentReadingLocation().locator;
         await this.checkBookmarks();
         if (this.state.visibleBookmarkList.length > 0) {
             for (const bookmark of this.state.visibleBookmarkList) {
-                this.props.deleteBookmark({ publicationId: this.pubId, locator: bookmark });
+                this.props.deleteBookmark({
+                    identifier: bookmark.identifier,
+                });
             }
         } else {
+            const locator = this.state.currentLocation.locator;
             this.props.addBookmark({
                 publication: {
                     identifier: this.pubId,
@@ -715,7 +728,7 @@ export default withApi(
             },
             {
                 moduleId: "reader",
-                methodId: "removeBookmark",
+                methodId: "deleteBookmark",
             },
         ],
     },

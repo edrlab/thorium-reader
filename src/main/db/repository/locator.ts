@@ -59,6 +59,7 @@ export class LocatorRepository extends BaseRepository<LocatorDocument> {
                 locator: dbDoc.locator,
                 locatorType: dbDoc.locatorType,
                 publicationIdentifier: dbDoc.publicationIdentifier,
+                name: dbDoc.name,
             },
         );
     }

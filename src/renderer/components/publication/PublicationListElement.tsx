@@ -107,16 +107,6 @@ export class PublicationListElement extends React.Component<PublicationListEleme
 
 const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => {
     return {
-        openReader: (publication: PublicationView) => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
-                },
-            });
-        },
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open(
                 DialogType.PublicationInfo,

@@ -29,8 +29,6 @@ export default class PageManager extends React.Component<{}, States> {
         this.state = {
             activePage: 0,
         };
-
-        this.handlePageClick = this.handlePageClick.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -50,9 +48,5 @@ export default class PageManager extends React.Component<{}, States> {
                 })}
             </Switch>
         );
-    }
-
-    private handlePageClick(id: number) {
-        this.setState({activePage: id});
     }
 }

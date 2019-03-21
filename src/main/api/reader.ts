@@ -15,11 +15,8 @@ import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 
 import { LocatorType } from "readium-desktop/common/models/locator";
 
-import { LocatorDocument } from "readium-desktop/main/db/document/locator";
-
 @injectable()
 export class ReaderApi {
-    private bookmarkList: any = {};
     private locatorRepository: LocatorRepository;
     private locatorViewConverter: LocatorViewConverter;
 
@@ -88,12 +85,25 @@ export class ReaderApi {
         });
     }
 
+    public async updateBookmark(data: any): Promise<void> {
+        const { publication, locator, identifier, name } = data;
+        const newDoc = {
+            identifier,
+            publicationIdentifier: publication.identifier,
+            locatorType: LocatorType.Bookmark,
+            locator: Object.assign({}, locator),
+            name,
+        };
+        await this.locatorRepository.save(newDoc);
+    }
+
     public async addBookmark(data: any): Promise<void> {
-        const { publication, locator } = data;
+        const { publication, locator, name } = data;
         const doc = {
             publicationIdentifier: publication.identifier,
             locatorType: LocatorType.Bookmark,
             locator: Object.assign({}, locator),
+            name,
         };
         await this.locatorRepository.save(doc);
     }

@@ -35,12 +35,12 @@ import * as api from "./api";
 
 import * as streamer from "./streamer";
 
-// import {
-//     lcpPassphraseSubmitRequestWatcher,
-//     lcpRenewRequestWatcher,
-//     lcpReturnRequestWatcher,
-//     lcpUserKeyCheckRequestWatcher,
-// } from "./lcp";
+import {
+    lcpPassphraseSubmitRequestWatcher,
+    lcpRenewRequestWatcher,
+    lcpReturnRequestWatcher,
+    // lcpUserKeyCheckRequestWatcher,
+} from "./lcp";
 
 import {
     updateStatusWatcher,
@@ -79,10 +79,10 @@ export function* rootSaga() {
         streamer.watchers(),
 
         // LCP
-        // lcpPassphraseSubmitRequestWatcher(),
+        lcpPassphraseSubmitRequestWatcher(),
         // lcpUserKeyCheckRequestWatcher(),
-        // lcpRenewRequestWatcher(),
-        // lcpReturnRequestWatcher(),
+        lcpRenewRequestWatcher(),
+        lcpReturnRequestWatcher(),
 
         // Update checker
         updateStatusWatcher(),

@@ -48,6 +48,14 @@ main {
     margin: 0 -36px;
 }
 
+/* HEADER */
+
+#catalog_header {
+	& > *:first-child {
+		margin-right: 1rem;
+	}
+}
+
 /* LIST MY BOOKS */
 
 

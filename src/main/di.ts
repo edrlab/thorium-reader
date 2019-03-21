@@ -43,6 +43,7 @@ import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
 import { CatalogApi } from "readium-desktop/main/api/catalog";
+import { LcpApi } from "readium-desktop/main/api/lcp";
 import { OpdsApi } from "readium-desktop/main/api/opds";
 import { PublicationApi } from "readium-desktop/main/api/publication";
 
@@ -246,6 +247,10 @@ container.bind<OpdsApi>("opds-api").toConstantValue(
         opdsFeedRepository,
         opdsFeedViewConverter,
     ),
+);
+
+container.bind<LcpApi>("lcp-api").toConstantValue(
+    new LcpApi(publicationRepository, lcpManager),
 );
 
 container.bind<ReaderApi>("reader-api").toConstantValue(

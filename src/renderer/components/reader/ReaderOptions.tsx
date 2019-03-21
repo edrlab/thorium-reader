@@ -36,14 +36,13 @@ interface Props {
     open: boolean;
     settings: any;
     indexes: {fontSize: number, pageMargins: number, wordSpacing: number, letterSpacing: number, paraSpacing: number};
-    handleLinkClick: (event: any, url: string) => void;
     handleSettingChange: (event: any, name: string, value?: any) => void;
     handleIndexChange: (event: any, name: string, value?: any) => void;
     setSettings: (settings: any) => void;
 }
 
 interface State {
-    sectionOpenList: boolean[];
+    openedSection: number;
 }
 
 enum themeType {
@@ -62,7 +61,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            sectionOpenList: [],
+            openedSection: undefined,
         };
 
         this.sectionRefList = [
@@ -414,9 +413,14 @@ export default class ReaderOptions extends React.Component<Props, State> {
     }
 
     private handleClickSection(id: number) {
-        const { sectionOpenList } = this.state;
-        sectionOpenList[id] = !sectionOpenList[id];
-        this.setState({ sectionOpenList });
+        let { openedSection } = this.state;
+        if (openedSection === id) {
+            openedSection = undefined;
+        } else {
+            openedSection = id;
+        }
+
+        this.setState({ openedSection });
     }
 
     private handleChooseTheme(theme: themeType) {
@@ -456,11 +460,11 @@ export default class ReaderOptions extends React.Component<Props, State> {
         if (el.current) {
             height = el.current.offsetHeight;
         }
-        return {maxHeight: this.state.sectionOpenList[id] ? height : 0};
+        return {maxHeight: this.state.openedSection === id ? height : 0};
     }
 
     private getSectionClassName(id: number): any {
-        return this.state.sectionOpenList[id] && styles.active;
+        return this.state.openedSection === id && styles.active;
     }
 
     private getButtonClassName(propertyName: string, value: any, additionalClassName?: string): string {
