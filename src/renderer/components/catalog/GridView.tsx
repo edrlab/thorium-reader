@@ -38,12 +38,6 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                             <section key={ i }>
                                 <div className={styles.title}>
                                     <h1>{ entry.title }</h1>
-                                    <Link to={{
-                                        pathname: entry.tag ? "/library/search/tag/" + entry.tag
-                                            : "/library/search/all",
-                                    }}>
-                                        Tous les livres <SVG svg={ArrowIcon} />
-                                    </Link>
                                 </div>
                                 <Slider
                                     className={styles.slider}
