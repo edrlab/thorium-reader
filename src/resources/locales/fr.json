@@ -188,9 +188,9 @@
       "language": "langue de l'interface",
       "languageChoice": "Language selection",
       "ConfirmAddTag": "Valider",
-      "English": "Anglais",
-      "Deutsch": "Allemand",
-      "French": "Français"
+      "English": "English (Anglais)",
+      "Deutch": "Deutsch (Allemand)",
+      "Français": "Français"
   },
   "header": {
     "myBooks": "Mes livres",

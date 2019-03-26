@@ -28,8 +28,8 @@ const initI18n = i18n.init({
 
 export enum AvailableLanguages {
     en = "English",
-    fr = "French",
-    de = "Deutsch",
+    fr = "Français",
+    de = "Deutch",
 }
 
 @injectable()

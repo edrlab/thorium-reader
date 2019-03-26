@@ -36,14 +36,7 @@ export class GridView extends React.Component<GridViewProps, undefined> {
                         return (
                             <section key={ i }>
                                 <div className={styles.title}>
-                                    <h1>{(entry.title === "Last additions" ?
-                                    this.props.__("catalog.entry.lastAdditions") : entry.title)}</h1>
-                                    <Link to={{
-                                        pathname: entry.tag ? "/library/search/tag/" + entry.tag
-                                            : "/library/search/all",
-                                    }}>
-                                        {this.props.__("catalog.allBooks")}<SVG svg={ArrowIcon} />
-                                    </Link>
+                                    <h1>{ entry.title }</h1>
                                 </div>
                                 <Slider
                                     className={styles.slider}

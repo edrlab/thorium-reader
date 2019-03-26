@@ -60,7 +60,7 @@ export class LanguageSettings extends React.Component<Props, States> {
                                 onClick={() => this.props.setLocale(lang)}
                                 {...(this.props.locale === lang && {className: styles.active})}
                             >
-                                { __(l.concat((AvailableLanguages as any)[lang])) }
+                                {__(l.concat((AvailableLanguages as any)[lang])) }
                             </li>,
                         )}
                     </ul>

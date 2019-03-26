@@ -127,9 +127,9 @@
       "language": "Language of the interface",
       "ConfirmAddTag": "Confirm",
       "languageChoice": "Language selection",
-      "English": "Englisch",
-      "Deutsch": "Deutsch",
-      "French": "Französisch"
+      "English": "English (Englisch)",
+      "Deutch": "Deutch",
+      "Français": "Français (Französisch)"
     },
     "header": {
       "myBooks": "Meine Bücher",
