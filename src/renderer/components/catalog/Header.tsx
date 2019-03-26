@@ -48,13 +48,14 @@ export class Header extends React.Component<Props, undefined> {
                     <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
                 </Link>
                 <SearchForm />
+                    {console.log("debut: " + window.location.hash)}
                     {this.AllBooksButton(window.location.hash)}
             </SecondaryHeader>
         );
     }
 
     private AllBooksButton(hash: any) {
-        if (hash === "#/library" ||
+        if (hash === "#/library" || hash === "#/" ||
         hash === "#/library?displayType=grid" ||
         hash === "#/library?displayType=list") {
             return (
