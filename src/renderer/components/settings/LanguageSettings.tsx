@@ -46,7 +46,6 @@ export class LanguageSettings extends React.Component<Props, States> {
     public render(): React.ReactElement<{}> {
         // How to translate temporarily
         const __ = this.translator.translate.bind(this.translator);
-        const l = "settings.";
         return (
             <>
                 <LibraryLayout>
@@ -60,13 +59,27 @@ export class LanguageSettings extends React.Component<Props, States> {
                                 onClick={() => this.props.setLocale(lang)}
                                 {...(this.props.locale === lang && {className: styles.active})}
                             >
-                                {__(l.concat((AvailableLanguages as any)[lang])) }
+                                {this.showLanguage((AvailableLanguages as any)[lang]) }
                             </li>,
                         )}
                     </ul>
                 </LibraryLayout>
             </>
         );
+    }
+
+    private showLanguage(lang: string) {
+        // How to translate temporarily
+        const __ = this.translator.translate.bind(this.translator);
+        switch (lang) {
+            case "Français":
+                return (__("settings.French"));
+            case "Deutch":
+                return (__("settings.German"));
+            case "English":
+                return (__("settings.English"));
+                break;
+        }
     }
 }
 
