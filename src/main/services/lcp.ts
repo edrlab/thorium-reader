@@ -258,7 +258,7 @@ export class LcpManager {
                         resolve(licenseUpdateJson);
                     },
                 );
-                console.log("status document processed")
+                console.log("status document processed");
             } catch (err) {
                 debug(err);
                 reject(err);

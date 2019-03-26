@@ -51,9 +51,32 @@ main {
 /* HEADER */
 
 #catalog_header {
+	width: calc(100% - 120px);
+
 	& > *:first-child {
-		margin-right: 1rem;
+		margin-right: 1rem;			
 	}
+}
+
+#all_link_button {
+		display: inline-flex;
+		position: relative;
+		float: right;
+		top: 25px;
+		right: 0px;	
+		align-items: center;	
+		color: black;
+		text-decoration: none;
+		border-radius: 2px;
+		border: 1px solid black;
+		font-size: 0.8rem;
+		padding: 4px 2px 4px 2px;
+
+		& svg {			
+			top: 0px;			
+			height: 15px;
+			margin-left: 0px;
+		}
 }
 
 /* LIST MY BOOKS */

@@ -20,6 +20,8 @@ import SearchForm from "./SearchForm";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
+import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
+
 export enum DisplayType {
     Grid = "grid",
     List = "list",
@@ -46,8 +48,26 @@ export class Header extends React.Component<Props, undefined> {
                     <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
                 </Link>
                 <SearchForm />
+                    {console.log("debut: " + window.location.hash)}
+                    {this.AllBooksButton(window.location.hash)}
             </SecondaryHeader>
         );
+    }
+
+    private AllBooksButton(hash: any) {
+        if (hash === "#/library" || hash === "#/" ||
+        hash === "#/library?displayType=grid" ||
+        hash === "#/library?displayType=list") {
+            return (
+                <Link
+                id={styles.all_link_button}
+                to={{pathname: "/library/search/all"}}
+                >
+                    Tous les livres <SVG svg={ArrowIcon} />
+                </Link>
+            );
+        }
+        return (<></>);
     }
 }
 
