@@ -108,4 +108,9 @@ export class PublicationApi {
             return this.publicationViewConverter.convertDocumentToView(doc);
         });
     }
+
+    public async exportPublication(data: any): Promise<void> {
+        const { publication, destinationPath } = data;
+        this.catalogService.exportPublication(publication, destinationPath);
+    }
 }

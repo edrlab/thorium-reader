@@ -198,13 +198,23 @@ main {
 	height: 0px;
 	transition: height 0.5s;
     margin-left: 10px;
-    & a {
+    & a, & span label {
         border: 1px solid black;
 		padding: 4px;
 		display: inline-block;
 		cursor: pointer;
 		margin: 0.6rem 0.5rem 0 0;
     }
+
+	& span {
+		& label {
+			cursor: pointer;
+		}
+		& input {
+			position: absolute;
+			left: -2000px;
+		}
+	}
 }
 
 .menu_open{

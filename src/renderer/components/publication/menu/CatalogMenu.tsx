@@ -13,12 +13,13 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import PublicationExportButton from "./PublicationExportButton";
+
+import { connect } from "react-redux";
 
 interface PublicationCardProps {
     publication: PublicationView;
     displayPublicationInfo?: any;
-    deletePublication?: any;
     openDeleteDialog?: any;
 }
 
@@ -26,7 +27,7 @@ interface PublicationCardState {
     menuOpen: boolean;
 }
 
-export class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
+class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
     constructor(props: any) {
         super(props);
 
@@ -40,8 +41,6 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
     }
 
     public render(): React.ReactElement<{}>  {
-        const authors = this.props.publication.authors.join(", ");
-
         return (
             <>
                 <a
@@ -52,9 +51,11 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
                 </a>
                 <a
                     onClick={ this.deletePublication }
-                    onBlur={this.handleOnBlurMenu}>
+                    onBlur={this.handleOnBlurMenu}
+                >
                     Supprimer définitivement
                 </a>
+                <PublicationExportButton publication={ this.props.publication }/>
             </>
         );
     }
@@ -76,7 +77,7 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open(
@@ -97,16 +98,4 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
     };
 };
 
-export default withApi(
-    PublicationCard,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "delete",
-                callProp: "deletePublication",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);
+export default connect(mapDispatchToProps)(PublicationCard) as any;

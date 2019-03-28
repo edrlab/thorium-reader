@@ -49,6 +49,7 @@ import {
 } from "readium-desktop/common/utils";
 
 import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -220,6 +221,10 @@ export class CatalogService {
 
         // Store refreshed metadata in db
         return await this.publicationRepository.save(newPub);
+    }
+
+    public exportPublication(publication: PublicationView, destinationPath: string) {
+        this.publicationStorage.copyPublicationToPath(publication, destinationPath);
     }
 
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {
