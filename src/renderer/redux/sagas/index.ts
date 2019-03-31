@@ -10,11 +10,6 @@ import { all } from "redux-saga/effects";
 import { winInitWatcher } from "./win";
 
 import {
-    publicationDownloadAddSuccessWatcher,
-    publicationDownloadSuccessWatcher,
-} from "./publication-download";
-
-import {
     lcpPassphraseSubmitErrorWatcher,
     lcpRenewErrorWatcher,
     lcpRenewSuccessWatcher,
@@ -30,9 +25,6 @@ export function* rootSaga() {
         opds.watchers(),
 
         winInitWatcher(),
-
-        publicationDownloadAddSuccessWatcher(),
-        publicationDownloadSuccessWatcher(),
 
         lcpPassphraseSubmitErrorWatcher(),
         lcpRenewErrorWatcher(),

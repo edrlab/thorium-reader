@@ -25,7 +25,7 @@ import { lsdReturn } from "@r2-lcp-js/lsd/return";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
-import { catalogActions, lcpActions, readerActions } from "readium-desktop/common/redux/actions";
+import { lcpActions, readerActions } from "readium-desktop/common/redux/actions";
 
 import { toSha256Hex, updateLicenseStatus } from "readium-desktop/utils/lcp";
 
@@ -193,12 +193,6 @@ export function* lcpReturnRequestWatcher(): SagaIterator {
         let refreshedPublication = yield call(
             () => catalogService.refreshPublicationMetadata(publication),
         );
-        yield put({
-            type: catalogActions.ActionType.PublicationAddSuccess,
-            payload: {
-                publication: refreshedPublication,
-            },
-        });
 
         // Get lsd status
         let lsdStatus: any = null;
@@ -233,12 +227,6 @@ export function* lcpReturnRequestWatcher(): SagaIterator {
             refreshedPublication = yield call(
                 () => catalogService.refreshPublicationMetadata(publication),
             );
-            yield put({
-                type: catalogActions.ActionType.PublicationAddSuccess,
-                payload: {
-                    publication: refreshedPublication,
-                },
-            });
         } catch (error) {
             yield put({
                 type: lcpActions.ActionType.ReturnError,
@@ -284,12 +272,6 @@ export function* lcpRenewRequestWatcher(): SagaIterator {
         let refreshedPublication = yield call(
             () => catalogService.refreshPublicationMetadata(publication),
         );
-        yield put({
-            type: catalogActions.ActionType.PublicationAddSuccess,
-            payload: {
-                publication: refreshedPublication,
-            },
-        });
 
         // Get lsd status
         let lsdStatus: any = null;
@@ -325,12 +307,6 @@ export function* lcpRenewRequestWatcher(): SagaIterator {
             refreshedPublication = yield call(
                 () => catalogService.refreshPublicationMetadata(publication),
             );
-            yield put({
-                type: catalogActions.ActionType.PublicationAddSuccess,
-                payload: {
-                    publication: refreshedPublication,
-                },
-            });
         } catch (error) {
             yield put({
                 type: lcpActions.ActionType.RenewError,

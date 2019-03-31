@@ -7,21 +7,8 @@
 
 import { all } from "redux-saga/effects";
 
-import {
-    downloadAddRequestWatcher,
-    downloadPostProcessWatcher,
-} from "./downloader";
-
-import {
-    publicationDownloadCancelRequestWatcher,
-} from "./publication-download";
-
 import { appInitWatcher } from "./app";
-import {
-    catalogFileImportWatcher,
-    catalogPublicationDownloadSuccessWatcher,
-    catalogPublicationRemoveWatcher,
-} from "./catalog";
+
 import { netStatusWatcher } from "./net";
 import {
     readerBookmarkSaveRequestWatcher,
@@ -49,18 +36,6 @@ import {
 export function* rootSaga() {
     yield all([
         api.watchers(),
-
-        // Catalog
-        catalogPublicationDownloadSuccessWatcher(),
-        catalogPublicationRemoveWatcher(),
-        catalogFileImportWatcher(),
-
-        // Download
-        downloadAddRequestWatcher(),
-        downloadPostProcessWatcher(),
-
-        // Publication download
-        publicationDownloadCancelRequestWatcher(),
 
         // App
         appInitWatcher(),
