@@ -49,6 +49,7 @@ import {
 } from "readium-desktop/common/utils";
 
 import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -84,7 +85,7 @@ export class CatalogService {
         return null;
     }
 
-    public async importOpdsEntry(url: string): Promise<PublicationDocument> {
+    public async importOpdsEntry(url: string, downloadSample: boolean): Promise<PublicationDocument> {
         debug("Import OPDS publication", url);
         const opdsFeedData = await httpGet(url) as string;
         let opdsPublication: OPDSPublication = null;
@@ -121,7 +122,11 @@ export class CatalogService {
         let downloadUrl = null;
 
         for (const link of opdsPublication.Links) {
-            if (
+            if (downloadSample && link.TypeLink === "application/epub+zip"
+                && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition/sample"
+            ) {
+                downloadUrl = link.Href;
+            } else if (
                 link.TypeLink === "application/epub+zip"
                 && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition"
             ) {
@@ -130,6 +135,7 @@ export class CatalogService {
             }
         }
 
+        console.log(downloadUrl);
         if (downloadUrl == null) {
             debug("Unable to get an acquisition url from opds publication", opdsPublication.Links);
             throw new Error("Unable to get acquisition url from opds publication");
@@ -215,6 +221,10 @@ export class CatalogService {
 
         // Store refreshed metadata in db
         return await this.publicationRepository.save(newPub);
+    }
+
+    public exportPublication(publication: PublicationView, destinationPath: string) {
+        this.publicationStorage.copyPublicationToPath(publication, destinationPath);
     }
 
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {

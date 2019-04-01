@@ -31,6 +31,7 @@ interface PublicationInfoProps {
     publication?: PublicationView;
     closeDialog?: any;
     getPublicationFromId?: any;
+    hideControls?: boolean;
 }
 
 export class PublicationInfo extends React.Component<PublicationInfoProps, undefined> {
@@ -72,7 +73,9 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
                         <Cover publication={publication} />
                     </div>
                 </div>
-                <Controls publication={this.props.publication}/>
+                { !this.props.hideControls &&
+                    <Controls publication={this.props.publication}/>
+                }
             </div>
             <div className={styles.dialog_right}>
                 <h2>{publication.title}</h2>

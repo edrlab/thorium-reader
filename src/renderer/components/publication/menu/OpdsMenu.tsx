@@ -11,12 +11,13 @@ import { DialogType } from "readium-desktop/common/models/dialog";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 interface PublicationCardProps {
-    publication: PublicationView;
+    publication: OpdsPublicationView;
     displayPublicationInfo?: any;
     deletePublication?: any;
     importOpdsEntry?: any;
@@ -38,11 +39,11 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
         this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
         this.addToCatalog = this.addToCatalog.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
+        this.addSampleToCatalog = this.addSampleToCatalog.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
-        const authors = this.props.publication.authors.join(", ");
-
+        const { publication } = this.props;
         return (
             <>
                 <a
@@ -51,12 +52,22 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
                 >
                     Fiche livre
                 </a>
-                <a
-                    onClick={ this.addToCatalog }
-                    onBlur={this.handleOnBlurMenu}
-                >
-                    Ajouter à la bibliothèque
-                </a>
+                { publication.isFree &&
+                    <a
+                        onClick={ this.addToCatalog }
+                        onBlur={this.handleOnBlurMenu}
+                    >
+                        Ajouter à la bibliothèque
+                    </a>
+                }
+                { publication.hasSample &&
+                    <a
+                        onClick={ this.addSampleToCatalog }
+                        onBlur={this.handleOnBlurMenu}
+                    >
+                        Ajouter l'extrait à la bibliothèque
+                    </a>
+                }
             </>
         );
     }
@@ -65,7 +76,17 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
         e.preventDefault();
         this.props.importOpdsEntry(
             {
-                url: (this.props.publication as any).url,
+                url: this.props.publication.url,
+            },
+        );
+    }
+
+    private addSampleToCatalog(e: any) {
+        e.preventDefault();
+        this.props.importOpdsEntry(
+            {
+                url: this.props.publication.url,
+                downloadSample: true,
             },
         );
     }
@@ -84,7 +105,7 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
 
 const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
     return {
-        displayPublicationInfo: (publication: PublicationView) => {
+        displayPublicationInfo: (publication: OpdsPublicationView) => {
             dispatch(dialogActions.open(
                 DialogType.PublicationInfo,
                 {

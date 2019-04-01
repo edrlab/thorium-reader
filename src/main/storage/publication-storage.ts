@@ -17,6 +17,10 @@ import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
 import { File } from "readium-desktop/common/models/file";
 import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
 
+import { PublicationView } from "readium-desktop/common/views/publication";
+
+import slugify from "slugify";
+
 // Store publications in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
 // publication uuid
@@ -76,6 +80,13 @@ export class PublicationStorage {
             this.buildPublicationPath(identifier),
             "book.epub",
         );
+    }
+
+    public copyPublicationToPath(publication: PublicationView, destinationPath: string) {
+        console.log(publication);
+        const publicationPath = `${this.buildPublicationPath(publication.identifier)}/book.epub`;
+        const newFilePath = `${destinationPath}/${slugify(publication.title)}.epub`;
+        fs.copyFileSync(publicationPath, newFilePath);
     }
 
     private buildPublicationPath(identifier: string): string {

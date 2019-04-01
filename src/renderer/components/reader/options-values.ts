@@ -65,12 +65,24 @@ export const paraSpacing: string[] = [
     "3rem",
 ];
 
+export const lineHeight: string[] = [
+    "1",
+    "1.125",
+    "1.25",
+    "1.35",
+    "1.5",
+    "1.65",
+    "1.75",
+    "2",
+];
+
 const optionsValues = {
     fontSize,
     pageMargins,
     wordSpacing,
     letterSpacing,
     paraSpacing,
+    lineHeight,
 };
 
 export default optionsValues as {[name: string]: string[]};

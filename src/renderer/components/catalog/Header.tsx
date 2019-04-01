@@ -18,6 +18,8 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
 import SearchForm from "./SearchForm";
 
+import PublicationAddButton from "./PublicationAddButton";
+
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
@@ -48,8 +50,8 @@ export class Header extends React.Component<Props, undefined> {
                     <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
                 </Link>
                 <SearchForm />
-                    {console.log("debut: " + window.location.hash)}
-                    {this.AllBooksButton(window.location.hash)}
+                {this.AllBooksButton(window.location.hash)}
+                <PublicationAddButton />
             </SecondaryHeader>
         );
     }
