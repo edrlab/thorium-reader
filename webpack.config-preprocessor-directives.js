@@ -6,8 +6,9 @@ var git = require("git-rev-sync");
 const portApp = process.env.PORT_APP || "8090";
 const portReader = process.env.PORT_READER || "8191";
 
-const nodeEnv = process.env.NODE_ENV || "DEV";
-const isDev = nodeEnv === "DEV";
+// Get node environment
+const nodeEnv = process.env.NODE_ENV || "development";
+const isDev = nodeEnv === "development";
 
 const pouchDbAdapterName = isDev ?
     "jsondown" : "leveldb";

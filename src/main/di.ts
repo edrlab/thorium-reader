@@ -87,7 +87,7 @@ if (PouchDB.default) {
 
 const rootDbPath = path.join(
     userDataPath,
-    (_NODE_ENV === "DEV") ? "db-dev" : "db",
+    (_NODE_ENV === "development") ? "db-dev" : "db",
 );
 
 if (!fs.existsSync(rootDbPath)) {
