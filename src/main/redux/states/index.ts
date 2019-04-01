@@ -11,7 +11,6 @@ import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { LcpState } from "readium-desktop/common/redux/states/lcp";
 import { NetState } from "readium-desktop/common/redux/states/net";
 
-
 import { ReaderState } from "readium-desktop/common/redux/states/reader";
 import { UpdateState } from "readium-desktop/common/redux/states/update";
 
