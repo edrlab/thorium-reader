@@ -53,7 +53,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
         const formatedPublishers = publication.publishers.join(", ");
         let formatedPublishedDate = null;
 
-        let Controls = CatalogControls;
+        let Controls: any = CatalogControls;
         if (this.props.isOpds) {
             Controls = OpdsControls;
         }

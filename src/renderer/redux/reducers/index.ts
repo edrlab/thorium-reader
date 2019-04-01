@@ -18,6 +18,8 @@ import {
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 
+import { connectRouter } from "connected-react-router";
+
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { updateReducer } from "readium-desktop/common/redux/reducers/update";
@@ -30,7 +32,9 @@ import { apiReducer } from "./api";
 
 import { opdsReducer } from "./opds";
 
-export const rootReducer = combineReducers({
+import { History } from "history";
+
+export const rootReducer = (history: History) => combineReducers({
     i18n: i18nReducer,
     lcp: lcpReducer,
     window: windowReducer,
@@ -42,4 +46,5 @@ export const rootReducer = combineReducers({
     update: updateReducer,
     api: apiReducer,
     dialog: dialogReducer,
+    router: connectRouter(history),
 });

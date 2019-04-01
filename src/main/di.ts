@@ -155,12 +155,10 @@ const store = initStore();
 container.bind<Store<any>>("store").toConstantValue(store);
 
 // Create window registry
-const winRegistry = new WinRegistry();
-container.bind<WinRegistry>("win-registry").toConstantValue(winRegistry);
+container.bind<WinRegistry>("win-registry").to(WinRegistry).inSingletonScope();
 
 // Create translator
-const translator = new Translator();
-container.bind<Translator>("translator").toConstantValue(translator);
+container.bind<Translator>("translator").to(Translator).inSingletonScope();
 
 // Create downloader
 const downloader = new Downloader(app.getPath("temp"));
@@ -181,18 +179,9 @@ container.bind<ConfigRepository>("config-repository").toConstantValue(
 );
 
 // Create converters
-const publicationViewConverter = new PublicationViewConverter();
-container.bind<PublicationViewConverter>("publication-view-converter").toConstantValue(
-    publicationViewConverter,
-);
-const locatorViewConverter = new LocatorViewConverter();
-container.bind<LocatorViewConverter>("locator-view-converter").toConstantValue(
-    locatorViewConverter,
-);
-const opdsFeedViewConverter = new OpdsFeedViewConverter();
-container.bind<OpdsFeedViewConverter>("opds-feed-view-converter").toConstantValue(
-    opdsFeedViewConverter,
-);
+container.bind<PublicationViewConverter>("publication-view-converter").to(PublicationViewConverter).inSingletonScope();
+container.bind<LocatorViewConverter>("locator-view-converter").to(LocatorViewConverter).inSingletonScope();
+container.bind<OpdsFeedViewConverter>("opds-feed-view-converter").to(OpdsFeedViewConverter).inSingletonScope();
 
 // Storage
 const publicationStorage = new PublicationStorage(publicationRepositoryPath);
@@ -209,60 +198,18 @@ container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
 );
 
 // Create lcp manager
-const lcpManager = new LcpManager(
-    publicationRepository,
-    publicationStorage,
-    deviceIdManager,
-);
-container.bind<LcpManager>("lcp-manager").toConstantValue(lcpManager);
-
-const catalogService = new CatalogService(
-    publicationRepository,
-    publicationStorage,
-    downloader,
-    lcpManager,
-);
-container.bind<CatalogService>("catalog-service").toConstantValue(
-    catalogService,
-);
+container.bind<LcpManager>("lcp-manager").to(LcpManager).inSingletonScope();
+container.bind<CatalogService>("catalog-service").to(CatalogService).inSingletonScope();
 
 // API
-container.bind<CatalogApi>("catalog-api").toConstantValue(
-    new CatalogApi(
-        publicationRepository,
-        configRepository,
-        publicationViewConverter,
-        translator,
-    ),
-);
-container.bind<PublicationApi>("publication-api").toConstantValue(
-    new PublicationApi(
-        publicationRepository,
-        publicationViewConverter,
-        catalogService,
-    ),
-);
-container.bind<OpdsApi>("opds-api").toConstantValue(
-    new OpdsApi(
-        opdsFeedRepository,
-        opdsFeedViewConverter,
-    ),
-);
-
-container.bind<LcpApi>("lcp-api").toConstantValue(
-    new LcpApi(publicationRepository, lcpManager),
-);
-
-container.bind<ReaderApi>("reader-api").toConstantValue(
-    new ReaderApi(
-        locatorRepository,
-        locatorViewConverter,
-    ),
-);
+container.bind<CatalogApi>("catalog-api").to(CatalogApi).inSingletonScope();
+container.bind<PublicationApi>("publication-api").to(PublicationApi).inSingletonScope();
+container.bind<OpdsApi>("opds-api").to(OpdsApi).inSingletonScope();
+container.bind<LcpApi>("lcp-api").to(LcpApi).inSingletonScope();
+container.bind<ReaderApi>("reader-api").to(ReaderApi).inSingletonScope();
 
 // Create action serializer
-const actionSerializer = new ActionSerializer();
-container.bind<ActionSerializer>("action-serializer").toConstantValue(actionSerializer);
+container.bind<ActionSerializer>("action-serializer").to(ActionSerializer).inSingletonScope();
 
 const {
     lazyInject,

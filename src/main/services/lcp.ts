@@ -11,10 +11,17 @@ import * as uuid from "uuid";
 
 import { JSON as TAJSON } from "ta-json-x";
 
-import { injectable} from "inversify";
+import { Server } from "@r2-streamer-js/http/server";
+
+import { inject, injectable } from "inversify";
 
 import { lsdRenew } from "@r2-lcp-js/lsd/renew";
 import { lsdReturn } from "@r2-lcp-js/lsd/return";
+import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
+
+import { Publication } from "readium-desktop/common/models/publication";
+
+import { toSha256Hex } from "readium-desktop/utils/lcp";
 
 import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
 
@@ -43,11 +50,13 @@ export class LcpManager {
     private deviceIdManager: DeviceIdManager;
     private publicationStorage: PublicationStorage;
     private publicationRepository: PublicationRepository;
+    private streamer: Server;
 
     public constructor(
-        publicationRepository: PublicationRepository,
-        publicationStorage: PublicationStorage,
-        deviceIdManager: DeviceIdManager,
+        @inject("publication-repository") publicationRepository: PublicationRepository,
+        @inject("publication-storage") publicationStorage: PublicationStorage,
+        @inject("device-id-manager") deviceIdManager: DeviceIdManager,
+        @inject("streamer") streamer: Server,
     ) {
         this.publicationRepository = publicationRepository;
         this.publicationStorage = publicationStorage;
@@ -236,6 +245,23 @@ export class LcpManager {
         }
 
         return newPublicationDocument;
+    }
+
+    public async testPassphrase(publication: Publication, passphrase: string): Promise<void> {
+        // Get epub file from publication
+        const epubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
+
+        // Create sha256 in hex of passphrase
+        const sha256HexPassphrase = toSha256Hex(passphrase);
+        await doTryLcpPass(
+            this.streamer,
+            epubPath,
+            [ sha256HexPassphrase ],
+            true,
+        );
+
+        // New secret that rocks
+        // secretManager.storeSecret(sha256HexPassphrase);
     }
 
     private async processStatusDocument(

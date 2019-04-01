@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
+import { inject, injectable} from "inversify";
 
 import { JSON as TAJSON } from "ta-json-x";
 
@@ -38,8 +38,8 @@ export class OpdsApi {
     private opdsFeedViewConverter: OpdsFeedViewConverter;
 
     constructor(
-        opdsFeedRepository: OpdsFeedRepository,
-        opdsFeedViewConverter: OpdsFeedViewConverter,
+        @inject("opds-feed-repository") opdsFeedRepository: OpdsFeedRepository,
+        @inject("opds-feed-view-converter") opdsFeedViewConverter: OpdsFeedViewConverter,
     ) {
         this.opdsFeedRepository = opdsFeedRepository;
         this.opdsFeedViewConverter = opdsFeedViewConverter;

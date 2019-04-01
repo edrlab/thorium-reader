@@ -15,7 +15,7 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 interface CatalogControlsProps {
     publication: OpdsPublicationView;
-    importOpdsEntry: any;
+    importOpdsEntry?: any;
 }
 
 export class OpdsControls extends React.Component<CatalogControlsProps, undefined> {

@@ -19,7 +19,7 @@ import {
     convertOpds1ToOpds2_EntryToPublication,
 } from "@r2-opds-js/opds/converter";
 
-import { injectable} from "inversify";
+import { inject, injectable} from "inversify";
 
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Publication } from "readium-desktop/common/models/publication";
@@ -62,10 +62,10 @@ export class CatalogService {
     private publicationRepository: PublicationRepository;
 
     public constructor(
-        publicationRepository: PublicationRepository,
-        publicationStorage: PublicationStorage,
-        downloader: Downloader,
-        lcpManager: LcpManager,
+        @inject("publication-repository") publicationRepository: PublicationRepository,
+        @inject("publication-storage") publicationStorage: PublicationStorage,
+        @inject("downloader") downloader: Downloader,
+        @inject("lcp-manager") lcpManager: LcpManager,
     ) {
         this.publicationRepository = publicationRepository;
         this.publicationStorage = publicationStorage;

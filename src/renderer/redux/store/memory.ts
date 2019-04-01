@@ -9,7 +9,7 @@ import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
 
-import { connectRouter, routerMiddleware } from "connected-react-router";
+import { routerMiddleware } from "connected-react-router";
 
 import { History } from "history";
 import { reduxSyncMiddleware } from "readium-desktop/renderer/redux/middleware/sync";
@@ -20,7 +20,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 export function initStore(history: History): Store<RootState> {
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(
-        connectRouter(history)(rootReducer),
+        rootReducer(history),
         composeWithDevTools(
             applyMiddleware(
                 routerMiddleware(history),

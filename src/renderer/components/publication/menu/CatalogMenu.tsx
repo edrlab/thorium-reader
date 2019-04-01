@@ -17,17 +17,17 @@ import PublicationExportButton from "./PublicationExportButton";
 
 import { connect } from "react-redux";
 
-interface PublicationCardProps {
+interface Props {
     publication: PublicationView;
     displayPublicationInfo?: any;
     openDeleteDialog?: any;
 }
 
-interface PublicationCardState {
+interface State {
     menuOpen: boolean;
 }
 
-class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
+class CatalogMenu extends React.Component<Props, State> {
     constructor(props: any) {
         super(props);
 
@@ -98,4 +98,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapDispatchToProps)(PublicationCard) as any;
+export default connect(null, mapDispatchToProps)(CatalogMenu) as any;

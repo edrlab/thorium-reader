@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
+import { inject, injectable} from "inversify";
 
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
 
@@ -28,10 +28,10 @@ export class CatalogApi {
     private translator: Translator;
 
     constructor(
-        publicationRepository: PublicationRepository,
-        configRepository: ConfigRepository,
-        publicationViewConverter: PublicationViewConverter,
-        translator: Translator,
+        @inject("publication-repository") publicationRepository: PublicationRepository,
+        @inject("config-repository") configRepository: ConfigRepository,
+        @inject("publication-view-converter") publicationViewConverter: PublicationViewConverter,
+        @inject("translator") translator: Translator,
     ) {
         this.publicationRepository = publicationRepository;
         this.configRepository = configRepository;

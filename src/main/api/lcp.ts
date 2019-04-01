@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
+import { inject, injectable} from "inversify";
 
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { PublicationRepository } from "../db/repository/publication";
@@ -16,8 +16,8 @@ export class LcpApi {
     private lcpManager: LcpManager;
 
     constructor(
-        publicationRepository: PublicationRepository,
-        lcpManager: LcpManager,
+        @inject("publication-repository") publicationRepository: PublicationRepository,
+        @inject("lcp-manager") lcpManager: LcpManager,
     ) {
         this.lcpManager = lcpManager;
         this.publicationRepository = publicationRepository;
