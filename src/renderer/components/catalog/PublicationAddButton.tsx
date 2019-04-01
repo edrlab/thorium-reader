@@ -19,7 +19,7 @@ interface Props {
     importFiles?: any;
 }
 
-export class AddPublicationButton extends React.Component<Props, undefined> {
+export class PublicationAddButton extends React.Component<Props> {
 
     public constructor(props: Props) {
         super(props);
@@ -57,7 +57,7 @@ export class AddPublicationButton extends React.Component<Props, undefined> {
 }
 
 export default withApi(
-    AddPublicationButton,
+    PublicationAddButton,
     {
         operations: [
             {

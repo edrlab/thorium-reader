@@ -18,7 +18,7 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
 import SearchForm from "./SearchForm";
 
-import AddPublicationButton from "./AddPublicationButton";
+import PublicationAddButton from "./PublicationAddButton";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
@@ -51,7 +51,7 @@ export class Header extends React.Component<Props, undefined> {
                 </Link>
                 <SearchForm />
                 {this.AllBooksButton(window.location.hash)}
-                <AddPublicationButton />
+                <PublicationAddButton />
             </SecondaryHeader>
         );
     }
