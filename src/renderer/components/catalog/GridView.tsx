@@ -25,6 +25,8 @@ import AddEntryForm from "./AddEntryForm";
 
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 
+import TagContainer from "./TagContainer";
+
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
 }
@@ -52,8 +54,26 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                             </section>
                         );
                 })}
-                <AddEntryForm />
+
+                {this.buildGridTagView()}
+                <AddEntryForm/>
             </>
+        );
+    }
+    private buildGridTagView() {
+        return (
+            <section>
+                <Slider
+                className={styles.slider}
+                content={this.props.catalogEntries.map((entry, index: number) =>
+                        <TagContainer
+                            tag={entry.title}
+                            totalCount={entry.totalCount}
+                            key={index}
+                        />,
+                )}
+                />
+        </section>
         );
     }
 }
