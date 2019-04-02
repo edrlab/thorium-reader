@@ -108,8 +108,8 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         await this.checkIndexes();
 
         try {
-            const locatorQuery = await this.db.find({ selector });
-            return locatorQuery.docs.map((doc) => {
+            const query = await this.db.find({ selector });
+            return query.docs.map((doc) => {
                 return this.convertToDocument(doc);
             });
         } catch (error) {
