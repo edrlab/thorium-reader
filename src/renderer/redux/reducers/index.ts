@@ -16,7 +16,6 @@ import {
 } from "readium-desktop/renderer/reducers/message";
 
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
-import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 
 import { connectRouter } from "connected-react-router";
 
@@ -36,7 +35,6 @@ import { History } from "history";
 
 export const rootReducer = (history: History) => combineReducers({
     i18n: i18nReducer,
-    lcp: lcpReducer,
     window: windowReducer,
     reader: readerReducer,
     message: messageReducer,

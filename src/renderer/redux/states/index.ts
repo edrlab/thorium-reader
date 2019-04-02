@@ -12,7 +12,6 @@ import {WindowState} from "readium-desktop/renderer/reducers/window";
 
 import { DialogState } from "readium-desktop/common/redux/states/dialog";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
-import { LcpState } from "readium-desktop/common/redux/states/lcp";
 import { NetState } from "readium-desktop/common/redux/states/net";
 
 import { ReaderState } from "readium-desktop/common/redux/states/reader";
@@ -30,7 +29,6 @@ export interface RootState {
     net: NetState;
     win: WinState;
     i18n: I18NState;
-    lcp: LcpState;
     window: WindowState;
     message: MessageState;
     opds: OpdsState;

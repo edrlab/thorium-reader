@@ -17,16 +17,11 @@ import { LocatorType } from "readium-desktop/common/models/locator";
 
 @injectable()
 export class ReaderApi {
+    @inject("locator-repository")
     private locatorRepository: LocatorRepository;
-    private locatorViewConverter: LocatorViewConverter;
 
-    constructor(
-        @inject("local-repository") locatorRepository: LocatorRepository,
-        @inject("locator-view_converter") locatorViewConverter: LocatorViewConverter,
-    ) {
-        this.locatorRepository = locatorRepository;
-        this.locatorViewConverter = locatorViewConverter;
-    }
+    @inject("locator-view-converter")
+    private locatorViewConverter: LocatorViewConverter;
 
     public async setLastReadingLocation(data: any): Promise<LocatorView> {
         const { publication, locator } = data;

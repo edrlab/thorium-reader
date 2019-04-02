@@ -7,28 +7,31 @@
 
 import { inject, injectable} from "inversify";
 
+import { Store } from "redux";
+
+import * as readerActions from "readium-desktop/common/redux/actions/reader";
+
 import { LcpManager } from "readium-desktop/main/services/lcp";
-import { PublicationRepository } from "../db/repository/publication";
+
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 
 @injectable()
 export class LcpApi {
-    private publicationRepository: PublicationRepository;
-    private lcpManager: LcpManager;
+    @inject("store")
+    private store: Store<any>;
 
-    constructor(
-        @inject("publication-repository") publicationRepository: PublicationRepository,
-        @inject("lcp-manager") lcpManager: LcpManager,
-    ) {
-        this.lcpManager = lcpManager;
-        this.publicationRepository = publicationRepository;
-    }
+    @inject("publication-repository")
+    private publicationRepository: PublicationRepository;
+
+    @inject("lcp-manager")
+    private lcpManager: LcpManager;
 
     public async renewPublicationLicense(data: any): Promise<void> {
         const { publication } = data;
         const publicationDocument = await this.publicationRepository.get(
             publication.identifier,
         );
-        this.lcpManager.renewPublicationLicense(publicationDocument);
+        await this.lcpManager.renewPublicationLicense(publicationDocument);
         console.log("renew license", publication);
     }
 
@@ -37,7 +40,15 @@ export class LcpApi {
         const publicationDocument = await this.publicationRepository.get(
             publication.identifier,
         );
-        this.lcpManager.returnPublicationLicense(publicationDocument);
+        await this.lcpManager.returnPublicationLicense(publicationDocument);
         console.log("return publication", publication);
+    }
+
+    public async unlockPublicationWithPassphrase(data: any) {
+        const { publication, passphrase } = data;
+        console.log("#### 1", publication);
+        await this.lcpManager.unlockPublicationWithPassphrase(publication, passphrase);
+        console.log("#### 2", publication);
+        this.store.dispatch(readerActions.open(publication));
     }
 }

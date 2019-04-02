@@ -12,7 +12,6 @@ import { syncIpc } from "readium-desktop/common/ipc";
 import {
     apiActions,
     i18nActions,
-    lcpActions,
     readerActions,
 } from "readium-desktop/common/redux/actions";
 
@@ -30,11 +29,6 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     readerActions.ActionType.OpenRequest,
     readerActions.ActionType.ConfigSetRequest,
     readerActions.ActionType.BookmarkSaveRequest,
-
-    lcpActions.ActionType.PassphraseSubmitRequest,
-    lcpActions.ActionType.UserKeyCheckError,
-    lcpActions.ActionType.RenewRequest,
-    lcpActions.ActionType.ReturnRequest,
 
     i18nActions.ActionType.Set,
 ];

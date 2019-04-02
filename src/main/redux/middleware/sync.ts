@@ -39,14 +39,6 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     readerActions.ActionType.BookmarkSaveSuccess,
 
     lcpActions.ActionType.UserKeyCheckRequest,
-    lcpActions.ActionType.UserKeyCheckError,
-    lcpActions.ActionType.UserKeyCheckSuccess,
-    lcpActions.ActionType.PassphraseSubmitError,
-    lcpActions.ActionType.PassphraseSubmitSuccess,
-    lcpActions.ActionType.RenewSuccess,
-    lcpActions.ActionType.RenewError,
-    lcpActions.ActionType.ReturnSuccess,
-    lcpActions.ActionType.ReturnError,
 
     i18nActions.ActionType.Set,
 
@@ -54,6 +46,7 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 ];
 
 export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action: any) => {
+    console.log("### action type", action.type);
     // Test if the action must be sent to the rendeder processes
     if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
         // Do not send

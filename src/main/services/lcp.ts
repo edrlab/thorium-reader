@@ -42,26 +42,28 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 
 import { DeviceIdManager } from "./device";
 
+import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
+import { LcpSecretDocument } from "../db/document/lcp-secret";
+
 // Logger
 const debug = debug_("readium-desktop:main#services/lcp");
 
 @injectable()
 export class LcpManager {
+    @inject("device-id-manager")
     private deviceIdManager: DeviceIdManager;
-    private publicationStorage: PublicationStorage;
-    private publicationRepository: PublicationRepository;
-    private streamer: Server;
 
-    public constructor(
-        @inject("publication-repository") publicationRepository: PublicationRepository,
-        @inject("publication-storage") publicationStorage: PublicationStorage,
-        @inject("device-id-manager") deviceIdManager: DeviceIdManager,
-        @inject("streamer") streamer: Server,
-    ) {
-        this.publicationRepository = publicationRepository;
-        this.publicationStorage = publicationStorage;
-        this.deviceIdManager = deviceIdManager;
-    }
+    @inject("publication-storage")
+    private publicationStorage: PublicationStorage;
+
+    @inject("publication-repository")
+    private publicationRepository: PublicationRepository;
+
+    @inject("lcp-secret-repository")
+    private lcpSecretRepository: LcpSecretRepository;
+
+    @inject("streamer")
+    private streamer: Server;
 
     /**
      * Inject lcpl document in publication
@@ -247,21 +249,61 @@ export class LcpManager {
         return newPublicationDocument;
     }
 
-    public async testPassphrase(publication: Publication, passphrase: string): Promise<void> {
+    public async unlockPublication(publication: Publication): Promise<void> {
+        // Try to unlock publication with stored secrets
+        const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
+            publication.identifier,
+        );
+        const secrets = lcpSecretDocs.map((doc: any) => doc.secret);
+
+        // Get epub file from publication
+        const epubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
+        console.log("##### existing secrets", epubPath, secrets);
+        await doTryLcpPass(
+            this.streamer,
+            epubPath,
+            secrets,
+            true,
+        );
+    }
+
+    public async unlockPublicationWithPassphrase(publication: Publication, passphrase: string): Promise<void> {
         // Get epub file from publication
         const epubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
 
         // Create sha256 in hex of passphrase
-        const sha256HexPassphrase = toSha256Hex(passphrase);
+        const secret = toSha256Hex(passphrase);
         await doTryLcpPass(
             this.streamer,
             epubPath,
-            [ sha256HexPassphrase ],
+            [ secret ],
             true,
         );
 
-        // New secret that rocks
-        // secretManager.storeSecret(sha256HexPassphrase);
+        // If secret is new store it
+        const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
+            publication.identifier,
+        );
+        const secrets = lcpSecretDocs.map((doc: any) => doc.secret);
+
+        if (!secrets.includes(secret)) {
+            await this.lcpSecretRepository.save({
+                publicationIdentifier: publication.identifier,
+                secret,
+            });
+        }
+    }
+
+    public async storePassphrase(publication: Publication, passphrase: string): Promise<void> {
+        // Create sha256 in hex of passphrase
+        const secret = toSha256Hex(passphrase);
+        const lcpSecretDoc = {
+            identifier: uuid.v4(),
+            publicationIdentifier: publication.identifier,
+            secret,
+        } as LcpSecretDocument;
+
+        await this.lcpSecretRepository.save(lcpSecretDoc);
     }
 
     private async processStatusDocument(

@@ -19,14 +19,12 @@ import {
     readerReducer,
 } from "readium-desktop/common/redux/reducers/reader";
 
-import { lcpReducer } from "readium-desktop/common/redux/reducers/lcp";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 
 export const rootReducer = combineReducers({
     streamer: streamerReducer,
     i18n: i18nReducer,
-    lcp: lcpReducer,
     reader: readerReducer,
     net: netReducer,
     update: updateReducer,

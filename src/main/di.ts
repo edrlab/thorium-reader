@@ -14,7 +14,6 @@ import { app } from "electron";
 import { Store } from "redux";
 
 import { Container } from "inversify";
-import getDecorators from "inversify-inject-decorators";
 
 import { Server } from "@r2-streamer-js/http/server";
 
@@ -22,8 +21,6 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { Downloader } from "readium-desktop/main/services/downloader";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
-
-import { RootState } from "readium-desktop/main/redux/states";
 
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { LcpManager } from "readium-desktop/main/services/lcp";
@@ -34,6 +31,7 @@ import { initStore } from "readium-desktop/main/redux/store/memory";
 import { streamer } from "readium-desktop/main/streamer";
 
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
@@ -140,6 +138,13 @@ const locatorDb = new PouchDB(
 );
 const locatorRepository = new LocatorRepository(locatorDb);
 
+// Lcp secret db
+const lcpSecretDb = new PouchDB(
+    path.join(rootDbPath, "lcp-secret"),
+    dbOpts,
+);
+const lcpSecretRepository = new LcpSecretRepository(lcpSecretDb);
+
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
     userDataPath,
@@ -177,6 +182,9 @@ container.bind<LocatorRepository>("locator-repository").toConstantValue(
 container.bind<ConfigRepository>("config-repository").toConstantValue(
     configRepository,
 );
+container.bind<LcpSecretRepository>("lcp-secret-repository").toConstantValue(
+    lcpSecretRepository,
+);
 
 // Create converters
 container.bind<PublicationViewConverter>("publication-view-converter").to(PublicationViewConverter).inSingletonScope();
@@ -211,17 +219,6 @@ container.bind<ReaderApi>("reader-api").to(ReaderApi).inSingletonScope();
 // Create action serializer
 container.bind<ActionSerializer>("action-serializer").to(ActionSerializer).inSingletonScope();
 
-const {
-    lazyInject,
-    lazyInjectNamed,
-    lazyInjectTagged,
-    lazyMultiInject,
-} = getDecorators(container);
-
 export {
     container,
-    lazyInject,
-    lazyInjectNamed,
-    lazyInjectTagged,
-    lazyMultiInject,
 };
