@@ -14,6 +14,7 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 interface PublicationCardProps {
     publication: PublicationView;
     exportPublication?: (data: any) => void;
+    onClick: () => void;
 }
 
 class PublicationExportButton extends React.Component<PublicationCardProps> {
@@ -45,6 +46,7 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
                         type="file"
                         multiple
                         onChange={this.onExport}
+                        onClick={this.props.onClick}
                     />
                 </span>
         );

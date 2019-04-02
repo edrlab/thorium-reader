@@ -49,6 +49,11 @@ export class CatalogApi {
         // Dynamic entries
         let entries: CatalogEntryView[] = [
             {
+                title: __("catalog.entry.continueReading"),
+                totalCount: publicationViews.length,
+                publications: publicationViews,
+            },
+            {
                 title: __("catalog.entry.lastAdditions"),
                 totalCount: publicationViews.length,
                 publications: publicationViews,
