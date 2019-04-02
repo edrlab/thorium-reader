@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { oc } from "ts-optchain";
+
 import * as moment from "moment";
 
 import * as React from "react";
@@ -50,9 +52,9 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
             return (<></>);
         }
 
-        const formatedAuthors = publication.authors.join(", ");
-        const formatedLanguages = publication.languages.join(", ");
-        const formatedPublishers = publication.publishers.join(", ");
+        const formatedAuthors = oc(publication).authors([]).join(", ");
+        const formatedLanguages = oc(publication).languages([]).join(", ");
+        const formatedPublishers = oc(publication).publishers([]).join(", ");
         let formatedPublishedDate = null;
 
         let Controls: any = CatalogControls;
