@@ -25,7 +25,9 @@ import OpdsControls from "./opdsControls";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
-interface PublicationInfoProps {
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+
+interface PublicationInfoProps extends TranslatorProps {
     publicationIdentifier: string;
     isOpds?: boolean;
     publication?: PublicationView;
@@ -42,7 +44,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
     }
 
     public render(): React.ReactElement<{}> {
-        const { publication } = this.props;
+        const { publication, __ } = this.props;
 
         if (!publication) {
             return (<></>);
@@ -105,7 +107,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
 
                         <p>
                             <span>Éditeur</span> { formatedPublishers } <br/>
-                            <span>Langue</span> { formatedLanguages } <br/>
+                            <span>Langue</span> { __(`languages.${formatedLanguages}`) } <br/>
                             <span>Identifiant</span> { publication.workIdentifier } <br/>
                         </p>
                     </div>
@@ -116,7 +118,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __: PublicationInfoProps) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
         closeDialog: () => {
             dispatch(
