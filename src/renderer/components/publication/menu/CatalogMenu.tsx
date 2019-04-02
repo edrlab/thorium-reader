@@ -21,6 +21,7 @@ interface Props {
     publication: PublicationView;
     displayPublicationInfo?: any;
     openDeleteDialog?: any;
+    toggleMenu?: () => void;
 }
 
 interface State {
@@ -55,7 +56,10 @@ class CatalogMenu extends React.Component<Props, State> {
                 >
                     Supprimer définitivement
                 </a>
-                <PublicationExportButton publication={ this.props.publication }/>
+                <PublicationExportButton
+                    onClick={ this.props.toggleMenu }
+                    publication={ this.props.publication }
+                />
             </>
         );
     }
@@ -67,7 +71,7 @@ class CatalogMenu extends React.Component<Props, State> {
 
     private handleOnBlurMenu(e: any) {
         if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== e.target.parentElement)) {
-            this.setState({ menuOpen: false});
+            this.props.toggleMenu();
         }
     }
 
