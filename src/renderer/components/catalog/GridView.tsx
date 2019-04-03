@@ -56,28 +56,10 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                             </section>
                         );
                 })}
-
-                {/*this.buildGridTagView()*/}
                 <GridTagLayout
                 entries={this.props.catalogEntries}/>
                 <AddEntryForm/>
             </>
-        );
-    }
-    private buildGridTagView() {
-        return (
-            <section>
-                <Slider
-                className={styles.slider}
-                content={this.props.catalogEntries.map((entry, index: number) =>
-                        <TagContainer
-                            tag={entry.title}
-                            totalCount={entry.totalCount}
-                            key={index}
-                        />,
-                )}
-                />
-        </section>
         );
     }
 }
