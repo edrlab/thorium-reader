@@ -27,6 +27,8 @@ import CatalogMenu from "readium-desktop/renderer/components/publication/menu/Ca
 
 import TagContainer from "./TagContainer";
 
+import GridTagLayout from "./GridTagLayout";
+
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
 }
@@ -55,7 +57,9 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                         );
                 })}
 
-                {this.buildGridTagView()}
+                {/*this.buildGridTagView()*/}
+                <GridTagLayout
+                entries={this.props.catalogEntries}/>
                 <AddEntryForm/>
             </>
         );

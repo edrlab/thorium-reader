@@ -136,6 +136,7 @@
     ]
   },
   "dependencies": {
+    "@material-ui/core": "^3.9.3",
     "@types/react-beautiful-dnd": "^7.1.2",
     "bootstrap": "^4.1.1",
     "classnames": "^2.2.6",
@@ -200,7 +201,7 @@
     "@types/node": "8.*.*",
     "@types/pouchdb-core": "^7.0.0",
     "@types/query-string": "^6.1.1",
-    "@types/react": "^16.4.14",
+    "@types/react": "^16.8.10",
     "@types/react-dom": "^16.0.8",
     "@types/react-dropzone": "^4.2.2",
     "@types/react-redux": "5.*.*",
@@ -220,7 +221,7 @@
     "css-loader": "^1.0.0",
     "eclint": "^2.8.0",
     "electron": "1.*.*",
-    "electron-builder": "^20.28.4",
+    "electron-builder": "^20.39.0",
     "electron-devtools-installer": "^2.2.4",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.11",

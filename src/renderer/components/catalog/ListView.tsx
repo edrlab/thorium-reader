@@ -15,6 +15,7 @@ import PublicationListElement from "readium-desktop/renderer/components/publicat
 import AddEntryForm from "./AddEntryForm";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import GridTagLayout from "./GridTagLayout";
 
 interface ListViewProps {
     catalogEntries: CatalogEntryView[];
@@ -48,6 +49,8 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                     );
             })
             }
+            <GridTagLayout
+                entries={this.props.catalogEntries}/>
             <AddEntryForm />
             </>
         );
