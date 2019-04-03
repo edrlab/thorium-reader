@@ -12,11 +12,13 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 
 import { BaseRepository } from "./base";
 
-const ID_PREFIX = "publication_";
+const CREATED_AT_INDEX = "created_at_index";
 
 const TAG_INDEX = "tag_index";
 
 const TITLE_INDEX = "title_index";
+
+const IDENTIFIER_INDEX = "identifier_index";
 
 import {
     convertMultiLangStringToString,
@@ -26,6 +28,10 @@ import {
 export class PublicationRepository extends BaseRepository<PublicationDocument> {
     public constructor(db: PouchDB.Database) {
         const indexes = [
+            {
+                fields: ["createdAt"],
+                name: CREATED_AT_INDEX,
+            },
             {
                 fields: ["title"],
                 name: TITLE_INDEX,

@@ -21,6 +21,21 @@ interface Index  {
     fields: string[];
 }
 
+interface SortOption {
+    [key: string]: string;
+}
+
+interface Query {
+    selector?: string;
+    sort?: SortOption[];
+    limit?: number;
+}
+
+interface FindByOptions {
+    sort?: SortOption[];
+    limit?: number;
+}
+
 export abstract class BaseRepository<D extends Identifiable & Timestampable> {
     protected db: PouchDB.Database;
     protected idPrefix: string;
@@ -104,17 +119,64 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         });
     }
 
-    public async findBy(selector: any): Promise<D[]> {
+    public async find(query?: Query): Promise<D[]> {
         await this.checkIndexes();
+        const newQuery: any = Object.assign(
+            {},
+        );
+
+        if (query.selector) {
+            newQuery.selector = query.selector;
+        } else {
+            newQuery.selector = {};
+        }
+
+        if (query.limit) {
+            newQuery.limit = query.limit;
+        }
+
+        if (query.sort) {
+            newQuery.sort = query.sort;
+
+            for (const sortOption of newQuery.sort) {
+                const sortField = Object.keys(sortOption)[0];
+
+                if (sortField in newQuery.selector) {
+                    // Sort field is already in selector
+                    continue;
+                }
+
+                // Add sort field to selector
+                (newQuery.selector as any)[sortField] = { $gt: null };
+            }
+        }
+
+        if (Object.keys(newQuery.selector).length === 0) {
+            // You need at least one selector
+            newQuery.selector = { identifier: { $gt: null }};
+        }
 
         try {
-            const query = await this.db.find({ selector });
-            return query.docs.map((doc) => {
+            const result = await this.db.find(newQuery);
+            return result.docs.map((doc: any) => {
                 return this.convertToDocument(doc);
             });
         } catch (error) {
             throw error;
         }
+    }
+
+    public async findBy(
+        selector: any,
+        options?: FindByOptions,
+    ): Promise<D[]> {
+        return this.find(
+            Object.assign(
+                {},
+                { selector },
+                options,
+            ),
+        );
     }
 
     protected convertToMinimalDocument(dbDoc: PouchDB.Core.Document<any>): D {
@@ -132,6 +194,7 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
                 index: {
                     fields: index.fields,
                     name: index.name,
+                    ddoc: index.name,
                 },
             });
         } catch (error) {

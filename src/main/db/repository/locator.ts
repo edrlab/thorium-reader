@@ -14,11 +14,21 @@ import { BaseRepository } from "./base";
 
 const PUBLICATION_INDEX = "publication_index";
 const LOCATOR_TYPE_INDEX = "locator_type_index";
+const CREATED_AT_INDEX = "created_at_index";
+const UPDATED_AT_INDEX = "updatded_at_index";
 
 @injectable()
 export class LocatorRepository extends BaseRepository<LocatorDocument> {
     public constructor(db: PouchDB.Database) {
         const indexes = [
+            {
+                fields: ["createdAt"],
+                name: CREATED_AT_INDEX,
+            },
+            {
+                fields: ["updatedAt"],
+                name: UPDATED_AT_INDEX,
+            },
             {
                 fields: ["publicationIdentifier"],
                 name: PUBLICATION_INDEX,
