@@ -13,7 +13,7 @@ import { LcpSecretDocument } from "readium-desktop/main/db/document/lcp-secret";
 
 import { BaseRepository } from "./base";
 
-const PUBLICATION_IDENTIFIER_INDEX = "lcp_secret_publication_identifier";
+const PUBLICATION_IDENTIFIER_INDEX = "publication_identifier";
 
 @injectable()
 export class LcpSecretRepository extends BaseRepository<LcpSecretDocument> {
