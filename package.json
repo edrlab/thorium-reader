@@ -117,7 +117,7 @@
     "inversify": "^4.13.0",
     "inversify-inject-decorators": "^3.1.0",
     "jsondown": "^1.0.0",
-    "markdown-loader": "^2.0.2",
+    "markdown-loader": "^5.0.0",
     "material-ui": "^0.20.0",
     "material-ui-icons": "^1.0.0-beta.36",
     "opds-feed-parser": "^0.0.14",
