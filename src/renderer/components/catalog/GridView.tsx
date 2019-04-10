@@ -25,15 +25,21 @@ import AddEntryForm from "./AddEntryForm";
 
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 
-import TagContainer from "./TagContainer";
-
 import GridTagLayout from "./GridTagLayout";
+import SortMenu from "./SortMenu";
 
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
 }
 
 export default class GridView extends React.Component<GridViewProps, undefined> {
+    public constructor(props: any) {
+        super(props);
+
+        this.sortByAlpha = this.sortByAlpha.bind(this);
+        this.sortbyCount = this.sortbyCount.bind(this);
+    }
+
     public render(): React.ReactElement<{}> {
         return (
             <>
@@ -57,9 +63,40 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                         );
                 })}
                 <GridTagLayout
-                entries={this.props.catalogEntries}/>
+                entries={this.props.catalogEntries}
+                content={
+                    <SortMenu
+                        onClickAlphaSort={this.sortByAlpha}
+                        onClickCountSort={this.sortbyCount}
+                    />}
+                />
                 <AddEntryForm/>
             </>
         );
     }
+
+    private sortbyCount() {
+        console.log("count");
+        this.props.catalogEntries.sort((a, b) => {
+            if (a.totalCount < b.totalCount) {
+                  return (1);
+            } else if (a.totalCount > b.totalCount) {
+                  return (-1);
+            }
+            return (0);
+      });
+  }
+
+  private sortByAlpha() {
+      console.log("alpha");
+      this.props.catalogEntries.sort((a, b) => {
+            if (a.title > b.title) {
+                  return (1);
+            } else if (a.title < b.title) {
+                  return (-1);
+            }
+            return (0);
+      });
+  }
+
 }

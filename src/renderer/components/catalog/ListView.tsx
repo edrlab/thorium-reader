@@ -49,8 +49,8 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                     );
             })
             }
-            <GridTagLayout
-                entries={this.props.catalogEntries}/>
+            {/*<GridTagLayout
+                entries={this.props.catalogEntries}/>*/}
             <AddEntryForm />
             </>
         );
