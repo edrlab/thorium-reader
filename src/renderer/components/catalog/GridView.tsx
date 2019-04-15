@@ -76,6 +76,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                         onClickAlphaSort={this.sortByAlpha}
                         onClickCountSort={this.sortbyCount}
                     />}
+                type="GridView"
                 />
                 <AddEntryForm/>
             </>

@@ -48,7 +48,6 @@ export class Header extends React.Component<Props, undefined> {
                     <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
                 </Link>
                 <SearchForm />
-                    {console.log("debut: " + window.location.hash)}
                     {this.AllBooksButton(window.location.hash)}
             </SecondaryHeader>
         );

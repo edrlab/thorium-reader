@@ -73,6 +73,7 @@ export default class ListView extends React.Component<ListViewProps, ListViewSta
                         onClickAlphaSort={this.sortByAlpha}
                         onClickCountSort={this.sortbyCount}
                     />}
+                type="ListView"
             />
             <AddEntryForm />
             </>

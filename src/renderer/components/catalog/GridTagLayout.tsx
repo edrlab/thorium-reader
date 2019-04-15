@@ -19,6 +19,7 @@ import Menu from "../utils/menu/Menu";
 export interface TagProps {
             entries: CatalogEntryView[];
             content?: any;
+            type?: string;
 }
 
 export interface LayoutState {
@@ -40,18 +41,31 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
                     <div id={style.myTags}>
                         Mes Tags
                         <div id={style.sortMenu}>
+                        {this.props.type === "GridView" ? (
                         <Menu
-                                button={(<div> sort by
+                        button={(<div> sort by
+                                <SVG svg={ArrowIcon}/>
+                            </div>
+                                )}
+                        content={(<div>
+                                    {this.props.content}
+                            </div>)}
+                        open={false}
+                        dir="left"
+                        />)
+                        : (
+                        <Menu
+                        button={(<div> sort by
                                     <SVG svg={ArrowIcon}/>
                                 </div>
-                                    )}
-                                content={(<div>
-                                    {this.props.content}
+                                )}
+                        content={(<div>
+                                {this.props.content}
                                 </div>)}
-                                open={false}
-                                dir="left"
-                        />
-                        </div>
+                        open={false}
+                        dir="left"
+                        />) }
+                    </div>
                         <section id={style.content}>
                                 {this.props.entries.map((entry, i: number) => {
                                         return (

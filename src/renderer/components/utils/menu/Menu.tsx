@@ -60,6 +60,8 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
 
         // Refresh position of menu content
         const buttonClientRect = buttonElement.getBoundingClientRect();
+        console.log("button client rect " + buttonClientRect.top);
+        console.log("height: " +  buttonClientRect.height);
         const contentStyle: ContentStyle = {
             display: "none",
             position: "absolute",
@@ -71,7 +73,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
             contentStyle.right = Math.round(window.innerWidth - buttonClientRect.right) + "px";
         } else {
             // Left direction
-            contentStyle.left = Math.round(buttonClientRect.left) + "px";
+            contentStyle.left = Math.round(buttonClientRect.left) + 75 + "px";
         }
 
         this.setState({
@@ -141,7 +143,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
                 contentStyle.right = Math.round(window.innerWidth - buttonClientRect.right) + "px";
             } else {
                 // Left direction
-                contentStyle.left = Math.round(buttonClientRect.left) + "px";
+                contentStyle.left = Math.round(buttonClientRect.left) + 75 + "px";
             }
             // Click on button: toggle menu
             this.setState({
