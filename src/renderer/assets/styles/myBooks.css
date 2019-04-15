@@ -236,6 +236,7 @@ main {
 	margin: 2.0em 1.0em 4.0em 0;
 	/*width: 100%;*/
 	font: 1.1rem "Open Sans", sans-serif;
+	font-weight: bolder;
 	background: #fbfbfb;
 }
 
@@ -255,17 +256,37 @@ main {
 		margin-left: 0.5em;
 	}
 }
-
-table{
-	border-collapse: collapse;
-	z-index: 100;
+#sortType {
+	height: 90px;
+	width: 90px;
+	display: flex;
+	flex-direction: column;
+	background-color: white;
+	font-size: 0.9rem;
+	box-shadow: 0px 0px 10px 0px #cfcfcf;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
 }
 
-table, tr, td {
-	border: 1px solid;
-	border-radius: 6px;
+#sortType button {
+	text-decoration: none;
+	color: black;
+	flex: 1; 
+	text-align: justify;
+	cursor: pointer;    
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
+#sortType button:not(:last-child) {
+	border-bottom: 1px solid #E5E3E3;
+}
+
+#sortType button:hover {
+	background-color: #CECECE;
+}
 #value {
 	font: 0.9rem "Open Sans", sans-serif;	
 	align-items: center;

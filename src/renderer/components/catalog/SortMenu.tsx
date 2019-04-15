@@ -8,6 +8,7 @@
 import * as React from "react";
 
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 
@@ -33,12 +34,12 @@ export default class SortMenu extends React.Component<SortMenuProps, SortMenuSta
 
       public render(): React.ReactElement<{}> {
             return (
-                  <>
+                  <div id={style.sortType}>
                         <button
                         onClick={this.props.onClickAlphaSort}> A-Z </button>
                         <button
                         onClick={this.props.onClickCountSort}> tag count</button>
-                  </>
+                  </div>
             );
       }
 }
