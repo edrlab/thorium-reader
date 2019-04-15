@@ -32,10 +32,19 @@ interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
 }
 
-export default class GridView extends React.Component<GridViewProps, undefined> {
+interface GridViewState {
+    tabEntries: CatalogEntryView[];
+    status: string;
+}
+
+export default class GridView extends React.Component<GridViewProps, GridViewState> {
     public constructor(props: any) {
         super(props);
 
+        this.state = {
+            tabEntries: this.props.catalogEntries.slice(),
+            status: "count",
+        };
         this.sortByAlpha = this.sortByAlpha.bind(this);
         this.sortbyCount = this.sortbyCount.bind(this);
     }
@@ -63,7 +72,7 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                         );
                 })}
                 <GridTagLayout
-                entries={this.props.catalogEntries}
+                entries={this.state.tabEntries}
                 content={
                     <SortMenu
                         onClickAlphaSort={this.sortByAlpha}
@@ -75,25 +84,42 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
         );
     }
 
+    public shouldComponentUpdate(nextProps: any, nextState: any) {
+        console.log("Component should update", nextProps, nextState);
+        return true;
+    }
+
+    public componentWillUpdate(nextProps: any, nextState: any) {
+        console.log("Component Will update", nextProps, nextState);
+    }
+
+    public componentdidUpdate(prevstate: any, prevprops: any) {
+        console.log("Component did update", prevstate, prevprops);
+    }
+
     private sortbyCount() {
-        console.log("count");
-        this.props.catalogEntries.sort((a, b) => {
+        this.setState({
+            status: "count",
+        });
+        this.state.tabEntries.sort((a, b) => {
             if (a.totalCount < b.totalCount) {
-                  return (1);
+                return (1);
             } else if (a.totalCount > b.totalCount) {
-                  return (-1);
+                return (-1);
             }
             return (0);
       });
   }
 
-  private sortByAlpha() {
-      console.log("alpha");
-      this.props.catalogEntries.sort((a, b) => {
+    private sortByAlpha() {
+        this.setState({
+            status: "alpha",
+        });
+        this.state.tabEntries.sort((a, b) => {
             if (a.title > b.title) {
-                  return (1);
+                return (1);
             } else if (a.title < b.title) {
-                  return (-1);
+                return (-1);
             }
             return (0);
       });

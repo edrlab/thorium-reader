@@ -104,7 +104,14 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
             );
         }
 
-       // private componentDidUpdate()
+        /*public componentdidUpdate(prevstate: any) {
+   
+                this.props.entries.map((entry, i: number) => {
+                    console.log(entry.title);
+                });
+   
+
+}*/
 
         private checkEntryTotalCount(entry: CatalogEntryView, i: number) {
             if (entry.totalCount < 2) {
@@ -117,6 +124,7 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
                     </div>
             );
         }
+
 /*
         private sortbyCount() {
               this.setState({
