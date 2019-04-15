@@ -8,38 +8,35 @@
 import * as React from "react";
 
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
-import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
-
-import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 
 interface SortMenuProps {
-      onClickAlphaSort?: () => void;
-      onClickCountSort?: () => void;
+        onClickAlphaSort?: () => void;
+        onClickCountSort?: () => void;
 }
 
 interface SortMenuState {
-      menuOpen: boolean;
-      value: string;
+        menuOpen: boolean;
+        value: string;
 }
 
 export default class SortMenu extends React.Component<SortMenuProps, SortMenuState> {
-      public constructor(props: any) {
+        public constructor(props: any) {
             super(props);
 
             this.state = {
-                  menuOpen: false,
-                  value: "",
+                    menuOpen: false,
+                    value: "",
             };
-      }
+        }
 
-      public render(): React.ReactElement<{}> {
+        public render(): React.ReactElement<{}> {
             return (
-                  <div id={style.sortType}>
+                    <div id={style.sortType}>
                         <button
                         onClick={this.props.onClickAlphaSort}> A-Z </button>
                         <button
                         onClick={this.props.onClickCountSort}> tag count</button>
-                  </div>
+                    </div>
             );
-      }
+        }
 }

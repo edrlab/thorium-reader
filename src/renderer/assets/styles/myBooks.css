@@ -260,6 +260,8 @@ main {
 	height: 90px;
 	width: 90px;
 	display: flex;
+	position: relative;
+	float: right;
 	flex-direction: column;
 	background-color: white;
 	font-size: 0.9rem;

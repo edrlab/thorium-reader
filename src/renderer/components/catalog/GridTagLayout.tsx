@@ -11,8 +11,6 @@ import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 
-import {Theme} from "@material-ui/core/styles/createMuiTheme";
-
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
@@ -34,42 +32,34 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
             this.state = {
                     showMenu: false,
                     value: "",
-             };
-           /* this.showMenu = this.showMenu.bind(this);
-            this.closeMenu = this.closeMenu.bind(this);
-            this.sortByAlpha = this.sortByAlpha.bind(this);
-            this.sortbyCount = this.sortbyCount.bind(this);*/
+            };
         }
         public render(): React.ReactElement<{}> {
 
             return (
-
-                  <div id={style.myTags}>
-                        {this.props.entries.map((entry, i: number) => {
-                                console.log(entry.title);
-                              })}
+                    <div id={style.myTags}>
                         Mes Tags
                         <div id={style.sortMenu}>
                         <Menu
-                              button={(<div> sort by
+                                button={(<div> sort by
                                     <SVG svg={ArrowIcon}/>
-                              </div>
+                                </div>
                                     )}
-                              content={(<div>
+                                content={(<div>
                                     {this.props.content}
-                              </div>)}
-                              open={false}
-                              dir="right"
+                                </div>)}
+                                open={false}
+                                dir="left"
                         />
                         </div>
                         <section id={style.content}>
-                              {this.props.entries.map((entry, i: number) => {
-                                      return (
-                                          this.checkEntryTotalCount(entry, i)
+                                {this.props.entries.map((entry, i: number) => {
+                                        return (
+                                            this.checkEntryTotalCount(entry, i)
                                     );
-                              })}
+                                })}
                         </section>
-                  </div>
+                    </div>
             );
         }
 

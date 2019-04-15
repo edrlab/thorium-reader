@@ -19,8 +19,6 @@ import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow
 
 import { Link, RouteComponentProps } from "react-router-dom";
 
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
 import AddEntryForm from "./AddEntryForm";
 
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
@@ -84,7 +82,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         );
     }
 
-    public shouldComponentUpdate(nextProps: any, nextState: any) {
+    /*public shouldComponentUpdate(nextProps: any, nextState: any) {
         console.log("Component should update", nextProps, nextState);
         return true;
     }
@@ -95,7 +93,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
 
     public componentdidUpdate(prevstate: any, prevprops: any) {
         console.log("Component did update", prevstate, prevprops);
-    }
+    }*/
 
     private sortbyCount() {
         this.setState({
@@ -108,8 +106,8 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                 return (-1);
             }
             return (0);
-      });
-  }
+        });
+    }
 
     private sortByAlpha() {
         this.setState({
@@ -122,7 +120,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                 return (-1);
             }
             return (0);
-      });
-  }
+        });
+    }
 
 }

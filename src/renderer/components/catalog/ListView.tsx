@@ -16,12 +16,29 @@ import AddEntryForm from "./AddEntryForm";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import GridTagLayout from "./GridTagLayout";
+import SortMenu from "./SortMenu";
 
 interface ListViewProps {
     catalogEntries: CatalogEntryView[];
 }
 
-export default class ListView extends React.Component<ListViewProps, undefined> {
+interface ListViewState {
+    tabEntries: CatalogEntryView[];
+    status: string;
+}
+
+export default class ListView extends React.Component<ListViewProps, ListViewState> {
+    public constructor(props: any) {
+        super(props);
+
+        this.state = {
+            tabEntries: this.props.catalogEntries.slice(),
+            status: "count",
+        };
+        this.sortByAlpha = this.sortByAlpha.bind(this);
+        this.sortbyCount = this.sortbyCount.bind(this);
+    }
+
     public render(): React.ReactElement<{}> {
         return (
             <>
@@ -49,10 +66,44 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                     );
             })
             }
-            {/*<GridTagLayout
-                entries={this.props.catalogEntries}/>*/}
+            <GridTagLayout
+                entries={this.state.tabEntries}
+                content={
+                    <SortMenu
+                        onClickAlphaSort={this.sortByAlpha}
+                        onClickCountSort={this.sortbyCount}
+                    />}
+            />
             <AddEntryForm />
             </>
         );
+    }
+
+    private sortbyCount() {
+        this.setState({
+            status: "count",
+        });
+        this.state.tabEntries.sort((a, b) => {
+            if (a.totalCount < b.totalCount) {
+                return (1);
+            } else if (a.totalCount > b.totalCount) {
+                return (-1);
+            }
+            return (0);
+        });
+    }
+
+    private sortByAlpha() {
+        this.setState({
+            status: "alpha",
+        });
+        this.state.tabEntries.sort((a, b) => {
+            if (a.title > b.title) {
+                return (1);
+            } else if (a.title < b.title) {
+                return (-1);
+            }
+            return (0);
+        });
     }
 }
