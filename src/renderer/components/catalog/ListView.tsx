@@ -22,22 +22,7 @@ interface ListViewProps {
     catalogEntries: CatalogEntryView[];
 }
 
-interface ListViewState {
-    tabEntries: CatalogEntryView[];
-    status: string;
-}
-
-export default class ListView extends React.Component<ListViewProps, ListViewState> {
-    public constructor(props: any) {
-        super(props);
-
-        this.state = {
-            tabEntries: this.props.catalogEntries.slice(),
-            status: "count",
-        };
-        this.sortByAlpha = this.sortByAlpha.bind(this);
-        this.sortbyCount = this.sortbyCount.bind(this);
-    }
+export default class ListView extends React.Component<ListViewProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         return (
@@ -66,45 +51,8 @@ export default class ListView extends React.Component<ListViewProps, ListViewSta
                     );
             })
             }
-            <GridTagLayout
-                entries={this.state.tabEntries}
-                content={
-                    <SortMenu
-                        onClickAlphaSort={this.sortByAlpha}
-                        onClickCountSort={this.sortbyCount}
-                    />}
-                type="ListView"
-            />
-            <AddEntryForm />
             </>
         );
     }
 
-    private sortbyCount() {
-        this.setState({
-            status: "count",
-        });
-        this.state.tabEntries.sort((a, b) => {
-            if (a.totalCount < b.totalCount) {
-                return (1);
-            } else if (a.totalCount > b.totalCount) {
-                return (-1);
-            }
-            return (0);
-        });
-    }
-
-    private sortByAlpha() {
-        this.setState({
-            status: "alpha",
-        });
-        this.state.tabEntries.sort((a, b) => {
-            if (a.title > b.title) {
-                return (1);
-            } else if (a.title < b.title) {
-                return (-1);
-            }
-            return (0);
-        });
-    }
 }

@@ -15,11 +15,7 @@ import Slider from "readium-desktop/renderer/components/utils/Slider";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-
 import { Link, RouteComponentProps } from "react-router-dom";
-
-import AddEntryForm from "./AddEntryForm";
 
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 
@@ -53,9 +49,12 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                 { this.props.catalogEntries.map((entry, i: number) => {
                         return (
                             <section key={ i }>
+                            {i <= 0 ? (
                                 <div className={styles.title}>
                                     <h1>{ entry.title }</h1>
                                 </div>
+                            ) : (<></>) }
+                            {i <= 0 ? (
                                 <Slider
                                     className={styles.slider}
                                     content={entry.publications.map((pub) =>
@@ -66,6 +65,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                                         />,
                                     )}
                                 />
+                            ) : (<></>)}
                             </section>
                         );
                 })}
@@ -76,25 +76,10 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                         onClickAlphaSort={this.sortByAlpha}
                         onClickCountSort={this.sortbyCount}
                     />}
-                type="GridView"
                 />
-                <AddEntryForm/>
             </>
         );
     }
-
-    /*public shouldComponentUpdate(nextProps: any, nextState: any) {
-        console.log("Component should update", nextProps, nextState);
-        return true;
-    }
-
-    public componentWillUpdate(nextProps: any, nextState: any) {
-        console.log("Component Will update", nextProps, nextState);
-    }
-
-    public componentdidUpdate(prevstate: any, prevprops: any) {
-        console.log("Component did update", prevstate, prevprops);
-    }*/
 
     private sortbyCount() {
         this.setState({

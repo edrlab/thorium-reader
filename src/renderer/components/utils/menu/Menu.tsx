@@ -60,8 +60,6 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
 
         // Refresh position of menu content
         const buttonClientRect = buttonElement.getBoundingClientRect();
-        console.log("button client rect " + buttonClientRect.top);
-        console.log("height: " +  buttonClientRect.height);
         const contentStyle: ContentStyle = {
             display: "none",
             position: "absolute",
