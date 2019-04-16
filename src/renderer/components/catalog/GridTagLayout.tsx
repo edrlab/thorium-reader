@@ -33,6 +33,7 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
                     showMenu: false,
                     value: "",
             };
+            this.togglemenu = this.togglemenu.bind(this);
         }
         public render(): React.ReactElement<{}> {
 
@@ -48,8 +49,9 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
                         content={(<div>
                                     {this.props.content}
                             </div>)}
-                        open={false}
+                        open={this.state.showMenu}
                         dir="left"
+                        toggle={this.togglemenu}
                         />
 
                     </div>
@@ -74,5 +76,11 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
                         <div id={style.count}> {entry.totalCount} </div>
                     </div>
             );
+        }
+
+        private togglemenu(open: boolean) {
+            this.setState({
+                showMenu: open,
+            });
         }
 }
