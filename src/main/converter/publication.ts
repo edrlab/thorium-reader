@@ -54,6 +54,7 @@ export class PublicationViewConverter {
             identifier: document.identifier,
             title: document.title,
             authors,
+            description: epub.Metadata.Description,
             languages: epub.Metadata.Language,
             publishers,
             workIdentifier: epub.Metadata.Identifier,

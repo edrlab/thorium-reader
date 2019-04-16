@@ -16,6 +16,7 @@ export function buildOpdsBrowserRoute(
     }
     const route = `/opds/${rootFeedIdentifier}/browse/` + level
         + `/${encodeB64(title)}/${encodeB64(url)}`;
+
     return route;
 }
 
@@ -47,7 +48,7 @@ export function decodeB64(data: any) {
 export function parseOpdsBrowserRoute(route: string) {
     // Parse route with regexp
     // tslint:disable-next-line:max-line-length
-    const regexp =  /\/opds\/([a-zA-Z0-9-=]+)\/browse\/([0-9]+)\/([a-zA-Z0-9=]+)\/([a-zA-Z0-9=]+)/g;
+    const regexp =  /\/opds\/([a-zA-Z0-9-=]+)\/browse\/([0-9]+)\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)/g;
     const match = regexp.exec(route);
 
     if (match == null) {

@@ -228,7 +228,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                 font: "DEFAULT",
                 fontSize: "100%",
                 invert: false,
-                lineHeight: "1.5",
+                lineHeight: undefined,
                 night: false,
                 paged: false,
                 readiumcss: true,

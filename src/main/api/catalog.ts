@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
+import { inject, injectable} from "inversify";
 
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
 
@@ -15,43 +15,82 @@ import { CatalogConfig } from "readium-desktop/main/db/document/config";
 
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 
+import { LocatorType } from "readium-desktop/common/models/locator";
+
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
 @injectable()
 export class CatalogApi {
+    @inject("publication-repository")
     private publicationRepository: PublicationRepository;
-    private configRepository: ConfigRepository;
-    private publicationViewConverter: PublicationViewConverter;
-    private translator: Translator;
 
-    constructor(
-        publicationRepository: PublicationRepository,
-        configRepository: ConfigRepository,
-        publicationViewConverter: PublicationViewConverter,
-        translator: Translator,
-    ) {
-        this.publicationRepository = publicationRepository;
-        this.configRepository = configRepository;
-        this.publicationViewConverter = publicationViewConverter;
-        this.translator = translator;
-    }
+    @inject("config-repository")
+    private configRepository: ConfigRepository;
+
+    @inject("locator-repository")
+    private locatorRepository: LocatorRepository;
+
+    @inject("publication-view-converter")
+    private publicationViewConverter: PublicationViewConverter;
+
+    @inject("translator")
+    private translator: Translator;
 
     public async get(): Promise<CatalogView> {
         const __ = this.translator.translate.bind(this.translator);
-        const publications = await this.publicationRepository.findAll();
-        const publicationViews = publications.map((doc) => {
+
+        // Last added publications
+        const lastAddedPublications = await this.publicationRepository.find({
+            limit: 10,
+            sort: [ { createdAt: "desc" } ],
+        });
+        const lastAddedPublicationViews = lastAddedPublications.map((doc) => {
             return this.publicationViewConverter.convertDocumentToView(doc);
         });
+
+        // Last read publicatons
+        const lastLocators = await this.locatorRepository.findBy(
+            { locatorType: LocatorType.LastReadingLocation },
+            {
+                limit: 10,
+                sort: [ { updatedAt: "desc" } ],
+            },
+        );
+        const lastLocatorPublicationIdentifiers = lastLocators.map(
+            (locator: any) => locator.publicationIdentifier,
+        );
+        const lastReadPublicationViews = [];
+
+        for (const pubIdentifier of lastLocatorPublicationIdentifiers) {
+            let pubDoc = null;
+
+            try {
+                pubDoc = await this.publicationRepository.get(pubIdentifier);
+            } catch (error) {
+                // Document not found
+                continue;
+            }
+
+            lastReadPublicationViews.push(
+                this.publicationViewConverter.convertDocumentToView(pubDoc),
+            );
+        }
 
         // Dynamic entries
         let entries: CatalogEntryView[] = [
             {
+                title: __("catalog.entry.continueReading"),
+                totalCount: lastReadPublicationViews.length,
+                publications: lastReadPublicationViews,
+            },
+            {
                 title: __("catalog.entry.lastAdditions"),
-                totalCount: publicationViews.length,
-                publications: publicationViews,
+                totalCount: lastAddedPublicationViews.length,
+                publications: lastAddedPublicationViews,
             },
         ];
 

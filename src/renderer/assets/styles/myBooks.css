@@ -77,6 +77,46 @@ main {
 		}
 }
 
+.addEpubButton {
+	display: inline-block;
+	margin-left: 2rem;
+
+	& input {
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		z-index: -1;
+		position: absolute;
+	}
+
+	& label {
+		margin-top: 15px;
+		width: 35px;
+		height: 35px;
+		display: inline-block;
+		position: relative;
+		top: 15px;
+		opacity: 0.5;
+		cursor: pointer;
+
+		&:hover {
+			opacity: 0.75;
+		}
+
+		& svg {
+			top: 0;
+			margin-left: 0;
+			width: 33px;
+			height: 33px;
+			padding: 1px;
+		}
+	}
+
+	& input:focus + label {
+		outline: -webkit-focus-ring-color auto 5px;
+	}
+}
+
 /* LIST MY BOOKS */
 
 
@@ -158,13 +198,23 @@ main {
 	height: 0px;
 	transition: height 0.5s;
     margin-left: 10px;
-    & a {
+    & a, & span label {
         border: 1px solid black;
 		padding: 4px;
 		display: inline-block;
 		cursor: pointer;
 		margin: 0.6rem 0.5rem 0 0;
     }
+
+	& span {
+		& label {
+			cursor: pointer;
+		}
+		& input {
+			position: absolute;
+			left: -2000px;
+		}
+	}
 }
 
 .menu_open{

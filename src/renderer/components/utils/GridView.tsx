@@ -9,17 +9,17 @@ import * as React from "react";
 
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 
-import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
-
 import { RouteComponentProps} from "react-router-dom";
-
-import { Publication } from "readium-desktop/common/models/publication";
 
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/components/publication/menu/OpdsMenu";
 
+import { PublicationView } from "readium-desktop/common/views/publication";
+
+import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
+
 interface GridViewProps extends RouteComponentProps {
-    publications: Publication[];
+    publications: PublicationView[];
     isOpdsView?: boolean;
 }
 
@@ -36,7 +36,7 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                     <PublicationCard
                         key={-index }
                         publication={pub}
-                        menuContent={<MenuContent publication={pub}/>}
+                        menuContent={MenuContent}
                         isOpds={this.props.isOpdsView}
                     />,
                 )}

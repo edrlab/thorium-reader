@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
+import { inject, injectable} from "inversify";
 
 import { LocatorView } from "readium-desktop/common/views/locator";
 
@@ -17,16 +17,11 @@ import { LocatorType } from "readium-desktop/common/models/locator";
 
 @injectable()
 export class ReaderApi {
+    @inject("locator-repository")
     private locatorRepository: LocatorRepository;
-    private locatorViewConverter: LocatorViewConverter;
 
-    constructor(
-        locatorRepository: LocatorRepository,
-        locatorViewConverter: LocatorViewConverter,
-    ) {
-        this.locatorRepository = locatorRepository;
-        this.locatorViewConverter = locatorViewConverter;
-    }
+    @inject("locator-view-converter")
+    private locatorViewConverter: LocatorViewConverter;
 
     public async setLastReadingLocation(data: any): Promise<LocatorView> {
         const { publication, locator } = data;

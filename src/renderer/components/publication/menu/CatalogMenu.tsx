@@ -13,20 +13,22 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import PublicationExportButton from "./PublicationExportButton";
 
-interface PublicationCardProps {
+import { connect } from "react-redux";
+
+interface Props {
     publication: PublicationView;
     displayPublicationInfo?: any;
-    deletePublication?: any;
     openDeleteDialog?: any;
+    toggleMenu?: () => void;
 }
 
-interface PublicationCardState {
+interface State {
     menuOpen: boolean;
 }
 
-export class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
+class CatalogMenu extends React.Component<Props, State> {
     constructor(props: any) {
         super(props);
 
@@ -40,8 +42,6 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
     }
 
     public render(): React.ReactElement<{}>  {
-        const authors = this.props.publication.authors.join(", ");
-
         return (
             <>
                 <a
@@ -52,9 +52,14 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
                 </a>
                 <a
                     onClick={ this.deletePublication }
-                    onBlur={this.handleOnBlurMenu}>
+                    onBlur={this.handleOnBlurMenu}
+                >
                     Supprimer définitivement
                 </a>
+                <PublicationExportButton
+                    onClick={ this.props.toggleMenu }
+                    publication={ this.props.publication }
+                />
             </>
         );
     }
@@ -66,7 +71,7 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
 
     private handleOnBlurMenu(e: any) {
         if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== e.target.parentElement)) {
-            this.setState({ menuOpen: false});
+            this.props.toggleMenu();
         }
     }
 
@@ -76,7 +81,7 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open(
@@ -97,16 +102,4 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
     };
 };
 
-export default withApi(
-    PublicationCard,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "delete",
-                callProp: "deletePublication",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);
+export default connect(null, mapDispatchToProps)(CatalogMenu) as any;

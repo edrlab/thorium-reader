@@ -113,7 +113,7 @@
 }
 
 .menu {
-    height: 90px;
+    height: fit-content;
     width: 180px;
     display: flex;
     flex-direction: column;
@@ -121,21 +121,32 @@
     font-size: 0.9rem;
     box-shadow: 0px 0px 10px 0px #cfcfcf;
     overflow: hidden;
-    & a {
+    & a, & span label {
         text-decoration: none;
         color: black;
         flex: 1;
         padding: 0.5rem;
         text-align: center;
-        cursor: pointer;    
+        cursor: pointer;
         display: flex;
         align-items: center;
-        justify-content: center;                
+        justify-content: center;
+        height: 40px;
     }
-    & a:not(:last-child) {
+    & a:not(:last-child), & span:not(:last-child){
         border-bottom: 1px solid #E5E3E3;
     }
-    & a:hover {
+    & a:hover, & span:hover {
         background-color: #CECECE;
+    }
+
+    & span {
+        cursor: pointer;
+        & input {
+            height: 0;
+            width: 0;
+            position: absolute;
+            left: -2000px;
+        }
     }
 }

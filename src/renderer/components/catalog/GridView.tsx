@@ -56,12 +56,12 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                             ) : (<></>) }
                             {i <= 0 ? (
                                 <Slider
-                                    className={styles.slider}
-                                    content={entry.publications.map((pub) =>
+                                    className={ styles.slider }
+                                    content={ entry.publications.map((pub) =>
                                         <PublicationCard
-                                            key={pub.identifier}
-                                            publication={pub}
-                                            menuContent={<CatalogMenu publication={pub}/>}
+                                            key={ pub.identifier }
+                                            publication={ pub }
+                                            menuContent={ CatalogMenu }
                                         />,
                                     )}
                                 />

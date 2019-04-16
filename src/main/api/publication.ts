@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
+import { inject, injectable } from "inversify";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -22,9 +22,9 @@ export class PublicationApi {
     private catalogService: CatalogService;
 
     constructor(
-        publicationRepository: PublicationRepository,
-        publicationViewConverter: PublicationViewConverter,
-        catalogService: CatalogService,
+        @inject("publication-repository") publicationRepository: PublicationRepository,
+        @inject("publication-view-converter") publicationViewConverter: PublicationViewConverter,
+        @inject("catalog-service") catalogService: CatalogService,
     ) {
         this.publicationRepository = publicationRepository;
         this.publicationViewConverter = publicationViewConverter;
@@ -79,13 +79,9 @@ export class PublicationApi {
     }
 
     public async importOpdsEntry(data: any): Promise<PublicationView[]> {
-        const { url } = data;
+        const { url, downloadSample } = data;
 
-        const newDoc = await this.catalogService.importOpdsEntry(url);
-
-        // return newDocs.map((doc) => {
-        //     return this.publicationViewConverter.convertDocumentToView(doc);
-        // });
+        await this.catalogService.importOpdsEntry(url, downloadSample);
         return null;
     }
 
@@ -111,5 +107,10 @@ export class PublicationApi {
         return docs.map((doc) => {
             return this.publicationViewConverter.convertDocumentToView(doc);
         });
+    }
+
+    public async exportPublication(data: any): Promise<void> {
+        const { publication, destinationPath } = data;
+        this.catalogService.exportPublication(publication, destinationPath);
     }
 }

@@ -20,29 +20,26 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 import { lcpReadable } from "readium-desktop/utils/publication";
 
+import { connect } from "react-redux";
+
 interface PublicationCardProps {
     publication: PublicationView;
-    displayPublicationInfo?: any;
-    deletePublication?: any;
-    openReader?: any;
-    openDeleteDialog?: any;
     menuContent: any;
-    isOpds: boolean;
-    openInfosDialog: any;
+    isOpds?: boolean;
+    openInfosDialog?: (data: any) => void;
+    openReader?: (data: any) => void;
 }
 
 interface PublicationCardState {
     menuOpen: boolean;
 }
 
-export class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
+class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
     constructor(props: any) {
         super(props);
 
@@ -50,15 +47,13 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
             menuOpen: false,
         };
 
-        this.handleMenuClick = this.handleMenuClick.bind(this);
-        this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
-        this.deletePublication = this.deletePublication.bind(this);
-        this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
+        this.toggleMenu = this.toggleMenu.bind(this);
+        this.openCloseMenu = this.openCloseMenu.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
         const authors = this.props.publication.authors.join(", ");
-
+        const MenuContent = this.props.menuContent;
         return (
             <div className={styles.block_book}
                 aria-haspopup="dialog"
@@ -84,29 +79,23 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
                         )}
                         content={(
                             <div className={styles.menu}>
-                                {this.props.menuContent}
+                                <MenuContent toggleMenu={this.toggleMenu} publication={this.props.publication}/>
                             </div>
                         )}
-                        open={false}
+                        open={this.state.menuOpen}
                         dir="right"
+                        toggle={this.openCloseMenu}
                     />
                 </div>
             </div>
         );
     }
 
-    private deletePublication(e: any) {
-        e.preventDefault();
-        this.props.openDeleteDialog(this.props.publication);
+    private openCloseMenu(open: boolean) {
+        this.setState({menuOpen: open});
     }
 
-    private handleOnBlurMenu(e: any) {
-        if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== e.target.parentElement)) {
-            this.setState({ menuOpen: false});
-        }
-    }
-
-    private handleMenuClick() {
+    private toggleMenu() {
         this.setState({menuOpen: !this.state.menuOpen});
     }
 
@@ -118,11 +107,6 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
         } else {
             this.props.openInfosDialog(publication);
         }
-    }
-
-    private displayPublicationInfo(e: any) {
-        e.preventDefault();
-        this.props.displayPublicationInfo(this.props.publication);
     }
 }
 
@@ -138,22 +122,6 @@ const mapDispatchToProps = (dispatch: any, props: PublicationCardProps) => {
                 },
             });
         },
-        displayPublicationInfo: (publication: PublicationView) => {
-            dispatch(dialogActions.open(
-                DialogType.PublicationInfo,
-                {
-                    publication,
-                },
-            ));
-        },
-        openDeleteDialog: (publication: string) => {
-            dispatch(dialogActions.open(
-                DialogType.DeletePublicationConfirm,
-                {
-                    publication,
-                },
-            ));
-        },
         openInfosDialog: (publication: string) => {
             dispatch(dialogActions.open(
                 DialogType.PublicationInfo,
@@ -166,16 +134,4 @@ const mapDispatchToProps = (dispatch: any, props: PublicationCardProps) => {
     };
 };
 
-export default withApi(
-    PublicationCard,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "delete",
-                callProp: "deletePublication",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);
+export default connect(undefined, mapDispatchToProps)(PublicationCard);

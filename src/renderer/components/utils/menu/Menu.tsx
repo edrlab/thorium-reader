@@ -21,10 +21,10 @@ interface MenuProps {
     content: any;
     open: boolean; // Is menu open
     dir: string; // Direction of menu: right or left
+    toggle: (open: boolean) => void;
 }
 
 interface MenuState {
-    open: boolean;
     contentStyle: any;
 }
 
@@ -40,17 +40,11 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
     public constructor(props: any) {
         super(props);
         this.state = {
-            open: props.open,
             contentStyle: {},
         };
         this.menuId = "menu-" + uuid.v4();
         this.handleGlobalClick = this.handleGlobalClick.bind(this);
         this.handleGlobalKeydown = this.handleGlobalKeydown.bind(this);
-    }
-
-    public componentWillUnmount() {
-        document.removeEventListener("click", this.handleGlobalClick);
-        document.removeEventListener("keydown", this.handleGlobalKeydown);
     }
 
     public componentDidMount() {
@@ -74,16 +68,27 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
             contentStyle.left = Math.round(buttonClientRect.left) + 75 + "px";
         }
 
+        document.addEventListener("click", this.handleGlobalClick);
+
         this.setState({
             contentStyle,
         });
+    }
 
-        document.addEventListener("click", this.handleGlobalClick);
-        document.addEventListener("keydown", this.handleGlobalKeydown);
+    public componentWillUnmount() {
+        document.removeEventListener("click", this.handleGlobalClick);
+    }
+
+    public componentDidUpdate(oldProps: MenuProps) {
+        if (this.props.open && !oldProps.open) {
+            document.addEventListener("keydown", this.handleGlobalKeydown);
+        } else if (!this.props.open && oldProps.open) {
+            document.removeEventListener("keydown", this.handleGlobalKeydown);
+        }
     }
 
     public render(): React.ReactElement<{}> {
-        const { open } = this.state;
+        const { open } = this.props;
         const contentStyle = Object.assign({}, this.state.contentStyle);
 
         if (open) {
@@ -114,10 +119,8 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
     public handleGlobalKeydown(event: any) {
         const key = event.key;
 
-        if (key === "Escape" && this.state.open) {
-            this.setState({
-                open: false,
-            });
+        if (key === "Escape" && this.props.open) {
+            this.props.toggle(false);
 
             // Focus button
             const buttonElement = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
@@ -129,6 +132,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
         const buttonElement = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
         const targetElement: HTMLElement = event.target;
         const contentElement = document.getElementById(this.menuId);
+        const { open } = this.props;
 
         if (buttonElement.contains(targetElement)) {
             const contentStyle = Object.assign({}, this.state.contentStyle);
@@ -144,24 +148,21 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
                 contentStyle.left = Math.round(buttonClientRect.left) + 75 + "px";
             }
             // Click on button: toggle menu
+            this.props.toggle(!this.props.open);
             this.setState({
                 contentStyle,
-                open: !this.state.open,
             });
 
             return;
         }
-
-        if (!contentElement.contains(targetElement)) {
-            this.setState({
-                open: false,
-            });
-        } else {
-            if (CLICKABLE_TAGS.indexOf(targetElement.tagName.toLowerCase()) > -1) {
-                // This is a link => close menu
-                this.setState({
-                    open: false,
-                });
+        if (open) {
+            if (!contentElement.contains(targetElement)) {
+                this.props.toggle(false);
+            } else {
+                if (CLICKABLE_TAGS.indexOf(targetElement.tagName.toLowerCase()) > -1) {
+                    // This is a link => close menu
+                    this.props.toggle(false);
+                }
             }
         }
     }

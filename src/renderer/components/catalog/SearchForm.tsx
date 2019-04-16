@@ -44,7 +44,7 @@ export class Search extends React.Component<RouteComponentProps, undefined> {
         e.preventDefault();
         const value = this.inputRef.current.value;
 
-        this.props.history.push("/library/search/text/" + value);
+        this.props.history.push("/library/search/text/" + value + this.props.location.search);
     }
 }
 

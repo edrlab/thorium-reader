@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { oc } from "ts-optchain";
+
 import * as moment from "moment";
 
 import * as React from "react";
@@ -25,12 +27,15 @@ import OpdsControls from "./opdsControls";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
-interface PublicationInfoProps {
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+
+interface PublicationInfoProps extends TranslatorProps {
     publicationIdentifier: string;
     isOpds?: boolean;
     publication?: PublicationView;
     closeDialog?: any;
     getPublicationFromId?: any;
+    hideControls?: boolean;
 }
 
 export class PublicationInfo extends React.Component<PublicationInfoProps, undefined> {
@@ -41,18 +46,18 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
     }
 
     public render(): React.ReactElement<{}> {
-        const { publication } = this.props;
+        const { publication, __ } = this.props;
 
         if (!publication) {
             return (<></>);
         }
 
-        const formatedAuthors = publication.authors.join(", ");
-        const formatedLanguages = publication.languages.join(", ");
-        const formatedPublishers = publication.publishers.join(", ");
+        const formatedAuthors = oc(publication).authors([]).join(", ");
+        const formatedLanguages = oc(publication).languages([]).join(", ");
+        const formatedPublishers = oc(publication).publishers([]).join(", ");
         let formatedPublishedDate = null;
 
-        let Controls = CatalogControls;
+        let Controls: any = CatalogControls;
         if (this.props.isOpds) {
             Controls = OpdsControls;
         }
@@ -72,7 +77,9 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
                         <Cover publication={publication} />
                     </div>
                 </div>
-                <Controls publication={this.props.publication}/>
+                { !this.props.hideControls &&
+                    <Controls publication={this.props.publication}/>
+                }
             </div>
             <div className={styles.dialog_right}>
                 <h2>{publication.title}</h2>
@@ -102,7 +109,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
 
                         <p>
                             <span>Éditeur</span> { formatedPublishers } <br/>
-                            <span>Langue</span> { formatedLanguages } <br/>
+                            <span>Langue</span> { __(`languages.${formatedLanguages}`) } <br/>
                             <span>Identifiant</span> { publication.workIdentifier } <br/>
                         </p>
                     </div>
@@ -113,7 +120,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __: PublicationInfoProps) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
         closeDialog: () => {
             dispatch(

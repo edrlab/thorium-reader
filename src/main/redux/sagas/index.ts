@@ -7,21 +7,8 @@
 
 import { all } from "redux-saga/effects";
 
-import {
-    downloadAddRequestWatcher,
-    downloadPostProcessWatcher,
-} from "./downloader";
-
-import {
-    publicationDownloadCancelRequestWatcher,
-} from "./publication-download";
-
 import { appInitWatcher } from "./app";
-import {
-    catalogFileImportWatcher,
-    catalogPublicationDownloadSuccessWatcher,
-    catalogPublicationRemoveWatcher,
-} from "./catalog";
+
 import { netStatusWatcher } from "./net";
 import {
     readerBookmarkSaveRequestWatcher,
@@ -36,31 +23,12 @@ import * as api from "./api";
 import * as streamer from "./streamer";
 
 import {
-    lcpPassphraseSubmitRequestWatcher,
-    lcpRenewRequestWatcher,
-    lcpReturnRequestWatcher,
-    // lcpUserKeyCheckRequestWatcher,
-} from "./lcp";
-
-import {
     updateStatusWatcher,
 } from "./update";
 
 export function* rootSaga() {
     yield all([
         api.watchers(),
-
-        // Catalog
-        catalogPublicationDownloadSuccessWatcher(),
-        catalogPublicationRemoveWatcher(),
-        catalogFileImportWatcher(),
-
-        // Download
-        downloadAddRequestWatcher(),
-        downloadPostProcessWatcher(),
-
-        // Publication download
-        publicationDownloadCancelRequestWatcher(),
 
         // App
         appInitWatcher(),
@@ -77,12 +45,6 @@ export function* rootSaga() {
 
         // Streamer
         streamer.watchers(),
-
-        // LCP
-        lcpPassphraseSubmitRequestWatcher(),
-        // lcpUserKeyCheckRequestWatcher(),
-        lcpRenewRequestWatcher(),
-        lcpReturnRequestWatcher(),
 
         // Update checker
         updateStatusWatcher(),

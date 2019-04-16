@@ -1,3 +1,10 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 export const fontSize: string[] = [
     "75%",
     "87.5%",
@@ -58,12 +65,24 @@ export const paraSpacing: string[] = [
     "3rem",
 ];
 
+export const lineHeight: string[] = [
+    "1",
+    "1.125",
+    "1.25",
+    "1.35",
+    "1.5",
+    "1.65",
+    "1.75",
+    "2",
+];
+
 const optionsValues = {
     fontSize,
     pageMargins,
     wordSpacing,
     letterSpacing,
     paraSpacing,
+    lineHeight,
 };
 
 export default optionsValues as {[name: string]: string[]};

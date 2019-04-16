@@ -13,12 +13,10 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
-import { ActionType, sendPassphrase } from "readium-desktop/common/redux/actions/lcp";
-
 interface DeleteOpdsFeedConfirmProps extends TranslatorProps {
     publication: any;
     hint: string;
-    checkPassphrase?: any;
+    unlockPublicationWithPassphrase?: any;
     closeDialog?: any;
     sendLCPError?: any;
 }
@@ -61,12 +59,15 @@ export class LCPAuthentication extends React.Component<DeleteOpdsFeedConfirmProp
     private submite(e: any) {
         e.preventDefault();
 
-        this.props.checkPassphrase(this.props.publication, this.passphraseRef.current.value);
+        this.props.unlockPublicationWithPassphrase({
+            publication: this.props.publication,
+            passphrase: this.passphraseRef.current.value,
+        });
         this.props.closeDialog();
     }
 
     private close() {
-        this.props.sendLCPError();
+        // this.props.sendLCPError();
         this.props.closeDialog();
     }
 }
@@ -78,24 +79,25 @@ const mapDispatchToProps = (dispatch: any) => {
                 dialogActions.close(),
             );
         },
-        checkPassphrase: (publication: any, passphrase: string) => {
-            dispatch(
-                sendPassphrase(publication, passphrase),
-            );
-        },
-        sendLCPError: () => {
-            dispatch({
-                type: ActionType.UserKeyCheckError,
-                error: true,
-            });
-        },
+        // sendLCPError: () => {
+        //     dispatch({
+        //         type: ActionType.UserKeyCheckError,
+        //         error: true,
+        //     });
+        // },
     };
 };
 
 export default withApi(
     withTranslator(LCPAuthentication),
     {
-        operations: [],
+        operations: [
+            {
+                moduleId: "lcp",
+                methodId: "unlockPublicationWithPassphrase",
+                callProp: "unlockPublicationWithPassphrase",
+            },
+        ],
         mapDispatchToProps,
     },
 );
