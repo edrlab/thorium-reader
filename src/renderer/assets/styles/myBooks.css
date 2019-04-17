@@ -358,9 +358,9 @@ main {
 	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 	grid-gap: 2.0em;
 	grid-auto-flow: row;	
-	max-width: 100%;
+	max-width: 2000px;
 	margin-top: 1.0em;
-	
+	align-content: center;
 }
 
 #content > * {
