@@ -40,27 +40,26 @@
   	justify-content: space-between;
 
     & > a {
+        height: 301px;
+        width: 301px;
+        border-radius: 33px;
+        background: linear-gradient(160.03deg, #6FA4FC 0%, #4083FD 100%);
+        margin-bottom:30px;
+        display: flex;
+        flex-direction: column;
         text-decoration: none;
-        color: black;
+        & p {
+            text-align: center;
+            color:white;
+            font-size: 1.5rem;
+            margin-top: calc(50% - 30px - 1.4rem);
+            font-weight: bold;
+        }
 
-        & div {
-            width: 300px; 
-            height: 300px;
-            margin-bottom:30px;
-            background-color: grey;
-            display: flex;
-            flex-direction: column;
-
-            & p {
-                text-align: center;
-                color:white;
-                font-size: 1.5rem;
-                margin-top: calc(50% - 30px - 1.4rem);
-            }
-
-            & button {
-                align-self: flex-end;
-            }
+        & button {
+            align-self: flex-end;
+            fill: white;
+            margin: 1rem 1rem 0;
         }
     }
 
