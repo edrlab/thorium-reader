@@ -49,6 +49,7 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
 
         this.toggleMenu = this.toggleMenu.bind(this);
         this.openCloseMenu = this.openCloseMenu.bind(this);
+        this.truncateTitle = this.truncateTitle.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
@@ -67,7 +68,7 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                 <div className={styles.legend}>
                     <a onClick={(e) => this.handleBookClick(e)}>
                         <p className={styles.book_title} aria-label="Titre du livre">
-                            { this.props.publication.title }
+                            { this.truncateTitle(this.props.publication.title) }
                         </p>
                         <p className={styles.book_author} aria-label="Auteur du livre">
                             {authors}
@@ -107,6 +108,18 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
         } else {
             this.props.openInfosDialog(publication);
         }
+    }
+
+    /* function Truncate very long titles at 60 characters */
+    private truncateTitle(title: string): string {
+        let newTitle = title;
+        const truncate = 60;
+
+        if (newTitle && newTitle.length > truncate) {
+            newTitle = title.substr(0, truncate);
+            newTitle += "...";
+        }
+        return (newTitle);
     }
 }
 
