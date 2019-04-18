@@ -21,6 +21,8 @@ import { Publication } from "readium-desktop/common/models/publication";
 import { Bookmark, Reader, ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
+import { WinRegistry } from "readium-desktop/main/services/win-registry";
+
 import { LocatorType } from "readium-desktop/common/models/locator";
 
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
@@ -33,6 +35,8 @@ import {
     _RENDERER_READER_BASE_URL,
     IS_DEV,
 } from "readium-desktop/preprocessor-directives";
+
+import { AppWindowType } from "readium-desktop/common/models/win";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -62,6 +66,8 @@ async function openReader(publication: Publication, manifestUrl: string) {
             webviewTag: true,
         },
     });
+    const winRegistry = container.get("win-registry") as WinRegistry;
+    winRegistry.registerWindow(readerWindow, AppWindowType.Reader);
 
     // Track it
     trackBrowserWindow(readerWindow);

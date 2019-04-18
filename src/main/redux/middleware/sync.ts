@@ -60,9 +60,10 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
     // Get action serializer
     const actionSerializer = container.get("action-serializer") as ActionSerializer;
 
-    for (const winId of Object.keys(windows)) {
+    for (const appWindow of Object.values(windows)) {
         // Notifies renderer process
-        const win = windows[winId];
+        const win = appWindow.win;
+        const winId = appWindow.identifier;
 
         if (action.sender &&
             action.sender.type === SenderType.Renderer &&
