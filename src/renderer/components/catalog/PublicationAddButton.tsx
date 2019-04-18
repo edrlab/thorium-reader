@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import * as PlusIcon from "readium-desktop/renderer/assets/icons/plus.svg";
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
