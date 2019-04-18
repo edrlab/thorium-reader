@@ -30,19 +30,29 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                 { this.props.catalogEntries.map((entry, i: number) => {
                         return (
                             <section key={ i }>
+                            {
+                                i <= 1 ? (
                                 <div className={ styles.title }>
                                     <h1>{ entry.title }</h1>
                                 </div>
-                                <Slider
-                                    className={ styles.slider }
-                                    content={ entry.publications.map((pub) =>
-                                        <PublicationCard
-                                            key={ pub.identifier }
-                                            publication={ pub }
-                                            menuContent={ CatalogMenu }
-                                        />,
-                                    )}
-                                />
+                                ) :
+                                (<></>)
+                            }
+                            {
+                                i <= 1 ? (
+                                    <Slider
+                                        className={ styles.slider }
+                                        content={ entry.publications.map((pub) =>
+                                            <PublicationCard
+                                                key={ pub.identifier }
+                                                publication={ pub }
+                                                menuContent={ CatalogMenu }
+                                            />,
+                                        )}
+                                    />
+                                ) :
+                                (<></>)
+                            }
                             </section>
                         );
                 })}
