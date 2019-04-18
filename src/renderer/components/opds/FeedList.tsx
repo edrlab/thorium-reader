@@ -52,14 +52,12 @@ export class FeedList extends React.Component<OpdsListProps, null> {
                                 ),
                             }}
                         >
-                            <div>
-                                <button
-                                    onClick={(e) => this.deleteFeed(e, item)}
-                                >
-                                    <SVG svg={DeleteIcon} />
-                                </button>
-                                <p>{ item.title }</p>
-                            </div>
+                            <button
+                                onClick={(e) => this.deleteFeed(e, item)}
+                            >
+                                <SVG svg={DeleteIcon} />
+                            </button>
+                            <p>{ item.title }</p>
                         </Link>
                     );
                 })}
