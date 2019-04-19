@@ -11,7 +11,7 @@ import * as uuid from "uuid";
 
 import { BrowserWindow, webContents } from "electron";
 import { SagaIterator } from "redux-saga";
-import { call, put, take } from "redux-saga/effects";
+import { all, call, put, take } from "redux-saga/effects";
 
 import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
@@ -305,4 +305,34 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
             });
         }
     }
+}
+
+export function* readerFullscreenWatcher(): SagaIterator {
+    while (true) {
+        // Wait for app initialization
+        const action = yield take([
+            readerActions.ActionType.FullscreenOffRequest,
+            readerActions.ActionType.FullscreenOnRequest,
+        ]);
+
+        const fullscreen = (action.type === readerActions.ActionType.FullscreenOnRequest);
+
+        // Get browser window
+        const sender = action.sender;
+        const winRegistry = container.get("win-registry") as WinRegistry;
+        const appWindow = winRegistry.getWindowByIdentifier(sender.winId);
+        const browerWindow = appWindow.win as BrowserWindow;
+        browerWindow.setFullScreen(fullscreen);
+    }
+}
+
+export function* watchers() {
+    yield all([
+        readerBookmarkSaveRequestWatcher(),
+        readerCloseRequestWatcher(),
+        readerConfigInitWatcher(),
+        readerConfigSetRequestWatcher(),
+        readerOpenRequestWatcher(),
+        readerFullscreenWatcher(),
+    ]);
 }

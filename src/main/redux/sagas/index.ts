@@ -10,13 +10,8 @@ import { all } from "redux-saga/effects";
 import { appInitWatcher } from "./app";
 
 import { netStatusWatcher } from "./net";
-import {
-    readerBookmarkSaveRequestWatcher,
-    readerCloseRequestWatcher,
-    readerConfigInitWatcher,
-    readerConfigSetRequestWatcher,
-    readerOpenRequestWatcher,
-} from "./reader";
+
+import * as reader from "./reader";
 
 import * as api from "./api";
 
@@ -37,11 +32,7 @@ export function* rootSaga() {
         netStatusWatcher(),
 
         // Reader
-        readerBookmarkSaveRequestWatcher(),
-        readerCloseRequestWatcher(),
-        readerConfigInitWatcher(),
-        readerConfigSetRequestWatcher(),
-        readerOpenRequestWatcher(),
+        reader.watchers(),
 
         // Streamer
         streamer.watchers(),

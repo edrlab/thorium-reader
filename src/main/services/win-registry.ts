@@ -102,6 +102,15 @@ export class WinRegistry {
         return this.windows[winId];
     }
 
+    public getWindowByIdentifier(identifier: string): AppWindow {
+        for (const appWindow of Object.values(this.windows)) {
+            if (appWindow.identifier === identifier) {
+                return appWindow;
+            }
+        }
+        return null;
+    }
+
     /** Returns all registered windows */
     public getWindows() {
         return this.windows;

@@ -14,6 +14,12 @@ export enum ActionType {
     OpenSuccess = "READER_OPEN_SUCCESS",
     OpenError = "READER_OPEN_ERROR",
 
+    FullscreenOnRequest = "READER_FULLSCREEN_ON_REQUEST",
+    FullscreenOnSuccess = "READER_FULLSCREEN_ON_SUCCESS",
+
+    FullscreenOffRequest = "READER_FULLSCREEN_OFF_REQUEST",
+    FullscreenOffSuccess = "READER_FULLSCREEN_OFF_SUCCESS",
+
     CloseRequest = "READER_CLOSE_REQUEST",
     CloseSuccess = "READER_CLOSE_SUCCESS",
     CloseError = "READER_CLOSE_ERROR",
@@ -60,5 +66,17 @@ export function saveBookmark(bookmark: Bookmark) {
         payload: {
             bookmark,
         },
+    };
+}
+
+export function setFullscreenOn() {
+    return {
+        type: ActionType.FullscreenOnRequest,
+    };
+}
+
+export function setFullscreenOff() {
+    return {
+        type: ActionType.FullscreenOffRequest,
     };
 }
