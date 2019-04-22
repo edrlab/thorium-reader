@@ -29,6 +29,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     readerActions.ActionType.OpenRequest,
     readerActions.ActionType.ConfigSetRequest,
     readerActions.ActionType.BookmarkSaveRequest,
+    readerActions.ActionType.FullscreenOffRequest,
+    readerActions.ActionType.FullscreenOnRequest,
 
     i18nActions.ActionType.Set,
 ];

@@ -65,7 +65,7 @@ export class Header extends React.Component<Props, undefined> {
                 id={styles.all_link_button}
                 to={{pathname: "/library/search/all"}}
                 >
-                    Tous les livres <SVG svg={ArrowIcon} />
+                    Tous mes livres {/*<SVG svg={ArrowIcon} />*/}
                 </Link>
             );
         }

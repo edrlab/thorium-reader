@@ -191,6 +191,7 @@ interface ReaderProps {
     deleteBookmark?: any;
     addBookmark?: any;
     findBookmarks: any;
+    toggleFullscreen?: any;
     setLastReadingLocation: any;
     bookmarks?: LocatorView[];
 }
@@ -560,6 +561,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private handleFullscreenClick() {
+        this.props.toggleFullscreen(!this.state.fullscreen);
         this.setState({fullscreen: !this.state.fullscreen});
     }
 
@@ -636,9 +638,22 @@ const buildBookmarkRequestData = () => {
     };
 };
 
+const mapDispatchToProps = (dispatch: any, __0: ReaderProps) => {
+    return {
+        toggleFullscreen: (fullscreenOn: boolean) => {
+            if (fullscreenOn) {
+                dispatch(readerActions.setFullscreenOn());
+            } else {
+                dispatch(readerActions.setFullscreenOff());
+            }
+        },
+    };
+};
+
 export default withApi(
     Reader,
     {
+        mapDispatchToProps,
         operations: [
             {
                 moduleId: "reader",
