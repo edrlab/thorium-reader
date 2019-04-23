@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import {
-    Reader, ReaderConfig, ReaderMode
+    Reader, ReaderConfig, ReaderMode,
 } from "readium-desktop/common/models/reader";
 
 export interface ReaderState {

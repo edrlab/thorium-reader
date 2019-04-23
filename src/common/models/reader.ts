@@ -12,7 +12,7 @@ import { Publication } from "./publication";
 
 export enum ReaderMode {
     Attached = "attached",
-    Detached = "detached"
+    Detached = "detached",
 }
 
 /**
