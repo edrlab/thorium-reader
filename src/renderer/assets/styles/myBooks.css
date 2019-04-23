@@ -59,16 +59,14 @@ main {
 }
 
 #all_link_button {
-		display: inline-flex;
-		position: relative;
-		float: right;
-		top: 25px;
-		right: -25px;	
-		align-items: center;	
+		border: 1px solid black;
+		padding: 8px 15px 8px 15px;
+		border-radius: 5px;
+		margin-left: 4rem;
+		text-align: center;		
 		color: black;
 		text-decoration: none;
 		font-size: 0.9rem;
-		padding: 4px 2px 4px 2px;
 		font: 14px Arial;
 		& svg {			
 			top: 0px;			
@@ -79,7 +77,7 @@ main {
 
 .addEpubButton {
 	display: inline-block;
-	margin-left: 2rem;
+	margin-left: 1rem;
 
 	& input {
 		width: 1px;
@@ -90,14 +88,13 @@ main {
 	}
 
 	& label {
-		margin-top: 15px;
 		width: 35px;
 		height: 35px;
-		display: inline-block;
-		position: relative;
-		top: 15px;
-		opacity: 0.5;
+		padding: 7px 10px 7px 10px;
 		cursor: pointer;
+		border: 1px solid black;
+		border-radius: 5px;
+		align-items: center;
 
 		&:hover {
 			opacity: 0.75;
@@ -106,9 +103,9 @@ main {
 		& svg {
 			top: 0;
 			margin-left: 0;
-			width: 33px;
-			height: 33px;
-			padding: 1px;
+			width: 15px;
+			align-content: center;
+			height: 15px;
 		}
 	}
 

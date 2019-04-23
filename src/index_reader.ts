@@ -80,10 +80,6 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: any) => {
 });
 
 // Request main process for a new id
-ipcRenderer.send(winIpc.CHANNEL, {
-    type: winIpc.EventType.IdRequest,
-});
-
 ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: any) => {
     const actionSerializer = container.get("action-serializer") as ActionSerializer;
 

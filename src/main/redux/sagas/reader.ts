@@ -11,7 +11,7 @@ import * as uuid from "uuid";
 
 import { BrowserWindow, webContents } from "electron";
 import { SagaIterator } from "redux-saga";
-import { call, put, take } from "redux-saga/effects";
+import { all, call, put, take } from "redux-saga/effects";
 
 import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
@@ -20,6 +20,8 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { Publication } from "readium-desktop/common/models/publication";
 import { Bookmark, Reader, ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
+
+import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { LocatorType } from "readium-desktop/common/models/locator";
 
@@ -33,6 +35,8 @@ import {
     _RENDERER_READER_BASE_URL,
     IS_DEV,
 } from "readium-desktop/preprocessor-directives";
+
+import { AppWindowType } from "readium-desktop/common/models/win";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -62,6 +66,8 @@ async function openReader(publication: Publication, manifestUrl: string) {
             webviewTag: true,
         },
     });
+    const winRegistry = container.get("win-registry") as WinRegistry;
+    winRegistry.registerWindow(readerWindow, AppWindowType.Reader);
 
     // Track it
     trackBrowserWindow(readerWindow);
@@ -299,4 +305,34 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
             });
         }
     }
+}
+
+export function* readerFullscreenWatcher(): SagaIterator {
+    while (true) {
+        // Wait for app initialization
+        const action = yield take([
+            readerActions.ActionType.FullscreenOffRequest,
+            readerActions.ActionType.FullscreenOnRequest,
+        ]);
+
+        const fullscreen = (action.type === readerActions.ActionType.FullscreenOnRequest);
+
+        // Get browser window
+        const sender = action.sender;
+        const winRegistry = container.get("win-registry") as WinRegistry;
+        const appWindow = winRegistry.getWindowByIdentifier(sender.winId);
+        const browerWindow = appWindow.win as BrowserWindow;
+        browerWindow.setFullScreen(fullscreen);
+    }
+}
+
+export function* watchers() {
+    yield all([
+        readerBookmarkSaveRequestWatcher(),
+        readerCloseRequestWatcher(),
+        readerConfigInitWatcher(),
+        readerConfigSetRequestWatcher(),
+        readerOpenRequestWatcher(),
+        readerFullscreenWatcher(),
+    ]);
 }

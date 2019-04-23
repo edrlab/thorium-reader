@@ -20,7 +20,7 @@ if (_PACKAGING !== "0") {
 import * as path from "path";
 import { Store } from "redux";
 
-import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
+import { app, BrowserWindow, ipcMain, Menu, protocol, shell, WebContents } from "electron";
 
 import { container } from "readium-desktop/main/di";
 
@@ -61,6 +61,8 @@ import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
 import { CatalogService } from "readium-desktop/main/services/catalog";
 
+import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
+
 // Logger
 const debug = debug_("readium-desktop:main");
 
@@ -77,12 +79,16 @@ setLcpNativePluginPath(lcpNativePluginPath);
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
 let mainWindow: BrowserWindow = null;
+let mainWindowId: any = null;
 
 initSessions();
 
 // Initialize application
 function initApp() {
     (container.get("store") as Store<any>).dispatch(appInit());
+    const winRegistry = container.get("win-registry") as WinRegistry;
+    winRegistry.registerOpenCallback(winOpenCallback);
+    winRegistry.registerCloseCallback(winCloseCallback);
 }
 
 // Opens the main window, with a native menu bar.
@@ -99,6 +105,8 @@ function createWindow() {
             allowRunningInsecureContent: false,
         },
     });
+    const winRegistry = container.get("win-registry") as WinRegistry;
+    winRegistry.registerWindow(mainWindow, AppWindowType.Library);
 
     let rendererBaseUrl = _RENDERER_APP_BASE_URL;
 
@@ -178,6 +186,7 @@ function createWindow() {
     // mainWindow.webContents.session.clearStorageData();
 
     mainWindow.on("closed", () => {
+        mainWindowId = null;
         mainWindow = null;
     });
 }
@@ -229,95 +238,88 @@ app.on("open-file", (event: any, url: any) => {
     // Process file: import or open?
 });
 
-// Listen to a window that requests a new id
-ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
-    const win: BrowserWindow = event.sender;
+// Callback called when a window is closed
+const winCloseCallback = (appWindow: AppWindow) => {
+    console.log("#### Close window", appWindow);
+};
+
+// Callback called when a window is opened
+const winOpenCallback = (appWindow: AppWindow) => {
     const store = container.get("store") as Store<RootState>;
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const webContents = appWindow.win.webContents;
 
-    switch (data.type) {
-        case winIpc.EventType.IdRequest:
-            const winId = winRegistry.registerWindow(win);
+    // Send the id to the new window
+    webContents.send(winIpc.CHANNEL, {
+        type: winIpc.EventType.IdResponse,
+        payload: {
+            winId: appWindow.identifier,
+        },
+    });
 
-            win.on("closed", () => {
-                winRegistry.unregisterWindow(winId);
-            });
+    // Init network on window
+    const state = store.getState();
+    let netActionType = null;
 
-            // Send the id to the new window
-            win.webContents.send(winIpc.CHANNEL, {
-                type: winIpc.EventType.IdResponse,
-                payload: {
-                    winId,
-                },
-            });
-
-            // Init network on window
-            const state = store.getState();
-            let netActionType = null;
-
-            switch (state.net.status) {
-                case NetStatus.Online:
-                    netActionType = netActions.ActionType.Online;
-                    break;
-                case NetStatus.Online:
-                    netActionType = netActions.ActionType.Offline;
-                    break;
-            }
-
-            // Send network status
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: netActionType,
-                    },
-                },
-            });
-
-            // Send reader config
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: readerActions.ActionType.ConfigSetSuccess,
-                        payload: {
-                            config: state.reader.config,
-                        },
-                    },
-                },
-            });
-
-            // Send locale
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: i18nActions.ActionType.Set,
-                        payload: {
-                            locale: state.i18n.locale,
-                        },
-                    },
-                },
-            });
-
-            // Send locale
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: updateActions.ActionType.LatestVersionSet,
-                        payload: {
-                            status: state.update.status,
-                            latestVersion: state.update.latestVersion,
-                            latestVersionUrl: state.update.latestVersionUrl,
-                        },
-                    },
-                },
-            });
-
+    switch (state.net.status) {
+        case NetStatus.Online:
+            netActionType = netActions.ActionType.Online;
+            break;
+        case NetStatus.Online:
+            netActionType = netActions.ActionType.Offline;
             break;
     }
-});
+
+    // Send network status
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: netActionType,
+            },
+        },
+    });
+
+    // Send reader config
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: readerActions.ActionType.ConfigSetSuccess,
+                payload: {
+                    config: state.reader.config,
+                },
+            },
+        },
+    });
+
+    // Send locale
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: i18nActions.ActionType.Set,
+                payload: {
+                    locale: state.i18n.locale,
+                },
+            },
+        },
+    });
+
+    // Send locale
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: updateActions.ActionType.LatestVersionSet,
+                payload: {
+                    status: state.update.status,
+                    latestVersion: state.update.latestVersion,
+                    latestVersionUrl: state.update.latestVersionUrl,
+                },
+            },
+        },
+    });
+};
 
 // Listen to renderer action
 ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {

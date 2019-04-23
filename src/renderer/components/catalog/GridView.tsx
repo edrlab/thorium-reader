@@ -49,19 +49,33 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                 { this.props.catalogEntries.map((entry, i: number) => {
                         return (
                             <section key={ i }>
+<<<<<<< HEAD
                                 <div className={styles.title}>
+=======
+                            {
+                                i <= 1 ? (
+                                <div className={ styles.title }>
+>>>>>>> upstream/develop
                                     <h1>{ entry.title }</h1>
                                 </div>
-                                <Slider
-                                    className={ styles.slider }
-                                    content={ entry.publications.map((pub) =>
-                                        <PublicationCard
-                                            key={ pub.identifier }
-                                            publication={ pub }
-                                            menuContent={ CatalogMenu }
-                                        />,
-                                    )}
-                                />
+                                ) :
+                                (<></>)
+                            }
+                            {
+                                i <= 1 ? (
+                                    <Slider
+                                        className={ styles.slider }
+                                        content={ entry.publications.map((pub) =>
+                                            <PublicationCard
+                                                key={ pub.identifier }
+                                                publication={ pub }
+                                                menuContent={ CatalogMenu }
+                                            />,
+                                        )}
+                                    />
+                                ) :
+                                (<></>)
+                            }
                             </section>
                         );
                 })}

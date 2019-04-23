@@ -26,6 +26,7 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import * as readerActions from "readium-desktop/common/redux/actions/reader";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { withApi } from "../utils/api";
@@ -165,7 +166,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: Props) => {
+const mapDispatchToProps = (dispatch: any, props: Props) => {
     return {
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open(
