@@ -15,8 +15,10 @@ import { Server } from "@r2-streamer-js/http/server";
 
 import { inject, injectable } from "inversify";
 
+import { lsdRegister } from "@r2-lcp-js/lsd/register";
 import { lsdRenew } from "@r2-lcp-js/lsd/renew";
 import { lsdReturn } from "@r2-lcp-js/lsd/return";
+
 import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
 
 import { Publication } from "readium-desktop/common/models/publication";
@@ -145,6 +147,33 @@ export class LcpManager {
         return this.publicationRepository.save(newPublicationDocument);
     }
 
+    public async registerPublicationLicense(
+        publicationDocument: PublicationDocument,
+    ): Promise<PublicationDocument> {
+        // Get lsd status
+        let lsdStatus = await this.getLsdStatus(publicationDocument);
+
+        let newPublicationDocument = await this.updateLsdStatus(
+            publicationDocument,
+            lsdStatus,
+        );
+
+        // Renew
+        await lsdRegister(
+            lsdStatus,
+            this.deviceIdManager,
+        );
+
+        // Update again lsd status
+        lsdStatus = await this.getLsdStatus(newPublicationDocument);
+        newPublicationDocument = await this.updateLsdStatus(
+            publicationDocument,
+            lsdStatus,
+        );
+
+        return this.publicationRepository.get(publicationDocument.identifier);
+    }
+
     public async renewPublicationLicense(
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
@@ -258,13 +287,17 @@ export class LcpManager {
 
         // Get epub file from publication
         const epubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
-        console.log("##### existing secrets", epubPath, secrets);
+
         await doTryLcpPass(
             this.streamer,
             epubPath,
             secrets,
             true,
         );
+
+        // Register device
+        const publicationDocument = await this.publicationRepository.get(publication.identifier);
+        this.registerPublicationLicense(publicationDocument);
     }
 
     public async unlockPublicationWithPassphrase(publication: Publication, passphrase: string): Promise<void> {
@@ -292,6 +325,10 @@ export class LcpManager {
                 secret,
             });
         }
+
+        // Register device
+        const publicationDocument = await this.publicationRepository.get(publication.identifier);
+        this.registerPublicationLicense(publicationDocument);
     }
 
     public async storePassphrase(publication: Publication, passphrase: string): Promise<void> {

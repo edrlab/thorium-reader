@@ -35,6 +35,15 @@ export class LcpApi {
         console.log("renew license", publication);
     }
 
+    public async registerPublicationLicense(data: any): Promise<void> {
+        const { publication } = data;
+        const publicationDocument = await this.publicationRepository.get(
+            publication.identifier,
+        );
+        await this.lcpManager.registerPublicationLicense(publicationDocument);
+        console.log("register publication", publication);
+    }
+
     public async returnPublication(data: any): Promise<void> {
         const { publication } = data;
         const publicationDocument = await this.publicationRepository.get(
