@@ -49,13 +49,9 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                 { this.props.catalogEntries.map((entry, i: number) => {
                         return (
                             <section key={ i }>
-<<<<<<< HEAD
-                                <div className={styles.title}>
-=======
                             {
                                 i <= 1 ? (
                                 <div className={ styles.title }>
->>>>>>> upstream/develop
                                     <h1>{ entry.title }</h1>
                                 </div>
                                 ) :
