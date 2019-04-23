@@ -17,7 +17,7 @@ import {
 
 import {
     readerReducer,
-} from "readium-desktop/common/redux/reducers/reader";
+} from "./reader";
 
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { updateReducer } from "readium-desktop/common/redux/reducers/update";

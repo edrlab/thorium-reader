@@ -10,10 +10,13 @@ import * as uuid from "uuid";
 import { Action } from "readium-desktop/common/models/redux";
 
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { ReaderState } from "readium-desktop/common/redux/states/reader";
+import { ReaderState } from "readium-desktop/renderer/redux/states/reader";
+
+import { ReaderMode } from "readium-desktop/common/models/reader";
 
 const initialState: ReaderState = {
-    readers: {},
+    reader: undefined,
+    mode: ReaderMode.Attached,
     config: {
         align: "left",
         colCount: "auto",
@@ -37,10 +40,13 @@ export function readerReducer(
 
     switch (action.type) {
         case readerActions.ActionType.OpenSuccess:
-            newState.readers[action.payload.reader.identifier] = action.payload.reader;
+            newState.reader = action.payload.reader;
             return newState;
         case readerActions.ActionType.CloseSuccess:
-            delete newState.readers[action.payload.reader.identifier];
+            delete newState.reader;
+            return newState;
+        case readerActions.ActionType.ModeSetSuccess:
+            newState.mode = action.payload.mode;
             return newState;
         case readerActions.ActionType.ConfigSetSuccess:
             newState.config = action.payload.config;

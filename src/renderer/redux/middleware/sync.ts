@@ -27,6 +27,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     apiActions.ActionType.Request,
 
     readerActions.ActionType.OpenRequest,
+    readerActions.ActionType.CloseRequest,
+    readerActions.ActionType.ModeSetRequest,
     readerActions.ActionType.ConfigSetRequest,
     readerActions.ActionType.BookmarkSaveRequest,
     readerActions.ActionType.FullscreenOffRequest,

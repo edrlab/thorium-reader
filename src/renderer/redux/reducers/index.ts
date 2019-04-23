@@ -15,7 +15,7 @@ import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 
-import { readerReducer } from "readium-desktop/common/redux/reducers/reader";
+import { readerReducer } from "./reader";
 
 import { winReducer } from "./win";
 

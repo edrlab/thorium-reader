@@ -57,6 +57,8 @@ import {
 
 import { SenderType } from "readium-desktop/common/models/sync";
 
+import { ReaderMode } from "readium-desktop/common/models/reader";
+
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
 import { CatalogService } from "readium-desktop/main/services/catalog";
@@ -240,11 +242,41 @@ app.on("open-file", (event: any, url: any) => {
 
 // Callback called when a window is closed
 const winCloseCallback = (appWindow: AppWindow) => {
-    console.log("#### Close window", appWindow);
+    const store = container.get("store") as Store<RootState>;
+    const winRegistry = container.get("win-registry") as WinRegistry;
+    const appWindows = winRegistry.getWindows();
+
+    if (Object.keys(appWindows).length !== 1) {
+        return;
+    }
+
+    const appWin = Object.values(appWindows)[0];
+
+    if (appWin.type === AppWindowType.Library) {
+        // Set reader to attached mode
+        store.dispatch({
+            type: readerActions.ActionType.ModeSetSuccess,
+            payload: {
+                mode: ReaderMode.Attached,
+            },
+        });
+    }
+
+    if (
+        appWin.type === AppWindowType.Library &&
+        !appWin.win.isVisible()
+    ) {
+        // Library window is hidden
+        // There is no more opened window
+        // Consider that we close application
+        Object.values(appWindows)[0].win.close();
+
+    }
 };
 
 // Callback called when a window is opened
 const winOpenCallback = (appWindow: AppWindow) => {
+    // Send information to the new window
     const store = container.get("store") as Store<RootState>;
     const webContents = appWindow.win.webContents;
 
@@ -279,6 +311,19 @@ const winOpenCallback = (appWindow: AppWindow) => {
         },
     });
 
+    // Send reader information
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: readerActions.ActionType.OpenSuccess,
+                payload: {
+                    reader: state.reader.readers[appWindow.identifier],
+                },
+            },
+        },
+    });
+
     // Send reader config
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
@@ -287,6 +332,19 @@ const winOpenCallback = (appWindow: AppWindow) => {
                 type: readerActions.ActionType.ConfigSetSuccess,
                 payload: {
                     config: state.reader.config,
+                },
+            },
+        },
+    });
+
+    // Send reader mode
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: readerActions.ActionType.ModeSetSuccess,
+                payload: {
+                    mode: state.reader.mode,
                 },
             },
         },

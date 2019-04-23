@@ -34,14 +34,18 @@ import { withApi } from "../utils/api";
 import { Publication } from "readium-desktop/common/models/publication";
 
 import * as qs from "query-string";
+import { ReaderMode } from "readium-desktop/common/models/reader";
 
 interface Props {
     menuOpen: boolean;
+    mode?: ReaderMode;
     settingsOpen: boolean;
     handleMenuClick: () => void;
     handleSettingsClick: () => void;
     fullscreen: boolean;
     handleFullscreenClick: () => void;
+    handleReaderClose: () => void;
+    handleReaderDetach: () => void;
     toggleBookmark: any;
     isOnBookmark: boolean;
     displayPublicationInfo?: any;
@@ -74,13 +78,17 @@ export class ReaderHeader extends React.Component<Props, undefined> {
             >
                 <ul>
                     { !this.props.fullscreen ? <>
-                        <li>
-                            <button
-                                className={styles.menu_button}
-                            >
-                                <SVG svg={BackIcon} title="Retour à la bibliotheque"/>
-                            </button>
-                        </li>
+                        { (this.props.mode === ReaderMode.Attached) ? (
+                            <li>
+                                <button
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleReaderClose}
+                                >
+                                    <SVG svg={BackIcon} title="Retour à la bibliotheque"/>
+                                </button>
+                            </li>
+                            ) : (<></>)
+                        }
                         <li>
                             <button
                                 className={styles.menu_button}
@@ -89,13 +97,17 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 <SVG svg={InfosIcon} title="Informations"/>
                             </button>
                         </li>
-                        <li>
-                            <button
-                                className={styles.menu_button}
-                            >
-                                <SVG svg={DetachIcon} title="Détacher la fenêtre"/>
-                            </button>
-                        </li>
+                        { (this.props.mode === ReaderMode.Attached) ? (
+                            <li>
+                                <button
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleReaderDetach}
+                                >
+                                    <SVG svg={DetachIcon} title="Détacher la fenêtre"/>
+                                </button>
+                            </li>
+                            ) : (<></>)
+                        }
                         <li  className={styles.right + " " + styles.blue}>
                             <button
                                 className={styles.menu_button}

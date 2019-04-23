@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import * as path from "path";
-import * as uuid from "uuid";
 
 import { BrowserWindow, webContents } from "electron";
 import { SagaIterator } from "redux-saga";
@@ -18,7 +17,7 @@ import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-windo
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { Publication } from "readium-desktop/common/models/publication";
-import { Bookmark, Reader, ReaderConfig } from "readium-desktop/common/models/reader";
+import { Bookmark, Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
@@ -67,7 +66,16 @@ async function openReader(publication: Publication, manifestUrl: string) {
         },
     });
     const winRegistry = container.get("win-registry") as WinRegistry;
-    winRegistry.registerWindow(readerWindow, AppWindowType.Reader);
+    const appWindows = winRegistry.getWindows();
+
+    // If this is the only window, hide library window by default
+    if (Object.keys(appWindows).length === 1) {
+        const appWindow = Object.values(appWindows)[0];
+        appWindow.win.hide();
+    }
+
+    // Register reader window
+    const readerAppWindow = winRegistry.registerWindow(readerWindow, AppWindowType.Reader);
 
     // Track it
     trackBrowserWindow(readerWindow);
@@ -77,7 +85,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
 
     // Create reader object
     const reader: Reader = {
-        identifier: uuid.v4(),
+        identifier: readerAppWindow.identifier,
         publication,
         manifestUrl,
         filesystemPath: pathDecoded,
@@ -139,7 +147,6 @@ export function* readerOpenRequestWatcher(): SagaIterator {
         const action = yield take(readerActions.ActionType.OpenRequest);
         const publication = action.payload.publication;
 
-        console.log("#### Reader open request");
         // Notify the streamer to create a manifest fo this publication
         yield put(streamerActions.openPublication(
             publication,
@@ -182,6 +189,7 @@ export function* readerCloseRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield take(readerActions.ActionType.CloseRequest);
         const reader = action.payload.reader;
+        const gotoLibrary = action.payload.gotoLibrary;
         const publication = reader.publication;
 
         // Notify the streamer that a publication has been closed
@@ -204,6 +212,27 @@ export function* readerCloseRequestWatcher(): SagaIterator {
                 },
             });
             continue;
+        }
+
+        const winRegistry = container.get("win-registry") as WinRegistry;
+        const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
+
+        if (gotoLibrary) {
+            // Show library window
+            const appWindows = winRegistry.getWindows();
+
+            for (const appWin of Object.values(appWindows)) {
+                if (appWin.type !== AppWindowType.Library) {
+                    continue;
+                }
+
+                appWin.win.show();
+            }
+        }
+
+        // Close directly reader window
+        if (readerWindow && readerWindow.win) {
+            readerWindow.win.close();
         }
 
         yield put({
@@ -307,7 +336,7 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
     }
 }
 
-export function* readerFullscreenWatcher(): SagaIterator {
+export function* readerFullscreenRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for app initialization
         const action = yield take([
@@ -326,6 +355,39 @@ export function* readerFullscreenWatcher(): SagaIterator {
     }
 }
 
+export function* readerDetachRequestWatcher(): SagaIterator {
+    while (true) {
+        // Wait for a change mode request
+        const action = yield take(readerActions.ActionType.ModeSetRequest);
+        const readerMode = action.payload.mode;
+        const reader = action.payload.reader;
+
+        if (readerMode === ReaderMode.Detached) {
+            const winRegistry = container.get("win-registry") as WinRegistry;
+            const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
+
+            const appWindows = winRegistry.getWindows();
+
+            for (const appWin of Object.values(appWindows)) {
+                if (appWin.type !== AppWindowType.Library) {
+                    continue;
+                }
+
+                appWin.win.show();
+            }
+
+            readerWindow.win.focus();
+        }
+
+        yield put({
+            type: readerActions.ActionType.ModeSetSuccess,
+            payload: {
+                mode: readerMode,
+            },
+        });
+    }
+}
+
 export function* watchers() {
     yield all([
         readerBookmarkSaveRequestWatcher(),
@@ -333,6 +395,7 @@ export function* watchers() {
         readerConfigInitWatcher(),
         readerConfigSetRequestWatcher(),
         readerOpenRequestWatcher(),
-        readerFullscreenWatcher(),
+        readerFullscreenRequestWatcher(),
+        readerDetachRequestWatcher(),
     ]);
 }

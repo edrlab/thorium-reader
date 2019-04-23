@@ -84,13 +84,12 @@ export class WinRegistry {
         }
 
         const appWindow = this.windows[winId];
+        delete this.windows[winId];
 
         // Call callbacks
         for (const callback of this.closeCallbacks) {
             callback(appWindow);
         }
-
-        delete this.windows[winId];
     }
 
     public getWindow(winId: number): AppWindow {

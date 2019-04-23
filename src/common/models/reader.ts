@@ -10,6 +10,11 @@ import { BrowserWindow } from "electron";
 import { Identifiable } from "./identifiable";
 import { Publication } from "./publication";
 
+export enum ReaderMode {
+    Attached = "attached",
+    Detached = "detached"
+}
+
 /**
  *  A reader
  */

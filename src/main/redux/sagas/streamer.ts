@@ -226,6 +226,13 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
         if (Object.keys(state.streamer.openPublicationCounter).length === 0) {
             yield put(streamerActions.stop());
         }
+
+        yield put({
+            type: streamerActions.ActionType.PublicationCloseSuccess,
+            payload: {
+                publication,
+            },
+        });
     }
 }
 

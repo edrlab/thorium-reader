@@ -32,7 +32,10 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     netActions.ActionType.Online,
 
     readerActions.ActionType.OpenError,
-    readerActions.ActionType.OpenSuccess,
+    readerActions.ActionType.CloseError,
+    readerActions.ActionType.CloseSuccess,
+    readerActions.ActionType.ModeSetError,
+    readerActions.ActionType.ModeSetSuccess,
     readerActions.ActionType.ConfigSetError,
     readerActions.ActionType.ConfigSetSuccess,
     readerActions.ActionType.BookmarkSaveError,
