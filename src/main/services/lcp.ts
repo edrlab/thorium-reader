@@ -152,7 +152,6 @@ export class LcpManager {
     ): Promise<PublicationDocument> {
         // Get lsd status
         let lsdStatus = await this.getLsdStatus(publicationDocument);
-
         let newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
             lsdStatus,
@@ -279,6 +278,17 @@ export class LcpManager {
     }
 
     public async unlockPublication(publication: Publication): Promise<void> {
+        const publicationDocument = await this.publicationRepository.get(publication.identifier);
+        const lsdStatus = await this.getLsdStatus(publicationDocument);
+
+        if (
+            lsdStatus.status !== "ready" &&
+            lsdStatus.status !== "active"
+        ) {
+            await this.updateLsdStatus(publicationDocument, lsdStatus);
+            throw new Error("license is not active");
+        }
+
         // Try to unlock publication with stored secrets
         const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
             publication.identifier,
@@ -296,11 +306,21 @@ export class LcpManager {
         );
 
         // Register device
-        const publicationDocument = await this.publicationRepository.get(publication.identifier);
         this.registerPublicationLicense(publicationDocument);
     }
 
     public async unlockPublicationWithPassphrase(publication: Publication, passphrase: string): Promise<void> {
+        const publicationDocument = await this.publicationRepository.get(publication.identifier);
+        const lsdStatus = await this.getLsdStatus(publicationDocument);
+
+        if (
+            lsdStatus.status !== "ready" &&
+            lsdStatus.status !== "active"
+        ) {
+            await this.updateLsdStatus(publicationDocument, lsdStatus);
+            throw new Error("license is not active");
+        }
+
         // Get epub file from publication
         const epubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
 
@@ -327,7 +347,6 @@ export class LcpManager {
         }
 
         // Register device
-        const publicationDocument = await this.publicationRepository.get(publication.identifier);
         this.registerPublicationLicense(publicationDocument);
     }
 

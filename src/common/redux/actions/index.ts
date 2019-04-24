@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as apiActions from "./api";
+import * as dialogActions from "./dialog";
 import * as i18nActions from "./i18n";
 import * as lcpActions from "./lcp";
 import * as loggerActions from "./logger";
@@ -15,6 +16,7 @@ import * as updateActions from "./update";
 
 export {
     apiActions,
+    dialogActions,
     i18nActions,
     loggerActions,
     netActions,

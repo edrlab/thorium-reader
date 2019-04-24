@@ -14,6 +14,8 @@ import { call, put, select, take } from "redux-saga/effects";
 import { Server } from "@r2-streamer-js/http/server";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
@@ -24,6 +26,8 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
 import { LcpManager } from "readium-desktop/main/services/lcp";
+
+import { DialogType } from "readium-desktop/common/models/dialog";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
@@ -166,11 +170,39 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                     publication as any,
                 );
             } catch (error) {
-                console.log("error", error);
-                yield put(lcpActions.checkUserKey(
-                    publicationView,
-                    parsedEpub.LCP.Encryption.UserKey.TextHint,
-                ));
+                // Get lsd status
+                try {
+                    publication = yield call(
+                        publicationRepository.get.bind(publicationRepository),
+                        action.payload.publication.identifier,
+                    );
+
+                    const lsdStatus = yield call(
+                        lcpManager.getLsdStatus.bind(lcpManager),
+                        publication,
+                    );
+
+                    if (
+                        lsdStatus.status === "active" ||
+                        lsdStatus.status === "ready"
+                    ) {
+                        // Publication is protected and is not expired
+                        yield put(lcpActions.checkUserKey(
+                            publicationView,
+                            parsedEpub.LCP.Encryption.UserKey.TextHint,
+                        ));
+                    } else {
+                        yield put(dialogActions.open(
+                            DialogType.PublicationInfo,
+                            {
+                                publicationIdentifier: publication.identifier,
+                            },
+                        ));
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+
                 yield put({
                     type: streamerActions.ActionType.PublicationOpenError,
                     error: true,

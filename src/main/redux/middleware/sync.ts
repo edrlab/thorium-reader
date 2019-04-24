@@ -10,6 +10,7 @@ import { Store } from "redux";
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
     apiActions,
+    dialogActions,
     i18nActions,
     lcpActions,
     netActions,
@@ -30,6 +31,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 
     netActions.ActionType.Offline,
     netActions.ActionType.Online,
+
+    dialogActions.ActionType.OpenRequest,
 
     readerActions.ActionType.OpenError,
     readerActions.ActionType.CloseError,

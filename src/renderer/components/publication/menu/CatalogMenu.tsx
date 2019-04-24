@@ -87,7 +87,7 @@ const mapDispatchToProps = (dispatch: any) => {
             dispatch(dialogActions.open(
                 DialogType.PublicationInfo,
                 {
-                    publication,
+                    publicationIdentifier: publication.identifier,
                 },
             ));
         },
