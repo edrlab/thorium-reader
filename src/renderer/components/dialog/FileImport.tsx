@@ -13,7 +13,7 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
-import * as styles from "readium-desktop/renderer/assets/styles/app.css";
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 
 interface FileImportProps extends TranslatorProps {
     files: any;
@@ -28,20 +28,13 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
+        const {__} = this.props;
         return (
             <div>
-                <div className={styles.add_dialog_content}>
-                    { this.buildBasicFileImportList() }
-                    { this.buildLcpFileImportList() }
-                </div>
-                <div className={styles.add_dialog_choices}>
-                    <button onClick={ this.importFiles }
-                    >
-                        { this.props.__("dialog.yes") }
-                    </button>
-                    <button onClick={ this.props.closeDialog }>
-                        { this.props.__("dialog.no") }
-                    </button>
+                { this.buildBasicFileImportList() }
+                <div>
+                    <button className={ styles.primary } onClick={ this.importFiles }>{ __("dialog.yes") }</button>
+                    <button onClick={ this.props.closeDialog }>{ __("dialog.no") }</button>
                 </div>
             </div>
         );
@@ -56,12 +49,9 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
     }
 
     private buildBasicFileImportList() {
-        const basicFiles = this.props.files.filter((file: any) => {
-            const fileParts = file.name.split(".");
-            return (fileParts.length > 1 && fileParts[1] !== "lcp");
-        });
+        const { files } = this.props;
 
-        if (basicFiles.length === 0) {
+        if (!files || files.length === 0) {
             return (<></>);
         }
 
@@ -69,50 +59,20 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
             <div>
                 <p>{ this.props.__("dialog.import") }</p>
                 <ul>
-                    {
-                        basicFiles.map((file: File, i: number) => {
-                            return (
-                                <li key={ i }>{ file.name }</li>
-                            );
-                        })
-
-                    }
-                </ul>
-            </div>
-        );
-    }
-
-    private buildLcpFileImportList() {
-        const lcpFiles = this.props.files.filter((file: any) => {
-            const fileParts = file.name.split(".");
-            return (fileParts.length > 1 && fileParts[1] === "lcp");
-        });
-
-        if (lcpFiles.length === 0) {
-            return (<></>);
-        }
-
-        return (
-            <div>
-                <p>{ this.props.__("dialog.lcpImport") }</p>
-                <ul>
-                    {
-                        lcpFiles.map((file: File, i: number) => {
-                            return (
-                                <li key={ i }>{ file.name }</li>
-                            );
-                        })
-
-                    }
+                    { files.map((file: File, i: number) => {
+                        return (
+                            <li key={ i }>{ file.name }</li>
+                        );
+                    })}
                 </ul>
             </div>
         );
     }
 }
 
-const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
-        closeDialog: (data: any) => {
+        closeDialog: () => {
             dispatch(
                 dialogActions.close(),
             );

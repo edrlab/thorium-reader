@@ -21,7 +21,8 @@
           "sentence": "Cette publication a besoin d'un mot de passe : ",
           "submit": "Valider",
           "cancel": "Annuler",
-          "hint": "Indice : {{hint}}",
+          "hint": "(Indice : {{hint}})",
+          "password": "Mot de passe",
           "informations": {
             "title": "Informations LCP",
             "close": "Fermer",
@@ -93,8 +94,10 @@
         "addSentence": "Quel flux OPDS souhaitez vous ajouter ?",
         "delete": "Supprimer le flux",
         "update": "Modifier",
-        "name": "Nom du flux :",
-        "url": "Adresse du flux :"
+        "name": "Nom :",
+        "url": "Adresse :",
+        "namePlaceholder": "Nom",
+        "urlPlaceholder": "Adresse"
       },
       "authentication": {
         "username": "Nom d'utilisateur :",

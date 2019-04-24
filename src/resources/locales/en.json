@@ -21,7 +21,8 @@
           "sentence": "This publication needs a LCP password to be opened: ",
           "submit": "Submit",
           "cancel": "Cancel",
-          "hint": "Hint : {{hint}}",
+          "hint": "(Hint : {{hint}})",
+          "password": "Password",
           "informations": {
             "title": "LCP Informations",
             "close": "Close",
@@ -93,8 +94,10 @@
         "addSentence": "What OPDS feed would you like to add?",
         "delete": "Delete the feed",
         "update": "Update",
-        "name": "Feed name :",
-        "url": "Feed link :"
+        "name": "Name :",
+        "url": "Link :",
+        "namePlaceholder": "Name",
+        "urlPlaceholder": "Link"
       },
       "authentication": {
         "username": "Username :",

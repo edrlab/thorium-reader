@@ -121,6 +121,12 @@ let config = Object.assign({}, {
                 to: "ReadiumCSS",
             }
         ]),
+        new CopyWebpackPlugin([
+            {
+                from: path.join(__dirname, "resources", "icons"),
+                to: "assets/icons",
+            }
+        ]),
         preprocessorDirectives.definePlugin
     ],
 });
