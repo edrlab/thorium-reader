@@ -83,8 +83,10 @@
       "yes": "Oui",
       "no": "Non",
       "delete": "Êtes vous sûr de vouloir supprimer cette publication ?",
-      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-      "lcpImport": "Etes vous sûr de vouloir importer ce(s) fichier(s) LCP :"
+      "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
+      "deleteOpds": "Êtes vous sûr de vouloir supprimer ce flux opds ?",
+      "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
+      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :"
     },
     "opds": {
       "download": "Télécharger",

@@ -70,6 +70,10 @@
     & > div {
         & p {
             margin-top: 0;
+            & span {
+                font-weight: bold;
+                display: block;
+            }
         }
         & form {
             display: flex;
@@ -113,15 +117,6 @@
                 background-color: #ADAEAE;
                 cursor: not-allowed;
             }
-        }
-    }
-}
-
-#lcp_dialog {
-    & > p {
-        & span {
-            font-weight: bold;
-            display: block;
         }
     }
 }

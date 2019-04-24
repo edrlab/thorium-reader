@@ -71,8 +71,7 @@
       "yes": "Ja",
       "no": "Nein",
       "delete": "Willst du diese Publikation wirklich löschen?",
-      "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-      "lcpImport": "Willst du diese LCP-Dateien wirklich importieren?"
+      "import": "Willst du diese EPUB-Dateien wirklich importieren?"
     },
     "opds": {
       "download": "Download",
