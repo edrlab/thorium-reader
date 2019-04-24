@@ -52,6 +52,8 @@
         width: 50px;
         cursor: pointer;
         fill: #3B3B3B;
+        background-color: transparent;
+        border: none;
     }
     & button svg {
         width: 80%;
