@@ -11,19 +11,38 @@ import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 
-import { RouteComponentProps } from "react-router-dom";
-
-import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import Slider from "readium-desktop/renderer/components/utils/Slider";
-import AddEntryForm from "./AddEntryForm";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+
+import { Link, RouteComponentProps } from "react-router-dom";
+
+import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
+
+import GridTagLayout from "./GridTagLayout";
+import SortMenu from "./SortMenu";
 
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
 }
 
-export default class GridView extends React.Component<GridViewProps, undefined> {
+interface GridViewState {
+    tabEntries: CatalogEntryView[];
+    status: string;
+}
+
+export default class GridView extends React.Component<GridViewProps, GridViewState> {
+    public constructor(props: any) {
+        super(props);
+
+        this.state = {
+            tabEntries: this.props.catalogEntries.slice(),
+            status: "count",
+        };
+        this.sortByAlpha = this.sortByAlpha.bind(this);
+        this.sortbyCount = this.sortbyCount.bind(this);
+    }
+
     public render(): React.ReactElement<{}> {
         return (
             <>
@@ -56,8 +75,44 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                             </section>
                         );
                 })}
-                <AddEntryForm />
+                <GridTagLayout
+                entries={this.state.tabEntries}
+                content={
+                    <SortMenu
+                        onClickAlphaSort={this.sortByAlpha}
+                        onClickCountSort={this.sortbyCount}
+                    />}
+                />
             </>
         );
     }
+
+    private sortbyCount() {
+        this.setState({
+            status: "count",
+        });
+        this.state.tabEntries.sort((a, b) => {
+            if (a.totalCount < b.totalCount) {
+                return (1);
+            } else if (a.totalCount > b.totalCount) {
+                return (-1);
+            }
+            return (0);
+        });
+    }
+
+    private sortByAlpha() {
+        this.setState({
+            status: "alpha",
+        });
+        this.state.tabEntries.sort((a, b) => {
+            if (a.title > b.title) {
+                return (1);
+            } else if (a.title < b.title) {
+                return (-1);
+            }
+            return (0);
+        });
+    }
+
 }

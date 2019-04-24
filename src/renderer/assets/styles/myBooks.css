@@ -276,3 +276,108 @@ main {
 	background: none;
 	border: none;
 }
+
+/*GRIDTAG LAYOUT*/
+
+#myTags {
+	margin: 2.0em 1.0em 4.0em 0;
+	/*width: 100%;*/
+	font: 1.1rem "Open Sans", sans-serif;
+	font-weight: bolder;
+	background: #fbfbfb;
+}
+
+#sortMenu {
+	margin: 0 0.2em 2.0em 1.0em;	
+	display: inline-flex;
+	cursor:pointer;
+	color:#666666;
+	font: 1.1rem "Open Sans", sans-serif;
+	position: relative;
+	top: -2px;
+	border: 1px;
+	border-radius: 5px;
+	& svg {
+		
+		height: 10px;
+		margin-left: 0.5em;
+	}
+}
+#sortType {
+	height: 90px;
+	width: 90px;
+	display: flex;
+	position: relative;
+	float: right;
+	flex-direction: column;
+	background-color: white;
+	font-size: 0.9rem;
+	box-shadow: 0px 0px 10px 0px #cfcfcf;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+}
+
+#sortType button {
+	text-decoration: none;
+	color: black;
+	flex: 1; 
+	text-align: justify;
+	cursor: pointer;    
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#sortType button:not(:last-child) {
+	border-bottom: 1px solid #E5E3E3;
+}
+
+#sortType button:hover {
+	background-color: #CECECE;
+}
+#value {
+	font: 0.9rem "Open Sans", sans-serif;	
+	align-items: center;
+	position: relative;
+	top: 9px;
+	list-style: none;
+}
+
+#sortMenu button{
+	width: 5em;
+	height: 2em;
+	font: 0.9rem "Open Sans", sans-serif;
+}
+
+#content {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+	grid-gap: 2.0em;
+	grid-auto-flow: row;	
+	max-width: 2000px;
+	margin-top: 1.0em;
+	align-content: center;
+}
+
+#content > * {
+	background: #ebebeb;
+	font-size: 0.9rem;
+	padding: 7px;
+	text-align: center;
+	border-radius: 3px;
+	border: 2px solid #a6a6a6;
+}
+
+#count {
+	text-align: center;
+	color: white;
+	width: 17px;
+	height: 17px;
+	background: #595959;
+	border-radius: 31px;
+	position: relative;
+	float: right;
+	top: -15px;
+	right: -1.3em;
+}

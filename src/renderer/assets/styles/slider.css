@@ -31,3 +31,25 @@
 .back {
     transform: rotateY(180deg);
 }
+
+/************GridTagView************/
+
+.badge {
+    padding-top: 20%;
+    padding: 1.5rem;
+    margin-right: 0;
+    margin-left: 0;
+    border-width: .2rem;
+    background-color: #6c757d;
+    color: white;
+    
+    & a {
+        ;
+    }
+
+    & div {
+        text-align: center;
+    }
+}
+
+
