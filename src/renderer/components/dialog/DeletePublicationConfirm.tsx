@@ -13,9 +13,9 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
-import * as styles from "readium-desktop/renderer/assets/styles/app.css";
-
 import { PublicationView } from "readium-desktop/common/views/publication";
+
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 
 interface DeletePublicationConfirmProps extends TranslatorProps {
     publication?: PublicationView;
@@ -40,7 +40,7 @@ export class DeletePublicationConfirm extends React.Component<DeletePublicationC
             <div>
                 <p>Êtes vous sûr de vouloir supprimer ce livre : {this.props.publication.title} ?</p>
                 <div>
-                    <button onClick={this.remove}>Oui</button>
+                    <button className={styles.primary} onClick={this.remove}>Oui</button>
                     <button onClick={this.props.closeDialog}>Non</button>
                 </div>
             </div>

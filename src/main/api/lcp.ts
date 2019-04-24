@@ -55,9 +55,11 @@ export class LcpApi {
 
     public async unlockPublicationWithPassphrase(data: any) {
         const { publication, passphrase } = data;
-        console.log("#### 1", publication);
-        await this.lcpManager.unlockPublicationWithPassphrase(publication, passphrase);
-        console.log("#### 2", publication);
+        try {
+            await this.lcpManager.unlockPublicationWithPassphrase(publication, passphrase);
+        } catch {
+            return;
+        }
         this.store.dispatch(readerActions.open(publication));
     }
 }

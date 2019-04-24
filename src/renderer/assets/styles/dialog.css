@@ -43,19 +43,115 @@
     height: fit-content;
     max-height: 90%;
     box-sizing: border-box;
+    & .close_button {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        height: 50px;
+        display: block;
+        width: 50px;
+        cursor: pointer;
+        fill: #3B3B3B;
+    }
+    & button svg {
+        width: 80%;
+    }
 }
 
-.c_dialog__box .close_button {
-	position: absolute;
-    top: 15px;
-    right: 15px;
-    height: 50px;
-    display: block;
-    width: 50px;
-    cursor: pointer;
-    fill: #3B3B3B;
+/* DIALOGS */
+
+#choice_dialog, #lcp_dialog, #opds_form_dialog, #add_dialog {
+    width: fit-content;
+    min-width: 47rem;
+    padding: 60px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    & > div {
+        & p {
+            margin-top: 0;
+        }
+        & form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: 2rem;
+            & > input {
+                font-size: 1rem;
+                padding-bottom: 4px;
+                padding-left: 0.3rem;
+                border: none;
+                border-bottom: 1px solid grey;
+                width: 20rem;
+            }
+
+            & > div {
+                margin-top: 4rem;
+            }
+        }
+        & button, & input[type="submit"] {
+            width: 9rem;
+            border: 2px #E1E1E1 solid;
+            font-size: 1.2rem;
+            padding: 0.5rem 0;
+            height: 40px;
+            border-radius: 0.3rem;
+            &:not(:last-child) {
+                margin-right: 1rem;
+            }
+        }
+        & input[type="submit"], & .primary {
+            background-color: #4D8FE0;
+            color: white;
+            border: none;
+            cursor: pointer;
+            &:hover {
+                background-color: #417dc7;
+            }
+            &:disabled {
+                background-color: #ADAEAE;
+                cursor: not-allowed;
+            }
+        }
+    }
 }
 
-.c_dialog__box button svg {
-	width: 80%;
+#lcp_dialog {
+    & > p {
+        & span {
+            font-weight: bold;
+            display: block;
+        }
+    }
+}
+
+#opds_form_dialog {
+  & .field {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      & label {
+        flex: 1;
+        max-width: 10rem;
+      }
+      & input {
+        font-size: 1rem;
+        padding-bottom: 4px;
+        padding-left: 0.3rem;
+        border: none;
+        border-bottom: 1px solid grey;
+        width: 20rem;
+      }
+  }
+}
+
+#add_dialog {
+    & ul {
+        padding: 0;
+        & li {
+            font-weight: bold;
+            list-style: none;
+        }
+    }
 }

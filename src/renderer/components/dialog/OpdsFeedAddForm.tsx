@@ -13,67 +13,86 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
-interface OpdsFeedAddFormProps extends TranslatorProps {
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+
+interface Props extends TranslatorProps {
     url?: any;
     addFeed?: any;
     closeDialog?: any;
 }
 
-export class OpdsFeedAddForm extends React.Component<OpdsFeedAddFormProps, undefined> {
-    private nameRef: any;
-    private urlRef: any;
+interface State {
+    name: string;
+    url: string;
+}
 
+export class OpdsFeedAddForm extends React.Component<Props, State> {
     constructor(props: any) {
         super(props);
 
-        this.nameRef = React.createRef();
-        this.urlRef = React.createRef();
+        this.state = {
+            name: undefined,
+            url: props.url,
+        };
 
         this.add = this.add.bind(this);
-    }
-
-    public componentDidMount() {
-        this.urlRef.current.value = this.props.url;
+        this.close = this.close.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
+        const {__} = this.props;
+        const { name, url } = this.state;
         return (
             <div>
-                <h2>Ajout d'un flux OPDS</h2>
+                <h2>{__("opds.addMenu")}</h2>
                 <form onSubmit={ this.add }>
-                    <div>
-                        <label>Nom : </label>
+                    <div className={styles.field}>
+                        <label>{__("opds.addForm.name")}</label>
                         <input
-                            ref={ this.nameRef }
+                            onChange={(e) => this.onFieldChange("name", e.target.value)}
                             type="text"
-                            aria-label="Nom du flux OPDS"
-                            placeholder="Nom"
-                            size={60}
+                            aria-label={__("opds.addForm.name")}
+                            placeholder={__("opds.addForm.namePlaceholder")}
+                            defaultValue={name}
+                        />
+                    </div>
+                    <div className={styles.field}>
+                        <label>{__("opds.addForm.url")}</label>
+                        <input
+                            onChange={(e) => this.onFieldChange("url", e.target.value)}
+                            type="text"
+                            aria-label={__("opds.addForm.url")}
+                            placeholder={__("opds.addForm.urlPlaceholder")}
+                            defaultValue={url}
                         />
                     </div>
                     <div>
-                        <label>Lien : </label>
                         <input
-                            ref={ this.urlRef }
-                            type="text"
-                            aria-label="Url du flux OPDS"
-                            placeholder="Url"
-                            size={255}
+                            disabled={!name || !url}
+                            type="submit"
+                            value={__("opds.addForm.addButton")}
                         />
+                        <button onClick={this.close}>{__("opds.back")}</button>
                     </div>
-                    <button>
-                        Ajouter
-                    </button>
                 </form>
             </div>
         );
     }
 
+    public onFieldChange(name: string, value: any) {
+        const change: any = {[name]: value};
+        this.setState(change);
+    }
+
     public add(e: any) {
         e.preventDefault();
-        const title = this.nameRef.current.value;
-        const url = this.urlRef.current.value;
+        const title = this.state.name;
+        const url = this.state.url;
         this.props.addFeed({ title, url});
+        this.props.closeDialog();
+    }
+
+    private close() {
         this.props.closeDialog();
     }
 }
