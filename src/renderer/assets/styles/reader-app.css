@@ -310,20 +310,40 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    & > .tab_not_clickable {
-      color: grey;
-      cursor: auto;
-      & svg {
-        display: none;
-      }
-    }
-
     & > li {
-      padding:20px 20px 20px 20px;
+      padding: 0;
       border-bottom: 1px solid #e5e5e5;
       font-weight: 600;
       background-color: white;
       cursor: pointer;
+
+      & > button {
+        padding: 20px;
+        border-bottom: 1px solid #e5e5e5;
+        font-size: 1.1rem;
+        font-weight: 600;
+        background-color: white;
+        cursor: pointer;
+        display: flex;
+        border: none;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+        &:disabled {
+          color: grey;
+          cursor: auto;
+          & svg {
+            display: none;
+          }
+        }
+      }
+      & svg {
+        width:20px;
+        padding:0;
+        margin: 0;
+        height:30px;
+      }
     }
   }
 }
@@ -418,12 +438,19 @@
 	  padding: 0 0 0 20px;
   }
 
-  & .subheading:hover {
-    background-color: #d8d8d8;
+  & .subheading {
+    &:hover {
+      background-color: #d8d8d8;
+    }
   }
 
-  & .line.active:hover {
-    color: #808080;
+  & .line.active {
+    &:hover {
+      color: #808080;
+    }
+    &:focus {
+      outline: -webkit-focus-ring-color auto 5px;
+    }
   }
 }
 
@@ -534,7 +561,6 @@ p.chapters_description {
 /* ============= SETTINGS MENU =================== */
 
 #read_settings_list > li, #chapter_settings_list > li{
-	padding:20px 20px 20px 20px;
 	border-bottom: 1px solid #e5e5e5;
 	font-size: 1.1rem;
 	font-weight: 600;
@@ -551,7 +577,7 @@ p.chapters_description {
   }
 
   &.active {
-    & > svg {
+    & svg {
       transform: rotate(90deg);
     }
   }
