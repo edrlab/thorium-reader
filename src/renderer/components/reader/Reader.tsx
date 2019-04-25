@@ -388,7 +388,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                             handleSettingChange={this.handleSettingsValueChange.bind(this)}
                             handleIndexChange={this.handleIndexValueChange.bind(this)}
                             setSettings={this.setSettings}
-                            toggleMenu={this.handleMenuButtonClick}
+                            toggleMenu={this.handleSettingsClick}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
