@@ -95,6 +95,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                 listClassName={styles.chapter_settings_list}
                 open={this.props.open}
                 sections={sections}
+                toggleMenu={toggleMenu}
             />
         );
     }

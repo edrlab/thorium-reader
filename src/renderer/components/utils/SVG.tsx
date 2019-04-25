@@ -10,13 +10,14 @@ import * as React from "react";
 interface Props {
     svg: any;
     title?: string;
+    className?: string;
 }
 
 export default class SVG extends React.Component<Props, null> {
     public render(): React.ReactElement<{}>  {
-        const svg = this.props.svg;
+        const { svg, className } = this.props;
         return (
-            <svg viewBox={svg.default.viewBox}>
+            <svg className={className} viewBox={svg.default.viewBox}>
                 { this.props.title &&
                     <title>{this.props.title}</title>
                 }

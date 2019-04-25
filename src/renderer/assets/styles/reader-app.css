@@ -226,7 +226,6 @@
 /* ========== Navigation ==========*/
 
 .main_navigation {
-  position: fixed;
 	z-index:102;
 	width:100%;
 	top:0;
@@ -239,12 +238,12 @@
 	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
 	min-width: 600px;
 
-  & ul {
+  & > ul {
     line-height: 0.9rem;
     padding: 0;
     margin: 0;
 
-    & li {
+    & > li {
       display: inline-block;
       height:100%;
       width:60px;
@@ -253,7 +252,7 @@
       border-right:1px solid #c1c1c1;
       cursor: pointer;
       
-      & button {
+      & > button {
         width: inherit;
         height: 60px;
         color:inherit;
@@ -268,7 +267,7 @@
           height:30px;
         }
       }
-      & .active {
+      & > .active {
         color:black;
         border-bottom:3px solid black;
         padding-bottom:15px;
@@ -291,7 +290,7 @@
 
 .menu_background {
   position: absolute;
-  top: 0;
+  top: 60px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -313,7 +312,7 @@
 	z-index:100;
   font-family: Arial;
 
-  & > ul {
+  & > div > ul {
     border: 0;
     font-size: 100%;
     font: inherit;
@@ -327,6 +326,7 @@
       font-weight: 600;
       background-color: white;
       cursor: pointer;
+      width: 100%;
 
       & > button {
         padding: 20px;
@@ -344,12 +344,12 @@
         &:disabled {
           color: grey;
           cursor: auto;
-          & svg {
+          & svg.menu_section_svg {
             display: none;
           }
         }
       }
-      & svg {
+      & svg.menu_section_svg {
         width:20px;
         padding:0;
         margin: 0;

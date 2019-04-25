@@ -25,13 +25,25 @@ interface Props extends TranslatorProps {
     id: number;
 }
 
-export class SideMenuSection extends React.Component<Props> {
+interface State {
+    style: any;
+}
+
+export class SideMenuSection extends React.Component<Props, State> {
     private sectionRef: any = [];
 
     public constructor(props: Props) {
         super(props);
-
+        this.state = {
+            style: undefined,
+        }
         this.sectionRef = React.createRef();
+    }
+
+    public componentDidUpdate() {
+        if (this.props.open && !this.state.style) {
+            this.getSectionStyle();
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -45,12 +57,12 @@ export class SideMenuSection extends React.Component<Props> {
                 >
                     <button onClick={() => onClick(id)} disabled={disabled}>
                         <span>{title}</span>
-                        <SVG svg={ArrowIcon} />
+                        <SVG className={styles.menu_section_svg} svg={ArrowIcon} />
                     </button>
                 </li>
-                <div style={this.getSectionStyle()} className={styles.tab_content}>
-                    <div ref={this.sectionRef} className={styles.line_tab_content}>
-                        {content }
+                <div style={this.state.style} className={open && styles.tab_content}>
+                    <div ref={this.sectionRef} className={open && styles.line_tab_content}>
+                        {open && content }
                     </div>
                 </div>
             </>
@@ -63,7 +75,7 @@ export class SideMenuSection extends React.Component<Props> {
         if (this.props.open && el) {
             height = el.offsetHeight;
         }
-        return {maxHeight: height};
+        this.setState({style: {maxHeight: height}});
     }
 }
 

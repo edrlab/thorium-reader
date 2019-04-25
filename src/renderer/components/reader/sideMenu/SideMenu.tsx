@@ -12,6 +12,8 @@ import { TranslatorProps, withTranslator } from "readium-desktop/renderer/compon
 import { SectionData } from "./sideMenuData";
 import SideMenuSection from "./SideMenuSection";
 
+import AccessibleMenu from "../../utils/menu/AccessibleMenu";
+
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 interface Props extends TranslatorProps {
@@ -46,7 +48,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         }
 
         return (<>
-            <div className={className}>
+            <AccessibleMenu dontCloseWhenClickOutside className={className} visible={open} toggleMenu={toggleMenu}>
                 <ul id={listClassName}>
                     { sections.map((section, index) =>
                         <SideMenuSection
@@ -59,9 +61,9 @@ export class ReaderMenu extends React.Component<Props, State> {
                         />,
                     )}
                 </ul>
-            </div>
+            </AccessibleMenu>
             { open &&
-                <div className={styles.menu_background} onClick={() => toggleMenu()}/>
+                <div aria-hidden={true} className={styles.menu_background} onClick={() => toggleMenu()}/>
             }
         </>);
     }
