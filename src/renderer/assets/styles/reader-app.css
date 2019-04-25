@@ -289,8 +289,19 @@
 
 /* ========== MENU ========== */
 
+.menu_background {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: black;
+  opacity: 0.55;
+  z-index: 10;
+}
+
 .chapters_settings, .read_settings{
-	width: 20rem;
+	width: 21rem;
 	border-left: 1px solid #e5e5e5;
 	position: fixed;
 	overflow-y: scroll;
@@ -590,7 +601,7 @@ p.chapters_description {
 
 .read_settings {
   width: 21rem;
-  z-index: 10;
+  z-index: 20;
 	border-left: 1px solid #e5e5e5;
 	position: fixed;
 	overflow-y: scroll;

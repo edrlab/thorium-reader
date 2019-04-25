@@ -40,6 +40,7 @@ interface Props extends TranslatorProps {
     handleSettingChange: (event: any, name: string, value?: any) => void;
     handleIndexChange: (event: any, name: string, value?: any) => void;
     setSettings: (settings: any) => void;
+    toggleMenu: any;
 }
 
 enum themeType {
@@ -58,7 +59,7 @@ export class ReaderOptions extends React.Component<Props> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, settings } = this.props;
+        const { __, settings, toggleMenu } = this.props;
 
         if (!settings) {
             return <></>;
@@ -89,6 +90,7 @@ export class ReaderOptions extends React.Component<Props> {
                 listClassName={styles.read_settings_list}
                 open={this.props.open}
                 sections={sections}
+                toggleMenu={toggleMenu}
             />
         );
     }
@@ -395,4 +397,4 @@ export class ReaderOptions extends React.Component<Props> {
     }
 }
 
-export default withTranslator(ReaderOptions);
+export default withTranslator(ReaderOptions) as any;

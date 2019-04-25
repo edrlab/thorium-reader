@@ -379,6 +379,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                             publication={this.state.publication}
                             handleLinkClick={this.handleLinkClick}
                             handleBookmarkClick={this.goToLocator}
+                            toggleMenu={this.handleMenuButtonClick}
                         />
                         <ReaderOptions
                             open={this.state.settingsOpen}
@@ -387,6 +388,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                             handleSettingChange={this.handleSettingsValueChange.bind(this)}
                             handleIndexChange={this.handleIndexValueChange.bind(this)}
                             setSettings={this.setSettings}
+                            toggleMenu={this.handleMenuButtonClick}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>

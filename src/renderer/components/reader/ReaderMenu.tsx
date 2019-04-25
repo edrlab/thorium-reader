@@ -39,6 +39,7 @@ interface Props extends TranslatorProps {
     bookmarks: LocatorView[];
     handleBookmarkClick: (locator: any) => void;
     deleteBookmark?: any;
+    toggleMenu: any;
 }
 
 interface State {
@@ -59,7 +60,7 @@ export class ReaderMenu extends React.Component<Props, State> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, publication, bookmarks } = this.props;
+        const { __, publication, bookmarks, toggleMenu } = this.props;
 
         if (!publication) {
             return <></>;

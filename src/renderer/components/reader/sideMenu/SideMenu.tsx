@@ -13,11 +13,13 @@ import { SectionData } from "./sideMenuData";
 import SideMenuSection from "./SideMenuSection";
 
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+
 interface Props extends TranslatorProps {
     open: boolean;
     sections: SectionData[];
     className: string;
     listClassName: string;
+    toggleMenu: any;
 }
 
 interface State {
@@ -36,11 +38,15 @@ export class ReaderMenu extends React.Component<Props, State> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, open, sections, className, listClassName } = this.props;
+        const { __, open, sections, className, listClassName, toggleMenu } = this.props;
         const { openedSection } = this.state;
 
-        return (
-            <div style={{visibility: open ? "visible" : "hidden"}} className={className}>
+        if (!open) {
+            return <></>;
+        }
+
+        return (<>
+            <div className={className}>
                 <ul id={listClassName}>
                     { sections.map((section, index) =>
                         <SideMenuSection
@@ -54,7 +60,10 @@ export class ReaderMenu extends React.Component<Props, State> {
                     )}
                 </ul>
             </div>
-        );
+            { open &&
+                <div className={styles.menu_background} onClick={() => toggleMenu()}/>
+            }
+        </>);
     }
 
     private handleClickSection(id: number) {
