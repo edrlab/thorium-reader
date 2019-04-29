@@ -48,10 +48,12 @@
         }
     },
     "publication": {
-      "notReadableLcp": "This book can't be read because the LCP license is expired",
+      "expiredLcp": "This book can't be read because the LCP license has expired.",
+      "revokedLcp": "This book can't be read because the LCP license has been revoked.",
+      "returnedLcp": "This book can't be read because the LCP license has been returned.",
       "downloadButton": "Download",
       "readButton": "Read",
-      "deleteButton": "Delete",
+      "deleteButton": "Delete from the library",
       "infoButton": "LCP Informations",
       "renewButton": "Renew",
       "renewSentence": "Are you sure you want to renew this publication?",

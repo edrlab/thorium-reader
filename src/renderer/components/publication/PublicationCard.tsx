@@ -8,31 +8,33 @@
 import * as React from "react";
 
 import { DialogType } from "readium-desktop/common/models/dialog";
-
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import Cover from "readium-desktop/renderer/components/publication/Cover";
+import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { readerActions } from "readium-desktop/common/redux/actions";
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
+import Cover from "readium-desktop/renderer/components/publication/Cover";
+import { withApi } from "readium-desktop/renderer/components/utils/api";
 import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 
-import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 import { lcpReadable } from "readium-desktop/utils/publication";
 
-import { connect } from "react-redux";
+import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
-interface PublicationCardProps {
+interface PublicationCardProps extends TranslatorProps {
     publication: PublicationView;
     menuContent: any;
     isOpds?: boolean;
     openInfosDialog?: (data: any) => void;
     openReader?: (data: any) => void;
+    lsdStatus?: LsdStatus;
+    getLsdStatus?: (data: any) => void;
 }
 
 interface PublicationCardState {
@@ -40,7 +42,7 @@ interface PublicationCardState {
 }
 
 class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
-    constructor(props: any) {
+    public constructor(props: any) {
         super(props);
 
         this.state = {
@@ -50,6 +52,13 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
         this.toggleMenu = this.toggleMenu.bind(this);
         this.openCloseMenu = this.openCloseMenu.bind(this);
         this.truncateTitle = this.truncateTitle.bind(this);
+    }
+
+    public componentDidMount() {
+        const { publication, getLsdStatus } = this.props;
+        if (publication.lcp) {
+            getLsdStatus({publication});
+        }
     }
 
     public render(): React.ReactElement<{}>  {
@@ -75,9 +84,7 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                         </p>
                     </a>
                     <Menu
-                        button={(
-                            <SVG svg={MenuIcon}/>
-                        )}
+                        button={(<SVG svg={MenuIcon}/>)}
                         content={(
                             <div className={styles.menu}>
                                 <MenuContent toggleMenu={this.toggleMenu} publication={this.props.publication}/>
@@ -102,11 +109,11 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
 
     private handleBookClick(e: any) {
         e.preventDefault();
-        const { publication } = this.props;
-        if (!this.props.isOpds && lcpReadable(publication)) {
-            this.props.openReader(publication);
-        } else {
+        const { publication, lsdStatus } = this.props;
+        if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
             this.props.openInfosDialog(publication);
+        } else {
+            this.props.openReader(publication);
         }
     }
 
@@ -156,4 +163,17 @@ const mapDispatchToProps = (dispatch: any, props: PublicationCardProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(PublicationCard);
+export default withApi(
+    withTranslator(PublicationCard),
+    {
+        mapDispatchToProps,
+        operations: [
+            {
+                moduleId: "lcp",
+                methodId: "getLsdStatus",
+                callProp: "getLsdStatus",
+                resultProp: "lsdStatus",
+            },
+        ],
+    },
+);
