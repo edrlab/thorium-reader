@@ -163,7 +163,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                                     key={id}
                                                     value={font.id}
                                                 >
-                                                    {font.label}
+                                                    {this.checkFontName(font.label, __)}
                                                 </option>
                                             );
                                         })}
@@ -412,6 +412,13 @@ export default class ReaderOptions extends React.Component<Props, State> {
         );
     }
 
+    private checkFontName(font: string, __: any): string {
+        if (font && font === "Default font") {
+            return (__("reader.settings.DefaultFont"));
+        } else {
+            return (font);
+        }
+    }
     private handleClickSection(id: number) {
         let { openedSection } = this.state;
         if (openedSection === id) {

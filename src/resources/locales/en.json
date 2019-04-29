@@ -138,6 +138,7 @@
         },
         "right": "Right",
         "font": "Font",
+        "DefaultFont": "Default font",
         "fontSize": "Font size",
         "display": "Display",
         "justification": "Alignement",
