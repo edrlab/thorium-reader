@@ -92,6 +92,17 @@
     "reader": {
       "settings": {
         "title": "Einstellungen",
+        "theme": {
+          "title": "Thema",
+          "predefined": "vordefiniertes Thema",
+          "myTheme": "meine Themen",
+          "create": "ein Thema erstellen",
+          "name": {
+            "Neutral": "Neutral",
+            "Sepia": "Sepia",
+            "Night": "Nachtzeit"
+          }
+        },
         "align": "Textausrichtung:",
         "left": "Linksbündig",
         "center": "Zentriert",

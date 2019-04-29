@@ -114,7 +114,12 @@
           "title": "Theme",
           "predefined": "Predifined themes",
           "myTheme": "My themes",
-          "create": "Create a theme"
+          "create": "Create a theme",
+          "name": {
+            "Neutral": "Neutral",
+            "Sepia": "Sepia",
+            "Night": "Night"
+          }
         },
         "text": "Text",
         "left": "Left",
