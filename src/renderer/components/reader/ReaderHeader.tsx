@@ -118,17 +118,6 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         </li>
                         <li
                             className={styles.right}
-                        >
-                            <button
-                                className={styles.menu_button}
-                                onClick={this.props.toggleBookmark}
-                                {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
-                            >
-                                <SVG svg={MarkIcon} title="Marquer la page"/>
-                            </button>
-                        </li>
-                        <li
-                            className={styles.right}
                             {...(this.props.menuOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                         >
                             <button
@@ -147,6 +136,17 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 onClick={this.props.handleSettingsClick.bind(this)}
                             >
                                 <SVG svg={SettingsIcon} title="Settings"/>
+                            </button>
+                        </li>
+                        <li
+                            className={styles.right}
+                        >
+                            <button
+                                className={styles.menu_button}
+                                onClick={this.props.toggleBookmark}
+                                {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                            >
+                                <SVG svg={MarkIcon} title="Marquer la page"/>
                             </button>
                         </li>
                         <li className={styles.right}>
