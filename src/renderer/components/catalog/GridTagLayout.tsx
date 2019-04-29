@@ -17,7 +17,7 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import Menu from "../utils/menu/Menu";
 
 export interface TagProps {
-            entries: CatalogEntryView[];
+           tags: string[];
             content?: any;
 }
 
@@ -56,9 +56,9 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
 
                     </div>
                         <section id={style.content}>
-                                {this.props.entries.map((entry, i: number) => {
+                                {this.props.tags.map((tag, i: number) => {
                                         return (
-                                            this.checkEntryTotalCount(entry, i)
+                                            this.checkEntryTotalCount(tag, i)
                                     );
                                 })}
                         </section>
@@ -66,14 +66,11 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
             );
         }
 
-        private checkEntryTotalCount(entry: CatalogEntryView, i: number) {
-            if (entry.totalCount < 2) {
-                    return;
-            }
+        private checkEntryTotalCount(tag: string, i: number) {
             return (
                     <div key={i}>
-                        {entry.title}
-                        <div id={style.count}> {entry.totalCount} </div>
+                        {tag}
+                        <div id={style.count}> {0} </div>
                     </div>
             );
         }

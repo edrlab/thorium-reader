@@ -21,13 +21,15 @@ import CatalogMenu from "readium-desktop/renderer/components/publication/menu/Ca
 
 import GridTagLayout from "./GridTagLayout";
 import SortMenu from "./SortMenu";
+import { AddEntryForm } from "./AddEntryForm";
 
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
+    tags?: string[];
 }
 
 interface GridViewState {
-    tabEntries: CatalogEntryView[];
+    tabTags: string[];
     status: string;
 }
 
@@ -36,7 +38,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         super(props);
 
         this.state = {
-            tabEntries: this.props.catalogEntries.slice(),
+            tabTags: this.props.tags.slice(),
             status: "count",
         };
         this.sortByAlpha = this.sortByAlpha.bind(this);
@@ -46,11 +48,13 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
     public render(): React.ReactElement<{}> {
         return (
             <>
-                { this.props.catalogEntries.map((entry, i: number) => {
+                { this.props.catalogEntries.map((entry, EntryIndex: number) => {
                         return (
-                            <section key={ i }>
+                            <section key={ EntryIndex }>
+                            {console.log("tag: " + entry.title)}
                             {
-                                i <= 1 ? (
+
+                                EntryIndex <= 1 ? (
                                 <div className={ styles.title }>
                                     <h1>{ entry.title }</h1>
                                 </div>
@@ -58,7 +62,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                                 (<></>)
                             }
                             {
-                                i <= 1 ? (
+                                EntryIndex <= 1 ? (
                                     <Slider
                                         className={ styles.slider }
                                         content={ entry.publications.map((pub) =>
@@ -76,7 +80,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                         );
                 })}
                 <GridTagLayout
-                entries={this.state.tabEntries}
+                tags={this.state.tabTags}
                 content={
                     <SortMenu
                         onClickAlphaSort={this.sortByAlpha}
@@ -91,10 +95,10 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         this.setState({
             status: "count",
         });
-        this.state.tabEntries.sort((a, b) => {
-            if (a.totalCount < b.totalCount) {
+        this.state.tabTags.sort((a, b) => {
+            if (a < b) {
                 return (1);
-            } else if (a.totalCount > b.totalCount) {
+            } else if (a > b) {
                 return (-1);
             }
             return (0);
@@ -105,10 +109,10 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         this.setState({
             status: "alpha",
         });
-        this.state.tabEntries.sort((a, b) => {
-            if (a.title > b.title) {
+        this.state.tabTags.sort((a, b) => {
+            if (a > b) {
                 return (1);
-            } else if (a.title < b.title) {
+            } else if (a < b) {
                 return (-1);
             }
             return (0);
