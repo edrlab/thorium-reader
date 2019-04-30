@@ -31,11 +31,6 @@ export default class SettingsHeader extends React.Component<Props, undefined> {
         return (
             <SecondaryHeader id={styles.settings_header}>
                 <ul>
-                    <li {...(this.props.section === 0 && {className: styles.active})}>
-                        <Link to="/settings/tags">
-                            Gérer mes tags
-                        </Link>
-                    </li>
                     <li {...(this.props.section === 2 && {className: styles.active})}>
                         <Link to="/settings/languages">Langue de l'interface</Link>
                     </li>
