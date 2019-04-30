@@ -35,6 +35,7 @@ const CLICKABLE_TAGS = [
 
 export default class Menu extends React.Component<MenuProps, MenuState> {
     private buttonRef: any;
+    private contentRef: any;
     private menuId: string;
 
     public constructor(props: any) {
@@ -48,31 +49,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
     }
 
     public componentDidMount() {
-
-        // Find button position
-        const buttonElement = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
-
-        // Refresh position of menu content
-        const buttonClientRect = buttonElement.getBoundingClientRect();
-        const contentStyle: ContentStyle = {
-            display: "none",
-            position: "absolute",
-            top: "" + Math.round(buttonClientRect.top + buttonClientRect.height) + "px",
-        };
-
-        if (this.props.dir === "right") {
-            // Right direction
-            contentStyle.right = Math.round(window.innerWidth - buttonClientRect.right) + "px";
-        } else {
-            // Left direction
-            contentStyle.left = Math.round(buttonClientRect.left) + 75 + "px";
-        }
-
         document.addEventListener("click", this.handleGlobalClick);
-
-        this.setState({
-            contentStyle,
-        });
     }
 
     public componentWillUnmount() {
@@ -81,6 +58,8 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
 
     public componentDidUpdate(oldProps: MenuProps) {
         if (this.props.open && !oldProps.open) {
+            this.refreshStyle();
+
             document.addEventListener("keydown", this.handleGlobalKeydown);
         } else if (!this.props.open && oldProps.open) {
             document.removeEventListener("keydown", this.handleGlobalKeydown);
@@ -89,12 +68,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
 
     public render(): React.ReactElement<{}> {
         const { open } = this.props;
-        const contentStyle = Object.assign({}, this.state.contentStyle);
-
-        if (open) {
-            contentStyle.display = "block";
-        }
-
+        const contentStyle = this.state.contentStyle;
         return (
             <>
                 <MenuButton
@@ -104,14 +78,17 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
                 >
                     {this.props.button}
                 </MenuButton>
-                <MenuContent
-                    menuId={this.menuId}
-                    menuOpen={open}
-                    menuDir={this.props.dir}
-                    menuStyle={contentStyle}
-                >
-                    {this.props.content}
-                </MenuContent>
+                { open &&
+                    <MenuContent
+                        menuId={this.menuId}
+                        menuOpen={open}
+                        menuDir={this.props.dir}
+                        menuStyle={contentStyle}
+                        ref={(ref) => { this.contentRef = ref; }}
+                    >
+                        {this.props.content}
+                    </MenuContent>
+                }
             </>
         );
     }
@@ -135,23 +112,8 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
         const { open } = this.props;
 
         if (buttonElement.contains(targetElement)) {
-            const contentStyle = Object.assign({}, this.state.contentStyle);
-
-            // Refresh position of menu content
-            const buttonClientRect = buttonElement.getBoundingClientRect();
-
-            if (this.props.dir === "right") {
-                // Right direction
-                contentStyle.right = Math.round(window.innerWidth - buttonClientRect.right) + "px";
-            } else {
-                // Left direction
-                contentStyle.left = Math.round(buttonClientRect.left) + 75 + "px";
-            }
             // Click on button: toggle menu
             this.props.toggle(!this.props.open);
-            this.setState({
-                contentStyle,
-            });
 
             return;
         }
@@ -165,5 +127,44 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
                 }
             }
         }
+    }
+
+    private offset(el: any) {
+        const rect = el.getBoundingClientRect();
+        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const right = window.innerWidth - (rect.right + 19) - scrollLeft;
+        return {
+            top: rect.top + scrollTop,
+            left: rect.left + scrollLeft,
+            right,
+        };
+    }
+
+    private refreshStyle() {
+        const contentStyle: ContentStyle = {
+            position: "absolute",
+        };
+
+        // calculate vertical position of the menu
+        const button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
+        const buttonRect = button.getBoundingClientRect();
+        const bottomPos = window.innerHeight - buttonRect.bottom;
+        const contentElement = ReactDOM.findDOMNode(this.contentRef) as HTMLElement;
+        const contentHeight = contentElement.getBoundingClientRect().height;
+
+        if (bottomPos < contentHeight) {
+            contentStyle.top = Math.round(this.offset(button).top - contentHeight) + "px";
+        } else {
+            contentStyle.top = Math.round(this.offset(button).top + buttonRect.height) + "px";
+        }
+
+        if (this.props.dir === "right") {
+            contentStyle.right = Math.round(this.offset(button).right) + "px";
+        } else {
+            contentStyle.left = Math.round(this.offset(button).left) + "px";
+        }
+
+        this.setState({ contentStyle });
     }
 }
