@@ -10,7 +10,7 @@
 .content {
     display: inline-flex;
 
-    & > * {
+    & > *:not(:first-child) {
         margin: 0 15px;
     }
 }

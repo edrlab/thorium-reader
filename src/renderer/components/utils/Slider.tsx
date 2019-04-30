@@ -24,6 +24,7 @@ interface States {
 
 export default class Slider extends React.Component<Props, States> {
     private contentRef: any;
+    private contentElRefs: any = [];
     private wrapperRef: any;
 
     public constructor(props: Props) {
@@ -96,9 +97,25 @@ export default class Slider extends React.Component<Props, States> {
         this.setState({position});
     }
 
+    private moveTo(elementId: any) {
+        const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
+        const element = this.contentElRefs[elementId];
+        let position = -element.offsetLeft;
+        position = position > 0 ? 0 : position < max ? max : position;
+        this.setState({position});
+    }
+
     private createBoxes(): JSX.Element[] {
         const content = this.props.content;
 
-        return content.map((el) => el);
+        return content.map((element, index) =>
+            <div
+                ref={(ref) => this.contentElRefs[index] = ref}
+                key={index}
+                onFocus={() => this.moveTo(index)}
+            >
+                {element}
+            </div>,
+        );
     }
 }
