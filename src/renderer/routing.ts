@@ -57,7 +57,7 @@ export const routes: RouteList = {
     "/settings": {
         path: "/settings",
         exact: false,
-        title: "Settings: Languages",
+        title: "Settings: default page",
         component: LanguageSettings,
     },
     "/library/search/text": {
