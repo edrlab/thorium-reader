@@ -151,7 +151,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                         </div>
                     </div>
                 </ul>
-                <form id={styles.insidebook_search} role="search">
+                {/*<form id={styles.insidebook_search} role="search">
                     <input
                         type="search"
                         id={styles.book_search}
@@ -168,6 +168,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                 </form>
 
                 <div className={styles.go_to_page}>Aller à la page <input type="number" placeholder="13"/></div>
+                */}
             </div>
         );
     }
