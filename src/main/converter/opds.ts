@@ -107,6 +107,24 @@ export class OpdsFeedViewConverter {
             },
         ).length > 0;
 
+        const buyLink = publication.Links.filter(
+            (link: any) => {
+                return (link.Rel[0] === "http://opds-spec.org/acquisition/buy");
+            },
+        )[0];
+
+        const borrowLink = publication.Links.filter(
+            (link: any) => {
+                return (link.Rel[0] === "http://opds-spec.org/acquisition/borrow");
+            },
+        )[0];
+
+        const subscribeLink = publication.Links.filter(
+            (link: any) => {
+                return (link.Rel[0] === "http://opds-spec.org/acquisition/subscribe");
+            },
+        )[0];
+
         return  {
             title,
             authors,
@@ -118,6 +136,9 @@ export class OpdsFeedViewConverter {
             publishedAt,
             cover,
             url,
+            buyUrl: buyLink && buyLink.Href,
+            borrowUrl: borrowLink && borrowLink.Href,
+            subscribeUrl: subscribeLink && subscribeLink.Href,
             hasSample: sampleUrl && true ,
             isFree,
         };

@@ -60,6 +60,30 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
                         Ajouter à la bibliothèque
                     </a>
                 }
+                { publication.buyUrl &&
+                    <a
+                        href={publication.buyUrl}
+                        onBlur={this.handleOnBlurMenu}
+                    >
+                        Aller sur la page d'achat
+                    </a>
+                }
+                { publication.borrowUrl &&
+                    <a
+                        href={publication.borrowUrl}
+                        onBlur={this.handleOnBlurMenu}
+                    >
+                        Aller sur la page d'emprunt
+                    </a>
+                }
+                { publication.subscribeUrl &&
+                    <a
+                        href={publication.subscribeUrl}
+                        onBlur={this.handleOnBlurMenu}
+                    >
+                        Aller sur la page d'abonnement
+                    </a>
+                }
                 { publication.hasSample &&
                     <a
                         onClick={ this.addSampleToCatalog }
