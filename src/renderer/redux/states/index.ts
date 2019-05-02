@@ -9,6 +9,7 @@ import { RouterState } from "connected-react-router";
 
 import { DialogState } from "readium-desktop/common/redux/states/dialog";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
+import { ImportState } from "readium-desktop/common/redux/states/import";
 import { NetState } from "readium-desktop/common/redux/states/net";
 
 import { UpdateState } from "readium-desktop/common/redux/states/update";
@@ -33,4 +34,5 @@ export interface RootState {
     api: ApiState;
     dialog: DialogState;
     router: RouterState;
+    import: ImportState;
 }

@@ -29,6 +29,8 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { DialogType } from "readium-desktop/common/models/dialog";
 
+import SameFileImportManager from "./utils/SameFileImportManager";
+
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 export default class App extends React.Component<any, undefined> {
@@ -74,6 +76,7 @@ export default class App extends React.Component<any, undefined> {
                         }}>
                         <PageManager/>
                         <DialogManager />
+                        <SameFileImportManager />
                         </Dropzone>
                     </div>
                 </ConnectedRouter>
