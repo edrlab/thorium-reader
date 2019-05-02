@@ -117,7 +117,12 @@ export class CatalogService {
             debug("Unable to retrieve opds publication", opdsPublication);
             throw new Error("Unable to retrieve opds publication");
         }
+        return this.importOpdsPublication(opdsPublication, downloadSample);
+    }
 
+    public async importOpdsPublication(
+        opdsPublication: OPDSPublication, downloadSample: boolean,
+    ): Promise<PublicationDocument> {
         // Retrieve the download (acquisition) url
         let downloadUrl = null;
 
@@ -162,7 +167,7 @@ export class CatalogService {
         const jsonOpdsPublication = TAJSON.serialize(opdsPublication);
         const b64OpdsPublication = Buffer
             .from(JSON.stringify(jsonOpdsPublication))
-            .toString("base-64");
+            .toString("base64");
 
         // Merge with the original publication
         publicationDocument = Object.assign(

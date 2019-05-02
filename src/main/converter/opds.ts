@@ -96,8 +96,13 @@ export class OpdsFeedViewConverter {
             sampleUrl = sampleLinks[0].Href;
         }
 
+        let base64OpdsPublication = null;
         if (links.length > 0) {
             url = links[0].Href;
+        } else {
+            base64OpdsPublication = Buffer
+            .from(JSON.stringify(publication))
+            .toString("base64");
         }
 
         const isFree = publication.Links.filter(
@@ -139,7 +144,8 @@ export class OpdsFeedViewConverter {
             buyUrl: buyLink && buyLink.Href,
             borrowUrl: borrowLink && borrowLink.Href,
             subscribeUrl: subscribeLink && subscribeLink.Href,
-            hasSample: sampleUrl && true ,
+            hasSample: sampleUrl && true,
+            base64OpdsPublication,
             isFree,
         };
     }

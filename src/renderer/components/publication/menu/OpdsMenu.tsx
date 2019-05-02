@@ -101,6 +101,7 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
         this.props.importOpdsEntry(
             {
                 url: this.props.publication.url,
+                base64OpdsPublication: this.props.publication.base64OpdsPublication,
             },
         );
     }
@@ -111,6 +112,7 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
             {
                 url: this.props.publication.url,
                 downloadSample: true,
+                base64OpdsPublication: this.props.publication.base64OpdsPublication,
             },
         );
     }
