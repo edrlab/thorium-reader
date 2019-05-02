@@ -176,5 +176,10 @@
         "returnError": "An error occurred when returning the LCP license of {{title}}.",
         "passphraseError": "Unable to unlock publication {{publicationTitle}}"
       }
+    },
+    "settings": {
+      "manageTags": "Manage tags",
+      "uiLanguage": "UI language",
+      "information": "Information"
     }
 }

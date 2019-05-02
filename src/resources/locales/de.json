@@ -116,5 +116,10 @@
         "returnError": "Beim Zurückgeben der LCP-Lizenz von {{title}} trat ein Fehler auf",
         "passphraseError": "Konnte die Publikation {{publicationTitle}} nicht entsperren"
       }
+    },
+    "settings": {
+      "manageTags": "Manage tags",
+      "uiLanguage": "UI language",
+      "information": "Information"
     }
 }

@@ -176,5 +176,10 @@
         "returnError": "Un erreur est survenue lors du retournement de {{title}}.",
         "passphraseError": "Impossible de déverouiller la publication {{publicationTitle}}"
       }
+    },
+    "settings": {
+      "manageTags": "Gérer mes tags",
+      "uiLanguage": "Langue de l'interface",
+      "information": "Informations"
     }
 }
