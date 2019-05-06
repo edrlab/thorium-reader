@@ -189,7 +189,9 @@
       "allBooks": "all books",
       "gridTitle": "Books cover in a gridview",
       "listTitle": "Books cover in a listview",
-      "searchPlaceholder": "Search"
+      "searchPlaceholder": "Search",
+      "searchTitle": "Start the search",
+      "importTitle": "Import a book"
 
     }
 

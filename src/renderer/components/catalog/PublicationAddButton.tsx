@@ -14,8 +14,9 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface Props {
+interface Props extends TranslatorProps {
     importFiles?: any;
 }
 
@@ -28,6 +29,7 @@ export class PublicationAddButton extends React.Component<Props> {
     }
 
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
         return (
             <div className={ styles.addEpubButton }>
                 <input
@@ -39,7 +41,7 @@ export class PublicationAddButton extends React.Component<Props> {
                     accept=".lcpl, .epub"
                 />
                 <label htmlFor="epubInput">
-                    <SVG svg={ PlusIcon } title="Lancer la recherche"/>
+                    <SVG svg={ PlusIcon } title={__("header.importTitle")}/>
                 </label>
             </div>
         );
@@ -56,7 +58,7 @@ export class PublicationAddButton extends React.Component<Props> {
     }
 }
 
-export default withApi(
+export default withTranslator(withApi(
     PublicationAddButton,
     {
         operations: [
@@ -67,4 +69,4 @@ export default withApi(
             },
         ],
     },
-);
+));

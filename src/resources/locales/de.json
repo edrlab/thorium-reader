@@ -129,6 +129,8 @@
       "allBooks": "alle bücher",
       "gridTitle": "Buchumschläge in einem Raster präsentieren",
       "listTitle": "Buchumschläge in einer Liste präsentieren",
-      "searchPlaceholder": "Suche"
+      "searchPlaceholder": "Suche",
+      "searchTitle": "Starten Sie die Suche",
+      "importTitle": "ein Buch importieren"
     }
 }

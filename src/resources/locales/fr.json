@@ -189,6 +189,8 @@
       "allBooks": "tous les livres",
       "gridTitle": "Présenter les couvertures de livres en grille",
       "listTitle": "Présenter les livres sous forme de liste",
-      "searchPlaceholder": "Rechercher"
+      "searchPlaceholder": "Rechercher",
+      "searchTitle": "Lancer la recherche",
+      "importTitle": "Importer un livre"
     }
 }

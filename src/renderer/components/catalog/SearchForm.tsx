@@ -38,7 +38,7 @@ export class Search extends React.Component<SearchProps, undefined> {
                     placeholder={ __("header.searchPlaceholder")}
                 />
                 <button>
-                    <SVG svg={SearchIcon} title="Lancer la recherche"/>
+                    <SVG svg={SearchIcon} title={ __("header.searchTitle")}/>
                 </button>
             </form>
         );
