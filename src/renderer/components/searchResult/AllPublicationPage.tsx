@@ -13,7 +13,7 @@ import { RouteComponentProps } from "react-router-dom";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 
@@ -34,8 +34,8 @@ export class AllPublicationPage extends React.Component<AllPublicationPageProps,
     public render(): React.ReactElement<{}> {
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
-
-        const title = "Tous mes livres";
+        const { __ } = this.props;
+        const title = __("catalog.allBooks");
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
@@ -52,7 +52,7 @@ export class AllPublicationPage extends React.Component<AllPublicationPageProps,
                     <Header displayType={ displayType } />
                     <BreadCrumb
                         search={this.props.location.search}
-                        breadcrumb={[{name: "Mes livres", path: "/library"}, {name: title as string}]}
+                        breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title as string}]}
                     />
                     { this.props.publications ?
                         <DisplayView publications={ this.props.publications } />
@@ -63,7 +63,7 @@ export class AllPublicationPage extends React.Component<AllPublicationPageProps,
     }
 }
 
-export default withApi(
+export default withTranslator(withApi(
     AllPublicationPage,
     {
         operations: [
@@ -93,4 +93,4 @@ export default withApi(
             },
         ],
     },
-);
+));

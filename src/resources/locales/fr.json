@@ -4,6 +4,8 @@
         "continueReading": "Reprendre la lecture",
         "lastAdditions": "Derniers ajouts"
       },
+      "myBooks": "Mes livres",
+      "allBooks": "Tous les livres",
       "bookInfo": "Fiche livre",
       "delete": "Supprimer défintivement",
       "export": "Exporter",

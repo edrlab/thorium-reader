@@ -4,6 +4,8 @@
         "continueReading": "Resume reading",
         "lastAdditions": "Recently added"
       },
+      "myBooks": "My books",
+      "allBooks": "all books",
       "bookInfo": "About this book",
       "delete": "Delete definitively",
       "export": "Export",
