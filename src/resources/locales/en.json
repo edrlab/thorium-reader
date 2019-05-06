@@ -4,6 +4,9 @@
         "continueReading": "Resume reading",
         "lastAdditions": "Recently added"
       },
+      "bookInfo": "About this book",
+      "delete": "Delete definitively",
+      "export": "Export",
       "tags": "My tags",
       "sort": "sort by",
       "tagCount": "Tag count"

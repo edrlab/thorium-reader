@@ -4,6 +4,9 @@
         "continueReading": "Reprendre la lecture",
         "lastAdditions": "Derniers ajouts"
       },
+      "bookInfo": "Fiche livre",
+      "delete": "Supprimer défintivement",
+      "export": "Exporter",
       "tags": "Mes tags",
       "sort": "trier par",
       "tagCount": "Nombre de tags"

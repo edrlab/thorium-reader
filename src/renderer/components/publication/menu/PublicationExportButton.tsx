@@ -10,8 +10,9 @@ import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { TranslatorProps } from "../../utils/translator";
 
-interface PublicationCardProps {
+interface PublicationCardProps extends TranslatorProps {
     publication: PublicationView;
     exportPublication?: (data: any) => void;
     onClick: () => void;
@@ -37,9 +38,12 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
     }
 
     public render(): React.ReactElement<{}>  {
+        const { __ } = this.props;
         return (
                 <span>
-                    <label htmlFor={"exportInput" + this.props.publication.identifier}>Exporter</label>
+                    <label htmlFor={"exportInput" + this.props.publication.identifier}> 
+                        { __("catalog.export")}
+                    </label>
                     <input
                         id={ "exportInput" + this.props.publication.identifier}
                         ref={ this.exportInputRef }

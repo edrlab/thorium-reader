@@ -4,6 +4,9 @@
         "continueReading": "Lesen Sie weiter",
         "lastAdditions": "neueste Ergänzungen"
       },
+      "bookInfo": "Über dieses Buch",
+      "delete": "Dauerhaft löschen",
+      "export": "Export",
       "tags": "Meine tags",
       "sort": "sortieren nach",
       "tagCount": "Anzahl tags"
