@@ -22,7 +22,7 @@ import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface Props extends TranslatorProps{
+interface Props extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;
     fullscreen: boolean;
     currentLocation: LocatorExtended;
