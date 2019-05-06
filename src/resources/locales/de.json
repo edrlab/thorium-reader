@@ -2,8 +2,11 @@
     "catalog": {
       "entry": {
         "continueReading": "Lesen Sie weiter",
-        "lastAdditions": "Last additions"
-      }
+        "lastAdditions": "neueste Ergänzungen"
+      },
+      "tags": "Meine tags",
+      "sort": "sortieren nach",
+      "tagCount": "Anzahl tags"
     },
     "library": {
         "heading": "Bibliothek",

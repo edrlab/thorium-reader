@@ -3,7 +3,10 @@
       "entry": {
         "continueReading": "Reprendre la lecture",
         "lastAdditions": "Derniers ajouts"
-      }
+      },
+      "tags": "Mes tags",
+      "sort": "trier par",
+      "tagCount": "Nombre de tags"
     },
     "library": {
         "heading": "Bibliothèque",
