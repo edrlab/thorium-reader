@@ -77,6 +77,8 @@
       "back": "Zurück",
       "downloadError": "Beim Abrufen des Feeds trat ein Fehler auf.",
       "addForm": {
+        "title": "Feed hinzufügen",
+        "pasteUrl": "die URL eines Futters einfügen",
         "addButton": "Hinzufügen",
         "updateSentence": "Du kannst die Felder aktualisieren.",
         "addSentence": "Welchen ODPS-Feed willst du hinzufügen?",
@@ -93,6 +95,21 @@
       }
     },
     "reader": {
+      "navigation": {
+        "backHomeTitle": "zurück zu Hause",
+        "infoTitle": "Informationen",
+        "detachWindowTitle": "das Fenster lösen",
+        "fullscreenTitle": "fullscreen mode",
+        "bookmarkTitle": "bookmark",
+        "openTableOfContentsTitle": "Öffnen Sie das Inhaltsverzeichnis.",
+        "closeTableOfContentsTitle": "Schließen des Inhaltsverzeichnisses",
+        "settingsTitle": "settings",
+        "readBookTitle": "mit dem Lesen des Buches beginnen"
+      },
+      "footerInfo": {
+        "moreInfo": "mehr informationen",
+        "lessInfo":  "weniger informationen"
+      },
       "settings": {
         "title": "Einstellungen",
         "align": "Textausrichtung:",

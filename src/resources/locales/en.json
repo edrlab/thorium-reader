@@ -92,6 +92,8 @@
         "opds": "Opds"
       },
       "addForm": {
+        "title": "Add a feed",
+        "pasteUrl": "paste url of a feed",
         "addButton": "Add",
         "updateSentence": "You can update the fields.",
         "addSentence": "What OPDS feed would you like to add?",
@@ -111,6 +113,21 @@
       "breadcrumbRoot": "Catalogs"
     },
     "reader": {
+      "navigation": {
+        "backHomeTitle": "back to home",
+        "infoTitle": "informations",
+        "detachWindowTitle": "detach the window",
+        "fullscreenTitle": "open fullscreen mode",
+        "bookmarkTitle": "bookmark",
+        "openTableOfContentsTitle": "table of contents",
+        "quitFullscreenTitle": "quit fullscreen mode",
+        "settingsTitle": "settings",
+        "readBookTitle": "start reading the book"
+      },
+      "footerInfo": {
+        "moreInfo": "more informations",
+        "lessInfo":  "less informations"
+      },
       "settings": {
         "title": "Settings",
         "theme": {

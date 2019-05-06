@@ -92,6 +92,8 @@
         "opds": "Opds"
       },
       "addForm": {
+        "title": "Ajouter un flux",
+        "pasteUrl": "coller l'url d'un flux",
         "addButton": "Ajouter",
         "updateSentence": "Vous pouvez mettre les champs à jour.",
         "addSentence": "Quel flux OPDS souhaitez vous ajouter ?",
@@ -111,6 +113,21 @@
       "breadcrumbRoot": "Catalogues"
     },
     "reader": {
+      "navigation": {
+        "backHomeTitle": "retour à la bibliothèque",
+        "infoTitle": "informations",
+        "detachWindowTitle": "détacher la fenêtre",
+        "fullscreenTitle": "mode plein écran",
+        "bookmarkTitle": "marque page",
+        "openTableOfContentsTitle": "table des matières",
+        "quitFullscreenTitle": "quitter le mode plein écran",
+        "settingsTitle": "préférences",
+        "readBookTitle": "lancer la lecture du livre"
+      },
+      "footerInfo": {
+        "moreInfo": "Plus d'informations",
+        "lessInfo":  "Moins d'informations"
+      },
       "settings": {
         "title": "Paramètres",
         "theme": {
