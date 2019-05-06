@@ -36,9 +36,6 @@ interface States {
 
 export class ReaderFooter extends React.Component<Props, States> {
 
-    @lazyInject("translator")
-    private translator: Translator;
-
     public constructor(props: Props) {
         super(props);
 
