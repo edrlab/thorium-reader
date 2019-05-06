@@ -119,7 +119,16 @@
     },
     "settings": {
       "manageTags": "Manage tags",
-      "uiLanguage": "UI language",
-      "information": "Information"
+      "uiLanguage": "Sprache",
+      "information": "Informationen"
+    },
+    "header": {
+      "books": "meine Bücher",
+      "catalogs": "Kataloge",
+      "settings": "Settings",
+      "allBooks": "alle bücher",
+      "gridTitle": "Buchumschläge in einem Raster präsentieren",
+      "listTitle": "Buchumschläge in einer Liste präsentieren",
+      "searchPlaceholder": "Suche"
     }
 }

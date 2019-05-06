@@ -181,5 +181,16 @@
       "manageTags": "Manage tags",
       "uiLanguage": "UI language",
       "information": "Information"
+    },
+    "header": {
+      "books": "My Books",
+      "catalogs": "Catalogs",
+      "settings": "Settings",
+      "allBooks": "all books",
+      "gridTitle": "Books cover in a gridview",
+      "listTitle": "Books cover in a listview",
+      "searchPlaceholder": "Search"
+
     }
+
 }
