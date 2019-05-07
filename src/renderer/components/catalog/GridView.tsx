@@ -47,18 +47,16 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         return (
             <>
                 { this.props.catalogEntries.map((entry, i: number) => {
-                        return (
+                        return entry.publications.length > 0 ? (
                             <section key={ i }>
-                            {
-                                i <= 1 ? (
+                            { i <= 1 ? (
                                 <div className={ styles.title }>
                                     <h1>{ entry.title }</h1>
                                 </div>
                                 ) :
                                 (<></>)
                             }
-                            {
-                                i <= 1 ? (
+                            { i <= 1 ? (
                                     <Slider
                                         className={ styles.slider }
                                         content={ entry.publications.map((pub) =>
@@ -73,7 +71,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                                 (<></>)
                             }
                             </section>
-                        );
+                        ) : <></>;
                 })}
                 <GridTagLayout
                 entries={this.state.tabEntries}
