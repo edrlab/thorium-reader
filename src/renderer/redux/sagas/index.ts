@@ -9,11 +9,15 @@ import { all } from "redux-saga/effects";
 
 import { winInitWatcher } from "./win";
 
+import * as i18n from "./i18n";
+
 import * as lcp from "./lcp";
 import * as opds from "./opds";
 
 export function* rootSaga() {
     yield all([
+        i18n.watchers(),
+
         lcp.watchers(),
         opds.watchers(),
 

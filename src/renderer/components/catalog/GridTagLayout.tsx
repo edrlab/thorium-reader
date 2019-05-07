@@ -15,9 +15,10 @@ import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import Menu from "../utils/menu/Menu";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-export interface TagProps {
-           tags: string[];
+export interface TagProps extends TranslatorProps {
+            tags: string[];
             content?: any;
 }
 
@@ -26,7 +27,7 @@ export interface LayoutState {
             value: string;
 }
 
-export default class GridTagLayout extends React.Component<TagProps, LayoutState> {
+export class GridTagLayout extends React.Component<TagProps, LayoutState> {
         public constructor(props: any) {
             super(props);
             this.state = {
@@ -36,42 +37,38 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
             this.togglemenu = this.togglemenu.bind(this);
         }
         public render(): React.ReactElement<{}> {
-
+            const { __ } = this.props;
             return (
-                    <section id={style.myTags}>
-                        <h1>Mes Tags</h1>
-
+                <section id={style.myTags}>
+                        <h1> { __("catalog.tags")} </h1>
                         {this.props.tags.length === 0 ?
-                                <> les livres ne contiennent pas de tags </>
+                                <> {__("catalog.emptyTagList")} </>
                                 :
-                            <div id={style.sortMenu}>
-                            <Menu
-                            button={(<div> sort by
-                                    <SVG svg={ArrowIcon}/>
-                                </div>
-                                    )}
-                            content={(<div>
-                                    {this.props.content}
-                                    </div>)}
-                            open={this.state.showMenu}
-                            dir="left"
-                            toggle={this.togglemenu}
-                            />
-
-                            </div>
+                                <>
+                                    <div id={style.sortMenu}>
+                                    <Menu
+                                    button={(<div> { __("catalog.sort")}
+                                            <SVG svg={ArrowIcon}/>
+                                            </div>
+                                            )}
+                                    content={(<div>
+                                                {this.props.content}
+                                            </div>)}
+                                    open={this.state.showMenu}
+                                    dir="left"
+                                    toggle={this.togglemenu}
+                                    />
+                                    </div>
+                                    <section id={style.content}>
+                                            {this.props.tags.map((tag, i: number) => {
+                                                return (
+                                                    this.checkEntryTotalCount(tag, i)
+                                                );
+                                            })}
+                                    </section>
+                                </>
                         }
-                        {this.props.tags.length === 0 ?
-                                <></>
-                                :
-                                <section id={style.content}>
-                                        {this.props.tags.map((tag, i: number) => {
-                                            return (
-                                                this.checkEntryTotalCount(tag, i)
-                                            );
-                                        })}
-                                </section>
-                        }
-                    </section>
+                </section>
             );
         }
 
@@ -90,3 +87,5 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
             });
         }
 }
+
+export default withTranslator(GridTagLayout);

@@ -2,8 +2,17 @@
     "catalog": {
       "entry": {
         "continueReading": "Lesen Sie weiter",
-        "lastAdditions": "Last additions"
-      }
+        "lastAdditions": "neueste Ergänzungen"
+      },
+      "myBooks": "meine Bücher",
+      "allBooks": "alle Bücher",
+      "bookInfo": "Über dieses Buch",
+      "delete": "Dauerhaft löschen",
+      "export": "Export",
+      "tags": "Meine tags",
+      "sort": "sortieren nach",
+      "tagCount": "Anzahl tags",
+      "emptyTagList": "es gibt keine Tags in Büchern."
     },
     "library": {
         "heading": "Bibliothek",
@@ -74,6 +83,8 @@
       "back": "Zurück",
       "downloadError": "Beim Abrufen des Feeds trat ein Fehler auf.",
       "addForm": {
+        "title": "Feed hinzufügen",
+        "pasteUrl": "die URL eines Futters einfügen",
         "addButton": "Hinzufügen",
         "updateSentence": "Du kannst die Felder aktualisieren.",
         "addSentence": "Welchen ODPS-Feed willst du hinzufügen?",
@@ -90,8 +101,34 @@
       }
     },
     "reader": {
+      "navigation": {
+        "backHomeTitle": "zurück zu Hause",
+        "infoTitle": "Informationen",
+        "detachWindowTitle": "das Fenster lösen",
+        "fullscreenTitle": "fullscreen mode",
+        "bookmarkTitle": "bookmark",
+        "openTableOfContentsTitle": "Öffnen Sie das Inhaltsverzeichnis.",
+        "closeTableOfContentsTitle": "Schließen des Inhaltsverzeichnisses",
+        "settingsTitle": "settings",
+        "readBookTitle": "mit dem Lesen des Buches beginnen"
+      },
+      "footerInfo": {
+        "moreInfo": "mehr informationen",
+        "lessInfo":  "weniger informationen"
+      },
       "settings": {
         "title": "Einstellungen",
+        "theme": {
+          "title": "Thema",
+          "predefined": "vordefiniertes Thema",
+          "myTheme": "meine Themen",
+          "create": "ein Thema erstellen",
+          "name": {
+            "Neutral": "Neutral",
+            "Sepia": "Sepia",
+            "Night": "Nachtzeit"
+          }
+        },
         "align": "Textausrichtung:",
         "left": "Linksbündig",
         "center": "Zentriert",
@@ -116,5 +153,21 @@
         "returnError": "Beim Zurückgeben der LCP-Lizenz von {{title}} trat ein Fehler auf",
         "passphraseError": "Konnte die Publikation {{publicationTitle}} nicht entsperren"
       }
+    },
+    "settings": {
+      "manageTags": "Manage tags",
+      "uiLanguage": "Sprache",
+      "information": "Informationen"
+    },
+    "header": {
+      "books": "meine Bücher",
+      "catalogs": "Kataloge",
+      "settings": "Settings",
+      "allBooks": "alle bücher",
+      "gridTitle": "Buchumschläge in einem Raster präsentieren",
+      "listTitle": "Buchumschläge in einer Liste präsentieren",
+      "searchPlaceholder": "Suche",
+      "searchTitle": "Starten Sie die Suche",
+      "importTitle": "ein Buch importieren"
     }
 }

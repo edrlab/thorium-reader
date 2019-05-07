@@ -21,7 +21,6 @@ import CatalogMenu from "readium-desktop/renderer/components/publication/menu/Ca
 
 import GridTagLayout from "./GridTagLayout";
 import SortMenu from "./SortMenu";
-import { AddEntryForm } from "./AddEntryForm";
 
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];

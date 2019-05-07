@@ -8,8 +8,9 @@
 import * as React from "react";
 
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
+import {  TranslatorProps, withTranslator } from "../utils/translator";
 
-interface SortMenuProps {
+interface SortMenuProps extends TranslatorProps {
         onClickAlphaSort?: () => void;
         onClickCountSort?: () => void;
 }
@@ -19,7 +20,7 @@ interface SortMenuState {
         value: string;
 }
 
-export default class SortMenu extends React.Component<SortMenuProps, SortMenuState> {
+export class SortMenu extends React.Component<SortMenuProps, SortMenuState> {
         public constructor(props: any) {
             super(props);
 
@@ -30,13 +31,16 @@ export default class SortMenu extends React.Component<SortMenuProps, SortMenuSta
         }
 
         public render(): React.ReactElement<{}> {
+            const { __ } = this.props;
             return (
                     <div id={style.sortType}>
                         <button
                         onClick={this.props.onClickAlphaSort}> A-Z </button>
                         <button
-                        onClick={this.props.onClickCountSort}> tag count</button>
+                        onClick={this.props.onClickCountSort}> { __("catalog.tagCount") } </button>
                     </div>
             );
         }
 }
+
+export default withTranslator(SortMenu);

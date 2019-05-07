@@ -106,6 +106,7 @@ function createWindow() {
             webSecurity: false,
             allowRunningInsecureContent: false,
         },
+        icon: path.join(__dirname, "assets/icons/icon.png"),
     });
     const winRegistry = container.get("win-registry") as WinRegistry;
     winRegistry.registerWindow(mainWindow, AppWindowType.Library);
