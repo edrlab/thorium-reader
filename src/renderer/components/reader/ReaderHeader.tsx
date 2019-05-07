@@ -147,13 +147,13 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
                             </button>
                         </li>
-                        <li className={styles.right}>
+                        {/*<li className={styles.right}>
                             <button
                                 className={styles.menu_button}
                             >
                                 <SVG svg={AudioIcon} title={ __("reader.navigation.readBookTitle")}/>
                             </button>
-                        </li>
+                    </li>*/}
                     </> :
                     <li  className={styles.right}>
                         <button
