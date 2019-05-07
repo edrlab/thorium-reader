@@ -40,28 +40,37 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
             return (
                     <section id={style.myTags}>
                         <h1>Mes Tags</h1>
-                        <div id={style.sortMenu}>
-                        <Menu
-                        button={(<div> sort by
-                                <SVG svg={ArrowIcon}/>
-                            </div>
-                                )}
-                        content={(<div>
-                                    {this.props.content}
-                            </div>)}
-                        open={this.state.showMenu}
-                        dir="left"
-                        toggle={this.togglemenu}
-                        />
 
-                    </div>
-                        <section id={style.content}>
-                                {this.props.tags.map((tag, i: number) => {
-                                        return (
-                                            this.checkEntryTotalCount(tag, i)
-                                    );
-                                })}
-                        </section>
+                        {this.props.tags.length === 0 ?
+                                <> les livres ne contiennent pas de tags </>
+                                :
+                            <div id={style.sortMenu}>
+                            <Menu
+                            button={(<div> sort by
+                                    <SVG svg={ArrowIcon}/>
+                                </div>
+                                    )}
+                            content={(<div>
+                                    {this.props.content}
+                                    </div>)}
+                            open={this.state.showMenu}
+                            dir="left"
+                            toggle={this.togglemenu}
+                            />
+
+                            </div>
+                        }
+                        {this.props.tags.length === 0 ?
+                                <></>
+                                :
+                                <section id={style.content}>
+                                        {this.props.tags.map((tag, i: number) => {
+                                            return (
+                                                this.checkEntryTotalCount(tag, i)
+                                            );
+                                        })}
+                                </section>
+                        }
                     </section>
             );
         }
