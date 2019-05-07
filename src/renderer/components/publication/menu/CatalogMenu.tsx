@@ -16,8 +16,9 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import PublicationExportButton from "./PublicationExportButton";
 
 import { connect } from "react-redux";
+import { TranslatorProps, withTranslator } from "../../utils/translator";
 
-interface Props {
+interface Props extends TranslatorProps {
     publication: PublicationView;
     displayPublicationInfo?: any;
     openDeleteDialog?: any;
@@ -42,19 +43,20 @@ class CatalogMenu extends React.Component<Props, State> {
     }
 
     public render(): React.ReactElement<{}>  {
+        const { __ } = this.props;
         return (
             <>
                 <a
                     onClick={this.displayPublicationInfo }
                     onBlur={this.handleOnBlurMenu}
                 >
-                    Fiche livre
+                    { __("catalog.bookInfo")}
                 </a>
                 <a
                     onClick={ this.deletePublication }
                     onBlur={this.handleOnBlurMenu}
                 >
-                    Supprimer définitivement
+                    { __("catalog.delete")}
                 </a>
                 <PublicationExportButton
                     onClick={ this.props.toggleMenu }
@@ -102,4 +104,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(CatalogMenu) as any;
+export default withTranslator(connect(null, mapDispatchToProps)(CatalogMenu)) as any;

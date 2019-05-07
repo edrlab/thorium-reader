@@ -3,7 +3,15 @@
       "entry": {
         "continueReading": "Reprendre la lecture",
         "lastAdditions": "Derniers ajouts"
-      }
+      },
+      "myBooks": "Mes livres",
+      "allBooks": "Tous les livres",
+      "bookInfo": "Fiche livre",
+      "delete": "Supprimer défintivement",
+      "export": "Exporter",
+      "tags": "Mes tags",
+      "sort": "trier par",
+      "tagCount": "Nombre de tags"
     },
     "library": {
         "heading": "Bibliothèque",
@@ -89,6 +97,8 @@
         "opds": "Opds"
       },
       "addForm": {
+        "title": "Ajouter un flux",
+        "pasteUrl": "coller l'url d'un flux",
         "addButton": "Ajouter",
         "updateSentence": "Vous pouvez mettre les champs à jour.",
         "addSentence": "Quel flux OPDS souhaitez vous ajouter ?",
@@ -108,6 +118,21 @@
       "breadcrumbRoot": "Catalogues"
     },
     "reader": {
+      "navigation": {
+        "backHomeTitle": "retour à la bibliothèque",
+        "infoTitle": "informations",
+        "detachWindowTitle": "détacher la fenêtre",
+        "fullscreenTitle": "mode plein écran",
+        "bookmarkTitle": "marque page",
+        "openTableOfContentsTitle": "table des matières",
+        "quitFullscreenTitle": "quitter le mode plein écran",
+        "settingsTitle": "préférences",
+        "readBookTitle": "lancer la lecture du livre"
+      },
+      "footerInfo": {
+        "moreInfo": "Plus d'informations",
+        "lessInfo":  "Moins d'informations"
+      },
       "settings": {
         "title": "Paramètres",
         "theme": {
@@ -181,5 +206,16 @@
       "manageTags": "Gérer mes tags",
       "uiLanguage": "Langue de l'interface",
       "information": "Informations"
+    },
+    "header": {
+      "books": "Mes Livres",
+      "catalogs": "Catalogues",
+      "settings": "Préférences",
+      "allBooks": "tous les livres",
+      "gridTitle": "Présenter les couvertures de livres en grille",
+      "listTitle": "Présenter les livres sous forme de liste",
+      "searchPlaceholder": "Rechercher",
+      "searchTitle": "Lancer la recherche",
+      "importTitle": "Importer un livre"
     }
 }

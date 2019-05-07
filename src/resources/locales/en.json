@@ -3,7 +3,15 @@
       "entry": {
         "continueReading": "Resume reading",
         "lastAdditions": "Recently added"
-      }
+      },
+      "myBooks": "My books",
+      "allBooks": "all books",
+      "bookInfo": "About this book",
+      "delete": "Delete definitively",
+      "export": "Export",
+      "tags": "My tags",
+      "sort": "sort by",
+      "tagCount": "Tag count"
     },
     "library": {
         "heading": "Library",
@@ -89,6 +97,8 @@
         "opds": "Opds"
       },
       "addForm": {
+        "title": "Add a feed",
+        "pasteUrl": "paste url of a feed",
         "addButton": "Add",
         "updateSentence": "You can update the fields.",
         "addSentence": "What OPDS feed would you like to add?",
@@ -108,6 +118,21 @@
       "breadcrumbRoot": "Catalogs"
     },
     "reader": {
+      "navigation": {
+        "backHomeTitle": "back to home",
+        "infoTitle": "informations",
+        "detachWindowTitle": "detach the window",
+        "fullscreenTitle": "open fullscreen mode",
+        "bookmarkTitle": "bookmark",
+        "openTableOfContentsTitle": "table of contents",
+        "quitFullscreenTitle": "quit fullscreen mode",
+        "settingsTitle": "settings",
+        "readBookTitle": "start reading the book"
+      },
+      "footerInfo": {
+        "moreInfo": "more informations",
+        "lessInfo":  "less informations"
+      },
       "settings": {
         "title": "Settings",
         "theme": {
@@ -181,5 +206,18 @@
       "manageTags": "Manage tags",
       "uiLanguage": "UI language",
       "information": "Information"
+    },
+    "header": {
+      "books": "My Books",
+      "catalogs": "Catalogs",
+      "settings": "Settings",
+      "allBooks": "all books",
+      "gridTitle": "Books cover in a gridview",
+      "listTitle": "Books cover in a listview",
+      "searchPlaceholder": "Search",
+      "searchTitle": "Start the search",
+      "importTitle": "Import a book"
+
     }
+
 }

@@ -15,8 +15,9 @@ import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import Menu from "../utils/menu/Menu";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-export interface TagProps {
+export interface TagProps extends TranslatorProps {
             entries: CatalogEntryView[];
             content?: any;
 }
@@ -26,7 +27,7 @@ export interface LayoutState {
             value: string;
 }
 
-export default class GridTagLayout extends React.Component<TagProps, LayoutState> {
+export class GridTagLayout extends React.Component<TagProps, LayoutState> {
         public constructor(props: any) {
             super(props);
             this.state = {
@@ -36,13 +37,13 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
             this.togglemenu = this.togglemenu.bind(this);
         }
         public render(): React.ReactElement<{}> {
-
+            const { __ } = this.props;
             return (
                     <div id={style.myTags}>
-                        Mes Tags
+                        { __("catalog.tags")}
                         <div id={style.sortMenu}>
                         <Menu
-                        button={(<div> sort by
+                        button={(<div> { __("catalog.sort")}
                                 <SVG svg={ArrowIcon}/>
                             </div>
                                 )}
@@ -84,3 +85,5 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
             });
         }
 }
+
+export default withTranslator(GridTagLayout);
