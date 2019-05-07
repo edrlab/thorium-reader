@@ -139,7 +139,12 @@
           "title": "Thème",
           "predefined": "Thèmes prédéfinis",
           "myTheme": "Mes thèmes",
-          "create": "Créer un thème"
+          "create": "Créer un thème",
+          "name": {
+            "Neutral": "Neutre",
+            "Sepia": "Sépia",
+            "Night": "Nuit"
+          }
         },
         "text": "Texte",
         "left": "Gauche",
