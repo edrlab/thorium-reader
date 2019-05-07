@@ -67,17 +67,16 @@ export default class App extends React.Component<any, undefined> {
             <Provider store={ this.store }>
                 <ConnectedRouter history={ this.history }>
                     <div className={styles.root}>
-                        <Dropzone disableClick onDrop={ this.onDrop } style={{
+                        <Dropzone aria-hidden disableClick onDrop={ this.onDrop } style={{
                             position: "absolute",
                             top: 0,
                             bottom: 0,
                             left: 0,
                             right: 0,
-                        }}>
+                        }}/>
                         <PageManager/>
                         <DialogManager />
                         <SameFileImportManager />
-                        </Dropzone>
                     </div>
                 </ConnectedRouter>
             </Provider>

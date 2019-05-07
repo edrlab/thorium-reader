@@ -11,13 +11,14 @@ interface Props {
     svg: any;
     title?: string;
     className?: string;
+    ariaHidden?: boolean;
 }
 
 export default class SVG extends React.Component<Props, null> {
     public render(): React.ReactElement<{}>  {
-        const { svg, className } = this.props;
+        const { svg, className, ariaHidden } = this.props;
         return (
-            <svg className={className} viewBox={svg.default.viewBox}>
+            <svg aria-hidden={ariaHidden} className={className} viewBox={svg.default.viewBox}>
                 { this.props.title &&
                     <title>{this.props.title}</title>
                 }

@@ -22,8 +22,6 @@ import PublicationAddButton from "./PublicationAddButton";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
 export enum DisplayType {
@@ -43,14 +41,16 @@ export class Header extends React.Component<Props, undefined> {
                 <Link
                     to={{search: "displayType=grid"}}
                     style={(this.props.displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
+                    title={__("header.gridTitle")}
                 >
-                    <SVG svg={GridIcon} title={__("header.gridTitle")}/>
+                    <SVG svg={GridIcon} ariaHidden/>
                 </Link>
                 <Link
                     to={{search: "displayType=list"}}
                     style={this.props.displayType !== DisplayType.List ? {fill: "grey"} : {}}
+                    title={__("header.listTitle")}
                 >
-                    <SVG svg={ListIcon} title={__("header.listTitle")}/>
+                    <SVG svg={ListIcon} ariaHidden/>
                 </Link>
                 <SearchForm />
                 {this.AllBooksButton(window.location.hash, __)}
