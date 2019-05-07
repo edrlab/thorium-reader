@@ -51,6 +51,8 @@ enum themeType {
     Night,
 }
 
+const DEFAULT_FONT_NAME: string = "Default font";
+
 export default class ReaderOptions extends React.Component<Props, State> {
     private sectionRefList: any = [];
 
@@ -413,7 +415,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
     }
 
     private checkFontName(font: string, __: any): string {
-        if (font && font === "Default font") {
+        if (font && font ===  DEFAULT_FONT_NAME) {
             return (__("reader.settings.DefaultFont"));
         } else {
             return (font);
