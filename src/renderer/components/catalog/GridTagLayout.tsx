@@ -38,8 +38,8 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
         public render(): React.ReactElement<{}> {
 
             return (
-                    <div id={style.myTags}>
-                        Mes Tags
+                    <section id={style.myTags}>
+                        <h1>Mes Tags</h1>
                         <div id={style.sortMenu}>
                         <Menu
                         button={(<div> sort by
@@ -62,7 +62,7 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
                                     );
                                 })}
                         </section>
-                    </div>
+                    </section>
             );
         }
 

@@ -281,14 +281,12 @@ main {
 
 #myTags {
 	margin: 2.0em 1.0em 4.0em 0;
-	/*width: 100%;*/
 	font: 1.1rem "Open Sans", sans-serif;
 	font-weight: bolder;
 	background: #fbfbfb;
 }
 
 #sortMenu {
-	margin: 0 0.2em 2.0em 1.0em;	
 	display: inline-flex;
 	cursor:pointer;
 	color:#666666;
