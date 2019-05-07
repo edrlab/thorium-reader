@@ -15,7 +15,7 @@ import Slider from "readium-desktop/renderer/components/utils/Slider";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import { Link, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 
