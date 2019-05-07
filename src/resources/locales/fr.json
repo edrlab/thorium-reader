@@ -168,6 +168,7 @@
         },
         "right": "Droite",
         "font": "Police",
+        "DefaultFont": "Police par défaut",
         "fontSize": "Taille du texte",
         "display": "Affichage",
         "justification": "Alignement",

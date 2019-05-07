@@ -132,6 +132,7 @@
         "left": "Linksbündig",
         "center": "Zentriert",
         "right": "Rechtsbündig",
+        "DefaultFont": "Standardschrift",
         "fontSize": "Schriftgröße:",
         "display": "Lesefluss:",
         "close": "Schließen",
