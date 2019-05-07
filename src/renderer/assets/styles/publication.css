@@ -46,6 +46,7 @@
     & .image_wrapper {
         width: 100%;
         position: relative;
+        
         & > a {
             position: absolute;
             top: 0;
@@ -53,12 +54,12 @@
             left: 0;
             right: 0;
             display: flex;
-            align-items: center;
+            align-items: flex-end;
+            justify-content: center;
             cursor: pointer;
             & img {
                 max-height: 100%;
                 max-width: 100%;
-                margin: auto;
                 display: block;
             }
         }
