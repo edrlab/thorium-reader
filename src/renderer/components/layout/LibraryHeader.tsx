@@ -22,19 +22,19 @@ import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 const headerNav = [
     {
         route: "/library",
-        label: "Mes livres",
+        label: "books",
         matchRoutes: ["/", "/library"],
         styles: [],
     },
     {
         route: "/opds",
-        label: "Catalogues",
+        label: "catalogs",
         matchRoutes: ["/opds"],
         styles: [],
     },
     {
         route: "/settings",
-        label: "Préférences",
+        label: "settings",
         matchRoutes: ["/settings"],
         styles: [styles.preferences],
     },
@@ -44,12 +44,14 @@ export interface HeaderProps extends RouteComponentProps, TranslatorProps { }
 
 export class Header extends React.Component<HeaderProps, undefined> {
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
+
         return (
             <nav className={styles.main_navigation} role="navigation" aria-label="Menu principal">
                 <ul>
                     {
                         headerNav.map((item, index: number) => {
-                            return this.buildNavItem(item, index);
+                            return this.buildNavItem(item, index, __);
                         })
                     }
                 </ul>
@@ -57,7 +59,8 @@ export class Header extends React.Component<HeaderProps, undefined> {
         );
     }
 
-    private buildNavItem(item: any, index: number) {
+    private buildNavItem(item: any, index: number, __: any) {
+        const jsn = "header." + item.label;
         if (!this.props.location) {
             return (<></>);
         }
@@ -80,7 +83,7 @@ export class Header extends React.Component<HeaderProps, undefined> {
         return (
             <li className={classNames(...styleClasses)} key={ index }>
                 <Link to={ item.route } replace={true}>
-                    { this.props.__(item.label) }
+                    { __(jsn) }
                 </Link>
             </li>
         );

@@ -65,7 +65,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
             contentStyle.right = Math.round(window.innerWidth - buttonClientRect.right) + "px";
         } else {
             // Left direction
-            contentStyle.left = Math.round(buttonClientRect.left) + "px";
+            contentStyle.left = Math.round(buttonClientRect.left) + 75 + "px";
         }
 
         document.addEventListener("click", this.handleGlobalClick);
@@ -145,7 +145,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
                 contentStyle.right = Math.round(window.innerWidth - buttonClientRect.right) + "px";
             } else {
                 // Left direction
-                contentStyle.left = Math.round(buttonClientRect.left) + "px";
+                contentStyle.left = Math.round(buttonClientRect.left) + 75 + "px";
             }
             // Click on button: toggle menu
             this.props.toggle(!this.props.open);

@@ -35,6 +35,15 @@ export class LcpApi {
         console.log("renew license", publication);
     }
 
+    public async registerPublicationLicense(data: any): Promise<void> {
+        const { publication } = data;
+        const publicationDocument = await this.publicationRepository.get(
+            publication.identifier,
+        );
+        await this.lcpManager.registerPublicationLicense(publicationDocument);
+        console.log("register publication", publication);
+    }
+
     public async returnPublication(data: any): Promise<void> {
         const { publication } = data;
         const publicationDocument = await this.publicationRepository.get(
@@ -46,9 +55,11 @@ export class LcpApi {
 
     public async unlockPublicationWithPassphrase(data: any) {
         const { publication, passphrase } = data;
-        console.log("#### 1", publication);
-        await this.lcpManager.unlockPublicationWithPassphrase(publication, passphrase);
-        console.log("#### 2", publication);
+        try {
+            await this.lcpManager.unlockPublicationWithPassphrase(publication, passphrase);
+        } catch {
+            return;
+        }
         this.store.dispatch(readerActions.open(publication));
     }
 }

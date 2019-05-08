@@ -135,14 +135,23 @@ const mapDispatchToProps = (dispatch: any, props: PublicationCardProps) => {
                 },
             });
         },
-        openInfosDialog: (publication: string) => {
-            dispatch(dialogActions.open(
-                DialogType.PublicationInfo,
-                {
-                    publication,
-                    isOpds: props.isOpds,
-                },
-            ));
+        openInfosDialog: (publication: PublicationView) => {
+            if (props.isOpds) {
+                dispatch(dialogActions.open(
+                    DialogType.PublicationInfo,
+                    {
+                        publication,
+                        isOpds: props.isOpds,
+                    },
+                ));
+            } else {
+                dispatch(dialogActions.open(
+                    DialogType.PublicationInfo,
+                    {
+                        publicationIdentifier: publication.identifier,
+                    },
+                ));
+            }
         },
     };
 };

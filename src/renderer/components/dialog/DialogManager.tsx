@@ -35,7 +35,7 @@ import RenewLsdConfirm from "./RenewLsdConfirm";
 
 import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
 
-import * as styles from "readium-desktop/renderer/assets/styles/app.css";
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 
 interface DialogManagerProps  {
     dialog?: DialogState;
@@ -99,6 +99,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 close={ this.props.closeDialog }
             >
                 <PublicationInfo
+                    publicationIdentifier={ this.props.dialog.data.publicationIdentifier }
                     publication={ this.props.dialog.data.publication }
                     isOpds={ this.props.dialog.data.isOpds }
                 />
@@ -167,8 +168,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             <Dialog
                 open={ true }
                 close={ this.props.closeDialog }
-                id={styles.choice_dialog}
-                hideArrow={true}
+                id={styles.lcp_dialog}
             >
                 <LcpAuthentication
                     publication={ this.props.dialog.data.publication }
@@ -207,9 +207,9 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
     }
 }
 
-const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
-        closeDialog: (data: any) => {
+        closeDialog: () => {
             dispatch(
                 dialogActions.close(),
             );
@@ -217,7 +217,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
     };
 };
 
-const mapStateToProps = (state: RootState, __: any) => {
+const mapStateToProps = (state: RootState) => {
     return {
         dialog: state.dialog,
     };

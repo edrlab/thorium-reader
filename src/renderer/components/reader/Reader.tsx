@@ -188,10 +188,14 @@ interface ReaderState {
 }
 
 interface ReaderProps {
+    reader?: any;
+    mode?: any;
     deleteBookmark?: any;
     addBookmark?: any;
     findBookmarks: any;
     toggleFullscreen?: any;
+    closeReader?: any;
+    detachReader?: any;
     setLastReadingLocation: any;
     bookmarks?: LocatorView[];
 }
@@ -258,6 +262,8 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleFullscreenClick = this.handleFullscreenClick.bind(this);
+        this.handleReaderClose = this.handleReaderClose.bind(this);
+        this.handleReaderDetach = this.handleReaderDetach.bind(this);
         this.setSettings = this.setSettings.bind(this);
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
@@ -361,7 +367,10 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                             handleMenuClick={this.handleMenuButtonClick}
                             handleSettingsClick={this.handleSettingsClick}
                             fullscreen={this.state.fullscreen}
+                            mode={this.props.mode}
                             handleFullscreenClick={this.handleFullscreenClick}
+                            handleReaderDetach={this.handleReaderDetach}
+                            handleReaderClose={this.handleReaderClose}
                             toggleBookmark={ this.handleToggleBookmark }
                             isOnBookmark={this.state.visibleBookmarkList.length > 0}
                         />
@@ -560,6 +569,14 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         await this.checkBookmarks();
     }
 
+    private handleReaderClose() {
+        this.props.closeReader(this.props.reader);
+    }
+
+    private handleReaderDetach() {
+        this.props.detachReader(this.props.reader);
+    }
+
     private handleFullscreenClick() {
         this.props.toggleFullscreen(!this.state.fullscreen);
         this.setState({fullscreen: !this.state.fullscreen});
@@ -638,7 +655,14 @@ const buildBookmarkRequestData = () => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any, __0: ReaderProps) => {
+const mapStateToProps = (state: RootState, __: any) => {
+    return {
+        reader: state.reader.reader,
+        mode: state.reader.mode,
+    };
+};
+
+const mapDispatchToProps = (dispatch: any, props: ReaderProps) => {
     return {
         toggleFullscreen: (fullscreenOn: boolean) => {
             if (fullscreenOn) {
@@ -647,12 +671,19 @@ const mapDispatchToProps = (dispatch: any, __0: ReaderProps) => {
                 dispatch(readerActions.setFullscreenOff());
             }
         },
+        closeReader: (reader: any) => {
+            dispatch(readerActions.close(reader, true));
+        },
+        detachReader: (reader: any) => {
+            dispatch(readerActions.detach(reader));
+        },
     };
 };
 
 export default withApi(
     Reader,
     {
+        mapStateToProps,
         mapDispatchToProps,
         operations: [
             {

@@ -20,8 +20,9 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface Props {
+interface Props extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;
     fullscreen: boolean;
     currentLocation: LocatorExtended;
@@ -33,10 +34,7 @@ interface States {
     moreInfo: boolean;
 }
 
-export default class ReaderFooter extends React.Component<Props, States> {
-
-    @lazyInject("translator")
-    private translator: Translator;
+export class ReaderFooter extends React.Component<Props, States> {
 
     public constructor(props: Props) {
         super(props);
@@ -55,7 +53,7 @@ export default class ReaderFooter extends React.Component<Props, States> {
             return (<></>);
         }
 
-        const __ = this.translator.translate.bind(this.translator);
+        const { __ } = this.props;
         const { moreInfo } = this.state;
 
         const spineIndex = publication.Spine.findIndex(
@@ -118,7 +116,7 @@ export default class ReaderFooter extends React.Component<Props, States> {
                         onClick={this.handleMoreInfoClick}
                         id={styles.more_info_chapters}
                     >
-                        {moreInfo ? "Moins d'informations" : "Plus d'informations"}
+                        {moreInfo ? __("reader.footerInfo.lessInfo") : __("reader.footerInfo.moreInfo")}
                     </span>
                 </div>
             </div>
@@ -190,3 +188,4 @@ export default class ReaderFooter extends React.Component<Props, States> {
         this.setState({ moreInfo: !this.state.moreInfo });
     }
 }
+export default withTranslator(ReaderFooter);

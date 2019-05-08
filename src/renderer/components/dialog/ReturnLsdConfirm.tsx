@@ -10,11 +10,12 @@ import * as React from "react";
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as lcpActions from "readium-desktop/common/redux/actions/lcp";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
+
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 
 interface LsdReturnConfirmProps extends TranslatorProps {
     publication?: PublicationView;
@@ -39,7 +40,7 @@ export class LsdReturnConfirm extends React.Component<LsdReturnConfirmProps, und
             <div>
                 <p>Êtes vous sûr de vouloir supprimer ce livre : {this.props.publication.title} ?</p>
                 <div>
-                    <button onClick={this.remove}>Oui</button>
+                    <button className={styles.primary} onClick={this.remove}>Oui</button>
                     <button onClick={this.props.closeDialog}>Non</button>
                 </div>
             </div>

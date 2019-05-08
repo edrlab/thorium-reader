@@ -24,39 +24,42 @@ import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 
+import { TranslatorProps, withTranslator } from "../utils/translator";
+
 export enum DisplayType {
     Grid = "grid",
     List = "list",
 }
 
-interface Props extends RouteComponentProps {
+interface Props extends RouteComponentProps, TranslatorProps {
     displayType: DisplayType;
 }
 
 export class Header extends React.Component<Props, undefined> {
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
         return (
             <SecondaryHeader id={styles.catalog_header}>
                 <Link
                     to={{search: "displayType=grid"}}
                     style={(this.props.displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
                 >
-                    <SVG svg={GridIcon} title="Présenter les couvertures de livres en grille"/>
+                    <SVG svg={GridIcon} title={__("header.gridTitle")}/>
                 </Link>
                 <Link
                     to={{search: "displayType=list"}}
                     style={this.props.displayType !== DisplayType.List ? {fill: "grey"} : {}}
                 >
-                    <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
+                    <SVG svg={ListIcon} title={__("header.listTitle")}/>
                 </Link>
                 <SearchForm />
-                {this.AllBooksButton(window.location.hash)}
+                {this.AllBooksButton(window.location.hash, __)}
                 <PublicationAddButton />
             </SecondaryHeader>
         );
     }
 
-    private AllBooksButton(hash: any) {
+    private AllBooksButton(hash: any, __: any) {
         if (hash === "#/library" || hash === "#/" ||
         hash === "#/library?displayType=grid" ||
         hash === "#/library?displayType=list") {
@@ -65,7 +68,7 @@ export class Header extends React.Component<Props, undefined> {
                 id={styles.all_link_button}
                 to={{pathname: "/library/search/all"}}
                 >
-                    Tous mes livres {/*<SVG svg={ArrowIcon} />*/}
+                    {__("header.allBooks")}
                 </Link>
             );
         }
@@ -73,4 +76,4 @@ export class Header extends React.Component<Props, undefined> {
     }
 }
 
-export default withRouter(Header);
+export default withTranslator(withRouter(Header)) ;

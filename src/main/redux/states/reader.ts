@@ -5,22 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { all } from "redux-saga/effects";
+import {
+    Reader, ReaderConfig, ReaderMode,
+} from "readium-desktop/common/models/reader";
 
-import { winInitWatcher } from "./win";
+export interface ReaderState {
+    // Base url of started server
+    readers: { [identifier: string]: Reader };
 
-import * as i18n from "./i18n";
+    // Config for all readers
+    config: ReaderConfig;
 
-import * as lcp from "./lcp";
-import * as opds from "./opds";
-
-export function* rootSaga() {
-    yield all([
-        i18n.watchers(),
-
-        lcp.watchers(),
-        opds.watchers(),
-
-        winInitWatcher(),
-    ]);
+    mode: ReaderMode;
 }

@@ -51,6 +51,8 @@ enum themeType {
     Night,
 }
 
+const DEFAULT_FONT_NAME: string = "Default font";
+
 export default class ReaderOptions extends React.Component<Props, State> {
     private sectionRefList: any = [];
 
@@ -101,7 +103,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         {...(!this.props.settings.sepia && !this.props.settings.night
                                             && {checked: true})}
                                     />
-                                    <label>Without</label>
+                                    <label>{__("reader.settings.theme.name.Neutral")}</label>
                                 </div>
                                 <div className={styles.theme_choices}>
                                     <input
@@ -110,7 +112,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         onChange={() => this.handleChooseTheme(themeType.Sepia)}
                                         {...(this.props.settings.sepia && {checked: true})}
                                     />
-                                    <label>Sepia</label>
+                                    <label>{__("reader.settings.theme.name.Sepia")}</label>
                                 </div>
                                 <div className={styles.theme_choices}>
                                     <input
@@ -119,7 +121,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                         onChange={() => this.handleChooseTheme(themeType.Night)}
                                         {...(this.props.settings.night && {checked: true})}
                                     />
-                                    <label>Night</label>
+                                    <label>{__("reader.settings.theme.name.Night")}</label>
                                 </div>
                             </div>
                         </div>
@@ -163,7 +165,7 @@ export default class ReaderOptions extends React.Component<Props, State> {
                                                     key={id}
                                                     value={font.id}
                                                 >
-                                                    {font.label}
+                                                    {this.checkFontName(font.label, __)}
                                                 </option>
                                             );
                                         })}
@@ -412,6 +414,13 @@ export default class ReaderOptions extends React.Component<Props, State> {
         );
     }
 
+    private checkFontName(font: string, __: any): string {
+        if (font && font ===  DEFAULT_FONT_NAME) {
+            return (__("reader.settings.DefaultFont"));
+        } else {
+            return (font);
+        }
+    }
     private handleClickSection(id: number) {
         let { openedSection } = this.state;
         if (openedSection === id) {

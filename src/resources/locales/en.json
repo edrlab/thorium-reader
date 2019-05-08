@@ -3,7 +3,15 @@
       "entry": {
         "continueReading": "Resume reading",
         "lastAdditions": "Recently added"
-      }
+      },
+      "myBooks": "My books",
+      "allBooks": "all books",
+      "bookInfo": "About this book",
+      "delete": "Delete definitively",
+      "export": "Export",
+      "tags": "My tags",
+      "sort": "sort by",
+      "tagCount": "Tag count"
     },
     "library": {
         "heading": "Library",
@@ -21,7 +29,8 @@
           "sentence": "This publication needs a LCP password to be opened: ",
           "submit": "Submit",
           "cancel": "Cancel",
-          "hint": "Hint : {{hint}}",
+          "hint": "(Hint : {{hint}})",
+          "password": "Password",
           "informations": {
             "title": "LCP Informations",
             "close": "Close",
@@ -88,13 +97,17 @@
         "opds": "Opds"
       },
       "addForm": {
+        "title": "Add a feed",
+        "pasteUrl": "paste url of a feed",
         "addButton": "Add",
         "updateSentence": "You can update the fields.",
         "addSentence": "What OPDS feed would you like to add?",
         "delete": "Delete the feed",
         "update": "Update",
-        "name": "Feed name :",
-        "url": "Feed link :"
+        "name": "Name :",
+        "url": "Link :",
+        "namePlaceholder": "Name",
+        "urlPlaceholder": "Link"
       },
       "authentication": {
         "username": "Username :",
@@ -105,13 +118,33 @@
       "breadcrumbRoot": "Catalogs"
     },
     "reader": {
+      "navigation": {
+        "backHomeTitle": "back to home",
+        "infoTitle": "informations",
+        "detachWindowTitle": "detach the window",
+        "fullscreenTitle": "open fullscreen mode",
+        "bookmarkTitle": "bookmark",
+        "openTableOfContentsTitle": "table of contents",
+        "quitFullscreenTitle": "quit fullscreen mode",
+        "settingsTitle": "settings",
+        "readBookTitle": "start reading the book"
+      },
+      "footerInfo": {
+        "moreInfo": "more informations",
+        "lessInfo":  "less informations"
+      },
       "settings": {
         "title": "Settings",
         "theme": {
           "title": "Theme",
           "predefined": "Predifined themes",
           "myTheme": "My themes",
-          "create": "Create a theme"
+          "create": "Create a theme",
+          "name": {
+            "Neutral": "Neutral",
+            "Sepia": "Sepia",
+            "Night": "Night"
+          }
         },
         "text": "Text",
         "left": "Left",
@@ -135,6 +168,7 @@
         },
         "right": "Right",
         "font": "Font",
+        "DefaultFont": "Default font",
         "fontSize": "Font size",
         "display": "Display",
         "justification": "Alignement",
@@ -173,5 +207,23 @@
         "returnError": "An error occurred when returning the LCP license of {{title}}.",
         "passphraseError": "Unable to unlock publication {{publicationTitle}}"
       }
+    },
+    "settings": {
+      "manageTags": "Manage tags",
+      "uiLanguage": "UI language",
+      "information": "Information"
+    },
+    "header": {
+      "books": "My Books",
+      "catalogs": "Catalogs",
+      "settings": "Settings",
+      "allBooks": "all books",
+      "gridTitle": "Books cover in a gridview",
+      "listTitle": "Books cover in a listview",
+      "searchPlaceholder": "Search",
+      "searchTitle": "Start the search",
+      "importTitle": "Import a book"
+
     }
+
 }

@@ -13,12 +13,15 @@ import CatalogMenu from "readium-desktop/renderer/components/publication/menu/Ca
 import PublicationListElement from "readium-desktop/renderer/components/publication/PublicationListElement";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import GridTagLayout from "./GridTagLayout";
+import SortMenu from "./SortMenu";
 
 interface ListViewProps {
     catalogEntries: CatalogEntryView[];
 }
 
 export default class ListView extends React.Component<ListViewProps, undefined> {
+
     public render(): React.ReactElement<{}> {
         return (
             <>
@@ -59,4 +62,5 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
             </>
         );
     }
+
 }

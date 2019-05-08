@@ -9,6 +9,8 @@ import { Bookmark, Reader, ReaderConfig } from "readium-desktop/common/models/re
 import { Action } from "readium-desktop/common/models/redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
+import { ReaderMode } from "readium-desktop/common/models/reader";
+
 export enum ActionType {
     OpenRequest = "READER_OPEN_REQUEST",
     OpenSuccess = "READER_OPEN_SUCCESS",
@@ -23,6 +25,10 @@ export enum ActionType {
     CloseRequest = "READER_CLOSE_REQUEST",
     CloseSuccess = "READER_CLOSE_SUCCESS",
     CloseError = "READER_CLOSE_ERROR",
+
+    ModeSetRequest = "READER_MODE_SET_REQUEST",
+    ModeSetSuccess = "READER_MODE_SET_SUCCESS",
+    ModeSetError = "READER_MODE_SET_ERROR",
 
     ConfigSetRequest = "READER_CONFIG_SET_REQUEST",
     ConfigSetSuccess = "READER_CONFIG_SET_SUCCESS",
@@ -42,11 +48,22 @@ export function open(publication: PublicationView): Action {
     };
 }
 
-export function close(reader: Reader): Action {
+export function close(reader: Reader, gotoLibrary: boolean = false): Action {
     return {
         type: ActionType.CloseRequest,
         payload: {
-            close,
+            reader,
+            gotoLibrary,
+        },
+    };
+}
+
+export function detach(reader: Reader): Action {
+    return {
+        type: ActionType.ModeSetRequest,
+        payload: {
+            reader,
+            mode: ReaderMode.Detached,
         },
     };
 }
