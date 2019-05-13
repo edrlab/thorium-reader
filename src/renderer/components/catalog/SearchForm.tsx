@@ -8,11 +8,13 @@
 import * as React from "react";
 
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { TranslatorProps, withTranslator } from "../utils/translator";
+
+import { setLatestVersion } from "readium-desktop/common/redux/actions/update";
 
 interface SearchProps extends RouteComponentProps, TranslatorProps {}
 
@@ -37,7 +39,7 @@ export class Search extends React.Component<SearchProps, undefined> {
                     aria-label="Rechercher un livre, un tag, ou un type de littérature"
                     placeholder={ __("header.searchPlaceholder")}
                 />
-                <button>
+                <button id={styles.search_img}>
                     <SVG svg={SearchIcon} title={ __("header.searchTitle")}/>
                 </button>
             </form>
