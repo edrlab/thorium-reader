@@ -79,10 +79,10 @@ main {
 }
 
 .addEpubButton {
-	display: flex;
+	display: inline-flex;
 	position: relative;
-	left: 625px;
-	top: -38px;
+	left: 10px;
+	top: 3px;
 	margin-left: 1rem;
 
 	& input {
@@ -96,11 +96,10 @@ main {
 	& label {
 		/*width: 35px;
 		height: 35px;*/
-		padding: 7px 10px 7px 10px;
+		padding: 7px 10px 3px 10px;
 		cursor: pointer;
 		border: 1px solid black;
 		border-radius: 5px;
-		align-items: center;
 
 		&:hover {
 			opacity: 0.75;
@@ -111,7 +110,7 @@ main {
 			margin-left: 0;
 			width: 15px;
 			align-content: center;
-			height: 15px;
+			height: 17px;
 		}
 	}
 
