@@ -1,5 +1,5 @@
 {
-  "name": "readium-desktop",
+  "name": "Thorium",
   "version": "1.0.0-alpha.4",
   "description": "Desktop application to read ebooks",
   "keywords": [
@@ -60,7 +60,7 @@
   },
   "homepage": "https://github.com/edrlab/readium-desktop",
   "build": {
-    "productName": "ReadiumDesktop",
+    "productName": "Thorium",
     "appId": "io.github.edrlab.readium-desktop",
     "dmg": {
       "contents": [
