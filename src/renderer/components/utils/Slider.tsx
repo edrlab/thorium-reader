@@ -20,42 +20,66 @@ interface Props {
 
 interface States {
     position: number;
+    refreshVisible: boolean;
 }
 
 export default class Slider extends React.Component<Props, States> {
     private contentRef: any;
-    private contentElRefs: any = [];
+    private contentElRefs: any[] = [];
     private wrapperRef: any;
+    private contentElVisible: boolean[] = [];
 
     public constructor(props: Props) {
         super(props);
 
         this.state = {
             position: 0,
+            refreshVisible: false,
         };
+
+        this.update = this.update.bind(this);
 
         this.contentRef = React.createRef();
         this.wrapperRef = React.createRef();
-
-        window.addEventListener("resize", () => this.forceUpdate());
     }
 
     public componentDidMount() {
-        this.forceUpdate();
+        this.setState({refreshVisible: true});
+        window.addEventListener("resize", this.update);
+    }
+
+    public componentWillUnmount() {
+        window.removeEventListener("resize", this.update);
+    }
+
+    public componentDidUpdate() {
+        if (this.state.refreshVisible) {
+            this.contentElRefs.map((element, index) => {
+                const buttonList = element.getElementsByTagName("button");
+                for (const button of buttonList) {
+                    if (!this.isElementVisible(index)) {
+                        button.tabIndex = "-1";
+                    } else {
+                        button.tabIndex = "0";
+                    }
+                }
+            });
+            this.setState({refreshVisible: false});
+        }
     }
 
     public render(): React.ReactElement<{}>  {
         const className = this.props.className;
 
-        const list = this.createBoxes();
+        const list = this.createContent();
         let max = 0;
         if (this.contentRef.current && this.wrapperRef.current) {
             max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
         }
 
         const varStyle = {
-            transform: "translateX(" + this.state.position + "px)",
-            transition: "transform 0.5s",
+            left: this.state.position + "px",
+            transition: "left 0.5s",
         };
 
         return (
@@ -94,28 +118,56 @@ export default class Slider extends React.Component<Props, States> {
             position = max;
         }
 
-        this.setState({position});
+        this.setState({position, refreshVisible: true});
     }
 
-    private moveTo(elementId: any) {
+    private moveInView(elementId: number) {
         const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
         const element = this.contentElRefs[elementId];
-        let position = -element.offsetLeft;
-        position = position > 0 ? 0 : position < max ? max : position;
-        this.setState({position});
+        let elementPosition = -element.offsetLeft;
+
+        const isVisible = this.isElementVisible(elementId);
+        if (!isVisible) {
+            elementPosition = elementPosition > 0 ? 0 : elementPosition < max ? max : elementPosition;
+            this.setState({position: elementPosition, refreshVisible: true});
+        }
     }
 
-    private createBoxes(): JSX.Element[] {
+    private createContent(): JSX.Element[] {
         const content = this.props.content;
 
-        return content.map((element, index) =>
-            <div
-                ref={(ref) => this.contentElRefs[index] = ref}
-                key={index}
-                onFocus={() => this.moveTo(index)}
-            >
-                {element}
-            </div>,
-        );
+        const visible = this.contentElVisible;
+
+        return content.map((element, index) => {
+            const props: any = {};
+            if (!visible[index]) {
+                props.tabIndex = -1;
+            }
+            return (
+                <div
+                    ref={(ref) => this.contentElRefs[index] = ref}
+                    key={index}
+                    onFocus={() => this.moveInView(index)}
+                    {...props}
+                >
+                    {element}
+                </div>
+            );
+        });
+    }
+
+    private isElementVisible(elementId: number) {
+        const element = this.contentElRefs[elementId];
+        const wrapperWidth = this.wrapperRef.current.offsetWidth;
+        const position = this.state.position;
+        const elementPosition = -element.offsetLeft;
+        const elementWidth = element.offsetWidth;
+
+        const isVisible = elementPosition <= position && elementPosition - elementWidth >= position - wrapperWidth;
+        return isVisible;
+    }
+
+    private update() {
+        this.forceUpdate();
     }
 }
