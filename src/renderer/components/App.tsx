@@ -30,6 +30,7 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { DialogType } from "readium-desktop/common/models/dialog";
 
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
+import AppContainer from "./AppContainer";
 
 export default class App extends React.Component<any, undefined> {
     @lazyInject("store")
@@ -41,10 +42,10 @@ export default class App extends React.Component<any, undefined> {
     constructor(props: any) {
         super(props);
 
-        this.onDrop = this.onDrop.bind(this);
+       // this.onDrop = this.onDrop.bind(this);
     }
 
-    // Called when files are droped on the dropzone
+    /* Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
         this.store.dispatch(
             dialogActions.open(
@@ -58,24 +59,13 @@ export default class App extends React.Component<any, undefined> {
                     }),
                 },
         ));
-    }
+    }*/
 
     public render(): React.ReactElement<{}> {
         return (
             <Provider store={ this.store }>
                 <ConnectedRouter history={ this.history }>
-                    <div className={styles.root}>
-                        <Dropzone disableClick onDrop={ this.onDrop } style={{
-                            position: "absolute",
-                            top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                        }}>
-                        <PageManager/>
-                        <DialogManager />
-                        </Dropzone>
-                    </div>
+                   <AppContainer/>
                 </ConnectedRouter>
             </Provider>
         );
