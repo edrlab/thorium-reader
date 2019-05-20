@@ -49,11 +49,14 @@ export class Translator {
     }
 
     public setLocale(locale: string) {
+        console.log("setLocale = " + locale );
         this.locale = locale;
     }
 
     public translate(message: string, options: any = {}): string {
+        console.log("translator -> " + message + " locale -> " + this.locale);
         if (initI18n.language !== this.locale) {
+            console.log("locale -> " + this.locale);
             initI18n.changeLanguage(this.locale);
         }
 

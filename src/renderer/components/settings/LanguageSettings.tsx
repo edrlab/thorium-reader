@@ -63,12 +63,14 @@ export class LanguageSettings extends React.Component<Props, States> {
 }
 
 const mapStateToProps = (state: any) => {
+    console.log("mapStateToProps");
     return {
         locale: state.i18n.locale,
     };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
+    console.log("mapDispatchToProps");
     return {
         setLocale: (locale: string) => dispatch(setLocale(locale)),
     };
