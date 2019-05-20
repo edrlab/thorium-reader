@@ -84,7 +84,7 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                         </p>
                     </a>
                     <Menu
-                        button={(<SVG svg={MenuIcon}/>)}
+                        button={(<SVG title={this.props.publication.title} svg={MenuIcon}/>)}
                         content={(
                             <div className={styles.menu}>
                                 <MenuContent toggleMenu={this.toggleMenu} publication={this.props.publication}/>
