@@ -336,6 +336,7 @@ main {
 	overflow: hidden;
 	align-items: center;
 	justify-content: center;
+	z-index: 100;
 }
 
 #sortType button {
