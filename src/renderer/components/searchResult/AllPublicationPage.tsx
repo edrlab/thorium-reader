@@ -46,10 +46,11 @@ export class AllPublicationPage extends React.Component<AllPublicationPageProps,
             }
         }
 
+        const secondaryHeader = <Header displayType={ displayType } />;
+
         return (
-            <LibraryLayout>
+            <LibraryLayout secondaryHeader={secondaryHeader}>
                 <div>
-                    <Header displayType={ displayType } />
                     <BreadCrumb
                         search={this.props.location.search}
                         breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title as string}]}
