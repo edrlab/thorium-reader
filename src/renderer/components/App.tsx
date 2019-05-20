@@ -42,7 +42,7 @@ export default class App extends React.Component<any, undefined> {
     constructor(props: any) {
         super(props);
 
-       // this.onDrop = this.onDrop.bind(this);
+        // this.onDrop = this.onDrop.bind(this);
     }
 
     /* Called when files are droped on the dropzone
@@ -65,7 +65,7 @@ export default class App extends React.Component<any, undefined> {
         return (
             <Provider store={ this.store }>
                 <ConnectedRouter history={ this.history }>
-                   <AppContainer/>
+                    <AppContainer/>
                 </ConnectedRouter>
             </Provider>
         );

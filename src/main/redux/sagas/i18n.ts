@@ -24,8 +24,8 @@ export function* localeWatcher() {
         const action = yield take(i18nActions.ActionType.Set);
         const translator = container.get("translator") as Translator;
         const config = container.get("config-repository") as ConfigRepository;
-        console.log("main action : " + action.payload.locale);
-        console.log(config);
+        // console.log("main action : " + action.payload.locale);
+        // console.log(config);
         translator.setLocale(action.payload.locale);
     }
 }
