@@ -9,6 +9,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as uuid from "uuid";
 
+import AccessibleMenu from "./AccessibleMenu";
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
 
@@ -21,17 +22,12 @@ interface MenuProps {
     content: any;
     open: boolean; // Is menu open
     dir: string; // Direction of menu: right or left
-    toggle: (open: boolean) => void;
+    toggle: () => void;
 }
 
 interface MenuState {
     contentStyle: any;
 }
-
-const CLICKABLE_TAGS = [
-    "a",
-    "button",
-];
 
 export default class Menu extends React.Component<MenuProps, MenuState> {
     private buttonRef: any;
@@ -44,30 +40,18 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
             contentStyle: {},
         };
         this.menuId = "menu-" + uuid.v4();
-        this.handleGlobalClick = this.handleGlobalClick.bind(this);
-        this.handleGlobalKeydown = this.handleGlobalKeydown.bind(this);
-    }
 
-    public componentDidMount() {
-        document.addEventListener("click", this.handleGlobalClick);
-    }
-
-    public componentWillUnmount() {
-        document.removeEventListener("click", this.handleGlobalClick);
+        this.focusMenuButton = this.focusMenuButton.bind(this);
     }
 
     public componentDidUpdate(oldProps: MenuProps) {
         if (this.props.open && !oldProps.open) {
             this.refreshStyle();
-
-            document.addEventListener("keydown", this.handleGlobalKeydown);
-        } else if (!this.props.open && oldProps.open) {
-            document.removeEventListener("keydown", this.handleGlobalKeydown);
         }
     }
 
     public render(): React.ReactElement<{}> {
-        const { open } = this.props;
+        const { open, toggle, button, dir, content } = this.props;
         const contentStyle = this.state.contentStyle;
         return (
             <>
@@ -75,58 +59,25 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
                     ref={(ref) => { this.buttonRef = ref; }}
                     menuId={this.menuId}
                     open={open}
+                    toggle={toggle}
                 >
-                    {this.props.button}
+                    {button}
                 </MenuButton>
                 { open &&
                     <MenuContent
-                        menuId={this.menuId}
-                        menuOpen={open}
-                        menuDir={this.props.dir}
+                        id={this.menuId}
+                        open={open}
+                        dir={dir}
                         menuStyle={contentStyle}
+                        toggle={toggle}
                         ref={(ref) => { this.contentRef = ref; }}
+                        focusMenuButton={this.focusMenuButton}
                     >
-                        {this.props.content}
+                        {content}
                     </MenuContent>
                 }
             </>
         );
-    }
-
-    public handleGlobalKeydown(event: any) {
-        const key = event.key;
-
-        if (key === "Escape" && this.props.open) {
-            this.props.toggle(false);
-
-            // Focus button
-            const buttonElement = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
-            buttonElement.focus();
-        }
-    }
-
-    public handleGlobalClick(event: any) {
-        const buttonElement = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
-        const targetElement: HTMLElement = event.target;
-        const contentElement = document.getElementById(this.menuId);
-        const { open } = this.props;
-
-        if (buttonElement.contains(targetElement)) {
-            // Click on button: toggle menu
-            this.props.toggle(!this.props.open);
-
-            return;
-        }
-        if (open) {
-            if (!contentElement.contains(targetElement)) {
-                this.props.toggle(false);
-            } else {
-                if (CLICKABLE_TAGS.indexOf(targetElement.tagName.toLowerCase()) > -1) {
-                    // This is a link => close menu
-                    this.props.toggle(false);
-                }
-            }
-        }
     }
 
     private offset(el: any) {
@@ -166,5 +117,11 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
         }
 
         this.setState({ contentStyle });
+    }
+
+    private focusMenuButton() {
+        const button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
+
+        button.focus();
     }
 }

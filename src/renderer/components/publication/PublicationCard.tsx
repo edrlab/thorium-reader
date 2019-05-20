@@ -99,8 +99,8 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
         );
     }
 
-    private openCloseMenu(open: boolean) {
-        this.setState({menuOpen: open});
+    private openCloseMenu() {
+        this.setState({menuOpen: !this.state.menuOpen});
     }
 
     private toggleMenu() {

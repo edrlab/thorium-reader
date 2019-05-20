@@ -33,17 +33,17 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
         const { publication } = this.props;
         return (
             <>
-                <a
+                <button
                     onClick={this.displayPublicationInfo }
                 >
                     Fiche livre
-                </a>
+                </button>
                 { publication.isFree &&
-                    <a
+                    <button
                         onClick={ (e) => this.onAddToCatalogClick(e) }
                     >
                         Ajouter à la bibliothèque
-                    </a>
+                    </button>
                 }
                 { publication.buyUrl &&
                     <a
@@ -67,11 +67,11 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
                     </a>
                 }
                 { publication.hasSample &&
-                    <a
+                    <button
                         onClick={ (e) => this.onAddToCatalogClick(e, true) }
                     >
                         Ajouter l'extrait à la bibliothèque
-                    </a>
+                    </button>
                 }
             </>
         );

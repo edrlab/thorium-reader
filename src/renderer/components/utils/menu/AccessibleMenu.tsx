@@ -8,7 +8,8 @@ interface Props {
     className?: any;
     visible?: boolean;
     toggleMenu: any;
-    dontCloseWhenClickOutside: boolean;
+    dontCloseWhenClickOutside?: boolean;
+    focusMenuButton?: () => void;
 }
 
 interface State {
@@ -29,34 +30,34 @@ export default class AccessibleMenu extends React.Component<Props, State> {
 
         this.containerRef = React.createRef();
         this.handleFocus = this.handleFocus.bind(this);
-        this.handleEscKey = this.handleEscKey.bind(this);
+        this.handleKey = this.handleKey.bind(this);
         this.onClickOutside = this.onClickOutside.bind(this);
     }
 
     public componentDidMount() {
         if (this.props.visible) {
-            document.addEventListener("keydown", this.handleEscKey);
+            document.addEventListener("keydown", this.handleKey);
             document.addEventListener("focusin", this.handleFocus);
         }
     }
 
     public componentWillUnmount() {
         if (this.props.visible) {
-            document.removeEventListener("keydown", this.handleEscKey);
+            document.removeEventListener("keydown", this.handleKey);
             document.removeEventListener("focusin", this.handleFocus);
         }
     }
 
     public componentDidUpdate(oldProps: Props, prevState: State) {
         if (!this.props.visible && oldProps.visible) {
-            document.removeEventListener("keydown", this.handleEscKey);
+            document.removeEventListener("keydown", this.handleKey);
             document.removeEventListener("focusin", this.handleFocus);
 
             this.setState({
                 inFocus: false,
             });
         } else if (this.props.visible && !oldProps.visible) {
-            document.addEventListener("keydown", this.handleEscKey);
+            document.addEventListener("keydown", this.handleKey);
             document.addEventListener("focusin", this.handleFocus);
 
             this.setState({
@@ -92,14 +93,19 @@ export default class AccessibleMenu extends React.Component<Props, State> {
         );
     }
 
-    private handleEscKey(event: any) {
+    private handleKey(event: any) {
         if (event.key === "Escape" || (!this.state.inFocus && (event.shiftKey && event.key === "Tab"))) {
             this.props.toggleMenu();
-
+            this.props.focusMenuButton();
             this.setState({
                 inFocus: false,
             });
-
+        }
+        if (event.key === "Tab" && !this.state.inFocus) {
+            event.preventDefault();
+            this.setState({
+                inFocus: true,
+            });
         }
     }
 

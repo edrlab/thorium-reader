@@ -43,16 +43,19 @@ export class GridTagLayout extends React.Component<TagProps, LayoutState> {
                         { __("catalog.tags")}
                         <div id={style.sortMenu}>
                         <Menu
-                        button={(<div> { __("catalog.sort")}
-                                <SVG svg={ArrowIcon}/>
-                            </div>
-                                )}
-                        content={(<div>
+                            button={(
+                                <div> { __("catalog.sort")}
+                                    <SVG svg={ArrowIcon}/>
+                                </div>
+                            )}
+                            content={(
+                                <div>
                                     {this.props.content}
-                            </div>)}
-                        open={this.state.showMenu}
-                        dir="left"
-                        toggle={this.togglemenu}
+                                </div>
+                            )}
+                            open={this.state.showMenu}
+                            dir="left"
+                            toggle={this.togglemenu}
                         />
 
                     </div>
@@ -79,9 +82,9 @@ export class GridTagLayout extends React.Component<TagProps, LayoutState> {
             );
         }
 
-        private togglemenu(open: boolean) {
+        private togglemenu() {
             this.setState({
-                showMenu: open,
+                showMenu: !this.state.showMenu,
             });
         }
 }
