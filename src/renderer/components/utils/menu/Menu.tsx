@@ -47,6 +47,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
     public componentDidUpdate(oldProps: MenuProps) {
         if (this.props.open && !oldProps.open) {
             this.refreshStyle();
+            console.log("HELLO");
         }
     }
 
@@ -70,7 +71,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
                         dir={dir}
                         menuStyle={contentStyle}
                         toggle={toggle}
-                        ref={(ref) => { this.contentRef = ref; }}
+                        setContentRef={(ref) => { this.contentRef = ref; }}
                         focusMenuButton={this.focusMenuButton}
                     >
                         {content}
@@ -103,6 +104,9 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
         const bottomPos = window.innerHeight - buttonRect.bottom;
         const contentElement = ReactDOM.findDOMNode(this.contentRef) as HTMLElement;
         const contentHeight = contentElement.getBoundingClientRect().height;
+
+        console.log(`bottomPos: ${bottomPos} || contentHeight: ${contentHeight}`);
+        console.log(contentElement);
 
         if (bottomPos < contentHeight) {
             contentStyle.top = Math.round(this.offset(button).top - contentHeight) + "px";

@@ -17,6 +17,7 @@ interface MenuContentProps {
     menuStyle: object;
     toggle: () => void;
     focusMenuButton?: () => void;
+    setContentRef?: (ref: any) => any;
 }
 
 export default class MenuContent extends React.Component<MenuContentProps, undefined> {
@@ -39,7 +40,7 @@ export default class MenuContent extends React.Component<MenuContentProps, undef
     }
 
     public render() {
-        const { open, toggle } = this.props;
+        const { open, toggle, setContentRef } = this.props;
         return ReactDOM.createPortal(
             (
                 <AccessibleMenu focusMenuButton={this.props.focusMenuButton} visible={open} toggleMenu={toggle}>
@@ -47,6 +48,7 @@ export default class MenuContent extends React.Component<MenuContentProps, undef
                         style={this.props.menuStyle}
                         id={this.props.id}
                         aria-hidden={!this.props.open}
+                        ref={(ref) => setContentRef && setContentRef(ref)}
                     >
                         {this.props.children}
                     </div>
