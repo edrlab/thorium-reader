@@ -75,10 +75,10 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
     }
 
     public render(): React.ReactElement<{}> {
+        const secondaryHeader = <Header section={0} />;
         return (
             <>
-                <LibraryLayout>
-                    <Header section={0} />
+                <LibraryLayout secondaryHeader={secondaryHeader}>
                     { this.buildDragAndDropList() }
                 </LibraryLayout>
             </>

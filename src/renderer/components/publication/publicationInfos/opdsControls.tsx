@@ -9,18 +9,20 @@ import * as React from "react";
 
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import * as importAction from "readium-desktop/common/redux/actions/import";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
+import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+
 interface CatalogControlsProps {
     publication: OpdsPublicationView;
-    importOpdsEntry?: any;
+    verifyImport?: (publication: OpdsPublicationView, downloadSample?: boolean) => void;
 }
 
 export class OpdsControls extends React.Component<CatalogControlsProps, undefined> {
     public render(): React.ReactElement<{}> {
-        const { publication, importOpdsEntry } = this.props;
+        const { publication, verifyImport } = this.props;
 
         if (!publication) {
             return <></>;
@@ -28,14 +30,14 @@ export class OpdsControls extends React.Component<CatalogControlsProps, undefine
 
         return publication.isFree ? (
             <a
-                onClick={() => importOpdsEntry({ url: publication.url })}
+                onClick={() => verifyImport(publication)}
                 className={styles.lire}
             >
                 Ajouter à la bibliothèque
             </a>
         ) : publication.hasSample && (
             <a
-                onClick={() => importOpdsEntry({ url: publication, downloadSample: true })}
+                onClick={() => verifyImport(publication, true)}
                 className={styles.lire}
             >
                 Ajouter l'extrait à la bibliothèque
@@ -44,15 +46,23 @@ export class OpdsControls extends React.Component<CatalogControlsProps, undefine
     }
 }
 
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        verifyImport: (publication: OpdsPublicationView, downloadSample: boolean) => {
+            dispatch(importAction.verifyImport(
+                {
+                    publication,
+                    downloadSample,
+                },
+            ));
+        },
+    };
+};
+
 export default withApi(
     OpdsControls,
     {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "importOpdsEntry",
-                callProp: "importOpdsEntry",
-            },
-        ],
+        operations: [],
+        mapDispatchToProps,
     },
 );

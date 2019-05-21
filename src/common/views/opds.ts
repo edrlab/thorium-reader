@@ -23,8 +23,12 @@ export interface OpdsPublicationView {
     languages?: string[];
     publishedAt?: string; // ISO8601
     url?: string;
+    buyUrl?: string;
+    borrowUrl?: string;
+    subscribeUrl?: string;
     hasSample?: boolean;
     isFree?: boolean;
+    base64OpdsPublication?: string;
     cover?: CoverView;
 }
 

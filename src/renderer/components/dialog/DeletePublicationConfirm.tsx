@@ -32,16 +32,20 @@ export class DeletePublicationConfirm extends React.Component<DeletePublicationC
     }
 
     public render(): React.ReactElement<{}> {
+        const {__} = this.props;
         if (!this.props.publication) {
             return <></>;
         }
 
         return (
             <div>
-                <p>Êtes vous sûr de vouloir supprimer ce livre : {this.props.publication.title} ?</p>
+                <p>
+                    {__("dialog.delete")}
+                    <span>{this.props.publication.title}</span>
+                </p>
                 <div>
-                    <button className={styles.primary} onClick={this.remove}>Oui</button>
-                    <button onClick={this.props.closeDialog}>Non</button>
+                    <button onClick={this.remove}>{__("dialog.yes")}</button>
+                    <button className={styles.primary} onClick={this.props.closeDialog}>{__("dialog.no")}</button>
                 </div>
             </div>
         );

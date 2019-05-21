@@ -36,6 +36,7 @@ import RenewLsdConfirm from "./RenewLsdConfirm";
 import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
 
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import SameFileImportConfirm from "./SameFileImportConfirm";
 
 interface DialogManagerProps  {
     dialog?: DialogState;
@@ -73,6 +74,8 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 return this.buildLsdRenewConfirmDialog();
             case DialogType.LsdReturnConfirm:
                 return this.buildLsdReturnConfirmDialog();
+            case DialogType.SameFileImportConfirm:
+                return this.buildSameFileImportConfirmDialog();
             default:
                 return (<></>);
         }
@@ -201,6 +204,21 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             >
                 <ReturnLsdConfirm
                     publication={ this.props.dialog.data.publication }
+                />
+            </Dialog>
+        );
+    }
+
+    private buildSameFileImportConfirmDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+                id={styles.choice_dialog}
+            >
+                <SameFileImportConfirm
+                    publication={ this.props.dialog.data.publication }
+                    downloadSample={ this.props.dialog.data.downloadSample }
                 />
             </Dialog>
         );
