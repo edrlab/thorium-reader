@@ -9,7 +9,7 @@ interface Props {
     visible: boolean;
     toggleMenu: any;
     dontCloseWhenClickOutside?: boolean;
-    focusMenuButton: () => void;
+    focusMenuButton?: () => void;
 }
 
 interface State {
