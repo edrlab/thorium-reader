@@ -46,15 +46,15 @@ export class LanguageSettings extends React.Component<Props, States> {
             <>
                 <LibraryLayout secondaryHeader={secondaryHeader}>
                     <div className={styles.section_title}>Choix de la langue</div>
-                    <form>
-                        <ul className={styles.languages_list}>
+                    <form className={styles.languages_list}>
                             { Object.keys(AvailableLanguages).map((lang: string, i: number) =>
-                                <li key={i}>
+                                <>
                                     <input
                                         id={"radio-" + lang}
                                         type="radio"
                                         lang={lang}
                                         name="language"
+                                        key={i}
                                         onChange={() => this.props.setLocale(lang)}
                                         {...(this.props.locale === lang && {checked: true})}
                                     />
@@ -62,9 +62,8 @@ export class LanguageSettings extends React.Component<Props, States> {
                                         { this.props.locale === lang && <SVG svg={DoneIcon} ariaHidden/>}
                                         { (AvailableLanguages as any)[lang] }
                                     </label>
-                                </li>,
+                                </>,
                             )}
-                        </ul>
                     </form>
                 </LibraryLayout>
             </>

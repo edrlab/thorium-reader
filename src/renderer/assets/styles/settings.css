@@ -66,37 +66,30 @@
 	min-width: 300px;
 	margin-bottom: 20px;
 
-	& li {
-		& label {
-			display: inline-flex;
-			margin: 0 3px 3px 3px; 
-			padding: 5px 10px 5px 2rem; 
-			font-size: 1.25em; 
-			height: 1.2rem; 
-			width: 14rem;
-			background: #e5e5e5;
-			cursor: pointer;
+	& label {
+		display: inline-flex;
+		margin: 0 3px 3px 3px; 
+		padding: 5px 10px 5px 2rem; 
+		font-size: 1.25em; 
+		height: 1.2rem; 
+		width: 14rem;
+		background: #e5e5e5;
+		cursor: pointer;
 
-			& svg {
-				height: 1rem;
-				width: 1rem;
-				margin-left: -1.3rem;
-				margin-right: 0.3rem;
-			}
+		& svg {
+			height: 1rem;
+			width: 1rem;
+			margin-left: -1.3rem;
+			margin-right: 0.3rem;
 		}
+	}
 
-		& input {
-			position: absolute;
-			left: -2000px;
+	& input {
+		position: absolute;
+		left: -2000px;
 
-			&:focus + label {
-				outline: -webkit-focus-ring-color auto 5px;
-			}
-		}
-
-		& .active {
-			background-color: grey;
-			color:white;
+		&:focus + label {
+			outline: -webkit-focus-ring-color auto 5px;
 		}
 	}
 }
