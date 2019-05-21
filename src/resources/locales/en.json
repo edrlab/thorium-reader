@@ -5,7 +5,7 @@
         "lastAdditions": "Recently added"
       },
       "myBooks": "My books",
-      "allBooks": "all books",
+      "allBooks": "All books",
       "bookInfo": "About this book",
       "delete": "Delete definitively",
       "export": "Export",
@@ -229,6 +229,9 @@
       "searchTitle": "Start the search",
       "importTitle": "Import a book"
 
+    },
+    "accessibility": {
+      "skipLink": "Skip to content"
     }
 
 }

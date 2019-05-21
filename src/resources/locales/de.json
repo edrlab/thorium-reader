@@ -169,5 +169,8 @@
       "searchPlaceholder": "Suche",
       "searchTitle": "Starten Sie die Suche",
       "importTitle": "ein Buch importieren"
+    },
+    "accessibility": {
+      "skipLink": "Gehe zum Inhalt"
     }
 }

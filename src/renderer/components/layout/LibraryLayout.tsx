@@ -25,13 +25,13 @@ class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
         return (
             <>
                 <LibraryHeader />
+                { this.props.secondaryHeader }
                 <main
                     style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} }
-                    id={styles.main}
+                    className={styles.main}
                     role="main"
                 >
-                    { this.props.secondaryHeader }
-                    <a id="main-content" tabIndex={-1}></a>
+                    <a id="main-content" aria-hidden tabIndex={-1}></a>
                     { this.props.children }
                 </main>
             </>
