@@ -17,14 +17,21 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 interface LibraryLayoutProps {
     dialogOpen?: boolean;
+    secondaryHeader?: any;
 }
 
-export class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
+class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
     public render(): React.ReactElement<{}> {
         return (
             <>
                 <LibraryHeader />
-                <main style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} } id={styles.main} role="main">
+                <main
+                    style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} }
+                    id={styles.main}
+                    role="main"
+                >
+                    { this.props.secondaryHeader }
+                    <a id="main-content" tabIndex={-1}></a>
                     { this.props.children }
                 </main>
             </>

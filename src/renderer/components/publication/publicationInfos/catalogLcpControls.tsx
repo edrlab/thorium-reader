@@ -7,32 +7,31 @@
 
 import * as React from "react";
 
-import { connect } from "react-redux";
-
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
 
+import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
+import { withApi } from "readium-desktop/renderer/components/utils/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { DialogType } from "readium-desktop/common/models/dialog";
-
-import { lcpReadable } from "readium-desktop/utils/publication";
+import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
-interface CatalogLcpControlsProps {
+interface CatalogLcpControlsProps extends TranslatorProps {
     publication: PublicationView;
     openReader?: any;
     openDeleteDialog?: any;
     openReturnDialog?: any;
     openRenewDialog?: any;
+    lsdStatus?: LsdStatus;
 }
 
 export class CatalogLcpControls extends React.Component<CatalogLcpControlsProps, undefined> {
@@ -44,39 +43,42 @@ export class CatalogLcpControls extends React.Component<CatalogLcpControlsProps,
     }
 
     public render(): React.ReactElement<{}> {
-        const { publication } = this.props;
-        console.log(publication);
+        const { __, publication, lsdStatus } = this.props;
 
         if (!publication) {
             return (<></>);
         }
 
+        console.log(lsdStatus);
+
         return (
             <>
-                { lcpReadable(publication) ?
-                    <a  onClick={this.handleRead} className={styles.lire}>Lire</a>
-                :
-                    <p style={{color: "red"}}>Impossible de lire ce document. Veuillez renouveler la liscence.</p>
-                }
+                { lsdStatus && (lsdStatus.status === LsdStatusType.Active ?
+                    <a  onClick={this.handleRead} className={styles.lire}>{__("publication.readButton")}</a>
+                : lsdStatus.status === LsdStatusType.Expired ?
+                    <p style={{color: "red"}}>{__("publication.expiredLcp")}</p>
+                : lsdStatus.status === LsdStatusType.Revoked ?
+                    <p style={{color: "red"}}>{__("publication.revokedLcp")}</p>
+                : <p style={{color: "red"}}>{__("publication.returnedLcp")}</p>)}
                 <ul className={styles.liens}>
-                    { publication.lcp.rights.end && <>
+                    { lsdStatus && lsdStatus.status === LsdStatusType.Expired &&
                         <li>
                             <a onClick={ this.props.openRenewDialog }>
                                 <SVG svg={LoopIcon} />
-                                Renew
+                                {__("publication.renewButton")}
                             </a>
                         </li>
-                        <li>
-                            <a onClick={ this.props.openReturnDialog }>
-                                <SVG svg={ArrowIcon} />
-                                Return
-                            </a>
-                        </li>
-                    </>}
+                    }
+                    <li>
+                        <a onClick={ this.props.openReturnDialog }>
+                            <SVG svg={ArrowIcon} />
+                            {__("publication.returnButton")}
+                        </a>
+                    </li>
                     <li>
                         <a onClick={ this.deletePublication }>
                             <SVG svg={DeleteIcon} />
-                            Supprimer de la bibliothèque
+                            {__("publication.deleteButton")}
                         </a>
                     </li>
                 </ul>
@@ -135,4 +137,22 @@ const mapDispatchToProps = (dispatch: any, props: CatalogLcpControlsProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(CatalogLcpControls);
+const buildRequestData = (props: CatalogLcpControlsProps) => {
+    return { publication: props.publication };
+};
+
+export default withApi(
+    withTranslator(CatalogLcpControls),
+    {
+        mapDispatchToProps,
+        operations: [
+            {
+                moduleId: "lcp",
+                methodId: "getLsdStatus",
+                resultProp: "lsdStatus",
+                buildRequestData,
+                onLoad: true,
+            },
+        ],
+    },
+);

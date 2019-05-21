@@ -46,10 +46,11 @@ export class TagSearchResult extends React.Component<TextSearchResultProps, unde
             }
         }
 
+        const secondaryHeader = <Header displayType={ displayType } />;
+
         return (
-            <LibraryLayout>
+            <LibraryLayout secondaryHeader={secondaryHeader}>
                 <div>
-                    <Header displayType={ displayType } />
                     <BreadCrumb
                         search={this.props.location.search}
                         breadcrumb={[{name: "Mes livres", path: "/library"}, {name: title as string}]}

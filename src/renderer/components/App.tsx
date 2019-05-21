@@ -29,6 +29,8 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { DialogType } from "readium-desktop/common/models/dialog";
 
+import SameFileImportManager from "./utils/SameFileImportManager";
+
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 export default class App extends React.Component<any, undefined> {
@@ -65,16 +67,16 @@ export default class App extends React.Component<any, undefined> {
             <Provider store={ this.store }>
                 <ConnectedRouter history={ this.history }>
                     <div className={styles.root}>
-                        <Dropzone disableClick onDrop={ this.onDrop } style={{
+                        <Dropzone aria-hidden disableClick onDrop={ this.onDrop } style={{
                             position: "absolute",
                             top: 0,
                             bottom: 0,
                             left: 0,
                             right: 0,
-                        }}>
+                        }}/>
                         <PageManager/>
                         <DialogManager />
-                        </Dropzone>
+                        <SameFileImportManager />
                     </div>
                 </ConnectedRouter>
             </Provider>

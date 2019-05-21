@@ -43,9 +43,10 @@ export class Browser extends React.Component<FeedDetailsProps, null> {
             browserResult = (<BrowserResult url={ url } />);
         }
 
+        const secondaryHeader = <Header/>;
+
         return (
-            <LibraryLayout>
-                <Header/>
+            <LibraryLayout secondaryHeader={secondaryHeader}>
                 <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search}/>
                 { browserResult }
             </LibraryLayout>

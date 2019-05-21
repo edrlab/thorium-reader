@@ -15,7 +15,7 @@ import Slider from "readium-desktop/renderer/components/utils/Slider";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import { Link, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 
@@ -47,33 +47,31 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         return (
             <>
                 { this.props.catalogEntries.map((entry, i: number) => {
-                        return (
+                        return entry.publications.length > 0 ? (
                             <section key={ i }>
-                            {
-                                i <= 1 ? (
-                                <div className={ styles.title }>
-                                    <h1>{ entry.title }</h1>
-                                </div>
-                                ) :
-                                (<></>)
-                            }
-                            {
-                                i <= 1 ? (
-                                    <Slider
-                                        className={ styles.slider }
-                                        content={ entry.publications.map((pub) =>
-                                            <PublicationCard
-                                                key={ pub.identifier }
-                                                publication={ pub }
-                                                menuContent={ CatalogMenu }
-                                            />,
-                                        )}
-                                    />
-                                ) :
-                                (<></>)
-                            }
+                                { i <= 1 ? (
+                                    <div className={ styles.title }>
+                                        <h1>{ entry.title }</h1>
+                                    </div>
+                                    ) :
+                                    (<></>)
+                                }
+                                { i <= 1 ? (
+                                        <Slider
+                                            className={ styles.slider }
+                                            content={ entry.publications.map((pub) =>
+                                                <PublicationCard
+                                                    key={ pub.identifier }
+                                                    publication={ pub }
+                                                    menuContent={ CatalogMenu }
+                                                />,
+                                            )}
+                                        />
+                                    ) :
+                                    (<></>)
+                                }
                             </section>
-                        );
+                        ) : <></>;
                 })}
                 <GridTagLayout
                 entries={this.state.tabEntries}
