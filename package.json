@@ -174,6 +174,7 @@
     "react-dom": "^16.5.2",
     "react-dropdown": "^1.6.2",
     "react-dropzone": "^7.0.1",
+    "react-focus-lock": "^1.19.1",
     "react-redux": "^6.0.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",

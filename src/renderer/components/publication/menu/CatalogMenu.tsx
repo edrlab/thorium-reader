@@ -37,7 +37,6 @@ class CatalogMenu extends React.Component<Props, State> {
             menuOpen: false,
         };
 
-        this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
@@ -46,18 +45,16 @@ class CatalogMenu extends React.Component<Props, State> {
         const { __ } = this.props;
         return (
             <>
-                <a
+                <button
                     onClick={this.displayPublicationInfo }
-                    onBlur={this.handleOnBlurMenu}
                 >
                     { __("catalog.bookInfo")}
-                </a>
-                <a
+                </button>
+                <button
                     onClick={ this.deletePublication }
-                    onBlur={this.handleOnBlurMenu}
                 >
                     { __("catalog.delete")}
-                </a>
+                </button>
                 <PublicationExportButton
                     onClick={ this.props.toggleMenu }
                     publication={ this.props.publication }
@@ -66,19 +63,11 @@ class CatalogMenu extends React.Component<Props, State> {
         );
     }
 
-    private deletePublication(e: any) {
-        e.preventDefault();
+    private deletePublication() {
         this.props.openDeleteDialog(this.props.publication);
     }
 
-    private handleOnBlurMenu(e: any) {
-        if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== e.target.parentElement)) {
-            this.props.toggleMenu();
-        }
-    }
-
-    private displayPublicationInfo(e: any) {
-        e.preventDefault();
+    private displayPublicationInfo() {
         this.props.displayPublicationInfo(this.props.publication);
     }
 }

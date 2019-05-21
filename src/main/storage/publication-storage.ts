@@ -83,7 +83,6 @@ export class PublicationStorage {
     }
 
     public copyPublicationToPath(publication: PublicationView, destinationPath: string) {
-        console.log(publication);
         const publicationPath = `${this.buildPublicationPath(publication.identifier)}/book.epub`;
         const newFilePath = `${destinationPath}/${slugify(publication.title)}.epub`;
         fs.copyFileSync(publicationPath, newFilePath);
@@ -100,7 +99,7 @@ export class PublicationStorage {
         const filename = "book.epub";
         const dstPath = path.join(
             this.buildPublicationPath(identifier),
-            "book.epub",
+            filename,
         );
 
         return new Promise<File>((resolve, reject) => {

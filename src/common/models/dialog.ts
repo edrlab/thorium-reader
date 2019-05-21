@@ -15,4 +15,5 @@ export enum DialogType {
     LcpAuthentication = "lcp-authentication",
     LsdReturnConfirm = "lsd-return-confirm",
     LsdRenewConfirm = "lsd-renew-confirm",
+    SameFileImportConfirm = "same-file-import-confirm",
 }

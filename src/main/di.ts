@@ -200,7 +200,7 @@ container.bind<PublicationStorage>("publication-storage").toConstantValue(
 // Bind services
 container.bind<Server>("streamer").toConstantValue(streamer);
 
-const deviceIdManager = new DeviceIdManager("readium-desktop", configRepository);
+const deviceIdManager = new DeviceIdManager("Thorium", configRepository);
 container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
     deviceIdManager,
 );
