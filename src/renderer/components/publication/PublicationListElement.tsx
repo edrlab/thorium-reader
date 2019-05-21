@@ -24,6 +24,7 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 
 import uuid = require("uuid");
+import AccessibleMenu from "../utils/menu/AccessibleMenu";
 
 interface PublicationListElementProps {
     publication: PublicationView;
@@ -39,6 +40,7 @@ interface PublicationListElementState {
 
 export class PublicationListElement extends React.Component<PublicationListElementProps, PublicationListElementState> {
     private menuId: string;
+    private buttonRef: any;
 
     constructor(props: any) {
         super(props);
@@ -49,7 +51,8 @@ export class PublicationListElement extends React.Component<PublicationListEleme
 
         this.deletePublication = this.deletePublication.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
-        this.switchMenu = this.switchMenu.bind(this);
+        this.toggleMenu = this.toggleMenu.bind(this);
+        this.focusButton = this.focusButton.bind(this);
 
         this.menuId = "menu-" + uuid.v4();
     }
@@ -81,17 +84,24 @@ export class PublicationListElement extends React.Component<PublicationListEleme
                     aria-expanded={this.state.menuOpen}
                     aria-controls={this.menuId}
                     title={this.props.publication.title}
-                    onClick={this.switchMenu}
+                    onClick={this.toggleMenu}
+                    ref={(ref) => this.buttonRef = ref}
                 >
                     <SVG svg={MenuIcon}/>
                 </button>
                 { this.state.menuOpen &&
-                    <div
-                        id={this.menuId}
-                        className={(this.state.menuOpen ? styles.menu_open + " " : "") + styles.list_menu}
+                    <AccessibleMenu
+                        toggleMenu={this.toggleMenu}
+                        focusMenuButton={this.focusButton}
+                        visible={this.state.menuOpen}
                     >
-                        {this.props.menuContent}
-                    </div>
+                        <div
+                            id={this.menuId}
+                            className={(this.state.menuOpen ? styles.menu_open + " " : "") + styles.list_menu}
+                        >
+                            {this.props.menuContent}
+                        </div>
+                    </AccessibleMenu>
                 }
             </>
         );
@@ -107,8 +117,12 @@ export class PublicationListElement extends React.Component<PublicationListEleme
         this.props.displayPublicationInfo(this.props.publication);
     }
 
-    private switchMenu() {
+    private toggleMenu() {
         this.setState({menuOpen: !this.state.menuOpen});
+    }
+
+    private focusButton() {
+        this.buttonRef.focus();
     }
 }
 
