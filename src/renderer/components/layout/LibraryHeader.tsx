@@ -46,17 +46,22 @@ export class Header extends React.Component<HeaderProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        return (
+        return (<>
+            <a
+                className={styles.avoid_link}
+                href="#main-content"
+                tabIndex={0}
+            >
+                {__("accessibility.avoid")}
+            </a>
             <nav className={styles.main_navigation} role="navigation" aria-label="Menu principal">
                 <ul>
-                    {
-                        headerNav.map((item, index: number) => {
-                            return this.buildNavItem(item, index, __);
-                        })
-                    }
+                    { headerNav.map((item, index: number) => {
+                        return this.buildNavItem(item, index, __);
+                    })}
                 </ul>
             </nav>
-        );
+        </>);
     }
 
     private buildNavItem(item: any, index: number, __: any) {
@@ -64,15 +69,12 @@ export class Header extends React.Component<HeaderProps, undefined> {
         if (!this.props.location) {
             return (<></>);
         }
-
-        let active = false;
         let styleClasses = [];
         const pathname = this.props.match.path;
 
         for (const matchRoute of item.matchRoutes) {
             if (pathname.startsWith(matchRoute)
             && ((pathname === "/" && matchRoute === pathname) || matchRoute !== "/")) {
-                active = true;
                 styleClasses.push(styles.active);
                 break;
             }

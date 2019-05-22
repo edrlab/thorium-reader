@@ -8,11 +8,16 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import AccessibleMenu from "./AccessibleMenu";
+
 interface MenuContentProps {
-    menuId: string;
-    menuOpen: boolean;
-    menuDir: string;
+    id: string;
+    open: boolean;
+    dir: string;
     menuStyle: object;
+    toggle: () => void;
+    focusMenuButton?: () => void;
+    setContentRef?: (ref: any) => any;
 }
 
 export default class MenuContent extends React.Component<MenuContentProps, undefined> {
@@ -35,16 +40,19 @@ export default class MenuContent extends React.Component<MenuContentProps, undef
     }
 
     public render() {
+        const { open, toggle, setContentRef } = this.props;
         return ReactDOM.createPortal(
             (
-                <div
-                    style={this.props.menuStyle}
-                    id={this.props.menuId}
-                    aria-hidden={!this.props.menuOpen}
-                    className={null}
-                >
-                    {this.props.children}
-                </div>
+                <AccessibleMenu focusMenuButton={this.props.focusMenuButton} visible={open} toggleMenu={toggle}>
+                    <div
+                        style={this.props.menuStyle}
+                        id={this.props.id}
+                        aria-hidden={!this.props.open}
+                        ref={(ref) => setContentRef && setContentRef(ref)}
+                    >
+                        {this.props.children}
+                    </div>
+                </AccessibleMenu>
             ),
             this.rootElement,
         );

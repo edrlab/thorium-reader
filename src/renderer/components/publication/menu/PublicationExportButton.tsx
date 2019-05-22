@@ -41,9 +41,6 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
         const { __ } = this.props;
         return (
                 <span>
-                    <label htmlFor={"exportInput" + this.props.publication.identifier}>
-                        { __("catalog.export")}
-                    </label>
                     <input
                         id={ "exportInput" + this.props.publication.identifier}
                         ref={ this.exportInputRef }
@@ -52,6 +49,9 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
                         onChange={this.onExport}
                         onClick={this.props.onClick}
                     />
+                    <label htmlFor={"exportInput" + this.props.publication.identifier}>
+                        { __("catalog.export")}
+                    </label>
                 </span>
         );
     }

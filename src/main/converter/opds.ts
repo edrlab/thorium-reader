@@ -96,8 +96,13 @@ export class OpdsFeedViewConverter {
             sampleUrl = sampleLinks[0].Href;
         }
 
+        let base64OpdsPublication = null;
         if (links.length > 0) {
             url = links[0].Href;
+        } else {
+            base64OpdsPublication = Buffer
+            .from(JSON.stringify(publication))
+            .toString("base64");
         }
 
         const isFree = publication.Links.filter(
@@ -106,6 +111,24 @@ export class OpdsFeedViewConverter {
                     || link.Rel[0] === "http://opds-spec.org/acquisition/open-access");
             },
         ).length > 0;
+
+        const buyLink = publication.Links.filter(
+            (link: any) => {
+                return (link.Rel[0] === "http://opds-spec.org/acquisition/buy");
+            },
+        )[0];
+
+        const borrowLink = publication.Links.filter(
+            (link: any) => {
+                return (link.Rel[0] === "http://opds-spec.org/acquisition/borrow");
+            },
+        )[0];
+
+        const subscribeLink = publication.Links.filter(
+            (link: any) => {
+                return (link.Rel[0] === "http://opds-spec.org/acquisition/subscribe");
+            },
+        )[0];
 
         return  {
             title,
@@ -118,7 +141,11 @@ export class OpdsFeedViewConverter {
             publishedAt,
             cover,
             url,
-            hasSample: sampleUrl && true ,
+            buyUrl: buyLink && buyLink.Href,
+            borrowUrl: borrowLink && borrowLink.Href,
+            subscribeUrl: subscribeLink && subscribeLink.Href,
+            hasSample: sampleUrl && true,
+            base64OpdsPublication,
             isFree,
         };
     }

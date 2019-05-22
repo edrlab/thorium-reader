@@ -55,7 +55,7 @@
 	position: fixed;
 	left: 0;
 	width:100%;
-	height:auto;
+	height: 3.5rem;;
 	padding-top:0;
 	padding-bottom:10px;
 	z-index:101;
@@ -74,7 +74,7 @@
 
 	& input[type=search] {
 		position: relative;
-		width:300px;
+		width:225px;
 		border-radius: 0;
 		border:none;
 		height:35px;

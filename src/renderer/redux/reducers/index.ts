@@ -12,6 +12,7 @@ import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { connectRouter } from "connected-react-router";
 
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
+import { importReducer } from "readium-desktop/common/redux/reducers/import";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 
@@ -35,4 +36,5 @@ export const rootReducer = (history: History) => combineReducers({
     api: apiReducer,
     dialog: dialogReducer,
     router: connectRouter(history),
+    import: importReducer,
 });
