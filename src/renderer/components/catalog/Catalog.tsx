@@ -21,7 +21,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 
-import { CatalogView } from "readium-desktop/common/views/catalog";
+import { CatalogEntryView, CatalogView} from "readium-desktop/common/views/catalog";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
@@ -33,6 +33,8 @@ import Header, { DisplayType } from "./Header";
 
 import GridView from "./GridView";
 import ListView from "./ListView";
+
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 interface CatalogProps extends TranslatorProps, RouteComponentProps {
     catalog?: CatalogView;

@@ -47,32 +47,36 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
     public render(): React.ReactElement<{}> {
         return (
             <>
-                { this.props.catalogEntries.map((entry, i: number) => {
-                        return entry.publications.length > 0 ? (
-                            <section key={ i }>
-                                { i <= 1 ? (
-                                    <div className={ styles.title }>
-                                        <h1>{ entry.title }</h1>
-                                    </div>
-                                    ) :
-                                    (<></>)
-                                }
-                                { i <= 1 ? (
-                                        <Slider
-                                            className={ styles.slider }
-                                            content={ entry.publications.map((pub) =>
-                                                <PublicationCard
-                                                    key={ pub.identifier }
-                                                    publication={ pub }
-                                                    menuContent={ CatalogMenu }
-                                                />,
-                                            )}
-                                        />
-                                    ) :
-                                    (<></>)
-                                }
+                { this.props.catalogEntries.map((entry, EntryIndex: number) => {
+                        return (
+                            <section key={ EntryIndex }>
+                            {
+
+                                EntryIndex <= 1 ? (
+                                <div className={ styles.title }>
+                                    <h1>{ entry.title }</h1>
+                                </div>
+                                ) :
+                                (<></>)
+                            }
+                            {
+                                EntryIndex <= 1 ? (
+                                    <Slider
+                                        className={ styles.slider }
+                                        content={ entry.publications.map((pub) =>
+                                            <PublicationCard
+                                                key={ pub.identifier }
+                                                publication={ pub }
+                                                menuContent={ CatalogMenu }
+                                            />,
+                                        )}
+                                    />
+                                ) :
+                                (<></>)
+                            }
+
                             </section>
-                        ) : <></>;
+                        );
                 })}
                 <GridTagLayout
                 tags={this.state.tabTags}

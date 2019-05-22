@@ -38,34 +38,34 @@ export class GridTagLayout extends React.Component<TagProps, LayoutState> {
             const { __ } = this.props;
             return (
                 <section id={style.myTags}>
-                <h1> { __("catalog.tags")} </h1>
-                {this.props.tags.length === 0 ?
-                        <> {__("catalog.emptyTagList")} </>
-                        :
-                        <>
-                            <div id={style.sortMenu}>
-                            <Menu
-                            button={(<div> { __("catalog.sort")}
-                                    <SVG svg={ArrowIcon}/>
+                        <h1> { __("catalog.tags")} </h1>
+                        {this.props.tags.length === 0 ?
+                                <> {__("catalog.emptyTagList")} </>
+                                :
+                                <>
+                                    <div id={style.sortMenu}>
+                                    <Menu
+                                    button={(<div> { __("catalog.sort")}
+                                            <SVG svg={ArrowIcon}/>
+                                            </div>
+                                            )}
+                                    content={(<div>
+                                                {this.props.content}
+                                            </div>)}
+                                    open={this.state.showMenu}
+                                    dir="left"
+                                    toggle={this.togglemenu}
+                                    />
                                     </div>
-                                    )}
-                            content={(<div>
-                                        {this.props.content}
-                                    </div>)}
-                            open={this.state.showMenu}
-                            dir="left"
-                            toggle={this.togglemenu}
-                            />
-                            </div>
-                            <section id={style.content}>
-                                    {this.props.tags.map((tag, i: number) => {
-                                        return (
-                                            this.checkEntryTotalCount(tag, i)
-                                        );
-                                    })}
-                            </section>
-                        </>
-                }
+                                    <section id={style.content}>
+                                            {this.props.tags.map((tag, i: number) => {
+                                                return (
+                                                    this.checkEntryTotalCount(tag, i)
+                                                );
+                                            })}
+                                    </section>
+                                </>
+                        }
                 </section>
             );
         }
