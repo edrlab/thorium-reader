@@ -10,91 +10,76 @@ import * as React from "react";
 import { DialogType } from "readium-desktop/common/models/dialog";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import * as importAction from "readium-desktop/common/redux/actions/import";
 
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 interface PublicationCardProps {
     publication: OpdsPublicationView;
-    displayPublicationInfo?: any;
-    deletePublication?: any;
-    importOpdsEntry?: any;
-    openDeleteDialog?: any;
+    displayPublicationInfo?: (data: any) => any;
+    verifyImport?: (publication: OpdsPublicationView, downloadSample?: boolean) => void;
 }
 
-interface PublicationCardState {
-    menuOpen: boolean;
-}
-
-export class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
-    constructor(props: any) {
+export class PublicationCard extends React.Component<PublicationCardProps> {
+    public constructor(props: any) {
         super(props);
 
-        this.state = {
-            menuOpen: false,
-        };
-
-        this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
-        this.addToCatalog = this.addToCatalog.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
-        this.addSampleToCatalog = this.addSampleToCatalog.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
         const { publication } = this.props;
         return (
             <>
-                <a
+                <button
                     onClick={this.displayPublicationInfo }
-                    onBlur={this.handleOnBlurMenu}
                 >
                     Fiche livre
-                </a>
+                </button>
                 { publication.isFree &&
-                    <a
-                        onClick={ this.addToCatalog }
-                        onBlur={this.handleOnBlurMenu}
+                    <button
+                        onClick={ (e) => this.onAddToCatalogClick(e) }
                     >
                         Ajouter à la bibliothèque
+                    </button>
+                }
+                { publication.buyUrl &&
+                    <a
+                        href={publication.buyUrl}
+                    >
+                        Aller sur la page d'achat
+                    </a>
+                }
+                { publication.borrowUrl &&
+                    <a
+                        href={publication.borrowUrl}
+                    >
+                        Aller sur la page d'emprunt
+                    </a>
+                }
+                { publication.subscribeUrl &&
+                    <a
+                        href={publication.subscribeUrl}
+                    >
+                        Aller sur la page d'abonnement
                     </a>
                 }
                 { publication.hasSample &&
-                    <a
-                        onClick={ this.addSampleToCatalog }
-                        onBlur={this.handleOnBlurMenu}
+                    <button
+                        onClick={ (e) => this.onAddToCatalogClick(e, true) }
                     >
                         Ajouter l'extrait à la bibliothèque
-                    </a>
+                    </button>
                 }
             </>
         );
     }
 
-    private addToCatalog(e: any) {
+    private onAddToCatalogClick(e: any, downloadSample?: boolean) {
         e.preventDefault();
-        this.props.importOpdsEntry(
-            {
-                url: this.props.publication.url,
-            },
-        );
-    }
-
-    private addSampleToCatalog(e: any) {
-        e.preventDefault();
-        this.props.importOpdsEntry(
-            {
-                url: this.props.publication.url,
-                downloadSample: true,
-            },
-        );
-    }
-
-    private handleOnBlurMenu(e: any) {
-        if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== e.target.parentElement)) {
-            this.setState({ menuOpen: false});
-        }
+        this.props.verifyImport(this.props.publication, downloadSample);
     }
 
     private displayPublicationInfo(e: any) {
@@ -114,24 +99,21 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
                 },
             ));
         },
+        verifyImport: (publication: OpdsPublicationView, downloadSample: boolean) => {
+            dispatch(importAction.verifyImport(
+                {
+                    publication,
+                    downloadSample,
+                },
+            ));
+        },
     };
 };
 
 export default withApi(
     PublicationCard,
     {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "delete",
-                callProp: "deletePublication",
-            },
-            {
-                moduleId: "publication",
-                methodId: "importOpdsEntry",
-                callProp: "importOpdsEntry",
-            },
-        ],
+        operations: [],
         mapDispatchToProps,
     },
 );

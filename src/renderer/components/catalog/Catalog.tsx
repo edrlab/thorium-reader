@@ -56,6 +56,8 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
             }
         }
 
+        const secondaryHeader = <Header displayType={ displayType } />;
+
         return (
             <LibraryLayout>
                     <Header displayType={ displayType } />

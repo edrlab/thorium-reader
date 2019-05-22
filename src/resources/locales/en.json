@@ -49,10 +49,12 @@
         }
     },
     "publication": {
-      "notReadableLcp": "This book can't be read because the LCP license is expired",
+      "expiredLcp": "This book can't be read because the LCP license has expired.",
+      "revokedLcp": "This book can't be read because the LCP license has been revoked.",
+      "returnedLcp": "This book can't be read because the LCP license has been returned.",
       "downloadButton": "Download",
       "readButton": "Read",
-      "deleteButton": "Delete",
+      "deleteButton": "Delete from the library",
       "infoButton": "LCP Informations",
       "renewButton": "Renew",
       "renewSentence": "Are you sure you want to renew this publication?",
@@ -85,7 +87,9 @@
       "no": "No",
       "delete": "Do you really want to delete this publication?",
       "import": "Do you really want to import those EPUB files :",
-      "lcpImport": "Do you really want to import those LCP files :"
+      "return": "Do you really want to return the licence for this publication?",
+      "deleteOpds": "Do you really want to delete this opds feed?",
+      "renew": "Do you really want to renew the licence for this publication?"
     },
     "opds": {
       "download": "Download",
@@ -169,6 +173,7 @@
         },
         "right": "Right",
         "font": "Font",
+        "DefaultFont": "Default font",
         "fontSize": "Font size",
         "display": "Display",
         "justification": "Alignement",
@@ -217,7 +222,7 @@
       "books": "My Books",
       "catalogs": "Catalogs",
       "settings": "Settings",
-      "allBooks": "all books",
+      "allBooks": "All books",
       "gridTitle": "Books cover in a gridview",
       "listTitle": "Books cover in a listview",
       "searchPlaceholder": "Search",

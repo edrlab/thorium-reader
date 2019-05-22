@@ -81,9 +81,9 @@ export class GridTagLayout extends React.Component<TagProps, LayoutState> {
             );
         }
 
-        private togglemenu(open: boolean) {
+        private togglemenu() {
             this.setState({
-                showMenu: open,
+                showMenu: !this.state.showMenu,
             });
         }
 }

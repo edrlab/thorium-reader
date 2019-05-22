@@ -79,10 +79,10 @@ main {
 }
 
 .addEpubButton {
-	display: flex;
+	display: inline-flex;
 	position: relative;
-	left: 625px;
-	top: -38px;
+	left: 10px;
+	top: 3px;
 	margin-left: 1rem;
 
 	& input {
@@ -96,11 +96,10 @@ main {
 	& label {
 		/*width: 35px;
 		height: 35px;*/
-		padding: 7px 10px 7px 10px;
+		padding: 7px 10px 3px 10px;
 		cursor: pointer;
 		border: 1px solid black;
 		border-radius: 5px;
-		align-items: center;
 
 		&:hover {
 			opacity: 0.75;
@@ -111,7 +110,7 @@ main {
 			margin-left: 0;
 			width: 15px;
 			align-content: center;
-			height: 15px;
+			height: 17px;
 		}
 	}
 
@@ -201,21 +200,35 @@ main {
 	height: 0px;
 	transition: height 0.5s;
     margin-left: 10px;
-    & a, & span label {
+    & a, & span label, & button {
         border: 1px solid black;
 		padding: 4px;
 		display: inline-block;
 		cursor: pointer;
 		margin: 0.6rem 0.5rem 0 0;
+		opacity: 1;
+		width: fit-content;
+		height: 2rem;
+		box-sizing: border-box;
+		font-size: 0.9rem;
+		display: flex;
+		align-items: center;
     }
 
 	& span {
+		display: flex;
+		align-items: center;
 		& label {
 			cursor: pointer;
+			
 		}
 		& input {
 			position: absolute;
 			left: -2000px;
+		}
+
+		& input:focus + label {
+			outline: -webkit-focus-ring-color auto 5px;
 		}
 	}
 }
@@ -320,6 +333,7 @@ main {
 	overflow: hidden;
 	align-items: center;
 	justify-content: center;
+	z-index: 100;
 }
 
 #sortType button {

@@ -37,6 +37,9 @@ import * as qs from "query-string";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
+import ReaderMenu from "./ReaderMenu";
+import ReaderOptions from "./ReaderOptions";
+
 interface Props extends TranslatorProps {
     menuOpen: boolean;
     mode?: ReaderMode;
@@ -51,6 +54,8 @@ interface Props extends TranslatorProps {
     isOnBookmark: boolean;
     displayPublicationInfo?: any;
     publication?: Publication;
+    readerMenuProps: any;
+    readerOptionsProps: any;
 }
 
 export class ReaderHeader extends React.Component<Props, undefined> {
@@ -135,6 +140,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             >
                                 <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
                             </button>
+                            <ReaderMenu {...this.props.readerMenuProps}/>
                         </li>
                         <li
                             className={styles.right}
@@ -146,6 +152,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             >
                                 <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
                             </button>
+                            <ReaderOptions {...this.props.readerOptionsProps}/>
                         </li>
                         {/*<li className={styles.right}>
                             <button
