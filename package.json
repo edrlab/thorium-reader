@@ -98,9 +98,7 @@
       "app": "dist"
     },
     "fileAssociations": {
-      "ext": [
-        "epub"
-      ]
+      "ext": "epub"
     },
     "win": {
       "target": "nsis"
