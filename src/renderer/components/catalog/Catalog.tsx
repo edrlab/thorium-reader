@@ -5,21 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as uuid from "uuid";
-
 import * as qs from "query-string";
 
 import * as React from "react";
 
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
-import { connect } from "react-redux";
-
-import { RouteComponentProps } from "react-router-dom";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
-import { apiActions } from "readium-desktop/common/redux/actions";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import { CatalogEntryView, CatalogView} from "readium-desktop/common/views/catalog";
 
@@ -44,6 +34,7 @@ interface CatalogProps extends TranslatorProps, RouteComponentProps {
 
 export class Catalog extends React.Component<CatalogProps, undefined> {
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
 
@@ -59,7 +50,7 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
         const secondaryHeader = <Header displayType={ displayType } />;
 
         return (
-            <LibraryLayout secondaryHeader={secondaryHeader}>
+            <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
                     { this.props.catalog &&
                         <DisplayView catalogEntries={ this.props.catalog.entries }
                         tags={this.props.tags}/>
@@ -70,7 +61,7 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
 }
 
 export default withApi(
-    Catalog,
+    withRouter(Catalog),
     {
         operations: [
             {

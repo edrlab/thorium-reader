@@ -7,8 +7,6 @@
 
 import * as React from "react";
 
-import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
-
 import DragAndDropList from "readium-desktop/renderer/components/utils/DragAndDropList";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
@@ -16,17 +14,19 @@ import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLay
 
 import Header from "./Header";
 
-import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
-
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-
 import * as DragableIcon from "readium-desktop/renderer/assets/icons/baseline-drag_handle-24px.svg";
+import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 
-interface CatalogEntrySettingsProps {
+import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+
+interface CatalogEntrySettingsProps extends TranslatorProps {
     entries?: CatalogEntryView[];
     updateEntries?: (data: any) => void;
 }
@@ -76,9 +76,10 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
 
     public render(): React.ReactElement<{}> {
         const secondaryHeader = <Header section={0} />;
+        const { __ } = this.props;
         return (
             <>
-                <LibraryLayout secondaryHeader={secondaryHeader}>
+                <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.settings")}>
                     { this.buildDragAndDropList() }
                 </LibraryLayout>
             </>
@@ -222,7 +223,7 @@ export class CatalogEntrySettings extends React.Component<CatalogEntrySettingsPr
 }
 
 export default withApi(
-    CatalogEntrySettings,
+    withTranslator(CatalogEntrySettings),
     {
         operations: [
             {

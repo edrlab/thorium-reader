@@ -9,16 +9,21 @@ import * as React from "react";
 
 import OpdsAddForm from "./OpdsAddForm";
 
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import FeedList from "./FeedList";
 
-export default class Opds extends React.Component<{}, null> {
+class Opds extends React.Component<TranslatorProps> {
     public render(): React.ReactElement<{}>  {
+        const { __ } = this.props;
         return (
-            <LibraryLayout>
+            <LibraryLayout title={__("header.catalogs")}>
                 <OpdsAddForm />
                 <FeedList />
             </LibraryLayout>
         );
     }
 }
+
+export default withTranslator(Opds);

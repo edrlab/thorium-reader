@@ -19,10 +19,12 @@ import Header from "./Header";
 
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import SVG from "../utils/SVG";
 
-interface Props {
+interface Props extends TranslatorProps {
     locale: string;
     setLocale: (locale: string) => void;
 }
@@ -42,9 +44,10 @@ export class LanguageSettings extends React.Component<Props, States> {
 
     public render(): React.ReactElement<{}> {
         const secondaryHeader = <Header section={2}/>;
+        const { __ } = this.props;
         return (
             <>
-                <LibraryLayout secondaryHeader={secondaryHeader}>
+                <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.settings")}>
                     <div className={styles.section_title}>Choix de la langue</div>
                     <form className={styles.languages_list}>
                             { Object.keys(AvailableLanguages).map((lang: string, i: number) =>
@@ -83,4 +86,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageSettings);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LanguageSettings));
