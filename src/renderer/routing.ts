@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import CatalogEntrySettings from "./components/settings/CatalogEntrySettings";
 import Information from "./components/settings/Information";
 import LanguageSettings from "./components/settings/LanguageSettings";
 
@@ -43,12 +42,6 @@ export const routes: RouteList = {
         title: "Catalogues",
         component: Browser,
     },
-    "/settings/tags": {
-        path: "/settings/tags",
-        exact: false,
-        title: "Settings: Tags",
-        component: CatalogEntrySettings,
-    },
     "/settings/languages": {
         path: "/settings/languages",
         exact: false,
@@ -64,8 +57,8 @@ export const routes: RouteList = {
     "/settings": {
         path: "/settings",
         exact: false,
-        title: "Settings: Tags",
-        component: CatalogEntrySettings,
+        title: "Settings: default page",
+        component: LanguageSettings,
     },
     "/library/search/text": {
         path: "/library/search/text/:value",
