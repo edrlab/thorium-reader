@@ -36,6 +36,7 @@ import ListView from "./ListView";
 
 interface CatalogProps extends TranslatorProps, RouteComponentProps {
     catalog?: CatalogView;
+    tags?: string[];
     requestCatalog: any;
 }
 
@@ -58,7 +59,8 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                     { this.props.catalog &&
-                        <DisplayView catalogEntries={ this.props.catalog.entries } />
+                        <DisplayView catalogEntries={ this.props.catalog.entries }
+                        tags={this.props.tags}/>
                     }
             </LibraryLayout>
         );
@@ -74,6 +76,12 @@ export default withApi(
                 methodId: "get",
                 callProp: "requestCatalog",
                 resultProp: "catalog",
+                onLoad: true,
+            },
+            {
+                moduleId: "publication",
+                methodId: "getAllTags",
+                resultProp: "tags",
                 onLoad: true,
             },
         ],
