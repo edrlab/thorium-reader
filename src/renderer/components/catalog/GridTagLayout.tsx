@@ -15,8 +15,9 @@ import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import Menu from "../utils/menu/Menu";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-export interface TagProps {
+export interface TagProps extends TranslatorProps {
             entries: CatalogEntryView[];
             content?: any;
 }
@@ -26,7 +27,7 @@ export interface LayoutState {
             value: string;
 }
 
-export default class GridTagLayout extends React.Component<TagProps, LayoutState> {
+export class GridTagLayout extends React.Component<TagProps, LayoutState> {
         public constructor(props: any) {
             super(props);
             this.state = {
@@ -36,22 +37,25 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
             this.togglemenu = this.togglemenu.bind(this);
         }
         public render(): React.ReactElement<{}> {
-
+            const { __ } = this.props;
             return (
                     <div id={style.myTags}>
-                        Mes Tags
+                        { __("catalog.tags")}
                         <div id={style.sortMenu}>
                         <Menu
-                        button={(<div> sort by
-                                <SVG svg={ArrowIcon}/>
-                            </div>
-                                )}
-                        content={(<div>
+                            button={(
+                                <div> { __("catalog.sort")}
+                                    <SVG svg={ArrowIcon}/>
+                                </div>
+                            )}
+                            content={(
+                                <div>
                                     {this.props.content}
-                            </div>)}
-                        open={this.state.showMenu}
-                        dir="left"
-                        toggle={this.togglemenu}
+                                </div>
+                            )}
+                            open={this.state.showMenu}
+                            dir="left"
+                            toggle={this.togglemenu}
                         />
 
                     </div>
@@ -78,9 +82,11 @@ export default class GridTagLayout extends React.Component<TagProps, LayoutState
             );
         }
 
-        private togglemenu(open: boolean) {
+        private togglemenu() {
             this.setState({
-                showMenu: open,
+                showMenu: !this.state.showMenu,
             });
         }
 }
+
+export default withTranslator(GridTagLayout);

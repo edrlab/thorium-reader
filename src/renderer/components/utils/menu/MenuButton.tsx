@@ -10,6 +10,7 @@ import * as React from "react";
 interface MenuButtonProps {
     menuId: string;
     open: boolean;
+    toggle: () => void;
 }
 
 export default class Header extends React.Component<MenuButtonProps, undefined> {
@@ -18,12 +19,14 @@ export default class Header extends React.Component<MenuButtonProps, undefined> 
     }
 
     public render(): React.ReactElement<{}> {
+        const { toggle, open, menuId, children } = this.props;
         return (
             <button
-                aria-expanded={this.props.open}
-                aria-controls={this.props.menuId}
+                aria-expanded={open}
+                aria-controls={menuId}
+                onClick={toggle}
             >
-                {this.props.children}
+                {children}
             </button>
         );
     }

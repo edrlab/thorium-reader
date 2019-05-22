@@ -7,8 +7,10 @@
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-export function lcpReadable(publication: PublicationView): boolean {
-    return (!publication.lcp ||
-        (publication.lcp && !publication.lcp.rights.end) ||
-        (publication.lcp && publication.lcp.rights.end && new Date(publication.lcp.rights.end).getTime() > Date.now()));
+import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
+
+export function lcpReadable(publication: PublicationView, lsdStatus: LsdStatus): boolean {
+    const isReadable = (!publication.lcp || (publication.lcp &&
+        (lsdStatus.status === LsdStatusType.Active || lsdStatus.status === LsdStatusType.Ready)));
+    return isReadable;
 }

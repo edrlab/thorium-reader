@@ -39,10 +39,10 @@ export class LanguageSettings extends React.Component<Props, States> {
     }
 
     public render(): React.ReactElement<{}> {
+        const secondaryHeader = <Header section={2}/>;
         return (
             <>
-                <LibraryLayout>
-                    <Header section={2}/>
+                <LibraryLayout secondaryHeader={secondaryHeader}>
                     <div className={styles.section_title}>Choix de la langue</div>
                     <ul className={styles.languages_list}>
                         { Object.keys(AvailableLanguages).map((lang: string, i: number) =>

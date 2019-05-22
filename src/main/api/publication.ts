@@ -79,9 +79,14 @@ export class PublicationApi {
     }
 
     public async importOpdsEntry(data: any): Promise<PublicationView[]> {
-        const { url, downloadSample } = data;
+        const { url, base64OpdsPublication, downloadSample } = data;
 
-        await this.catalogService.importOpdsEntry(url, downloadSample);
+        if (url) {
+            await this.catalogService.importOpdsEntry(url, downloadSample);
+        } else {
+            const opdsPublication = JSON.parse(Buffer.from(base64OpdsPublication, "base64").toString("utf-8"));
+            await this.catalogService.importOpdsPublication(opdsPublication, downloadSample);
+        }
         return null;
     }
 

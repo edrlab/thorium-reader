@@ -55,10 +55,10 @@ export class LanguageSettings extends React.Component<Props, States> {
 
     public render(): React.ReactElement<{}> {
         const html = { __html: this.parsedMarkdown };
+        const secondaryHeader = <Header section={3}/>;
         return (
             <>
-                <LibraryLayout>
-                    <Header section={3}/>
+                <LibraryLayout secondaryHeader={secondaryHeader}>
                     <div dangerouslySetInnerHTML={html}></div>
                 </LibraryLayout>
             </>

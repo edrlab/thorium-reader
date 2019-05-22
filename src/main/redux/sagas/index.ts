@@ -15,6 +15,8 @@ import * as reader from "./reader";
 
 import * as api from "./api";
 
+import * as i18n from "./i18n";
+
 import * as streamer from "./streamer";
 
 import {
@@ -24,6 +26,9 @@ import {
 export function* rootSaga() {
     yield all([
         api.watchers(),
+
+        // I18N
+        i18n.watchers(),
 
         // App
         appInitWatcher(),
