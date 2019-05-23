@@ -67,16 +67,32 @@ export default class App extends React.Component<any, undefined> {
             <Provider store={ this.store }>
                 <ConnectedRouter history={ this.history }>
                     <div className={styles.root}>
-                        <Dropzone aria-hidden disableClick onDrop={ this.onDrop } style={{
-                            position: "absolute",
-                            top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                        }}/>
-                        <PageManager/>
-                        <DialogManager />
-                        <SameFileImportManager />
+                        <Dropzone
+                            aria-hidden
+                            onClick={(evt) => evt.preventDefault()}
+                            onDrop={ this.onDrop }
+                        >
+                            {({getRootProps, getInputProps}) => {
+                                const rootProps = getRootProps();
+                                rootProps.tabIndex = -1;
+                                return <div
+                                    aria-hidden
+                                    {...rootProps}
+                                    style={{
+                                        position: "absolute",
+                                        top: 0,
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                    }}
+                                >
+                                    <input aria-hidden {...getInputProps()} />
+                                    <PageManager/>
+                                    <DialogManager />
+                                    <SameFileImportManager />
+                                </div>
+                            }}
+                        </Dropzone>
                     </div>
                 </ConnectedRouter>
             </Provider>
