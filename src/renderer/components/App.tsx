@@ -47,7 +47,7 @@ export default class App extends React.Component<any, undefined> {
     }
 
     // Called when files are droped on the dropzone
-    public onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
+    public onDrop(acceptedFiles: File[]) {
         this.store.dispatch(
             dialogActions.open(
                 DialogType.FileImport,
@@ -73,6 +73,7 @@ export default class App extends React.Component<any, undefined> {
                             bottom: 0,
                             left: 0,
                             right: 0,
+                            zIndex: 99,
                         }}/>
                         <PageManager/>
                         <DialogManager />
