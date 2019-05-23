@@ -24,10 +24,11 @@ import SortMenu from "./SortMenu";
 
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
+    tags?: string[];
 }
 
 interface GridViewState {
-    tabEntries: CatalogEntryView[];
+    tabTags: string[];
     status: string;
 }
 
@@ -36,7 +37,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         super(props);
 
         this.state = {
-            tabEntries: this.props.catalogEntries.slice(),
+            tabTags: this.props.tags.slice(),
             status: "count",
         };
         this.sortByAlpha = this.sortByAlpha.bind(this);
@@ -46,35 +47,39 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
     public render(): React.ReactElement<{}> {
         return (
             <>
-                { this.props.catalogEntries.map((entry, i: number) => {
-                        return entry.publications.length > 0 ? (
-                            <section key={ i }>
-                                { i <= 1 ? (
-                                    <div className={ styles.title }>
-                                        <h1>{ entry.title }</h1>
-                                    </div>
-                                    ) :
-                                    (<></>)
-                                }
-                                { i <= 1 ? (
-                                        <Slider
-                                            className={ styles.slider }
-                                            content={ entry.publications.map((pub) =>
-                                                <PublicationCard
-                                                    key={ pub.identifier }
-                                                    publication={ pub }
-                                                    menuContent={ CatalogMenu }
-                                                />,
-                                            )}
-                                        />
-                                    ) :
-                                    (<></>)
-                                }
+                { this.props.catalogEntries.map((entry, EntryIndex: number) => {
+                        return (
+                            <section key={ EntryIndex }>
+                            {
+
+                                EntryIndex <= 1 ? (
+                                <div className={ styles.title }>
+                                    <h1>{ entry.title }</h1>
+                                </div>
+                                ) :
+                                (<></>)
+                            }
+                            {
+                                EntryIndex <= 1 ? (
+                                    <Slider
+                                        className={ styles.slider }
+                                        content={ entry.publications.map((pub) =>
+                                            <PublicationCard
+                                                key={ pub.identifier }
+                                                publication={ pub }
+                                                menuContent={ CatalogMenu }
+                                            />,
+                                        )}
+                                    />
+                                ) :
+                                (<></>)
+                            }
+
                             </section>
-                        ) : <></>;
+                        );
                 })}
                 <GridTagLayout
-                entries={this.state.tabEntries}
+                tags={this.state.tabTags}
                 content={
                     <SortMenu
                         onClickAlphaSort={this.sortByAlpha}
@@ -89,10 +94,10 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         this.setState({
             status: "count",
         });
-        this.state.tabEntries.sort((a, b) => {
-            if (a.totalCount < b.totalCount) {
+        this.state.tabTags.sort((a, b) => {
+            if (a < b) {
                 return (1);
-            } else if (a.totalCount > b.totalCount) {
+            } else if (a > b) {
                 return (-1);
             }
             return (0);
@@ -103,10 +108,10 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         this.setState({
             status: "alpha",
         });
-        this.state.tabEntries.sort((a, b) => {
-            if (a.title > b.title) {
+        this.state.tabTags.sort((a, b) => {
+            if (a > b) {
                 return (1);
-            } else if (a.title < b.title) {
+            } else if (a < b) {
                 return (-1);
             }
             return (0);

@@ -18,6 +18,7 @@ import SortMenu from "./SortMenu";
 
 interface ListViewProps {
     catalogEntries: CatalogEntryView[];
+    tags?: string[];
 }
 
 export default class ListView extends React.Component<ListViewProps, undefined> {
