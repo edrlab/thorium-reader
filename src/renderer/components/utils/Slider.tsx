@@ -18,12 +18,12 @@ interface Props {
     className?: string;
 }
 
-interface States {
+interface State {
     position: number;
     refreshVisible: boolean;
 }
 
-export default class Slider extends React.Component<Props, States> {
+export default class Slider extends React.Component<Props, State> {
     private contentRef: any;
     private contentElRefs: any[] = [];
     private wrapperRef: any;
@@ -34,7 +34,7 @@ export default class Slider extends React.Component<Props, States> {
 
         this.state = {
             position: 0,
-            refreshVisible: false,
+            refreshVisible: true,
         };
 
         this.update = this.update.bind(this);
@@ -168,6 +168,6 @@ export default class Slider extends React.Component<Props, States> {
     }
 
     private update() {
-        this.forceUpdate();
+        this.setState({refreshVisible: true});
     }
 }

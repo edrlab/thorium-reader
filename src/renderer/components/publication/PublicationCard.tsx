@@ -62,7 +62,8 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
     }
 
     public render(): React.ReactElement<{}>  {
-        const authors = this.props.publication.authors.join(", ");
+        const { publication } = this.props;
+        const authors = publication.authors.join(", ");
         const MenuContent = this.props.menuContent;
         return (
             <div className={styles.block_book}
@@ -70,24 +71,24 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                 aria-controls="dialog"
             >
                 <div className={styles.image_wrapper}>
-                    <a onClick={(e) => this.handleBookClick(e)}>
-                        <Cover publication={ this.props.publication } />
+                    <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
+                        <Cover publication={ publication } />
                     </a>
                 </div>
                 <div className={styles.legend}>
-                    <a onClick={(e) => this.handleBookClick(e)}>
+                    <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
                         <p className={styles.book_title} aria-label="Titre du livre">
-                            { this.truncateTitle(this.props.publication.title) }
+                            { this.truncateTitle(publication.title) }
                         </p>
                         <p className={styles.book_author} aria-label="Auteur du livre">
                             {authors}
                         </p>
                     </a>
                     <Menu
-                        button={(<SVG title={this.props.publication.title} svg={MenuIcon}/>)}
+                        button={(<SVG title={`${publication.title} - ${authors}`} svg={MenuIcon}/>)}
                         content={(
                             <div className={styles.menu}>
-                                <MenuContent toggleMenu={this.toggleMenu} publication={this.props.publication}/>
+                                <MenuContent toggleMenu={this.toggleMenu} publication={publication}/>
                             </div>
                         )}
                         open={this.state.menuOpen}
