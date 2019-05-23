@@ -90,7 +90,7 @@ export default class App extends React.Component<any, undefined> {
                                     <PageManager/>
                                     <DialogManager />
                                     <SameFileImportManager />
-                                </div>
+                                </div>;
                             }}
                         </Dropzone>
                     </div>
