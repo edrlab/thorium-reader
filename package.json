@@ -60,7 +60,7 @@
   },
   "homepage": "https://github.com/edrlab/readium-desktop",
   "build": {
-    "productName": "Thorium",
+    "productName": "thorium",
     "appId": "io.github.edrlab.thorium",
     "dmg": {
       "contents": [
@@ -102,7 +102,7 @@
       "ext": "epub"
     },
     "win": {
-      "target": "nsis-web",
+      "target": "appx",
       "icon": "dist/assets/icons/icon.ico"
     },
     "linux": {
