@@ -1,7 +1,7 @@
 // ==LICENSE-BEGIN==
 // Copyright 2017 European Digital Reading Lab. All rights reserved.
 // Licensed to the Readium Foundation under one or more contributor license agreements.
-// Use of this source code is governed by a BSD-style license
+// Use of this source code is governed by button BSD-style license
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
@@ -49,12 +49,10 @@ export class CatalogLcpControls extends React.Component<CatalogLcpControlsProps,
             return (<></>);
         }
 
-        console.log(lsdStatus);
-
         return (
             <>
                 { lsdStatus && (lsdStatus.status === LsdStatusType.Active ?
-                    <a  onClick={this.handleRead} className={styles.lire}>{__("publication.readButton")}</a>
+                    <button  onClick={this.handleRead} className={styles.lire}>{__("publication.readButton")}</button>
                 : lsdStatus.status === LsdStatusType.Expired ?
                     <p style={{color: "red"}}>{__("publication.expiredLcp")}</p>
                 : lsdStatus.status === LsdStatusType.Revoked ?
@@ -63,23 +61,23 @@ export class CatalogLcpControls extends React.Component<CatalogLcpControlsProps,
                 <ul className={styles.liens}>
                     { lsdStatus && lsdStatus.status === LsdStatusType.Expired &&
                         <li>
-                            <a onClick={ this.props.openRenewDialog }>
-                                <SVG svg={LoopIcon} />
+                            <button onClick={ this.props.openRenewDialog }>
+                                <SVG svg={LoopIcon} ariaHidden/>
                                 {__("publication.renewButton")}
-                            </a>
+                            </button>
                         </li>
                     }
                     <li>
-                        <a onClick={ this.props.openReturnDialog }>
-                            <SVG svg={ArrowIcon} />
+                        <button onClick={ this.props.openReturnDialog }>
+                            <SVG svg={ArrowIcon} ariaHidden/>
                             {__("publication.returnButton")}
-                        </a>
+                        </button>
                     </li>
                     <li>
-                        <a onClick={ this.deletePublication }>
-                            <SVG svg={DeleteIcon} />
+                        <button onClick={ this.deletePublication }>
+                            <SVG svg={DeleteIcon} ariaHidden/>
                             {__("publication.deleteButton")}
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </>

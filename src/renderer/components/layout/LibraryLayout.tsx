@@ -13,25 +13,38 @@ import LibraryHeader from "./LibraryHeader";
 
 import { connect } from "react-redux";
 
+import { Helmet } from "react-helmet";
+
 import { RootState } from "readium-desktop/renderer/redux/states";
 
 interface LibraryLayoutProps {
     dialogOpen?: boolean;
     secondaryHeader?: any;
+    title?: string;
 }
 
 class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
     public render(): React.ReactElement<{}> {
+        const { title } = this.props;
+
+        let helmetTitle = "Thorium";
+        if (title) {
+            helmetTitle += " - " + title;
+        }
+
         return (
             <>
+                <Helmet>
+                    <title>{ helmetTitle }</title>
+                </Helmet>
                 <LibraryHeader />
+                { this.props.secondaryHeader }
                 <main
                     style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} }
-                    id={styles.main}
+                    className={styles.main}
                     role="main"
                 >
-                    { this.props.secondaryHeader }
-                    <a id="main-content" tabIndex={-1}></a>
+                    <a id="main-content" aria-hidden tabIndex={-1}></a>
                     { this.props.children }
                 </main>
             </>

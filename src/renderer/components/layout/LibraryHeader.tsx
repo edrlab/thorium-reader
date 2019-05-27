@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 
 import { RouteComponentProps } from "react-router-dom";
 
+import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
@@ -47,13 +48,11 @@ export class Header extends React.Component<HeaderProps, undefined> {
         const { __ } = this.props;
 
         return (<>
-            <a
-                className={styles.avoid_link}
-                href="#main-content"
-                tabIndex={0}
-            >
-                {__("accessibility.avoid")}
-            </a>
+            <SkipLink
+                className={styles.skip_link}
+                anchorId="main-content"
+                label={__("accessibility.skipLink")}
+            />
             <nav className={styles.main_navigation} role="navigation" aria-label="Menu principal">
                 <ul>
                     { headerNav.map((item, index: number) => {

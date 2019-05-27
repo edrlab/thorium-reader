@@ -46,13 +46,13 @@ export class CatalogControls extends React.Component<CatalogControlsProps, undef
 
         return (
             <>
-                <a  onClick={this.handleRead} className={styles.lire}>Lire</a>
+                <button onClick={this.handleRead} className={styles.lire}>Lire</button>
                 <ul className={styles.liens}>
                     <li>
-                        <a onClick={ this.deletePublication }>
-                            <SVG svg={DeleteIcon} />
+                        <button onClick={ this.deletePublication }>
+                            <SVG svg={DeleteIcon} ariaHidden/>
                             Supprimer de la bibliothèque
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </>

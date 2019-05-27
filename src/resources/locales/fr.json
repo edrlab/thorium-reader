@@ -228,5 +228,8 @@
       "searchPlaceholder": "Rechercher",
       "searchTitle": "Lancer la recherche",
       "importTitle": "Importer un livre"
+    },
+    "accessibility": {
+      "skipLink": "Aller au contenu"
     }
 }
