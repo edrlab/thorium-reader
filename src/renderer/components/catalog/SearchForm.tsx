@@ -8,12 +8,17 @@
 import * as React from "react";
 
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-export class Search extends React.Component<RouteComponentProps, undefined> {
+import { setLatestVersion } from "readium-desktop/common/redux/actions/update";
+
+interface SearchProps extends RouteComponentProps, TranslatorProps {}
+
+export class Search extends React.Component<SearchProps, undefined> {
     private inputRef: any;
 
     public constructor(props: any) {
@@ -24,6 +29,7 @@ export class Search extends React.Component<RouteComponentProps, undefined> {
         this.search = this.search.bind(this);
     }
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
         return (
             <form onSubmit={this.search} role="search">
                 <input
@@ -31,10 +37,10 @@ export class Search extends React.Component<RouteComponentProps, undefined> {
                     type="search"
                     id="menu_search"
                     aria-label="Rechercher un livre, un tag, ou un type de littérature"
-                    placeholder="Rechercher"
+                    placeholder={ __("header.searchPlaceholder")}
                 />
-                <button>
-                    <SVG svg={SearchIcon} title="Lancer la recherche"/>
+                <button id={styles.search_img}>
+                    <SVG svg={SearchIcon} title={ __("header.searchTitle")}/>
                 </button>
             </form>
         );
@@ -48,4 +54,4 @@ export class Search extends React.Component<RouteComponentProps, undefined> {
     }
 }
 
-export default withRouter(Search);
+export default withTranslator(withRouter(Search));

@@ -18,6 +18,7 @@ import SortMenu from "./SortMenu";
 
 interface ListViewProps {
     catalogEntries: CatalogEntryView[];
+    tags?: string[];
 }
 
 export default class ListView extends React.Component<ListViewProps, undefined> {
@@ -27,7 +28,7 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
             <>
             {
                 this.props.catalogEntries.map((entry, entryIndex: number) => {
-                    return (
+                    return entry.publications.length > 0 ? (
                         <section key={ entryIndex }>
                         {
                             entryIndex <= 1 ? (
@@ -56,7 +57,7 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                             (<></>)
                         }
                         </section>
-                    );
+                    ) : <></>;
             })
             }
             </>

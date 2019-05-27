@@ -35,8 +35,12 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import * as qs from "query-string";
 import { ReaderMode } from "readium-desktop/common/models/reader";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface Props {
+import ReaderMenu from "./ReaderMenu";
+import ReaderOptions from "./ReaderOptions";
+
+interface Props extends TranslatorProps {
     menuOpen: boolean;
     mode?: ReaderMode;
     settingsOpen: boolean;
@@ -50,12 +54,11 @@ interface Props {
     isOnBookmark: boolean;
     displayPublicationInfo?: any;
     publication?: Publication;
+    readerMenuProps: any;
+    readerOptionsProps: any;
 }
 
 export class ReaderHeader extends React.Component<Props, undefined> {
-
-    @lazyInject("translator")
-    private translator: Translator;
 
     public constructor(props: Props) {
         super(props);
@@ -64,7 +67,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
+        const { __ } = this.props;
 
         return (
             <nav
@@ -84,7 +87,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                     className={styles.menu_button}
                                     onClick={this.props.handleReaderClose}
                                 >
-                                    <SVG svg={BackIcon} title="Retour à la bibliotheque"/>
+                                    <SVG svg={BackIcon} title={ __("reader.navigation.backHomeTitle")}/>
                                 </button>
                             </li>
                             ) : (<></>)
@@ -94,7 +97,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 className={styles.menu_button}
                                 onClick={() => this.displayPublicationInfo()}
                             >
-                                <SVG svg={InfosIcon} title="Informations"/>
+                                <SVG svg={InfosIcon} title={ __("reader.navigation.infoTitle")}/>
                             </button>
                         </li>
                         { (this.props.mode === ReaderMode.Attached) ? (
@@ -103,7 +106,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                     className={styles.menu_button}
                                     onClick={this.props.handleReaderDetach}
                                 >
-                                    <SVG svg={DetachIcon} title="Détacher la fenêtre"/>
+                                    <SVG svg={DetachIcon} title={ __("reader.navigation.detachWindowTitle")}/>
                                 </button>
                             </li>
                             ) : (<></>)
@@ -113,7 +116,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 className={styles.menu_button}
                                 onClick={this.props.handleFullscreenClick}
                             >
-                                <SVG svg={FullscreenIcon} title="Mode plein écran"/>
+                                <SVG svg={FullscreenIcon} title={ __("reader.navigation.fullscreenTitle")}/>
                             </button>
                         </li>
                         <li
@@ -124,7 +127,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 className={styles.menu_button}
                                 onClick={this.props.handleMenuClick.bind(this)}
                             >
-                                <SVG svg={TOCIcon} title="Ouvrir table des matieres"/>
+                                <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
                             </button>
                         </li>
                         <li
@@ -135,8 +138,9 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 className={styles.menu_button}
                                 onClick={this.props.handleSettingsClick.bind(this)}
                             >
-                                <SVG svg={SettingsIcon} title="Settings"/>
+                                <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
                             </button>
+                            <ReaderMenu {...this.props.readerMenuProps}/>
                         </li>
                         <li
                             className={styles.right}
@@ -146,23 +150,24 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 onClick={this.props.toggleBookmark}
                                 {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                             >
-                                <SVG svg={MarkIcon} title="Marquer la page"/>
+                                <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
                             </button>
+                            <ReaderOptions {...this.props.readerOptionsProps}/>
                         </li>
-                        <li className={styles.right}>
+                        {/*<li className={styles.right}>
                             <button
                                 className={styles.menu_button}
                             >
-                                <SVG svg={AudioIcon} title="Lancer la lecture du livre"/>
+                                <SVG svg={AudioIcon} title={ __("reader.navigation.readBookTitle")}/>
                             </button>
-                        </li>
+                    </li>*/}
                     </> :
                     <li  className={styles.right}>
                         <button
                             className={styles.menu_button}
                             onClick={this.props.handleFullscreenClick}
                         >
-                            <SVG svg={QuitFullscreenIcon} title="Quitter le mode plein écran"/>
+                            <SVG svg={QuitFullscreenIcon} title={ __("reader.navigation.quitFullscreenTitle")}/>
                         </button>
                     </li>
                 }
@@ -198,7 +203,7 @@ const buildRequestData = (props: Props) => {
     };
 };
 
-export default withApi(
+export default withTranslator(withApi(
     ReaderHeader,
     {
         mapDispatchToProps,
@@ -212,4 +217,4 @@ export default withApi(
             },
         ],
     },
-);
+));

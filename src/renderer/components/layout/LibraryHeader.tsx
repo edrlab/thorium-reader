@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 
 import { RouteComponentProps } from "react-router-dom";
 
+import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
@@ -22,19 +23,19 @@ import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 const headerNav = [
     {
         route: "/library",
-        label: "Mes livres",
+        label: "books",
         matchRoutes: ["/", "/library"],
         styles: [],
     },
     {
         route: "/opds",
-        label: "Catalogues",
+        label: "catalogs",
         matchRoutes: ["/opds"],
         styles: [],
     },
     {
         route: "/settings",
-        label: "Préférences",
+        label: "settings",
         matchRoutes: ["/settings"],
         styles: [styles.preferences],
     },
@@ -44,32 +45,35 @@ export interface HeaderProps extends RouteComponentProps, TranslatorProps { }
 
 export class Header extends React.Component<HeaderProps, undefined> {
     public render(): React.ReactElement<{}> {
-        return (
+        const { __ } = this.props;
+
+        return (<>
+            <SkipLink
+                className={styles.skip_link}
+                anchorId="main-content"
+                label={__("accessibility.skipLink")}
+            />
             <nav className={styles.main_navigation} role="navigation" aria-label="Menu principal">
                 <ul>
-                    {
-                        headerNav.map((item, index: number) => {
-                            return this.buildNavItem(item, index);
-                        })
-                    }
+                    { headerNav.map((item, index: number) => {
+                        return this.buildNavItem(item, index, __);
+                    })}
                 </ul>
             </nav>
-        );
+        </>);
     }
 
-    private buildNavItem(item: any, index: number) {
+    private buildNavItem(item: any, index: number, __: any) {
+        const jsn = "header." + item.label;
         if (!this.props.location) {
             return (<></>);
         }
-
-        let active = false;
         let styleClasses = [];
         const pathname = this.props.match.path;
 
         for (const matchRoute of item.matchRoutes) {
             if (pathname.startsWith(matchRoute)
             && ((pathname === "/" && matchRoute === pathname) || matchRoute !== "/")) {
-                active = true;
                 styleClasses.push(styles.active);
                 break;
             }
@@ -80,7 +84,7 @@ export class Header extends React.Component<HeaderProps, undefined> {
         return (
             <li className={classNames(...styleClasses)} key={ index }>
                 <Link to={ item.route } replace={true}>
-                    { this.props.__(item.label) }
+                    { __(jsn) }
                 </Link>
             </li>
         );

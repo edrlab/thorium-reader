@@ -15,7 +15,6 @@ import * as queryString from "query-string";
 
 import { LocatorView } from "readium-desktop/common/views/locator";
 
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 
@@ -27,6 +26,10 @@ import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
+import { SectionData } from "./sideMenu/sideMenuData";
+
+import SideMenu from "./sideMenu/SideMenu";
+
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 interface Props extends TranslatorProps {
@@ -36,6 +39,7 @@ interface Props extends TranslatorProps {
     bookmarks: LocatorView[];
     handleBookmarkClick: (locator: any) => void;
     deleteBookmark?: any;
+    toggleMenu: any;
 }
 
 interface State {
@@ -44,9 +48,6 @@ interface State {
 }
 
 export class ReaderMenu extends React.Component<Props, State> {
-    private sectionRefList: any = [];
-    private clickableList: boolean[] = [];
-
     public constructor(props: Props) {
         super(props);
 
@@ -55,224 +56,118 @@ export class ReaderMenu extends React.Component<Props, State> {
             bookmarkToUpdate: undefined,
         };
 
-        this.sectionRefList = [
-            React.createRef(),
-            React.createRef(),
-            React.createRef(),
-            React.createRef(),
-        ];
-
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
     }
 
-    public componentWillReceiveProps(newProps: Props) {
-        if (!this.props.publication && newProps.publication) {
-            const pub: R2Publication = newProps.publication;
-            // this.tocRendererList = this.createTOCRenderList(pub.TOC);
-
-            this.clickableList = [
-                pub.TOC && pub.TOC.length > 0,
-                pub.LOI && pub.LOI.length > 0,
-                newProps.bookmarks && newProps.bookmarks.length > 0,
-                false,
-            ];
-        }
-    }
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
+        const { __, publication, bookmarks, toggleMenu } = this.props;
 
-        this.clickableList[2] = this.props.bookmarks && this.props.bookmarks.length > 0;
+        if (!publication) {
+            return <></>;
+        }
+
+        const sections: SectionData[] = [
+            {
+                title: __("reader.marks.toc"),
+                content: publication && this.createTOCRenderList(publication.TOC),
+                disabled: !publication.TOC || publication.TOC.length === 0,
+            },
+            {
+                title: __("reader.marks.illustrations"),
+                content: <></>,
+                disabled: !publication.LOI || publication.LOI.length === 0,
+            },
+            {
+                title: __("reader.marks.landmarks"),
+                content: this.createLandmarkList(),
+                disabled: !bookmarks || bookmarks.length === 0,
+            },
+            {
+                title: __("reader.marks.annotations"),
+                content: <></>,
+                disabled: true,
+            },
+        ];
 
         return (
-            <div style={{visibility: this.props.open ? "visible" : "hidden"}} className={styles.chapters_settings}>
-                <ul id={styles.chapter_settings_list}>
-                    <li
-                        onClick={this.handleClickSection.bind(this, 0)}
-                        className={this.getSectionClassName(0)}
-                    >
-                        <span>{__("reader.marks.toc")}</span>
-                        <SVG svg={ArrowIcon} />
-                    </li>
-                    <div style={this.getSectionStyle(0)} className={styles.tab_content}>
-                        <div ref={this.sectionRefList[0]} className={styles.line_tab_content}>
-                            <ul className={styles.chapters_content}>
-                                {this.props.publication && this.createTOCRenderList(this.props.publication.TOC)}
-                            </ul>
-                        </div>
-                    </div>
-                    <li
-                        onClick={this.handleClickSection.bind(this, 1)}
-                        className={this.getSectionClassName(1)}
-                    >
-                        <span>{__("reader.marks.illustrations")}</span>
-                        <SVG svg={ArrowIcon} />
-                    </li>
-                    <div style={this.getSectionStyle(1)} className={styles.tab_content}>
-                        <div ref={this.sectionRefList[1]} className={styles.line_tab_content}>
-                        </div>
-                    </div>
-                    <li
-                        onClick={this.handleClickSection.bind(this, 2)}
-                        className={this.getSectionClassName(2)}
-                    >
-                        <span>{__("reader.marks.landmarks")}</span>
-                        <SVG svg={ArrowIcon} />
-                    </li>
-                    <div
-                        style={this.getSectionStyle(2, this.props.bookmarks && this.props.bookmarks.length > 0)}
-                        className={styles.tab_content}
-                    >
-                        <div ref={this.sectionRefList[2]} className={styles.line_tab_content}>
-                            {this.createLandmarkList()}
-                        </div>
-                    </div>
-                    <li
-                        onClick={this.handleClickSection.bind(this, 3)}
-                        className={this.getSectionClassName(3)}
-                    >
-                        <span>{__("reader.marks.annotations")}</span>
-                        <SVG svg={ArrowIcon} />
-                    </li>
-                    <div style={this.getSectionStyle(3)} className={styles.tab_content}>
-                        <div ref={this.sectionRefList[3]} className={styles.line_tab_content}>
-                            <div className={styles.bookmarks_line}>
-                                <img src="src/renderer/assets/icons/baseline-edit-24px-grey.svg" alt=""/>
-                                <div className={styles.chapter_marker}>
-                                    Chapitre 1
-                                    <div className={styles.gauge}>
-                                        <div className={styles.fill}></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={styles.bookmarks_line}>
-                                <img src="src/renderer/assets/icons/baseline-add-24px.svg"/>
-                                <span>Nouvelle annotation</span>
-                            </div>
-                        </div>
-                    </div>
-                </ul>
-                <form id={styles.insidebook_search} role="search">
-                    <input
-                        type="search"
-                        id={styles.book_search}
-                        placeholder="Rechercher dans le livre"
-                        title="rechercher dans le livre"
-                    />
-                    <input
-                        type="image"
-                        id={styles.launch}
-                        src="src/renderer/assets/icons/baseline-search-24px-grey.svg"
-                        value=""
-                        alt="lancer la recherche"
-                    />
-                </form>
-
-                <div className={styles.go_to_page}>Aller à la page <input type="number" placeholder="13"/></div>
-            </div>
+            <SideMenu
+                className={styles.chapters_settings}
+                listClassName={styles.chapter_settings_list}
+                open={this.props.open}
+                sections={sections}
+                toggleMenu={toggleMenu}
+            />
         );
     }
 
-    private handleClickSection(id: number) {
-        if (this.clickableList[id]) {
-            let { openedSection } = this.state;
-            if (openedSection === id) {
-                openedSection = undefined;
-            } else {
-                openedSection = id;
-            }
-
-            this.setState({ openedSection });
-        }
-    }
-
-    private getSectionStyle(id: number, bool?: boolean): any {
-        if (bool === false) {
-            return {maxHeight: 0};
-        }
-
-        const el = this.sectionRefList[id];
-        let height = 0;
-        if (el.current) {
-            height = el.current.offsetHeight;
-        }
-        return {maxHeight: this.state.openedSection === id ? height : 0};
-    }
-
-    private getSectionClassName(id: number): any {
-        return classnames([
-            this.state.openedSection === id && styles.active,
-            !this.clickableList[id] && styles.tab_not_clickable,
-        ]);
-    }
-
-    private createTOCRenderList(TOC: any[]): JSX.Element[] {
-        return TOC.map((content, i: number) => {
-            return (
-                <li key={i}>
-                    {content.Children ? (
-                        <>
+    private createTOCRenderList(TOC: any[]): JSX.Element {
+        return <ul className={styles.chapters_content}>
+            { TOC.map((content, i: number) => {
+                return (
+                    <li key={i}>
+                        {content.Children ? (
+                            <>
+                                <a
+                                    className={styles.subheading}
+                                    onClick={(e) => this.props.handleLinkClick(e, content.Href)}
+                                >
+                                    {content.Title}
+                                </a>
+                                {content.Children &&
+                                    <ul className={styles.chapters_content}>
+                                        {this.createTOCRenderList(content.Children)}
+                                    </ul>
+                                }
+                            </>
+                        ) : (
                             <a
-                                className={styles.subheading}
+                                className={classnames(styles.line, styles.active)}
                                 onClick={(e) => this.props.handleLinkClick(e, content.Href)}
                             >
                                 {content.Title}
                             </a>
-                            {content.Children &&
-                                <ul className={styles.chapters_content}>
-                                    {this.createTOCRenderList(content.Children)}
-                                </ul>
-                            }
-                        </>
-                    ) : (
-                        <a
-                            className={styles.line + " " + styles.active}
-                            onClick={(e) => this.props.handleLinkClick(e, content.Href)}
-                        >
-                            {content.Title}
-                        </a>
-                    )}
-                </li>
-            );
-        });
+                        )}
+                    </li>
+                );
+            })}
+        </ul>;
     }
 
     private createLandmarkList(): JSX.Element[] {
         if (this.props.publication && this.props.bookmarks) {
             const { bookmarkToUpdate } = this.state;
-            return this.props.bookmarks.map((bookmark, i) => {
-                return (
+            return this.props.bookmarks.map((bookmark, i) =>
+                <div
+                    className={styles.bookmarks_line}
+                    key={i}
+                >
+                    <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
                     <div
-                        className={styles.bookmarks_line}
-                        key={i}
+                        className={styles.chapter_marker}
+                        onClick={() => this.props.handleBookmarkClick(bookmark.locator)}
                     >
-                        <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
-                        <div
-                            className={styles.chapter_marker}
-                            onClick={() => this.props.handleBookmarkClick(bookmark.locator)}
-                        >
-                            { bookmarkToUpdate === i ?
-                                <UpdateBookmarkForm
-                                    close={ this.closeBookarkEditForm }
-                                    bookmark={ bookmark }
-                                />
-                            :
-                                bookmark.name ? bookmark.name : <>Bookmark {i}</>
-                            }
-                            <div className={styles.gauge}>
-                                <div className={styles.fill}></div>
-                            </div>
+                        { bookmarkToUpdate === i ?
+                            <UpdateBookmarkForm
+                                close={ this.closeBookarkEditForm }
+                                bookmark={ bookmark }
+                            />
+                        :
+                            bookmark.name ? bookmark.name : <>Bookmark {i}</>
+                        }
+                        <div className={styles.gauge}>
+                            <div className={styles.fill}></div>
                         </div>
-                        <button onClick={() => this.setState({bookmarkToUpdate: i})}>
-                            <SVG svg={ EditIcon }/>
-                        </button>
-                        <button onClick={() => this.props.deleteBookmark({
-                            identifier: bookmark.identifier,
-                        })}>
-                            <SVG svg={ DeleteIcon }/>
-                        </button>
                     </div>
-                );
-            });
+                    <button onClick={() => this.setState({bookmarkToUpdate: i})}>
+                        <SVG svg={ EditIcon }/>
+                    </button>
+                    <button onClick={() => this.props.deleteBookmark({
+                        identifier: bookmark.identifier,
+                    })}>
+                        <SVG svg={ DeleteIcon }/>
+                    </button>
+                </div>,
+            );
         }
     }
 

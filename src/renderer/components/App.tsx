@@ -29,6 +29,8 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { DialogType } from "readium-desktop/common/models/dialog";
 
+import SameFileImportManager from "./utils/SameFileImportManager";
+
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 export default class App extends React.Component<any, undefined> {
@@ -45,7 +47,7 @@ export default class App extends React.Component<any, undefined> {
     }
 
     // Called when files are droped on the dropzone
-    public onDrop(acceptedFiles: File[], rejectedFiles: File[]) {
+    public onDrop(acceptedFiles: File[]) {
         this.store.dispatch(
             dialogActions.open(
                 DialogType.FileImport,
@@ -65,15 +67,31 @@ export default class App extends React.Component<any, undefined> {
             <Provider store={ this.store }>
                 <ConnectedRouter history={ this.history }>
                     <div className={styles.root}>
-                        <Dropzone disableClick onDrop={ this.onDrop } style={{
-                            position: "absolute",
-                            top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                        }}>
-                        <PageManager/>
-                        <DialogManager />
+                        <Dropzone
+                            aria-hidden
+                            onClick={(evt) => evt.preventDefault()}
+                            onDrop={ this.onDrop }
+                        >
+                            {({getRootProps, getInputProps}) => {
+                                const rootProps = getRootProps();
+                                rootProps.tabIndex = -1;
+                                return <div
+                                    aria-hidden
+                                    {...rootProps}
+                                    style={{
+                                        position: "absolute",
+                                        top: 0,
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                    }}
+                                >
+                                    <input aria-hidden {...getInputProps()} />
+                                    <PageManager/>
+                                    <DialogManager />
+                                    <SameFileImportManager />
+                                </div>;
+                            }}
                         </Dropzone>
                     </div>
                 </ConnectedRouter>

@@ -54,29 +54,35 @@ main {
 	width: calc(100% - 120px);
 
 	& > *:first-child {
-		margin-right: 1rem;			
+		margin-right: 1rem;
 	}
 }
 
 #all_link_button {
+		display: inline;
 		border: 1px solid black;
 		padding: 8px 15px 8px 15px;
 		border-radius: 5px;
-		margin-left: 4rem;
-		text-align: center;		
+		margin-left: 1.5rem;
+		text-align: center;
 		color: black;
 		text-decoration: none;
 		font-size: 0.9rem;
 		font: 14px Arial;
-		& svg {			
-			top: 0px;			
+		overflow: hidden;
+		z-index: -1;
+		& svg {	
+			top: 0px;
 			height: 15px;
 			margin-left: 0px;
 		}
 }
 
 .addEpubButton {
-	display: inline-block;
+	display: inline-flex;
+	position: relative;
+	left: 10px;
+	top: 3px;
 	margin-left: 1rem;
 
 	& input {
@@ -88,13 +94,12 @@ main {
 	}
 
 	& label {
-		width: 35px;
-		height: 35px;
-		padding: 7px 10px 7px 10px;
+		/*width: 35px;
+		height: 35px;*/
+		padding: 7px 10px 3px 10px;
 		cursor: pointer;
 		border: 1px solid black;
 		border-radius: 5px;
-		align-items: center;
 
 		&:hover {
 			opacity: 0.75;
@@ -105,7 +110,7 @@ main {
 			margin-left: 0;
 			width: 15px;
 			align-content: center;
-			height: 15px;
+			height: 17px;
 		}
 	}
 
@@ -195,21 +200,35 @@ main {
 	height: 0px;
 	transition: height 0.5s;
     margin-left: 10px;
-    & a, & span label {
+    & a, & span label, & button {
         border: 1px solid black;
 		padding: 4px;
 		display: inline-block;
 		cursor: pointer;
 		margin: 0.6rem 0.5rem 0 0;
+		opacity: 1;
+		width: fit-content;
+		height: 2rem;
+		box-sizing: border-box;
+		font-size: 0.9rem;
+		display: flex;
+		align-items: center;
     }
 
 	& span {
+		display: flex;
+		align-items: center;
 		& label {
 			cursor: pointer;
+			
 		}
 		& input {
 			position: absolute;
 			left: -2000px;
+		}
+
+		& input:focus + label {
+			outline: -webkit-focus-ring-color auto 5px;
 		}
 	}
 }
@@ -281,14 +300,12 @@ main {
 
 #myTags {
 	margin: 2.0em 1.0em 4.0em 0;
-	/*width: 100%;*/
 	font: 1.1rem "Open Sans", sans-serif;
 	font-weight: bolder;
 	background: #fbfbfb;
 }
 
 #sortMenu {
-	margin: 0 0.2em 2.0em 1.0em;	
 	display: inline-flex;
 	cursor:pointer;
 	color:#666666;
@@ -316,6 +333,7 @@ main {
 	overflow: hidden;
 	align-items: center;
 	justify-content: center;
+	z-index: 100;
 }
 
 #sortType button {

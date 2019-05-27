@@ -16,8 +16,9 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import PublicationExportButton from "./PublicationExportButton";
 
 import { connect } from "react-redux";
+import { TranslatorProps, withTranslator } from "../../utils/translator";
 
-interface Props {
+interface Props extends TranslatorProps {
     publication: PublicationView;
     displayPublicationInfo?: any;
     openDeleteDialog?: any;
@@ -36,26 +37,24 @@ class CatalogMenu extends React.Component<Props, State> {
             menuOpen: false,
         };
 
-        this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
+        const { __ } = this.props;
         return (
             <>
-                <a
+                <button
                     onClick={this.displayPublicationInfo }
-                    onBlur={this.handleOnBlurMenu}
                 >
-                    Fiche livre
-                </a>
-                <a
+                    { __("catalog.bookInfo")}
+                </button>
+                <button
                     onClick={ this.deletePublication }
-                    onBlur={this.handleOnBlurMenu}
                 >
-                    Supprimer définitivement
-                </a>
+                    { __("catalog.delete")}
+                </button>
                 <PublicationExportButton
                     onClick={ this.props.toggleMenu }
                     publication={ this.props.publication }
@@ -64,19 +63,11 @@ class CatalogMenu extends React.Component<Props, State> {
         );
     }
 
-    private deletePublication(e: any) {
-        e.preventDefault();
+    private deletePublication() {
         this.props.openDeleteDialog(this.props.publication);
     }
 
-    private handleOnBlurMenu(e: any) {
-        if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== e.target.parentElement)) {
-            this.props.toggleMenu();
-        }
-    }
-
-    private displayPublicationInfo(e: any) {
-        e.preventDefault();
+    private displayPublicationInfo() {
         this.props.displayPublicationInfo(this.props.publication);
     }
 }
@@ -102,4 +93,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(CatalogMenu) as any;
+export default withTranslator(connect(null, mapDispatchToProps)(CatalogMenu)) as any;

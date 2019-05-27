@@ -24,7 +24,6 @@ interface DeletePublicationConfirmProps extends TranslatorProps {
 }
 
 export class RenewLsdConfirm extends React.Component<DeletePublicationConfirmProps, undefined> {
-
     public constructor(props: any) {
         super(props);
 
@@ -32,16 +31,20 @@ export class RenewLsdConfirm extends React.Component<DeletePublicationConfirmPro
     }
 
     public render(): React.ReactElement<{}> {
+        const {__} = this.props;
         if (!this.props.publication) {
             return <></>;
         }
 
         return (
             <div>
-                <p>Êtes vous sûr de vouloir renouveler la licence pour ce livre : {this.props.publication.title} ?</p>
+                <p>
+                    {__("dialog.renew")}
+                    <span>{this.props.publication.title}</span>
+                </p>
                 <div>
-                    <button className={ styles.primary } onClick={this.renew}>Oui</button>
-                    <button onClick={this.props.closeDialog}>Non</button>
+                    <button className={ styles.primary } onClick={this.renew}>{__("dialog.yes")}</button>
+                    <button onClick={this.props.closeDialog}>{__("dialog.no")}</button>
                 </div>
             </div>
         );
