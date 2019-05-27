@@ -122,19 +122,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         <li
                             className={styles.right}
                         >
-                            <button
-                                className={styles.menu_button}
-                                onClick={this.props.toggleBookmark}
-                                {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
-                            >
-                                <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
-                            </button>
-                        </li>
-                        <li
-                            className={styles.right}
-                            {...(this.props.menuOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
-                        >
-                            <button
+                        <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleMenuClick.bind(this)}
                             >
@@ -144,13 +132,25 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         </li>
                         <li
                             className={styles.right}
-                            {...(this.props.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                            {...(this.props.menuOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                         >
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleSettingsClick.bind(this)}
                             >
                                 <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
+                            </button>
+                        </li>
+                        <li
+                            className={styles.right}
+                            {...(this.props.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                        >
+                            <button
+                                className={styles.menu_button}
+                                onClick={this.props.toggleBookmark}
+                                {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                            >
+                                <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
                             </button>
                             <ReaderOptions {...this.props.readerOptionsProps}/>
                         </li>
