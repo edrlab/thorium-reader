@@ -115,3 +115,16 @@
 .nav_secondary svg:nth-child(2) {
 	margin-left:20px;
 }
+
+.skip_link {
+	position: absolute;
+	left: -2000px;
+
+	&:focus {
+		left: calc(50% - 2rem);
+		width: fit-content;
+		top: 0;
+		z-index: 150;
+		font-size: 0.9rem;
+	}
+}

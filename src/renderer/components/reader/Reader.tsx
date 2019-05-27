@@ -444,7 +444,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             const title = this.translator.translateContentField(publication.Metadata.Title);
 
             if (title) {
-                window.document.title = "Readium2 [ " + title + "]";
+                window.document.title = "Thorium - " + title;
                 this.setState({
                     title,
                 });

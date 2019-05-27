@@ -6,7 +6,7 @@ import OutsideClickAlerter from "readium-desktop/renderer/components/utils/Outsi
 
 interface Props {
     className?: any;
-    visible?: boolean;
+    visible: boolean;
     toggleMenu: any;
     dontCloseWhenClickOutside?: boolean;
     focusMenuButton?: () => void;

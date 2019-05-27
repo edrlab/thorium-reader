@@ -47,7 +47,6 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
     public componentDidUpdate(oldProps: MenuProps) {
         if (this.props.open && !oldProps.open) {
             this.refreshStyle();
-            console.log("HELLO");
         }
     }
 

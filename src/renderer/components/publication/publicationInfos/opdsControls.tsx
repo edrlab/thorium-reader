@@ -29,19 +29,19 @@ export class OpdsControls extends React.Component<CatalogControlsProps, undefine
         }
 
         return publication.isFree ? (
-            <a
+            <button
                 onClick={() => verifyImport(publication)}
                 className={styles.lire}
             >
                 Ajouter à la bibliothèque
-            </a>
+            </button>
         ) : publication.hasSample && (
-            <a
+            <button
                 onClick={() => verifyImport(publication, true)}
                 className={styles.lire}
             >
                 Ajouter l'extrait à la bibliothèque
-            </a>
+            </button>
         );
     }
 }
