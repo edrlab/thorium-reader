@@ -21,7 +21,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 
-import { CatalogView } from "readium-desktop/common/views/catalog";
+import { CatalogEntryView, CatalogView} from "readium-desktop/common/views/catalog";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
@@ -34,8 +34,11 @@ import Header, { DisplayType } from "./Header";
 import GridView from "./GridView";
 import ListView from "./ListView";
 
+import { PublicationView } from "readium-desktop/common/views/publication";
+
 interface CatalogProps extends TranslatorProps, RouteComponentProps {
     catalog?: CatalogView;
+    tags?: string[];
     requestCatalog: any;
 }
 
@@ -58,7 +61,8 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                     { this.props.catalog &&
-                        <DisplayView catalogEntries={ this.props.catalog.entries } />
+                        <DisplayView catalogEntries={ this.props.catalog.entries }
+                        tags={this.props.tags}/>
                     }
             </LibraryLayout>
         );
@@ -74,6 +78,12 @@ export default withApi(
                 methodId: "get",
                 callProp: "requestCatalog",
                 resultProp: "catalog",
+                onLoad: true,
+            },
+            {
+                moduleId: "publication",
+                methodId: "getAllTags",
+                resultProp: "tags",
                 onLoad: true,
             },
         ],

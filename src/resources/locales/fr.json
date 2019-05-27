@@ -11,7 +11,8 @@
       "export": "Exporter",
       "tags": "Mes tags",
       "sort": "trier par",
-      "tagCount": "Nombre de tags"
+      "tagCount": "Nombre de tags",
+      "emptyTagList": "Les livres ne contiennent pas de tags."
     },
     "library": {
         "heading": "Bibliothèque",

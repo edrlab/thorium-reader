@@ -11,7 +11,8 @@
       "export": "Export",
       "tags": "My tags",
       "sort": "sort by",
-      "tagCount": "Tag count"
+      "tagCount": "Tag count",
+      "emptyTagList": "there is no tags in books."
     },
     "library": {
         "heading": "Library",

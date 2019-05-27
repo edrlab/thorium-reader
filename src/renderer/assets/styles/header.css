@@ -92,12 +92,12 @@
 		
 	& form button{
 		position: relative;
-		width:35px;
-		border: 0;
+		top:10px;
+		height:38px;
+		width:36px;
 		background-color: transparent;
 	}
 }
-
 
 .nav_secondary svg {
 	display: inline-block;
@@ -108,6 +108,10 @@
 	margin-left:-5px;
 }
 
+#search_img svg {
+	right: -5px;
+	top: 2px;
+}
 .nav_secondary svg:nth-child(2) {
 	margin-left:20px;
 }
