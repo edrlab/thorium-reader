@@ -118,13 +118,15 @@
 
 .skip_link {
 	position: absolute;
-	left: -2000px;
+	right: -2000px;
 
 	&:focus {
-		left: calc(50% - 2rem);
+		right: 3.75rem;
 		width: fit-content;
-		top: 0;
+		top: 59px;
 		z-index: 150;
-		font-size: 0.9rem;
+		height: 1rem;
+		font-size: 0.7rem;
+		color: grey;
 	}
 }
