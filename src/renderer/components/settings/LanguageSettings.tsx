@@ -40,6 +40,7 @@ export class LanguageSettings extends React.Component<Props, States> {
         this.state = {
             placeholder: undefined,
         };
+
     }
 
     public render(): React.ReactElement<{}> {
@@ -61,7 +62,7 @@ export class LanguageSettings extends React.Component<Props, States> {
                                         onChange={() => this.props.setLocale(lang)}
                                         {...(this.props.locale === lang && {checked: true})}
                                     />
-                                    <label htmlFor={"radio-" + lang}>
+                                    <label htmlFor={"radio-" + lang} onClick={() => this.props.setLocale(lang)}>
                                         { this.props.locale === lang && <SVG svg={DoneIcon} ariaHidden/>}
                                         { (AvailableLanguages as any)[lang] }
                                     </label>
