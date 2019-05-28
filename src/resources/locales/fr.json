@@ -228,7 +228,10 @@
     "settings": {
       "manageTags": "Gérer mes tags",
       "uiLanguage": "Langue de l'interface",
-      "information": "Informations"
+      "information": "Informations",
+      "language": {
+        "languageChoice": "Choix de la langue"
+      }
     },
     "header": {
       "books": "Mes Livres",

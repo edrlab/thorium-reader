@@ -228,7 +228,10 @@
     "settings": {
       "manageTags": "Manage tags",
       "uiLanguage": "UI language",
-      "information": "Information"
+      "information": "Information",
+      "language": {
+        "languageChoice": "Language choice"
+      }
     },
     "header": {
       "books": "My Books",

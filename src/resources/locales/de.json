@@ -177,7 +177,10 @@
     "settings": {
       "manageTags": "Manage tags",
       "uiLanguage": "Sprache",
-      "information": "Informationen"
+      "information": "Informationen",
+      "language": {
+        "languageChoice": "Sprachauswahl"
+      }
     },
     "header": {
       "books": "meine Bücher",

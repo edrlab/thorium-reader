@@ -24,7 +24,7 @@ import { DialogType } from "readium-desktop/common/models/dialog";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import { TranslatorProps, withTranslator } from "../../utils/translator";
 
-interface CatalogControlsProps extends TranslatorProps{
+interface CatalogControlsProps extends TranslatorProps {
     publication: PublicationView;
     openReader?: any;
     openDeleteDialog?: any;
