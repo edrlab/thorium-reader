@@ -68,12 +68,10 @@ export default class App extends React.Component<any, undefined> {
                 <ConnectedRouter history={ this.history }>
                     <div className={styles.root}>
                         <Dropzone
-                            aria-hidden
-                            onClick={(evt) => evt.preventDefault()}
                             onDrop={ this.onDrop }
                         >
                             {({getRootProps, getInputProps}) => {
-                                const rootProps = getRootProps();
+                                const rootProps = getRootProps({onClick: (e) => e.stopPropagation()});
                                 rootProps.tabIndex = -1;
                                 return <div
                                     aria-hidden
@@ -86,7 +84,7 @@ export default class App extends React.Component<any, undefined> {
                                         right: 0,
                                     }}
                                 >
-                                    <input aria-hidden {...getInputProps()} />
+                                    <input aria-hidden {...getInputProps({onClick: (evt) => evt.preventDefault()})} />
                                     <PageManager/>
                                     <DialogManager />
                                     <SameFileImportManager />
