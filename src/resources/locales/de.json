@@ -146,6 +146,8 @@
             "Night": "Nachtzeit"
           }
         },
+        "text": "Text",
+        "spacing": "Abstand",
         "align": "Textausrichtung:",
         "left": "Linksbündig",
         "center": "Zentriert",
