@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import * as ReactDom from "react-dom";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -20,6 +21,7 @@ interface PublicationCardProps extends TranslatorProps {
 
 class PublicationExportButton extends React.Component<PublicationCardProps> {
     private exportInputRef: any;
+
     constructor(props: any) {
         super(props);
 
@@ -30,6 +32,7 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
         this.exportInputRef = React.createRef();
 
         this.onExport = this.onExport.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
     public componentDidMount() {
@@ -39,21 +42,28 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
 
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
+        const id = "exportInput" + this.props.publication.identifier;
         return (
                 <span>
                     <input
-                        id={ "exportInput" + this.props.publication.identifier}
+                        id={ id }
+                        name={ id }
                         ref={ this.exportInputRef }
                         type="file"
                         multiple
                         onChange={this.onExport}
-                        onClick={this.props.onClick}
+                        onClick={(e) => e.stopPropagation()}
                     />
-                    <label htmlFor={"exportInput" + this.props.publication.identifier}>
+                    <label onClick={ this.onClick } htmlFor={ id }>
                         { __("catalog.export")}
                     </label>
                 </span>
         );
+    }
+
+    private onClick(e: any) {
+        this.exportInputRef.current.click();
+        this.props.onClick();
     }
 
     private onExport(event: any) {

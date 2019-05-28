@@ -21,11 +21,14 @@ interface Props extends TranslatorProps {
 }
 
 export class PublicationAddButton extends React.Component<Props> {
-
+    private inputRef: any;
     public constructor(props: Props) {
         super(props);
 
+        this.inputRef = React.createRef();
+
         this.importFile = this.importFile.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -37,14 +40,20 @@ export class PublicationAddButton extends React.Component<Props> {
                     type="file"
                     aria-label="Importer un fichier epub"
                     onChange={ this.importFile }
+                    onClick={(e) => e.stopPropagation()}
                     multiple
                     accept=".lcpl, .epub"
+                    ref={this.inputRef}
                 />
-                <label htmlFor="epubInput">
+                <label onClick={this.onClick} htmlFor="epubInput">
                     <SVG svg={ PlusIcon } title={__("header.importTitle")}/>
                 </label>
             </div>
         );
+    }
+
+    private onClick() {
+        this.inputRef.current.click();
     }
 
     private importFile(event: any) {
