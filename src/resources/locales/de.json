@@ -9,6 +9,17 @@
       "bookInfo": "Über dieses Buch",
       "delete": "Dauerhaft löschen",
       "export": "Export",
+      "released": "veröffentlicht am",
+      "description": "Beschreibung",
+      "moreInfo": "mehr Informationen",
+      "publisher": "Herausgeber",
+      "lang": "Sprache",
+      "id": "Benutzername",
+      "addBookToLib": "zur Bibliothek hinzufügen",
+      "addTeaserToLib": "den Extrakt zur Bibliothek hinzufügen",
+      "addTags": "Ein tag hinzufügen",
+      "readBook": "Lesen",
+      "deleteBook": "aus der Bibliothek löschen",
       "tags": "Meine tags",
       "sort": "sortieren nach",
       "tagCount": "Anzahl tags",
@@ -111,6 +122,12 @@
         "closeTableOfContentsTitle": "Schließen des Inhaltsverzeichnisses",
         "settingsTitle": "settings",
         "readBookTitle": "mit dem Lesen des Buches beginnen"
+      },
+      "marks": {
+        "landmarks": "Lesezeichen",
+        "illustrations": "Illustrationen",
+        "toc": "inhaltsverzeichnis",
+        "annotations": "Annotationen"
       },
       "footerInfo": {
         "moreInfo": "mehr informationen",
