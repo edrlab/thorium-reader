@@ -174,7 +174,7 @@
     "react-beautiful-dnd": "^9.0.2",
     "react-dom": "^16.8.6",
     "react-dropdown": "^1.6.2",
-    "react-dropzone": "^9.0.0",
+    "react-dropzone": "10.0.0",
     "react-focus-lock": "^1.19.1",
     "react-helmet": "^5.2.1",
     "react-redux": "^6.0.1",

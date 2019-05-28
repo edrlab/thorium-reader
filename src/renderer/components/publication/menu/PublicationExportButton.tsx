@@ -47,14 +47,13 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
                 <span>
                     <input
                         id={ id }
-                        name={ id }
                         ref={ this.exportInputRef }
                         type="file"
                         multiple
                         onChange={this.onExport}
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={ this.onClick }
                     />
-                    <label onClick={ this.onClick } htmlFor={ id }>
+                    <label htmlFor={ id }>
                         { __("catalog.export")}
                     </label>
                 </span>
@@ -62,7 +61,6 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
     }
 
     private onClick(e: any) {
-        this.exportInputRef.current.click();
         this.props.onClick();
     }
 
