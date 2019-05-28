@@ -72,7 +72,8 @@
       "yes": "Ja",
       "no": "Nein",
       "delete": "Willst du diese Publikation wirklich löschen?",
-      "import": "Willst du diese EPUB-Dateien wirklich importieren?"
+      "import": "Willst du diese EPUB-Dateien wirklich importieren?",
+      "closeModalWindow": "Dieses modale Fenster schließen"
     },
     "opds": {
       "download": "Download",
@@ -171,6 +172,14 @@
       "importTitle": "ein Buch importieren"
     },
     "accessibility": {
-      "skipLink": "Gehe zum Inhalt"
+      "skipLink": "Gehe zum Inhalt",
+      "importFile": "importieren einer epub-datei",
+      "searchBook": "Suche nach einem Buch, einem Tag oder einer Art von Literatur",
+      "closeDialog": "Schließen",
+      "bookTitle": "Titel des Buches",
+      "bookAuthor": "Buchautorin",
+      "bookReleaseDate": "Buchfreigabedatum",
+      "bookPublisher": "Buchverlag",
+      "homeMenu": "Startmenü"
     }
 }

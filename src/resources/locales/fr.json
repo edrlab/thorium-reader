@@ -89,7 +89,8 @@
       "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
       "deleteOpds": "Êtes vous sûr de vouloir supprimer ce flux opds ?",
       "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
-      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :"
+      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
+      "closeModalWindow": "Fermer cette fenêtre modale"
     },
     "opds": {
       "download": "Télécharger",
@@ -230,6 +231,14 @@
       "importTitle": "Importer un livre"
     },
     "accessibility": {
-      "skipLink": "Aller au contenu"
+      "skipLink": "Aller au contenu",
+      "importFile": "Importer un fichier epub",
+      "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
+      "closeDialog": "Fermer",
+      "bookTitle": "Titre du livre",
+      "bookAuthor": "Auteur du livre",
+      "bookReleaseDate": "Date de sortie du livre",
+      "bookPublisher": "Editeur du livre",
+      "homeMenu": "Menu principal"
     }
 }

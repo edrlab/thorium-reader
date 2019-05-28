@@ -36,7 +36,7 @@ export class Search extends React.Component<SearchProps, undefined> {
                     ref={this.inputRef}
                     type="search"
                     id="menu_search"
-                    aria-label="Rechercher un livre, un tag, ou un type de littérature"
+                    aria-label={__("accessibility.searchBook")}
                     placeholder={ __("header.searchPlaceholder")}
                 />
                 <button id={styles.search_img}>

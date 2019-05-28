@@ -35,7 +35,7 @@ export class PublicationAddButton extends React.Component<Props> {
                 <input
                     id="epubInput"
                     type="file"
-                    aria-label="Importer un fichier epub"
+                    aria-label={__("accessibility.importFile")}
                     onChange={ this.importFile }
                     multiple
                     accept=".lcpl, .epub"

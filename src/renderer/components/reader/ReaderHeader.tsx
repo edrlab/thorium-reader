@@ -73,7 +73,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
             <nav
                 className={styles.main_navigation}
                 role="navigation"
-                aria-label="Menu principal"
+                aria-label={ __("accessibility.homeMenu")}
                 {...(this.props.fullscreen && {style: {
                     backgroundColor: "transparent",
                     boxShadow: "none",

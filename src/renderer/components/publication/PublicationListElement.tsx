@@ -25,8 +25,9 @@ import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 
 import uuid = require("uuid");
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface PublicationListElementProps {
+interface PublicationListElementProps extends TranslatorProps {
     publication: PublicationView;
     deletePublication?: any;
     displayPublicationInfo?: any;
@@ -61,6 +62,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
         const pub = this.props.publication;
         const formatedPublishers = pub.publishers.join(", ");
         let formatedPublishedYear = "";
+        const { __ } = this.props;
 
         if (pub.publishedAt) {
             formatedPublishedYear = "" + moment(pub.publishedAt).year();
@@ -69,16 +71,18 @@ export class PublicationListElement extends React.Component<PublicationListEleme
         return (
             <>
                 <div className={styles.list_book_title}>
-                <p className={styles.book_title} aria-label="Titre du livre">{ pub.title }</p>
+                <p className={styles.book_title} aria-label={ __("accessibility.bookTitle")}>{ pub.title }</p>
                 <p
                     className={`${styles.book_author} ${styles.lightgrey}`}
-                    aria-label="Auteur du livre"
+                    aria-label={ __("accessibility.bookAuthor")}
                 >
                     {pub.authors.map((author) => author).join(", ")}
                 </p>
                 </div>
-                <p className={styles.infos_sup} aria-label="Date de sortie du livre">{ formatedPublishedYear}</p>
-                <p className={styles.infos_sup} aria-label="Éditeur du livre">{ formatedPublishers }</p>
+                <p className={styles.infos_sup} aria-label={ __("accessibility.bookReleaseDate")}>
+                { formatedPublishedYear}</p>
+                <p className={styles.infos_sup} aria-label={ __("accessibility.bookPublisher")}>
+                { formatedPublishers }</p>
                 <button
                     type="button"
                     aria-expanded={this.state.menuOpen}
@@ -149,7 +153,7 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => 
     };
 };
 
-export default withApi(
+export default withTranslator(withApi(
     PublicationListElement,
     {
         operations: [
@@ -161,4 +165,4 @@ export default withApi(
         ],
         mapDispatchToProps,
     },
-);
+));

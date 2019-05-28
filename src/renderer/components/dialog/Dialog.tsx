@@ -14,18 +14,20 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-
 import FocusLock from "react-focus-lock";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface Props {
+interface Props extends TranslatorProps {
     open: boolean;
     close: () => void;
     className?: string;
     id?: string;
 }
 
-export default class Dialog extends React.Component<Props, undefined> {
+export class Dialog extends React.Component<Props, undefined> {
     public render(): React.ReactElement<{}> {
         const content = this.props.children;
         const className = this.props.className;
+        const { __ } = this.props;
 
         return (
             <FocusLock>
@@ -52,8 +54,8 @@ export default class Dialog extends React.Component<Props, undefined> {
                         <button
                             className={styles.close_button}
                             type="button"
-                            aria-label="Fermer"
-                            title="Fermer cette fenêtre modale"
+                            aria-label={__("accessibility.closeDialog")}
+                            title={__("dialog.closeModalWindow")}
                             data-dismiss="dialog"
                             onClick={this.props.close}
                         >
@@ -65,3 +67,5 @@ export default class Dialog extends React.Component<Props, undefined> {
         );
     }
 }
+
+export default withTranslator(Dialog);
