@@ -132,6 +132,14 @@
         "loginButton": "Login",
         "sentence": "Please, log in to access to the contents"
       },
+      "menu": {
+        "aboutBook": "About this book",
+        "addLib": "Add this book to the librairy",
+        "goBuyBook": "Buy this book",
+        "goLoanBook": "Borrow this book",
+        "goSubBook": "Subscribe",
+        "addTeaser": "Add extract to the librairy"
+      },
       "breadcrumbRoot": "Catalogs"
     },
     "reader": {

@@ -132,6 +132,14 @@
         "loginButton": "Connexion",
         "sentence": "Veuillez vous connecter pour acceder au contenu"
       },
+      "menu": {
+        "aboutBook": "Fiche livre",
+        "addLib": "Ajouter à la bibliothèque",
+        "goBuyBook": "Aller sur la page d'achat",
+        "goLoanBook": "Aller sur la page d'emprunt",
+        "goSubBook": "Aller sur la page d'abonnement",
+        "addTeaser": "Ajouter l'extrait à la bibliothèque"
+      },
       "breadcrumbRoot": "Catalogues"
     },
     "reader": {

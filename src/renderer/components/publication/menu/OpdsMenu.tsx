@@ -15,8 +15,9 @@ import * as importAction from "readium-desktop/common/redux/actions/import";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { TranslatorProps, withTranslator } from "../../utils/translator";
 
-interface PublicationCardProps {
+interface PublicationCardProps extends TranslatorProps {
     publication: OpdsPublicationView;
     displayPublicationInfo?: (data: any) => any;
     verifyImport?: (publication: OpdsPublicationView, downloadSample?: boolean) => void;
@@ -30,47 +31,47 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
     }
 
     public render(): React.ReactElement<{}>  {
-        const { publication } = this.props;
+        const { publication, __ } = this.props;
         return (
             <>
                 <button
                     onClick={this.displayPublicationInfo }
                 >
-                    Fiche livre
+                   {__("opds.menu.aboutBook")}
                 </button>
                 { publication.isFree &&
                     <button
                         onClick={ (e) => this.onAddToCatalogClick(e) }
                     >
-                        Ajouter à la bibliothèque
+                        {__("opds.menu.addLib")}
                     </button>
                 }
                 { publication.buyUrl &&
                     <a
                         href={publication.buyUrl}
                     >
-                        Aller sur la page d'achat
+                        {__("opds.menu.goBuyBook")}
                     </a>
                 }
                 { publication.borrowUrl &&
                     <a
                         href={publication.borrowUrl}
                     >
-                        Aller sur la page d'emprunt
+                        {__("opds.menu.goLoanBook")}
                     </a>
                 }
                 { publication.subscribeUrl &&
                     <a
                         href={publication.subscribeUrl}
                     >
-                        Aller sur la page d'abonnement
+                        {__("opds.menu.goSubBook")}
                     </a>
                 }
                 { publication.hasSample &&
                     <button
                         onClick={ (e) => this.onAddToCatalogClick(e, true) }
                     >
-                        Ajouter l'extrait à la bibliothèque
+                        {__("opds.menu.addTeaser")}
                     </button>
                 }
             </>
@@ -110,10 +111,10 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
     };
 };
 
-export default withApi(
+export default withTranslator(withApi(
     PublicationCard,
     {
         operations: [],
         mapDispatchToProps,
     },
-);
+));

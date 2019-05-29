@@ -109,6 +109,14 @@
         "password": "Passwort:",
         "loginButton": "Login",
         "sentence": "Bitte logge dich ein, um auf die Inhalte zuzugreifen"
+      },
+      "menu": {
+        "aboutBook": "über dieses Buch",
+        "addLib": "zur Lib hinzufügen",
+        "goBuyBook": "dieses Buch kaufen",
+        "goLoanBook": "dieses Buch ausleihen",
+        "goSubBook": "abonnieren",
+        "addTeaser": "Extrakt zur Lib hinzufügen"
       }
     },
     "reader": {
