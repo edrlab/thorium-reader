@@ -37,7 +37,7 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
                 <button
                     onClick={this.displayPublicationInfo }
                 >
-                   {__("opds.menu.aboutBook")}
+                    {__("opds.menu.aboutBook")}
                 </button>
                 { publication.isFree &&
                     <button
