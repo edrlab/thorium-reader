@@ -34,20 +34,26 @@ export class AllPublicationPage extends React.Component<AllPublicationPageProps,
     public render(): React.ReactElement<{}> {
         let DisplayView: any = GridView;
         const displayType = this.props.location.state;
+        let type: any = "";
+        let typeview: DisplayType = DisplayType.Grid;
         const { __ } = this.props;
         const title = __("catalog.allBooks");
 
-        if (this.props.location) {
-            const parsedResult = qs.parse(this.props.location.search);
-
-            if (parsedResult.displayType === DisplayType.List) {
-                DisplayView = ListView;
-            } else {
-                DisplayView = GridView;
-            }
+        if (displayType) {
+            type = Object.values(displayType).pop();
         }
 
-        const secondaryHeader = <Header displayType={ displayType } />;
+        // console.log(`type: ${type}`);
+        if (type === DisplayType.List ||
+            window.location.hash === "#/library/search/all?displayType=list") {
+            DisplayView = ListView;
+            typeview = DisplayType.List;
+        } else {
+            DisplayView = GridView;
+            typeview = DisplayType.Grid;
+        }
+
+        const secondaryHeader = <Header displayType={ typeview } />;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
