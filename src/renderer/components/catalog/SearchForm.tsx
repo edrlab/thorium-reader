@@ -25,7 +25,6 @@ export class Search extends React.Component<SearchProps, undefined> {
         super(props);
 
         this.inputRef = React.createRef();
-
         this.search = this.search.bind(this);
     }
     public render(): React.ReactElement<{}> {
@@ -49,8 +48,11 @@ export class Search extends React.Component<SearchProps, undefined> {
     public search(e: any) {
         e.preventDefault();
         const value = this.inputRef.current.value;
-
-        this.props.history.push("/library/search/text/" + value + this.props.location.search);
+        if (!value) {
+            this.props.history.push("/library/search/all");
+        } else {
+            this.props.history.push("/library/search/text/" + value + this.props.location.search);
+        }
     }
 }
 
