@@ -41,7 +41,8 @@ export class Header extends React.Component<HeaderProps, undefined> {
                         </Link>
                         <Link
                             to={{search: "displayType=list"}}
-                            style={this.props.displayType !== DisplayType.List ? {fill: "grey"} : {}}
+                            style={this.props.displayType !== DisplayType.List ?
+                                {fill: "grey", marginLeft: "16px"} : {}}
                         >
                             <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
                         </Link>

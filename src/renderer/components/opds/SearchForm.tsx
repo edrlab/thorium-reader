@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -33,7 +33,7 @@ export class SearchForm extends React.Component<RouteComponentProps, undefined> 
                     aria-label="Rechercher un livre, un tag, ou un type de littérature"
                     placeholder="Rechercher"
                 />
-                <button>
+                <button id={styles.search_img}>
                     <SVG svg={SearchIcon} title="Lancer la recherche"/>
                 </button>
             </form>
