@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
