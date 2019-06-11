@@ -74,7 +74,6 @@ export default class App extends React.Component<any, undefined> {
                                 const rootProps = getRootProps({onClick: (e) => e.stopPropagation()});
                                 rootProps.tabIndex = -1;
                                 return <div
-                                    aria-hidden
                                     {...rootProps}
                                     style={{
                                         position: "absolute",
