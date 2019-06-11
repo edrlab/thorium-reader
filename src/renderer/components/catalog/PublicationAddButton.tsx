@@ -21,7 +21,6 @@ interface Props extends TranslatorProps {
 }
 
 export class PublicationAddButton extends React.Component<Props> {
-
     public constructor(props: Props) {
         super(props);
 

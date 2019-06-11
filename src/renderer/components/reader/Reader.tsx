@@ -356,7 +356,23 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
+        const readerMenuProps = {
+            open: this.state.menuOpen,
+            publication: this.state.publication,
+            handleLinkClick: this.handleLinkClick,
+            handleBookmarkClick: this.goToLocator,
+            toggleMenu: this.handleMenuButtonClick,
+        };
+
+        const readerOptionsProps = {
+            open: this.state.settingsOpen,
+            indexes: this.state.indexes,
+            settings: this.state.settingsValues,
+            handleSettingChange: this.handleSettingsValueChange.bind(this),
+            handleIndexChange: this.handleIndexValueChange.bind(this),
+            setSettings: this.setSettings,
+            toggleMenu: this.handleSettingsClick,
+        };
 
         return (
                 <div>
@@ -373,20 +389,8 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                             handleReaderClose={this.handleReaderClose}
                             toggleBookmark={ this.handleToggleBookmark }
                             isOnBookmark={this.state.visibleBookmarkList.length > 0}
-                        />
-                        <ReaderMenu
-                            open={this.state.menuOpen}
-                            publication={this.state.publication}
-                            handleLinkClick={this.handleLinkClick}
-                            handleBookmarkClick={this.goToLocator}
-                        />
-                        <ReaderOptions
-                            open={this.state.settingsOpen}
-                            indexes={this.state.indexes}
-                            settings={this.state.settingsValues}
-                            handleSettingChange={this.handleSettingsValueChange.bind(this)}
-                            handleIndexChange={this.handleIndexValueChange.bind(this)}
-                            setSettings={this.setSettings}
+                            readerOptionsProps={readerOptionsProps}
+                            readerMenuProps={readerMenuProps}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
@@ -440,7 +444,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             const title = this.translator.translateContentField(publication.Metadata.Title);
 
             if (title) {
-                window.document.title = "Readium2 [ " + title + "]";
+                window.document.title = "Thorium - " + title;
                 this.setState({
                     title,
                 });

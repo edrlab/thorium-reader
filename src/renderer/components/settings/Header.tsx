@@ -28,11 +28,6 @@ export class SettingsHeader extends React.Component<Props, undefined> {
         return (
             <SecondaryHeader id={styles.settings_header}>
                 <ul>
-                    <li {...(this.props.section === 0 && {className: styles.active})}>
-                        <Link to="/settings/tags">
-                            { __("settings.manageTags") }
-                        </Link>
-                    </li>
                     <li {...(this.props.section === 2 && {className: styles.active})}>
                         <Link to="/settings/languages">
                             { __("settings.uiLanguage") }

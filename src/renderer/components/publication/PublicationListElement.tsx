@@ -9,15 +9,11 @@ import * as moment from "moment";
 
 import * as React from "react";
 
-import { connect } from "react-redux";
-
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import { DialogType } from "readium-desktop/common/models/dialog";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { readerActions } from "readium-desktop/common/redux/actions";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -26,6 +22,9 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+
+import uuid = require("uuid");
+import AccessibleMenu from "../utils/menu/AccessibleMenu";
 
 interface PublicationListElementProps {
     publication: PublicationView;
@@ -40,6 +39,9 @@ interface PublicationListElementState {
 }
 
 export class PublicationListElement extends React.Component<PublicationListElementProps, PublicationListElementState> {
+    private menuId: string;
+    private buttonRef: any;
+
     constructor(props: any) {
         super(props);
 
@@ -49,7 +51,10 @@ export class PublicationListElement extends React.Component<PublicationListEleme
 
         this.deletePublication = this.deletePublication.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
-        this.switchMenu = this.switchMenu.bind(this);
+        this.toggleMenu = this.toggleMenu.bind(this);
+        this.focusButton = this.focusButton.bind(this);
+
+        this.menuId = "menu-" + uuid.v4();
     }
 
     public render(): React.ReactElement<{}>  {
@@ -76,16 +81,28 @@ export class PublicationListElement extends React.Component<PublicationListEleme
                 <p className={styles.infos_sup} aria-label="Éditeur du livre">{ formatedPublishers }</p>
                 <button
                     type="button"
-                    aria-haspopup="dialog"
-                    aria-controls="dialog"
-                    title="Voir plus"
-                    onClick={this.switchMenu}
+                    aria-expanded={this.state.menuOpen}
+                    aria-controls={this.menuId}
+                    title={this.props.publication.title}
+                    onClick={this.toggleMenu}
+                    ref={(ref) => this.buttonRef = ref}
                 >
                     <SVG svg={MenuIcon}/>
                 </button>
-                <div className={(this.state.menuOpen ? styles.menu_open + " " : "") + styles.list_menu}>
-                    {this.props.menuContent}
-                </div>
+                { this.state.menuOpen &&
+                    <AccessibleMenu
+                        toggleMenu={this.toggleMenu}
+                        focusMenuButton={this.focusButton}
+                        visible={this.state.menuOpen}
+                    >
+                        <div
+                            id={this.menuId}
+                            className={(this.state.menuOpen ? styles.menu_open + " " : "") + styles.list_menu}
+                        >
+                            {this.props.menuContent}
+                        </div>
+                    </AccessibleMenu>
+                }
             </>
         );
     }
@@ -100,8 +117,12 @@ export class PublicationListElement extends React.Component<PublicationListEleme
         this.props.displayPublicationInfo(this.props.publication);
     }
 
-    private switchMenu() {
+    private toggleMenu() {
         this.setState({menuOpen: !this.state.menuOpen});
+    }
+
+    private focusButton() {
+        this.buttonRef.focus();
     }
 }
 

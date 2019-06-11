@@ -115,7 +115,6 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
         } catch (error) {
             continue;
         }
-
         const publicationView = publicationViewConverter.convertDocumentToView(publication);
 
         // Get epub file from publication
@@ -156,10 +155,23 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
 
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
-        // Test if publication contains LCP drm
-        const parsedEpub = yield call(
-            () => streamer.loadOrGetCachedPublication(epubPath),
-        );
+
+        let parsedEpub;
+        try {
+            // Test if publication contains LCP drm
+            parsedEpub = yield call(
+                () => streamer.loadOrGetCachedPublication(epubPath),
+            );
+        } catch (error) {
+            yield put({
+                type: streamerActions.ActionType.PublicationOpenError,
+                error: true,
+                meta: {
+                    publication,
+                },
+            });
+            continue;
+        }
 
         if (parsedEpub.LCP) {
             console.log("### LCP publication");

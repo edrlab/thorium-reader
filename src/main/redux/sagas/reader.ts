@@ -147,7 +147,7 @@ export function* readerOpenRequestWatcher(): SagaIterator {
         const action = yield take(readerActions.ActionType.OpenRequest);
         const publication = action.payload.publication;
 
-        // Notify the streamer to create a manifest fo this publication
+        // Notify the streamer to create a manifest for this publication
         yield put(streamerActions.openPublication(
             publication,
         ));

@@ -11,7 +11,8 @@
       "export": "Exporter",
       "tags": "Mes tags",
       "sort": "trier par",
-      "tagCount": "Nombre de tags"
+      "tagCount": "Nombre de tags",
+      "emptyTagList": "Les livres ne contiennent pas de tags."
     },
     "library": {
         "heading": "Bibliothèque",
@@ -48,10 +49,12 @@
         }
     },
     "publication": {
-      "notReadableLcp": "Ce livre ne peut être lu car la licence lcp est terminée",
+      "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",
+      "revokedLcp": "Ce livre ne peut être lu car la licence lcp a été révoqué.",
+      "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retourné.",
       "downloadButton": "Télécharger",
-      "readButton": "Voir",
-      "deleteButton": "Supprimer",
+      "readButton": "Lire",
+      "deleteButton": "Supprimer de la bibliothèque",
       "infoButton": "Informations LCP",
       "renewButton": "Renouveler",
       "renewSentence": "Etes vous sûr de vouloir renouveler cette publication ?",
@@ -83,8 +86,10 @@
       "yes": "Oui",
       "no": "Non",
       "delete": "Êtes vous sûr de vouloir supprimer cette publication ?",
-      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-      "lcpImport": "Etes vous sûr de vouloir importer ce(s) fichier(s) LCP :"
+      "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
+      "deleteOpds": "Êtes vous sûr de vouloir supprimer ce flux opds ?",
+      "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
+      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :"
     },
     "opds": {
       "download": "Télécharger",
@@ -217,11 +222,14 @@
       "books": "Mes Livres",
       "catalogs": "Catalogues",
       "settings": "Préférences",
-      "allBooks": "tous les livres",
+      "allBooks": "Tous les livres",
       "gridTitle": "Présenter les couvertures de livres en grille",
       "listTitle": "Présenter les livres sous forme de liste",
       "searchPlaceholder": "Rechercher",
       "searchTitle": "Lancer la recherche",
       "importTitle": "Importer un livre"
+    },
+    "accessibility": {
+      "skipLink": "Aller au contenu"
     }
 }

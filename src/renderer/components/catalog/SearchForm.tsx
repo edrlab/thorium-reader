@@ -8,11 +8,13 @@
 import * as React from "react";
 
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { TranslatorProps, withTranslator } from "../utils/translator";
+
+import { setLatestVersion } from "readium-desktop/common/redux/actions/update";
 
 interface SearchProps extends RouteComponentProps, TranslatorProps {}
 
@@ -23,7 +25,6 @@ export class Search extends React.Component<SearchProps, undefined> {
         super(props);
 
         this.inputRef = React.createRef();
-
         this.search = this.search.bind(this);
     }
     public render(): React.ReactElement<{}> {
@@ -37,7 +38,7 @@ export class Search extends React.Component<SearchProps, undefined> {
                     aria-label="Rechercher un livre, un tag, ou un type de littérature"
                     placeholder={ __("header.searchPlaceholder")}
                 />
-                <button>
+                <button id={styles.search_img}>
                     <SVG svg={SearchIcon} title={ __("header.searchTitle")}/>
                 </button>
             </form>
@@ -47,8 +48,11 @@ export class Search extends React.Component<SearchProps, undefined> {
     public search(e: any) {
         e.preventDefault();
         const value = this.inputRef.current.value;
-
-        this.props.history.push("/library/search/text/" + value + this.props.location.search);
+        if (!value) {
+            this.props.history.push("/library/search/all");
+        } else {
+            this.props.history.push("/library/search/text/" + value + this.props.location.search);
+        }
     }
 }
 

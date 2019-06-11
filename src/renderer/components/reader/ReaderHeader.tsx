@@ -37,6 +37,9 @@ import * as qs from "query-string";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
+import ReaderMenu from "./ReaderMenu";
+import ReaderOptions from "./ReaderOptions";
+
 interface Props extends TranslatorProps {
     menuOpen: boolean;
     mode?: ReaderMode;
@@ -51,6 +54,8 @@ interface Props extends TranslatorProps {
     isOnBookmark: boolean;
     displayPublicationInfo?: any;
     publication?: Publication;
+    readerMenuProps: any;
+    readerOptionsProps: any;
 }
 
 export class ReaderHeader extends React.Component<Props, undefined> {
@@ -119,11 +124,11 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         >
                             <button
                                 className={styles.menu_button}
-                                onClick={this.props.toggleBookmark}
-                                {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                                onClick={this.props.handleMenuClick.bind(this)}
                             >
-                                <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
+                                <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
                             </button>
+                            <ReaderMenu {...this.props.readerMenuProps}/>
                         </li>
                         <li
                             className={styles.right}
@@ -131,9 +136,9 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         >
                             <button
                                 className={styles.menu_button}
-                                onClick={this.props.handleMenuClick.bind(this)}
+                                onClick={this.props.handleSettingsClick.bind(this)}
                             >
-                                <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
+                                <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
                             </button>
                         </li>
                         <li
@@ -142,10 +147,12 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         >
                             <button
                                 className={styles.menu_button}
-                                onClick={this.props.handleSettingsClick.bind(this)}
+                                onClick={this.props.toggleBookmark}
+                                {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                             >
-                                <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
+                                <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
                             </button>
+                            <ReaderOptions {...this.props.readerOptionsProps}/>
                         </li>
                         {/*<li className={styles.right}>
                             <button

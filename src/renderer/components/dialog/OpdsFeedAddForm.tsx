@@ -45,7 +45,7 @@ export class OpdsFeedAddForm extends React.Component<Props, State> {
         return (
             <div>
                 <h2>{__("opds.addMenu")}</h2>
-                <form onSubmit={ this.add }>
+                <form>
                     <div className={styles.field}>
                         <label>{__("opds.addForm.name")}</label>
                         <input
@@ -71,6 +71,7 @@ export class OpdsFeedAddForm extends React.Component<Props, State> {
                             disabled={!name || !url}
                             type="submit"
                             value={__("opds.addForm.addButton")}
+                            onClick={ this.add }
                         />
                         <button onClick={this.close}>{__("opds.back")}</button>
                     </div>

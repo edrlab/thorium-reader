@@ -1,5 +1,5 @@
 {
-  "name": "readium-desktop",
+  "name": "thorium",
   "version": "1.0.0-alpha.4",
   "description": "Desktop application to read ebooks",
   "keywords": [
@@ -60,8 +60,8 @@
   },
   "homepage": "https://github.com/edrlab/readium-desktop",
   "build": {
-    "productName": "ReadiumDesktop",
-    "appId": "io.github.edrlab.readium-desktop",
+    "productName": "Thorium",
+    "appId": "io.github.edrlab.thorium",
     "dmg": {
       "contents": [
         {
@@ -81,6 +81,7 @@
       "node_modules/",
       "external-assets/",
       "assets/",
+      "ressources/",
       "ReadiumCSS/",
       "index_app.html",
       "index_app.js",
@@ -98,12 +99,11 @@
       "app": "dist"
     },
     "fileAssociations": {
-      "ext": [
-        "epub"
-      ]
+      "ext": "epub"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis-web",
+      "icon": "dist/assets/icons/icon.ico"
     },
     "linux": {
       "target": [
@@ -138,6 +138,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@types/react-beautiful-dnd": "^7.1.2",
+    "@types/react-helmet": "^5.0.8",
     "acorn": "^6.1.1",
     "acorn-dynamic-import": "^4.0.0",
     "bootstrap": "^4.1.1",
@@ -169,11 +170,13 @@
     "r2-shared-js": "^1.0.12",
     "r2-streamer-js": "^1.0.13",
     "r2-utils-js": "^1.0.9",
-    "react": "^16.6.3",
+    "react": "^16.8.6",
     "react-beautiful-dnd": "^9.0.2",
-    "react-dom": "^16.5.2",
+    "react-dom": "^16.8.6",
     "react-dropdown": "^1.6.2",
-    "react-dropzone": "^7.0.1",
+    "react-dropzone": "10.0.0",
+    "react-focus-lock": "^1.19.1",
+    "react-helmet": "^5.2.1",
     "react-redux": "^6.0.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
@@ -202,9 +205,8 @@
     "@types/node": "8.*.*",
     "@types/pouchdb-core": "^7.0.0",
     "@types/query-string": "^6.1.1",
-    "@types/react": "^16.8.13",
+    "@types/react": "^16.8.18",
     "@types/react-dom": "^16.8.4",
-    "@types/react-dropzone": "^4.2.2",
     "@types/react-redux": "^7.0.6",
     "@types/react-router": "^4.4.1",
     "@types/react-router-dom": "^4.3.2",

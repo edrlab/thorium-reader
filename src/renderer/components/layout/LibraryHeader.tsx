@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 
 import { RouteComponentProps } from "react-router-dom";
 
+import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
@@ -46,17 +47,20 @@ export class Header extends React.Component<HeaderProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        return (
+        return (<>
+            <SkipLink
+                className={styles.skip_link}
+                anchorId="main-content"
+                label={__("accessibility.skipLink")}
+            />
             <nav className={styles.main_navigation} role="navigation" aria-label="Menu principal">
                 <ul>
-                    {
-                        headerNav.map((item, index: number) => {
-                            return this.buildNavItem(item, index, __);
-                        })
-                    }
+                    { headerNav.map((item, index: number) => {
+                        return this.buildNavItem(item, index, __);
+                    })}
                 </ul>
             </nav>
-        );
+        </>);
     }
 
     private buildNavItem(item: any, index: number, __: any) {
@@ -64,15 +68,12 @@ export class Header extends React.Component<HeaderProps, undefined> {
         if (!this.props.location) {
             return (<></>);
         }
-
-        let active = false;
         let styleClasses = [];
         const pathname = this.props.match.path;
 
         for (const matchRoute of item.matchRoutes) {
             if (pathname.startsWith(matchRoute)
             && ((pathname === "/" && matchRoute === pathname) || matchRoute !== "/")) {
-                active = true;
                 styleClasses.push(styles.active);
                 break;
             }
