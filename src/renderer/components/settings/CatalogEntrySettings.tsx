@@ -35,7 +35,7 @@ interface CatalogEntrySettingStates {
     entryToUpdate: {
         id: number,
         title: string,
-        tag: string;
+        tag: string,
     };
 }
 
