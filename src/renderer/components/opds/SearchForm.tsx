@@ -37,7 +37,7 @@ export class SearchForm extends React.Component<OpdsProps, undefined> {
                     aria-label={__("accessibility.searchBook")}
                     placeholder={__("header.searchPlaceholder")}
                 />
-                <button>
+                <button id={styles.search_img}>
                     <SVG svg={SearchIcon} title={__("header.searchTitle")}/>
                 </button>
             </form>
