@@ -12,7 +12,7 @@ import { TranslatorProps, withTranslator } from "readium-desktop/renderer/compon
 import { SectionData } from "./sideMenuData";
 import SideMenuSection from "./SideMenuSection";
 
-import AccessibleMenu from "../../utils/menu/AccessibleMenu";
+import AccessibleMenu from "readium-desktop/renderer/components/utils/menu/AccessibleMenu";
 
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
