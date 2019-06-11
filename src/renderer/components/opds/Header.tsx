@@ -17,7 +17,7 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import SearchForm from "./SearchForm";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 export enum DisplayType {
     Grid = "grid",

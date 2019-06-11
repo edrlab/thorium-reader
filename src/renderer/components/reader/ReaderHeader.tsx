@@ -35,7 +35,7 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import * as qs from "query-string";
 import { ReaderMode } from "readium-desktop/common/models/reader";
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";

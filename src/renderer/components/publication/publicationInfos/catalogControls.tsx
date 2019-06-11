@@ -22,7 +22,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { DialogType } from "readium-desktop/common/models/dialog";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-import { TranslatorProps, withTranslator } from "../../utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 interface CatalogControlsProps extends TranslatorProps {
     publication: PublicationView;

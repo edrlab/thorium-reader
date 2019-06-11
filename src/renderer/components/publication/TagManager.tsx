@@ -16,7 +16,7 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 interface TagManagerProps extends TranslatorProps {
     publicationIdentifier: string;

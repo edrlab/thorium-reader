@@ -12,7 +12,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 interface OpdsProps extends TranslatorProps, RouteComponentProps {}
 

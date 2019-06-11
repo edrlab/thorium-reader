@@ -16,7 +16,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import PublicationExportButton from "./PublicationExportButton";
 
 import { connect } from "react-redux";
-import { TranslatorProps, withTranslator } from "../../utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 interface Props extends TranslatorProps {
     publication: PublicationView;

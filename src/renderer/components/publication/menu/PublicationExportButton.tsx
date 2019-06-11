@@ -11,7 +11,7 @@ import * as ReactDom from "react-dom";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps } from "../../utils/translator";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
 interface PublicationCardProps extends TranslatorProps {
     publication: PublicationView;

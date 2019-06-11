@@ -15,7 +15,7 @@ import * as importAction from "readium-desktop/common/redux/actions/import";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps, withTranslator } from "../../utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 interface PublicationCardProps extends TranslatorProps {
     publication: OpdsPublicationView;
