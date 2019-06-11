@@ -27,7 +27,7 @@ import OpdsControls from "./opdsControls";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 interface PublicationInfoProps extends TranslatorProps {
     publicationIdentifier: string;
@@ -88,7 +88,7 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
 
                     {
                         (formatedPublishedDate) ?
-                        (<p><span>Publié le</span> { formatedPublishedDate }</p>) : (<></>)
+                        (<p><span>{__("catalog.released")}</span> { formatedPublishedDate }</p>) : (<></>)
                     }
                     <div className={styles.tags}>
                         <div className={styles.tag_list}>
@@ -101,16 +101,16 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
                         </div>
 
                         {publication.description && <>
-                            <h3>Description</h3>
+                            <h3>{__("catalog.description")}</h3>
                             <p className={styles.description}>{ publication.description }</p>
                         </>}
 
-                        <h3>Plus d'informations</h3>
+                        <h3>{__("catalog.moreInfo")}</h3>
 
                         <p>
-                            <span>Éditeur</span> { formatedPublishers } <br/>
-                            <span>Langue</span> { __(`languages.${formatedLanguages}`) } <br/>
-                            <span>Identifiant</span> { publication.workIdentifier } <br/>
+                            <span>{__("catalog.publisher")}</span> { formatedPublishers } <br/>
+                            <span>{__("catalog.lang")}</span> { __(`languages.${formatedLanguages}`) } <br/>
+                            <span>{__("catalog.id")}</span> { publication.workIdentifier } <br/>
                         </p>
                     </div>
                 </div>
@@ -136,7 +136,7 @@ const buildRequestData = (props: PublicationInfoProps) => {
     };
 };
 
-export default withApi(
+export default withTranslator(withApi(
     PublicationInfo,
     {
         operations: [
@@ -150,4 +150,4 @@ export default withApi(
         ],
         mapDispatchToProps,
     },
-);
+));

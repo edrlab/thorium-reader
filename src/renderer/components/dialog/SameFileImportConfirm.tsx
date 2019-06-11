@@ -10,7 +10,7 @@ import * as React from "react";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps } from "../utils/translator";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
 import { dialogActions } from "readium-desktop/common/redux/actions";
 

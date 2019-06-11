@@ -16,8 +16,9 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-interface TagManagerProps {
+interface TagManagerProps extends TranslatorProps {
     publicationIdentifier: string;
     tags: string[];
     updatedPublication?: PublicationView;
@@ -52,6 +53,7 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
     }
 
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
         return (
             <div>
                 { this.state.tags.length > 0 && <ul>
@@ -70,8 +72,8 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
                         <input
                             type="text"
                             className={styles.tag_inputs}
-                            title="ajouter un tag"
-                            placeholder="Ajouter un tag"
+                            title={ __("catalog.addTags")}
+                            placeholder={ __("catalog.addTags")}
                             onChange={this.handleChangeName}
                             value={this.state.nameNewTag}
                         />
@@ -107,7 +109,7 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
     }
 }
 
-export default withApi(
+export default withTranslator(withApi(
     TagManager,
     {
         operations: [
@@ -119,4 +121,4 @@ export default withApi(
             },
         ],
     },
-);
+));

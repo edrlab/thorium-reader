@@ -22,7 +22,7 @@ import PublicationAddButton from "./PublicationAddButton";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 export enum DisplayType {
     Grid = "grid",
@@ -60,7 +60,6 @@ export class Header extends React.Component<Props, undefined> {
     }
 
     private AllBooksButton(hash: any, __: any) {
-        console.log(`hash -> ${hash}`);
         if (hash === "#/library" || hash === "#/" ||
         hash === "#/library?displayType=grid" || hash === "#/?displayType=grid" ||
         hash === "#/library?displayType=list" || hash === "#/?displayType=list") {

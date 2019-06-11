@@ -14,8 +14,9 @@ import * as importAction from "readium-desktop/common/redux/actions/import";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-interface CatalogControlsProps {
+interface CatalogControlsProps extends TranslatorProps {
     publication: OpdsPublicationView;
     verifyImport?: (publication: OpdsPublicationView, downloadSample?: boolean) => void;
 }
@@ -23,6 +24,7 @@ interface CatalogControlsProps {
 export class OpdsControls extends React.Component<CatalogControlsProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { publication, verifyImport } = this.props;
+        const { __ } = this.props;
 
         if (!publication) {
             return <></>;
@@ -33,14 +35,14 @@ export class OpdsControls extends React.Component<CatalogControlsProps, undefine
                 onClick={() => verifyImport(publication)}
                 className={styles.lire}
             >
-                Ajouter à la bibliothèque
+                {__("catalog.addBookToLib")}
             </button>
         ) : publication.hasSample && (
             <button
                 onClick={() => verifyImport(publication, true)}
                 className={styles.lire}
             >
-                Ajouter l'extrait à la bibliothèque
+                {__("catalog.addTeaserToLib")}
             </button>
         );
     }
@@ -59,10 +61,10 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default withApi(
+export default withTranslator(withApi(
     OpdsControls,
     {
         operations: [],
         mapDispatchToProps,
     },
-);
+));

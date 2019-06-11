@@ -26,7 +26,7 @@ import optionsValues from "./options-values";
 
 import classNames = require("classnames");
 
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 import { SectionData } from "./sideMenu/sideMenuData";
 
 import SideMenu from "./sideMenu/SideMenu";

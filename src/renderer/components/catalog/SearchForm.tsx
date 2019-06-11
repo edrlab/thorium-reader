@@ -12,7 +12,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import { setLatestVersion } from "readium-desktop/common/redux/actions/update";
 
@@ -35,7 +35,7 @@ export class Search extends React.Component<SearchProps, undefined> {
                     ref={this.inputRef}
                     type="search"
                     id="menu_search"
-                    aria-label="Rechercher un livre, un tag, ou un type de littérature"
+                    aria-label={__("accessibility.searchBook")}
                     placeholder={ __("header.searchPlaceholder")}
                 />
                 <button id={styles.search_img}>
