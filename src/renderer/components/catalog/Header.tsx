@@ -60,13 +60,18 @@ export class Header extends React.Component<Props, undefined> {
     }
 
     private AllBooksButton(hash: any, __: any) {
+        console.log(`hash -> ${hash}`);
         if (hash === "#/library" || hash === "#/" ||
-        hash === "#/library?displayType=grid" ||
-        hash === "#/library?displayType=list") {
+        hash === "#/library?displayType=grid" || hash === "#/?displayType=grid" ||
+        hash === "#/library?displayType=list" || hash === "#/?displayType=list") {
             return (
                 <Link
                 id={styles.all_link_button}
-                to={{pathname: "/library/search/all"}}
+                to={{pathname: "/library/search/all",
+                state: {
+                    displaytype: this.props.displayType as DisplayType,
+                },
+                }}
                 >
                     {__("header.allBooks")}
                 </Link>
