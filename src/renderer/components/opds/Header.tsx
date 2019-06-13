@@ -51,7 +51,7 @@ export class Header extends React.Component<HeaderProps, undefined> {
                         </Link>
                     </>
                 }
-                <SearchForm />
+                {/*<SearchForm />*/}
             </SecondaryHeader>
         );
     }
