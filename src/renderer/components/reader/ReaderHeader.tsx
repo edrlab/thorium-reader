@@ -121,6 +121,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         </li>
                         <li
                             className={styles.right}
+                            {...(this.props.menuOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                         >
                             <button
                                 className={styles.menu_button}
@@ -132,7 +133,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         </li>
                         <li
                             className={styles.right}
-                            {...(this.props.menuOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                            {...(this.props.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                         >
                             <button
                                 className={styles.menu_button}
@@ -143,7 +144,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         </li>
                         <li
                             className={styles.right}
-                            {...(this.props.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                            {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                         >
                             <button
                                 className={styles.menu_button}
