@@ -13,10 +13,10 @@
       "description": "Description",
       "moreInfo": "More Info",
       "publisher": "Publisher",
-      "lang": "Language",
-      "id": "Identifier",
-      "addBookToLib": "Add book to library",
-      "addTeaserToLib": "Add the extract book to library",
+      "lang": "language",
+      "id": "identifier",
+      "addBookToLib": "Import the book",
+      "addTeaserToLib": "Add the extract to the library",
       "addTags": "Add tag",
       "readBook": "Read",
       "deleteBook": "delete from the library",
@@ -134,11 +134,11 @@
       },
       "menu": {
         "aboutBook": "About this book",
-        "addLib": "Add this book to the librairy",
+        "addLib": "Import the extract",
         "goBuyBook": "Buy this book",
         "goLoanBook": "Borrow this book",
         "goSubBook": "Subscribe",
-        "addTeaser": "Add extract to the librairy"
+        "addTeaser": "add the extract to the library"
       },
       "breadcrumbRoot": "Catalogs"
     },
@@ -162,7 +162,7 @@
         "title": "Settings",
         "theme": {
           "title": "Theme",
-          "predefined": "Predefined themes",
+          "predefined": "Predifined themes",
           "myTheme": "My themes",
           "create": "Create a theme",
           "name": {
@@ -173,18 +173,18 @@
         },
         "text": "Text",
         "left": "Left",
-        "justify": "Justified",
+        "justify": "Justify",
         "column": {
           "title": "Column",
           "auto": "Automatic",
           "one": "1 column",
-          "two": "2 columns"
+          "two": "2 column"
         },
         "spacing": "Spacing",
         "margin": "Margin",
-        "wordSpacing": "Word spacing",
+        "wordSpacing": "Words spacing",
         "lineSpacing": "Line spacing",
-        "letterSpacing": "Letter spacing",
+        "letterSpacing": "Letters spacing",
         "accessibility": "Accessibility",
         "disposition": {
           "title": "Disposition",
