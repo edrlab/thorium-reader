@@ -17,9 +17,10 @@ import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-import * as fs from "fs";
-
 import * as commonmark from "commonmark";
+
+import * as packageJson from "readium-desktop/../package.json";
+import { readFile } from "readium-desktop/utils/readFileAsync";
 
 interface Props extends TranslatorProps {
     locale: string;
@@ -41,15 +42,17 @@ export class LanguageSettings extends React.Component<Props, States> {
         };
     }
 
-    public componentDidMount() {
+    public async componentDidMount() {
         const { locale } = this.props;
+
         try {
-            const fileContent = fs.readFileSync(`src/resources/information/${locale}.md`, {encoding: "utf8"});
-            const reader = new commonmark.Parser();
-            const writer = new commonmark.HtmlRenderer();
-            const parsed = reader.parse(fileContent);
-            this.parsedMarkdown = writer.render(parsed);
-        } catch {
+            let fileContent = await readFile(`src/resources/information/${locale}.md`);
+            if ((packageJson as any).version) {
+                fileContent = fileContent.replace("{{version}}", (packageJson as any).version);
+            }
+            this.parsedMarkdown = (new commonmark.HtmlRenderer()).render((new commonmark.Parser()).parse(fileContent));
+        } catch (e) {
+            console.error(e);
             this.parsedMarkdown = "<h1>There is no information for your language</h1>";
         }
         this.forceUpdate();
