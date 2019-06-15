@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import * as path from "path";
 
-import { BrowserWindow, webContents } from "electron";
+import { BrowserWindow, Rectangle, webContents } from "electron";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
@@ -36,6 +36,7 @@ import {
 } from "readium-desktop/preprocessor-directives";
 
 import { AppWindowType } from "readium-desktop/common/models/win";
+import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -52,8 +53,9 @@ function openAllDevTools() {
 async function openReader(publication: Publication, manifestUrl: string) {
     // Create reader window
     const readerWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        ...(await getWindowsRectangle()),
+        minWidth: 800,
+        minHeight: 600,
         webPreferences: {
             allowRunningInsecureContent: false,
             contextIsolation: false,
