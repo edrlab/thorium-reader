@@ -3,7 +3,8 @@ A propos de Thorium Reader
 
 {{version}}
 
-Importez et lisez des ebooks au format EPUB sur votre ordinateur Windows 10/10S, avec une excellente expérience de lecture ; bibliothèque locale avec capacités de recherche et gestion de tags ; paramètres de mise en page hautement personnalisables, navigation facile à partir de la table des matières et de la liste des pages du livre, barre de progression de lecture, signets étiquetés, mode "Zen".
+Importez et lisez des ebooks au format EPUB sur votre ordinateur Windows 10/10S, avec une excellente expérience de lecture ; bibliothèque
+locale avec capacités de recherche et gestion de tags ; paramètres de mise en page hautement personnalisables, navigation facile à partir de la table des matières et de la liste des pages du livre, barre de progression de lecture, signets étiquetés, mode "Zen".
 
 * Profitez de la lecture d'ebooks complexes au format EPUB 3, comprenant audio, vidéo et animation.
 * Accédez aux ebooks protégés par Readium LCP (*) .
@@ -24,6 +25,6 @@ Il s'agit actuellement d'une version bêta, nous savons qu'il y a encore des pro
 Le projet est en constante évolution, des corrections et de nouvelles fonctionnalités seront ajoutées chaque mois.
 
 Ce projet n'aurait pas vu le jour sans l'aide financière des organisations suivantes :
-- CNLCNL (Centre National du livre), France
+- CNL (Centre National du livre), France
 - Ministère de la Culture, France
 

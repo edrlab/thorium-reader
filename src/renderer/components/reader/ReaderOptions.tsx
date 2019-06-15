@@ -107,7 +107,7 @@ export class ReaderOptions extends React.Component<Props> {
                     {...(!this.props.settings.sepia && !this.props.settings.night
                         && {checked: true})}
                 />
-                <label>Without</label>
+                <label>{ __("reader.settings.theme.name.Neutral")}</label>
             </div>
             <div className={styles.theme_choices}>
                 <input
@@ -116,7 +116,7 @@ export class ReaderOptions extends React.Component<Props> {
                     onChange={() => this.handleChooseTheme(themeType.Sepia)}
                     {...(this.props.settings.sepia && {checked: true})}
                 />
-                <label>Sepia</label>
+                <label>{ __("reader.settings.theme.name.Sepia")}</label>
             </div>
             <div className={styles.theme_choices}>
                 <input
@@ -125,7 +125,7 @@ export class ReaderOptions extends React.Component<Props> {
                     onChange={() => this.handleChooseTheme(themeType.Night)}
                     {...(this.props.settings.night && {checked: true})}
                 />
-                <label>Night</label>
+                <label>{ __("reader.settings.theme.name.Night")}</label>
             </div>
         </div>;
     }

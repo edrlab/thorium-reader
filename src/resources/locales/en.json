@@ -13,8 +13,8 @@
       "description": "Description",
       "moreInfo": "More Info",
       "publisher": "Publisher",
-      "lang": "language",
-      "id": "identifier",
+      "lang": "Language",
+      "id": "Identifier",
       "addBookToLib": "Add book to library",
       "addTeaserToLib": "Add the extract book to library",
       "addTags": "Add tag",
@@ -162,7 +162,7 @@
         "title": "Settings",
         "theme": {
           "title": "Theme",
-          "predefined": "Predifined themes",
+          "predefined": "Predefined themes",
           "myTheme": "My themes",
           "create": "Create a theme",
           "name": {
@@ -173,18 +173,18 @@
         },
         "text": "Text",
         "left": "Left",
-        "justify": "Justify",
+        "justify": "Justified",
         "column": {
           "title": "Column",
           "auto": "Automatic",
           "one": "1 column",
-          "two": "2 column"
+          "two": "2 columns"
         },
         "spacing": "Spacing",
         "margin": "Margin",
-        "wordSpacing": "Words spacing",
+        "wordSpacing": "Word spacing",
         "lineSpacing": "Line spacing",
-        "letterSpacing": "Letters spacing",
+        "letterSpacing": "Letter spacing",
         "accessibility": "Accessibility",
         "disposition": {
           "title": "Disposition",

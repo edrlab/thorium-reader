@@ -3,7 +3,8 @@ About Thorium Reader
 
 {{version}}
 
-Import and read EPUB ebooks on your Windows 10/10S computer. Great reading experience; local bookshelf with search capabilities and personal tagging; highly customizable layout settings, easy navigation using the table of contents and page list, reading progress bar, labelled bookmarks, "Zen" mode.
+Import and read EPUB ebooks on your Windows 10/10S computer. Great reading experience; local bookshelf with search capabilities and personal
+tagging; highly customizable layout settings, easy navigation using the table of contents and page list, reading progress bar, labelled bookmarks, "Zen" mode.
 
 * Enjoy complex EPUB 3 ebooks, fixed layout, with audio, video, animation and interactivity.
 * Open Readium LCP protected ebooks provided by a Public Library or Bookseller

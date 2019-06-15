@@ -3,7 +3,8 @@
 
 {{version}}
 
-Importieren und lesen Sie EPUB-Ebooks auf Ihrem Windows 10/10S-Computer. Großartige Leseerfahrung; lokales Bücherregal mit Suchfunktionen und persönlichem Tagging; hochgradig anpassbare Layout-Einstellungen, einfache Navigation über Inhaltsverzeichnis und Seitenliste, Lesefortschrittsleiste, beschriftete Lesezeichen, Zen-Modus.
+Importieren und lesen Sie EPUB-Ebooks auf Ihrem Windows 10/10S-Computer. Großartige Leseerfahrung; lokales Bücherregal mit Suchfunktionen und
+persönlichem Tagging; hochgradig anpassbare Layout-Einstellungen, einfache Navigation über Inhaltsverzeichnis und Seitenliste, Lesefortschrittsleiste, beschriftete Lesezeichen, Zen-Modus.
 
 * Genießen Sie komplexe EPUB 3 E-Books, festes Layout, mit Audio, Video, Animation und Interaktivität.
 * Offene Readium LCP-geschützte E-Books, die von einer öffentlichen Bibliothek oder einem Buchhändler bereitgestellt werden.
