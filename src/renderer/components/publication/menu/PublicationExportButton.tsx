@@ -28,11 +28,7 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
         this.state = {
             menuOpen: false,
         };
-
         this.exportInputRef = React.createRef();
-
-        this.onExport = this.onExport.bind(this);
-        this.onClick = this.onClick.bind(this);
     }
 
     public componentDidMount() {
@@ -50,8 +46,7 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
                         ref={ this.exportInputRef }
                         type="file"
                         multiple
-                        onChange={this.onExport}
-                        onClick={ this.onClick }
+                        onChange={ this.onExport }
                     />
                     <label htmlFor={ id }>
                         { __("catalog.export")}
@@ -60,11 +55,8 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
         );
     }
 
-    private onClick(e: any) {
+    private onExport = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.props.onClick();
-    }
-
-    private onExport(event: any) {
         const destinationPath = event.target.files[0].path;
         const publication = this.props.publication;
         this.props.exportPublication({ destinationPath, publication });
