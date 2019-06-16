@@ -19,7 +19,7 @@ import { TranslatorProps, withTranslator } from "readium-desktop/renderer/compon
 
 import * as commonmark from "commonmark";
 
-import * as packageJson from "readium-desktop/../package.json";
+import * as packageJson from "readium-desktop/package.json";
 import { readFile } from "readium-desktop/utils/readFileAsync";
 
 interface Props extends TranslatorProps {
