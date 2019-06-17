@@ -20,7 +20,10 @@ import { TranslatorProps, withTranslator } from "readium-desktop/renderer/compon
 import * as commonmark from "commonmark";
 
 import * as packageJson from "readium-desktop/package.json";
-import { readFile } from "readium-desktop/utils/readFileAsync";
+
+import { readFile } from "fs";
+
+import { promisify } from "util";
 
 interface Props extends TranslatorProps {
     locale: string;
@@ -46,7 +49,7 @@ export class LanguageSettings extends React.Component<Props, States> {
         const { locale } = this.props;
 
         try {
-            let fileContent = await readFile(`src/resources/information/${locale}.md`);
+            let fileContent = await promisify(readFile)(`src/resources/information/${locale}.md`, {encoding: "utf8"});
             if ((packageJson as any).version) {
                 fileContent = fileContent.replace("{{version}}", (packageJson as any).version);
             }
