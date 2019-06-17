@@ -29,12 +29,12 @@ export class SettingsHeader extends React.Component<Props, undefined> {
             <SecondaryHeader id={styles.settings_header}>
                 <ul>
                     <li {...(this.props.section === 2 && {className: styles.active})}>
-                        <Link to="/settings/languages">
+                        <Link to={{pathname: "/settings/languages", search: "?focusInside=true"}}>
                             { __("settings.uiLanguage") }
                         </Link>
                     </li>
                     <li {...(this.props.section === 3 && {className: styles.active})}>
-                        <Link to="/settings/information">
+                        <Link to={{pathname: "/settings/information", search: "?focusInside=true"}}>
                             { __("settings.information") }
                         </Link>
                     </li>

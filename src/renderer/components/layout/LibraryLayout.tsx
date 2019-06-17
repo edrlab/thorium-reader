@@ -17,13 +17,26 @@ import { Helmet } from "react-helmet";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-interface LibraryLayoutProps {
+import * as qs from "query-string";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+
+interface LibraryLayoutProps extends RouteComponentProps {
     dialogOpen?: boolean;
     secondaryHeader?: any;
     title?: string;
 }
 
 class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
+    private fastLinkRef: any;
+
+    public componentDidMount() {
+        const { location } = this.props;
+        const focusInside = qs.parse(location.search).focusInside === "true";
+        if (focusInside) {
+            this.fastLinkRef.focus();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
         const { title } = this.props;
 
@@ -44,7 +57,7 @@ class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
                     className={styles.main}
                     role="main"
                 >
-                    <a id="main-content" aria-hidden tabIndex={-1}></a>
+                    <a ref={(ref) => this.fastLinkRef = ref} id="main-content" aria-hidden tabIndex={-1}></a>
                     { this.props.children }
                 </main>
             </>
@@ -58,4 +71,4 @@ const mapStateToProps = (state: RootState, ownProps: any) => {
     };
 };
 
-export default connect(mapStateToProps)(LibraryLayout);
+export default connect(mapStateToProps)(withRouter(LibraryLayout));
