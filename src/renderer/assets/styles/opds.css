@@ -39,6 +39,9 @@
   	height: auto;
   	justify-content: space-between;
     & ul {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
         & li {
             height: 301px;
             width: 301px;
