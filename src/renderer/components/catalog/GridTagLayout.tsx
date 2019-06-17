@@ -11,6 +11,8 @@ import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow
 
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
 
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import Menu from "../utils/menu/Menu";
 import { TranslatorProps, withTranslator } from "../utils/translator";
@@ -72,10 +74,12 @@ export class GridTagLayout extends React.Component<TagProps, LayoutState> {
 
         private checkEntryTotalCount(tag: string, i: number) {
             return (
-                    <div key={i}>
+                    <Link key={i}
+                    to={{pathname: `/library/search/tag/${tag}`}}
+                    >
                         {tag}
                         <div id={style.count}> {0} </div>
-                    </div>
+                    </Link>
             );
         }
 
@@ -86,4 +90,4 @@ export class GridTagLayout extends React.Component<TagProps, LayoutState> {
         }
 }
 
-export default withTranslator(GridTagLayout);
+export default withTranslator(withRouter(GridTagLayout));
