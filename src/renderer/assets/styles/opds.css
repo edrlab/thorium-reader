@@ -70,7 +70,7 @@
         }
 
         & > div {
-            height: 301px;
+            width: 301px;
         }
     }
 }
