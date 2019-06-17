@@ -7,8 +7,19 @@
       "myBooks": "Mes livres",
       "allBooks": "Tous les livres",
       "bookInfo": "Fiche livre",
-      "delete": "Supprimer défintivement",
+      "delete": "Supprimer définitivement",
       "export": "Exporter",
+      "released": "Publié le",
+      "description": "Description",
+      "moreInfo": "Plus d'informations",
+      "publisher": "Editeur",
+      "lang": "Langue",
+      "id": "Identifiant",
+      "addBookToLib": "Ajouter à la librairie",
+      "addTeaserToLib": "Ajouter l'extrait à la bibliothèque",
+      "addTags": "Ajouter un tag",
+      "readBook": "Lire",
+      "deleteBook": "supprimer de la bibliothèque",
       "tags": "Mes tags",
       "sort": "trier par",
       "tagCount": "Nombre de tags",
@@ -89,7 +100,8 @@
       "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
       "deleteOpds": "Êtes vous sûr de vouloir supprimer ce flux opds ?",
       "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
-      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :"
+      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
+      "closeModalWindow": "Fermer cette fenêtre modale"
     },
     "opds": {
       "download": "Télécharger",
@@ -119,6 +131,14 @@
         "password": "Mot de passe :",
         "loginButton": "Connexion",
         "sentence": "Veuillez vous connecter pour acceder au contenu"
+      },
+      "menu": {
+        "aboutBook": "Fiche livre",
+        "addLib": "Ajouter à la bibliothèque",
+        "goBuyBook": "Aller sur la page d'achat",
+        "goLoanBook": "Aller sur la page d'emprunt",
+        "goSubBook": "Aller sur la page d'abonnement",
+        "addTeaser": "Ajouter l'extrait à la bibliothèque"
       },
       "breadcrumbRoot": "Catalogues"
     },
@@ -216,7 +236,10 @@
     "settings": {
       "manageTags": "Gérer mes tags",
       "uiLanguage": "Langue de l'interface",
-      "information": "Informations"
+      "information": "Informations",
+      "language": {
+        "languageChoice": "Choix de la langue"
+      }
     },
     "header": {
       "books": "Mes Livres",
@@ -230,6 +253,14 @@
       "importTitle": "Importer un livre"
     },
     "accessibility": {
-      "skipLink": "Aller au contenu"
+      "skipLink": "Aller au contenu",
+      "importFile": "Importer un fichier epub",
+      "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
+      "closeDialog": "Fermer",
+      "bookTitle": "Titre du livre",
+      "bookAuthor": "Auteur du livre",
+      "bookReleaseDate": "Date de sortie du livre",
+      "bookPublisher": "Editeur du livre",
+      "homeMenu": "Menu principal"
     }
 }

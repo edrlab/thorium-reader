@@ -1,5 +1,5 @@
 {
-  "name": "thorium",
+  "name": "EDRLab.ThoriumReader",
   "version": "1.0.0-alpha.4",
   "description": "Desktop application to read ebooks",
   "keywords": [
@@ -15,7 +15,7 @@
     "url": "git@github.com:edrlab/readium-desktop.git"
   },
   "author": {
-    "name": "EDRLab developers",
+    "name": "EDRLab",
     "organization": "EDRLab",
     "email": "contact@edrlab.org",
     "url": "http://github.com/edrlab/"

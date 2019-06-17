@@ -25,6 +25,8 @@ In readium-desktop project
 
 ### Start application in production environment
 
+Before calling `npm start` (or `npm run start`), you must invoke the `npm run __postinstall` command (just once, so that the native libraries get build specifically for the Electron/NodeJS runtime).
+
 1) `npm start`
 
 ## Lint

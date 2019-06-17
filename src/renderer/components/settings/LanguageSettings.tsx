@@ -48,7 +48,7 @@ export class LanguageSettings extends React.Component<Props, States> {
         return (
             <>
                 <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.settings")}>
-                    <div className={styles.section_title}>Choix de la langue</div>
+                    <div className={styles.section_title}>{ __("settings.language.languageChoice")}</div>
                     <form className={styles.languages_list}>
                             { Object.keys(AvailableLanguages).map((lang: string, i: number) =>
                                 <>

@@ -9,6 +9,17 @@
       "bookInfo": "About this book",
       "delete": "Delete definitively",
       "export": "Export",
+      "released": "Published on",
+      "description": "Description",
+      "moreInfo": "More Info",
+      "publisher": "Publisher",
+      "lang": "Language",
+      "id": "Identifier",
+      "addBookToLib": "Add book to library",
+      "addTeaserToLib": "Add the extract book to library",
+      "addTags": "Add tag",
+      "readBook": "Read",
+      "deleteBook": "delete from the library",
       "tags": "My tags",
       "sort": "sort by",
       "tagCount": "Tag count",
@@ -89,7 +100,8 @@
       "import": "Do you really want to import those EPUB files :",
       "return": "Do you really want to return the licence for this publication?",
       "deleteOpds": "Do you really want to delete this opds feed?",
-      "renew": "Do you really want to renew the licence for this publication?"
+      "renew": "Do you really want to renew the licence for this publication?",
+      "closeModalWindow": "Close this modal window"
     },
     "opds": {
       "download": "Download",
@@ -120,6 +132,14 @@
         "loginButton": "Login",
         "sentence": "Please, log in to access to the contents"
       },
+      "menu": {
+        "aboutBook": "About this book",
+        "addLib": "Add this book to the librairy",
+        "goBuyBook": "Buy this book",
+        "goLoanBook": "Borrow this book",
+        "goSubBook": "Subscribe",
+        "addTeaser": "Add extract to the librairy"
+      },
       "breadcrumbRoot": "Catalogs"
     },
     "reader": {
@@ -142,7 +162,7 @@
         "title": "Settings",
         "theme": {
           "title": "Theme",
-          "predefined": "Predifined themes",
+          "predefined": "Predefined themes",
           "myTheme": "My themes",
           "create": "Create a theme",
           "name": {
@@ -153,18 +173,18 @@
         },
         "text": "Text",
         "left": "Left",
-        "justify": "Justify",
+        "justify": "Justified",
         "column": {
           "title": "Column",
           "auto": "Automatic",
           "one": "1 column",
-          "two": "2 column"
+          "two": "2 columns"
         },
         "spacing": "Spacing",
         "margin": "Margin",
-        "wordSpacing": "Words spacing",
+        "wordSpacing": "Word spacing",
         "lineSpacing": "Line spacing",
-        "letterSpacing": "Letters spacing",
+        "letterSpacing": "Letter spacing",
         "accessibility": "Accessibility",
         "disposition": {
           "title": "Disposition",
@@ -216,7 +236,10 @@
     "settings": {
       "manageTags": "Manage tags",
       "uiLanguage": "UI language",
-      "information": "Information"
+      "information": "Information",
+      "language": {
+        "languageChoice": "Language choice"
+      }
     },
     "header": {
       "books": "My Books",
@@ -231,7 +254,16 @@
 
     },
     "accessibility": {
-      "skipLink": "Skip to content"
+      "skipLink": "Skip to content",
+      "importFile": "Import an epub file",
+      "searchBook": "Search a book, a tag or type of a literature",
+      "closeDialog": "Close",
+      "bookTitle": "Book title",
+      "bookAuthor": "Book author",
+      "bookReleaseDate": "Book release date",
+      "bookPublisher": "Book publisher",
+      "homeMenu": "Home menu"
+
     }
 
 }
