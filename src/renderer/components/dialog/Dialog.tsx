@@ -16,6 +16,8 @@ import FocusLock from "react-focus-lock";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
+import classNames = require("classnames");
+
 interface Props extends TranslatorProps {
     open: boolean;
     close: () => void;
@@ -46,7 +48,7 @@ export class Dialog extends React.Component<Props, undefined> {
                     <div
                         role="document"
                         id={this.props.id}
-                        className={(className ? className + " " : "") + styles.c_dialog__box}
+                        className={classNames(className, styles.c_dialog__box)}
                     >
                         { content && <>
                             { content }

@@ -48,7 +48,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         return (
             <>
                 { this.props.catalogEntries.map((entry, EntryIndex: number) => {
-                        return (
+                        return entry.publications.length > 0 ? (
                             <section key={ EntryIndex }>
                             {
 
@@ -76,7 +76,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                             }
 
                             </section>
-                        );
+                        ) : <></>;
                 })}
                 <GridTagLayout
                 tags={this.state.tabTags}

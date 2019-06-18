@@ -59,11 +59,23 @@ interface Props extends TranslatorProps {
 }
 
 export class ReaderHeader extends React.Component<Props, undefined> {
+    private enableFullscreenRef: any;
+    private disableFullscreenRef: any;
 
     public constructor(props: Props) {
         super(props);
 
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
+    }
+
+    public componentDidUpdate(oldProps: Props) {
+        if (this.props.fullscreen !== oldProps.fullscreen) {
+            if (this.props.fullscreen) {
+                this.disableFullscreenRef.focus();
+            } else {
+                this.enableFullscreenRef.focus();
+            }
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -115,6 +127,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleFullscreenClick}
+                                ref={(ref) => this.enableFullscreenRef = ref}
                             >
                                 <SVG svg={FullscreenIcon} title={ __("reader.navigation.fullscreenTitle")}/>
                             </button>
@@ -166,6 +179,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         <button
                             className={styles.menu_button}
                             onClick={this.props.handleFullscreenClick}
+                            ref={(ref) => this.disableFullscreenRef = ref}
                         >
                             <SVG svg={QuitFullscreenIcon} title={ __("reader.navigation.quitFullscreenTitle")}/>
                         </button>

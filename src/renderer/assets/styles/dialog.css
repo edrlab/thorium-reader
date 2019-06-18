@@ -43,6 +43,7 @@
     height: fit-content;
     max-height: 90%;
     box-sizing: border-box;
+    margin-top: 66px;
     & .close_button {
         position: absolute;
         top: 15px;

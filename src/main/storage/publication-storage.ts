@@ -21,6 +21,8 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 
 import slugify from "slugify";
 
+import { dialog } from "electron";
+
 // Store publications in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
 // publication uuid
@@ -85,7 +87,16 @@ export class PublicationStorage {
     public copyPublicationToPath(publication: PublicationView, destinationPath: string) {
         const publicationPath = `${this.buildPublicationPath(publication.identifier)}/book.epub`;
         const newFilePath = `${destinationPath}/${slugify(publication.title)}.epub`;
-        fs.copyFileSync(publicationPath, newFilePath);
+        fs.copyFile(publicationPath, newFilePath, (err) => {
+            if (err) {
+                dialog.showMessageBox({
+                    type: "error",
+                    message: err.message,
+                    title: err.name,
+                    buttons: ["OK"],
+                });
+            }
+        });
     }
 
     private buildPublicationPath(identifier: string): string {
@@ -105,7 +116,7 @@ export class PublicationStorage {
         return new Promise<File>((resolve, reject) => {
             const writeStream = fs.createWriteStream(dstPath);
             const fileResolve = () => {
-                resolve ({
+                resolve({
                     url: `store://${identifier}/${filename}`,
                     ext: "epub",
                     contentType: "application/epub+zip",

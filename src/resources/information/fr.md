@@ -1,7 +1,7 @@
 A propos de Thorium Reader
 ==============
 
-Version 0.8, ou beta 1
+{{version}}
 
 Importez et lisez des ebooks au format EPUB sur votre ordinateur Windows 10/10S, avec une excellente expérience de lecture ; bibliothèque
 locale avec capacités de recherche et gestion de tags ; paramètres de mise en page hautement personnalisables, navigation facile à partir de la table des matières et de la liste des pages du livre, barre de progression de lecture, signets étiquetés, mode "Zen".
