@@ -23,7 +23,8 @@
       "tags": "Mes tags",
       "sort": "trier par",
       "tagCount": "Nombre de tags",
-      "emptyTagList": "Les livres ne contiennent pas de tags."
+      "emptyTagList": "Les livres ne contiennent pas de tags.",
+      "noPublicationHelp": "Pour importer des ebooks, glissez des EPUB ici ou cliquez sur le bouton + dans le menu au dessus."
     },
     "library": {
         "heading": "Bibliothèque",
