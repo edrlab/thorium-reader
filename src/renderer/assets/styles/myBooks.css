@@ -235,6 +235,12 @@ main {
 
 .menu_open{
 	height: 3.5rem;
+	display: flex;
+	
+	& a {
+		text-decoration: none;
+		color: black;
+	}
 }
 
 /* ENTRY FORM */
