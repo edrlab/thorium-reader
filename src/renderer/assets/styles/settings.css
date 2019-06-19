@@ -1,7 +1,5 @@
 .main {
-    position: relative;
     margin-top: 120px;
-    left: 0;
     height: auto;
     width: calc(100% - 120px);
     padding-left: 60px;
