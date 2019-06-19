@@ -15,6 +15,12 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import Menu from "../utils/menu/Menu";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
+import { Link } from "react-router-dom";
+import { withApi } from "../utils/api";
+
+import { PublicationView } from "readium-desktop/common/views/publication";
+import GridTagButton from "./GridTagButton";
+
 interface TagProps extends TranslatorProps {
         tags: string[];
         content?: any;
@@ -58,24 +64,18 @@ export class GridTagLayout extends React.Component<TagProps, LayoutState> {
                                     />
                                     </div>
                                     <section id={style.content}>
-                                            {this.props.tags.map((tag, i: number) => {
-                                                return (
-                                                    this.checkEntryTotalCount(tag, i)
-                                                );
+                                        {this.props.tags.map((tag, i: number) => {
+                                            return (
+                                                <GridTagButton
+                                                name={tag}
+                                                key={i + 1000}
+                                                tag={[]}
+                                                />);
                                             })}
                                     </section>
                                 </>
                         }
                 </section>
-            );
-        }
-
-        private checkEntryTotalCount(tag: string, i: number) {
-            return (
-                    <div key={i}>
-                        {tag}
-                        <div id={style.count}> {0} </div>
-                    </div>
             );
         }
 

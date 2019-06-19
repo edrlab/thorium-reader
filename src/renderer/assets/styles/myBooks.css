@@ -69,7 +69,7 @@ main {
 		font: 14px Arial;
 		overflow: hidden;
 		z-index: -1;
-		& svg {	
+		& svg {
 			top: 0px;
 			height: 15px;
 			margin-left: 0px;
@@ -218,7 +218,7 @@ main {
 		align-items: center;
 		& label {
 			cursor: pointer;
-			
+
 		}
 		& input {
 			position: absolute;
@@ -234,7 +234,7 @@ main {
 .menu_open{
 	height: 3.5rem;
 	display: flex;
-	
+
 	& a {
 		text-decoration: none;
 		color: black;
@@ -319,7 +319,7 @@ main {
 	border: 1px;
 	border-radius: 5px;
 	& svg {
-		
+
 		height: 10px;
 		margin-left: 0.5em;
 	}
@@ -343,9 +343,9 @@ main {
 #sortType button {
 	text-decoration: none;
 	color: black;
-	flex: 1; 
+	flex: 1;
 	text-align: justify;
-	cursor: pointer;    
+	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -359,7 +359,7 @@ main {
 	background-color: #CECECE;
 }
 #value {
-	font: 0.9rem "Open Sans", sans-serif;	
+	font: 0.9rem "Open Sans", sans-serif;
 	align-items: center;
 	position: relative;
 	top: 9px;
@@ -376,14 +376,16 @@ main {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 	grid-gap: 2.0em;
-	grid-auto-flow: row;	
+	grid-auto-flow: row;
 	max-width: 2000px;
 	margin-top: 1.0em;
 	align-content: center;
 }
 
 #content > * {
-	background: #ebebeb;
+  background: #ebebeb;
+  color: #595959;
+  text-decoration: none;
 	font-size: 0.9rem;
 	padding: 7px;
 	text-align: center;
@@ -414,7 +416,7 @@ main {
 	justify-content: center;
 	text-align: center;
 	& svg {
-		height: 20rem; 
+		height: 20rem;
 		opacity: 0.2;
 	}
 }
