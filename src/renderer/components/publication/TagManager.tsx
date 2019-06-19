@@ -92,9 +92,11 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
     private addTag(e: any) {
         e.preventDefault();
         const { tags } = this.state;
-        tags.push(this.state.nameNewTag);
-        this.sendTags(tags);
-        this.setState({nameNewTag: ""});
+        if (tags.indexOf(this.state.nameNewTag) < 0) {
+            tags.push(this.state.nameNewTag);
+            this.sendTags(tags);
+        }
+        this.setState({ nameNewTag: "" });
     }
 
     private sendTags(tags: string[]) {
@@ -105,7 +107,7 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
     }
 
     private handleChangeName(e: any) {
-        this.setState({nameNewTag: e.target.value});
+        this.setState({ nameNewTag: e.target.value });
     }
 }
 
