@@ -26,6 +26,18 @@ interface Props extends TranslatorProps {
 }
 
 export class Dialog extends React.Component<Props, undefined> {
+    public constructor(props: Props) {
+        super(props);
+
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+    }
+    public componentDidMount() {
+        document.addEventListener("keydown", this.handleKeyPress);
+    }
+    public componentWillUnmount() {
+        document.removeEventListener("keydown", this.handleKeyPress);
+    }
+
     public render(): React.ReactElement<{}> {
         const content = this.props.children;
         const className = this.props.className;
@@ -67,6 +79,12 @@ export class Dialog extends React.Component<Props, undefined> {
                 </div>
             </FocusLock>
         );
+    }
+
+    private handleKeyPress(e: any) {
+        if (e.key === "Escape") {
+            this.props.close();
+        }
     }
 }
 
