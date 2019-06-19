@@ -40,7 +40,7 @@ export class GridTagLayout extends React.Component<TagProps, LayoutState> {
             showMenu: false,
             value: "",
         };
-        this.searchData = this.searchData.bind(this);
+        // this.searchData = this.searchData.bind(this);
         this.togglemenu = this.togglemenu.bind(this);
     }
 
