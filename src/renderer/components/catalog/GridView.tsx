@@ -13,14 +13,16 @@ import PublicationCard from "readium-desktop/renderer/components/publication/Pub
 
 import Slider from "readium-desktop/renderer/components/utils/Slider";
 
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
 import { RouteComponentProps } from "react-router-dom";
 
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 
 import GridTagLayout from "./GridTagLayout";
 import SortMenu from "./SortMenu";
+
+import NoPublicationInfo from "./NoPublicationInfo";
+
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
@@ -45,6 +47,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
     }
 
     public render(): React.ReactElement<{}> {
+        const entriesEmpty = this.props.catalogEntries.filter((entry) => entry.publications.length > 0).length === 0;
         return (
             <>
                 { this.props.catalogEntries.map((entry, EntryIndex: number) => {
@@ -78,14 +81,20 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                             </section>
                         ) : <></>;
                 })}
-                <GridTagLayout
-                tags={this.state.tabTags}
-                content={
-                    <SortMenu
-                        onClickAlphaSort={this.sortByAlpha}
-                        onClickCountSort={this.sortbyCount}
-                    />}
-                />
+                { this.state.tabTags.length > 0 &&
+                    <GridTagLayout
+                    tags={this.state.tabTags}
+                    content={
+                        <SortMenu
+                            onClickAlphaSort={this.sortByAlpha}
+                            onClickCountSort={this.sortbyCount}
+                        />}
+                    />
+                }
+
+                { this.state.tabTags.length === 0 && entriesEmpty &&
+                    <NoPublicationInfo />
+                }
             </>
         );
     }
