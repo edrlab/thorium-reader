@@ -23,7 +23,7 @@
       "tags": "My tags",
       "sort": "sort by",
       "tagCount": "Tag count",
-      "emptyTagList": "there is no tags in books."
+      "emptyTagList": "There is no tags in books."
     },
     "library": {
         "heading": "Library",
@@ -101,7 +101,9 @@
       "return": "Do you really want to return the licence for this publication?",
       "deleteOpds": "Do you really want to delete this opds feed?",
       "renew": "Do you really want to renew the licence for this publication?",
-      "closeModalWindow": "Close this modal window"
+      "closeModalWindow": "Close this modal window",
+      "alreadyAdd": "It seems that you have already added this publication to your library.",
+      "sure": "Are you sure you want to add it again ?"
     },
     "opds": {
       "download": "Download",

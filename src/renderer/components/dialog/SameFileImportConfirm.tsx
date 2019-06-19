@@ -39,10 +39,10 @@ class SameFileImportConfirm extends React.Component<Props> {
         return (
             <div>
                 <p>
-                    Il semblerais que vous ayez déjà ajouté cette publication à votre catalogue.
+                    {__("dialogue.alreadyAdd")}
                     <span>{this.props.publication.title}</span>
                 </p>
-                <p>Êtes vous sûr(e) de vouloir l'ajouter à nouveau ?</p>
+                <p>{__("dialogue.sure")}</p>
                 <div>
                     <button onClick={this.addToCatalog}>{__("dialog.yes")}</button>
                     <button className={styles.primary} onClick={this.props.closeDialog}>{__("dialog.no")}</button>
