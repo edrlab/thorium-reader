@@ -24,8 +24,6 @@ import GridTagButton from "./GridTagButton";
 interface TagProps extends TranslatorProps {
         tags: string[];
         content?: any;
-        //findByTag: (data: {tag: string}) => void;
-        //tagFound: PublicationView[];
 }
 
 interface LayoutState {
