@@ -20,7 +20,7 @@ if (_PACKAGING !== "0") {
 import * as path from "path";
 import { Store } from "redux";
 
-import { app, BrowserWindow, ipcMain, Menu, protocol, shell, WebContents } from "electron";
+import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
 
 import { container } from "readium-desktop/main/di";
 
@@ -64,6 +64,8 @@ import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
+import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
+import { debounce } from "./utils/debounce";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -94,10 +96,9 @@ function initApp() {
 }
 
 // Opens the main window, with a native menu bar.
-function createWindow() {
+async function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        ...(await getWindowsRectangle()),
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
@@ -192,6 +193,11 @@ function createWindow() {
         mainWindowId = null;
         mainWindow = null;
     });
+
+    const debounceSavedWindowsRectangle = debounce(savedWindowsRectangle, 500);
+
+    mainWindow.on("move", () =>
+        debounceSavedWindowsRectangle(mainWindow.getBounds()));
 }
 
 function registerProtocol() {
@@ -213,22 +219,22 @@ app.on("window-all-closed", () => {
 );
 
 // Call 'createWindow()' on startup.
-app.on("ready", () => {
+app.on("ready", async () => {
     debug("ready");
     initApp();
 
     if (!processCommandLine()) {
         // Do not open window if electron is launched as a command line
-        createWindow();
+        await createWindow();
         registerProtocol();
     }
 });
 
 // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
 // windows open.
-app.on("activate", () => {
+app.on("activate", async () => {
     if (mainWindow === null) {
-        createWindow();
+        await createWindow();
     }
 });
 
