@@ -45,13 +45,13 @@ export class Header extends React.Component<HeaderProps, undefined> {
                         <Link
                             to={{search: "displayType=list"}}
                             style={this.props.displayType !== DisplayType.List ?
-                                {fill: "grey", marginLeft: "16px"} : {}}
+                                {fill: "grey", marginLeft: "16px"} : {marginLeft: "16px"}}
                         >
                             <SVG svg={ListIcon} title={__("header.listTitle")}/>
                         </Link>
                     </>
                 }
-                <SearchForm />
+                {/*<SearchForm />*/}
             </SecondaryHeader>
         );
     }
