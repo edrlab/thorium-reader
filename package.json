@@ -255,6 +255,6 @@
   },
   "optionalDependencies": {
     "leveldown": "5.*.*",
-    "pouchdb-adapter-leveldb": "7.*.*"
+    "pouchdb-adapter-leveldb": "7.0.*"
   }
 }
