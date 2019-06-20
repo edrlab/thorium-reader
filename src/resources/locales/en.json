@@ -23,7 +23,7 @@
       "tags": "My tags",
       "sort": "sort by",
       "tagCount": "Tag count",
-      "emptyTagList": "there is no tags in books.",
+      "emptyTagList": "You have still not added tags to the books.",
       "noPublicationHelp": "To import ebooks, drag&drop EPUB files here or use the plus button in the menu above."
     },
     "library": {
