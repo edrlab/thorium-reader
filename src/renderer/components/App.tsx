@@ -31,6 +31,8 @@ import { DialogType } from "readium-desktop/common/models/dialog";
 
 import SameFileImportManager from "./utils/SameFileImportManager";
 
+import ToastManager from "./toast/ToastManager";
+
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 export default class App extends React.Component<any, undefined> {
@@ -88,6 +90,7 @@ export default class App extends React.Component<any, undefined> {
                                     <PageManager/>
                                     <DialogManager />
                                     <SameFileImportManager />
+                                    <ToastManager />
                                 </div>;
                             }}
                         </Dropzone>

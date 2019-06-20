@@ -226,6 +226,9 @@
         "success": "Le téléchargement de {{title}} est terminé.",
         "start": "Le téléchargement de {{title}} a commencé."
       },
+      "import": {
+        "success": "L'import de {{title}} est terminé."
+      },
       "lcp": {
         "renewSuccess": "La licence LCP de {{title}} a bien été renouvellée.",
         "renewError": "Une erreur est survenue lors du renouvellement de {{title}}.",

@@ -11,7 +11,7 @@ import * as React from "react";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
-import { CatalogEntryView, CatalogView} from "readium-desktop/common/views/catalog";
+import { CatalogView} from "readium-desktop/common/views/catalog";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
@@ -23,8 +23,6 @@ import Header, { DisplayType } from "./Header";
 
 import GridView from "./GridView";
 import ListView from "./ListView";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
 
 interface CatalogProps extends TranslatorProps, RouteComponentProps {
     catalog?: CatalogView;
