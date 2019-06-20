@@ -102,7 +102,9 @@
       "deleteOpds": "Êtes vous sûr de vouloir supprimer ce flux opds ?",
       "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
       "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-      "closeModalWindow": "Fermer cette fenêtre modale"
+      "closeModalWindow": "Fermer cette fenêtre modale",
+      "alreadyAdd": "Il semblerais que vous ayez déjà ajouté cette publication à votre catalogue.",
+      "sure": "Êtes vous sûr(e) de vouloir l'ajouter à nouveau ?"
     },
     "opds": {
       "download": "Télécharger",

@@ -102,7 +102,9 @@
       "return": "Do you really want to return the licence for this publication?",
       "deleteOpds": "Do you really want to delete this opds feed?",
       "renew": "Do you really want to renew the licence for this publication?",
-      "closeModalWindow": "Close this modal window"
+      "closeModalWindow": "Close this modal window",
+      "alreadyAdd": "It seems that you have already added this publication to your library.",
+      "sure": "Are you sure you want to add it again ?"
     },
     "opds": {
       "download": "Download",
@@ -135,11 +137,11 @@
       },
       "menu": {
         "aboutBook": "About this book",
-        "addLib": "Add this book to the librairy",
+        "addLib": "Import the extract",
         "goBuyBook": "Buy this book",
         "goLoanBook": "Borrow this book",
         "goSubBook": "Subscribe",
-        "addTeaser": "Add extract to the librairy"
+        "addTeaser": "Add extract to the library"
       },
       "breadcrumbRoot": "Catalogs"
     },
@@ -163,7 +165,7 @@
         "title": "Settings",
         "theme": {
           "title": "Theme",
-          "predefined": "Predefined themes",
+          "predefined": "Predifined themes",
           "myTheme": "My themes",
           "create": "Create a theme",
           "name": {
@@ -174,18 +176,18 @@
         },
         "text": "Text",
         "left": "Left",
-        "justify": "Justified",
+        "justify": "Justify",
         "column": {
           "title": "Column",
           "auto": "Automatic",
           "one": "1 column",
-          "two": "2 columns"
+          "two": "2 column"
         },
         "spacing": "Spacing",
         "margin": "Margin",
-        "wordSpacing": "Word spacing",
+        "wordSpacing": "Words spacing",
         "lineSpacing": "Line spacing",
-        "letterSpacing": "Letter spacing",
+        "letterSpacing": "Letters spacing",
         "accessibility": "Accessibility",
         "disposition": {
           "title": "Disposition",

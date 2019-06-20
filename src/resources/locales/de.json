@@ -84,7 +84,9 @@
       "no": "Nein",
       "delete": "Willst du diese Publikation wirklich löschen?",
       "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-      "closeModalWindow": "Dieses modale Fenster schließen"
+      "closeModalWindow": "Dieses modale Fenster schließen",
+      "alreadyAdd": "Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
+      "sure": "Bist du sicher, dass du es wieder hinzufügen willst?"
     },
     "opds": {
       "download": "Download",
