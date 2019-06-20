@@ -18,6 +18,7 @@
       "addBookToLib": "Ajouter à la librairie",
       "addTeaserToLib": "Ajouter l'extrait à la bibliothèque",
       "addTags": "Ajouter un tag",
+      "deleteTag": "Supprimer le tag",
       "readBook": "Lire",
       "deleteBook": "supprimer de la bibliothèque",
       "tags": "Mes tags",
@@ -245,6 +246,7 @@
       }
     },
     "header": {
+      "home": "Menu Principal",
       "books": "Mes Livres",
       "catalogs": "Catalogues",
       "settings": "Préférences",

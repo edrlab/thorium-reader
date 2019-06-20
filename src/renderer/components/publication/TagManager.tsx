@@ -61,7 +61,7 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
                         <li key={index}> {tag}
                             {this.props.canModifyTag &&
                                 <button onClick={() => this.deleteTag(index)}>
-                                    <SVG svg={CrossIcon} title="supprimer le tag" />
+                                    <SVG svg={CrossIcon} title={__("catalog.deleteTag")} />
                                 </button>
                             }
                         </li>,
