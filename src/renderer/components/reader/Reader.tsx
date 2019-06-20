@@ -303,8 +303,12 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 
                 this.setState({settingsValues: settings, indexes});
 
-                // Push reader config to navigator
-                readiumCssOnOff();
+                // this.state.publication is initialized in loadPublicationIntoViewport(),
+                // which calls installNavigatorDOM() which in turn allows navigator API functions to be called safely
+                if (this.state.publication) {
+                    // Push reader config to navigator
+                    readiumCssOnOff();
+                }
             }
         });
 
