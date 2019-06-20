@@ -761,7 +761,7 @@ input[type=radio] + label {
   }
 
   & > [type="radio"]:focus + label:before {
-			@mixin R2_MIXIN_FOCUS_OUTLINE;
+    @mixin R2_MIXIN_FOCUS_OUTLINE;
   }
 }
 

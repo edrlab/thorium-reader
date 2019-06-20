@@ -228,7 +228,7 @@ main {
 		}
 
 		& input:focus + label {
-            @mixin R2_MIXIN_FOCUS_OUTLINE;
+			@mixin R2_MIXIN_FOCUS_OUTLINE;
 		}
 	}
 }
