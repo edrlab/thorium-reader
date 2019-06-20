@@ -54,6 +54,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                         <SideMenuSection
                             open={ openedSection === index }
                             id={index}
+                            key={index}
                             title={section.title}
                             content={section.content}
                             onClick={this.handleClickSection}
