@@ -312,6 +312,13 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             }
         });
 
+        window.document.documentElement.addEventListener("keydown", (ev: KeyboardEvent) => {
+            window.document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
+        }, true);
+        window.document.documentElement.addEventListener("mousedown", (ev: MouseEvent) => {
+            window.document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
+        }, true);
+
         window.document.addEventListener("keydown", (ev: KeyboardEvent) => {
             if (this.state.shortcutEnable) {
                 if (ev.keyCode === 37) { // left
