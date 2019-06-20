@@ -140,7 +140,6 @@
     ]
   },
   "dependencies": {
-    "@material-ui/core": "^3.9.3",
     "@types/react-beautiful-dnd": "^7.1.2",
     "@types/react-helmet": "^5.0.8",
     "acorn": "^6.1.1",
