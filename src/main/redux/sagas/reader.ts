@@ -75,7 +75,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
         const appWindow = Object.values(appWindows)[0];
         appWindow.win.hide();
     }
-
+    debug("first nb de fenêtre: " + Object.keys(appWindows).length);
     // Register reader window
     const readerAppWindow = winRegistry.registerWindow(readerWindow, AppWindowType.Reader);
 
@@ -140,7 +140,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
         // Remove menu bar
         readerWindow.setMenu(null);
     }
-
+    debug("second nb de fenêtre: " + Object.keys(appWindows).length);
     return reader;
 }
 
