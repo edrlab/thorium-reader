@@ -138,7 +138,7 @@
       },
       "menu": {
         "aboutBook": "About this book",
-        "addLib": "Import the extract",
+        "addExtract": "Import the extract",
         "goBuyBook": "Buy this book",
         "goLoanBook": "Borrow this book",
         "goSubBook": "Subscribe",
@@ -166,7 +166,7 @@
         "title": "Settings",
         "theme": {
           "title": "Theme",
-          "predefined": "Predifined themes",
+          "predefined": "Predefined themes",
           "myTheme": "My themes",
           "create": "Create a theme",
           "name": {
@@ -186,9 +186,9 @@
         },
         "spacing": "Spacing",
         "margin": "Margin",
-        "wordSpacing": "Words spacing",
+        "wordSpacing": "Word spacing",
         "lineSpacing": "Line spacing",
-        "letterSpacing": "Letters spacing",
+        "letterSpacing": "Letter spacing",
         "accessibility": "Accessibility",
         "disposition": {
           "title": "Disposition",

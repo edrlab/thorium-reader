@@ -138,7 +138,7 @@
       },
       "menu": {
         "aboutBook": "Fiche livre",
-        "addLib": "Ajouter à la bibliothèque",
+        "addExtract": "Ajouter à la bibliothèque",
         "goBuyBook": "Aller sur la page d'achat",
         "goLoanBook": "Aller sur la page d'emprunt",
         "goSubBook": "Aller sur la page d'abonnement",
