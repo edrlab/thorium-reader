@@ -87,7 +87,7 @@ export default class App extends React.Component<any, undefined> {
                                     style={{
                                         position: "absolute",
                                         overflowX: "hidden",
-                                        top: 0,
+                                        top: 124,
                                         bottom: 0,
                                         left: 0,
                                         right: 0,
