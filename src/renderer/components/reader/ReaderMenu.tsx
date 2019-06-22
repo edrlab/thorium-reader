@@ -113,7 +113,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                                         {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
                                     tabIndex={0}
                                     onKeyPress=
-                                        {e => { if (e.charCode === 13) { this.props.handleLinkClick(e, content.Href) } }
+                                        {e => { if (e.charCode === 13) { this.props.handleLinkClick(e, content.Href)}}}
                                 >
                                     {content.Title}
                                 </a>
@@ -130,7 +130,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                                     {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
                                 tabIndex={0}
                                 onKeyPress=
-                                    {e => { if (e.charCode === 13) { this.props.handleLinkClick(e, content.Href) } }
+                                    {e => { if (e.charCode === 13) { this.props.handleLinkClick(e, content.Href)}}}
                             >
                                 {content.Title}
                             </a>
