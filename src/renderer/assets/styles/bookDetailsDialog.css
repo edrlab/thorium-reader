@@ -217,7 +217,7 @@
 	border-radius: 0;
 	border:none;
 	height:35px;
-	outline: inherit;
+	/* outline: inherit; */
 	background-color: transparent;
 	color:black;
 	font-size: 0.9rem;

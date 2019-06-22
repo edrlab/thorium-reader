@@ -1,3 +1,5 @@
+@import "./focus-mixin.css";
+@import "./focus.css";
 @import "./variable.css";
 
 :root {
@@ -88,7 +90,7 @@
   width: 50px;
   background-color: rgb(0, 0, 0, 0);
   border: none;
-  outline: none;
+  /* outline: none; */
   fill: var(--sideButtonColor);
 
   &:hover {
@@ -96,9 +98,9 @@
     fill: var(--secondary-color);
   }
 
-  &:focus {
+  /* &:focus {
     outline: 1pt dashed #999;
-  }
+  } */
 }
 
 .side_button_svg {
@@ -391,7 +393,7 @@
   border-radius: 0;
   border:none;
   height:35px;
-  outline: inherit;
+  /* outline: inherit; */
   color:black;
   font-size: 1rem;
   width:calc(100% - 35px);
@@ -456,9 +458,9 @@
     &:hover {
       color: #808080;
     }
-    &:focus {
+    /* &:focus {
       outline: -webkit-focus-ring-color auto 5px;
-    }
+    } */
   }
 }
 
@@ -684,7 +686,7 @@ input[type=number] {
 	padding:10px;
 	margin-top:10px;
 	background-color: white;
-	outline:none;
+	/* outline:none; */
 	border:1px solid #c1c1c1;
 	border-radius: 5px;
 	text-align: center;
@@ -759,7 +761,7 @@ input[type=radio] + label {
   }
 
   & > [type="radio"]:focus + label:before {
-    outline: 1px #ecb13f solid;
+    @mixin R2_MIXIN_FOCUS_OUTLINE;
   }
 }
 
