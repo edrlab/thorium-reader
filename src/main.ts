@@ -253,19 +253,11 @@ const winCloseCallback = (appWindow: AppWindow) => {
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindows = winRegistry.getWindows();
 
-    debug("app windows: ", Object.keys(appWindows).length);
-    debug("first window: ", Object.values(appWindows)[0]);
-    if (Object.keys(appWindows).length >= 1) {
-        debug("app last windows type: ", Object.values(appWindows)[Object.keys(appWindows).length - 1].type);
-    }
-
-    if (Object.keys(appWindows).length > 1 && 
-    Object.values(appWindows)[0].type === AppWindowType.Library &&
-    Object.values(appWindows)[0].isVisible()) {
-        let nb_window = Object.keys(appWindows).length - 1;
-        debug("nb_window : ", nb_window);
-        for ( ;nb_window > 1; nb_window--) {
-            Object.values(appWindows)[nb_window].win.close();
+    if (Object.keys(appWindows).length >= 1 &&
+    appWindow.type === AppWindowType.Library) {
+        for ( let nb_window = Object.keys(appWindows).length - 1; 
+        nb_window >= 0; nb_window--) {
+           Object.values(appWindows)[nb_window].win.close();
         }
     }
 
@@ -274,7 +266,6 @@ const winCloseCallback = (appWindow: AppWindow) => {
     }
 
     const appWin = Object.values(appWindows)[0];
-    debug("app type is: " + appWin.type);
     if (appWin.type === AppWindowType.Library) {
         // Set reader to attached mode
         store.dispatch({
