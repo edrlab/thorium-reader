@@ -18,9 +18,3 @@ export function open(type: ToastType, data?: any) {
         payload: { type, data },
     };
 }
-
-export function close() {
-    return {
-        type: ActionType.CloseRequest,
-    };
-}

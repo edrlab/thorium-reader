@@ -87,7 +87,8 @@ export class PublicationApi {
     }
 
     public async importOpdsEntry(data: any): Promise<PublicationView[]> {
-        const { url, base64OpdsPublication, downloadSample } = data;
+        const { url, base64OpdsPublication, downloadSample, title } = data;
+        this.dispatchToastRequest("message.download.start", title);
         let publication;
         if (url) {
             publication = await this.catalogService.importOpdsEntry(url, downloadSample);

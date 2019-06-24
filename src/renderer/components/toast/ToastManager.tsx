@@ -56,7 +56,7 @@ export class ToastManager extends React.Component<Props, State> {
 
     public render(): React.ReactElement<{}> {
         const { toastList } = this.state;
-        return <ul className={styles.toastList}>
+        return <div className={styles.toastList}>
             { Object.keys(toastList).map((id: string) => {
                 const toast = toastList[id];
                 if (toast) {
@@ -68,7 +68,7 @@ export class ToastManager extends React.Component<Props, State> {
                     }
                 }
             })}
-        </ul>;
+        </div>;
     }
 
     private buildFileImportToast(toast: ToastState, id: string) {

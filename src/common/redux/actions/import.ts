@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { DialogType } from "readium-desktop/common/models/dialog";
-
 export enum ActionType {
     ImportVerificationRequest = "IMPORT_VERIFICATION_REQUEST",
 }

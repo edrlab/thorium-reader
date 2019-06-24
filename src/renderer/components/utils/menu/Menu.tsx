@@ -73,7 +73,9 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
                         setContentRef={(ref) => { this.contentRef = ref; }}
                         focusMenuButton={this.focusMenuButton}
                     >
-                        {content}
+                        <span onClick={toggle}>
+                            {content}
+                        </span>
                     </MenuContent>
                 }
             </>
@@ -103,9 +105,6 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
         const bottomPos = window.innerHeight - buttonRect.bottom;
         const contentElement = ReactDOM.findDOMNode(this.contentRef) as HTMLElement;
         const contentHeight = contentElement.getBoundingClientRect().height;
-
-        console.log(`bottomPos: ${bottomPos} || contentHeight: ${contentHeight}`);
-        console.log(contentElement);
 
         if (bottomPos < contentHeight) {
             contentStyle.top = Math.round(this.offset(button).top - contentHeight) + "px";

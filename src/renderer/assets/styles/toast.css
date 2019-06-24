@@ -2,12 +2,14 @@
     position: fixed;
     top: 10rem;
     right: 0;
+    z-index: 10000;
 }
 .toast {
     margin-bottom: 1rem;
     position: relative;
     padding: 1rem;
     border: 1px grey solid;
+    border-right: none;
     width: 20rem;
     height: 4.125rem;
 
