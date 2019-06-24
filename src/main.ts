@@ -6,66 +6,45 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-
+import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
+import * as path from "path";
+import { syncIpc, winIpc } from "readium-desktop/common/ipc";
+import { ReaderMode } from "readium-desktop/common/models/reader";
+import { SenderType } from "readium-desktop/common/models/sync";
+import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
+import {
+    i18nActions, netActions, readerActions, updateActions,
+} from "readium-desktop/common/redux/actions";
+import { NetStatus } from "readium-desktop/common/redux/states/net";
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
+import { OpdsApi } from "readium-desktop/main/api/opds";
+import { container } from "readium-desktop/main/di";
+import { appInit } from "readium-desktop/main/redux/actions/app";
+import { RootState } from "readium-desktop/main/redux/states";
+import { CatalogService } from "readium-desktop/main/services/catalog";
+import { WinRegistry } from "readium-desktop/main/services/win-registry";
+import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import {
+    _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV,
+} from "readium-desktop/preprocessor-directives";
+import { Store } from "redux";
 import * as yargs from "yargs";
 
-import { _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV } from "readium-desktop/preprocessor-directives";
+import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
+import { initSessions } from "@r2-navigator-js/electron/main/sessions";
+import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
+import {
+    initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
+} from "@r2-shared-js/init-globals";
+
+import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
+import { debounce } from "./utils/debounce";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
     delete process.env.DEBUG;
     debug_.disable();
 }
-
-import * as path from "path";
-import { Store } from "redux";
-
-import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
-
-import { container } from "readium-desktop/main/di";
-
-import { OpdsApi } from "readium-desktop/main/api/opds";
-
-import { appInit } from "readium-desktop/main/redux/actions/app";
-import { RootState } from "readium-desktop/main/redux/states";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
-
-import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-
-import {
-    i18nActions,
-    netActions,
-    readerActions,
-    updateActions,
-} from "readium-desktop/common/redux/actions";
-import { NetStatus } from "readium-desktop/common/redux/states/net";
-
-import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-
-import { initSessions } from "@r2-navigator-js/electron/main/sessions";
-
-import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
-
-import {
-    initGlobalConverters_GENERIC,
-    initGlobalConverters_SHARED,
-} from "@r2-shared-js/init-globals";
-
-import {
-    initGlobalConverters_OPDS,
-} from "@r2-opds-js/opds/init-globals";
-
-import { SenderType } from "readium-desktop/common/models/sync";
-
-import { ReaderMode } from "readium-desktop/common/models/reader";
-
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
-
-import { CatalogService } from "readium-desktop/main/services/catalog";
-
-import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
-import { debounce } from "./utils/debounce";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -253,6 +232,7 @@ const winCloseCallback = (appWindow: AppWindow) => {
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindows = winRegistry.getWindows();
 
+    // if multiple windows are open & library are closed. all other windows are closed 
     if (Object.keys(appWindows).length >= 1 &&
     appWindow.type === AppWindowType.Library) {
         for (let nbWindow = Object.keys(appWindows).length - 1;
