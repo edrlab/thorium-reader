@@ -232,7 +232,7 @@ const winCloseCallback = (appWindow: AppWindow) => {
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindows = winRegistry.getWindows();
 
-    // if multiple windows are open & library are closed. all other windows are closed 
+    // if multiple windows are open & library are closed. all other windows are closed
     if (Object.keys(appWindows).length >= 1 &&
     appWindow.type === AppWindowType.Library) {
         for (let nbWindow = Object.keys(appWindows).length - 1;
