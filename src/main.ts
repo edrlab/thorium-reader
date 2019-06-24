@@ -255,10 +255,11 @@ const winCloseCallback = (appWindow: AppWindow) => {
 
     if (Object.keys(appWindows).length >= 1 &&
     appWindow.type === AppWindowType.Library) {
-        for ( let nb_window = Object.keys(appWindows).length - 1; 
-        nb_window >= 0; nb_window--) {
-           Object.values(appWindows)[nb_window].win.close();
+        for (let nbWindow = Object.keys(appWindows).length - 1;
+        nbWindow >= 0; nbWindow--) {
+           Object.values(appWindows)[nbWindow].win.close();
         }
+        return;
     }
 
     if (Object.keys(appWindows).length !== 1) {
