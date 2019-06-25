@@ -6,19 +6,14 @@
 // ==LICENSE-END==
 
 import * as qs from "query-string";
-
 import * as React from "react";
-
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import { CatalogEntryView, CatalogView} from "readium-desktop/common/views/catalog";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-
+import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 import Header, { DisplayType } from "./Header";
 
 import GridView from "./GridView";
@@ -82,6 +77,10 @@ export default withApi(
             {
                 moduleId: "publication",
                 methodId: "import",
+            },
+            {
+                moduleId: "publication",
+                methodId: "importOpdsEntry",
             },
             {
                 moduleId: "publication",
