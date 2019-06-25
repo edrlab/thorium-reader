@@ -140,6 +140,7 @@
     ]
   },
   "dependencies": {
+    "@types/node-notifier": "^5.4.0",
     "@types/react-beautiful-dnd": "^7.1.2",
     "@types/react-helmet": "^5.0.8",
     "acorn": "^6.1.1",
@@ -160,6 +161,7 @@
     "js-yaml": "^3.13.1",
     "jsondown": "^1.0.0",
     "markdown-loader": "^5.0.0",
+    "node-notifier": "^5.4.0",
     "opds-feed-parser": "^0.0.14",
     "ping": "github:danielzzz/node-ping#1601458126cc1dd0c31db8150f2e6b2a40570a7f",
     "portfinder": "^1.0.17",

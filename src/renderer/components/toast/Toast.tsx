@@ -7,12 +7,14 @@
 
 import * as React from "react";
 
+import classNames = require("classnames");
+
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
-import classNames = require("classnames");
+import * as notifier from "node-notifier";
 
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 
@@ -49,9 +51,10 @@ export class Toast extends React.Component<Props, State> {
         setTimeout(this.handleClose, 5000);
         this.ref.addEventListener("transitionend", this.handleTransitionEnd, false);
         if (this.props.displaySystemNotification) {
-            const myNotification = new Notification("Thorium", {
-                body: this.props.message,
-            });
+            notifier.notify({
+                title: "Thorium",
+                message: this.props.message,
+            })
         }
     }
 
