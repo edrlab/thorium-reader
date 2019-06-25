@@ -88,7 +88,7 @@ export class PublicationApi {
 
     public async importOpdsEntry(data: any): Promise<PublicationView[]> {
         const { url, base64OpdsPublication, downloadSample, title } = data;
-        this.dispatchToastRequest("message.download.start", title);
+        this.dispatchToastRequest(ToastType.DownloadStarted, "message.download.start", title);
         let publication;
         if (url) {
             publication = await this.catalogService.importOpdsEntry(url, downloadSample);
@@ -96,7 +96,7 @@ export class PublicationApi {
             const opdsPublication = JSON.parse(Buffer.from(base64OpdsPublication, "base64").toString("utf-8"));
             publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample);
         }
-        this.dispatchToastRequest("message.download.success", publication.title);
+        this.dispatchToastRequest(ToastType.DownloadComplete, "message.download.success", publication.title);
         return null;
     }
 
@@ -113,7 +113,7 @@ export class PublicationApi {
 
         return newDocs.map((doc) => {
             const publication = this.publicationViewConverter.convertDocumentToView(doc);
-            this.dispatchToastRequest("message.import.success", publication.title);
+            this.dispatchToastRequest(ToastType.DownloadComplete, "message.import.success", publication.title);
             return publication;
         });
     }
@@ -131,9 +131,9 @@ export class PublicationApi {
         this.catalogService.exportPublication(publication, destinationPath);
     }
 
-    private dispatchToastRequest(message: string, title: string) {
+    private dispatchToastRequest(type: ToastType, message: string, title: string) {
         const store = container.get("store") as Store<any>;
-        store.dispatch(open(ToastType.FinishedDownload,
+        store.dispatch(open(type,
             {
                 message,
                 messageProps: {title},

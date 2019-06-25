@@ -22,6 +22,7 @@ interface Props extends TranslatorProps {
     id?: string;
     icon?: any;
     message?: string;
+    displaySystemNotification: boolean;
 }
 
 interface State {
@@ -46,8 +47,12 @@ export class Toast extends React.Component<Props, State> {
 
     public componentDidMount() {
         setTimeout(this.handleClose, 5000);
-        console.log(this.ref);
         this.ref.addEventListener("transitionend", this.handleTransitionEnd, false);
+        if (this.props.displaySystemNotification) {
+            const myNotification = new Notification("Thorium", {
+                body: this.props.message,
+            });
+        }
     }
 
     public componentWillRemove() {

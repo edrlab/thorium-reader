@@ -61,8 +61,10 @@ export class ToastManager extends React.Component<Props, State> {
                 const toast = toastList[id];
                 if (toast) {
                     switch (toast.type) {
-                        case ToastType.FinishedDownload:
+                        case ToastType.DownloadComplete:
                             return this.buildFileImportToast(toast, id);
+                        case ToastType.DownloadStarted:
+                            return this.buildFileImportStartToast(toast, id);
                         default:
                             return (<></>);
                     }
@@ -72,6 +74,18 @@ export class ToastManager extends React.Component<Props, State> {
     }
 
     private buildFileImportToast(toast: ToastState, id: string) {
+        const { __ } = this.props;
+        return (
+            <Toast
+                message={__(toast.data.message, toast.data.messageProps)}
+                icon={ DownloadIcon }
+                close={ () => this.close(id) }
+                displaySystemNotification
+            />
+        );
+    }
+
+    private buildFileImportStartToast(toast: ToastState, id: string) {
         const { __ } = this.props;
         return (
             <Toast
