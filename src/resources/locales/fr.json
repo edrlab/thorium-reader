@@ -1,4 +1,7 @@
 {
+    "app": {
+      "quit": "Quitter l'application"
+    },
     "catalog": {
       "entry": {
         "continueReading": "Reprendre la lecture",
