@@ -10,12 +10,10 @@ import { Store } from "redux";
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
     apiActions,
-    catalogActions,
+    dialogActions,
     i18nActions,
     lcpActions,
     netActions,
-    opdsActions,
-    publicationDownloadActions,
     readerActions,
     updateActions,
 } from "readium-desktop/common/redux/actions";
@@ -28,49 +26,27 @@ import { SenderType } from "readium-desktop/common/models/sync";
 
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
-    catalogActions.ActionType.FileImportError,
-    catalogActions.ActionType.FileImportSuccess,
-    catalogActions.ActionType.PublicationAddSuccess,
-    catalogActions.ActionType.PublicationRemoveSuccess,
-    catalogActions.ActionType.PublicationRemoveError,
-
     apiActions.ActionType.Success,
     apiActions.ActionType.Error,
 
     netActions.ActionType.Offline,
     netActions.ActionType.Online,
 
-    opdsActions.ActionType.AddError,
-    opdsActions.ActionType.AddSuccess,
-    opdsActions.ActionType.UpdateError,
-    opdsActions.ActionType.UpdateSuccess,
-    opdsActions.ActionType.RemoveError,
-    opdsActions.ActionType.RemoveSuccess,
-
-    publicationDownloadActions.ActionType.AddError,
-    publicationDownloadActions.ActionType.AddSuccess,
-    publicationDownloadActions.ActionType.Progress,
-    publicationDownloadActions.ActionType.Success,
-    publicationDownloadActions.ActionType.Error,
-    publicationDownloadActions.ActionType.CancelError,
-    publicationDownloadActions.ActionType.CancelSuccess,
+    dialogActions.ActionType.OpenRequest,
 
     readerActions.ActionType.OpenError,
-    readerActions.ActionType.OpenSuccess,
+    readerActions.ActionType.CloseError,
+    readerActions.ActionType.CloseSuccess,
+    readerActions.ActionType.ModeSetError,
+    readerActions.ActionType.ModeSetSuccess,
     readerActions.ActionType.ConfigSetError,
     readerActions.ActionType.ConfigSetSuccess,
     readerActions.ActionType.BookmarkSaveError,
     readerActions.ActionType.BookmarkSaveSuccess,
+    readerActions.ActionType.FullscreenOnSuccess,
+    readerActions.ActionType.FullscreenOffSuccess,
 
     lcpActions.ActionType.UserKeyCheckRequest,
-    lcpActions.ActionType.UserKeyCheckError,
-    lcpActions.ActionType.UserKeyCheckSuccess,
-    lcpActions.ActionType.PassphraseSubmitError,
-    lcpActions.ActionType.PassphraseSubmitSuccess,
-    lcpActions.ActionType.RenewSuccess,
-    lcpActions.ActionType.RenewError,
-    lcpActions.ActionType.ReturnSuccess,
-    lcpActions.ActionType.ReturnError,
 
     i18nActions.ActionType.Set,
 
@@ -78,6 +54,7 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 ];
 
 export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action: any) => {
+    console.log("### action type", action.type);
     // Test if the action must be sent to the rendeder processes
     if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
         // Do not send
@@ -91,9 +68,10 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
     // Get action serializer
     const actionSerializer = container.get("action-serializer") as ActionSerializer;
 
-    for (const winId of Object.keys(windows)) {
+    for (const appWindow of Object.values(windows)) {
         // Notifies renderer process
-        const win = windows[winId];
+        const win = appWindow.win;
+        const winId = appWindow.identifier;
 
         if (action.sender &&
             action.sender.type === SenderType.Renderer &&

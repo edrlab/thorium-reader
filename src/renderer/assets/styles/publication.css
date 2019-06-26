@@ -46,6 +46,7 @@
     & .image_wrapper {
         width: 100%;
         position: relative;
+        
         & > a {
             position: absolute;
             top: 0;
@@ -53,12 +54,12 @@
             left: 0;
             right: 0;
             display: flex;
-            align-items: center;
+            align-items: flex-end;
+            justify-content: center;
             cursor: pointer;
             & img {
                 max-height: 100%;
                 max-width: 100%;
-                margin: auto;
                 display: block;
             }
         }
@@ -113,7 +114,7 @@
 }
 
 .menu {
-    height: 90px;
+    height: fit-content;
     width: 180px;
     display: flex;
     flex-direction: column;
@@ -121,21 +122,43 @@
     font-size: 0.9rem;
     box-shadow: 0px 0px 10px 0px #cfcfcf;
     overflow: hidden;
-    & a {
+    & button, & a, & span label {
         text-decoration: none;
         color: black;
         flex: 1;
         padding: 0.5rem;
         text-align: center;
-        cursor: pointer;    
+        cursor: pointer;
         display: flex;
         align-items: center;
-        justify-content: center;                
+        justify-content: center;
+        height: 40px;
+        box-sizing: border-box;
+        width:100%;
+        font-size: 0.9rem;
+        opacity: 1;
+        margin: 0;
+
+        &:hover {
+            background-color: #CECECE;
+        }
+
+        &:not(:last-child){
+            border-bottom: 1px solid #E5E3E3;
+        }
     }
-    & a:not(:last-child) {
-        border-bottom: 1px solid #E5E3E3;
-    }
-    & a:hover {
-        background-color: #CECECE;
+
+    & span {
+        cursor: pointer;
+        & input {
+            height: 0;
+            width: 0;
+            position: absolute;
+            left: -2000px;
+        }
+
+        & input:focus + label {
+            outline: -webkit-focus-ring-color auto 5px;
+        }
     }
 }

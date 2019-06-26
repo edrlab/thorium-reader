@@ -38,34 +38,43 @@
   	flex-flow: row wrap;
   	height: auto;
   	justify-content: space-between;
-
-    & > a {
-        text-decoration: none;
-        color: black;
-
-        & div {
-            width: 300px; 
-            height: 300px;
+    & ul {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        & li {
+            height: 301px;
+            width: 301px;
             margin-bottom:30px;
-            background-color: grey;
-            display: flex;
-            flex-direction: column;
-
-            & p {
-                text-align: center;
-                color:white;
-                font-size: 1.5rem;
-                margin-top: calc(50% - 30px - 1.4rem);
+            position: relative;
+            list-style: none;
+            & > a {
+                height: 100%;
+                width: 100%;
+                border-radius: 33px;
+                background: linear-gradient(160.03deg, #6FA4FC 0%, #4083FD 100%);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-decoration: none;
+                & p {
+                    text-align: center;
+                    color:white;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                }
             }
-
             & button {
-                align-self: flex-end;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                fill: white;
             }
         }
-    }
 
-    & > div {
-        width: 300px;
+        & > div {
+            width: 301px;
+        }
     }
 }
 

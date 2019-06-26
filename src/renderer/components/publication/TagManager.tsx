@@ -16,8 +16,9 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-interface TagManagerProps {
+interface TagManagerProps extends TranslatorProps {
     publicationIdentifier: string;
     tags: string[];
     updatedPublication?: PublicationView;
@@ -52,9 +53,10 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
     }
 
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
         return (
             <div>
-                <ul>
+                { this.state.tags.length > 0 && <ul>
                     {this.state.tags.map((tag: string, index: number) =>
                         <li key={index}> {tag}
                             {this.props.canModifyTag &&
@@ -64,14 +66,14 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
                             }
                         </li>,
                     )}
-                </ul>
+                </ul>}
                 {this.props.canModifyTag &&
                     <form onSubmit={this.addTag} id={styles.flux_search}>
                         <input
                             type="text"
                             className={styles.tag_inputs}
-                            title="ajouter un tag"
-                            placeholder="Ajouter un tag"
+                            title={ __("catalog.addTags")}
+                            placeholder={ __("catalog.addTags")}
                             onChange={this.handleChangeName}
                             value={this.state.nameNewTag}
                         />
@@ -90,9 +92,11 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
     private addTag(e: any) {
         e.preventDefault();
         const { tags } = this.state;
-        tags.push(this.state.nameNewTag);
-        this.sendTags(tags);
-        this.setState({nameNewTag: ""});
+        if (tags.indexOf(this.state.nameNewTag) < 0) {
+            tags.push(this.state.nameNewTag);
+            this.sendTags(tags);
+        }
+        this.setState({ nameNewTag: "" });
     }
 
     private sendTags(tags: string[]) {
@@ -103,11 +107,11 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
     }
 
     private handleChangeName(e: any) {
-        this.setState({nameNewTag: e.target.value});
+        this.setState({ nameNewTag: e.target.value });
     }
 }
 
-export default withApi(
+export default withTranslator(withApi(
     TagManager,
     {
         operations: [
@@ -119,4 +123,4 @@ export default withApi(
             },
         ],
     },
-);
+));

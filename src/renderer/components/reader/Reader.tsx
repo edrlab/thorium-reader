@@ -131,8 +131,6 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 
         night: settings.night,
 
-        noFootnotes: readiumCSSDefaults.noFootnotes,
-
         pageMargins: settings.pageMargins,
 
         paged: settings.paged,
@@ -140,8 +138,6 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         paraIndent: readiumCSSDefaults.paraIndent,
 
         paraSpacing: settings.paraSpacing,
-
-        reduceMotion: readiumCSSDefaults.reduceMotion,
 
         sepia: settings.sepia,
 
@@ -202,9 +198,14 @@ interface ReaderState {
 }
 
 interface ReaderProps {
+    reader?: any;
+    mode?: any;
     deleteBookmark?: any;
     addBookmark?: any;
     findBookmarks: any;
+    toggleFullscreen?: any;
+    closeReader?: any;
+    detachReader?: any;
     setLastReadingLocation: any;
     bookmarks?: LocatorView[];
 }
@@ -243,7 +244,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                 font: "DEFAULT",
                 fontSize: "100%",
                 invert: false,
-                lineHeight: "1.5",
+                lineHeight: undefined,
                 night: false,
                 paged: false,
                 readiumcss: true,
@@ -284,6 +285,8 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleFullscreenClick = this.handleFullscreenClick.bind(this);
+        this.handleReaderClose = this.handleReaderClose.bind(this);
+        this.handleReaderDetach = this.handleReaderDetach.bind(this);
         this.setSettings = this.setSettings.bind(this);
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
@@ -323,8 +326,12 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 
                 this.setState({settingsValues: settings, indexes});
 
-                // Push reader config to navigator
-                readiumCssOnOff();
+                // this.state.publication is initialized in loadPublicationIntoViewport(),
+                // which calls installNavigatorDOM() which in turn allows navigator API functions to be called safely
+                if (this.state.publication) {
+                    // Push reader config to navigator
+                    readiumCssOnOff();
+                }
             }
         });
 
@@ -380,7 +387,23 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
+        const readerMenuProps = {
+            open: this.state.menuOpen,
+            publication: this.state.publication,
+            handleLinkClick: this.handleLinkClick,
+            handleBookmarkClick: this.goToLocator,
+            toggleMenu: this.handleMenuButtonClick,
+        };
+
+        const readerOptionsProps = {
+            open: this.state.settingsOpen,
+            indexes: this.state.indexes,
+            settings: this.state.settingsValues,
+            handleSettingChange: this.handleSettingsValueChange.bind(this),
+            handleIndexChange: this.handleIndexValueChange.bind(this),
+            setSettings: this.setSettings,
+            toggleMenu: this.handleSettingsClick,
+        };
 
         return (
                 <div>
@@ -397,24 +420,15 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                             handleMenuClick={this.handleMenuButtonClick}
                             handleSettingsClick={this.handleSettingsClick}
                             fullscreen={this.state.fullscreen}
+                            mode={this.props.mode}
                             handleFullscreenClick={this.handleFullscreenClick}
+                            handleReaderDetach={this.handleReaderDetach}
+                            handleReaderClose={this.handleReaderClose}
                             toggleBookmark={ this.handleToggleBookmark }
                             ttsState={this.state.ttsState}
                             isOnBookmark={this.state.visibleBookmarkList.length > 0}
-                        />
-                        <ReaderMenu
-                            open={this.state.menuOpen}
-                            publication={this.state.publication}
-                            handleLinkClick={this.handleLinkClick}
-                            handleBookmarkClick={this.goToLocator}
-                        />
-                        <ReaderOptions
-                            open={this.state.settingsOpen}
-                            indexes={this.state.indexes}
-                            settings={this.state.settingsValues}
-                            handleSettingChange={this.handleSettingsValueChange.bind(this)}
-                            handleIndexChange={this.handleIndexValueChange.bind(this)}
-                            setSettings={this.setSettings}
+                            readerOptionsProps={readerOptionsProps}
+                            readerMenuProps={readerMenuProps}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
@@ -468,7 +482,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             const title = this.translator.translateContentField(publication.Metadata.Title);
 
             if (title) {
-                window.document.title = "Readium2 [ " + title + "]";
+                window.document.title = "Thorium - " + title;
                 this.setState({
                     title,
                 });
@@ -597,7 +611,16 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         await this.checkBookmarks();
     }
 
+    private handleReaderClose() {
+        this.props.closeReader(this.props.reader);
+    }
+
+    private handleReaderDetach() {
+        this.props.detachReader(this.props.reader);
+    }
+
     private handleFullscreenClick() {
+        this.props.toggleFullscreen(!this.state.fullscreen);
         this.setState({fullscreen: !this.state.fullscreen});
     }
 
@@ -693,9 +716,36 @@ const buildBookmarkRequestData = () => {
     };
 };
 
+const mapStateToProps = (state: RootState, __: any) => {
+    return {
+        reader: state.reader.reader,
+        mode: state.reader.mode,
+    };
+};
+
+const mapDispatchToProps = (dispatch: any, props: ReaderProps) => {
+    return {
+        toggleFullscreen: (fullscreenOn: boolean) => {
+            if (fullscreenOn) {
+                dispatch(readerActions.setFullscreenOn());
+            } else {
+                dispatch(readerActions.setFullscreenOff());
+            }
+        },
+        closeReader: (reader: any) => {
+            dispatch(readerActions.close(reader, true));
+        },
+        detachReader: (reader: any) => {
+            dispatch(readerActions.detach(reader));
+        },
+    };
+};
+
 export default withApi(
     Reader,
     {
+        mapStateToProps,
+        mapDispatchToProps,
         operations: [
             {
                 moduleId: "reader",

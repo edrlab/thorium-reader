@@ -57,9 +57,15 @@ import {
 
 import { SenderType } from "readium-desktop/common/models/sync";
 
+import { ReaderMode } from "readium-desktop/common/models/reader";
+
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
 import { CatalogService } from "readium-desktop/main/services/catalog";
+
+import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
+import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
+import { debounce } from "./utils/debounce";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -77,19 +83,22 @@ setLcpNativePluginPath(lcpNativePluginPath);
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
 let mainWindow: BrowserWindow = null;
+let mainWindowId: any = null;
 
 initSessions();
 
 // Initialize application
 function initApp() {
     (container.get("store") as Store<any>).dispatch(appInit());
+    const winRegistry = container.get("win-registry") as WinRegistry;
+    winRegistry.registerOpenCallback(winOpenCallback);
+    winRegistry.registerCloseCallback(winCloseCallback);
 }
 
 // Opens the main window, with a native menu bar.
-function createWindow() {
+async function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        ...(await getWindowsRectangle()),
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
@@ -98,7 +107,10 @@ function createWindow() {
             webSecurity: false,
             allowRunningInsecureContent: false,
         },
+        icon: path.join(__dirname, "assets/icons/icon.ico"),
     });
+    const winRegistry = container.get("win-registry") as WinRegistry;
+    winRegistry.registerWindow(mainWindow, AppWindowType.Library);
 
     let rendererBaseUrl = _RENDERER_APP_BASE_URL;
 
@@ -178,8 +190,14 @@ function createWindow() {
     // mainWindow.webContents.session.clearStorageData();
 
     mainWindow.on("closed", () => {
+        mainWindowId = null;
         mainWindow = null;
     });
+
+    const debounceSavedWindowsRectangle = debounce(savedWindowsRectangle, 500);
+
+    mainWindow.on("move", () =>
+        debounceSavedWindowsRectangle(mainWindow.getBounds()));
 }
 
 function registerProtocol() {
@@ -201,22 +219,22 @@ app.on("window-all-closed", () => {
 );
 
 // Call 'createWindow()' on startup.
-app.on("ready", () => {
+app.on("ready", async () => {
     debug("ready");
     initApp();
 
     if (!processCommandLine()) {
         // Do not open window if electron is launched as a command line
-        createWindow();
+        await createWindow();
         registerProtocol();
     }
 });
 
 // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
 // windows open.
-app.on("activate", () => {
+app.on("activate", async () => {
     if (mainWindow === null) {
-        createWindow();
+        await createWindow();
     }
 });
 
@@ -229,95 +247,144 @@ app.on("open-file", (event: any, url: any) => {
     // Process file: import or open?
 });
 
-// Listen to a window that requests a new id
-ipcMain.on(winIpc.CHANNEL, (event: any, data: any) => {
-    const win: BrowserWindow = event.sender;
+// Callback called when a window is closed
+const winCloseCallback = (appWindow: AppWindow) => {
     const store = container.get("store") as Store<RootState>;
     const winRegistry = container.get("win-registry") as WinRegistry;
+    const appWindows = winRegistry.getWindows();
 
-    switch (data.type) {
-        case winIpc.EventType.IdRequest:
-            const winId = winRegistry.registerWindow(win);
+    if (Object.keys(appWindows).length !== 1) {
+        return;
+    }
 
-            win.on("closed", () => {
-                winRegistry.unregisterWindow(winId);
-            });
+    const appWin = Object.values(appWindows)[0];
 
-            // Send the id to the new window
-            win.webContents.send(winIpc.CHANNEL, {
-                type: winIpc.EventType.IdResponse,
-                payload: {
-                    winId,
-                },
-            });
+    if (appWin.type === AppWindowType.Library) {
+        // Set reader to attached mode
+        store.dispatch({
+            type: readerActions.ActionType.ModeSetSuccess,
+            payload: {
+                mode: ReaderMode.Attached,
+            },
+        });
+    }
 
-            // Init network on window
-            const state = store.getState();
-            let netActionType = null;
+    if (
+        appWin.type === AppWindowType.Library &&
+        !appWin.win.isVisible()
+    ) {
+        // Library window is hidden
+        // There is no more opened window
+        // Consider that we close application
+        Object.values(appWindows)[0].win.close();
 
-            switch (state.net.status) {
-                case NetStatus.Online:
-                    netActionType = netActions.ActionType.Online;
-                    break;
-                case NetStatus.Online:
-                    netActionType = netActions.ActionType.Offline;
-                    break;
-            }
+    }
+};
 
-            // Send network status
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: netActionType,
-                    },
-                },
-            });
+// Callback called when a window is opened
+const winOpenCallback = (appWindow: AppWindow) => {
+    // Send information to the new window
+    const store = container.get("store") as Store<RootState>;
+    const webContents = appWindow.win.webContents;
 
-            // Send reader config
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: readerActions.ActionType.ConfigSetSuccess,
-                        payload: {
-                            config: state.reader.config,
-                        },
-                    },
-                },
-            });
+    // Send the id to the new window
+    webContents.send(winIpc.CHANNEL, {
+        type: winIpc.EventType.IdResponse,
+        payload: {
+            winId: appWindow.identifier,
+        },
+    });
 
-            // Send locale
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: i18nActions.ActionType.Set,
-                        payload: {
-                            locale: state.i18n.locale,
-                        },
-                    },
-                },
-            });
+    // Init network on window
+    const state = store.getState();
+    let netActionType = null;
 
-            // Send locale
-            win.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: {
-                        type: updateActions.ActionType.LatestVersionSet,
-                        payload: {
-                            status: state.update.status,
-                            latestVersion: state.update.latestVersion,
-                            latestVersionUrl: state.update.latestVersionUrl,
-                        },
-                    },
-                },
-            });
-
+    switch (state.net.status) {
+        case NetStatus.Online:
+            netActionType = netActions.ActionType.Online;
+            break;
+        case NetStatus.Online:
+            netActionType = netActions.ActionType.Offline;
             break;
     }
-});
+
+    // Send network status
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: netActionType,
+            },
+        },
+    });
+
+    // Send reader information
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: readerActions.ActionType.OpenSuccess,
+                payload: {
+                    reader: state.reader.readers[appWindow.identifier],
+                },
+            },
+        },
+    });
+
+    // Send reader config
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: readerActions.ActionType.ConfigSetSuccess,
+                payload: {
+                    config: state.reader.config,
+                },
+            },
+        },
+    });
+
+    // Send reader mode
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: readerActions.ActionType.ModeSetSuccess,
+                payload: {
+                    mode: state.reader.mode,
+                },
+            },
+        },
+    });
+
+    // Send locale
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: i18nActions.ActionType.Set,
+                payload: {
+                    locale: state.i18n.locale,
+                },
+            },
+        },
+    });
+
+    // Send locale
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: {
+                type: updateActions.ActionType.LatestVersionSet,
+                payload: {
+                    status: state.update.status,
+                    latestVersion: state.update.latestVersion,
+                    latestVersionUrl: state.update.latestVersionUrl,
+                },
+            },
+        },
+    });
+};
 
 // Listen to renderer action
 ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {

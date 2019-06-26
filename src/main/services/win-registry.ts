@@ -5,21 +5,41 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { BrowserWindow } from "electron";
-import { injectable } from "inversify";
 import * as uuid from "uuid";
 
+import { BrowserWindow } from "electron";
+import { injectable } from "inversify";
+
+import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
+
 export interface WinDictionary {
-    [winId: string]: BrowserWindow;
+    [winId: number]: AppWindow;
 }
+
+type OpenCallbackFunc = (appWindow: AppWindow) => void;
+type CloseCallbackFunc = (appWindow: AppWindow) => void;
 
 @injectable()
 export class WinRegistry {
+    // BrowserWindow.id => AppWindow
     private windows: WinDictionary;
+    private openCallbacks: OpenCallbackFunc[];
+    private closeCallbacks: CloseCallbackFunc[];
 
     constructor() {
         // No windows are registered
         this.windows = {};
+        this.unregisterWindow = this.unregisterWindow.bind(this);
+        this.openCallbacks = [];
+        this.closeCallbacks = [];
+    }
+
+    public registerOpenCallback(callback: OpenCallbackFunc) {
+        this.openCallbacks.push(callback);
+    }
+
+    public registerCloseCallback(callback: CloseCallbackFunc) {
+        this.closeCallbacks.push(callback);
     }
 
     /**
@@ -28,10 +48,28 @@ export class WinRegistry {
      * @param win Electron BrowserWindows
      * @return Id of registered window
      */
-    public registerWindow(win: BrowserWindow): string {
-        const winId = uuid.v4();
-        this.windows[winId] = win;
-        return winId;
+    public registerWindow(win: BrowserWindow, type: AppWindowType): AppWindow {
+        const winId = win.id;
+        const appWindow = {
+            identifier: uuid.v4(),
+            type,
+            win,
+        };
+        this.windows[winId] = appWindow;
+
+        win.webContents.on("did-finish-load", () => {
+            // Call callbacks
+            for (const callback of this.openCallbacks) {
+                callback(appWindow);
+            }
+        });
+
+        // Unregister automatically
+        win.on("closed", () => {
+            this.unregisterWindow(winId);
+        });
+
+        return appWindow;
     }
 
     /**
@@ -39,13 +77,37 @@ export class WinRegistry {
      *
      * @param winId Id of registered window
      */
-    public unregisterWindow(winId: string) {
-        if (this.windows.hasOwnProperty(winId)) {
+    public unregisterWindow(winId: number) {
+        if (!(winId in this.windows)) {
             // Window not found
             return;
         }
 
+        const appWindow = this.windows[winId];
         delete this.windows[winId];
+
+        // Call callbacks
+        for (const callback of this.closeCallbacks) {
+            callback(appWindow);
+        }
+    }
+
+    public getWindow(winId: number): AppWindow {
+        if (!(winId in this.windows)) {
+            // Window not found
+            return;
+        }
+
+        return this.windows[winId];
+    }
+
+    public getWindowByIdentifier(identifier: string): AppWindow {
+        for (const appWindow of Object.values(this.windows)) {
+            if (appWindow.identifier === identifier) {
+                return appWindow;
+            }
+        }
+        return null;
     }
 
     /** Returns all registered windows */

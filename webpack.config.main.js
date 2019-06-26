@@ -4,6 +4,9 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
+// Get node environment
+const nodeEnv = process.env.NODE_ENV || "development";
+
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
 
 const aliases = {
@@ -34,7 +37,7 @@ let externals = {
     "pouchdb-adapter-leveldb": "pouchdb-adapter-leveldb",
     "electron-devtools-installer": "electron-devtools-installer",
 }
-if (process.env.NODE_ENV !== "PROD") {
+if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {
     // //         "electron-config": "electron-config",
     // //     }
@@ -75,6 +78,7 @@ console.log(JSON.stringify(externals, null, "  "));
 let config = Object.assign({}, {
     entry: "./src/main.ts",
     name: "main",
+    mode: nodeEnv,
     output: {
         filename: "main.js",
         path: path.join(__dirname, "dist"),
@@ -98,10 +102,10 @@ let config = Object.assign({}, {
     },
 
     module: {
-        loaders: [
+        rules: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-                { test: /\.tsx?$/, loaders: ["awesome-typescript-loader"] },
-                { test: /\.node$/, loaders: ["node-loader"] },
+            { test: /\.tsx?$/, loaders: ["awesome-typescript-loader"] },
+            { test: /\.node$/, loaders: ["node-loader"] },
         ],
     },
     plugins: [
@@ -117,11 +121,17 @@ let config = Object.assign({}, {
                 to: "ReadiumCSS",
             }
         ]),
+        new CopyWebpackPlugin([
+            {
+                from: path.join(__dirname, "resources", "icons"),
+                to: "assets/icons",
+            }
+        ]),
         preprocessorDirectives.definePlugin
     ],
 });
 
-if (process.env.NODE_ENV !== "PROD") {
+if (nodeEnv !== "production") {
     // Bundle absolute resource paths in the source-map,
     // so VSCode can match the source file.
     config.output.devtoolModuleFilenameTemplate = "[absolute-resource-path]";

@@ -40,32 +40,34 @@ export class FeedList extends React.Component<OpdsListProps, null> {
 
         return (
             <section className={styles.opds_list}>
-                { this.props.feeds.map((item, index) => {
-                    return (
-                        <Link
-                            key={index}
-                            to={{
-                                pathname: buildOpdsBrowserRoute(
-                                    item.identifier,
-                                    item.title,
-                                    item.url,
-                                ),
-                            }}
-                        >
-                            <div>
+                <ul>
+                    { this.props.feeds.map((item, index) => {
+                        return (
+                            <li>
+                                <Link
+                                    key={index}
+                                    to={{
+                                        pathname: buildOpdsBrowserRoute(
+                                            item.identifier,
+                                            item.title,
+                                            item.url,
+                                        ),
+                                    }}
+                                >
+                                    <p>{ item.title }</p>
+                                </Link>
                                 <button
                                     onClick={(e) => this.deleteFeed(e, item)}
                                 >
                                     <SVG svg={DeleteIcon} />
                                 </button>
-                                <p>{ item.title }</p>
-                            </div>
-                        </Link>
-                    );
-                })}
-                {[...Array(6).keys()].map((__, index) => {
-                    return <div key={-index}></div>;
-                })}
+                            </li>
+                        );
+                    })}
+                    {[...Array(6).keys()].map((__, index) => {
+                        return <div key={-index}></div>;
+                    })}
+                </ul>
             </section>
         );
     }

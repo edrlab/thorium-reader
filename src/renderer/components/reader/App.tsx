@@ -17,6 +17,8 @@ import { Provider } from "react-redux";
 
 import Reader from "./Reader";
 
+import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
+
 export default class App extends React.Component<any, undefined> {
     @lazyInject("store")
     private store: Store<RootState>;
@@ -24,7 +26,10 @@ export default class App extends React.Component<any, undefined> {
     public render(): React.ReactElement<{}> {
         return (
             <Provider store={ this.store }>
-                <Reader/>
+                <div>
+                    <Reader/>
+                    <DialogManager />
+                </div>
             </Provider>
         );
     }

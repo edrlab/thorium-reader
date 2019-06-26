@@ -18,37 +18,66 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
 import SearchForm from "./SearchForm";
 
+import PublicationAddButton from "./PublicationAddButton";
+
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 export enum DisplayType {
     Grid = "grid",
     List = "list",
 }
 
-interface Props extends RouteComponentProps {
+interface Props extends RouteComponentProps, TranslatorProps {
     displayType: DisplayType;
 }
 
 export class Header extends React.Component<Props, undefined> {
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
         return (
             <SecondaryHeader id={styles.catalog_header}>
                 <Link
                     to={{search: "displayType=grid"}}
                     style={(this.props.displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
+                    title={__("header.gridTitle")}
                 >
-                    <SVG svg={GridIcon} title="Présenter les couvertures de livres en grille"/>
+                    <SVG svg={GridIcon} ariaHidden/>
                 </Link>
                 <Link
                     to={{search: "displayType=list"}}
                     style={this.props.displayType !== DisplayType.List ? {fill: "grey"} : {}}
+                    title={__("header.listTitle")}
                 >
-                    <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
+                    <SVG svg={ListIcon} ariaHidden/>
                 </Link>
                 <SearchForm />
+                {this.AllBooksButton(window.location.hash, __)}
+                <PublicationAddButton />
             </SecondaryHeader>
         );
     }
+
+    private AllBooksButton(hash: any, __: any) {
+        if (hash === "#/library" || hash === "#/" ||
+        hash === "#/library?displayType=grid" || hash === "#/?displayType=grid" ||
+        hash === "#/library?displayType=list" || hash === "#/?displayType=list") {
+            return (
+                <Link
+                id={styles.all_link_button}
+                to={{pathname: "/library/search/all",
+                state: {
+                    displaytype: this.props.displayType as DisplayType,
+                },
+                }}
+                >
+                    {__("header.allBooks")}
+                </Link>
+            );
+        }
+        return (<></>);
+    }
 }
 
-export default withRouter(Header);
+export default withTranslator(withRouter(Header)) ;

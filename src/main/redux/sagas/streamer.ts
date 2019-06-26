@@ -14,12 +14,20 @@ import { call, put, select, take } from "redux-saga/effects";
 import { Server } from "@r2-streamer-js/http/server";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+
 import { container } from "readium-desktop/main/di";
 import { lcpActions, streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+
+import { LcpManager } from "readium-desktop/main/services/lcp";
+
+import { DialogType } from "readium-desktop/common/models/dialog";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
@@ -93,6 +101,8 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield take(streamerActions.ActionType.PublicationOpenRequest);
         const publicationRepository = container.get("publication-repository") as PublicationRepository;
+        const publicationViewConverter = container.get("publication-view-converter") as PublicationViewConverter;
+        const lcpManager = container.get("lcp-manager") as LcpManager;
 
         // Get publication
         let publication: PublicationDocument = null;
@@ -105,6 +115,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
         } catch (error) {
             continue;
         }
+        const publicationView = publicationViewConverter.convertDocumentToView(publication);
 
         // Get epub file from publication
         const pubStorage = container.get("publication-storage") as PublicationStorage;
@@ -144,25 +155,66 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
 
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
-        // Test if publication contains LCP drm
-        const parsedEpub = yield call(
-            () => streamer.loadOrGetCachedPublication(epubPath),
-        );
+
+        let parsedEpub;
+        try {
+            // Test if publication contains LCP drm
+            parsedEpub = yield call(
+                () => streamer.loadOrGetCachedPublication(epubPath),
+            );
+        } catch (error) {
+            yield put({
+                type: streamerActions.ActionType.PublicationOpenError,
+                error: true,
+                meta: {
+                    publication,
+                },
+            });
+            continue;
+        }
 
         if (parsedEpub.LCP) {
-            // User key check
-            yield put(lcpActions.checkUserKey(
-                publication as any,
-                parsedEpub.LCP.Encryption.UserKey.TextHint,
-            ));
+            console.log("### LCP publication");
+            // Test existing secrets on the given publication
+            try {
+                yield call(
+                    lcpManager.unlockPublication.bind(lcpManager),
+                    publication as any,
+                );
+            } catch (error) {
+                // Get lsd status
+                try {
+                    publication = yield call(
+                        publicationRepository.get.bind(publicationRepository),
+                        action.payload.publication.identifier,
+                    );
 
-            // Wait for success
-            const userKeyCheckAction = yield take([
-                lcpActions.ActionType.UserKeyCheckSuccess,
-                lcpActions.ActionType.UserKeyCheckError,
-            ]);
+                    const lsdStatus = yield call(
+                        lcpManager.getLsdStatus.bind(lcpManager),
+                        publication,
+                    );
 
-            if (userKeyCheckAction.error) {
+                    if (
+                        lsdStatus.status === "active" ||
+                        lsdStatus.status === "ready"
+                    ) {
+                        // Publication is protected and is not expired
+                        yield put(lcpActions.checkUserKey(
+                            publicationView,
+                            parsedEpub.LCP.Encryption.UserKey.TextHint,
+                        ));
+                    } else {
+                        yield put(dialogActions.open(
+                            DialogType.PublicationInfo,
+                            {
+                                publicationIdentifier: publication.identifier,
+                            },
+                        ));
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+
                 yield put({
                     type: streamerActions.ActionType.PublicationOpenError,
                     error: true,
@@ -218,6 +270,13 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
         if (Object.keys(state.streamer.openPublicationCounter).length === 0) {
             yield put(streamerActions.stop());
         }
+
+        yield put({
+            type: streamerActions.ActionType.PublicationCloseSuccess,
+            payload: {
+                publication,
+            },
+        });
     }
 }
 

@@ -2,8 +2,7 @@ var fs = require("fs");
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const preprocessorDirectives = require("./webpack.config-preprocessor-directives");
 
@@ -29,13 +28,16 @@ const aliases = {
 // const nodeExternals = require("webpack-node-externals");
 const nodeExternals = require("./nodeExternals");
 
+// Get node environment
+const nodeEnv = process.env.NODE_ENV || "development";
+
 let externals = {
     "bindings": "bindings",
     "leveldown": "leveldown",
     "fsevents": "fsevents",
     "conf": "conf"
 }
-if (process.env.NODE_ENV !== "PROD") {
+if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {
     // //         "electron-config": "electron-config",
     // //     }
@@ -77,6 +79,8 @@ let config = Object.assign({}, {
     },
     target: "electron-renderer",
 
+    mode: nodeEnv,
+
     externals: externals,
 
     resolve: {
@@ -85,7 +89,7 @@ let config = Object.assign({}, {
     },
 
     module: {
-        loaders: [
+        rules: [
             {
                 exclude: /node_modules/,
                 loaders: ["react-hot-loader/webpack", "awesome-typescript-loader"],
@@ -130,12 +134,14 @@ let config = Object.assign({}, {
             template: "./src/index_app.ejs",
             filename: "index_app.html",
         }),
-        new ExtractTextPlugin("styles_app.css"),
+        new MiniCssExtractPlugin({
+            filename: "styles_app.css",
+        }),
         preprocessorDirectives.definePlugin,
     ],
 });
 
-if (process.env.NODE_ENV !== "PROD") {
+if (nodeEnv !== "production") {
     const port = parseInt(preprocessorDirectives.portApp, 10);
     console.log("APP PORT: " + port);
 
@@ -159,38 +165,37 @@ if (process.env.NODE_ENV !== "PROD") {
 
     config.output.publicPath = preprocessorDirectives.rendererAppBaseUrl;
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
-    config.module.loaders.push({
+    config.module.rules.push({
         test: /\.css$/,
-        use: ["css-hot-loader"].concat(ExtractTextPlugin.extract({
-            use: [
-                {
-                    loader: "css-loader",
-                    options: {
-                        importLoaders: 1,
-                        modules: true,
-                    },
+        use: [
+            MiniCssExtractPlugin.loader,
+            {
+                loader: "css-loader",
+                options: {
+                    importLoaders: 1,
+                    modules: true,
                 },
-                "postcss-loader",
-            ],
-        })),
+            },
+            "postcss-loader",
+        ],
     });
 } else {
     // Minify and uglify in production environment
     //config.plugins.push(new UglifyJsPlugin());
-    config.module.loaders.push({
+    config.module.rules.push({
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-            use: [
-                {
-                    loader: "css-loader",
-                    options: {
-                        importLoaders: 1,
-                        modules: true,
-                    },
+        use: [
+            "css-hot-loader",
+            MiniCssExtractPlugin.loader,
+            {
+                loader: "css-loader",
+                options: {
+                    importLoaders: 1,
+                    modules: true,
                 },
-                "postcss-loader",
-            ],
-        }),
+            },
+            "postcss-loader",
+        ],
     });
 }
 

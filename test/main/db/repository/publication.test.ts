@@ -39,8 +39,8 @@ const dbDoc2 = {
     files: [] as any,
     coverFile: null as any,
     customCover: null as any,
-    createdAt: now,
-    updatedAt: now,
+    createdAt: now - 10,
+    updatedAt: now - 10,
 };
 
 beforeEach(async () => {
@@ -60,6 +60,22 @@ afterEach(async () => {
 test("repository.findAll", async () => {
     const result = await repository.findAll();
     expect(result.length).toBe(2);
+});
+
+test("repository.find limit 1", async () => {
+    const result = await repository.find({
+        limit: 1,
+    });
+    expect(result.length).toBe(1);
+});
+
+test("repository.find sort by createdAt", async () => {
+    const result = await repository.find({
+        sort: [{ createdAt: "asc" }],
+    });
+    expect(result.length).toBe(2);
+    expect(result[0].identifier).toBe("pub-2");
+    expect(result[1].identifier).toBe("pub-1");
 });
 
 test("repository.findByTag - found", async () => {
@@ -83,7 +99,7 @@ test("repository.findByTag - not found", async () => {
 });
 
 test("repository.findByTitle - found", async () => {
-    let result = await repository.findByTitle("Publication 1");
+    const result = await repository.findByTitle("Publication 1");
     expect(result.length).toBe(1);
 });
 
@@ -101,7 +117,7 @@ test("repository.searchByTitle - found", async () => {
 });
 
 test("repository.getAllTags", async () => {
-    let tags = await repository.getAllTags();
+    const tags = await repository.getAllTags();
     expect(tags.length).toBe(3);
     expect(tags).toContain("computer");
     expect(tags).toContain("node");
@@ -144,7 +160,7 @@ test("repository.save create", async () => {
     expect(result.title).toBe("New publication");
     expect(result.tags.length).toBe(1);
     expect(result.tags).toContain("scifi");
-    expect(result.createdAt).toBeDefined()
+    expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
     expect(result.createdAt === result.updatedAt).toBeTruthy();
 });
@@ -165,7 +181,7 @@ test("repository.save update", async () => {
     expect(result.title).toBe("Publication 1");
     expect(result.tags.length).toBe(1);
     expect(result.tags).toContain("computer");
-    expect(result.createdAt).toBeDefined()
+    expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
     expect(result.createdAt < result.updatedAt).toBeTruthy();
 });

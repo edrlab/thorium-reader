@@ -22,8 +22,9 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { DialogType } from "readium-desktop/common/models/dialog";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-interface CatalogControlsProps {
+interface CatalogControlsProps extends TranslatorProps {
     publication: PublicationView;
     openReader?: any;
     openDeleteDialog?: any;
@@ -38,7 +39,7 @@ export class CatalogControls extends React.Component<CatalogControlsProps, undef
     }
 
     public render(): React.ReactElement<{}> {
-        const { publication } = this.props;
+        const { publication, __ } = this.props;
 
         if (!publication) {
             return (<></>);
@@ -46,13 +47,13 @@ export class CatalogControls extends React.Component<CatalogControlsProps, undef
 
         return (
             <>
-                <a  onClick={this.handleRead} className={styles.lire}>Lire</a>
+                <button onClick={this.handleRead} className={styles.lire}>{ __("catalog.readBook")}</button>
                 <ul className={styles.liens}>
                     <li>
-                        <a onClick={ this.deletePublication }>
-                            <SVG svg={DeleteIcon} />
-                            Supprimer de la bibliothèque
-                        </a>
+                        <button onClick={ this.deletePublication }>
+                            <SVG svg={DeleteIcon} ariaHidden/>
+                            { __("catalog.deleteBook")}
+                        </button>
                     </li>
                 </ul>
             </>
@@ -94,4 +95,4 @@ const mapDispatchToProps = (dispatch: any, __: CatalogControlsProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(CatalogControls);
+export default withTranslator(connect(undefined, mapDispatchToProps)(CatalogControls));

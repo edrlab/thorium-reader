@@ -101,8 +101,6 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
 
         night: settings.night,
 
-        noFootnotes: readiumCSSDefaults.noFootnotes,
-
         pageMargins: settings.pageMargins,
 
         paged: settings.paged,
@@ -110,8 +108,6 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
         paraIndent: readiumCSSDefaults.paraIndent,
 
         paraSpacing: settings.paraSpacing,
-
-        reduceMotion: readiumCSSDefaults.reduceMotion,
 
         sepia: settings.sepia,
 

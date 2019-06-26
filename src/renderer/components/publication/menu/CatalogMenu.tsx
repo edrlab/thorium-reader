@@ -13,20 +13,23 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import PublicationExportButton from "./PublicationExportButton";
 
-interface PublicationCardProps {
+import { connect } from "react-redux";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+
+interface Props extends TranslatorProps {
     publication: PublicationView;
     displayPublicationInfo?: any;
-    deletePublication?: any;
     openDeleteDialog?: any;
+    toggleMenu?: () => void;
 }
 
-interface PublicationCardState {
+interface State {
     menuOpen: boolean;
 }
 
-export class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
+class CatalogMenu extends React.Component<Props, State> {
     constructor(props: any) {
         super(props);
 
@@ -34,55 +37,48 @@ export class PublicationCard extends React.Component<PublicationCardProps, Publi
             menuOpen: false,
         };
 
-        this.handleOnBlurMenu = this.handleOnBlurMenu.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
-        const authors = this.props.publication.authors.join(", ");
-
+        const { __ } = this.props;
         return (
             <>
-                <a
+                <button
                     onClick={this.displayPublicationInfo }
-                    onBlur={this.handleOnBlurMenu}
                 >
-                    Fiche livre
-                </a>
-                <a
+                    { __("catalog.bookInfo")}
+                </button>
+                <button
                     onClick={ this.deletePublication }
-                    onBlur={this.handleOnBlurMenu}>
-                    Supprimer définitivement
-                </a>
+                >
+                    { __("catalog.delete")}
+                </button>
+                <PublicationExportButton
+                    onClick={ this.props.toggleMenu }
+                    publication={ this.props.publication }
+                />
             </>
         );
     }
 
-    private deletePublication(e: any) {
-        e.preventDefault();
+    private deletePublication() {
         this.props.openDeleteDialog(this.props.publication);
     }
 
-    private handleOnBlurMenu(e: any) {
-        if (!e.relatedTarget || (e.relatedTarget && e.relatedTarget.parentElement !== e.target.parentElement)) {
-            this.setState({ menuOpen: false});
-        }
-    }
-
-    private displayPublicationInfo(e: any) {
-        e.preventDefault();
+    private displayPublicationInfo() {
         this.props.displayPublicationInfo(this.props.publication);
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open(
                 DialogType.PublicationInfo,
                 {
-                    publication,
+                    publicationIdentifier: publication.identifier,
                 },
             ));
         },
@@ -97,16 +93,4 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
     };
 };
 
-export default withApi(
-    PublicationCard,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "delete",
-                callProp: "deletePublication",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);
+export default withTranslator(connect(null, mapDispatchToProps)(CatalogMenu)) as any;

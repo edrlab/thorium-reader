@@ -9,8 +9,7 @@ import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 
-import { AvailableLanguages, Translator } from "readium-desktop/common/services/translator";
-import { lazyInject } from "readium-desktop/renderer/di";
+import { AvailableLanguages } from "readium-desktop/common/services/translator";
 
 import { connect } from "react-redux";
 
@@ -20,7 +19,12 @@ import Header from "./Header";
 
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 
-interface Props {
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+
+import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
+import SVG from "../utils/SVG";
+
+interface Props extends TranslatorProps {
     locale: string;
     setLocale: (locale: string) => void;
 }
@@ -39,23 +43,30 @@ export class LanguageSettings extends React.Component<Props, States> {
     }
 
     public render(): React.ReactElement<{}> {
+        const secondaryHeader = <Header section={2}/>;
+        const { __ } = this.props;
         return (
             <>
-                <LibraryLayout>
-                    <Header section={2}/>
-                    <div className={styles.section_title}>Choix de la langue</div>
-                    <ul className={styles.languages_list}>
-                        { Object.keys(AvailableLanguages).map((lang: string, i: number) =>
-                            <li
-                                key={i}
-                                lang={lang}
-                                onClick={() => this.props.setLocale(lang)}
-                                {...(this.props.locale === lang && {className: styles.active})}
-                            >
-                                { (AvailableLanguages as any)[lang] }
-                            </li>,
-                        )}
-                    </ul>
+                <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.settings")}>
+                    <div className={styles.section_title}>{ __("settings.language.languageChoice")}</div>
+                    <form className={styles.languages_list}>
+                            { Object.keys(AvailableLanguages).map((lang: string, i: number) =>
+                                <div key={i}>
+                                    <input
+                                        id={"radio-" + lang}
+                                        type="radio"
+                                        lang={lang}
+                                        name="language"
+                                        onChange={() => this.props.setLocale(lang)}
+                                        checked={this.props.locale === lang}
+                                    />
+                                    <label htmlFor={"radio-" + lang}>
+                                        { this.props.locale === lang && <SVG svg={DoneIcon} ariaHidden/>}
+                                        { (AvailableLanguages as any)[lang] }
+                                    </label>
+                                </div>,
+                            )}
+                    </form>
                 </LibraryLayout>
             </>
         );
@@ -74,4 +85,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LanguageSettings);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LanguageSettings));

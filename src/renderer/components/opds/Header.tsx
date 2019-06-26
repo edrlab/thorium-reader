@@ -17,18 +17,21 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import SearchForm from "./SearchForm";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 export enum DisplayType {
     Grid = "grid",
     List = "list",
 }
 
-interface HeaderProps extends RouteComponentProps {
+interface HeaderProps extends RouteComponentProps, TranslatorProps {
     displayType?: DisplayType;
 }
 
 export class Header extends React.Component<HeaderProps, undefined> {
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
+
         return (
             <SecondaryHeader>
                 { this.props.displayType &&
@@ -37,20 +40,21 @@ export class Header extends React.Component<HeaderProps, undefined> {
                             to={{search: "displayType=grid"}}
                             style={(this.props.displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
                         >
-                            <SVG svg={GridIcon} title="Présenter les couvertures de livres en grille"/>
+                            <SVG svg={GridIcon} title={__("header.gridTitle")}/>
                         </Link>
                         <Link
                             to={{search: "displayType=list"}}
-                            style={this.props.displayType !== DisplayType.List ? {fill: "grey"} : {}}
+                            style={this.props.displayType !== DisplayType.List ?
+                                {fill: "grey", marginLeft: "16px"} : {marginLeft: "16px"}}
                         >
-                            <SVG svg={ListIcon} title="Présenter les livres sous forme de liste"/>
+                            <SVG svg={ListIcon} title={__("header.listTitle")}/>
                         </Link>
                     </>
                 }
-                <SearchForm />
+                {/*<SearchForm />*/}
             </SecondaryHeader>
         );
     }
 }
 
-export default withRouter(Header);
+export default withTranslator(withRouter(Header));

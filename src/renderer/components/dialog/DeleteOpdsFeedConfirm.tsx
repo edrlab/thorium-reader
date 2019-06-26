@@ -15,6 +15,8 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
 
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+
 interface DeleteOpdsFeedConfirmProps extends TranslatorProps {
     feed?: OpdsFeedView;
     delete?: any;
@@ -30,16 +32,20 @@ export class DeleteOpdsFeedConfirm extends React.Component<DeleteOpdsFeedConfirm
     }
 
     public render(): React.ReactElement<{}> {
+        const {__} = this.props;
         if (!this.props.feed) {
             return <></>;
         }
 
         return (
             <div>
-                <p>Êtes vous sûr de vouloir supprimer ce flux opds : { this.props.feed.title } ?</p>
+                <p>
+                    {__("dialog.delete")}
+                    <span>{this.props.feed.title}</span>
+                </p>
                 <div>
-                    <button onClick={ this.remove }>Oui</button>
-                    <button onClick={ this.props.closeDialog }>Non</button>
+                    <button onClick={ this.remove }>{__("dialog.yes")}</button>
+                    <button className={styles.primary} onClick={ this.props.closeDialog }>{__("dialog.no")}</button>
                 </div>
             </div>
         );

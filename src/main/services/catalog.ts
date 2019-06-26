@@ -19,7 +19,7 @@ import {
     convertOpds1ToOpds2_EntryToPublication,
 } from "@r2-opds-js/opds/converter";
 
-import { injectable} from "inversify";
+import { inject, injectable} from "inversify";
 
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Publication } from "readium-desktop/common/models/publication";
@@ -49,6 +49,7 @@ import {
 } from "readium-desktop/common/utils";
 
 import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
+import { PublicationView } from "readium-desktop/common/views/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -61,10 +62,10 @@ export class CatalogService {
     private publicationRepository: PublicationRepository;
 
     public constructor(
-        publicationRepository: PublicationRepository,
-        publicationStorage: PublicationStorage,
-        downloader: Downloader,
-        lcpManager: LcpManager,
+        @inject("publication-repository") publicationRepository: PublicationRepository,
+        @inject("publication-storage") publicationStorage: PublicationStorage,
+        @inject("downloader") downloader: Downloader,
+        @inject("lcp-manager") lcpManager: LcpManager,
     ) {
         this.publicationRepository = publicationRepository;
         this.publicationStorage = publicationStorage;
@@ -72,19 +73,19 @@ export class CatalogService {
         this.lcpManager = lcpManager;
     }
 
-    public async importFile(filePath: string): Promise<PublicationDocument> {
+    public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument> {
         const ext = path.extname(filePath);
 
-        if (ext === ".epub") {
-            return this.importEpubFile(filePath);
-        } else if (ext === ".lcpl") {
+        if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
             return this.importLcplFile(filePath);
+        } else if (ext === ".epub" || (ext === ".part" && !isLcpFile)) {
+            return this.importEpubFile(filePath);
         }
 
         return null;
     }
 
-    public async importOpdsEntry(url: string): Promise<PublicationDocument> {
+    public async importOpdsEntry(url: string, downloadSample: boolean): Promise<PublicationDocument> {
         debug("Import OPDS publication", url);
         const opdsFeedData = await httpGet(url) as string;
         let opdsPublication: OPDSPublication = null;
@@ -116,20 +117,38 @@ export class CatalogService {
             debug("Unable to retrieve opds publication", opdsPublication);
             throw new Error("Unable to retrieve opds publication");
         }
+        return this.importOpdsPublication(opdsPublication, downloadSample);
+    }
 
+    public async importOpdsPublication(
+        opdsPublication: OPDSPublication, downloadSample: boolean,
+    ): Promise<PublicationDocument> {
         // Retrieve the download (acquisition) url
         let downloadUrl = null;
+        let isLcpFile = false;
 
         for (const link of opdsPublication.Links) {
-            if (
+            if (downloadSample && link.TypeLink === "application/epub+zip"
+                && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition/sample"
+            ) {
+                downloadUrl = link.Href;
+            } else if (
                 link.TypeLink === "application/epub+zip"
                 && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition"
             ) {
                 downloadUrl = link.Href;
                 break;
+            } else if (
+                link.TypeLink === "application/vnd.readium.lcp.license-1.0+json"
+                && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition"
+            ) {
+                downloadUrl = link.Href;
+                isLcpFile = true;
+                break;
             }
         }
 
+        console.log(downloadUrl);
         if (downloadUrl == null) {
             debug("Unable to get an acquisition url from opds publication", opdsPublication.Links);
             throw new Error("Unable to get acquisition url from opds publication");
@@ -148,15 +167,14 @@ export class CatalogService {
             },
         );
         debug("[END] Download publication", downloadUrl, newDownload);
-
         // Import downloaded publication in catalog
-        let publicationDocument = await this.importEpubFile(download.dstPath);
+        let publicationDocument = await this.importFile(download.dstPath, isLcpFile);
 
         // Add opds publication serialization to resources
         const jsonOpdsPublication = TAJSON.serialize(opdsPublication);
         const b64OpdsPublication = Buffer
             .from(JSON.stringify(jsonOpdsPublication))
-            .toString("base-64");
+            .toString("base64");
 
         // Merge with the original publication
         publicationDocument = Object.assign(
@@ -215,6 +233,10 @@ export class CatalogService {
 
         // Store refreshed metadata in db
         return await this.publicationRepository.save(newPub);
+    }
+
+    public exportPublication(publication: PublicationView, destinationPath: string) {
+        this.publicationStorage.copyPublicationToPath(publication, destinationPath);
     }
 
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {

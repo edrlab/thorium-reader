@@ -1,7 +1,5 @@
 main {
-    position: relative;
     margin-top: 120px;
-    left: 0;
     height: auto;
     width: calc(100% - 120px);
     padding-left: 60px;
@@ -51,8 +49,71 @@ main {
 /* HEADER */
 
 #catalog_header {
+	width: calc(100% - 120px);
+
 	& > *:first-child {
 		margin-right: 1rem;
+	}
+}
+
+#all_link_button {
+		display: inline;
+		border: 1px solid black;
+		padding: 8px 15px 8px 15px;
+		border-radius: 5px;
+		margin-left: 1.5rem;
+		text-align: center;
+		color: black;
+		text-decoration: none;
+		font-size: 0.9rem;
+		font: 14px Arial;
+		overflow: hidden;
+		z-index: -1;
+		& svg {
+			top: 0px;
+			height: 15px;
+			margin-left: 0px;
+		}
+}
+
+.addEpubButton {
+	display: inline-flex;
+	position: relative;
+	left: 10px;
+	top: 3px;
+	margin-left: 1rem;
+
+	& input {
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		z-index: -1;
+		position: absolute;
+	}
+
+	& label {
+		/*width: 35px;
+		height: 35px;*/
+		padding: 7px 10px 3px 10px;
+		cursor: pointer;
+		border: 1px solid black;
+		border-radius: 5px;
+
+		&:hover {
+			opacity: 0.75;
+		}
+
+		& svg {
+			top: 0;
+			margin-left: 0;
+			width: 15px;
+			align-content: center;
+			height: 17px;
+		}
+	}
+
+	& input:focus + label {
+		outline: -webkit-focus-ring-color auto 5px;
 	}
 }
 
@@ -137,17 +198,47 @@ main {
 	height: 0px;
 	transition: height 0.5s;
     margin-left: 10px;
-    & a {
+    & a, & span label, & button {
         border: 1px solid black;
 		padding: 4px;
 		display: inline-block;
 		cursor: pointer;
 		margin: 0.6rem 0.5rem 0 0;
+		opacity: 1;
+		width: fit-content;
+		height: 2rem;
+		box-sizing: border-box;
+		font-size: 0.9rem;
+		display: flex;
+		align-items: center;
     }
+
+	& span {
+		display: flex;
+		align-items: center;
+		& label {
+			cursor: pointer;
+
+		}
+		& input {
+			position: absolute;
+			left: -2000px;
+		}
+
+		& input:focus + label {
+			outline: -webkit-focus-ring-color auto 5px;
+		}
+	}
 }
 
 .menu_open{
 	height: 3.5rem;
+	display: flex;
+
+	& a {
+		text-decoration: none;
+		color: black;
+	}
 }
 
 /* ENTRY FORM */
@@ -207,4 +298,126 @@ main {
 	vertical-align: top;
 	background: none;
 	border: none;
+}
+
+/*GRIDTAG LAYOUT*/
+
+#myTags {
+	margin: 2.0em 1.0em 4.0em 0;
+	font: 1.1rem "Open Sans", sans-serif;
+	font-weight: bolder;
+	background: #fbfbfb;
+}
+
+#sortMenu {
+	display: inline-flex;
+	cursor:pointer;
+	color:#666666;
+	font: 1.1rem "Open Sans", sans-serif;
+	position: relative;
+	top: -2px;
+	border: 1px;
+	border-radius: 5px;
+	& svg {
+
+		height: 10px;
+		margin-left: 0.5em;
+	}
+}
+#sortType {
+	height: 90px;
+	width: 90px;
+	display: flex;
+	position: relative;
+	float: right;
+	flex-direction: column;
+	background-color: white;
+	font-size: 0.9rem;
+	box-shadow: 0px 0px 10px 0px #cfcfcf;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+	z-index: 100;
+}
+
+#sortType button {
+	text-decoration: none;
+	color: black;
+	flex: 1;
+	text-align: center;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+}
+
+#sortType button:not(:last-child) {
+	border-bottom: 1px solid #E5E3E3;
+}
+
+#sortType button:hover {
+	background-color: #CECECE;
+}
+#value {
+	font: 0.9rem "Open Sans", sans-serif;
+	align-items: center;
+	position: relative;
+	top: 9px;
+	list-style: none;
+}
+
+#sortMenu button{
+	width: 5em;
+	height: 2em;
+	font: 0.9rem "Open Sans", sans-serif;
+}
+
+#content {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+	grid-gap: 2.0em;
+	grid-auto-flow: row;
+	max-width: 2000px;
+	margin-top: 1.0em;
+	align-content: center;
+}
+
+#content > * {
+  background: #ebebeb;
+  color: #595959;
+  text-decoration: none;
+	font-size: 0.9rem;
+	padding: 7px;
+	text-align: center;
+	border-radius: 3px;
+	border: 2px solid #a6a6a6;
+}
+
+#count {
+	text-align: center;
+	color: white;
+	width: 17px;
+	height: 17px;
+	background: #595959;
+	border-radius: 31px;
+	position: relative;
+	float: right;
+	top: -15px;
+	right: -1.3em;
+}
+
+.noPublicationHelp {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+	& svg {
+		height: 20rem;
+		opacity: 0.2;
+	}
 }

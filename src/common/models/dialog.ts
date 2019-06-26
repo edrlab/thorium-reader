@@ -8,10 +8,12 @@
 export enum DialogType {
     FileImport = "file-import",
     PublicationInfo = "publication-info",
+    PublicationInfoReader = "publication-info-reader",
     OpdsFeedAddForm = "opds-feed-add-form",
     DeletePublicationConfirm = "delete-publication-confirm",
     DeleteOpdsFeedConfirm = "delete-opds-feed-confirm",
     LcpAuthentication = "lcp-authentication",
     LsdReturnConfirm = "lsd-return-confirm",
     LsdRenewConfirm = "lsd-renew-confirm",
+    SameFileImportConfirm = "same-file-import-confirm",
 }

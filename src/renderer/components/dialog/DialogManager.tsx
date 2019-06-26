@@ -35,7 +35,8 @@ import RenewLsdConfirm from "./RenewLsdConfirm";
 
 import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
 
-import * as styles from "readium-desktop/renderer/assets/styles/app.css";
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import SameFileImportConfirm from "./SameFileImportConfirm";
 
 interface DialogManagerProps  {
     dialog?: DialogState;
@@ -59,6 +60,8 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 return this.buildFileImportDialog();
             case DialogType.PublicationInfo:
                 return this.buildPublicationShowDialog();
+            case DialogType.PublicationInfoReader:
+                return this.buildReaderPublicationShowDialog();
             case DialogType.OpdsFeedAddForm:
                 return this.buildOpdsFeedAddFormDialog();
             case DialogType.DeletePublicationConfirm:
@@ -71,6 +74,8 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 return this.buildLsdRenewConfirmDialog();
             case DialogType.LsdReturnConfirm:
                 return this.buildLsdReturnConfirmDialog();
+            case DialogType.SameFileImportConfirm:
+                return this.buildSameFileImportConfirmDialog();
             default:
                 return (<></>);
         }
@@ -97,8 +102,23 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 close={ this.props.closeDialog }
             >
                 <PublicationInfo
+                    publicationIdentifier={ this.props.dialog.data.publicationIdentifier }
                     publication={ this.props.dialog.data.publication }
                     isOpds={ this.props.dialog.data.isOpds }
+                />
+            </Dialog>
+        );
+    }
+
+    private buildReaderPublicationShowDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+            >
+                <PublicationInfo
+                    publication={ this.props.dialog.data.publication }
+                    hideControls={ true }
                 />
             </Dialog>
         );
@@ -151,8 +171,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             <Dialog
                 open={ true }
                 close={ this.props.closeDialog }
-                id={styles.choice_dialog}
-                hideArrow={true}
+                id={styles.lcp_dialog}
             >
                 <LcpAuthentication
                     publication={ this.props.dialog.data.publication }
@@ -189,11 +208,26 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             </Dialog>
         );
     }
+
+    private buildSameFileImportConfirmDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+                id={styles.choice_dialog}
+            >
+                <SameFileImportConfirm
+                    publication={ this.props.dialog.data.publication }
+                    downloadSample={ this.props.dialog.data.downloadSample }
+                />
+            </Dialog>
+        );
+    }
 }
 
-const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
-        closeDialog: (data: any) => {
+        closeDialog: () => {
             dispatch(
                 dialogActions.close(),
             );
@@ -201,7 +235,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
     };
 };
 
-const mapStateToProps = (state: RootState, __: any) => {
+const mapStateToProps = (state: RootState) => {
     return {
         dialog: state.dialog,
     };

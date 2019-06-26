@@ -12,6 +12,10 @@ import * as deCatalog from "readium-desktop/resources/locales/de.json";
 import * as enCatalog from "readium-desktop/resources/locales/en.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
 
+import * as deLang from "readium-desktop/resources/locales/enLang.json";
+import * as enLang from "readium-desktop/resources/locales/enLang.json";
+import * as frLang from "readium-desktop/resources/locales/frLang.json";
+
 const initI18n = i18n.init({
     resources: {
         en: {
@@ -25,6 +29,10 @@ const initI18n = i18n.init({
         },
     },
 });
+
+initI18n.addResourceBundle("en", "translation", enLang, true);
+initI18n.addResourceBundle("fr", "translation", frLang, true);
+initI18n.addResourceBundle("de", "translation", deLang, true);
 
 export enum AvailableLanguages {
     en = "English",

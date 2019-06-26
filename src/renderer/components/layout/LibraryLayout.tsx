@@ -13,18 +13,51 @@ import LibraryHeader from "./LibraryHeader";
 
 import { connect } from "react-redux";
 
+import { Helmet } from "react-helmet";
+
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-interface LibraryLayoutProps {
+import * as qs from "query-string";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+
+interface LibraryLayoutProps extends RouteComponentProps {
     dialogOpen?: boolean;
+    secondaryHeader?: any;
+    title?: string;
 }
 
-export class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
+class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
+    private fastLinkRef: any;
+
+    public componentDidMount() {
+        const { location } = this.props;
+        const focusInside = qs.parse(location.search).focusInside === "true";
+        if (focusInside) {
+            this.fastLinkRef.focus();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
+        const { title } = this.props;
+
+        let helmetTitle = "Thorium";
+        if (title) {
+            helmetTitle += " - " + title;
+        }
+
         return (
             <>
+                <Helmet>
+                    <title>{ helmetTitle }</title>
+                </Helmet>
                 <LibraryHeader />
-                <main style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} } id={styles.main} role="main">
+                { this.props.secondaryHeader }
+                <main
+                    style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} }
+                    className={styles.main}
+                    role="main"
+                >
+                    <a ref={(ref) => this.fastLinkRef = ref} id="main-content" aria-hidden tabIndex={-1}></a>
                     { this.props.children }
                 </main>
             </>
@@ -38,4 +71,4 @@ const mapStateToProps = (state: RootState, ownProps: any) => {
     };
 };
 
-export default connect(mapStateToProps)(LibraryLayout);
+export default connect(mapStateToProps)(withRouter(LibraryLayout));

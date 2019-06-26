@@ -14,7 +14,6 @@ import { app } from "electron";
 import { Store } from "redux";
 
 import { Container } from "inversify";
-import getDecorators from "inversify-inject-decorators";
 
 import { Server } from "@r2-streamer-js/http/server";
 
@@ -22,8 +21,6 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { Downloader } from "readium-desktop/main/services/downloader";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
-
-import { RootState } from "readium-desktop/main/redux/states";
 
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { LcpManager } from "readium-desktop/main/services/lcp";
@@ -34,6 +31,7 @@ import { initStore } from "readium-desktop/main/redux/store/memory";
 import { streamer } from "readium-desktop/main/streamer";
 
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
@@ -87,7 +85,7 @@ if (PouchDB.default) {
 
 const rootDbPath = path.join(
     userDataPath,
-    (_NODE_ENV === "DEV") ? "db-dev" : "db",
+    (_NODE_ENV === "development") ? "db-dev" : "db",
 );
 
 if (!fs.existsSync(rootDbPath)) {
@@ -140,6 +138,13 @@ const locatorDb = new PouchDB(
 );
 const locatorRepository = new LocatorRepository(locatorDb);
 
+// Lcp secret db
+const lcpSecretDb = new PouchDB(
+    path.join(rootDbPath, "lcp-secret"),
+    dbOpts,
+);
+const lcpSecretRepository = new LcpSecretRepository(lcpSecretDb);
+
 // Create filesystem storage for publications
 const publicationRepositoryPath = path.join(
     userDataPath,
@@ -155,12 +160,10 @@ const store = initStore();
 container.bind<Store<any>>("store").toConstantValue(store);
 
 // Create window registry
-const winRegistry = new WinRegistry();
-container.bind<WinRegistry>("win-registry").toConstantValue(winRegistry);
+container.bind<WinRegistry>("win-registry").to(WinRegistry).inSingletonScope();
 
 // Create translator
-const translator = new Translator();
-container.bind<Translator>("translator").toConstantValue(translator);
+container.bind<Translator>("translator").to(Translator).inSingletonScope();
 
 // Create downloader
 const downloader = new Downloader(app.getPath("temp"));
@@ -179,20 +182,14 @@ container.bind<LocatorRepository>("locator-repository").toConstantValue(
 container.bind<ConfigRepository>("config-repository").toConstantValue(
     configRepository,
 );
+container.bind<LcpSecretRepository>("lcp-secret-repository").toConstantValue(
+    lcpSecretRepository,
+);
 
 // Create converters
-const publicationViewConverter = new PublicationViewConverter();
-container.bind<PublicationViewConverter>("publication-view-converter").toConstantValue(
-    publicationViewConverter,
-);
-const locatorViewConverter = new LocatorViewConverter();
-container.bind<LocatorViewConverter>("locator-view-converter").toConstantValue(
-    locatorViewConverter,
-);
-const opdsFeedViewConverter = new OpdsFeedViewConverter();
-container.bind<OpdsFeedViewConverter>("opds-feed-view-converter").toConstantValue(
-    opdsFeedViewConverter,
-);
+container.bind<PublicationViewConverter>("publication-view-converter").to(PublicationViewConverter).inSingletonScope();
+container.bind<LocatorViewConverter>("locator-view-converter").to(LocatorViewConverter).inSingletonScope();
+container.bind<OpdsFeedViewConverter>("opds-feed-view-converter").to(OpdsFeedViewConverter).inSingletonScope();
 
 // Storage
 const publicationStorage = new PublicationStorage(publicationRepositoryPath);
@@ -203,78 +200,25 @@ container.bind<PublicationStorage>("publication-storage").toConstantValue(
 // Bind services
 container.bind<Server>("streamer").toConstantValue(streamer);
 
-const deviceIdManager = new DeviceIdManager("readium-desktop", configRepository);
+const deviceIdManager = new DeviceIdManager("Thorium", configRepository);
 container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
     deviceIdManager,
 );
 
 // Create lcp manager
-const lcpManager = new LcpManager(
-    publicationRepository,
-    publicationStorage,
-    deviceIdManager,
-);
-container.bind<LcpManager>("lcp-manager").toConstantValue(lcpManager);
-
-const catalogService = new CatalogService(
-    publicationRepository,
-    publicationStorage,
-    downloader,
-    lcpManager,
-);
-container.bind<CatalogService>("catalog-service").toConstantValue(
-    catalogService,
-);
+container.bind<LcpManager>("lcp-manager").to(LcpManager).inSingletonScope();
+container.bind<CatalogService>("catalog-service").to(CatalogService).inSingletonScope();
 
 // API
-container.bind<CatalogApi>("catalog-api").toConstantValue(
-    new CatalogApi(
-        publicationRepository,
-        configRepository,
-        publicationViewConverter,
-        translator,
-    ),
-);
-container.bind<PublicationApi>("publication-api").toConstantValue(
-    new PublicationApi(
-        publicationRepository,
-        publicationViewConverter,
-        catalogService,
-    ),
-);
-container.bind<OpdsApi>("opds-api").toConstantValue(
-    new OpdsApi(
-        opdsFeedRepository,
-        opdsFeedViewConverter,
-    ),
-);
-
-container.bind<LcpApi>("lcp-api").toConstantValue(
-    new LcpApi(publicationRepository, lcpManager),
-);
-
-container.bind<ReaderApi>("reader-api").toConstantValue(
-    new ReaderApi(
-        locatorRepository,
-        locatorViewConverter,
-    ),
-);
+container.bind<CatalogApi>("catalog-api").to(CatalogApi).inSingletonScope();
+container.bind<PublicationApi>("publication-api").to(PublicationApi).inSingletonScope();
+container.bind<OpdsApi>("opds-api").to(OpdsApi).inSingletonScope();
+container.bind<LcpApi>("lcp-api").to(LcpApi).inSingletonScope();
+container.bind<ReaderApi>("reader-api").to(ReaderApi).inSingletonScope();
 
 // Create action serializer
-const actionSerializer = new ActionSerializer();
-container.bind<ActionSerializer>("action-serializer").toConstantValue(actionSerializer);
-
-const {
-    lazyInject,
-    lazyInjectNamed,
-    lazyInjectTagged,
-    lazyMultiInject,
-} = getDecorators(container);
+container.bind<ActionSerializer>("action-serializer").to(ActionSerializer).inSingletonScope();
 
 export {
     container,
-    lazyInject,
-    lazyInjectNamed,
-    lazyInjectTagged,
-    lazyMultiInject,
 };

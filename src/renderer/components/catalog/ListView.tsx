@@ -12,44 +12,60 @@ import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import PublicationListElement from "readium-desktop/renderer/components/publication/PublicationListElement";
 
-import AddEntryForm from "./AddEntryForm";
+import NoPublicationInfo from "./NoPublicationInfo";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 interface ListViewProps {
     catalogEntries: CatalogEntryView[];
+    tags?: string[];
 }
 
 export default class ListView extends React.Component<ListViewProps, undefined> {
+
     public render(): React.ReactElement<{}> {
+        const entriesEmpty = this.props.catalogEntries.filter((entry) => entry.publications.length > 0).length === 0;
         return (
             <>
             {
                 this.props.catalogEntries.map((entry, entryIndex: number) => {
-                    return (
+                    return entry.publications.length > 0 ? (
                         <section key={ entryIndex }>
-                            <div className={styles.title}>
-                                <h1>{ entry.title }</h1>
-                            </div>
-                            <ul>
-                                { entry.publications.map((pub, i: number) => {
-                                    return (
-                                        <li className={styles.block_book_list} key={ i }>
-                                            <PublicationListElement
-                                                publication={pub}
-                                                menuContent={<CatalogMenu publication={pub}/>}
-                                            />
-                                        </li>
-                                    );
-                                })
-                                }
-                            </ul>
+                        {
+                            entryIndex <= 1 ? (
+                                <div className={styles.title}>
+                                    <h1>{ entry.title }</h1>
+                                </div>
+                            ) :
+                            (<></>)
+                        }
+                        {
+                            entryIndex <= 1 ? (
+                                <ul>
+                                    { entry.publications.map((pub, i: number) => {
+                                        return (
+                                            <li className={styles.block_book_list} key={ i }>
+                                                <PublicationListElement
+                                                    publication={pub}
+                                                    menuContent={<CatalogMenu publication={pub}/>}
+                                                />
+                                            </li>
+                                        );
+                                    })
+                                    }
+                                </ul>
+                            ) :
+                            (<></>)
+                        }
                         </section>
-                    );
+                    ) : <></>;
             })
             }
-            <AddEntryForm />
+            { entriesEmpty &&
+                <NoPublicationInfo />
+            }
             </>
         );
     }
+
 }

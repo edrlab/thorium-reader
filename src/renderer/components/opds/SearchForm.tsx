@@ -8,12 +8,15 @@
 import * as React from "react";
 
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-export class SearchForm extends React.Component<RouteComponentProps, undefined> {
+interface OpdsProps extends TranslatorProps, RouteComponentProps {}
+
+export class SearchForm extends React.Component<OpdsProps, undefined> {
     private inputRef: any;
 
     public constructor(props: any) {
@@ -24,17 +27,18 @@ export class SearchForm extends React.Component<RouteComponentProps, undefined> 
         this.search = this.search.bind(this);
     }
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
         return (
             <form onSubmit={this.search} role="search">
                 <input
                     ref={this.inputRef}
                     type="search"
                     id="menu_search"
-                    aria-label="Rechercher un livre, un tag, ou un type de littérature"
-                    placeholder="Rechercher"
+                    aria-label={__("accessibility.searchBook")}
+                    placeholder={__("header.searchPlaceholder")}
                 />
-                <button>
-                    <SVG svg={SearchIcon} title="Lancer la recherche"/>
+                <button id={styles.search_img}>
+                    <SVG svg={SearchIcon} title={__("header.searchTitle")}/>
                 </button>
             </form>
         );
@@ -48,4 +52,4 @@ export class SearchForm extends React.Component<RouteComponentProps, undefined> 
     }
 }
 
-export default withRouter(SearchForm);
+export default withTranslator(withRouter(SearchForm));

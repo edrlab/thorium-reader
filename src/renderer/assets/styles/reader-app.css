@@ -22,9 +22,6 @@
     width: 50%;
     background-color: transparent;
   }
-  & input[type=range]:focus {
-    outline: none;
-  }
   & input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
     height: 2px;
@@ -226,7 +223,6 @@
 /* ========== Navigation ==========*/
 
 .main_navigation {
-  position: fixed;
 	z-index:102;
 	width:100%;
 	top:0;
@@ -239,12 +235,12 @@
 	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
 	min-width: 600px;
 
-  & ul {
+  & > ul {
     line-height: 0.9rem;
     padding: 0;
     margin: 0;
 
-    & li {
+    & > li {
       display: inline-block;
       height:100%;
       width:60px;
@@ -253,7 +249,7 @@
       border-right:1px solid #c1c1c1;
       cursor: pointer;
       
-      & button {
+      & > button {
         width: inherit;
         height: 60px;
         color:inherit;
@@ -268,7 +264,7 @@
           height:30px;
         }
       }
-      & .active {
+      & > .active {
         color:black;
         border-bottom:3px solid black;
         padding-bottom:15px;
@@ -289,8 +285,19 @@
 
 /* ========== MENU ========== */
 
+.menu_background {
+  position: absolute;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: black;
+  opacity: 0.55;
+  z-index: 10;
+}
+
 .chapters_settings, .read_settings{
-	width: 20rem;
+	width: 21rem;
 	border-left: 1px solid #e5e5e5;
 	position: fixed;
 	overflow-y: scroll;
@@ -302,7 +309,7 @@
 	z-index:100;
   font-family: Arial;
 
-  & > ul {
+  & > div > ul {
     border: 0;
     font-size: 100%;
     font: inherit;
@@ -310,20 +317,41 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    & > .tab_not_clickable {
-      color: grey;
-      cursor: auto;
-      & svg {
-        display: none;
-      }
-    }
-
     & > li {
-      padding:20px 20px 20px 20px;
+      padding: 0;
       border-bottom: 1px solid #e5e5e5;
       font-weight: 600;
       background-color: white;
       cursor: pointer;
+      width: 100%;
+
+      & > button {
+        padding: 20px;
+        border-bottom: 1px solid #e5e5e5;
+        font-size: 1.1rem;
+        font-weight: 600;
+        background-color: white;
+        cursor: pointer;
+        display: flex;
+        border: none;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+        &:disabled {
+          color: grey;
+          cursor: auto;
+          & svg.menu_section_svg {
+            display: none;
+          }
+        }
+      }
+      & svg.menu_section_svg {
+        width:20px;
+        padding:0;
+        margin: 0;
+        height:30px;
+      }
     }
   }
 }
@@ -418,12 +446,19 @@
 	  padding: 0 0 0 20px;
   }
 
-  & .subheading:hover {
-    background-color: #d8d8d8;
+  & .subheading {
+    &:hover {
+      background-color: #d8d8d8;
+    }
   }
 
-  & .line.active:hover {
-    color: #808080;
+  & .line.active {
+    &:hover {
+      color: #808080;
+    }
+    &:focus {
+      outline: -webkit-focus-ring-color auto 5px;
+    }
   }
 }
 
@@ -534,7 +569,6 @@ p.chapters_description {
 /* ============= SETTINGS MENU =================== */
 
 #read_settings_list > li, #chapter_settings_list > li{
-	padding:20px 20px 20px 20px;
 	border-bottom: 1px solid #e5e5e5;
 	font-size: 1.1rem;
 	font-weight: 600;
@@ -551,7 +585,7 @@ p.chapters_description {
   }
 
   &.active {
-    & > svg {
+    & svg {
       transform: rotate(90deg);
     }
   }
@@ -564,7 +598,7 @@ p.chapters_description {
 
 .read_settings {
   width: 21rem;
-  z-index: 10;
+  z-index: 20;
 	border-left: 1px solid #e5e5e5;
 	position: fixed;
 	overflow-y: scroll;
@@ -620,10 +654,11 @@ p.chapters_description {
 #option_colonne, #option_colonne1, #option_colonne2 {
 	display: inline-block;
 	text-align: center;
-	margin-right:10px;
-	margin-left:10px;
+  margin: 0 10px 20px 10px;
 	line-height: 2rem;
 	vertical-align: baseline;
+  height: 70px;
+  width: 63px;
 }
 
 .separateur {
@@ -679,7 +714,6 @@ input[type=radio] + label {
 .line_tab_content select {
 	background-color: white;
 	border-radius: none;
-	outline:none;
 	width:40%;
 	text-align: center;
 	text-align-last: center;

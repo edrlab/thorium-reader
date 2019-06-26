@@ -7,40 +7,17 @@
 
 import { all } from "redux-saga/effects";
 
-import {
-    downloadAddRequestWatcher,
-    downloadPostProcessWatcher,
-} from "./downloader";
-
-import {
-    publicationDownloadCancelRequestWatcher,
-} from "./publication-download";
-
 import { appInitWatcher } from "./app";
-import {
-    catalogFileImportWatcher,
-    catalogPublicationDownloadSuccessWatcher,
-    catalogPublicationRemoveWatcher,
-} from "./catalog";
+
 import { netStatusWatcher } from "./net";
-import {
-    readerBookmarkSaveRequestWatcher,
-    readerCloseRequestWatcher,
-    readerConfigInitWatcher,
-    readerConfigSetRequestWatcher,
-    readerOpenRequestWatcher,
-} from "./reader";
+
+import * as reader from "./reader";
 
 import * as api from "./api";
 
-import * as streamer from "./streamer";
+import * as i18n from "./i18n";
 
-import {
-    lcpPassphraseSubmitRequestWatcher,
-    lcpRenewRequestWatcher,
-    lcpReturnRequestWatcher,
-    // lcpUserKeyCheckRequestWatcher,
-} from "./lcp";
+import * as streamer from "./streamer";
 
 import {
     updateStatusWatcher,
@@ -50,17 +27,8 @@ export function* rootSaga() {
     yield all([
         api.watchers(),
 
-        // Catalog
-        catalogPublicationDownloadSuccessWatcher(),
-        catalogPublicationRemoveWatcher(),
-        catalogFileImportWatcher(),
-
-        // Download
-        downloadAddRequestWatcher(),
-        downloadPostProcessWatcher(),
-
-        // Publication download
-        publicationDownloadCancelRequestWatcher(),
+        // I18N
+        i18n.watchers(),
 
         // App
         appInitWatcher(),
@@ -69,20 +37,10 @@ export function* rootSaga() {
         netStatusWatcher(),
 
         // Reader
-        readerBookmarkSaveRequestWatcher(),
-        readerCloseRequestWatcher(),
-        readerConfigInitWatcher(),
-        readerConfigSetRequestWatcher(),
-        readerOpenRequestWatcher(),
+        reader.watchers(),
 
         // Streamer
         streamer.watchers(),
-
-        // LCP
-        lcpPassphraseSubmitRequestWatcher(),
-        // lcpUserKeyCheckRequestWatcher(),
-        lcpRenewRequestWatcher(),
-        lcpReturnRequestWatcher(),
 
         // Update checker
         updateStatusWatcher(),

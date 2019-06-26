@@ -5,42 +5,31 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as uuid from "uuid";
-
 import * as qs from "query-string";
-
 import * as React from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
-import { connect } from "react-redux";
-
-import { RouteComponentProps } from "react-router-dom";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
-import { apiActions } from "readium-desktop/common/redux/actions";
-
-import { CatalogView } from "readium-desktop/common/views/catalog";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+import { CatalogEntryView, CatalogView} from "readium-desktop/common/views/catalog";
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-
+import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 import Header, { DisplayType } from "./Header";
 
 import GridView from "./GridView";
 import ListView from "./ListView";
 
+import { PublicationView } from "readium-desktop/common/views/publication";
+
 interface CatalogProps extends TranslatorProps, RouteComponentProps {
     catalog?: CatalogView;
+    tags?: string[];
     requestCatalog: any;
 }
 
 export class Catalog extends React.Component<CatalogProps, undefined> {
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
 
@@ -53,11 +42,13 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
             }
         }
 
+        const secondaryHeader = <Header displayType={ displayType } />;
+
         return (
-            <LibraryLayout>
-                    <Header displayType={ displayType } />
+            <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
                     { this.props.catalog &&
-                        <DisplayView catalogEntries={ this.props.catalog.entries } />
+                        <DisplayView catalogEntries={ this.props.catalog.entries }
+                        tags={this.props.tags}/>
                     }
             </LibraryLayout>
         );
@@ -65,7 +56,7 @@ export class Catalog extends React.Component<CatalogProps, undefined> {
 }
 
 export default withApi(
-    Catalog,
+    withRouter(Catalog),
     {
         operations: [
             {
@@ -75,11 +66,21 @@ export default withApi(
                 resultProp: "catalog",
                 onLoad: true,
             },
+            {
+                moduleId: "publication",
+                methodId: "getAllTags",
+                resultProp: "tags",
+                onLoad: true,
+            },
         ],
         refreshTriggers: [
             {
                 moduleId: "publication",
                 methodId: "import",
+            },
+            {
+                moduleId: "publication",
+                methodId: "importOpdsEntry",
             },
             {
                 moduleId: "publication",

@@ -11,11 +11,7 @@ import { Store } from "redux";
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
     apiActions,
-    catalogActions,
     i18nActions,
-    lcpActions,
-    opdsActions,
-    publicationDownloadActions,
     readerActions,
 } from "readium-desktop/common/redux/actions";
 
@@ -27,26 +23,16 @@ import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
-    catalogActions.ActionType.FileImportRequest,
-    catalogActions.ActionType.PublicationRemoveRequest,
 
     apiActions.ActionType.Request,
 
-    opdsActions.ActionType.AddRequest,
-    opdsActions.ActionType.UpdateRequest,
-    opdsActions.ActionType.RemoveRequest,
-
-    publicationDownloadActions.ActionType.AddRequest,
-    publicationDownloadActions.ActionType.CancelRequest,
-
     readerActions.ActionType.OpenRequest,
+    readerActions.ActionType.CloseRequest,
+    readerActions.ActionType.ModeSetRequest,
     readerActions.ActionType.ConfigSetRequest,
     readerActions.ActionType.BookmarkSaveRequest,
-
-    lcpActions.ActionType.PassphraseSubmitRequest,
-    lcpActions.ActionType.UserKeyCheckError,
-    lcpActions.ActionType.RenewRequest,
-    lcpActions.ActionType.ReturnRequest,
+    readerActions.ActionType.FullscreenOffRequest,
+    readerActions.ActionType.FullscreenOnRequest,
 
     i18nActions.ActionType.Set,
 ];

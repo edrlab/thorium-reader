@@ -9,36 +9,18 @@ import { all } from "redux-saga/effects";
 
 import { winInitWatcher } from "./win";
 
-import {
-    publicationDownloadAddSuccessWatcher,
-    publicationDownloadSuccessWatcher,
-} from "./publication-download";
+import * as i18n from "./i18n";
 
-import {
-    lcpPassphraseSubmitErrorWatcher,
-    lcpRenewErrorWatcher,
-    lcpRenewSuccessWatcher,
-    lcpReturnErrorWatcher,
-    lcpReturnSuccessWatcher,
-    lcpUserKeyCheckRequestWatcher,
-} from "./lcp";
-
+import * as lcp from "./lcp";
 import * as opds from "./opds";
 
 export function* rootSaga() {
     yield all([
+        i18n.watchers(),
+
+        lcp.watchers(),
         opds.watchers(),
 
         winInitWatcher(),
-
-        publicationDownloadAddSuccessWatcher(),
-        publicationDownloadSuccessWatcher(),
-
-        lcpPassphraseSubmitErrorWatcher(),
-        lcpRenewErrorWatcher(),
-        lcpRenewSuccessWatcher(),
-        lcpReturnErrorWatcher(),
-        lcpReturnSuccessWatcher(),
-        lcpUserKeyCheckRequestWatcher(),
     ]);
 }

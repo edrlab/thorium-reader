@@ -7,46 +7,64 @@
 
 import * as React from "react";
 
-import { connect } from "react-redux";
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 
-import { PublicationView } from "readium-desktop/common/views/publication";
+import * as importAction from "readium-desktop/common/redux/actions/import";
+
+import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-interface CatalogControlsProps {
-    publication: PublicationView;
+interface CatalogControlsProps extends TranslatorProps {
+    publication: OpdsPublicationView;
+    verifyImport?: (publication: OpdsPublicationView, downloadSample?: boolean) => void;
 }
 
 export class OpdsControls extends React.Component<CatalogControlsProps, undefined> {
-    public constructor(props: any) {
-        super(props);
-
-        this.handleImport = this.handleImport.bind(this);
-    }
-
     public render(): React.ReactElement<{}> {
-        const { publication } = this.props;
+        const { publication, verifyImport } = this.props;
+        const { __ } = this.props;
 
         if (!publication) {
-            return (<></>);
+            return <></>;
         }
 
-        return (
-            <>
-                <a  onClick={this.handleImport} className={styles.lire}>Ajouter à la bibliothèque</a>
-            </>
+        return publication.isFree ? (
+            <button
+                onClick={() => verifyImport(publication)}
+                className={styles.lire}
+            >
+                {__("catalog.addBookToLib")}
+            </button>
+        ) : publication.hasSample && (
+            <button
+                onClick={() => verifyImport(publication, true)}
+                className={styles.lire}
+            >
+                {__("catalog.addTeaserToLib")}
+            </button>
         );
-    }
-
-    private handleImport(e: any) {
-        e.preventDefault();
-
-        console.log("DOWNLOAD:", this.props.publication.title);
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __: CatalogControlsProps) => {
-    return {};
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        verifyImport: (publication: OpdsPublicationView, downloadSample: boolean) => {
+            dispatch(importAction.verifyImport(
+                {
+                    publication,
+                    downloadSample,
+                },
+            ));
+        },
+    };
 };
 
-export default connect(undefined, mapDispatchToProps)(OpdsControls);
+export default withTranslator(withApi(
+    OpdsControls,
+    {
+        operations: [],
+        mapDispatchToProps,
+    },
+));

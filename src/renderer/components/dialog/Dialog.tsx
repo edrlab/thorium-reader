@@ -11,54 +11,81 @@ import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 
-import SVG from "readium-desktop/renderer/components/utils/SVG";
+import FocusLock from "react-focus-lock";
 
-interface Props {
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TranslatorProps, withTranslator } from "../utils/translator";
+
+import classNames = require("classnames");
+
+interface Props extends TranslatorProps {
     open: boolean;
     close: () => void;
     className?: string;
     id?: string;
-    hideArrow?: boolean;
 }
 
-export default class Dialog extends React.Component<Props, undefined> {
+export class Dialog extends React.Component<Props, undefined> {
+    public constructor(props: Props) {
+        super(props);
+
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+    }
+    public componentDidMount() {
+        document.addEventListener("keydown", this.handleKeyPress);
+    }
+    public componentWillUnmount() {
+        document.removeEventListener("keydown", this.handleKeyPress);
+    }
+
     public render(): React.ReactElement<{}> {
         const content = this.props.children;
         const className = this.props.className;
+        const { __ } = this.props;
 
         return (
-            <div
-                id="dialog"
-                role="dialog"
-                aria-labelledby="dialog-title"
-                aria-describedby="dialog-desc"
-                aria-modal="true"
-                aria-hidden={this.props.open ? "false" : "true"}
-                tabIndex={-1}
-                className={styles.c_dialog}
-                style={{visibility: this.props.open ? "visible" : "hidden"}}
-            >
-                {!this.props.hideArrow && <div onClick={this.props.close} className={styles.c_dialog_background} />}
+            <FocusLock>
                 <div
-                    role="document"
-                    id={this.props.id}
-                    className={(className ? className + " " : "") + styles.c_dialog__box}
+                    id="dialog"
+                    role="dialog"
+                    aria-labelledby="dialog-title"
+                    aria-describedby="dialog-desc"
+                    aria-modal="true"
+                    aria-hidden={this.props.open ? "false" : "true"}
+                    tabIndex={-1}
+                    className={styles.c_dialog}
+                    style={{visibility: this.props.open ? "visible" : "hidden"}}
                 >
-                    { content && <>
-                        { content }
-                    </>}
-                    {!this.props.hideArrow && <button
-                        className={styles.close_button}
-                        type="button"
-                        aria-label="Fermer"
-                        title="Fermer cette fenêtre modale"
-                        data-dismiss="dialog"
-                        onClick={this.props.close}
+                    <div onClick={this.props.close} className={styles.c_dialog_background} />
+                    <div
+                        role="document"
+                        id={this.props.id}
+                        className={classNames(className, styles.c_dialog__box)}
                     >
-                        <SVG svg={QuitIcon}/>
-                    </button>}
+                        { content && <>
+                            { content }
+                        </>}
+                        <button
+                            className={styles.close_button}
+                            type="button"
+                            aria-label={__("accessibility.closeDialog")}
+                            title={__("dialog.closeModalWindow")}
+                            data-dismiss="dialog"
+                            onClick={this.props.close}
+                        >
+                            <SVG svg={QuitIcon}/>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </FocusLock>
         );
     }
+
+    private handleKeyPress(e: any) {
+        if (e.key === "Escape") {
+            this.props.close();
+        }
+    }
 }
+
+export default withTranslator(Dialog);

@@ -6,60 +6,144 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { RouteComponentProps } from "react-router-dom";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 
+import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
-
 import Slider from "readium-desktop/renderer/components/utils/Slider";
+
+import GridTagLayout from "./GridTagLayout";
+import NoPublicationInfo from "./NoPublicationInfo";
+import SortMenu from "./SortMenu";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-
-import { Link, RouteComponentProps } from "react-router-dom";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
-import AddEntryForm from "./AddEntryForm";
-
-import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
-
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
+    tags?: string[];
 }
 
-export default class GridView extends React.Component<GridViewProps, undefined> {
+interface GridViewState {
+    tabTags: string[];
+    status: SortStatus;
+}
+
+enum SortStatus {
+    Count,
+    Alpha,
+}
+
+export default class GridView extends React.Component<GridViewProps, GridViewState> {
+    public constructor(props: any) {
+        super(props);
+
+        this.state = {
+            tabTags: this.props.tags.slice(),
+            status: SortStatus.Count,
+        };
+        this.sortByAlpha = this.sortByAlpha.bind(this);
+        this.sortbyCount = this.sortbyCount.bind(this);
+    }
+
+    public componentDidUpdate(oldProps: GridViewProps) {
+        if (this.props.tags !== oldProps.tags) {
+            const { status } = this.state;
+            switch (status) {
+                case SortStatus.Count:
+                    this.sortbyCount();
+                    break;
+                case SortStatus.Alpha:
+                    this.sortByAlpha();
+                    break;
+            }
+        }
+    }
+
     public render(): React.ReactElement<{}> {
+        const entriesEmpty = this.props.catalogEntries.filter((entry) => entry.publications.length > 0).length === 0;
         return (
             <>
-                { this.props.catalogEntries.map((entry, i: number) => {
-                        return (
-                            <section key={ i }>
-                                <div className={styles.title}>
+                { this.props.catalogEntries.map((entry, EntryIndex: number) => {
+                        return entry.publications.length > 0 ? (
+                            <section key={ EntryIndex }>
+                            {
+
+                                EntryIndex <= 1 ? (
+                                <div className={ styles.title }>
                                     <h1>{ entry.title }</h1>
-                                    <Link to={{
-                                        pathname: entry.tag ? "/library/search/tag/" + entry.tag
-                                            : "/library/search/all",
-                                    }}>
-                                        Tous les livres <SVG svg={ArrowIcon} />
-                                    </Link>
                                 </div>
-                                <Slider
-                                    className={styles.slider}
-                                    content={entry.publications.map((pub) =>
-                                        <PublicationCard
-                                            key={pub.identifier}
-                                            publication={pub}
-                                            menuContent={<CatalogMenu publication={pub}/>}
-                                        />,
-                                    )}
-                                />
+                                ) :
+                                (<></>)
+                            }
+                            {
+                                EntryIndex <= 1 ? (
+                                    <Slider
+                                        className={ styles.slider }
+                                        content={ entry.publications.map((pub) =>
+                                            <PublicationCard
+                                                key={ pub.identifier }
+                                                publication={ pub }
+                                                menuContent={ CatalogMenu }
+                                            />,
+                                        )}
+                                    />
+                                ) :
+                                (<></>)
+                            }
+
                             </section>
-                        );
+                        ) : <></>;
                 })}
-                <AddEntryForm />
+                { this.state.tabTags.length > 0 &&
+                    <GridTagLayout
+                    tags={this.state.tabTags}
+                    content={
+                        <SortMenu
+                            onClickAlphaSort={this.sortByAlpha}
+                            onClickCountSort={this.sortbyCount}
+                        />}
+                    />
+                }
+
+                { this.state.tabTags.length === 0 && entriesEmpty &&
+                    <NoPublicationInfo />
+                }
             </>
         );
     }
+
+    private sortbyCount() {
+        const { tags } = this.props;
+        const tabTags = tags.sort((a, b) => {
+            if (a < b) {
+                return (1);
+            } else if (a > b) {
+                return (-1);
+            }
+            return (0);
+        });
+        this.setState({
+            status: SortStatus.Count,
+            tabTags,
+        });
+    }
+
+    private sortByAlpha() {
+        const { tags } = this.props;
+        const tabTags = tags.sort((a, b) => {
+            if (a > b) {
+                return (1);
+            } else if (a < b) {
+                return (-1);
+            }
+            return (0);
+        });
+        this.setState({
+            status: SortStatus.Alpha,
+            tabTags,
+        });
+    }
+
 }
