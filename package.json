@@ -60,7 +60,7 @@
   },
   "homepage": "https://github.com/edrlab/readium-desktop",
   "build": {
-    "productName": "thorium",
+    "productName": "Thorium Reader",
     "appId": "io.github.edrlab.thorium",
     "dmg": {
       "contents": [
@@ -112,7 +112,9 @@
       ],
       "desktop": {
         "MimeType": "application/epub+zip"
-      }
+      },
+      "icon": "dist/assets/icons/",
+      "executableName": "Thorium Reader"
     },
     "appx": {
       "displayName": "Thorium Reader",
