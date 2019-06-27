@@ -1,4 +1,7 @@
 {
+    "app": {
+      "quit": "Quit the application"
+    },
     "catalog": {
       "entry": {
         "continueReading": "Resume reading",

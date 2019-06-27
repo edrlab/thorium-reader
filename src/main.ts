@@ -128,23 +128,15 @@ async function createWindow() {
 
     // Create the app menu on mac os to allow copy paste
     if (process.platform === "darwin") {
-        const template: any = [
+        const translator = container.get("translator") as any;
+        const template: Electron.MenuItemConstructorOptions[] = [
             {
-                label: app.getName(),
+                label: "Thorium Reader",
                 submenu: [
-                    {role: "quit"},
-                ],
-            },
-            {
-                label: "Edit",
-                submenu: [
-                    {role: "undo"},
-                    {role: "redo"},
-                    {type: "separator"},
-                    {role: "cut"},
-                    {role: "copy"},
-                    {role: "paste"},
-                    {role: "selectall"},
+                    {
+                        role: "quit",
+                        label: translator.translate("app.quit"),
+                    },
                 ],
             },
         ];
