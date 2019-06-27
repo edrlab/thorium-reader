@@ -54,7 +54,7 @@ export class Toast extends React.Component<Props, State> {
             notifier.notify({
                 title: "Thorium",
                 message: this.props.message,
-            })
+            });
         }
     }
 
