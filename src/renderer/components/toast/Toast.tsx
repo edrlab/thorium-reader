@@ -51,9 +51,8 @@ export class Toast extends React.Component<Props, State> {
         setTimeout(this.handleClose, 5000);
         this.ref.addEventListener("transitionend", this.handleTransitionEnd, false);
         if (this.props.displaySystemNotification) {
-            notifier.notify({
-                title: "Thorium",
-                message: this.props.message,
+            const notif = new Notification("Thorium Reader", {
+                body: this.props.message,
             });
         }
     }
