@@ -42,18 +42,8 @@ export function convertContributorArrayToStringArray(items: any): string[] {
     }
 
     const itemParts = items.map((item: any) => {
-        if (typeof(item.Name) === "object") {
-            return Object.values(item.Name);
-        }
-
-        return [item.Name];
+        return item.Name;
     });
 
-    let newItems: any = [];
-
-    for (const itemPart of itemParts) {
-        newItems = newItems.concat(itemPart);
-    }
-
-    return newItems;
+    return itemParts;
 }
