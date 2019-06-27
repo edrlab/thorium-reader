@@ -15,6 +15,7 @@ import {
     lcpActions,
     netActions,
     readerActions,
+    toastActions,
     updateActions,
 } from "readium-desktop/common/redux/actions";
 import { container } from "readium-desktop/main/di";
@@ -51,6 +52,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     i18nActions.ActionType.Set,
 
     updateActions.ActionType.LatestVersionSet,
+
+    toastActions.ActionType.OpenRequest,
 ];
 
 export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action: any) => {

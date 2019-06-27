@@ -14,6 +14,7 @@ import { connectRouter } from "connected-react-router";
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { importReducer } from "readium-desktop/common/redux/reducers/import";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
+import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 
 import { readerReducer } from "./reader";
@@ -37,4 +38,5 @@ export const rootReducer = (history: History) => combineReducers({
     dialog: dialogReducer,
     router: connectRouter(history),
     import: importReducer,
+    toast: toastReducer,
 });

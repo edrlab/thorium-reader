@@ -22,6 +22,8 @@ import { WinState } from "./win";
 
 import { OpdsState } from "./opds";
 
+import { ToastState } from "readium-desktop/common/redux/states/toast";
+
 export { WinState };
 
 export interface RootState {
@@ -35,4 +37,5 @@ export interface RootState {
     dialog: DialogState;
     router: RouterState;
     import: ImportState;
+    toast: ToastState;
 }
