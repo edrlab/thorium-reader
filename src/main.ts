@@ -372,7 +372,6 @@ const winOpenCallback = (appWindow: AppWindow) => {
             },
         },
     });
-    debug("app window type:" + appWindow.type + " a été ouvert.");
 };
 
 // Listen to renderer action
