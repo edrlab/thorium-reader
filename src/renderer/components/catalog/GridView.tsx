@@ -40,7 +40,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         super(props);
 
         this.state = {
-            tabTags: this.props.tags.slice(),
+            tabTags: this.props.tags ? this.props.tags.slice() : [],
             status: SortStatus.Count,
         };
         this.sortByAlpha = this.sortByAlpha.bind(this);
