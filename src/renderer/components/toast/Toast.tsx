@@ -14,8 +14,6 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
-import * as notifier from "node-notifier";
-
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 
 interface Props extends TranslatorProps {

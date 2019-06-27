@@ -143,7 +143,6 @@
     ]
   },
   "dependencies": {
-    "@types/node-notifier": "^5.4.0",
     "@types/react-beautiful-dnd": "^7.1.2",
     "@types/react-helmet": "^5.0.8",
     "acorn": "^6.1.1",

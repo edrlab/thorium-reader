@@ -93,6 +93,7 @@ function initApp() {
     const winRegistry = container.get("win-registry") as WinRegistry;
     winRegistry.registerOpenCallback(winOpenCallback);
     winRegistry.registerCloseCallback(winCloseCallback);
+    app.setAppUserModelId("io.github.edrlab.thorium");
 }
 
 // Opens the main window, with a native menu bar.
