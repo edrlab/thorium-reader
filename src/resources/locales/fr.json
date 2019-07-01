@@ -205,7 +205,8 @@
         "paginated": "Paginé"
       },
       "marks": {
-        "landmarks": "Signets",
+        "landmarks": "point de repères",
+        "bookmarks": "marque pages",
         "illustrations": "Illustrations",
         "toc": "Table des matières ",
         "annotations": "Annotations"
