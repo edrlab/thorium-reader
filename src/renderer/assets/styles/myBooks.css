@@ -214,8 +214,6 @@ main {
     }
 
 	& span {
-		display: flex;
-		align-items: center;
 		& label {
 			cursor: pointer;
 
