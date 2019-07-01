@@ -15,7 +15,7 @@ import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
 
 import { File } from "readium-desktop/common/models/file";
-import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
+import { getFileSize, rmDirAsync } from "readium-desktop/utils/fs";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -73,8 +73,8 @@ export class PublicationStorage {
         return files;
     }
 
-    public removePublication(identifier: string) {
-        rmDirSync(this.buildPublicationPath(identifier));
+    public async removePublication(identifier: string) {
+        await rmDirAsync(this.buildPublicationPath(identifier));
     }
 
     public getPublicationEpubPath(identifier: string): string {
