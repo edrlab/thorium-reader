@@ -1,6 +1,6 @@
 .c_dialog {
     position: fixed;
-    z-index: 100;
+    z-index: 102;
     top: 0;
     left:0;
     right: 0;
@@ -14,7 +14,6 @@
     min-width: 700px;
     display: flex;
     align-items: center;
-    margin-top: 57px;
 }
 
 .c_dialog_background {
