@@ -11,3 +11,19 @@ export function encodeURIComponent_RFC3986(str: string): string {
             return "%" + c.charCodeAt(0).toString(16);
         });
 }
+
+export function parseQueryString(queryString: string) {
+    if (!queryString) {
+        return {};
+    }
+    const result: any = {};
+
+    const splited = queryString.split("&");
+
+    for (const couple of splited) {
+        const splitedCouple = couple.split("=");
+        result[splitedCouple[0]] = splitedCouple[1];
+    }
+
+    return result;
+}

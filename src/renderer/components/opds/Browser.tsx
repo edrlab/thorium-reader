@@ -33,12 +33,13 @@ interface FeedDetailsProps extends RouteComponentProps, TranslatorProps {
 export class Browser extends React.Component<FeedDetailsProps, null> {
     public render(): React.ReactElement<{}>  {
         const breadcrumb = this.buildBreadcrumb();
-        let browserResult = (<></>);
+        let url: string;
+        let search: string;
 
         if (this.props.navigation.length > 0) {
             const link = this.props.navigation[this.props.navigation.length - 1];
-            const url = link.url;
-            browserResult = (<BrowserResult url={ url } />);
+            search = (this.props.match.params as any).search;
+            url = link.url;
         }
 
         const secondaryHeader = <Header/>;
@@ -46,7 +47,9 @@ export class Browser extends React.Component<FeedDetailsProps, null> {
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search}/>
-                { browserResult }
+                { url &&
+                    <BrowserResult url={ url } search={search}/>
+                }
             </LibraryLayout>
         );
     }
@@ -71,6 +74,11 @@ export class Browser extends React.Component<FeedDetailsProps, null> {
                     index + 1,
                 ),
             });
+        });
+        
+        breadcrumb.push({
+            name: this.props.__("opds.breadcrumbRoot"),
+            path: "/opds",
         });
 
         return breadcrumb;

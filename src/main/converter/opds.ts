@@ -23,6 +23,9 @@ import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
+import { httpGet } from "readium-desktop/common/utils";
+import * as convert from "xml-js";
+
 import {
     convertContributorArrayToStringArray,
     convertMultiLangStringToString,
@@ -150,9 +153,9 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public convertOpdsFeedToView(feed: OPDSFeed): OpdsResultView {
+    public async convertOpdsFeedToView(feed: OPDSFeed): Promise<any> {
         const title = convertMultiLangStringToString(feed.Metadata.Title);
-        let type = OpdsResultType.NavigationFeed;
+        let type = OpdsResultType.Empty;
         let navigation = null;
         let publications = null;
 
@@ -162,11 +165,31 @@ export class OpdsFeedViewConverter {
             publications = feed.Publications.map((item) => {
                 return this.convertOpdsPublicationToView(item);
             });
-        } else {
+        } else if (feed.Navigation) {
             // result page containing navigation
+            type = OpdsResultType.NavigationFeed;
             navigation = feed.Navigation.map((item) => {
                 return this.convertOpdsLinkToView(item);
             });
+        }
+
+        let searchLink = null;
+        if (feed.Links) {
+            searchLink = feed.Links.find((value) => value.Rel[0] === "search");
+        }
+        let searchUrl = null;
+        if (searchLink.TypeLink === "application/opds+json") {
+            searchUrl = searchLink.Href;
+        } else {
+            const searchLinkFeedData = await httpGet(searchLink.Href) as string;
+            const result: any = convert.xml2js(searchLinkFeedData, {compact: true});
+
+            if (result) {
+                const doc = result.OpenSearchDescription;
+                searchUrl = doc.Url.find((value: any) => {
+                    return value._attributes && value._attributes.type === "application/atom+xml";
+                })._attributes.template;
+            }
         }
 
         return {
@@ -174,7 +197,8 @@ export class OpdsFeedViewConverter {
             type,
             publications,
             navigation,
+            searchUrl,
+            feed,
         };
     }
-
 }
