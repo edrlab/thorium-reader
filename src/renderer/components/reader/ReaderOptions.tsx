@@ -180,88 +180,108 @@ export class ReaderOptions extends React.Component<Props> {
         const {__, settings} = this.props;
         return <>
             <section className={styles.line_tab_content}>
-                <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
-                <div className={styles.center_in_tab}>
-                    <button
-                        id={styles.scroll_option} role="link"
-                        className={this.getButtonClassName("paged", false)}
-                        onClick={(e) => this.props.handleSettingChange(e, "paged", "false")}
-                    >
-                        <SVG svg={DefileIcon} title={__("reader.settings.scrolled")}/>
-                        {__("reader.settings.scrolled")}
-                    </button>
-                    <button
-                        id={styles.page_option} role="link"
-                        className={this.getButtonClassName("paged", true)}
-                        onClick={(e) => this.props.handleSettingChange(e, "paged", "true")}
-                    >
-                        <SVG svg={PagineIcon} title={__("reader.settings.paginated")}/>
-                        {__("reader.settings.paginated")}
-                    </button>
-                </div>
+            <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
+                <ul>
+                    <div className={styles.center_in_tab}>
+                        <li>
+                            <button
+                                id={styles.scroll_option} role="link"
+                                className={this.getButtonClassName("paged", false)}
+                                onClick={(e) => this.props.handleSettingChange(e, "paged", "false")}
+                            >
+                            <SVG svg={DefileIcon} title={__("reader.settings.scrolled")}/>
+                            {__("reader.settings.scrolled")}
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                id={styles.page_option} role="link"
+                                className={this.getButtonClassName("paged", true)}
+                                onClick={(e) => this.props.handleSettingChange(e, "paged", "true")}
+                            >
+                                <SVG svg={PagineIcon} title={__("reader.settings.paginated")}/>
+                                {__("reader.settings.paginated")}
+                            </button>
+                        </li>
+                    </div>
+                </ul>
                 </section>
                 <section className={styles.line_tab_content}>
-                <div className={styles.subheading}>{__("reader.settings.justification")}</div>
-                <div className={styles.center_in_tab}>
-                    <button
-                        id={styles.option_gauche} role="link"
-                        className={this.getButtonClassName("align", "left")}
-                        onClick={(e) => this.props.handleSettingChange(e, "align", "left")}
-                    >
-                        <SVG svg={LeftIcon} title={__("reader.settings.left")}/>
-                        {__("reader.settings.left")}
-                    </button>
-                    <button
-                        id={styles.option_justif} role="link"
-                        className={this.getButtonClassName("align", "justify")}
-                        onClick={(e) => this.props.handleSettingChange(e, "align", "justify")}
-                    >
-                        <SVG svg={JustifyIcon} title={__("reader.settings.justify")}/>
-                        {__("reader.settings.justify")}
-                    </button>
-                </div>
+                    <div className={styles.subheading}>{__("reader.settings.justification")}</div>
+                    <ul>
+                        <div className={styles.center_in_tab}>
+                            <li>
+                                <button
+                                id={styles.option_gauche} role="link"
+                                className={this.getButtonClassName("align", "left")}
+                                onClick={(e) => this.props.handleSettingChange(e, "align", "left")}
+                                >
+                                    <SVG svg={LeftIcon} title={__("reader.settings.left")}/>
+                                    {__("reader.settings.left")}
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                id={styles.option_justif} role="link"
+                                className={this.getButtonClassName("align", "justify")}
+                                onClick={(e) => this.props.handleSettingChange(e, "align", "justify")}
+                                >
+                                    <SVG svg={JustifyIcon} title={__("reader.settings.justify")}/>
+                                    {__("reader.settings.justify")}
+                                </button>
+                            </li>
+                        </div>
+                    </ul>
             </section>
             <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.column.title")}</div>
-                <div className={styles.center_in_tab}>
-                    <button
-                        id={styles.option_colonne}
-                        className={this.getButtonClassName("colCount",
-                        !settings.paged ? null : colCountEnum.auto,
-                        !settings.paged && styles.disable)}
-                        {...(!settings.paged && {disabled: true})}
-                        role="link"
-                        onClick={(e) =>
+                <ul>
+                    <div className={styles.center_in_tab}>
+                        <li>
+                            <button
+                            id={styles.option_colonne}
+                            className={this.getButtonClassName("colCount",
+                            !settings.paged ? null : colCountEnum.auto,
+                            !settings.paged && styles.disable)}
+                            {...(!settings.paged && {disabled: true})}
+                            role="link"
+                            onClick={(e) =>
                             this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
-                    >
-                        <SVG svg={AutoIcon} title={__("reader.settings.column.auto")}/>
-                        {__("reader.settings.column.auto")}
-                    </button>
-                    <button
-                        className={this.getButtonClassName("colCount",
-                        !settings.paged ? null : colCountEnum.one,
-                        !settings.paged && styles.disable)}
-                        {...(!settings.paged && { disabled: true })}
-                        id={styles.option_colonne1}
-                        role="link"
-                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
-                    >
-                        <SVG svg={ColumnIcon} title={__("reader.settings.column.one")}/>
-                        {__("reader.settings.column.one")}
-                    </button>
-                    <button
-                        className={this.getButtonClassName("colCount",
-                        !settings.paged ? null : colCountEnum.two,
-                        !settings.paged && styles.disable)}
-                        id={styles.option_colonne2}
-                        {...(!settings.paged && { disabled: true })}
-                        role="link"
-                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
-                    >
-                        <SVG svg={Column2Icon} title={__("reader.settings.column.two")}/>
-                        {__("reader.settings.column.two")}
-                    </button>
-                </div>
+                            >
+                                <SVG svg={AutoIcon} title={__("reader.settings.column.auto")}/>
+                            {__("reader.settings.column.auto")}
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                            className={this.getButtonClassName("colCount",
+                            !settings.paged ? null : colCountEnum.one,
+                            !settings.paged && styles.disable)}
+                            {...(!settings.paged && { disabled: true })}
+                            id={styles.option_colonne1}
+                            role="link"
+                            onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
+                            >
+                                <SVG svg={ColumnIcon} title={__("reader.settings.column.one")}/>
+                            {__("reader.settings.column.one")}
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                            className={this.getButtonClassName("colCount",
+                            !settings.paged ? null : colCountEnum.two,
+                            !settings.paged && styles.disable)}
+                            id={styles.option_colonne2}
+                            {...(!settings.paged && { disabled: true })}
+                            role="link"
+                            onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
+                            >
+                                <SVG svg={Column2Icon} title={__("reader.settings.column.two")}/>
+                                {__("reader.settings.column.two")}
+                            </button>
+                        </li>
+                    </div>
+                </ul>
             </section>
         </>;
     }

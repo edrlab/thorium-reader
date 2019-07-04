@@ -248,7 +248,7 @@
       color:#c1c1c1;
       border-right:1px solid #c1c1c1;
       cursor: pointer;
-      
+
       & > button {
         width: inherit;
         height: 60px;
@@ -268,7 +268,7 @@
         color:black;
         border-bottom:3px solid black;
         padding-bottom:15px;
-      }  
+      }
     }
 
     & .right {
@@ -301,7 +301,7 @@
 	border-left: 1px solid #e5e5e5;
 	position: fixed;
 	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch; 
+	-webkit-overflow-scrolling: touch;
 	top:60px;
 	right:0;
 	height: calc(100vh - 60px);
@@ -557,7 +557,7 @@ p.chapters_description {
 	margin-top:2px;
 	height:4px;
 	background-color: #ECECEC;
-  
+
   & .fill {
     height:100%;
     position: relative;
@@ -602,7 +602,7 @@ p.chapters_description {
 	border-left: 1px solid #e5e5e5;
 	position: fixed;
 	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch; 
+	-webkit-overflow-scrolling: touch;
 	top:60px;
 	right:0;
 	height: calc(100vh - 60px);
@@ -647,10 +647,14 @@ p.chapters_description {
     color: grey;
     cursor: default;
   }
+
+  & li {
+    list-style-type: none;
+  }
 }
 
-#scroll_option, #page_option, 
-#option_gauche, #option_justif, 
+#scroll_option, #page_option,
+#option_gauche, #option_justif,
 #option_colonne, #option_colonne1, #option_colonne2 {
 	display: inline-block;
 	text-align: center;
