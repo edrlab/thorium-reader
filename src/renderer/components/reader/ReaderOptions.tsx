@@ -32,7 +32,6 @@ import { SectionData } from "./sideMenu/sideMenuData";
 import SideMenu from "./sideMenu/SideMenu";
 
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-import * as style from "readium-desktop/renderer/assets/styles/settings.css";
 
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 
@@ -103,8 +102,8 @@ export class ReaderOptions extends React.Component<Props> {
 
         return (
             <>
-                <div className={styles.subheading}>{__("reader.settings.theme.predefined")}</div>
-                    <div ref={this.sectionRefList[0]} className={style.languages_list}>
+                {/*<div className={styles.subheading}>{__("reader.settings.theme.predefined")}</div>*/}
+                    <div ref={this.sectionRefList[0]} id={styles.themes_list}>
                         <div>
                             <input
                                 id={"radio-" + themeType.Without}
