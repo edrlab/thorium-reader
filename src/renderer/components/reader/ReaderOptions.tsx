@@ -179,7 +179,7 @@ export class ReaderOptions extends React.Component<Props> {
     private displayContent() {
         const {__, settings} = this.props;
         return <>
-            <div className={styles.line_tab_content}>
+            <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
                 <div className={styles.center_in_tab}>
                     <button
@@ -199,8 +199,8 @@ export class ReaderOptions extends React.Component<Props> {
                         {__("reader.settings.paginated")}
                     </button>
                 </div>
-                </div>
-                <div className={styles.line_tab_content}>
+                </section>
+                <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.justification")}</div>
                 <div className={styles.center_in_tab}>
                     <button
@@ -220,8 +220,8 @@ export class ReaderOptions extends React.Component<Props> {
                         {__("reader.settings.justify")}
                     </button>
                 </div>
-            </div>
-            <div className={styles.line_tab_content}>
+            </section>
+            <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.column.title")}</div>
                 <div className={styles.center_in_tab}>
                     <button
@@ -262,7 +262,7 @@ export class ReaderOptions extends React.Component<Props> {
                         {__("reader.settings.column.two")}
                     </button>
                 </div>
-            </div>
+            </section>
         </>;
     }
 
