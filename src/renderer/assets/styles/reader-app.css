@@ -69,8 +69,8 @@
   height: 100%;
   display: flex;
   align-items: stretch;
-  margin-top: 6rem;
-  margin-bottom: 7.7rem;
+  margin-top: 1rem;
+  margin-bottom: 5rem;
 }
 
 /* ========== READER ==========*/
@@ -450,13 +450,13 @@
 
   & .subheading {
     &:hover {
-      background-color: #d8d8d8;
+      background-color: #d8d8d8 !important;
     }
   }
 
   & .line.active {
     &:hover {
-      color: #808080;
+      color: #808080 !important;
     }
     /* &:focus {
       outline: -webkit-focus-ring-color auto 5px;

@@ -30,6 +30,7 @@ interface OpdsListProps extends TranslatorProps {
     feeds?: OpdsFeedView[];
     deleteFeed?: any;
     openDeleteDialog?: any;
+    openToast?: any;
 }
 
 export class FeedList extends React.Component<OpdsListProps, null> {

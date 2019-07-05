@@ -46,13 +46,13 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
     }
 
     public render(): React.ReactElement<{}> {
-        const { publication, __ } = this.props;
+        const { publication, __, translator } = this.props;
 
         if (!publication) {
             return (<></>);
         }
 
-        const formatedAuthors = oc(publication).authors([]).join(", ");
+        const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
         const formatedLanguages = oc(publication).languages([]).join(", ");
         const formatedPublishers = oc(publication).publishers([]).join(", ");
         let formatedPublishedDate = null;
@@ -71,20 +71,20 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
 
         return (
             <>
-            <div className={styles.dialog_left}>
-                <div className={styles.image_wrapper}>
+            <div className={ styles.dialog_left }>
+                <div className={ styles.image_wrapper }>
                     <div>
-                        <Cover publication={publication} />
+                        <Cover publication={ publication } />
                     </div>
                 </div>
                 { !this.props.hideControls &&
-                    <Controls publication={this.props.publication}/>
+                    <Controls publication={ this.props.publication }/>
                 }
             </div>
-            <div className={styles.dialog_right}>
-                <h2>{publication.title}</h2>
+            <div className={ styles.dialog_right }>
+                <h2>{ publication.title }</h2>
                 <div>
-                    <p className={styles.author}>{formatedAuthors}</p>
+                    <p className={ styles.author }>{ authors }</p>
 
                     {
                         (formatedPublishedDate) ?
@@ -108,7 +108,9 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
                         <h3>{__("catalog.moreInfo")}</h3>
 
                         <p>
-                            <span>{__("catalog.publisher")}</span> { formatedPublishers } <br/>
+                            { formatedPublishers &&
+                                <><span>{__("catalog.publisher")}</span> { formatedPublishers } <br/></>
+                            }
                             <span>{__("catalog.lang")}</span> { __(`languages.${formatedLanguages}`) } <br/>
                             <span>{__("catalog.id")}</span> { publication.workIdentifier } <br/>
                         </p>

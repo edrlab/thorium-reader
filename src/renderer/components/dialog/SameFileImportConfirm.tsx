@@ -57,6 +57,7 @@ class SameFileImportConfirm extends React.Component<Props> {
                 url: this.props.publication.url,
                 base64OpdsPublication: this.props.publication.base64OpdsPublication,
                 downloadSample: this.props.downloadSample,
+                title: this.props.publication.title,
             },
         );
         this.props.closeDialog();
