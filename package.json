@@ -116,6 +116,10 @@
       "icon": "dist/assets/icons/",
       "executableName": "Thorium Reader"
     },
+    "mac": {
+      "target": "default",
+      "icon": "dist/assets/icons/icon.png"
+    },
     "appx": {
       "displayName": "Thorium Reader",
       "publisher": "CN=C91F86A8-45E6-48E0-8015-8A5BF2B38BD4"
