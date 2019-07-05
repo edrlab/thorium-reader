@@ -448,17 +448,17 @@
 
   & .subheading {
     &:hover {
-      background-color: #d8d8d8;
+      background-color: #d8d8d8 !important;
     }
   }
 
   & .line.active {
     &:hover {
-      color: #808080;
+      color: #808080 !important;
     }
-    &:focus {
+    /* &:focus {
       outline: -webkit-focus-ring-color auto 5px;
-    }
+    } */
   }
 }
 
