@@ -102,48 +102,47 @@ export class ReaderOptions extends React.Component<Props> {
 
         return (
             <>
-                {/*<div className={styles.subheading}>{__("reader.settings.theme.predefined")}</div>*/}
-                    <div ref={this.sectionRefList[0]} id={styles.themes_list}>
-                        <div>
-                            <input
-                                id={"radio-" + themeType.Without}
-                                type="radio"
-                                name="theme"
-                                onChange={() => this.handleChooseTheme(themeType.Without)}
-                                {...(!this.props.settings.sepia && !this.props.settings.night
-                                && {checked: true})}
-                            />
-                            <label htmlFor={"radio-" + themeType.Without}>
+                <div ref={this.sectionRefList[0]} id={styles.themes_list}>
+                    <div>
+                        <input
+                        id={"radio-" + themeType.Without}
+                        type="radio"
+                        name="theme"
+                        onChange={() => this.handleChooseTheme(themeType.Without)}
+                        {...(!this.props.settings.sepia && !this.props.settings.night
+                        && {checked: true})}
+                        />
+                        <label htmlFor={"radio-" + themeType.Without}>
                             {this.props.settings.predefined && <SVG svg={DoneIcon} ariaHidden/>}
                             { __("reader.settings.theme.name.Neutral")}
-                            </label>
-                        </div>
-                        <div>
-                            <input
-                                id={"radio-" + themeType.Sepia}
-                                type="radio"
-                                name="theme"
-                                onChange={() => this.handleChooseTheme(themeType.Sepia)}
-                                {...(this.props.settings.sepia && {checked: true})}
-                            />
-                            <label htmlFor={"radio-" + themeType.Sepia}>
-                                {this.props.settings.sepia && <SVG svg={DoneIcon} ariaHidden/>}
-                                { __("reader.settings.theme.name.Sepia")}
-                            </label>
-                        </div>
-                        <div>
-                            <input
-                                id={"radio-" + themeType.Night}
-                                type="radio"
-                                name="theme"
-                                onChange={() => this.handleChooseTheme(themeType.Night)}
-                                {...(this.props.settings.night && {checked: true})}
-                            />
-                            <label htmlFor={"radio-" + themeType.Night}>
-                                {this.props.settings.night && <SVG svg={DoneIcon} ariaHidden/>}
-                                { __("reader.settings.theme.name.Night")}
-                            </label>
-                        </div>
+                        </label>
+                    </div>
+                    <div>
+                        <input
+                        id={"radio-" + themeType.Sepia}
+                        type="radio"
+                        name="theme"
+                        onChange={() => this.handleChooseTheme(themeType.Sepia)}
+                        {...(this.props.settings.sepia && {checked: true})}
+                        />
+                        <label htmlFor={"radio-" + themeType.Sepia}>
+                            {this.props.settings.sepia && <SVG svg={DoneIcon} ariaHidden/>}
+                            { __("reader.settings.theme.name.Sepia")}
+                        </label>
+                    </div>
+                    <div>
+                        <input
+                        id={"radio-" + themeType.Night}
+                        type="radio"
+                        name="theme"
+                        onChange={() => this.handleChooseTheme(themeType.Night)}
+                        {...(this.props.settings.night && {checked: true})}
+                        />
+                        <label htmlFor={"radio-" + themeType.Night}>
+                            {this.props.settings.night && <SVG svg={DoneIcon} ariaHidden/>}
+                            { __("reader.settings.theme.name.Night")}
+                        </label>
+                    </div>
                 </div>
             </>
         );
