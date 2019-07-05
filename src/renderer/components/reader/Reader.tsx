@@ -537,8 +537,10 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     private async handleReadingLocationChange(loc: LocatorExtended) {
         await this.props.findBookmarks({publication: {identifier: this.pubId}});
         this.saveReadingLocation(loc);
-        await this.checkBookmarks();
         this.setState({currentLocation: getCurrentReadingLocation()});
+        // No need to explicitly refresh the bookmarks status here,
+        // as componentDidUpdate() will call the function after setState():
+        // await this.checkBookmarks();
     }
 
     // check if a bookmark is on the screen
@@ -546,12 +548,24 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         if (!this.props.bookmarks) {
             return;
         }
+
+        // this.state.publication is initialized in loadPublicationIntoViewport(),
+        // which calls installNavigatorDOM() which in turn allows navigator API functions to be called safely
+        if (!this.state.publication) {
+            return;
+        }
+
+        const locator = this.state.currentLocation ? this.state.currentLocation.locator : undefined;
+
         const visibleBookmarkList = [];
         for (const bookmark of this.props.bookmarks) {
-            console.log(bookmark);
-            const isVisible = await isLocatorVisible(bookmark.locator);
-            if ( isVisible ) {
-                visibleBookmarkList.push(bookmark);
+            // calling into the webview via IPC is expensive,
+            // let's filter out ahead of time based on document href
+            if (!locator || locator.href === bookmark.locator.href) {
+                const isVisible = await isLocatorVisible(bookmark.locator);
+                if ( isVisible ) {
+                    visibleBookmarkList.push(bookmark);
+                }
             }
         }
         this.setState({visibleBookmarkList});
@@ -594,7 +608,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                     identifier: bookmark.identifier,
                 });
             }
-        } else {
+        } else if (this.state.currentLocation) {
             const locator = this.state.currentLocation.locator;
             this.props.addBookmark({
                 publication: {
@@ -603,7 +617,6 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                 locator,
             });
         }
-        await this.checkBookmarks();
     }
 
     private handleReaderClose() {

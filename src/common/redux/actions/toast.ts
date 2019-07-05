@@ -5,13 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ToastType } from "readium-desktop/common/models/toast";
+
 export enum ActionType {
-    ImportVerificationRequest = "IMPORT_VERIFICATION_REQUEST",
+    OpenRequest = "TOAST_OPEN_REQUEST",
+    CloseRequest = "TOAST_CLOSE_REQUEST",
 }
 
-export function verifyImport(data: {publication: any, downloadSample: boolean}) {
+export function open(type: ToastType, data?: any) {
     return {
-        type: ActionType.ImportVerificationRequest,
-        payload: { data },
+        type: ActionType.OpenRequest,
+        payload: { type, data },
     };
 }

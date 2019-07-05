@@ -28,7 +28,7 @@ interface State {
     openedSection: number;
 }
 
-export class ReaderMenu extends React.Component<Props, State> {
+export class SideMenu extends React.Component<Props, State> {
     public constructor(props: Props) {
         super(props);
 
@@ -83,4 +83,4 @@ export class ReaderMenu extends React.Component<Props, State> {
     }
 }
 
-export default withTranslator(ReaderMenu) as any;
+export default withTranslator(SideMenu) as any;

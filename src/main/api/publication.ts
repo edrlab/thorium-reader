@@ -15,6 +15,14 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 
+import { container } from "readium-desktop/main/di";
+
+import { Store } from "redux";
+
+import { ToastType } from "readium-desktop/common/models/toast";
+
+import { open } from "readium-desktop/common/redux/actions/toast";
+
 @injectable()
 export class PublicationApi {
     private publicationRepository: PublicationRepository;
@@ -79,14 +87,16 @@ export class PublicationApi {
     }
 
     public async importOpdsEntry(data: any): Promise<PublicationView[]> {
-        const { url, base64OpdsPublication, downloadSample } = data;
-
+        const { url, base64OpdsPublication, downloadSample, title } = data;
+        this.dispatchToastRequest(ToastType.DownloadStarted, "message.download.start", title);
+        let publication;
         if (url) {
-            await this.catalogService.importOpdsEntry(url, downloadSample);
+            publication = await this.catalogService.importOpdsEntry(url, downloadSample);
         } else {
             const opdsPublication = JSON.parse(Buffer.from(base64OpdsPublication, "base64").toString("utf-8"));
-            await this.catalogService.importOpdsPublication(opdsPublication, downloadSample);
+            publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample);
         }
+        this.dispatchToastRequest(ToastType.DownloadComplete, "message.download.success", publication.title);
         return null;
     }
 
@@ -102,7 +112,9 @@ export class PublicationApi {
         }
 
         return newDocs.map((doc) => {
-            return this.publicationViewConverter.convertDocumentToView(doc);
+            const publication = this.publicationViewConverter.convertDocumentToView(doc);
+            this.dispatchToastRequest(ToastType.DownloadComplete, "message.import.success", publication.title);
+            return publication;
         });
     }
 
@@ -117,5 +129,15 @@ export class PublicationApi {
     public async exportPublication(data: any): Promise<void> {
         const { publication, destinationPath } = data;
         this.catalogService.exportPublication(publication, destinationPath);
+    }
+
+    private dispatchToastRequest(type: ToastType, message: string, title: string) {
+        const store = container.get("store") as Store<any>;
+        store.dispatch(open(type,
+            {
+                message,
+                messageProps: {title},
+            },
+        ));
     }
 }

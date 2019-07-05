@@ -93,6 +93,7 @@ function initApp() {
     const winRegistry = container.get("win-registry") as WinRegistry;
     winRegistry.registerOpenCallback(winOpenCallback);
     winRegistry.registerCloseCallback(winCloseCallback);
+    app.setAppUserModelId("io.github.edrlab.thorium");
 }
 
 // Opens the main window, with a native menu bar.
@@ -107,7 +108,7 @@ async function createWindow() {
             webSecurity: false,
             allowRunningInsecureContent: false,
         },
-        icon: path.join(__dirname, "assets/icons/icon.ico"),
+        icon: path.join(__dirname, "assets/icons/icon.png"),
     });
     const winRegistry = container.get("win-registry") as WinRegistry;
     winRegistry.registerWindow(mainWindow, AppWindowType.Library);
@@ -128,23 +129,15 @@ async function createWindow() {
 
     // Create the app menu on mac os to allow copy paste
     if (process.platform === "darwin") {
-        const template: any = [
+        const translator = container.get("translator") as any;
+        const template: Electron.MenuItemConstructorOptions[] = [
             {
-                label: app.getName(),
+                label: "Thorium Reader",
                 submenu: [
-                    {role: "quit"},
-                ],
-            },
-            {
-                label: "Edit",
-                submenu: [
-                    {role: "undo"},
-                    {role: "redo"},
-                    {type: "separator"},
-                    {role: "cut"},
-                    {role: "copy"},
-                    {role: "paste"},
-                    {role: "selectall"},
+                    {
+                        role: "quit",
+                        label: translator.translate("app.quit"),
+                    },
                 ],
             },
         ];

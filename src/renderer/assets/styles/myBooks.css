@@ -1,5 +1,4 @@
 main {
-    margin-top: 120px;
     height: auto;
     width: calc(100% - 120px);
     padding-left: 60px;
@@ -344,11 +343,12 @@ main {
 	text-decoration: none;
 	color: black;
 	flex: 1;
-	text-align: justify;
+	text-align: center;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	width: 100%;
 }
 
 #sortType button:not(:last-child) {
