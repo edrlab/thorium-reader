@@ -1,4 +1,7 @@
 {
+    "app": {
+      "quit": "Quitter l'application"
+    },
     "catalog": {
       "entry": {
         "continueReading": "Reprendre la lecture",
@@ -18,6 +21,7 @@
       "addBookToLib": "Ajouter à la librairie",
       "addTeaserToLib": "Ajouter l'extrait à la bibliothèque",
       "addTags": "Ajouter un tag",
+      "deleteTag": "Supprimer le tag",
       "readBook": "Lire",
       "deleteBook": "supprimer de la bibliothèque",
       "tags": "Mes tags",
@@ -102,7 +106,9 @@
       "deleteOpds": "Êtes vous sûr de vouloir supprimer ce flux opds ?",
       "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
       "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-      "closeModalWindow": "Fermer cette fenêtre modale"
+      "closeModalWindow": "Fermer cette fenêtre modale",
+      "alreadyAdd": "Il semblerais que vous ayez déjà ajouté cette publication à votre catalogue.",
+      "sure": "Êtes vous sûr(e) de vouloir l'ajouter à nouveau ?"
     },
     "opds": {
       "download": "Télécharger",
@@ -135,7 +141,7 @@
       },
       "menu": {
         "aboutBook": "Fiche livre",
-        "addLib": "Ajouter à la bibliothèque",
+        "addExtract": "Ajouter à la bibliothèque",
         "goBuyBook": "Aller sur la page d'achat",
         "goLoanBook": "Aller sur la page d'emprunt",
         "goSubBook": "Aller sur la page d'abonnement",
@@ -226,6 +232,9 @@
         "success": "Le téléchargement de {{title}} est terminé.",
         "start": "Le téléchargement de {{title}} a commencé."
       },
+      "import": {
+        "success": "L'import de {{title}} est terminé."
+      },
       "lcp": {
         "renewSuccess": "La licence LCP de {{title}} a bien été renouvellée.",
         "renewError": "Une erreur est survenue lors du renouvellement de {{title}}.",
@@ -243,6 +252,7 @@
       }
     },
     "header": {
+      "home": "Menu Principal",
       "books": "Mes Livres",
       "catalogs": "Catalogues",
       "settings": "Préférences",

@@ -38,6 +38,7 @@ class SameFileImportManager extends React.Component<Props> {
                         url: lastImport.publication.url,
                         base64OpdsPublication: lastImport.publication.base64OpdsPublication,
                         downloadSample: lastImport.downloadSample,
+                        title: lastImport.publication.title,
                     },
                 );
             } else {

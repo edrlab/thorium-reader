@@ -35,7 +35,7 @@ export class OpdsControls extends React.Component<CatalogControlsProps, undefine
                 onClick={() => verifyImport(publication)}
                 className={styles.lire}
             >
-                {__("catalog.addBookToLib")}
+                {__("catalog.addTeaser")}
             </button>
         ) : publication.hasSample && (
             <button

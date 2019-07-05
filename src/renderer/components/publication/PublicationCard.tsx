@@ -62,8 +62,8 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
     }
 
     public render(): React.ReactElement<{}>  {
-        const { publication } = this.props;
-        const authors = publication.authors.join(", ");
+        const { publication, translator } = this.props;
+        const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
         const MenuContent = this.props.menuContent;
         return (
             <div className={styles.block_book}

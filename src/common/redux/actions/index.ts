@@ -13,6 +13,7 @@ import * as lcpActions from "./lcp";
 import * as loggerActions from "./logger";
 import * as netActions from "./net";
 import * as readerActions from "./reader";
+import * as toastActions from "./toast";
 import * as updateActions from "./update";
 
 export {
@@ -25,4 +26,5 @@ export {
     lcpActions,
     updateActions,
     importActions,
+    toastActions,
 };
