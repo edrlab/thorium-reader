@@ -250,7 +250,7 @@
       color:#c1c1c1;
       border-right:1px solid #c1c1c1;
       cursor: pointer;
-      
+
       & > button {
         width: inherit;
         height: 60px;
@@ -270,7 +270,7 @@
         color:black;
         border-bottom:3px solid black;
         padding-bottom:15px;
-      }  
+      }
     }
 
     & .right {
@@ -303,7 +303,7 @@
 	border-left: 1px solid #e5e5e5;
 	position: fixed;
 	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch; 
+	-webkit-overflow-scrolling: touch;
 	top:60px;
 	right:0;
 	height: calc(100vh - 60px);
@@ -559,7 +559,7 @@ p.chapters_description {
 	margin-top:2px;
 	height:4px;
 	background-color: #ECECEC;
-  
+
   & .fill {
     height:100%;
     position: relative;
@@ -569,6 +569,42 @@ p.chapters_description {
 }
 
 /* ============= SETTINGS MENU =================== */
+
+#themes_list {
+	width: 30%;
+	list-style-type: none;
+	font-size: 0.8rem;
+  min-width: 300px;
+  margin-top: 2px;
+	margin-bottom: 30px;
+
+	& label {
+		display: inline-flex;
+		margin: 0 3px 3px 3px;
+		padding: 5px 10px 5px 2rem;
+		font-size: 1.25em;
+		height: 1.2rem;
+		width: 14rem;
+		background: #e5e5e5;
+		cursor: pointer;
+
+		& svg {
+			height: 1rem;
+			width: 1rem;
+			margin-left: -1.3rem;
+			margin-right: 0.3rem;
+		}
+	}
+
+	& input {
+		position: absolute;
+		left: -2000px;
+
+		&:focus + label {
+			outline: -webkit-focus-ring-color auto 5px;
+		}
+	}
+}
 
 #read_settings_list > li, #chapter_settings_list > li{
 	border-bottom: 1px solid #e5e5e5;
@@ -604,7 +640,7 @@ p.chapters_description {
 	border-left: 1px solid #e5e5e5;
 	position: fixed;
 	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch; 
+	-webkit-overflow-scrolling: touch;
 	top:60px;
 	right:0;
 	height: calc(100vh - 60px);
@@ -651,8 +687,8 @@ p.chapters_description {
   }
 }
 
-#scroll_option, #page_option, 
-#option_gauche, #option_justif, 
+#scroll_option, #page_option,
+#option_gauche, #option_justif,
 #option_colonne, #option_colonne1, #option_colonne2 {
 	display: inline-block;
 	text-align: center;
