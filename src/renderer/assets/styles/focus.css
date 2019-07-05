@@ -9,6 +9,9 @@
 :global :root.R2_CSS_CLASS__KEYBOARD_INTERACT *:focus {
   @mixin R2_MIXIN_FOCUS_OUTLINE;
 }
+:global :root:not(.R2_CSS_CLASS__KEYBOARD_INTERACT) #body_element *:focus + label {
+  outline: none !important;
+}
 
 @keyframes readium2ElectronAnimation_TARGET {
   0% {
