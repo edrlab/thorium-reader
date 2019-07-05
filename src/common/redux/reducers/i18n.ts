@@ -10,9 +10,10 @@ import { Action } from "readium-desktop/common/models/redux";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
+import { app } from "electron";
 
 const initialState: I18NState = {
-    locale: "fr",
+    locale: 'en',
 };
 
 export function i18nReducer(

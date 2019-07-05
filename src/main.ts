@@ -66,6 +66,8 @@ import { CatalogService } from "readium-desktop/main/services/catalog";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
 import { debounce } from "./utils/debounce";
+import { setLocale } from "./common/redux/actions/i18n";
+import { AvailableLanguages } from "./common/services/translator";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -222,6 +224,13 @@ app.on("window-all-closed", () => {
 app.on("ready", async () => {
     debug("ready");
     initApp();
+
+    const store = container.get("store") as Store<RootState>;
+    store.dispatch(setLocale(
+        Object.keys(AvailableLanguages).reduce(
+            (pv, cv) => cv === app.getLocale().split('-')[0] ? cv : pv,
+            'en')
+    ));
 
     if (!processCommandLine()) {
         // Do not open window if electron is launched as a command line
