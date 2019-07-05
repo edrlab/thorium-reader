@@ -61,6 +61,10 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 
+import { DialogType } from "readium-desktop/common/models/dialog";
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { PublicationView } from "readium-desktop/common/views/publication";
+
 import optionsValues from "./options-values";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
@@ -70,6 +74,10 @@ import * as queryString from "query-string";
 import { LocatorView } from "readium-desktop/common/views/locator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+
+import { Publication } from "readium-desktop/common/models/publication";
+
+import * as qs from "query-string";
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
@@ -198,6 +206,8 @@ interface ReaderProps {
     detachReader?: any;
     setLastReadingLocation: any;
     bookmarks?: LocatorView[];
+    displayPublicationInfo?: any;
+    publication?: Publication;
 }
 
 const defaultLocale = "fr";
@@ -269,6 +279,8 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
         this.handleLinkClick = this.handleLinkClick.bind(this);
+
+        this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
     public async componentDidMount() {
@@ -320,6 +332,15 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                     navLeftOrRight(false);
                 }
             }
+        });
+
+        // TODO: this is a short-term hack.
+        // Can we instead subscribe to Redux action type == ActionType.CloseRequest,
+        // but narrow it down specically to a reader window instance (not application-wide)
+        window.document.addEventListener("Thorium:DialogClose", (ev: Event) => {
+            this.setState({
+                shortcutEnable: true,
+            });
         });
 
         // tslint:disable-next-line:no-string-literal
@@ -395,6 +416,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                             isOnBookmark={this.state.visibleBookmarkList.length > 0}
                             readerOptionsProps={readerOptionsProps}
                             readerMenuProps={readerMenuProps}
+                            displayPublicationInfo={this.displayPublicationInfo}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
@@ -413,6 +435,12 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                     </div>
                 </div>
         );
+    }
+
+    private displayPublicationInfo() {
+        if (this.props.publication) {
+            this.props.displayPublicationInfo(this);
+        }
     }
 
     private goToLocator(locator: Locator) {
@@ -489,6 +517,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     private handleMenuButtonClick() {
         this.setState({
             menuOpen: !this.state.menuOpen,
+            shortcutEnable: this.state.menuOpen,
             settingsOpen: false,
         });
     }
@@ -606,6 +635,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     private handleSettingsClick() {
         this.setState({
             settingsOpen: !this.state.settingsOpen,
+            shortcutEnable: this.state.settingsOpen,
             menuOpen: false,
         });
     }
@@ -698,6 +728,27 @@ const mapDispatchToProps = (dispatch: any, props: ReaderProps) => {
         detachReader: (reader: any) => {
             dispatch(readerActions.detach(reader));
         },
+        displayPublicationInfo: (that: Reader) => {
+            // TODO: subscribe to Redux action type == ActionType.CloseRequest
+            // in order to reset shortcutEnable to true? Problem: must be specific to this reader window.
+            // So instead we subscribe to DOM event "Thorium:DialogClose", but this is a short-term hack!
+            that.setState({
+                shortcutEnable: false,
+            });
+            dispatch(dialogActions.open(
+                DialogType.PublicationInfoReader,
+                {
+                    publication: that.props.publication,
+                },
+            ));
+        },
+    };
+};
+
+const buildRequestData = (props: ReaderProps) => {
+    const parsedResult = qs.parse(document.location.href);
+    return {
+        identifier: parsedResult.pubId,
     };
 };
 
@@ -729,6 +780,13 @@ export default withApi(
                 moduleId: "reader",
                 methodId: "setLastReadingLocation",
                 callProp: "setLastReadingLocation",
+            },
+            {
+                moduleId: "publication",
+                methodId: "get",
+                buildRequestData,
+                resultProp: "publication",
+                onLoad: true,
             },
         ],
         refreshTriggers: [
