@@ -228,8 +228,8 @@ app.on("ready", async () => {
     const store = container.get("store") as Store<RootState>;
     store.dispatch(setLocale(
         Object.keys(AvailableLanguages).reduce(
-            (pv, cv) => cv === app.getLocale().split('-')[0] ? cv : pv,
-            'en')
+            (pv, cv) => cv === app.getLocale().split("-")[0] ? cv : pv,
+            "en")
     ));
 
     if (!processCommandLine()) {
