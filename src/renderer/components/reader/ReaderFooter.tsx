@@ -77,7 +77,7 @@ export class ReaderFooter extends React.Component<Props, States> {
                         <div id={styles.track_reading}>
                             <div id={styles.current}></div>
                                 <div id={styles.chapters_markers}
-                                    className={moreInfo && styles.more_information}>
+                                    className={moreInfo ? styles.more_information : undefined}>
                                     { publication.Spine.map((value, index) => {
                                         const atCurrentLocation = currentLocation.locator.href === value.Href;
                                         if (atCurrentLocation) {

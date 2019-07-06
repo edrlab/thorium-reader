@@ -60,7 +60,7 @@
   },
   "homepage": "https://github.com/edrlab/readium-desktop",
   "build": {
-    "productName": "thorium",
+    "productName": "Thorium Reader",
     "appId": "io.github.edrlab.thorium",
     "dmg": {
       "contents": [
@@ -112,11 +112,20 @@
       ],
       "desktop": {
         "MimeType": "application/epub+zip"
-      }
+      },
+      "icon": "dist/assets/icons/",
+      "executableName": "Thorium Reader"
+    },
+    "mac": {
+      "target": "default",
+      "icon": "dist/assets/icons/icon.png"
     },
     "appx": {
       "displayName": "Thorium Reader",
       "publisher": "CN=C91F86A8-45E6-48E0-8015-8A5BF2B38BD4"
+    },
+    "mac": {
+      "icon": "dist/assets/icons/icon.png"
     }
   },
   "jest": {
@@ -140,7 +149,6 @@
     ]
   },
   "dependencies": {
-    "@material-ui/core": "^3.9.3",
     "@types/react-beautiful-dnd": "^7.1.2",
     "@types/react-helmet": "^5.0.8",
     "acorn": "^6.1.1",
@@ -240,6 +248,7 @@
     "postcss-cssnext": "^3.1.0",
     "postcss-import": "^12.0.0",
     "postcss-loader": "^3.0.0",
+    "postcss-mixins": "^6.2.1",
     "pouchdb-adapter-memory": "^7.0.0",
     "react-hot-loader": "3.*.*",
     "react-svg-loader": "^2.1.0",

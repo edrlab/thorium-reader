@@ -6,21 +6,17 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { RouteComponentProps } from "react-router-dom";
 
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 
+import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
-
 import Slider from "readium-desktop/renderer/components/utils/Slider";
 
-import { RouteComponentProps } from "react-router-dom";
-
-import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
-
 import GridTagLayout from "./GridTagLayout";
-import SortMenu from "./SortMenu";
-
 import NoPublicationInfo from "./NoPublicationInfo";
+import SortMenu from "./SortMenu";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
@@ -31,7 +27,12 @@ interface GridViewProps extends RouteComponentProps {
 
 interface GridViewState {
     tabTags: string[];
-    status: string;
+    status: SortStatus;
+}
+
+enum SortStatus {
+    Count,
+    Alpha,
 }
 
 export default class GridView extends React.Component<GridViewProps, GridViewState> {
@@ -39,11 +40,25 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         super(props);
 
         this.state = {
-            tabTags: this.props.tags.slice(),
-            status: "count",
+            tabTags: this.props.tags ? this.props.tags.slice() : [],
+            status: SortStatus.Count,
         };
         this.sortByAlpha = this.sortByAlpha.bind(this);
         this.sortbyCount = this.sortbyCount.bind(this);
+    }
+
+    public componentDidUpdate(oldProps: GridViewProps) {
+        if (this.props.tags !== oldProps.tags) {
+            const { status } = this.state;
+            switch (status) {
+                case SortStatus.Count:
+                    this.sortbyCount();
+                    break;
+                case SortStatus.Alpha:
+                    this.sortByAlpha();
+                    break;
+            }
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -100,10 +115,8 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
     }
 
     private sortbyCount() {
-        this.setState({
-            status: "count",
-        });
-        this.state.tabTags.sort((a, b) => {
+        const { tags } = this.props;
+        const tabTags = tags.sort((a, b) => {
             if (a < b) {
                 return (1);
             } else if (a > b) {
@@ -111,19 +124,25 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
             }
             return (0);
         });
+        this.setState({
+            status: SortStatus.Count,
+            tabTags,
+        });
     }
 
     private sortByAlpha() {
-        this.setState({
-            status: "alpha",
-        });
-        this.state.tabTags.sort((a, b) => {
+        const { tags } = this.props;
+        const tabTags = tags.sort((a, b) => {
             if (a > b) {
                 return (1);
             } else if (a < b) {
                 return (-1);
             }
             return (0);
+        });
+        this.setState({
+            status: SortStatus.Alpha,
+            tabTags,
         });
     }
 

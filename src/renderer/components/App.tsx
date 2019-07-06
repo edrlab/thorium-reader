@@ -31,6 +31,8 @@ import { DialogType } from "readium-desktop/common/models/dialog";
 
 import SameFileImportManager from "./utils/SameFileImportManager";
 
+import ToastManager from "./toast/ToastManager";
+
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 export default class App extends React.Component<any, undefined> {
@@ -62,6 +64,15 @@ export default class App extends React.Component<any, undefined> {
         ));
     }
 
+    public async componentDidMount() {
+        window.document.documentElement.addEventListener("keydown", (ev: KeyboardEvent) => {
+            window.document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
+        }, true);
+        window.document.documentElement.addEventListener("mousedown", (ev: MouseEvent) => {
+            window.document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
+        }, true);
+    }
+
     public render(): React.ReactElement<{}> {
         return (
             <Provider store={ this.store }>
@@ -78,7 +89,7 @@ export default class App extends React.Component<any, undefined> {
                                     style={{
                                         position: "absolute",
                                         overflowX: "hidden",
-                                        top: 0,
+                                        top: 124,
                                         bottom: 0,
                                         left: 0,
                                         right: 0,
@@ -88,6 +99,7 @@ export default class App extends React.Component<any, undefined> {
                                     <PageManager/>
                                     <DialogManager />
                                     <SameFileImportManager />
+                                    <ToastManager />
                                 </div>;
                             }}
                         </Dropzone>

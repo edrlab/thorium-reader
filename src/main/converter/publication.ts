@@ -23,7 +23,7 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 
 @injectable()
 export class PublicationViewConverter {
-    public convertDocumentToView(document: PublicationDocument): PublicationView {
+    public convertDocumentToView(document: PublicationDocument): any {
         const b64ParsedPublication = document.resources.filePublication;
         const jsonParsedPublication = Buffer
             .from(b64ParsedPublication, "base64")
@@ -63,6 +63,7 @@ export class PublicationViewConverter {
             cover,
             customCover: document.customCover,
             lcp: document.lcp,
+            doc: epub.Metadata,
         };
     }
 }

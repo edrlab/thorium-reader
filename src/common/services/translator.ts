@@ -40,6 +40,10 @@ export enum AvailableLanguages {
     de = "Deutch",
 }
 
+interface LocalizedContent {
+    [locale: string]: string;
+}
+
 @injectable()
 export class Translator {
     private locale: string = "en";
@@ -67,7 +71,7 @@ export class Translator {
      *
      * @param text
      */
-    public translateContentField(field: any) {
+    public translateContentField(field: string | LocalizedContent) {
         if (!field) {
             return "";
         }
@@ -80,6 +84,23 @@ export class Translator {
             return field[this.locale];
         }
 
+        // Check if there is no composed locale names matching with the current locale
+        const simplifiedFieldLocales = Object.keys(field).filter(
+            (locale) => locale.split("-")[0] === this.locale.split("-")[0],
+        );
+        if (simplifiedFieldLocales.length) {
+            return field[simplifiedFieldLocales[0]];
+        }
+
+        // If nothing try to take an english locale
+        const englishFieldLocales = Object.keys(field).filter(
+            (locale) => locale.split("-")[0] === "en",
+        );
+        if (englishFieldLocales.length) {
+            return field[englishFieldLocales[0]];
+        }
+
+        // Take the first locale if nothing match with current locale or english
         const keys = Object.keys(field);
 
         if (keys && keys.length) {

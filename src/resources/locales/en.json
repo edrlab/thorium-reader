@@ -1,4 +1,7 @@
 {
+    "app": {
+      "quit": "Quit the application"
+    },
     "catalog": {
       "entry": {
         "continueReading": "Resume reading",
@@ -18,12 +21,13 @@
       "addBookToLib": "Add book to library",
       "addTeaserToLib": "Add the extract book to library",
       "addTags": "Add tag",
+      "deleteTag": "Delete tag",
       "readBook": "Read",
       "deleteBook": "delete from the library",
       "tags": "My tags",
       "sort": "sort by",
       "tagCount": "Tag count",
-      "emptyTagList": "there is no tags in books.",
+      "emptyTagList": "You have still not added tags to the books.",
       "noPublicationHelp": "To import ebooks, drag&drop EPUB files here or use the plus button in the menu above."
     },
     "library": {
@@ -102,7 +106,9 @@
       "return": "Do you really want to return the licence for this publication?",
       "deleteOpds": "Do you really want to delete this opds feed?",
       "renew": "Do you really want to renew the licence for this publication?",
-      "closeModalWindow": "Close this modal window"
+      "closeModalWindow": "Close this modal window",
+      "alreadyAdd": "It seems that you have already added this publication to your library.",
+      "sure": "Are you sure you want to add it again ?"
     },
     "opds": {
       "download": "Download",
@@ -135,11 +141,11 @@
       },
       "menu": {
         "aboutBook": "About this book",
-        "addLib": "Add this book to the librairy",
+        "addExtract": "Import the extract",
         "goBuyBook": "Buy this book",
         "goLoanBook": "Borrow this book",
         "goSubBook": "Subscribe",
-        "addTeaser": "Add extract to the librairy"
+        "addTeaser": "Add extract to the library"
       },
       "breadcrumbRoot": "Catalogs"
     },
@@ -174,7 +180,7 @@
         },
         "text": "Text",
         "left": "Left",
-        "justify": "Justified",
+        "justify": "Justify",
         "column": {
           "title": "Column",
           "auto": "Automatic",
@@ -226,6 +232,9 @@
         "success": "The download of {{title}} is finished.",
         "start": "The download of {{title}} began."
       },
+      "import": {
+        "success": "The import of {{title}} is finished."
+      },
       "lcp": {
         "renewSuccess": "The LCP license of {{title}} has been renewed.",
         "renewError": "An error occurred when renewing the LCP license of {{title}}.",
@@ -243,6 +252,7 @@
       }
     },
     "header": {
+      "home": "Home",
       "books": "My Books",
       "catalogs": "Catalogs",
       "settings": "Settings",
