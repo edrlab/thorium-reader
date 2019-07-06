@@ -38,9 +38,9 @@ import {
 } from "@r2-shared-js/init-globals";
 
 import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
-import { debounce } from "./utils/debounce";
 import { setLocale } from "./common/redux/actions/i18n";
 import { AvailableLanguages } from "./common/services/translator";
+import { debounce } from "./utils/debounce";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -197,12 +197,11 @@ app.on("ready", async () => {
     debug("ready");
     initApp();
 
+    // set the locale from platform
     const store = container.get("store") as Store<RootState>;
-    store.dispatch(setLocale(
-        Object.keys(AvailableLanguages).reduce(
-            (pv, cv) => cv === app.getLocale().split("-")[0] ? cv : pv,
-            "en")
-    ));
+    const loc = app.getLocale().split("-")[0];
+    const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
+    store.dispatch(setLocale(lang));
 
     if (!processCommandLine()) {
         // Do not open window if electron is launched as a command line
