@@ -38,6 +38,8 @@ import {
 } from "@r2-shared-js/init-globals";
 
 import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
+import { setLocale } from "./common/redux/actions/i18n";
+import { AvailableLanguages } from "./common/services/translator";
 import { debounce } from "./utils/debounce";
 
 if (_PACKAGING !== "0") {
@@ -194,6 +196,12 @@ app.on("window-all-closed", () => {
 app.on("ready", async () => {
     debug("ready");
     initApp();
+
+    // set the locale from platform
+    const store = container.get("store") as Store<RootState>;
+    const loc = app.getLocale().split("-")[0];
+    const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
+    store.dispatch(setLocale(lang));
 
     if (!processCommandLine()) {
         // Do not open window if electron is launched as a command line
