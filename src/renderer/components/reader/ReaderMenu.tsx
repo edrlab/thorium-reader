@@ -78,7 +78,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                 disabled: !publication.LOI || publication.LOI.length === 0,
             },
             {
-                title: __("reader.marks.landmarks"),
+                title: __("reader.marks.bookmarks"),
                 content: this.createLandmarkList(),
                 disabled: !bookmarks || bookmarks.length === 0,
             },

@@ -134,7 +134,8 @@
         "readBookTitle": "mit dem Lesen des Buches beginnen"
       },
       "marks": {
-        "landmarks": "Lesezeichen",
+        "landmarks": "Sehenswürdigkeiten",
+        "bookmarks": "Lesezeichen",
         "illustrations": "Illustrationen",
         "toc": "inhaltsverzeichnis",
         "annotations": "Annotationen"

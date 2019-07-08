@@ -209,6 +209,7 @@
       },
       "marks": {
         "landmarks": "Landmarks",
+        "bookmarks": "Bookmarks",
         "illustrations": "Illustrations",
         "toc": "Table of content",
         "annotations": "Annotations"
