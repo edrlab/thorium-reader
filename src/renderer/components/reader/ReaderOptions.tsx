@@ -56,6 +56,7 @@ export class ReaderOptions extends React.Component<Props> {
         super(props);
 
         this.handleChooseTheme = this.handleChooseTheme.bind(this);
+        this.handleAlignement = this.handleAlignement.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -181,8 +182,7 @@ export class ReaderOptions extends React.Component<Props> {
         return <>
             <section className={styles.line_tab_content}>
             <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
-                <ul>
-                    <div className={styles.center_in_tab}>
+                {/*<ul className={styles.center_in_tab}>
                         <li>
                             <button
                                 id={styles.scroll_option} role="link"
@@ -203,40 +203,74 @@ export class ReaderOptions extends React.Component<Props> {
                                 {__("reader.settings.paginated")}
                             </button>
                         </li>
-                    </div>
+                </ul>*/}
+                <ul className={styles.center_in_tab}>
+                    <li>
+                        <label htmlFor={styles.scroll_option}
+                        className={this.getButtonClassName("paged", false)}>
+                            <SVG svg={DefileIcon} title={__("reader.settings.scrolled")} />
+                            {__("reader.settings.scrolled")}
+                        </label>
+                        <input
+                        id={styles.scroll_option}
+                        type="radio"
+                        name="disposition"
+                        onChange={(e) => this.props.handleSettingChange(e, "paged", "false")}
+                        />
+                    </li>
+                    <li>
+                        <label htmlFor={styles.page_option}
+                        className={this.getButtonClassName("paged", true)}>
+                            <SVG svg={PagineIcon} title={__("reader.settings.paginated")}/>
+                            {__("reader.settings.paginated")}
+                        </label>
+                        <input
+                        id={styles.page_option}
+                        type="radio"
+                        name="disposition"
+                        onChange={(e) => this.props.handleSettingChange(e, "paged", "true")}
+                        defaultChecked={true}
+                        />
+                    </li>
+
                 </ul>
                 </section>
                 <section className={styles.line_tab_content}>
                     <div className={styles.subheading}>{__("reader.settings.justification")}</div>
-                    <ul>
-                        <div className={styles.center_in_tab}>
+                    <ul className={styles.center_in_tab}>
                             <li>
-                                <button
-                                id={styles.option_gauche} role="link"
-                                className={this.getButtonClassName("align", "left")}
-                                onClick={(e) => this.props.handleSettingChange(e, "align", "left")}
-                                >
+                                <label htmlFor={styles.option_gauche}
+                                className={this.getButtonClassName("align", "left")}>
                                     <SVG svg={LeftIcon} title={__("reader.settings.left")}/>
                                     {__("reader.settings.left")}
-                                </button>
+                                </label>
+                                {console.log("left true ?", this.props.settings.align === "left")}
+                                <input
+                                id={styles.option_gauche}
+                                type="radio"
+                                onClick={() => this.handleAlignement("left")}
+                                {...(this.props.settings.align === "left" && {checked: true})}
+                                />
                             </li>
                             <li>
-                                <button
-                                id={styles.option_justif} role="link"
-                                className={this.getButtonClassName("align", "justify")}
-                                onClick={(e) => this.props.handleSettingChange(e, "align", "justify")}
-                                >
+                                <label htmlFor={styles.option_justif}
+                                className={this.getButtonClassName("align", "justify")}>
                                     <SVG svg={JustifyIcon} title={__("reader.settings.justify")}/>
                                     {__("reader.settings.justify")}
-                                </button>
+                                </label>
+                                {console.log("justify true ? ", this.props.settings.align === "justify")}
+                                <input
+                                id={styles.option_justif}
+                                type="radio"
+                                onClick={() => this.handleAlignement("justify")}
+                                {...(this.props.settings.align === "justify" && {checked: true})}
+                                />
                             </li>
-                        </div>
                     </ul>
             </section>
             <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.column.title")}</div>
-                <ul>
-                    <div className={styles.center_in_tab}>
+                <ul className={styles.center_in_tab}>
                         <li>
                             <button
                             id={styles.option_colonne}
@@ -249,7 +283,7 @@ export class ReaderOptions extends React.Component<Props> {
                             this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
                             >
                                 <SVG svg={AutoIcon} title={__("reader.settings.column.auto")}/>
-                            {__("reader.settings.column.auto")}
+                                {__("reader.settings.column.auto")}
                             </button>
                         </li>
                         <li>
@@ -280,7 +314,6 @@ export class ReaderOptions extends React.Component<Props> {
                                 {__("reader.settings.column.two")}
                             </button>
                         </li>
-                    </div>
                 </ul>
             </section>
         </>;
@@ -374,6 +407,22 @@ export class ReaderOptions extends React.Component<Props> {
                 </span>
             </div>
         </>;
+    }
+
+    private handleAlignement(align: string) {
+        const value = this.props.settings;
+        let def = "";
+
+        value.align = def;
+        if (align === "justify") {
+            def = align;
+            value.align = def;
+        } else if (align === "left") {
+            def = align;
+            value.align = def;
+        }
+        console.log("value: ", value.align);
+        this.props.setSettings(value);
     }
 
     private handleChooseTheme(theme: themeType) {

@@ -618,6 +618,12 @@ p.chapters_description {
   justify-content: center;
   align-items: center;
 
+
+  & input {
+    height: 20px;
+    width: 18px;
+  }
+
   & svg {
     width: 63px;
     height: 70px;
@@ -642,6 +648,11 @@ p.chapters_description {
     }
   }
 
+  & label {
+    cursor: pointer;
+    padding: 10px 10px 10px
+  }
+
   & .disable {
     fill: grey;
     color: grey;
@@ -653,8 +664,8 @@ p.chapters_description {
   }
 }
 
-#scroll_option, #page_option,
-#option_gauche, #option_justif,
+/*#scroll_option, #page_option,
+#option_gauche, #option_justif,*/
 #option_colonne, #option_colonne1, #option_colonne2 {
 	display: inline-block;
 	text-align: center;
@@ -664,6 +675,19 @@ p.chapters_description {
   height: 70px;
   width: 63px;
 }
+
+#option_gauche, #option_justif,
+#scroll_option, #page_option {
+  display: inline-block;
+  text-align: center;
+  margin: 0 10px 20px 10px;
+  line-height: 2rem;
+  vertical-align: baseline;
+  height: 15px;
+  width: 20px;
+}
+
+
 
 .separateur {
 	margin-top:20px;
