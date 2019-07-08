@@ -129,8 +129,7 @@
         "detachWindowTitle": "das Fenster lösen",
         "fullscreenTitle": "fullscreen mode",
         "bookmarkTitle": "bookmark",
-        "openTableOfContentsTitle": "Öffnen Sie das Inhaltsverzeichnis.",
-        "closeTableOfContentsTitle": "Schließen des Inhaltsverzeichnisses",
+        "openTableOfContentsTitle": "navigation",
         "settingsTitle": "settings",
         "readBookTitle": "mit dem Lesen des Buches beginnen"
       },

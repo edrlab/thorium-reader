@@ -157,7 +157,7 @@ export class ReaderOptions extends React.Component<Props> {
                     <span className={styles.slider_marker} >a</span>
                     <input type="range"
                         onChange={(e) => this.props.handleIndexChange(e, "fontSize")}
-                        id="taille_texte"
+                        id="text_length"
                         min={0}
                         max={optionsValues.fontSize.length - 1}
                         value={this.props.indexes.fontSize}
@@ -294,8 +294,7 @@ export class ReaderOptions extends React.Component<Props> {
                 <input
                     type="range"
                     onChange={(e) => this.props.handleIndexChange(e, "pageMargins")}
-                    title="Valeur des marges"
-                    id="taille_texte"
+                    id="text_length"
                     min={0}
                     max={optionsValues.pageMargins.length - 1}
                     value={this.props.indexes.pageMargins}
@@ -315,8 +314,7 @@ export class ReaderOptions extends React.Component<Props> {
                 <input
                     type="range"
                     onChange={(e) => this.props.handleIndexChange(e, "wordSpacing")}
-                    title="Valeur des marges"
-                    id="taille_texte"
+                    id="text_length"
                     min={0}
                     max={optionsValues.wordSpacing.length - 1}
                     value={this.props.indexes.wordSpacing}
@@ -336,8 +334,7 @@ export class ReaderOptions extends React.Component<Props> {
                 <input
                     type="range"
                     onChange={(e) => this.props.handleIndexChange(e, "letterSpacing")}
-                    title="Valeur des marges"
-                    id="taille_texte"
+                    id="text_length"
                     min={0}
                     max={optionsValues.letterSpacing.length - 1}
                     value={this.props.indexes.letterSpacing}
@@ -357,8 +354,7 @@ export class ReaderOptions extends React.Component<Props> {
                 <input
                     type="range"
                     onChange={(e) => this.props.handleIndexChange(e, "lineHeight")}
-                    title="Valeur des marges"
-                    id="taille_texte"
+                    id="text_length"
                     min={0}
                     max={optionsValues.lineHeight.length - 1}
                     value={this.props.indexes.lineHeight}
