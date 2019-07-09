@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
 import * as path from "path";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
@@ -39,10 +40,9 @@ import {
 import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
 import { setLocale } from "./common/redux/actions/i18n";
 import { AvailableLanguages } from "./common/services/translator";
+import { cli } from "./main/cli/commandLine";
 import { processCommandLine } from "./main/cli/process";
 import { debounce } from "./utils/debounce";
-import * as debug_ from "debug";
-import { cli } from "./main/cli/commandLine";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -56,7 +56,8 @@ export { container };
 const debug = debug_("readium-desktop:main");
 
 // Parse command line
-const processArgs = yargs.argv;
+const processArgs = yargs.parse(process.argv.slice(1));
+
 
 initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();

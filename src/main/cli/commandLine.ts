@@ -30,26 +30,34 @@ export interface ICli {
 export const cli: ICli[] = [
     {
         name: "_",
-        fct: async ({argv}) => {
+        fct: async ({ argv }) => {
 
-            // import and read publication
-            const catalogService = container.get("catalog-service") as CatalogService;
-            const publication = await catalogService.importFile(argv._[0] as string);
-            const store = container.get("store") as Store<RootState>;
-            store.dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
-                },
+            argv._.map(async (path) => {
+                // import and read publication
+                const catalogService = container.get("catalog-service") as CatalogService;
+                const publication = await catalogService.importFile(path as string);
+                const store = container.get("store") as Store<RootState>;
+                try {
+                    store.dispatch({
+                        type: readerActions.ActionType.OpenRequest,
+                        payload: {
+                            publication: {
+                                identifier: publication.identifier,
+                            },
+                        },
+                    });
+                } catch (e) {
+                    if (path !== ".") {
+                        console.error("Publication error, path:", path);
+                    }
+                }
             });
         },
         help: [],
     },
     {
         name: "import",
-        fct: async ({argv}) => {
+        fct: async ({ argv }) => {
             const catalogService = container.get("catalog-service") as CatalogService;
             return await catalogService.importFile(argv.import as string);
         },
@@ -60,12 +68,12 @@ export const cli: ICli[] = [
     },
     {
         name: "opds",
-        fct: async ({argv}) => {
+        fct: async ({ argv }) => {
             const feed = (argv.opds as string).split("=");
             const url = feed.length === 2 ? feed[1] : feed[0];
             const title = feed.length === 2 ? feed[0] : extractHostname(url, true);
             const opdsRepository = container.get("opds-feed-repository") as OpdsFeedRepository;
-            return await opdsRepository.save({title, url});
+            return await opdsRepository.save({ title, url });
         },
         help: [
             "--opds \"my title=http://myopdsfeed.com\"",
@@ -84,7 +92,7 @@ export const cli: ICli[] = [
     },
     {
         name: "read",
-        fct: async ({argv}) => {
+        fct: async ({ argv }) => {
             // read the publication name
             const publicationRepo = container.get("publication-repository") as PublicationRepository;
             const publication = await publicationRepo.searchByTitle(argv.read as string);
