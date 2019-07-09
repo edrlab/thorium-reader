@@ -102,12 +102,12 @@
       {
         "ext": "epub",
         "role": "Viewer",
-        "MimeType": "application/epub+zip"
+        "mimeType": "application/epub+zip"
       },
       {
         "ext": "lcpl",
         "role": "Viewer",
-        "MimeType": "application/lcpl+zip"
+        "mimeType": "application/lcpl+zip"
       }
     ],
     "win": {
