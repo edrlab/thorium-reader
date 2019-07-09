@@ -26,8 +26,8 @@ export const getWindowsRectangle = async (): Promise<Rectangle> => {
         return JSON.parse(await promisify(fs.readFile)(PATH, { encoding: "utf8" }));
     }
     const c: Rectangle = {
-        height: 800,
-        width: 600,
+        height: 600,
+        width: 800,
         x: screen.getPrimaryDisplay().workAreaSize.width / 3,
         y: screen.getPrimaryDisplay().workAreaSize.height / 3,
     };

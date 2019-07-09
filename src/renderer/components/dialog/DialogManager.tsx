@@ -228,6 +228,11 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
 const mapDispatchToProps = (dispatch: any) => {
     return {
         closeDialog: () => {
+            // TODO: this is a short-term hack.
+            // Can we instead subscribe to Redux action type == ActionType.CloseRequest,
+            // but narrow it down specically to the window instance (not application-wide)
+            window.document.dispatchEvent(new Event("Thorium:DialogClose"));
+
             dispatch(
                 dialogActions.close(),
             );

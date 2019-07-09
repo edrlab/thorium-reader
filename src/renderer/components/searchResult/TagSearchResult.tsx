@@ -34,7 +34,7 @@ export class TagSearchResult extends React.Component<TextSearchResultProps, unde
     public render(): React.ReactElement<{}> {
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
-
+        const { __ } = this.props;
         const title = (this.props.match.params as any).value;
 
         if (this.props.location) {
@@ -53,7 +53,7 @@ export class TagSearchResult extends React.Component<TextSearchResultProps, unde
                 <div>
                     <BreadCrumb
                         search={this.props.location.search}
-                        breadcrumb={[{name: "Mes livres", path: "/library"}, {name: title as string}]}
+                        breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title as string}]}
                     />
                     { this.props.publications ?
                         <DisplayView publications={ this.props.publications } />

@@ -46,21 +46,22 @@ class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
         }
 
         return (
-            <>
+            <div
+                style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} }
+            >
                 <Helmet>
                     <title>{ helmetTitle }</title>
                 </Helmet>
                 <LibraryHeader />
                 { this.props.secondaryHeader }
                 <main
-                    style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} }
                     className={styles.main}
                     role="main"
                 >
                     <a ref={(ref) => this.fastLinkRef = ref} id="main-content" aria-hidden tabIndex={-1}></a>
                     { this.props.children }
                 </main>
-            </>
+            </div>
         );
     }
 }
