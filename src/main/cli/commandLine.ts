@@ -12,6 +12,7 @@ import { Store } from "redux";
 import * as yargs from "yargs";
 
 import { OpdsFeedRepository } from "../db/repository/opds";
+import { PublicationRepository } from "../db/repository/publication";
 import { RootState } from "../redux/states";
 import { CatalogService } from "../services/catalog";
 
@@ -83,8 +84,21 @@ export const cli: ICli[] = [
     },
     {
         name: "read",
-        fct: async (param) => {
+        fct: async ({argv}) => {
             // read the publication name
+            const publicationRepo = container.get("publication-repository") as PublicationRepository;
+            const publication = await publicationRepo.searchByTitle(argv.read as string);
+            if (publication && publication.length) {
+                const store = container.get("store") as Store<RootState>;
+                store.dispatch({
+                    type: readerActions.ActionType.OpenRequest,
+                    payload: {
+                        publication: {
+                            identifier: publication[0].identifier,
+                        },
+                    },
+                });
+            }
         },
         help: [
             "--read \"Publication name\"",

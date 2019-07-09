@@ -10,7 +10,6 @@ import { app } from "electron";
 import { ICli, ICliParam } from "readium-desktop/main/cli/commandLine";
 import { Arguments } from "yargs";
 
-
 declare const __APP_NAME__: string;
 declare const __APP_VERSION__: string;
 
