@@ -98,8 +98,18 @@
       "output": "release",
       "app": "dist"
     },
-    "fileAssociations": {
-      "ext": "epub"
+    "fileAssociations": [
+      {
+        "ext": "epub",
+        "role": "Viewer",
+        "MimeType": "application/epub+zip"
+      },
+      {
+        "ext": "lcpl",
+        "role": "Viewer",
+        "MimeType": "application/lcpl+zip"
+      }
+    ]
     },
     "win": {
       "target": "appx",
