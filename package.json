@@ -109,8 +109,7 @@
         "role": "Viewer",
         "MimeType": "application/lcpl+zip"
       }
-    ]
-    },
+    ],
     "win": {
       "target": [
         "appx",
