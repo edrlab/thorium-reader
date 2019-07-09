@@ -232,88 +232,101 @@ export class ReaderOptions extends React.Component<Props> {
                         defaultChecked={true}
                         />
                     </li>
-
                 </ul>
-                </section>
-                <section className={styles.line_tab_content}>
-                    <div className={styles.subheading}>{__("reader.settings.justification")}</div>
-                    <ul className={styles.center_in_tab}>
-                            <li>
-                                <label htmlFor={styles.option_gauche}
-                                className={this.getButtonClassName("align", "left")}>
-                                    <SVG svg={LeftIcon} title={__("reader.settings.left")}/>
-                                    {__("reader.settings.left")}
-                                </label>
-                                {console.log("left true ?", this.props.settings.align === "left")}
-                                <input
-                                id={styles.option_gauche}
-                                type="radio"
-                                onClick={() => this.handleAlignement("left")}
-                                {...(this.props.settings.align === "left" && {checked: true})}
-                                />
-                            </li>
-                            <li>
-                                <label htmlFor={styles.option_justif}
-                                className={this.getButtonClassName("align", "justify")}>
-                                    <SVG svg={JustifyIcon} title={__("reader.settings.justify")}/>
-                                    {__("reader.settings.justify")}
-                                </label>
-                                {console.log("justify true ? ", this.props.settings.align === "justify")}
-                                <input
-                                id={styles.option_justif}
-                                type="radio"
-                                onClick={() => this.handleAlignement("justify")}
-                                {...(this.props.settings.align === "justify" && {checked: true})}
-                                />
-                            </li>
-                    </ul>
+            </section>
+            <section className={styles.line_tab_content}>
+                <div className={styles.subheading}>{__("reader.settings.justification")}</div>
+                <ul className={styles.center_in_tab}>
+                    <li>
+                        <label htmlFor={"radio-" + styles.option_gauche}
+                        className={this.getButtonClassName("align", "left")}>
+                            <SVG svg={LeftIcon} title={__("reader.settings.left")}/>
+                            {__("reader.settings.left")}
+                        </label>
+                            {console.log("left true ?", this.props.settings.align === "left")}
+                        <input
+                        id={"radio-" + styles.option_gauche}
+                        name="alignement"
+                        type="radio"
+                        onClick={(e) => this.props.handleSettingChange(e, "align", "left")}
+                        checked={this.props.settings.align === "left"}
+                        />
+                    </li>
+                    <li>
+                        <label htmlFor={"radio-" + styles.option_justif}
+                        className={this.getButtonClassName("align", "justify")}>
+                            <SVG svg={JustifyIcon} title={__("reader.settings.justify")}/>
+                            {__("reader.settings.justify")}
+                        </label>
+                        {console.log("justify true ? ", this.props.settings.align === "justify")}
+                        <input
+                        id={"radio-" + styles.option_justif}
+                        name="alignement"
+                        type="radio"
+                        onClick={(e) => this.props.handleSettingChange(e, "align", "justify")}
+                        checked={this.props.settings.align === "justify"}
+                        />
+                    </li>
+                </ul>
             </section>
             <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.column.title")}</div>
                 <ul className={styles.center_in_tab}>
-                        <li>
-                            <button
-                            id={styles.option_colonne}
-                            className={this.getButtonClassName("colCount",
-                            !settings.paged ? null : colCountEnum.auto,
-                            !settings.paged && styles.disable)}
-                            {...(!settings.paged && {disabled: true})}
-                            role="link"
-                            onClick={(e) =>
-                            this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
-                            >
-                                <SVG svg={AutoIcon} title={__("reader.settings.column.auto")}/>
-                                {__("reader.settings.column.auto")}
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                            className={this.getButtonClassName("colCount",
-                            !settings.paged ? null : colCountEnum.one,
-                            !settings.paged && styles.disable)}
-                            {...(!settings.paged && { disabled: true })}
-                            id={styles.option_colonne1}
-                            role="link"
-                            onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
-                            >
-                                <SVG svg={ColumnIcon} title={__("reader.settings.column.one")}/>
+                    <li>
+                        <label htmlFor={"radio-" + styles.option_colonne}
+                        className={this.getButtonClassName("colCount",
+                        !settings.paged ? null : colCountEnum.auto,
+                        !settings.paged && styles.disable)}>
+                            <SVG svg={AutoIcon} title={__("reader.settings.column.auto")}/>
+                            {__("reader.settings.column.auto")}
+                        </label>
+                        <input
+                        id={"radio-" + styles.option_colonne}
+                        type="radio"
+                        name="column"
+                        {...(!settings.paged && {disabled: true})}
+                        role="link"
+                        onClick={(e) =>
+                        this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
+                        checked={this.props.settings.colCount === colCountEnum.auto}
+                        />
+                    </li>
+                    <li>
+                        <label htmlFor={"radio-" + styles.option_colonne1}
+                        className={this.getButtonClassName("colCount",
+                        !settings.paged ? null : colCountEnum.one,
+                        !settings.paged && styles.disable)}>
+                            <SVG svg={ColumnIcon} title={__("reader.settings.column.one")}/>
                             {__("reader.settings.column.one")}
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                            className={this.getButtonClassName("colCount",
-                            !settings.paged ? null : colCountEnum.two,
-                            !settings.paged && styles.disable)}
-                            id={styles.option_colonne2}
-                            {...(!settings.paged && { disabled: true })}
-                            role="link"
-                            onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
-                            >
-                                <SVG svg={Column2Icon} title={__("reader.settings.column.two")}/>
-                                {__("reader.settings.column.two")}
-                            </button>
-                        </li>
+                        </label>
+                        <input
+                        {...(!settings.paged && { disabled: true })}
+                        id={"radio-" + styles.option_colonne1}
+                        type="radio"
+                        name="column"
+                        role="link"
+                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
+                        checked={this.props.settings.colCount === colCountEnum.one}
+                        />
+                    </li>
+                    <li>
+                        <label htmlFor={"radio-" + styles.option_colonne2}
+                        className={this.getButtonClassName("colCount",
+                        !settings.paged ? null : colCountEnum.two,
+                        !settings.paged && styles.disable)}>
+                            <SVG svg={Column2Icon} title={__("reader.settings.column.two")}/>
+                            {__("reader.settings.column.two")}
+                        </label>
+                        <input
+                        id={"radio-" + styles.option_colonne2}
+                        type="radio"
+                        name="column"
+                        {...(!settings.paged && { disabled: true })}
+                        role="link"
+                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
+                        checked={this.props.settings.colCount === colCountEnum.two}
+                        />
+                    </li>
                 </ul>
             </section>
         </>;
