@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
 import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
 import * as path from "path";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
@@ -40,13 +39,18 @@ import {
 import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
 import { setLocale } from "./common/redux/actions/i18n";
 import { AvailableLanguages } from "./common/services/translator";
+import { processCommandLine } from "./main/cli/process";
 import { debounce } from "./utils/debounce";
+import * as debug_ from "debug";
+import { cli } from "./main/cli/commandLine";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
     delete process.env.DEBUG;
     debug_.disable();
 }
+
+export { container };
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -197,16 +201,16 @@ app.on("ready", async () => {
     debug("ready");
     initApp();
 
-    // set the locale from platform
-    const store = container.get("store") as Store<RootState>;
-    const loc = app.getLocale().split("-")[0];
-    const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
-    store.dispatch(setLocale(lang));
-
-    if (!processCommandLine()) {
-        // Do not open window if electron is launched as a command line
+    if (!(await processCommandLine(cli, yargs.argv))) {
+        // Do not open window if electron is launched with silent
         await createWindow();
         registerProtocol();
+
+        // set the locale from platform
+        const store = container.get("store") as Store<RootState>;
+        const loc = app.getLocale().split("-")[0];
+        const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
+        store.dispatch(setLocale(lang));
     }
 });
 
@@ -235,9 +239,9 @@ const winCloseCallback = (appWindow: AppWindow) => {
 
     // if multiple windows are open & library are closed. all other windows are closed
     if (Object.keys(appWindows).length >= 1 &&
-    appWindow.type === AppWindowType.Library) {
+        appWindow.type === AppWindowType.Library) {
         for (let nbWindow = Object.keys(appWindows).length - 1;
-        nbWindow >= 0; nbWindow--) {
+            nbWindow >= 0; nbWindow--) {
             Object.values(appWindows)[nbWindow].win.close();
         }
         return;
@@ -391,13 +395,14 @@ ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {
             break;
     }
 });
+/*
 
-function processCommandLine() {
+function processCommandLine(argv: yargs.Arguments) {
     let promise = null;
 
-    if ("importFile" in processArgs) {
+    if ("importFile" in argv) {
         const catalogService = container.get("catalog-service") as CatalogService;
-        promise = catalogService.importFile(processArgs.importFile as string);
+        promise = catalogService.importFile(argv.importFile as string);
     }
 
     if (promise == null) {
@@ -415,3 +420,4 @@ function processCommandLine() {
 
     return true;
 }
+*/
