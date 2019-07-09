@@ -179,10 +179,10 @@
         "left": "Left",
         "justify": "Justified",
         "column": {
-          "title": "Column",
+          "title": "Columns",
           "auto": "Automatic",
-          "one": "1 column",
-          "two": "2 columns"
+          "one": "1 col",
+          "two": "2 cols"
         },
         "spacing": "Spacing",
         "margin": "Margin",

@@ -182,28 +182,6 @@ export class ReaderOptions extends React.Component<Props> {
         return <>
             <section className={styles.line_tab_content}>
             <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
-                {/*<ul className={styles.center_in_tab}>
-                        <li>
-                            <button
-                                id={styles.scroll_option} role="link"
-                                className={this.getButtonClassName("paged", false)}
-                                onClick={(e) => this.props.handleSettingChange(e, "paged", "false")}
-                            >
-                            <SVG svg={DefileIcon} title={__("reader.settings.scrolled")}/>
-                            {__("reader.settings.scrolled")}
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                id={styles.page_option} role="link"
-                                className={this.getButtonClassName("paged", true)}
-                                onClick={(e) => this.props.handleSettingChange(e, "paged", "true")}
-                            >
-                                <SVG svg={PagineIcon} title={__("reader.settings.paginated")}/>
-                                {__("reader.settings.paginated")}
-                            </button>
-                        </li>
-                </ul>*/}
                 <ul className={styles.center_in_tab}>
                     <li>
                         <label htmlFor={styles.scroll_option}
@@ -243,7 +221,6 @@ export class ReaderOptions extends React.Component<Props> {
                             <SVG svg={LeftIcon} title={__("reader.settings.left")}/>
                             {__("reader.settings.left")}
                         </label>
-                            {console.log("left true ?", this.props.settings.align === "left")}
                         <input
                         id={"radio-" + styles.option_gauche}
                         name="alignement"
@@ -258,7 +235,6 @@ export class ReaderOptions extends React.Component<Props> {
                             <SVG svg={JustifyIcon} title={__("reader.settings.justify")}/>
                             {__("reader.settings.justify")}
                         </label>
-                        {console.log("justify true ? ", this.props.settings.align === "justify")}
                         <input
                         id={"radio-" + styles.option_justif}
                         name="alignement"

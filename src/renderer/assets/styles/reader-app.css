@@ -630,6 +630,8 @@ p.chapters_description {
     display: block;
     margin: auto;
     fill: grey;
+    padding-bottom: 5px;
+    padding-right: 5px;
   }
 
   & button {
