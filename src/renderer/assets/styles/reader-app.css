@@ -666,8 +666,6 @@ p.chapters_description {
   }
 }
 
-/*#scroll_option, #page_option,
-#option_gauche, #option_justif,*/
 #option_colonne, #option_colonne1, #option_colonne2 {
 	display: inline-block;
 	text-align: center;
