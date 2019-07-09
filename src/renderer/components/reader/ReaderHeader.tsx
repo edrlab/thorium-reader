@@ -54,6 +54,8 @@ interface Props extends TranslatorProps {
 export class ReaderHeader extends React.Component<Props, undefined> {
     private enableFullscreenRef: any;
     private disableFullscreenRef: any;
+    private catchSettingFocus: any;
+    private catchMenuFocus: any;
 
     public constructor(props: Props) {
         super(props);
@@ -67,6 +69,16 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                 this.enableFullscreenRef.focus();
             }
         }
+
+        if (this.props.settingsOpen !== oldProps.settingsOpen &&
+            this.props.settingsOpen === false) {
+                this.catchSettingFocus.focus();
+        }
+
+        if (this.props.menuOpen !== oldProps.menuOpen &&
+            this.props.menuOpen === false) {
+                this.catchMenuFocus.focus();
+            }
     }
 
     public render(): React.ReactElement<{}> {
@@ -130,6 +142,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleMenuClick.bind(this)}
+                                ref={(ref) => this.catchMenuFocus = ref}
                             >
                                 <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
                             </button>
@@ -142,9 +155,11 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleSettingsClick.bind(this)}
+                                ref={(ref) => this.catchSettingFocus = ref}
                             >
                                 <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
                             </button>
+                            <ReaderOptions {...this.props.readerOptionsProps}/>
                         </li>
                         <li
                             className={styles.right}
@@ -157,7 +172,6 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             >
                                 <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
                             </button>
-                            <ReaderOptions {...this.props.readerOptionsProps}/>
                         </li>
                         {/*<li className={styles.right}>
                             <button
