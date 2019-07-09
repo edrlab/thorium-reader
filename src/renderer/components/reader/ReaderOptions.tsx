@@ -56,7 +56,6 @@ export class ReaderOptions extends React.Component<Props> {
         super(props);
 
         this.handleChooseTheme = this.handleChooseTheme.bind(this);
-        this.handleAlignement = this.handleAlignement.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -396,22 +395,6 @@ export class ReaderOptions extends React.Component<Props> {
                 </span>
             </div>
         </>;
-    }
-
-    private handleAlignement(align: string) {
-        const value = this.props.settings;
-        let def = "";
-
-        value.align = def;
-        if (align === "justify") {
-            def = align;
-            value.align = def;
-        } else if (align === "left") {
-            def = align;
-            value.align = def;
-        }
-        console.log("value: ", value.align);
-        this.props.setSettings(value);
     }
 
     private handleChooseTheme(theme: themeType) {
