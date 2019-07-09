@@ -50,14 +50,11 @@ if (_PACKAGING !== "0") {
     debug_.disable();
 }
 
-export { container };
-
 // Logger
 const debug = debug_("readium-desktop:main");
 
 // Parse command line
 const processArgs = yargs.parse(process.argv.slice(1));
-
 
 initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();

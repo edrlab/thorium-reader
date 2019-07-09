@@ -76,7 +76,7 @@ export const cli: ICli[] = [
             return await opdsRepository.save({ title, url });
         },
         help: [
-            "--opds \"my title=http://myopdsfeed.com\"",
+            "--opds URL",
             "import opds feed url",
         ],
     },
@@ -109,7 +109,7 @@ export const cli: ICli[] = [
             }
         },
         help: [
-            "--read \"Publication name\"",
+            "--read STRING",
             "open the reader on your publication",
         ],
     },
