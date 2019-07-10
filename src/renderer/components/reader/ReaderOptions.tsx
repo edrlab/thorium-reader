@@ -222,7 +222,7 @@ export class ReaderOptions extends React.Component<Props> {
                         </label>
                         <input
                         id={"radio-" + styles.option_gauche}
-                        name="alignement"
+                        name="alignment"
                         type="radio"
                         onClick={(e) => this.props.handleSettingChange(e, "align", "left")}
                         checked={this.props.settings.align === "left"}
@@ -236,7 +236,7 @@ export class ReaderOptions extends React.Component<Props> {
                         </label>
                         <input
                         id={"radio-" + styles.option_justif}
-                        name="alignement"
+                        name="alignment"
                         type="radio"
                         onClick={(e) => this.props.handleSettingChange(e, "align", "justify")}
                         checked={this.props.settings.align === "justify"}
