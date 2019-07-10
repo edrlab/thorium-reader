@@ -394,29 +394,3 @@ ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {
             break;
     }
 });
-/*
-
-function processCommandLine(argv: yargs.Arguments) {
-    let promise = null;
-
-    if ("importFile" in argv) {
-        const catalogService = container.get("catalog-service") as CatalogService;
-        promise = catalogService.importFile(argv.importFile as string);
-    }
-
-    if (promise == null) {
-        return false;
-    }
-
-    promise.then((result: any) => {
-        debug("Command processed");
-        app.quit();
-    })
-    .catch((error) => {
-        debug("Command failed", error);
-        app.quit();
-    });
-
-    return true;
-}
-*/
