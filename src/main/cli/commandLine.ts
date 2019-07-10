@@ -69,6 +69,8 @@ export const cli: ICli[] = [
     {
         name: "opds",
         fct: async ({ argv }) => {
+            // extract and save the title and url from opdsFeed
+            // title=http://myurl.com or get TLD and set url
             const feed = (argv.opds as string).split("=");
             const url = feed.length === 2 ? feed[1] : feed[0];
             const title = feed.length === 2 ? feed[0] : extractHostname(url, true);

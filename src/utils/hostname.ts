@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// return Top Level Domain from URL
 export function extractHostname(url: string, tld: boolean) {
     let hostname;
 
