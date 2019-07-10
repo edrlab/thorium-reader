@@ -1,18 +1,41 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "no-reference": false,
+    "no-floating-promises": true,
+    "promise-function-async": true,
+    "await-promise": true,
+    "no-unused-expression": true,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-trailing-underscore",
+      "allow-pascal-case"
+    ],
     "ordered-imports": [
       true,
       {
         "import-sources-order": "case-insensitive",
-        "named-imports-order": "case-insensitive"
+        "named-imports-order": "lowercase-last"
       }
     ],
-    "object-literal-sort-keys": false,
-    "interface-name": [false],
-    "no-unused-variable": [true],
-    "no-console": [false],
-    "forin": false,
-    "prefer-for-of": false
-  }
+    "no-console": [
+      false
+    ],
+    "interface-name": [
+      false
+    ]
+  },
+  "jsRules": {
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "case-insensitive",
+        "named-imports-order": "lowercase-last"
+      }
+    ]
+  },
+  "rulesDirectory": []
 }
