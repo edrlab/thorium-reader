@@ -200,15 +200,16 @@ app.on("ready", async () => {
     initApp();
 
     if (!(await processCommandLine(cli, yargs.argv))) {
-        // Do not open window if electron is launched with silent
-        await createWindow();
-        registerProtocol();
 
         // set the locale from platform
         const store = container.get("store") as Store<RootState>;
         const loc = app.getLocale().split("-")[0];
         const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
         store.dispatch(setLocale(lang));
+
+        // launch library window
+        await createWindow();
+        registerProtocol();
     }
 });
 
