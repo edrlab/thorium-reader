@@ -18,6 +18,8 @@ import {
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { OpdsApi } from "readium-desktop/main/api/opds";
+import { cli } from "readium-desktop/main/cli/commandLine";
+import { processCommandLine } from "readium-desktop/main/cli/process";
 import { container } from "readium-desktop/main/di";
 import { appInit } from "readium-desktop/main/redux/actions/app";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -40,8 +42,6 @@ import {
 import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
 import { setLocale } from "./common/redux/actions/i18n";
 import { AvailableLanguages } from "./common/services/translator";
-import { cli } from "./main/cli/commandLine";
-import { processCommandLine } from "./main/cli/process";
 import { debounce } from "./utils/debounce";
 
 if (_PACKAGING !== "0") {

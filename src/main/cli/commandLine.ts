@@ -11,10 +11,10 @@ import { extractHostname } from "readium-desktop/utils/hostname";
 import { Store } from "redux";
 import * as yargs from "yargs";
 
-import { OpdsFeedRepository } from "../db/repository/opds";
-import { PublicationRepository } from "../db/repository/publication";
-import { RootState } from "../redux/states";
-import { CatalogService } from "../services/catalog";
+import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { RootState } from "readium-desktop/main/redux/states";
+import { CatalogService } from "readium-desktop/main/services/catalog";
 
 export interface ICliParam {
     readonly argv: yargs.Arguments;
