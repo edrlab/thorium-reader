@@ -7,28 +7,27 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { promisify } from "util";
 
-export async function rmDirAsync(dirPath: string) {
+export function rmDirSync(dirPath: string): void {
+    let filenames = [];
 
     try {
-        const filenames = await promisify(fs.readdir)(dirPath);
-
-        for (const filename of filenames) {
-            const filePath = path.join(dirPath, filename);
-
-            if ((await promisify(fs.stat)(filePath)).isFile()) {
-                await promisify(fs.unlink)(filePath);
-            } else {
-                await rmDirAsync(filePath);
-            }
-        }
-
-        await promisify(fs.rmdir)(dirPath);
-
-    } catch (e) {
-        console.error(e);
+        filenames = fs.readdirSync(dirPath);
+    } catch (err) {
+        return;
     }
+
+    for (const filename of filenames) {
+        const filePath = path.join(dirPath, filename);
+
+        if (fs.statSync(filePath).isFile()) {
+            fs.unlinkSync(filePath);
+        } else {
+            rmDirSync(filePath);
+        }
+    }
+
+    fs.rmdirSync(dirPath);
 }
 
 export function getFileSize(filePath: string): number {
