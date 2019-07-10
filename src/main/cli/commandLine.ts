@@ -31,13 +31,14 @@ export const cli: ICli[] = [
     {
         name: "_",
         fct: async ({ argv }) => {
+            let notRead = true;
 
             argv._.map(async (path) => {
                 // import and read publication
                 const catalogService = container.get("catalog-service") as CatalogService;
                 const publication = await catalogService.importFile(path as string);
                 const store = container.get("store") as Store<RootState>;
-                try {
+                if (publication && notRead) {
                     store.dispatch({
                         type: readerActions.ActionType.OpenRequest,
                         payload: {
@@ -46,10 +47,10 @@ export const cli: ICli[] = [
                             },
                         },
                     });
-                } catch (e) {
-                    if (path !== ".") {
-                        console.error("Publication error, path:", path);
-                    }
+                    notRead = false;
+                }
+                if (path !== "." && !publication && notRead) {
+                    console.error("Publication error, path:", path);
                 }
             });
         },
