@@ -103,7 +103,7 @@
     },
     "win": {
       "target": "appx",
-      "icon": "dist/assets/icons/"
+      "icon": "dist/assets/icons/icon.ico"
     },
     "linux": {
       "target": [
@@ -118,7 +118,7 @@
     },
     "mac": {
       "target": "default",
-      "icon": "dist/assets/icons/"
+      "icon": "dist/assets/icons/icon.png"
     },
     "appx": {
       "displayName": "Thorium Reader",
