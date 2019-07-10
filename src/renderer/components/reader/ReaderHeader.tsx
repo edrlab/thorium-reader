@@ -35,6 +35,7 @@ import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
 
 import {createRef} from "react";
+import ReactDOM = require("react-dom");
 
 interface Props extends TranslatorProps {
     menuOpen: boolean;
@@ -61,6 +62,9 @@ export class ReaderHeader extends React.Component<Props, undefined> {
 
     public constructor(props: Props) {
         super(props);
+
+        this.focusSettingMenuButton = this.focusSettingMenuButton.bind(this);
+        this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
     }
 
     public componentDidUpdate(oldProps: Props) {
@@ -71,16 +75,6 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                 this.enableFullscreenRef.current.focus();
             }
         }
-
-        if (this.props.settingsOpen !== oldProps.settingsOpen &&
-            this.props.settingsOpen === false && this.settingsMenuButtonRef.current) {
-                this.settingsMenuButtonRef.current.focus();
-        }
-
-        if (this.props.menuOpen !== oldProps.menuOpen &&
-            this.props.menuOpen === false && this.navigationMenuButtonRef.current) {
-                this.navigationMenuButtonRef.current.focus();
-            }
     }
 
     public render(): React.ReactElement<{}> {
@@ -148,7 +142,8 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             >
                                 <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
                             </button>
-                            <ReaderMenu {...this.props.readerMenuProps}/>
+                            <ReaderMenu {...this.props.readerMenuProps}
+                            focusNaviguationMenu={this.focusNaviguationMenuButton}/>
                         </li>
                         <li
                             className={styles.right}
@@ -161,7 +156,8 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             >
                                 <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
                             </button>
-                            <ReaderOptions {...this.props.readerOptionsProps}/>
+                            <ReaderOptions {...this.props.readerOptionsProps}
+                            focusSettingMenuButton={this.focusSettingMenuButton}/>
                         </li>
                         <li
                             className={styles.right}
@@ -196,6 +192,17 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                 </ul>
             </nav>
         );
+    }
+    private focusSettingMenuButton() {
+        const button = ReactDOM.findDOMNode(this.settingsMenuButtonRef.current) as HTMLButtonElement;
+
+        button.focus();
+    }
+
+    private focusNaviguationMenuButton() {
+        const button = ReactDOM.findDOMNode(this.navigationMenuButtonRef.current) as HTMLButtonElement;
+
+        button.focus();
     }
 }
 
