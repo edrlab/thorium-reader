@@ -78,7 +78,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                 disabled: !publication.LOI || publication.LOI.length === 0,
             },
             {
-                title: __("reader.marks.landmarks"),
+                title: __("reader.marks.bookmarks"),
                 content: this.createLandmarkList(),
                 disabled: !bookmarks || bookmarks.length === 0,
             },
@@ -109,7 +109,17 @@ export class ReaderMenu extends React.Component<Props, State> {
                             <>
                                 <a
                                     className={styles.subheading}
-                                    onClick={(e) => this.props.handleLinkClick(e, content.Href)}
+                                    onClick=
+                                        {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
+                                    tabIndex={0}
+                                    onKeyPress=
+                                        {
+                                            (e) => {
+                                                if (e.charCode === 13) {
+                                                    this.props.handleLinkClick(e, content.Href);
+                                                }
+                                            }
+                                        }
                                 >
                                     {content.Title}
                                 </a>
@@ -122,7 +132,17 @@ export class ReaderMenu extends React.Component<Props, State> {
                         ) : (
                             <a
                                 className={classnames(styles.line, styles.active)}
-                                onClick={(e) => this.props.handleLinkClick(e, content.Href)}
+                                onClick=
+                                    {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
+                                tabIndex={0}
+                                onKeyPress=
+                                    {
+                                        (e) => {
+                                            if (e.charCode === 13) {
+                                                this.props.handleLinkClick(e, content.Href);
+                                            }
+                                        }
+                                    }
                             >
                                 {content.Title}
                             </a>

@@ -66,6 +66,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
             webSecurity: true,
             webviewTag: true,
         },
+        icon: path.join(__dirname, "assets/icons/icon.png"),
     });
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindows = winRegistry.getWindows();

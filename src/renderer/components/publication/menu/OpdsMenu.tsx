@@ -43,7 +43,7 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
                     <button
                         onClick={ (e) => this.onAddToCatalogClick(e) }
                     >
-                        {__("opds.menu.addLib")}
+                        {__("opds.menu.addExtract")}
                     </button>
                 }
                 { publication.buyUrl &&

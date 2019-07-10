@@ -18,6 +18,7 @@
       "addBookToLib": "zur Bibliothek hinzufügen",
       "addTeaserToLib": "den Extrakt zur Bibliothek hinzufügen",
       "addTags": "Ein tag hinzufügen",
+      "deleteTag": "Löschen des Tags",
       "readBook": "Lesen",
       "deleteBook": "aus der Bibliothek löschen",
       "tags": "Meine tags",
@@ -84,7 +85,9 @@
       "no": "Nein",
       "delete": "Willst du diese Publikation wirklich löschen?",
       "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-      "closeModalWindow": "Dieses modale Fenster schließen"
+      "closeModalWindow": "Dieses modale Fenster schließen",
+      "alreadyAdd": "Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
+      "sure": "Bist du sicher, dass du es wieder hinzufügen willst?"
     },
     "opds": {
       "download": "Download",
@@ -112,7 +115,7 @@
       },
       "menu": {
         "aboutBook": "über dieses Buch",
-        "addLib": "zur Lib hinzufügen",
+        "addExtract": "zur Lib hinzufügen",
         "goBuyBook": "dieses Buch kaufen",
         "goLoanBook": "dieses Buch ausleihen",
         "goSubBook": "abonnieren",
@@ -126,13 +129,13 @@
         "detachWindowTitle": "das Fenster lösen",
         "fullscreenTitle": "fullscreen mode",
         "bookmarkTitle": "bookmark",
-        "openTableOfContentsTitle": "Öffnen Sie das Inhaltsverzeichnis.",
-        "closeTableOfContentsTitle": "Schließen des Inhaltsverzeichnisses",
+        "openTableOfContentsTitle": "navigation",
         "settingsTitle": "settings",
         "readBookTitle": "mit dem Lesen des Buches beginnen"
       },
       "marks": {
-        "landmarks": "Lesezeichen",
+        "landmarks": "Sehenswürdigkeiten",
+        "bookmarks": "Lesezeichen",
         "illustrations": "Illustrationen",
         "toc": "inhaltsverzeichnis",
         "annotations": "Annotationen"
@@ -191,6 +194,7 @@
       }
     },
     "header": {
+      "home": "Hauptmenü",
       "books": "meine Bücher",
       "catalogs": "Kataloge",
       "settings": "Settings",

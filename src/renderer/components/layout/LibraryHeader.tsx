@@ -53,7 +53,7 @@ export class Header extends React.Component<HeaderProps, undefined> {
                 anchorId="main-content"
                 label={__("accessibility.skipLink")}
             />
-            <nav className={styles.main_navigation} role="navigation" aria-label="Menu principal">
+            <nav className={styles.main_navigation} role="navigation" aria-label={ __("header.home")}>
                 <ul>
                     { headerNav.map((item, index: number) => {
                         return this.buildNavItem(item, index, __);

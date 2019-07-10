@@ -24,16 +24,10 @@ import * as QuitFullscreenIcon from "readium-desktop/renderer/assets/icons/sharp
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import { DialogType } from "readium-desktop/common/models/dialog";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as readerActions from "readium-desktop/common/redux/actions/reader";
-import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { withApi } from "../utils/api";
 
-import { Publication } from "readium-desktop/common/models/publication";
-
-import * as qs from "query-string";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
@@ -52,8 +46,7 @@ interface Props extends TranslatorProps {
     handleReaderDetach: () => void;
     toggleBookmark: any;
     isOnBookmark: boolean;
-    displayPublicationInfo?: any;
-    publication?: Publication;
+    displayPublicationInfo: any;
     readerMenuProps: any;
     readerOptionsProps: any;
 }
@@ -64,8 +57,6 @@ export class ReaderHeader extends React.Component<Props, undefined> {
 
     public constructor(props: Props) {
         super(props);
-
-        this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
     public componentDidUpdate(oldProps: Props) {
@@ -107,7 +98,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         <li>
                             <button
                                 className={styles.menu_button}
-                                onClick={() => this.displayPublicationInfo()}
+                                onClick={() => this.props.displayPublicationInfo()}
                             >
                                 <SVG svg={InfosIcon} title={ __("reader.navigation.infoTitle")}/>
                             </button>
@@ -190,46 +181,6 @@ export class ReaderHeader extends React.Component<Props, undefined> {
             </nav>
         );
     }
-
-    private displayPublicationInfo() {
-        if (this.props.publication) {
-            this.props.displayPublicationInfo(this.props.publication);
-        }
-    }
 }
 
-const mapDispatchToProps = (dispatch: any, props: Props) => {
-    return {
-        displayPublicationInfo: (publication: PublicationView) => {
-            dispatch(dialogActions.open(
-                DialogType.PublicationInfoReader,
-                {
-                    publication,
-                },
-            ));
-        },
-    };
-};
-
-const buildRequestData = (props: Props) => {
-    const parsedResult = qs.parse(document.location.href);
-    return {
-        identifier: parsedResult.pubId,
-    };
-};
-
-export default withTranslator(withApi(
-    ReaderHeader,
-    {
-        mapDispatchToProps,
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "get",
-                buildRequestData,
-                resultProp: "publication",
-                onLoad: true,
-            },
-        ],
-    },
-));
+export default withTranslator(ReaderHeader);
