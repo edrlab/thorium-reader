@@ -56,8 +56,8 @@ interface Props extends TranslatorProps {
 export class ReaderHeader extends React.Component<Props, undefined> {
     private enableFullscreenRef = createRef<HTMLButtonElement>();
     private disableFullscreenRef = createRef<HTMLButtonElement>();
-    private catchSettingFocus = createRef<HTMLButtonElement>();
-    private catchMenuFocus = createRef<HTMLButtonElement>();
+    private settingsMenuButtonRef = createRef<HTMLButtonElement>();
+    private navigationMenuButtonRef = createRef<HTMLButtonElement>();
 
     public constructor(props: Props) {
         super(props);
@@ -73,13 +73,13 @@ export class ReaderHeader extends React.Component<Props, undefined> {
         }
 
         if (this.props.settingsOpen !== oldProps.settingsOpen &&
-            this.props.settingsOpen === false && this.catchSettingFocus.current) {
-                this.catchSettingFocus.current.focus();
+            this.props.settingsOpen === false && this.settingsMenuButtonRef.current) {
+                this.settingsMenuButtonRef.current.focus();
         }
 
         if (this.props.menuOpen !== oldProps.menuOpen &&
-            this.props.menuOpen === false && this.catchMenuFocus.current) {
-                this.catchMenuFocus.current.focus();
+            this.props.menuOpen === false && this.navigationMenuButtonRef.current) {
+                this.navigationMenuButtonRef.current.focus();
             }
     }
 
@@ -144,7 +144,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleMenuClick.bind(this)}
-                                ref={this.catchMenuFocus}
+                                ref={this.navigationMenuButtonRef}
                             >
                                 <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
                             </button>
@@ -157,7 +157,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleSettingsClick.bind(this)}
-                                ref={this.catchSettingFocus}
+                                ref={this.settingsMenuButtonRef}
                             >
                                 <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
                             </button>
