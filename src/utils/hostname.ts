@@ -23,8 +23,8 @@ export function extractHostname(url: string, tld: boolean) {
     hostname = hostname.split("?")[0];
 
     if (tld) {
-      const hostnames = hostname.split(".");
-      hostname = hostnames[hostnames.length - 2] + "." + hostnames[hostnames.length - 1];
+        const hostnames = hostname.split(".");
+        hostname = hostnames[hostnames.length - 2] + "." + hostnames[hostnames.length - 1];
     }
 
     return hostname;
