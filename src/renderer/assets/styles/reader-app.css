@@ -710,6 +710,7 @@ p.chapters_description {
   }
 }
 
+<<<<<<< HEAD
 .focus_element {
   display: inline-block;
   text-align: center;
@@ -731,6 +732,8 @@ p.chapters_description {
   }
 }
 
+=======
+>>>>>>> origin/feature/ReaderMenuStruct
 #option_colonne, #option_colonne1, #option_colonne2 {
 	display: inline-block;
 	text-align: center;
