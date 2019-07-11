@@ -1,6 +1,15 @@
 {
     "app": {
-      "quit": "Quit the application"
+      "quit": "Quit Thorium",
+      "edit": {
+        "title": "Edit",
+        "undo": "Undo",
+        "redo": "Redo",
+        "cut": "Cut",
+        "copy": "Copy",
+        "paste": "Paste",
+        "selectAll": "Select all"
+      }
     },
     "catalog": {
       "entry": {
