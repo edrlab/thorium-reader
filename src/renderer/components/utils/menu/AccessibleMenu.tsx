@@ -63,18 +63,17 @@ export default class AccessibleMenu extends React.Component<Props, State> {
             document.removeEventListener("keydown", this.handleKey);
             document.removeEventListener("focusin", this.handleFocus);
             if (this.ismounted) {
-            this.setState({
-                inFocus: false,
-            });
+                this.setState({
+                    inFocus: false,
+                });
             }
         } else if (this.props.visible && !oldProps.visible) {
             document.addEventListener("keydown", this.handleKey);
             document.addEventListener("focusin", this.handleFocus);
             if (this.ismounted) {
-
-            this.setState({
-                triggerElem: document.activeElement,
-            });
+                this.setState({
+                    triggerElem: document.activeElement,
+                });
             }
         }
 
