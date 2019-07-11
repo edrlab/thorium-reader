@@ -107,7 +107,7 @@
       {
         "ext": "lcpl",
         "role": "Viewer",
-        "mimeType": "application/lcpl+zip"
+        "mimeType": "application/vnd.readium.lcp.license.v1.0+json"
       }
     ],
     "win": {
