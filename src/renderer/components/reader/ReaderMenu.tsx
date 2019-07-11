@@ -40,6 +40,7 @@ interface Props extends TranslatorProps {
     handleBookmarkClick: (locator: any) => void;
     deleteBookmark?: any;
     toggleMenu: any;
+    focusNaviguationMenu: () => void;
 }
 
 interface State {
@@ -96,6 +97,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                 open={this.props.open}
                 sections={sections}
                 toggleMenu={toggleMenu}
+                focusMenuButton={this.props.focusNaviguationMenu}
             />
         );
     }
