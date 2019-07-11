@@ -126,7 +126,6 @@ function computeReadiumCssJsonMessage(publication: Publication, link: Link | und
         reduceMotion: readiumCSSDefaults.reduceMotion,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
-    debug("jsonMsg MAIN", jsonMsg);
     return jsonMsg;
 }
 
