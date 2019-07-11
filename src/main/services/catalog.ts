@@ -148,7 +148,6 @@ export class CatalogService {
             }
         }
 
-        console.log(downloadUrl);
         if (downloadUrl == null) {
             debug("Unable to get an acquisition url from opds publication", opdsPublication.Links);
             throw new Error("Unable to get acquisition url from opds publication");
