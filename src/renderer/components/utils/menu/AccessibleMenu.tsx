@@ -26,6 +26,7 @@ interface State {
 
 export default class AccessibleMenu extends React.Component<Props, State> {
     private containerRef: any;
+    private ismounted = false;
 
     public constructor(props: Props) {
         super(props);
@@ -42,6 +43,7 @@ export default class AccessibleMenu extends React.Component<Props, State> {
     }
 
     public componentDidMount() {
+        this.ismounted = true;
         if (this.props.visible) {
             document.addEventListener("keydown", this.handleKey);
             document.addEventListener("focusin", this.handleFocus);
@@ -49,6 +51,7 @@ export default class AccessibleMenu extends React.Component<Props, State> {
     }
 
     public componentWillUnmount() {
+        this.ismounted = false;
         if (this.props.visible) {
             document.removeEventListener("keydown", this.handleKey);
             document.removeEventListener("focusin", this.handleFocus);
@@ -59,17 +62,19 @@ export default class AccessibleMenu extends React.Component<Props, State> {
         if (!this.props.visible && oldProps.visible) {
             document.removeEventListener("keydown", this.handleKey);
             document.removeEventListener("focusin", this.handleFocus);
-
-            this.setState({
-                inFocus: false,
-            });
+            if (this.ismounted) {
+                this.setState({
+                    inFocus: false,
+                });
+            }
         } else if (this.props.visible && !oldProps.visible) {
             document.addEventListener("keydown", this.handleKey);
             document.addEventListener("focusin", this.handleFocus);
-
-            this.setState({
-                triggerElem: document.activeElement,
-            });
+            if (this.ismounted) {
+                this.setState({
+                    triggerElem: document.activeElement,
+                });
+            }
         }
 
         if (prevState.inFocus
@@ -103,16 +108,23 @@ export default class AccessibleMenu extends React.Component<Props, State> {
     private handleKey(event: any) {
         if (event.key === "Escape" || (!this.state.inFocus && (event.shiftKey && event.key === "Tab"))) {
             this.props.toggleMenu();
-            this.props.focusMenuButton();
-            this.setState({
-                inFocus: false,
-            });
+            if (this.props.focusMenuButton) {
+                this.props.focusMenuButton();
+            }
+            if (this.ismounted) {
+                this.setState({
+                    inFocus: false,
+                });
+            }
         }
         if (event.key === "Tab" && !this.state.inFocus) {
             event.preventDefault();
-            this.setState({
-                inFocus: true,
-            });
+            if (this.ismounted) {
+                this.setState({
+                    inFocus: true,
+                });
+            }
+
         }
     }
 
@@ -129,9 +141,11 @@ export default class AccessibleMenu extends React.Component<Props, State> {
             && this.containerRef.current
             && this.containerRef.current.contains(focusedNode)
         ) {
-            this.setState({
+            if (this.ismounted) {
+                this.setState({
                 inFocus: true,
-            });
+                });
+            }
         }
     }
 }
