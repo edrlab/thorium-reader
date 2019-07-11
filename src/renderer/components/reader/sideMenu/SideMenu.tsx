@@ -22,6 +22,7 @@ interface Props extends TranslatorProps {
     className: string;
     listClassName: string;
     toggleMenu: any;
+    focusMenuButton: () => void;
 }
 
 interface State {
@@ -48,7 +49,12 @@ export class SideMenu extends React.Component<Props, State> {
         }
 
         return (<>
-            <AccessibleMenu dontCloseWhenClickOutside className={className} visible={open} toggleMenu={toggleMenu}>
+            <AccessibleMenu
+            dontCloseWhenClickOutside
+            focusMenuButton = {this.props.focusMenuButton}
+            className={className}
+            visible={open}
+            toggleMenu={toggleMenu}>
                 <ul id={listClassName}>
                     { sections.map((section, index) =>
                         <SideMenuSection
