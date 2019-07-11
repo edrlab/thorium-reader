@@ -102,8 +102,7 @@
       "ext": "epub"
     },
     "win": {
-      "target": "appx",
-      "icon": "dist/assets/icons/"
+      "target": "appx"
     },
     "linux": {
       "target": [
@@ -113,12 +112,10 @@
       "desktop": {
         "MimeType": "application/epub+zip"
       },
-      "icon": "dist/assets/icons/",
       "executableName": "Thorium Reader"
     },
     "mac": {
-      "target": "default",
-      "icon": "dist/assets/icons/"
+      "target": "default"
     },
     "appx": {
       "displayName": "Thorium Reader",
