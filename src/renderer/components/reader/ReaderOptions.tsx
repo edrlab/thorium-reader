@@ -237,7 +237,7 @@ export class ReaderOptions extends React.Component<Props> {
                         id={"radio-" + styles.option_gauche}
                         name="alignment"
                         type="radio"
-                        onClick={(e) => this.props.handleSettingChange(e, "align", "left")}
+                        onChange={(e) => this.props.handleSettingChange(e, "align", "left")}
                         checked={this.props.settings.align === "left"}
                         />
                         <label htmlFor={"radio-" + styles.option_gauche}
@@ -251,7 +251,7 @@ export class ReaderOptions extends React.Component<Props> {
                         id={"radio-" + styles.option_justif}
                         name="alignment"
                         type="radio"
-                        onClick={(e) => this.props.handleSettingChange(e, "align", "justify")}
+                        onChange={(e) => this.props.handleSettingChange(e, "align", "justify")}
                         checked={this.props.settings.align === "justify"}
                         />
                         <label htmlFor={"radio-" + styles.option_justif}
@@ -272,7 +272,7 @@ export class ReaderOptions extends React.Component<Props> {
                         name="column"
                         {...(!settings.paged && {disabled: true})}
                         role="link"
-                        onClick={(e) =>
+                        onChange={(e) =>
                         this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
                         checked={this.props.settings.colCount === colCountEnum.auto}
                         />
@@ -291,7 +291,7 @@ export class ReaderOptions extends React.Component<Props> {
                         type="radio"
                         name="column"
                         role="link"
-                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
+                        onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
                         checked={this.props.settings.colCount === colCountEnum.one}
                         />
                         <label htmlFor={"radio-" + styles.option_colonne1}
@@ -309,7 +309,7 @@ export class ReaderOptions extends React.Component<Props> {
                         name="column"
                         {...(!settings.paged && { disabled: true })}
                         role="link"
-                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
+                        onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
                         checked={this.props.settings.colCount === colCountEnum.two}
                         />
                         <label htmlFor={"radio-" + styles.option_colonne2}
