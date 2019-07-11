@@ -209,7 +209,7 @@ export class ReaderOptions extends React.Component<Props> {
                         />
                         <label htmlFor={styles.scroll_option}
                         className={this.getButtonClassName("paged", false)}>
-                            <SVG svg={DefileIcon} title={__("reader.settings.scrolled")} />
+                            <SVG svg={DefileIcon}/>
                             {__("reader.settings.scrolled")}
                         </label>
                     </li>
@@ -223,7 +223,7 @@ export class ReaderOptions extends React.Component<Props> {
                         />
                         <label htmlFor={styles.page_option}
                         className={this.getButtonClassName("paged", true)}>
-                            <SVG svg={PagineIcon} title={__("reader.settings.paginated")}/>
+                            <SVG svg={PagineIcon}/>
                             {__("reader.settings.paginated")}
                         </label>
                     </li>
@@ -242,7 +242,7 @@ export class ReaderOptions extends React.Component<Props> {
                         />
                         <label htmlFor={"radio-" + styles.option_gauche}
                         className={this.getButtonClassName("align", "left")}>
-                            <SVG svg={LeftIcon} title={__("reader.settings.left")}/>
+                            <SVG svg={LeftIcon}/>
                             {__("reader.settings.left")}
                         </label>
                     </li>
@@ -256,7 +256,7 @@ export class ReaderOptions extends React.Component<Props> {
                         />
                         <label htmlFor={"radio-" + styles.option_justif}
                         className={this.getButtonClassName("align", "justify")}>
-                            <SVG svg={JustifyIcon} title={__("reader.settings.justify")}/>
+                            <SVG svg={JustifyIcon}/>
                             {__("reader.settings.justify")}
                         </label>
                     </li>
@@ -280,7 +280,7 @@ export class ReaderOptions extends React.Component<Props> {
                         className={this.getButtonClassName("colCount",
                         !settings.paged ? null : colCountEnum.auto,
                         !settings.paged && styles.disable)}>
-                            <SVG svg={AutoIcon} title={__("reader.settings.column.auto")}/>
+                            <SVG svg={AutoIcon}/>
                             {__("reader.settings.column.auto")}
                         </label>
                     </li>
@@ -298,7 +298,7 @@ export class ReaderOptions extends React.Component<Props> {
                         className={this.getButtonClassName("colCount",
                         !settings.paged ? null : colCountEnum.one,
                         !settings.paged && styles.disable)}>
-                            <SVG svg={ColumnIcon} title={__("reader.settings.column.one")}/>
+                            <SVG svg={ColumnIcon} title={__("reader.settings.column.oneTitle")}/>
                             {__("reader.settings.column.one")}
                         </label>
                     </li>
@@ -316,7 +316,7 @@ export class ReaderOptions extends React.Component<Props> {
                         className={this.getButtonClassName("colCount",
                         !settings.paged ? null : colCountEnum.two,
                         !settings.paged && styles.disable)}>
-                            <SVG svg={Column2Icon} title={__("reader.settings.column.two")}/>
+                            <SVG svg={Column2Icon} title={__("reader.settings.column.twoTitle")}/>
                             {__("reader.settings.column.two")}
                         </label>
                     </li>

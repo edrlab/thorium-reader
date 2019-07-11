@@ -185,7 +185,9 @@
           "title": "Colonnes",
           "auto": "Automatique",
           "one": "1 col",
-          "two": "2 cols"
+          "two": "2 cols",
+          "oneTitle": "une colonne",
+          "twoTitle": "deux colonnes"
         },
         "spacing": "Espacement",
         "margin": "Marge",
