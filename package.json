@@ -93,6 +93,10 @@
       "main.js",
       "package.json"
     ],
+    "asarUnpack": [
+      "**/*.node",
+      "!**/lcp.node"
+    ],
     "directories": {
       "buildResources": "resources",
       "output": "release",
