@@ -169,7 +169,7 @@
     "opds-feed-parser": "^0.0.14",
     "ping": "github:danielzzz/node-ping#1601458126cc1dd0c31db8150f2e6b2a40570a7f",
     "portfinder": "^1.0.17",
-    "pouchdb-core": "^7.0.0",
+    "pouchdb-core": "7.0.*",
     "pouchdb-find": "^7.0.0",
     "pouchdb-quick-search": "^1.3.0",
     "query-string": "^6.2.0",
