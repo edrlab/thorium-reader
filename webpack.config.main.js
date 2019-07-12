@@ -123,7 +123,7 @@ let config = Object.assign({}, {
         ]),
         new CopyWebpackPlugin([
             {
-                from: path.join(__dirname, "resources", "icons"),
+                from: path.join(__dirname, "resources"),
                 to: "assets/icons",
             }
         ]),

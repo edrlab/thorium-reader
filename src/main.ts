@@ -113,11 +113,44 @@ async function createWindow() {
         const translator = container.get("translator") as any;
         const template: Electron.MenuItemConstructorOptions[] = [
             {
-                label: "Thorium Reader",
+                label: "Thorium",
                 submenu: [
                     {
                         role: "quit",
                         label: translator.translate("app.quit"),
+                    },
+                ],
+            },
+            {
+                label: translator.translate("app.edit.title"),
+                role: "edit",
+                submenu: [
+                    {
+                        role: "undo",
+                        label: translator.translate("app.edit.undo"),
+                    },
+                    {
+                        role: "redo",
+                        label: translator.translate("app.edit.redo"),
+                    },
+                    {
+                        type: "separator",
+                    },
+                    {
+                        role: "cut",
+                        label: translator.translate("app.edit.cut"),
+                    },
+                    {
+                        role: "copy",
+                        label: translator.translate("app.edit.copy"),
+                    },
+                    {
+                        role: "paste",
+                        label: translator.translate("app.edit.paste"),
+                    },
+                    {
+                        role: "selectall",
+                        label: translator.translate("app.edit.selectAll"),
                     },
                 ],
             },
