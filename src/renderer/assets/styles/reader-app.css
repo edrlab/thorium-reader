@@ -4,6 +4,30 @@
   --sideButtonColor: rgb(130, 130, 130, 0.5);
 }
 
+button 
+
+button {
+  transition: 0.5s;
+}
+
+button  {
+  transition: 0.5s;
+}
+
+button:hover {
+  background-color: rgba(1,1,1,0.03) !important;
+  padding-right: 15px;
+}
+
+button:focus {
+  outline: none;
+}
+.main_navigation > ul > li > button:active,
+button:active {
+  background-color: rgba(1,1,1,0.3) !important;
+  transition: 0s;
+}
+
 .root {
   position: absolute;
   top: 0;

@@ -126,17 +126,6 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 <SVG svg={InfosIcon} title={ __("reader.navigation.infoTitle")}/>
                             </button>
                         </li>
-                        { (this.props.mode === ReaderMode.Attached) ? (
-                            <li>
-                                <button
-                                    className={styles.menu_button}
-                                    onClick={this.props.handleReaderDetach}
-                                >
-                                    <SVG svg={DetachIcon} title={ __("reader.navigation.detachWindowTitle")}/>
-                                </button>
-                            </li>
-                            ) : (<></>)
-                        }
                         <li  className={styles.right + " " + styles.blue}>
                             <button
                                 className={styles.menu_button}
