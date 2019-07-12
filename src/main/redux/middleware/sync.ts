@@ -25,6 +25,10 @@ import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
 import { SenderType } from "readium-desktop/common/models/sync";
 
+import * as debug_ from "debug";
+
+const debug = debug_("readium-desktop:sync");
+
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
     apiActions.ActionType.Success,
@@ -57,7 +61,7 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 ];
 
 export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action: any) => {
-    console.log("### action type", action.type);
+    debug("### action type", action.type);
     // Test if the action must be sent to the rendeder processes
     if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
         // Do not send
@@ -95,7 +99,7 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
                 },
             });
         } catch (error) {
-            console.log("Windows does not exist", winId);
+            console.error("Windows does not exist", winId);
         }
     }
 
