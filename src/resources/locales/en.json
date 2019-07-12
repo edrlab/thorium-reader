@@ -1,93 +1,102 @@
 {
-    "app": {
-      "quit": "Quit the application"
+  "app": {
+    "quit": "Quit Thorium",
+    "edit": {
+      "title": "Edit",
+      "undo": "Undo",
+      "redo": "Redo",
+      "cut": "Cut",
+      "copy": "Copy",
+      "paste": "Paste",
+      "selectAll": "Select all"
+    }
+  },
+  "catalog": {
+    "entry": {
+      "continueReading": "Resume reading",
+      "lastAdditions": "Recently added"
     },
-    "catalog": {
-      "entry": {
-        "continueReading": "Resume reading",
-        "lastAdditions": "Recently added"
-      },
-      "myBooks": "My books",
-      "allBooks": "All books",
-      "bookInfo": "About this book",
-      "delete": "Delete definitively",
-      "export": "Export",
-      "released": "Published on",
-      "description": "Description",
-      "moreInfo": "More Info",
-      "publisher": "Publisher",
-      "lang": "Language",
-      "id": "Identifier",
-      "addBookToLib": "Add book to library",
-      "addTeaserToLib": "Add the extract book to library",
-      "addTags": "Add tag",
-      "deleteTag": "Delete tag",
-      "readBook": "Read",
-      "deleteBook": "delete from the library",
-      "tags": "My tags",
-      "sort": "sort by",
-      "tagCount": "Tag count",
-      "emptyTagList": "You have still not added tags to the books.",
-      "noPublicationHelp": "To import ebooks, drag&drop EPUB files here or use the plus button in the menu above."
+    "myBooks": "My books",
+    "allBooks": "All books",
+    "bookInfo": "About this book",
+    "delete": "Delete definitively",
+    "export": "Export",
+    "released": "Published on",
+    "description": "Description",
+    "moreInfo": "More Info",
+    "publisher": "Publisher",
+    "lang": "Language",
+    "id": "Identifier",
+    "addBookToLib": "Add book to library",
+    "addTeaserToLib": "Add the extract book to library",
+    "addTags": "Add tag",
+    "deleteTag": "Delete tag",
+    "readBook": "Read",
+    "deleteBook": "delete from the library",
+    "tags": "My tags",
+    "sort": "sort by",
+    "tagCount": "Tag count",
+    "emptyTagList": "You have still not added tags to the books.",
+    "noPublicationHelp": "To import ebooks, drag&drop EPUB files here or use the plus button in the menu above."
+  },
+  "library": {
+    "heading": "Library",
+    "add": "Add to the library",
+    "startDownload": "A download started.",
+    "cancelDownload": "A download canceled.",
+    "endDownload": "A download ended.",
+    "svg": {
+      "list": "List",
+      "card": "Cards",
+      "showParaphrase": "Show paraphrase"
     },
-    "library": {
-        "heading": "Library",
-        "add": "Add to the library",
-        "startDownload": "A download started.",
-        "cancelDownload": "A download canceled.",
-        "endDownload": "A download ended.",
-        "svg" : {
-          "list": "List",
-          "card": "Cards",
-          "showParaphrase": "Show paraphrase"
-        },
-        "lcp": {
-          "title": "LCP Verification",
-          "sentence": "This publication needs a LCP password to be opened: ",
-          "submit": "Submit",
-          "cancel": "Cancel",
-          "hint": "(Hint : {{hint}})",
-          "password": "Password",
-          "informations": {
-            "title": "LCP Informations",
-            "close": "Close",
-            "provider": "Provider:",
-            "issued": "Creation date:",
-            "updated": "Updated:",
-            "right": {
-              "title": "Rights",
-              "start": "Start:",
-              "end": "End:",
-              "copy": "Copy number:",
-              "print": "Print number:"
-            }
-          }
+    "lcp": {
+      "title": "LCP Verification",
+      "sentence": "This publication needs a LCP password to be opened: ",
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "hint": "(Hint : {{hint}})",
+      "password": "Password",
+      "informations": {
+        "title": "LCP Informations",
+        "close": "Close",
+        "provider": "Provider:",
+        "issued": "Creation date:",
+        "updated": "Updated:",
+        "right": {
+          "title": "Rights",
+          "start": "Start:",
+          "end": "End:",
+          "copy": "Copy number:",
+          "print": "Print number:"
         }
-    },
-    "publication": {
-      "expiredLcp": "This book can't be read because the LCP license has expired.",
-      "revokedLcp": "This book can't be read because the LCP license has been revoked.",
-      "returnedLcp": "This book can't be read because the LCP license has been returned.",
-      "downloadButton": "Download",
-      "readButton": "Read",
-      "deleteButton": "Delete from the library",
-      "infoButton": "LCP Informations",
-      "renewButton": "Renew",
-      "renewSentence": "Are you sure you want to renew this publication?",
-      "returnButton": "Return",
-      "returnSentence": "Are you sure you want to return this publication?",
-      "cancelDownloadButton": "Cancel",
-      "progressDownload": "Downloading",
-      "endDownload": "Download completed",
-      "failedDownload": "Download Failed",
-      "canceledDownload": "Download Canceled"
-    },
-    "toolbar": {
-        "about": "About",
-        "help":"Help",
-        "news":"What's new?",
-        "sync":"Synchronize the library",
-        "svg": {
+      }
+    }
+  },
+  "publication": {
+    "expiredLcp": "This book can't be read because the LCP license has expired.",
+    "revokedLcp": "This book can't be read because the LCP license has been revoked.",
+    "returnedLcp": "This book can't be read because the LCP license has been returned.",
+    "downloadButton": "Download",
+    "readButton": "Read",
+    "deleteButton": "Delete from the library",
+    "infoButton": "LCP Informations",
+    "renewButton": "Renew",
+    "renewSentence": "Are you sure you want to renew this publication?",
+    "returnButton": "Return",
+    "returnSentence": "Are you sure you want to return this publication?",
+    "cancelDownloadButton": "Cancel",
+    "progressDownload": "Downloading",
+    "endDownload": "Download completed",
+    "failedDownload": "Download Failed",
+    "canceledDownload": "Download Canceled"
+  },
+  "toolbar": {
+    "about": "About",
+    "help": "Help",
+    "news": "What's new?",
+    "sync": "Synchronize the library",
+    "svg": {
           "help": "Help",
           "news": "News",
           "addEpub": "Add an EPUB",
@@ -265,7 +274,6 @@
       "searchPlaceholder": "Search",
       "searchTitle": "Start the search",
       "importTitle": "Import a book"
-
     },
     "accessibility": {
       "skipLink": "Skip to content",
@@ -277,7 +285,5 @@
       "bookReleaseDate": "Book release date",
       "bookPublisher": "Book publisher",
       "homeMenu": "Home menu"
-
     }
-
 }

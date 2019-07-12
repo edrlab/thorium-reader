@@ -1,169 +1,191 @@
 {
-    "app": {
-      "quit": "Quitter l'application"
+  "app": {
+    "quit": "Quitter Thorium",
+    "edit": {
+      "title": "Édition",
+      "undo": "Annuler",
+      "redo": "Refaire",
+      "cut": "Couper",
+      "copy": "Copier",
+      "paste": "Coller",
+      "selectAll": "Sélectionner tout"
+    }
+  },
+  "catalog": {
+    "entry": {
+      "continueReading": "Reprendre la lecture",
+      "lastAdditions": "Derniers ajouts"
     },
-    "catalog": {
-      "entry": {
-        "continueReading": "Reprendre la lecture",
-        "lastAdditions": "Derniers ajouts"
-      },
-      "myBooks": "Mes livres",
-      "allBooks": "Tous les livres",
-      "bookInfo": "Fiche livre",
-      "delete": "Supprimer définitivement",
-      "export": "Exporter",
-      "released": "Publié le",
-      "description": "Description",
+    "myBooks": "Mes livres",
+    "allBooks": "Tous les livres",
+    "bookInfo": "Fiche livre",
+    "delete": "Supprimer définitivement",
+    "export": "Exporter",
+    "released": "Publié le",
+    "description": "Description",
+    "moreInfo": "Plus d'informations",
+    "publisher": "Editeur",
+    "lang": "Langue",
+    "id": "Identifiant",
+    "addBookToLib": "Ajouter à la librairie",
+    "addTeaserToLib": "Ajouter l'extrait à la bibliothèque",
+    "addTags": "Ajouter un tag",
+    "deleteTag": "Supprimer le tag",
+    "readBook": "Lire",
+    "deleteBook": "supprimer de la bibliothèque",
+    "tags": "Mes tags",
+    "sort": "trier par",
+    "tagCount": "Nombre de tags",
+    "emptyTagList": "Les livres ne contiennent pas de tags.",
+    "noPublicationHelp": "Pour importer des ebooks, glissez des EPUB ici ou cliquez sur le bouton + dans le menu au ci-dessus."
+  },
+  "library": {
+    "heading": "Bibliothèque",
+    "add": "Ajouter à la bibliothèque",
+    "startDownload": "Un téléchargement a démarré.",
+    "cancelDownload": "Un téléchargement a été arrété.",
+    "endDownload": "Un téléchargement est terminé.",
+    "svg": {
+      "list": "Liste",
+      "card": "Cartes",
+      "showParaphrase": "Montrer la paraphrase"
+    },
+    "lcp": {
+      "title": "Vérification LCP",
+      "sentence": "Cette publication a besoin d'un mot de passe : ",
+      "submit": "Valider",
+      "cancel": "Annuler",
+      "hint": "(Indice : {{hint}})",
+      "password": "Mot de passe",
+      "informations": {
+        "title": "Informations LCP",
+        "close": "Fermer",
+        "provider": "Fournisseur :",
+        "issued": "Date de création :",
+        "updated": "Modification :",
+        "right": {
+          "title": "Droits",
+          "start": "Début :",
+          "end": "Fin :",
+          "copy": "Nombre de copie :",
+          "print": "Nombre d'impression :"
+        }
+      }
+    }
+  },
+  "publication": {
+    "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",
+    "revokedLcp": "Ce livre ne peut être lu car la licence lcp a été révoqué.",
+    "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retourné.",
+    "downloadButton": "Télécharger",
+    "readButton": "Lire",
+    "deleteButton": "Supprimer de la bibliothèque",
+    "infoButton": "Informations LCP",
+    "renewButton": "Renouveler",
+    "renewSentence": "Etes vous sûr de vouloir renouveler cette publication ?",
+    "returnButton": "Retourner",
+    "returnSentence": "Etes vous sûr de vouloir retourner cette publication ?",
+    "cancelDownloadButton": "Annuler",
+    "progressDownload": "Téléchargement en cours",
+    "endDownload": "Téléchargement terminé",
+    "failedDownload": "Téléchargement échoué",
+    "canceledDownload": "Téléchargement annulé"
+  },
+  "toolbar": {
+    "about": "A propos",
+    "help": "Aide",
+    "news": "Quoi de neuf ?",
+    "sync": "Synchroniser la bibliothèque",
+    "svg": {
+      "help": "Aide",
+      "news": "Nouvelles",
+      "addEpub": "Ajouter un EPUB",
+      "opds": "Opds",
+      "others": "Autres"
+    }
+  },
+  "update": {
+    "available": "Nouvelle version !"
+  },
+  "dialog": {
+    "yes": "Oui",
+    "no": "Non",
+    "delete": "Êtes vous sûr de vouloir supprimer cette publication ?",
+    "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
+    "deleteOpds": "Êtes vous sûr de vouloir supprimer ce flux opds ?",
+    "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
+    "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
+    "closeModalWindow": "Fermer cette fenêtre modale",
+    "alreadyAdd": "Il semblerais que vous ayez déjà ajouté cette publication à votre catalogue.",
+    "sure": "Êtes vous sûr(e) de vouloir l'ajouter à nouveau ?"
+  },
+  "opds": {
+    "download": "Télécharger",
+    "settings": "Parametre",
+    "addMenu": "Ajouter un flux OPDS",
+    "formError": "Veuillez remplir tous les champs",
+    "downloadError": "Une erreur est survenue lors de la récupération du flux.",
+    "back": "Retour",
+    "svg": {
+      "opds": "Opds"
+    },
+    "addForm": {
+      "title": "Ajouter un flux",
+      "pasteUrl": "coller l'url d'un flux",
+      "addButton": "Ajouter",
+      "updateSentence": "Vous pouvez mettre les champs à jour.",
+      "addSentence": "Quel flux OPDS souhaitez vous ajouter ?",
+      "delete": "Supprimer le flux",
+      "update": "Modifier",
+      "name": "Nom :",
+      "url": "Adresse :",
+      "namePlaceholder": "Nom",
+      "urlPlaceholder": "Adresse"
+    },
+    "authentication": {
+      "username": "Nom d'utilisateur :",
+      "password": "Mot de passe :",
+      "loginButton": "Connexion",
+      "sentence": "Veuillez vous connecter pour acceder au contenu"
+    },
+    "menu": {
+      "aboutBook": "Fiche livre",
+      "addExtract": "Ajouter à la bibliothèque",
+      "goBuyBook": "Aller sur la page d'achat",
+      "goLoanBook": "Aller sur la page d'emprunt",
+      "goSubBook": "Aller sur la page d'abonnement",
+      "addTeaser": "Ajouter l'extrait à la bibliothèque"
+    },
+    "breadcrumbRoot": "Catalogues"
+  },
+  "reader": {
+    "navigation": {
+      "backHomeTitle": "retour à la bibliothèque",
+      "infoTitle": "informations",
+      "detachWindowTitle": "détacher la fenêtre",
+      "fullscreenTitle": "mode plein écran",
+      "bookmarkTitle": "marque page",
+      "openTableOfContentsTitle": "navigation",
+      "quitFullscreenTitle": "quitter le mode plein écran",
+      "settingsTitle": "préférences",
+      "readBookTitle": "lancer la lecture du livre"
+    },
+    "footerInfo": {
       "moreInfo": "Plus d'informations",
-      "publisher": "Editeur",
-      "lang": "Langue",
-      "id": "Identifiant",
-      "addBookToLib": "Ajouter à la librairie",
-      "addTeaserToLib": "Ajouter l'extrait à la bibliothèque",
-      "addTags": "Ajouter un tag",
-      "deleteTag": "Supprimer le tag",
-      "readBook": "Lire",
-      "deleteBook": "supprimer de la bibliothèque",
-      "tags": "Mes tags",
-      "sort": "trier par",
-      "tagCount": "Nombre de tags",
-      "emptyTagList": "Les livres ne contiennent pas de tags.",
-      "noPublicationHelp": "Pour importer des ebooks, glissez des EPUB ici ou cliquez sur le bouton + dans le menu au ci-dessus."
+      "lessInfo": "Moins d'informations"
     },
-    "library": {
-        "heading": "Bibliothèque",
-        "add": "Ajouter à la bibliothèque",
-        "startDownload": "Un téléchargement a démarré.",
-        "cancelDownload": "Un téléchargement a été arrété.",
-        "endDownload": "Un téléchargement est terminé.",
-        "svg" : {
-          "list": "Liste",
-          "card": "Cartes",
-          "showParaphrase": "Montrer la paraphrase"
-        },
-        "lcp": {
-          "title": "Vérification LCP",
-          "sentence": "Cette publication a besoin d'un mot de passe : ",
-          "submit": "Valider",
-          "cancel": "Annuler",
-          "hint": "(Indice : {{hint}})",
-          "password": "Mot de passe",
-          "informations": {
-            "title": "Informations LCP",
-            "close": "Fermer",
-            "provider": "Fournisseur :",
-            "issued": "Date de création :",
-            "updated": "Modification :",
-            "right": {
-              "title": "Droits",
-              "start": "Début :",
-              "end": "Fin :",
-              "copy": "Nombre de copie :",
-              "print": "Nombre d'impression :"
-            }
-          }
+    "settings": {
+      "title": "Paramètres",
+      "theme": {
+        "title": "Thème",
+        "predefined": "Thèmes prédéfinis",
+        "myTheme": "Mes thèmes",
+        "create": "Créer un thème",
+        "name": {
+          "Neutral": "Neutre",
+          "Sepia": "Sépia",
+          "Night": "Nuit"
         }
-    },
-    "publication": {
-      "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",
-      "revokedLcp": "Ce livre ne peut être lu car la licence lcp a été révoqué.",
-      "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retourné.",
-      "downloadButton": "Télécharger",
-      "readButton": "Lire",
-      "deleteButton": "Supprimer de la bibliothèque",
-      "infoButton": "Informations LCP",
-      "renewButton": "Renouveler",
-      "renewSentence": "Etes vous sûr de vouloir renouveler cette publication ?",
-      "returnButton": "Retourner",
-      "returnSentence": "Etes vous sûr de vouloir retourner cette publication ?",
-      "cancelDownloadButton": "Annuler",
-      "progressDownload": "Téléchargement en cours",
-      "endDownload": "Téléchargement terminé",
-      "failedDownload": "Téléchargement échoué",
-      "canceledDownload": "Téléchargement annulé"
-    },
-    "toolbar": {
-        "about": "A propos",
-        "help":"Aide",
-        "news":"Quoi de neuf ?",
-        "sync":"Synchroniser la bibliothèque",
-        "svg": {
-          "help": "Aide",
-          "news": "Nouvelles",
-          "addEpub": "Ajouter un EPUB",
-          "opds": "Opds",
-          "others": "Autres"
-        }
-    },
-    "update": {
-        "available": "Nouvelle version !"
-    },
-    "dialog": {
-      "yes": "Oui",
-      "no": "Non",
-      "delete": "Êtes vous sûr de vouloir supprimer cette publication ?",
-      "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
-      "deleteOpds": "Êtes vous sûr de vouloir supprimer ce flux opds ?",
-      "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
-      "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-      "closeModalWindow": "Fermer cette fenêtre modale",
-      "alreadyAdd": "Il semblerais que vous ayez déjà ajouté cette publication à votre catalogue.",
-      "sure": "Êtes vous sûr(e) de vouloir l'ajouter à nouveau ?"
-    },
-    "opds": {
-      "download": "Télécharger",
-      "settings": "Parametre",
-      "addMenu": "Ajouter un flux OPDS",
-      "formError": "Veuillez remplir tous les champs",
-      "downloadError": "Une erreur est survenue lors de la récupération du flux.",
-      "back": "Retour",
-      "svg": {
-        "opds": "Opds"
-      },
-      "addForm": {
-        "title": "Ajouter un flux",
-        "pasteUrl": "coller l'url d'un flux",
-        "addButton": "Ajouter",
-        "updateSentence": "Vous pouvez mettre les champs à jour.",
-        "addSentence": "Quel flux OPDS souhaitez vous ajouter ?",
-        "delete": "Supprimer le flux",
-        "update": "Modifier",
-        "name": "Nom :",
-        "url": "Adresse :",
-        "namePlaceholder": "Nom",
-        "urlPlaceholder": "Adresse"
-      },
-      "authentication": {
-        "username": "Nom d'utilisateur :",
-        "password": "Mot de passe :",
-        "loginButton": "Connexion",
-        "sentence": "Veuillez vous connecter pour acceder au contenu"
-      },
-      "menu": {
-        "aboutBook": "Fiche livre",
-        "addExtract": "Ajouter à la bibliothèque",
-        "goBuyBook": "Aller sur la page d'achat",
-        "goLoanBook": "Aller sur la page d'emprunt",
-        "goSubBook": "Aller sur la page d'abonnement",
-        "addTeaser": "Ajouter l'extrait à la bibliothèque"
-      },
-      "breadcrumbRoot": "Catalogues"
-    },
-    "reader": {
-      "navigation": {
-        "backHomeTitle": "retour à la bibliothèque",
-        "infoTitle": "informations",
-        "detachWindowTitle": "détacher la fenêtre",
-        "fullscreenTitle": "mode plein écran",
-        "bookmarkTitle": "marque page",
-        "openTableOfContentsTitle": "navigation",
-        "quitFullscreenTitle": "quitter le mode plein écran",
-        "settingsTitle": "préférences",
-        "readBookTitle": "lancer la lecture du livre"
-      },
-      "footerInfo": {
-        "moreInfo": "Plus d'informations",
-        "lessInfo":  "Moins d'informations"
       },
       "settings": {
         "title": "Paramètres",
@@ -209,72 +231,92 @@
         "scrolled": "Défilé",
         "paginated": "Paginé"
       },
-      "marks": {
-        "landmarks": "point de repères",
-        "bookmarks": "marque pages",
-        "illustrations": "Illustrations",
-        "toc": "Table des matières ",
-        "annotations": "Annotations"
+      "spacing": "Espacement",
+      "margin": "Marge",
+      "wordSpacing": "Espacement des mots",
+      "lineSpacing": "Espacement des lignes",
+      "letterSpacing": "Espacement des lettres",
+      "accessibility": "Accessibilité",
+      "disposition": {
+        "title": "Disposition",
+        "with": "Avec",
+        "without": "Sans"
       },
-      "svg": {
-        "contentTable": "Table des matières",
-        "night": "Mode Nuit",
-        "settings": "Parametres",
-        "left": "Gauche",
-        "right": "Droite",
-        "alignLeft": "Aligner à gauche",
-        "alignCenter": "Aligner au centre",
-        "alignRight": "Aligner à droite",
-        "document": "Paginé",
-        "continue": "Défilé",
-        "landmark": "Point de repère"
-      }
+      "right": "Droite",
+      "font": "Police",
+      "DefaultFont": "Police par défaut",
+      "fontSize": "Taille du texte",
+      "display": "Affichage",
+      "justification": "Alignement",
+      "scrolled": "Défilé",
+      "paginated": "Paginé"
     },
-    "message": {
-      "download": {
-        "success": "Le téléchargement de {{title}} est terminé.",
-        "start": "Le téléchargement de {{title}} a commencé."
-      },
-      "import": {
-        "success": "L'import de {{title}} est terminé."
-      },
-      "lcp": {
-        "renewSuccess": "La licence LCP de {{title}} a bien été renouvellée.",
-        "renewError": "Une erreur est survenue lors du renouvellement de {{title}}.",
-        "returnSuccess": "La license lcp de {{title}} a bien été retorunée.",
-        "returnError": "Un erreur est survenue lors du retournement de {{title}}.",
-        "passphraseError": "Impossible de déverouiller la publication {{publicationTitle}}"
-      }
+    "marks": {
+      "landmarks": "point de repères",
+      "bookmarks": "marque pages",
+      "illustrations": "Illustrations",
+      "toc": "Table des matières ",
+      "annotations": "Annotations"
     },
-    "settings": {
-      "manageTags": "Gérer mes tags",
-      "uiLanguage": "Langue de l'interface",
-      "information": "Informations",
-      "language": {
-        "languageChoice": "Choix de la langue"
-      }
-    },
-    "header": {
-      "home": "Menu Principal",
-      "books": "Mes Livres",
-      "catalogs": "Catalogues",
-      "settings": "Préférences",
-      "allBooks": "Tous les livres",
-      "gridTitle": "Présenter les couvertures de livres en grille",
-      "listTitle": "Présenter les livres sous forme de liste",
-      "searchPlaceholder": "Rechercher",
-      "searchTitle": "Lancer la recherche",
-      "importTitle": "Importer un livre"
-    },
-    "accessibility": {
-      "skipLink": "Aller au contenu",
-      "importFile": "Importer un fichier epub",
-      "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
-      "closeDialog": "Fermer",
-      "bookTitle": "Titre du livre",
-      "bookAuthor": "Auteur du livre",
-      "bookReleaseDate": "Date de sortie du livre",
-      "bookPublisher": "Editeur du livre",
-      "homeMenu": "Menu principal"
+    "svg": {
+      "contentTable": "Table des matières",
+      "night": "Mode Nuit",
+      "settings": "Parametres",
+      "left": "Gauche",
+      "right": "Droite",
+      "alignLeft": "Aligner à gauche",
+      "alignCenter": "Aligner au centre",
+      "alignRight": "Aligner à droite",
+      "document": "Paginé",
+      "continue": "Défilé",
+      "landmark": "Point de repère"
     }
+  },
+  "message": {
+    "download": {
+      "success": "Le téléchargement de {{title}} est terminé.",
+      "start": "Le téléchargement de {{title}} a commencé."
+    },
+    "import": {
+      "success": "L'import de {{title}} est terminé."
+    },
+    "lcp": {
+      "renewSuccess": "La licence LCP de {{title}} a bien été renouvellée.",
+      "renewError": "Une erreur est survenue lors du renouvellement de {{title}}.",
+      "returnSuccess": "La license lcp de {{title}} a bien été retorunée.",
+      "returnError": "Un erreur est survenue lors du retournement de {{title}}.",
+      "passphraseError": "Impossible de déverouiller la publication {{publicationTitle}}"
+    }
+  },
+  "settings": {
+    "manageTags": "Gérer mes tags",
+    "uiLanguage": "Langue de l'interface",
+    "information": "Informations",
+    "language": {
+      "languageChoice": "Choix de la langue"
+    }
+  },
+  "header": {
+    "home": "Menu Principal",
+    "books": "Mes Livres",
+    "catalogs": "Catalogues",
+    "settings": "Préférences",
+    "allBooks": "Tous les livres",
+    "gridTitle": "Présenter les couvertures de livres en grille",
+    "listTitle": "Présenter les livres sous forme de liste",
+    "searchPlaceholder": "Rechercher",
+    "searchTitle": "Lancer la recherche",
+    "importTitle": "Importer un livre"
+  },
+  "accessibility": {
+    "skipLink": "Aller au contenu",
+    "importFile": "Importer un fichier epub",
+    "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
+    "closeDialog": "Fermer",
+    "bookTitle": "Titre du livre",
+    "bookAuthor": "Auteur du livre",
+    "bookReleaseDate": "Date de sortie du livre",
+    "bookPublisher": "Editeur du livre",
+    "homeMenu": "Menu principal"
+  }
 }
