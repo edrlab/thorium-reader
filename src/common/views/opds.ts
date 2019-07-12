@@ -42,6 +42,7 @@ export enum OpdsResultType {
     Entry = "entry",
     NavigationFeed = "navigation-feed",
     PublicationFeed = "publication-feed",
+    Error = "error",
 }
 
 export interface OpdsResultView {

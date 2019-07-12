@@ -22,6 +22,7 @@ import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 
 import Loader from "readium-desktop/renderer/components/utils/Loader";
+import { Entry } from "./Entry";
 
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
@@ -56,6 +57,9 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
                     );
                     break;
                 default:
+                    console.log(result);
+                    content = (<p>{result}</p>
+                    );
                     break;
             }
         }
