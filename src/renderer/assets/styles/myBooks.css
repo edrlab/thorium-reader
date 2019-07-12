@@ -392,7 +392,12 @@ main {
 	border-radius: 3px;
 	border: 2px solid #a6a6a6;
 }
-
+#content > *:hover {
+background: #dadada;
+}
+#content > *:active {
+  background: #c1c1c1;
+}
 #count {
 	text-align: center;
 	color: white;
