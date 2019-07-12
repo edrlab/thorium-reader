@@ -24,6 +24,7 @@ import * as packageJson from "readium-desktop/package.json";
 import { readFile } from "fs";
 
 import { promisify } from "util";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 interface Props extends TranslatorProps {
     locale: string;
@@ -33,6 +34,9 @@ interface Props extends TranslatorProps {
 interface States {
     placeholder: any;
 }
+
+const DEV_INFO_DIR = "src/resources/information";
+const PROD_INFO_DIR = process.resourcesPath + '/app.asar/assets/information';
 
 export class LanguageSettings extends React.Component<Props, States> {
     private parsedMarkdown: string;
@@ -49,7 +53,11 @@ export class LanguageSettings extends React.Component<Props, States> {
         const { locale } = this.props;
 
         try {
-            let fileContent = await promisify(readFile)(`src/resources/information/${locale}.md`, {encoding: "utf8"});
+            var infoDir = PROD_INFO_DIR;
+            if (IS_DEV) {
+                infoDir = DEV_INFO_DIR;
+            }
+            let fileContent = await promisify(readFile)(infoDir + `/${locale}.md`, {encoding: "utf8"});
             if ((packageJson as any).version) {
                 fileContent = fileContent.replace("{{version}}", (packageJson as any).version);
             }

@@ -127,6 +127,12 @@ let config = Object.assign({}, {
                 to: "assets/icons",
             }
         ]),
+        new CopyWebpackPlugin([
+            {
+                from: path.join(__dirname, "src", "resources", "information"),
+                to: "assets/information",
+            }
+        ]),
         preprocessorDirectives.definePlugin
     ],
 });
