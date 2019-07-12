@@ -5,25 +5,29 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as commonmark from "commonmark";
 import * as React from "react";
-
 import { connect } from "react-redux";
-
+import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import * as packageJson from "readium-desktop/package.json";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/translator";
+import * as info_de from "readium-desktop/resources/information/de.md";
+import * as info_en from "readium-desktop/resources/information/en.md";
+import * as info_fr from "readium-desktop/resources/information/fr.md";
 import Header from "./Header";
 
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+type Record<K extends keyof any, T> = {
+    [P in K]: T;
+};
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-import * as commonmark from "commonmark";
-
-import * as packageJson from "readium-desktop/package.json";
-
-import { readFile } from "fs";
-
-import { promisify } from "util";
+const info: Record<string, typeof import("*.md")> = {
+    en: info_en,
+    fr: info_fr,
+    de: info_de,
+};
 
 interface Props extends TranslatorProps {
     locale: string;
@@ -47,15 +51,13 @@ export class LanguageSettings extends React.Component<Props, States> {
 
     public async componentDidMount() {
         const { locale } = this.props;
-
-        try {
-            let fileContent = await promisify(readFile)(`src/resources/information/${locale}.md`, {encoding: "utf8"});
+        if (info[locale]) {
+            let fileContent = info[locale] as unknown as string;
             if ((packageJson as any).version) {
                 fileContent = fileContent.replace("{{version}}", (packageJson as any).version);
             }
             this.parsedMarkdown = (new commonmark.HtmlRenderer()).render((new commonmark.Parser()).parse(fileContent));
-        } catch (e) {
-            console.error(e);
+        } else {
             this.parsedMarkdown = "<h1>There is no information for your language</h1>";
         }
         this.forceUpdate();
