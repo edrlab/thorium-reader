@@ -174,7 +174,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
         }
 
         if (parsedEpub.LCP) {
-            console.log("### LCP publication");
+            debug("### LCP publication");
             // Test existing secrets on the given publication
             try {
                 yield call(
@@ -212,7 +212,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                         ));
                     }
                 } catch (error) {
-                    console.log(error);
+                    console.error(error);
                 }
 
                 yield put({

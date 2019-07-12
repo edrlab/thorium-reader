@@ -93,6 +93,10 @@
       "main.js",
       "package.json"
     ],
+    "asarUnpack": [
+      "**/*.node",
+      "!**/lcp.node"
+    ],
     "directories": {
       "buildResources": "resources",
       "output": "release",
@@ -125,12 +129,10 @@
       "desktop": {
         "MimeType": "application/epub+zip"
       },
-      "icon": "dist/assets/icons/",
       "executableName": "Thorium Reader"
     },
     "mac": {
-      "target": "default",
-      "icon": "dist/assets/icons/icon.png"
+      "target": "default"
     },
     "appx": {
       "displayName": "Thorium Reader",
