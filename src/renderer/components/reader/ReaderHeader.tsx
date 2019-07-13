@@ -34,6 +34,9 @@ import { TranslatorProps, withTranslator } from "readium-desktop/renderer/compon
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
 
+import {createRef} from "react";
+import ReactDOM = require("react-dom");
+
 interface Props extends TranslatorProps {
     menuOpen: boolean;
     mode?: ReaderMode;
@@ -52,19 +55,24 @@ interface Props extends TranslatorProps {
 }
 
 export class ReaderHeader extends React.Component<Props, undefined> {
-    private enableFullscreenRef: any;
-    private disableFullscreenRef: any;
+    private enableFullscreenRef = createRef<HTMLButtonElement>();
+    private disableFullscreenRef = createRef<HTMLButtonElement>();
+    private settingsMenuButtonRef = createRef<HTMLButtonElement>();
+    private navigationMenuButtonRef = createRef<HTMLButtonElement>();
 
     public constructor(props: Props) {
         super(props);
+
+        this.focusSettingMenuButton = this.focusSettingMenuButton.bind(this);
+        this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
     }
 
     public componentDidUpdate(oldProps: Props) {
         if (this.props.fullscreen !== oldProps.fullscreen) {
-            if (this.props.fullscreen) {
-                this.disableFullscreenRef.focus();
-            } else {
-                this.enableFullscreenRef.focus();
+            if (this.props.fullscreen && this.disableFullscreenRef.current) {
+                this.disableFullscreenRef.current.focus();
+            } else if (!this.props.fullscreen && this.enableFullscreenRef.current) {
+                this.enableFullscreenRef.current.focus();
             }
         }
     }
@@ -118,7 +126,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleFullscreenClick}
-                                ref={(ref) => this.enableFullscreenRef = ref}
+                                ref={this.enableFullscreenRef}
                             >
                                 <SVG svg={FullscreenIcon} title={ __("reader.navigation.fullscreenTitle")}/>
                             </button>
@@ -130,10 +138,12 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleMenuClick.bind(this)}
+                                ref={this.navigationMenuButtonRef}
                             >
                                 <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
                             </button>
-                            <ReaderMenu {...this.props.readerMenuProps}/>
+                            <ReaderMenu {...this.props.readerMenuProps}
+                            focusNaviguationMenu={this.focusNaviguationMenuButton}/>
                         </li>
                         <li
                             className={styles.right}
@@ -142,9 +152,12 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleSettingsClick.bind(this)}
+                                ref={this.settingsMenuButtonRef}
                             >
                                 <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
                             </button>
+                            <ReaderOptions {...this.props.readerOptionsProps}
+                            focusSettingMenuButton={this.focusSettingMenuButton}/>
                         </li>
                         <li
                             className={styles.right}
@@ -157,7 +170,6 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             >
                                 <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
                             </button>
-                            <ReaderOptions {...this.props.readerOptionsProps}/>
                         </li>
                         {/*<li className={styles.right}>
                             <button
@@ -171,7 +183,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         <button
                             className={styles.menu_button}
                             onClick={this.props.handleFullscreenClick}
-                            ref={(ref) => this.disableFullscreenRef = ref}
+                            ref={this.disableFullscreenRef}
                         >
                             <SVG svg={QuitFullscreenIcon} title={ __("reader.navigation.quitFullscreenTitle")}/>
                         </button>
@@ -180,6 +192,17 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                 </ul>
             </nav>
         );
+    }
+    private focusSettingMenuButton() {
+        const button = ReactDOM.findDOMNode(this.settingsMenuButtonRef.current) as HTMLButtonElement;
+
+        button.focus();
+    }
+
+    private focusNaviguationMenuButton() {
+        const button = ReactDOM.findDOMNode(this.navigationMenuButtonRef.current) as HTMLButtonElement;
+
+        button.focus();
     }
 }
 

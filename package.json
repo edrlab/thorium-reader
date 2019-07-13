@@ -93,6 +93,10 @@
       "main.js",
       "package.json"
     ],
+    "asarUnpack": [
+      "**/*.node",
+      "!**/lcp.node"
+    ],
     "directories": {
       "buildResources": "resources",
       "output": "release",
@@ -102,8 +106,7 @@
       "ext": "epub"
     },
     "win": {
-      "target": "appx",
-      "icon": "dist/assets/icons/icon.ico"
+      "target": "appx"
     },
     "linux": {
       "target": [
@@ -113,19 +116,14 @@
       "desktop": {
         "MimeType": "application/epub+zip"
       },
-      "icon": "dist/assets/icons/",
       "executableName": "Thorium Reader"
     },
     "mac": {
-      "target": "default",
-      "icon": "dist/assets/icons/icon.png"
+      "target": "default"
     },
     "appx": {
       "displayName": "Thorium Reader",
       "publisher": "CN=C91F86A8-45E6-48E0-8015-8A5BF2B38BD4"
-    },
-    "mac": {
-      "icon": "dist/assets/icons/icon.png"
     }
   },
   "jest": {
@@ -172,7 +170,7 @@
     "opds-feed-parser": "^0.0.14",
     "ping": "github:danielzzz/node-ping#1601458126cc1dd0c31db8150f2e6b2a40570a7f",
     "portfinder": "^1.0.17",
-    "pouchdb-core": "^7.0.0",
+    "pouchdb-core": "7.0.*",
     "pouchdb-find": "^7.0.0",
     "pouchdb-quick-search": "^1.3.0",
     "query-string": "^6.2.0",

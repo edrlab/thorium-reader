@@ -43,6 +43,7 @@ interface Props extends TranslatorProps {
     handleIndexChange: (event: any, name: string, value?: any) => void;
     setSettings: (settings: any) => void;
     toggleMenu: any;
+    focusSettingMenuButton: () => void;
 }
 
 enum themeType {
@@ -93,6 +94,7 @@ export class ReaderOptions extends React.Component<Props> {
                 open={this.props.open}
                 sections={sections}
                 toggleMenu={toggleMenu}
+                focusMenuButton={this.props.focusSettingMenuButton}
             />
         );
     }
