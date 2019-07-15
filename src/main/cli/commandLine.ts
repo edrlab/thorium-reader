@@ -40,17 +40,17 @@ export const cli: ICli[] = [
                 const publication = await catalogService.importFile(filePath);
                 const store = container.get("store") as Store<RootState>;
                 if (publication) {
-                   if (!publicationOpenRequested) {
-                       store.dispatch({
-                           type: readerActions.ActionType.OpenRequest,
-                           payload: {
-                               publication: {
-                                   identifier: publication.identifier,
-                               },
-                           },
-                       });
-                       publicationOpenRequested = true;
-                   }
+                    if (!publicationOpenRequested) {
+                        store.dispatch({
+                            type: readerActions.ActionType.OpenRequest,
+                            payload: {
+                                publication: {
+                                    identifier: publication.identifier,
+                                },
+                            },
+                        });
+                        publicationOpenRequested = true;
+                    }
                 } else {
                     process.stderr.write(`Publication error for "${filePath}"\n`);
                     returnValue = false;
