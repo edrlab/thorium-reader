@@ -65,6 +65,7 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
         const { publication, translator } = this.props;
         const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
         const MenuContent = this.props.menuContent;
+
         return (
             <div className={styles.block_book}
                 aria-haspopup="dialog"
@@ -120,11 +121,6 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
         } else {
             this.props.openReader(publication);
         }
-
-        /*if (e.key === "Enter") {
-            console.log("Key Enter pressed ");
-            this.props.openReader(publication);
-        }*/
     }
 
     /* function Truncate very long titles at 60 characters */
