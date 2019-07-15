@@ -18,8 +18,6 @@ import PublicationExportButton from "./PublicationExportButton";
 import { connect } from "react-redux";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-// import { readerActions } from "readium-desktop/common/redux/actions";
-
 interface Props extends TranslatorProps {
     publication: PublicationView;
     displayPublicationInfo?: any;
@@ -42,18 +40,12 @@ class CatalogMenu extends React.Component<Props, State> {
 
         this.deletePublication = this.deletePublication.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
-        // this.handleRead = this.handleRead.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (
             <>
-                {/*<button
-                onClick={this.handleRead}
-                >
-                    {__("catalog.readBook")}
-                </button>*/}
                 <button
                     onClick={this.displayPublicationInfo }
                 >
@@ -72,10 +64,6 @@ class CatalogMenu extends React.Component<Props, State> {
         );
     }
 
-    /*private handleRead(e: React.MouseEvent) {
-        e.preventDefault();
-        this.props.openReader(this.props.publication);
-    }*/
     private deletePublication() {
         this.props.openDeleteDialog(this.props.publication);
     }
@@ -87,16 +75,6 @@ class CatalogMenu extends React.Component<Props, State> {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        /* openReader: (publication: PublicationView) => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
-                },
-            });
-        },*/
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open(
                 DialogType.PublicationInfo,
