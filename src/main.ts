@@ -48,13 +48,15 @@ if (_PACKAGING !== "0") {
     // Disable debug in packaged app
     delete process.env.DEBUG;
     debug_.disable();
+
+    // Parse command line
+    yargs.parse(process.argv.slice(1));
+} else {
+    yargs.parse(process.argv.slice(2));
 }
 
 // Logger
 const debug = debug_("readium-desktop:main");
-
-// Parse command line
-yargs.parse(process.argv.slice(1));
 
 initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();

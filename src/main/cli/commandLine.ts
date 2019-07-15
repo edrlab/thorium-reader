@@ -7,7 +7,6 @@
 
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { container } from "readium-desktop/main/di";
-import { extractHostname } from "readium-desktop/utils/hostname";
 import { Store } from "redux";
 import * as yargs from "yargs";
 
@@ -15,6 +14,7 @@ import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { RootState } from "readium-desktop/main/redux/states";
 import { CatalogService } from "readium-desktop/main/services/catalog";
+import { URL } from "url";
 
 export interface ICliParam {
     readonly argv: yargs.Arguments;
@@ -32,31 +32,31 @@ export const cli: ICli[] = [
         name: "_",
         fct: async ({ argv }) => {
             let publicationOpenRequested = false;
+            let returnValue = true;
 
             for (const filePath of argv._) {
                 // import and read publication
                 const catalogService = container.get("catalog-service") as CatalogService;
                 const publication = await catalogService.importFile(filePath);
                 const store = container.get("store") as Store<RootState>;
-                if (publication && !publicationOpenRequested) {
-                    store.dispatch({
-                        type: readerActions.ActionType.OpenRequest,
-                        payload: {
-                            publication: {
-                                identifier: publication.identifier,
-                            },
-                        },
-                    });
-                    publicationOpenRequested = true;
-                }
-                if (filePath !== "." && !publication && !publicationOpenRequested) {
+                if (publication) {
+                   if (!publicationOpenRequested) {
+                       store.dispatch({
+                           type: readerActions.ActionType.OpenRequest,
+                           payload: {
+                               publication: {
+                                   identifier: publication.identifier,
+                               },
+                           },
+                       });
+                       publicationOpenRequested = true;
+                   }
+                } else {
                     process.stderr.write(`Publication error for "${filePath}"\n`);
+                    returnValue = false;
                 }
             }
-            if (!publicationOpenRequested) {
-                return false;
-            }
-            return true;
+            return returnValue;
         },
         help: [],
     },
@@ -79,13 +79,17 @@ export const cli: ICli[] = [
             // title=http://myurl.com or get TLD and set url
             const feed = (argv.opds as string).split("=");
             const url = feed.length === 2 ? feed[1] : feed[0];
-            const title = feed.length === 2 ? feed[0] : extractHostname(url, true);
-            const opdsRepository = container.get("opds-feed-repository") as OpdsFeedRepository;
-            await opdsRepository.save({ title, url });
-            return true;
+            const hostname = (new URL(url)).hostname;
+            const title = feed.length === 2 ? feed[0] : hostname;
+            if (hostname) {
+                const opdsRepository = container.get("opds-feed-repository") as OpdsFeedRepository;
+                await opdsRepository.save({ title, url });
+                return true;
+            }
+            return false;
         },
         help: [
-            "--opds URL",
+            "--opds TITLE=URL | URL",
             "import opds feed url",
         ],
     },

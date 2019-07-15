@@ -47,17 +47,17 @@ export async function processCommandLine(commandLine: ICli[], argv: Arguments): 
         const commandPromiseTab = arg.map((command) => {
             const op = commandLine.find((c) => c.name === command);
             if (op && (op.name !== "_" || argv._.length)) {
-                try {
                     return op.fct(param);
-                } catch (e) {
-                    return Promise.resolve(false);
-                }
             }
         });
 
-        const commandRes = await Promise.all(commandPromiseTab);
-        const ifFalse = commandRes.indexOf(false);
-        returnCode = ifFalse < 0 ? 0 : 1;
+        try {
+            const commandRes = await Promise.all(commandPromiseTab);
+            const ifFalse = commandRes.indexOf(false);
+            returnCode = ifFalse < 0 ? 0 : 1;
+        } catch (e) {
+            returnCode = 1;
+        }
     }
 
     if (param.quit) {
