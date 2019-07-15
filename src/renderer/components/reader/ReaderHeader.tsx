@@ -39,6 +39,7 @@ import ReactDOM = require("react-dom");
 
 interface Props extends TranslatorProps {
     menuOpen: boolean;
+    infoOpen: boolean;
     mode?: ReaderMode;
     settingsOpen: boolean;
     handleMenuClick: () => void;
@@ -59,6 +60,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
     private disableFullscreenRef = createRef<HTMLButtonElement>();
     private settingsMenuButtonRef = createRef<HTMLButtonElement>();
     private navigationMenuButtonRef = createRef<HTMLButtonElement>();
+    private infoMenuButtonRef = createRef<HTMLButtonElement>();
 
     public constructor(props: Props) {
         super(props);
@@ -75,6 +77,11 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                 this.enableFullscreenRef.current.focus();
             }
         }
+
+        if (this.props.infoOpen !== oldProps.infoOpen &&
+            this.props.infoOpen === false) {
+                this.infoMenuButtonRef.current.focus();
+            }
     }
 
     public render(): React.ReactElement<{}> {
@@ -107,6 +114,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <button
                                 className={styles.menu_button}
                                 onClick={() => this.props.displayPublicationInfo()}
+                                ref={this.infoMenuButtonRef}
                             >
                                 <SVG svg={InfosIcon} title={ __("reader.navigation.infoTitle")}/>
                             </button>
@@ -193,6 +201,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
             </nav>
         );
     }
+
     private focusSettingMenuButton() {
         const button = ReactDOM.findDOMNode(this.settingsMenuButtonRef.current) as HTMLButtonElement;
 
