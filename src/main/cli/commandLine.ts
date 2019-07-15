@@ -23,7 +23,7 @@ export interface ICliParam {
 
 export interface ICli {
     name: string;
-    fct: (o: ICliParam) => Promise<any>;
+    fct: (o: ICliParam) => Promise<boolean>;
     help: string[];
 }
 
@@ -31,14 +31,14 @@ export const cli: ICli[] = [
     {
         name: "_",
         fct: async ({ argv }) => {
-            let notRead = true;
+            let publicationOpenRequested = false;
 
-            argv._.map(async (path) => {
+            for (const filePath of argv._) {
                 // import and read publication
                 const catalogService = container.get("catalog-service") as CatalogService;
-                const publication = await catalogService.importFile(path as string);
+                const publication = await catalogService.importFile(filePath);
                 const store = container.get("store") as Store<RootState>;
-                if (publication && notRead) {
+                if (publication && !publicationOpenRequested) {
                     store.dispatch({
                         type: readerActions.ActionType.OpenRequest,
                         payload: {
@@ -47,12 +47,16 @@ export const cli: ICli[] = [
                             },
                         },
                     });
-                    notRead = false;
+                    publicationOpenRequested = true;
                 }
-                if (path !== "." && !publication && notRead) {
-                    console.error("Publication error, path:", path);
+                if (filePath !== "." && !publication && !publicationOpenRequested) {
+                    process.stderr.write(`Publication error for "${filePath}"\n`);
                 }
-            });
+            }
+            if (!publicationOpenRequested) {
+                return false;
+            }
+            return true;
         },
         help: [],
     },
@@ -60,7 +64,8 @@ export const cli: ICli[] = [
         name: "import",
         fct: async ({ argv }) => {
             const catalogService = container.get("catalog-service") as CatalogService;
-            return await catalogService.importFile(argv.import as string);
+            await catalogService.importFile(argv.import as string);
+            return true;
         },
         help: [
             "--import PATH",
@@ -76,7 +81,8 @@ export const cli: ICli[] = [
             const url = feed.length === 2 ? feed[1] : feed[0];
             const title = feed.length === 2 ? feed[0] : extractHostname(url, true);
             const opdsRepository = container.get("opds-feed-repository") as OpdsFeedRepository;
-            return await opdsRepository.save({ title, url });
+            await opdsRepository.save({ title, url });
+            return true;
         },
         help: [
             "--opds URL",
@@ -87,6 +93,7 @@ export const cli: ICli[] = [
         name: "silent",
         fct: async (param) => {
             param.quit = true;
+            return true;
         },
         help: [
             "--silent",
@@ -109,11 +116,15 @@ export const cli: ICli[] = [
                         },
                     },
                 });
+            } else {
+                process.stdout.write(`There is not publication title match for "${argv.read}"\n`);
+                return false;
             }
+            return true;
         },
         help: [
-            "--read STRING",
-            "open the reader on your publication",
+            "--read TITLE",
+            "searches already-imported publications with the provided TITLE, and opens the reader with the first match",
         ],
     },
 

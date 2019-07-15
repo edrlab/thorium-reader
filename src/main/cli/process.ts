@@ -23,6 +23,7 @@ export async function processCommandLine(commandLine: ICli[], argv: Arguments): 
         quit: false,
     };
     debug("param: ", param);
+    let returnCode = 0;
 
     // assign arg and remove $0
     const arg = Object.keys(argv);
@@ -43,16 +44,24 @@ export async function processCommandLine(commandLine: ICli[], argv: Arguments): 
         param.quit = true;
     } else {
         // execute all commands
-        await arg.map(async (command, idx) => {
+        const commandPromiseTab = arg.map((command) => {
             const op = commandLine.find((c) => c.name === command);
             if (op && (op.name !== "_" || argv._.length)) {
-                await op.fct(param);
+                try {
+                    return op.fct(param);
+                } catch (e) {
+                    return Promise.resolve(false);
+                }
             }
         });
+
+        const commandRes = await Promise.all(commandPromiseTab);
+        const ifFalse = commandRes.indexOf(false);
+        returnCode = ifFalse < 0 ? 0 : 1;
     }
 
     if (param.quit) {
-        app.quit();
+        app.exit(returnCode);
         return true;
     }
     return false;
