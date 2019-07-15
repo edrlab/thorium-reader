@@ -36,7 +36,9 @@
     "package:win": "npm run package:build && electron-builder --win --x64",
     "package:linux": "npm run package:build && electron-builder --linux",
     "package:mac": "npm run package:build && electron-builder --mac",
-    "package:all": "npm run package:build && electron-builder -mwl"
+    "package:all": "npm run package:build && electron-builder -mwl",
+    "cli:help": "npm run build && electron . -h",
+    "cli": "electron ."
   },
   "repository": {
     "type": "git",
