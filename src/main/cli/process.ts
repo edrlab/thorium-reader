@@ -30,14 +30,14 @@ export async function processCommandLine(commandLine: ICli[], argv: Arguments): 
 
     // print help and quit
     if (arg.indexOf("help") > -1 || arg.indexOf("h") > -1) {
-        console.log(`${__APP_NAME__} ${__APP_VERSION__}`);
-        console.log("");
-        console.log(`Usage: ${argv.$0} [options][paths...]`);
-        console.log("");
-        console.log(`Options`);
+        process.stdout.write(`${__APP_NAME__} ${__APP_VERSION__}\n`);
+        process.stdout.write("\n");
+        process.stdout.write(`Usage: ${argv.$0} [options][paths...]\n`);
+        process.stdout.write("\n");
+        process.stdout.write(`Options\n`);
         commandLine.map((v) => {
             if (v.help.length) {
-                console.log(` ${v.help[0]}\t\t${v.help[1] ? v.help[1] : ""}`);
+                process.stdout.write(` ${v.help[0]}\t\t${v.help[1] ? v.help[1] : ""}\n`);
             }
         });
         param.quit = true;
