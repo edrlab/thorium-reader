@@ -71,7 +71,9 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                 aria-controls="dialog"
             >
                 <div className={styles.image_wrapper}>
-                    <a aria-hidden tabIndex={0}
+                    <a aria-hidden
+                    title={`${publication.title} - ${authors}`}
+                    tabIndex={0}
                     onClick={(e) => this.handleBookClick(e)}
                     onKeyPress={(e) => this.handleBookClick(e)}>
                         <Cover publication={ publication } />

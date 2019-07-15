@@ -87,7 +87,7 @@ class CatalogMenu extends React.Component<Props, State> {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-       /* openReader: (publication: PublicationView) => {
+        /* openReader: (publication: PublicationView) => {
             dispatch({
                 type: readerActions.ActionType.OpenRequest,
                 payload: {
