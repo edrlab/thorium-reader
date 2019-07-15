@@ -71,7 +71,9 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                 aria-controls="dialog"
             >
                 <div className={styles.image_wrapper}>
-                    <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
+                    <a aria-hidden tabIndex={0}
+                    onClick={(e) => this.handleBookClick(e)}
+                    onKeyPress={(e) => this.handleBookClick(e)}>
                         <Cover publication={ publication } />
                     </a>
                 </div>
@@ -111,11 +113,17 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
     private handleBookClick(e: any) {
         e.preventDefault();
         const { publication, lsdStatus } = this.props;
+
         if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
             this.props.openInfosDialog(publication);
         } else {
             this.props.openReader(publication);
         }
+
+        /*if (e.key === "Enter") {
+            console.log("Key Enter pressed ");
+            this.props.openReader(publication);
+        }*/
     }
 
     /* function Truncate very long titles at 60 characters */
