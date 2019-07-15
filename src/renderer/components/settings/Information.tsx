@@ -19,11 +19,7 @@ import * as info_en from "readium-desktop/resources/information/en.md";
 import * as info_fr from "readium-desktop/resources/information/fr.md";
 import Header from "./Header";
 
-type Record<K extends keyof any, T> = {
-    [P in K]: T;
-};
-
-const info: Record<string, typeof import("*.md")> = {
+const info: { [key: string]: typeof import("*.md") } = {
     en: info_en,
     fr: info_fr,
     de: info_de,
