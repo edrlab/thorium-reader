@@ -21,7 +21,6 @@ import { TranslatorProps, withTranslator } from "readium-desktop/renderer/compon
 interface Props extends TranslatorProps {
     publication: PublicationView;
     displayPublicationInfo?: any;
-    openReader?: any;
     openDeleteDialog?: any;
     toggleMenu?: () => void;
 }
