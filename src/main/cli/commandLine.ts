@@ -121,7 +121,7 @@ export const cli: ICli[] = [
                     },
                 });
             } else {
-                process.stdout.write(`There is not publication title match for "${argv.read}"\n`);
+                process.stdout.write(`There is no publication title match for "${argv.read}"\n`);
                 return false;
             }
             return true;
