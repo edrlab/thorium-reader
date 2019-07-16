@@ -34,7 +34,7 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     readerActions.ActionType.FullscreenOffRequest,
     readerActions.ActionType.FullscreenOnRequest,
 
-    i18nActions.ActionType.Set,
+    i18nActions.ActionType.LocaleSetRequest,
 ];
 
 export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action: any) => {

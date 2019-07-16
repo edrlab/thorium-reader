@@ -384,7 +384,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
         type: syncIpc.EventType.MainAction,
         payload: {
             action: {
-                type: i18nActions.ActionType.Set,
+                type: i18nActions.ActionType.LocaleSetSuccess,
                 payload: {
                     locale: state.i18n.locale,
                 },

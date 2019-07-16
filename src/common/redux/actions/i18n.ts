@@ -8,12 +8,14 @@
 import { Action } from "readium-desktop/common/models/redux";
 
 export enum ActionType {
-    Set = "LOCALE_SET",
+    LocaleSetRequest = "LOCALE_SET_REQUEST",
+    LocaleSetSuccess = "LOCALE_SET_SUCCESS",
+    LocaleSetError = "LOCALE_SET_ERROR",
 }
 
 export function setLocale(locale: string): Action {
     return {
-        type: ActionType.Set,
+        type: ActionType.LocaleSetRequest,
         payload: {
             locale,
         },

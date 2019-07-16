@@ -20,7 +20,7 @@ export function i18nReducer(
     action: Action,
     ): I18NState {
     switch (action.type) {
-        case i18nActions.ActionType.Set:
+        case i18nActions.ActionType.LocaleSetSuccess:
             return Object.assign({}, state, {
                 locale: action.payload.locale,
             });

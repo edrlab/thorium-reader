@@ -34,7 +34,7 @@ interface States {
     placeholder: any;
 }
 
-export class LanguageSettings extends React.Component<Props, States> {
+export class AppInformation extends React.Component<Props, States> {
     private parsedMarkdown: string;
 
     public constructor(props: Props) {
@@ -87,4 +87,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LanguageSettings));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(AppInformation));

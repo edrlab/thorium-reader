@@ -53,7 +53,9 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 
     lcpActions.ActionType.UserKeyCheckRequest,
 
-    i18nActions.ActionType.Set,
+    i18nActions.ActionType.LocaleSetRequest,
+    i18nActions.ActionType.LocaleSetSuccess,
+    i18nActions.ActionType.LocaleSetError,
 
     updateActions.ActionType.LatestVersionSet,
 
