@@ -52,6 +52,7 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
         this.toggleMenu = this.toggleMenu.bind(this);
         this.openCloseMenu = this.openCloseMenu.bind(this);
         this.truncateTitle = this.truncateTitle.bind(this);
+        this.handleEnterPressed = this.handleEnterPressed.bind(this);
     }
 
     public componentDidMount() {
@@ -75,7 +76,7 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                     <a
                     tabIndex={0}
                     onClick={(e) => this.handleBookClick(e)}
-                    onKeyPress={(e) => this.handleBookClick(e)}>
+                    onKeyPress={(e) => this.handleEnterPressed(e)}>
                         <Cover publication={ publication } />
                     </a>
                 </div>
@@ -120,6 +121,19 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
             this.props.openInfosDialog(publication);
         } else {
             this.props.openReader(publication);
+        }
+    }
+
+    private handleEnterPressed(e: React.KeyboardEvent) {
+        const {publication, lsdStatus} = this.props;
+        e.preventDefault();
+
+        if (e.key === "Enter") {
+            if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
+                this.props.openInfosDialog(publication);
+            } else {
+                this.props.openReader(publication);
+            }
         }
     }
 
