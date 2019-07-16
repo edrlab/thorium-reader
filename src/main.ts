@@ -260,9 +260,26 @@ app.on("open-url", (event: any, url: any) => {
     event.preventDefault();
     // Process url: import or open?
 });
-app.on("open-file", (event: any, url: any) => {
+app.on("open-file", async (event: any, filePath) => {
     event.preventDefault();
-    // Process file: import or open?
+
+    try {
+        const catalogService = container.get("catalog-service") as CatalogService;
+        const publication = await catalogService.importFile(filePath);
+        const store = container.get("store") as Store<RootState>;
+        if (publication) {
+            store.dispatch({
+                type: readerActions.ActionType.OpenRequest,
+                payload: {
+                    publication: {
+                        identifier: publication.identifier,
+                    },
+                },
+            });
+        }
+    } catch (e) {
+        process.stderr.write(`Publication error for "${filePath}"\n`);
+    }
 });
 
 // Callback called when a window is closed
