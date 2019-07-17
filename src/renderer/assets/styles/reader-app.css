@@ -300,7 +300,7 @@
       border-left:1px solid #c1c1c1;
       cursor: pointer;
 
-      & button {
+      & > button {
         width: inherit;
         height: 60px;
         color:inherit;
