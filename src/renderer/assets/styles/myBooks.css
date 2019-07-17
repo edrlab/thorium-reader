@@ -240,6 +240,16 @@ main {
 	}
 }
 
+.publicationLine {
+	display: flex;
+	align-items: center;
+	& p {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
 /* ENTRY FORM */
 
 .tag_add_button {

@@ -9,8 +9,6 @@ import * as moment from "moment";
 
 import * as React from "react";
 
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
 import { DialogType } from "readium-desktop/common/models/dialog";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
@@ -26,6 +24,8 @@ import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import uuid = require("uuid");
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
 import { TranslatorProps, withTranslator } from "../utils/translator";
+
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 interface PublicationListElementProps extends TranslatorProps {
     publication: PublicationView;
@@ -70,29 +70,31 @@ export class PublicationListElement extends React.Component<PublicationListEleme
 
         return (
             <>
-                <div className={styles.list_book_title}>
-                <p className={styles.book_title} aria-label={ __("accessibility.bookTitle")}>{ pub.title }</p>
-                <p
-                    className={`${styles.book_author} ${styles.lightgrey}`}
-                    aria-label={ __("accessibility.bookAuthor")}
-                >
-                    {pub.authors.map((author) => translator.translateContentField(author)).join(", ")}
-                </p>
+                <div className={styles.publicationLine}>
+                    <button
+                        type="button"
+                        aria-expanded={this.state.menuOpen}
+                        aria-controls={this.menuId}
+                        title={this.props.publication.title}
+                        onClick={this.toggleMenu}
+                        ref={(ref) => this.buttonRef = ref}
+                    >
+                        <SVG svg={MenuIcon}/>
+                    </button>
+                    <div className={styles.list_book_title}>
+                    <p className={styles.book_title} aria-label={ __("accessibility.bookTitle")}>{ pub.title }</p>
+                    <p
+                        className={`${styles.book_author} ${styles.lightgrey}`}
+                        aria-label={ __("accessibility.bookAuthor")}
+                    >
+                        {pub.authors.map((author) => translator.translateContentField(author)).join(", ")}
+                    </p>
+                    </div>
+                    <p className={styles.infos_sup} aria-label={ __("accessibility.bookReleaseDate")}>
+                    { formatedPublishedYear}</p>
+                    <p className={styles.infos_sup} aria-label={ __("accessibility.bookPublisher")}>
+                    { formatedPublishers }</p>
                 </div>
-                <p className={styles.infos_sup} aria-label={ __("accessibility.bookReleaseDate")}>
-                { formatedPublishedYear}</p>
-                <p className={styles.infos_sup} aria-label={ __("accessibility.bookPublisher")}>
-                { formatedPublishers }</p>
-                <button
-                    type="button"
-                    aria-expanded={this.state.menuOpen}
-                    aria-controls={this.menuId}
-                    title={this.props.publication.title}
-                    onClick={this.toggleMenu}
-                    ref={(ref) => this.buttonRef = ref}
-                >
-                    <SVG svg={MenuIcon}/>
-                </button>
                 { this.state.menuOpen &&
                     <AccessibleMenu
                         toggleMenu={this.toggleMenu}
