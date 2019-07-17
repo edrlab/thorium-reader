@@ -285,6 +285,55 @@
   }
 }
 
+.menu_option {
+    line-height: 0.9rem;
+    padding: 0;
+    margin: 0;
+    float: right;
+
+    & > li {
+      display: inline-block;
+      height:100%;
+      width:60px;
+      font-weight: 600;
+      color:#c1c1c1;
+      border-left:1px solid #c1c1c1;
+      cursor: pointer;
+
+      & button {
+        width: inherit;
+        height: 60px;
+        color:inherit;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+
+        & svg {
+          width:30px;
+          padding:0;
+          margin: 0 auto;
+          height:30px;
+        }
+      }
+      & .active {
+        color:black;
+        border-bottom:3px solid black;
+        padding-bottom:15px;
+      }
+
+      & .right {
+        float:right;
+        border-left:1px solid #c1c1c1;
+        border-right:none;
+      }
+
+      & .blue {
+        background-color: #2B5366;
+      }
+    }
+ }
+
+
 /* ========== MENU ========== */
 
 .menu_background {

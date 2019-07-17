@@ -122,7 +122,8 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             </li>
                             ) : (<></>)
                         }
-                        <li  className={styles.right + " " + styles.blue}>
+
+                        {/*<li  className={styles.right + " " + styles.blue}>
                             <button
                                 className={styles.menu_button}
                                 onClick={this.props.handleFullscreenClick}
@@ -170,7 +171,55 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             >
                                 <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
                             </button>
-                        </li>
+                    </li>*/}
+                        <ul className={styles.menu_option}>
+                            <li
+                                {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                            >
+                                <button
+                                    className={styles.menu_button}
+                                    onClick={this.props.toggleBookmark}
+                                    {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                                >
+                                    <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
+                                </button>
+                            </li>
+                            <li
+                            {...(this.props.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                            >
+                                <button
+                                className={styles.menu_button}
+                                onClick={this.props.handleSettingsClick.bind(this)}
+                                ref={this.settingsMenuButtonRef}
+                                >
+                                    <SVG svg={SettingsIcon} title={ __("reader.navigation.settingsTitle")}/>
+                                </button>
+                                <ReaderOptions {...this.props.readerOptionsProps}
+                                focusSettingMenuButton={this.focusSettingMenuButton}/>
+                            </li>
+                            <li
+                            {...(this.props.menuOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                            >
+                                <button
+                                    className={styles.menu_button}
+                                    onClick={this.props.handleMenuClick.bind(this)}
+                                    ref={this.navigationMenuButtonRef}
+                                >
+                                <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
+                            </button>
+                            <ReaderMenu {...this.props.readerMenuProps}
+                            focusNaviguationMenu={this.focusNaviguationMenuButton}/>
+                            </li>
+                            <li  className={styles.blue}>
+                                <button
+                                className={styles.menu_button}
+                                onClick={this.props.handleFullscreenClick}
+                                ref={this.enableFullscreenRef}
+                                >
+                                <SVG svg={FullscreenIcon} title={ __("reader.navigation.fullscreenTitle")}/>
+                                </button>
+                            </li>
+                        </ul>
                         {/*<li className={styles.right}>
                             <button
                                 className={styles.menu_button}
