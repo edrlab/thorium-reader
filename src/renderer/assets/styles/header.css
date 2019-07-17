@@ -118,7 +118,7 @@
 
 .skip_link {
 	position: absolute;
-	right: -2000px;
+	left: -2000px;
 
 	&:focus {
 		right: 3.75rem;
