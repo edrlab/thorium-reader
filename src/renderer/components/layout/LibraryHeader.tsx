@@ -50,7 +50,6 @@ export class Header extends React.Component<HeaderProps, undefined> {
         return (<>
             <SkipLink
                 className={styles.skip_link}
-                anchorId="main-content"
                 label={__("accessibility.skipLink")}
             />
             <nav className={styles.main_navigation} role="navigation" aria-label={ __("header.home")}>

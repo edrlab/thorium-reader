@@ -6,14 +6,14 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
-interface Props {
-    anchorId: string;
+interface Props extends RouteComponentProps {
     label: string;
     className?: string;
 }
 
-export default class SkipLink extends React.Component<Props> {
+class SkipLink extends React.Component<Props> {
     public render(): React.ReactElement<{}>  {
         const { label, className } = this.props;
         return (
@@ -28,9 +28,8 @@ export default class SkipLink extends React.Component<Props> {
     }
 
     private onClick() {
-        const element = document.getElementById(this.props.anchorId);
-        if (element) {
-            element.focus();
-        }
+        this.props.history.push({pathname: this.props.location.pathname, search: `?focusInside=true`});
     }
 }
+
+export default withRouter(SkipLink);

@@ -6,35 +6,33 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
-
-import LibraryHeader from "./LibraryHeader";
-
 import { connect } from "react-redux";
+import { RouteComponentProps, withRouter } from "react-router-dom";
+
+import AutoFocus from "readium-desktop/renderer/components/utils/AutoFocus";
+import LibraryHeader from "./LibraryHeader";
 
 import { Helmet } from "react-helmet";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
 import * as qs from "query-string";
-import { RouteComponentProps, withRouter } from "react-router-dom";
 
-interface LibraryLayoutProps extends RouteComponentProps {
+import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+
+interface Props extends RouteComponentProps {
     dialogOpen?: boolean;
     secondaryHeader?: any;
     title?: string;
 }
 
-class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
-    private fastLinkRef: any;
+class LibraryLayout extends React.Component<Props> {
+    public constructor(props: Props) {
+        super(props);
 
-    public componentDidMount() {
-        const { location } = this.props;
-        const focusInside = qs.parse(location.search).focusInside === "true";
-        if (focusInside) {
-            this.fastLinkRef.focus();
-        }
+        this.state = {
+            focusInside: false,
+        };
     }
 
     public render(): React.ReactElement<{}> {
@@ -54,13 +52,14 @@ class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
                 </Helmet>
                 <LibraryHeader />
                 { this.props.secondaryHeader }
-                <main
-                    className={styles.main}
-                    role="main"
-                >
-                    <a ref={(ref) => this.fastLinkRef = ref} id="main-content" aria-hidden tabIndex={-1}></a>
-                    { this.props.children }
-                </main>
+                <AutoFocus active={true}>
+                    <main
+                        className={styles.main}
+                        role="main"
+                    >
+                        { this.props.children }
+                    </main>
+                </AutoFocus>
             </div>
         );
     }
