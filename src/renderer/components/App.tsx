@@ -50,11 +50,13 @@ export default class App extends React.Component<any, undefined> {
 
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
+        const tabfile: File[] = this.cleanTabFile(acceptedFiles);
+
         this.store.dispatch(
             dialogActions.open(
                 DialogType.FileImport,
                 {
-                    files: acceptedFiles.map((file) => {
+                    files: tabfile.map((file) => {
                         return {
                             name: file.name,
                             path: file.path,
@@ -62,6 +64,19 @@ export default class App extends React.Component<any, undefined> {
                     }),
                 },
         ));
+    }
+
+    public cleanTabFile(files: File[]): File[] {
+        const tab: File[] = [];
+
+        files.map((file) => {
+            if (file.name.search(".epub") !== -1 ||
+                file.name.search(".opds") !== -1 ||
+                file.name.search(".lcpl") !== -1) {
+                    tab.push(file);
+                }
+            });
+        return (tab);
     }
 
     public async componentDidMount() {
