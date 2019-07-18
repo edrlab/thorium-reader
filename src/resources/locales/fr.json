@@ -108,6 +108,7 @@
     "available": "Nouvelle version !"
   },
   "dialog": {
+    "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub,.opds ou.lcpl)",
     "yes": "Oui",
     "no": "Non",
     "delete": "Êtes vous sûr de vouloir supprimer cette publication ?",

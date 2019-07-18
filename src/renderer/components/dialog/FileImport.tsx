@@ -51,7 +51,7 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
         const { files } = this.props;
 
         if (!files || files.length === 0) {
-            return (<></>);
+            return (<div> {__("dialog.importError")}</div>);
         }
 
         return (
