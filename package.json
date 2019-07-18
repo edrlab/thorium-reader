@@ -151,7 +151,6 @@
     "@types/react-helmet": "^5.0.8",
     "acorn": "^6.1.1",
     "acorn-dynamic-import": "^4.0.0",
-    "bootstrap": "^4.1.1",
     "classnames": "^2.2.6",
     "commonmark": "^0.28.1",
     "connected-react-router": "^6.4.0",
