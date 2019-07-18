@@ -6,6 +6,8 @@
 // ==LICENSE-END==
 
 import * as commonmark from "commonmark";
+import { readFile } from "fs";
+import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
@@ -14,16 +16,11 @@ import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLay
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/translator";
-import * as info_de from "readium-desktop/resources/information/de.md";
-import * as info_en from "readium-desktop/resources/information/en.md";
-import * as info_fr from "readium-desktop/resources/information/fr.md";
+import { promisify } from "util";
 import Header from "./Header";
 
-const info: { [key: string]: typeof import("*.md") } = {
-    en: info_en,
-    fr: info_fr,
-    de: info_de,
-};
+declare const __PACKAGING__: string;
+declare const __INFO_MD_RELATIVE_URL__: string;
 
 interface Props extends TranslatorProps {
     locale: string;
@@ -47,13 +44,18 @@ export class LanguageSettings extends React.Component<Props, States> {
 
     public async componentDidMount() {
         const { locale } = this.props;
-        if (info[locale]) {
-            let fileContent = info[locale] as unknown as string;
+        let filePath: string = path.join((global as any).__dirname, __INFO_MD_RELATIVE_URL__);
+        try {
+            if (__PACKAGING__ === "0") {
+                filePath = path.join(process.cwd(), __INFO_MD_RELATIVE_URL__);
+            }
+            let fileContent = await promisify(readFile)(path.join(filePath, `${locale}.md`), {encoding: "utf8"});
             if ((packageJson as any).version) {
                 fileContent = fileContent.replace("{{version}}", (packageJson as any).version);
             }
             this.parsedMarkdown = (new commonmark.HtmlRenderer()).render((new commonmark.Parser()).parse(fileContent));
-        } else {
+        } catch (e) {
+            console.error(e);
             this.parsedMarkdown = "<h1>There is no information for your language</h1>";
         }
         this.forceUpdate();
