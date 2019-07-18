@@ -19,7 +19,7 @@ import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { OpdsApi } from "readium-desktop/main/api/opds";
 import { cli } from "readium-desktop/main/cli/commandLine";
-import { processCommandLine } from "readium-desktop/main/cli/process";
+import { printHelp, processCommandLine } from "readium-desktop/main/cli/process";
 import { container } from "readium-desktop/main/di";
 import { appInit } from "readium-desktop/main/redux/actions/app";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -54,6 +54,9 @@ if (_PACKAGING !== "0") {
 } else {
     yargs.parse(process.argv.slice(2));
 }
+
+// CLI help command
+printHelp(cli, yargs.argv);
 
 // Logger
 const debug = debug_("readium-desktop:main");

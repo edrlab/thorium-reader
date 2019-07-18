@@ -16,6 +16,24 @@ declare const __APP_VERSION__: string;
 // Logger
 const debug = debug_("readium-desktop:cli");
 
+export function printHelp(commandLine: ICli[], argv: Arguments) {
+
+    if (argv.help || argv.h) {
+        process.stdout.write(`${__APP_NAME__} ${__APP_VERSION__}\n`);
+        process.stdout.write("\n");
+        process.stdout.write(`Usage: ${argv.$0} [options][paths...]\n`);
+        process.stdout.write("\n");
+        process.stdout.write(`Options\n`);
+        commandLine.map((v) => {
+            if (v.help.length) {
+                process.stdout.write(` ${v.help[0]}\t\t${v.help[1] ? v.help[1] : ""}\n`);
+            }
+        });
+        app.exit(0);
+        process.exit(0);
+    }
+}
+
 export async function processCommandLine(commandLine: ICli[], argv: Arguments): Promise<boolean> {
 
     const param: ICliParam = {
@@ -29,35 +47,19 @@ export async function processCommandLine(commandLine: ICli[], argv: Arguments): 
     const arg = Object.keys(argv);
     arg.splice(arg.indexOf("$0"), 1);
 
-    // print help and quit
-    if (arg.indexOf("help") > -1 || arg.indexOf("h") > -1) {
-        process.stdout.write(`${__APP_NAME__} ${__APP_VERSION__}\n`);
-        process.stdout.write("\n");
-        process.stdout.write(`Usage: ${argv.$0} [options][paths...]\n`);
-        process.stdout.write("\n");
-        process.stdout.write(`Options\n`);
-        commandLine.map((v) => {
-            if (v.help.length) {
-                process.stdout.write(` ${v.help[0]}\t\t${v.help[1] ? v.help[1] : ""}\n`);
-            }
-        });
-        param.quit = true;
-    } else {
-        // execute all commands
-        const commandPromiseTab = arg.map((command) => {
-            const op = commandLine.find((c) => c.name === command);
-            if (op && (op.name !== "_" || argv._.length)) {
-                    return op.fct(param);
-            }
-        });
-
-        try {
-            const commandRes = await Promise.all(commandPromiseTab);
-            const ifFalse = commandRes.indexOf(false);
-            returnCode = ifFalse < 0 ? 0 : 1;
-        } catch (e) {
-            returnCode = 1;
+    // execute all commands
+    const commandPromiseTab = arg.map((command) => {
+        const op = commandLine.find((c) => c.name === command);
+        if (op && (op.name !== "_" || argv._.length)) {
+            return op.fct(param);
         }
+    });
+    try {
+        const commandRes = await Promise.all(commandPromiseTab);
+        const ifFalse = commandRes.indexOf(false);
+        returnCode = ifFalse < 0 ? 0 : 1;
+    } catch (e) {
+        returnCode = 1;
     }
 
     if (param.quit) {
