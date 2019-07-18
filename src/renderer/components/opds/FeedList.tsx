@@ -46,7 +46,7 @@ export class FeedList extends React.Component<OpdsListProps, null> {
                         return (
                             <li>
                                 <Link
-                                    key={index}
+                                    key={index + 3000}
                                     to={{
                                         pathname: buildOpdsBrowserRoute(
                                             item.identifier,
