@@ -281,7 +281,7 @@ app.on("open-file", async (event: any, filePath) => {
             });
         }
     } catch (e) {
-        process.stderr.write(`Publication error for "${filePath}"\n`);
+        debug(`Publication error for "${filePath}"`);
     }
 });
 
