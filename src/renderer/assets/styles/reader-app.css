@@ -259,7 +259,6 @@
       font-weight: 600;
       color:#c1c1c1;
       border-right:1px solid #c1c1c1;
-      cursor: pointer;
 
       & > button {
         width: inherit;
