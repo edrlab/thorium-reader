@@ -109,14 +109,6 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             </li>
                             ) : (<></>)
                         }
-                        <li>
-                            <button
-                                className={styles.menu_button}
-                                onClick={() => this.props.displayPublicationInfo()}
-                            >
-                                <SVG svg={InfosIcon} title={ __("reader.navigation.infoTitle")}/>
-                            </button>
-                        </li>
                         <li  className={styles.right + " " + styles.blue}>
                             <button
                                 className={styles.menu_button}
