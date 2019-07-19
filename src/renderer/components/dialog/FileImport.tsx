@@ -31,7 +31,7 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
         const {__} = this.props;
         return (
             <div>
-                { this.buildBasicFileImportList(__) }
+                { this.buildBasicFileImportList() }
 
             </div>
         );
@@ -47,11 +47,11 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
         }
     }
 
-    private buildBasicFileImportList(__: any) {
+    private buildBasicFileImportList() {
         const { files } = this.props;
 
         if (!files || files.length === 0) {
-            return (<div> {__("dialog.importError")}</div>);
+            return (<div> {this.props.__("dialog.importError")}</div>);
         }
 
         return (
@@ -67,8 +67,10 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
                     </ul>
                 </div>
                 <div>
-                    <button className={ styles.primary } onClick={ this.importFiles }>{ __("dialog.yes") }</button>
-                    <button onClick={ this.props.closeDialog }>{ __("dialog.no") }</button>
+                    <button className={ styles.primary } onClick={ this.importFiles }>
+                        { this.props.__("dialog.yes") }
+                    </button>
+                    <button onClick={ this.props.closeDialog }>{this.props.__("dialog.no") }</button>
                 </div>
             </>
         );

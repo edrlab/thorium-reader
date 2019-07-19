@@ -7,6 +7,8 @@
 
 import * as React from "react";
 
+import * as path from "path";
+
 import { Store } from "redux";
 
 import { History } from "history";
@@ -36,6 +38,7 @@ import ToastManager from "./toast/ToastManager";
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 export default class App extends React.Component<any, undefined> {
+
     @lazyInject("store")
     private store: Store<RootState>;
 
@@ -50,13 +53,15 @@ export default class App extends React.Component<any, undefined> {
 
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
-        const tabfile: File[] = this.cleanTabFile(acceptedFiles);
-
         this.store.dispatch(
             dialogActions.open(
                 DialogType.FileImport,
                 {
-                    files: tabfile.map((file) => {
+                    files: acceptedFiles.filter((file) => {
+                            return (path.extname(file.path) === ".epub" ||
+                            path.extname(file.path) === ".lcpl");
+                    })
+                    .map((file) => {
                         return {
                             name: file.name,
                             path: file.path,
@@ -64,19 +69,6 @@ export default class App extends React.Component<any, undefined> {
                     }),
                 },
         ));
-    }
-
-    public cleanTabFile(files: File[]): File[] {
-        const tab: File[] = [];
-
-        files.map((file) => {
-            if (file.name.search(".epub") !== -1 ||
-                file.name.search(".opds") !== -1 ||
-                file.name.search(".lcpl") !== -1) {
-                    tab.push(file);
-                }
-            });
-        return (tab);
     }
 
     public async componentDidMount() {
@@ -88,9 +80,9 @@ export default class App extends React.Component<any, undefined> {
         }, true);
     }
 
-    public render(): React.ReactElement<{}> {
-        return (
-            <Provider store={ this.store }>
+    public render(): React.ReactElement < {} > {
+        return(
+            <Provider store= { this.store } >
                 <ConnectedRouter history={ this.history }>
                     <div className={styles.root}>
                         <Dropzone
@@ -120,7 +112,7 @@ export default class App extends React.Component<any, undefined> {
                         </Dropzone>
                     </div>
                 </ConnectedRouter>
-            </Provider>
+            </Provider >
         );
     }
 }

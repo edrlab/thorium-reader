@@ -108,7 +108,7 @@
         "available": "Update available!"
     },
     "dialog": {
-      "importError": "an error occured, verify your file extension (.epub, .opds or .lcpl)",
+      "importError": "an error occured, verify your file extension (.epub or .lcpl)",
       "yes": "Yes",
       "no": "No",
       "delete": "Do you really want to delete this publication?",
