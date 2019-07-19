@@ -30,7 +30,6 @@ export function printHelp(commandLine: ICli[], argv: Arguments) {
             }
         });
         app.exit(0);
-        process.exit(0);
     }
 }
 
