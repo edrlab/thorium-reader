@@ -719,7 +719,8 @@ const mapStateToProps = (state: RootState, __: any) => {
     return {
         reader: state.reader.reader,
         mode: state.reader.mode,
-        infoOpen: state.dialog.open,
+        infoOpen: state.dialog.open &&
+        state.dialog.type === DialogType.PublicationInfoReader,
     };
 };
 
