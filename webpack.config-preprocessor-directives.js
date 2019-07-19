@@ -27,9 +27,6 @@ const isPackaging = process.env.PACKAGING || "0";
 const nodeModuleRelativeUrl = (isPackaging === "1") ?
     "node_modules" : "../node_modules";
 
-const infoMdRelativeUrl = (isPackaging === '1') ?
-    "assets/md/information" : "dist/assets/md/information"
-
 const data = {
     __APP_VERSION__: JSON.stringify(version),
     __GIT_BRANCH__: JSON.stringify(git.branch()),
@@ -37,7 +34,6 @@ const data = {
     __GIT_SHORT__: JSON.stringify(git.short()),
     __NODE_ENV__: JSON.stringify(nodeEnv),
     __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
-    __INFO_MD_RELATIVE_URL__: JSON.stringify(infoMdRelativeUrl),
     __PACKAGING__: JSON.stringify(isPackaging),
     __POUCHDB_ADAPTER_NAME__: JSON.stringify(pouchDbAdapterName),
     __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),

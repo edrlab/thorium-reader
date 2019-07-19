@@ -44,10 +44,10 @@ export class LanguageSettings extends React.Component<Props, States> {
 
     public async componentDidMount() {
         const { locale } = this.props;
-        let folderPath: string = path.join((global as any).__dirname, __INFO_MD_RELATIVE_URL__);
+        let folderPath: string = path.join((global as any).__dirname, "assets/md/information");
         try {
             if (__PACKAGING__ === "0") {
-                folderPath = path.join(process.cwd(), __INFO_MD_RELATIVE_URL__);
+                folderPath = path.join(process.cwd(), "dist/assets/md/information");
             }
             let fileContent = await promisify(readFile)(path.join(folderPath, `${locale}.md`), {encoding: "utf8"});
             if ((packageJson as any).version) {
