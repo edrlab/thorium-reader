@@ -191,10 +191,12 @@
         "left": "Left",
         "justify": "Justify",
         "column": {
-          "title": "Column",
+          "title": "Columns",
           "auto": "Automatic",
-          "one": "1 column",
-          "two": "2 columns"
+          "one": "1 col",
+          "two": "2 cols",
+          "oneTitle": "one column",
+          "twoTitle": "two columns"
         },
         "spacing": "Spacing",
         "margin": "Margin",

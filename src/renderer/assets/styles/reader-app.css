@@ -2,6 +2,7 @@
 @import "./focus.css";
 @import "./variable.css";
 
+
 :root {
   --sideButtonColor: rgb(130, 130, 130, 0.5);
 }
@@ -22,12 +23,13 @@
     position: relative;
     -webkit-appearance: none;
     width: 50%;
+    height: 18px;
     background-color: transparent;
+    cursor: pointer;
   }
   & input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
     height: 2px;
-    cursor: pointer;
     background: #C0C0C0;
   }
   & input[type=range]::-webkit-slider-thumb {
@@ -41,21 +43,6 @@
   }
   & input[type=range]:focus::-webkit-slider-runnable-track {
     background: #C0C0C0;
-  }
-  & input[type=range]::-moz-range-track {
-    width: 100%;
-    height: 2px;
-    cursor: pointer;
-    background: #C0C0C0;
-  }
-  & input[type=range]::-moz-range-thumb {
-    height: 15px;
-    width: 15px;
-    border-radius: 10px;
-    background: #6B6B6B;
-    cursor: pointer;
-    -webkit-appearance: none;
-    margin-top: -6px;
   }
 
   & .slider_marker {
@@ -237,10 +224,19 @@
 	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
 	min-width: 600px;
 
-  & > ul {
+  & > ul, & ul.menu_option {
     line-height: 0.9rem;
     padding: 0;
     margin: 0;
+
+    & .menu_option {
+      float: right;
+
+      & > li {
+        border-left: 1px solid #c1c1c1;
+        border-right: none;
+      }
+    }
 
     & > li {
       display: inline-block;
@@ -249,7 +245,6 @@
       font-weight: 600;
       color:#c1c1c1;
       border-right:1px solid #c1c1c1;
-      cursor: pointer;
 
       & > button {
         width: inherit;
@@ -374,7 +369,7 @@
 		& label, & .subheading {
 			display: block;
 			font-weight: 600;
-			text-align: left;
+			text-align: center;
 		}
 	}
 }
@@ -656,12 +651,21 @@ p.chapters_description {
   justify-content: center;
   align-items: center;
 
+
+  & input {
+    height: 20px;
+    width: 18px;
+
+  }
+
   & svg {
     width: 63px;
     height: 70px;
     display: block;
     margin: auto;
     fill: grey;
+    padding-bottom: 5px;
+    padding-right: 5px;
   }
 
   & button {
@@ -680,15 +684,47 @@ p.chapters_description {
     }
   }
 
+  & label {
+    cursor: pointer;
+    padding: 10px 10px 10px;
+
+    &:focus + input {
+      @mixin R2_MIXIN_FOCUS_OUTLINE;
+    }
+  }
+
   & .disable {
     fill: grey;
     color: grey;
     cursor: default;
   }
+
+  & li {
+    list-style-type: none;
+  }
 }
 
-#scroll_option, #page_option,
-#option_gauche, #option_justif,
+.focus_element {
+  display: inline-block;
+  text-align: center;
+
+  & input[type="radio"] {
+    position: absolute;
+    height: 15px;
+    width: 20px;
+    left: -20000px;
+
+    &:focus + label {
+      @mixin R2_MIXIN_FOCUS_OUTLINE;
+    }
+  }
+
+  & label {
+    display: inline-flex;
+    margin: 0 5px 0 5px;
+  }
+}
+
 #option_colonne, #option_colonne1, #option_colonne2 {
 	display: inline-block;
 	text-align: center;
@@ -698,6 +734,19 @@ p.chapters_description {
   height: 70px;
   width: 63px;
 }
+
+#option_gauche, #option_justif,
+#scroll_option, #page_option {
+  display: inline-block;
+  text-align: center;
+  margin: 0 10px 20px 10px;
+  line-height: 2rem;
+  vertical-align: baseline;
+  height: 15px;
+  width: 20px;
+}
+
+
 
 .separateur {
 	margin-top:20px;
