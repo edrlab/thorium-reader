@@ -44,7 +44,7 @@ export class FeedList extends React.Component<OpdsListProps, null> {
                 <ul>
                     { this.props.feeds.map((item, index) => {
                         return (
-                            <li key={item.title}>
+                            <li key={"feed-" + index}>
                                 <Link
                                     to={{
                                         pathname: buildOpdsBrowserRoute(
