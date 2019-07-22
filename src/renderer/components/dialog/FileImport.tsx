@@ -32,40 +32,47 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
         return (
             <div>
                 { this.buildBasicFileImportList() }
-                <div>
-                    <button className={ styles.primary } onClick={ this.importFiles }>{ __("dialog.yes") }</button>
-                    <button onClick={ this.props.closeDialog }>{ __("dialog.no") }</button>
-                </div>
+
             </div>
         );
     }
 
     private importFiles() {
-        const paths = this.props.files.map((file: File) => {
-            return file.path;
-        });
-        this.props.importFiles({ paths });
-        this.props.closeDialog();
+        if (this.props.files) {
+            const paths = this.props.files.map((file: File) => {
+                return file.path;
+            });
+            this.props.importFiles({ paths });
+            this.props.closeDialog();
+        }
     }
 
     private buildBasicFileImportList() {
         const { files } = this.props;
 
         if (!files || files.length === 0) {
-            return (<></>);
+            return (<div> {this.props.__("dialog.importError")}</div>);
         }
 
         return (
-            <div>
-                <p>{ this.props.__("dialog.import") }</p>
-                <ul>
-                    { files.map((file: File, i: number) => {
-                        return (
-                            <li key={ i }>{ file.name }</li>
-                        );
-                    })}
-                </ul>
-            </div>
+            <>
+                <div>
+                    <p>{ this.props.__("dialog.import") }</p>
+                    <ul>
+                        { files.map((file: File, i: number) => {
+                            return (
+                                <li key={ i }>{ file.name }</li>
+                            );
+                        })}
+                    </ul>
+                </div>
+                <div>
+                    <button className={ styles.primary } onClick={ this.importFiles }>
+                        { this.props.__("dialog.yes") }
+                    </button>
+                    <button onClick={ this.props.closeDialog }>{this.props.__("dialog.no") }</button>
+                </div>
+            </>
         );
     }
 }

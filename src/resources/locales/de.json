@@ -83,6 +83,7 @@
         "available": "Update verfügbar!"
     },
     "dialog": {
+      "importError": "ein Fehler ist aufgetreten, überprüfen Sie Ihre Dateiendung (.epub or .lcpl).",
       "yes": "Ja",
       "no": "Nein",
       "delete": "Willst du diese Publikation wirklich löschen?",
