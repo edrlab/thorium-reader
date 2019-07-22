@@ -58,8 +58,9 @@ export default class App extends React.Component<any, undefined> {
                 DialogType.FileImport,
                 {
                     files: acceptedFiles.filter((file) => {
-                            return (path.extname(file.path) === ".epub" ||
-                            path.extname(file.path) === ".lcpl");
+                            const ext = path.extname(file.path);
+                            return (ext === ".epub" ||
+                            ext === ".lcpl");
                     })
                     .map((file) => {
                         return {
@@ -104,15 +105,15 @@ export default class App extends React.Component<any, undefined> {
                                 >
                                     <input aria-hidden {...getInputProps({onClick: (evt) => evt.preventDefault()})} />
                                     <PageManager/>
-                                    <DialogManager />
-                                    <SameFileImportManager />
-                                    <ToastManager />
+                                    <DialogManager/>
+                                    <SameFileImportManager/>
+                                    <ToastManager/>
                                 </div>;
                             }}
                         </Dropzone>
                     </div>
                 </ConnectedRouter>
-            </Provider >
+            </Provider>
         );
     }
 }
