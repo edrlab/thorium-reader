@@ -121,6 +121,7 @@
 	left: -2000px;
 
 	&:focus {
+		left: unset;
 		right: 3.75rem;
 		width: fit-content;
 		top: 0px;
