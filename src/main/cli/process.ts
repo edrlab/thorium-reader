@@ -7,63 +7,108 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
-import { ICli, ICliParam } from "readium-desktop/main/cli/commandLine";
-import { Arguments } from "yargs";
+import * as path from "path";
+import { _PACKAGING } from "readium-desktop/preprocessor-directives";
+import * as yargs from "yargs";
+import { cli_, cliImport, cliOpds, cliRead } from "./commandLine";
 
 declare const __APP_NAME__: string;
-declare const __APP_VERSION__: string;
 
 // Logger
 const debug = debug_("readium-desktop:cli");
 
-export function printHelp(commandLine: ICli[], argv: Arguments) {
+export function cli(mainFct: () => void) {
 
-    if (argv.help || argv.h) {
-        process.stdout.write(`${__APP_NAME__} ${__APP_VERSION__}\n`);
-        process.stdout.write("\n");
-        process.stdout.write(`Usage: ${argv.$0} [options][paths...]\n`);
-        process.stdout.write("\n");
-        process.stdout.write(`Options\n`);
-        commandLine.map((v) => {
-            if (v.help.length) {
-                process.stdout.write(` ${v.help[0]}\t\t${v.help[1] ? v.help[1] : ""}\n`);
-            }
-        });
-        app.exit(0);
-    }
-}
+    yargs
+        .scriptName(__APP_NAME__)
+        .usage("$0 <option> [args]")
+        .option("import", {
+            type: "string",
+            coerce: (arg) => path.resolve(arg),
+            describe: "import epub or lpcl file",
+        })
+        .option("silent", {
+            boolean: true,
+            describe: "stay on command line and don't open main window",
+        })
+        .option("opds", {
+            type: "string",
+            coerce: (arg) => {
+                const feed = (arg as string).split("=");
+                const url = feed.length === 2 ? feed[1] : feed[0];
+                const hostname = (new URL(url)).hostname;
+                const title = feed.length === 2 ? feed[0] : hostname;
+                if (!hostname) {
+                    throw new Error("URL ERROR");
+                }
+                return { title, hostname };
+            },
+        })
+        .coerce("file", (arg) => {
+            return path.resolve(arg);
+        })
+        .command("opds <title=url>",
+            "import epub or lpcl file",
+            (y) =>
+                y.positional("source", {
+                    describe: "path of your publication",
+                    type: "string",
+                })
+            ,
+            (argv) => {
+                if (cliOpds(argv.source)) {
+                    app.exit(0);
+                    return ;
+                }
+                app.exit(1);
+            },
+        )
+        .command("import <path>",
+            "import epub or lpcl file",
+            (y) =>
+                y.positional("source", {
+                    describe: "path of your publication",
+                    type: "string",
+                    coerce: (arg) => path.resolve(arg),
+                })
+            ,
+            (argv) => {
+                if (cliImport(argv.source)) {
+                    app.exit(0);
+                    return ;
+                }
+                app.exit(1);
+            },
+        )
+        .command("read <title>",
+            "searches already-imported publications with the provided TITLE, and opens the reader with the first match",
+            (y) =>
+                y.positional("title", {
+                    describe: "title of your publication",
+                    type: "string",
+                })
+            ,
+            (argv) => {
+                mainFct();
+                app.on("will-finish-launching", async () => {
+                    await cliRead(argv.title);
+                });
+            },
+        )
+        .command("$0",
+            "default command",
+            (y) => y,
+            (argv) => {
+                const filePathArray = argv._.map((p) => path.resolve(p));
 
-export async function processCommandLine(commandLine: ICli[], argv: Arguments): Promise<boolean> {
-
-    const param: ICliParam = {
-        argv,
-        quit: false,
-    };
-    debug("param: ", param);
-    let returnCode = 0;
-
-    // assign arg and remove $0
-    const arg = Object.keys(argv);
-    arg.splice(arg.indexOf("$0"), 1);
-
-    // execute all commands
-    const commandPromiseTab = arg.map((command) => {
-        const op = commandLine.find((c) => c.name === command);
-        if (op && (op.name !== "_" || argv._.length)) {
-            return op.fct(param);
-        }
-    });
-    try {
-        const commandRes = await Promise.all(commandPromiseTab);
-        const ifFalse = commandRes.indexOf(false);
-        returnCode = ifFalse < 0 ? 0 : 1;
-    } catch (e) {
-        returnCode = 1;
-    }
-
-    if (param.quit) {
-        app.exit(returnCode);
-        return true;
-    }
-    return false;
+                mainFct();
+                app.on("will-finish-launching", async () => {
+                    if (!await cli_(filePathArray)) {
+                        debug("error in publication path");
+                    }
+                });
+            },
+        )
+        .help()
+        .parse((_PACKAGING === "0") ? process.argv.slice(2) : process.argv.slice(1));
 }
