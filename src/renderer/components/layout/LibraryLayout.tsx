@@ -55,6 +55,7 @@ class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
                 <LibraryHeader />
                 { this.props.secondaryHeader }
                 <main
+                    id="main"
                     className={styles.main}
                     role="main"
                 >

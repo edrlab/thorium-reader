@@ -17,23 +17,16 @@ import { DialogState } from "readium-desktop/common/redux/states/dialog";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import Dialog from "./Dialog";
-
-import FileImport from "./FileImport";
-
-import OpdsFeedAddForm from "./OpdsFeedAddForm";
-
-import DeletePublicationConfirm from "./DeletePublicationConfirm";
-
-import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
-
-import LcpAuthentication from "./LcpAuthentication";
-
-import ReturnLsdConfirm from "./ReturnLsdConfirm";
-
-import RenewLsdConfirm from "./RenewLsdConfirm";
-
 import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
+import Information from "readium-desktop/renderer/components/settings/Information";
+import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
+import DeletePublicationConfirm from "./DeletePublicationConfirm";
+import Dialog from "./Dialog";
+import FileImport from "./FileImport";
+import LcpAuthentication from "./LcpAuthentication";
+import OpdsFeedAddForm from "./OpdsFeedAddForm";
+import RenewLsdConfirm from "./RenewLsdConfirm";
+import ReturnLsdConfirm from "./ReturnLsdConfirm";
 
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import SameFileImportConfirm from "./SameFileImportConfirm";
@@ -76,6 +69,8 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 return this.buildLsdReturnConfirmDialog();
             case DialogType.SameFileImportConfirm:
                 return this.buildSameFileImportConfirmDialog();
+            case DialogType.AboutThorium:
+                return this.buildAboutThoriumDialog();
             default:
                 return (<></>);
         }
@@ -217,6 +212,21 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 id={styles.choice_dialog}
             >
                 <SameFileImportConfirm
+                    publication={ this.props.dialog.data.publication }
+                    downloadSample={ this.props.dialog.data.downloadSample }
+                />
+            </Dialog>
+        );
+    }
+
+    private buildAboutThoriumDialog() {
+        return (
+            <Dialog
+                open={ true }
+                close={ this.props.closeDialog }
+                id={styles.choice_dialog}
+            >
+                <Information
                     publication={ this.props.dialog.data.publication }
                     downloadSample={ this.props.dialog.data.downloadSample }
                 />
