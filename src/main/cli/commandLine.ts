@@ -6,14 +6,12 @@
 // ==LICENSE-END==
 
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { container } from "readium-desktop/main/di";
-import { Store } from "redux";
-import * as yargs from "yargs";
-
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { container } from "readium-desktop/main/di";
 import { RootState } from "readium-desktop/main/redux/states";
 import { CatalogService } from "readium-desktop/main/services/catalog";
+import { Store } from "redux";
 import { URL } from "url";
 
 export async function cli_(filePathArray: string[]) {
