@@ -69,7 +69,9 @@
       "progressDownload": "Download läuft",
       "endDownload": "Download abgeschlossen",
       "failedDownload": "Download fehlerhaft",
-      "canceledDownload": "Download abgebrochen"
+      "canceledDownload": "Download abgebrochen",
+      "seeMore": "Mehr Infos",
+      "seeLess": "Weniger Infos"
     },
     "toolbar": {
         "about": "Über",
