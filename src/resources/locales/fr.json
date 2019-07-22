@@ -89,7 +89,9 @@
     "progressDownload": "Téléchargement en cours",
     "endDownload": "Téléchargement terminé",
     "failedDownload": "Téléchargement échoué",
-    "canceledDownload": "Téléchargement annulé"
+    "canceledDownload": "Téléchargement annulé",
+    "seeMore": "Voir plus",
+    "seeLess": "Voir moins"
   },
   "toolbar": {
     "about": "A propos",
