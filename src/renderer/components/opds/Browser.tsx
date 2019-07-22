@@ -75,7 +75,6 @@ export class Browser extends React.Component<FeedDetailsProps, null> {
                 ),
             });
         });
-        
         breadcrumb.push({
             name: this.props.__("opds.breadcrumbRoot"),
             path: "/opds",
