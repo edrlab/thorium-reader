@@ -39,10 +39,10 @@ class SameFileImportConfirm extends React.Component<Props> {
         return (
             <div>
                 <p>
-                {__("dialogue.alreadyAdd")}
+                {__("dialog.alreadyAdd")}
                     <span>{this.props.publication.title}</span>
                 </p>
-                <p>{__("dialogue.sure")}</p>
+                <p>{__("dialog.sure")}</p>
                 <div>
                     <button onClick={this.addToCatalog}>{__("dialog.yes")}</button>
                     <button className={styles.primary} onClick={this.props.closeDialog}>{__("dialog.no")}</button>

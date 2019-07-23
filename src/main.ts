@@ -60,9 +60,12 @@ function main() {
 
     // Quit when all windows are closed.
     app.on("window-all-closed", () => {
-        if (process.platform !== "darwin") {
-            app.quit();
-        }
+        // At the moment, there are no menu items to revive / re-open windows,
+        // so let's terminate the app on MacOS too.
+        // if (process.platform !== "darwin") {
+        //     app.quit();
+        // }
+        app.quit();
     });
 
     // Call 'createWindow()' on startup.

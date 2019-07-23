@@ -65,13 +65,19 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
         const { publication, translator } = this.props;
         const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
         const MenuContent = this.props.menuContent;
+
         return (
             <div className={styles.block_book}
                 aria-haspopup="dialog"
                 aria-controls="dialog"
             >
                 <div className={styles.image_wrapper}>
-                    <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
+                    <a
+                    tabIndex={0}
+                    onClick={(e) => this.handleBookClick(e)}
+                    onKeyPress={(e) => {
+                        if (e.charCode === 13) { this.handleBookClick(e); }}
+                    }>
                         <Cover publication={ publication } />
                     </a>
                 </div>
@@ -108,9 +114,10 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
         this.setState({menuOpen: !this.state.menuOpen});
     }
 
-    private handleBookClick(e: any) {
+    private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
         const { publication, lsdStatus } = this.props;
+
         if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
             this.props.openInfosDialog(publication);
         } else {
