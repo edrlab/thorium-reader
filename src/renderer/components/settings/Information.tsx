@@ -20,7 +20,6 @@ import { promisify } from "util";
 import Header from "./Header";
 
 declare const __PACKAGING__: string;
-declare const __INFO_MD_RELATIVE_URL__: string;
 
 interface Props extends TranslatorProps {
     locale: string;
@@ -49,7 +48,7 @@ export class LanguageSettings extends React.Component<Props, States> {
         let folderPath: string = path.join((global as any).__dirname, infoFolderRelativePath);
         try {
             if (__PACKAGING__ === "0") {
-                folderPath = path.join(process.cwd(), infoFolderRelativePath);
+                folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
             }
             let fileContent = await promisify(readFile)(path.join(folderPath, `${locale}.md`), {encoding: "utf8"});
             if ((packageJson as any).version) {
