@@ -127,19 +127,19 @@
     & button, & a, & span label {
         text-decoration: none;
         color: black;
-        flex: 1;
-        padding: 0.5rem;
+        padding: 0.7rem;
         text-align: center;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 40px;
+        height: 2.5rem;
         box-sizing: border-box;
-        width:100%;
+        width: 100%;
         font-size: 0.9rem;
         opacity: 1;
         margin: 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-block;
 
         &:hover {
             background-color: #CECECE;
