@@ -13,16 +13,18 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { Store } from "redux";
 import { URL } from "url";
+import { isArray } from "util";
 
-export async function cli_(filePathArray: string[]) {
+export async function cli_(filePath: string[] | string) {
 
     let publicationOpenRequested = false;
     let returnValue = true;
+    const filePathArray = isArray(filePath) ? filePath : [filePath];
 
-    for (const filePath of filePathArray) {
+    for (const fp of filePathArray) {
         // import and read publication
         const catalogService = container.get("catalog-service") as CatalogService;
-        const publication = await catalogService.importFile(filePath);
+        const publication = await catalogService.importFile(fp);
         const store = container.get("store") as Store<RootState>;
         if (publication) {
             if (!publicationOpenRequested) {
@@ -56,13 +58,10 @@ export async function cliImport(filePath: string) {
     return true;
 }
 
-export async function cliOpds(arg: string) {
+export async function cliOpds(title: string, url: string) {
     // extract and save the title and url from opdsFeed
     // title=http://myurl.com or get TLD and set url
-    const feed = arg.split("=");
-    const url = feed.length === 2 ? feed[1] : feed[0];
     const hostname = (new URL(url)).hostname;
-    const title = feed.length === 2 ? feed[0] : hostname;
     if (hostname) {
         const opdsRepository = container.get("opds-feed-repository") as OpdsFeedRepository;
         await opdsRepository.save({ title, url });
@@ -71,10 +70,10 @@ export async function cliOpds(arg: string) {
     return false;
 }
 
-export async function cliRead(argv: any) {
+export async function cliRead(title: string) {
     // read the publication name
     const publicationRepo = container.get("publication-repository") as PublicationRepository;
-    const publication = await publicationRepo.searchByTitle(argv.title);
+    const publication = await publicationRepo.searchByTitle(title);
     if (publication && publication.length) {
         const store = container.get("store") as Store<RootState>;
         store.dispatch({
@@ -86,7 +85,7 @@ export async function cliRead(argv: any) {
             },
         });
     } else {
-        process.stdout.write(`There is no publication title match for "${argv.title}"\n`);
+        process.stdout.write(`There is no publication title match for "${title}"\n`);
         return false;
     }
     return true;

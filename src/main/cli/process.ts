@@ -22,41 +22,20 @@ export function cli(mainFct: () => void) {
     yargs
         .scriptName(__APP_NAME__)
         .usage("$0 <option> [args]")
-        .option("import", {
-            type: "string",
-            coerce: (arg) => path.resolve(arg),
-            describe: "import epub or lpcl file",
-        })
-        .option("silent", {
-            boolean: true,
-            describe: "stay on command line and don't open main window",
-        })
-        .option("opds", {
-            type: "string",
-            coerce: (arg) => {
-                const feed = (arg as string).split("=");
-                const url = feed.length === 2 ? feed[1] : feed[0];
-                const hostname = (new URL(url)).hostname;
-                const title = feed.length === 2 ? feed[0] : hostname;
-                if (!hostname) {
-                    throw new Error("URL ERROR");
-                }
-                return { title, hostname };
-            },
-        })
-        .coerce("file", (arg) => {
-            return path.resolve(arg);
-        })
-        .command("opds <title=url>",
+        .command("opds <title> <url>",
             "import epub or lpcl file",
             (y) =>
-                y.positional("source", {
-                    describe: "path of your publication",
+                y.positional("title", {
+                    describe: "title opds feed",
+                    type: "string",
+                })
+                .positional("url", {
+                    describe: "url opds feed",
                     type: "string",
                 })
             ,
             (argv) => {
-                if (cliOpds(argv.source)) {
+                if (cliOpds(argv.title, argv.url)) {
                     app.exit(0);
                     return ;
                 }
@@ -66,14 +45,14 @@ export function cli(mainFct: () => void) {
         .command("import <path>",
             "import epub or lpcl file",
             (y) =>
-                y.positional("source", {
+                y.positional("path", {
                     describe: "path of your publication",
                     type: "string",
                     coerce: (arg) => path.resolve(arg),
                 })
             ,
             (argv) => {
-                if (cliImport(argv.source)) {
+                if (cliImport(argv.path)) {
                     app.exit(0);
                     return ;
                 }
@@ -95,18 +74,26 @@ export function cli(mainFct: () => void) {
                 });
             },
         )
-        .command("$0",
+        .command("$0 [path]",
             "default command",
-            (y) => y,
+            (y) =>
+                y.positional("path", {
+                    describe: "publication in absolute or relative path",
+                    type: "string",
+                    coerce: (arg) => path.resolve(arg),
+                })
+            ,
             (argv) => {
-                const filePathArray = argv._.map((p) => path.resolve(p));
+                // const filePathArray = argv._.map((p) => path.resolve(p));
 
                 mainFct();
-                app.on("will-finish-launching", async () => {
-                    if (!await cli_(filePathArray)) {
-                        debug("error in publication path");
-                    }
-                });
+                if (argv.path) {
+                    app.on("will-finish-launching", async () => {
+                        if (!await cli_(argv.path)) {
+                            debug("no publication to open");
+                        }
+                    });
+                }
             },
         )
         .help()
