@@ -5,25 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as commonmark from "commonmark";
+import { readFile } from "fs";
+import * as path from "path";
 import * as React from "react";
-
 import { connect } from "react-redux";
-
+import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import * as packageJson from "readium-desktop/package.json";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/translator";
+import { promisify } from "util";
 import Header from "./Header";
 
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-import * as commonmark from "commonmark";
-
-import * as packageJson from "readium-desktop/package.json";
-
-import { readFile } from "fs";
-
-import { promisify } from "util";
+declare const __PACKAGING__: string;
 
 interface Props extends TranslatorProps {
     locale: string;
@@ -47,9 +43,14 @@ export class LanguageSettings extends React.Component<Props, States> {
 
     public async componentDidMount() {
         const { locale } = this.props;
+        const infoFolderRelativePath = "assets/md/information";
 
+        let folderPath: string = path.join((global as any).__dirname, infoFolderRelativePath);
         try {
-            let fileContent = await promisify(readFile)(`src/resources/information/${locale}.md`, {encoding: "utf8"});
+            if (__PACKAGING__ === "0") {
+                folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
+            }
+            let fileContent = await promisify(readFile)(path.join(folderPath, `${locale}.md`), {encoding: "utf8"});
             if ((packageJson as any).version) {
                 fileContent = fileContent.replace("{{version}}", (packageJson as any).version);
             }
