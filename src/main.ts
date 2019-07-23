@@ -28,6 +28,7 @@ import {
 } from "@r2-shared-js/init-globals";
 import { setLocale } from "./common/redux/actions/i18n";
 import { AvailableLanguages } from "./common/services/translator";
+import { cli_ } from "./main/cli/commandLine";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -100,22 +101,8 @@ function main() {
         app.on("open-file", async (event: any, filePath) => {
             event.preventDefault();
 
-            try {
-                const catalogService = container.get("catalog-service") as CatalogService;
-                const publication = await catalogService.importFile(filePath);
-                const store = container.get("store") as Store<RootState>;
-                if (publication) {
-                    store.dispatch({
-                        type: readerActions.ActionType.OpenRequest,
-                        payload: {
-                            publication: {
-                                identifier: publication.identifier,
-                            },
-                        },
-                    });
-                }
-            } catch (e) {
-                debug(`Publication error for "${filePath}"`);
+            if (!await cli_(filePath)) {
+                debug(`the open-file event with ${filePath} return an error`);
             }
         });
     });
