@@ -13,7 +13,9 @@ import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, netActions, readerActions, updateActions,
 } from "readium-desktop/common/redux/actions";
+import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
+import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { container } from "readium-desktop/main/di";
 import { appInit } from "readium-desktop/main/redux/actions/app";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -171,7 +173,13 @@ const winCloseCallback = (appWindow: AppWindow) => {
 
 // Initialize application
 export function initApp() {
-    (container.get("store") as Store<any>).dispatch(appInit());
+    const store = container.get("store") as Store<RootState>;
+    store.dispatch(appInit());
+
+    const loc = app.getLocale().split("-")[0];
+    const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
+    store.dispatch(setLocale(lang));
+
     const winRegistry = container.get("win-registry") as WinRegistry;
     winRegistry.registerOpenCallback(winOpenCallback);
     winRegistry.registerCloseCallback(winCloseCallback);
