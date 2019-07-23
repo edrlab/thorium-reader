@@ -23,7 +23,7 @@ export function cli(mainFct: () => void) {
         .scriptName(__APP_NAME__)
         .usage("$0 <option> [args]")
         .command("opds <title> <url>",
-            "import epub or lpcl file",
+            "import opds feed",
             (y) =>
                 y.positional("title", {
                     describe: "title opds feed",
@@ -35,11 +35,16 @@ export function cli(mainFct: () => void) {
                 })
             ,
             (argv) => {
-                if (cliOpds(argv.title, argv.url)) {
-                    app.exit(0);
-                    return ;
-                }
-                app.exit(1);
+                const promise = cliOpds(argv.title, argv.url);
+                promise.then((isValid) => {
+                    if (isValid) {
+                        app.exit(0);
+                        return ;
+                    }
+                    app.exit(1);
+                }).catch(() => {
+                    app.exit(1);
+                });
             },
         )
         .command("import <path>",
@@ -52,11 +57,17 @@ export function cli(mainFct: () => void) {
                 })
             ,
             (argv) => {
-                if (cliImport(argv.path)) {
-                    app.exit(0);
-                    return ;
-                }
-                app.exit(1);
+                const promise = cliImport(argv.path);
+                promise.then((isValid) => {
+                    console.log(isValid);
+                    if (isValid) {
+                        app.exit(0);
+                        return ;
+                    }
+                    app.exit(1);
+                }).catch(() => {
+                    app.exit(1);
+                });
             },
         )
         .command("read <title>",
