@@ -7,6 +7,8 @@
 
 import * as React from "react";
 
+import * as path from "path";
+
 import { Store } from "redux";
 
 import { History } from "history";
@@ -36,6 +38,7 @@ import ToastManager from "./toast/ToastManager";
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 
 export default class App extends React.Component<any, undefined> {
+
     @lazyInject("store")
     private store: Store<RootState>;
 
@@ -54,7 +57,12 @@ export default class App extends React.Component<any, undefined> {
             dialogActions.open(
                 DialogType.FileImport,
                 {
-                    files: acceptedFiles.map((file) => {
+                    files: acceptedFiles.filter((file) => {
+                            const ext = path.extname(file.path);
+                            return (ext === ".epub" ||
+                            ext === ".lcpl");
+                    })
+                    .map((file) => {
                         return {
                             name: file.name,
                             path: file.path,
@@ -73,9 +81,9 @@ export default class App extends React.Component<any, undefined> {
         }, true);
     }
 
-    public render(): React.ReactElement<{}> {
-        return (
-            <Provider store={ this.store }>
+    public render(): React.ReactElement < {} > {
+        return(
+            <Provider store= { this.store } >
                 <ConnectedRouter history={ this.history }>
                     <div className={styles.root}>
                         <Dropzone
@@ -97,9 +105,9 @@ export default class App extends React.Component<any, undefined> {
                                 >
                                     <input aria-hidden {...getInputProps({onClick: (evt) => evt.preventDefault()})} />
                                     <PageManager/>
-                                    <DialogManager />
-                                    <SameFileImportManager />
-                                    <ToastManager />
+                                    <DialogManager/>
+                                    <SameFileImportManager/>
+                                    <ToastManager/>
                                 </div>;
                             }}
                         </Dropzone>

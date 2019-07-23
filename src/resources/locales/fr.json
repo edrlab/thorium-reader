@@ -89,7 +89,9 @@
     "progressDownload": "Téléchargement en cours",
     "endDownload": "Téléchargement terminé",
     "failedDownload": "Téléchargement échoué",
-    "canceledDownload": "Téléchargement annulé"
+    "canceledDownload": "Téléchargement annulé",
+    "seeMore": "Voir plus",
+    "seeLess": "Voir moins"
   },
   "toolbar": {
     "about": "A propos",
@@ -108,6 +110,7 @@
     "available": "Nouvelle version !"
   },
   "dialog": {
+    "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub ou .lcpl)",
     "yes": "Oui",
     "no": "Non",
     "delete": "Êtes vous sûr de vouloir supprimer cette publication ?",
@@ -187,14 +190,49 @@
           "Night": "Nuit"
         }
       },
-      "text": "Texte",
-      "left": "Gauche",
-      "justify": "Justifié",
-      "column": {
-        "title": "Colonne",
-        "auto": "Automatique",
-        "one": "1 colonne",
-        "two": "2 colonnes"
+      "settings": {
+        "title": "Paramètres",
+        "theme": {
+          "title": "Thème",
+          "predefined": "Thèmes prédéfinis",
+          "myTheme": "Mes thèmes",
+          "create": "Créer un thème",
+          "name": {
+            "Neutral": "Neutre",
+            "Sepia": "Sépia",
+            "Night": "Nuit"
+          }
+        },
+        "text": "Texte",
+        "left": "Gauche",
+        "justify": "Justifié",
+        "column": {
+          "title": "Colonnes",
+          "auto": "Automatique",
+          "one": "1 col",
+          "two": "2 cols",
+          "oneTitle": "une colonne",
+          "twoTitle": "deux colonnes"
+        },
+        "spacing": "Espacement",
+        "margin": "Marge",
+        "wordSpacing": "Espacement des mots",
+        "lineSpacing": "Espacement des lignes",
+        "letterSpacing": "Espacement des lettres",
+        "accessibility": "Accessibilité",
+        "disposition": {
+          "title": "Disposition",
+          "with": "Avec",
+          "without": "Sans"
+        },
+        "right": "Droite",
+        "font": "Police",
+        "DefaultFont": "Police par défaut",
+        "fontSize": "Taille du texte",
+        "display": "Affichage",
+        "justification": "Alignement",
+        "scrolled": "Défilé",
+        "paginated": "Paginé"
       },
       "spacing": "Espacement",
       "margin": "Marge",
@@ -219,7 +257,7 @@
     "marks": {
       "landmarks": "point de repères",
       "bookmarks": "marque pages",
-      "illustrations": "Illustrations",
+      "illustrations": "Table des Illustrations",
       "toc": "Table des matières ",
       "annotations": "Annotations"
     },

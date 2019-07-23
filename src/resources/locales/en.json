@@ -89,7 +89,9 @@
     "progressDownload": "Downloading",
     "endDownload": "Download completed",
     "failedDownload": "Download Failed",
-    "canceledDownload": "Download Canceled"
+    "canceledDownload": "Download Canceled",
+    "seeMore": "See more",
+    "seeLess": "See less"
   },
   "toolbar": {
     "about": "About",
@@ -108,6 +110,7 @@
         "available": "Update available!"
     },
     "dialog": {
+      "importError": "an error occured, verify your file extension (.epub or .lcpl)",
       "yes": "Yes",
       "no": "No",
       "delete": "Do you really want to delete this publication?",
@@ -191,10 +194,12 @@
         "left": "Left",
         "justify": "Justify",
         "column": {
-          "title": "Column",
+          "title": "Columns",
           "auto": "Automatic",
-          "one": "1 column",
-          "two": "2 columns"
+          "one": "1 col",
+          "two": "2 cols",
+          "oneTitle": "one column",
+          "twoTitle": "two columns"
         },
         "spacing": "Spacing",
         "margin": "Margin",
@@ -219,7 +224,7 @@
       "marks": {
         "landmarks": "Landmarks",
         "bookmarks": "Bookmarks",
-        "illustrations": "Illustrations",
+        "illustrations": "Table of illustrations",
         "toc": "Table of content",
         "annotations": "Annotations"
       },

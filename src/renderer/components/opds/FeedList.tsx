@@ -44,9 +44,8 @@ export class FeedList extends React.Component<OpdsListProps, null> {
                 <ul>
                     { this.props.feeds.map((item, index) => {
                         return (
-                            <li>
+                            <li key={"feed-" + index}>
                                 <Link
-                                    key={index}
                                     to={{
                                         pathname: buildOpdsBrowserRoute(
                                             item.identifier,
@@ -66,7 +65,7 @@ export class FeedList extends React.Component<OpdsListProps, null> {
                         );
                     })}
                     {[...Array(6).keys()].map((__, index) => {
-                        return <div key={-index}></div>;
+                        return <div key={"array-" + __}></div>;
                     })}
                 </ul>
             </section>
