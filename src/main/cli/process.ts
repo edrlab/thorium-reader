@@ -110,7 +110,7 @@ export function cli(mainFct: () => void) {
                                 debug("import failed for at least one of the given publication paths");
                             }
                         } catch (e) {
-                            debug("An error occurred during on default CLI");
+                            debug("An error occurred during default CLI");
                         }
                     });
                 }
