@@ -21,7 +21,7 @@ export function cli(mainFct: () => void) {
 
     yargs
         .scriptName(__APP_NAME__)
-        .usage("$0 <option> [args]")
+        .usage("$0 <cmd> [args]")
         .command("opds <title> <url>",
             "import opds feed",
             (y) =>
@@ -59,7 +59,6 @@ export function cli(mainFct: () => void) {
             (argv) => {
                 const promise = cliImport(argv.path);
                 promise.then((isValid) => {
-                    console.log(isValid);
                     if (isValid) {
                         app.exit(0);
                         return ;
