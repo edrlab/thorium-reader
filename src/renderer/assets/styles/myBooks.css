@@ -136,10 +136,10 @@ main {
 	float:left;
     display: flex;
     justify-content: center;
+	align-items: center;
 	border: none;
     background: none;
     cursor: pointer;
-	margin-top: 0.5rem;
 }
 
 .block_book_list:nth-child(odd){
@@ -151,7 +151,6 @@ main {
 	float:left;
 	height: 24px;
     width: 24px;
-	margin: 5px;
 }
 
 .block_book_list .book_title {
