@@ -80,7 +80,13 @@ export function cli(mainFct: () => void) {
             (argv) => {
                 mainFct();
                 app.on("will-finish-launching", async () => {
-                    await cliRead(argv.title);
+                    try {
+                        if (!await cliRead(argv.title)) {
+                            debug("no publication to read");
+                        }
+                    } catch (e) {
+                        debug("An error was appears on cliRead");
+                    }
                 });
             },
         )
@@ -99,8 +105,12 @@ export function cli(mainFct: () => void) {
                 mainFct();
                 if (argv.path) {
                     app.on("will-finish-launching", async () => {
-                        if (!await cli_(argv.path)) {
-                            debug("no publication to open");
+                        try {
+                            if (!await cli_(argv.path)) {
+                                debug("import failed for at least one of the given publication paths");
+                            }
+                        } catch (e) {
+                            debug("An error was appears on default CLI");
                         }
                     });
                 }
