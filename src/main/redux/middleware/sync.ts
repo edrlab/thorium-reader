@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Store } from "redux";
+import { Action, AnyAction, Dispatch, Middleware, MiddlewareAPI, Store } from "redux";
 
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
@@ -23,9 +23,11 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
-import { SenderType } from "readium-desktop/common/models/sync";
+import { IActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 
 import * as debug_ from "debug";
+
+import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 
 const debug = debug_("readium-desktop:sync");
 
@@ -60,8 +62,13 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     toastActions.ActionType.OpenRequest,
 ];
 
-export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action: any) => {
+export const reduxSyncMiddleware: Middleware
+    = (store: MiddlewareAPI<Dispatch<AnyAction>>) =>
+    (next: Dispatch<IActionWithSender>) =>
+    ((action: IActionWithSender) => {
+
     debug("### action type", action.type);
+
     // Test if the action must be sent to the rendeder processes
     if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
         // Do not send
@@ -75,7 +82,9 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
     // Get action serializer
     const actionSerializer = container.get("action-serializer") as ActionSerializer;
 
-    for (const appWindow of Object.values(windows)) {
+    for (const appWin of Object.values(windows)) {
+        const appWindow = appWin as AppWindow;
+
         // Notifies renderer process
         const win = appWindow.win;
         const winId = appWindow.identifier;
@@ -104,4 +113,4 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
     }
 
     return next(action);
-};
+}) as Dispatch<IActionWithSender>;

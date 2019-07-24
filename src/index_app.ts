@@ -33,7 +33,7 @@ import {
 
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
-import { SenderType } from "readium-desktop/common/models/sync";
+import { IActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
@@ -87,7 +87,7 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: any) => {
             store.dispatch(Object.assign(
                 {},
                 actionSerializer.deserialize(data.payload.action),
-                {sender: data.sender},
+                {sender: data.sender} as IActionWithSender,
             ));
             break;
     }

@@ -14,11 +14,12 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-
-    "__TMP__": {
-      "alwaysStrict": true,
+    "alwaysStrict": true,
+    "strictFunctionTypes": true,
+    "__FAIL__": {
       "strictNullChecks": true,
-      "strictFunctionTypes": true,
+    },
+    "__TMP__": {
       "strictPropertyInitialization": true,
       "noImplicitReturns": true,
       "noFallthroughCasesInSwitch": true,

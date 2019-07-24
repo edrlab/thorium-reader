@@ -10,7 +10,7 @@ import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
 import * as path from "path";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
-import { SenderType } from "readium-desktop/common/models/sync";
+import { IActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, netActions, readerActions, updateActions,
@@ -441,7 +441,7 @@ ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {
             store.dispatch(Object.assign(
                 {},
                 actionSerializer.deserialize(data.payload.action),
-                {sender: data.sender},
+                {sender: data.sender} as IActionWithSender,
             ));
             break;
     }

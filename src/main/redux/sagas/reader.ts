@@ -38,6 +38,8 @@ import {
 import { AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 
+import { IActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
 
@@ -342,10 +344,11 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
 export function* readerFullscreenRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for app initialization
-        const action = yield take([
+        const act = yield take([
             readerActions.ActionType.FullscreenOffRequest,
             readerActions.ActionType.FullscreenOnRequest,
         ]);
+        const action = act as IActionWithSender;
 
         const fullscreen = (action.type === readerActions.ActionType.FullscreenOnRequest);
 

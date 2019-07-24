@@ -5,7 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Action } from "redux";
+
 export enum SenderType {
     Main, // Main process
     Renderer, // Renderer process
+}
+
+export interface IWindowSender {
+    type: SenderType;
+    winId: string;
+}
+
+export interface IActionWithSender extends Action {
+    sender: IWindowSender;
 }
