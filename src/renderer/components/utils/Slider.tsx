@@ -124,12 +124,13 @@ export default class Slider extends React.Component<Props, State> {
     private moveInView(elementId: number) {
         const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
         const element = this.contentElRefs[elementId];
-        let elementPosition = -element.offsetLeft;
-
-        const isVisible = this.isElementVisible(elementId);
-        if (!isVisible) {
-            elementPosition = elementPosition > 0 ? 0 : elementPosition < max ? max : elementPosition;
-            this.setState({position: elementPosition, refreshVisible: true});
+        if (element) {
+            let elementPosition = -element.offsetLeft;
+            const isVisible = this.isElementVisible(elementId);
+            if (!isVisible) {
+                elementPosition = elementPosition > 0 ? 0 : elementPosition < max ? max : elementPosition;
+                this.setState({position: elementPosition, refreshVisible: true});
+            }
         }
     }
 

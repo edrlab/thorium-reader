@@ -6,16 +6,22 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import ReactDOM = require("react-dom");
 
 interface MenuButtonProps {
     menuId: string;
     open: boolean;
     toggle: () => void;
+    focusMenuButton?: (ref: React.RefObject<HTMLButtonElement>, menuID: string) => void;
 }
 
 export default class Header extends React.Component<MenuButtonProps, undefined> {
+    private menuButton = React.createRef<HTMLButtonElement>();
+
     public constructor(props: any) {
         super(props);
+
+        this.getFocusBack = this.getFocusBack.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -25,9 +31,23 @@ export default class Header extends React.Component<MenuButtonProps, undefined> 
                 aria-expanded={open}
                 aria-controls={menuId}
                 onClick={toggle}
+                ref={this.menuButton}
             >
+                {this.getFocusBack()}
                 {children}
             </button>
         );
+    }
+
+    public getFocusBack() {
+        /*console.log("get focus back: ", this.menuButton.current);
+        console.log("menu open: ", this.props.open);
+        console.log("menuID", this.props.menuId);*/
+        if (this.menuButton && this.props.open) {
+            console.log("get focus back: ", this.menuButton.current);
+            console.log("menu open: ", this.props.open);
+            console.log("menuID", this.props.menuId);
+            this.props.focusMenuButton(this.menuButton, this.props.menuId);
+        }
     }
 }
