@@ -40,13 +40,7 @@ export default class Header extends React.Component<MenuButtonProps, undefined> 
     }
 
     public getFocusBack() {
-        /*console.log("get focus back: ", this.menuButton.current);
-        console.log("menu open: ", this.props.open);
-        console.log("menuID", this.props.menuId);*/
         if (this.menuButton && this.props.open) {
-            console.log("get focus back: ", this.menuButton.current);
-            console.log("menu open: ", this.props.open);
-            console.log("menuID", this.props.menuId);
             this.props.focusMenuButton(this.menuButton, this.props.menuId);
         }
     }

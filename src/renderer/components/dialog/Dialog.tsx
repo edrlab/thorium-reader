@@ -30,7 +30,7 @@ export class Dialog extends React.Component<Props, undefined> {
         super(props);
 
         this.handleKeyPress = this.handleKeyPress.bind(this);
-        this.handleCloseButton = this.handleCloseButton.bind(this);
+
     }
     public componentDidMount() {
         document.addEventListener("keydown", this.handleKeyPress);
@@ -73,7 +73,9 @@ export class Dialog extends React.Component<Props, undefined> {
                             title={__("dialog.closeModalWindow")}
                             data-dismiss="dialog"
                             onClick={this.props.close}
-                            onKeyPress={this.handleCloseButton}
+                            onKeyPress={(e) => {
+                                if (e.charCode === 13) { this.props.close(); }
+                            }}
                         >
                             <SVG svg={QuitIcon}/>
                         </button>
@@ -81,12 +83,6 @@ export class Dialog extends React.Component<Props, undefined> {
                 </div>
             </FocusLock>
         );
-    }
-
-    private handleCloseButton(event: React.KeyboardEvent<HTMLButtonElement>) {
-        if (event.charCode === 13) {
-            this.props.close();
-        }
     }
 
     private handleKeyPress(e: any) {

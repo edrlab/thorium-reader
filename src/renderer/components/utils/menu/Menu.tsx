@@ -9,7 +9,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as uuid from "uuid";
 
-import {createRef} from "react";
 import AccessibleMenu from "./AccessibleMenu";
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
@@ -55,8 +54,6 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
         if (oldProps.infoDialogIsOpen === true &&
             oldProps.infoDialogIsOpen !== this.props.infoDialogIsOpen &&
             this.menuButtonRef) {
-                console.log("Yatta !!");
-                console.log("button: ", this.menuButtonRef.current);
                 this.menuButtonRef.current.focus();
             }
     }
@@ -134,16 +131,9 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
     }
 
     private getBackFocusMenuButton(currentRef: React.RefObject<HTMLButtonElement>, currentMenuId: string) {
-        console.log("focusMenuButton(PubCard): ", currentRef.current);
-        console.log(`id found: ${currentMenuId} && menuId ${this.menuId}`);
         if (currentRef && this.menuId === currentMenuId) {
                 this.menuButtonRef = currentRef;
         }
-        /*const button = ReactDOM.findDOMNode(ref.current) as HTMLButtonElement;
-        console.log("button: ", button);
-        if (button) {
-            button.focus();
-        }*/
     }
 
     private focusMenuButton() {
