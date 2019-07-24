@@ -382,9 +382,9 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         setEpubReadingSystemInfo({ name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION });
     }
 
-    public componentDidUpdate(oldProps: ReaderProps) {
+    public async componentDidUpdate(oldProps: ReaderProps) {
         if (oldProps.bookmarks !== this.props.bookmarks) {
-            this.checkBookmarks();
+            await this.checkBookmarks();
         }
     }
 
@@ -464,7 +464,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             // publicationJsonUrl_ is https://127.0.0.1:PORT
             response = await fetch(publicationJsonUrl_);
         } catch (e) {
-            return;
+            return Promise.reject(e);
         }
         if (!response.ok) {
             console.log("BAD RESPONSE?!");
@@ -475,9 +475,10 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             publicationJSON = await response.json();
         } catch (e) {
             console.log(e);
+            return Promise.reject(e);
         }
         if (!publicationJSON) {
-            return;
+            return Promise.reject("!publicationJSON");
         }
         const publication = TAJSON.deserialize<R2Publication>(publicationJSON, R2Publication);
 

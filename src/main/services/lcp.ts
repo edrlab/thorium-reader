@@ -306,7 +306,7 @@ export class LcpManager {
         );
 
         // Register device
-        this.registerPublicationLicense(publicationDocument);
+        await this.registerPublicationLicense(publicationDocument);
     }
 
     public async unlockPublicationWithPassphrase(publication: Publication, passphrase: string): Promise<void> {
@@ -347,7 +347,7 @@ export class LcpManager {
         }
 
         // Register device
-        this.registerPublicationLicense(publicationDocument);
+        await this.registerPublicationLicense(publicationDocument);
     }
 
     public async storePassphrase(publication: Publication, passphrase: string): Promise<void> {
@@ -371,9 +371,9 @@ export class LcpManager {
         );
         const parsedPublication: Epub = await EpubParsePromise(epubPath);
 
-        return new Promise((resolve: any, reject: any) => {
+        return new Promise(async (resolve: any, reject: any) => {
             try {
-                launchStatusDocumentProcessing(
+                await launchStatusDocumentProcessing(
                     parsedPublication.LCP,
                     this.deviceIdManager,
                     async (licenseUpdateJson: string | undefined) => {

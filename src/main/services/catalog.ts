@@ -195,7 +195,7 @@ export class CatalogService {
         await this.publicationRepository.delete(publicationIdentifier);
 
         // Remove from storage
-        await this.publicationStorage.removePublication(publicationIdentifier);
+        this.publicationStorage.removePublication(publicationIdentifier);
     }
 
     /**

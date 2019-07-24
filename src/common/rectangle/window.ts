@@ -31,6 +31,6 @@ export const getWindowsRectangle = async (): Promise<Rectangle> => {
         x: screen.getPrimaryDisplay().workAreaSize.width / 3,
         y: screen.getPrimaryDisplay().workAreaSize.height / 3,
     };
-    savedWindowsRectangle(c);
+    await savedWindowsRectangle(c);
     return c;
 };

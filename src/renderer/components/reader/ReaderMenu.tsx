@@ -191,6 +191,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                 </div>,
             );
         }
+        return undefined;
     }
 
     private closeBookarkEditForm() {

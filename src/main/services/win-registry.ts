@@ -95,7 +95,7 @@ export class WinRegistry {
     public getWindow(winId: number): AppWindow {
         if (!(winId in this.windows)) {
             // Window not found
-            return;
+            return undefined;
         }
 
         return this.windows[winId];

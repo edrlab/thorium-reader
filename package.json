@@ -17,7 +17,7 @@
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
     "build:dev:main": "webpack --config webpack.config.main.js",
     "start": "npm run build && cross-env DEBUG=r2:*,readium-desktop:* electron .",
-    "lint:ts": "tslint './src/**/*.ts' './src/**/*.tsx'",
+    "lint:ts": "tslint --project tsconfig.json -c tslint.json './src/**/*.ts' './src/**/*.tsx'",
     "lint:editorconfig": "eclint check '**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!**/.DS_Store'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer-reader": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:reader\"",

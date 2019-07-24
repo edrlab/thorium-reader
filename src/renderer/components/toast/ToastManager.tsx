@@ -69,6 +69,7 @@ export class ToastManager extends React.Component<Props, State> {
                             return (<></>);
                     }
                 }
+                return undefined;
             })}
         </div>;
     }

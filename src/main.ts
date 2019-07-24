@@ -243,12 +243,12 @@ app.on("ready", async () => {
         } else {
             debug(`error on configRepository.get("i18n")): ${i18nLocale}`);
         }
-    }).catch(() => {
+    }).catch(async () => {
         const loc = app.getLocale().split("-")[0];
         const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
         store.dispatch(setLocale(lang));
         try {
-            configRepository.save({
+            await configRepository.save({
                 identifier: "i18n",
                 value: { locale: lang },
             });

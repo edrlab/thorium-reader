@@ -32,7 +32,7 @@ import { DialogType } from "readium-desktop/common/models/dialog";
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
 
-function startStreamer(streamer: Server): Promise<string> {
+async function startStreamer(streamer: Server): Promise<string> {
     // Find a free port on your local machine
     return portfinder.getPortPromise()
         .then(async (port) => {

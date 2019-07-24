@@ -7,7 +7,7 @@
 
 import * as request from "request";
 
-export function requestGet(url: string, options: any): Promise<any> {
+export async function requestGet(url: string, options: any): Promise<any> {
     return new Promise((resolve, reject) => {
         const requestOptions = Object.assign(
             {},
