@@ -68,7 +68,7 @@ export class CatalogService {
     @inject("publication-repository")
     private readonly publicationRepository!: PublicationRepository;
 
-    public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument> {
+    public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | null> {
         const ext = path.extname(filePath);
 
         if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
@@ -77,13 +77,13 @@ export class CatalogService {
             return this.importEpubFile(filePath);
         }
 
-        return null;
+        return Promise.resolve(null);
     }
 
     public async importOpdsEntry(url: string, downloadSample: boolean): Promise<PublicationDocument> {
         debug("Import OPDS publication", url);
         const opdsFeedData = await httpGet(url) as string;
-        let opdsPublication: OPDSPublication = null;
+        let opdsPublication: OPDSPublication | null = null;
 
         if (opdsFeedData.startsWith("<?xml")) {
             // This is an opds feed in version 1
@@ -163,6 +163,9 @@ export class CatalogService {
         debug("[END] Download publication", downloadUrl, newDownload);
         // Import downloaded publication in catalog
         let publicationDocument = await this.importFile(download.dstPath, isLcpFile);
+        if (!publicationDocument) {
+            return Promise.reject("!publicationDocument");
+        }
 
         // Add opds publication serialization to resources
         const jsonOpdsPublication = TAJSON.serialize(opdsPublication);
@@ -200,6 +203,9 @@ export class CatalogService {
      * @return: Refreshed publication
      */
     public async refreshPublicationMetadata(publication: Publication) {
+        if (!publication.files) {
+            return;
+        }
         const pubPath = path.join(
             this.publicationStorage.getRootPath(),
             publication.files[0].url.substr(6),
@@ -238,7 +244,7 @@ export class CatalogService {
         const lcpl = JSON.parse(buffer.toString());
 
         // search the path of the epub file
-        let download: Download = null;
+        let download: Download | undefined;
 
         if (lcpl.links) {
             for (const link of lcpl.links) {
@@ -280,18 +286,18 @@ export class CatalogService {
             .from(JSON.stringify(jsonParsedPublication))
             .toString("base64");
 
-        const pubDocument = {
+        const pubDocument: PublicationDocument = {
             identifier: uuid.v4(),
             resources: {
                 filePublication: b64ParsedPublication,
-                opdsPublication: null,
+                opdsPublication: undefined,
             },
             title: convertMultiLangStringToString(parsedPublication.Metadata.Title),
             tags: [],
-            files: [],
-            coverFile: null,
-            customCover: null,
-        } as PublicationDocument;
+            coverFile: undefined,
+            customCover: undefined,
+        };
+        pubDocument.files = [];
 
         // Store publication on filesystem
         debug("[START] Store publication on filesystem", filePath);

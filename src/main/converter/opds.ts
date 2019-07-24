@@ -28,6 +28,8 @@ import {
     convertMultiLangStringToString,
 } from "readium-desktop/common/utils";
 
+import { CoverView } from "readium-desktop/common/views/publication";
+
 @injectable()
 export class OpdsFeedViewConverter {
     public convertDocumentToView(document: OpdsFeedDocument): OpdsFeedView {
@@ -48,7 +50,7 @@ export class OpdsFeedViewConverter {
         return  {
             title,
             url: link.Href,
-            publicationCount: (link.Children) ? link.Children.length : null,
+            publicationCount: (link.Children) ? link.Children.length : undefined,
         };
     }
 
@@ -63,13 +65,13 @@ export class OpdsFeedViewConverter {
             tags = metadata.Subject.map((subject) => convertMultiLangStringToString(subject.Name));
         }
 
-        let publishedAt = null;
+        let publishedAt: string | undefined;
 
         if (metadata.PublicationDate) {
             publishedAt = moment(metadata.PublicationDate).toISOString();
         }
 
-        let cover = null;
+        let cover: CoverView | undefined;
 
         if (publication.Images && publication.Images.length > 0) {
             cover = {
@@ -78,8 +80,8 @@ export class OpdsFeedViewConverter {
         }
 
         // Get odps entry
-        let url = null;
-        let sampleUrl = null;
+        let url: string | undefined;
+        let sampleUrl: string | undefined;
         const links = publication.Links.filter(
             (link: any) => {
                 return (link.TypeLink.indexOf(";type=entry;profile=opds-catalog") > 0);
@@ -96,7 +98,7 @@ export class OpdsFeedViewConverter {
             sampleUrl = sampleLinks[0].Href;
         }
 
-        let base64OpdsPublication = null;
+        let base64OpdsPublication: string | undefined;
         if (links.length > 0) {
             url = links[0].Href;
         } else {
@@ -144,7 +146,7 @@ export class OpdsFeedViewConverter {
             buyUrl: buyLink && buyLink.Href,
             borrowUrl: borrowLink && borrowLink.Href,
             subscribeUrl: subscribeLink && subscribeLink.Href,
-            hasSample: sampleUrl && true,
+            hasSample: (typeof sampleUrl !== "undefined") && true,
             base64OpdsPublication,
             isFree,
         };
@@ -153,8 +155,8 @@ export class OpdsFeedViewConverter {
     public convertOpdsFeedToView(feed: OPDSFeed): OpdsResultView {
         const title = convertMultiLangStringToString(feed.Metadata.Title);
         let type = OpdsResultType.NavigationFeed;
-        let navigation = null;
-        let publications = null;
+        let navigation: OpdsLinkView[] | undefined;
+        let publications: OpdsPublicationView[] | undefined;
 
         if (feed.Publications) {
             // result page containing publications

@@ -98,7 +98,7 @@ export class LcpManager {
 
         debug("Parse publication - START", epubPath);
         const parsedPublication: Epub = await EpubParsePromise(epubPath);
-        let lcpInfo: LcpInfo = null;
+        let lcpInfo: LcpInfo | undefined;
 
         if (parsedPublication.LCP) {
             // Add Lcp info
@@ -227,6 +227,12 @@ export class LcpManager {
     }
 
     public async getLsdStatus(publicationDocument: PublicationDocument): Promise<any> {
+        if (!publicationDocument.lcp) {
+            return Promise.reject("!publicationDocument.lcp");
+        }
+        if (!publicationDocument.lcp.lsd) {
+            return Promise.reject("!publicationDocument.lcp.lsd");
+        }
         // Get lsd status
         const lsdStatusBodyResponse = await httpGet(
             publicationDocument.lcp.lsd.statusUrl,
@@ -240,7 +246,7 @@ export class LcpManager {
         lsdStatus: any,
     ): Promise<PublicationDocument> {
         // Search LCPL license url
-        let lcplUrl: string = null;
+        let lcplUrl: string | undefined;
 
         for (const link of lsdStatus.links) {
             if (link.rel === "license") {
@@ -371,8 +377,15 @@ export class LcpManager {
         );
         const parsedPublication: Epub = await EpubParsePromise(epubPath);
 
+        if (!parsedPublication.LCP) {
+            return Promise.reject("!parsedPublication.LCP");
+        }
+
         return new Promise(async (resolve: any, reject: any) => {
             try {
+                if (!parsedPublication.LCP) {
+                    return reject("!parsedPublication.LCP");
+                }
                 await launchStatusDocumentProcessing(
                     parsedPublication.LCP,
                     this.deviceIdManager,

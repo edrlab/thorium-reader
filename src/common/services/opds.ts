@@ -48,11 +48,13 @@ export class OPDSParser {
                         files: [],
                     };
 
-                    // Fill authors
-                    for (const author of entry.authors) {
-                        publication.authors.push({
-                            name: author.name,
-                        });
+                    if (publication.authors) {
+                        // Fill authors
+                        for (const author of entry.authors) {
+                            publication.authors.push({
+                                name: author.name,
+                            });
+                        }
                     }
 
                     // Set language
@@ -78,7 +80,7 @@ export class OPDSParser {
                                 ext: extObj,
                             };
                         }
-                        if (link.type === TYPE_EPUB) {
+                        if (publication.files && link.type === TYPE_EPUB) {
                             // We found the EPUB link
                             const urlObj = new URL(link.href);
                             let extObj = path.extname(urlObj.pathname);

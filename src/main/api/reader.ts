@@ -54,7 +54,7 @@ export class ReaderApi {
         return this.locatorViewConverter.convertDocumentToView(savedDoc);
     }
 
-    public async getLastReadingLocation(data: any): Promise<LocatorView> {
+    public async getLastReadingLocation(data: any): Promise<LocatorView | null> {
         const { publication } = data;
         const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
             publication.identifier,

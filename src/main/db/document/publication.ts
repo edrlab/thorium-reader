@@ -13,12 +13,12 @@ import { Timestampable } from "readium-desktop/common/models/timestampable";
 
 interface Resources {
     filePublication: string;
-    opdsPublication: string;
+    opdsPublication?: string;
 }
 
 export interface PublicationDocument extends Identifiable, Timestampable {
     resources: Resources;
-    opdsPublication: any;
+    opdsPublication?: any;
     title: string;
     tags?: string[];
     files?: File[];

@@ -75,6 +75,9 @@ export class AddEntryForm extends React.Component<AddEntryFormProps, AddEntryFor
     }
 
     private submit(e: any) {
+        if (!this.props.addEntry) {
+            return;
+        }
         e.preventDefault();
         this.props.addEntry({
             entry: {

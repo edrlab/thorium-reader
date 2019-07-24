@@ -64,7 +64,7 @@ setLcpNativePluginPath(lcpNativePluginPath);
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
-let mainWindow: BrowserWindow = null;
+let mainWindow: BrowserWindow | null = null;
 
 initSessions();
 
@@ -180,7 +180,7 @@ async function createWindow() {
 
     // Redirect link to an external browser
     const handleRedirect = (event: any, url: any) => {
-        if (url === mainWindow.webContents.getURL()) {
+        if (!mainWindow || url === mainWindow.webContents.getURL()) {
             return;
         }
 
@@ -202,8 +202,11 @@ async function createWindow() {
 
     const debounceSavedWindowsRectangle = debounce(savedWindowsRectangle, 500);
 
-    mainWindow.on("move", () =>
-        debounceSavedWindowsRectangle(mainWindow.getBounds()));
+    mainWindow.on("move", () => {
+        if (mainWindow) {
+            debounceSavedWindowsRectangle(mainWindow.getBounds());
+        }
+    });
 }
 
 function registerProtocol() {

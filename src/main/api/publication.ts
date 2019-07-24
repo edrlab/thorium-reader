@@ -81,7 +81,7 @@ export class PublicationApi {
         return this.publicationRepository.getAllTags();
     }
 
-    public async importOpdsEntry(data: any): Promise<PublicationView[]> {
+    public async importOpdsEntry(data: any) {
         const { url, base64OpdsPublication, downloadSample, title } = data;
         this.dispatchToastRequest(ToastType.DownloadStarted, "message.download.start", title);
         let publication;
@@ -92,7 +92,6 @@ export class PublicationApi {
             publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample);
         }
         this.dispatchToastRequest(ToastType.DownloadComplete, "message.download.success", publication.title);
-        return null;
     }
 
     public async import(data: any): Promise<PublicationView[]> {
@@ -103,7 +102,9 @@ export class PublicationApi {
 
         for (const path of paths) {
             const newDoc = await this.catalogService.importFile(path);
-            newDocs.push(newDoc);
+            if (newDoc) {
+                newDocs.push(newDoc);
+            }
         }
 
         return newDocs.map((doc) => {

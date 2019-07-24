@@ -47,6 +47,6 @@ export enum OpdsResultType {
 export interface OpdsResultView {
     title: string;
     type: OpdsResultType;
-    navigation: OpdsLinkView[];
-    publications: OpdsPublicationView[];
+    navigation?: OpdsLinkView[];
+    publications?: OpdsPublicationView[];
 }

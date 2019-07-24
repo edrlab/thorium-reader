@@ -52,6 +52,9 @@ class SameFileImportConfirm extends React.Component<Props> {
     }
 
     private addToCatalog() {
+        if (!this.props.importOpdsEntry) {
+            return;
+        }
         this.props.importOpdsEntry(
             {
                 url: this.props.publication.url,

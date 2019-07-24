@@ -30,6 +30,9 @@ interface Props  {
 class SameFileImportManager extends React.Component<Props> {
     public componentDidUpdate(oldProps: Props) {
         const { searchResult, lastImport } = this.props;
+        if (!lastImport) {
+            return;
+        }
 
         if (searchResult !== oldProps.searchResult) {
             if (searchResult.length === 0) {

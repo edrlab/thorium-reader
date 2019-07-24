@@ -6,5 +6,5 @@
 // ==LICENSE-END==
 
 export interface LoggerState {
-    lastMessage: string;
+    lastMessage: string | null;
 }
