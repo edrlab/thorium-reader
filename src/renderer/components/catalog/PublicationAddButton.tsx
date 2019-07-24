@@ -50,8 +50,8 @@ export class PublicationAddButton extends React.Component<Props> {
         const files = event.target.files;
         const paths: string[] = [];
 
-        for (let i = 0 ; i < files.length ; i++) {
-            paths.push(files[i].path);
+        for (const f of files) {
+            paths.push(f.path);
         }
         this.props.importFiles({ paths });
     }

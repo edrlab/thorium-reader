@@ -199,7 +199,9 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
 
             if (newProps.operationResults) {
                 for (const key in newProps.operationResults) {
-                    newProps[key] = newProps.operationResults[key];
+                    if (newProps.operationResults.hasOwnProperty(key)) {
+                        newProps[key] = newProps.operationResults[key];
+                    }
                 }
             }
 
