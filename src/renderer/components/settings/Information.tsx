@@ -5,25 +5,19 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as commonmark from "commonmark";
+import { readFile } from "fs";
+import * as path from "path";
 import * as React from "react";
-
 import { connect } from "react-redux";
 
-import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-
-import Header from "./Header";
-
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-import * as commonmark from "commonmark";
-
-import * as packageJson from "readium-desktop/package.json";
-
-import { readFile } from "fs";
-
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/translator";
 import { promisify } from "util";
+
+declare const __PACKAGING__: string;
 
 interface Props extends TranslatorProps {
     locale: string;
@@ -47,15 +41,16 @@ export class LanguageSettings extends React.Component<Props, States> {
 
     public async componentDidMount() {
         const { locale } = this.props;
+        const infoFolderRelativePath = "assets/md/information";
 
+        let folderPath: string = path.join((global as any).__dirname, infoFolderRelativePath);
         try {
-            let fileContent = await promisify(readFile)(`src/resources/information/${locale}.md`, {encoding: "utf8"});
-            if ((packageJson as any).version) {
-                fileContent = fileContent.replace("{{version}}", (packageJson as any).version);
+            if (__PACKAGING__ === "0") {
+                folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
             }
+            const fileContent = await promisify(readFile)(path.join(folderPath, `${locale}.md`), {encoding: "utf8"});
             this.parsedMarkdown = (new commonmark.HtmlRenderer()).render((new commonmark.Parser()).parse(fileContent));
-        } catch (e) {
-            console.error(e);
+        } catch (__) {
             this.parsedMarkdown = "<h1>There is no information for your language</h1>";
         }
         this.forceUpdate();
@@ -63,15 +58,7 @@ export class LanguageSettings extends React.Component<Props, States> {
 
     public render(): React.ReactElement<{}> {
         const html = { __html: this.parsedMarkdown };
-        const secondaryHeader = <Header section={3}/>;
-        const { __ } = this.props;
-        return (
-            <>
-                <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.settings")}>
-                    <div dangerouslySetInnerHTML={html}></div>
-                </LibraryLayout>
-            </>
-        );
+        return <div dangerouslySetInnerHTML={html}></div>;
     }
 }
 

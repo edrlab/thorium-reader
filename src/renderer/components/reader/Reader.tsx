@@ -198,6 +198,7 @@ interface ReaderState {
 interface ReaderProps {
     reader?: any;
     mode?: any;
+    infoOpen?: boolean;
     deleteBookmark?: any;
     addBookmark?: any;
     findBookmarks: any;
@@ -410,6 +411,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                 <div>
                     <div className={styles.root}>
                         <ReaderHeader
+                            infoOpen={this.props.infoOpen}
                             menuOpen={this.state.menuOpen}
                             settingsOpen={this.state.settingsOpen}
                             handleMenuClick={this.handleMenuButtonClick}
@@ -717,6 +719,8 @@ const mapStateToProps = (state: RootState, __: any) => {
     return {
         reader: state.reader.reader,
         mode: state.reader.mode,
+        infoOpen: state.dialog.open &&
+        state.dialog.type === DialogType.PublicationInfoReader,
     };
 };
 

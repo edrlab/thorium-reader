@@ -1,6 +1,6 @@
 {
   "name": "EDRLab.ThoriumReader",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Desktop application to read ebooks",
   "keywords": [
     "readium",
@@ -106,8 +106,7 @@
       "ext": "epub"
     },
     "win": {
-      "target": "appx",
-      "icon": "dist/assets/icons/icon.ico"
+      "target": "appx"
     },
     "linux": {
       "target": [
@@ -117,12 +116,10 @@
       "desktop": {
         "MimeType": "application/epub+zip"
       },
-      "icon": "dist/assets/icons/",
       "executableName": "Thorium Reader"
     },
     "mac": {
-      "target": "default",
-      "icon": "dist/assets/icons/icon.png"
+      "target": "default"
     },
     "appx": {
       "displayName": "Thorium Reader",
@@ -154,7 +151,6 @@
     "@types/react-helmet": "^5.0.8",
     "acorn": "^6.1.1",
     "acorn-dynamic-import": "^4.0.0",
-    "bootstrap": "^4.1.1",
     "classnames": "^2.2.6",
     "commonmark": "^0.28.1",
     "connected-react-router": "^6.4.0",

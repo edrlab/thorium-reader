@@ -47,7 +47,7 @@ export class PublicationApi {
 
     public async delete(data: any): Promise<void> {
         const { identifier } = data;
-        await this.publicationRepository.delete(identifier);
+        await this.catalogService.deletePublication(identifier);
     }
 
     public async findAll(): Promise<PublicationView[]> {

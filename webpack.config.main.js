@@ -111,6 +111,12 @@ let config = Object.assign({}, {
     plugins: [
         new CopyWebpackPlugin([
             {
+                from: path.join(__dirname, "src", "resources", "information"),
+                to: "assets/md/information",
+            }
+        ]),
+        new CopyWebpackPlugin([
+            {
                 from: path.join(__dirname, "external-assets"),
                 to: "external-assets",
             }
@@ -123,7 +129,7 @@ let config = Object.assign({}, {
         ]),
         new CopyWebpackPlugin([
             {
-                from: path.join(__dirname, "resources", "icons"),
+                from: path.join(__dirname, "resources"),
                 to: "assets/icons",
             }
         ]),

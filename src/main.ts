@@ -18,6 +18,7 @@ import {
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { OpdsApi } from "readium-desktop/main/api/opds";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { container } from "readium-desktop/main/di";
 import { appInit } from "readium-desktop/main/redux/actions/app";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -113,11 +114,44 @@ async function createWindow() {
         const translator = container.get("translator") as any;
         const template: Electron.MenuItemConstructorOptions[] = [
             {
-                label: "Thorium Reader",
+                label: "Thorium",
                 submenu: [
                     {
                         role: "quit",
                         label: translator.translate("app.quit"),
+                    },
+                ],
+            },
+            {
+                label: translator.translate("app.edit.title"),
+                role: "edit",
+                submenu: [
+                    {
+                        role: "undo",
+                        label: translator.translate("app.edit.undo"),
+                    },
+                    {
+                        role: "redo",
+                        label: translator.translate("app.edit.redo"),
+                    },
+                    {
+                        type: "separator",
+                    },
+                    {
+                        role: "cut",
+                        label: translator.translate("app.edit.cut"),
+                    },
+                    {
+                        role: "copy",
+                        label: translator.translate("app.edit.copy"),
+                    },
+                    {
+                        role: "paste",
+                        label: translator.translate("app.edit.paste"),
+                    },
+                    {
+                        role: "selectall",
+                        label: translator.translate("app.edit.selectAll"),
                     },
                 ],
             },
@@ -186,9 +220,12 @@ function registerProtocol() {
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
-        app.quit();
-    }
+    // At the moment, there are no menu items to revive / re-open windows,
+    // so let's terminate the app on MacOS too.
+    // if (process.platform !== "darwin") {
+    //     app.quit();
+    // }
+    app.quit();
 },
 );
 
@@ -197,11 +234,29 @@ app.on("ready", async () => {
     debug("ready");
     initApp();
 
-    // set the locale from platform
     const store = container.get("store") as Store<RootState>;
-    const loc = app.getLocale().split("-")[0];
-    const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
-    store.dispatch(setLocale(lang));
+    const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
+    configRepository.get("i18n").then((i18nLocale) => {
+        if (i18nLocale && i18nLocale.value && i18nLocale.value.locale) {
+            store.dispatch(setLocale(i18nLocale.value.locale));
+            debug(`set the locale ${i18nLocale.value.locale}`);
+        } else {
+            debug(`error on configRepository.get("i18n")): ${i18nLocale}`);
+        }
+    }).catch(() => {
+        const loc = app.getLocale().split("-")[0];
+        const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
+        store.dispatch(setLocale(lang));
+        try {
+            configRepository.save({
+                identifier: "i18n",
+                value: { locale: lang },
+            });
+        } catch (e) {
+            debug("error in save locale", e);
+        }
+        debug(`create i18n key in configRepository with ${lang} locale`);
+    });
 
     if (!processCommandLine()) {
         // Do not open window if electron is launched as a command line
