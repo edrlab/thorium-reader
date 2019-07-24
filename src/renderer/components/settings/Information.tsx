@@ -10,6 +10,7 @@ import { readFile } from "fs";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
+
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import * as packageJson from "readium-desktop/package.json";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
@@ -50,13 +51,9 @@ export class LanguageSettings extends React.Component<Props, States> {
             if (__PACKAGING__ === "0") {
                 folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
             }
-            let fileContent = await promisify(readFile)(path.join(folderPath, `${locale}.md`), {encoding: "utf8"});
-            if ((packageJson as any).version) {
-                fileContent = fileContent.replace("{{version}}", (packageJson as any).version);
-            }
+            const fileContent = await promisify(readFile)(path.join(folderPath, `${locale}.md`), {encoding: "utf8"});
             this.parsedMarkdown = (new commonmark.HtmlRenderer()).render((new commonmark.Parser()).parse(fileContent));
-        } catch (e) {
-            console.error(e);
+        } catch (__) {
             this.parsedMarkdown = "<h1>There is no information for your language</h1>";
         }
         this.forceUpdate();
@@ -64,15 +61,7 @@ export class LanguageSettings extends React.Component<Props, States> {
 
     public render(): React.ReactElement<{}> {
         const html = { __html: this.parsedMarkdown };
-        const secondaryHeader = <Header section={3}/>;
-        const { __ } = this.props;
-        return (
-            <>
-                <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.settings")}>
-                    <div dangerouslySetInnerHTML={html}></div>
-                </LibraryLayout>
-            </>
-        );
+        return <div dangerouslySetInnerHTML={html}></div>;
     }
 }
 

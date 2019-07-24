@@ -16,6 +16,10 @@
       "continueReading": "Resume reading",
       "lastAdditions": "Recently added"
     },
+    "about": {
+      "title": "About Thorium",
+      "button": "More information"
+    },
     "myBooks": "My books",
     "allBooks": "All books",
     "bookInfo": "About this book",

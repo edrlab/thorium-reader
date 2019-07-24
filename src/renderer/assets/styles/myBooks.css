@@ -28,12 +28,12 @@ main {
 			}
 		}
 
-		& h1 {
+		& h2 {
 			display: inline-block;
 			position: relative;
 			font-weight: 700;
 			margin: 0;
-			font-size: 1.3rem;
+			font-size: 1.5rem;
 		}
 	}
 
@@ -427,5 +427,24 @@ main {
 	& svg {
 		height: 20rem;
 		opacity: 0.2;
+	}
+}
+
+/* ABOUT THORIUM BUTTON */
+
+#aboutThoriumButton {
+	margin-bottom: 2rem;
+	
+	& p {
+		font-weight: bold;
+	}
+	& button {
+		font-size: 1rem;
+		border: 1px solid black;
+		border-radius: 5px;
+		color: black;
+		width: auto;
+		height: auto;
+		padding: 10px;
 	}
 }

@@ -16,6 +16,10 @@
       "continueReading": "Reprendre la lecture",
       "lastAdditions": "Derniers ajouts"
     },
+    "about": {
+      "title": "A propos de Thorium",
+      "button": "Plus d'informations"
+    },
     "myBooks": "Mes livres",
     "allBooks": "Tous les livres",
     "bookInfo": "Fiche livre",
