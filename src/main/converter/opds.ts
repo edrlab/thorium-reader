@@ -153,7 +153,7 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public async convertOpdsFeedToView(feed: OPDSFeed): Promise<any> {
+    public async convertOpdsFeedToView(feed: OPDSFeed): Promise<OpdsResultView> {
         const title = convertMultiLangStringToString(feed.Metadata.Title);
         let type = OpdsResultType.Empty;
         let navigation = null;
@@ -198,7 +198,6 @@ export class OpdsFeedViewConverter {
             publications,
             navigation,
             searchUrl,
-            feed,
         };
     }
 }
