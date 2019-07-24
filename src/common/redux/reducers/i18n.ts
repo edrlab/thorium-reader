@@ -11,7 +11,7 @@ import { i18nActions } from "readium-desktop/common/redux/actions";
 
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 
-const initialState: I18NState = {
+export const initialState: I18NState = {
     locale: "en",
 };
 

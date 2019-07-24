@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
@@ -22,6 +23,11 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { Store } from "redux";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import * as i18nReducer from "readium-desktop/common/redux/reducers/i18n";
+
+// Logger
+const debug = debug_("readium-desktop:main-init");
 
 // Callback called when a window is opened
 const winOpenCallback = (appWindow: AppWindow) => {
@@ -171,14 +177,51 @@ const winCloseCallback = (appWindow: AppWindow) => {
     }
 };
 
+function handleLocale(store: Store<RootState>) {
+    const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
+
+    configRepository.get("i18n").then((i18nLocale) => {
+        if (i18nLocale && i18nLocale.value && i18nLocale.value.locale) {
+            store.dispatch(setLocale(i18nLocale.value.locale));
+            debug(`set the locale ${i18nLocale.value.locale}`);
+        } else {
+            debug(`error on configRepository.get("i18n")): ${i18nLocale}`);
+        }
+    }).catch(() => {
+        const loc = app.getLocale().split("-")[0];
+        const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
+        store.dispatch(setLocale(lang));
+        configRepository.save({
+            identifier: "i18n",
+            value: { locale: lang },
+        });
+        debug(`create i18n key in configRepository with ${lang} locale`);
+    });
+
+    let currentValue: string = i18nReducer.initialState.locale;
+    store.subscribe(() => {
+        const previousValue = currentValue;
+        currentValue = store.getState().i18n.locale;
+        if (previousValue !== currentValue) {
+            try {
+                configRepository.save({
+                    identifier: "i18n",
+                    value: { locale: currentValue },
+                });
+                debug(`locale updated from redux state: ${currentValue}`);
+            } catch (e) {
+                debug(`locale ${currentValue} not saved : ${e}`);
+            }
+        }
+    });
+}
+
 // Initialize application
 export function initApp() {
     const store = container.get("store") as Store<RootState>;
     store.dispatch(appInit());
 
-    const loc = app.getLocale().split("-")[0];
-    const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
-    store.dispatch(setLocale(lang));
+    handleLocale(store);
 
     const winRegistry = container.get("win-registry") as WinRegistry;
     winRegistry.registerOpenCallback(winOpenCallback);
