@@ -18,7 +18,7 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-interface TagManagerProps extends TranslatorProps {
+interface Props extends TranslatorProps {
     publicationIdentifier: string;
     tags: string[];
     updatedPublication?: PublicationView;
@@ -31,8 +31,8 @@ interface TagManagerState {
     nameNewTag: string;
 }
 
-export class TagManager extends React.Component<TagManagerProps, TagManagerState> {
-    public constructor(props: any) {
+export class TagManager extends React.Component<Props, TagManagerState> {
+    public constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -45,15 +45,15 @@ export class TagManager extends React.Component<TagManagerProps, TagManagerState
         this.addTag = this.addTag.bind(this);
     }
 
-    public componentDidUpdate() {
-        if (this.props.updatedPublication && this.props.updatedPublication.tags
-            && this.state.tags !== this.props.updatedPublication.tags) {
-            this.setState({tags: this.props.updatedPublication.tags});
+    public componentDidUpdate(oldProps: Props) {
+        if (this.props.tags !== oldProps.tags) {
+            this.setState({tags: this.props.tags});
         }
     }
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
+
         return (
             <div>
                 { this.state.tags.length > 0 && <ul>

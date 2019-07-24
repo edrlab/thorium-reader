@@ -27,6 +27,8 @@ import OpdsControls from "./opdsControls";
 
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
+import { RootState } from "readium-desktop/renderer/redux/states";
+
 import classNames from "classnames";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
@@ -37,6 +39,7 @@ interface Props extends TranslatorProps {
     closeDialog?: any;
     getPublicationFromId?: any;
     hideControls?: boolean;
+    lastAction: any;
 }
 
 interface State {
@@ -68,6 +71,13 @@ export class PublicationInfo extends React.Component<Props, State> {
     public componentDidUpdate(oldProps: Props) {
         if (oldProps.publication !== this.props.publication) {
             this.needSeeMoreButton();
+        }
+
+        if (oldProps.lastAction !== this.props.lastAction
+            && this.props.lastAction.moduleId === "publication"
+            && this.props.lastAction.methodId === "updateTags"
+        ) {
+            this.props.getPublicationFromId();
         }
     }
 
@@ -189,9 +199,15 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
+const mapStateToProps = (state: RootState) => {
+    return {
+        lastAction: state.api.lastSuccess.action.meta.api,
+    };
+};
+
 const buildRequestData = (props: Props) => {
     return {
-        identifier: props.publicationIdentifier,
+        identifier: props.publicationIdentifier || props.publication.identifier,
     };
 };
 
@@ -208,5 +224,6 @@ export default withTranslator(withApi(
             },
         ],
         mapDispatchToProps,
+        mapStateToProps,
     },
 ));
