@@ -170,7 +170,6 @@ export class PublicationInfo extends React.Component<Props, State> {
                         <span>{__("catalog.lang")}</span> { __(`languages.${formatedLanguages}`) } <br/>
                         <span>{__("catalog.id")}</span> { publication.workIdentifier } <br/>
                     </p>
-                    <button onClick={() => this.props.getPublicationFromId()}>lolilol</button>
                 </div>
             </div>
             </>
