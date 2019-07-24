@@ -24,7 +24,7 @@ export function debounce<F extends (...args: any[]) => Promise<void> | void>(
 ) {
     let timeoutId: NodeJS.Timer | undefined;
 
-    return (...args: any[]) => {
+    return function fct(this: any, ...args: any[]): Promise<void> | void {
 
         const doLater = async () => {
             timeoutId = undefined;
@@ -44,7 +44,7 @@ export function debounce<F extends (...args: any[]) => Promise<void> | void>(
         timeoutId = setTimeout(doLater, waitMilliseconds) as any;
 
         if (shouldCallNow) {
-            Promise.resolve(func.apply(this, args));
+            return Promise.resolve(func.apply(this, args));
         }
     };
 }
