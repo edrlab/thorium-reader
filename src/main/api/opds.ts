@@ -30,16 +30,11 @@ import { httpGet } from "readium-desktop/common/utils";
 
 @injectable()
 export class OpdsApi {
-    private opdsFeedRepository: OpdsFeedRepository;
-    private opdsFeedViewConverter: OpdsFeedViewConverter;
+    @inject("opds-feed-repository")
+    private readonly opdsFeedRepository!: OpdsFeedRepository;
 
-    constructor(
-        @inject("opds-feed-repository") opdsFeedRepository: OpdsFeedRepository,
-        @inject("opds-feed-view-converter") opdsFeedViewConverter: OpdsFeedViewConverter,
-    ) {
-        this.opdsFeedRepository = opdsFeedRepository;
-        this.opdsFeedViewConverter = opdsFeedViewConverter;
-    }
+    @inject("opds-feed-view-converter")
+    private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
 
     public async getFeed(data: any): Promise<OpdsFeedView> {
         const { identifier } = data;

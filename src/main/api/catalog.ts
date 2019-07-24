@@ -26,19 +26,19 @@ export const CATALOG_CONFIG_ID = "catalog";
 @injectable()
 export class CatalogApi {
     @inject("publication-repository")
-    private publicationRepository: PublicationRepository;
+    private readonly publicationRepository!: PublicationRepository;
 
     @inject("config-repository")
-    private configRepository: ConfigRepository;
+    private readonly configRepository!: ConfigRepository;
 
     @inject("locator-repository")
-    private locatorRepository: LocatorRepository;
+    private readonly locatorRepository!: LocatorRepository;
 
     @inject("publication-view-converter")
-    private publicationViewConverter: PublicationViewConverter;
+    private readonly publicationViewConverter!: PublicationViewConverter;
 
     @inject("translator")
-    private translator: Translator;
+    private readonly translator!: Translator;
 
     public async get(): Promise<CatalogView> {
         const __ = this.translator.translate.bind(this.translator);

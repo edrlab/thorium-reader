@@ -7,7 +7,7 @@
 
 import * as uuid from "uuid";
 
-import { inject, injectable} from "inversify";
+import { injectable } from "inversify";
 
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 
@@ -19,13 +19,13 @@ const DEVICE_ID_PREFIX = "device_id_";
 @injectable()
 export class DeviceIdManager implements IDeviceIDManager {
     // Config repository
-    private configRepository: ConfigRepository;
+    private readonly configRepository: ConfigRepository;
 
-    private deviceName: string;
+    private readonly deviceName: string;
 
     public constructor(
         deviceName: string,
-        @inject("config-repository") configRepository: ConfigRepository,
+        configRepository: ConfigRepository,
     ) {
         this.deviceName = deviceName;
         this.configRepository = configRepository;

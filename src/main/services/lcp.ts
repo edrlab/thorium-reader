@@ -53,19 +53,19 @@ const debug = debug_("readium-desktop:main#services/lcp");
 @injectable()
 export class LcpManager {
     @inject("device-id-manager")
-    private deviceIdManager: DeviceIdManager;
+    private readonly deviceIdManager!: DeviceIdManager;
 
     @inject("publication-storage")
-    private publicationStorage: PublicationStorage;
+    private readonly publicationStorage!: PublicationStorage;
 
     @inject("publication-repository")
-    private publicationRepository: PublicationRepository;
+    private readonly publicationRepository!: PublicationRepository;
 
     @inject("lcp-secret-repository")
-    private lcpSecretRepository: LcpSecretRepository;
+    private readonly lcpSecretRepository!: LcpSecretRepository;
 
     @inject("streamer")
-    private streamer: Server;
+    private readonly streamer!: Server;
 
     /**
      * Inject lcpl document in publication

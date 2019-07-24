@@ -56,22 +56,17 @@ const debug = debug_("readium-desktop:main#services/catalog");
 
 @injectable()
 export class CatalogService {
-    private downloader: Downloader;
-    private lcpManager: LcpManager;
-    private publicationStorage: PublicationStorage;
-    private publicationRepository: PublicationRepository;
+    @inject("downloader")
+    private readonly downloader!: Downloader;
 
-    public constructor(
-        @inject("publication-repository") publicationRepository: PublicationRepository,
-        @inject("publication-storage") publicationStorage: PublicationStorage,
-        @inject("downloader") downloader: Downloader,
-        @inject("lcp-manager") lcpManager: LcpManager,
-    ) {
-        this.publicationRepository = publicationRepository;
-        this.publicationStorage = publicationStorage;
-        this.downloader = downloader;
-        this.lcpManager = lcpManager;
-    }
+    @inject("lcp-manager")
+    private readonly lcpManager!: LcpManager;
+
+    @inject("publication-storage")
+    private readonly publicationStorage!: PublicationStorage;
+
+    @inject("publication-repository")
+    private readonly publicationRepository!: PublicationRepository;
 
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument> {
         const ext = path.extname(filePath);
