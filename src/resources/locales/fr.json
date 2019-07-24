@@ -19,7 +19,7 @@
     "myBooks": "Mes livres",
     "allBooks": "Tous les livres",
     "bookInfo": "Fiche livre",
-    "delete": "Supprimer définitivement",
+    "delete": "Supprimer",
     "export": "Exporter",
     "released": "Publié le",
     "description": "Description",
@@ -32,7 +32,7 @@
     "addTags": "Ajouter un tag",
     "deleteTag": "Supprimer le tag",
     "readBook": "Lire",
-    "deleteBook": "supprimer de la bibliothèque",
+    "deleteBook": "Supprimer",
     "tags": "Mes tags",
     "sort": "trier par",
     "tagCount": "Nombre de tags",
@@ -153,11 +153,11 @@
     },
     "menu": {
       "aboutBook": "Fiche livre",
-      "addExtract": "Ajouter à la bibliothèque",
+      "addExtract": "Importer",
       "goBuyBook": "Aller sur la page d'achat",
       "goLoanBook": "Aller sur la page d'emprunt",
       "goSubBook": "Aller sur la page d'abonnement",
-      "addTeaser": "Ajouter l'extrait à la bibliothèque"
+      "addTeaser": "Importer l'extrait"
     },
     "breadcrumbRoot": "Catalogues"
   },
