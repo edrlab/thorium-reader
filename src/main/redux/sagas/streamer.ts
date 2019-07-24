@@ -37,7 +37,7 @@ async function startStreamer(streamer: Server): Promise<string> {
     return portfinder.getPortPromise()
         .then(async (port) => {
             // HTTPS, see secureSessions()
-            const streamerInfo = await streamer.start(port, true);
+            await streamer.start(port, true);
 
             const streamerUrl = streamer.serverUrl();
             debug("Streamer started on %s", streamerUrl);
@@ -54,7 +54,7 @@ function stopStreamer(streamer: Server) {
 
 export function* startRequestWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(streamerActions.ActionType.StartRequest);
+        yield take(streamerActions.ActionType.StartRequest);
         const streamer: Server = container.get("streamer") as Server;
 
         try {
@@ -78,7 +78,7 @@ export function* startRequestWatcher(): SagaIterator {
 
 export function* stopRequestWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(streamerActions.ActionType.StopRequest);
+        yield take(streamerActions.ActionType.StopRequest);
         const streamer: Server = container.get("streamer") as Server;
 
         try {

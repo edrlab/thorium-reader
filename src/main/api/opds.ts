@@ -13,14 +13,11 @@ import * as xmldom from "xmldom";
 
 import {
     convertOpds1ToOpds2,
-    convertOpds1ToOpds2_EntryToPublication,
 } from "@r2-opds-js/opds/converter";
 
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
-import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
-import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
@@ -30,7 +27,6 @@ import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 
 import { httpGet } from "readium-desktop/common/utils";
-import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 
 @injectable()
 export class OpdsApi {
@@ -76,7 +72,7 @@ export class OpdsApi {
     public async browse(data: any): Promise<any> {
         const { url } = data;
         const opdsFeedData = await httpGet(url) as string;
-        let opds2Publication: OPDSPublication = null;
+        // let opds2Publication: OPDSPublication = null;
         let opds2Feed: OPDSFeed = null;
 
         // This is an opds feed in version 1
@@ -92,12 +88,14 @@ export class OpdsApi {
 
         const isEntry = xmlDom.documentElement.localName === "entry";
         if (isEntry) {
-            const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
-            opds2Publication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
+            // const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
+            // opds2Publication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
         } else {
             const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
             opds2Feed = convertOpds1ToOpds2(opds1Feed);
             return this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
         }
+
+        return undefined;
     }
 }

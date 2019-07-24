@@ -7,7 +7,6 @@
 
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
 import { withApi } from "../utils/api";
 
 import { Link } from "react-router-dom";

@@ -7,8 +7,6 @@
 
 import * as React from "react";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
@@ -16,8 +14,6 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
 
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 

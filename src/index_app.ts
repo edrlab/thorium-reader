@@ -7,8 +7,6 @@
 
 import "font-awesome/css/font-awesome.css";
 
-import * as path from "path";
-
 import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -33,7 +31,7 @@ import {
 
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
-import { IActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { IActionWithSender } from "readium-desktop/common/models/sync";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 

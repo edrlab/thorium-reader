@@ -35,7 +35,7 @@ class SameFileImportConfirm extends React.Component<Props> {
     }
 
     public render(): React.ReactElement<{}>  {
-        const { __, publication } = this.props;
+        const { __ } = this.props;
         return (
             <div>
                 <p>

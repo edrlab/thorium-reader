@@ -1,12 +1,11 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-import * as PouchDB from "pouchdb-core";
 
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
 
-import { clearDatabase, createDatabase,  } from "test/main/db/utils";
+import { clearDatabase, createDatabase } from "test/main/db/utils";
 
 let repository: ConfigRepository = null;
 let db: PouchDB.Database = null;

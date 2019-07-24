@@ -4,8 +4,6 @@
       "strictPropertyInitialization": true,
     },
     "__TMP__": {
-      "noFallthroughCasesInSwitch": true,
-      "noUnusedLocals": true,
       "noUnusedParameters": true,
       "noImplicitUseStrict": false,
       "declaration": true,

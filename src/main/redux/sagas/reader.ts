@@ -5,10 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
 import * as path from "path";
 
-import { BrowserWindow, Rectangle, webContents } from "electron";
+import { BrowserWindow } from "electron";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
@@ -38,19 +37,7 @@ import {
 import { AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 
-import { IActionWithSender, SenderType } from "readium-desktop/common/models/sync";
-
-// Logger
-const debug = debug_("readium-desktop:main:redux:sagas:reader");
-
-function openAllDevTools() {
-    for (const wc of webContents.getAllWebContents()) {
-        // if (wc.hostWebContents &&
-        //     wc.hostWebContents.id === electronBrowserWindow.webContents.id) {
-        // }
-        wc.openDevTools();
-    }
-}
+import { IActionWithSender } from "readium-desktop/common/models/sync";
 
 async function openReader(publication: Publication, manifestUrl: string) {
     // Create reader window

@@ -9,11 +9,7 @@ import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
-import { Translator } from "readium-desktop/common/services/translator";
-import { lazyInject } from "readium-desktop/renderer/di";
-
 import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
-import * as AudioIcon from "readium-desktop/renderer/assets/icons/baseline-volume_up-24px.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/font-size.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark_border-24px.svg";
@@ -23,10 +19,6 @@ import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-cro
 import * as QuitFullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-uncrop_free-24px.svg";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-
-import * as readerActions from "readium-desktop/common/redux/actions/reader";
-
-import { withApi } from "../utils/api";
 
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";

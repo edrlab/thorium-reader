@@ -1,13 +1,10 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-import * as PouchDB from "pouchdb-core";
 
 import { LocatorType } from "readium-desktop/common/models/locator";
 
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-
-import { LocatorDocument } from "readium-desktop/main/db/document/locator";
 
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
 

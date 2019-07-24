@@ -17,6 +17,8 @@
     "alwaysStrict": true,
     "strictFunctionTypes": true,
     "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
 
     "module": "commonjs",
     "lib": ["es2017", "es6", "dom"],

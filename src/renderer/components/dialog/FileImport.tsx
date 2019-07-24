@@ -28,11 +28,9 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const {__} = this.props;
         return (
             <div>
                 { this.buildBasicFileImportList() }
-
             </div>
         );
     }

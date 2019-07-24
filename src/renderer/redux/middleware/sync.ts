@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { ipcRenderer } from "electron";
-import { Action, AnyAction, Dispatch, Middleware, MiddlewareAPI, Store } from "redux";
+import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { syncIpc } from "readium-desktop/common/ipc";
 import {

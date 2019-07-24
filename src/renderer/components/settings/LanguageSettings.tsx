@@ -15,8 +15,6 @@ import { connect } from "react-redux";
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 
-import Header from "./Header";
-
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
@@ -43,7 +41,7 @@ export class LanguageSettings extends React.Component<Props, States> {
     }
 
     public render(): React.ReactElement<{}> {
-        const secondaryHeader = <Header section={2}/>;
+        // const secondaryHeader = <Header section={2}/>;
         const { __ } = this.props;
         return (
             <>

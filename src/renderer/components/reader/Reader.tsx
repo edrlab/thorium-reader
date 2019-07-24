@@ -54,8 +54,6 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
-import ReaderMenu from "readium-desktop/renderer/components/reader/ReaderMenu";
-import ReaderOptions from "readium-desktop/renderer/components/reader/ReaderOptions";
 import { container, lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
@@ -63,7 +61,6 @@ import { JSON as TAJSON } from "ta-json-x";
 
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { PublicationView } from "readium-desktop/common/views/publication";
 
 import optionsValues from "./options-values";
 
@@ -164,13 +161,12 @@ const publicationJsonUrl = queryParams["pub"];
 // tslint:disable-next-line:variable-name
 const publicationJsonUrl_ = publicationJsonUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
     convertCustomSchemeToHttpUrl(publicationJsonUrl) : publicationJsonUrl;
-const pathBase64Raw = publicationJsonUrl_.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
-const pathBase64 = decodeURIComponent(pathBase64Raw);
-const pathDecoded = window.atob(pathBase64);
-
-const pathFileName = pathDecoded.substr(
-    pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
-    pathDecoded.length - 1);
+// const pathBase64Raw = publicationJsonUrl_.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+// const pathBase64 = decodeURIComponent(pathBase64Raw);
+// const pathDecoded = window.atob(pathBase64);
+// const pathFileName = pathDecoded.substr(
+//     pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
+//     pathDecoded.length - 1);
 
 // tslint:disable-next-line:no-string-literal
 const lcpHint = queryParams["lcpHint"];

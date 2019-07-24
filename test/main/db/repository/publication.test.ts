@@ -1,7 +1,6 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-import * as PouchDB from "pouchdb-core";
 
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 

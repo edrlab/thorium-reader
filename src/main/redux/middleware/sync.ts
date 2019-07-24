@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action, AnyAction, Dispatch, Middleware, MiddlewareAPI, Store } from "redux";
+import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
@@ -27,7 +27,7 @@ import { IActionWithSender, SenderType } from "readium-desktop/common/models/syn
 
 import * as debug_ from "debug";
 
-import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
+import { AppWindow } from "readium-desktop/common/models/win";
 
 const debug = debug_("readium-desktop:sync");
 

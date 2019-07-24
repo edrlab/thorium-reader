@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import * as ReactDom from "react-dom";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 

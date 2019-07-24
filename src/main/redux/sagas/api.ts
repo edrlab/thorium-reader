@@ -8,11 +8,10 @@
 import { container } from "readium-desktop/main/di";
 
 import * as debug_ from "debug";
-import * as moment from "moment";
 
 import { SagaIterator } from "redux-saga";
 
-import { call, fork, put, select, take } from "redux-saga/effects";
+import { call, fork, put, take } from "redux-saga/effects";
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 

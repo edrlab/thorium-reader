@@ -14,8 +14,6 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-import { setLatestVersion } from "readium-desktop/common/redux/actions/update";
-
 interface SearchProps extends RouteComponentProps, TranslatorProps {}
 
 export class Search extends React.Component<SearchProps, undefined> {

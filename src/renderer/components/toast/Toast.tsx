@@ -49,7 +49,8 @@ export class Toast extends React.Component<Props, State> {
         setTimeout(this.handleClose, 5000);
         this.ref.addEventListener("transitionend", this.handleTransitionEnd, false);
         if (this.props.displaySystemNotification) {
-            const notif = new Notification("Thorium Reader", {
+            // tslint:disable-next-line: no-unused-expression
+            new Notification("Thorium Reader", {
                 body: this.props.message,
             });
         }
@@ -60,7 +61,7 @@ export class Toast extends React.Component<Props, State> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, icon, id } = this.props;
+        const { icon } = this.props;
         const { willLeave, toRemove } = this.state;
         return (
             <div

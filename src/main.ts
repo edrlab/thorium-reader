@@ -10,14 +10,14 @@ import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
 import * as path from "path";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
-import { IActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { IActionWithSender } from "readium-desktop/common/models/sync";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, netActions, readerActions, updateActions,
 } from "readium-desktop/common/redux/actions";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
-import { OpdsApi } from "readium-desktop/main/api/opds";
+
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { container } from "readium-desktop/main/di";
 import { appInit } from "readium-desktop/main/redux/actions/app";
@@ -65,7 +65,6 @@ setLcpNativePluginPath(lcpNativePluginPath);
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
 let mainWindow: BrowserWindow = null;
-let mainWindowId: any = null;
 
 initSessions();
 
@@ -198,7 +197,6 @@ async function createWindow() {
     // mainWindow.webContents.session.clearStorageData();
 
     mainWindow.on("closed", () => {
-        mainWindowId = null;
         mainWindow = null;
     });
 

@@ -9,7 +9,7 @@ import * as qs from "query-string";
 
 import * as React from "react";
 
-import { Link, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
