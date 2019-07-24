@@ -12,13 +12,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
-import * as packageJson from "readium-desktop/package.json";
-import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/translator";
 import { promisify } from "util";
-import Header from "./Header";
 
 declare const __PACKAGING__: string;
 
