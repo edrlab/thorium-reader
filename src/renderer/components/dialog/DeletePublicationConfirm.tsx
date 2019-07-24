@@ -58,9 +58,9 @@ export class DeletePublicationConfirm extends React.Component<DeletePublicationC
     }
 }
 
-const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+const mapDispatchToProps = (dispatch: any, _ownProps: any) => {
     return {
-        closeDialog: (data: any) => {
+        closeDialog: (_data: any) => {
             dispatch(
                 dialogActions.close(),
             );

@@ -321,10 +321,10 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             }
         });
 
-        window.document.documentElement.addEventListener("keydown", (ev: KeyboardEvent) => {
+        window.document.documentElement.addEventListener("keydown", (_ev: KeyboardEvent) => {
             window.document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
         }, true);
-        window.document.documentElement.addEventListener("mousedown", (ev: MouseEvent) => {
+        window.document.documentElement.addEventListener("mousedown", (_ev: MouseEvent) => {
             window.document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
         }, true);
 
@@ -341,7 +341,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == ActionType.CloseRequest,
         // but narrow it down specically to a reader window instance (not application-wide)
-        window.document.addEventListener("Thorium:DialogClose", (ev: Event) => {
+        window.document.addEventListener("Thorium:DialogClose", (_ev: Event) => {
             this.setState({
                 shortcutEnable: true,
             });
@@ -721,7 +721,7 @@ const mapStateToProps = (state: RootState, __: any) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any, props: ReaderProps) => {
+const mapDispatchToProps = (dispatch: any, _props: ReaderProps) => {
     return {
         toggleFullscreen: (fullscreenOn: boolean) => {
             if (fullscreenOn) {
@@ -753,7 +753,7 @@ const mapDispatchToProps = (dispatch: any, props: ReaderProps) => {
     };
 };
 
-const buildRequestData = (props: ReaderProps) => {
+const buildRequestData = (_props: ReaderProps) => {
     const parsedResult = qs.parse(document.location.href);
     return {
         identifier: parsedResult.pubId,

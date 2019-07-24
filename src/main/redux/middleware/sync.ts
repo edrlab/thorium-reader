@@ -63,7 +63,7 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 ];
 
 export const reduxSyncMiddleware: Middleware
-    = (store: MiddlewareAPI<Dispatch<AnyAction>>) =>
+    = (_store: MiddlewareAPI<Dispatch<AnyAction>>) =>
     (next: Dispatch<IActionWithSender>) =>
     ((action: IActionWithSender) => {
 

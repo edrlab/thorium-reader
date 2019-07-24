@@ -98,9 +98,9 @@ export class OpdsFeedAddForm extends React.Component<Props, State> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+const mapDispatchToProps = (dispatch: any, _ownProps: any) => {
     return {
-        closeDialog: (data: any) => {
+        closeDialog: (_data: any) => {
             dispatch(
                 dialogActions.close(),
             );

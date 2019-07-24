@@ -110,7 +110,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
             {},
             dispatchToPropsResult,
             {
-                requestOnLoadData: (data: any) => {
+                requestOnLoadData: (_data: any) => {
                     for (const operationRequest of operationRequests) {
                         if (operationRequest.definition.onLoad) {
                             operationRequest.caller(ownProps)();

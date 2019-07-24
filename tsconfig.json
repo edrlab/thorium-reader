@@ -19,6 +19,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": true,
 
     "module": "commonjs",
     "lib": ["es2017", "es6", "dom"],

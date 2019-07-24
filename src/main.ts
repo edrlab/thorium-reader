@@ -271,11 +271,11 @@ app.on("activate", async () => {
     }
 });
 
-app.on("open-url", (event: any, url: any) => {
+app.on("open-url", (event: any, _url: any) => {
     event.preventDefault();
     // Process url: import or open?
 });
-app.on("open-file", (event: any, url: any) => {
+app.on("open-file", (event: any, _url: any) => {
     event.preventDefault();
     // Process file: import or open?
 });
@@ -457,7 +457,7 @@ function processCommandLine() {
         return false;
     }
 
-    promise.then((result: any) => {
+    promise.then((_result: any) => {
         debug("Command processed");
         app.quit();
     })

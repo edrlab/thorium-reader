@@ -4,7 +4,6 @@
       "strictPropertyInitialization": true,
     },
     "__TMP__": {
-      "noUnusedParameters": true,
       "noImplicitUseStrict": false,
       "declaration": true,
       "noEmit": false,

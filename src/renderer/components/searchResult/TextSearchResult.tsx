@@ -32,7 +32,7 @@ interface TextSearchResultProps extends TranslatorProps, RouteComponentProps {
 }
 
 export class TextSearchResult extends React.Component<TextSearchResultProps, undefined> {
-    public componentDidUpdate(prevProps: any, prevState: any, snapshot?: any): boolean {
+    public componentDidUpdate(prevProps: any, _prevState: any, _snapshot?: any): boolean {
         const text = (this.props.match.params as any).value;
         const prevText = (prevProps.match.params as any).value;
 

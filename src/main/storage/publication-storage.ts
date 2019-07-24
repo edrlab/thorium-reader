@@ -113,7 +113,7 @@ export class PublicationStorage {
             filename,
         );
 
-        return new Promise<File>((resolve, reject) => {
+        return new Promise<File>((resolve, _reject) => {
             const writeStream = fs.createWriteStream(dstPath);
             const fileResolve = () => {
                 resolve({

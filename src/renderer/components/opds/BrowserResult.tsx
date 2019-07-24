@@ -31,7 +31,7 @@ interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
 }
 
 export class BrowserResult extends React.Component<BrowserResultProps, null> {
-    public componentDidUpdate?(prevProps: BrowserResultProps, prevState: any) {
+    public componentDidUpdate?(prevProps: BrowserResultProps, _prevState: any) {
         if (prevProps.url !== this.props.url) {
             // New url to browse
             this.props.cleanData(),
