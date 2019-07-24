@@ -42,16 +42,25 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
+    if (!db) {
+        return;
+    }
     repository = null;
     await clearDatabase(db);
 });
 
 test("repository.findAll", async () => {
+    if (!repository) {
+        return;
+    }
     const result = await repository.findAll();
     expect(result.length).toBe(2);
 });
 
 test("repository.get - found", async () => {
+    if (!repository) {
+        return;
+    }
     const result = await repository.get("feed-1");
     expect(result.identifier).toBe("feed-1");
     expect(result.title).toBe("Feed 1");
@@ -59,6 +68,9 @@ test("repository.get - found", async () => {
 });
 
 test("repository.get - not found", async () => {
+    if (!repository) {
+        return;
+    }
     // Test unknown key
     try {
         await repository.get("feed-3");
@@ -69,6 +81,9 @@ test("repository.get - not found", async () => {
 });
 
 test("repository.save create", async () => {
+    if (!repository) {
+        return;
+    }
     const dbDoc = {
         identifier: "new-feed",
         title: "New feed",
@@ -84,6 +99,9 @@ test("repository.save create", async () => {
 });
 
 test("repository.save update", async () => {
+    if (!repository) {
+        return;
+    }
     const dbDoc = {
         identifier: "feed-1",
         title: "New feed",
@@ -99,6 +117,9 @@ test("repository.save update", async () => {
 });
 
 test("repository.delete", async () => {
+    if (!db || !repository) {
+        return;
+    }
     const result = await db.get("opds-feed_feed-1") as any;
     expect(result.identifier).toBe("feed-1");
 
