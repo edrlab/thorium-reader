@@ -15,47 +15,38 @@ import { Store } from "redux";
 import { URL } from "url";
 import { isArray } from "util";
 
-export async function cli_(filePath: string[] | string) {
+export async function cli_(filePath: string) {
+    // import and read publication
+    const catalogService = container.get("catalog-service") as CatalogService;
+    const publication = await catalogService.importFile(filePath);
+    const store = container.get("store") as Store<RootState>;
+    if (publication) {
+        store.dispatch({
+            type: readerActions.ActionType.OpenRequest,
+            payload: {
+                publication: {
+                    identifier: publication.identifier,
+                },
+            },
+        });
+    } else {
+        return false;
+    }
+    return true;
+}
 
-    let publicationOpenRequested = false;
+export async function cliImport(filePath: string[] | string) {
+
     let returnValue = true;
     const filePathArray = isArray(filePath) ? filePath : [filePath];
 
     for (const fp of filePathArray) {
-        // import and read publication
         const catalogService = container.get("catalog-service") as CatalogService;
-        const publication = await catalogService.importFile(fp);
-        const store = container.get("store") as Store<RootState>;
-        if (publication) {
-            if (!publicationOpenRequested) {
-                store.dispatch({
-                    type: readerActions.ActionType.OpenRequest,
-                    payload: {
-                        publication: {
-                            identifier: publication.identifier,
-                        },
-                    },
-                });
-                publicationOpenRequested = true;
-            }
-        } else {
-            process.stderr.write(`Publication error for "${filePath}"\n`);
+        if (!await catalogService.importFile(fp)) {
             returnValue = false;
         }
     }
     return returnValue;
-}
-
-export async function cliImport(filePath: string) {
-    try {
-        const catalogService = container.get("catalog-service") as CatalogService;
-        if (!await catalogService.importFile(filePath)) {
-            throw new Error();
-        }
-    } catch (e) {
-        return false;
-    }
-    return true;
 }
 
 export async function cliOpds(title: string, url: string) {

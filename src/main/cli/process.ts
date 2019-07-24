@@ -6,10 +6,12 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app } from "electron";
+import { app, dialog } from "electron";
+import * as glob from "glob";
 import * as path from "path";
 import { _PACKAGING } from "readium-desktop/preprocessor-directives";
 import * as yargs from "yargs";
+
 import { cli_, cliImport, cliOpds, cliRead } from "./commandLine";
 
 declare const __APP_NAME__: string;
@@ -39,7 +41,7 @@ export function cli(mainFct: () => void) {
                 promise.then((isValid) => {
                     if (isValid) {
                         app.exit(0);
-                        return ;
+                        return;
                     }
                     app.exit(1);
                 }).catch(() => {
@@ -51,17 +53,23 @@ export function cli(mainFct: () => void) {
             "import epub or lpcl file",
             (y) =>
                 y.positional("path", {
-                    describe: "path of your publication",
+                    describe: "absolute, relative or globbing path",
                     type: "string",
-                    coerce: (arg) => path.resolve(arg),
                 })
+                .example("import", "\"./myPath/**/*.epub\"")
+                .example("import", "\"/*.epub\"")
+                .example("import", "\"myPublication.epub\"")
             ,
             (argv) => {
-                const promise = cliImport(argv.path);
+                const pathArray = glob.sync(argv.path, {
+                    absolute: true,
+                    realpath: true,
+                }) || [];
+                const promise = cliImport(pathArray);
                 promise.then((isValid) => {
                     if (isValid) {
                         app.exit(0);
-                        return ;
+                        return;
                     }
                     app.exit(1);
                 }).catch(() => {
@@ -79,7 +87,7 @@ export function cli(mainFct: () => void) {
             ,
             (argv) => {
                 mainFct();
-                app.on("will-finish-launching", async () => {
+                app.on("ready", async () => {
                     try {
                         if (!await cliRead(argv.title)) {
                             debug("no publication to read");
@@ -94,20 +102,22 @@ export function cli(mainFct: () => void) {
             "default command",
             (y) =>
                 y.positional("path", {
-                    describe: "publication in absolute or relative path",
+                    describe: "path of your publication, it can be an absolute, relative path",
                     type: "string",
                     coerce: (arg) => path.resolve(arg),
                 })
+                .completion()
             ,
             (argv) => {
-                // const filePathArray = argv._.map((p) => path.resolve(p));
-
                 mainFct();
                 if (argv.path) {
-                    app.on("will-finish-launching", async () => {
+                    app.on("ready", async () => {
                         try {
                             if (!await cli_(argv.path)) {
-                                debug("import failed for at least one of the given publication paths");
+                                const errorTitle = "Import Failed";
+                                const errorMessage = `Import failed for the publication path : ${argv.path}`;
+                                debug(errorMessage);
+                                dialog.showErrorBox(errorTitle, errorMessage);
                             }
                         } catch (e) {
                             debug("An error occurred during default CLI");
