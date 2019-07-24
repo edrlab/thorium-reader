@@ -72,9 +72,6 @@ export class Dialog extends React.Component<Props, undefined> {
                             title={__("dialog.closeModalWindow")}
                             data-dismiss="dialog"
                             onClick={this.props.close}
-                            onKeyPress={(e) => {
-                                if (e.charCode === 13) { this.props.close(); }
-                            }}
                         >
                             <SVG svg={QuitIcon}/>
                         </button>
