@@ -8,7 +8,7 @@ import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
 
-import { clearDatabase, createDatabase,  } from "test/main/db/utils";
+import { clearDatabase, createDatabase } from "test/main/db/utils";
 
 let repository: LocatorRepository = null;
 let db: PouchDB.Database = null;
@@ -150,7 +150,7 @@ test("repository.save create", async () => {
     expect(result.publicationIdentifier).toBe("pub-1");
     expect(result.locator.href).toBe("/spines/spine-3");
     expect(result.locator.locations.position).toBe(138);
-    expect(result.createdAt).toBeDefined()
+    expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
     expect(result.createdAt === result.updatedAt).toBeTruthy();
 });
@@ -175,7 +175,7 @@ test("repository.save update", async () => {
     expect(result.locator.href).toBe("/spines/spine-1");
     expect(result.locator.title).toBe("New bookmark");
     expect(result.locator.locations.position).toBe(12);
-    expect(result.createdAt).toBeDefined()
+    expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
     expect(result.createdAt < result.updatedAt).toBeTruthy();
 });
@@ -187,7 +187,7 @@ test("repository.delete", async () => {
     // Delete locator 1
     await repository.delete("bookmark-1");
     try {
-        await db.get("bookmark-1") as any;
+        await db.get("bookmark-1");
     } catch (e) {
         expect(e.message).toBe("missing");
     }

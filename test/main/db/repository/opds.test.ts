@@ -8,8 +8,8 @@ import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
-let repository: OpdsFeedRepository = null;
-let db: PouchDB.Database = null;
+let repository: OpdsFeedRepository | null = null;
+let db: PouchDB.Database | null = null;
 const now = moment.now();
 
 const dbDocIdentifier1 = "feed-1";

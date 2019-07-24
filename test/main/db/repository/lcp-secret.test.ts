@@ -8,8 +8,8 @@ import { NotFoundError } from "readium-desktop/main/db/exceptions";
 
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
-let repository: LcpSecretRepository = null;
-let db: PouchDB.Database = null;
+let repository: LcpSecretRepository | null = null;
+let db: PouchDB.Database | null = null;
 const now = moment.now();
 
 const dbDocIdentifier1 = "lcp-secret-1";
