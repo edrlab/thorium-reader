@@ -14,11 +14,13 @@
       "allow-trailing-underscore",
       "allow-pascal-case"
     ],
+    "object-literal-sort-keys": false,
     "ordered-imports": [
       true,
       {
         "import-sources-order": "case-insensitive",
-        "named-imports-order": "lowercase-last"
+        "named-imports-order": "case-insensitive",
+        "__named-imports-order": "lowercase-last"
       }
     ],
     "no-console": [
@@ -33,7 +35,8 @@
       true,
       {
         "import-sources-order": "case-insensitive",
-        "named-imports-order": "lowercase-last"
+        "named-imports-order": "case-insensitive",
+        "__named-imports-order": "lowercase-last"
       }
     ]
   },
