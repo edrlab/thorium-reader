@@ -30,7 +30,6 @@ export class Dialog extends React.Component<Props, undefined> {
         super(props);
 
         this.handleKeyPress = this.handleKeyPress.bind(this);
-
     }
     public componentDidMount() {
         document.addEventListener("keydown", this.handleKeyPress);

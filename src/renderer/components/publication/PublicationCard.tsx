@@ -44,14 +44,12 @@ interface PublicationCardState {
 }
 
 class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
-
     public constructor(props: any) {
         super(props);
 
         this.state = {
             menuOpen: false,
         };
-
         this.toggleMenu = this.toggleMenu.bind(this);
         this.openCloseMenu = this.openCloseMenu.bind(this);
         this.truncateTitle = this.truncateTitle.bind(this);
