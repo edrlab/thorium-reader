@@ -20,7 +20,7 @@ import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
-import { OpdsFeedView } from "readium-desktop/common/views/opds";
+import { OpdsFeedView, OpdsResultView } from "readium-desktop/common/views/opds";
 
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 
@@ -64,7 +64,7 @@ export class OpdsApi {
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
-    public async browse(data: any): Promise<any> {
+    public async browse(data: any): Promise<OpdsResultView> {
         const { url } = data;
         const opdsFeedData = await httpGet(url) as string;
         // let opds2Publication: OPDSPublication = null;
@@ -91,6 +91,6 @@ export class OpdsApi {
             return this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
         }
 
-        return undefined;
+        return Promise.reject("OPDS API browse nil");
     }
 }
