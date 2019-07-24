@@ -51,10 +51,7 @@ export class LanguageSettings extends React.Component<Props, States> {
             if (__PACKAGING__ === "0") {
                 folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
             }
-            let fileContent = await promisify(readFile)(path.join(folderPath, `${locale}.md`), {encoding: "utf8"});
-            if ((packageJson as any).version) {
-                fileContent = fileContent.replace("{{version}}", (packageJson as any).version);
-            }
+            const fileContent = await promisify(readFile)(path.join(folderPath, `${locale}.md`), {encoding: "utf8"});
             this.parsedMarkdown = (new commonmark.HtmlRenderer()).render((new commonmark.Parser()).parse(fileContent));
         } catch (__) {
             this.parsedMarkdown = "<h1>There is no information for your language</h1>";

@@ -14,6 +14,8 @@ import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 
+import * as packageJson from "readium-desktop/package.json";
+
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 interface Props extends TranslatorProps {
@@ -26,7 +28,7 @@ class AboutThoriumButton extends React.Component<Props> {
         return (
             <section id={style.aboutThoriumButton}>
                 <h2>{__("catalog.about.title")}</h2>
-                <p>V1.0.0.beta.2</p>
+                <p>{`V.${(packageJson as any).version}`}</p>
                 <button onClick={this.props.displayPublicationInfo}>
                     {__("catalog.about.button")}
                 </button>
