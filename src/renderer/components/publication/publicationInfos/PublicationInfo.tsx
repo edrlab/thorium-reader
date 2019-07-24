@@ -25,22 +25,58 @@ import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls";
 
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-interface PublicationInfoProps extends TranslatorProps {
+import { RootState } from "readium-desktop/renderer/redux/states";
+
+import classNames from "classnames";
+import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+
+interface Props extends TranslatorProps {
     publicationIdentifier: string;
     isOpds?: boolean;
     publication?: PublicationView;
     closeDialog?: any;
     getPublicationFromId?: any;
     hideControls?: boolean;
+    lastAction: any;
 }
 
-export class PublicationInfo extends React.Component<PublicationInfoProps, undefined> {
+interface State {
+    seeMore: boolean;
+    needSeeMore: boolean;
+}
+
+export class PublicationInfo extends React.Component<Props, State> {
+    private descriptionWrapperRef: any;
+    private descriptionRef: any;
+
+    public constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            seeMore: false,
+            needSeeMore: false,
+        };
+        this.toggleSeeMore = this.toggleSeeMore.bind(this);
+    }
+
     public componentDidMount() {
         if (this.props.publicationIdentifier) {
+            this.props.getPublicationFromId();
+        }
+        this.needSeeMoreButton();
+    }
+
+    public componentDidUpdate(oldProps: Props) {
+        if (oldProps.publication !== this.props.publication) {
+            this.needSeeMoreButton();
+        }
+
+        if (oldProps.lastAction !== this.props.lastAction
+            && this.props.lastAction.moduleId === "publication"
+            && this.props.lastAction.methodId === "updateTags"
+        ) {
             this.props.getPublicationFromId();
         }
     }
@@ -99,26 +135,57 @@ export class PublicationInfo extends React.Component<PublicationInfoProps, undef
                                 canModifyTag={!this.props.isOpds}
                             />
                         </div>
-
-                        {publication.description && <>
-                            <h3>{__("catalog.description")}</h3>
-                            <p className={styles.description}>{ publication.description }</p>
-                        </>}
-
-                        <h3>{__("catalog.moreInfo")}</h3>
-
-                        <p>
-                            { formatedPublishers &&
-                                <><span>{__("catalog.publisher")}</span> { formatedPublishers } <br/></>
-                            }
-                            <span>{__("catalog.lang")}</span> { __(`languages.${formatedLanguages}`) } <br/>
-                            <span>{__("catalog.id")}</span> { publication.workIdentifier } <br/>
-                        </p>
                     </div>
+
+                    {publication.description && <>
+                        <h3>{__("catalog.description")}</h3>
+                        <div
+                            ref={(ref) => this.descriptionWrapperRef = ref}
+                            className={classNames(
+                                styles.descriptionWrapper,
+                                this.state.needSeeMore && styles.hideEnd,
+                                this.state.seeMore && styles.seeMore,
+                            )}
+                        >
+                            <p
+                                ref={(ref) => this.descriptionRef = ref}
+                                className={styles.description}
+                            >
+                                { publication.description }
+                            </p>
+                        </div>
+                        { this.state.needSeeMore &&
+                            <button aria-hidden className={styles.seeMoreButton} onClick={this.toggleSeeMore}>
+                                { this.state.seeMore ? __("publication.seeLess") : __("publication.seeMore") }
+                            </button>
+                        }
+                    </>}
+
+                    <h3>{__("catalog.moreInfo")}</h3>
+
+                    <p>
+                        { formatedPublishers &&
+                            <><span>{__("catalog.publisher")}</span> { formatedPublishers } <br/></>
+                        }
+                        <span>{__("catalog.lang")}</span> { __(`languages.${formatedLanguages}`) } <br/>
+                        <span>{__("catalog.id")}</span> { publication.workIdentifier } <br/>
+                    </p>
                 </div>
             </div>
             </>
         );
+    }
+
+    private toggleSeeMore() {
+        this.setState({seeMore: !this.state.seeMore});
+    }
+
+    private needSeeMoreButton() {
+        if (!this.descriptionWrapperRef || !this.descriptionRef) {
+            return;
+        }
+        const need = this.descriptionWrapperRef.offsetHeight < this.descriptionRef.offsetHeight;
+        this.setState({needSeeMore: need});
     }
 }
 
@@ -132,9 +199,15 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-const buildRequestData = (props: PublicationInfoProps) => {
+const mapStateToProps = (state: RootState) => {
     return {
-        identifier: props.publicationIdentifier,
+        lastAction: state.api.lastSuccess.action.meta.api,
+    };
+};
+
+const buildRequestData = (props: Props) => {
+    return {
+        identifier: props.publicationIdentifier || props.publication.identifier,
     };
 };
 
@@ -151,5 +224,6 @@ export default withTranslator(withApi(
             },
         ],
         mapDispatchToProps,
+        mapStateToProps,
     },
 ));

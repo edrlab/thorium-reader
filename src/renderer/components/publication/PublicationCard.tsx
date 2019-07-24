@@ -26,11 +26,13 @@ import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import { lcpReadable } from "readium-desktop/utils/publication";
 
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 interface PublicationCardProps extends TranslatorProps {
     publication: PublicationView;
     menuContent: any;
     isOpds?: boolean;
+    InfoDialogIsOpen?: boolean;
     openInfosDialog?: (data: any) => void;
     openReader?: (data: any) => void;
     lsdStatus?: LsdStatus;
@@ -48,7 +50,6 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
         this.state = {
             menuOpen: false,
         };
-
         this.toggleMenu = this.toggleMenu.bind(this);
         this.openCloseMenu = this.openCloseMenu.bind(this);
         this.truncateTitle = this.truncateTitle.bind(this);
@@ -100,6 +101,7 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                         open={this.state.menuOpen}
                         dir="right"
                         toggle={this.openCloseMenu}
+                        infoDialogIsOpen={this.props.InfoDialogIsOpen}
                     />
                 </div>
             </div>
@@ -138,6 +140,13 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
     }
 }
 
+const mapStateToProps = (state: RootState) => {
+    return {
+        InfoDialogIsOpen: state.dialog.open &&
+        state.dialog.type === DialogType.PublicationInfo,
+    };
+};
+
 const mapDispatchToProps = (dispatch: any, props: PublicationCardProps) => {
     return {
         openReader: (publication: PublicationView) => {
@@ -174,6 +183,7 @@ const mapDispatchToProps = (dispatch: any, props: PublicationCardProps) => {
 export default withApi(
     withTranslator(PublicationCard),
     {
+        mapStateToProps,
         mapDispatchToProps,
         operations: [
             {

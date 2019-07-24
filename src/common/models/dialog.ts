@@ -16,4 +16,5 @@ export enum DialogType {
     LsdReturnConfirm = "lsd-return-confirm",
     LsdRenewConfirm = "lsd-renew-confirm",
     SameFileImportConfirm = "same-file-import-confirm",
+    AboutThorium = "about-thorium",
 }

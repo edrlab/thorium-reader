@@ -28,12 +28,12 @@ main {
 			}
 		}
 
-		& h1 {
+		& h2 {
 			display: inline-block;
 			position: relative;
 			font-weight: 700;
 			margin: 0;
-			font-size: 1.3rem;
+			font-size: 1.5rem;
 		}
 	}
 
@@ -136,10 +136,10 @@ main {
 	float:left;
     display: flex;
     justify-content: center;
+	align-items: center;
 	border: none;
     background: none;
     cursor: pointer;
-	margin-top: 0.5rem;
 }
 
 .block_book_list:nth-child(odd){
@@ -151,7 +151,6 @@ main {
 	float:left;
 	height: 24px;
     width: 24px;
-	margin: 5px;
 }
 
 .block_book_list .book_title {
@@ -237,6 +236,16 @@ main {
 	& a {
 		text-decoration: none;
 		color: black;
+	}
+}
+
+.publicationLine {
+	display: flex;
+	align-items: center;
+	& p {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 }
 
@@ -418,5 +427,24 @@ main {
 	& svg {
 		height: 20rem;
 		opacity: 0.2;
+	}
+}
+
+/* ABOUT THORIUM BUTTON */
+
+#aboutThoriumButton {
+	margin-bottom: 2rem;
+	
+	& p {
+		font-weight: bold;
+	}
+	& button {
+		font-size: 1rem;
+		border: 1px solid black;
+		border-radius: 5px;
+		color: black;
+		width: auto;
+		height: auto;
+		padding: 10px;
 	}
 }

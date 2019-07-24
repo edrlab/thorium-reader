@@ -16,6 +16,10 @@
       "continueReading": "Resume reading",
       "lastAdditions": "Recently added"
     },
+    "about": {
+      "title": "About Thorium",
+      "button": "More information"
+    },
     "myBooks": "My books",
     "allBooks": "All books",
     "bookInfo": "About this book",
@@ -89,7 +93,9 @@
     "progressDownload": "Downloading",
     "endDownload": "Download completed",
     "failedDownload": "Download Failed",
-    "canceledDownload": "Download Canceled"
+    "canceledDownload": "Download Canceled",
+    "seeMore": "See more",
+    "seeLess": "See less"
   },
   "toolbar": {
     "about": "About",
@@ -108,6 +114,7 @@
         "available": "Update available!"
     },
     "dialog": {
+      "importError": "an error occured, verify your file extension (.epub or .lcpl)",
       "yes": "Yes",
       "no": "No",
       "delete": "Do you really want to delete this publication?",
@@ -221,7 +228,7 @@
       "marks": {
         "landmarks": "Landmarks",
         "bookmarks": "Bookmarks",
-        "illustrations": "Illustrations",
+        "illustrations": "Table of illustrations",
         "toc": "Table of content",
         "annotations": "Annotations"
       },
