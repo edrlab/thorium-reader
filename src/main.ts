@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
+import { app, BrowserWindow, ipcMain, Menu, protocol, shell, globalShortcut } from "electron";
 import * as path from "path";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
@@ -234,6 +234,9 @@ app.on("ready", async () => {
     debug("ready");
     initApp();
 
+    globalShortcut.register("CommandOrControl+w", () => {
+        app.quit();
+    });
     const store = container.get("store") as Store<RootState>;
     const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
     configRepository.get("i18n").then((i18nLocale) => {
