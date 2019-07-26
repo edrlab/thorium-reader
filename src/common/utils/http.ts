@@ -24,7 +24,7 @@ export function httpGet(url: string, options?: request.CoreOptions): Promise<req
         {
             headers: {
                 "User-Agent": "readium-desktop",
-                "Accept-Language": `${locale}-${locale.toUpperCase},en-US;q=0.7,en;q=0.5`,
+                "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
             },
         },
         options,
