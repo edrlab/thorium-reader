@@ -38,7 +38,7 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 
 import { Download } from "readium-desktop/common/models/download";
 
-import { httpGet } from "readium-desktop/common/utils";
+import { httpGet } from "readium-desktop/common/utils/http";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 
 import { Downloader } from "./downloader";
@@ -87,13 +87,13 @@ export class CatalogService {
 
     public async importOpdsEntry(url: string, downloadSample: boolean): Promise<PublicationDocument> {
         debug("Import OPDS publication", url);
-        const opdsFeedData = await httpGet(url) as string;
+        const opdsFeedData = await httpGet(url);
         let opdsPublication: OPDSPublication = null;
 
-        if (opdsFeedData.startsWith("<?xml")) {
+        if (opdsFeedData.body && opdsFeedData.body.startsWith("<?xml")) {
             // This is an opds feed in version 1
             // Convert to opds version 2
-            const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData);
+            const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
 
             if (!xmlDom || !xmlDom.documentElement) {
                 throw new OpdsParsingError(`Unable to parse ${url}`);
@@ -108,7 +108,7 @@ export class CatalogService {
             opdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
         } else {
             opdsPublication = TAJSON.deserialize<OPDSPublication>(
-                JSON.parse(opdsFeedData),
+                JSON.parse(opdsFeedData.body),
                 OPDSPublication,
             );
         }

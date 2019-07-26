@@ -23,7 +23,7 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 
-import { requestGet } from "readium-desktop/utils/http";
+import { httpGet } from "readium-desktop/common/utils/http";
 import { injectDataInZip } from "readium-desktop/utils/zip";
 
 // Logger
@@ -55,7 +55,7 @@ export async function injectLcpl(publication: Publication, lcpl: string) {
 
 export async function updateLicenseStatus(publication: Publication) {
     // Get lsd status
-    const lsdResponse = await requestGet(
+    const lsdResponse = await httpGet(
         publication.lcp.lsd.statusUrl,
         {timeout: 5000, json: true},
     );
@@ -77,7 +77,7 @@ export async function updateLicenseStatus(publication: Publication) {
     }
 
     // Download lcpl
-    const lcplResponse = await requestGet(
+    const lcplResponse = await httpGet(
         lcplUrl,
         {timeout: 5000},
     );
