@@ -6,19 +6,25 @@
 // ==LICENSE-END==
 
 import { app } from "electron";
+import { container } from "readium-desktop/main/di";
+import { RootState } from "readium-desktop/main/redux/states";
+import { Store } from "redux";
 import * as request from "request";
 import { promisify } from "util";
 
 export type httpResponse = request.Response;
 
 export function httpGet(url: string, options?: request.CoreOptions): Promise<request.Response> {
+
+    const store = container.get("store") as Store<RootState>;
+    const locale = store.getState().i18n.locale;
     const requestOptions = Object.assign(
         {},
         { url },
         {
             headers: {
                 "User-Agent": "readium-desktop",
-                "Accept-Language": `${app.getLocale() || "en-US"},en-US;q=0.7,en;q=0.5`,
+                "Accept-Language": `${locale}-${locale.toUpperCase},en-US;q=0.7,en;q=0.5`,
             },
         },
         options,
