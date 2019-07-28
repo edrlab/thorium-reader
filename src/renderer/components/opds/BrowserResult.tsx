@@ -43,6 +43,8 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     public render(): React.ReactElement<{}>  {
         const { result } = this.props;
         let content = (<Loader/>);
+        const { __ } = this.props;
+        const title = __("opds.downloadError");
 
         if (result) {
             switch (result.type) {
@@ -57,8 +59,8 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
                     );
                     break;
                 default:
-                    console.log(result);
-                    content = (<p>{result}</p>
+                    console.log(title);
+                    content = (<p>{title}</p>
                     );
                     break;
             }
