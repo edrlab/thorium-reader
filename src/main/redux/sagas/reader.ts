@@ -84,7 +84,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
     trackBrowserWindow(readerWindow);
 
     const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
-    const pathDecoded = new Buffer(decodeURIComponent(pathBase64), "base64").toString("utf8");
+    const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
 
     // Create reader object
     const reader: Reader = {
