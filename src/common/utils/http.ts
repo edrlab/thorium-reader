@@ -16,7 +16,7 @@ import { promisify } from "util";
  * @param options request options
  * @returns body of url response. 'String' type returned in many cases except for options.json = true
  */
-export async function httpGet(url: string, options?: request.CoreOptions) {
+export async function httpGet(url: string, options?: request.CoreOptions): Promise<string | any> {
     options = options || {};
     options.headers = options.headers || {};
 
