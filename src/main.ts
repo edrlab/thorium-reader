@@ -47,6 +47,11 @@ if (_PACKAGING !== "0") {
     // Disable debug in packaged app
     delete process.env.DEBUG;
     debug_.disable();
+
+    console.log = (message?: any, ...optionalParams: any[]) => { return; };
+    console.warn = (message?: any, ...optionalParams: any[]) => { return; };
+    console.error = (message?: any, ...optionalParams: any[]) => { return; };
+    console.info = (message?: any, ...optionalParams: any[]) => { return; };
 }
 
 // Logger
