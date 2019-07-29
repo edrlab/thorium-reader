@@ -194,19 +194,6 @@
           "Night": "Nuit"
         }
       },
-      "settings": {
-        "title": "Paramètres",
-        "theme": {
-          "title": "Thème",
-          "predefined": "Thèmes prédéfinis",
-          "myTheme": "Mes thèmes",
-          "create": "Créer un thème",
-          "name": {
-            "Neutral": "Neutre",
-            "Sepia": "Sépia",
-            "Night": "Nuit"
-          }
-        },
         "text": "Texte",
         "left": "Gauche",
         "justify": "Justifié",
@@ -237,26 +224,6 @@
         "justification": "Alignement",
         "scrolled": "Défilé",
         "paginated": "Paginé"
-      },
-      "spacing": "Espacement",
-      "margin": "Marge",
-      "wordSpacing": "Espacement des mots",
-      "lineSpacing": "Espacement des lignes",
-      "letterSpacing": "Espacement des lettres",
-      "accessibility": "Accessibilité",
-      "disposition": {
-        "title": "Disposition",
-        "with": "Avec",
-        "without": "Sans"
-      },
-      "right": "Droite",
-      "font": "Police",
-      "DefaultFont": "Police par défaut",
-      "fontSize": "Taille du texte",
-      "display": "Affichage",
-      "justification": "Alignement",
-      "scrolled": "Défilé",
-      "paginated": "Paginé"
     },
     "marks": {
       "landmarks": "point de repères",

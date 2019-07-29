@@ -39,6 +39,8 @@ import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 
 import { IActionWithSender } from "readium-desktop/common/models/sync";
 
+import { ReaderState } from "readium-desktop/main/redux/states/reader";
+
 async function openReader(publication: Publication, manifestUrl: string) {
     // Create reader window
     const readerWindow = new BrowserWindow({
@@ -67,13 +69,16 @@ async function openReader(publication: Publication, manifestUrl: string) {
     }
 
     // Register reader window
-    const readerAppWindow = winRegistry.registerWindow(readerWindow, AppWindowType.Reader);
+    const readerAppWindow = winRegistry.registerWindow(
+        readerWindow,
+        AppWindowType.Reader,
+    );
 
     // Track it
     trackBrowserWindow(readerWindow);
 
     const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
-    const pathDecoded = new Buffer(decodeURIComponent(pathBase64), "base64").toString("utf8");
+    const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
 
     // Create reader object
     const reader: Reader = {
@@ -182,58 +187,80 @@ export function* readerCloseRequestWatcher(): SagaIterator {
         const action = yield take(readerActions.ActionType.CloseRequest);
         const reader = action.payload.reader;
         const gotoLibrary = action.payload.gotoLibrary;
-        const publication = reader.publication;
 
-        // Notify the streamer that a publication has been closed
-        yield put(streamerActions.closePublication(
-            publication,
-        ));
+        const closeFunction = closeReader.bind(closeReader, reader, gotoLibrary);
+        yield call(closeFunction);
+    }
+}
 
-        // Wait for the publication to be closed
-        const streamerAction = yield take([
-            streamerActions.ActionType.PublicationCloseSuccess,
-            streamerActions.ActionType.PublicationCloseError,
-        ]);
+export function* closeReaderFromPublicationWatcher(): SagaIterator {
+    while (true) {
+        const action = yield take(readerActions.ActionType.CloseFromPublicationRequest);
+        const publication = action.payload.publication;
+        const store: any = container.get("store");
+        const readers = (store.getState().reader as ReaderState).readers;
 
-        if (streamerAction.error) {
-            // Failed to close publication
-            yield put({
-                type: readerActions.ActionType.CloseError,
-                payload: {
-                    reader,
-                },
-            });
-            continue;
-        }
-
-        const winRegistry = container.get("win-registry") as WinRegistry;
-        const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
-
-        if (gotoLibrary) {
-            // Show library window
-            const appWindows = winRegistry.getWindows();
-
-            for (const appWin of Object.values(appWindows)) {
-                if (appWin.type !== AppWindowType.Library) {
-                    continue;
-                }
-
-                appWin.win.show();
+        for (const reader of Object.values(readers)) {
+            if (reader.publication.identifier === publication.identifier) {
+                const closeFunction = closeReader.bind(closeReader, reader, false);
+                yield call(closeFunction);
             }
         }
+    }
+}
 
-        // Close directly reader window
-        if (readerWindow && readerWindow.win) {
-            readerWindow.win.close();
-        }
+function* closeReader(reader: Reader, gotoLibrary: boolean) {
+    const publication = reader.publication;
 
+    // Notify the streamer that a publication has been closed
+    yield put(streamerActions.closePublication(
+        publication,
+    ));
+
+    // Wait for the publication to be closed
+    const streamerAction = yield take([
+        streamerActions.ActionType.PublicationCloseSuccess,
+        streamerActions.ActionType.PublicationCloseError,
+    ]);
+
+    if (streamerAction.error) {
+        // Failed to close publication
         yield put({
-            type: readerActions.ActionType.CloseSuccess,
+            type: readerActions.ActionType.CloseError,
             payload: {
                 reader,
             },
         });
+        return;
     }
+
+    const winRegistry = container.get("win-registry") as WinRegistry;
+    const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
+
+    if (gotoLibrary) {
+        // Show library window
+        const appWindows = winRegistry.getWindows();
+
+        for (const appWin of Object.values(appWindows)) {
+            if (appWin.type !== AppWindowType.Library) {
+                continue;
+            }
+
+            appWin.win.show();
+        }
+    }
+
+    // Close directly reader window
+    if (readerWindow && readerWindow.win) {
+        readerWindow.win.close();
+    }
+
+    yield put({
+        type: readerActions.ActionType.CloseSuccess,
+        payload: {
+            reader,
+        },
+    });
 }
 
 export function* readerConfigSetRequestWatcher(): SagaIterator {
@@ -390,5 +417,6 @@ export function* watchers() {
         readerOpenRequestWatcher(),
         readerFullscreenRequestWatcher(),
         readerDetachRequestWatcher(),
+        closeReaderFromPublicationWatcher(),
     ]);
 }

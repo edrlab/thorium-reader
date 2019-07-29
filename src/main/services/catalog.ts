@@ -51,6 +51,12 @@ import {
 import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
+import { container } from "readium-desktop/main/di";
+import { Store } from "redux";
+
+import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
+import { PublicationApi } from "readium-desktop/main/api/publication";
+
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
 
@@ -189,6 +195,13 @@ export class CatalogService {
     }
 
     public async deletePublication(publicationIdentifier: string) {
+        const store = container.get("store") as Store<any>;
+        const publicationApi = container.get("publication-api") as PublicationApi;
+        const publication = await publicationApi.get({identifier: publicationIdentifier});
+
+        // tslint:disable-next-line: await-promise
+        await store.dispatch(closeReaderFromPublication(publication));
+
         // Remove from database
         await this.publicationRepository.delete(publicationIdentifier);
 
