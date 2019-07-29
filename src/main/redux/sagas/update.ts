@@ -8,7 +8,7 @@
 import { delay, SagaIterator } from "redux-saga";
 import { call, put, select, take } from "redux-saga/effects";
 
-import { httpGet, httpResponse } from "readium-desktop/common/utils/http";
+import { httpGet } from "readium-desktop/common/utils/http";
 
 import { appActions } from "readium-desktop/main/redux/actions";
 
@@ -27,23 +27,21 @@ export function* updateStatusWatcher(): SagaIterator {
 
     while (true) {
         try {
-            const result: httpResponse = yield call(() => httpGet(
+            const result: string = yield call(() => httpGet(
                 LATEST_VERSION_URL,
                 {timeout: 5000},
             ));
 
-            if (result.statusCode === 200) {
-                const jsonObj = JSON.parse(result.body);
+            const jsonObj = JSON.parse(result);
 
-                if (jsonObj.id && jsonObj.html_url) {
-                    const latestVersion = jsonObj.tag_name;
+            if (jsonObj.id && jsonObj.html_url) {
+                const latestVersion = jsonObj.tag_name;
 
-                    if (latestVersion > CURRENT_VERSION) {
-                        yield put(updateActions.setLatestVersion(
-                            jsonObj.tag_name,
-                            jsonObj.html_url,
-                        ));
-                    }
+                if (latestVersion > CURRENT_VERSION) {
+                    yield put(updateActions.setLatestVersion(
+                        jsonObj.tag_name,
+                        jsonObj.html_url,
+                    ));
                 }
             }
         } catch (error) {

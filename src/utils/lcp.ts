@@ -59,7 +59,7 @@ export async function updateLicenseStatus(publication: Publication) {
         publication.lcp.lsd.statusUrl,
         {timeout: 5000, json: true},
     );
-    const lsdStatus = lsdResponse.body;
+    const lsdStatus = lsdResponse;
 
     // Force updating lcpl
     let lcplUrl: string = null;
@@ -83,7 +83,7 @@ export async function updateLicenseStatus(publication: Publication) {
     );
 
     // Inject lcpl in publication
-    await injectLcpl(publication, lcplResponse.body);
+    await injectLcpl(publication, lcplResponse);
 
     // Get epub file from publication
     // FIXME: do not use services in utils

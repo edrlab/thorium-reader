@@ -81,10 +81,10 @@ export class OpdsApi {
 
         // This is an opds feed in version 1
         // Convert to opds version 2
-        const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
+        const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData);
         if (!xmlDom || !xmlDom.documentElement) {
             opds2Feed = TAJSON.deserialize<OPDSFeed>(
-                JSON.parse(opdsFeedData.body),
+                JSON.parse(opdsFeedData),
                 OPDSFeed,
             );
             return this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);

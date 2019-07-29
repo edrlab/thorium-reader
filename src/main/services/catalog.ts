@@ -90,10 +90,10 @@ export class CatalogService {
         const opdsFeedData = await httpGet(url);
         let opdsPublication: OPDSPublication = null;
 
-        if (opdsFeedData.body && opdsFeedData.body.startsWith("<?xml")) {
+        if (opdsFeedData.startsWith("<?xml")) {
             // This is an opds feed in version 1
             // Convert to opds version 2
-            const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
+            const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData);
 
             if (!xmlDom || !xmlDom.documentElement) {
                 throw new OpdsParsingError(`Unable to parse ${url}`);
@@ -108,7 +108,7 @@ export class CatalogService {
             opdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
         } else {
             opdsPublication = TAJSON.deserialize<OPDSPublication>(
-                JSON.parse(opdsFeedData.body),
+                JSON.parse(opdsFeedData),
                 OPDSPublication,
             );
         }
