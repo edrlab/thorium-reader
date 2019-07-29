@@ -12,7 +12,6 @@ import * as request from "request";
 import { promisify } from "util";
 
 /**
- * 
  * @param url url of your GET request
  * @param options request options
  * @returns body of url response. 'String' type returned in many cases except for options.json = true
