@@ -26,6 +26,10 @@ export enum ActionType {
     CloseSuccess = "READER_CLOSE_SUCCESS",
     CloseError = "READER_CLOSE_ERROR",
 
+    CloseFromPublicationRequest = "READER_FROM_PUBLICATION_CLOSE_REQUEST",
+    CloseFromPublicationSuccess = "READER_FROM_PUBLICATION_CLOSE_SUCCESS",
+    CloseFromPublicationError = "READER_FROM_PUBLICATION_CLOSE_ERROR",
+
     ModeSetRequest = "READER_MODE_SET_REQUEST",
     ModeSetSuccess = "READER_MODE_SET_SUCCESS",
     ModeSetError = "READER_MODE_SET_ERROR",
@@ -82,6 +86,15 @@ export function saveBookmark(bookmark: Bookmark) {
         type: ActionType.BookmarkSaveRequest,
         payload: {
             bookmark,
+        },
+    };
+}
+
+export function closeReaderFromPublication(publication: PublicationView) {
+    return {
+        type: ActionType.CloseFromPublicationRequest,
+        payload: {
+            publication,
         },
     };
 }
