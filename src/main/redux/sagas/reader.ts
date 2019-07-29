@@ -220,7 +220,7 @@ export function* closeReaderFromPublicationWatcher(): SagaIterator {
     }
 }
 
-function* closeReader(reader: any, gotoLibrary: boolean): any {
+function* closeReader(reader: any, gotoLibrary: boolean) {
     const publication = reader.publication;
 
     // Notify the streamer that a publication has been closed
