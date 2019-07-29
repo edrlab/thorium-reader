@@ -228,7 +228,7 @@ export class LcpManager {
 
     public async getLsdStatus(publicationDocument: PublicationDocument): Promise<any> {
         // Get lsd status
-        const lsdStatusBodyResponse = await httpGet(
+        const lsdStatusBodyResponse = await httpGet<string>(
             publicationDocument.lcp.lsd.statusUrl,
         );
 
@@ -255,7 +255,7 @@ export class LcpManager {
         }
 
         // Download and inject new lcpl file
-        const lcplResponse = await httpGet(lcplUrl);
+        const lcplResponse = await httpGet<string>(lcplUrl);
         const lcpl = JSON.parse(lcplResponse);
         let newPublicationDocument = await this.injectLcpl(
             publicationDocument,

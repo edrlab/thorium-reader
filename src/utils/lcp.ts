@@ -58,7 +58,7 @@ export async function updateLicenseStatus(publication: Publication) {
     const lsdResponse = await httpGet(
         publication.lcp.lsd.statusUrl,
         {timeout: 5000, json: true},
-    );
+    ) as any;
     const lsdStatus = lsdResponse;
 
     // Force updating lcpl
@@ -77,7 +77,7 @@ export async function updateLicenseStatus(publication: Publication) {
     }
 
     // Download lcpl
-    const lcplResponse = await httpGet(
+    const lcplResponse = await httpGet<string>(
         lcplUrl,
         {timeout: 5000},
     );

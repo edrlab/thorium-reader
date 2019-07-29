@@ -75,7 +75,7 @@ export class OpdsApi {
 
     public async browse(data: any): Promise<any> {
         const { url } = data;
-        const opdsFeedData = await httpGet(url);
+        const opdsFeedData: string = await httpGet<string>(url);
         let opds2Publication: OPDSPublication = null;
         let opds2Feed: OPDSFeed = null;
 
