@@ -48,10 +48,10 @@ if (_PACKAGING !== "0") {
     delete process.env.DEBUG;
     debug_.disable();
 
-    console.log = (message?: any, ...optionalParams: any[]) => { return; };
-    console.warn = (message?: any, ...optionalParams: any[]) => { return; };
-    console.error = (message?: any, ...optionalParams: any[]) => { return; };
-    console.info = (message?: any, ...optionalParams: any[]) => { return; };
+    console.log = (_message?: any, ..._optionalParams: any[]) => { return; };
+    console.warn = (_message?: any, ..._optionalParams: any[]) => { return; };
+    console.error = (_message?: any, ..._optionalParams: any[]) => { return; };
+    console.info = (_message?: any, ..._optionalParams: any[]) => { return; };
 }
 
 // Logger
