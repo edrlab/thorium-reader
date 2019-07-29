@@ -34,6 +34,7 @@
     "addBookToLib": "Ajouter à la librairie",
     "addTeaserToLib": "Ajouter l'extrait à la bibliothèque",
     "addTags": "Ajouter un tag",
+    "confirmAddTag": "Valider l'ajout du tag",
     "deleteTag": "Supprimer le tag",
     "readBook": "Lire",
     "deleteBook": "Supprimer",

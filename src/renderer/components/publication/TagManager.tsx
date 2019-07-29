@@ -9,6 +9,8 @@ import * as React from "react";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
+import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
+
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px-blue.svg";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
@@ -68,7 +70,7 @@ export class TagManager extends React.Component<Props, TagManagerState> {
                     )}
                 </ul>}
                 {this.props.canModifyTag &&
-                    <form onSubmit={this.addTag} id={styles.flux_search}>
+                    <form id={styles.flux_search}>
                         <input
                             type="text"
                             className={styles.tag_inputs}
@@ -76,7 +78,16 @@ export class TagManager extends React.Component<Props, TagManagerState> {
                             placeholder={ __("catalog.addTags")}
                             onChange={this.handleChangeName}
                             value={this.state.nameNewTag}
+                            onKeyDown={(e) => {
+                                if (e.keyCode === 13) {
+                                    e.preventDefault();
+                                    return (false);
+                                }
+                            }}
                         />
+                        <button onClick={this.addTag}>
+                            <SVG svg={PlusIcon} title={__("catalog.confirmAddTag")}/>
+                        </button>
                     </form>
                 }
             </div>
@@ -92,8 +103,10 @@ export class TagManager extends React.Component<Props, TagManagerState> {
     private addTag(e: any) {
         e.preventDefault();
         const { tags } = this.state;
-        if (this.state.nameNewTag && tags.indexOf(this.state.nameNewTag) < 0) {
-            tags.push(this.state.nameNewTag);
+        const currentTag = this.state.nameNewTag.trim();
+
+        if (currentTag && tags.indexOf(currentTag) < 0) {
+            tags.push(currentTag);
             this.sendTags(tags);
         }
         this.setState({ nameNewTag: "" });
@@ -107,7 +120,9 @@ export class TagManager extends React.Component<Props, TagManagerState> {
     }
 
     private handleChangeName(e: any) {
-        this.setState({ nameNewTag: e.target.value });
+        const currentTag: string = e.target.value.trim();
+
+        this.setState({ nameNewTag: currentTag });
     }
 }
 

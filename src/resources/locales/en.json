@@ -34,6 +34,7 @@
     "addBookToLib": "Add book to library",
     "addTeaserToLib": "Add the extract book to library",
     "addTags": "Add tag",
+    "confirmAddTag": "Confirm add tag",
     "deleteTag": "Delete tag",
     "readBook": "Read",
     "deleteBook": "delete from the library",
