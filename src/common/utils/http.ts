@@ -11,18 +11,23 @@ import { Store } from "redux";
 import * as request from "request";
 import { promisify } from "util";
 
-export async function httpGet(url: string, options?: request.CoreOptions): Promise<string> {
+export async function httpGet(url: string, options?: request.CoreOptions) {
+    options = options || {};
+    options.headers = options.headers || {};
+
+    const headerFromOptions = {};
+    for (const [key, value] of Object.entries(options.headers)) {
+        Object.assign(headerFromOptions, {
+            [key.toLowerCase()]: value,
+        });
+    }
 
     const store = container.get("store") as Store<RootState>;
     const locale = store.getState().i18n.locale;
-    const headers = Object.assign(
-        {},
-        options.headers,
-        {
-            "User-Agent": "readium-desktop",
-            "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
-        },
-    );
+    const headers = Object.assign(headerFromOptions, {
+                "user-agent": "readium-desktop",
+                "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
+            });
     const requestOptions = Object.assign(
         {},
         options,
