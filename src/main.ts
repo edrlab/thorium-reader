@@ -45,8 +45,6 @@ import { debounce } from "./utils/debounce";
 
 import { UpdateState } from "./common/redux/states/update";
 
-import { I18NState } from "./common/redux/states/i18n";
-
 import { ReaderStateConfig, ReaderStateMode, ReaderStateReader } from "./main/redux/states/reader";
 
 if (_PACKAGING !== "0") {
@@ -418,7 +416,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
                 type: i18nActions.ActionType.Set,
                 payload: {
                     locale: state.i18n.locale,
-                } as I18NState,
+                } as i18nActions.PayloadLocale,
             },
         },
     } as syncIpc.EventPayload);

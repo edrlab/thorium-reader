@@ -39,7 +39,7 @@ export function* processRequest(requestAction: apiActions.ApiAction): SagaIterat
 
 export function* requestWatcher() {
     while (true) {
-        const action = yield take(apiActions.ActionType.Request);
+        const action: apiActions.ApiAction = yield take(apiActions.ActionType.Request);
         yield fork(processRequest, action);
     }
 }

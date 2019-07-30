@@ -11,7 +11,15 @@ export enum ActionType {
     Set = "LOCALE_SET",
 }
 
-export function setLocale(locale: string): Action {
+export interface PayloadLocale {
+    locale: string;
+}
+
+export interface ActionLocale extends Action {
+    payload: PayloadLocale;
+}
+
+export function setLocale(locale: string): ActionLocale {
     return {
         type: ActionType.Set,
         payload: {

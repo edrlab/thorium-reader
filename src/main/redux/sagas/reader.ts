@@ -358,11 +358,10 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
 export function* readerFullscreenRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for app initialization
-        const act = yield take([
+        const action: ActionWithSender = yield take([
             readerActions.ActionType.FullscreenOffRequest,
             readerActions.ActionType.FullscreenOnRequest,
         ]);
-        const action = act as ActionWithSender;
 
         const fullscreen = (action.type === readerActions.ActionType.FullscreenOnRequest);
 
