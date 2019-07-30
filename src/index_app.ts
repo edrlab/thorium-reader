@@ -31,7 +31,7 @@ import {
 
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
-import { IActionWithSender } from "readium-desktop/common/models/sync";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
@@ -66,7 +66,7 @@ store.subscribe(() => {
     }
 });
 
-ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: any) => {
+ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
@@ -76,7 +76,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: any) => {
 });
 
 // Request main process for a new id
-ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: any) => {
+ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
     const actionSerializer = container.get("action-serializer") as ActionSerializer;
 
     switch (data.type) {
@@ -85,7 +85,7 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: any) => {
             store.dispatch(Object.assign(
                 {},
                 actionSerializer.deserialize(data.payload.action),
-                {sender: data.sender} as IActionWithSender,
+                {sender: data.sender} as ActionWithSender,
             ));
             break;
     }

@@ -15,7 +15,7 @@ import {
     readerActions,
 } from "readium-desktop/common/redux/actions";
 
-import { IActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 
 import { container } from "readium-desktop/renderer/di";
 
@@ -39,8 +39,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 
 export const reduxSyncMiddleware: Middleware
     = (store: MiddlewareAPI<Dispatch<AnyAction>>) =>
-    (next: Dispatch<IActionWithSender>) =>
-    ((action: IActionWithSender) => {
+    (next: Dispatch<ActionWithSender>) =>
+    ((action: ActionWithSender) => {
 
     // Does this action must be sent to the main process
     if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
@@ -66,7 +66,7 @@ export const reduxSyncMiddleware: Middleware
             type: SenderType.Renderer,
             winId: store.getState().win.winId,
         },
-    });
+    } as syncIpc.EventPayload);
 
     return next(action);
-}) as Dispatch<IActionWithSender>;
+}) as Dispatch<ActionWithSender>;

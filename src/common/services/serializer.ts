@@ -9,23 +9,25 @@ import { injectable} from "inversify";
 
 import { CodeError } from "readium-desktop/common/errors";
 
+import { Action } from "../models/redux";
+
 @injectable()
 export class ActionSerializer {
-    public serialize(action: any) {
+    public serialize(action: Action): Action {
         if (action.error && action.payload instanceof CodeError) {
             return Object.assign(
                 {},
                 action,
                 {
-                    payload: action.payload.toJson(),
-                },
+                    payload: (action.payload as CodeError).toJson(),
+                } as Action,
             );
         } else {
             return action;
         }
     }
 
-    public deserialize(json: any): any {
+    public deserialize(json: Action): Action {
         if (json.error &&
             json.payload &&
             json.payload.class &&
@@ -35,11 +37,11 @@ export class ActionSerializer {
                 {},
                 json,
                 {
-                    payload: new CodeError(
-                        json.payload.code,
-                        json.payload.message,
-                    ),
-                },
+                    payload: CodeError.fromJson({
+                        code: json.payload.code,
+                        message: json.payload.message,
+                    }),
+                } as Action,
             );
         } else {
             return json;

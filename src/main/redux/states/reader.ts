@@ -9,12 +9,21 @@ import {
     Reader, ReaderConfig, ReaderMode,
 } from "readium-desktop/common/models/reader";
 
-export interface ReaderState {
-    // Base url of started server
-    readers: { [identifier: string]: Reader };
+export interface ReaderStateReader {
+    reader: Reader;
+}
+
+export interface ReaderStateMode {
+    mode: ReaderMode;
+}
+
+export interface ReaderStateConfig {
 
     // Config for all readers
     config: ReaderConfig;
+}
 
-    mode: ReaderMode;
+export interface ReaderState extends ReaderStateMode, ReaderStateConfig {
+    // Base url of started server
+    readers: { [identifier: string]: Reader };
 }

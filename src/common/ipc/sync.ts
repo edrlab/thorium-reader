@@ -9,9 +9,21 @@
  * Synchronization of redux actions
  */
 
+import { Action } from "../models/redux";
+
+import { WindowSender } from "../models/sync";
+
 export enum EventType {
     RendererAction = "RENDERER_ACTION",
     MainAction = "MAIN_ACTION",
 }
 
 export const CHANNEL = "SYNC";
+
+export interface EventPayload {
+    type: EventType;
+    payload: {
+        action: Action;
+    };
+    sender: WindowSender;
+}

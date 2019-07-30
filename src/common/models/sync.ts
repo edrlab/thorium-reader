@@ -12,11 +12,11 @@ export enum SenderType {
     Renderer, // Renderer process
 }
 
-export interface IWindowSender {
+export interface WindowSender {
     type: SenderType;
     winId: string;
 }
 
-export interface IActionWithSender extends Action {
-    sender: IWindowSender;
+export interface ActionWithSender extends Action {
+    sender: WindowSender;
 }

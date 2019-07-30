@@ -23,7 +23,7 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
-import { IActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 
 import * as debug_ from "debug";
 
@@ -64,8 +64,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 
 export const reduxSyncMiddleware: Middleware
     = (_store: MiddlewareAPI<Dispatch<AnyAction>>) =>
-    (next: Dispatch<IActionWithSender>) =>
-    ((action: IActionWithSender) => {
+    (next: Dispatch<ActionWithSender>) =>
+    ((action: ActionWithSender) => {
 
     debug("### action type", action.type);
 
@@ -106,11 +106,11 @@ export const reduxSyncMiddleware: Middleware
                 sender: {
                     type: SenderType.Main,
                 },
-            });
+            } as syncIpc.EventPayload);
         } catch (error) {
             console.error("Windows does not exist", winId);
         }
     }
 
     return next(action);
-}) as Dispatch<IActionWithSender>;
+}) as Dispatch<ActionWithSender>;
