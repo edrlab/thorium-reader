@@ -36,7 +36,10 @@
     "package:win": "npm run package:build && electron-builder --win --x64",
     "package:linux": "npm run package:build && electron-builder --linux",
     "package:mac": "npm run package:build && electron-builder --mac",
-    "package:all": "npm run package:build && electron-builder -mwl"
+    "package:all": "npm run package:build && electron-builder -mwl",
+    "i18n": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr es de --space 4 --finalnewline --newkeysempty",
+    "i18n-check": "yarn run i18n --check",
+    "i18n-help": "sync-i18n --help"
   },
   "repository": {
     "type": "git",
@@ -228,6 +231,7 @@
     "git-rev-sync": "^1.12.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "i18next-json-sync": "^2.3.1",
     "jest": "^24.7.1",
     "markdown-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.5.0",
