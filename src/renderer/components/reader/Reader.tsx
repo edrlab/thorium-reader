@@ -159,8 +159,8 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
 
-const publicationJsonUrl = queryParams.pubId.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
-    convertCustomSchemeToHttpUrl(queryParams.pubId) : queryParams.pubId;
+const publicationJsonUrl = queryParams.pub.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
+    convertCustomSchemeToHttpUrl(queryParams.pub) : queryParams.pub;
 const pathBase64Raw = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
 const pathBase64 = decodeURIComponent(pathBase64Raw);
 const pathDecoded = window.atob(pathBase64);
