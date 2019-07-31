@@ -1,222 +1,222 @@
 {
+    "accessibility": {
+        "bookAuthor": "Buchautorin",
+        "bookPublisher": "Buchverlag",
+        "bookReleaseDate": "Buchfreigabedatum",
+        "bookTitle": "Titel des Buches",
+        "closeDialog": "Schließen",
+        "homeMenu": "Startmenü",
+        "importFile": "importieren einer epub-datei",
+        "searchBook": "Suche nach einem Buch, einem Tag oder einer Art von Literatur",
+        "skipLink": "Gehe zum Inhalt"
+    },
     "catalog": {
-      "entry": {
-        "continueReading": "Lesen Sie weiter",
-        "lastAdditions": "neueste Ergänzungen"
-      },
-      "myBooks": "meine Bücher",
-      "allBooks": "alle Bücher",
-      "bookInfo": "Über dieses Buch",
-      "delete": "Dauerhaft löschen",
-      "export": "Export",
-      "released": "veröffentlicht am",
-      "description": "Beschreibung",
-      "moreInfo": "mehr Informationen",
-      "publisher": "Herausgeber",
-      "lang": "Sprache",
-      "id": "Benutzername",
-      "addBookToLib": "zur Bibliothek hinzufügen",
-      "addTeaserToLib": "den Extrakt zur Bibliothek hinzufügen",
-      "addTags": "Ein tag hinzufügen",
-      "deleteTag": "Löschen des Tags",
-      "readBook": "Lesen",
-      "deleteBook": "aus der Bibliothek löschen",
-      "tags": "Meine tags",
-      "sort": "sortieren nach",
-      "tagCount": "Anzahl tags",
-      "emptyTagList": "es gibt keine Tags in Büchern."
+        "addBookToLib": "zur Bibliothek hinzufügen",
+        "addTags": "Ein tag hinzufügen",
+        "addTeaserToLib": "den Extrakt zur Bibliothek hinzufügen",
+        "allBooks": "alle Bücher",
+        "bookInfo": "Über dieses Buch",
+        "delete": "Dauerhaft löschen",
+        "deleteBook": "aus der Bibliothek löschen",
+        "deleteTag": "Löschen des Tags",
+        "description": "Beschreibung",
+        "emptyTagList": "es gibt keine Tags in Büchern.",
+        "entry": {
+            "continueReading": "Lesen Sie weiter",
+            "lastAdditions": "neueste Ergänzungen"
+        },
+        "export": "Export",
+        "id": "Benutzername",
+        "lang": "Sprache",
+        "moreInfo": "mehr Informationen",
+        "myBooks": "meine Bücher",
+        "publisher": "Herausgeber",
+        "readBook": "Lesen",
+        "released": "veröffentlicht am",
+        "sort": "sortieren nach",
+        "tagCount": "Anzahl tags",
+        "tags": "Meine tags"
+    },
+    "dialog": {
+        "alreadyAdd": "Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
+        "closeModalWindow": "Dieses modale Fenster schließen",
+        "delete": "Willst du diese Publikation wirklich löschen?",
+        "import": "Willst du diese EPUB-Dateien wirklich importieren?",
+        "importError": "ein Fehler ist aufgetreten, überprüfen Sie Ihre Dateiendung (.epub or .lcpl).",
+        "no": "Nein",
+        "sure": "Bist du sicher, dass du es wieder hinzufügen willst?",
+        "yes": "Ja"
+    },
+    "header": {
+        "allBooks": "Alle bücher",
+        "books": "meine Bücher",
+        "catalogs": "Kataloge",
+        "gridTitle": "Buchumschläge in einem Raster präsentieren",
+        "home": "Hauptmenü",
+        "importTitle": "ein Buch importieren",
+        "listTitle": "Buchumschläge in einer Liste präsentieren",
+        "searchPlaceholder": "Suche",
+        "searchTitle": "Starten Sie die Suche",
+        "settings": "Settings"
     },
     "library": {
-        "heading": "Bibliothek",
         "add": "Zur Bibliothek hinzufügen",
-        "startDownload": "Ein Download wurde gestartet.",
         "cancelDownload": "Ein Download wurde abgebrochen.",
         "endDownload": "Ein Download wurde beendet.",
+        "heading": "Bibliothek",
         "lcp": {
-          "title": "LCP-Verifikation",
-          "sentence": "Diese Publikation benötigt zum Öffnen ein LCP-Password: ",
-          "submit": "Absenden",
-          "cancel": "Abbrechen",
-          "hint": "Dein Kennwort",
-          "hintSentence": "Hinweis:",
-          "informations": {
-            "title": "LCP-Informationen",
-            "close": "Schließen",
-            "provider": "Aussteller:",
-            "issued": "Ausstellungsdatum:",
-            "updated": "Aktualisiert:",
-            "right": {
-              "title": "Rechte",
-              "start": "Start:",
-              "end": "Ende:",
-              "copy": "Nummer der Kopie:",
-              "print": "Nummer des gedruckten Werks:"
-            }
-          }
+            "cancel": "Abbrechen",
+            "hint": "Dein Kennwort",
+            "hintSentence": "Hinweis:",
+            "informations": {
+                "close": "Schließen",
+                "issued": "Ausstellungsdatum:",
+                "provider": "Aussteller:",
+                "right": {
+                    "copy": "Nummer der Kopie:",
+                    "end": "Ende:",
+                    "print": "Nummer des gedruckten Werks:",
+                    "start": "Start:",
+                    "title": "Rechte"
+                },
+                "title": "LCP-Informationen",
+                "updated": "Aktualisiert:"
+            },
+            "sentence": "Diese Publikation benötigt zum Öffnen ein LCP-Password: ",
+            "submit": "Absenden",
+            "title": "LCP-Verifikation"
+        },
+        "startDownload": "Ein Download wurde gestartet."
+    },
+    "message": {
+        "download": {
+            "start": "Der Download von {{title}} hat begonnen",
+            "success": "Der Download von {{title}} wurde abgeschlossen"
+        },
+        "lcp": {
+            "passphraseError": "Konnte die Publikation {{publicationTitle}} nicht entsperren",
+            "renewError": "Beim Verlängern der LCP-Lizenz von {{title}} trat ein Fehler auf",
+            "renewSuccess": "Die LCP-Lizenz von {{title}} wurde verlängert",
+            "returnError": "Beim Zurückgeben der LCP-Lizenz von {{title}} trat ein Fehler auf",
+            "returnSuccess": "Die LCP-Lizenz von {{title}} wurde zurückgegeben"
         }
     },
+    "opds": {
+        "addForm": {
+            "addButton": "Hinzufügen",
+            "addSentence": "Welchen ODPS-Feed willst du hinzufügen?",
+            "delete": "Feed löschen",
+            "name": "Feed-Name:",
+            "pasteUrl": "die URL eines Futters einfügen",
+            "title": "Feed hinzufügen",
+            "update": "Aktualisieren",
+            "updateSentence": "Du kannst die Felder aktualisieren.",
+            "url": "Feed-Link:"
+        },
+        "addMenu": "OPDS-Feed hinzufügen",
+        "authentication": {
+            "loginButton": "Login",
+            "password": "Passwort:",
+            "sentence": "Bitte logge dich ein, um auf die Inhalte zuzugreifen",
+            "username": "Benutzername:"
+        },
+        "back": "Zurück",
+        "download": "Download",
+        "downloadError": "Beim Abrufen des Feeds trat ein Fehler auf.",
+        "formError": "Bitte fülle alle Felder aus",
+        "menu": {
+            "aboutBook": "über dieses Buch",
+            "addExtract": "zur Lib hinzufügen",
+            "addTeaser": "Extrakt zur Lib hinzufügen",
+            "goBuyBook": "dieses Buch kaufen",
+            "goLoanBook": "dieses Buch ausleihen",
+            "goSubBook": "abonnieren"
+        },
+        "settings": "Einstellungen"
+    },
     "publication": {
-      "notReadableLcp": "Dieses Buch kann nicht gelesen werden, das die LCP-Lizenz abgelaufen ist.",
-      "downloadButton": "Download",
-      "readButton": "Lesen",
-      "deleteButton": "Löschen",
-      "infoButton": "LCP-Informationen",
-      "renewButton": "Verlängern",
-      "renewSentence": "Bist du sicher, dass die Publikation verlängert werden soll?",
-      "returnButton": "Zurückgeben",
-      "returnSentence": "Bist du sicher, dass die Publikation zurückgegeben werden soll?",
-      "cancelDownloadButton": "Abbrechen",
-      "progressDownload": "Download läuft",
-      "endDownload": "Download abgeschlossen",
-      "failedDownload": "Download fehlerhaft",
-      "canceledDownload": "Download abgebrochen",
-      "seeMore": "Mehr Infos",
-      "seeLess": "Weniger Infos"
+        "cancelDownloadButton": "Abbrechen",
+        "canceledDownload": "Download abgebrochen",
+        "deleteButton": "Löschen",
+        "downloadButton": "Download",
+        "endDownload": "Download abgeschlossen",
+        "failedDownload": "Download fehlerhaft",
+        "infoButton": "LCP-Informationen",
+        "notReadableLcp": "Dieses Buch kann nicht gelesen werden, das die LCP-Lizenz abgelaufen ist.",
+        "progressDownload": "Download läuft",
+        "readButton": "Lesen",
+        "renewButton": "Verlängern",
+        "renewSentence": "Bist du sicher, dass die Publikation verlängert werden soll?",
+        "returnButton": "Zurückgeben",
+        "returnSentence": "Bist du sicher, dass die Publikation zurückgegeben werden soll?",
+        "seeLess": "Weniger Infos",
+        "seeMore": "Mehr Infos"
+    },
+    "reader": {
+        "footerInfo": {
+            "lessInfo": "weniger informationen",
+            "moreInfo": "mehr informationen"
+        },
+        "marks": {
+            "annotations": "Annotationen",
+            "bookmarks": "Lesezeichen",
+            "illustrations": "Illustrationstabelle",
+            "landmarks": "Sehenswürdigkeiten",
+            "toc": "inhaltsverzeichnis"
+        },
+        "navigation": {
+            "backHomeTitle": "zurück zu Hause",
+            "bookmarkTitle": "bookmark",
+            "detachWindowTitle": "das Fenster lösen",
+            "fullscreenTitle": "fullscreen mode",
+            "infoTitle": "Informationen",
+            "openTableOfContentsTitle": "navigation",
+            "readBookTitle": "mit dem Lesen des Buches beginnen",
+            "settingsTitle": "settings"
+        },
+        "settings": {
+            "DefaultFont": "Standardschrift",
+            "align": "Textausrichtung",
+            "center": "Zentriert",
+            "close": "Schließen",
+            "display": "Lesefluss",
+            "fontSize": "Schriftgröße:",
+            "left": "Linksbündig",
+            "paginated": "Seitendarstellung",
+            "right": "Rechtsbündig",
+            "save": "Speichern",
+            "scrolled": "Fortlaufend",
+            "spacing": "Abstand",
+            "text": "Text",
+            "theme": {
+                "create": "ein Thema erstellen",
+                "myTheme": "meine Themen",
+                "name": {
+                    "Neutral": "Neutral",
+                    "Night": "Nachtzeit",
+                    "Sepia": "Sepia"
+                },
+                "predefined": "vordefiniertes Thema",
+                "title": "Thema"
+            },
+            "title": "Einstellungen"
+        }
+    },
+    "settings": {
+        "information": "Informationen",
+        "language": {
+            "languageChoice": "Sprachauswahl"
+        },
+        "manageTags": "Manage tags",
+        "uiLanguage": "Sprache"
     },
     "toolbar": {
         "about": "Über",
-        "help":"Hilfe",
-        "news":"Neuerungen",
-        "sync":"Synchronisiere die Bibliothek"
+        "help": "Hilfe",
+        "news": "Neuerungen",
+        "sync": "Synchronisiere die Bibliothek"
     },
     "update": {
         "available": "Update verfügbar!"
-    },
-    "dialog": {
-      "importError": "ein Fehler ist aufgetreten, überprüfen Sie Ihre Dateiendung (.epub or .lcpl).",
-      "yes": "Ja",
-      "no": "Nein",
-      "delete": "Willst du diese Publikation wirklich löschen?",
-      "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-      "closeModalWindow": "Dieses modale Fenster schließen",
-      "alreadyAdd": "Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
-      "sure": "Bist du sicher, dass du es wieder hinzufügen willst?"
-    },
-    "opds": {
-      "download": "Download",
-      "settings": "Einstellungen",
-      "addMenu": "OPDS-Feed hinzufügen",
-      "formError": "Bitte fülle alle Felder aus",
-      "back": "Zurück",
-      "downloadError": "Beim Abrufen des Feeds trat ein Fehler auf.",
-      "addForm": {
-        "title": "Feed hinzufügen",
-        "pasteUrl": "die URL eines Futters einfügen",
-        "addButton": "Hinzufügen",
-        "updateSentence": "Du kannst die Felder aktualisieren.",
-        "addSentence": "Welchen ODPS-Feed willst du hinzufügen?",
-        "delete": "Feed löschen",
-        "update": "Aktualisieren",
-        "name": "Feed-Name:",
-        "url": "Feed-Link:"
-      },
-      "authentication": {
-        "username": "Benutzername:",
-        "password": "Passwort:",
-        "loginButton": "Login",
-        "sentence": "Bitte logge dich ein, um auf die Inhalte zuzugreifen"
-      },
-      "menu": {
-        "aboutBook": "über dieses Buch",
-        "addExtract": "zur Lib hinzufügen",
-        "goBuyBook": "dieses Buch kaufen",
-        "goLoanBook": "dieses Buch ausleihen",
-        "goSubBook": "abonnieren",
-        "addTeaser": "Extrakt zur Lib hinzufügen"
-      }
-    },
-    "reader": {
-      "navigation": {
-        "backHomeTitle": "zurück zu Hause",
-        "infoTitle": "Informationen",
-        "detachWindowTitle": "das Fenster lösen",
-        "fullscreenTitle": "fullscreen mode",
-        "bookmarkTitle": "bookmark",
-        "openTableOfContentsTitle": "navigation",
-        "settingsTitle": "settings",
-        "readBookTitle": "mit dem Lesen des Buches beginnen"
-      },
-      "marks": {
-        "landmarks": "Sehenswürdigkeiten",
-        "bookmarks": "Lesezeichen",
-        "illustrations": "Illustrationstabelle",
-        "toc": "inhaltsverzeichnis",
-        "annotations": "Annotationen"
-      },
-      "footerInfo": {
-        "moreInfo": "mehr informationen",
-        "lessInfo":  "weniger informationen"
-      },
-      "settings": {
-        "title": "Einstellungen",
-        "theme": {
-          "title": "Thema",
-          "predefined": "vordefiniertes Thema",
-          "myTheme": "meine Themen",
-          "create": "ein Thema erstellen",
-          "name": {
-            "Neutral": "Neutral",
-            "Sepia": "Sepia",
-            "Night": "Nachtzeit"
-          }
-        },
-        "text": "Text",
-        "spacing": "Abstand",
-        "align": "Textausrichtung",
-        "left": "Linksbündig",
-        "center": "Zentriert",
-        "right": "Rechtsbündig",
-        "DefaultFont": "Standardschrift",
-        "fontSize": "Schriftgröße:",
-        "display": "Lesefluss",
-        "close": "Schließen",
-        "save": "Speichern",
-        "scrolled": "Fortlaufend",
-        "paginated": "Seitendarstellung"
-      }
-    },
-    "message": {
-      "download": {
-        "success": "Der Download von {{title}} wurde abgeschlossen",
-        "start": "Der Download von {{title}} hat begonnen"
-      },
-      "lcp": {
-        "renewSuccess": "Die LCP-Lizenz von {{title}} wurde verlängert",
-        "renewError": "Beim Verlängern der LCP-Lizenz von {{title}} trat ein Fehler auf",
-        "returnSuccess": "Die LCP-Lizenz von {{title}} wurde zurückgegeben",
-        "returnError": "Beim Zurückgeben der LCP-Lizenz von {{title}} trat ein Fehler auf",
-        "passphraseError": "Konnte die Publikation {{publicationTitle}} nicht entsperren"
-      }
-    },
-    "settings": {
-      "manageTags": "Manage tags",
-      "uiLanguage": "Sprache",
-      "information": "Informationen",
-      "language": {
-        "languageChoice": "Sprachauswahl"
-      }
-    },
-    "header": {
-      "home": "Hauptmenü",
-      "books": "meine Bücher",
-      "catalogs": "Kataloge",
-      "settings": "Settings",
-      "allBooks": "Alle bücher",
-      "gridTitle": "Buchumschläge in einem Raster präsentieren",
-      "listTitle": "Buchumschläge in einer Liste präsentieren",
-      "searchPlaceholder": "Suche",
-      "searchTitle": "Starten Sie die Suche",
-      "importTitle": "ein Buch importieren"
-    },
-    "accessibility": {
-      "skipLink": "Gehe zum Inhalt",
-      "importFile": "importieren einer epub-datei",
-      "searchBook": "Suche nach einem Buch, einem Tag oder einer Art von Literatur",
-      "closeDialog": "Schließen",
-      "bookTitle": "Titel des Buches",
-      "bookAuthor": "Buchautorin",
-      "bookReleaseDate": "Buchfreigabedatum",
-      "bookPublisher": "Buchverlag",
-      "homeMenu": "Startmenü"
     }
 }
