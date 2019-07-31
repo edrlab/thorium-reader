@@ -10,7 +10,7 @@ import { app, BrowserWindow, ipcMain, Menu, protocol, shell } from "electron";
 import * as path from "path";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
-import { IActionWithSender } from "readium-desktop/common/models/sync";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, netActions, readerActions, updateActions,
@@ -42,6 +42,10 @@ import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/w
 import { setLocale } from "./common/redux/actions/i18n";
 import { AvailableLanguages } from "./common/services/translator";
 import { debounce } from "./utils/debounce";
+
+import { UpdateState } from "./common/redux/states/update";
+
+import { ReaderStateConfig, ReaderStateMode, ReaderStateReader } from "./main/redux/states/reader";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -343,7 +347,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
         payload: {
             winId: appWindow.identifier,
         },
-    });
+    } as winIpc.EventPayload);
 
     // Init network on window
     const state = store.getState();
@@ -366,7 +370,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
                 type: netActionType,
             },
         },
-    });
+    } as syncIpc.EventPayload);
 
     // Send reader information
     webContents.send(syncIpc.CHANNEL, {
@@ -376,10 +380,10 @@ const winOpenCallback = (appWindow: AppWindow) => {
                 type: readerActions.ActionType.OpenSuccess,
                 payload: {
                     reader: state.reader.readers[appWindow.identifier],
-                },
+                } as ReaderStateReader,
             },
         },
-    });
+    } as syncIpc.EventPayload);
 
     // Send reader config
     webContents.send(syncIpc.CHANNEL, {
@@ -389,10 +393,10 @@ const winOpenCallback = (appWindow: AppWindow) => {
                 type: readerActions.ActionType.ConfigSetSuccess,
                 payload: {
                     config: state.reader.config,
-                },
+                } as ReaderStateConfig,
             },
         },
-    });
+    } as syncIpc.EventPayload);
 
     // Send reader mode
     webContents.send(syncIpc.CHANNEL, {
@@ -402,10 +406,10 @@ const winOpenCallback = (appWindow: AppWindow) => {
                 type: readerActions.ActionType.ModeSetSuccess,
                 payload: {
                     mode: state.reader.mode,
-                },
+                } as ReaderStateMode,
             },
         },
-    });
+    } as syncIpc.EventPayload);
 
     // Send locale
     webContents.send(syncIpc.CHANNEL, {
@@ -415,10 +419,10 @@ const winOpenCallback = (appWindow: AppWindow) => {
                 type: i18nActions.ActionType.Set,
                 payload: {
                     locale: state.i18n.locale,
-                },
+                } as i18nActions.PayloadLocale,
             },
         },
-    });
+    } as syncIpc.EventPayload);
 
     // Send locale
     webContents.send(syncIpc.CHANNEL, {
@@ -430,14 +434,14 @@ const winOpenCallback = (appWindow: AppWindow) => {
                     status: state.update.status,
                     latestVersion: state.update.latestVersion,
                     latestVersionUrl: state.update.latestVersionUrl,
-                },
+                } as UpdateState,
             },
         },
-    });
+    } as syncIpc.EventPayload);
 };
 
 // Listen to renderer action
-ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {
+ipcMain.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
     const store = container.get("store") as Store<any>;
     const actionSerializer = container.get("action-serializer") as ActionSerializer;
 
@@ -447,7 +451,7 @@ ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {
             store.dispatch(Object.assign(
                 {},
                 actionSerializer.deserialize(data.payload.action),
-                {sender: data.sender} as IActionWithSender,
+                {sender: data.sender} as ActionWithSender,
             ));
             break;
     }

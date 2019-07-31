@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
-
 import { i18nActions } from "readium-desktop/common/redux/actions";
 
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
@@ -17,13 +15,13 @@ const initialState: I18NState = {
 
 export function i18nReducer(
     state: I18NState = initialState,
-    action: Action,
+    action: i18nActions.ActionLocale,
     ): I18NState {
     switch (action.type) {
         case i18nActions.ActionType.Set:
             return Object.assign({}, state, {
                 locale: action.payload.locale,
-            });
+            } as I18NState);
         default:
             return state;
     }
