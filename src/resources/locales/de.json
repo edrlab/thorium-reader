@@ -10,7 +10,23 @@
         "searchBook": "Suche nach einem Buch, einem Tag oder einer Art von Literatur",
         "skipLink": "Gehe zum Inhalt"
     },
+    "app": {
+        "edit": {
+            "copy": "",
+            "cut": "",
+            "paste": "",
+            "redo": "",
+            "selectAll": "",
+            "title": "",
+            "undo": ""
+        },
+        "quit": ""
+    },
     "catalog": {
+        "about": {
+            "button": "",
+            "title": ""
+        },
         "addBookToLib": "zur Bibliothek hinzufügen",
         "addTags": "Ein tag hinzufügen",
         "addTeaserToLib": "den Extrakt zur Bibliothek hinzufügen",
@@ -30,6 +46,7 @@
         "lang": "Sprache",
         "moreInfo": "mehr Informationen",
         "myBooks": "meine Bücher",
+        "noPublicationHelp": "",
         "publisher": "Herausgeber",
         "readBook": "Lesen",
         "released": "veröffentlicht am",
@@ -41,9 +58,12 @@
         "alreadyAdd": "Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
         "closeModalWindow": "Dieses modale Fenster schließen",
         "delete": "Willst du diese Publikation wirklich löschen?",
+        "deleteOpds": "",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
         "importError": "ein Fehler ist aufgetreten, überprüfen Sie Ihre Dateiendung (.epub or .lcpl).",
         "no": "Nein",
+        "renew": "",
+        "return": "",
         "sure": "Bist du sicher, dass du es wieder hinzufügen willst?",
         "yes": "Ja"
     },
@@ -67,7 +87,6 @@
         "lcp": {
             "cancel": "Abbrechen",
             "hint": "Dein Kennwort",
-            "hintSentence": "Hinweis:",
             "informations": {
                 "close": "Schließen",
                 "issued": "Ausstellungsdatum:",
@@ -82,16 +101,25 @@
                 "title": "LCP-Informationen",
                 "updated": "Aktualisiert:"
             },
+            "password": "",
             "sentence": "Diese Publikation benötigt zum Öffnen ein LCP-Password: ",
             "submit": "Absenden",
             "title": "LCP-Verifikation"
         },
-        "startDownload": "Ein Download wurde gestartet."
+        "startDownload": "Ein Download wurde gestartet.",
+        "svg": {
+            "card": "",
+            "list": "",
+            "showParaphrase": ""
+        }
     },
     "message": {
         "download": {
             "start": "Der Download von {{title}} hat begonnen",
             "success": "Der Download von {{title}} wurde abgeschlossen"
+        },
+        "import": {
+            "success": ""
         },
         "lcp": {
             "passphraseError": "Konnte die Publikation {{publicationTitle}} nicht entsperren",
@@ -107,11 +135,13 @@
             "addSentence": "Welchen ODPS-Feed willst du hinzufügen?",
             "delete": "Feed löschen",
             "name": "Feed-Name:",
+            "namePlaceholder": "",
             "pasteUrl": "die URL eines Futters einfügen",
             "title": "Feed hinzufügen",
             "update": "Aktualisieren",
             "updateSentence": "Du kannst die Felder aktualisieren.",
-            "url": "Feed-Link:"
+            "url": "Feed-Link:",
+            "urlPlaceholder": ""
         },
         "addMenu": "OPDS-Feed hinzufügen",
         "authentication": {
@@ -121,6 +151,7 @@
             "username": "Benutzername:"
         },
         "back": "Zurück",
+        "breadcrumbRoot": "",
         "download": "Download",
         "downloadError": "Beim Abrufen des Feeds trat ein Fehler auf.",
         "formError": "Bitte fülle alle Felder aus",
@@ -132,7 +163,10 @@
             "goLoanBook": "dieses Buch ausleihen",
             "goSubBook": "abonnieren"
         },
-        "settings": "Einstellungen"
+        "settings": "Einstellungen",
+        "svg": {
+            "opds": ""
+        }
     },
     "publication": {
         "cancelDownloadButton": "Abbrechen",
@@ -140,15 +174,17 @@
         "deleteButton": "Löschen",
         "downloadButton": "Download",
         "endDownload": "Download abgeschlossen",
+        "expiredLcp": "",
         "failedDownload": "Download fehlerhaft",
         "infoButton": "LCP-Informationen",
-        "notReadableLcp": "Dieses Buch kann nicht gelesen werden, das die LCP-Lizenz abgelaufen ist.",
         "progressDownload": "Download läuft",
         "readButton": "Lesen",
         "renewButton": "Verlängern",
         "renewSentence": "Bist du sicher, dass die Publikation verlängert werden soll?",
         "returnButton": "Zurückgeben",
         "returnSentence": "Bist du sicher, dass die Publikation zurückgegeben werden soll?",
+        "returnedLcp": "",
+        "revokedLcp": "",
         "seeLess": "Weniger Infos",
         "seeMore": "Mehr Infos"
     },
@@ -171,20 +207,37 @@
             "fullscreenTitle": "fullscreen mode",
             "infoTitle": "Informationen",
             "openTableOfContentsTitle": "navigation",
+            "quitFullscreenTitle": "",
             "readBookTitle": "mit dem Lesen des Buches beginnen",
             "settingsTitle": "settings"
         },
         "settings": {
             "DefaultFont": "Standardschrift",
-            "align": "Textausrichtung",
-            "center": "Zentriert",
-            "close": "Schließen",
+            "accessibility": "",
+            "column": {
+                "auto": "",
+                "one": "",
+                "oneTitle": "",
+                "title": "",
+                "two": "",
+                "twoTitle": ""
+            },
             "display": "Lesefluss",
+            "disposition": {
+                "title": "",
+                "with": "",
+                "without": ""
+            },
+            "font": "",
             "fontSize": "Schriftgröße:",
+            "justification": "",
+            "justify": "",
             "left": "Linksbündig",
+            "letterSpacing": "",
+            "lineSpacing": "",
+            "margin": "",
             "paginated": "Seitendarstellung",
             "right": "Rechtsbündig",
-            "save": "Speichern",
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",
             "text": "Text",
@@ -199,7 +252,21 @@
                 "predefined": "vordefiniertes Thema",
                 "title": "Thema"
             },
-            "title": "Einstellungen"
+            "title": "Einstellungen",
+            "wordSpacing": ""
+        },
+        "svg": {
+            "alignCenter": "",
+            "alignLeft": "",
+            "alignRight": "",
+            "contentTable": "",
+            "continue": "",
+            "document": "",
+            "landmark": "",
+            "left": "",
+            "night": "",
+            "right": "",
+            "settings": ""
         }
     },
     "settings": {
@@ -214,6 +281,13 @@
         "about": "Über",
         "help": "Hilfe",
         "news": "Neuerungen",
+        "svg": {
+            "addEpub": "",
+            "help": "",
+            "news": "",
+            "opds": "",
+            "others": ""
+        },
         "sync": "Synchronisiere die Bibliothek"
     },
     "update": {
