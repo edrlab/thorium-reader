@@ -37,7 +37,7 @@
     "package:linux": "npm run package:build && electron-builder --linux",
     "package:mac": "npm run package:build && electron-builder --mac",
     "package:all": "npm run package:build && electron-builder -mwl",
-    "i18n": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr es de --space 4 --finalnewline --newkeysempty",
+    "i18n": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr de --space 4 --finalnewline --newkeysempty",
     "i18n-check": "yarn run i18n --check",
     "i18n-help": "sync-i18n --help"
   },
