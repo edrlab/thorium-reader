@@ -757,9 +757,8 @@ const mapDispatchToProps = (dispatch: any, props: ReaderProps) => {
 };
 
 const buildRequestData = (props: ReaderProps) => {
-    const parsedResult = qs.parse(document.location.href);
     return {
-        identifier: parsedResult.pubId,
+        identifier: queryParams.pubId,
     };
 };
 
