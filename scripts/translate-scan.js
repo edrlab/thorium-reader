@@ -1,3 +1,4 @@
+const util = require('util');
 var fs = require("fs");
 var path = require("path");
 var glob = require("glob");
@@ -35,8 +36,9 @@ glob("src/**/*{.ts,.tsx}", {}, function (err, files) {
             const key = regexMatch[2];
             if (!keys.includes(key)) {
                 keys.push(key);
-            } else {
                 console.log(key);
+            } else {
+                console.log(`-- duplicate: ${key}`);
             }
             regexMatch = regex.exec(fileTxt);
         }
@@ -74,7 +76,7 @@ glob("src/**/*{.ts,.tsx}", {}, function (err, files) {
     jsonObj = jsonUtils.sortObject(jsonObj);
 
     const jsonStr = JSON.stringify(jsonObj, null, "    ");
-    console.log(jsonStr);
+    console.log(util.inspect(jsonObj, { colors: true, depth: null, compact: false }));
 
     fs.writeFileSync(path.join(process.cwd(), jsonFilePath), jsonStr, { encoding: "utf8" });
 });
