@@ -39,7 +39,8 @@
     "package:all": "npm run package:build && electron-builder -mwl",
     "i18n": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr de --space 4 --finalnewline --newkeysempty",
     "i18n-check": "npm run i18n --check",
-    "i18n-help": "sync-i18n --help"
+    "i18n-help": "sync-i18n --help",
+    "i18n-typed": "typed_i18n -i src/resources/locales/en.json -o src/typings -l typescript"
   },
   "repository": {
     "type": "git",

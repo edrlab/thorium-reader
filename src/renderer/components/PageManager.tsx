@@ -6,12 +6,9 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { Route, Switch } from "react-router-dom";
-
-import { Translator } from "readium-desktop/common/services/translator";
+import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { lazyInject } from "readium-desktop/renderer/di";
-
 import { routes } from "readium-desktop/renderer/routing";
 
 interface States {
@@ -32,7 +29,7 @@ export default class PageManager extends React.Component<{}, States> {
     }
 
     public render(): React.ReactElement<{}> {
-        const __ = this.translator.translate.bind(this.translator);
+        const __ = this.translator.translate.bind(this.translator) as I18nTyped;
         const activePage = this.state.activePage;
         return (
             <Switch>
