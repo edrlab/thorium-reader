@@ -18,7 +18,7 @@
     "build:dev:main": "webpack --config webpack.config.main.js",
     "start": "npm run build && cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "lint:ts": "tslint './src/**/*.ts' './src/**/*.tsx'",
-    "lint:editorconfig": "eclint check '**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.ts",
+    "lint:editorconfig": "eclint check '**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.ts'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer-reader": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:reader\"",
     "start:dev:renderer": "webpack-dev-server --config webpack.config.renderer.js",
@@ -40,7 +40,7 @@
     "i18n": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr de --space 4 --finalnewline --newkeysempty",
     "i18n-check": "npm run i18n --check",
     "i18n-help": "sync-i18n --help",
-    "i18n-typed": "typed_i18n -i src/resources/locales/en.json -o src/typings -l typescript"
+    "i18n-typed": "bash scripts/i18n-typed-patch.sh" 
   },
   "repository": {
     "type": "git",
