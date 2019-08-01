@@ -18,7 +18,7 @@
     "build:dev:main": "webpack --config webpack.config.main.js",
     "start": "npm run build && cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "lint:ts": "tslint --project tsconfig.json -c tslint.json './src/**/*.ts' './src/**/*.tsx' './test/**/*.ts' './test/**/*.tsx'",
-    "lint:editorconfig": "eclint check '**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!**/.DS_Store'",
+    "lint:editorconfig": "eclint check '**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.ts'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer-reader": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:reader\"",
     "start:dev:renderer": "webpack-dev-server --config webpack.config.renderer.js",
@@ -37,9 +37,10 @@
     "package:linux": "npm run package:build && electron-builder --linux",
     "package:mac": "npm run package:build && electron-builder --mac",
     "package:all": "npm run package:build && electron-builder -mwl",
-    "i18n": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr de --space 4 --finalnewline --newkeysempty",
-    "i18n-check": "npm run i18n --check",
-    "i18n-help": "sync-i18n --help"
+    "i18n-sort": "node ./scripts/locales-sort.js",
+    "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages en fr de --space 4 --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\"",
+    "i18n-check": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr de --space 4 --finalnewline --newkeysempty",
+    "i18n-typed": "node ./scripts/locale-wrap.js \"src/resources/locales/en.json\" \"en.json\" && typed_i18n -i \"en.json\" -o src/typings -l typescript && rimraf \"en.json\""
   },
   "repository": {
     "type": "git",
@@ -196,6 +197,7 @@
     "yazl": "^2.4.3"
   },
   "devDependencies": {
+    "@kogai/typed_i18n": "^0.6.0",
     "@types/classnames": "^2.2.6",
     "@types/commonmark": "^0.27.1",
     "@types/express": "^4.16.0",
@@ -229,6 +231,7 @@
     "electron-devtools-installer": "^2.2.4",
     "file-loader": "^1.1.11",
     "git-rev-sync": "^1.12.0",
+    "glob": "^7.1.4",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "i18next-json-sync": "^2.3.1",
@@ -246,6 +249,7 @@
     "react-hot-loader": "3.*.*",
     "react-svg-loader": "^2.1.0",
     "redux-devtools-extension": "^2.13.5",
+    "rimraf": "^2.6.3",
     "style-loader": "^0.22.1",
     "svg-sprite-loader": "^3.9.2",
     "ts-jest": "^23.10.5",

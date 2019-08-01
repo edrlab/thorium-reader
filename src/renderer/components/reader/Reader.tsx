@@ -74,6 +74,8 @@ import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import { Publication } from "readium-desktop/common/models/publication";
 
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
+
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
 // import { webFrame } from "electron";
@@ -366,7 +368,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.setState({publication});
         setReadingLocationSaver(this.handleReadingLocationChange);
 
-        setEpubReadingSystemInfo({ name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION });
+        setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
     }
 
     public async componentDidUpdate(oldProps: ReaderProps) {

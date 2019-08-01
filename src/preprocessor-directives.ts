@@ -35,6 +35,9 @@ export const _GIT_DATE = __GIT_DATE__;
 declare const __APP_VERSION__: string;
 export const _APP_VERSION = __APP_VERSION__;
 
+declare const __APP_NAME__: string;
+export const _APP_NAME = __APP_NAME__;
+
 // This ones needs to be inlined, no var allowed (because otherwise: dynamic require() import!)
 // declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 // export const _POUCHDB_ADAPTER_PACKAGE = __POUCHDB_ADAPTER_PACKAGE__;

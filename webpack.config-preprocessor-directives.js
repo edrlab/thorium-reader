@@ -1,6 +1,6 @@
 const webpack = require("webpack");
 
-const { version } = require("./package.json");
+const { version, build } = require("./package.json");
 var git = require("git-rev-sync");
 
 const portApp = process.env.PORT_APP || "8090";
@@ -29,6 +29,7 @@ const nodeModuleRelativeUrl = (isPackaging === "1") ?
 
 const data = {
     __APP_VERSION__: JSON.stringify(version),
+    __APP_NAME__: JSON.stringify(build.productName),
     __GIT_BRANCH__: JSON.stringify(git.branch()),
     __GIT_DATE__: JSON.stringify(git.date()),
     __GIT_SHORT__: JSON.stringify(git.short()),
