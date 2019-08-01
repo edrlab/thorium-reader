@@ -17,17 +17,7 @@ import * as enLang from "readium-desktop/resources/locales/enLang.json";
 import * as frLang from "readium-desktop/resources/locales/frLang.json";
 
 const initI18n = i18n.init({
-    resources: {
-        en: {
-            translation: enCatalog,
-        },
-        fr: {
-            translation: frCatalog,
-        },
-        de: {
-            translation: deCatalog,
-        },
-    },
+    resources: Object.assign(enCatalog, deCatalog, frCatalog),
 });
 
 initI18n.addResourceBundle("en", "translation", enLang, true);
