@@ -1,7 +1,5 @@
 {
-  "en": {
-    "translation": {
-      "accessibility": {
+    "accessibility": {
         "bookAuthor": "Book author",
         "bookPublisher": "Book publisher",
         "bookReleaseDate": "Book release date",
@@ -11,23 +9,23 @@
         "importFile": "Import an epub file",
         "searchBook": "Search a book, a tag or type of a literature",
         "skipLink": "Skip to content"
-      },
-      "app": {
+    },
+    "app": {
         "edit": {
-          "copy": "Copy",
-          "cut": "Cut",
-          "paste": "Paste",
-          "redo": "Redo",
-          "selectAll": "Select all",
-          "title": "Edit",
-          "undo": "Undo"
+            "copy": "Copy",
+            "cut": "Cut",
+            "paste": "Paste",
+            "redo": "Redo",
+            "selectAll": "Select all",
+            "title": "Edit",
+            "undo": "Undo"
         },
         "quit": "Quit Thorium"
-      },
-      "catalog": {
+    },
+    "catalog": {
         "about": {
-          "button": "More information",
-          "title": "About Thorium"
+            "button": "More information",
+            "title": "About Thorium"
         },
         "addBookToLib": "Add book to library",
         "addTags": "Add tag",
@@ -40,8 +38,8 @@
         "description": "Description",
         "emptyTagList": "You have still not added tags to the books.",
         "entry": {
-          "continueReading": "Resume reading",
-          "lastAdditions": "Recently added"
+            "continueReading": "Resume reading",
+            "lastAdditions": "Recently added"
         },
         "export": "Export",
         "id": "Identifier",
@@ -55,8 +53,8 @@
         "sort": "sort by",
         "tagCount": "Tag count",
         "tags": "My tags"
-      },
-      "dialog": {
+    },
+    "dialog": {
         "alreadyAdd": "It seems that you have already added this publication to your library.",
         "closeModalWindow": "Close this modal window",
         "delete": "Do you really want to delete this publication?",
@@ -68,8 +66,8 @@
         "return": "Do you really want to return the licence for this publication?",
         "sure": "Are you sure you want to add it again ?",
         "yes": "Yes"
-      },
-      "header": {
+    },
+    "header": {
         "allBooks": "All books",
         "books": "My Books",
         "catalogs": "Catalogs",
@@ -80,77 +78,77 @@
         "searchPlaceholder": "Search",
         "searchTitle": "Start the search",
         "settings": "Settings"
-      },
-      "library": {
+    },
+    "library": {
         "add": "Add to the library",
         "cancelDownload": "A download canceled.",
         "endDownload": "A download ended.",
         "heading": "Library",
         "lcp": {
-          "cancel": "Cancel",
-          "hint": "(Hint : {{hint}})",
-          "informations": {
-            "close": "Close",
-            "issued": "Creation date:",
-            "provider": "Provider:",
-            "right": {
-              "copy": "Copy number:",
-              "end": "End:",
-              "print": "Print number:",
-              "start": "Start:",
-              "title": "Rights"
+            "cancel": "Cancel",
+            "hint": "(Hint : {{hint}})",
+            "informations": {
+                "close": "Close",
+                "issued": "Creation date:",
+                "provider": "Provider:",
+                "right": {
+                    "copy": "Copy number:",
+                    "end": "End:",
+                    "print": "Print number:",
+                    "start": "Start:",
+                    "title": "Rights"
+                },
+                "title": "LCP Informations",
+                "updated": "Updated:"
             },
-            "title": "LCP Informations",
-            "updated": "Updated:"
-          },
-          "password": "Password",
-          "sentence": "This publication needs a LCP password to be opened: ",
-          "submit": "Submit",
-          "title": "LCP Verification"
+            "password": "Password",
+            "sentence": "This publication needs a LCP password to be opened: ",
+            "submit": "Submit",
+            "title": "LCP Verification"
         },
         "startDownload": "A download started.",
         "svg": {
-          "card": "Cards",
-          "list": "List",
-          "showParaphrase": "Show paraphrase"
+            "card": "Cards",
+            "list": "List",
+            "showParaphrase": "Show paraphrase"
         }
-      },
-      "message": {
+    },
+    "message": {
         "download": {
-          "start": "The download of {{title}} began.",
-          "success": "The download of {{title}} is finished."
+            "start": "The download of {{title}} began.",
+            "success": "The download of {{title}} is finished."
         },
         "import": {
-          "success": "The import of {{title}} is finished."
+            "success": "The import of {{title}} is finished."
         },
         "lcp": {
-          "passphraseError": "Unable to unlock publication {{publicationTitle}}",
-          "renewError": "An error occurred when renewing the LCP license of {{title}}.",
-          "renewSuccess": "The LCP license of {{title}} has been renewed.",
-          "returnError": "An error occurred when returning the LCP license of {{title}}.",
-          "returnSuccess": "The LCP license of {{title}} has been returned"
+            "passphraseError": "Unable to unlock publication {{publicationTitle}}",
+            "renewError": "An error occurred when renewing the LCP license of {{title}}.",
+            "renewSuccess": "The LCP license of {{title}} has been renewed.",
+            "returnError": "An error occurred when returning the LCP license of {{title}}.",
+            "returnSuccess": "The LCP license of {{title}} has been returned"
         }
-      },
-      "opds": {
+    },
+    "opds": {
         "addForm": {
-          "addButton": "Add",
-          "addSentence": "What OPDS feed would you like to add?",
-          "delete": "Delete the feed",
-          "name": "Name :",
-          "namePlaceholder": "Name",
-          "pasteUrl": "paste url of a feed",
-          "title": "Add a feed",
-          "update": "Update",
-          "updateSentence": "You can update the fields.",
-          "url": "Link :",
-          "urlPlaceholder": "Link"
+            "addButton": "Add",
+            "addSentence": "What OPDS feed would you like to add?",
+            "delete": "Delete the feed",
+            "name": "Name :",
+            "namePlaceholder": "Name",
+            "pasteUrl": "paste url of a feed",
+            "title": "Add a feed",
+            "update": "Update",
+            "updateSentence": "You can update the fields.",
+            "url": "Link :",
+            "urlPlaceholder": "Link"
         },
         "addMenu": "Add OPDS feed",
         "authentication": {
-          "loginButton": "Login",
-          "password": "Password :",
-          "sentence": "Please, log in to access to the contents",
-          "username": "Username :"
+            "loginButton": "Login",
+            "password": "Password :",
+            "sentence": "Please, log in to access to the contents",
+            "username": "Username :"
         },
         "back": "Back",
         "breadcrumbRoot": "Catalogs",
@@ -158,19 +156,19 @@
         "downloadError": "An error occurred while retrieving the feed.",
         "formError": "Please, fill all the fields",
         "menu": {
-          "aboutBook": "About this book",
-          "addExtract": "Import the extract",
-          "addTeaser": "Add extract to the library",
-          "goBuyBook": "Buy this book",
-          "goLoanBook": "Borrow this book",
-          "goSubBook": "Subscribe"
+            "aboutBook": "About this book",
+            "addExtract": "Import the extract",
+            "addTeaser": "Add extract to the library",
+            "goBuyBook": "Buy this book",
+            "goLoanBook": "Borrow this book",
+            "goSubBook": "Subscribe"
         },
         "settings": "Settings",
         "svg": {
-          "opds": "Opds"
+            "opds": "Opds"
         }
-      },
-      "publication": {
+    },
+    "publication": {
         "cancelDownloadButton": "Cancel",
         "canceledDownload": "Download Canceled",
         "deleteButton": "Delete from the library",
@@ -189,112 +187,110 @@
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "See less",
         "seeMore": "See more"
-      },
-      "reader": {
+    },
+    "reader": {
         "footerInfo": {
-          "lessInfo": "less informations",
-          "moreInfo": "more informations"
+            "lessInfo": "less informations",
+            "moreInfo": "more informations"
         },
         "marks": {
-          "annotations": "Annotations",
-          "bookmarks": "Bookmarks",
-          "illustrations": "Table of illustrations",
-          "landmarks": "Landmarks",
-          "toc": "Table of content"
+            "annotations": "Annotations",
+            "bookmarks": "Bookmarks",
+            "illustrations": "Table of illustrations",
+            "landmarks": "Landmarks",
+            "toc": "Table of content"
         },
         "navigation": {
-          "backHomeTitle": "back to home",
-          "bookmarkTitle": "bookmark",
-          "detachWindowTitle": "detach the window",
-          "fullscreenTitle": "open fullscreen mode",
-          "infoTitle": "informations",
-          "openTableOfContentsTitle": "navigation",
-          "quitFullscreenTitle": "quit fullscreen mode",
-          "readBookTitle": "start reading the book",
-          "settingsTitle": "settings"
+            "backHomeTitle": "back to home",
+            "bookmarkTitle": "bookmark",
+            "detachWindowTitle": "detach the window",
+            "fullscreenTitle": "open fullscreen mode",
+            "infoTitle": "informations",
+            "openTableOfContentsTitle": "navigation",
+            "quitFullscreenTitle": "quit fullscreen mode",
+            "readBookTitle": "start reading the book",
+            "settingsTitle": "settings"
         },
         "settings": {
-          "DefaultFont": "Default font",
-          "accessibility": "Accessibility",
-          "column": {
-            "auto": "Automatic",
-            "one": "1 col",
-            "oneTitle": "one column",
-            "title": "Columns",
-            "two": "2 cols",
-            "twoTitle": "two columns"
-          },
-          "display": "Display",
-          "disposition": {
-            "title": "Disposition",
-            "with": "With",
-            "without": "Without"
-          },
-          "font": "Font",
-          "fontSize": "Font size",
-          "justification": "Alignement",
-          "justify": "Justify",
-          "left": "Left",
-          "letterSpacing": "Letter spacing",
-          "lineSpacing": "Line spacing",
-          "margin": "Margin",
-          "paginated": "Paginated",
-          "right": "Right",
-          "scrolled": "Scrollable",
-          "spacing": "Spacing",
-          "text": "Text",
-          "theme": {
-            "create": "Create a theme",
-            "myTheme": "My themes",
-            "name": {
-              "Neutral": "Neutral",
-              "Night": "Night",
-              "Sepia": "Sepia"
+            "DefaultFont": "Default font",
+            "accessibility": "Accessibility",
+            "column": {
+                "auto": "Automatic",
+                "one": "1 col",
+                "oneTitle": "one column",
+                "title": "Columns",
+                "two": "2 cols",
+                "twoTitle": "two columns"
             },
-            "predefined": "Predefined themes",
-            "title": "Theme"
-          },
-          "title": "Settings",
-          "wordSpacing": "Word spacing"
+            "display": "Display",
+            "disposition": {
+                "title": "Disposition",
+                "with": "With",
+                "without": "Without"
+            },
+            "font": "Font",
+            "fontSize": "Font size",
+            "justification": "Alignement",
+            "justify": "Justify",
+            "left": "Left",
+            "letterSpacing": "Letter spacing",
+            "lineSpacing": "Line spacing",
+            "margin": "Margin",
+            "paginated": "Paginated",
+            "right": "Right",
+            "scrolled": "Scrollable",
+            "spacing": "Spacing",
+            "text": "Text",
+            "theme": {
+                "create": "Create a theme",
+                "myTheme": "My themes",
+                "name": {
+                    "Neutral": "Neutral",
+                    "Night": "Night",
+                    "Sepia": "Sepia"
+                },
+                "predefined": "Predefined themes",
+                "title": "Theme"
+            },
+            "title": "Settings",
+            "wordSpacing": "Word spacing"
         },
         "svg": {
-          "alignCenter": "Center align",
-          "alignLeft": "Left align",
-          "alignRight": "Right align",
-          "contentTable": "Content Table",
-          "continue": "Scrolled",
-          "document": "Paginated",
-          "landmark": "Landmark",
-          "left": "Left",
-          "night": "Night",
-          "right": "Right",
-          "settings": "Settings"
+            "alignCenter": "Center align",
+            "alignLeft": "Left align",
+            "alignRight": "Right align",
+            "contentTable": "Content Table",
+            "continue": "Scrolled",
+            "document": "Paginated",
+            "landmark": "Landmark",
+            "left": "Left",
+            "night": "Night",
+            "right": "Right",
+            "settings": "Settings"
         }
-      },
-      "settings": {
+    },
+    "settings": {
         "information": "Information",
         "language": {
-          "languageChoice": "Language choice"
+            "languageChoice": "Language choice"
         },
         "manageTags": "Manage tags",
         "uiLanguage": "UI language"
-      },
-      "toolbar": {
+    },
+    "toolbar": {
         "about": "About",
         "help": "Help",
         "news": "What's new?",
         "svg": {
-          "addEpub": "Add an EPUB",
-          "help": "Help",
-          "news": "News",
-          "opds": "Opds",
-          "others": "Others"
+            "addEpub": "Add an EPUB",
+            "help": "Help",
+            "news": "News",
+            "opds": "Opds",
+            "others": "Others"
         },
         "sync": "Synchronize the library"
-      },
-      "update": {
+    },
+    "update": {
         "available": "Update available!"
-      }
     }
-  }
 }
