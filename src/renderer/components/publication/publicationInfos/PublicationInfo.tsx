@@ -107,79 +107,79 @@ export class PublicationInfo extends React.Component<Props, State> {
 
         return (
             <>
-            <div className={ styles.dialog_left }>
-                <div className={ styles.image_wrapper }>
-                    <div>
-                        <Cover publication={ publication } />
+                <div className={styles.dialog_left}>
+                    <div className={styles.image_wrapper}>
+                        <div>
+                            <Cover publication={publication} />
+                        </div>
                     </div>
-                </div>
-                { !this.props.hideControls &&
-                    <Controls publication={ this.props.publication }/>
-                }
-            </div>
-            <div className={ styles.dialog_right }>
-                <h2>{ publication.title }</h2>
-                <div>
-                    <p className={ styles.author }>{ authors }</p>
-
-                    {
-                        (formatedPublishedDate) ?
-                        (<p><span>{__("catalog.released")}</span> { formatedPublishedDate }</p>) : (<></>)
+                    {!this.props.hideControls &&
+                        <Controls publication={this.props.publication} />
                     }
-                    <div className={styles.tags}>
-                        <div className={styles.tag_list}>
-                            <span>Tags</span>
-                            <TagManager
-                                publicationIdentifier={this.props.publication.identifier}
-                                tags={this.props.publication.tags}
-                                canModifyTag={!this.props.isOpds}
-                            />
-                        </div>
-                    </div>
-
-                    {publication.description && <>
-                        <h3>{__("catalog.description")}</h3>
-                        <div
-                            ref={(ref) => this.descriptionWrapperRef = ref}
-                            className={classNames(
-                                styles.descriptionWrapper,
-                                this.state.needSeeMore && styles.hideEnd,
-                                this.state.seeMore && styles.seeMore,
-                            )}
-                        >
-                            <p
-                                ref={(ref) => this.descriptionRef = ref}
-                                className={styles.description}
-                            >
-                                { publication.description }
-                            </p>
-                        </div>
-                        { this.state.needSeeMore &&
-                            <button aria-hidden className={styles.seeMoreButton} onClick={this.toggleSeeMore}>
-                                { this.state.seeMore ? __("publication.seeLess") : __("publication.seeMore") }
-                            </button>
-                        }
-                    </>}
-
-                    <h3>{__("catalog.moreInfo")}</h3>
-
-                    <p>
-                        { formatedPublishers &&
-                            <><span>{__("catalog.publisher")}</span> { formatedPublishers } <br/></>
-                        }
-                        { /* formatedLanguages provide src/resources/locale-names/*.json and not the locales files
-                           * It's used to display the country name in the locale language */ }
-                        <span>{__("catalog.lang")}</span> { __(`languages.${formatedLanguages}` as any) } <br/>
-                        <span>{__("catalog.id")}</span> { publication.workIdentifier } <br/>
-                    </p>
                 </div>
-            </div>
+                <div className={styles.dialog_right}>
+                    <h2>{publication.title}</h2>
+                    <div>
+                        <p className={styles.author}>{authors}</p>
+
+                        {
+                            (formatedPublishedDate) ?
+                                (<p><span>{__("catalog.released")}</span> {formatedPublishedDate}</p>) : (<></>)
+                        }
+                        <div className={styles.tags}>
+                            <div className={styles.tag_list}>
+                                <span>Tags</span>
+                                <TagManager
+                                    publicationIdentifier={this.props.publication.identifier}
+                                    tags={this.props.publication.tags}
+                                    canModifyTag={!this.props.isOpds}
+                                />
+                            </div>
+                        </div>
+
+                        {publication.description && <>
+                            <h3>{__("catalog.description")}</h3>
+                            <div
+                                ref={(ref) => this.descriptionWrapperRef = ref}
+                                className={classNames(
+                                    styles.descriptionWrapper,
+                                    this.state.needSeeMore && styles.hideEnd,
+                                    this.state.seeMore && styles.seeMore,
+                                )}
+                            >
+                                <p
+                                    ref={(ref) => this.descriptionRef = ref}
+                                    className={styles.description}
+                                >
+                                    {publication.description}
+                                </p>
+                            </div>
+                            {this.state.needSeeMore &&
+                                <button aria-hidden className={styles.seeMoreButton} onClick={this.toggleSeeMore}>
+                                    {this.state.seeMore ? __("publication.seeLess") : __("publication.seeMore")}
+                                </button>
+                            }
+                        </>}
+
+                        <h3>{__("catalog.moreInfo")}</h3>
+
+                        <p>
+                            {formatedPublishers &&
+                                <><span>{__("catalog.publisher")}</span> {formatedPublishers} <br /></>
+                            }
+                            { /* formatedLanguages provide src/resources/locale-names/*.json and not the locales files
+                           * It's used to display the country name in the locale language */ }
+                            <span>{__("catalog.lang")}</span> {__(`languages.${formatedLanguages}` as any)} <br />
+                            <span>{__("catalog.id")}</span> {publication.workIdentifier} <br />
+                        </p>
+                    </div>
+                </div>
             </>
         );
     }
 
     private toggleSeeMore() {
-        this.setState({seeMore: !this.state.seeMore});
+        this.setState({ seeMore: !this.state.seeMore });
     }
 
     private needSeeMoreButton() {
@@ -187,7 +187,7 @@ export class PublicationInfo extends React.Component<Props, State> {
             return;
         }
         const need = this.descriptionWrapperRef.offsetHeight < this.descriptionRef.offsetHeight;
-        this.setState({needSeeMore: need});
+        this.setState({ needSeeMore: need });
     }
 }
 
