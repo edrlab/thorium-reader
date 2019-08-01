@@ -74,8 +74,6 @@ import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import { Publication } from "readium-desktop/common/models/publication";
 
-import * as qs from "query-string";
-
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
 // import { webFrame } from "electron";
