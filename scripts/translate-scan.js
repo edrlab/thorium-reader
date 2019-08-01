@@ -27,8 +27,8 @@ glob("src/**/*{.ts,.tsx}", {}, function (err, files) {
     for (const file of files) {
         const fileTxt = fs.readFileSync(path.join(process.cwd(), file), { encoding: "utf8" });
 
-        // (\.translate|__)\s*\(\s*['"]\s*([^\]'"]+)['"]
-        const regex = new RegExp(`(\.translate|__)\\s*\\(\\s*['"]([^\\]'"]+)['"]`, "g");
+        // (\.translate|__)\s*\(\s*['"]\s*([^'"]+)['"]
+        const regex = new RegExp(`(\.translate|__)\\s*\\(\\s*['"]([^'"]+)['"]`, "g");
 
         let regexMatch = regex.exec(fileTxt);
         while (regexMatch) {
