@@ -89,7 +89,6 @@ export class PublicationInfo extends React.Component<Props, State> {
         }
 
         const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
-        const formatedLanguages = oc(publication).languages([]).join(", ");
         const formatedPublishers = oc(publication).publishers([]).join(", ");
         let formatedPublishedDate = null;
 
@@ -167,7 +166,20 @@ export class PublicationInfo extends React.Component<Props, State> {
                         { formatedPublishers &&
                             <><span>{__("catalog.publisher")}</span> { formatedPublishers } <br/></>
                         }
-                        <span>{__("catalog.lang")}</span> { __(`languages.${formatedLanguages}` as any)} <br/>
+                        <span>{__("catalog.lang")}</span> {
+                            publication.languages &&
+                            publication.languages
+                            .map((lang: string, index: number) => {
+                                const l = lang.split("-")[0];
+                                // tslint:disable-next-line:max-line-length
+                                const ll = ((__(`languages.${l}` as any) as unknown) as string).replace(`languages.${l}`, lang);
+                                const note = (lang !== ll) ? ` (${lang})` : "";
+                                const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");
+                                // tslint:disable-next-line:max-line-length
+                                return <i key={"lang-" + index} title={lang}>{ll + note + suffix}</i>;
+                                // return <></>;
+                            })
+                        } <br/>
                         <span>{__("catalog.id")}</span> { publication.workIdentifier } <br/>
                     </p>
                 </div>
