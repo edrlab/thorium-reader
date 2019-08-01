@@ -15,9 +15,9 @@ import * as frCatalog from "readium-desktop/resources/locales/fr.json";
 import * as deLang from "readium-desktop/resources/locale-names/enLang.json";
 import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
 import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
+import { TFunction } from "readium-desktop/typings/en.translation";
 
 const initI18n = i18n.init({
-    fallbackLng: "en",
     resources: {
         en: {
             translation: enCatalog,
@@ -29,6 +29,7 @@ const initI18n = i18n.init({
             translation: deCatalog,
         },
     },
+    fallbackLng: "en",
 });
 
 initI18n.addResourceBundle("en", "translation", enLang, true);
@@ -48,8 +49,11 @@ interface LocalizedContent {
     [locale: string]: string;
 }
 
+export type I18nTyped = TFunction;
+
 @injectable()
 export class Translator {
+    public translate: I18nTyped = this._translate;
     private locale: string = "en";
 
     public getLocale(): string {
@@ -58,18 +62,9 @@ export class Translator {
 
     public setLocale(locale: string) {
         this.locale = locale;
-    }
-
-    public translate(message: string, options: any = {}): string {
         if (initI18n.language !== this.locale) {
             initI18n.changeLanguage(this.locale);
         }
-
-        const label = initI18n.t(message, options);
-        if (!label || !label.length) {
-            return initI18nEN.t(message, options);
-        }
-        return label;
     }
 
     /**
@@ -116,5 +111,13 @@ export class Translator {
         }
 
         return "";
+    }
+
+    private _translate(message: string, options: any = {}): any {
+        const label = initI18n.t(message, options);
+        if (!label || !label.length) {
+            return initI18nEN.t(message, options);
+        }
+        return label;
     }
 }
