@@ -18,7 +18,17 @@ import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
 import { TFunction } from "readium-desktop/typings/en.translation";
 
 const initI18n = i18n.init({
-    resources: Object.assign(enCatalog, deCatalog, frCatalog),
+    resources: {
+        en: {
+            translation: enCatalog,
+        },
+        fr: {
+            translation: frCatalog,
+        },
+        de: {
+            translation: deCatalog,
+        },
+    },
     fallbackLng: "en",
 });
 
