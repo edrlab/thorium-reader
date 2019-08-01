@@ -12,11 +12,12 @@ import * as deCatalog from "readium-desktop/resources/locales/de.json";
 import * as enCatalog from "readium-desktop/resources/locales/en.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
 
-import * as deLang from "readium-desktop/resources/locales/enLang.json";
-import * as enLang from "readium-desktop/resources/locales/enLang.json";
-import * as frLang from "readium-desktop/resources/locales/frLang.json";
+import * as deLang from "readium-desktop/resources/locale-names/enLang.json";
+import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
+import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
 
 const initI18n = i18n.init({
+    fallbackLng: "en",
     resources: {
         en: {
             translation: enCatalog,
@@ -33,6 +34,9 @@ const initI18n = i18n.init({
 initI18n.addResourceBundle("en", "translation", enLang, true);
 initI18n.addResourceBundle("fr", "translation", frLang, true);
 initI18n.addResourceBundle("de", "translation", deLang, true);
+
+const initI18nEN = initI18n.cloneInstance();
+initI18nEN.changeLanguage("en");
 
 export enum AvailableLanguages {
     en = "English",
@@ -61,7 +65,11 @@ export class Translator {
             initI18n.changeLanguage(this.locale);
         }
 
-        return initI18n.t(message, options);
+        const label = initI18n.t(message, options);
+        if (!label || !label.length) {
+            return initI18nEN.t(message, options);
+        }
+        return label;
     }
 
     /**
