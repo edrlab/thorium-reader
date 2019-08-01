@@ -5,12 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { inject, injectable } from "inversify";
-import { LocatorType } from "readium-desktop/common/models/locator";
-import { Translator } from "readium-desktop/common/services/translator";
+import { inject, injectable} from "inversify";
+
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
-import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+
+import { Translator } from "readium-desktop/common/services/translator";
+
 import { CatalogConfig } from "readium-desktop/main/db/document/config";
+
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+
+import { LocatorType } from "readium-desktop/common/models/locator";
+
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
