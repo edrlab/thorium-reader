@@ -35,7 +35,7 @@ export class CatalogApi {
     private translator: Translator;
 
     public async get(): Promise<CatalogView> {
-        const __ = this.translator.translate;
+        const __ = this.translator.translate.bind(this.translator);
 
         // Last added publications
         const lastAddedPublications = await this.publicationRepository.find({
