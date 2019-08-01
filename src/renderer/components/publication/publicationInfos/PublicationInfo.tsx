@@ -167,7 +167,7 @@ export class PublicationInfo extends React.Component<Props, State> {
                         { formatedPublishers &&
                             <><span>{__("catalog.publisher")}</span> { formatedPublishers } <br/></>
                         }
-                        <span>{__("catalog.lang")}</span> { __(`languages.${formatedLanguages}`) } <br/>
+                        <span>{__("catalog.lang")}</span> { __(`languages.${formatedLanguages}` as any)} <br/>
                         <span>{__("catalog.id")}</span> { publication.workIdentifier } <br/>
                     </p>
                 </div>
