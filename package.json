@@ -37,12 +37,10 @@
     "package:linux": "npm run package:build && electron-builder --linux",
     "package:mac": "npm run package:build && electron-builder --mac",
     "package:all": "npm run package:build && electron-builder -mwl",
-    "i18n": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr de --space 4 --finalnewline --newkeysempty",
-    "i18n-check": "npm run i18n --check",
-    "i18n-help": "sync-i18n --help",
+    "i18n-sort": "node ./scripts/locales-sort.js",
     "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages en fr de --space 4 --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\"",
-    "i18n-typed": "bash scripts/i18n-typed-patch.sh",
-    "i18n-sort": "node ./scripts/locales-sort.js"
+    "i18n-check": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr de --space 4 --finalnewline --newkeysempty",
+    "i18n-typed": "node ./scripts/locale-wrap.js \"src/resources/locales/en.json\" \"en.json\" && typed_i18n -i \"en.json\" -o src/typings -l typescript && rimraf \"en.json\""
   },
   "repository": {
     "type": "git",
@@ -233,6 +231,7 @@
     "electron-devtools-installer": "^2.2.4",
     "file-loader": "^1.1.11",
     "git-rev-sync": "^1.12.0",
+    "glob": "^7.1.4",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "i18next-json-sync": "^2.3.1",
@@ -250,6 +249,7 @@
     "react-hot-loader": "3.*.*",
     "react-svg-loader": "^2.1.0",
     "redux-devtools-extension": "^2.13.5",
+    "rimraf": "^2.6.3",
     "style-loader": "^0.22.1",
     "svg-sprite-loader": "^3.9.2",
     "ts-jest": "^23.10.5",

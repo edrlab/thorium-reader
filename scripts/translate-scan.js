@@ -77,6 +77,6 @@ glob("src/**/*{.ts,.tsx}", {}, function (err, files) {
 
     console.log(util.inspect(jsonObj, { colors: true, depth: null, compact: false }));
 
-    const jsonStr = JSON.stringify(jsonObj, null, "    ");
+    const jsonStr = JSON.stringify(jsonObj, null, "    ") + "\n";
     fs.writeFileSync(path.join(process.cwd(), jsonFilePath), jsonStr, { encoding: "utf8" });
 });
