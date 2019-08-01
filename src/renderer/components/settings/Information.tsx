@@ -17,7 +17,7 @@ import {
 } from "readium-desktop/renderer/components/utils/translator";
 import { promisify } from "util";
 
-declare const __PACKAGING__: string;
+import { _PACKAGING } from "readium-desktop/preprocessor-directives";
 
 interface Props extends TranslatorProps {
     locale: string;
@@ -45,7 +45,7 @@ export class LanguageSettings extends React.Component<Props, States> {
 
         let folderPath: string = path.join((global as any).__dirname, infoFolderRelativePath);
         try {
-            if (__PACKAGING__ === "0") {
+            if (_PACKAGING === "0") {
                 folderPath = path.join(process.cwd(), "dist", infoFolderRelativePath);
             }
             const fileContent = await promisify(readFile)(path.join(folderPath, `${locale}.md`), {encoding: "utf8"});

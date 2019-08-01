@@ -40,7 +40,7 @@ import {
 
 import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
 import { setLocale } from "./common/redux/actions/i18n";
-import { AvailableLanguages } from "./common/services/translator";
+import { AvailableLanguages, Translator } from "./common/services/translator";
 import { debounce } from "./utils/debounce";
 
 import { UpdateState } from "./common/redux/states/update";
@@ -119,7 +119,7 @@ async function createWindow() {
 
     // Create the app menu on mac os to allow copy paste
     if (process.platform === "darwin") {
-        const translator = container.get("translator") as any;
+        const translator = container.get("translator") as Translator;
         const template: Electron.MenuItemConstructorOptions[] = [
             {
                 label: "Thorium",

@@ -58,7 +58,6 @@
         "alreadyAdd": "It seems that you have already added this publication to your library.",
         "closeModalWindow": "Close this modal window",
         "delete": "Do you really want to delete this publication?",
-        "deleteOpds": "Do you really want to delete this opds feed?",
         "import": "Do you really want to import those EPUB files :",
         "importError": "an error occured, verify your file extension (.epub or .lcpl)",
         "no": "No",
@@ -80,81 +79,27 @@
         "settings": "Settings"
     },
     "library": {
-        "add": "Add to the library",
-        "cancelDownload": "A download canceled.",
-        "endDownload": "A download ended.",
-        "heading": "Library",
         "lcp": {
             "cancel": "Cancel",
             "hint": "(Hint : {{hint}})",
-            "informations": {
-                "close": "Close",
-                "issued": "Creation date:",
-                "provider": "Provider:",
-                "right": {
-                    "copy": "Copy number:",
-                    "end": "End:",
-                    "print": "Print number:",
-                    "start": "Start:",
-                    "title": "Rights"
-                },
-                "title": "LCP Informations",
-                "updated": "Updated:"
-            },
             "password": "Password",
             "sentence": "This publication needs a LCP password to be opened: ",
-            "submit": "Submit",
-            "title": "LCP Verification"
-        },
-        "startDownload": "A download started.",
-        "svg": {
-            "card": "Cards",
-            "list": "List",
-            "showParaphrase": "Show paraphrase"
-        }
-    },
-    "message": {
-        "download": {
-            "start": "The download of {{title}} began.",
-            "success": "The download of {{title}} is finished."
-        },
-        "import": {
-            "success": "The import of {{title}} is finished."
-        },
-        "lcp": {
-            "passphraseError": "Unable to unlock publication {{publicationTitle}}",
-            "renewError": "An error occurred when renewing the LCP license of {{title}}.",
-            "renewSuccess": "The LCP license of {{title}} has been renewed.",
-            "returnError": "An error occurred when returning the LCP license of {{title}}.",
-            "returnSuccess": "The LCP license of {{title}} has been returned"
+            "submit": "Submit"
         }
     },
     "opds": {
         "addForm": {
             "addButton": "Add",
-            "addSentence": "What OPDS feed would you like to add?",
-            "delete": "Delete the feed",
             "name": "Name :",
             "namePlaceholder": "Name",
             "pasteUrl": "paste url of a feed",
             "title": "Add a feed",
-            "update": "Update",
-            "updateSentence": "You can update the fields.",
             "url": "Link :",
             "urlPlaceholder": "Link"
         },
         "addMenu": "Add OPDS feed",
-        "authentication": {
-            "loginButton": "Login",
-            "password": "Password :",
-            "sentence": "Please, log in to access to the contents",
-            "username": "Username :"
-        },
         "back": "Back",
         "breadcrumbRoot": "Catalogs",
-        "download": "Download",
-        "downloadError": "An error occurred while retrieving the feed.",
-        "formError": "Please, fill all the fields",
         "menu": {
             "aboutBook": "About this book",
             "addExtract": "Import the extract",
@@ -162,27 +107,14 @@
             "goBuyBook": "Buy this book",
             "goLoanBook": "Borrow this book",
             "goSubBook": "Subscribe"
-        },
-        "settings": "Settings",
-        "svg": {
-            "opds": "Opds"
         }
     },
     "publication": {
-        "cancelDownloadButton": "Cancel",
-        "canceledDownload": "Download Canceled",
         "deleteButton": "Delete from the library",
-        "downloadButton": "Download",
-        "endDownload": "Download completed",
         "expiredLcp": "This book can't be read because the LCP license has expired.",
-        "failedDownload": "Download Failed",
-        "infoButton": "LCP Informations",
-        "progressDownload": "Downloading",
         "readButton": "Read",
         "renewButton": "Renew",
-        "renewSentence": "Are you sure you want to renew this publication?",
         "returnButton": "Return",
-        "returnSentence": "Are you sure you want to return this publication?",
         "returnedLcp": "This book can't be read because the LCP license has been returned.",
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "See less",
@@ -197,7 +129,6 @@
             "annotations": "Annotations",
             "bookmarks": "Bookmarks",
             "illustrations": "Table of illustrations",
-            "landmarks": "Landmarks",
             "toc": "Table of content"
         },
         "navigation": {
@@ -212,8 +143,6 @@
             "settingsTitle": "settings"
         },
         "settings": {
-            "DefaultFont": "Default font",
-            "accessibility": "Accessibility",
             "column": {
                 "auto": "Automatic",
                 "one": "1 col",
@@ -224,9 +153,7 @@
             },
             "display": "Display",
             "disposition": {
-                "title": "Disposition",
-                "with": "With",
-                "without": "Without"
+                "title": "Disposition"
             },
             "font": "Font",
             "fontSize": "Font size",
@@ -237,36 +164,22 @@
             "lineSpacing": "Line spacing",
             "margin": "Margin",
             "paginated": "Paginated",
-            "right": "Right",
             "scrolled": "Scrollable",
             "spacing": "Spacing",
             "text": "Text",
             "theme": {
-                "create": "Create a theme",
-                "myTheme": "My themes",
                 "name": {
                     "Neutral": "Neutral",
                     "Night": "Night",
                     "Sepia": "Sepia"
                 },
-                "predefined": "Predefined themes",
                 "title": "Theme"
             },
-            "title": "Settings",
             "wordSpacing": "Word spacing"
         },
         "svg": {
-            "alignCenter": "Center align",
-            "alignLeft": "Left align",
-            "alignRight": "Right align",
-            "contentTable": "Content Table",
-            "continue": "Scrolled",
-            "document": "Paginated",
-            "landmark": "Landmark",
             "left": "Left",
-            "night": "Night",
-            "right": "Right",
-            "settings": "Settings"
+            "right": "Right"
         }
     },
     "settings": {
@@ -274,23 +187,6 @@
         "language": {
             "languageChoice": "Language choice"
         },
-        "manageTags": "Manage tags",
         "uiLanguage": "UI language"
-    },
-    "toolbar": {
-        "about": "About",
-        "help": "Help",
-        "news": "What's new?",
-        "svg": {
-            "addEpub": "Add an EPUB",
-            "help": "Help",
-            "news": "News",
-            "opds": "Opds",
-            "others": "Others"
-        },
-        "sync": "Synchronize the library"
-    },
-    "update": {
-        "available": "Update available!"
     }
 }

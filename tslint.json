@@ -40,5 +40,10 @@
       }
     ]
   },
-  "rulesDirectory": []
+  "rulesDirectory": [],
+  "linterOptions": {
+    "exclude": [
+      "src/typings/en.translation.d.ts"
+    ]
+  }
 }

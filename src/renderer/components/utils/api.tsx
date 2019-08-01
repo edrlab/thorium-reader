@@ -5,23 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as uuid from "uuid";
-
 import * as React from "react";
-
-import { Store } from "redux";
-
 import { connect } from "react-redux";
-
-import { Translator } from "readium-desktop/common/services/translator";
-
-import { container } from "readium-desktop/renderer/di";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
 import { apiActions } from "readium-desktop/common/redux/actions";
-
+import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
+import { container } from "readium-desktop/renderer/di";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
+import { Store } from "redux";
+import * as uuid from "uuid";
 
 export interface ApiOperationDefinition {
     moduleId: string;
@@ -186,7 +178,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
 
         public render() {
             const translator = container.get("translator") as Translator;
-            const translate = translator.translate.bind(translator);
+            const translate = translator.translate.bind(translator) as I18nTyped;
 
             const newProps: any = Object.assign(
                 {},
