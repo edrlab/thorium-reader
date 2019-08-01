@@ -39,7 +39,8 @@
     "package:all": "npm run package:build && electron-builder -mwl",
     "i18n": "sync-i18n --files 'src/resources/locales/*.json' --primary en --languages fr de --space 4 --finalnewline --newkeysempty",
     "i18n-check": "npm run i18n --check",
-    "i18n-help": "sync-i18n --help"
+    "i18n-help": "sync-i18n --help",
+    "i18n-scan": "node ./scripts/translate-scan.js \"src/resources/locales/temp.json\" && sync-i18n --files 'src/resources/locales/*.json' --primary temp --languages en fr de --space 4 --finalnewline --newkeysempty && rimraf \"src/resources/locales/temp.json\""
   },
   "repository": {
     "type": "git",
