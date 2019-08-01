@@ -43,7 +43,7 @@ export type I18nTyped = TFunction;
 
 @injectable()
 export class Translator {
-    public translate: TFunction = this._translate;
+    public translate: I18nTyped = this._translate;
     private locale: string = "en";
 
     public getLocale(): string {
