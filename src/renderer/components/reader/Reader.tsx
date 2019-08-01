@@ -165,10 +165,6 @@ const pathBase64Raw = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/,
 const pathBase64 = decodeURIComponent(pathBase64Raw);
 const pathDecoded = window.atob(pathBase64);
 
-const pathFileName = pathDecoded.substr(
-    pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
-    pathDecoded.length - 1);
-
 const lcpHint = queryParams.lcpHint;
 
 interface ReaderState {
@@ -453,8 +449,8 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         let response: Response;
         try {
             // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webframe
-            // publicationJsonUrl is READIUM2_ELECTRON_HTTP_PROTOCOL (see convertCustomSchemeToHttpUrl)
-            // publicationJsonUrl_ is https://127.0.0.1:PORT
+            // queryParams.pub is READIUM2_ELECTRON_HTTP_PROTOCOL (see convertCustomSchemeToHttpUrl)
+            // publicationJsonUrl is https://127.0.0.1:PORT
             response = await fetch(publicationJsonUrl);
         } catch (e) {
             return;
