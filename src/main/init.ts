@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
@@ -16,12 +17,16 @@ import {
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { container } from "readium-desktop/main/di";
 import { appInit } from "readium-desktop/main/redux/actions/app";
 import { RootState } from "readium-desktop/main/redux/states";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { Store } from "redux";
+
+// Logger
+const debug = debug_("readium-desktop:main");
 
 // Callback called when a window is opened
 const winOpenCallback = (appWindow: AppWindow) => {
@@ -176,9 +181,28 @@ export function initApp() {
     const store = container.get("store") as Store<RootState>;
     store.dispatch(appInit());
 
-    const loc = app.getLocale().split("-")[0];
-    const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
-    store.dispatch(setLocale(lang));
+    const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
+    configRepository.get("i18n").then((i18nLocale) => {
+        if (i18nLocale && i18nLocale.value && i18nLocale.value.locale) {
+            store.dispatch(setLocale(i18nLocale.value.locale));
+            debug(`set the locale ${i18nLocale.value.locale}`);
+        } else {
+            debug(`error on configRepository.get("i18n")): ${i18nLocale}`);
+        }
+    }).catch(() => {
+        const loc = app.getLocale().split("-")[0];
+        const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
+        store.dispatch(setLocale(lang));
+        try {
+            configRepository.save({
+                identifier: "i18n",
+                value: { locale: lang },
+            });
+        } catch (e) {
+            debug("error in save locale", e);
+        }
+        debug(`create i18n key in configRepository with ${lang} locale`);
+    });
 
     const winRegistry = container.get("win-registry") as WinRegistry;
     winRegistry.registerOpenCallback(winOpenCallback);

@@ -9,7 +9,10 @@ import * as debug_ from "debug";
 import { BrowserWindow, Menu, shell } from "electron";
 import * as path from "path";
 import { AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowsRectangle, savedWindowsRectangle} from "readium-desktop/common/rectangle/window";
+import {
+    getWindowsRectangle, savedWindowsRectangle,
+} from "readium-desktop/common/rectangle/window";
+import { Translator } from "readium-desktop/common/services/translator";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import {
@@ -53,52 +56,7 @@ export async function createWindow({ mainWindow }: { mainWindow: BrowserWindow }
 
     // Create the app menu on mac os to allow copy paste
     if (process.platform === "darwin") {
-        const translator = container.get("translator") as any;
-        const template: Electron.MenuItemConstructorOptions[] = [
-            {
-                label: "Thorium",
-                submenu: [
-                    {
-                        role: "quit",
-                        label: translator.translate("app.quit"),
-                    },
-                ],
-            },
-            {
-                label: translator.translate("app.edit.title"),
-                role: "edit",
-                submenu: [
-                    {
-                        role: "undo",
-                        label: translator.translate("app.edit.undo"),
-                    },
-                    {
-                        role: "redo",
-                        label: translator.translate("app.edit.redo"),
-                    },
-                    {
-                        type: "separator",
-                    },
-                    {
-                        role: "cut",
-                        label: translator.translate("app.edit.cut"),
-                    },
-                    {
-                        role: "copy",
-                        label: translator.translate("app.edit.copy"),
-                    },
-                    {
-                        role: "paste",
-                        label: translator.translate("app.edit.paste"),
-                    },
-                    {
-                        role: "selectall",
-                        label: translator.translate("app.edit.selectAll"),
-                    },
-                ],
-            },
-        ];
-        Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+        initDarwin();
     }
 
     if (IS_DEV) {
@@ -147,4 +105,53 @@ export async function createWindow({ mainWindow }: { mainWindow: BrowserWindow }
 
     mainWindow.on("move", () =>
         debounceSavedWindowsRectangle(mainWindow.getBounds()));
+}
+
+export function initDarwin() {
+    const translator = container.get("translator") as Translator;
+    const template: Electron.MenuItemConstructorOptions[] = [
+        {
+            label: "Thorium",
+            submenu: [
+                {
+                    role: "quit",
+                    label: translator.translate("app.quit"),
+                },
+            ],
+        },
+        {
+            label: translator.translate("app.edit.title"),
+            role: "edit",
+            submenu: [
+                {
+                    role: "undo",
+                    label: translator.translate("app.edit.undo"),
+                },
+                {
+                    role: "redo",
+                    label: translator.translate("app.edit.redo"),
+                },
+                {
+                    type: "separator",
+                },
+                {
+                    role: "cut",
+                    label: translator.translate("app.edit.cut"),
+                },
+                {
+                    role: "copy",
+                    label: translator.translate("app.edit.copy"),
+                },
+                {
+                    role: "paste",
+                    label: translator.translate("app.edit.paste"),
+                },
+                {
+                    role: "selectall",
+                    label: translator.translate("app.edit.selectAll"),
+                },
+            ],
+        },
+    ];
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }

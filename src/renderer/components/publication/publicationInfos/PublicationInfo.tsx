@@ -27,6 +27,8 @@ import OpdsControls from "./opdsControls";
 
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
+import { RootState } from "readium-desktop/renderer/redux/states";
+
 import classNames from "classnames";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 
@@ -37,6 +39,7 @@ interface Props extends TranslatorProps {
     closeDialog?: any;
     getPublicationFromId?: any;
     hideControls?: boolean;
+    lastAction: any;
 }
 
 interface State {
@@ -69,6 +72,13 @@ export class PublicationInfo extends React.Component<Props, State> {
         if (oldProps.publication !== this.props.publication) {
             this.needSeeMoreButton();
         }
+
+        if (oldProps.lastAction !== this.props.lastAction
+            && this.props.lastAction.moduleId === "publication"
+            && this.props.lastAction.methodId === "updateTags"
+        ) {
+            this.props.getPublicationFromId();
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -79,7 +89,6 @@ export class PublicationInfo extends React.Component<Props, State> {
         }
 
         const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
-        const formatedLanguages = oc(publication).languages([]).join(", ");
         const formatedPublishers = oc(publication).publishers([]).join(", ");
         let formatedPublishedDate = null;
 
@@ -157,7 +166,20 @@ export class PublicationInfo extends React.Component<Props, State> {
                         { formatedPublishers &&
                             <><span>{__("catalog.publisher")}</span> { formatedPublishers } <br/></>
                         }
-                        <span>{__("catalog.lang")}</span> { __(`languages.${formatedLanguages}`) } <br/>
+                        <span>{__("catalog.lang")}</span> {
+                            publication.languages &&
+                            publication.languages
+                            .map((lang: string, index: number) => {
+                                const l = lang.split("-")[0];
+                                // tslint:disable-next-line:max-line-length
+                                const ll = ((__(`languages.${l}` as any) as unknown) as string).replace(`languages.${l}`, lang);
+                                const note = (lang !== ll) ? ` (${lang})` : "";
+                                const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");
+                                // tslint:disable-next-line:max-line-length
+                                return <i key={"lang-" + index} title={lang}>{ll + note + suffix}</i>;
+                                // return <></>;
+                            })
+                        } <br/>
                         <span>{__("catalog.id")}</span> { publication.workIdentifier } <br/>
                     </p>
                 </div>
@@ -189,9 +211,15 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
+const mapStateToProps = (state: RootState) => {
+    return {
+        lastAction: state.api.lastSuccess.action.meta.api,
+    };
+};
+
 const buildRequestData = (props: Props) => {
     return {
-        identifier: props.publicationIdentifier,
+        identifier: props.publicationIdentifier || props.publication.identifier,
     };
 };
 
@@ -208,5 +236,6 @@ export default withTranslator(withApi(
             },
         ],
         mapDispatchToProps,
+        mapStateToProps,
     },
 ));

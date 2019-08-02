@@ -23,6 +23,8 @@ interface MenuProps {
     open: boolean; // Is menu open
     dir: string; // Direction of menu: right or left
     toggle: () => void;
+    focusMenuButton?: (ref: React.RefObject<HTMLButtonElement>, currentMenuId: string) => void;
+    infoDialogIsOpen?: boolean;
 }
 
 interface MenuState {
@@ -31,6 +33,7 @@ interface MenuState {
 
 export default class Menu extends React.Component<MenuProps, MenuState> {
     private buttonRef: any;
+    private menuButtonRef: React.RefObject<HTMLButtonElement>;
     private contentRef: any;
     private menuId: string;
 
@@ -40,14 +43,19 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
             contentStyle: {},
         };
         this.menuId = "menu-" + uuid.v4();
-
         this.focusMenuButton = this.focusMenuButton.bind(this);
+        this.getBackFocusMenuButton = this.getBackFocusMenuButton.bind(this);
     }
 
     public componentDidUpdate(oldProps: MenuProps) {
         if (this.props.open && !oldProps.open) {
             this.refreshStyle();
         }
+        if (oldProps.infoDialogIsOpen === true &&
+            oldProps.infoDialogIsOpen !== this.props.infoDialogIsOpen &&
+            this.menuButtonRef) {
+                this.menuButtonRef.current.focus();
+            }
     }
 
     public render(): React.ReactElement<{}> {
@@ -60,6 +68,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
                     menuId={this.menuId}
                     open={open}
                     toggle={toggle}
+                    focusMenuButton={this.getBackFocusMenuButton}
                 >
                     {button}
                 </MenuButton>
@@ -119,6 +128,12 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
         }
 
         this.setState({ contentStyle });
+    }
+
+    private getBackFocusMenuButton(currentRef: React.RefObject<HTMLButtonElement>, currentMenuId: string) {
+        if (currentRef && this.menuId === currentMenuId) {
+                this.menuButtonRef = currentRef;
+        }
     }
 
     private focusMenuButton() {

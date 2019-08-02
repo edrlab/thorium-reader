@@ -34,7 +34,7 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                         {
                             entryIndex <= 1 ? (
                                 <div className={styles.title}>
-                                    <h1>{ entry.title }</h1>
+                                    <h2>{ entry.title }</h2>
                                 </div>
                             ) :
                             (<></>)

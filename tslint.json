@@ -14,5 +14,10 @@
     "no-console": [false],
     "forin": false,
     "prefer-for-of": false
+  },
+  "linterOptions": {
+    "exclude": [
+      "src/typings/en.translation.d.ts"
+    ]
   }
 }

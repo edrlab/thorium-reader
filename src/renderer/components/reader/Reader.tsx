@@ -79,6 +79,8 @@ import { Publication } from "readium-desktop/common/models/publication";
 
 import * as qs from "query-string";
 
+import { _APP_NAME } from "readium-desktop/preprocessor-directives";
+
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
 // import { webFrame } from "electron";
@@ -159,21 +161,13 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 };
 setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
 
-// tslint:disable-next-line:no-string-literal
-const publicationJsonUrl = queryParams["pub"];
-// tslint:disable-next-line:variable-name
-const publicationJsonUrl_ = publicationJsonUrl.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
-    convertCustomSchemeToHttpUrl(publicationJsonUrl) : publicationJsonUrl;
-const pathBase64Raw = publicationJsonUrl_.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+const publicationJsonUrl = queryParams.pub.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
+    convertCustomSchemeToHttpUrl(queryParams.pub) : queryParams.pub;
+const pathBase64Raw = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
 const pathBase64 = decodeURIComponent(pathBase64Raw);
 const pathDecoded = window.atob(pathBase64);
 
-const pathFileName = pathDecoded.substr(
-    pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
-    pathDecoded.length - 1);
-
-// tslint:disable-next-line:no-string-literal
-const lcpHint = queryParams["lcpHint"];
+const lcpHint = queryParams.lcpHint;
 
 interface ReaderState {
     publicationJsonUrl?: string;
@@ -351,11 +345,8 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             });
         });
 
-        // tslint:disable-next-line:no-string-literal
-        let docHref: string = queryParams["docHref"];
-
-        // tslint:disable-next-line:no-string-literal
-        let docSelector: string = queryParams["docSelector"];
+        let docHref: string = queryParams.docHref;
+        let docSelector: string = queryParams.docSelector;
 
         if (docHref && docSelector) {
             // Decode base64
@@ -379,7 +370,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.setState({publication});
         setReadingLocationSaver(this.handleReadingLocationChange);
 
-        setEpubReadingSystemInfo({ name: "Readium2 Electron/NodeJS desktop app", version: _APP_VERSION });
+        setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
     }
 
     public componentDidUpdate(oldProps: ReaderProps) {
@@ -460,9 +451,9 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         let response: Response;
         try {
             // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webframe
-            // publicationJsonUrl is READIUM2_ELECTRON_HTTP_PROTOCOL (see convertCustomSchemeToHttpUrl)
-            // publicationJsonUrl_ is https://127.0.0.1:PORT
-            response = await fetch(publicationJsonUrl_);
+            // queryParams.pub is READIUM2_ELECTRON_HTTP_PROTOCOL (see convertCustomSchemeToHttpUrl)
+            // publicationJsonUrl is https://127.0.0.1:PORT
+            response = await fetch(publicationJsonUrl);
         } catch (e) {
             return;
         }
@@ -535,8 +526,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.props.setLastReadingLocation(
             {
                 publication: {
-                    // tslint:disable-next-line:no-string-literal
-                    identifier: queryParams["pubId"],
+                    identifier: queryParams.pubId,
                 },
                 locator: loc.locator,
             },
@@ -582,6 +572,9 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 
     private handleLinkClick(event: any, url: string) {
         event.preventDefault();
+        if (!url) {
+            return;
+        }
         const newUrl = publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
 
@@ -757,9 +750,8 @@ const mapDispatchToProps = (dispatch: any, props: ReaderProps) => {
 };
 
 const buildRequestData = (props: ReaderProps) => {
-    const parsedResult = qs.parse(document.location.href);
     return {
-        identifier: parsedResult.pubId,
+        identifier: queryParams.pubId,
     };
 };
 

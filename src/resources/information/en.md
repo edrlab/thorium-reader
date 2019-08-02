@@ -1,8 +1,6 @@
 About Thorium Reader
 =======================
 
-{{version}}
-
 Import and read EPUB ebooks on your Windows 10/10S computer. Great reading experience; local bookshelf with search capabilities and personal
 tagging; highly customizable layout settings, easy navigation using the table of contents and page list, reading progress bar, labelled bookmarks, "Zen" mode.
 
