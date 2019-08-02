@@ -93,7 +93,7 @@ export class CatalogService {
 
     public async importOpdsEntry(url: string, downloadSample: boolean): Promise<PublicationDocument> {
         debug("Import OPDS publication", url);
-        const opdsFeedData = await httpGet<string>(url);
+        const opdsFeedData = await httpGet(url);
         let opdsPublication: OPDSPublication = null;
 
         if (opdsFeedData.startsWith("<?xml")) {

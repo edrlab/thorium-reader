@@ -7,7 +7,7 @@
 
 import { container } from "readium-desktop/main/di";
 import { RootState } from "readium-desktop/main/redux/states";
-import { AnyJson } from "readium-desktop/typings/json";
+import { JsonMap } from "readium-desktop/typings/json";
 import { Store } from "redux";
 import * as request from "request";
 import { promisify } from "util";
@@ -17,7 +17,8 @@ import { promisify } from "util";
  * @param options request options
  * @returns body of url response. 'String' type returned in many cases except for options.json = true
  */
-export async function httpGet<T extends AnyJson = string>(url: string, options?: request.CoreOptions): Promise<T> {
+// tslint:disable-next-line: max-line-length
+export async function httpGet<T extends JsonMap | string = string>(url: string, options?: request.CoreOptions): Promise<T> {
     options = options || {};
     options.headers = options.headers || {};
 
