@@ -30,7 +30,7 @@ import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-p
 import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
-import { httpGet } from "readium-desktop/common/utils";
+import { httpGet } from "readium-desktop/common/utils/http";
 
 import { LcpInfo } from "readium-desktop/common/models/lcp";
 
@@ -228,9 +228,9 @@ export class LcpManager {
 
     public async getLsdStatus(publicationDocument: PublicationDocument): Promise<any> {
         // Get lsd status
-        const lsdStatusBodyResponse = await httpGet(
+        const lsdStatusBodyResponse = await httpGet<string>(
             publicationDocument.lcp.lsd.statusUrl,
-        ) as string;
+        );
 
         return JSON.parse(lsdStatusBodyResponse);
     }
@@ -255,7 +255,7 @@ export class LcpManager {
         }
 
         // Download and inject new lcpl file
-        const lcplResponse = await httpGet(lcplUrl);
+        const lcplResponse = await httpGet<string>(lcplUrl);
         const lcpl = JSON.parse(lcplResponse);
         let newPublicationDocument = await this.injectLcpl(
             publicationDocument,

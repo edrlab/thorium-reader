@@ -38,7 +38,7 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 
 import { Download } from "readium-desktop/common/models/download";
 
-import { httpGet } from "readium-desktop/common/utils";
+import { httpGet } from "readium-desktop/common/utils/http";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 
 import { Downloader } from "./downloader";
@@ -93,7 +93,7 @@ export class CatalogService {
 
     public async importOpdsEntry(url: string, downloadSample: boolean): Promise<PublicationDocument> {
         debug("Import OPDS publication", url);
-        const opdsFeedData = await httpGet(url) as string;
+        const opdsFeedData = await httpGet<string>(url);
         let opdsPublication: OPDSPublication = null;
 
         if (opdsFeedData.startsWith("<?xml")) {
