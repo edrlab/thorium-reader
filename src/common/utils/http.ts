@@ -7,17 +7,17 @@
 
 import { container } from "readium-desktop/main/di";
 import { RootState } from "readium-desktop/main/redux/states";
+import { AnyJson } from "readium-desktop/typings/json";
 import { Store } from "redux";
 import * as request from "request";
 import { promisify } from "util";
-import { AnyJson } from "./type";
 
 /**
  * @param url url of your GET request
  * @param options request options
  * @returns body of url response. 'String' type returned in many cases except for options.json = true
  */
-export async function httpGet<T extends AnyJson>(url: string, options?: request.CoreOptions): Promise<T> {
+export async function httpGet<T extends AnyJson = string>(url: string, options?: request.CoreOptions): Promise<T> {
     options = options || {};
     options.headers = options.headers || {};
 

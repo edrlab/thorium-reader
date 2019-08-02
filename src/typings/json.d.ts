@@ -5,11 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export type AnyJson = JsonPrimitives | JsonArray | JsonMap;
-export type JsonPrimitives = string | number | boolean | null;
-export interface JsonMap {
-    [key: string]: AnyJson;
-}
-export interface JsonArray extends Array<AnyJson> {
+declare namespace typed_json {
+    type AnyJson = JsonPrimitives | JsonArray | JsonMap;
+    type JsonPrimitives = string | number | boolean | null;
+    interface JsonMap {
+        [key: string]: AnyJson;
+    }
+    interface JsonArray extends Array<AnyJson> {
 
+    }
 }
+
+export = typed_json;
