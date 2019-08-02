@@ -5,20 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as request from "request";
-
-export async function httpGet(url: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-        request(url, (error, _response, body) => {
-            if (error) {
-                reject(error);
-            }
-
-            resolve(body);
-        });
-    });
-}
-
 export function convertMultiLangStringToString(item: any): string {
     if (typeof(item) === "string") {
         return item;

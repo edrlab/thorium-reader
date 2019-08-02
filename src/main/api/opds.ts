@@ -26,7 +26,7 @@ import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 
-import { httpGet } from "readium-desktop/common/utils";
+import { httpGet } from "readium-desktop/common/utils/http";
 
 @injectable()
 export class OpdsApi {
@@ -66,7 +66,7 @@ export class OpdsApi {
 
     public async browse(data: any): Promise<OpdsResultView> {
         const { url } = data;
-        const opdsFeedData = await httpGet(url) as string;
+        const opdsFeedData = await httpGet(url);
         // let opds2Publication: OPDSPublication = null;
         let opds2Feed: OPDSFeed = null;
 
