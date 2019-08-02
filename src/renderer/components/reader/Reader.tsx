@@ -572,6 +572,9 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 
     private handleLinkClick(event: any, url: string) {
         event.preventDefault();
+        if (!url) {
+            return;
+        }
         const newUrl = publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
 
