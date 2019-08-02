@@ -168,6 +168,7 @@ if (nodeEnv !== "production") {
     config.module.rules.push({
         test: /\.css$/,
         use: [
+            "css-hot-loader",
             MiniCssExtractPlugin.loader,
             {
                 loader: "css-loader",
@@ -185,7 +186,6 @@ if (nodeEnv !== "production") {
     config.module.rules.push({
         test: /\.css$/,
         use: [
-            "css-hot-loader",
             MiniCssExtractPlugin.loader,
             {
                 loader: "css-loader",

@@ -40,13 +40,18 @@ import {
 
 import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
 import { setLocale } from "./common/redux/actions/i18n";
-import { AvailableLanguages } from "./common/services/translator";
+import { AvailableLanguages, Translator } from "./common/services/translator";
 import { debounce } from "./utils/debounce";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
     delete process.env.DEBUG;
     debug_.disable();
+
+    console.log = (message?: any, ...optionalParams: any[]) => { return; };
+    console.warn = (message?: any, ...optionalParams: any[]) => { return; };
+    console.error = (message?: any, ...optionalParams: any[]) => { return; };
+    console.info = (message?: any, ...optionalParams: any[]) => { return; };
 }
 
 // Logger
@@ -111,7 +116,7 @@ async function createWindow() {
 
     // Create the app menu on mac os to allow copy paste
     if (process.platform === "darwin") {
-        const translator = container.get("translator") as any;
+        const translator = container.get("translator") as Translator;
         const template: Electron.MenuItemConstructorOptions[] = [
             {
                 label: "Thorium",
