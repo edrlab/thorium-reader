@@ -110,18 +110,21 @@ export class ReaderMenu extends React.Component<Props, State> {
                         {content.Children ? (
                             <>
                                 <a
-                                    className={styles.subheading}
+                                    className={
+                                        content.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
+                                    }
                                     onClick=
                                         {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
                                     tabIndex={0}
                                     onKeyPress=
                                         {
                                             (e) => {
-                                                if (e.charCode === 13) {
+                                                if (content.Href && e.charCode === 13) {
                                                     this.props.handleLinkClick(e, content.Href);
                                                 }
                                             }
                                         }
+                                    data-href={content.Href}
                                 >
                                     {content.Title}
                                 </a>
@@ -133,18 +136,23 @@ export class ReaderMenu extends React.Component<Props, State> {
                             </>
                         ) : (
                             <a
-                                className={classnames(styles.line, styles.active)}
+                                className={
+                                    content.Href ?
+                                        classnames(styles.line, styles.active) :
+                                        classnames(styles.line, styles.active, styles.inert)
+                                }
                                 onClick=
                                     {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
                                 tabIndex={0}
                                 onKeyPress=
                                     {
                                         (e) => {
-                                            if (e.charCode === 13) {
+                                            if (content.Href && e.charCode === 13) {
                                                 this.props.handleLinkClick(e, content.Href);
                                             }
                                         }
                                     }
+                                data-href={content.Href}
                             >
                                 {content.Title}
                             </a>

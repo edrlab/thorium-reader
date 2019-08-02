@@ -443,13 +443,13 @@
 	  padding: 0 0 0 20px;
   }
 
-  & .subheading {
+  & .subheading:not(.inert) {
     &:hover {
       background-color: #d8d8d8 !important;
     }
   }
 
-  & .line.active {
+  & .line.active:not(.inert) {
     &:hover {
       color: #808080 !important;
     }
@@ -464,6 +464,8 @@
     background-color: #EDEDED;
     padding:20px;
     margin-bottom: 10px;
+  }
+  & .subheading:not(.inert) {
     cursor: pointer;
   }
   & .line.active {
@@ -486,11 +488,13 @@
 	font-size: 0.9rem;
 	padding-top:10px;
   display: block;
-  cursor: pointer;
 	font-weight: bold;
 	color:#c1c1c1;
 	padding-bottom:20px;
 	border-bottom: 1px solid #e5e5e5;
+}
+.chapters_content .line:not(.inert) {
+	cursor: pointer;
 }
 
 .chapters_content .line:last-child {
