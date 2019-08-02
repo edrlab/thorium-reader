@@ -9,13 +9,10 @@ import * as debug_ from "debug";
 import { app, dialog } from "electron";
 import * as glob from "glob";
 import * as path from "path";
-import { _PACKAGING } from "readium-desktop/preprocessor-directives";
+import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import * as yargs from "yargs";
 
 import { cli_, cliImport, cliOpds, cliRead } from "./commandLine";
-
-declare const __APP_NAME__: string;
-declare const __APP_VERSION__: string;
 
 // Logger
 const debug = debug_("readium-desktop:cli");
@@ -23,8 +20,8 @@ const debug = debug_("readium-desktop:cli");
 export function cli(mainFct: () => void) {
 
     yargs
-        .scriptName(__APP_NAME__)
-        .version(__APP_VERSION__)
+        .scriptName(_APP_NAME)
+        .version(_APP_VERSION)
         .usage("$0 <cmd> [args]")
         .command("opds <title> <url>",
             "import opds feed",
