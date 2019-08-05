@@ -8,6 +8,7 @@
 import * as debug_ from "debug";
 import { app, dialog } from "electron";
 import * as glob from "glob";
+import { EOL } from "os";
 import * as path from "path";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import * as yargs from "yargs";
@@ -42,8 +43,11 @@ export function cli(mainFct: () => void) {
                         app.exit(0);
                         return;
                     }
+                    process.stderr.write("OPDS URL not valid, exit with code 1" + EOL);
                     app.exit(1);
-                }).catch(() => {
+                }).catch((e) => {
+                    debug("import error :", e);
+                    process.stderr.write("An error occurred during import an ODPS feed, exit with code 1" + EOL);
                     app.exit(1);
                 });
             },
@@ -70,8 +74,11 @@ export function cli(mainFct: () => void) {
                         app.exit(0);
                         return;
                     }
+                    process.stderr.write("No valid files, exit with code 1" + EOL);
                     app.exit(1);
-                }).catch(() => {
+                }).catch((e) => {
+                    debug("import error :", e);
+                    process.stderr.write("An error occurred during import, exit with code 1" + EOL);
                     app.exit(1);
                 });
             },
@@ -89,10 +96,14 @@ export function cli(mainFct: () => void) {
                 app.on("ready", async () => {
                     try {
                         if (!await cliRead(argv.title)) {
-                            debug("no publication to read");
+                            const errorMessage = `There is no publication title match for \"${argv.title}\"`;
+                            throw new Error(errorMessage);
                         }
                     } catch (e) {
-                        debug("An error occurred during cliRead");
+                        debug("read error :", e);
+                        const errorTitle = "No publication to read";
+                        dialog.showErrorBox(errorTitle, e.toString());
+                        process.stderr.write(e.toString() + EOL);
                     }
                 });
             },
@@ -105,7 +116,7 @@ export function cli(mainFct: () => void) {
                     type: "string",
                     coerce: (arg) => path.resolve(arg),
                 })
-                .completion()
+                    .completion()
             ,
             (argv) => {
                 mainFct();
@@ -113,13 +124,14 @@ export function cli(mainFct: () => void) {
                     app.on("ready", async () => {
                         try {
                             if (!await cli_(argv.path)) {
-                                const errorTitle = "Import Failed";
                                 const errorMessage = `Import failed for the publication path : ${argv.path}`;
-                                debug(errorMessage);
-                                dialog.showErrorBox(errorTitle, errorMessage);
+                                throw new Error(errorMessage);
                             }
                         } catch (e) {
-                            debug("An error occurred during default CLI");
+                            debug("$0 error :", e);
+                            const errorTitle = "Import Failed";
+                            dialog.showErrorBox(errorTitle, e.toString());
+                            process.stderr.write(e.toString() + EOL);
                         }
                     });
                 }

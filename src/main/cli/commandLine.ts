@@ -76,7 +76,6 @@ export async function cliRead(title: string) {
             },
         });
     } else {
-        process.stderr.write(`There is no publication title match for "${title}"\n`);
         return false;
     }
     return true;
