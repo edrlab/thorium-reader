@@ -36,7 +36,7 @@ export async function cli_(filePath: string) {
 }
 
 export async function cliImport(filePath: string[] | string) {
-
+    // import a publication from local path
     let returnValue = true;
     const filePathArray = isArray(filePath) ? filePath : [filePath];
 
@@ -50,8 +50,7 @@ export async function cliImport(filePath: string[] | string) {
 }
 
 export async function cliOpds(title: string, url: string) {
-    // extract and save the title and url from opdsFeed
-    // title=http://myurl.com or get TLD and set url
+    // save an opds feed with title and url in the db
     const hostname = (new URL(url)).hostname;
     if (hostname) {
         const opdsRepository = container.get("opds-feed-repository") as OpdsFeedRepository;
@@ -62,7 +61,7 @@ export async function cliOpds(title: string, url: string) {
 }
 
 export async function cliRead(title: string) {
-    // read the publication name
+    // get the publication id then open it in reader
     const publicationRepo = container.get("publication-repository") as PublicationRepository;
     const publication = await publicationRepo.searchByTitle(title);
     if (publication && publication.length) {
