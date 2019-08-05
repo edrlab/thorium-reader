@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { BrowserWindow } from "electron";
 import { Identifiable } from "./identifiable";
 
 export enum AppWindowType {
@@ -14,5 +15,6 @@ export enum AppWindowType {
 
 export interface AppWindow extends Identifiable {
     type: AppWindowType;
-    win: any;
+    win: BrowserWindow;
+    setBoundsHandler: () => void;
 }

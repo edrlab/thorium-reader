@@ -9,12 +9,15 @@ import * as debug_ from "debug";
 import { BrowserWindow, Rectangle, screen } from "electron";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { container } from "readium-desktop/main/di";
+import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { debounce } from "readium-desktop/utils/debounce";
 
-// Logger
-const debug = debug_("readium-desktop:common:rectangle");
+import { AppWindow, AppWindowType } from "../models/win";
 
-const configIdKey = "rectangle";
+// Logger
+const debug = debug_("readium-desktop:common:rectangle:window");
+
+const configIdKey = "windowRectangle";
 const defaultRectangle = (): Rectangle => (
     {
         height: 600,
@@ -23,15 +26,15 @@ const defaultRectangle = (): Rectangle => (
         y: screen.getPrimaryDisplay().workAreaSize.height / 3,
     });
 
-type t_savedWindowsRectangle = typeof savedWindowsRectangle;
+export type t_savedWindowsRectangle = typeof savedWindowsRectangle;
 export const savedWindowsRectangle = async (rectangle: Rectangle) => {
     try {
         const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
-        configRepository.save({
+        await configRepository.save({
             identifier: configIdKey,
             value: rectangle,
         });
-        debug("new windows rectangle position :", rectangle);
+        debug("new window rectangle position :", rectangle);
     } catch (e) {
         debug("save error", e);
     }
@@ -39,24 +42,28 @@ export const savedWindowsRectangle = async (rectangle: Rectangle) => {
 };
 
 export const getWindowsRectangle = async (): Promise<Rectangle> => {
+
     try {
-        const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
-        const rectangle = await configRepository.get(configIdKey);
-        if (rectangle && rectangle.value) {
-            return rectangle.value;
+        const winRegistry = container.get("win-registry") as WinRegistry;
+        const windows = Object.values(winRegistry.getWindows()) as AppWindow[];
+        if (windows.filter((win) => win.type === AppWindowType.Reader).length) {
+            const rectangle = windows.pop().win.getBounds();
+            rectangle.x += 100;
+            rectangle.x %= screen.getPrimaryDisplay().workAreaSize.width;
+            rectangle.y += 100;
+            rectangle.y %= screen.getPrimaryDisplay().workAreaSize.height;
+            return rectangle;
+        } else {
+            const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
+            const rectangle = await configRepository.get(configIdKey);
+            if (rectangle && rectangle.value) {
+                debug("get window rectangle position from db :", rectangle.value);
+                return rectangle.value;
+            }
+            return await savedWindowsRectangle(defaultRectangle());
         }
-        return await savedWindowsRectangle(defaultRectangle());
     } catch (e) {
         debug("get error", e);
         return defaultRectangle();
     }
-};
-
-export const initRectangleWatcher = (win: BrowserWindow) => {
-    const debounceSavedWindowsRectangle =
-        debounce<t_savedWindowsRectangle>(savedWindowsRectangle, 500);
-    win.on("move", () =>
-        debounceSavedWindowsRectangle(win.getBounds()));
-    win.on("resize", () =>
-        debounceSavedWindowsRectangle(win.getBounds()));
 };

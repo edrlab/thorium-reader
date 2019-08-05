@@ -5,12 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as uuid from "uuid";
-
 import { BrowserWindow } from "electron";
 import { injectable } from "inversify";
-
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
+import {
+    savedWindowsRectangle, t_savedWindowsRectangle,
+} from "readium-desktop/common/rectangle/window";
+import { debounce } from "readium-desktop/utils/debounce";
+import * as uuid from "uuid";
 
 export interface WinDictionary {
     [winId: number]: AppWindow;
@@ -50,10 +52,15 @@ export class WinRegistry {
      */
     public registerWindow(win: BrowserWindow, type: AppWindowType): AppWindow {
         const winId = win.id;
-        const appWindow = {
+        const appWindow: AppWindow = {
             identifier: uuid.v4(),
             type,
             win,
+            setBoundsHandler: () => {
+                const debounceSavedWindowsRectangle =
+                    debounce<t_savedWindowsRectangle>(savedWindowsRectangle, 500);
+                debounceSavedWindowsRectangle(win.getBounds());
+            },
         };
         this.windows[winId] = appWindow;
 
