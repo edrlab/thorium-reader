@@ -15,7 +15,7 @@ export interface Options {
     isImmediate: boolean;
 }
 
-export function debounce<F extends (...args: any[]) => Promise<void> | void>(
+export function debounce<F extends (...args: any[]) => Promise<any> | any>(
     func: F,
     waitMilliseconds = 50,
     options: Options = {

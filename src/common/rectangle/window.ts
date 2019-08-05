@@ -5,32 +5,58 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { app, Rectangle, screen } from "electron";
-import * as fs from "fs";
-import * as path from "path";
-import { promisify } from "util";
+import * as debug_ from "debug";
+import { BrowserWindow, Rectangle, screen } from "electron";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { container } from "readium-desktop/main/di";
+import { debounce } from "readium-desktop/utils/debounce";
 
-const CONFIG_NAME = "windowRectangle.json";
-const PATH = path.join(app.getPath("userData"), CONFIG_NAME);
+// Logger
+const debug = debug_("readium-desktop:common:rectangle");
 
-export const savedWindowsRectangle = async (rectangle: Rectangle) => {
-    try {
-        await promisify(fs.writeFile)(PATH, JSON.stringify(rectangle));
-    } catch (e) {
-        console.error(e);
-    }
-};
-
-export const getWindowsRectangle = async (): Promise<Rectangle> => {
-    if (await promisify(fs.exists)(PATH)) {
-        return JSON.parse(await promisify(fs.readFile)(PATH, { encoding: "utf8" }));
-    }
-    const c: Rectangle = {
+const configIdKey = "rectangle";
+const defaultRectangle = (): Rectangle => (
+    {
         height: 600,
         width: 800,
         x: screen.getPrimaryDisplay().workAreaSize.width / 3,
         y: screen.getPrimaryDisplay().workAreaSize.height / 3,
-    };
-    savedWindowsRectangle(c);
-    return c;
+    });
+
+type t_savedWindowsRectangle = typeof savedWindowsRectangle;
+export const savedWindowsRectangle = async (rectangle: Rectangle) => {
+    try {
+        const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
+        configRepository.save({
+            identifier: configIdKey,
+            value: rectangle,
+        });
+        debug("new windows rectangle position :", rectangle);
+    } catch (e) {
+        debug("save error", e);
+    }
+    return rectangle;
+};
+
+export const getWindowsRectangle = async (): Promise<Rectangle> => {
+    try {
+        const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
+        const rectangle = await configRepository.get(configIdKey);
+        if (rectangle && rectangle.value) {
+            return rectangle.value;
+        }
+        return await savedWindowsRectangle(defaultRectangle());
+    } catch (e) {
+        debug("get error", e);
+        return defaultRectangle();
+    }
+};
+
+export const initRectangleWatcher = (win: BrowserWindow) => {
+    const debounceSavedWindowsRectangle =
+        debounce<t_savedWindowsRectangle>(savedWindowsRectangle, 500);
+    win.on("move", () =>
+        debounceSavedWindowsRectangle(win.getBounds()));
+    win.on("resize", () =>
+        debounceSavedWindowsRectangle(win.getBounds()));
 };

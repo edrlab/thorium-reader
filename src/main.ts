@@ -38,7 +38,7 @@ import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 
-import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
+import { getWindowsRectangle, initRectangleWatcher } from "./common/rectangle/window";
 import { setLocale } from "./common/redux/actions/i18n";
 import { AvailableLanguages, Translator } from "./common/services/translator";
 import { debounce } from "./utils/debounce";
@@ -207,10 +207,10 @@ async function createWindow() {
         mainWindow = null;
     });
 
-    const debounceSavedWindowsRectangle = debounce(savedWindowsRectangle, 500);
-
-    mainWindow.on("move", () =>
-        debounceSavedWindowsRectangle(mainWindow.getBounds()));
+    /**
+     * watcher to record windows rectangle position in the db
+     */
+    initRectangleWatcher(mainWindow);
 }
 
 function registerProtocol() {

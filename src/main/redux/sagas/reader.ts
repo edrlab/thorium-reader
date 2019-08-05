@@ -6,39 +6,31 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { BrowserWindow, webContents } from "electron";
 import * as path from "path";
-
-import { BrowserWindow, Rectangle, webContents } from "electron";
+import { LocatorType } from "readium-desktop/common/models/locator";
+import { Publication } from "readium-desktop/common/models/publication";
+import { Bookmark, Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
+import { AppWindowType } from "readium-desktop/common/models/win";
+import {
+    getWindowsRectangle, initRectangleWatcher,
+} from "readium-desktop/common/rectangle/window";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
+import { container } from "readium-desktop/main/di";
+import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
+import { ReaderState } from "readium-desktop/main/redux/states/reader";
+import { WinRegistry } from "readium-desktop/main/services/win-registry";
+import {
+    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, IS_DEV,
+} from "readium-desktop/preprocessor-directives";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
 import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-
-import { Publication } from "readium-desktop/common/models/publication";
-import { Bookmark, Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
-import { readerActions } from "readium-desktop/common/redux/actions";
-
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
-
-import { LocatorType } from "readium-desktop/common/models/locator";
-
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-import { container } from "readium-desktop/main/di";
-import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
-import {
-    _NODE_MODULE_RELATIVE_URL,
-    _PACKAGING,
-    _RENDERER_READER_BASE_URL,
-    IS_DEV,
-} from "readium-desktop/preprocessor-directives";
-
-import { AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
-
-import { ReaderState } from "readium-desktop/main/redux/states/reader";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -146,6 +138,11 @@ async function openReader(publication: Publication, manifestUrl: string) {
         // Remove menu bar
         readerWindow.setMenu(null);
     }
+
+    /**
+     * watcher to record windows rectangle position in the db
+     */
+    initRectangleWatcher(readerWindow);
 
     return reader;
 }
