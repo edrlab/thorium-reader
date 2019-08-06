@@ -87,6 +87,15 @@
             "submit": "Submit"
         }
     },
+    "message": {
+        "download": {
+            "start": "The download of {{title}} began.",
+            "success": "The download of {{title}} is finished."
+        },
+        "import": {
+            "success": "The import of {{title}} is finished."
+        }
+    },
     "opds": {
         "addForm": {
             "addButton": "Add",
