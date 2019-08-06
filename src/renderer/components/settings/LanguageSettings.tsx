@@ -22,6 +22,8 @@ import { TranslatorProps, withTranslator } from "readium-desktop/renderer/compon
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import SVG from "../utils/SVG";
 
+import { RootState } from "readium-desktop/renderer/redux/states";
+
 interface Props extends TranslatorProps {
     locale: string;
     setLocale: (locale: string) => void;
@@ -71,7 +73,7 @@ export class LanguageSettings extends React.Component<Props, States> {
     }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: RootState) => {
     return {
         locale: state.i18n.locale,
     };
