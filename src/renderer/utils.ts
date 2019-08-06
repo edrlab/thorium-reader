@@ -23,14 +23,15 @@ export function buildOpdsBrowserRoute(
 // Encode without padding
 // And apply RFC 4648
 export function encodeB64(data: any) {
-    let encoded = btoa(data);
+    let encoded = btoa(unescape(encodeURIComponent(data)));
 
     // RFC 4648
     encoded = encoded.replace(/\//g, "_");
-    encoded = encoded.replace(/\[+]/g, "-");
+    encoded = encoded.replace(/\+/g, "-");
 
     // Remove padding
     encoded = encoded.replace(/=/g, "");
+
     return encoded;
 }
 
@@ -39,9 +40,9 @@ export function decodeB64(data: any) {
     decoded = decoded.replace(/_/g, "/");
     decoded = decoded.replace(/-/g, "+");
 
-    // // Add padding
     // const paddingLength = (3 - (decoded.length % 3)) % 3;
-    decoded = atob(decoded);
+
+    decoded = decodeURIComponent(escape(atob(decoded)));
     return decoded;
 }
 
