@@ -167,6 +167,18 @@ declare namespace typed_i18n {
   (_: "library.lcp.password", __?: {}): string;
   (_: "library.lcp.sentence", __?: {}): string;
   (_: "library.lcp.submit", __?: {}): string;
+  (_: "message", __?: {}): {
+  readonly "download": {
+    readonly "start": string,
+    readonly "success": string
+  },
+  readonly "import": { readonly "success": string }
+};
+  (_: "message.download", __?: {}): { readonly "start": string, readonly "success": string };
+  (_: "message.download.start", __?: {}): string;
+  (_: "message.download.success", __?: {}): string;
+  (_: "message.import", __?: {}): { readonly "success": string };
+  (_: "message.import.success", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {
     readonly "addButton": string,
