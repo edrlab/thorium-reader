@@ -29,8 +29,6 @@ import { ReaderStateConfig, ReaderStateMode, ReaderStateReader } from "readium-d
 
 import { UpdateState } from "readium-desktop/common/redux/states/update";
 
-import { I18NState } from "readium-desktop/common/redux/states/i18n";
-
 // Logger
 const debug = debug_("readium-desktop:main");
 
@@ -199,14 +197,6 @@ export function initApp() {
         const loc = app.getLocale().split("-")[0];
         const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
         store.dispatch(setLocale(lang));
-        try {
-            await configRepository.save({
-                identifier: "i18n",
-                value: { locale: lang } as I18NState,
-            });
-        } catch (e) {
-            debug("error in save locale", e);
-        }
         debug(`create i18n key in configRepository with ${lang} locale`);
     });
 
