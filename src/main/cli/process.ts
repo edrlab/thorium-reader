@@ -40,6 +40,7 @@ export function cli(mainFct: () => void) {
                 const promise = cliOpds(argv.title, argv.url);
                 promise.then((isValid) => {
                     if (isValid) {
+                        process.stdout.write("OPDS import done." + EOL);
                         app.exit(0);
                         return;
                     }
@@ -71,6 +72,7 @@ export function cli(mainFct: () => void) {
                 const promise = cliImport(pathArray);
                 promise.then((isValid) => {
                     if (isValid) {
+                        process.stdout.write("Publication(s) import done." + EOL);
                         app.exit(0);
                         return;
                     }
