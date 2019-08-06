@@ -6,39 +6,29 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { BrowserWindow, webContents } from "electron";
 import * as path from "path";
-
-import { BrowserWindow, Rectangle, webContents } from "electron";
+import { LocatorType } from "readium-desktop/common/models/locator";
+import { Publication } from "readium-desktop/common/models/publication";
+import { Bookmark, Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
+import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
+import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
+import { container } from "readium-desktop/main/di";
+import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
+import { ReaderState } from "readium-desktop/main/redux/states/reader";
+import { WinRegistry } from "readium-desktop/main/services/win-registry";
+import {
+    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, IS_DEV,
+} from "readium-desktop/preprocessor-directives";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
 import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-
-import { Publication } from "readium-desktop/common/models/publication";
-import { Bookmark, Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
-import { readerActions } from "readium-desktop/common/redux/actions";
-
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
-
-import { LocatorType } from "readium-desktop/common/models/locator";
-
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-import { container } from "readium-desktop/main/di";
-import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
-import {
-    _NODE_MODULE_RELATIVE_URL,
-    _PACKAGING,
-    _RENDERER_READER_BASE_URL,
-    IS_DEV,
-} from "readium-desktop/preprocessor-directives";
-
-import { AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
-
-import { ReaderState } from "readium-desktop/main/redux/states/reader";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -53,6 +43,7 @@ function openAllDevTools() {
 }
 
 async function openReader(publication: Publication, manifestUrl: string) {
+    debug("create readerWindow");
     // Create reader window
     const readerWindow = new BrowserWindow({
         ...(await getWindowsRectangle()),
@@ -83,7 +74,12 @@ async function openReader(publication: Publication, manifestUrl: string) {
     const readerAppWindow = winRegistry.registerWindow(
         readerWindow,
         AppWindowType.Reader,
-    );
+        );
+
+    // If there are 2 win, record window position in the db
+    if (Object.keys(appWindows).length === 2) {
+        readerAppWindow.onWindowMoveResize.attach();
+    }
 
     // Track it
     trackBrowserWindow(readerWindow);
@@ -123,12 +119,12 @@ async function openReader(publication: Publication, manifestUrl: string) {
 
     // Get publication last reading location
     const locatorRepository = container
-            .get("locator-repository") as LocatorRepository;
+        .get("locator-repository") as LocatorRepository;
     const locators = await locatorRepository
         .findByPublicationIdentifierAndLocatorType(
-        publication.identifier,
-        LocatorType.LastReadingLocation,
-    );
+            publication.identifier,
+            LocatorType.LastReadingLocation,
+        );
 
     if (locators.length > 0) {
         const locator = locators[0];
@@ -179,7 +175,7 @@ export function* readerOpenRequestWatcher(): SagaIterator {
         }
 
         const manifestUrl = streamerAction.payload.manifestUrl;
-        const reader = yield call(
+        const reader: Reader = yield call(
             () => openReader(publication, manifestUrl),
         );
 
@@ -252,10 +248,14 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
         // Show library window
         const appWindows = winRegistry.getWindows();
 
-        for (const appWin of Object.values(appWindows)) {
+        for (const appWin of Object.values(appWindows) as AppWindow[]) {
             if (appWin.type !== AppWindowType.Library) {
                 continue;
             }
+            // update window rectangle position
+            yield call(async () => {
+                appWin.win.setBounds(await getWindowsRectangle(AppWindowType.Library));
+            });
 
             appWin.win.show();
         }
@@ -405,7 +405,7 @@ export function* readerDetachRequestWatcher(): SagaIterator {
 
                 appWin.win.show();
             }
-
+            readerWindow.onWindowMoveResize.detach();
             readerWindow.win.focus();
         }
 

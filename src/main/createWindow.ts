@@ -38,7 +38,10 @@ export async function createWindow({ mainWindow }: { mainWindow: BrowserWindow }
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
     const winRegistry = container.get("win-registry") as WinRegistry;
-    winRegistry.registerWindow(mainWindow, AppWindowType.Library);
+    const appWindow = winRegistry.registerWindow(mainWindow, AppWindowType.Library);
+
+    // watch to record window rectangle position in the db
+    appWindow.onWindowMoveResize.attach();
 
     let rendererBaseUrl = _RENDERER_APP_BASE_URL;
 
