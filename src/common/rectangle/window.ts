@@ -13,6 +13,8 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { debounce } from "readium-desktop/utils/debounce";
 import { AppWindow, AppWindowType } from "../models/win";
 
+import { ConfigDocument } from "readium-desktop/main/db/document/config";
+
 // Logger
 const debug = debug_("readium-desktop:common:rectangle:window");
 
@@ -56,17 +58,23 @@ export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rect
             return rectangle;
         } else {
             const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
-            const rectangle = await configRepository.get(configIdKey);
+            let rectangle: ConfigDocument | undefined;
+            try {
+                rectangle = await configRepository.get(configIdKey);
+            } catch (err) {
+                // ignore
+            }
             if (rectangle && rectangle.value) {
                 debug("get window rectangle position from db :", rectangle.value);
                 return rectangle.value;
             }
-            return await savedWindowsRectangle(defaultRectangle());
         }
     } catch (e) {
         debug("get error", e);
-        return defaultRectangle();
     }
+
+    debug("default window rectangle");
+    return defaultRectangle();
 };
 
 export interface IOnWindowMoveResize {
