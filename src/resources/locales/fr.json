@@ -87,6 +87,15 @@
             "submit": "Valider"
         }
     },
+    "message": {
+        "download": {
+            "start": "Le téléchargement de {{title}} a commencé.",
+            "success": "Le téléchargement de {{title}} est terminé."
+        },
+        "import": {
+            "success": "L'import de {{title}} est terminé."
+        }
+    },
     "opds": {
         "addForm": {
             "addButton": "Ajouter",
