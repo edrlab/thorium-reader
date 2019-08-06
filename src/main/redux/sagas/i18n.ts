@@ -11,6 +11,8 @@ import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { container } from "readium-desktop/main/di";
 import { call, take } from "redux-saga/effects";
 
+import { I18NState } from "readium-desktop/common/redux/states/i18n";
+
 export function* localeWatcher() {
     while (true) {
         const action: i18nActions.ActionLocale = yield take(i18nActions.ActionType.Set);
@@ -20,7 +22,7 @@ export function* localeWatcher() {
         const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
         yield call(() => configRepository.save({
             identifier: "i18n",
-            value: { locale: action.payload.locale },
+            value: { locale: action.payload.locale } as I18NState,
         }));
     }
 }

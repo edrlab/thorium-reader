@@ -43,7 +43,10 @@ export interface ApiProps {
     cleanData?: any;
 }
 
+// TS4094: private members fail the TS compiler, because:
+// returned type is ConnectedComponentClass<typeof BaseWrapperComponent, any>
 export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
+
     // Create operationRequests
     const operationRequests: ApiOperationRequest[] = [];
     const store = container.get("store") as Store<RootState>;
@@ -120,7 +123,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
         );
     };
 
-    const mapStateToProps = (state: any, ownProps: any) => {
+    const mapStateToProps = (state: RootState, ownProps: any) => {
         let stateToPropsResult = {};
 
         if (queryConfig.mapStateToProps != null) {
@@ -148,9 +151,11 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
     };
 
     const BaseWrapperComponent = class extends React.Component<ApiProps, undefined> {
-        private lastSuccess: ApiLastSuccess;
-        private store: Store<RootState>;
-        private stateUpdateUnsubscribe: any;
+
+        // Ideally should be private, but see TS4094 comments in this file
+        /* private */ public lastSuccess: ApiLastSuccess;
+        /* private */ public store: Store<RootState>;
+        /* private */ public stateUpdateUnsubscribe: any;
 
         constructor(props: any) {
             super(props);
@@ -205,7 +210,8 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
             return (<WrappedComponent { ...newProps } />);
         }
 
-        private handleStateUpdate() {
+        // Ideally should be private, but see TS4094 comments in this file
+        /* private */ public handleStateUpdate() {
             const state = this.store.getState();
             const apiLastSuccess = state.api.lastSuccess;
 
