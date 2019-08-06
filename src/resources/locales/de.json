@@ -58,7 +58,6 @@
         "alreadyAdd": "Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
         "closeModalWindow": "Dieses modale Fenster schließen",
         "delete": "Willst du diese Publikation wirklich löschen?",
-        "deleteOpds": "",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
         "importError": "ein Fehler ist aufgetreten, überprüfen Sie Ihre Dateiendung (.epub or .lcpl).",
         "no": "Nein",
@@ -80,37 +79,12 @@
         "settings": "Settings"
     },
     "library": {
-        "add": "Zur Bibliothek hinzufügen",
-        "cancelDownload": "Ein Download wurde abgebrochen.",
-        "endDownload": "Ein Download wurde beendet.",
-        "heading": "Bibliothek",
         "lcp": {
             "cancel": "Abbrechen",
             "hint": "Dein Kennwort",
-            "informations": {
-                "close": "Schließen",
-                "issued": "Ausstellungsdatum:",
-                "provider": "Aussteller:",
-                "right": {
-                    "copy": "Nummer der Kopie:",
-                    "end": "Ende:",
-                    "print": "Nummer des gedruckten Werks:",
-                    "start": "Start:",
-                    "title": "Rechte"
-                },
-                "title": "LCP-Informationen",
-                "updated": "Aktualisiert:"
-            },
             "password": "",
             "sentence": "Diese Publikation benötigt zum Öffnen ein LCP-Password: ",
-            "submit": "Absenden",
-            "title": "LCP-Verifikation"
-        },
-        "startDownload": "Ein Download wurde gestartet.",
-        "svg": {
-            "card": "",
-            "list": "",
-            "showParaphrase": ""
+            "submit": "Absenden"
         }
     },
     "message": {
@@ -120,41 +94,21 @@
         },
         "import": {
             "success": ""
-        },
-        "lcp": {
-            "passphraseError": "Konnte die Publikation {{publicationTitle}} nicht entsperren",
-            "renewError": "Beim Verlängern der LCP-Lizenz von {{title}} trat ein Fehler auf",
-            "renewSuccess": "Die LCP-Lizenz von {{title}} wurde verlängert",
-            "returnError": "Beim Zurückgeben der LCP-Lizenz von {{title}} trat ein Fehler auf",
-            "returnSuccess": "Die LCP-Lizenz von {{title}} wurde zurückgegeben"
         }
     },
     "opds": {
         "addForm": {
             "addButton": "Hinzufügen",
-            "addSentence": "Welchen ODPS-Feed willst du hinzufügen?",
-            "delete": "Feed löschen",
             "name": "Feed-Name:",
             "namePlaceholder": "",
             "pasteUrl": "die URL eines Futters einfügen",
             "title": "Feed hinzufügen",
-            "update": "Aktualisieren",
-            "updateSentence": "Du kannst die Felder aktualisieren.",
             "url": "Feed-Link:",
             "urlPlaceholder": ""
         },
         "addMenu": "OPDS-Feed hinzufügen",
-        "authentication": {
-            "loginButton": "Login",
-            "password": "Passwort:",
-            "sentence": "Bitte logge dich ein, um auf die Inhalte zuzugreifen",
-            "username": "Benutzername:"
-        },
         "back": "Zurück",
         "breadcrumbRoot": "",
-        "download": "Download",
-        "downloadError": "Beim Abrufen des Feeds trat ein Fehler auf.",
-        "formError": "Bitte fülle alle Felder aus",
         "menu": {
             "aboutBook": "über dieses Buch",
             "addExtract": "zur Lib hinzufügen",
@@ -162,27 +116,14 @@
             "goBuyBook": "dieses Buch kaufen",
             "goLoanBook": "dieses Buch ausleihen",
             "goSubBook": "abonnieren"
-        },
-        "settings": "Einstellungen",
-        "svg": {
-            "opds": ""
         }
     },
     "publication": {
-        "cancelDownloadButton": "Abbrechen",
-        "canceledDownload": "Download abgebrochen",
         "deleteButton": "Löschen",
-        "downloadButton": "Download",
-        "endDownload": "Download abgeschlossen",
         "expiredLcp": "",
-        "failedDownload": "Download fehlerhaft",
-        "infoButton": "LCP-Informationen",
-        "progressDownload": "Download läuft",
         "readButton": "Lesen",
         "renewButton": "Verlängern",
-        "renewSentence": "Bist du sicher, dass die Publikation verlängert werden soll?",
         "returnButton": "Zurückgeben",
-        "returnSentence": "Bist du sicher, dass die Publikation zurückgegeben werden soll?",
         "returnedLcp": "",
         "revokedLcp": "",
         "seeLess": "Weniger Infos",
@@ -197,7 +138,6 @@
             "annotations": "Annotationen",
             "bookmarks": "Lesezeichen",
             "illustrations": "Illustrationstabelle",
-            "landmarks": "Sehenswürdigkeiten",
             "toc": "inhaltsverzeichnis"
         },
         "navigation": {
@@ -212,8 +152,6 @@
             "settingsTitle": "settings"
         },
         "settings": {
-            "DefaultFont": "Standardschrift",
-            "accessibility": "",
             "column": {
                 "auto": "",
                 "one": "",
@@ -224,9 +162,7 @@
             },
             "display": "Lesefluss",
             "disposition": {
-                "title": "",
-                "with": "",
-                "without": ""
+                "title": ""
             },
             "font": "",
             "fontSize": "Schriftgröße:",
@@ -237,36 +173,22 @@
             "lineSpacing": "",
             "margin": "",
             "paginated": "Seitendarstellung",
-            "right": "Rechtsbündig",
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",
             "text": "Text",
             "theme": {
-                "create": "ein Thema erstellen",
-                "myTheme": "meine Themen",
                 "name": {
                     "Neutral": "Neutral",
                     "Night": "Nachtzeit",
                     "Sepia": "Sepia"
                 },
-                "predefined": "vordefiniertes Thema",
                 "title": "Thema"
             },
-            "title": "Einstellungen",
             "wordSpacing": ""
         },
         "svg": {
-            "alignCenter": "",
-            "alignLeft": "",
-            "alignRight": "",
-            "contentTable": "",
-            "continue": "",
-            "document": "",
-            "landmark": "",
             "left": "",
-            "night": "",
-            "right": "",
-            "settings": ""
+            "right": ""
         }
     },
     "settings": {
@@ -274,23 +196,6 @@
         "language": {
             "languageChoice": "Sprachauswahl"
         },
-        "manageTags": "Manage tags",
         "uiLanguage": "Sprache"
-    },
-    "toolbar": {
-        "about": "Über",
-        "help": "Hilfe",
-        "news": "Neuerungen",
-        "svg": {
-            "addEpub": "",
-            "help": "",
-            "news": "",
-            "opds": "",
-            "others": ""
-        },
-        "sync": "Synchronisiere die Bibliothek"
-    },
-    "update": {
-        "available": "Update verfügbar!"
     }
 }

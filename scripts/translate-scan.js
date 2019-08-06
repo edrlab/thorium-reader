@@ -28,7 +28,7 @@ glob("src/**/*{.ts,.tsx}", {}, function (err, files) {
         const fileTxt = fs.readFileSync(path.join(process.cwd(), file), { encoding: "utf8" });
 
         // (\.translate|__)\s*\(\s*['"]\s*([^'"]+)['"]
-        const regex = new RegExp(`(\.translate|__)\\s*\\(\\s*['"]([^'"]+)['"]`, "g");
+        const regex = new RegExp(`(\\.translate|__)\\s*\\(\\s*['"]([^'"]+)['"]`, "g");
 
         let regexMatch = regex.exec(fileTxt);
         while (regexMatch) {
@@ -41,6 +41,22 @@ glob("src/**/*{.ts,.tsx}", {}, function (err, files) {
                 console.log(`-- duplicate: ${key}`);
             }
             regexMatch = regex.exec(fileTxt);
+        }
+
+        // dispatchToastRequest\s*\(\s*ToastType\.[^"']+['"]([^'"]+)['"]
+        const regex2 = new RegExp(`dispatchToastRequest\\s*\\(\\s*ToastType\\.[^"']+['"]([^'"]+)['"]`, "g");
+
+        regexMatch = regex2.exec(fileTxt);
+        while (regexMatch) {
+            totalMatch++;
+            const key = regexMatch[1];
+            if (!keys.includes(key)) {
+                keys.push(key);
+                console.log(key);
+            } else {
+                console.log(`-- duplicate: ${key}`);
+            }
+            regexMatch = regex2.exec(fileTxt);
         }
     }
 
