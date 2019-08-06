@@ -41,17 +41,18 @@ export const savedWindowsRectangle = async (rectangle: Rectangle) => {
     return rectangle;
 };
 
-export const getWindowsRectangle = async (): Promise<Rectangle> => {
+export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rectangle> => {
 
     try {
         const winRegistry = container.get("win-registry") as WinRegistry;
         const windows = Object.values(winRegistry.getWindows()) as AppWindow[];
-        if (windows.filter((win) => win.type === AppWindowType.Reader).length) {
+        const displayArea = screen.getPrimaryDisplay().workAreaSize;
+        if (WinType !== AppWindowType.Library && windows.length > 1) {
             const rectangle = windows.pop().win.getBounds();
             rectangle.x += 100;
-            rectangle.x %= screen.getPrimaryDisplay().workAreaSize.width;
+            rectangle.x %= displayArea.width - rectangle.width;
             rectangle.y += 100;
-            rectangle.y %= screen.getPrimaryDisplay().workAreaSize.height;
+            rectangle.y %= displayArea.height - rectangle.height;
             return rectangle;
         } else {
             const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;

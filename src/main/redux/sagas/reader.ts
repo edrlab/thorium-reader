@@ -256,7 +256,7 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
             }
             // update window rectangle position
             yield call(async () => {
-                appWin.win.setBounds(await getWindowsRectangle());
+                appWin.win.setBounds(await getWindowsRectangle(AppWindowType.Library));
             });
 
             appWin.win.show();
