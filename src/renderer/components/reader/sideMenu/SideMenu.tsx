@@ -41,7 +41,7 @@ export class SideMenu extends React.Component<Props, State> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, open, sections, className, listClassName, toggleMenu } = this.props;
+        const { open, sections, className, listClassName, toggleMenu } = this.props;
         const { openedSection } = this.state;
 
         if (!open) {

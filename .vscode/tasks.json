@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "isBackground": false,
+  "presentation": {
+      "reveal": "always",
+      "panel": "new"
+  },
+  "env": {
+    "DEBUG": "*",
+    "NODE_DEBUG": "1",
+    "NODE_ENV": "development"
+  },
+  "tasks": [
+    {
+      "label": "build",
+      "group": "build",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "build"
+      ],
+      "problemMatcher": [
+        "$tsc",
+        "$eslint-stylish"
+      ],
+      "presentation": {
+          "reveal": "always",
+          "panel": "shared"
+      }
+    },
+    {
+      "label": "lint",
+      "group": "build",
+      "type": "shell",
+      "command": "npm",
+      "args": [
+        "run",
+        "lint"
+      ],
+      "problemMatcher": [
+        "$tsc",
+        "$eslint-stylish"
+      ],
+      "presentation": {
+          "reveal": "always",
+          "panel": "shared"
+      }
+    }
+  ]
+}

@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import ReactDOM = require("react-dom");
 
 interface MenuButtonProps {
     menuId: string;

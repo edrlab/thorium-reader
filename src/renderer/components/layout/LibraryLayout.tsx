@@ -67,7 +67,7 @@ class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState, ownProps: any) => {
+const mapStateToProps = (state: RootState, _ownProps: any) => {
     return {
         dialogOpen: state.dialog.open,
     };

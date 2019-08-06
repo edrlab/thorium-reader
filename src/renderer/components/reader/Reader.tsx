@@ -54,8 +54,6 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
-import ReaderMenu from "readium-desktop/renderer/components/reader/ReaderMenu";
-import ReaderOptions from "readium-desktop/renderer/components/reader/ReaderOptions";
 import { container, lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
@@ -63,7 +61,6 @@ import { JSON as TAJSON } from "ta-json-x";
 
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { PublicationView } from "readium-desktop/common/views/publication";
 
 import optionsValues from "./options-values";
 
@@ -76,8 +73,6 @@ import { LocatorView } from "readium-desktop/common/views/locator";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import { Publication } from "readium-desktop/common/models/publication";
-
-import * as qs from "query-string";
 
 import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
@@ -163,9 +158,12 @@ setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
 
 const publicationJsonUrl = queryParams.pub.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
     convertCustomSchemeToHttpUrl(queryParams.pub) : queryParams.pub;
-const pathBase64Raw = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
-const pathBase64 = decodeURIComponent(pathBase64Raw);
-const pathDecoded = window.atob(pathBase64);
+// const pathBase64Raw = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+// const pathBase64 = decodeURIComponent(pathBase64Raw);
+// const pathDecoded = window.atob(pathBase64);
+// const pathFileName = pathDecoded.substr(
+//     pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
+//     pathDecoded.length - 1);
 
 const lcpHint = queryParams.lcpHint;
 
@@ -319,10 +317,10 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             }
         });
 
-        window.document.documentElement.addEventListener("keydown", (ev: KeyboardEvent) => {
+        window.document.documentElement.addEventListener("keydown", (_ev: KeyboardEvent) => {
             window.document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
         }, true);
-        window.document.documentElement.addEventListener("mousedown", (ev: MouseEvent) => {
+        window.document.documentElement.addEventListener("mousedown", (_ev: MouseEvent) => {
             window.document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
         }, true);
 
@@ -339,7 +337,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == ActionType.CloseRequest,
         // but narrow it down specically to a reader window instance (not application-wide)
-        window.document.addEventListener("Thorium:DialogClose", (ev: Event) => {
+        window.document.addEventListener("Thorium:DialogClose", (_ev: Event) => {
             this.setState({
                 shortcutEnable: true,
             });
@@ -373,9 +371,9 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
     }
 
-    public componentDidUpdate(oldProps: ReaderProps) {
+    public async componentDidUpdate(oldProps: ReaderProps) {
         if (oldProps.bookmarks !== this.props.bookmarks) {
-            this.checkBookmarks();
+            await this.checkBookmarks();
         }
     }
 
@@ -455,7 +453,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             // publicationJsonUrl is https://127.0.0.1:PORT
             response = await fetch(publicationJsonUrl);
         } catch (e) {
-            return;
+            return Promise.reject(e);
         }
         if (!response.ok) {
             console.log("BAD RESPONSE?!");
@@ -466,9 +464,10 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             publicationJSON = await response.json();
         } catch (e) {
             console.log(e);
+            return Promise.reject(e);
         }
         if (!publicationJSON) {
-            return;
+            return Promise.reject("!publicationJSON");
         }
         const publication = TAJSON.deserialize<R2Publication>(publicationJSON, R2Publication);
 
@@ -717,7 +716,7 @@ const mapStateToProps = (state: RootState, __: any) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any, props: ReaderProps) => {
+const mapDispatchToProps = (dispatch: any, _props: ReaderProps) => {
     return {
         toggleFullscreen: (fullscreenOn: boolean) => {
             if (fullscreenOn) {
@@ -749,7 +748,7 @@ const mapDispatchToProps = (dispatch: any, props: ReaderProps) => {
     };
 };
 
-const buildRequestData = (props: ReaderProps) => {
+const buildRequestData = (_props: ReaderProps) => {
     return {
         identifier: queryParams.pubId,
     };

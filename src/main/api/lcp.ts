@@ -18,13 +18,13 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 @injectable()
 export class LcpApi {
     @inject("store")
-    private store: Store<any>;
+    private readonly store!: Store<any>;
 
     @inject("publication-repository")
-    private publicationRepository: PublicationRepository;
+    private readonly publicationRepository!: PublicationRepository;
 
     @inject("lcp-manager")
-    private lcpManager: LcpManager;
+    private readonly lcpManager!: LcpManager;
 
     public async renewPublicationLicense(data: any): Promise<void> {
         const { publication } = data;

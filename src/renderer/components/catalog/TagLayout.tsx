@@ -15,10 +15,6 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import Menu from "../utils/menu/Menu";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
-import { Link } from "react-router-dom";
-import { withApi } from "../utils/api";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
 import GridTagButton from "./GridTagButton";
 
 interface TagProps extends TranslatorProps {

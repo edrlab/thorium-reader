@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import { DialogType } from "readium-desktop/common/models/dialog";
-import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
+import { LsdStatus } from "readium-desktop/common/models/lcp";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 

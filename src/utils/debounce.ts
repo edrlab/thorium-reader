@@ -21,15 +21,17 @@ export function debounce<F extends (...args: any[]) => Promise<any> | any>(
     options: Options = {
         isImmediate: false,
     },
-) {
+): (...args: any[]) => void {
+
     let timeoutId: NodeJS.Timer | undefined;
 
-    return (...args: any[]) => {
+    return async function fct(this: any, ...args: any[]) {
+        const that = this;
 
         const doLater = async () => {
             timeoutId = undefined;
             if (!options.isImmediate) {
-                await Promise.resolve(func.apply(this, args));
+                await Promise.resolve(func.apply(that, args));
             }
         };
 
@@ -44,7 +46,7 @@ export function debounce<F extends (...args: any[]) => Promise<any> | any>(
         timeoutId = setTimeout(doLater, waitMilliseconds) as any;
 
         if (shouldCallNow) {
-            Promise.resolve(func.apply(this, args));
+            await Promise.resolve(func.apply(that, args));
         }
     };
 }

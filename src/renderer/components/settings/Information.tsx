@@ -19,6 +19,8 @@ import { promisify } from "util";
 
 import { _PACKAGING } from "readium-desktop/preprocessor-directives";
 
+import { RootState } from "readium-desktop/renderer/redux/states";
+
 interface Props extends TranslatorProps {
     locale: string;
     setLocale: (locale: string) => void;
@@ -62,7 +64,7 @@ export class LanguageSettings extends React.Component<Props, States> {
     }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: RootState) => {
     return {
         locale: state.i18n.locale,
     };

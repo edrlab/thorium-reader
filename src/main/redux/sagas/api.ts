@@ -8,11 +8,10 @@
 import { container } from "readium-desktop/main/di";
 
 import * as debug_ from "debug";
-import * as moment from "moment";
 
 import { SagaIterator } from "redux-saga";
 
-import { call, fork, put, select, take } from "redux-saga/effects";
+import { call, fork, put, take } from "redux-saga/effects";
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 
@@ -40,7 +39,7 @@ export function* processRequest(requestAction: apiActions.ApiAction): SagaIterat
 
 export function* requestWatcher() {
     while (true) {
-        const action = yield take(apiActions.ActionType.Request);
+        const action: apiActions.ApiAction = yield take(apiActions.ActionType.Request);
         yield fork(processRequest, action);
     }
 }

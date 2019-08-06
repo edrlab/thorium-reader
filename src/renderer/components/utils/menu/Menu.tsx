@@ -9,7 +9,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as uuid from "uuid";
 
-import AccessibleMenu from "./AccessibleMenu";
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
 

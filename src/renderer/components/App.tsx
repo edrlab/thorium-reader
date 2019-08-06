@@ -73,10 +73,10 @@ export default class App extends React.Component<any, undefined> {
     }
 
     public async componentDidMount() {
-        window.document.documentElement.addEventListener("keydown", (ev: KeyboardEvent) => {
+        window.document.documentElement.addEventListener("keydown", (_ev: KeyboardEvent) => {
             window.document.documentElement.classList.add("R2_CSS_CLASS__KEYBOARD_INTERACT");
         }, true);
-        window.document.documentElement.addEventListener("mousedown", (ev: MouseEvent) => {
+        window.document.documentElement.addEventListener("mousedown", (_ev: MouseEvent) => {
             window.document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
         }, true);
     }

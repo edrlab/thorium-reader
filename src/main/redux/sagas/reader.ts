@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { BrowserWindow, webContents } from "electron";
+import { BrowserWindow } from "electron";
 import * as path from "path";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Publication } from "readium-desktop/common/models/publication";
@@ -30,17 +30,10 @@ import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/s
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
+import { ActionWithSender } from "readium-desktop/common/models/sync";
+
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
-
-function openAllDevTools() {
-    for (const wc of webContents.getAllWebContents()) {
-        // if (wc.hostWebContents &&
-        //     wc.hostWebContents.id === electronBrowserWindow.webContents.id) {
-        // }
-        wc.openDevTools();
-    }
-}
 
 async function openReader(publication: Publication, manifestUrl: string) {
     debug("create readerWindow");
@@ -369,7 +362,7 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
 export function* readerFullscreenRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for app initialization
-        const action = yield take([
+        const action: ActionWithSender = yield take([
             readerActions.ActionType.FullscreenOffRequest,
             readerActions.ActionType.FullscreenOnRequest,
         ]);

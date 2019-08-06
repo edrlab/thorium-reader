@@ -8,8 +8,6 @@
 import "font-awesome/css/font-awesome.css";
 import "react-dropdown/style.css";
 
-import * as path from "path";
-
 import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -34,9 +32,11 @@ import {
 
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
-import { SenderType } from "readium-desktop/common/models/sync";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
+
+import { EventPayload } from "./common/ipc/sync";
 
 initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();
@@ -70,7 +70,7 @@ store.subscribe(() => {
     }
 });
 
-ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: any) => {
+ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
@@ -80,7 +80,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: any) => {
 });
 
 // Request main process for a new id
-ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: any) => {
+ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: EventPayload) => {
     const actionSerializer = container.get("action-serializer") as ActionSerializer;
 
     switch (data.type) {
@@ -89,7 +89,7 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: any) => {
             store.dispatch(Object.assign(
                 {},
                 actionSerializer.deserialize(data.payload.action),
-                {sender: data.sender},
+                {sender: data.sender} as ActionWithSender,
             ));
             break;
     }

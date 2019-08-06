@@ -25,19 +25,14 @@ import { open } from "readium-desktop/common/redux/actions/toast";
 
 @injectable()
 export class PublicationApi {
-    private publicationRepository: PublicationRepository;
-    private publicationViewConverter: PublicationViewConverter;
-    private catalogService: CatalogService;
+    @inject("publication-repository")
+    private readonly publicationRepository!: PublicationRepository;
 
-    constructor(
-        @inject("publication-repository") publicationRepository: PublicationRepository,
-        @inject("publication-view-converter") publicationViewConverter: PublicationViewConverter,
-        @inject("catalog-service") catalogService: CatalogService,
-    ) {
-        this.publicationRepository = publicationRepository;
-        this.publicationViewConverter = publicationViewConverter;
-        this.catalogService = catalogService;
-    }
+    @inject("publication-view-converter")
+    private readonly publicationViewConverter!: PublicationViewConverter;
+
+    @inject("catalog-service")
+    private readonly catalogService!: CatalogService;
 
     public async get(data: any): Promise<PublicationView> {
         const { identifier } = data;

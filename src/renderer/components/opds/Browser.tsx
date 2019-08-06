@@ -26,8 +26,6 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import BrowserResult from "./BrowserResult";
 
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-
 interface FeedDetailsProps extends RouteComponentProps, TranslatorProps {
     navigation: OpdsLinkView[];
 }
@@ -54,7 +52,7 @@ export class Browser extends React.Component<FeedDetailsProps, null> {
     }
 
     private buildBreadcrumb(): BreadCrumbItem[] {
-        const { location, match, navigation } = this.props;
+        const { match, navigation } = this.props;
         const breadcrumb: any = [];
 
         // Add root page

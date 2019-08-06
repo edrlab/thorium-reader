@@ -64,7 +64,7 @@ export class FeedList extends React.Component<OpdsListProps, null> {
                             </li>
                         );
                     })}
-                    {[...Array(6).keys()].map((__, index) => {
+                    {[...Array(6).keys()].map((__, _index) => {
                         return <div key={"array-" + __}></div>;
                     })}
                 </ul>

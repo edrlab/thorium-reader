@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { ipcRenderer } from "electron";
-import { Store } from "redux";
+import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { syncIpc } from "readium-desktop/common/ipc";
 import {
@@ -15,7 +15,7 @@ import {
     readerActions,
 } from "readium-desktop/common/redux/actions";
 
-import { SenderType } from "readium-desktop/common/models/sync";
+import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 
 import { container } from "readium-desktop/renderer/di";
 
@@ -37,7 +37,11 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     i18nActions.ActionType.Set,
 ];
 
-export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action: any) => {
+export const reduxSyncMiddleware: Middleware
+    = (store: MiddlewareAPI<Dispatch<AnyAction>>) =>
+    (next: Dispatch<ActionWithSender>) =>
+    ((action: ActionWithSender) => {
+
     // Does this action must be sent to the main process
     if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
         // Do not send
@@ -62,7 +66,7 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
             type: SenderType.Renderer,
             winId: store.getState().win.winId,
         },
-    });
+    } as syncIpc.EventPayload);
 
     return next(action);
-};
+}) as Dispatch<ActionWithSender>;

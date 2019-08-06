@@ -5,8 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export class CodeError extends Error {
-    public static fromJson(json: any): CodeError {
+export interface CodeMessage {
+    code: number | string;
+    message: string;
+}
+
+export interface CodeMessageWithClass extends CodeMessage {
+    class: string;
+}
+
+export class CodeError extends Error implements CodeMessage {
+    public static fromJson(json: CodeMessage): CodeError {
         return new CodeError(
             json.code,
             json.message,
@@ -22,7 +31,7 @@ export class CodeError extends Error {
         this.message = message;
     }
 
-    public toJson() {
+    public toJson(): CodeMessageWithClass {
         return {
             class: "CodeError",
             code: this.code,

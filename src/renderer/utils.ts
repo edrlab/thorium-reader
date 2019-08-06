@@ -39,8 +39,8 @@ export function decodeB64(data: any) {
     decoded = decoded.replace(/_/g, "/");
     decoded = decoded.replace(/-/g, "+");
 
-    // Add padding
-    const paddingLength = (3 - (decoded.length % 3)) % 3;
+    // // Add padding
+    // const paddingLength = (3 - (decoded.length % 3)) % 3;
     decoded = atob(decoded);
     return decoded;
 }

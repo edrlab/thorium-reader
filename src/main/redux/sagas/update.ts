@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { delay, SagaIterator } from "redux-saga";
-import { call, put, select, take } from "redux-saga/effects";
+import { call, put, take } from "redux-saga/effects";
 
 import { httpGet } from "readium-desktop/common/utils/http";
 

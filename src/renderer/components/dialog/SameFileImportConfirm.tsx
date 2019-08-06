@@ -35,7 +35,7 @@ class SameFileImportConfirm extends React.Component<Props> {
     }
 
     public render(): React.ReactElement<{}>  {
-        const { __, publication } = this.props;
+        const { __ } = this.props;
         return (
             <div>
                 <p>
@@ -68,7 +68,7 @@ const buildRequestData = (props: Props) => {
     return { text: props.publication.title };
 };
 
-const mapDispatchToProps = (dispatch: any, props: any) => {
+const mapDispatchToProps = (dispatch: any, _props: any) => {
     return {
         closeDialog: () => {
             dispatch(

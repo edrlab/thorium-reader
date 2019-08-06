@@ -9,13 +9,9 @@ import * as React from "react";
 
 import { lazyInject } from "readium-desktop/renderer/di";
 
-import { Publication } from "readium-desktop/common/models/publication";
-
 import { Translator } from "readium-desktop/common/services/translator";
 
 import { Styles } from "readium-desktop/renderer/components/styles";
-
-import { Contributor } from "readium-desktop/common/models/contributor";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -28,8 +24,6 @@ export default class Cover extends React.Component<ICoverProps, null> {
     private translator: Translator;
 
     public render(): React.ReactElement<{}>  {
-        // TODO: should get language from view state? (user preferences)
-        const lang = "en";
 
         if (this.props.publication.cover == null) {
             let authors = "";

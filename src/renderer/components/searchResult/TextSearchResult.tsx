@@ -9,7 +9,7 @@ import * as qs from "query-string";
 
 import * as React from "react";
 
-import { Link, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
@@ -32,7 +32,7 @@ interface TextSearchResultProps extends TranslatorProps, RouteComponentProps {
 }
 
 export class TextSearchResult extends React.Component<TextSearchResultProps, undefined> {
-    public componentDidUpdate(prevProps: any, prevState: any, snapshot?: any): boolean {
+    public componentDidUpdate(prevProps: any, _prevState: any, _snapshot?: any): boolean {
         const text = (this.props.match.params as any).value;
         const prevText = (prevProps.match.params as any).value;
 

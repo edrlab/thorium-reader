@@ -13,8 +13,6 @@ import { JSON as TAJSON } from "ta-json-x";
 
 import { Publication as Epub } from "@r2-shared-js/models/publication";
 
-import { PublicationView } from "readium-desktop/common/views/publication";
-
 import {
     convertContributorArrayToStringArray,
 } from "readium-desktop/common/utils";

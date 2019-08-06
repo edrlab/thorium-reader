@@ -6,16 +6,7 @@
 // ==LICENSE-END==
 
 import * as crypto from "crypto";
-import * as debug_ from "debug";
 import * as fs from "fs";
-import * as path from "path";
-
-import { Publication as Epub } from "@r2-shared-js/models/publication";
-import { EpubParsePromise } from "@r2-shared-js/parser/epub";
-
-import { IDeviceIDManager } from "@r2-lcp-js/lsd/deviceid-manager";
-
-import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
 
 import { container } from "readium-desktop/main/di";
 
@@ -25,9 +16,6 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 
 import { httpGet } from "readium-desktop/common/utils/http";
 import { injectDataInZip } from "readium-desktop/utils/zip";
-
-// Logger
-const debug = debug_("readium-desktop:utils:lcp");
 
 export function toSha256Hex(data: string) {
     const checkSum = crypto.createHash("sha256");
@@ -85,41 +73,39 @@ export async function updateLicenseStatus(publication: Publication) {
     // Inject lcpl in publication
     await injectLcpl(publication, lcplResponse);
 
-    // Get epub file from publication
-    // FIXME: do not use services in utils
-    const pubStorage = container.get("publication-storage") as PublicationStorage;
-    const epubPath = pubStorage.getPublicationEpubPath(publication.identifier);
+    // // Get epub file from publication
+    // // FIXME: do not use services in utils
+    // const pubStorage = container.get("publication-storage") as PublicationStorage;
+    // const epubPath = pubStorage.getPublicationEpubPath(publication.identifier);
 
-    // Get lcpl information
-    let parsedEpub: Epub = null;
+    // // Get lcpl information
+    // let parsedEpub: Epub = null;
 
-    try {
-        parsedEpub = await EpubParsePromise(epubPath);
-    } catch (error) {
-        debug(error);
-    }
+    // try {
+    //     parsedEpub = await EpubParsePromise(epubPath);
+    // } catch (error) {
+    //     debug(error);
+    // }
 
-    // Update status document
-    const deviceIdManager = container.get("device-id-manager") as IDeviceIDManager;
-    const deviceId = await deviceIdManager.getDeviceID();
+    // // Update status document
+    // const deviceIdManager = container.get("device-id-manager") as IDeviceIDManager;
 
-    try {
-        /* await launchStatusDocumentProcessing(
-                parsedEpub.LCP, deviceIdManager,
-            async (licenseUpdateJson: string | undefined) => {
-                debug("launchStatusDocumentProcessing DONE.");
-                debug("new license", licenseUpdateJson);
-                if (licenseUpdateJson) {
-                    try {
-                        await injectLcpl(publication, licenseUpdateJson);
-                    } catch (err) {
-                        console.log("1.5.error");
-                        debug(err);
-                    }
-                }
-            });*/
-    } catch (err) {
-        debug(err);
-    }
-
+    // try {
+    //     /* await launchStatusDocumentProcessing(
+    //             parsedEpub.LCP, deviceIdManager,
+    //         async (licenseUpdateJson: string | undefined) => {
+    //             debug("launchStatusDocumentProcessing DONE.");
+    //             debug("new license", licenseUpdateJson);
+    //             if (licenseUpdateJson) {
+    //                 try {
+    //                     await injectLcpl(publication, licenseUpdateJson);
+    //                 } catch (err) {
+    //                     console.log("1.5.error");
+    //                     debug(err);
+    //                 }
+    //             }
+    //         });*/
+    // } catch (err) {
+    //     debug(err);
+    // }
 }

@@ -15,14 +15,14 @@ import { connect } from "react-redux";
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 
-import Header from "./Header";
-
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import SVG from "../utils/SVG";
+
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 interface Props extends TranslatorProps {
     locale: string;
@@ -43,7 +43,7 @@ export class LanguageSettings extends React.Component<Props, States> {
     }
 
     public render(): React.ReactElement<{}> {
-        const secondaryHeader = <Header section={2}/>;
+        // const secondaryHeader = <Header section={2}/>;
         const { __ } = this.props;
         return (
             <>
@@ -73,7 +73,7 @@ export class LanguageSettings extends React.Component<Props, States> {
     }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: RootState) => {
     return {
         locale: state.i18n.locale,
     };

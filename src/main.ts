@@ -25,15 +25,17 @@ import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 
+import { ActionWithSender } from "readium-desktop/common/models/sync";
+
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
     delete process.env.DEBUG;
     debug_.disable();
 
-    console.log = (message?: any, ...optionalParams: any[]) => { return; };
-    console.warn = (message?: any, ...optionalParams: any[]) => { return; };
-    console.error = (message?: any, ...optionalParams: any[]) => { return; };
-    console.info = (message?: any, ...optionalParams: any[]) => { return; };
+    console.log = (_message?: any, ..._optionalParams: any[]) => { return; };
+    console.warn = (_message?: any, ..._optionalParams: any[]) => { return; };
+    console.error = (_message?: any, ..._optionalParams: any[]) => { return; };
+    console.info = (_message?: any, ..._optionalParams: any[]) => { return; };
 }
 
 // Logger
@@ -87,7 +89,7 @@ function main() {
     });
 
     app.on("will-finish-launching", () => {
-        app.on("open-url", (event: any, url: any) => {
+        app.on("open-url", (event: any, _url: any) => {
             event.preventDefault();
             // Process url: import or open?
         });
@@ -101,7 +103,7 @@ function main() {
     });
 
     // Listen to renderer action
-    ipcMain.on(syncIpc.CHANNEL, (_0: any, data: any) => {
+    ipcMain.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
         const store = container.get("store") as Store<any>;
         const actionSerializer = container.get("action-serializer") as ActionSerializer;
 
@@ -111,7 +113,7 @@ function main() {
                 store.dispatch(Object.assign(
                     {},
                     actionSerializer.deserialize(data.payload.action),
-                    { sender: data.sender },
+                    { sender: data.sender } as ActionWithSender,
                 ));
                 break;
         }

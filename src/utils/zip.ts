@@ -73,7 +73,7 @@ function injectObjectInZip(
     });
 }
 
-export function injectFileInZip(
+export async function injectFileInZip(
     destPathTMP: string,
     destPathFINAL: string,
     filePath: string,
@@ -95,7 +95,7 @@ export function injectFileInZip(
     });
 }
 
-export function injectDataInZip(
+export async function injectDataInZip(
     destPathTMP: string,
     destPathFINAL: string,
     data: string,

@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as uuid from "uuid";
-
 import { Action } from "readium-desktop/common/models/redux";
 
 import { readerActions } from "readium-desktop/common/redux/actions";

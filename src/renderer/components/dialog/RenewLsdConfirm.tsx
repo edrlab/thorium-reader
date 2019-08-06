@@ -61,7 +61,7 @@ export class RenewLsdConfirm extends React.Component<DeletePublicationConfirmPro
     }
 }
 
-const mapDispatchToProps = (dispatch: any, props: any) => {
+const mapDispatchToProps = (dispatch: any, _props: any) => {
     return {
         closeDialog: () => {
             dispatch(

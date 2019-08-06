@@ -15,7 +15,7 @@ import { i18nActions } from "readium-desktop/common/redux/actions";
 
 export function* localeWatcher() {
     while (true) {
-        const action = yield take(i18nActions.ActionType.Set);
+        const action: i18nActions.ActionLocale = yield take(i18nActions.ActionType.Set);
         const translator = container.get("translator") as Translator;
         translator.setLocale(action.payload.locale);
     }
