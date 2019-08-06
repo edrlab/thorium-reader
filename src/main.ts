@@ -38,10 +38,9 @@ import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 
-import { getWindowsRectangle, savedWindowsRectangle } from "./common/rectangle/window";
+import { getWindowsRectangle } from "./common/rectangle/window";
 import { setLocale } from "./common/redux/actions/i18n";
 import { AvailableLanguages, Translator } from "./common/services/translator";
-import { debounce } from "./utils/debounce";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -98,7 +97,10 @@ async function createWindow() {
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
     const winRegistry = container.get("win-registry") as WinRegistry;
-    winRegistry.registerWindow(mainWindow, AppWindowType.Library);
+    const appWindow = winRegistry.registerWindow(mainWindow, AppWindowType.Library);
+
+    // watch to record window rectangle position in the db
+    appWindow.onWindowMoveResize.attach();
 
     let rendererBaseUrl = _RENDERER_APP_BASE_URL;
 
@@ -207,10 +209,6 @@ async function createWindow() {
         mainWindow = null;
     });
 
-    const debounceSavedWindowsRectangle = debounce(savedWindowsRectangle, 500);
-
-    mainWindow.on("move", () =>
-        debounceSavedWindowsRectangle(mainWindow.getBounds()));
 }
 
 function registerProtocol() {
