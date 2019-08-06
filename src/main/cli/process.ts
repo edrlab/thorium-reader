@@ -47,7 +47,7 @@ export function cli(mainFct: () => void) {
                     app.exit(1);
                 }).catch((e) => {
                     debug("import error :", e);
-                    process.stderr.write("An error occurred during import an ODPS feed, exit with code 1" + EOL);
+                    process.stderr.write(e.toString() + EOL);
                     app.exit(1);
                 });
             },
@@ -78,7 +78,7 @@ export function cli(mainFct: () => void) {
                     app.exit(1);
                 }).catch((e) => {
                     debug("import error :", e);
-                    process.stderr.write("An error occurred during import, exit with code 1" + EOL);
+                    process.stderr.write(e.toString() + EOL);
                     app.exit(1);
                 });
             },
