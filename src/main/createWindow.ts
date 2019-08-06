@@ -10,7 +10,7 @@ import { BrowserWindow, Menu, shell } from "electron";
 import * as path from "path";
 import { AppWindowType } from "readium-desktop/common/models/win";
 import {
-    getWindowsRectangle, savedWindowsRectangle,
+    getWindowsRectangle,
 } from "readium-desktop/common/rectangle/window";
 import { Translator } from "readium-desktop/common/services/translator";
 import { container } from "readium-desktop/main/di";
@@ -18,7 +18,6 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import {
     _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
-import { debounce } from "readium-desktop/utils/debounce";
 
 // Logger
 const debug = debug_("readium-desktop:createWindow");
@@ -103,11 +102,6 @@ export async function createWindow({ mainWindow }: { mainWindow: BrowserWindow }
     mainWindow.on("closed", () => {
         mainWindow = null;
     });
-
-    const debounceSavedWindowsRectangle = debounce(savedWindowsRectangle, 500);
-
-    mainWindow.on("move", () =>
-        debounceSavedWindowsRectangle(mainWindow.getBounds()));
 }
 
 export function initDarwin() {

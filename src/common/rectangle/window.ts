@@ -39,6 +39,7 @@ export const savedWindowsRectangle = async (rectangle: Rectangle) => {
     }
     return rectangle;
 };
+const debounceSavedWindowsRectangle = debounce<t_savedWindowsRectangle>(savedWindowsRectangle, 500);
 
 export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rectangle> => {
 
@@ -76,8 +77,6 @@ export interface IOnWindowMoveResize {
 // handler to attach and detach move/resize event to win
 export const onWindowMoveResize = (win: BrowserWindow): IOnWindowMoveResize => {
     const handler = () => {
-        const debounceSavedWindowsRectangle =
-            debounce<t_savedWindowsRectangle>(savedWindowsRectangle, 500);
         debounceSavedWindowsRectangle(win.getBounds());
     };
 
