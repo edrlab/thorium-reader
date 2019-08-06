@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { BrowserWindow, Menu, shell } from "electron";
+import { app, BrowserWindow, Menu, shell } from "electron";
 import * as path from "path";
 import { AppWindowType } from "readium-desktop/common/models/win";
 import {
@@ -22,8 +22,12 @@ import {
 // Logger
 const debug = debug_("readium-desktop:createWindow");
 
+// Global reference to the main window,
+// so the garbage collector doesn't close it.
+let mainWindow: BrowserWindow = null;
+
 // Opens the main window, with a native menu bar.
-export async function createWindow({ mainWindow }: { mainWindow: BrowserWindow }) {
+export async function createWindow() {
     mainWindow = new BrowserWindow({
         ...(await getWindowsRectangle()),
         minWidth: 800,
@@ -100,9 +104,18 @@ export async function createWindow({ mainWindow }: { mainWindow: BrowserWindow }
     // mainWindow.webContents.session.clearStorageData();
 
     mainWindow.on("closed", () => {
+        // note that winRegistry still contains a reference to mainWindow, so won't necessarily be garbage-collected
         mainWindow = null;
     });
 }
+
+// On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
+// windows open.
+app.on("activate", async () => {
+    if (mainWindow === null) {
+        await createWindow();
+    }
+});
 
 export function initDarwin() {
     const translator = container.get("translator") as Translator;

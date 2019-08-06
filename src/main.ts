@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, ipcMain } from "electron";
 import * as path from "path";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
@@ -50,11 +50,6 @@ initGlobalConverters_GENERIC();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
-// Global reference to the main window,
-// so the garbage collector doesn't close it.
-// tslint:disable-next-line: prefer-const
-let mainWindow: BrowserWindow = null;
-
 cli(main);
 
 function main() {
@@ -76,16 +71,8 @@ function main() {
         initApp();
 
         // launch library window
-        await createWindow({ mainWindow });
+        await createWindow();
         registerProtocol();
-    });
-
-    // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
-    // windows open.
-    app.on("activate", async () => {
-        if (mainWindow === null) {
-            await createWindow({ mainWindow });
-        }
     });
 
     app.on("will-finish-launching", () => {
