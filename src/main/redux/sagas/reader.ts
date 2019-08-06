@@ -144,7 +144,6 @@ async function openReader(publication: Publication, manifestUrl: string) {
         readerWindow.setMenu(null);
     }
 
-
     return reader;
 }
 

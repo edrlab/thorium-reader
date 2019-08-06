@@ -6,11 +6,10 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { BrowserWindow, Rectangle, screen } from "electron";
+import { Rectangle, screen } from "electron";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
-import { debounce } from "readium-desktop/utils/debounce";
 
 import { AppWindow, AppWindowType } from "../models/win";
 
