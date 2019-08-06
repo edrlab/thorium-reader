@@ -8,10 +8,7 @@
 import { BrowserWindow } from "electron";
 import { injectable } from "inversify";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
-import {
-    savedWindowsRectangle, t_savedWindowsRectangle,
-} from "readium-desktop/common/rectangle/window";
-import { debounce } from "readium-desktop/utils/debounce";
+import { onWindowMoveResize } from "readium-desktop/common/rectangle/window";
 import * as uuid from "uuid";
 
 export interface WinDictionary {
@@ -56,11 +53,7 @@ export class WinRegistry {
             identifier: uuid.v4(),
             type,
             win,
-            setBoundsHandler: () => {
-                const debounceSavedWindowsRectangle =
-                    debounce<t_savedWindowsRectangle>(savedWindowsRectangle, 500);
-                debounceSavedWindowsRectangle(win.getBounds());
-            },
+            onWindowMoveResize: onWindowMoveResize(win),
         };
         this.windows[winId] = appWindow;
 

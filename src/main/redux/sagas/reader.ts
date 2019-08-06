@@ -78,8 +78,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
 
     // If there are 2 win, record window position in the db
     if (Object.keys(appWindows).length === 2) {
-        readerWindow.on("move", readerAppWindow.setBoundsHandler);
-        readerWindow.on("resize", readerAppWindow.setBoundsHandler);
+        readerAppWindow.onWindowMoveResize.attach();
     }
 
     // Track it
@@ -406,8 +405,7 @@ export function* readerDetachRequestWatcher(): SagaIterator {
 
                 appWin.win.show();
             }
-            readerWindow.win.removeListener("move", readerWindow.setBoundsHandler);
-            readerWindow.win.removeListener("resize", readerWindow.setBoundsHandler);
+            readerWindow.onWindowMoveResize.detach();
             readerWindow.win.focus();
         }
 

@@ -100,8 +100,7 @@ async function createWindow() {
     const appWindow = winRegistry.registerWindow(mainWindow, AppWindowType.Library);
 
     // watch to record window rectangle position in the db
-    mainWindow.on("move", appWindow.setBoundsHandler);
-    mainWindow.on("resize", appWindow.setBoundsHandler);
+    appWindow.onWindowMoveResize.attach();
 
     let rendererBaseUrl = _RENDERER_APP_BASE_URL;
 

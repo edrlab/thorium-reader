@@ -6,6 +6,8 @@
 // ==LICENSE-END==
 
 import { BrowserWindow } from "electron";
+
+import { IOnWindowMoveResize } from "../rectangle/window";
 import { Identifiable } from "./identifiable";
 
 export enum AppWindowType {
@@ -16,5 +18,5 @@ export enum AppWindowType {
 export interface AppWindow extends Identifiable {
     type: AppWindowType;
     win: BrowserWindow;
-    setBoundsHandler: () => void;
+    onWindowMoveResize: IOnWindowMoveResize;
 }

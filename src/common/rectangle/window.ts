@@ -6,11 +6,11 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { Rectangle, screen } from "electron";
+import { BrowserWindow, Rectangle, screen } from "electron";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
-
+import { debounce } from "readium-desktop/utils/debounce";
 import { AppWindow, AppWindowType } from "../models/win";
 
 // Logger
@@ -66,4 +66,29 @@ export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rect
         debug("get error", e);
         return defaultRectangle();
     }
+};
+
+export interface IOnWindowMoveResize {
+    attach: () => void;
+    detach: () => void;
+}
+
+// handler to attach and detach move/resize event to win
+export const onWindowMoveResize = (win: BrowserWindow): IOnWindowMoveResize => {
+    const handler = () => {
+        const debounceSavedWindowsRectangle =
+            debounce<t_savedWindowsRectangle>(savedWindowsRectangle, 500);
+        debounceSavedWindowsRectangle(win.getBounds());
+    };
+
+    return {
+        attach: () => {
+            win.on("move", handler);
+            win.on("resize", handler);
+        },
+        detach: () => {
+            win.removeListener("move", handler);
+            win.removeListener("resize", handler);
+        },
+    };
 };
