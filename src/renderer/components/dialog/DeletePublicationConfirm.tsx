@@ -40,7 +40,7 @@ export class DeletePublicationConfirm extends React.Component<DeletePublicationC
         return (
             <div>
                 <p>
-                    {__("dialog.delete")}
+                    {__("dialog.deletePublication")}
                     <span>{this.props.publication.title}</span>
                 </p>
                 <div>

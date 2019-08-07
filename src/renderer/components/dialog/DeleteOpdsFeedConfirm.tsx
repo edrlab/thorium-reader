@@ -40,7 +40,7 @@ export class DeleteOpdsFeedConfirm extends React.Component<DeleteOpdsFeedConfirm
         return (
             <div>
                 <p>
-                    {__("dialog.delete")}
+                    {__("dialog.deleteFeed")}
                     <span>{this.props.feed.title}</span>
                 </p>
                 <div>
