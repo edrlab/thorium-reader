@@ -57,7 +57,8 @@
     "dialog": {
         "alreadyAdd": "It seems that you have already added this publication to your library.",
         "closeModalWindow": "Close this modal window",
-        "delete": "Do you really want to delete this publication?",
+        "deleteFeed": "Do you really want to delete this catalog ?",
+        "deletePublication": "Do you really want to delete this publication ?",
         "import": "Do you really want to import those EPUB files :",
         "importError": "an error occured, verify your file extension (.epub or .lcpl)",
         "no": "No",

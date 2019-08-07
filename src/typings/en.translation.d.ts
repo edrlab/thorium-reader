@@ -107,7 +107,8 @@ declare namespace typed_i18n {
   (_: "dialog", __?: {}): {
   readonly "alreadyAdd": string,
   readonly "closeModalWindow": string,
-  readonly "delete": string,
+  readonly "deleteFeed": string,
+  readonly "deletePublication": string,
   readonly "import": string,
   readonly "importError": string,
   readonly "no": string,
@@ -118,7 +119,8 @@ declare namespace typed_i18n {
 };
   (_: "dialog.alreadyAdd", __?: {}): string;
   (_: "dialog.closeModalWindow", __?: {}): string;
-  (_: "dialog.delete", __?: {}): string;
+  (_: "dialog.deleteFeed", __?: {}): string;
+  (_: "dialog.deletePublication", __?: {}): string;
   (_: "dialog.import", __?: {}): string;
   (_: "dialog.importError", __?: {}): string;
   (_: "dialog.no", __?: {}): string; (_: "dialog.renew", __?: {}): string;
