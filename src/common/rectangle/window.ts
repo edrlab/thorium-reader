@@ -23,8 +23,8 @@ const defaultRectangle = (): Rectangle => (
     {
         height: 600,
         width: 800,
-        x: screen.getPrimaryDisplay().workAreaSize.width / 3,
-        y: screen.getPrimaryDisplay().workAreaSize.height / 3,
+        x: Math.round(screen.getPrimaryDisplay().workAreaSize.width / 3),
+        y: Math.round(screen.getPrimaryDisplay().workAreaSize.height / 3),
     });
 
 export type t_savedWindowsRectangle = typeof savedWindowsRectangle;
