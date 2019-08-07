@@ -57,8 +57,8 @@
     "dialog": {
         "alreadyAdd": "Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
         "closeModalWindow": "Dieses modale Fenster schließen",
-        "deletePublication": "Willst du diese Publikation wirklich löschen ?",
         "deleteFeed": "Willst du diese Publikation wirklich Katalog ?",
+        "deletePublication": "Willst du diese Publikation wirklich löschen ?",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
         "importError": "ein Fehler ist aufgetreten, überprüfen Sie Ihre Dateiendung (.epub or .lcpl).",
         "no": "Nein",
