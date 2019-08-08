@@ -6,8 +6,8 @@
         "bookTitle": "Book title",
         "closeDialog": "Close",
         "homeMenu": "Home menu",
-        "importFile": "Import an epub file",
-        "searchBook": "Search a book, a tag or type of a literature",
+        "importFile": "Import a publication",
+        "searchBook": "Search by title",
         "skipLink": "Skip to content"
     },
     "app": {
@@ -27,13 +27,13 @@
             "button": "More information",
             "title": "About Thorium"
         },
-        "addBookToLib": "Add book to library",
-        "addTags": "Add tag",
-        "addTeaserToLib": "Add the extract book to library",
+        "addBookToLib": "Add the book to the library",
+        "addTags": "Add a tag",
+        "addTeaserToLib": "Add the extract to the library",
         "allBooks": "All books",
         "bookInfo": "About this book",
         "delete": "Delete definitively",
-        "deleteBook": "delete from the library",
+        "deleteBook": "Delete from the library",
         "deleteTag": "Delete tag",
         "description": "Description",
         "emptyTagList": "You have still not added tags to the books.",
@@ -46,11 +46,11 @@
         "lang": "Language",
         "moreInfo": "More Info",
         "myBooks": "My books",
-        "noPublicationHelp": "To import ebooks, drag&drop EPUB files here or use the plus button in the menu above.",
+        "noPublicationHelp": "Drop ebooks in this window or use the (+) button above. LCP protected files are supported.",
         "publisher": "Publisher",
         "readBook": "Read",
         "released": "Published on",
-        "sort": "sort by",
+        "sort": "Sort by",
         "tagCount": "Tag count",
         "tags": "My tags"
     },
@@ -59,7 +59,7 @@
         "closeModalWindow": "Close this modal window",
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
-        "import": "Do you really want to import those EPUB files :",
+        "import": "Do you really want to import those files :",
         "importError": "an error occured, verify your file extension (.epub or .lcpl)",
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
@@ -71,26 +71,26 @@
         "allBooks": "All books",
         "books": "My Books",
         "catalogs": "Catalogs",
-        "gridTitle": "Books cover in a gridview",
+        "gridTitle": "Grid view",
         "home": "Home",
-        "importTitle": "Import a book",
-        "listTitle": "Books cover in a listview",
+        "importTitle": "Import a publication",
+        "listTitle": "List view",
         "searchPlaceholder": "Search",
-        "searchTitle": "Start the search",
+        "searchTitle": "Start a search",
         "settings": "Settings"
     },
     "library": {
         "lcp": {
             "cancel": "Cancel",
             "hint": "(Hint : {{hint}})",
-            "password": "Password",
-            "sentence": "This publication needs a LCP password to be opened: ",
+            "password": "Passphrase",
+            "sentence": "This publication needs an LCP passphrase to be opened: ",
             "submit": "Submit"
         }
     },
     "message": {
         "download": {
-            "start": "The download of {{title}} began.",
+            "start": "The download of {{title}} has begun.",
             "success": "The download of {{title}} is finished."
         },
         "import": {
@@ -102,8 +102,8 @@
             "addButton": "Add",
             "name": "Name :",
             "namePlaceholder": "Name",
-            "pasteUrl": "paste url of a feed",
-            "title": "Add a feed",
+            "pasteUrl": "Paste the url of an OPDS feed",
+            "title": "Add an OPDS feed",
             "url": "Link :",
             "urlPlaceholder": "Link"
         },
@@ -113,7 +113,7 @@
         "menu": {
             "aboutBook": "About this book",
             "addExtract": "Import the extract",
-            "addTeaser": "Add extract to the library",
+            "addTeaser": "Add the extract to the library",
             "goBuyBook": "Buy this book",
             "goLoanBook": "Borrow this book",
             "goSubBook": "Subscribe"
@@ -132,21 +132,21 @@
     },
     "reader": {
         "footerInfo": {
-            "lessInfo": "less informations",
-            "moreInfo": "more informations"
+            "lessInfo": "less information",
+            "moreInfo": "more information"
         },
         "marks": {
             "annotations": "Annotations",
             "bookmarks": "Bookmarks",
             "illustrations": "Table of illustrations",
-            "toc": "Table of content"
+            "toc": "Table of Contents"
         },
         "navigation": {
             "backHomeTitle": "back to home",
             "bookmarkTitle": "bookmark",
             "detachWindowTitle": "detach the window",
             "fullscreenTitle": "open fullscreen mode",
-            "infoTitle": "informations",
+            "infoTitle": "information",
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "quit fullscreen mode",
             "readBookTitle": "start reading the book",
@@ -197,6 +197,6 @@
         "language": {
             "languageChoice": "Language choice"
         },
-        "uiLanguage": "UI language"
+        "uiLanguage": "Language of the user interface"
     }
 }
