@@ -5,7 +5,7 @@
         "bookReleaseDate": "Book release date",
         "bookTitle": "Book title",
         "closeDialog": "Close",
-        "homeMenu": "Home menu",
+        "homeMenu": "Reading view menu",
         "importFile": "Import a publication",
         "searchBook": "Search by title",
         "skipLink": "Skip to content"
@@ -32,11 +32,11 @@
         "addTeaserToLib": "Add the extract to the library",
         "allBooks": "All books",
         "bookInfo": "About this book",
-        "delete": "Delete definitively",
+        "delete": "Delete",
         "deleteBook": "Delete from the library",
-        "deleteTag": "Delete tag",
+        "deleteTag": "Delete the tag",
         "description": "Description",
-        "emptyTagList": "You have still not added tags to the books.",
+        "emptyTagList": "You have no tagged ebook.",
         "entry": {
             "continueReading": "Resume reading",
             "lastAdditions": "Recently added"
@@ -72,7 +72,7 @@
         "books": "My Books",
         "catalogs": "Catalogs",
         "gridTitle": "Grid view",
-        "home": "Home",
+        "home": "Library view menu",
         "importTitle": "Import a publication",
         "listTitle": "List view",
         "searchPlaceholder": "Search",
@@ -142,7 +142,7 @@
             "toc": "Table of Contents"
         },
         "navigation": {
-            "backHomeTitle": "back to home",
+            "backHomeTitle": "back to the library view",
             "bookmarkTitle": "bookmark",
             "detachWindowTitle": "detach the window",
             "fullscreenTitle": "open fullscreen mode",
