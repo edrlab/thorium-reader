@@ -27,13 +27,13 @@
             "button": "More information",
             "title": "About Thorium"
         },
-        "addBookToLib": "Add the book to the library",
+        "addBookToLib": "Add the book to the bookshelf",
         "addTags": "Add a tag",
-        "addTeaserToLib": "Add the extract to the library",
+        "addTeaserToLib": "Add the extract to the bookshelf",
         "allBooks": "All books",
         "bookInfo": "About this book",
         "delete": "Delete",
-        "deleteBook": "Delete from the library",
+        "deleteBook": "Delete from the bookshelf",
         "deleteTag": "Delete the tag",
         "description": "Description",
         "emptyTagList": "You have no tagged ebook.",
@@ -55,7 +55,7 @@
         "tags": "My tags"
     },
     "dialog": {
-        "alreadyAdd": "It seems that you have already added this publication to your library.",
+        "alreadyAdd": "It seems that you have already added this publication to your bookshelf.",
         "closeModalWindow": "Close this modal window",
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
@@ -72,7 +72,7 @@
         "books": "My Books",
         "catalogs": "Catalogs",
         "gridTitle": "Grid view",
-        "home": "Library view menu",
+        "home": "Bookshelf menu",
         "importTitle": "Import a publication",
         "listTitle": "List view",
         "searchPlaceholder": "Search",
@@ -113,14 +113,14 @@
         "menu": {
             "aboutBook": "About this book",
             "addExtract": "Import the extract",
-            "addTeaser": "Add the extract to the library",
+            "addTeaser": "Add the extract to the bookshelf",
             "goBuyBook": "Buy this book",
             "goLoanBook": "Borrow this book",
             "goSubBook": "Subscribe"
         }
     },
     "publication": {
-        "deleteButton": "Delete from the library",
+        "deleteButton": "Delete from the bookshelf",
         "expiredLcp": "This book can't be read because the LCP license has expired.",
         "readButton": "Read",
         "renewButton": "Renew",
@@ -142,7 +142,7 @@
             "toc": "Table of Contents"
         },
         "navigation": {
-            "backHomeTitle": "back to the library view",
+            "backHomeTitle": "back to the bookshelf",
             "bookmarkTitle": "bookmark",
             "detachWindowTitle": "detach the window",
             "fullscreenTitle": "open fullscreen mode",
