@@ -20,6 +20,7 @@ export interface ApiOperationDefinition {
     methodId: string;
     callProp?: string;
     resultProp?: string;
+    resultIsRejectProp?: string;
     buildRequestData?: any;
     onLoad?: boolean; // Load in component did mount, default true
 }
@@ -140,6 +141,10 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
                 const result = state.api.data[operationRequest.id].result;
                 const resultProp = operationRequest.definition.resultProp;
                 operationResults[resultProp] = result;
+
+                const resultIsReject = state.api.data[operationRequest.id].resultIsReject;
+                const resultIsRejectProp = operationRequest.definition.resultIsRejectProp;
+                operationResults[resultIsRejectProp] = resultIsReject;
             }
         }
 
