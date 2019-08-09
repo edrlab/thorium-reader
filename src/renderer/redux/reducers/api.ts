@@ -20,7 +20,7 @@ export function apiReducer(
     state: ApiState<any> = initialState,
     action: ApiAction,
 ) {
-    const resultIsReject = action.type === ActionType.Error ? true : false;
+    const resultIsReject = action.type === ActionType.Error;
 
     switch (action.type) {
         case ActionType.Error:
