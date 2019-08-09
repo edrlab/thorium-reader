@@ -33,7 +33,7 @@ export interface RootState {
     opds: OpdsState;
     reader: ReaderState;
     update: UpdateState;
-    api: ApiState;
+    api: ApiState<any>;
     dialog: DialogState;
     router: RouterState;
     import: ImportState;
