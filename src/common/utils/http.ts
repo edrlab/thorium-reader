@@ -53,14 +53,11 @@ export async function httpGet<T extends JsonMap | string = string>(url: string, 
     const response = await promisifiedRequest(requestOptions);
 
     if (!response) {
-        throw new Error(`No HTTP response?! ${url}`);
-    }
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-        const b = response.body ? JSON.stringify(response.body) : "";
-        throw new Error(`HTTP response status code: ${url} => ${response.statusCode} => ${b}`);
-    }
-    if (!response.body) {
-        throw new Error(`HTTP no body?! ${url} => ${response.statusCode}`);
+        throw new Error(`HTTP no response for ${url}`);
+    } else if (response.statusCode < 200 || response.statusCode >= 300) {
+        throw new Error(`HTTP error ${response.statusCode} for ${url}`);
+    } else if (!response.body) {
+        throw new Error(`HTTP no body with error ${response.statusCode} for ${url}`);
     }
     return response.body;
 }
