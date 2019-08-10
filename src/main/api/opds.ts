@@ -73,19 +73,19 @@ export class OpdsApi {
 
         const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData);
         if (xmlDom && xmlDom.documentElement) {
-            opds2Feed = TAJSON.deserialize<OPDSFeed>(
-                JSON.parse(opdsFeedData),
-                OPDSFeed,
-            );
+            // This is an opds feed in version 1
+            // Convert to opds version 2
+            const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
+            opds2Feed = convertOpds1ToOpds2(opds1Feed);
         } else {
             const isEntry = xmlDom.documentElement.localName === "entry";
             if (isEntry) {
                 throw new Error("OPDS feed is entry");
             }
-            // This is an opds feed in version 1
-            // Convert to opds version 2
-            const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
-            opds2Feed = convertOpds1ToOpds2(opds1Feed);
+            opds2Feed = TAJSON.deserialize<OPDSFeed>(
+                JSON.parse(opdsFeedData),
+                OPDSFeed,
+            );
         }
         return this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
     }
