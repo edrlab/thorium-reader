@@ -119,7 +119,8 @@
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
             "goSubBook": "Aller sur la page d'abonnement"
-        }
+        },
+        "empty": ""
     },
     "publication": {
         "deleteButton": "Supprimer de la bibliothèque",

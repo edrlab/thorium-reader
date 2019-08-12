@@ -66,7 +66,8 @@ export class OpdsApi {
 
     public async browse(data: any): Promise<OpdsResultView> {
         const { url } = data;
-        const opdsFeedData = await httpGet(url);
+        const opdsFeedData = await httpGet(url) as string;
+
         // let opds2Publication: OPDSPublication = null;
         let opds2Feed: OPDSFeed = null;
 
@@ -78,7 +79,7 @@ export class OpdsApi {
                 JSON.parse(opdsFeedData),
                 OPDSFeed,
             );
-            return this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
+            return await this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
         }
 
         const isEntry = xmlDom.documentElement.localName === "entry";
@@ -88,7 +89,7 @@ export class OpdsApi {
         } else {
             const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
             opds2Feed = convertOpds1ToOpds2(opds1Feed);
-            return this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
+            return await this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
         }
 
         return Promise.reject("OPDS API browse nil");
