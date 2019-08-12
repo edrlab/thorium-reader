@@ -17,7 +17,7 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-import qs = require("qs");
+import * as qs from "qs";
 import { parseQueryString } from "readium-desktop/utils/url";
 import SearchForm from "./SearchForm";
 
