@@ -38,6 +38,14 @@ import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
 import { EventPayload } from "./common/ipc/sync";
 
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
+
+let devTron: any;
+if (IS_DEV) {
+    // tslint:disable-next-line: no-var-requires
+    devTron = require("devtron");
+}
+
 initGlobalConverters_OPDS();
 initGlobalConverters_SHARED();
 initGlobalConverters_GENERIC();
@@ -46,6 +54,12 @@ initGlobalConverters_GENERIC();
 // console.log((global as any).__dirname);
 // const lcpNativePluginPath = path.normalize(path.join((global as any).__dirname, "external-assets", "lcp.node"));
 // setLcpNativePluginPath(lcpNativePluginPath);
+
+if (IS_DEV) {
+    setTimeout(() => {
+        devTron.install();
+    }, 5000);
+}
 
 // Render app
 let hasBeenRenderered = false;
