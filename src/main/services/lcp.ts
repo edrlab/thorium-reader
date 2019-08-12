@@ -274,9 +274,10 @@ export class LcpManager {
         // Get lsd status
         const lsdStatusBodyResponse = await httpGet<string, any>(
             publicationDocument.lcp.lsd.statusUrl,
+            {
+                json: true,
+            },
         );
-
-        lsdStatusBodyResponse.data = JSON.parse(lsdStatusBodyResponse.body);
         return lsdStatusBodyResponse;
     }
 

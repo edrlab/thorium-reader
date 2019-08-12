@@ -91,7 +91,7 @@ export class CatalogService {
         return await httpGet(url, {}, async (opdsFeedData) => {
             let opdsPublication: OPDSPublication = null;
 
-            if (opdsFeedData.statusCode !== 200) {
+            if (opdsFeedData.isFailure) {
                 return opdsFeedData;
             }
 
