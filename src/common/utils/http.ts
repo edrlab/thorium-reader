@@ -76,7 +76,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
         responseUrl: response.url,
         statusCode: response.statusCode,
         body: response.body,
-        data: typeof response.body === "object" ? response.body : undefined,
+        data: callback ? undefined : response.body,
         contentType: response.caseless.get("Content-Type"),
     };
 
