@@ -15,11 +15,12 @@ import { promisify } from "util";
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
 
-export interface IHttpGetPayload<T> {
+export interface IHttpGetResult<T> {
     url: string;
+    responseUrl: string;
     httpStatus: number;
-    body?: T;
-    contentType?: string;
+    body: T;
+    contentType: string;
 }
 
 /**
@@ -28,7 +29,7 @@ export interface IHttpGetPayload<T> {
  * @returns body of url response. 'String' type returned in many cases except for options.json = true
  */
 // tslint:disable-next-line: max-line-length
-export async function httpGet<T extends JsonMap | string = string>(url: string, options?: TRequestCoreOptionsOptionalUriUrl): Promise<IHttpGetPayload<T>> {
+export async function httpGet<T extends JsonMap | string = string>(url: string, options?: TRequestCoreOptionsOptionalUriUrl): Promise<IHttpGetResult<T>> {
     options = options || {} as TRequestCoreOptionsOptionalUriUrl;
     options.headers = options.headers || {};
 
@@ -60,7 +61,8 @@ export async function httpGet<T extends JsonMap | string = string>(url: string, 
     const response = await promisifiedRequest(requestOptions);
 
     return {
-        url: response.url,
+        url,
+        responseUrl: response.url,
         httpStatus: response.statusCode,
         body: response.body,
         contentType: response.caseless.get("Content-Type"),
