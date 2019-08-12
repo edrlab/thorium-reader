@@ -45,7 +45,7 @@
         "id": "Benutzername",
         "lang": "Sprache",
         "moreInfo": "mehr Informationen",
-        "myBooks": "meine Bücher",
+        "myBooks": "Meine Bücher",
         "noPublicationHelp": "",
         "publisher": "Herausgeber",
         "readBook": "Lesen",
@@ -69,7 +69,7 @@
     },
     "header": {
         "allBooks": "Alle bücher",
-        "books": "meine Bücher",
+        "books": "Meine Bücher",
         "catalogs": "Kataloge",
         "gridTitle": "Buchumschläge in einem Raster präsentieren",
         "home": "Hauptmenü",

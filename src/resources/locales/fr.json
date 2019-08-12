@@ -103,7 +103,7 @@
             "name": "Nom :",
             "namePlaceholder": "Nom",
             "pasteUrl": "coller l'url d'un flux",
-            "title": "Ajouter un flux",
+            "title": "Ajouter un flux OPDS",
             "url": "Adresse :",
             "urlPlaceholder": "Adresse"
         },
