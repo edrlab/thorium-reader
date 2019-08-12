@@ -21,7 +21,7 @@ export interface IHttpGetResult<TBody, TData> {
     readonly statusCode: number;
     readonly contentType: string;
     readonly body: TBody;
-    readonly isSuccess: boolean;
+    readonly isFailure: boolean;
     data?: TData;
 }
 
@@ -71,7 +71,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
     const response = await promisifiedRequest(requestOptions);
 
     const result = {
-        isSuccess: response.statusCode >= 200 && response.statusCode < 300,
+        isFailure: response.statusCode < 200 && response.statusCode >= 300,
         url,
         responseUrl: response.url,
         statusCode: response.statusCode,

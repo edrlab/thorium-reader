@@ -70,7 +70,7 @@ export class OpdsApi {
             // let opds2Publication: OPDSPublication = null;
             let opds2Feed: OPDSFeed = null;
 
-            if (opdsFeedData.isSuccess) {
+            if (opdsFeedData.isFailure) {
                 return opdsFeedData;
             }
 
