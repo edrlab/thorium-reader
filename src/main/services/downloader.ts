@@ -90,7 +90,7 @@ export class Downloader {
         );
 
         return new Promise<Download>((resolve, reject) => {
-            requestStream.on("response", (response: any) => {
+            requestStream.on("response", (response) => {
                 if (response.statusCode < 200 || response.statusCode > 299) {
                     // Unable to download the resource
                     download.status = DownloadStatus.Failed;
@@ -101,13 +101,13 @@ export class Downloader {
                 }
 
                 download.status = DownloadStatus.Downloading;
-                const totalSize: number = response.headers["content-length"];
+                const totalSize: number = parseInt(response.headers["content-length"], 10);
                 let downloadedSize: number = 0;
 
                 // Progress in percent
                 let progress: number = 0;
 
-                response.on("data", (chunk: any) => {
+                response.on("data", (chunk) => {
                     // Write chunk
                     outputStream.write(chunk);
 
@@ -145,7 +145,7 @@ export class Downloader {
             });
 
             // Catch errors
-            requestStream.on("error", (error: any) => {
+            requestStream.on("error", (error) => {
                 // Download error
                 download.status = DownloadStatus.Failed;
                 outputStream.end(null, null, () => {
