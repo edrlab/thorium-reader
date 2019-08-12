@@ -101,7 +101,12 @@ export class Downloader {
                 }
 
                 download.status = DownloadStatus.Downloading;
-                const totalSize: number = parseInt(response.headers["content-length"], 10);
+
+                // https://github.com/request/request/blob/master/request.js#L419
+                const contentLength = response.headers["content-length"];
+                const totalSize: number = typeof contentLength === "string" ?
+                                            parseInt(contentLength, 10) : contentLength;
+
                 let downloadedSize: number = 0;
 
                 // Progress in percent
