@@ -152,7 +152,7 @@ export class LcpManager {
     ): Promise<PublicationDocument> {
         // Get lsd status
         let lsdStatus = await this.getLsdStatus(publicationDocument);
-        if (lsdStatus.statusCode !== 200) {
+        if (lsdStatus.isFailure) {
             throw new Error(`Http getLsdStatus error with code
                 ${lsdStatus.statusCode} for ${lsdStatus.url}`);
         }
@@ -160,7 +160,7 @@ export class LcpManager {
             publicationDocument,
             lsdStatus,
         );
-        if (newPublicationDocument.statusCode !== 200) {
+        if (newPublicationDocument.isFailure) {
             throw new Error(`Http updateLsdStatus error with code
                 ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
         }
@@ -173,7 +173,7 @@ export class LcpManager {
 
         // Update again lsd status
         lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
-        if (lsdStatus.statusCode !== 200) {
+        if (lsdStatus.isFailure) {
             throw new Error(`Http getLsdStatus error with code
                 ${lsdStatus.statusCode} for ${lsdStatus.url}`);
         }
@@ -181,7 +181,7 @@ export class LcpManager {
             publicationDocument,
             lsdStatus.data,
         );
-        if (newPublicationDocument.statusCode !== 200) {
+        if (newPublicationDocument.isFailure) {
             throw new Error(`Http updateLsdStatus error with code
                 ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
         }
@@ -194,7 +194,7 @@ export class LcpManager {
     ): Promise<PublicationDocument> {
         // Update lsd status
         let lsdStatus = await this.getLsdStatus(publicationDocument);
-        if (lsdStatus.statusCode !== 200) {
+        if (lsdStatus.isFailure) {
             throw new Error(`Http getLsdStatus error with code
                 ${lsdStatus.statusCode} for ${lsdStatus.url}`);
         }
@@ -202,7 +202,7 @@ export class LcpManager {
             publicationDocument,
             lsdStatus,
         );
-        if (newPublicationDocument.statusCode !== 200) {
+        if (newPublicationDocument.isFailure) {
             throw new Error(`Http updateLsdStatus error with code
                 ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
         }
@@ -215,7 +215,7 @@ export class LcpManager {
 
         // Update again lsd status
         lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
-        if (lsdStatus.statusCode !== 200) {
+        if (lsdStatus.isFailure) {
             throw new Error(`Http getLsdStatus error with code
                 ${lsdStatus.statusCode} for ${lsdStatus.url}`);
         }
@@ -223,7 +223,7 @@ export class LcpManager {
             publicationDocument,
             lsdStatus,
         );
-        if (newPublicationDocument.statusCode !== 200) {
+        if (newPublicationDocument.isFailure) {
             throw new Error(`Http getLsdStatus error with code
                 ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
         }
@@ -235,7 +235,7 @@ export class LcpManager {
     ): Promise<PublicationDocument> {
         // Update lsd status
         let lsdStatus = await this.getLsdStatus(publicationDocument);
-        if (lsdStatus.statusCode !== 200) {
+        if (lsdStatus.isFailure) {
             throw new Error(`Http getLsdStatus error with code
                 ${lsdStatus.statusCode} for ${lsdStatus.url}`);
         }
@@ -243,7 +243,7 @@ export class LcpManager {
             publicationDocument,
             lsdStatus,
         );
-        if (newPublicationDocument.statusCode !== 200) {
+        if (newPublicationDocument.isFailure) {
             throw new Error(`Http getLsdStatus error error with code
                 ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
         }
@@ -255,7 +255,7 @@ export class LcpManager {
 
         // Update again lsd status
         lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
-        if (lsdStatus.statusCode !== 200) {
+        if (lsdStatus.isFailure) {
             throw new Error(`Http getLsdStatus error error with code
                 ${lsdStatus.statusCode} for ${lsdStatus.url}`);
         }
@@ -263,7 +263,7 @@ export class LcpManager {
             publicationDocument,
             lsdStatus,
         );
-        if (newPublicationDocument.statusCode !== 200) {
+        if (newPublicationDocument.isFailure) {
             throw new Error(`Http updateLsdStatus error with code
                 ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
         }
