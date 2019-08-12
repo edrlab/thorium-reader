@@ -1,31 +1,21 @@
 /* FORM */
 
 .opds_form {
-    & p {
-        display: block;
-        position: relative;
-        padding-top: 0;
-        padding-bottom: 10px;
-        font-weight: 700;
-    }
-
-    & form {
-        border-bottom: 1px solid #c1c1c1;
-        margin-left:0;
-        height:auto;
-        margin-bottom:50px;
-        display: inline-block;
-
-        & input {
-            position: relative;
-            width: 300px;
-            border-radius: 0;
-            border: none;
-            height: 35px;
-            /* outline: inherit; */
-            background-color: transparent;
-            color: black;
-            font-size: 0.9rem;
+    & button {
+        font-size: 1rem;
+        border: 1px solid black;
+        border-radius: 0.3125rem;
+        color: black;
+        width: auto;
+        height: auto;
+        padding: 0.625rem;
+        display: flex;
+        align-items: center;
+        
+        & svg {
+            width: 0.9375rem;
+            height: 0.9375rem;
+            margin-right: 1rem;
         }
     }
 }
