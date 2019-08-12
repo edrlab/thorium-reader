@@ -40,6 +40,19 @@ export async function createWindow() {
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+
+    if (IS_DEV) {
+        mainWindow.webContents.on("context-menu", (_ev, params) => {
+            const { x, y } = params;
+            Menu.buildFromTemplate([{
+                label: "Inspect element",
+                click: () => {
+                    mainWindow.webContents.inspectElement(x, y);
+                },
+            }]).popup({window: mainWindow});
+        });
+    }
+
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindow = winRegistry.registerWindow(mainWindow, AppWindowType.Library);
 
