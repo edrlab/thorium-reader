@@ -122,12 +122,15 @@
 
 	&:focus {
 		left: unset;
-		right: 3.75rem;
+		left: 0;
 		width: fit-content;
-		top: 124px;
+		top: 0;
+		opacity: 1;
+		height: unset;
 		z-index: 150;
-		height: 1rem;
-		font-size: 0.7rem;
-		color: grey;
+		font-size: 1rem;
+		padding: 1rem;
+		color: white;
+		background-color: #0366d6;
 	}
 }
