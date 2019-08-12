@@ -20,13 +20,13 @@ import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
-import { OpdsFeedView, OpdsResultView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
+import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 
-import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
+import { httpGet } from "readium-desktop/common/utils/http";
 
 @injectable()
 export class OpdsApi {
