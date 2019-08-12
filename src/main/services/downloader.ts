@@ -102,7 +102,7 @@ export class Downloader {
 
                 download.status = DownloadStatus.Downloading;
 
-                // https://github.com/request/request/blob/master/request.js#L419
+                // https://github.com/request/request/blob/212570b6971a732b8dd9f3c73354bcdda158a737/request.js#L419-L440
                 const contentLength = response.headers["content-length"];
                 const totalSize: number = typeof contentLength === "string" ?
                                             parseInt(contentLength, 10) : contentLength;
