@@ -107,11 +107,10 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                         />}
                     />
                 }
-                <AboutThoriumButton />
-
                 { this.state.tabTags.length === 0 && entriesEmpty &&
                     <NoPublicationInfo />
                 }
+                <AboutThoriumButton />
             </>
         );
     }
