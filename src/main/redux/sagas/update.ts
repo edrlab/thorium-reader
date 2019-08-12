@@ -40,7 +40,7 @@ export function* updateStatusWatcher(): SagaIterator {
                     ${result.statusCode} for ${result.url}`);
             }
 
-            const jsonObj = JSON.parse(result.body);
+            const jsonObj = result.data;
 
             if (jsonObj.id && jsonObj.html_url) {
                 const latestVersion = jsonObj.tag_name;
