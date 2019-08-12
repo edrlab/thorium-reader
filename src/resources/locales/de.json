@@ -45,7 +45,7 @@
         "id": "Benutzername",
         "lang": "Sprache",
         "moreInfo": "mehr Informationen",
-        "myBooks": "meine Bücher",
+        "myBooks": "Meine Bücher",
         "noPublicationHelpL1": "Drop EPUB-Dateien in diesem Fenster",
         "noPublicationHelpL2": "oder benutzen Sie die taste \"+\" oben.",
         "noPublicationHelpL3": "LCP-geschützte Dateien werden unterstützt.",
@@ -71,7 +71,7 @@
     },
     "header": {
         "allBooks": "Alle bücher",
-        "books": "meine Bücher",
+        "books": "Meine Bücher",
         "catalogs": "Kataloge",
         "gridTitle": "Buchumschläge in einem Raster präsentieren",
         "home": "Hauptmenü",
@@ -92,8 +92,8 @@
     },
     "message": {
         "download": {
-            "start": "Der Download von {{title}} hat begonnen",
-            "success": "Der Download von {{title}} wurde abgeschlossen"
+            "start": "Der Download von {{- title}} hat begonnen",
+            "success": "Der Download von {{- title}} wurde abgeschlossen"
         },
         "import": {
             "success": ""
