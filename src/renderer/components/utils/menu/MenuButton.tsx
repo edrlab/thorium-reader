@@ -14,7 +14,7 @@ interface MenuButtonProps {
     focusMenuButton?: (ref: React.RefObject<HTMLButtonElement>, menuID: string) => void;
 }
 
-export default class Header extends React.Component<MenuButtonProps, undefined> {
+export default class MenuButton extends React.Component<MenuButtonProps, undefined> {
     private menuButton = React.createRef<HTMLButtonElement>();
 
     public constructor(props: any) {
