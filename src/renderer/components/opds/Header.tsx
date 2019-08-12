@@ -19,6 +19,7 @@ import { TranslatorProps, withTranslator } from "readium-desktop/renderer/compon
 
 import qs = require("qs");
 import { parseQueryString } from "readium-desktop/utils/url";
+import SearchForm from "./SearchForm";
 
 export enum DisplayType {
     Grid = "grid",

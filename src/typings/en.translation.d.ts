@@ -201,7 +201,8 @@ declare namespace typed_i18n {
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
     readonly "goSubBook": string
-  }
+  },
+  readonly "empty": string
 };
   (_: "opds.addForm", __?: {}): {
   readonly "addButton": string,
@@ -221,6 +222,7 @@ declare namespace typed_i18n {
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string; (_: "opds.back", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
+  (_: "opds.empty", __?: {}): string;
   (_: "opds.menu", __?: {}): {
   readonly "aboutBook": string,
   readonly "addExtract": string,

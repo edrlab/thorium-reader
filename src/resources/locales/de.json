@@ -117,7 +117,8 @@
             "goBuyBook": "dieses Buch kaufen",
             "goLoanBook": "dieses Buch ausleihen",
             "goSubBook": "abonnieren"
-        }
+        },
+        "empty": ""
     },
     "publication": {
         "deleteButton": "Löschen",

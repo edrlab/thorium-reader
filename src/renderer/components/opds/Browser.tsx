@@ -79,7 +79,6 @@ export class Browser extends React.Component<Props> {
         });
 
         const parsedQuerryString = parseQueryString(this.props.location.search);
-        console.log(this.props);
         const search = parsedQuerryString.search;
 
         if (search) {
