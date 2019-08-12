@@ -416,17 +416,21 @@ main {
 }
 
 .noPublicationHelp {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	text-align: center;
-	& svg {
-		height: 20rem;
-		opacity: 0.2;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border: 1px #5C5C5C dashed;
+    min-height: 17rem;
+    max-width: 43rem;
+    margin: 2rem auto;
+    box-sizing: border-box;
+	color: #5C5C5C;
+	& p {
+		font-size: 1.1rem;
+	}
+	& p:last-child {
+		font-size: 1rem;
 	}
 }
 

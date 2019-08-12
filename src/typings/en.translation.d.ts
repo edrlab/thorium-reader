@@ -69,7 +69,9 @@ declare namespace typed_i18n {
   readonly "lang": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
-  readonly "noPublicationHelp": string,
+  readonly "noPublicationHelpL1": string,
+  readonly "noPublicationHelpL2": string,
+  readonly "noPublicationHelpL3": string,
   readonly "publisher": string,
   readonly "readBook": string,
   readonly "released": string,
@@ -97,7 +99,9 @@ declare namespace typed_i18n {
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
-  (_: "catalog.noPublicationHelp", __?: {}): string;
+  (_: "catalog.noPublicationHelpL1", __?: {}): string;
+  (_: "catalog.noPublicationHelpL2", __?: {}): string;
+  (_: "catalog.noPublicationHelpL3", __?: {}): string;
   (_: "catalog.publisher", __?: {}): string;
   (_: "catalog.readBook", __?: {}): string;
   (_: "catalog.released", __?: {}): string;
