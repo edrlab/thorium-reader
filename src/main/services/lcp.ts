@@ -149,16 +149,20 @@ export class LcpManager {
 
     public async registerPublicationLicense(
         publicationDocument: PublicationDocument,
-    ): Promise<THttpGetPublicationDocument> {
+    ): Promise<PublicationDocument> {
         // Get lsd status
         let lsdStatus = await this.getLsdStatus(publicationDocument);
+        if (lsdStatus.statusCode !== 200) {
+            throw new Error(`Http getLsdStatus error with code
+                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        }
         let newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
             lsdStatus,
         );
-
         if (newPublicationDocument.statusCode !== 200) {
-            return newPublicationDocument;
+            throw new Error(`Http updateLsdStatus error with code
+                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
         }
 
         // Renew
@@ -169,12 +173,20 @@ export class LcpManager {
 
         // Update again lsd status
         lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
+        if (lsdStatus.statusCode !== 200) {
+            throw new Error(`Http getLsdStatus error with code
+                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        }
         newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
             lsdStatus.data,
         );
+        if (newPublicationDocument.statusCode !== 200) {
+            throw new Error(`Http updateLsdStatus error with code
+                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+        }
 
-        this.publicationRepository.get(publicationDocument.identifier);
+        return await this.publicationRepository.get(publicationDocument.identifier);
     }
 
     public async renewPublicationLicense(
@@ -182,11 +194,18 @@ export class LcpManager {
     ): Promise<PublicationDocument> {
         // Update lsd status
         let lsdStatus = await this.getLsdStatus(publicationDocument);
+        if (lsdStatus.statusCode !== 200) {
+            throw new Error(`Http getLsdStatus error with code
+                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        }
         let newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
             lsdStatus,
         );
-
+        if (newPublicationDocument.statusCode !== 200) {
+            throw new Error(`Http updateLsdStatus error with code
+                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+        }
         // Renew
         await lsdRenew(
             undefined,
@@ -195,13 +214,20 @@ export class LcpManager {
         );
 
         // Update again lsd status
-        lsdStatus = await this.getLsdStatus(newPublicationDocument);
+        lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
+        if (lsdStatus.statusCode !== 200) {
+            throw new Error(`Http getLsdStatus error with code
+                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        }
         newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
             lsdStatus,
         );
-
-        return this.publicationRepository.get(publicationDocument.identifier);
+        if (newPublicationDocument.statusCode !== 200) {
+            throw new Error(`Http getLsdStatus error with code
+                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+        }
+        return await this.publicationRepository.get(publicationDocument.identifier);
     }
 
     public async returnPublicationLicense(
@@ -209,11 +235,18 @@ export class LcpManager {
     ): Promise<PublicationDocument> {
         // Update lsd status
         let lsdStatus = await this.getLsdStatus(publicationDocument);
+        if (lsdStatus.statusCode !== 200) {
+            throw new Error(`Http getLsdStatus error with code
+                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        }
         let newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
             lsdStatus,
         );
-
+        if (newPublicationDocument.statusCode !== 200) {
+            throw new Error(`Http getLsdStatus error error with code
+                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+        }
         // Renew
         await lsdReturn(
             lsdStatus,
@@ -221,13 +254,20 @@ export class LcpManager {
         );
 
         // Update again lsd status
-        lsdStatus = await this.getLsdStatus(newPublicationDocument);
+        lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
+        if (lsdStatus.statusCode !== 200) {
+            throw new Error(`Http getLsdStatus error error with code
+                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        }
         newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
             lsdStatus,
         );
-
-        return this.publicationRepository.get(publicationDocument.identifier);
+        if (newPublicationDocument.statusCode !== 200) {
+            throw new Error(`Http updateLsdStatus error with code
+                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+        }
+        return await this.publicationRepository.get(publicationDocument.identifier);
     }
 
     public async getLsdStatus(publicationDocument: PublicationDocument): Promise<IHttpGetResult<string, any>> {
@@ -290,10 +330,14 @@ export class LcpManager {
     public async unlockPublication(publication: Publication): Promise<void> {
         const publicationDocument = await this.publicationRepository.get(publication.identifier);
         const lsdStatus = await this.getLsdStatus(publicationDocument);
+        if (lsdStatus.statusCode !== 200) {
+            throw new Error(`Http getLsdStatus error with code
+                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        }
 
         if (
-            lsdStatus.status !== "ready" &&
-            lsdStatus.status !== "active"
+            lsdStatus.data.status !== "ready" &&
+            lsdStatus.data.status !== "active"
         ) {
             await this.updateLsdStatus(publicationDocument, lsdStatus);
             throw new Error("license is not active");
