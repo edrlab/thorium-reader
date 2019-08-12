@@ -366,10 +366,14 @@ export class LcpManager {
     public async unlockPublicationWithPassphrase(publication: Publication, passphrase: string): Promise<void> {
         const publicationDocument = await this.publicationRepository.get(publication.identifier);
         const lsdStatus = await this.getLsdStatus(publicationDocument);
+        if (lsdStatus.statusCode !== 200) {
+            throw new Error(`Http getLsdStatus error with code
+                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        }
 
         if (
-            lsdStatus.status !== "ready" &&
-            lsdStatus.status !== "active"
+            lsdStatus.data.status !== "ready" &&
+            lsdStatus.data.status !== "active"
         ) {
             await this.updateLsdStatus(publicationDocument, lsdStatus);
             throw new Error("license is not active");
