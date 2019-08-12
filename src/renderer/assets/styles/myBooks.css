@@ -242,6 +242,12 @@ main {
 .publicationLine {
 	display: flex;
 	align-items: center;
+	& > .publicationLineLink {
+		flex: 1;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+	}
 	& p {
 		white-space: nowrap;
 		overflow: hidden;

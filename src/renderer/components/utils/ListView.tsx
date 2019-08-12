@@ -38,6 +38,7 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                                 <PublicationListElement
                                     publication={pub}
                                     menuContent={<MenuContent publication={pub}/>}
+                                    isOpds={this.props.isOpdsView}
                                 />
                             </li>
                         );
