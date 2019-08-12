@@ -31,7 +31,7 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
 import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationDocument, THttpGetPublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
@@ -86,39 +86,45 @@ export class CatalogService {
         return null;
     }
 
-    public async importOpdsEntry(url: string, downloadSample: boolean): Promise<PublicationDocument> {
+    public async importOpdsEntry(url: string, downloadSample: boolean): Promise<THttpGetPublicationDocument> {
         debug("Import OPDS publication", url);
-        const opdsFeedData = await httpGet(url);
-        let opdsPublication: OPDSPublication = null;
+        return await httpGet(url, {}, async (opdsFeedData) => {
+            let opdsPublication: OPDSPublication = null;
 
-        if (opdsFeedData.startsWith("<?xml")) {
-            // This is an opds feed in version 1
-            // Convert to opds version 2
-            const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData);
-
-            if (!xmlDom || !xmlDom.documentElement) {
-                throw new OpdsParsingError(`Unable to parse ${url}`);
+            if (opdsFeedData.statusCode !== 200) {
+                return opdsFeedData;
             }
 
-            const isEntry = xmlDom.documentElement.localName === "entry";
+            if (opdsFeedData.body.startsWith("<?xml")) {
+                // This is an opds feed in version 1
+                // Convert to opds version 2
+                const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
 
-            if (!isEntry) {
-                throw new OpdsParsingError(`This is not an OPDS entry ${url}`);
+                if (!xmlDom || !xmlDom.documentElement) {
+                    throw new OpdsParsingError(`Unable to parse ${url}`);
+                }
+
+                const isEntry = xmlDom.documentElement.localName === "entry";
+
+                if (!isEntry) {
+                    throw new OpdsParsingError(`This is not an OPDS entry ${url}`);
+                }
+                const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
+                opdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
+            } else {
+                opdsPublication = TAJSON.deserialize<OPDSPublication>(
+                    JSON.parse(opdsFeedData.body),
+                    OPDSPublication,
+                );
             }
-            const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
-            opdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
-        } else {
-            opdsPublication = TAJSON.deserialize<OPDSPublication>(
-                JSON.parse(opdsFeedData),
-                OPDSPublication,
-            );
-        }
 
-        if (opdsPublication == null) {
-            debug("Unable to retrieve opds publication", opdsPublication);
-            throw new Error("Unable to retrieve opds publication");
-        }
-        return this.importOpdsPublication(opdsPublication, downloadSample);
+            if (opdsPublication == null) {
+                debug("Unable to retrieve opds publication", opdsPublication);
+                throw new Error("Unable to retrieve opds publication");
+            }
+            opdsFeedData.data = await this.importOpdsPublication(opdsPublication, downloadSample);
+            return opdsFeedData;
+        });
     }
 
     public async importOpdsPublication(
@@ -194,7 +200,7 @@ export class CatalogService {
     public async deletePublication(publicationIdentifier: string) {
         const store = container.get("store") as Store<any>;
         const publicationApi = container.get("publication-api") as PublicationApi;
-        const publication = await publicationApi.get({identifier: publicationIdentifier});
+        const publication = await publicationApi.get({ identifier: publicationIdentifier });
 
         // tslint:disable-next-line: await-promise
         await store.dispatch(closeReaderFromPublication(publication));

@@ -15,13 +15,18 @@ import { promisify } from "util";
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
 
-export interface IHttpGetResult<T> {
-    url: string;
-    responseUrl: string;
-    httpStatus: number;
-    body: T;
-    contentType: string;
+export interface IHttpGetResult<TBody, TData> {
+    readonly url: string;
+    readonly responseUrl: string;
+    readonly statusCode: number;
+    readonly contentType: string;
+    readonly body: TBody;
+    data?: TData;
 }
+
+type THttpGetCallback<T1, T2> =
+    (result: IHttpGetResult<T1, T2>) =>
+        IHttpGetResult<T1, T2> | Promise<IHttpGetResult<T1, T2>>;
 
 /**
  * @param url url of your GET request
@@ -29,7 +34,11 @@ export interface IHttpGetResult<T> {
  * @returns body of url response. 'String' type returned in many cases except for options.json = true
  */
 // tslint:disable-next-line: max-line-length
-export async function httpGet<T extends JsonMap | string = string>(url: string, options?: TRequestCoreOptionsOptionalUriUrl): Promise<IHttpGetResult<T>> {
+export async function httpGet<TBody extends JsonMap | string = string , TData = string>(
+    url: string,
+    options?: TRequestCoreOptionsOptionalUriUrl,
+    callback?: THttpGetCallback<TBody, TData>,
+): Promise<IHttpGetResult<TBody, TData>> {
     options = options || {} as TRequestCoreOptionsOptionalUriUrl;
     options.headers = options.headers || {};
 
@@ -60,11 +69,16 @@ export async function httpGet<T extends JsonMap | string = string>(url: string, 
     const promisifiedRequest = promisify<TRequestCoreOptionsRequiredUriUrl, request.Response>(request);
     const response = await promisifiedRequest(requestOptions);
 
-    return {
+    const result = {
         url,
         responseUrl: response.url,
-        httpStatus: response.statusCode,
+        statusCode: response.statusCode,
         body: response.body,
         contentType: response.caseless.get("Content-Type"),
     };
+
+    if (callback) {
+        return (await Promise.all([callback(result)]))[0];
+    }
+    return result;
 }

@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { CoverView } from "./publication";
+import { IHttpGetResult } from '../utils/http';
 
 export interface OpdsFeedView {
     identifier: string;
@@ -50,3 +51,5 @@ export interface OpdsResultView {
     navigation: OpdsLinkView[];
     publications: OpdsPublicationView[];
 }
+
+export type THttpGetOpdsResultView = IHttpGetResult<string, OpdsResultView>;

@@ -30,11 +30,11 @@ import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-p
 import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
-import { httpGet } from "readium-desktop/common/utils/http";
+import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
 
 import { LcpInfo } from "readium-desktop/common/models/lcp";
 
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { PublicationDocument, THttpGetPublicationDocument } from "readium-desktop/main/db/document/publication";
 
 import { injectDataInZip } from "readium-desktop/utils/zip";
 
@@ -149,13 +149,17 @@ export class LcpManager {
 
     public async registerPublicationLicense(
         publicationDocument: PublicationDocument,
-    ): Promise<PublicationDocument> {
+    ): Promise<THttpGetPublicationDocument> {
         // Get lsd status
         let lsdStatus = await this.getLsdStatus(publicationDocument);
         let newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
             lsdStatus,
         );
+
+        if (newPublicationDocument.statusCode !== 200) {
+            return newPublicationDocument;
+        }
 
         // Renew
         await lsdRegister(
@@ -164,13 +168,13 @@ export class LcpManager {
         );
 
         // Update again lsd status
-        lsdStatus = await this.getLsdStatus(newPublicationDocument);
+        lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
         newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
-            lsdStatus,
+            lsdStatus.data,
         );
 
-        return this.publicationRepository.get(publicationDocument.identifier);
+        this.publicationRepository.get(publicationDocument.identifier);
     }
 
     public async renewPublicationLicense(
@@ -226,19 +230,20 @@ export class LcpManager {
         return this.publicationRepository.get(publicationDocument.identifier);
     }
 
-    public async getLsdStatus(publicationDocument: PublicationDocument): Promise<any> {
+    public async getLsdStatus(publicationDocument: PublicationDocument): Promise<IHttpGetResult<string, any>> {
         // Get lsd status
-        const lsdStatusBodyResponse = await httpGet(
+        const lsdStatusBodyResponse = await httpGet<string, any>(
             publicationDocument.lcp.lsd.statusUrl,
         );
 
-        return JSON.parse(lsdStatusBodyResponse);
+        lsdStatusBodyResponse.data = JSON.parse(lsdStatusBodyResponse.body);
+        return lsdStatusBodyResponse;
     }
 
     public async updateLsdStatus(
         publicationDocument: PublicationDocument,
         lsdStatus: any,
-    ): Promise<PublicationDocument> {
+    ): Promise<THttpGetPublicationDocument> {
         // Search LCPL license url
         let lcplUrl: string = null;
 
@@ -255,26 +260,31 @@ export class LcpManager {
         }
 
         // Download and inject new lcpl file
-        const lcplResponse = await httpGet(lcplUrl);
-        const lcpl = JSON.parse(lcplResponse);
-        let newPublicationDocument = await this.injectLcpl(
-            publicationDocument,
-            lcpl,
-        );
-
-        // Update status document
-        const updatedLicense = await this.processStatusDocument(
-            newPublicationDocument,
-        );
-
-        if (updatedLicense) {
-            newPublicationDocument = await this.injectLcpl(
-                newPublicationDocument,
-                updatedLicense,
+        return await httpGet(lcplUrl, {}, async (lcplResponse) => {
+            if (lcplResponse.statusCode !== 200) {
+                return lcplResponse;
+            }
+            const lcpl = JSON.parse(lcplResponse.body);
+            let newPublicationDocument = await this.injectLcpl(
+                publicationDocument,
+                lcpl,
             );
-        }
 
-        return newPublicationDocument;
+            // Update status document
+            const updatedLicense = await this.processStatusDocument(
+                newPublicationDocument,
+            );
+
+            if (updatedLicense) {
+                newPublicationDocument = await this.injectLcpl(
+                    newPublicationDocument,
+                    updatedLicense,
+                );
+            }
+
+            lcplResponse.data = newPublicationDocument;
+            return lcplResponse;
+        });
     }
 
     public async unlockPublication(publication: Publication): Promise<void> {
@@ -329,7 +339,7 @@ export class LcpManager {
         await doTryLcpPass(
             this.streamer,
             epubPath,
-            [ secret ],
+            [secret],
             true,
         );
 

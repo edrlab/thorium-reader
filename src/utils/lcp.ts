@@ -47,7 +47,10 @@ export async function updateLicenseStatus(publication: Publication) {
         publication.lcp.lsd.statusUrl,
         {timeout: 5000},
     );
-    const lsdStatus = JSON.parse(lsdResponse);
+    if (lsdResponse.statusCode !== 200) {
+        throw new Error(`Http get error with code ${lsdResponse.statusCode} for ${lsdResponse.url}`);
+    }
+    const lsdStatus = JSON.parse(lsdResponse.body);
 
     // Force updating lcpl
     let lcplUrl: string = null;
@@ -69,9 +72,12 @@ export async function updateLicenseStatus(publication: Publication) {
         lcplUrl,
         {timeout: 5000},
     );
+    if (lsdResponse.statusCode !== 200) {
+        throw new Error(`Http get error with code ${lcplResponse.statusCode} for ${lcplResponse.url}`);
+    }
 
     // Inject lcpl in publication
-    await injectLcpl(publication, lcplResponse);
+    await injectLcpl(publication, lcplResponse.body);
 
     // // Get epub file from publication
     // // FIXME: do not use services in utils
