@@ -90,11 +90,11 @@
     },
     "message": {
         "download": {
-            "start": "The download of {{title}} has begun.",
-            "success": "The download of {{title}} is finished."
+            "start": "The download of {{- title}} has begun.",
+            "success": "The download of {{- title}} is finished."
         },
         "import": {
-            "success": "The import of {{title}} is finished."
+            "success": "The import of {{- title}} is finished."
         }
     },
     "opds": {

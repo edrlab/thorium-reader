@@ -90,8 +90,8 @@
     },
     "message": {
         "download": {
-            "start": "Der Download von {{title}} hat begonnen",
-            "success": "Der Download von {{title}} wurde abgeschlossen"
+            "start": "Der Download von {{- title}} hat begonnen",
+            "success": "Der Download von {{- title}} wurde abgeschlossen"
         },
         "import": {
             "success": ""
