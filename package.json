@@ -222,6 +222,7 @@
     "@types/jest": "^23.3.14",
     "@types/node": "8.*.*",
     "@types/pouchdb-core": "^7.0.0",
+    "@types/qs": "^6.5.3",
     "@types/query-string": "^6.1.1",
     "@types/react": "^16.8.18",
     "@types/react-beautiful-dnd": "^7.1.2",

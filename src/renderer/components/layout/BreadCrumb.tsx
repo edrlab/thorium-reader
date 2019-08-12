@@ -33,16 +33,19 @@ interface BreadCrumbProps {
 export default class BreadCrumb extends React.Component<BreadCrumbProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { breadcrumb } = this.props;
-        const search = parseQueryString(this.props.search.replace("?", ""));
+        const search = parseQueryString(this.props.search);
         return (
             <div className={classNames([styles.breadcrumb, this.props.className])}>
-                { this.props.breadcrumb.length >= 2 &&
-                    <Link to={{pathname: breadcrumb[breadcrumb.length - 2].path, search: this.props.search}}>
+                { breadcrumb.length >= 2 &&
+                    <Link to={{
+                        pathname: breadcrumb[breadcrumb.length - 2].path,
+                        search: `?displayType=${search.displayType}`,
+                    }}>
                         <SVG svg={ArrowIcon}/>
                     </Link>
                 }
-                {this.props.breadcrumb && this.props.breadcrumb.map((item, index) =>
-                    item.path ?
+                {breadcrumb && breadcrumb.map((item, index) =>
+                    item.path && index !== breadcrumb.length - 1 ?
                         <Link key={index} to={{
                             pathname: item.path,
                             search: `?displayType=${search.displayType}`,
