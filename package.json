@@ -115,6 +115,11 @@
         "mimeType": "application/epub+zip"
       },
       {
+        "ext": "epub3",
+        "role": "Viewer",
+        "mimeType": "application/epub+zip"
+      },
+      {
         "ext": "lcpl",
         "role": "Viewer",
         "mimeType": "application/vnd.readium.lcp.license.v1.0+json"
