@@ -31,6 +31,11 @@ import {
     convertMultiLangStringToString,
 } from "readium-desktop/common/utils";
 
+import * as debug_ from "debug";
+
+// Logger
+const debug = debug_("readium-desktop:main#services/lcp");
+
 @injectable()
 export class OpdsFeedViewConverter {
     public convertDocumentToView(document: OpdsFeedDocument): OpdsFeedView {
@@ -207,7 +212,7 @@ export class OpdsFeedViewConverter {
                 }
             }
         } catch (e) {
-            // ignore
+            debug("getSearchUrlFromOpds1Feed", e);
         }
         // if searchUrl is not found return undefined
         // User will be can't use search form
