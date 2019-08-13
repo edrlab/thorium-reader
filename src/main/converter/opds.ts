@@ -196,7 +196,7 @@ export class OpdsFeedViewConverter {
                     if (searchLinkFeedData.isFailure) {
                         return undefined;
                     }
-                    const result: any = convert.xml2js(searchLinkFeedData.data, { compact: true });
+                    const result = convert.xml2js(searchLinkFeedData.data, { compact: true }) as convert.ElementCompact;
 
                     if (result) {
                         const doc = result.OpenSearchDescription;
