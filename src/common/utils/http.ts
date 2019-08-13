@@ -72,7 +72,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
     const response = await promisifiedRequest(requestOptions);
 
     const result = {
-        isFailure: response.statusCode < 200 && response.statusCode >= 300,
+        isFailure: response.statusCode < 200 || response.statusCode >= 300,
         isSuccess: response.statusCode >= 200 && response.statusCode < 300,
         url,
         responseUrl: response.url,
