@@ -244,7 +244,7 @@ export class LcpManager {
             lsdStatus,
         );
         if (newPublicationDocument.isFailure) {
-            throw new Error(`Http getLsdStatus error error with code
+            throw new Error(`Http getLsdStatus error with code
                 ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
         }
         // Renew
@@ -256,7 +256,7 @@ export class LcpManager {
         // Update again lsd status
         lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
         if (lsdStatus.isFailure) {
-            throw new Error(`Http getLsdStatus error error with code
+            throw new Error(`Http getLsdStatus error with code
                 ${lsdStatus.statusCode} for ${lsdStatus.url}`);
         }
         newPublicationDocument = await this.updateLsdStatus(
