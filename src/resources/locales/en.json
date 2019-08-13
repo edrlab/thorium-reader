@@ -104,7 +104,6 @@
             "addButton": "Add",
             "name": "Name :",
             "namePlaceholder": "Name",
-            "pasteUrl": "Paste the url of an OPDS feed",
             "title": "Add an OPDS feed",
             "url": "Link :",
             "urlPlaceholder": "Link"
@@ -112,6 +111,7 @@
         "addMenu": "Add OPDS feed",
         "back": "Back",
         "breadcrumbRoot": "Catalogs",
+        "empty": "",
         "menu": {
             "aboutBook": "About this book",
             "addExtract": "Import the extract",
@@ -119,8 +119,7 @@
             "goBuyBook": "Buy this book",
             "goLoanBook": "Borrow this book",
             "goSubBook": "Subscribe"
-        },
-        "empty": ""
+        }
     },
     "publication": {
         "deleteButton": "Delete from the bookshelf",

@@ -104,7 +104,6 @@
             "addButton": "Ajouter",
             "name": "Nom :",
             "namePlaceholder": "Nom",
-            "pasteUrl": "coller l'url d'un flux",
             "title": "Ajouter un flux OPDS",
             "url": "Adresse :",
             "urlPlaceholder": "Adresse"
@@ -112,6 +111,7 @@
         "addMenu": "Ajouter un flux OPDS",
         "back": "Retour",
         "breadcrumbRoot": "Catalogues",
+        "empty": "",
         "menu": {
             "aboutBook": "Fiche livre",
             "addExtract": "Importer",
@@ -119,8 +119,7 @@
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
             "goSubBook": "Aller sur la page d'abonnement"
-        },
-        "empty": ""
+        }
     },
     "publication": {
         "deleteButton": "Supprimer de la bibliothèque",

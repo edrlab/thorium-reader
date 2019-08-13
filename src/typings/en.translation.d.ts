@@ -190,7 +190,6 @@ declare namespace typed_i18n {
     readonly "addButton": string,
     readonly "name": string,
     readonly "namePlaceholder": string,
-    readonly "pasteUrl": string,
     readonly "title": string,
     readonly "url": string,
     readonly "urlPlaceholder": string
@@ -198,6 +197,7 @@ declare namespace typed_i18n {
   readonly "addMenu": string,
   readonly "back": string,
   readonly "breadcrumbRoot": string,
+  readonly "empty": string,
   readonly "menu": {
     readonly "aboutBook": string,
     readonly "addExtract": string,
@@ -205,14 +205,12 @@ declare namespace typed_i18n {
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
     readonly "goSubBook": string
-  },
-  readonly "empty": string
+  }
 };
   (_: "opds.addForm", __?: {}): {
   readonly "addButton": string,
   readonly "name": string,
   readonly "namePlaceholder": string,
-  readonly "pasteUrl": string,
   readonly "title": string,
   readonly "url": string,
   readonly "urlPlaceholder": string
@@ -220,7 +218,6 @@ declare namespace typed_i18n {
   (_: "opds.addForm.addButton", __?: {}): string;
   (_: "opds.addForm.name", __?: {}): string;
   (_: "opds.addForm.namePlaceholder", __?: {}): string;
-  (_: "opds.addForm.pasteUrl", __?: {}): string;
   (_: "opds.addForm.title", __?: {}): string;
   (_: "opds.addForm.url", __?: {}): string;
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
