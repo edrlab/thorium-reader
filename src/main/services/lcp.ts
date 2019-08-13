@@ -302,7 +302,7 @@ export class LcpManager {
 
         // Download and inject new lcpl file
         return await httpGet(lcplUrl, {}, async (lcplResponse) => {
-            if (lcplResponse.statusCode !== 200) {
+            if (lcplResponse.isFailure) {
                 return lcplResponse;
             }
             const lcpl = JSON.parse(lcplResponse.body);
@@ -331,7 +331,7 @@ export class LcpManager {
     public async unlockPublication(publication: Publication): Promise<void> {
         const publicationDocument = await this.publicationRepository.get(publication.identifier);
         const lsdStatus = await this.getLsdStatus(publicationDocument);
-        if (lsdStatus.statusCode !== 200) {
+        if (lsdStatus.isFailure) {
             throw new Error(`Http getLsdStatus error with code
                 ${lsdStatus.statusCode} for ${lsdStatus.url}`);
         }
@@ -367,7 +367,7 @@ export class LcpManager {
     public async unlockPublicationWithPassphrase(publication: Publication, passphrase: string): Promise<void> {
         const publicationDocument = await this.publicationRepository.get(publication.identifier);
         const lsdStatus = await this.getLsdStatus(publicationDocument);
-        if (lsdStatus.statusCode !== 200) {
+        if (lsdStatus.isFailure) {
             throw new Error(`Http getLsdStatus error with code
                 ${lsdStatus.statusCode} for ${lsdStatus.url}`);
         }

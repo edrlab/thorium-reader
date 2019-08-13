@@ -47,7 +47,7 @@ export async function updateLicenseStatus(publication: Publication) {
         publication.lcp.lsd.statusUrl,
         {timeout: 5000},
     );
-    if (lsdResponse.statusCode !== 200) {
+    if (lsdResponse.isFailure) {
         throw new Error(`Http get error with code ${lsdResponse.statusCode} for ${lsdResponse.url}`);
     }
     const lsdStatus = JSON.parse(lsdResponse.body);
@@ -72,7 +72,7 @@ export async function updateLicenseStatus(publication: Publication) {
         lcplUrl,
         {timeout: 5000},
     );
-    if (lsdResponse.statusCode !== 200) {
+    if (lsdResponse.isFailure) {
         throw new Error(`Http get error with code ${lcplResponse.statusCode} for ${lcplResponse.url}`);
     }
 
