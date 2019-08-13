@@ -130,7 +130,7 @@ let config = Object.assign({}, {
         hot: true,
         watchContentBase: true,
         watchOptions: {
-            ignored: [/dist/, /docs/, /resources/, /scripts/, /test/, /node_modules/, /external-assets/]
+            ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/]
         },
     },
     plugins: [
@@ -162,7 +162,7 @@ if (nodeEnv !== "production") {
             hot: true,
             watchContentBase: true,
             watchOptions: {
-                ignored: [/dist/, /docs/, /resources/, /scripts/, /test/, /node_modules/, /external-assets/]
+                ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/]
             },
             port,
         },
