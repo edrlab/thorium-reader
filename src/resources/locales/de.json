@@ -104,7 +104,6 @@
             "addButton": "Hinzufügen",
             "name": "Feed-Name:",
             "namePlaceholder": "",
-            "pasteUrl": "die URL eines Futters einfügen",
             "title": "Feed hinzufügen",
             "url": "Feed-Link:",
             "urlPlaceholder": ""
@@ -112,6 +111,7 @@
         "addMenu": "OPDS-Feed hinzufügen",
         "back": "Zurück",
         "breadcrumbRoot": "",
+        "empty": "",
         "menu": {
             "aboutBook": "über dieses Buch",
             "addExtract": "zur Lib hinzufügen",
@@ -119,8 +119,7 @@
             "goBuyBook": "dieses Buch kaufen",
             "goLoanBook": "dieses Buch ausleihen",
             "goSubBook": "abonnieren"
-        },
-        "empty": ""
+        }
     },
     "publication": {
         "deleteButton": "Löschen",
