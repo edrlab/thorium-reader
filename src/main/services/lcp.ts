@@ -158,7 +158,7 @@ export class LcpManager {
         }
         let newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
-            lsdStatus,
+            lsdStatus.data,
         );
         if (newPublicationDocument.isFailure) {
             throw new Error(`Http updateLsdStatus error with code
@@ -167,7 +167,7 @@ export class LcpManager {
 
         // Renew
         await lsdRegister(
-            lsdStatus,
+            lsdStatus.data,
             this.deviceIdManager,
         );
 
@@ -200,7 +200,7 @@ export class LcpManager {
         }
         let newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
-            lsdStatus,
+            lsdStatus.data,
         );
         if (newPublicationDocument.isFailure) {
             throw new Error(`Http updateLsdStatus error with code
@@ -209,7 +209,7 @@ export class LcpManager {
         // Renew
         await lsdRenew(
             undefined,
-            lsdStatus,
+            lsdStatus.data,
             this.deviceIdManager,
         );
 
@@ -221,7 +221,7 @@ export class LcpManager {
         }
         newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
-            lsdStatus,
+            lsdStatus.data,
         );
         if (newPublicationDocument.isFailure) {
             throw new Error(`Http getLsdStatus error with code
@@ -241,7 +241,7 @@ export class LcpManager {
         }
         let newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
-            lsdStatus,
+            lsdStatus.data,
         );
         if (newPublicationDocument.isFailure) {
             throw new Error(`Http getLsdStatus error with code
@@ -261,7 +261,7 @@ export class LcpManager {
         }
         newPublicationDocument = await this.updateLsdStatus(
             publicationDocument,
-            lsdStatus,
+            lsdStatus.data,
         );
         if (newPublicationDocument.isFailure) {
             throw new Error(`Http updateLsdStatus error with code
