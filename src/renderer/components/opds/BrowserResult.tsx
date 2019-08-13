@@ -13,7 +13,7 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import {
     OpdsResultType,
-    OpdsResultView,
+    THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
 
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
@@ -30,7 +30,7 @@ import { parseQueryString } from "readium-desktop/utils/url";
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
     search?: string;
-    result?: OpdsResultView;
+    result?: THttpGetOpdsResultView;
     cleanData: any;
     requestOnLoadData: any;
     browse?: any;
@@ -51,16 +51,18 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     public render(): React.ReactElement<{}>  {
         const { result } = this.props;
         let content = (<Loader/>);
-        if (result) {
-            switch (result.type) {
+        if (result && result.isFailure) {
+            // browse error
+        } else if (result) {
+            switch (result.data.type) {
                 case OpdsResultType.NavigationFeed:
                     content = (
-                        <EntryList entries={ result.navigation } />
+                        <EntryList entries={ result.data.navigation } />
                     );
                     break;
                 case OpdsResultType.PublicationFeed:
                     content = (
-                        <EntryPublicationList publications={ result.publications } />
+                        <EntryPublicationList publications={ result.data.publications } />
                     );
                     break;
                 case OpdsResultType.Empty:
@@ -82,8 +84,8 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
         const oldQs = parseQueryString(url.split("?")[1]);
         const search = qs.parse(location.search.replace("?", "")).search;
         let newUrl = url;
-        if (search && result) {
-            newUrl = (result as any).searchUrl;
+        if (search && result && result.isSuccess && result.data.searchUrl) {
+            newUrl = result.data.searchUrl;
             newUrl = this.addSearchTerms(newUrl, search) +
                 Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
         }

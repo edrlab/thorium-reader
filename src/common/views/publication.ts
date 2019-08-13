@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Metadata } from "r2-shared-js/dist/es6-es2015/src/models/metadata";
+
 export interface CoverView {
     url: string;
 }
@@ -27,4 +29,5 @@ export interface PublicationView {
     cover?: CoverView;
     customCover?: CustomCoverView;
     lcp: any;
+    doc?: Metadata;
 }

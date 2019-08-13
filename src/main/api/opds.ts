@@ -20,7 +20,7 @@ import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
-import { OpdsFeedView, OpdsResultView } from "readium-desktop/common/views/opds";
+import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 
@@ -64,34 +64,36 @@ export class OpdsApi {
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
-    public async browse(data: any): Promise<OpdsResultView> {
+    public async browse(data: any): Promise<THttpGetOpdsResultView> {
         const { url } = data;
-        const opdsFeedData = await httpGet(url) as string;
+        return await httpGet(url, {}, async (opdsFeedData) => {
+            // let opds2Publication: OPDSPublication = null;
+            let opds2Feed: OPDSFeed = null;
 
-        // let opds2Publication: OPDSPublication = null;
-        let opds2Feed: OPDSFeed = null;
+            if (opdsFeedData.isFailure) {
+                return opdsFeedData;
+            }
 
-        // This is an opds feed in version 1
-        // Convert to opds version 2
-        const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData);
-        if (!xmlDom || !xmlDom.documentElement) {
-            opds2Feed = TAJSON.deserialize<OPDSFeed>(
-                JSON.parse(opdsFeedData),
-                OPDSFeed,
-            );
-            return await this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
-        }
-
-        const isEntry = xmlDom.documentElement.localName === "entry";
-        if (isEntry) {
-            // const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
-            // opds2Publication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
-        } else {
-            const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
-            opds2Feed = convertOpds1ToOpds2(opds1Feed);
-            return await this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
-        }
-
-        return Promise.reject("OPDS API browse nil");
+            // This is an opds feed in version 1
+            // Convert to opds version 2
+            const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
+            if (xmlDom && xmlDom.documentElement) {
+                const isEntry = xmlDom.documentElement.localName === "entry";
+                if (isEntry) {
+                    throw new Error("OPDS feed is entry");
+                }
+                // This is an opds feed in version 1
+                // Convert to opds version 2
+                const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
+                opds2Feed = convertOpds1ToOpds2(opds1Feed);
+            } else {
+                opds2Feed = TAJSON.deserialize<OPDSFeed>(
+                    JSON.parse(opdsFeedData.body),
+                    OPDSFeed,
+                );
+            }
+            opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
+            return opdsFeedData;
+        });
     }
 }

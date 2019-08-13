@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IHttpGetResult } from "../utils/http";
 import { CoverView } from "./publication";
 
 export interface OpdsFeedView {
@@ -50,5 +51,7 @@ export interface OpdsResultView {
     type: OpdsResultType;
     navigation: OpdsLinkView[];
     publications: OpdsPublicationView[];
-    searchUrl: string;
+    searchUrl?: string;
 }
+
+export type THttpGetOpdsResultView = IHttpGetResult<string, OpdsResultView>;
