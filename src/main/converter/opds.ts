@@ -23,10 +23,18 @@ import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
+import { httpGet } from "readium-desktop/common/utils/http";
+import * as convert from "xml-js";
+
 import {
     convertContributorArrayToStringArray,
     convertMultiLangStringToString,
 } from "readium-desktop/common/utils";
+
+import * as debug_ from "debug";
+
+// Logger
+const debug = debug_("readium-desktop:main#services/lcp");
 
 @injectable()
 export class OpdsFeedViewConverter {
@@ -150,9 +158,9 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public convertOpdsFeedToView(feed: OPDSFeed): OpdsResultView {
+    public async convertOpdsFeedToView(feed: OPDSFeed): Promise<OpdsResultView> {
         const title = convertMultiLangStringToString(feed.Metadata.Title);
-        let type = OpdsResultType.NavigationFeed;
+        let type = OpdsResultType.Empty;
         let navigation = null;
         let publications = null;
 
@@ -162,8 +170,9 @@ export class OpdsFeedViewConverter {
             publications = feed.Publications.map((item) => {
                 return this.convertOpdsPublicationToView(item);
             });
-        } else {
+        } else if (feed.Navigation) {
             // result page containing navigation
+            type = OpdsResultType.NavigationFeed;
             navigation = feed.Navigation.map((item) => {
                 return this.convertOpdsLinkToView(item);
             });
@@ -174,7 +183,39 @@ export class OpdsFeedViewConverter {
             type,
             publications,
             navigation,
+            searchUrl: await this.getSearchUrlFromOpds1Feed(feed),
         };
     }
 
+    private async getSearchUrlFromOpds1Feed(feed: OPDSFeed) {
+        // https://github.com/readium/readium-desktop/issues/296#issuecomment-502134459
+
+        let searchUrl: string | undefined;
+        try {
+            if (feed.Links) {
+                const searchLink = feed.Links.find((value) => value.Rel[0] === "search");
+                if (searchLink.TypeLink === "application/opds+json") {
+                    searchUrl = searchLink.Href;
+                } else {
+                    const searchLinkFeedData = await httpGet(searchLink.Href);
+                    if (searchLinkFeedData.isFailure) {
+                        return undefined;
+                    }
+                    const result = convert.xml2js(searchLinkFeedData.data, { compact: true }) as convert.ElementCompact;
+
+                    if (result) {
+                        const doc = result.OpenSearchDescription;
+                        searchUrl = doc.Url.find((value: any) => {
+                            return value._attributes && value._attributes.type === "application/atom+xml";
+                        })._attributes.template;
+                    }
+                }
+            }
+        } catch (e) {
+            debug("getSearchUrlFromOpds1Feed", e);
+        }
+        // if searchUrl is not found return undefined
+        // User will be can't use search form
+        return searchUrl;
+    }
 }

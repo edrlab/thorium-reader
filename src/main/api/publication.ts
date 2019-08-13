@@ -81,18 +81,22 @@ export class PublicationApi {
         return this.publicationRepository.getAllTags();
     }
 
-    public async importOpdsEntry(data: any): Promise<PublicationView[]> {
+    public async importOpdsEntry(data: any): Promise<PublicationView> {
         const { url, base64OpdsPublication, downloadSample, title } = data;
         this.dispatchToastRequest(ToastType.DownloadStarted, "message.download.start", title);
-        let publication;
         if (url) {
-            publication = await this.catalogService.importOpdsEntry(url, downloadSample);
-        } else {
-            const opdsPublication = JSON.parse(Buffer.from(base64OpdsPublication, "base64").toString("utf-8"));
-            publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample);
+            const httpPub = await this.catalogService.importOpdsEntry(url, downloadSample);
+            if (httpPub.isSuccess) {
+                this.dispatchToastRequest(ToastType.DownloadComplete, "message.download.success", httpPub.data.title);
+                return this.publicationViewConverter.convertDocumentToView(httpPub.data);
+            }
+            throw new Error(`Http importOpdsEntry error with code
+                ${httpPub.statusCode} for ${httpPub.url}`);
         }
+        const opdsPublication = JSON.parse(Buffer.from(base64OpdsPublication, "base64").toString("utf-8"));
+        const publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample);
         this.dispatchToastRequest(ToastType.DownloadComplete, "message.download.success", publication.title);
-        return null;
+        return this.publicationViewConverter.convertDocumentToView(publication);
     }
 
     public async import(data: any): Promise<PublicationView[]> {
@@ -131,7 +135,7 @@ export class PublicationApi {
         store.dispatch(open(type,
             {
                 message,
-                messageProps: {title},
+                messageProps: { title },
             },
         ));
     }

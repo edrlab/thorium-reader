@@ -1,3 +1,7 @@
+.allowUserSelect {
+  user-select: text;
+}
+
 .c_dialog {
     position: fixed;
     z-index: 100;

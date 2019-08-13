@@ -35,7 +35,8 @@ let externals = {
     "bindings": "bindings",
     "leveldown": "leveldown",
     "fsevents": "fsevents",
-    "conf": "conf"
+    "conf": "conf",
+    "devtron": "devtron"
 }
 if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {
@@ -127,7 +128,10 @@ let config = Object.assign({}, {
     devServer: {
         contentBase: __dirname,
         hot: true,
-        watchContentBase: true
+        watchContentBase: true,
+        watchOptions: {
+            ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/]
+        },
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -157,6 +161,9 @@ if (nodeEnv !== "production") {
             },
             hot: true,
             watchContentBase: true,
+            watchOptions: {
+                ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/]
+            },
             port,
         },
     });

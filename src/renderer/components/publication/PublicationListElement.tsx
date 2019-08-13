@@ -25,6 +25,11 @@ import uuid = require("uuid");
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
+import { LsdStatus } from "readium-desktop/common/models/lcp";
+import { lcpReadable } from "readium-desktop/utils/publication";
+
+import { readerActions } from "readium-desktop/common/redux/actions";
+
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 interface PublicationListElementProps extends TranslatorProps {
@@ -33,6 +38,9 @@ interface PublicationListElementProps extends TranslatorProps {
     displayPublicationInfo?: any;
     openDeleteDialog?: any;
     menuContent: any;
+    openReader: (publication: PublicationView) => void;
+    lsdStatus: LsdStatus;
+    isOpds: boolean;
 }
 
 interface PublicationListElementState {
@@ -51,7 +59,6 @@ export class PublicationListElement extends React.Component<PublicationListEleme
         };
 
         this.deletePublication = this.deletePublication.bind(this);
-        this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
         this.toggleMenu = this.toggleMenu.bind(this);
         this.focusButton = this.focusButton.bind(this);
 
@@ -81,19 +88,28 @@ export class PublicationListElement extends React.Component<PublicationListEleme
                     >
                         <SVG svg={MenuIcon}/>
                     </button>
-                    <div className={styles.list_book_title}>
-                    <p className={styles.book_title} aria-label={ __("accessibility.bookTitle")}>{ pub.title }</p>
-                    <p
-                        className={`${styles.book_author} ${styles.lightgrey}`}
-                        aria-label={ __("accessibility.bookAuthor")}
+                    <a
+                        className={styles.publicationLineLink}
+                        tabIndex={0}
+                        onClick={(e) => this.handleBookClick(e)}
+                        onKeyPress={(e) => {
+                            if (e.charCode === 13) { this.handleBookClick(e); }}
+                        }
                     >
-                        {pub.authors.map((author) => translator.translateContentField(author)).join(", ")}
-                    </p>
-                    </div>
-                    <p className={styles.infos_sup} aria-label={ __("accessibility.bookReleaseDate")}>
-                    { formatedPublishedYear}</p>
-                    <p className={styles.infos_sup} aria-label={ __("accessibility.bookPublisher")}>
-                    { formatedPublishers }</p>
+                        <div className={styles.list_book_title}>
+                        <p className={styles.book_title} aria-label={ __("accessibility.bookTitle")}>{ pub.title }</p>
+                        <p
+                            className={`${styles.book_author} ${styles.lightgrey}`}
+                            aria-label={ __("accessibility.bookAuthor")}
+                        >
+                            {pub.authors.map((author) => translator.translateContentField(author)).join(", ")}
+                        </p>
+                        </div>
+                        <p className={styles.infos_sup} aria-label={ __("accessibility.bookReleaseDate")}>
+                        { formatedPublishedYear}</p>
+                        <p className={styles.infos_sup} aria-label={ __("accessibility.bookPublisher")}>
+                        { formatedPublishers }</p>
+                    </a>
                 </div>
                 { this.state.menuOpen &&
                     <AccessibleMenu
@@ -118,17 +134,23 @@ export class PublicationListElement extends React.Component<PublicationListEleme
         this.props.openDeleteDialog(this.props.publication);
     }
 
-    private displayPublicationInfo(e: any) {
-        e.preventDefault();
-        this.props.displayPublicationInfo(this.props.publication);
-    }
-
     private toggleMenu() {
         this.setState({menuOpen: !this.state.menuOpen});
     }
 
     private focusButton() {
         this.buttonRef.focus();
+    }
+
+    private handleBookClick(e: React.SyntheticEvent) {
+        e.preventDefault();
+        const { publication, lsdStatus } = this.props;
+
+        if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
+            this.props.displayPublicationInfo(publication);
+        } else {
+            this.props.openReader(publication);
+        }
     }
 }
 
@@ -138,11 +160,20 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => 
             dispatch(dialogActions.open(
                 DialogType.PublicationInfo,
                 {
+                    publication,
+                    isOpds: true,
+                },
+            ));
+        },
+        openReader: (publication: PublicationView) => {
+            dispatch({
+                type: readerActions.ActionType.OpenRequest,
+                payload: {
                     publication: {
                         identifier: publication.identifier,
                     },
                 },
-            ));
+            });
         },
         openDeleteDialog: (publication: string) => {
             dispatch(dialogActions.open(

@@ -15,13 +15,32 @@ import { promisify } from "util";
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
 
+export interface IHttpGetResult<TBody, TData> {
+    readonly url: string;
+    readonly responseUrl: string;
+    readonly statusCode: number;
+    readonly contentType: string;
+    readonly body: TBody;
+    readonly isFailure: boolean;
+    readonly isSuccess: boolean;
+    data?: TData;
+}
+
+type THttpGetCallback<T1, T2> =
+    (result: IHttpGetResult<T1, T2>) =>
+        IHttpGetResult<T1, T2> | Promise<IHttpGetResult<T1, T2>>;
+
 /**
  * @param url url of your GET request
  * @param options request options
  * @returns body of url response. 'String' type returned in many cases except for options.json = true
  */
 // tslint:disable-next-line: max-line-length
-export async function httpGet<T extends JsonMap | string = string>(url: string, options?: TRequestCoreOptionsOptionalUriUrl): Promise<T> {
+export async function httpGet<TBody extends JsonMap | string = string , TData = string>(
+    url: string,
+    options?: TRequestCoreOptionsOptionalUriUrl,
+    callback?: THttpGetCallback<TBody, TData>,
+): Promise<IHttpGetResult<TBody, TData>> {
     options = options || {} as TRequestCoreOptionsOptionalUriUrl;
     options.headers = options.headers || {};
 
@@ -52,15 +71,19 @@ export async function httpGet<T extends JsonMap | string = string>(url: string, 
     const promisifiedRequest = promisify<TRequestCoreOptionsRequiredUriUrl, request.Response>(request);
     const response = await promisifiedRequest(requestOptions);
 
-    if (!response) {
-        throw new Error(`No HTTP response?! ${url}`);
+    const result = {
+        isFailure: response.statusCode < 200 || response.statusCode >= 300,
+        isSuccess: response.statusCode >= 200 && response.statusCode < 300,
+        url,
+        responseUrl: response.url,
+        statusCode: response.statusCode,
+        body: response.body,
+        data: callback ? undefined : response.body,
+        contentType: response.caseless.get("Content-Type"),
+    };
+
+    if (callback) {
+        return (await Promise.all([callback(result)]))[0];
     }
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-        const b = response.body ? JSON.stringify(response.body) : "";
-        throw new Error(`HTTP response status code: ${url} => ${response.statusCode} => ${b}`);
-    }
-    if (!response.body) {
-        throw new Error(`HTTP no body?! ${url} => ${response.statusCode}`);
-    }
-    return response.body;
+    return result;
 }

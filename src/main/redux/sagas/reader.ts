@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { BrowserWindow } from "electron";
+import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Publication } from "readium-desktop/common/models/publication";
@@ -32,6 +32,8 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 
+import { setMenu } from "readium-desktop/main/menu";
+
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
 
@@ -54,6 +56,19 @@ async function openReader(publication: Publication, manifestUrl: string) {
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+
+    if (IS_DEV) {
+        readerWindow.webContents.on("context-menu", (_ev, params) => {
+            const { x, y } = params;
+            Menu.buildFromTemplate([{
+                label: "Inspect element",
+                click: () => {
+                    readerWindow.webContents.inspectElement(x, y);
+                },
+            }]).popup({window: readerWindow});
+        });
+    }
+
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindows = winRegistry.getWindows();
 
@@ -131,10 +146,9 @@ async function openReader(publication: Publication, manifestUrl: string) {
 
     if (IS_DEV) {
         readerWindow.webContents.openDevTools();
-    } else {
-        // Remove menu bar
-        readerWindow.setMenu(null);
     }
+
+    setMenu(readerWindow);
 
     return reader;
 }

@@ -12,12 +12,13 @@ import { AppWindowType } from "readium-desktop/common/models/win";
 import {
     getWindowsRectangle,
 } from "readium-desktop/common/rectangle/window";
-import { Translator } from "readium-desktop/common/services/translator";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import {
     _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
+
+import { setMenu } from "./menu";
 
 // Logger
 const debug = debug_("readium-desktop:createWindow");
@@ -40,6 +41,19 @@ export async function createWindow() {
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+
+    if (IS_DEV) {
+        mainWindow.webContents.on("context-menu", (_ev, params) => {
+            const { x, y } = params;
+            Menu.buildFromTemplate([{
+                label: "Inspect element",
+                click: () => {
+                    mainWindow.webContents.inspectElement(x, y);
+                },
+            }]).popup({window: mainWindow});
+        });
+    }
+
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindow = winRegistry.registerWindow(mainWindow, AppWindowType.Library);
 
@@ -60,10 +74,7 @@ export async function createWindow() {
 
     mainWindow.loadURL(rendererBaseUrl);
 
-    // Create the app menu on mac os to allow copy paste
-    if (process.platform === "darwin") {
-        initDarwin();
-    }
+    setMenu(mainWindow);
 
     if (IS_DEV) {
         const {
@@ -80,9 +91,6 @@ export async function createWindow() {
 
         // Open dev tools in development environment
         mainWindow.webContents.openDevTools();
-    } else {
-        // Remove menu bar
-        mainWindow.setMenu(null);
     }
 
     // Redirect link to an external browser
@@ -116,52 +124,3 @@ app.on("activate", async () => {
         await createWindow();
     }
 });
-
-export function initDarwin() {
-    const translator = container.get("translator") as Translator;
-    const template: Electron.MenuItemConstructorOptions[] = [
-        {
-            label: "Thorium",
-            submenu: [
-                {
-                    role: "quit",
-                    label: translator.translate("app.quit"),
-                },
-            ],
-        },
-        {
-            label: translator.translate("app.edit.title"),
-            role: "edit",
-            submenu: [
-                {
-                    role: "undo",
-                    label: translator.translate("app.edit.undo"),
-                },
-                {
-                    role: "redo",
-                    label: translator.translate("app.edit.redo"),
-                },
-                {
-                    type: "separator",
-                },
-                {
-                    role: "cut",
-                    label: translator.translate("app.edit.cut"),
-                },
-                {
-                    role: "copy",
-                    label: translator.translate("app.edit.copy"),
-                },
-                {
-                    role: "paste",
-                    label: translator.translate("app.edit.paste"),
-                },
-                {
-                    role: "selectall",
-                    label: translator.translate("app.edit.selectAll"),
-                },
-            ],
-        },
-    ];
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-}
