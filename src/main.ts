@@ -15,7 +15,7 @@ import { cli } from "readium-desktop/main/cli/process";
 import { createWindow } from "readium-desktop/main/createWindow";
 import { container } from "readium-desktop/main/di";
 import { initApp, registerProtocol } from "readium-desktop/main/init";
-import { _PACKAGING, _RENDERER_APP_BASE_URL } from "readium-desktop/preprocessor-directives";
+import { _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
@@ -50,7 +50,11 @@ initGlobalConverters_GENERIC();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
-cli(main);
+if (_VSCODE_LAUNCH === "true") {
+    main();
+} else {
+    cli(main);
+}
 
 function main() {
     initSessions();
