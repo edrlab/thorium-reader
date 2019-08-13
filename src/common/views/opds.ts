@@ -51,7 +51,7 @@ export interface OpdsResultView {
     type: OpdsResultType;
     navigation: OpdsLinkView[];
     publications: OpdsPublicationView[];
-    searchUrl: string;
+    searchUrl?: string;
 }
 
 export type THttpGetOpdsResultView = IHttpGetResult<string, OpdsResultView>;

@@ -173,31 +173,44 @@ export class OpdsFeedViewConverter {
             });
         }
 
-        let searchLink = null;
-        if (feed.Links) {
-            searchLink = feed.Links.find((value) => value.Rel[0] === "search");
-        }
-        let searchUrl = null;
-        if (searchLink.TypeLink === "application/opds+json") {
-            searchUrl = searchLink.Href;
-        } else {
-            const searchLinkFeedData = await httpGet(searchLink.Href) as string;
-            const result: any = convert.xml2js(searchLinkFeedData, {compact: true});
-
-            if (result) {
-                const doc = result.OpenSearchDescription;
-                searchUrl = doc.Url.find((value: any) => {
-                    return value._attributes && value._attributes.type === "application/atom+xml";
-                })._attributes.template;
-            }
-        }
-
         return {
             title,
             type,
             publications,
             navigation,
-            searchUrl,
+            searchUrl: await this.getSearchUrlFromOpds1Feed(feed),
         };
+    }
+
+    private async getSearchUrlFromOpds1Feed(feed: OPDSFeed) {
+        // https://github.com/readium/readium-desktop/issues/296#issuecomment-502134459
+
+        let searchUrl: string | undefined;
+        try {
+            if (feed.Links) {
+                const searchLink = feed.Links.find((value) => value.Rel[0] === "search");
+                if (searchLink.TypeLink === "application/opds+json") {
+                    searchUrl = searchLink.Href;
+                } else {
+                    const searchLinkFeedData = await httpGet(searchLink.Href);
+                    if (searchLinkFeedData.isFailure) {
+                        return undefined;
+                    }
+                    const result: any = convert.xml2js(searchLinkFeedData.data, { compact: true });
+
+                    if (result) {
+                        const doc = result.OpenSearchDescription;
+                        searchUrl = doc.Url.find((value: any) => {
+                            return value._attributes && value._attributes.type === "application/atom+xml";
+                        })._attributes.template;
+                    }
+                }
+            }
+        } catch (e) {
+            // ignore
+        }
+        // if searchUrl is not found return undefined
+        // User will be can't use search form
+        return searchUrl;
     }
 }
