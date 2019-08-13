@@ -170,7 +170,7 @@ main {
 }
 
 .list_book_title {
-	display: inline-block;
+	display: flex;
 	width: calc(70% - 50px);
 }
 
