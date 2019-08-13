@@ -10,6 +10,8 @@ const portReader = process.env.PORT_READER || "8191";
 const nodeEnv = process.env.NODE_ENV || "development";
 const isDev = nodeEnv === "development";
 
+const isVisualStudioCodeLaunch = process.env.VSCODE_LAUNCH || "false";
+
 const pouchDbAdapterName = isDev ?
     "jsondown" : "leveldb";
 
@@ -34,6 +36,7 @@ const data = {
     __GIT_DATE__: JSON.stringify(git.date()),
     __GIT_SHORT__: JSON.stringify(git.short()),
     __NODE_ENV__: JSON.stringify(nodeEnv),
+    __VSCODE_LAUNCH__: JSON.stringify(isVisualStudioCodeLaunch),
     __NODE_MODULE_RELATIVE_URL__: JSON.stringify(nodeModuleRelativeUrl),
     __PACKAGING__: JSON.stringify(isPackaging),
     __POUCHDB_ADAPTER_NAME__: JSON.stringify(pouchDbAdapterName),
