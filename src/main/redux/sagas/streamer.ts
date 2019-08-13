@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import * as path from "path";
 import * as portfinder from "portfinder";
 import { SagaIterator } from "redux-saga";
-import { call, put, select, take } from "redux-saga/effects";
+import { all, call, put, select, take } from "redux-saga/effects";
 
 import { Server } from "@r2-streamer-js/http/server";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
@@ -281,10 +281,10 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
 }
 
 export function* watchers() {
-    yield [
+    yield all([
         stopRequestWatcher(),
         startRequestWatcher(),
         publicationOpenRequestWatcher(),
         publicationCloseRequestWatcher(),
-    ];
+    ]);
 }
