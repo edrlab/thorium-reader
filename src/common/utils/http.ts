@@ -22,6 +22,7 @@ export interface IHttpGetResult<TBody, TData> {
     readonly contentType: string;
     readonly body: TBody;
     readonly isFailure: boolean;
+    readonly isSuccess: boolean;
     data?: TData;
 }
 
@@ -72,6 +73,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
 
     const result = {
         isFailure: response.statusCode < 200 && response.statusCode >= 300,
+        isSuccess: response.statusCode >= 200 && response.statusCode < 300,
         url,
         responseUrl: response.url,
         statusCode: response.statusCode,
