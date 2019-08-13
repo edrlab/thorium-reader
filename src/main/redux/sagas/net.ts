@@ -61,6 +61,6 @@ export function* netStatusWatcher(): SagaIterator {
             yield put({ type: actionType });
         }
 
-        yield call(delay, 5000);
+        yield delay(5000);
     }
 }

@@ -49,6 +49,6 @@ export function* updateStatusWatcher(): SagaIterator {
         }
 
         // Try to retrieve latest version every 20 minutes
-        yield call(delay, 120000);
+        yield delay(120000);
     }
 }
