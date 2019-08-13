@@ -32,6 +32,8 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 
+import { setMenu } from "readium-desktop/main/menu";
+
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
 
@@ -144,10 +146,9 @@ async function openReader(publication: Publication, manifestUrl: string) {
 
     if (IS_DEV) {
         readerWindow.webContents.openDevTools();
-    } else {
-        // Remove menu bar
-        readerWindow.setMenu(null);
     }
+
+    setMenu(readerWindow);
 
     return reader;
 }
