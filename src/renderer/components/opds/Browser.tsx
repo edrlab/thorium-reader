@@ -9,7 +9,7 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import BreadCrumb, { BreadCrumbItem } from "../layout/BreadCrumb";
 
@@ -26,19 +26,22 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import BrowserResult from "./BrowserResult";
 
-interface FeedDetailsProps extends RouteComponentProps, TranslatorProps {
+import { parseQueryString } from "readium-desktop/utils/url";
+
+interface Props extends RouteComponentProps, TranslatorProps {
     navigation: OpdsLinkView[];
 }
 
-export class Browser extends React.Component<FeedDetailsProps, null> {
-    public render(): React.ReactElement<{}>  {
+export class Browser extends React.Component<Props> {
+    public render(): React.ReactElement<Props>  {
         const breadcrumb = this.buildBreadcrumb();
-        let browserResult = (<></>);
+        let url: string;
+        let search: string;
 
         if (this.props.navigation.length > 0) {
             const link = this.props.navigation[this.props.navigation.length - 1];
-            const url = link.url;
-            browserResult = (<BrowserResult url={ url } />);
+            search = (this.props.match.params as any).search;
+            url = link.url;
         }
 
         const secondaryHeader = <Header/>;
@@ -46,7 +49,9 @@ export class Browser extends React.Component<FeedDetailsProps, null> {
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search}/>
-                { browserResult }
+                { url &&
+                    <BrowserResult url={ url } search={search}/>
+                }
             </LibraryLayout>
         );
     }
@@ -73,6 +78,15 @@ export class Browser extends React.Component<FeedDetailsProps, null> {
             });
         });
 
+        const parsedQuerryString = parseQueryString(this.props.location.search);
+        const search = parsedQuerryString.search;
+
+        if (search) {
+            breadcrumb.push({
+                name: search,
+            });
+        }
+
         return breadcrumb;
     }
 }
@@ -85,4 +99,4 @@ const mapStateToProps = (state: RootState, __: any) => {
     };
 };
 
-export default withTranslator(connect(mapStateToProps, undefined)(Browser));
+export default withRouter(withTranslator(connect(mapStateToProps, undefined)(Browser)));

@@ -48,7 +48,7 @@ export class SearchForm extends React.Component<OpdsProps, undefined> {
         e.preventDefault();
         const value = this.inputRef.current.value;
 
-        this.props.history.push("/opds/" + (this.props.match.params as any).opdsId + "/search/text/" + value);
+        this.props.history.push(`${this.props.location.pathname}?search=${value}`);
     }
 }
 

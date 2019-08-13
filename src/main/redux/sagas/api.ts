@@ -11,7 +11,7 @@ import * as debug_ from "debug";
 
 import { SagaIterator } from "redux-saga";
 
-import { call, fork, put, take } from "redux-saga/effects";
+import { all, call, fork, put, take } from "redux-saga/effects";
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 
@@ -45,7 +45,7 @@ export function* requestWatcher() {
 }
 
 export function* watchers() {
-    yield [
+    yield all([
         requestWatcher(),
-    ];
+    ]);
 }

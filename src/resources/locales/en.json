@@ -46,7 +46,9 @@
         "lang": "Language",
         "moreInfo": "More Info",
         "myBooks": "My books",
-        "noPublicationHelp": "Drop ebooks in this window or use the (+) button above. LCP protected files are supported.",
+        "noPublicationHelpL1": "Drop EPUB files in this window",
+        "noPublicationHelpL2": "or use the \"+\" button above.",
+        "noPublicationHelpL3": "LCP protected files are supported.",
         "publisher": "Publisher",
         "readBook": "Read",
         "released": "Published on",
@@ -90,11 +92,11 @@
     },
     "message": {
         "download": {
-            "start": "The download of {{title}} has begun.",
-            "success": "The download of {{title}} is finished."
+            "start": "The download of {{- title}} has begun.",
+            "success": "The download of {{- title}} is finished."
         },
         "import": {
-            "success": "The import of {{title}} is finished."
+            "success": "The import of {{- title}} is finished."
         }
     },
     "opds": {
@@ -117,7 +119,8 @@
             "goBuyBook": "Buy this book",
             "goLoanBook": "Borrow this book",
             "goSubBook": "Subscribe"
-        }
+        },
+        "empty": ""
     },
     "publication": {
         "deleteButton": "Delete from the bookshelf",

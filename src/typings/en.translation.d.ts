@@ -69,7 +69,9 @@ declare namespace typed_i18n {
   readonly "lang": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
-  readonly "noPublicationHelp": string,
+  readonly "noPublicationHelpL1": string,
+  readonly "noPublicationHelpL2": string,
+  readonly "noPublicationHelpL3": string,
   readonly "publisher": string,
   readonly "readBook": string,
   readonly "released": string,
@@ -97,7 +99,9 @@ declare namespace typed_i18n {
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
-  (_: "catalog.noPublicationHelp", __?: {}): string;
+  (_: "catalog.noPublicationHelpL1", __?: {}): string;
+  (_: "catalog.noPublicationHelpL2", __?: {}): string;
+  (_: "catalog.noPublicationHelpL3", __?: {}): string;
   (_: "catalog.publisher", __?: {}): string;
   (_: "catalog.readBook", __?: {}): string;
   (_: "catalog.released", __?: {}): string;
@@ -201,7 +205,8 @@ declare namespace typed_i18n {
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
     readonly "goSubBook": string
-  }
+  },
+  readonly "empty": string
 };
   (_: "opds.addForm", __?: {}): {
   readonly "addButton": string,
@@ -221,6 +226,7 @@ declare namespace typed_i18n {
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string; (_: "opds.back", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
+  (_: "opds.empty", __?: {}): string;
   (_: "opds.menu", __?: {}): {
   readonly "aboutBook": string,
   readonly "addExtract": string,

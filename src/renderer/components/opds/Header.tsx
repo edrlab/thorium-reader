@@ -17,6 +17,10 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
+import * as qs from "qs";
+import { parseQueryString } from "readium-desktop/utils/url";
+import SearchForm from "./SearchForm";
+
 export enum DisplayType {
     Grid = "grid",
     List = "list",
@@ -29,19 +33,21 @@ interface HeaderProps extends RouteComponentProps, TranslatorProps {
 export class Header extends React.Component<HeaderProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
+        const search = parseQueryString(this.props.location.search.replace("?", ""));
+        delete(search.displayType);
 
         return (
             <SecondaryHeader>
                 { this.props.displayType &&
                     <>
                         <Link
-                            to={{search: "displayType=grid"}}
+                            to={{search: "?" + qs.stringify(Object.assign(search, {displayType: "grid"})) }}
                             style={(this.props.displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
                         >
                             <SVG svg={GridIcon} title={__("header.gridTitle")}/>
                         </Link>
                         <Link
-                            to={{search: "displayType=list"}}
+                            to={{search: "?" + qs.stringify(Object.assign(search, {displayType: "list"})) }}
                             style={this.props.displayType !== DisplayType.List ?
                                 {fill: "grey", marginLeft: "16px"} : {marginLeft: "16px"}}
                         >
@@ -49,7 +55,7 @@ export class Header extends React.Component<HeaderProps, undefined> {
                         </Link>
                     </>
                 }
-                {/*<SearchForm />*/}
+                <SearchForm />
             </SecondaryHeader>
         );
     }

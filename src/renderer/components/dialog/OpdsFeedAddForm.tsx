@@ -16,7 +16,6 @@ import { withApi } from "readium-desktop/renderer/components/utils/api";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 
 interface Props extends TranslatorProps {
-    url?: any;
     addFeed?: any;
     closeDialog?: any;
 }
@@ -32,7 +31,7 @@ export class OpdsFeedAddForm extends React.Component<Props, State> {
 
         this.state = {
             name: undefined,
-            url: props.url,
+            url: undefined,
         };
 
         this.add = this.add.bind(this);

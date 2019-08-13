@@ -2,8 +2,9 @@
 @import "./focus.css";
 @import "./variable.css";
 
-
 :root {
+  user-select: none;
+
   --sideButtonColor: rgb(130, 130, 130, 0.5);
 }
 

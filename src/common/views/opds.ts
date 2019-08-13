@@ -43,6 +43,7 @@ export enum OpdsResultType {
     Entry = "entry",
     NavigationFeed = "navigation-feed",
     PublicationFeed = "publication-feed",
+    Empty = "empty",
 }
 
 export interface OpdsResultView {
@@ -50,6 +51,7 @@ export interface OpdsResultView {
     type: OpdsResultType;
     navigation: OpdsLinkView[];
     publications: OpdsPublicationView[];
+    searchUrl: string;
 }
 
 export type THttpGetOpdsResultView = IHttpGetResult<string, OpdsResultView>;
