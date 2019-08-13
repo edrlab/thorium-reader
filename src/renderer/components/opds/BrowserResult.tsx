@@ -51,9 +51,9 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     public render(): React.ReactElement<{}>  {
         const { result } = this.props;
         let content = (<Loader/>);
-        if (result.isFailure) {
+        if (result && result.isFailure) {
             // browse error
-        } else {
+        } else if (result) {
             switch (result.data.type) {
                 case OpdsResultType.NavigationFeed:
                     content = (
