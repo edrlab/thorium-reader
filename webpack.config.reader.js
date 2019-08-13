@@ -116,7 +116,10 @@ let config = Object.assign({}, {
     devServer: {
         contentBase: __dirname,
         hot: true,
-        watchContentBase: true
+        watchContentBase: true,
+        watchOptions: {
+            ignored: ['dist', 'docs', 'external-assets', 'resources', 'scripts', 'test', 'node_modules']
+        },
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -145,6 +148,9 @@ if (nodeEnv !== "production") {
             },
             hot: true,
             watchContentBase: true,
+            watchOptions: {
+                ignored: ['dist', 'docs', 'external-assets', 'resources', 'scripts', 'test', 'node_modules']
+            },
             port,
         },
     });
