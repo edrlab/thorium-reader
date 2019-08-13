@@ -4,7 +4,7 @@
 
 TravisCI, `develop` branch:
 
-[![Build Status](https://travis-ci.org/edrlab/readium-desktop.svg?branch=master)](https://travis-ci.org/edrlab/readium-desktop)
+[![Build Status](https://travis-ci.org/readium/readium-desktop.svg?branch=master)](https://travis-ci.org/readium/readium-desktop)
 
 ## Prerequisites
 
