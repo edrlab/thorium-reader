@@ -62,6 +62,9 @@
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {
+      "file-selector": [
+        "src/typings/noop.d.ts"
+      ],
       "readium-desktop/*": ["./src/*"],
       "test/*": ["./test/*"],
       "@r2-utils-js/*": [

@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import * as ping from "ping";
-import { delay, SagaIterator } from "redux-saga";
-import { call, put, select, take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
+import { call, delay, put, select, take } from "redux-saga/effects";
 
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { appActions, netActions } from "readium-desktop/main/redux/actions";

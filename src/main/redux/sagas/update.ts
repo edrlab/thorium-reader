@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { delay, SagaIterator } from "redux-saga";
-import { call, put, take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
+import { call, delay, put, take } from "redux-saga/effects";
 
 import { httpGet } from "readium-desktop/common/utils/http";
 
