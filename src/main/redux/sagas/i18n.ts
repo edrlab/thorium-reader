@@ -29,6 +29,6 @@ export function* localeWatcher() {
 
 export function* watchers() {
     yield all([
-        localeWatcher(),
+        call(localeWatcher),
     ]);
 }

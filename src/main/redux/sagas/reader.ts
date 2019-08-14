@@ -427,13 +427,13 @@ export function* readerDetachRequestWatcher(): SagaIterator {
 
 export function* watchers() {
     yield all([
-        readerBookmarkSaveRequestWatcher(),
-        readerCloseRequestWatcher(),
-        readerConfigInitWatcher(),
-        readerConfigSetRequestWatcher(),
-        readerOpenRequestWatcher(),
-        readerFullscreenRequestWatcher(),
-        readerDetachRequestWatcher(),
-        closeReaderFromPublicationWatcher(),
+        call(readerBookmarkSaveRequestWatcher),
+        call(readerCloseRequestWatcher),
+        call(readerConfigInitWatcher),
+        call(readerConfigSetRequestWatcher),
+        call(readerOpenRequestWatcher),
+        call(readerFullscreenRequestWatcher),
+        call(readerDetachRequestWatcher),
+        call(closeReaderFromPublicationWatcher),
     ]);
 }
