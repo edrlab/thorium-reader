@@ -205,6 +205,11 @@ declare namespace typed_i18n {
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
     readonly "goSubBook": string
+  },
+  readonly "network": {
+    readonly "error": string,
+    readonly "reject": string,
+    readonly "timeout": string
   }
 };
   (_: "opds.addForm", __?: {}): {
@@ -238,6 +243,14 @@ declare namespace typed_i18n {
   (_: "opds.menu.goBuyBook", __?: {}): string;
   (_: "opds.menu.goLoanBook", __?: {}): string;
   (_: "opds.menu.goSubBook", __?: {}): string;
+  (_: "opds.network", __?: {}): {
+  readonly "error": string,
+  readonly "reject": string,
+  readonly "timeout": string
+};
+  (_: "opds.network.error", __?: {}): string;
+  (_: "opds.network.reject", __?: {}): string;
+  (_: "opds.network.timeout", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "deleteButton": string,
   readonly "expiredLcp": string,

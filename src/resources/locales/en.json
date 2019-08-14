@@ -111,7 +111,7 @@
         "addMenu": "Add OPDS feed",
         "back": "Back",
         "breadcrumbRoot": "Catalogs",
-        "empty": "",
+        "empty": "No publication found",
         "menu": {
             "aboutBook": "About this book",
             "addExtract": "Import the extract",
@@ -119,6 +119,11 @@
             "goBuyBook": "Buy this book",
             "goLoanBook": "Borrow this book",
             "goSubBook": "Subscribe"
+        },
+        "network": {
+            "error": "Unable to access to opds feed",
+            "reject": "An error has occurred",
+            "timeout": "The opds feed takes time to get back, reload the page"
         }
     },
     "publication": {

@@ -16,9 +16,8 @@ import {
     THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
 
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-import Empty from "./Empty";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 
@@ -26,10 +25,11 @@ import Loader from "readium-desktop/renderer/components/utils/Loader";
 
 import * as qs from "qs";
 import { parseQueryString } from "readium-desktop/utils/url";
+import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
-    result?: THttpGetOpdsResultView;
+    result?: THttpGetOpdsResultView | string;
     resultIsReject?: boolean;
     cleanData: any;
     requestOnLoadData: any;
@@ -52,36 +52,43 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     }
 
     public render(): React.ReactElement<{}>  {
-        const { result, resultIsReject } = this.props;
+        const { result, resultIsReject, __ } = this.props;
         let content = (<Loader/>);
-        if (result) {
-            if (resultIsReject) {
-                // err modal
-            } else if (result.isSuccess) {
+        if (typeof result === "string" && resultIsReject) {
+            content = (
+                <MessageOpdBrowserResult title={__("opds.network.reject")} message={result} />
+            );
+        } else if (typeof result === "object" && result) {
+            if (result.isSuccess) {
                 switch (result.data.type) {
                     case OpdsResultType.NavigationFeed:
                         content = (
-                            <EntryList entries={ result.data.navigation } />
+                            <EntryList entries={result.data.navigation} />
                         );
                         break;
                     case OpdsResultType.PublicationFeed:
                         content = (
-                            <EntryPublicationList publications={ result.data.publications } />
+                            <EntryPublicationList publications={result.data.publications} />
                         );
                         break;
                     case OpdsResultType.Empty:
-                        // TRANSLATE
                         content = (
-                            <Empty />
+                            <MessageOpdBrowserResult title={__("opds.empty")} />
                         );
                         break;
                     default:
                         break;
                 }
             } else if (result.isTimeout) {
-                // modal timeout
+                content = (
+                    <MessageOpdBrowserResult title={__("opds.network.timeout")} />
+                );
             } else {
-                // modal err page with status code
+                content = (
+                    <MessageOpdBrowserResult
+                        title={`${__("opds.network.error")}${result.statusCode} ${result.statusMessage}`}
+                    />
+                );
             }
         }
 
@@ -89,18 +96,18 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     }
 
     private browseOpds() {
-        const {url, location, result, browse} = this.props;
+        const { url, location, result, browse } = this.props;
         const oldQs = parseQueryString(url.split("?")[1]);
         const search = qs.parse(location.search.replace("?", "")).search;
         let newUrl = url;
-        if (search && result && result.isSuccess && result.data.searchUrl) {
+        if (search && result && typeof result === "object" && result.isSuccess && result.data.searchUrl) {
             newUrl = result.data.searchUrl;
             newUrl = this.addSearchTerms(newUrl, search) +
                 Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
         }
         this.currentUrl = newUrl;
         this.props.cleanData();
-        browse({url: newUrl});
+        browse({ url: newUrl });
     }
 
     private addSearchTerms(url: string, search: string) {
@@ -128,7 +135,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     }
 }
 
-export default withApi(
+export default withTranslator(withApi(
     withRouter(BrowserResult),
     {
         operations: [
@@ -141,4 +148,4 @@ export default withApi(
             },
         ],
     },
-);
+));

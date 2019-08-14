@@ -5,28 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { inject, injectable} from "inversify";
-
+import * as debug_ from "debug";
+import { inject, injectable } from "inversify";
+import { httpGet } from "readium-desktop/common/utils/http";
+import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
+import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
+import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { JSON as TAJSON } from "ta-json-x";
-
 import * as xmldom from "xmldom";
 
-import {
-    convertOpds1ToOpds2,
-} from "@r2-opds-js/opds/converter";
-
+import { convertOpds1ToOpds2 } from "@r2-opds-js/opds/converter";
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
-
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
-import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
-
-import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
-
-import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
-
-import { httpGet } from "readium-desktop/common/utils/http";
+// Logger
+const debug = debug_("readium-desktop:src/main/api/opds");
 
 @injectable()
 export class OpdsApi {
@@ -67,13 +61,19 @@ export class OpdsApi {
     public async browse(data: any): Promise<THttpGetOpdsResultView> {
         const { url } = data;
         return await httpGet(url, {
-            timeout: 5000,
+            timeout: 10000,
         }, async (opdsFeedData) => {
             // let opds2Publication: OPDSPublication = null;
             let opds2Feed: OPDSFeed = null;
 
             if (opdsFeedData.isFailure) {
                 return opdsFeedData;
+            }
+
+            debug("opdsFeed content-type", opdsFeedData.contentType);
+            if (!opdsFeedData.contentType.startsWith("application/json") &&
+                !opdsFeedData.contentType.startsWith("application/atom+xml")) {
+                throw new Error("bad content-type");
             }
 
             // This is an opds feed in version 1

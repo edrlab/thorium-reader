@@ -22,6 +22,7 @@ export interface IHttpGetResult<TBody, TData> {
     readonly url: string | Url;
     readonly responseUrl?: string;
     readonly statusCode?: number;
+    readonly statusMessage?: string;
     readonly contentType?: string;
     readonly body?: TBody;
     data?: TData;
@@ -91,6 +92,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
                     url: opt.url,
                     responseUrl: response.url,
                     statusCode: response.statusCode,
+                    statusMessage: response.statusMessage,
                     body: response.body,
                     data: callback ? undefined : response.body,
                     contentType: response.caseless.get("Content-Type"),

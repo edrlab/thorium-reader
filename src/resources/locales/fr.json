@@ -111,7 +111,7 @@
         "addMenu": "Ajouter un flux OPDS",
         "back": "Retour",
         "breadcrumbRoot": "Catalogues",
-        "empty": "",
+        "empty": "Aucune publication trouvées",
         "menu": {
             "aboutBook": "Fiche livre",
             "addExtract": "Importer",
@@ -119,6 +119,11 @@
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
             "goSubBook": "Aller sur la page d'abonnement"
+        },
+        "network": {
+            "error": "Impossible d'accéder au flux opds",
+            "reject": "Une érreur est survenue",
+            "timeout": "Le flux opds met du temps à répondre, rechargez la page"
         }
     },
     "publication": {
