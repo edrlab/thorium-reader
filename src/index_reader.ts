@@ -81,6 +81,9 @@ function render() {
 
 store.subscribe(() => {
     const state = store.getState();
+    if (state.i18n && state.i18n.locale) {
+        document.documentElement.setAttribute("lang", state.i18n.locale);
+    }
 
     if (!hasBeenRenderered && state.win.status === WinStatus.Initialized) {
         render();
