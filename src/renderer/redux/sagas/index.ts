@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { all } from "redux-saga/effects";
+import { all, call } from "redux-saga/effects";
 
 import { winInitWatcher } from "./win";
 
@@ -16,11 +16,11 @@ import * as opds from "./opds";
 
 export function* rootSaga() {
     yield all([
-        i18n.watchers(),
+        call(i18n.watchers),
 
-        lcp.watchers(),
-        opds.watchers(),
+        call(lcp.watchers),
+        call(opds.watchers),
 
-        winInitWatcher(),
+        call(winInitWatcher),
     ]);
 }

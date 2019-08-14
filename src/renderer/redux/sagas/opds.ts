@@ -9,7 +9,7 @@ import { SagaIterator } from "redux-saga";
 
 import { LOCATION_CHANGE } from "connected-react-router";
 
-import { all, put, take } from "redux-saga/effects";
+import { all, call, put, take } from "redux-saga/effects";
 
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
@@ -29,6 +29,6 @@ export function* browseWatcher(): SagaIterator {
 
 export function* watchers() {
     yield all([
-        browseWatcher(),
+        call(browseWatcher),
     ]);
 }
