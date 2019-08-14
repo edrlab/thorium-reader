@@ -5,6 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+/**
+ * formating opds browser route to react-router route
+ * @param rootFeedIdentifier identifier from opdsId IOpdsBrowse react-router
+ * @param title title of opds feed
+ * @param url url of the current access ressource (Navigation or Publication)
+ * @param level current level of last url,
+ *  ex: catalog/fb/free-books/last from breadcrumb = level 3
+ */
 export function buildOpdsBrowserRoute(
     rootFeedIdentifier: string,
     title: string,
