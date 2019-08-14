@@ -33,9 +33,9 @@ type THttpGetCallback<T1, T2> =
 /**
  * @param url url of your GET request
  * @param options request options
+ * @param callback callback to set data from body
  * @returns body of url response. 'String' type returned in many cases except for options.json = true
  */
-// tslint:disable-next-line: max-line-length
 export async function httpGet<TBody extends JsonMap | string = string , TData = string>(
     url: string,
     options?: TRequestCoreOptionsOptionalUriUrl,
