@@ -29,7 +29,6 @@ import { parseQueryString } from "readium-desktop/utils/url";
 
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
-    search?: string;
     result?: THttpGetOpdsResultView;
     resultIsReject?: boolean;
     cleanData: any;

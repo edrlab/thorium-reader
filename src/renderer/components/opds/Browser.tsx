@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
@@ -22,6 +23,9 @@ import BreadCrumb, { BreadCrumbItem } from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
 import Header from "./Header";
 
+// Logger
+const debug = debug_("readium-desktop:src/renderer/components/opds/browser");
+
 interface Props extends RouteComponentProps<IOpdsBrowse>, TranslatorProps {
     navigation: OpdsLinkView[];
 }
@@ -29,13 +33,11 @@ interface Props extends RouteComponentProps<IOpdsBrowse>, TranslatorProps {
 export class Browser extends React.Component<Props> {
     public render(): React.ReactElement<Props>  {
         const breadcrumb = this.buildBreadcrumb();
-        let url: string;
-        let search: string;
+        let url: string | undefined;
 
         if (this.props.navigation.length > 0) {
-            const link = this.props.navigation[this.props.navigation.length - 1];
-            search = (this.props.match.params as any).search;
-            url = link.url;
+            // get the last link from navigation array print in breadcrumb
+            url = this.props.navigation[this.props.navigation.length - 1].url;
         }
 
         const secondaryHeader = <Header/>;
@@ -44,7 +46,7 @@ export class Browser extends React.Component<Props> {
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search} />
                 {url &&
-                    <BrowserResult url={url} search={search} />
+                    <BrowserResult url={url} />
                 }
             </LibraryLayout>
         );
