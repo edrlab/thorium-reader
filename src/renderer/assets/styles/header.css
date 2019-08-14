@@ -30,7 +30,7 @@
 	padding-bottom:18px;
 	padding-top:18px;
 	font-weight: 600;
-	color:#c1c1c1;
+	color: var(--disabled-color);
 	cursor: pointer;
 }
 
