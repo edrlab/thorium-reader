@@ -66,7 +66,9 @@ export class OpdsApi {
 
     public async browse(data: any): Promise<THttpGetOpdsResultView> {
         const { url } = data;
-        return await httpGet(url, {}, async (opdsFeedData) => {
+        return await httpGet(url, {
+            timeout: 5000,
+        }, async (opdsFeedData) => {
             // let opds2Publication: OPDSPublication = null;
             let opds2Feed: OPDSFeed = null;
 

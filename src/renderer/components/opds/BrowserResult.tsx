@@ -31,6 +31,7 @@ interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
     search?: string;
     result?: THttpGetOpdsResultView;
+    resultIsReject?: boolean;
     cleanData: any;
     requestOnLoadData: any;
     browse?: any;
@@ -38,41 +39,50 @@ interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
 
 export class BrowserResult extends React.Component<BrowserResultProps, null> {
     private currentUrl: string;
+
     public componentDidMount() {
         this.browseOpds();
     }
+
     public componentDidUpdate(prevProps: BrowserResultProps) {
-        if (prevProps.url !== this.props.url || prevProps.location.search !== this.props.location.search) {
+        if (prevProps.url !== this.props.url ||
+            prevProps.location.search !== this.props.location.search) {
             // New url to browse
             this.browseOpds();
         }
     }
 
     public render(): React.ReactElement<{}>  {
-        const { result } = this.props;
+        const { result, resultIsReject } = this.props;
         let content = (<Loader/>);
-        if (result && result.isFailure) {
-            // browse error
-        } else if (result) {
-            switch (result.data.type) {
-                case OpdsResultType.NavigationFeed:
-                    content = (
-                        <EntryList entries={ result.data.navigation } />
-                    );
-                    break;
-                case OpdsResultType.PublicationFeed:
-                    content = (
-                        <EntryPublicationList publications={ result.data.publications } />
-                    );
-                    break;
-                case OpdsResultType.Empty:
-                    // TRANSLATE
-                    content = (
-                        <Empty />
-                    );
-                    break;
-                default:
-                    break;
+        if (result) {
+            if (resultIsReject) {
+                // err modal
+            } else if (result.isSuccess) {
+                switch (result.data.type) {
+                    case OpdsResultType.NavigationFeed:
+                        content = (
+                            <EntryList entries={ result.data.navigation } />
+                        );
+                        break;
+                    case OpdsResultType.PublicationFeed:
+                        content = (
+                            <EntryPublicationList publications={ result.data.publications } />
+                        );
+                        break;
+                    case OpdsResultType.Empty:
+                        // TRANSLATE
+                        content = (
+                            <Empty />
+                        );
+                        break;
+                    default:
+                        break;
+                }
+            } else if (result.isTimeout) {
+                // modal timeout
+            } else {
+                // modal err page with status code
             }
         }
 
@@ -127,6 +137,7 @@ export default withApi(
                 moduleId: "opds",
                 methodId: "browse",
                 resultProp: "result",
+                resultIsRejectProp: "resultIsReject",
                 callProp: "browse",
             },
         ],
