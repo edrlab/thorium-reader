@@ -272,6 +272,7 @@
     "postcss-loader": "^3.0.0",
     "postcss-mixins": "^6.2.2",
     "pouchdb-adapter-memory": "^7.1.1",
+    "react-axe": "^3.2.0",
     "react-hot-loader": "3.*.*",
     "react-svg-loader": "^3.0.3",
     "redux-devtools-extension": "^2.13.8",
