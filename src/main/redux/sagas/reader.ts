@@ -145,7 +145,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
     readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
 
     if (IS_DEV) {
-        readerWindow.webContents.openDevTools();
+        readerWindow.webContents.openDevTools({ mode: "detach" });
     }
 
     setMenu(readerWindow);
