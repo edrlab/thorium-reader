@@ -71,9 +71,9 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
         },
     );
 
-    const result = await (async (opt): Promise<IHttpGetResult<TBody, TData>> =>
-        new Promise((resolve, reject) => {
-            request(opt, (err, response) => {
+    const result: IHttpGetResult<TBody, TData> =
+        await new Promise((resolve, reject) => {
+            request(requestOptions, (err, response) => {
                 if (err) {
                     if (err.code === "ETIMEDOUT") {
                         resolve({
@@ -81,7 +81,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
                             timeoutConnect: err.connect,
                             isFailure: true,
                             isSuccess: false,
-                            url: opt.url,
+                            url: requestOptions.url,
                         });
                     }
                     reject(err);
@@ -91,7 +91,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
                     isTimeout: false,
                     isFailure: response.statusCode < 200 || response.statusCode >= 300,
                     isSuccess: response.statusCode >= 200 && response.statusCode < 300,
-                    url: opt.url,
+                    url: requestOptions.url,
                     responseUrl: response.url,
                     statusCode: response.statusCode,
                     statusMessage: response.statusMessage,
@@ -100,7 +100,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
                     contentType: response.caseless.get("Content-Type"),
                 });
             });
-        }))(requestOptions);
+        });
 
     if (callback) {
         return (await Promise.all([callback(result)]))[0];
