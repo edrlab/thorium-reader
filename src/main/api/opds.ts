@@ -72,6 +72,7 @@ export class OpdsApi {
 
             debug("opdsFeed content-type", opdsFeedData.contentType);
             if (!opdsFeedData.contentType.startsWith("application/json") &&
+                !opdsFeedData.contentType.startsWith("application/opds+json") &&
                 !opdsFeedData.contentType.startsWith("application/atom+xml")) {
                 throw new Error("bad content-type");
             }
