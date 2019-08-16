@@ -60,11 +60,12 @@ if (_VSCODE_LAUNCH === "true") {
 debug(process.versions);
 
 function main() {
-    initSessions();
 
     if (lockInstance()) {
         return ;
     }
+
+    initSessions();
 
     // Quit when all windows are closed.
     app.on("window-all-closed", () => {
