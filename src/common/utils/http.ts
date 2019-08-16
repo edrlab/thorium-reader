@@ -20,6 +20,7 @@ export interface IHttpGetResult<TBody, TData> {
     readonly isSuccess: boolean;
     readonly isTimeout: boolean;
     readonly url: string | Url;
+    readonly timeoutConnect?: boolean;
     readonly responseUrl?: string;
     readonly statusCode?: number;
     readonly statusMessage?: string;
@@ -77,6 +78,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
                     if (err.code === "ETIMEDOUT") {
                         resolve({
                             isTimeout: true,
+                            timeoutConnect: err.connect,
                             isFailure: true,
                             isSuccess: false,
                             url: opt.url,

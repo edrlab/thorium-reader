@@ -89,7 +89,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
                         title={`${__("opds.network.error")}${result.statusCode} ${result.statusMessage}`}
                     />
                 );
-            }
+        }
         }
 
         return content;
