@@ -51,9 +51,9 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
         }
     }
 
-    public render(): React.ReactElement<{}>  {
+    public render(): React.ReactElement<{}> {
         const { result, resultIsReject, __ } = this.props;
-        let content = (<Loader/>);
+        let content = (<Loader />);
         if (typeof result === "string" && resultIsReject) {
             content = (
                 <MessageOpdBrowserResult title={__("opds.network.reject")} message={result} />
@@ -89,7 +89,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
                         title={`${__("opds.network.error")}${result.statusCode} ${result.statusMessage}`}
                     />
                 );
-        }
+            }
         }
 
         return content;
