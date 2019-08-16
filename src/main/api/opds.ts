@@ -74,7 +74,8 @@ export class OpdsApi {
             if (!opdsFeedData.contentType.startsWith("application/json") &&
                 !opdsFeedData.contentType.startsWith("application/opds+json") &&
                 !opdsFeedData.contentType.startsWith("application/atom+xml")) {
-                throw new Error("bad content-type");
+                throw new Error(`Not a valid OPDS HTTP Content-Type:
+                    ${opdsFeedData.url} => ${opdsFeedData.contentType}`);
             }
 
             // This is an opds feed in version 1
