@@ -116,7 +116,7 @@
                 background-color: #417dc7;
             }
             &:disabled {
-                background-color: #ADAEAE;
+                background-color: var(--disabled-color);
                 cursor: not-allowed;
             }
         }

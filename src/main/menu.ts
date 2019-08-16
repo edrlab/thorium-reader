@@ -90,6 +90,22 @@ function devMenu(win?: BrowserWindow): Electron.MenuItemConstructorOptions {
                     }
                 },
             },
+            {
+                type: "separator",
+            },
+            {
+                label: "INJECT AXE A11Y CHECKER",
+                accelerator: "Shift+Alt+CmdOrCtrl+A",
+                click: (_item: any, _focusedWindow: any) => {
+                    const arr = BrowserWindow.getAllWindows();
+                    arr.forEach((bww) => {
+                        bww.webContents.openDevTools({ mode: "detach" });
+                        setTimeout(() => {
+                            bww.webContents.send("AXE_A11Y", {});
+                        }, 300);
+                    });
+                },
+            },
         ],
     };
 }

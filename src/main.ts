@@ -55,6 +55,7 @@ if (_VSCODE_LAUNCH === "true") {
 } else {
     cli(main);
 }
+debug(process.versions);
 
 function main() {
     initSessions();

@@ -78,6 +78,7 @@ export class ToastManager extends React.Component<Props, State> {
         const { __ } = this.props;
         return (
             <Toast
+                key={id}
                 message={__(toast.data.message, toast.data.messageProps)}
                 icon={ DownloadIcon }
                 close={ () => this.close(id) }
@@ -90,6 +91,7 @@ export class ToastManager extends React.Component<Props, State> {
         const { __ } = this.props;
         return (
             <Toast
+                key={id}
                 message={__(toast.data.message, toast.data.messageProps)}
                 icon={ DownloadIcon }
                 close={ () => this.close(id) }
