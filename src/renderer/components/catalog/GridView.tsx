@@ -95,7 +95,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                         }
 
                         </section>
-                    ) : <></>;
+                    ) : <div key={ EntryIndex } aria-hidden="true" style={{display: "none"}}></div>;
                 })}
                 { this.state.tabTags.length > 0 &&
                     <TagLayout
