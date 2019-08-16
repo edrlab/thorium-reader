@@ -282,9 +282,9 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
 
 export function* watchers() {
     yield all([
-        stopRequestWatcher(),
-        startRequestWatcher(),
-        publicationOpenRequestWatcher(),
-        publicationCloseRequestWatcher(),
+        call(stopRequestWatcher),
+        call(startRequestWatcher),
+        call(publicationOpenRequestWatcher),
+        call(publicationCloseRequestWatcher),
     ]);
 }

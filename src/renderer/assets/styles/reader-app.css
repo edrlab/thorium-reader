@@ -668,7 +668,7 @@ p.chapters_description {
     height: 70px;
     display: block;
     margin: auto;
-    fill: grey;
+    fill: #757575;
     padding-bottom: 5px;
     padding-right: 5px;
   }
@@ -682,10 +682,10 @@ p.chapters_description {
   }
 
   & .active {
-    color: rgb(59, 59, 59);;
+    color: black;
 
     & svg {
-      fill: rgb(59, 59, 59);;
+      fill: black;
     }
   }
 
@@ -699,9 +699,14 @@ p.chapters_description {
   }
 
   & .disable {
-    fill: grey;
-    color: grey;
+    fill: var(--disabled-color);
+    color: var(--disabled-color);
     cursor: default;
+  }
+
+  & .notUsed {
+    fill: var(--disabled-color);
+    color: var(--disabled-color);
   }
 
   & li {
@@ -843,7 +848,7 @@ input[type=radio] + label {
       }
 
       & svg {
-        fill: #C1C1C1;
+        fill: #C1C1C1;;
       }
     }
 

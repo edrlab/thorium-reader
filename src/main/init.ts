@@ -175,8 +175,7 @@ const winCloseCallback = (appWindow: AppWindow) => {
         // Library window is hidden
         // There is no more opened window
         // Consider that we close application
-        Object.values(appWindows)[0].win.close();
-
+        appWin.win.close();
     }
 };
 

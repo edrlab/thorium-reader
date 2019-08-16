@@ -63,7 +63,7 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
     }
 
     public render(): React.ReactElement<{}>  {
-        const { publication, translator } = this.props;
+        const { __, publication, translator } = this.props;
         const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
         const MenuContent = this.props.menuContent;
 
@@ -84,10 +84,10 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                 </div>
                 <div className={styles.legend}>
                     <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
-                        <p className={styles.book_title} aria-label="Titre du livre">
+                        <p className={styles.book_title} aria-label={__("accessibility.bookTitle")}>
                             { this.truncateTitle(publication.title) }
                         </p>
-                        <p className={styles.book_author} aria-label="Auteur du livre">
+                        <p className={styles.book_author} aria-label={__("accessibility.bookAuthor")}>
                             {authors}
                         </p>
                     </a>

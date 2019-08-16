@@ -34,9 +34,9 @@ export class SortMenu extends React.Component<SortMenuProps, SortMenuState> {
             const { __ } = this.props;
             return (
                     <div id={style.sortType}>
-                        <button
+                        <button role="menuitem"
                         onClick={this.props.onClickAlphaSort}> A-Z </button>
-                        <button
+                        <button role="menuitem"
                         onClick={this.props.onClickCountSort}> { __("catalog.tagCount") } </button>
                     </div>
             );

@@ -17,7 +17,6 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-import * as qs from "qs";
 import { parseQueryString } from "readium-desktop/utils/url";
 import SearchForm from "./SearchForm";
 
@@ -41,15 +40,15 @@ export class Header extends React.Component<HeaderProps, undefined> {
                 { this.props.displayType &&
                     <>
                         <Link
-                            to={{search: "?" + qs.stringify(Object.assign(search, {displayType: "grid"})) }}
-                            style={(this.props.displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
+                            to={{search: "displayType=grid"}}
+                            style={(this.props.displayType !== DisplayType.Grid) ? {fill: "#767676"} : {}}
                         >
                             <SVG svg={GridIcon} title={__("header.gridTitle")}/>
                         </Link>
                         <Link
-                            to={{search: "?" + qs.stringify(Object.assign(search, {displayType: "list"})) }}
+                            to={{search: "displayType=list"}}
                             style={this.props.displayType !== DisplayType.List ?
-                                {fill: "grey", marginLeft: "16px"} : {marginLeft: "16px"}}
+                                {fill: "#757575", marginLeft: "16px"} : {marginLeft: "16px"}}
                         >
                             <SVG svg={ListIcon} title={__("header.listTitle")}/>
                         </Link>
