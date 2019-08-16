@@ -14,6 +14,7 @@ export function lockInstance() {
 
     if (!gotTheLock) {
         app.quit();
+        return true;
     } else {
         app.on("second-instance", () => {
             // Someone tried to run a second instance, we should focus our window.
@@ -28,4 +29,5 @@ export function lockInstance() {
             }
         });
     }
+    return false;
 }

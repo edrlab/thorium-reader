@@ -62,7 +62,9 @@ debug(process.versions);
 function main() {
     initSessions();
 
-    lockInstance();
+    if (lockInstance()) {
+        return ;
+    }
 
     // Quit when all windows are closed.
     app.on("window-all-closed", () => {
