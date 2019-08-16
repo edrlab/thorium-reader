@@ -20,7 +20,7 @@ export function lockInstance() {
             // Someone tried to run a second instance, we should focus our window.
 
             const winRegistry = container.get("win-registry") as WinRegistry;
-            const win = winRegistry.getWindow(0);
+            const win = winRegistry.getWindow(1);
             if (win && win.win) {
                 if (win.win.isMinimized()) {
                     win.win.restore();
