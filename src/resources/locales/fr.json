@@ -139,13 +139,13 @@
         },
         "marks": {
             "annotations": "Annotations",
-            "bookmarks": "marque pages",
+            "bookmarks": "Marque-pages",
             "illustrations": "Table des Illustrations",
             "toc": "Table des matières "
         },
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",
-            "bookmarkTitle": "marque page",
+            "bookmarkTitle": "marque-page",
             "detachWindowTitle": "détacher la fenêtre",
             "fullscreenTitle": "mode plein écran",
             "infoTitle": "informations",
