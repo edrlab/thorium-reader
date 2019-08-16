@@ -45,12 +45,12 @@ class CatalogMenu extends React.Component<Props, State> {
         const { __ } = this.props;
         return (
             <>
-                <button
+                <button role="menuitem"
                     onClick={this.displayPublicationInfo }
                 >
                     { __("catalog.bookInfo")}
                 </button>
-                <button
+                <button role="menuitem"
                     onClick={ this.deletePublication }
                 >
                     { __("catalog.delete")}

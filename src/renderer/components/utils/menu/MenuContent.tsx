@@ -48,6 +48,8 @@ export default class MenuContent extends React.Component<MenuContentProps, undef
                         style={this.props.menuStyle}
                         id={this.props.id}
                         aria-hidden={!this.props.open}
+                        role="menu"
+                        aria-expanded={this.props.open}
                         ref={(ref) => setContentRef && setContentRef(ref)}
                     >
                         {this.props.children}
