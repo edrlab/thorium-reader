@@ -5,26 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as qs from "qs";
 import * as React from "react";
-
 import { RouteComponentProps, withRouter } from "react-router-dom";
-
+import { OpdsResultType, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
+import { TOpdsBrowseApi } from "readium-desktop/main/api/opds";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
-
+import Loader from "readium-desktop/renderer/components/utils/Loader";
 import {
-    OpdsResultType,
-    THttpGetOpdsResultView,
-} from "readium-desktop/common/views/opds";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/translator";
+import { parseQueryString } from "readium-desktop/utils/url";
 
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
-
-import Loader from "readium-desktop/renderer/components/utils/Loader";
-
-import * as qs from "qs";
-import { parseQueryString } from "readium-desktop/utils/url";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
@@ -33,7 +27,7 @@ interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     resultIsReject?: boolean;
     cleanData: any;
     requestOnLoadData: any;
-    browse?: any;
+    browse?: TOpdsBrowseApi;
 }
 
 export class BrowserResult extends React.Component<BrowserResultProps, null> {
