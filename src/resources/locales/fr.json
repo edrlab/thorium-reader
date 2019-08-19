@@ -1,14 +1,12 @@
 {
     "accessibility": {
-        "bookAuthor": "Auteur du livre",
-        "bookPublisher": "Editeur du livre",
-        "bookReleaseDate": "Date de sortie du livre",
-        "bookTitle": "Titre du livre",
         "closeDialog": "Fermer",
         "homeMenu": "Menu principal",
         "importFile": "Importer un fichier epub",
         "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
-        "skipLink": "Aller au contenu"
+        "skipLink": "Aller au contenu",
+        "rightSlideButton": "Faire défiler la liste vers la droite",
+        "leftSlideButton": "Faire défiler la liste vers la gauche"
     },
     "app": {
         "edit": {
