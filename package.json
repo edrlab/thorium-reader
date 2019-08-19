@@ -17,7 +17,7 @@
     "__postinstall": "npm rebuild --runtime=electron --target=3.1.7 --disturl=https://atom.io/download/atom-shell --build-from-source",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
     "build:prod": "npm run lint && npm run build",
-    "build:dev:main": "webpack --config webpack.config.main.js && webpack --config webpack.config.preload.js",
+    "build:dev:main": "webpack --config webpack.config.main.js",
     "start": "npm run build:prod && cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "lint:ts": "tslint --project tsconfig.json -c tslint.json './src/**/*.ts' './src/**/*.tsx' './test/**/*.ts' './test/**/*.tsx'",
     "lint:editorconfig": "eclint check '**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.ts'",
