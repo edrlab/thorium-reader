@@ -162,4 +162,4 @@ https://github.com/readium/readium-desktop/tree/develop/src/resources/locales
 
 * `npm run i18n-sort` => ensure locales JSON files are "canonical" (sorted keys, consistent indentation and last-line-break syntax)
 * `npm run i18n-scan` => ensure locales JSON files have no missing keys and redundant/unused keys (this comnmand scans the source code for well-known `i18next` usage patterns)
-* `npm run i18n-scan` => rebuilds the TypeScript types for the locales JSON files (which enables static compiler checks)
+* `npm run i18n-typed` => rebuilds the TypeScript types for the locales JSON files (which enables static compiler checks)
