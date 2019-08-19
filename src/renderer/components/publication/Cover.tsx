@@ -43,7 +43,7 @@ export default class Cover extends React.Component<ICoverProps, null> {
                 };
             }
             const backgroundStyle = {
-                backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`;
+                backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
             };
 
             return (
