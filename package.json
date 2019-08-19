@@ -29,7 +29,7 @@
     "start:dev:main": "npm run build:dev:main && npm run start:dev:main:electron",
     "start:devex": "cross-env WEBPACK=bundle-external npm run start:dev",
     "start:dev": "cross-env DEBUG_COLORS=true concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:reader\" \"npm run start:dev:main\"",
-    "vscode:launch:attach:electron": "electron --enable-loggingxx --inspect=25575 --debug-brk --nolazyxx .",
+    "vscode:launch:attach:electron": "electron --enable-logging --remote-debugging-port=9223 --inspect=25575 --debug-brk --nolazyxx .",
     "vscode:launch:attach": "cross-env DEBUG=r2:*,readium-desktop:* NODE_ENV=development VSCODE_LAUNCH=true npm run build:dev:main && concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:reader\" \"npm run vscode:launch:attach:electron\"",
     "vscode:launch:hot": "cross-env DEBUG=r2:*,readium-desktop:* NODE_ENV=development VSCODE_LAUNCH=true npm run build:dev:main && concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:reader\"",
     "package:build": "cross-env PACKAGING=1 npm run build:prod",

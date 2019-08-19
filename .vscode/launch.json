@@ -29,17 +29,37 @@
       "windows": {
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
       },
+      "protocol": "inspector",
       "runtimeArgs": [
+        "--remote-debugging-port=9223",
         "--enable-logging"
       ]
     },
     {
-      "name": "LAUNCH ATTACH",
+      "name": "LAUNCH ATTACH - MAIN",
       "preLaunchTask": "launch:attach",
       "timeout": 30000,
       "type": "node",
       "request": "attach",
-      "port": 25575
+      "port": 25575,
+      "protocol": "inspector",
+    },
+    {
+        "name": "LAUNCH ATTACH - RENDERER",
+        "timeout": 40000,
+        "type": "chrome",
+        "request": "attach",
+        "port": 9223,
+        "webRoot": "${workspaceFolder}/dist",
     }
+  ],
+  "compounds": [
+      {
+          "name": "LAUNCH ATTACH - ALL",
+          "configurations": [
+              "LAUNCH ATTACH - MAIN",
+              "LAUNCH ATTACH - RENDERER"
+          ]
+      }
   ]
 }
