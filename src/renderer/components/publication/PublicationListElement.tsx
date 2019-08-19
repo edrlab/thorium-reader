@@ -69,7 +69,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
         const pub = this.props.publication;
         const formatedPublishers = pub.publishers.join(", ");
         let formatedPublishedYear = "";
-        const { __, translator } = this.props;
+        const { translator } = this.props;
 
         if (pub.publishedAt) {
             formatedPublishedYear = "" + moment(pub.publishedAt).year();
@@ -97,17 +97,14 @@ export class PublicationListElement extends React.Component<PublicationListEleme
                         }
                     >
                         <div className={styles.list_book_title}>
-                        <p className={styles.book_title} aria-label={ __("accessibility.bookTitle")}>{ pub.title }</p>
-                        <p
-                            className={`${styles.book_author} ${styles.lightgrey}`}
-                            aria-label={ __("accessibility.bookAuthor")}
-                        >
+                        <p className={styles.book_title}>{ pub.title }</p>
+                        <p className={`${styles.book_author} ${styles.lightgrey}`}>
                             {pub.authors.map((author) => translator.translateContentField(author)).join(", ")}
                         </p>
                         </div>
-                        <p className={styles.infos_sup} aria-label={ __("accessibility.bookReleaseDate")}>
+                        <p className={styles.infos_sup}>
                         { formatedPublishedYear}</p>
-                        <p className={styles.infos_sup} aria-label={ __("accessibility.bookPublisher")}>
+                        <p className={styles.infos_sup}>
                         { formatedPublishers }</p>
                     </a>
                 </div>

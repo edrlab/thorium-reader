@@ -1,9 +1,5 @@
 {
     "accessibility": {
-        "bookAuthor": "Buchautorin",
-        "bookPublisher": "Buchverlag",
-        "bookReleaseDate": "Buchfreigabedatum",
-        "bookTitle": "Titel des Buches",
         "closeDialog": "Schließen",
         "homeMenu": "Startmenü",
         "importFile": "importieren einer epub-datei",
