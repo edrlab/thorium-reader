@@ -42,7 +42,7 @@ export class OpdsControls extends React.Component<CatalogControlsProps, undefine
                 onClick={() => verifyImport(publication, true)}
                 className={styles.lire}
             >
-                {__("catalog.addTeaserToLib")}
+                {__("opds.menu.addExtract")}
             </button>
         );
     }

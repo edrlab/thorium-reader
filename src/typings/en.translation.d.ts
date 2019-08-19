@@ -52,7 +52,6 @@ declare namespace typed_i18n {
   readonly "about": { readonly "button": string, readonly "title": string },
   readonly "addBookToLib": string,
   readonly "addTags": string,
-  readonly "addTeaserToLib": string,
   readonly "allBooks": string,
   readonly "bookInfo": string,
   readonly "delete": string,
@@ -84,7 +83,6 @@ declare namespace typed_i18n {
   (_: "catalog.about.title", __?: {}): string;
   (_: "catalog.addBookToLib", __?: {}): string;
   (_: "catalog.addTags", __?: {}): string;
-  (_: "catalog.addTeaserToLib", __?: {}): string;
   (_: "catalog.allBooks", __?: {}): string;
   (_: "catalog.bookInfo", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
@@ -201,7 +199,6 @@ declare namespace typed_i18n {
   readonly "menu": {
     readonly "aboutBook": string,
     readonly "addExtract": string,
-    readonly "addTeaser": string,
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
     readonly "goSubBook": string
@@ -227,14 +224,12 @@ declare namespace typed_i18n {
   (_: "opds.menu", __?: {}): {
   readonly "aboutBook": string,
   readonly "addExtract": string,
-  readonly "addTeaser": string,
   readonly "goBuyBook": string,
   readonly "goLoanBook": string,
   readonly "goSubBook": string
 };
   (_: "opds.menu.aboutBook", __?: {}): string;
   (_: "opds.menu.addExtract", __?: {}): string;
-  (_: "opds.menu.addTeaser", __?: {}): string;
   (_: "opds.menu.goBuyBook", __?: {}): string;
   (_: "opds.menu.goLoanBook", __?: {}): string;
   (_: "opds.menu.goSubBook", __?: {}): string;

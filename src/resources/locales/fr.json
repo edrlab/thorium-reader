@@ -27,9 +27,8 @@
             "button": "Plus d'informations",
             "title": "A propos de Thorium"
         },
-        "addBookToLib": "Ajouter à la librairie",
+        "addBookToLib": "Importer",
         "addTags": "Ajouter un tag",
-        "addTeaserToLib": "Ajouter l'extrait à la bibliothèque",
         "allBooks": "Tous les livres",
         "bookInfo": "Fiche livre",
         "delete": "Supprimer",
@@ -114,8 +113,7 @@
         "empty": "",
         "menu": {
             "aboutBook": "Fiche livre",
-            "addExtract": "Importer",
-            "addTeaser": "Importer l'extrait",
+            "addExtract": "Importer l'extrait",
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
             "goSubBook": "Aller sur la page d'abonnement"

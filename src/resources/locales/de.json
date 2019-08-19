@@ -27,9 +27,8 @@
             "button": "",
             "title": ""
         },
-        "addBookToLib": "zur Bibliothek hinzufügen",
+        "addBookToLib": "Import",
         "addTags": "Ein tag hinzufügen",
-        "addTeaserToLib": "den Extrakt zur Bibliothek hinzufügen",
         "allBooks": "alle Bücher",
         "bookInfo": "Über dieses Buch",
         "delete": "Dauerhaft löschen",
@@ -115,7 +114,6 @@
         "menu": {
             "aboutBook": "über dieses Buch",
             "addExtract": "zur Lib hinzufügen",
-            "addTeaser": "Extrakt zur Lib hinzufügen",
             "goBuyBook": "dieses Buch kaufen",
             "goLoanBook": "dieses Buch ausleihen",
             "goSubBook": "abonnieren"

@@ -27,9 +27,8 @@
             "button": "More information",
             "title": "About Thorium"
         },
-        "addBookToLib": "Add the book to the bookshelf",
+        "addBookToLib": "Import",
         "addTags": "Add a tag",
-        "addTeaserToLib": "Add the extract to the bookshelf",
         "allBooks": "All books",
         "bookInfo": "About this book",
         "delete": "Delete",
@@ -115,7 +114,6 @@
         "menu": {
             "aboutBook": "About this book",
             "addExtract": "Import the extract",
-            "addTeaser": "Add the extract to the bookshelf",
             "goBuyBook": "Buy this book",
             "goLoanBook": "Borrow this book",
             "goSubBook": "Subscribe"
