@@ -33,21 +33,22 @@ export class Header extends React.Component<HeaderProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         const search = parseQueryString(this.props.location.search.replace("?", ""));
+        const displayType = search.displayType || DisplayType.Grid;
         delete(search.displayType);
 
         return (
             <SecondaryHeader>
-                { this.props.displayType &&
+                { displayType &&
                     <>
                         <Link
                             to={{search: "displayType=grid"}}
-                            style={(this.props.displayType !== DisplayType.Grid) ? {fill: "#767676"} : {}}
+                            style={(displayType !== DisplayType.Grid) ? {fill: "#767676"} : {}}
                         >
                             <SVG svg={GridIcon} title={__("header.gridTitle")}/>
                         </Link>
                         <Link
                             to={{search: "displayType=list"}}
-                            style={this.props.displayType !== DisplayType.List ?
+                            style={ displayType !== DisplayType.List ?
                                 {fill: "#757575", marginLeft: "16px"} : {marginLeft: "16px"}}
                         >
                             <SVG svg={ListIcon} title={__("header.listTitle")}/>

@@ -44,7 +44,9 @@ export class Browser extends React.Component<Props> {
             url = link.url;
         }
 
-        const secondaryHeader = <Header/>;
+        const parsedResult = parseQueryString(this.props.location.search);
+
+        const secondaryHeader = <Header displayType={parsedResult.displayType}/>;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
