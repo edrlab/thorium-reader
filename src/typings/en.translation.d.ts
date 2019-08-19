@@ -1,10 +1,6 @@
 declare namespace typed_i18n {
   interface TFunction {
   (_: "accessibility", __?: {}): {
-  readonly "bookAuthor": string,
-  readonly "bookPublisher": string,
-  readonly "bookReleaseDate": string,
-  readonly "bookTitle": string,
   readonly "closeDialog": string,
   readonly "homeMenu": string,
   readonly "importFile": string,
