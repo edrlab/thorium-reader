@@ -36,7 +36,6 @@ let externals = {
     "leveldown": "leveldown",
     "fsevents": "fsevents",
     "conf": "conf",
-    "devtron": "devtron"
 }
 if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {
