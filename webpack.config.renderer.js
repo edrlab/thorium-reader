@@ -188,6 +188,9 @@ if (nodeEnv !== "production") {
         ],
     });
 } else {
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^devtron$/ }));
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^react-axe$/ }));
+
     // Minify and uglify in production environment
     //config.plugins.push(new UglifyJsPlugin());
     config.module.rules.push({
