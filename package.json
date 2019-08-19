@@ -12,7 +12,7 @@
   },
   "main": "dist/main.js",
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf release",
     "test": "jest --verbose --runInBand",
     "__postinstall": "npm rebuild --runtime=electron --target=3.1.7 --disturl=https://atom.io/download/atom-shell --build-from-source",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
@@ -20,7 +20,7 @@
     "build:dev:main": "webpack --config webpack.config.main.js && webpack --config webpack.config.preload.js",
     "start": "npm run build:prod && cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "lint:ts": "tslint --project tsconfig.json -c tslint.json './src/**/*.ts' './src/**/*.tsx' './test/**/*.ts' './test/**/*.tsx'",
-    "lint:editorconfig": "eclint check '**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.ts'",
+    "lint:editorconfig": "eclint check '**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.ts'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer-reader": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:reader\"",
     "start:dev:renderer": "webpack-dev-server --config webpack.config.renderer.js",
