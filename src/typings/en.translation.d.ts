@@ -10,6 +10,8 @@ declare namespace typed_i18n {
   readonly "importFile": string,
   readonly "searchBook": string,
   readonly "skipLink": string
+  readonly "leftSlideButton": string
+  readonly "rightSlideButton": string
 };
   (_: "accessibility.bookAuthor", __?: {}): string;
   (_: "accessibility.bookPublisher", __?: {}): string;
@@ -20,6 +22,8 @@ declare namespace typed_i18n {
   (_: "accessibility.importFile", __?: {}): string;
   (_: "accessibility.searchBook", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
+  (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.rightSlideButton", __?: {}): string;
   (_: "app", __?: {}): {
   readonly "edit": {
     readonly "copy": string,

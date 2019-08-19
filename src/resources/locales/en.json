@@ -8,7 +8,9 @@
         "homeMenu": "Reading view menu",
         "importFile": "Import a publication",
         "searchBook": "Search by title",
-        "skipLink": "Skip to content"
+        "skipLink": "Skip to content",
+        "rightSlideButton": "Slide the list to the right",
+        "leftSlideButton": "Slide the list to the left"
     },
     "app": {
         "edit": {

@@ -8,7 +8,9 @@
         "homeMenu": "Startmenü",
         "importFile": "importieren einer epub-datei",
         "searchBook": "Suche nach einem Buch, einem Tag oder einer Art von Literatur",
-        "skipLink": "Gehe zum Inhalt"
+        "skipLink": "Gehe zum Inhalt",
+        "rightSlideButton": "Scrolle nach rechts unten",
+        "leftSlideButton": "Scrolle nach links unten"
     },
     "app": {
         "edit": {
