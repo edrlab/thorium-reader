@@ -157,6 +157,12 @@ There is an alternative "__ LAUNCH HOT" definition in `launch.json` which levera
 
 In both cases, the main process automatically enters debugging mode, and breakpoints can be set early on. However, because there may be several renderer processes to debug ; typically: the library/bookshelf view, and the reader view(s) ; two separate launch tasks are defined: "CHROME DEBUG 1 (BOOKSHELF)" and "CHROME DEBUG 2 (READER)". They must be invoked manually in order to choose which target Chromium tab to debug into. Note that the web inspector of any Electron BrowserWindows can be opened at the same time, for example to use the React or Redux dev tools.
 
+Important note: in order to debug into the Electron renderer process(es), the "Debugger for Chrome" extension must be installed in Visual Studio Code. More information:
+
+* https://github.com/Microsoft/vscode-chrome-debug
+* https://electronjs.org/docs/tutorial/debugging-main-process-vscode
+* https://github.com/microsoft/vscode-recipes/tree/master/Electron
+
 ## Localization / UI translations
 
 https://github.com/readium/readium-desktop/tree/develop/src/resources/locales
