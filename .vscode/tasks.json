@@ -86,7 +86,7 @@
       "command": "npm",
       "args": [
         "run",
-        "vscode:launch:attach",
+        "vscode:launch:attach"
       ],
       "problemMatcher": [
         {
