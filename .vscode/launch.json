@@ -141,7 +141,7 @@
       "name": "__ LAUNCH ATTACH",
       "configurations": [
         "LAUNCH ATTACH - MAIN",
-        "CHROME DEBUG 1 (BOOKSHELF)",
+        // "CHROME DEBUG 1 (BOOKSHELF)",
       ]
     },
     {
@@ -150,7 +150,7 @@
         "LAUNCH HOT",
         "BOOKSHELF - WEBPACK DEV SERVER",
         "READER - WEBPACK DEV SERVER",
-        "CHROME DEBUG 1 (BOOKSHELF)",
+        // "CHROME DEBUG 1 (BOOKSHELF)",
       ]
     }
   ]
