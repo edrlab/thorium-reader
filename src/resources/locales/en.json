@@ -1,9 +1,5 @@
 {
     "accessibility": {
-        "bookAuthor": "Book author",
-        "bookPublisher": "Book publisher",
-        "bookReleaseDate": "Book release date",
-        "bookTitle": "Book title",
         "closeDialog": "Close",
         "homeMenu": "Reading view menu",
         "importFile": "Import a publication",
