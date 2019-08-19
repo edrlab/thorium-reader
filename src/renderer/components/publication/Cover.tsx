@@ -11,9 +11,9 @@ import { lazyInject } from "readium-desktop/renderer/di";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import { Styles } from "readium-desktop/renderer/components/styles";
-
 import { PublicationView } from "readium-desktop/common/views/publication";
+
+import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
 interface ICoverProps {
     publication: PublicationView;
@@ -27,15 +27,6 @@ export default class Cover extends React.Component<ICoverProps, null> {
 
         if (this.props.publication.cover == null) {
             let authors = "";
-            const bodyCSS = Object.assign({}, Styles.BookCover.body);
-            let colors = this.props.publication.customCover;
-            if (colors === undefined) {
-                colors = {
-                    topColor: "#d18e4b",
-                    bottomColor: "#7c4c1c",
-                };
-            }
-            bodyCSS.backgroundImage = "linear-gradient(" + colors.topColor + ", " + colors.bottomColor + ")";
 
             for (const author of this.props.publication.authors) {
                 const newAuthor = author;
@@ -46,14 +37,12 @@ export default class Cover extends React.Component<ICoverProps, null> {
             }
 
             return (
-                <div style={bodyCSS}>
-                    <div style={Styles.BookCover.box}>
-                        <p style={Styles.BookCover.title}>
-                        {
-                            this.translator.translateContentField(this.props.publication.title)
-                        }
+                <div className={styles.cover}>
+                    <div className={styles.box}>
+                        <p className={styles.title}>
+                            {this.translator.translateContentField(this.props.publication.title)}
                         </p>
-                        <p style={Styles.BookCover.author}>{authors}</p>
+                        <p className={styles.author}>{authors}</p>
                     </div>
                 </div>
             );
