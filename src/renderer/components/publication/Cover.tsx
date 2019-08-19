@@ -35,9 +35,19 @@ export default class Cover extends React.Component<ICoverProps, null> {
                 }
                 authors += this.translator.translateContentField(newAuthor);
             }
+            let colors = this.props.publication.customCover;
+            if (colors === undefined) {
+                colors = {
+                    topColor: "#d18e4b",
+                    bottomColor: "#7c4c1c",
+                };
+            }
+            const backgroundStyle = {
+                backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`;
+            };
 
             return (
-                <div className={styles.cover}>
+                <div style={backgroundStyle} className={styles.cover}>
                     <div className={styles.box}>
                         <p className={styles.title}>
                             {this.translator.translateContentField(this.props.publication.title)}

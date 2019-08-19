@@ -171,7 +171,6 @@
     text-align: center;
     box-sizing: border-box;
     padding: 5%;
-    background-image: linear-gradient(#d18e4b, #7c4c1c);
 
     & p {
         word-break: break-all;
