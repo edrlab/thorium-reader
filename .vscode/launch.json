@@ -9,12 +9,12 @@
       "stopOnEntry": false,
       "cwd": "${workspaceRoot}",
       "internalConsoleOptions": "openOnSessionStart",
-      "preLaunchTask__ASYNC": "launch:hot",
+      "preLaunchTask": "launch:hot",
       "args": [
         "."
       ],
       "env": {
-        "DEBUG": "r2:*",
+        "DEBUG": "r2:*,readium-desktop:*",
         "NODE_DEBUG": "1",
         "NODE_ENV": "development",
         "BUILD_ENV": "dev",
@@ -30,10 +30,62 @@
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
       },
       "protocol": "inspector",
+      "skipFiles": [
+        "browser/init.js"
+      ],
+      "smartStep": true,
+      "outputCapture": "std",
       "runtimeArgs": [
         "--remote-debugging-port=9223",
-        "--enable-logging"
+        "--enable-logging",
+        "--nolazy",
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "BOOKSHELF - WEBPACK DEV SERVER",
+      "program": "${workspaceFolder}/node_modules/.bin/webpack-dev-server",
+      "args": [
+        "--config",
+        "webpack.config.renderer.js",
+      ],
+      "env": {
+        "DEBUG": "r2:*,readium-desktop:*",
+        "NODE_DEBUG": "1",
+        "NODE_ENV": "development",
+        "BUILD_ENV": "dev",
+        "VSCODE_LAUNCH": "true"
+      },
+      "stopOnEntry": false,
+      "cwd": "${workspaceRoot}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "externalTerminal",
+      // "outputCapture": "std",
+      "timeout": 35000,
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "READER - WEBPACK DEV SERVER",
+      "program": "${workspaceFolder}/node_modules/.bin/webpack-dev-server",
+      "args": [
+        "--config",
+        "webpack.config.reader.js",
+      ],
+      "env": {
+        "DEBUG": "r2:*,readium-desktop:*",
+        "NODE_DEBUG": "1",
+        "NODE_ENV": "development",
+        "BUILD_ENV": "dev",
+        "VSCODE_LAUNCH": "true"
+      },
+      "stopOnEntry": false,
+      "cwd": "${workspaceRoot}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "externalTerminal",
+      // "outputCapture": "std",
+      "timeout": 35000,
     },
     {
       "name": "LAUNCH ATTACH - MAIN",
@@ -43,23 +95,63 @@
       "request": "attach",
       "port": 25575,
       "protocol": "inspector",
+      "skipFiles": [
+        "browser/init.js"
+      ],
+      "smartStep": true,
+      "cwd": "${workspaceRoot}",
     },
     {
-        "name": "LAUNCH ATTACH - RENDERER",
-        "timeout": 40000,
-        "type": "chrome",
-        "request": "attach",
-        "port": 9223,
-        "webRoot": "${workspaceFolder}/dist",
+      "name": "CHROME DEBUG 1 (BOOKSHELF)",
+      "timeout": 40000,
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      // "trace": "verbose",
+      // "sourceMapPathOverrides": {
+      //   "webpack:/*": "${webRoot}/*",
+      //   "webpack:///./*": "${webRoot}/*",
+      //   "webpack:///./src/*": "${webRoot}/src/*",
+      //   "webpack:///./node_modules/*": "${webRoot}/node_modules/*",
+      //   "/./*": "${webRoot}/*",
+      //   "/./src/*": "${webRoot}/src/*",
+      //   "/./node_modules/*": "${webRoot}/node_modules/*",
+      //   "webpack:///*": "*",
+      //   "webpack:///./~/*": "${webRoot}/node_modules/*",
+      //   "/src/*": "${webRoot}/*",
+      //   "/*": "*",
+      //   "/./~/*": "${webRoot}/node_modules/*"
+      // },
+    },
+    {
+      "name": "CHROME DEBUG 2 (READER)",
+      "timeout": 40000,
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      // "trace": "verbose",
     }
   ],
   "compounds": [
-      {
-          "name": "LAUNCH ATTACH - ALL",
-          "configurations": [
-              "LAUNCH ATTACH - MAIN",
-              "LAUNCH ATTACH - RENDERER"
-          ]
-      }
+    {
+      "name": "__ LAUNCH ATTACH",
+      "configurations": [
+        "LAUNCH ATTACH - MAIN",
+        "CHROME DEBUG 1 (BOOKSHELF)",
+      ]
+    },
+    {
+      "name": "__ LAUNCH HOT",
+      "configurations": [
+        "LAUNCH HOT",
+        "BOOKSHELF - WEBPACK DEV SERVER",
+        "READER - WEBPACK DEV SERVER",
+        "CHROME DEBUG 1 (BOOKSHELF)",
+      ]
+    }
   ]
 }

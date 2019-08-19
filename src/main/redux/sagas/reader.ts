@@ -21,7 +21,7 @@ import { appActions, streamerActions } from "readium-desktop/main/redux/actions"
 import { ReaderState } from "readium-desktop/main/redux/states/reader";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import {
-    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, IS_DEV,
+    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
@@ -144,7 +144,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
 
     readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
 
-    if (IS_DEV) {
+    if (IS_DEV && _VSCODE_LAUNCH !== "true") {
         readerWindow.webContents.openDevTools({ mode: "detach" });
     }
 
