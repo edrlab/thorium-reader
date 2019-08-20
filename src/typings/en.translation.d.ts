@@ -1,23 +1,23 @@
 declare namespace typed_i18n {
   interface TFunction {
   (_: "accessibility", __?: {}): {
-  readonly "closeDialog": string,
   readonly "bookMenu": string,
+  readonly "closeDialog": string,
   readonly "homeMenu": string,
   readonly "importFile": string,
+  readonly "leftSlideButton": string,
+  readonly "rightSlideButton": string,
   readonly "searchBook": string,
   readonly "skipLink": string
-  readonly "leftSlideButton": string
-  readonly "rightSlideButton": string
 };
-  (_: "accessibility.closeDialog", __?: {}): string;
   (_: "accessibility.bookMenu", __?: {}): string;
+  (_: "accessibility.closeDialog", __?: {}): string;
   (_: "accessibility.homeMenu", __?: {}): string;
   (_: "accessibility.importFile", __?: {}): string;
-  (_: "accessibility.searchBook", __?: {}): string;
-  (_: "accessibility.skipLink", __?: {}): string;
   (_: "accessibility.leftSlideButton", __?: {}): string;
   (_: "accessibility.rightSlideButton", __?: {}): string;
+  (_: "accessibility.searchBook", __?: {}): string;
+  (_: "accessibility.skipLink", __?: {}): string;
   (_: "app", __?: {}): {
   readonly "edit": {
     readonly "copy": string,

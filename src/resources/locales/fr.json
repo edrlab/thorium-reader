@@ -1,13 +1,13 @@
 {
     "accessibility": {
+        "bookMenu": "Menu",
         "closeDialog": "Fermer",
         "homeMenu": "Menu principal",
         "importFile": "Importer un fichier epub",
-        "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
-        "skipLink": "Aller au contenu",
-        "rightSlideButton": "Faire défiler la liste vers la droite",
         "leftSlideButton": "Faire défiler la liste vers la gauche",
-        "bookMenu": "Menu"
+        "rightSlideButton": "Faire défiler la liste vers la droite",
+        "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
+        "skipLink": "Aller au contenu"
     },
     "app": {
         "edit": {
