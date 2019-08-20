@@ -1,12 +1,13 @@
 {
     "accessibility": {
+        "bookMenu": "Menu",
         "closeDialog": "Close",
         "homeMenu": "Reading view menu",
         "importFile": "Import a publication",
-        "searchBook": "Search by title",
-        "skipLink": "Skip to content",
+        "leftSlideButton": "Slide the list to the left",
         "rightSlideButton": "Slide the list to the right",
-        "leftSlideButton": "Slide the list to the left"
+        "searchBook": "Search by title",
+        "skipLink": "Skip to content"
     },
     "app": {
         "edit": {

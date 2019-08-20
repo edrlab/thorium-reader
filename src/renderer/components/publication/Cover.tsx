@@ -48,10 +48,10 @@ export default class Cover extends React.Component<ICoverProps, null> {
             return (
                 <div style={backgroundStyle} className={styles.cover}>
                     <div className={styles.box}>
-                        <p className={styles.title}>
+                        <p aria-hidden className={styles.title}>
                             {this.translator.translateContentField(this.props.publication.title)}
                         </p>
-                        <p className={styles.author}>{authors}</p>
+                        <p aria-hidden className={styles.author}>{authors}</p>
                     </div>
                 </div>
             );
