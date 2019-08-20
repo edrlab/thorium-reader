@@ -167,6 +167,7 @@ Important note: in order to debug into the Electron renderer process(es), the "D
 
 https://github.com/readium/readium-desktop/tree/develop/src/resources/locales
 
-* `npm run i18n-sort` => ensure locales JSON files are "canonical" (sorted keys, consistent indentation and last-line-break syntax)
-* `npm run i18n-scan` => ensure locales JSON files have no missing keys and redundant/unused keys (this comnmand scans the source code for well-known `i18next` usage patterns)
-* `npm run i18n-typed` => rebuilds the TypeScript types for the locales JSON files (which enables static compiler checks)
+* `npm run i18n-sort` => ensure locales JSON files are "canonical" (sorted keys, consistent indentation and trailing line break)
+* `npm run i18n-scan` => ensure locales JSON files have no missing keys and no superfluous/unused keys (this command analyzes the source code to search for well-known `i18next` usage patterns)
+* `npm run i18n-check` => ensure "secondary" locales JSON files have no missing keys and no superfluous keys, relative to the "primary" English translation. Missing keys are automatically added with an empty string value, redundant keys are removed.
+* `npm run i18n-typed` => rebuilds the TypeScript types for the locales JSON files (this enables static compiler checks)
