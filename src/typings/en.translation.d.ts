@@ -2,6 +2,7 @@ declare namespace typed_i18n {
   interface TFunction {
   (_: "accessibility", __?: {}): {
   readonly "closeDialog": string,
+  readonly "bookMenu": string,
   readonly "homeMenu": string,
   readonly "importFile": string,
   readonly "searchBook": string,
@@ -10,6 +11,7 @@ declare namespace typed_i18n {
   readonly "rightSlideButton": string
 };
   (_: "accessibility.closeDialog", __?: {}): string;
+  (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.homeMenu", __?: {}): string;
   (_: "accessibility.importFile", __?: {}): string;
   (_: "accessibility.searchBook", __?: {}): string;

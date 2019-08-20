@@ -1,6 +1,7 @@
 {
     "accessibility": {
         "closeDialog": "Close",
+        "bookMenu": "Menu",
         "homeMenu": "Reading view menu",
         "importFile": "Import a publication",
         "searchBook": "Search by title",

@@ -6,7 +6,8 @@
         "searchBook": "Rechercher un livre, un tag, ou un type de littérature",
         "skipLink": "Aller au contenu",
         "rightSlideButton": "Faire défiler la liste vers la droite",
-        "leftSlideButton": "Faire défiler la liste vers la gauche"
+        "leftSlideButton": "Faire défiler la liste vers la gauche",
+        "bookMenu": "Menu"
     },
     "app": {
         "edit": {
