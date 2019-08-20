@@ -13,6 +13,8 @@ import { Translator } from "readium-desktop/common/services/translator";
 
 import { PublicationView } from "readium-desktop/common/views/publication";
 
+import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
+
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
 interface ICoverProps {
@@ -37,10 +39,7 @@ export default class Cover extends React.Component<ICoverProps, null> {
             }
             let colors = this.props.publication.customCover;
             if (colors === undefined) {
-                colors = {
-                    topColor: "#d18e4b",
-                    bottomColor: "#7c4c1c",
-                };
+                colors = RandomCustomCovers[0];
             }
             const backgroundStyle = {
                 backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
