@@ -86,10 +86,10 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                 </div>
                 <div className={styles.legend}>
                     <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
-                        <p className={styles.book_title}>
+                        <p aria-hidden className={styles.book_title}>
                             { this.truncateTitle(publication.title) }
                         </p>
-                        <p className={styles.book_author}>
+                        <p aria-hidden className={styles.book_author}>
                             {authors}
                         </p>
                     </a>
