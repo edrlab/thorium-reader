@@ -13,7 +13,6 @@ import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/font-size.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
 import * as MarkIcon from "readium-desktop/renderer/assets/icons/outline-bookmark_border-24px.svg";
-import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-crop_free-24px.svg";
 import * as QuitFullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-uncrop_free-24px.svg";
@@ -32,19 +31,18 @@ import ReactDOM = require("react-dom");
 interface Props extends TranslatorProps {
     menuOpen: boolean;
     infoOpen: boolean;
-    mode?: ReaderMode;
     settingsOpen: boolean;
     handleMenuClick: () => void;
     handleSettingsClick: () => void;
     fullscreen: boolean;
     handleFullscreenClick: () => void;
     handleReaderClose: () => void;
-    handleReaderDetach: () => void;
     toggleBookmark: any;
     isOnBookmark: boolean;
     displayPublicationInfo: any;
     readerMenuProps: any;
     readerOptionsProps: any;
+    mode: ReaderMode;
 }
 
 export class ReaderHeader extends React.Component<Props, undefined> {
@@ -111,17 +109,6 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 <SVG svg={InfosIcon} title={ __("reader.navigation.infoTitle")}/>
                             </button>
                         </li>
-                        { (this.props.mode === ReaderMode.Attached) ? (
-                            <li>
-                                <button
-                                    className={styles.menu_button}
-                                    onClick={this.props.handleReaderDetach}
-                                >
-                                    <SVG svg={DetachIcon} title={ __("reader.navigation.detachWindowTitle")}/>
-                                </button>
-                            </li>
-                            ) : (<></>)
-                        }
                         <ul className={styles.menu_option}>
                             <li
                                 {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}

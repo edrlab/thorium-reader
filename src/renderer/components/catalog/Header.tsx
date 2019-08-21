@@ -6,34 +6,45 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
+import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_to_front-24px.svg";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
 import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
-
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-
+import PublicationAddButton from "./PublicationAddButton";
 import SearchForm from "./SearchForm";
 
-import PublicationAddButton from "./PublicationAddButton";
+import { ReaderMode } from "readium-desktop/common/models/reader";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { connect } from "react-redux";
+import { RootState } from "readium-desktop/renderer/redux/states";
+
+import { readerActions } from "readium-desktop/common/redux/actions";
 
 export enum DisplayType {
     Grid = "grid",
     List = "list",
 }
 
-interface Props extends RouteComponentProps, TranslatorProps {
+interface Props extends TranslatorProps {
     displayType: DisplayType;
+    readerMode?: ReaderMode;
+    detachReader?: (mode: ReaderMode) => void;
 }
 
 export class Header extends React.Component<Props, undefined> {
+    public constructor(props: Props) {
+        super(props);
+
+        this.toggleReaderMode = this.toggleReaderMode.bind(this);
+    }
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
@@ -55,6 +66,12 @@ export class Header extends React.Component<Props, undefined> {
                 <SearchForm />
                 {this.AllBooksButton(window.location.hash)}
                 <PublicationAddButton />
+                <button
+                    className={styles.menu_button}
+                    onClick={this.toggleReaderMode}
+                >
+                    <SVG svg={DetachIcon} title={ __("reader.navigation.detachWindowTitle")}/>
+                </button>
             </SecondaryHeader>
         );
     }
@@ -78,6 +95,25 @@ export class Header extends React.Component<Props, undefined> {
         }
         return (<></>);
     }
+
+    private toggleReaderMode() {
+        const mode = this.props.readerMode === ReaderMode.Attached ? ReaderMode.Detached : ReaderMode.Attached;
+        this.props.detachReader(mode);
+    }
 }
 
-export default withTranslator(withRouter(Header)) ;
+const mapStateToProps = (state: RootState) => {
+    return {
+        readerMode: state.reader.mode,
+    };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        detachReader: (mode: ReaderMode) => {
+            dispatch(readerActions.detach(mode));
+        },
+    };
+};
+
+export default withTranslator(connect(mapStateToProps, mapDispatchToProps)(Header));

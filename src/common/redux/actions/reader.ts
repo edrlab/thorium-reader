@@ -62,12 +62,11 @@ export function close(reader: Reader, gotoLibrary: boolean = false): Action {
     };
 }
 
-export function detach(reader: Reader): Action {
+export function detach(mode: ReaderMode): Action {
     return {
         type: ActionType.ModeSetRequest,
         payload: {
-            reader,
-            mode: ReaderMode.Detached,
+            mode,
         },
     };
 }

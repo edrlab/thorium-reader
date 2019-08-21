@@ -9,7 +9,7 @@ import * as path from "path";
 import * as React from "react";
 
 import {
-    ReaderConfig as ReadiumCSS,
+    ReaderConfig as ReadiumCSS, ReaderMode,
 } from "readium-desktop/common/models/reader";
 
 import {
@@ -189,18 +189,17 @@ interface ReaderState {
 
 interface ReaderProps {
     reader?: any;
-    mode?: any;
     infoOpen?: boolean;
     deleteBookmark?: any;
     addBookmark?: any;
     findBookmarks: any;
     toggleFullscreen?: any;
     closeReader?: any;
-    detachReader?: any;
     setLastReadingLocation: any;
     bookmarks?: LocatorView[];
     displayPublicationInfo?: any;
     publication?: Publication;
+    mode?: ReaderMode;
 }
 
 const defaultLocale = "fr";
@@ -266,7 +265,6 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.handleFullscreenClick = this.handleFullscreenClick.bind(this);
         this.handleReaderClose = this.handleReaderClose.bind(this);
-        this.handleReaderDetach = this.handleReaderDetach.bind(this);
         this.setSettings = this.setSettings.bind(this);
         this.handleReadingLocationChange = this.handleReadingLocationChange.bind(this);
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
@@ -406,15 +404,14 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                             handleMenuClick={this.handleMenuButtonClick}
                             handleSettingsClick={this.handleSettingsClick}
                             fullscreen={this.state.fullscreen}
-                            mode={this.props.mode}
                             handleFullscreenClick={this.handleFullscreenClick}
-                            handleReaderDetach={this.handleReaderDetach}
                             handleReaderClose={this.handleReaderClose}
                             toggleBookmark={ this.handleToggleBookmark }
                             isOnBookmark={this.state.visibleBookmarkList.length > 0}
                             readerOptionsProps={readerOptionsProps}
                             readerMenuProps={readerMenuProps}
                             displayPublicationInfo={this.displayPublicationInfo}
+                            mode={this.props.mode}
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
@@ -624,10 +621,6 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         this.props.closeReader(this.props.reader);
     }
 
-    private handleReaderDetach() {
-        this.props.detachReader(this.props.reader);
-    }
-
     private handleFullscreenClick() {
         this.props.toggleFullscreen(!this.state.fullscreen);
         this.setState({fullscreen: !this.state.fullscreen});
@@ -727,9 +720,6 @@ const mapDispatchToProps = (dispatch: any, _props: ReaderProps) => {
         },
         closeReader: (reader: any) => {
             dispatch(readerActions.close(reader, true));
-        },
-        detachReader: (reader: any) => {
-            dispatch(readerActions.detach(reader));
         },
         displayPublicationInfo: (that: Reader) => {
             // TODO: subscribe to Redux action type == ActionType.CloseRequest

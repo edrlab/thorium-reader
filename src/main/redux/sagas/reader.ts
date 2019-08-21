@@ -33,6 +33,7 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 
 import { setMenu } from "readium-desktop/main/menu";
+import { Store } from "redux";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -72,8 +73,10 @@ async function openReader(publication: Publication, manifestUrl: string) {
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindows = winRegistry.getWindows();
 
+    const readerMode = (container.get("store") as Store<any>).getState().reader.mode;
+
     // If this is the only window, hide library window by default
-    if (Object.keys(appWindows).length === 1) {
+    if (readerMode === ReaderMode.Attached) {
         const appWindow = Object.values(appWindows)[0];
         appWindow.win.hide();
     }
@@ -85,7 +88,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
         );
 
     // If there are 2 win, record window position in the db
-    if (Object.keys(appWindows).length === 2) {
+    if (readerMode === ReaderMode.Detached) {
         readerAppWindow.onWindowMoveResize.attach();
     }
 
@@ -397,24 +400,6 @@ export function* readerDetachRequestWatcher(): SagaIterator {
         // Wait for a change mode request
         const action = yield take(readerActions.ActionType.ModeSetRequest);
         const readerMode = action.payload.mode;
-        const reader = action.payload.reader;
-
-        if (readerMode === ReaderMode.Detached) {
-            const winRegistry = container.get("win-registry") as WinRegistry;
-            const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
-
-            const appWindows = winRegistry.getWindows();
-
-            for (const appWin of Object.values(appWindows)) {
-                if (appWin.type !== AppWindowType.Library) {
-                    continue;
-                }
-
-                appWin.win.show();
-            }
-            readerWindow.onWindowMoveResize.detach();
-            readerWindow.win.focus();
-        }
 
         yield put({
             type: readerActions.ActionType.ModeSetSuccess,
