@@ -103,6 +103,7 @@ export class ReaderMenu extends React.Component<Props, State> {
     }
 
     private createTOCRenderList(TOC: any[]): JSX.Element {
+        console.log(styles);
         return <ul className={styles.chapters_content}>
             { TOC.map((content, i: number) => {
                 return (
@@ -126,7 +127,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                                         }
                                     data-href={content.Href}
                                 >
-                                    {content.Title}
+                                    <span>{content.Title}</span>
                                 </a>
                                 {content.Children &&
                                     <ul className={styles.chapters_content}>
