@@ -19,13 +19,13 @@ import Header, { DisplayType } from "./Header";
 import GridView from "./GridView";
 import ListView from "./ListView";
 
-interface CatalogProps extends TranslatorProps, RouteComponentProps {
+interface Props extends TranslatorProps, RouteComponentProps {
     catalog?: CatalogView;
     tags?: string[];
     requestCatalog: any;
 }
 
-export class Catalog extends React.Component<CatalogProps, undefined> {
+export class Catalog extends React.Component<Props> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         let DisplayView: any = GridView;
@@ -91,6 +91,10 @@ export default withApi(
             {
                 moduleId: "publication",
                 methodId: "updateTags",
+            },
+            {
+                moduleId: "reader",
+                methodId: "setLastReadingLocation",
             },
         ],
     },
