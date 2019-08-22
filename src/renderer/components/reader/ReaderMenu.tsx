@@ -103,7 +103,6 @@ export class ReaderMenu extends React.Component<Props, State> {
     }
 
     private createTOCRenderList(TOC: any[]): JSX.Element {
-        console.log(styles);
         return <ul className={styles.chapters_content}>
             { TOC.map((content, i: number) => {
                 return (
