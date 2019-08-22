@@ -1,4 +1,5 @@
 @import "./focus-mixin.css";
+@import "./variable.css";
 
 main {
     height: auto;
@@ -54,6 +55,38 @@ main {
 
 	& > *:first-child {
 		margin-right: 1rem;
+	}
+
+	& .detachReaderButton {
+		border: 1px solid black;
+		border-radius: 5px;
+		width: 2.3125rem;
+		height: 2.125rem;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		left: 10px;
+		top: 8px;
+		margin-left: 1rem;
+		& svg {
+			width: 80%;
+			height: 80%;
+			fill: var(--disabled-color);
+			top: unset;
+			margin-left: 0;
+		}
+
+		&.detached, &[disabled] {
+			background-color: var(--disabled-color);
+			& svg {
+				fill: white;
+			}
+		}
+
+		&[disabled] {
+			cursor: not-allowed;
+		}
 	}
 }
 

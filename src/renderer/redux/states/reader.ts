@@ -6,15 +6,18 @@
 // ==LICENSE-END==
 
 import {
-    Reader, ReaderConfig, ReaderMode,
+    ReaderConfig, ReaderMode,
 } from "readium-desktop/common/models/reader";
+import { Reader } from "readium-desktop/renderer/components/reader/Reader";
 
 export interface ReaderState {
     // Base url of started server
-    reader: Reader;
+    readerCount: number;
 
     // Config for all readers
     config: ReaderConfig;
 
     mode: ReaderMode;
+
+    reader: Reader;
 }

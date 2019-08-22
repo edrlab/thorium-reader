@@ -263,6 +263,7 @@ declare namespace typed_i18n {
     readonly "toc": string
   },
   readonly "navigation": {
+    readonly "attachWindowTitle": string,
     readonly "backHomeTitle": string,
     readonly "bookmarkTitle": string,
     readonly "detachWindowTitle": string,
@@ -322,6 +323,7 @@ declare namespace typed_i18n {
   (_: "reader.marks.illustrations", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
   (_: "reader.navigation", __?: {}): {
+  readonly "attachWindowTitle": string,
   readonly "backHomeTitle": string,
   readonly "bookmarkTitle": string,
   readonly "detachWindowTitle": string,
@@ -332,6 +334,7 @@ declare namespace typed_i18n {
   readonly "readBookTitle": string,
   readonly "settingsTitle": string
 };
+  (_: "reader.navigation.attachWindowTitle", __?: {}): string;
   (_: "reader.navigation.backHomeTitle", __?: {}): string;
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
   (_: "reader.navigation.detachWindowTitle", __?: {}): string;

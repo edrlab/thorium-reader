@@ -141,9 +141,10 @@
             "toc": "Table of Contents"
         },
         "navigation": {
+            "attachWindowTitle": "Open readers in attached mode",
             "backHomeTitle": "back to the bookshelf",
             "bookmarkTitle": "bookmark",
-            "detachWindowTitle": "detach the window",
+            "detachWindowTitle": "Open readers in detached mode",
             "fullscreenTitle": "open fullscreen mode",
             "infoTitle": "information",
             "openTableOfContentsTitle": "navigation",

@@ -70,6 +70,15 @@ async function openReader(publication: Publication, manifestUrl: string) {
         });
     }
 
+    readerWindow.on("closed", () => {
+        (container.get("store") as Store<any>).dispatch({
+            type: readerActions.ActionType.CloseSuccess,
+            payload: {
+                reader,
+            },
+        });
+    });
+
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindows = winRegistry.getWindows();
 

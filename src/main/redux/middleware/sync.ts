@@ -41,6 +41,7 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 
     dialogActions.ActionType.OpenRequest,
 
+    readerActions.ActionType.OpenSuccess,
     readerActions.ActionType.OpenError,
     readerActions.ActionType.CloseError,
     readerActions.ActionType.CloseSuccess,

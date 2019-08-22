@@ -141,9 +141,10 @@
             "toc": "Table des matières "
         },
         "navigation": {
+            "attachWindowTitle": "Ouvrir les lecteurs attachés",
             "backHomeTitle": "retour à la bibliothèque",
             "bookmarkTitle": "marque-page",
-            "detachWindowTitle": "détacher la fenêtre",
+            "detachWindowTitle": "Ouvrir les lecteurs détachés",
             "fullscreenTitle": "mode plein écran",
             "infoTitle": "informations",
             "openTableOfContentsTitle": "navigation",

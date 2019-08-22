@@ -28,6 +28,8 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 import { readerActions } from "readium-desktop/common/redux/actions";
 
+import * as classnames from "classnames";
+
 export enum DisplayType {
     Grid = "grid",
     List = "list",
@@ -36,6 +38,7 @@ export enum DisplayType {
 interface Props extends TranslatorProps {
     displayType: DisplayType;
     readerMode?: ReaderMode;
+    readerCount?: number;
     detachReader?: (mode: ReaderMode) => void;
 }
 
@@ -67,10 +70,20 @@ export class Header extends React.Component<Props, undefined> {
                 {this.AllBooksButton(window.location.hash)}
                 <PublicationAddButton />
                 <button
-                    className={styles.menu_button}
+                    className={classnames(
+                        styles.detachReaderButton,
+                        this.props.readerMode === ReaderMode.Detached && styles.detached,
+                    )}
                     onClick={this.toggleReaderMode}
+                    disabled={this.props.readerCount > 0}
                 >
-                    <SVG svg={DetachIcon} title={ __("reader.navigation.detachWindowTitle")}/>
+                    <SVG
+                        svg={DetachIcon}
+                        title={
+                            this.props.readerMode === ReaderMode.Detached ? __("reader.navigation.detachWindowTitle")
+                            : __("reader.navigation.attachWindowTitle")
+                        }
+                    />
                 </button>
             </SecondaryHeader>
         );
@@ -105,6 +118,7 @@ export class Header extends React.Component<Props, undefined> {
 const mapStateToProps = (state: RootState) => {
     return {
         readerMode: state.reader.mode,
+        readerCount: state.reader.readerCount,
     };
 };
 

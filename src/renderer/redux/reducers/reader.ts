@@ -28,6 +28,7 @@ const initialState: ReaderState = {
         readiumcss: true,
         sepia: false,
     },
+    readerCount: 0,
 };
 
 export function readerReducer(
@@ -39,9 +40,13 @@ export function readerReducer(
     switch (action.type) {
         case readerActions.ActionType.OpenSuccess:
             newState.reader = action.payload.reader;
+            if (action.payload.reader) {
+                newState.readerCount++;
+            }
             return newState;
         case readerActions.ActionType.CloseSuccess:
             delete newState.reader;
+            newState.readerCount--;
             return newState;
         case readerActions.ActionType.ModeSetSuccess:
             newState.mode = action.payload.mode;

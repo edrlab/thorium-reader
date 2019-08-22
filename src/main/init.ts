@@ -9,7 +9,6 @@ import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-import { ReaderMode } from "readium-desktop/common/models/reader";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, netActions, readerActions, updateActions,
@@ -139,7 +138,6 @@ const winOpenCallback = (appWindow: AppWindow) => {
 
 // Callback called when a window is closed
 const winCloseCallback = (appWindow: AppWindow) => {
-    const store = container.get("store") as Store<RootState>;
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindows = winRegistry.getWindows();
 
@@ -158,15 +156,6 @@ const winCloseCallback = (appWindow: AppWindow) => {
     }
 
     const appWin = Object.values(appWindows)[0];
-    if (appWin.type === AppWindowType.Library) {
-        // Set reader to attached mode
-        store.dispatch({
-            type: readerActions.ActionType.ModeSetSuccess,
-            payload: {
-                mode: ReaderMode.Attached,
-            },
-        });
-    }
 
     if (
         appWin.type === AppWindowType.Library &&

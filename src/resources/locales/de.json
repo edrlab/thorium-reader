@@ -141,9 +141,10 @@
             "toc": "inhaltsverzeichnis"
         },
         "navigation": {
+            "attachWindowTitle": "Leser im angehängten Modus öffnen",
             "backHomeTitle": "zurück zu Hause",
             "bookmarkTitle": "bookmark",
-            "detachWindowTitle": "das Fenster lösen",
+            "detachWindowTitle": "Leser im getrennten Modus öffnen",
             "fullscreenTitle": "fullscreen mode",
             "infoTitle": "Informationen",
             "openTableOfContentsTitle": "navigation",
