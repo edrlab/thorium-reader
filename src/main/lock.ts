@@ -32,6 +32,7 @@ export function lockInstance() {
             // the mainFct is disallow to avoid to generate new mainWindow
             cli(() => ({}), commandLine);
         });
+        return false;
     }
-    return false;
+    return true;
 }
