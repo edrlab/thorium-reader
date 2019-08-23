@@ -8,15 +8,13 @@
 import { app } from "electron";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
+import { cli } from "./cli/process";
 
 export function lockInstance() {
     const gotTheLock = app.requestSingleInstanceLock();
 
-    if (!gotTheLock) {
-        app.quit();
-        return true;
-    } else {
-        app.on("second-instance", () => {
+    if (gotTheLock) {
+        app.on("second-instance", (_e, commandLine, _workingDir) => {
             // Someone tried to run a second instance, we should focus our window.
 
             const winRegistry = container.get("win-registry") as WinRegistry;
@@ -27,6 +25,12 @@ export function lockInstance() {
                 }
                 win.win.focus();
             }
+
+            // execute command line from second instance
+            // when the command line doesn't used electron: execute and exit in second instance process
+            // when the command has needed to open win electron: execute with below cli function
+            // the mainFct is disallow to avoid to generate new mainWindow
+            cli(() => ({}), commandLine);
         });
     }
     return false;

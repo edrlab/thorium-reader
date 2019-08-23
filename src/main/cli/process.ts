@@ -18,7 +18,8 @@ import { cli_, cliImport, cliOpds, cliRead } from "./commandLine";
 // Logger
 const debug = debug_("readium-desktop:cli");
 
-export function cli(mainFct: () => void) {
+export function cli(mainFct: () => void, processArgv = process.argv) {
+    const gotTheLock = app.hasSingleInstanceLock();
 
     yargs
         .scriptName(_APP_NAME)
@@ -94,20 +95,22 @@ export function cli(mainFct: () => void) {
                 })
             ,
             (argv) => {
-                mainFct();
-                app.on("ready", async () => {
-                    try {
-                        if (!await cliRead(argv.title)) {
-                            const errorMessage = `There is no publication title match for \"${argv.title}\"`;
-                            throw new Error(errorMessage);
+                if (gotTheLock) {
+                    mainFct();
+                    app.on("ready", async () => {
+                        try {
+                            if (!await cliRead(argv.title)) {
+                                const errorMessage = `There is no publication title match for \"${argv.title}\"`;
+                                throw new Error(errorMessage);
+                            }
+                        } catch (e) {
+                            debug("read error :", e);
+                            const errorTitle = "No publication to read";
+                            dialog.showErrorBox(errorTitle, e.toString());
+                            process.stderr.write(e.toString() + EOL);
                         }
-                    } catch (e) {
-                        debug("read error :", e);
-                        const errorTitle = "No publication to read";
-                        dialog.showErrorBox(errorTitle, e.toString());
-                        process.stderr.write(e.toString() + EOL);
-                    }
-                });
+                    });
+                }
             },
         )
         .command("$0 [path]",
@@ -121,24 +124,26 @@ export function cli(mainFct: () => void) {
                     .completion()
             ,
             (argv) => {
-                mainFct();
-                if (argv.path) {
-                    app.on("ready", async () => {
-                        try {
-                            if (!await cli_(argv.path)) {
-                                const errorMessage = `Import failed for the publication path : ${argv.path}`;
-                                throw new Error(errorMessage);
+                if (gotTheLock) {
+                    mainFct();
+                    if (argv.path) {
+                        app.on("ready", async () => {
+                            try {
+                                if (!await cli_(argv.path)) {
+                                    const errorMessage = `Import failed for the publication path : ${argv.path}`;
+                                    throw new Error(errorMessage);
+                                }
+                            } catch (e) {
+                                debug("$0 error :", e);
+                                const errorTitle = "Import Failed";
+                                dialog.showErrorBox(errorTitle, e.toString());
+                                process.stderr.write(e.toString() + EOL);
                             }
-                        } catch (e) {
-                            debug("$0 error :", e);
-                            const errorTitle = "Import Failed";
-                            dialog.showErrorBox(errorTitle, e.toString());
-                            process.stderr.write(e.toString() + EOL);
-                        }
-                    });
+                        });
+                    }
                 }
             },
         )
         .help()
-        .parse((_PACKAGING === "0") ? process.argv.slice(2) : process.argv.slice(1));
+        .parse((_PACKAGING === "0") ? processArgv.slice(2) : processArgv.slice(1));
 }
