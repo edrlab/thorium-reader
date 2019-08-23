@@ -27,7 +27,6 @@ import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
-import { lockInstance } from "readium-desktop/main/lock";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -51,9 +50,6 @@ initGlobalConverters_GENERIC();
 // Lcp
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
-
-// LockSingleInstance
-lockInstance();
 
 if (_VSCODE_LAUNCH === "true") {
     main();

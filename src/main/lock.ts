@@ -36,7 +36,8 @@ export function lockInstance() {
             // when the command line doesn't used electron: execute and exit in second instance process
             // when the command has needed to open win electron: execute with below cli function
             // the mainFct is disallow to avoid to generate new mainWindow
-            cli(() => ({}), commandLine);
+            // remove all -- option arg because isn't handle in ready state app
+            cli(() => ({}), commandLine.filter((arg) => !arg.startsWith("--")));
         });
     }
     return gotTheLock;

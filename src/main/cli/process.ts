@@ -10,21 +10,23 @@ import { app, dialog } from "electron";
 import * as glob from "glob";
 import { EOL } from "os";
 import * as path from "path";
+import { lockInstance } from "readium-desktop/main/lock";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import * as yargs from "yargs";
+
 import { cli_, cliImport, cliOpds, cliRead } from "./commandLine";
 
 // Logger
 const debug = debug_("readium-desktop:cli");
 
-// ask singleInstance
-const gotTheLock = app.hasSingleInstanceLock();
+// LockSingleInstance
+const gotTheLock = lockInstance();
 
 // main Fucntion variable
-let mainFct: () => void;
+let mainFct: () => void = () => ({});
 
 // yargs configuration
-const yarg = yargs
+yargs
     .scriptName(_APP_NAME)
     .version(_APP_VERSION)
     .usage("$0 <cmd> [args]")
@@ -41,20 +43,23 @@ const yarg = yargs
             })
         ,
         (argv) => {
-            const promise = cliOpds(argv.title, argv.url);
-            promise.then((isValid) => {
-                if (isValid) {
-                    process.stdout.write("OPDS import done." + EOL);
-                    app.exit(0);
-                    return;
-                }
-                process.stderr.write("OPDS URL not valid, exit with code 1" + EOL);
-                app.exit(1);
-            }).catch((e) => {
-                debug("import error :", e);
-                process.stderr.write(e.toString() + EOL);
-                app.exit(1);
-            });
+            // if the app is not started or it's the second instance
+            if (!app.isReady || !gotTheLock) {
+                const promise = cliOpds(argv.title, argv.url);
+                promise.then((isValid) => {
+                    if (isValid) {
+                        process.stdout.write("OPDS import done." + EOL);
+                        app.exit(0);
+                        return;
+                    }
+                    process.stderr.write("OPDS URL not valid, exit with code 1" + EOL);
+                    app.exit(1);
+                }).catch((e) => {
+                    debug("import error :", e);
+                    process.stderr.write(e.toString() + EOL);
+                    app.exit(1);
+                });
+            }
         },
     )
     .command("import <path>",
@@ -69,24 +74,27 @@ const yarg = yargs
             .example("import", "\"myPublication.epub\"")
         ,
         (argv) => {
-            const pathArray = glob.sync(argv.path, {
-                absolute: true,
-                realpath: true,
-            }) || [];
-            const promise = cliImport(pathArray);
-            promise.then((isValid) => {
-                if (isValid) {
-                    process.stdout.write("Publication(s) import done." + EOL);
-                    app.exit(0);
-                    return;
-                }
-                process.stderr.write("No valid files, exit with code 1" + EOL);
-                app.exit(1);
-            }).catch((e) => {
-                debug("import error :", e);
-                process.stderr.write(e.toString() + EOL);
-                app.exit(1);
-            });
+            // if the app is not started or it's the second instance
+            if (!app.isReady || !gotTheLock) {
+                const pathArray = glob.sync(argv.path, {
+                    absolute: true,
+                    realpath: true,
+                }) || [];
+                const promise = cliImport(pathArray);
+                promise.then((isValid) => {
+                    if (isValid) {
+                        process.stdout.write("Publication(s) import done." + EOL);
+                        app.exit(0);
+                        return;
+                    }
+                    process.stderr.write("No valid files, exit with code 1" + EOL);
+                    app.exit(1);
+                }).catch((e) => {
+                    debug("import error :", e);
+                    process.stderr.write(e.toString() + EOL);
+                    app.exit(1);
+                });
+            }
         },
     )
     .command("read <title>",
@@ -98,9 +106,10 @@ const yarg = yargs
             })
         ,
         (argv) => {
+            // if it's the main instance
             if (gotTheLock) {
                 mainFct();
-                app.on("ready", async () => {
+                app.whenReady().then(async () => {
                     try {
                         if (!await cliRead(argv.title)) {
                             const errorMessage = `There is no publication title match for \"${argv.title}\"`;
@@ -129,10 +138,11 @@ const yarg = yargs
                 .completion()
         ,
         (argv) => {
+            // if it's the main instance
             if (gotTheLock) {
                 mainFct();
                 if (argv.path) {
-                    app.on("ready", async () => {
+                    app.whenReady().then(async () => {
                         try {
                             if (!await cli_(argv.path)) {
                                 const errorMessage = `Import failed for the publication path : ${argv.path}`;
@@ -158,7 +168,7 @@ const yarg = yargs
  * @param main main function to exec
  * @param processArgv process.argv
  */
-export function cli(main: () => void, processArgv = process.argv) {
-    mainFct = main;
-    yarg.parse((_PACKAGING === "0") ? processArgv.slice(2) : processArgv.slice(1)).argv;
+export function cli(_main: () => void, _processArgv = process.argv) {
+    mainFct = _main;
+    yargs.parse((_PACKAGING === "0") ? _processArgv.slice(2) : _processArgv.slice(1));
 }
