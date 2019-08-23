@@ -59,7 +59,6 @@ if (_VSCODE_LAUNCH === "true") {
 debug(process.versions);
 
 function main() {
-
     initSessions();
 
     // Quit when all windows are closed.
