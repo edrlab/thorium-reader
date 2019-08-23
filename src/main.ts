@@ -16,7 +16,6 @@ import { cli } from "readium-desktop/main/cli/process";
 import { createWindow } from "readium-desktop/main/createWindow";
 import { container } from "readium-desktop/main/di";
 import { initApp, registerProtocol } from "readium-desktop/main/init";
-import { lockInstance } from "readium-desktop/main/lock";
 import {
     _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
@@ -28,6 +27,7 @@ import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
+import { lockInstance } from "readium-desktop/main/lock";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -52,6 +52,9 @@ initGlobalConverters_GENERIC();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
+// LockSingleInstance
+lockInstance();
+
 if (_VSCODE_LAUNCH === "true") {
     main();
 } else {
@@ -60,10 +63,6 @@ if (_VSCODE_LAUNCH === "true") {
 debug(process.versions);
 
 function main() {
-
-    if (lockInstance()) {
-        return ;
-    }
 
     initSessions();
 

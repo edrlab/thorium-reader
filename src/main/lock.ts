@@ -5,10 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { app } from "electron";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
+
 import { cli } from "./cli/process";
+
+// Logger
+const debug = debug_("readium-desktop:main:lock");
 
 export function lockInstance() {
     const gotTheLock = app.requestSingleInstanceLock();
@@ -16,6 +21,7 @@ export function lockInstance() {
     if (gotTheLock) {
         app.on("second-instance", (_e, commandLine, _workingDir) => {
             // Someone tried to run a second instance, we should focus our window.
+            debug("comandLine", commandLine, _workingDir);
 
             const winRegistry = container.get("win-registry") as WinRegistry;
             const win = winRegistry.getWindow(1);
@@ -32,7 +38,6 @@ export function lockInstance() {
             // the mainFct is disallow to avoid to generate new mainWindow
             cli(() => ({}), commandLine);
         });
-        return false;
     }
-    return true;
+    return gotTheLock;
 }
