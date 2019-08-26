@@ -119,7 +119,7 @@
         },
         "network": {
             "error": "Désolé, une erreur inattendue s'est produite lors de la tentative de traitement du flux OPDS.",
-            "reject": "Une érreur est survenue",
+            "reject": "Une erreur est survenue",
             "timeout": "Le flux OPDS met du temps à répondre, veuillez réessayer plus tard"
         }
     },
