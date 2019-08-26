@@ -158,11 +158,11 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public async convertOpdsFeedToView(feed: OPDSFeed): Promise<OpdsResultView> {
+    public async convertOpdsFeedToView(feed: OPDSFeed, url: string): Promise<OpdsResultView> {
         const title = convertMultiLangStringToString(feed.Metadata.Title);
         let type = OpdsResultType.Empty;
-        let navigation = null;
-        let publications = null;
+        let navigation: OpdsLinkView[] | undefined;
+        let publications: OpdsPublicationView[] | undefined;
 
         if (feed.Publications) {
             // result page containing publications
@@ -176,6 +176,14 @@ export class OpdsFeedViewConverter {
             navigation = feed.Navigation.map((item) => {
                 return this.convertOpdsLinkToView(item);
             });
+
+            // concatenate all relative path to an absolute URL path
+            navigation = navigation.map((nav) => {
+                if (nav.url && !/[a-zA-Z]+\:\/\//.exec(nav.url)) {
+                    nav.url = `${url}${nav.url}`;
+                }
+                return nav;
+            });
         }
 
         return {
@@ -187,7 +195,7 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    private async getSearchUrlFromOpds1Feed(feed: OPDSFeed) {
+    private async getSearchUrlFromOpds1Feed(feed: OPDSFeed): Promise<string| undefined> {
         // https://github.com/readium/readium-desktop/issues/296#issuecomment-502134459
 
         let searchUrl: string | undefined;

@@ -65,8 +65,13 @@ export class OpdsApi {
     }
 
     public async browse(data: any): Promise<THttpGetOpdsResultView> {
-        const { url } = data;
-        return await httpGet(url, {}, async (opdsFeedData) => {
+        let url: string = data.url;
+        if (new URL(url).protocol === "opds") {
+            url = url.replace(/[a-zA-Z]*)\:\/\//, "http");
+        }
+        return await httpGet(url, {
+            timeout: 10000,
+        }, async (opdsFeedData) => {
             // let opds2Publication: OPDSPublication = null;
             let opds2Feed: OPDSFeed = null;
 
@@ -92,7 +97,7 @@ export class OpdsApi {
                     OPDSFeed,
                 );
             }
-            opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
+            opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed, url);
             return opdsFeedData;
         });
     }
