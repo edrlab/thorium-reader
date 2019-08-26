@@ -25,6 +25,11 @@ const debug = debug_("readium-desktop:src/main/api/opds");
 @injectable()
 export class OpdsApi {
 
+    /**
+     * test all possible content-type for both xml and json
+     * @param contentType content-type headers
+     * @returns if content-Type is missing accept
+     */
     public static contentTypeisAccepted(contentType: string) {
         const retBool = contentType &&
             !contentType.startsWith("application/json") &&
