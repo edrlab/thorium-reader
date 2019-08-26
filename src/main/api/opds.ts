@@ -24,6 +24,17 @@ const debug = debug_("readium-desktop:src/main/api/opds");
 
 @injectable()
 export class OpdsApi {
+
+    public static contentTypeisAccepted(contentType: string) {
+        const retBool = contentType &&
+            !contentType.startsWith("application/json") &&
+            !contentType.startsWith("application/opds+json") &&
+            !contentType.startsWith("application/atom+xml") &&
+            !contentType.startsWith("application/xml") &&
+            !contentType.startsWith("text/xml");
+        return !retBool;
+    }
+
     @inject("opds-feed-repository")
     private readonly opdsFeedRepository!: OpdsFeedRepository;
 
@@ -71,9 +82,7 @@ export class OpdsApi {
             }
 
             debug("opdsFeed content-type", opdsFeedData.contentType);
-            if (!opdsFeedData.contentType.startsWith("application/json") &&
-                !opdsFeedData.contentType.startsWith("application/opds+json") &&
-                !opdsFeedData.contentType.startsWith("application/atom+xml")) {
+            if (!OpdsApi.contentTypeisAccepted(opdsFeedData.contentType)) {
                 throw new Error(`Not a valid OPDS HTTP Content-Type:
                     ${opdsFeedData.url} => ${opdsFeedData.contentType}`);
             }
