@@ -30,7 +30,9 @@ interface Props extends TranslatorProps {
 }
 
 interface State {
-    toastList: any;
+    toastList: {
+        [id: string]: ToastState;
+    };
 }
 
 export class ToastManager extends React.Component<Props, State> {
