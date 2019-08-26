@@ -54,11 +54,8 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     public render(): React.ReactElement<{}> {
         const { result, resultIsReject, __ } = this.props;
         let content = (<Loader />);
-        if (typeof result === "string" && resultIsReject) {
-            content = (
-                <MessageOpdBrowserResult title={__("opds.network.reject")} message={result} />
-            );
-        } else if (typeof result === "object" && result) {
+
+        if (typeof result === "object" && result) {
             if (result.isSuccess) {
                 switch (result.data.type) {
                     case OpdsResultType.NavigationFeed:
@@ -86,10 +83,18 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
             } else {
                 content = (
                     <MessageOpdBrowserResult
-                        title={`${__("opds.network.error")}${result.statusCode} ${result.statusMessage}`}
+                        title={__("opds.network.error")}
+                        message={`${result.statusCode} : ${result.statusMessage}`}
                     />
                 );
             }
+        } else if (resultIsReject) {
+            content = (
+                <MessageOpdBrowserResult
+                    title={__("opds.network.reject")}
+                    message={JSON.stringify(result)}
+                />
+            );
         }
 
         return content;

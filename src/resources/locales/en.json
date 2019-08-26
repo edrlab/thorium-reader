@@ -121,9 +121,9 @@
             "goSubBook": "Subscribe"
         },
         "network": {
-            "error": "Unable to access to opds feed",
+            "error": "Sorry, there was an unexpected error when trying to process the OPDS feed",
             "reject": "An error has occurred",
-            "timeout": "The opds feed takes time to get back, reload the page"
+            "timeout": "There was a network timeout, please try again later"
         }
     },
     "publication": {
