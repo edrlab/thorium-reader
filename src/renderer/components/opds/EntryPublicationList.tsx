@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
-import Header, { DisplayType } from "readium-desktop/renderer/components/opds/Header";
+import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
@@ -30,20 +30,17 @@ interface EntryPublicationListProps extends RouteComponentProps {
 export class EntryPublicationList extends React.Component<EntryPublicationListProps, undefined> {
     public render(): React.ReactElement<{}> {
         let DisplayView: any = GridView;
-        let displayType = DisplayType.Grid;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
 
             if (parsedResult.displayType === DisplayType.List) {
                 DisplayView = ListView;
-                displayType = DisplayType.List;
             }
         }
 
         return (
             <div>
-                <Header displayType={ displayType } />
                 { this.props.publications ?
                     <DisplayView publications={ this.props.publications } isOpdsView={true}/>
                 : <Loader/>}
