@@ -67,7 +67,7 @@ export class OpdsApi {
     public async browse(data: any): Promise<THttpGetOpdsResultView> {
         let url: string = data.url;
         if (new URL(url).protocol === "opds") {
-            url = url.replace(/[a-zA-Z]*)\:\/\//, "http");
+            url = url.replace(/([a-zA-Z]*)\:\/\//, "http");
         }
         return await httpGet(url, {
             timeout: 10000,
