@@ -121,6 +121,8 @@ yargs
                         dialog.showErrorBox(errorTitle, e.toString());
                         process.stderr.write(e.toString() + EOL);
                     }
+                }).catch(() => {
+                    // ignore
                 });
             } else {
                 app.exit(0);
@@ -154,6 +156,8 @@ yargs
                             dialog.showErrorBox(errorTitle, e.toString());
                             process.stderr.write(e.toString() + EOL);
                         }
+                    }).catch(() => {
+                        // ignore
                     });
                 }
             } else {
