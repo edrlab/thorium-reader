@@ -10,8 +10,8 @@ import * as path from "path";
 import { URL } from "url";
 import * as uuid from "uuid";
 
-import OPDSFeedParser from "opds-feed-parser/lib/src/index";
-import { AcquisitionFeed } from "opds-feed-parser/lib/src/index";
+import OPDSFeedParser from "opds-feed-parser";
+import { AcquisitionFeed } from "opds-feed-parser";
 import { Catalog } from "readium-desktop/common/models/catalog";
 import { Publication } from "readium-desktop/common/models/publication";
 

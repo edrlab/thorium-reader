@@ -1,23 +1,21 @@
 declare namespace typed_i18n {
   interface TFunction {
   (_: "accessibility", __?: {}): {
-  readonly "bookAuthor": string,
-  readonly "bookPublisher": string,
-  readonly "bookReleaseDate": string,
-  readonly "bookTitle": string,
+  readonly "bookMenu": string,
   readonly "closeDialog": string,
   readonly "homeMenu": string,
   readonly "importFile": string,
+  readonly "leftSlideButton": string,
+  readonly "rightSlideButton": string,
   readonly "searchBook": string,
   readonly "skipLink": string
 };
-  (_: "accessibility.bookAuthor", __?: {}): string;
-  (_: "accessibility.bookPublisher", __?: {}): string;
-  (_: "accessibility.bookReleaseDate", __?: {}): string;
-  (_: "accessibility.bookTitle", __?: {}): string;
+  (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
   (_: "accessibility.homeMenu", __?: {}): string;
   (_: "accessibility.importFile", __?: {}): string;
+  (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.rightSlideButton", __?: {}): string;
   (_: "accessibility.searchBook", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "app", __?: {}): {
@@ -52,7 +50,6 @@ declare namespace typed_i18n {
   readonly "about": { readonly "button": string, readonly "title": string },
   readonly "addBookToLib": string,
   readonly "addTags": string,
-  readonly "addTeaserToLib": string,
   readonly "allBooks": string,
   readonly "bookInfo": string,
   readonly "delete": string,
@@ -84,7 +81,6 @@ declare namespace typed_i18n {
   (_: "catalog.about.title", __?: {}): string;
   (_: "catalog.addBookToLib", __?: {}): string;
   (_: "catalog.addTags", __?: {}): string;
-  (_: "catalog.addTeaserToLib", __?: {}): string;
   (_: "catalog.allBooks", __?: {}): string;
   (_: "catalog.bookInfo", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
@@ -201,7 +197,6 @@ declare namespace typed_i18n {
   readonly "menu": {
     readonly "aboutBook": string,
     readonly "addExtract": string,
-    readonly "addTeaser": string,
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
     readonly "goSubBook": string
@@ -227,14 +222,12 @@ declare namespace typed_i18n {
   (_: "opds.menu", __?: {}): {
   readonly "aboutBook": string,
   readonly "addExtract": string,
-  readonly "addTeaser": string,
   readonly "goBuyBook": string,
   readonly "goLoanBook": string,
   readonly "goSubBook": string
 };
   (_: "opds.menu.aboutBook", __?: {}): string;
   (_: "opds.menu.addExtract", __?: {}): string;
-  (_: "opds.menu.addTeaser", __?: {}): string;
   (_: "opds.menu.goBuyBook", __?: {}): string;
   (_: "opds.menu.goLoanBook", __?: {}): string;
   (_: "opds.menu.goSubBook", __?: {}): string;

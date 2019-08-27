@@ -13,7 +13,9 @@ import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-interface Props {
+import { TranslatorProps, withTranslator } from "./translator";
+
+interface Props extends TranslatorProps {
     content: JSX.Element[];
     className?: string;
 }
@@ -23,7 +25,7 @@ interface State {
     refreshVisible: boolean;
 }
 
-export default class Slider extends React.Component<Props, State> {
+class Slider extends React.Component<Props, State> {
     private contentRef: any;
     private contentElRefs: any[] = [];
     private wrapperRef: any;
@@ -69,7 +71,7 @@ export default class Slider extends React.Component<Props, State> {
     }
 
     public render(): React.ReactElement<{}>  {
-        const className = this.props.className;
+        const { className, __ } = this.props;
 
         const list = this.createContent();
         let max = 0;
@@ -85,8 +87,12 @@ export default class Slider extends React.Component<Props, State> {
         return (
             <div className={(className ? className + " " : "") + styles.wrapper}>
                 {this.state.position < 0 ?
-                    <button className={styles.back} onClick={this.handleMove.bind(this, false)}>
-                        <SVG svg={ArrowRightIcon} title=""/>
+                    <button
+                        aria-label={__("accessibility.leftSlideButton")}
+                        className={styles.back}
+                        onClick={this.handleMove.bind(this, false)}
+                    >
+                        <SVG svg={ArrowRightIcon}/>
                     </button>
                 : <div className={styles.button_substitute}/>
                 }
@@ -96,8 +102,11 @@ export default class Slider extends React.Component<Props, State> {
                     </div>
                 </div>
                 {this.state.position > max ?
-                    <button onClick={this.handleMove.bind(this, true)}>
-                        <SVG svg={ArrowRightIcon} title=""/>
+                    <button
+                        onClick={this.handleMove.bind(this, true)}
+                        aria-label={__("accessibility.rightSlideButton")}
+                    >
+                        <SVG svg={ArrowRightIcon}/>
                     </button>
                 : <div className={styles.button_substitute}/>
                 }
@@ -171,3 +180,5 @@ export default class Slider extends React.Component<Props, State> {
         this.setState({refreshVisible: true});
     }
 }
+
+export default withTranslator(Slider);

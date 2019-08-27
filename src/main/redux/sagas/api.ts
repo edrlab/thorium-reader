@@ -46,6 +46,6 @@ export function* requestWatcher() {
 
 export function* watchers() {
     yield all([
-        requestWatcher(),
+        call(requestWatcher),
     ]);
 }

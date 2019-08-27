@@ -9,7 +9,7 @@ import { container } from "readium-desktop/renderer/di";
 
 import { Translator } from "readium-desktop/common/services/translator";
 
-import { all, take } from "redux-saga/effects";
+import { all, call, take } from "redux-saga/effects";
 
 import { i18nActions } from "readium-desktop/common/redux/actions";
 
@@ -23,6 +23,6 @@ export function* localeWatcher() {
 
 export function* watchers() {
     yield all([
-        localeWatcher(),
+        call(localeWatcher),
     ]);
 }

@@ -80,6 +80,7 @@ export class ToastManager extends React.Component<Props, State> {
         return (
             <Toast
                 message={toast.data}
+                key={id}
                 icon={ DownloadIcon }
                 close={ () => this.close(id) }
                 displaySystemNotification
@@ -91,6 +92,7 @@ export class ToastManager extends React.Component<Props, State> {
         return (
             <Toast
                 message={toast.data}
+                key={id}
                 icon={ DownloadIcon }
                 close={ () => this.close(id) }
             />

@@ -37,10 +37,22 @@ import { ActionSerializer } from "readium-desktop/common/services/serializer";
 
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
+// import { consoleRedirect } from "@r2-navigator-js/electron/renderer/common/console-redirect";
+if (IS_DEV) {
+    // tslint:disable-next-line:no-var-requires
+    const cr = require("@r2-navigator-js/electron/renderer/common/console-redirect");
+    // const releaseConsoleRedirect =
+    cr.consoleRedirect("readium-desktop:renderer:bookshelf", process.stdout, process.stderr, true);
+}
+
 let devTron: any;
+let axe: any;
 if (IS_DEV) {
     // tslint:disable-next-line: no-var-requires
     devTron = require("devtron");
+
+    // tslint:disable-next-line: no-var-requires
+    axe = require("react-axe");
 }
 
 initGlobalConverters_OPDS();
@@ -73,6 +85,9 @@ const store = (container.get("store") as Store<any>);
 
 store.subscribe(() => {
     const state = store.getState();
+    if (state.i18n && state.i18n.locale) {
+        document.documentElement.setAttribute("lang", state.i18n.locale);
+    }
 
     if (!hasBeenRenderered && state.win.status === WinStatus.Initialized) {
         render();
@@ -104,3 +119,18 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
             break;
     }
 });
+
+if (IS_DEV) {
+    ipcRenderer.once("AXE_A11Y", () => {
+        // https://github.com/dequelabs/axe-core/blob/master/doc/API.md#api-name-axeconfigure
+        const config = {
+            // rules: [
+            //     {
+            //         id: "skip-link",
+            //         enabled: true,
+            //     },
+            // ],
+        };
+        axe(React, ReactDOM, 1000, config);
+    });
+}

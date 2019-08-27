@@ -1,12 +1,11 @@
 {
     "accessibility": {
-        "bookAuthor": "Buchautorin",
-        "bookPublisher": "Buchverlag",
-        "bookReleaseDate": "Buchfreigabedatum",
-        "bookTitle": "Titel des Buches",
+        "bookMenu": "Menü",
         "closeDialog": "Schließen",
         "homeMenu": "Startmenü",
         "importFile": "importieren einer epub-datei",
+        "leftSlideButton": "Scrolle nach links unten",
+        "rightSlideButton": "Scrolle nach rechts unten",
         "searchBook": "Suche nach einem Buch, einem Tag oder einer Art von Literatur",
         "skipLink": "Gehe zum Inhalt"
     },
@@ -27,9 +26,8 @@
             "button": "",
             "title": ""
         },
-        "addBookToLib": "zur Bibliothek hinzufügen",
+        "addBookToLib": "Import",
         "addTags": "Ein tag hinzufügen",
-        "addTeaserToLib": "den Extrakt zur Bibliothek hinzufügen",
         "allBooks": "alle Bücher",
         "bookInfo": "Über dieses Buch",
         "delete": "Dauerhaft löschen",
@@ -115,7 +113,6 @@
         "menu": {
             "aboutBook": "über dieses Buch",
             "addExtract": "zur Lib hinzufügen",
-            "addTeaser": "Extrakt zur Lib hinzufügen",
             "goBuyBook": "dieses Buch kaufen",
             "goLoanBook": "dieses Buch ausleihen",
             "goSubBook": "abonnieren"

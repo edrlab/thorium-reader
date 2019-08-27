@@ -44,7 +44,9 @@ export class Browser extends React.Component<Props> {
             url = link.url;
         }
 
-        const secondaryHeader = <Header/>;
+        const parsedResult = parseQueryString(this.props.location.search);
+
+        const secondaryHeader = <Header displayType={parsedResult.displayType}/>;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
@@ -59,6 +61,8 @@ export class Browser extends React.Component<Props> {
     private buildBreadcrumb(): BreadCrumbItem[] {
         const { match, navigation } = this.props;
         const breadcrumb: any = [];
+        const parsedQuerryString = parseQueryString(this.props.location.search);
+        const search = parsedQuerryString.search;
 
         // Add root page
         breadcrumb.push({
@@ -66,6 +70,26 @@ export class Browser extends React.Component<Props> {
             path: "/opds",
         });
         const rootFeedIdentifier = (match.params as any).opdsId;
+
+        if (search) {
+            const link = navigation[0];
+            if (link) {
+                breadcrumb.push({
+                    name: link.title,
+                    path: buildOpdsBrowserRoute(
+                        rootFeedIdentifier,
+                        link.title,
+                        link.url,
+                        1,
+                    ),
+                });
+            }
+            breadcrumb.push({
+                name: search,
+            });
+            return breadcrumb;
+        }
+
         navigation.forEach((link, index: number) => {
             breadcrumb.push({
                 name: link.title,
@@ -77,15 +101,6 @@ export class Browser extends React.Component<Props> {
                 ),
             });
         });
-
-        const parsedQuerryString = parseQueryString(this.props.location.search);
-        const search = parsedQuerryString.search;
-
-        if (search) {
-            breadcrumb.push({
-                name: search,
-            });
-        }
 
         return breadcrumb;
     }

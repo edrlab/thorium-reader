@@ -34,44 +34,44 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
         const { publication, __ } = this.props;
         return (
             <>
-                <button
+                <button role="menuitem"
                     onClick={this.displayPublicationInfo }
                 >
                     {__("opds.menu.aboutBook")}
                 </button>
                 { publication.isFree &&
-                    <button
+                    <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e) }
                     >
-                        {__("opds.menu.addExtract")}
+                        {__("catalog.addBookToLib")}
                     </button>
                 }
                 { publication.buyUrl &&
-                    <a
+                    <a role="menuitem"
                         href={publication.buyUrl}
                     >
                         {__("opds.menu.goBuyBook")}
                     </a>
                 }
                 { publication.borrowUrl &&
-                    <a
+                    <a role="menuitem"
                         href={publication.borrowUrl}
                     >
                         {__("opds.menu.goLoanBook")}
                     </a>
                 }
                 { publication.subscribeUrl &&
-                    <a
+                    <a role="menuitem"
                         href={publication.subscribeUrl}
                     >
                         {__("opds.menu.goSubBook")}
                     </a>
                 }
                 { publication.hasSample &&
-                    <button
+                    <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e, true) }
                     >
-                        {__("opds.menu.addTeaser")}
+                        {__("opds.menu.addExtract")}
                     </button>
                 }
             </>

@@ -15,7 +15,7 @@ import {
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import {
-    _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV,
+    _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 
 import { setMenu } from "./menu";
@@ -52,6 +52,24 @@ export async function createWindow() {
                 },
             }]).popup({window: mainWindow});
         });
+
+        mainWindow.webContents.on("did-finish-load", () => {
+            const {
+                default: installExtension,
+                REACT_DEVELOPER_TOOLS,
+                REDUX_DEVTOOLS,
+            } = require("electron-devtools-installer");
+
+            [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+                installExtension(extension)
+                    .then((name: string) => debug("Added Extension: ", name))
+                    .catch((err: any) => debug("An error occurred: ", err));
+            });
+        });
+
+        if (_VSCODE_LAUNCH !== "true") {
+            mainWindow.webContents.openDevTools({ mode: "detach" });
+        }
     }
 
     const winRegistry = container.get("win-registry") as WinRegistry;
@@ -75,23 +93,6 @@ export async function createWindow() {
     mainWindow.loadURL(rendererBaseUrl);
 
     setMenu(mainWindow);
-
-    if (IS_DEV) {
-        const {
-            default: installExtension,
-            REACT_DEVELOPER_TOOLS,
-            REDUX_DEVTOOLS,
-        } = require("electron-devtools-installer");
-
-        [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
-            installExtension(extension)
-                .then((name: string) => debug("Added Extension: ", name))
-                .catch((err: any) => debug("An error occurred: ", err));
-        });
-
-        // Open dev tools in development environment
-        mainWindow.webContents.openDevTools();
-    }
 
     // Redirect link to an external browser
     const handleRedirect = (event: any, url: any) => {

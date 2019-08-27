@@ -17,7 +17,6 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
 
-import * as qs from "qs";
 import { parseQueryString } from "readium-desktop/utils/url";
 import SearchForm from "./SearchForm";
 
@@ -34,22 +33,23 @@ export class Header extends React.Component<HeaderProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         const search = parseQueryString(this.props.location.search.replace("?", ""));
+        const displayType = search.displayType || DisplayType.Grid;
         delete(search.displayType);
 
         return (
             <SecondaryHeader>
-                { this.props.displayType &&
+                { displayType &&
                     <>
                         <Link
-                            to={{search: "?" + qs.stringify(Object.assign(search, {displayType: "grid"})) }}
-                            style={(this.props.displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
+                            to={{search: "displayType=grid"}}
+                            style={(displayType !== DisplayType.Grid) ? {fill: "#767676"} : {}}
                         >
                             <SVG svg={GridIcon} title={__("header.gridTitle")}/>
                         </Link>
                         <Link
-                            to={{search: "?" + qs.stringify(Object.assign(search, {displayType: "list"})) }}
-                            style={this.props.displayType !== DisplayType.List ?
-                                {fill: "grey", marginLeft: "16px"} : {marginLeft: "16px"}}
+                            to={{search: "displayType=list"}}
+                            style={ displayType !== DisplayType.List ?
+                                {fill: "#757575", marginLeft: "16px"} : {marginLeft: "16px"}}
                         >
                             <SVG svg={ListIcon} title={__("header.listTitle")}/>
                         </Link>

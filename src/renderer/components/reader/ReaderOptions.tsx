@@ -204,27 +204,31 @@ export class ReaderOptions extends React.Component<Props> {
                 <ul className={styles.center_in_tab}>
                     <li className={styles.focus_element}>
                         <input
-                        id={styles.scroll_option}
-                        type="radio"
-                        name="disposition"
-                        onChange={(e) => this.props.handleSettingChange(e, "paged", "false")}
+                            id={styles.scroll_option}
+                            type="radio"
+                            name="disposition"
+                            onChange={(e) => this.props.handleSettingChange(e, "paged", "false")}
                         />
-                        <label htmlFor={styles.scroll_option}
-                        className={this.getButtonClassName("paged", false)}>
+                        <label
+                            htmlFor={styles.scroll_option}
+                            className={this.getButtonClassName("paged", false)}
+                        >
                             <SVG svg={DefileIcon}/>
                             {__("reader.settings.scrolled")}
                         </label>
                     </li>
                     <li className={styles.focus_element}>
                         <input
-                        id={styles.page_option}
-                        type="radio"
-                        name="disposition"
-                        onChange={(e) => this.props.handleSettingChange(e, "paged", "true")}
-                        defaultChecked={true}
+                            id={styles.page_option}
+                            type="radio"
+                            name="disposition"
+                            onChange={(e) => this.props.handleSettingChange(e, "paged", "true")}
+                            defaultChecked={true}
                         />
-                        <label htmlFor={styles.page_option}
-                        className={this.getButtonClassName("paged", true)}>
+                        <label
+                            htmlFor={styles.page_option}
+                            className={this.getButtonClassName("paged", true)}
+                        >
                             <SVG svg={PagineIcon}/>
                             {__("reader.settings.paginated")}
                         </label>
@@ -236,28 +240,32 @@ export class ReaderOptions extends React.Component<Props> {
                 <ul className={styles.center_in_tab}>
                     <li className={styles.focus_element}>
                         <input
-                        id={"radio-" + styles.option_gauche}
-                        name="alignment"
-                        type="radio"
-                        onChange={(e) => this.props.handleSettingChange(e, "align", "left")}
-                        checked={this.props.settings.align === "left"}
+                            id={"radio-" + styles.option_gauche}
+                            name="alignment"
+                            type="radio"
+                            onChange={(e) => this.props.handleSettingChange(e, "align", "left")}
+                            checked={this.props.settings.align === "left"}
                         />
-                        <label htmlFor={"radio-" + styles.option_gauche}
-                        className={this.getButtonClassName("align", "left")}>
+                        <label
+                            htmlFor={"radio-" + styles.option_gauche}
+                            className={this.getButtonClassName("align", "left")}
+                        >
                             <SVG svg={LeftIcon}/>
                             {__("reader.settings.left")}
                         </label>
                     </li>
                     <li className={styles.focus_element}>
                         <input
-                        id={"radio-" + styles.option_justif}
-                        name="alignment"
-                        type="radio"
-                        onChange={(e) => this.props.handleSettingChange(e, "align", "justify")}
-                        checked={this.props.settings.align === "justify"}
+                            id={"radio-" + styles.option_justif}
+                            name="alignment"
+                            type="radio"
+                            onChange={(e) => this.props.handleSettingChange(e, "align", "justify")}
+                            checked={this.props.settings.align === "justify"}
                         />
-                        <label htmlFor={"radio-" + styles.option_justif}
-                        className={this.getButtonClassName("align", "justify")}>
+                        <label
+                            htmlFor={"radio-" + styles.option_justif}
+                            className={this.getButtonClassName("align", "justify")}
+                        >
                             <SVG svg={JustifyIcon}/>
                             {__("reader.settings.justify")}
                         </label>
@@ -269,55 +277,62 @@ export class ReaderOptions extends React.Component<Props> {
                 <ul className={styles.center_in_tab}>
                     <li className={styles.focus_element}>
                         <input
-                        id={"radio-" + styles.option_colonne}
-                        type="radio"
-                        name="column"
-                        {...(!settings.paged && {disabled: true})}
-                        role="link"
-                        onChange={(e) =>
-                        this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
-                        checked={this.props.settings.colCount === colCountEnum.auto}
+                            id={"radio-" + styles.option_colonne}
+                            type="radio"
+                            name="column"
+                            {...(!settings.paged && {disabled: true})}
+                            role="link"
+                            onChange={(e) =>
+                            this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
+                            checked={this.props.settings.colCount === colCountEnum.auto}
                         />
-                        <label htmlFor={"radio-" + styles.option_colonne}
-                        className={this.getButtonClassName("colCount",
-                        !settings.paged ? null : colCountEnum.auto,
-                        !settings.paged && styles.disable)}>
+                        <label
+                            htmlFor={"radio-" + styles.option_colonne}
+                            className={this.getButtonClassName("colCount",
+                            !settings.paged ? null : colCountEnum.auto,
+                            !settings.paged && styles.disable)}
+                        >
                             <SVG svg={AutoIcon}/>
                             {__("reader.settings.column.auto")}
                         </label>
                     </li>
                     <li className={styles.focus_element}>
                         <input
-                        {...(!settings.paged && { disabled: true })}
-                        id={"radio-" + styles.option_colonne1}
-                        type="radio"
-                        name="column"
-                        role="link"
-                        onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
-                        checked={this.props.settings.colCount === colCountEnum.one}
+                            {...(!settings.paged && { disabled: true })}
+                            id={"radio-" + styles.option_colonne1}
+                            type="radio"
+                            name="column"
+                            role="link"
+                            onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
+                            checked={this.props.settings.colCount === colCountEnum.one}
                         />
-                        <label htmlFor={"radio-" + styles.option_colonne1}
-                        className={this.getButtonClassName("colCount",
-                        !settings.paged ? null : colCountEnum.one,
-                        !settings.paged && styles.disable)}>
+                        <label
+                            htmlFor={"radio-" + styles.option_colonne1}
+                            className={this.getButtonClassName("colCount",
+                            !settings.paged ? null : colCountEnum.one,
+                            !settings.paged && styles.disable)}
+                        >
                             <SVG svg={ColumnIcon} title={__("reader.settings.column.oneTitle")}/>
                             {__("reader.settings.column.one")}
                         </label>
                     </li>
                     <li className={styles.focus_element}>
                         <input
-                        id={"radio-" + styles.option_colonne2}
-                        type="radio"
-                        name="column"
-                        {...(!settings.paged && { disabled: true })}
-                        role="link"
-                        onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
-                        checked={this.props.settings.colCount === colCountEnum.two}
+                            id={"radio-" + styles.option_colonne2}
+                            type="radio"
+                            name="column"
+                            {...(!settings.paged && { disabled: true })}
+                            role="link"
+                            onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
+                            checked={this.props.settings.colCount === colCountEnum.two}
                         />
-                        <label htmlFor={"radio-" + styles.option_colonne2}
-                        className={this.getButtonClassName("colCount",
-                        !settings.paged ? null : colCountEnum.two,
-                        !settings.paged && styles.disable)}>
+                        <label
+                            htmlFor={"radio-" + styles.option_colonne2}
+                            className={this.getButtonClassName("colCount",
+                                !settings.paged ? null : colCountEnum.two,
+                                !settings.paged && styles.disable)
+                            }
+                        >
                             <SVG svg={Column2Icon} title={__("reader.settings.column.twoTitle")}/>
                             {__("reader.settings.column.two")}
                         </label>
@@ -453,6 +468,8 @@ export class ReaderOptions extends React.Component<Props> {
         let classname = "";
         if (property === value) {
             classname = styles.active;
+        } else {
+            classname = styles.notUsed;
         }
         return classNames(classname, additionalClassName);
     }
