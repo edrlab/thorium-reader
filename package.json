@@ -142,7 +142,7 @@
       "desktop": {
         "MimeType": "application/epub+zip"
       },
-      "executableName": "Thorium Reader"
+      "executableName": "thorium-reader"
     },
     "mac": {
       "target": "default"
