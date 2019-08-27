@@ -121,7 +121,8 @@ export class PublicationApi {
 
         return newDocs.map((doc) => {
             const publication = this.publicationViewConverter.convertDocumentToView(doc);
-            this.dispatchToastRequest(ToastType.DownloadComplete, "message.import.success", publication.title);
+            this.dispatchToastRequest(ToastType.DownloadComplete,
+                this.translator.translate("message.import.success", {title: publication.title}));
             return publication;
         });
     }
