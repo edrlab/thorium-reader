@@ -30,7 +30,9 @@ interface Props extends TranslatorProps {
 }
 
 interface State {
-    toastList: any;
+    toastList: {
+        [id: string]: ToastState;
+    };
 }
 
 export class ToastManager extends React.Component<Props, State> {
@@ -75,11 +77,10 @@ export class ToastManager extends React.Component<Props, State> {
     }
 
     private buildFileImportToast(toast: ToastState, id: string) {
-        const { __ } = this.props;
         return (
             <Toast
+                message={toast.data}
                 key={id}
-                message={__(toast.data.message, toast.data.messageProps)}
                 icon={ DownloadIcon }
                 close={ () => this.close(id) }
                 displaySystemNotification
@@ -88,11 +89,10 @@ export class ToastManager extends React.Component<Props, State> {
     }
 
     private buildFileImportStartToast(toast: ToastState, id: string) {
-        const { __ } = this.props;
         return (
             <Toast
+                message={toast.data}
                 key={id}
-                message={__(toast.data.message, toast.data.messageProps)}
                 icon={ DownloadIcon }
                 close={ () => this.close(id) }
             />
