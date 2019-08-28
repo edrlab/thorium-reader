@@ -8,6 +8,8 @@
 import * as debug_ from "debug";
 import * as path from "path";
 
+import * as express from "express";
+
 import {
     colCountEnum,
     IReadiumCSS,
@@ -33,6 +35,9 @@ import { container } from "readium-desktop/main/di";
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
 
 import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
+
+import { Transformers } from "@r2-shared-js/transform/transformer";
+import { TransformerHTML } from "@r2-shared-js/transform/transformer-html";
 
 const debug = debug_("readium-desktop:main#streamer");
 
@@ -130,3 +135,36 @@ function computeReadiumCssJsonMessage(_publication: Publication, _link: Link | u
 }
 
 setupReadiumCSS(streamer, rcssPath, computeReadiumCssJsonMessage);
+
+let mathJaxPath = "MathJax";
+if (_PACKAGING === "1") {
+    mathJaxPath = path.normalize(path.join(__dirname, mathJaxPath));
+} else {
+    mathJaxPath = "mathjax";
+    mathJaxPath = path.normalize(path.join(__dirname, _NODE_MODULE_RELATIVE_URL, mathJaxPath));
+}
+mathJaxPath = mathJaxPath.replace(/\\/g, "/");
+debug("MathJax path:", mathJaxPath);
+// https://expressjs.com/en/4x/api.html#express.static
+const staticOptions = {
+    dotfiles: "ignore",
+    etag: true,
+    fallthrough: false,
+    immutable: true,
+    index: false,
+    maxAge: "1d",
+    redirect: false,
+    // extensions: ["css", "otf"],
+    setHeaders: (res: express.Response, _path: string, _stat: any) => {
+        //   res.set('x-timestamp', Date.now())
+        streamer.setResponseCORS(res);
+    },
+};
+const MATHJAX_URL_PATH = "math-jax";
+streamer.expressUse("/" + MATHJAX_URL_PATH, express.static(mathJaxPath, staticOptions));
+const transformer = (_publication: Publication, _link: Link, str: string): string => {
+    const url = `${streamer.serverUrl()}/${MATHJAX_URL_PATH}/MathJax.js?config=MML_CHTML,Safe`;
+    const script = `<script type="application/javascript" src="${url}"> </script>`;
+    return str.replace(/<\/head>/, `${script}</head>`);
+};
+Transformers.instance().add(new TransformerHTML(transformer));
