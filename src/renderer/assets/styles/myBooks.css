@@ -247,6 +247,7 @@ main {
 		cursor: pointer;
 		display: flex;
 		align-items: center;
+		padding-left: 0.3125rem;
 	}
 	& p {
 		white-space: nowrap;
@@ -374,7 +375,7 @@ main {
 	background-color: #CECECE;
 }
 #value {
-	font: 0.9rem "Open Sans", sans-serif;
+	font-size: 0.9rem;
 	align-items: center;
 	position: relative;
 	top: 9px;
@@ -382,9 +383,10 @@ main {
 }
 
 #sortMenu button{
-	width: 5em;
+	width: unset;
 	height: 2em;
-	font: 0.9rem "Open Sans", sans-serif;
+	font-size: 0.9rem;
+	padding: 0 0.3125rem;
 }
 
 #content {
