@@ -81,10 +81,26 @@ To do it, launch the powershell as an administrator and type:
 npm install -g windows-build-tools
 ```
 
-## Import file from command line
+## Command line
 
 ```
-npm run build:dev:main && npm run start:dev:main:electron -- --import-file=<path to epub or lcpl file>
+Thorium Reader <cmd> [args]
+
+Commands:
+  Thorium Reader opds <title> <url>  import opds feed
+  Thorium Reader import <path>       import epub or lpcl file
+  Thorium Reader read <title>        searches already-imported publications with
+                                     the provided TITLE, and opens the reader
+                                     with the first match
+  Thorium Reader [path]              default command                   [default]
+  Thorium Reader completion          generate completion script
+
+Positionals:
+  path  path of your publication, it can be an absolute, relative path  [string]
+
+Options:
+  --version  Show version number                                       [boolean]
+  --help     Show help                                                 [boolean]
 ```
 
 ## Issues
