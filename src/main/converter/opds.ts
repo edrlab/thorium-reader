@@ -179,7 +179,7 @@ export class OpdsFeedViewConverter {
 
             // concatenate all relative path to an absolute URL path
             navigation = navigation.map((nav) => {
-                if (nav.url && !/[a-zA-Z]+\:\/\//.exec(nav.url)) {
+                if (nav.url && !/ˆ[a-zA-Z]+:\/\//.exec(nav.url)) {
                     nav.url = `${url}${nav.url}`;
                 }
                 return nav;
