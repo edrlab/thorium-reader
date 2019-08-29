@@ -55,7 +55,14 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
         const { result, resultIsReject, __ } = this.props;
         let content = (<Loader />);
 
-        if (typeof result === "object" && result) {
+        if (resultIsReject) {
+            content = (
+                <MessageOpdBrowserResult
+                    title={__("opds.network.reject")}
+                    message={JSON.stringify(result)}
+                />
+            );
+        } else if (typeof result === "object" && result) {
             if (result.isSuccess) {
                 switch (result.data.type) {
                     case OpdsResultType.NavigationFeed:
@@ -84,60 +91,53 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
                 content = (
                     <MessageOpdBrowserResult
                         title={__("opds.network.error")}
-                        message={`${result.statusCode} : ${result.statusMessage}`}
+                        message={`${result.statusCode || "unknow error code"} : ${result.statusMessage || ""}`}
                     />
                 );
             }
-        } else if (resultIsReject) {
-            content = (
-                <MessageOpdBrowserResult
-                    title={__("opds.network.reject")}
-                    message={JSON.stringify(result)}
-                />
-            );
         }
 
         return content;
     }
 
     private browseOpds() {
-        const { url, location, result, browse } = this.props;
-        const oldQs = parseQueryString(url.split("?")[1]);
-        const search = qs.parse(location.search.replace("?", "")).search;
-        let newUrl = url;
-        if (search && result && typeof result === "object" && result.isSuccess && result.data.searchUrl) {
-            newUrl = result.data.searchUrl;
-            newUrl = this.addSearchTerms(newUrl, search) +
-                Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
-        }
-        this.currentUrl = newUrl;
-        this.props.cleanData();
-        browse({ url: newUrl });
+    const { url, location, result, browse } = this.props;
+    const oldQs = parseQueryString(url.split("?")[1]);
+    const search = qs.parse(location.search.replace("?", "")).search;
+    let newUrl = url;
+    if (search && result && typeof result === "object" && result.isSuccess && result.data.searchUrl) {
+        newUrl = result.data.searchUrl;
+        newUrl = this.addSearchTerms(newUrl, search) +
+            Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
     }
+    this.currentUrl = newUrl;
+    this.props.cleanData();
+    browse({ url: newUrl });
+}
 
     private addSearchTerms(url: string, search: string) {
-        const opds1: boolean = url.search("{searchTerms}") !== -1;
-        if (opds1) {
-            return url.replace("{searchTerms}", search);
-        } else {
-            const searchTemplate = url.match(/{\?(.*?)}/g);
-            let newUrl = url;
-            if (searchTemplate) {
-                const searchOptions = searchTemplate[0].replace("{?", "").replace("}", "").split(",");
-                newUrl = url.replace(/{\?(.*?)}/g, "?");
-                if (searchOptions.find((value) => value === "query")) {
-                    newUrl += `query=${search}`;
-                }
-            } else {
-                const splitedCurrentUrl = this.currentUrl.split("?");
-                const parsedQueryString = parseQueryString(splitedCurrentUrl[1]);
-                parsedQueryString.query = search;
-                const queryString = Object.keys(parsedQueryString).map((key) => `${key}=${search}`);
-                newUrl = splitedCurrentUrl[0] + "?" + queryString.join("&");
+    const opds1: boolean = url.search("{searchTerms}") !== -1;
+    if (opds1) {
+        return url.replace("{searchTerms}", search);
+    } else {
+        const searchTemplate = url.match(/{\?(.*?)}/g);
+        let newUrl = url;
+        if (searchTemplate) {
+            const searchOptions = searchTemplate[0].replace("{?", "").replace("}", "").split(",");
+            newUrl = url.replace(/{\?(.*?)}/g, "?");
+            if (searchOptions.find((value) => value === "query")) {
+                newUrl += `query=${search}`;
             }
-            return newUrl;
+        } else {
+            const splitedCurrentUrl = this.currentUrl.split("?");
+            const parsedQueryString = parseQueryString(splitedCurrentUrl[1]);
+            parsedQueryString.query = search;
+            const queryString = Object.keys(parsedQueryString).map((key) => `${key}=${search}`);
+            newUrl = splitedCurrentUrl[0] + "?" + queryString.join("&");
         }
+        return newUrl;
     }
+}
 }
 
 export default withTranslator(withApi(
