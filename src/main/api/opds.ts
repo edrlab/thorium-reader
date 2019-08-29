@@ -79,7 +79,9 @@ export class OpdsApi {
         if (new URL(url).protocol === "opds:") {
             url = url.replace("opds://", "http://");
         }
-        return await httpGet(url, {}, async (opdsFeedData) => {
+        return await httpGet(url, {
+            timeout: 10000,
+        }, async (opdsFeedData) => {
             // let opds2Publication: OPDSPublication = null;
             let opds2Feed: OPDSFeed = null;
 
