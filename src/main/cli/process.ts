@@ -172,7 +172,7 @@ yargs
  * @param main main function to exec
  * @param processArgv process.argv
  */
-export function cli(_main: () => void, _processArgv = process.argv) {
-    mainFct = _main;
-    yargs.parse((_PACKAGING === "0") ? _processArgv.slice(2) : _processArgv.slice(1));
+export function cli(main: () => void, processArgv = process.argv) {
+    mainFct = main;
+    yargs.parse((_PACKAGING === "0") ? processArgv.slice(2) : processArgv.slice(1));
 }
