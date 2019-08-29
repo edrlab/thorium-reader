@@ -118,8 +118,8 @@
             "goSubBook": "abonnieren"
         },
         "network": {
-            "error": "Beim Versuch, den OPDS-Feed zu verarbeiten, ist ein unerwarteter Fehler aufgetreten",
-            "reject": "Ein Fehler ist aufgetreten",
+            "error": "Ein Fehler ist aufgetreten",
+            "reject": "Beim Versuch, den OPDS-Feed zu verarbeiten, ist ein unerwarteter Fehler aufgetreten.",
             "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut"
         }
     },
