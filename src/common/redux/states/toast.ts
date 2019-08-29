@@ -10,5 +10,5 @@ import { ToastType } from "readium-desktop/common/models/toast";
 export interface ToastState {
     open: boolean;
     type: ToastType;
-    data: any;
+    data: string;
 }
