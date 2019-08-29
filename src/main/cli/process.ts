@@ -138,7 +138,15 @@ export function cli(mainFct: () => void) {
                     });
                 }
             },
-        )
+    )
         .help()
-        .parse((_PACKAGING === "0") ? process.argv.slice(2) : process.argv.slice(1));
+        .parse(process.argv
+            .filter((arg) => knownOption(arg) || !arg.startsWith("--"))
+            .slice((_PACKAGING === "0") ? 2 : 1));
 }
+
+// arrow function to filter declared option in yargs
+const knownOption = (str: string) => [
+    "--help",
+    "--version",
+].includes(str);
