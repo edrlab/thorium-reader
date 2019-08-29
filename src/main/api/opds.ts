@@ -88,8 +88,8 @@ export class OpdsApi {
 
             debug("opdsFeed content-type", opdsFeedData.contentType);
             if (!OpdsApi.contentTypeisAccepted(opdsFeedData.contentType)) {
-                throw new Error(`Not a valid OPDS HTTP Content-Type:
-                    ${opdsFeedData.url} => ${opdsFeedData.contentType}`);
+                // tslint:disable-next-line: max-line-length
+                throw new Error(`Not a valid OPDS HTTP Content-Type for ${opdsFeedData.url} (${opdsFeedData.contentType})`);
             }
 
             // This is an opds feed in version 1
