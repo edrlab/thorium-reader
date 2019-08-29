@@ -126,7 +126,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                                         }
                                     data-href={content.Href}
                                 >
-                                    {content.Title}
+                                    <span>{content.Title}</span>
                                 </a>
                                 {content.Children &&
                                     <ul className={styles.chapters_content}>
