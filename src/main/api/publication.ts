@@ -16,6 +16,8 @@ import { container } from "readium-desktop/main/di";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { Store } from "redux";
 
+import { downloadActions } from "readium-desktop/common/redux/actions";
+
 @injectable()
 export class PublicationApi {
     @inject("publication-repository")
@@ -78,7 +80,7 @@ export class PublicationApi {
     }
 
     public async importOpdsEntry(data: any): Promise<PublicationView> {
-
+        this.sendDownloadRequest(data.title);
         // dispatch notification to user with redux
         this.dispatchToastRequest(ToastType.DownloadStarted,
             this.translator.translate("message.download.start", {title: data.title}));
@@ -90,6 +92,7 @@ export class PublicationApi {
             const httpPub = await this.catalogService.importOpdsEntry(data.url, data.downloadSample);
             if (httpPub.isSuccess) {
                 title = httpPub.data.title;
+                this.sendDownloadSuccess(title);
                 returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
             } else {
                 throw new Error(`Http importOpdsEntry error with code
@@ -99,7 +102,8 @@ export class PublicationApi {
             const opdsPublication = JSON.parse(Buffer.from(data.base64OpdsPublication, "base64").toString("utf-8"));
             const publication = await this.catalogService.importOpdsPublication(opdsPublication, data.downloadSample);
             title = publication.title;
-            returnView = this.publicationViewConverter.convertDocumentToView(publication);
+            this.sendDownloadSuccess(title);
+            returnView =  this.publicationViewConverter.convertDocumentToView(publication);
         }
 
         // dispatch notification to user with redux
@@ -143,5 +147,23 @@ export class PublicationApi {
     private dispatchToastRequest(type: ToastType, message: string) {
         const store = container.get("store") as Store<any>;
         store.dispatch(open(type, message));
+    }
+
+    private sendDownloadRequest(title: string) {
+        const store = container.get("store") as Store<any>;
+        store.dispatch(downloadActions.addDownload(
+            {
+                title,
+            },
+        ));
+    }
+
+    private sendDownloadSuccess(title: string) {
+        const store = container.get("store") as Store<any>;
+        store.dispatch(downloadActions.removeDownload(
+            {
+                title,
+            },
+        ));
     }
 }
