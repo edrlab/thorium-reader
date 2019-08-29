@@ -5,33 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { injectable } from "inversify";
-
 import * as moment from "moment";
-
 import {
-    OpdsFeedView,
-    OpdsLinkView,
-    OpdsPublicationView,
-    OpdsResultType,
-    OpdsResultView,
+    convertContributorArrayToStringArray, convertMultiLangStringToString,
+} from "readium-desktop/common/utils";
+import { httpGet } from "readium-desktop/common/utils/http";
+import {
+    OpdsFeedView, OpdsLinkView, OpdsPublicationView, OpdsResultType, OpdsResultView,
 } from "readium-desktop/common/views/opds";
-
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
+import { resolve } from "url";
+import * as convert from "xml-js";
 
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
-
-import { httpGet } from "readium-desktop/common/utils/http";
-import * as convert from "xml-js";
-
-import {
-    convertContributorArrayToStringArray,
-    convertMultiLangStringToString,
-} from "readium-desktop/common/utils";
-
-import * as debug_ from "debug";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/lcp");
@@ -180,7 +170,7 @@ export class OpdsFeedViewConverter {
             // concatenate all relative path to an absolute URL path
             navigation = navigation.map((nav) => {
                 if (nav.url && !/^https?:\/\//.exec(nav.url)) {
-                    nav.url = `${url}${nav.url}`;
+                    nav.url = resolve(url, nav.url);
                 }
                 return nav;
             });
