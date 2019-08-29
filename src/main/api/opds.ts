@@ -5,31 +5,41 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { inject, injectable} from "inversify";
-
+import * as debug_ from "debug";
+import { inject, injectable } from "inversify";
+import { httpGet } from "readium-desktop/common/utils/http";
+import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
+import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
+import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { JSON as TAJSON } from "ta-json-x";
-
 import * as xmldom from "xmldom";
 
-import {
-    convertOpds1ToOpds2,
-} from "@r2-opds-js/opds/converter";
-
+import { convertOpds1ToOpds2 } from "@r2-opds-js/opds/converter";
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
-
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
-import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
-
-import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
-
-import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
-
-import { httpGet } from "readium-desktop/common/utils/http";
+// Logger
+const debug = debug_("readium-desktop:src/main/api/opds");
 
 @injectable()
 export class OpdsApi {
+
+    /**
+     * test all possible content-type for both xml and json
+     * @param contentType content-type headers
+     * @returns if content-Type is missing accept
+     */
+    public static contentTypeisAccepted(contentType?: string) {
+        const retBool = contentType &&
+            !contentType.startsWith("application/json") &&
+            !contentType.startsWith("application/opds+json") &&
+            !contentType.startsWith("application/atom+xml") &&
+            !contentType.startsWith("application/xml") &&
+            !contentType.startsWith("text/xml");
+        return !retBool;
+    }
+
     @inject("opds-feed-repository")
     private readonly opdsFeedRepository!: OpdsFeedRepository;
 
@@ -69,12 +79,20 @@ export class OpdsApi {
         if (new URL(url).protocol === "opds:") {
             url = url.replace("opds://", "http://");
         }
-        return await httpGet(url, {}, async (opdsFeedData) => {
+        return await httpGet(url, {
+            timeout: 10000,
+        }, async (opdsFeedData) => {
             // let opds2Publication: OPDSPublication = null;
             let opds2Feed: OPDSFeed = null;
 
             if (opdsFeedData.isFailure) {
                 return opdsFeedData;
+            }
+
+            debug("opdsFeed content-type", opdsFeedData.contentType);
+            if (!OpdsApi.contentTypeisAccepted(opdsFeedData.contentType)) {
+                // tslint:disable-next-line: max-line-length
+                throw new Error(`Not a valid OPDS HTTP Content-Type for ${opdsFeedData.url} (${opdsFeedData.contentType})`);
             }
 
             // This is an opds feed in version 1

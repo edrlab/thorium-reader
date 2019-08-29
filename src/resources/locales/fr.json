@@ -109,13 +109,18 @@
         "addMenu": "Ajouter un flux OPDS",
         "back": "Retour",
         "breadcrumbRoot": "Catalogues",
-        "empty": "",
+        "empty": "Aucune publication trouvée",
         "menu": {
             "aboutBook": "Fiche livre",
             "addExtract": "Importer l'extrait",
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
             "goSubBook": "Aller sur la page d'abonnement"
+        },
+        "network": {
+            "error": "Une erreur est survenue",
+            "reject": "Désolé, une erreur inattendue s'est produite lors de la tentative de traitement du flux OPDS.",
+            "timeout": "Le flux OPDS met du temps à répondre, veuillez réessayer plus tard"
         }
     },
     "publication": {
