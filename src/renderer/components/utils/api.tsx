@@ -156,6 +156,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
     };
 
     const BaseWrapperComponent = class extends React.Component<ApiProps, undefined> {
+        public static displayName: string;
 
         // Ideally should be private, but see TS4094 comments in this file
         /* private */ public lastSuccess: ApiLastSuccess;
@@ -257,6 +258,9 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
             }
         }
     };
+
+    BaseWrapperComponent.displayName =
+        `withApi(${WrappedComponent.displayName || WrappedComponent.name || "Component"})`;
 
     return connect(mapStateToProps, mapDispatchToProps)(BaseWrapperComponent);
 }
