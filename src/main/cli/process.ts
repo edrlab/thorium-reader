@@ -31,10 +31,10 @@ export function cli(mainFct: () => void) {
                     describe: "title opds feed",
                     type: "string",
                 })
-                    .positional("url", {
-                        describe: "url opds feed",
-                        type: "string",
-                    })
+                .positional("url", {
+                    describe: "url opds feed",
+                    type: "string",
+                })
             ,
             (argv) => {
                 const promise = cliOpds(argv.title, argv.url);
@@ -60,9 +60,9 @@ export function cli(mainFct: () => void) {
                     describe: "absolute, relative or globbing path",
                     type: "string",
                 })
-                    .example("import", "\"./myPath/**/*.epub\"")
-                    .example("import", "\"/*.epub\"")
-                    .example("import", "\"myPublication.epub\"")
+                .example("import", "\"./myPath/**/*.epub\"")
+                .example("import", "\"/*.epub\"")
+                .example("import", "\"myPublication.epub\"")
             ,
             (argv) => {
                 const pathArray = glob.sync(argv.path, {
