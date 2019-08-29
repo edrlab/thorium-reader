@@ -61,6 +61,7 @@
 .dialog_left {
 	width: 33%;
 	height: fit-content;
+    min-width: 9rem;
 
     & img {
         width: 100%;

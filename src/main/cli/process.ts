@@ -174,5 +174,13 @@ yargs
  */
 export function cli(main: () => void, processArgv = process.argv) {
     mainFct = main;
-    yargs.parse((_PACKAGING === "0") ? processArgv.slice(2) : processArgv.slice(1));
+    yargs.parse(processArgv
+        .filter((arg) => knownOption(arg) || !arg.startsWith("--"))
+        .slice((_PACKAGING === "0") ? 2 : 1));
 }
+
+// arrow function to filter declared option in yargs
+const knownOption = (str: string) => [
+    "--help",
+    "--version",
+].includes(str);

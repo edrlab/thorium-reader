@@ -74,25 +74,27 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
             >
                 <div className={styles.image_wrapper}>
                     <a
-                    tabIndex={0}
-                    onClick={(e) => this.handleBookClick(e)}
-                    onKeyPress={(e) => {
-                        if (e.charCode === 13) { this.handleBookClick(e); }}
-                    }>
+                        tabIndex={0}
+                        onClick={(e) => this.handleBookClick(e)}
+                        onKeyPress={(e) => {
+                            if (e.charCode === 13) { this.handleBookClick(e); }}
+                        }
+                        title={`${publication.title} - ${authors}`}
+                    >
                         <Cover publication={ publication } />
                     </a>
                 </div>
                 <div className={styles.legend}>
                     <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
-                        <p className={styles.book_title} aria-label={__("accessibility.bookTitle")}>
+                        <p aria-hidden className={styles.book_title}>
                             { this.truncateTitle(publication.title) }
                         </p>
-                        <p className={styles.book_author} aria-label={__("accessibility.bookAuthor")}>
+                        <p aria-hidden className={styles.book_author}>
                             {authors}
                         </p>
                     </a>
                     <Menu
-                        button={(<SVG title={`${publication.title} - ${authors}`} svg={MenuIcon}/>)}
+                        button={(<SVG title={__("accessibility.bookMenu")} svg={MenuIcon}/>)}
                         content={(
                             <div className={styles.menu}>
                                 <MenuContent toggleMenu={this.toggleMenu} publication={publication}/>

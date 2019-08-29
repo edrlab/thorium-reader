@@ -36,7 +36,6 @@ let externals = {
     "leveldown": "leveldown",
     "fsevents": "fsevents",
     "conf": "conf",
-    "devtron": "devtron"
 }
 if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {
@@ -139,7 +138,7 @@ if (nodeEnv !== "production") {
     // Renderer config for DEV environment
     config = Object.assign({}, config, {
         // Enable sourcemaps for debugging webpack's output.
-        devtool: "source-map",
+        devtool: "inline-source-map",
 
         devServer: {
             contentBase: __dirname,
@@ -175,6 +174,9 @@ if (nodeEnv !== "production") {
         ],
     });
 } else {
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^devtron$/ }));
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^react-axe$/ }));
+
     // Minify and uglify in production environment
     //config.plugins.push(new UglifyJsPlugin());
     config.module.rules.push({

@@ -79,7 +79,7 @@ export class CatalogService {
 
         if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
             return this.importLcplFile(filePath);
-        } else if (ext === ".epub" || (ext === ".part" && !isLcpFile)) {
+        } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
             return this.importEpubFile(filePath);
         }
 
