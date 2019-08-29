@@ -30,7 +30,7 @@ export class OpdsApi {
      * @param contentType content-type headers
      * @returns if content-Type is missing accept
      */
-    public static contentTypeisAccepted(contentType: string) {
+    public static contentTypeisAccepted(contentType?: string) {
         const retBool = contentType &&
             !contentType.startsWith("application/json") &&
             !contentType.startsWith("application/opds+json") &&
