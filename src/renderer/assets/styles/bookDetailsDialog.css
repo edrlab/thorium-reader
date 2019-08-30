@@ -246,7 +246,6 @@
         right: 0;
         display: flex;
         align-items: center;
-        cursor: pointer;
         & img {
             max-height: 100%;
             max-width: 100%;
