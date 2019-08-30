@@ -273,7 +273,7 @@ declare namespace typed_i18n {
     readonly "annotations": string,
     readonly "bookmarks": string,
     readonly "illustrations": string,
-    readonly "landmark": string,
+    readonly "landmarks": string,
     readonly "toc": string
   },
   readonly "navigation": {
@@ -329,13 +329,13 @@ declare namespace typed_i18n {
   readonly "annotations": string,
   readonly "bookmarks": string,
   readonly "illustrations": string,
-  readonly "landmark": string,
+  readonly "landmarks": string,
   readonly "toc": string
 };
   (_: "reader.marks.annotations", __?: {}): string;
   (_: "reader.marks.bookmarks", __?: {}): string;
   (_: "reader.marks.illustrations", __?: {}): string;
-  (_: "reader.marks.landmark", __?: {}): string;
+  (_: "reader.marks.landmarks", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
   (_: "reader.navigation", __?: {}): {
   readonly "backHomeTitle": string,
