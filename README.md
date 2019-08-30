@@ -81,10 +81,26 @@ To do it, launch the powershell as an administrator and type:
 npm install -g windows-build-tools
 ```
 
-## Import file from command line
+## Command line
 
 ```
-npm run build:dev:main && npm run start:dev:main:electron -- --import-file=<path to epub or lcpl file>
+Thorium Reader <cmd> [args]
+
+Commands:
+  Thorium Reader opds <title> <url>  import opds feed
+  Thorium Reader import <path>       import epub or lpcl file
+  Thorium Reader read <title>        searches already-imported publications with
+                                     the provided TITLE, and opens the reader
+                                     with the first match
+  Thorium Reader [path]              default command                   [default]
+  Thorium Reader completion          generate completion script
+
+Positionals:
+  path  path of your publication, it can be an absolute, relative path  [string]
+
+Options:
+  --version  Show version number                                       [boolean]
+  --help     Show help                                                 [boolean]
 ```
 
 ## Issues
@@ -151,15 +167,23 @@ http://www.feedbooks.com/books/top.atom?category=FBFIC019000
 
 ## Debug main process from Visual Studio Code (renderer windows from web inspectors)
 
-Simply use the pre-defined "LAUNCH ATTACH" definition in `launch.json`, which will perform the required build steps in order to prepare the main and renderer process bundles for debugging (there is a 30s timeout just in case compiling takes too long, but this may need to be increased on slow computers).
-Technically, the automatically-called prerequisite for this launch configuration is `tasks.json` "launch:attach", which is an asynchronous task, thus why the debugger attachment waits for some time before giving-up. This launch configuration supports source maps, and the relative TypeScript file paths in compiler console messages can be clicked to reach into the source directly (for example when the renderer HotModulReload file watcher kicks-in, and generates errors). Note that the CLI functionality of Thorium / readium-desktop is bypassed in this special debugging mode, to avoid conflicts with Electron/Chromium's own command line parameters.
+Simply use the pre-defined "__ LAUNCH ATTACH" definition in `launch.json`, which will perform the required build steps ; via the regular WebPack configuration, including the dev server ; in order to prepare the main and renderer process bundles for debugging (there is a 30s timeout just in case compiling takes too long, but this may need to be increased on slow computers). The automatically-called prerequisite for this launch configuration is `tasks.json` "launch:attach", which is an asynchronous task (see the `npm run vscode:launch:attach` in `package.json`), thus why the debugger attachment waits for some time before giving-up. This launch configuration supports source maps, and the relative TypeScript file paths in compiler console messages can be clicked to reach into the source directly (for example when the renderer HotModulReload file watcher kicks-in, and generates errors). Note that the CLI functionality of Thorium / readium-desktop is bypassed in this special debugging mode, to avoid conflicts with Electron/Chromium's own command line parameters.
 
-Note that the "LAUNCH HOT" definition does not currently work, due to the Electron app being started differently in order to follow sourcemaps (which results in some `require()` failing to resolve). So this is a placeholder configuration for illustration purposes only. In principle, the prerequisite for this launch configuration is to manunally invoke `npm run vscode:launch:hot` (or the equivalent `tasks.json` "launch:hot" shortcut from within Visual Studio Code).
+There is an alternative "__ LAUNCH HOT" definition in `launch.json` which leverages VSCode's ability to automatically bind a debugger instance and work out the TypeScript source mapping. The automatically-called prerequisite for this launch configuration is `npm run vscode:launch:hot` in `package.json` (or the equivalent `tasks.json` "launch:hot" definition). Note that in this case, the WebPack dev servers are started in external shells, instead of VSCode's integrated console or terminals.
+
+In both cases, the main process automatically enters debugging mode, and breakpoints can be set early on. However, because there may be several renderer processes to debug ; typically: the library/bookshelf view, and the reader view(s) ; two separate launch tasks are defined: "CHROME DEBUG 1 (BOOKSHELF)" and "CHROME DEBUG 2 (READER)". They must be invoked manually in order to choose which target Chromium tab to debug into. Note that the web inspector of any Electron BrowserWindows can be opened at the same time, for example to use the React or Redux dev tools.
+
+Important note: in order to debug into the Electron renderer process(es), the "Debugger for Chrome" extension must be installed in Visual Studio Code. More information:
+
+* https://github.com/Microsoft/vscode-chrome-debug
+* https://electronjs.org/docs/tutorial/debugging-main-process-vscode
+* https://github.com/microsoft/vscode-recipes/tree/master/Electron
 
 ## Localization / UI translations
 
 https://github.com/readium/readium-desktop/tree/develop/src/resources/locales
 
-* `npm run i18n-sort` => ensure locales JSON files are "canonical" (sorted keys, consistent indentation and last-line-break syntax)
-* `npm run i18n-scan` => ensure locales JSON files have no missing keys and redundant/unused keys (this comnmand scans the source code for well-known `i18next` usage patterns)
-* `npm run i18n-scan` => rebuilds the TypeScript types for the locales JSON files (which enables static compiler checks)
+* `npm run i18n-sort` => ensure locales JSON files are "canonical" (sorted keys, consistent indentation and trailing line break)
+* `npm run i18n-scan` => ensure locales JSON files have no missing keys and no superfluous/unused keys (this command analyzes the source code to search for well-known `i18next` usage patterns)
+* `npm run i18n-check` => ensure "secondary" locales JSON files have no missing keys and no superfluous keys, relative to the "primary" English translation. Missing keys are automatically added with an empty string value, redundant keys are removed.
+* `npm run i18n-typed` => rebuilds the TypeScript types for the locales JSON files (this enables static compiler checks)

@@ -43,7 +43,7 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
                     <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e) }
                     >
-                        {__("opds.menu.addExtract")}
+                        {__("catalog.addBookToLib")}
                     </button>
                 }
                 { publication.buyUrl &&
@@ -71,7 +71,7 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
                     <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e, true) }
                     >
-                        {__("opds.menu.addTeaser")}
+                        {__("opds.menu.addExtract")}
                     </button>
                 }
             </>

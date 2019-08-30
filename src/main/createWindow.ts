@@ -15,7 +15,7 @@ import {
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import {
-    _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV,
+    _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 
 import { setMenu } from "./menu";
@@ -67,7 +67,9 @@ export async function createWindow() {
             });
         });
 
-        mainWindow.webContents.openDevTools({ mode: "detach" });
+        if (_VSCODE_LAUNCH !== "true") {
+            mainWindow.webContents.openDevTools({ mode: "detach" });
+        }
     }
 
     const winRegistry = container.get("win-registry") as WinRegistry;

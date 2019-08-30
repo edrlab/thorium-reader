@@ -13,6 +13,7 @@
         color: inherit;
         margin: 0 2px;
         cursor: pointer;
+        padding: 0.3125rem;
     }
     & span {
         font-weight: bold;

@@ -477,7 +477,7 @@
     margin-left:20px;
     position: relative;
     text-align: left;
-    padding:20px 0 20px 0;
+    padding:1.25rem 0.3125rem;
     font-size: 1rem;
     border-bottom: 1px solid #e5e5e5;
     display: flex;
@@ -487,11 +487,10 @@
 .chapters_content .line {
 	text-align: left;
 	font-size: 0.9rem;
-	padding-top:10px;
   display: block;
 	font-weight: bold;
-	color:#c1c1c1;
-	padding-bottom:20px;
+	color: #c1c1c1;
+	padding: 0.625rem 0.3125rem;
 	border-bottom: 1px solid #e5e5e5;
 }
 .chapters_content .line:not(.inert) {

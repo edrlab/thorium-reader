@@ -24,12 +24,12 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 const debug = debug_("readium-desktop:src/main/api/opds");
 
 export interface IOpdsApi {
-    getFeed: (data: OpdsFeed) => Promise<OpdsFeedView>;
-    deleteFeed: (data: OpdsFeed) => Promise<void>;
-    findAllFeeds: () => Promise<OpdsFeedView[]>;
-    addFeed: (data: OpdsFeed) => Promise<OpdsFeedView>;
-    updateFeed: (data: OpdsFeed) => Promise<OpdsFeedView>;
-    browse: (data: OpdsFeed) => Promise<THttpGetOpdsResultView>;
+    getFeed: (data: OpdsFeed) => Promise<OpdsFeedView> | void;
+    deleteFeed: (data: OpdsFeed) => Promise<void> | void;
+    findAllFeeds: () => Promise<OpdsFeedView[]> | void;
+    addFeed: (data: OpdsFeed) => Promise<OpdsFeedView> | void;
+    updateFeed: (data: OpdsFeed) => Promise<OpdsFeedView> | void;
+    browse: (data: OpdsFeed | { url: string }) => Promise<THttpGetOpdsResultView> | void;
 }
 
 export type TOpdsBrowseApi = IOpdsApi["browse"];
@@ -40,6 +40,22 @@ export type TOpdsUpdateFeedApi = IOpdsApi["updateFeed"];
 
 @injectable()
 export class OpdsApi implements IOpdsApi {
+
+    /**
+     * test all possible content-type for both xml and json
+     * @param contentType content-type headers
+     * @returns if content-Type is missing accept
+     */
+    public static contentTypeisAccepted(contentType?: string) {
+        const retBool = contentType &&
+            !contentType.startsWith("application/json") &&
+            !contentType.startsWith("application/opds+json") &&
+            !contentType.startsWith("application/atom+xml") &&
+            !contentType.startsWith("application/xml") &&
+            !contentType.startsWith("text/xml");
+        return !retBool;
+    }
+
     @inject("opds-feed-repository")
     private readonly opdsFeedRepository!: OpdsFeedRepository;
 
@@ -74,8 +90,11 @@ export class OpdsApi implements IOpdsApi {
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
-    public async browse(data: OpdsFeed): Promise<THttpGetOpdsResultView> {
-        const { url } = data;
+    public async browse(data: OpdsFeed | { url: string }): Promise<THttpGetOpdsResultView> {
+        let url: string = data.url;
+        if (new URL(url).protocol === "opds:") {
+            url = url.replace("opds://", "http://");
+        }
         return await httpGet(url, {
             timeout: 10000,
         }, async (opdsFeedData) => {
@@ -87,11 +106,9 @@ export class OpdsApi implements IOpdsApi {
             }
 
             debug("opdsFeed content-type", opdsFeedData.contentType);
-            if (!opdsFeedData.contentType.startsWith("application/json") &&
-                !opdsFeedData.contentType.startsWith("application/opds+json") &&
-                !opdsFeedData.contentType.startsWith("application/atom+xml")) {
-                throw new Error(`Not a valid OPDS HTTP Content-Type:
-                    ${opdsFeedData.url} => ${opdsFeedData.contentType}`);
+            if (!OpdsApi.contentTypeisAccepted(opdsFeedData.contentType)) {
+                // tslint:disable-next-line: max-line-length
+                throw new Error(`Not a valid OPDS HTTP Content-Type for ${opdsFeedData.url} (${opdsFeedData.contentType})`);
             }
 
             // This is an opds feed in version 1
@@ -112,7 +129,7 @@ export class OpdsApi implements IOpdsApi {
                     OPDSFeed,
                 );
             }
-            opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed);
+            opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed, url);
             return opdsFeedData;
         });
     }

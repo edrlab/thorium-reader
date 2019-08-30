@@ -12,7 +12,7 @@ export enum ActionType {
     CloseRequest = "TOAST_CLOSE_REQUEST",
 }
 
-export function open(type: ToastType, data?: any) {
+export function open(type: ToastType, data?: string) {
     return {
         type: ActionType.OpenRequest,
         payload: { type, data },

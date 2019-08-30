@@ -16,7 +16,6 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/translator";
 import { parseQueryString } from "readium-desktop/utils/url";
-
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
@@ -48,9 +47,13 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     public render(): React.ReactElement<{}> {
         const { result, resultIsReject, __ } = this.props;
         let content = (<Loader />);
-        if (typeof result === "string" && resultIsReject) {
+
+        if (resultIsReject) {
             content = (
-                <MessageOpdBrowserResult title={__("opds.network.reject")} message={result} />
+                <MessageOpdBrowserResult
+                    title={__("opds.network.reject")}
+                    message={JSON.stringify(result)}
+                />
             );
         } else if (typeof result === "object" && result) {
             if (result.isSuccess) {
@@ -80,7 +83,8 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
             } else {
                 content = (
                     <MessageOpdBrowserResult
-                        title={`${__("opds.network.error")}${result.statusCode} ${result.statusMessage}`}
+                        title={__("opds.network.error")}
+                        message={`${result.statusCode || "unknow error code"} : ${result.statusMessage || ""}`}
                     />
                 );
             }

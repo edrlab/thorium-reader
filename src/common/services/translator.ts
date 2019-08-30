@@ -11,7 +11,7 @@ import * as deCatalog from "readium-desktop/resources/locales/de.json";
 import * as enCatalog from "readium-desktop/resources/locales/en.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
 
-import * as deLang from "readium-desktop/resources/locale-names/enLang.json";
+import * as deLang from "readium-desktop/resources/locale-names/deLang.json";
 import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
 import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
 import { TFunction } from "readium-desktop/typings/en.translation";
@@ -76,15 +76,12 @@ import * as i18next from "i18next";
 
 let i18nextInstance: i18n | undefined;
 if (i18next.createInstance) {
-    process.stdout.write("i18next 1 (no default module import)\n");
     i18nextInstance = i18next.createInstance();
 
 } else if (((i18next as any).default as i18n).createInstance) {
-    process.stdout.write("i18next 2 (default module import)\n");
     i18nextInstance = ((i18next as any).default as i18n).createInstance();
 
 } else { // Fallback for TS compiler only (not an actual runtime occurrence)
-    process.stdout.write("i18next 3 (fallback)\n");
     i18nextInstance = i18next;
 }
 // -----------------------------------------------------------
