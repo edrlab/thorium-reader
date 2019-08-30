@@ -6,17 +6,14 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { TOpdsAddFeedApi } from "readium-desktop/main/api/opds";
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import { withApi } from "readium-desktop/renderer/components/utils/api";
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-
 interface Props extends TranslatorProps {
-    addFeed?: any;
+    addFeed?: TOpdsAddFeedApi;
     closeDialog?: any;
 }
 

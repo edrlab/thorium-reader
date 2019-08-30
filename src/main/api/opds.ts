@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
+import { OpdsFeed } from "readium-desktop/common/models/opds";
 import { httpGet } from "readium-desktop/common/utils/http";
 import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
@@ -22,8 +23,23 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 // Logger
 const debug = debug_("readium-desktop:src/main/api/opds");
 
+export interface IOpdsApi {
+    getFeed: (data: OpdsFeed) => Promise<OpdsFeedView> | void;
+    deleteFeed: (data: OpdsFeed) => Promise<void> | void;
+    findAllFeeds: () => Promise<OpdsFeedView[]> | void;
+    addFeed: (data: OpdsFeed) => Promise<OpdsFeedView> | void;
+    updateFeed: (data: OpdsFeed) => Promise<OpdsFeedView> | void;
+    browse: (data: OpdsFeed | { url: string }) => Promise<THttpGetOpdsResultView> | void;
+}
+
+export type TOpdsBrowseApi = IOpdsApi["browse"];
+export type TOpdsgetFeedApi = IOpdsApi["getFeed"];
+export type TOpdsFindAllFeedApi = IOpdsApi["findAllFeeds"];
+export type TOpdsAddFeedApi = IOpdsApi["addFeed"];
+export type TOpdsUpdateFeedApi = IOpdsApi["updateFeed"];
+
 @injectable()
-export class OpdsApi {
+export class OpdsApi implements IOpdsApi {
 
     /**
      * test all possible content-type for both xml and json
@@ -46,13 +62,13 @@ export class OpdsApi {
     @inject("opds-feed-view-converter")
     private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
 
-    public async getFeed(data: any): Promise<OpdsFeedView> {
+    public async getFeed(data: OpdsFeed): Promise<OpdsFeedView> {
         const { identifier } = data;
         const doc = await this.opdsFeedRepository.get(identifier);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
-    public async deleteFeed(data: any): Promise<void> {
+    public async deleteFeed(data: OpdsFeed): Promise<void> {
         const { identifier } = data;
         await this.opdsFeedRepository.delete(identifier);
     }
@@ -64,17 +80,17 @@ export class OpdsApi {
         });
     }
 
-    public async addFeed(data: any): Promise<OpdsFeedView> {
+    public async addFeed(data: OpdsFeed): Promise<OpdsFeedView> {
         const doc = await this.opdsFeedRepository.save(data);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
-    public async updateFeed(data: any): Promise<OpdsFeedView> {
+    public async updateFeed(data: OpdsFeed): Promise<OpdsFeedView> {
         const doc = await this.opdsFeedRepository.save(data);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
-    public async browse(data: any): Promise<THttpGetOpdsResultView> {
+    public async browse(data: OpdsFeed | { url: string }): Promise<THttpGetOpdsResultView> {
         let url: string = data.url;
         if (new URL(url).protocol === "opds:") {
             url = url.replace("opds://", "http://");
