@@ -143,6 +143,7 @@
             "annotations": "Annotations",
             "bookmarks": "Bookmarks",
             "illustrations": "Table of illustrations",
+            "landmarks": "Landmarks",
             "toc": "Table of Contents"
         },
         "navigation": {
