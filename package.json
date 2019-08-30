@@ -1,5 +1,5 @@
 {
-  "name": "EDRLab.ThoriumReader",
+  "name": "thorium-reader",
   "version": "1.0.2",
   "description": "Desktop application to read ebooks",
   "keywords": [
@@ -68,7 +68,7 @@
   },
   "homepage": "https://github.com/edrlab/readium-desktop",
   "build": {
-    "productName": "Thorium Reader",
+    "productName": "thorium",
     "appId": "io.github.edrlab.thorium",
     "dmg": {
       "contents": [
@@ -142,7 +142,7 @@
       "desktop": {
         "MimeType": "application/epub+zip"
       },
-      "executableName": "thorium-reader"
+      "executableName": "thorium"
     },
     "mac": {
       "target": "default"
