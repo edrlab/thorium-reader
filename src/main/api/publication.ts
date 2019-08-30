@@ -17,7 +17,7 @@ import { CatalogService } from "readium-desktop/main/services/catalog";
 import { Store } from "redux";
 
 import { downloadActions } from "readium-desktop/common/redux/actions";
-import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
+import { ImportState } from "readium-desktop/common/redux/states/import";
 
 @injectable()
 export class PublicationApi {
@@ -80,17 +80,17 @@ export class PublicationApi {
         return this.publicationRepository.getAllTags();
     }
 
-    public async importOpdsEntry(data: ImportOpdsPublication): Promise<PublicationView> {
-        this.sendDownloadRequest(data.title);
+    public async importOpdsEntry(data: ImportState): Promise<PublicationView> {
+        this.sendDownloadRequest(data.publication.title);
         // dispatch notification to user with redux
         this.dispatchToastRequest(ToastType.DownloadStarted,
-            this.translator.translate("message.download.start", {title: data.title}));
+            this.translator.translate("message.download.start", {title: data.publication.title}));
 
         let returnView: PublicationView;
         let title: string;
         // if url exist import new entry by download
-        if (data.url) {
-            const httpPub = await this.catalogService.importOpdsEntry(data.url, data.downloadSample);
+        if (data.publication.url) {
+            const httpPub = await this.catalogService.importOpdsEntry(data.publication.url, data.downloadSample);
             if (httpPub.isSuccess) {
                 title = httpPub.data.title;
                 this.sendDownloadSuccess(title);
@@ -100,7 +100,8 @@ export class PublicationApi {
                     ${httpPub.statusCode} for ${httpPub.url}`);
             }
         } else {
-            const opdsPublication = JSON.parse(Buffer.from(data.base64OpdsPublication, "base64").toString("utf-8"));
+            const opdsPublication =
+                JSON.parse(Buffer.from(data.publication.base64OpdsPublication, "base64").toString("utf-8"));
             const publication = await this.catalogService.importOpdsPublication(opdsPublication, data.downloadSample);
             title = publication.title;
             this.sendDownloadSuccess(title);

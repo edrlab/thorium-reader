@@ -13,6 +13,5 @@ export interface ImportState {
 export interface ImportOpdsPublication {
     url: string;
     base64OpdsPublication: string;
-    downloadSample: boolean;
     title: string;
 }
