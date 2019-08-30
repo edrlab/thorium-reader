@@ -16,7 +16,7 @@ import { DialogType } from "readium-desktop/common/models/dialog";
 
 export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(lcpActions.ActionType.UserKeyCheckRequest);
+        const action: any = yield take(lcpActions.ActionType.UserKeyCheckRequest);
 
         const { hint, publication } = action.payload;
 
