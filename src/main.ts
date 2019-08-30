@@ -32,10 +32,15 @@ if (_PACKAGING !== "0") {
     delete process.env.DEBUG;
     debug_.disable();
 
+    /**
+     * yargs used console and doesn't used process.stdout
+     */
+    /*
     console.log = (_message?: any, ..._optionalParams: any[]) => { return; };
     console.warn = (_message?: any, ..._optionalParams: any[]) => { return; };
     console.error = (_message?: any, ..._optionalParams: any[]) => { return; };
     console.info = (_message?: any, ..._optionalParams: any[]) => { return; };
+    */
 }
 
 // Logger
