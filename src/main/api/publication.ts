@@ -17,6 +17,7 @@ import { CatalogService } from "readium-desktop/main/services/catalog";
 import { Store } from "redux";
 
 import { downloadActions } from "readium-desktop/common/redux/actions";
+import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
 
 @injectable()
 export class PublicationApi {
@@ -79,7 +80,7 @@ export class PublicationApi {
         return this.publicationRepository.getAllTags();
     }
 
-    public async importOpdsEntry(data: any): Promise<PublicationView> {
+    public async importOpdsEntry(data: ImportOpdsPublication): Promise<PublicationView> {
         this.sendDownloadRequest(data.title);
         // dispatch notification to user with redux
         this.dispatchToastRequest(ToastType.DownloadStarted,

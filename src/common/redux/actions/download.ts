@@ -10,16 +10,20 @@ export enum ActionType {
     DownloadSuccess = "DOWNLOAD_SUCCESS",
 }
 
-export function addDownload(data: any) {
+export interface DownloadPayload {
+    title: string;
+}
+
+export function addDownload(data: DownloadPayload) {
     return {
         type: ActionType.DownloadRequest,
-        payload: { data },
+        payload: data,
     };
 }
 
-export function removeDownload(data: any) {
+export function removeDownload(data: DownloadPayload) {
     return {
         type: ActionType.DownloadSuccess,
-        payload: { data },
+        payload: data,
     };
 }

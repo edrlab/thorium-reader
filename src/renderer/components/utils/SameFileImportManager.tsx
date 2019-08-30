@@ -18,6 +18,7 @@ import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { withApi } from "./api";
 
 import { ImportState } from "readium-desktop/common/redux/states/import";
+import { Download } from "readium-desktop/renderer/redux/states/download";
 
 interface Props  {
     lastImport?: ImportState;
@@ -25,13 +26,12 @@ interface Props  {
     search?: any;
     searchResult?: any;
     importOpdsEntry?: any;
-    downloads?: any[];
+    downloads?: Download[];
 }
 
 class SameFileImportManager extends React.Component<Props> {
     public componentDidUpdate(oldProps: Props) {
         const { searchResult, lastImport, downloads } = this.props;
-
         if (searchResult !== oldProps.searchResult) {
             if (searchResult.length === 0) {
                 this.importOpds();
@@ -43,7 +43,7 @@ class SameFileImportManager extends React.Component<Props> {
         if (lastImport !== oldProps.lastImport) {
             const foundInCurrentDownload = downloads.findIndex(
                 (value) => {
-                    return value.publicationTitle === lastImport.publication.title;
+                    return value.title === lastImport.publication.title;
                 },
             );
             if (foundInCurrentDownload === -1) {

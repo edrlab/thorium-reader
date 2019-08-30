@@ -8,6 +8,7 @@
 import { Action } from "readium-desktop/common/models/redux";
 
 import { downloadActions } from "readium-desktop/common/redux/actions";
+import { DownloadPayload } from "readium-desktop/common/redux/actions/download";
 import { DownloadState } from "readium-desktop/renderer/redux/states/download";
 
 import { oc } from "ts-optchain";
@@ -18,16 +19,16 @@ const initialState: DownloadState = {
 
 export function downloadReducer(
     state: DownloadState = initialState,
-    action: Action,
+    action: Action<DownloadPayload>,
 ): DownloadState {
     const downloads = state.downloads;
-    const publicationTitle = oc(action).payload.data.title(undefined);
+    const title = oc(action).payload.title(undefined);
     switch (action.type) {
         case downloadActions.ActionType.DownloadRequest:
-            downloads.push({publicationTitle});
+            downloads.push({title});
             return Object.assign({}, state, { downloads });
         case downloadActions.ActionType.DownloadSuccess:
-            const index = downloads.findIndex((value) => value.publicationTitle === publicationTitle);
+            const index = downloads.findIndex((value) => value.title === title);
             downloads.splice(index, 1);
             return Object.assign({}, state, { downloads });
         default:

@@ -10,5 +10,5 @@ export interface DownloadState {
 }
 
 export interface Download {
-    publicationTitle: string;
+    title: string;
 }
