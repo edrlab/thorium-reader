@@ -6,17 +6,14 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-
-import { Publication } from "r2-shared-js/dist/es6-es2015/src/models/publication";
-
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { Publication } from "@r2-shared-js/models/publication";
 
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
 interface Props extends TranslatorProps {

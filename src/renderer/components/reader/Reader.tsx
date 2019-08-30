@@ -6,75 +6,45 @@
 // ==LICENSE-END==
 
 import * as path from "path";
+import * as queryString from "query-string";
 import * as React from "react";
-
-import {
-    ReaderConfig as ReadiumCSS,
-} from "readium-desktop/common/models/reader";
-
-import {
-    colCountEnum,
-    IReadiumCSS,
-    readiumCSSDefaults,
-    textAlignEnum,
-} from "@r2-navigator-js/electron/common/readium-css-settings";
-import {
-    getCurrentReadingLocation,
-    handleLinkLocator,
-    handleLinkUrl,
-    installNavigatorDOM,
-    isLocatorVisible,
-    LocatorExtended,
-    navLeftOrRight,
-    readiumCssOnOff,
-    setEpubReadingSystemInfo,
-    setReadingLocationSaver,
-    setReadiumCssJsonGetter,
-} from "@r2-navigator-js/electron/renderer/index";
-
-import {
-    convertCustomSchemeToHttpUrl,
-    READIUM2_ELECTRON_HTTP_PROTOCOL,
-} from "@r2-navigator-js/electron/common/sessions";
-import {
-    _NODE_MODULE_RELATIVE_URL,
-    _PACKAGING,
-    _RENDERER_READER_BASE_URL,
-} from "readium-desktop/preprocessor-directives";
-
-import {
-    IEventPayload_R2_EVENT_READIUMCSS,
-} from "@r2-navigator-js/electron/common/events";
-import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
-import { Locator } from "@r2-shared-js/models/locator";
-import { Publication as R2Publication } from "r2-shared-js/dist/es6-es2015/src/models/publication";
+import { DialogType } from "readium-desktop/common/models/dialog";
+import { Publication } from "readium-desktop/common/models/publication";
+import { ReaderConfig as ReadiumCSS } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
-import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { LocatorView } from "readium-desktop/common/views/locator";
+import {
+    _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
+} from "readium-desktop/preprocessor-directives";
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
+import { withApi } from "readium-desktop/renderer/components/utils/api";
 import { container, lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 
-import { DialogType } from "readium-desktop/common/models/dialog";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
+import {
+    colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
+} from "@r2-navigator-js/electron/common/readium-css-settings";
+import {
+    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
+} from "@r2-navigator-js/electron/common/sessions";
+import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
+import {
+    getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
+    isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssOnOff, setEpubReadingSystemInfo,
+    setReadingLocationSaver, setReadiumCssJsonGetter,
+} from "@r2-navigator-js/electron/renderer/index";
+import { Locator } from "@r2-shared-js/models/locator";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import optionsValues from "./options-values";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import * as queryString from "query-string";
-
-import { LocatorView } from "readium-desktop/common/views/locator";
-
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-
-import { Publication } from "readium-desktop/common/models/publication";
-
-import { _APP_NAME } from "readium-desktop/preprocessor-directives";
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();

@@ -5,10 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import classnames from "classnames";
 import * as queryString from "query-string";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
@@ -16,7 +14,13 @@ import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-2
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/translator";
+
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { Link } from "@r2-shared-js/models/publication-link";
+
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
