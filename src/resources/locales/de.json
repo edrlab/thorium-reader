@@ -109,13 +109,18 @@
         "addMenu": "OPDS-Feed hinzufügen",
         "back": "Zurück",
         "breadcrumbRoot": "",
-        "empty": "",
+        "empty": "Keine Publikation gefunden",
         "menu": {
             "aboutBook": "über dieses Buch",
             "addExtract": "zur Lib hinzufügen",
             "goBuyBook": "dieses Buch kaufen",
             "goLoanBook": "dieses Buch ausleihen",
             "goSubBook": "abonnieren"
+        },
+        "network": {
+            "error": "Ein Fehler ist aufgetreten",
+            "reject": "Beim Versuch, den OPDS-Feed zu verarbeiten, ist ein unerwarteter Fehler aufgetreten.",
+            "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut"
         }
     },
     "publication": {

@@ -109,13 +109,18 @@
         "addMenu": "Add OPDS feed",
         "back": "Back",
         "breadcrumbRoot": "Catalogs",
-        "empty": "",
+        "empty": "No publication found",
         "menu": {
             "aboutBook": "About this book",
             "addExtract": "Import the extract",
             "goBuyBook": "Buy this book",
             "goLoanBook": "Borrow this book",
             "goSubBook": "Subscribe"
+        },
+        "network": {
+            "error": "Unable to access to opds feed",
+            "reject": "Sorry, there was an unexpected error when trying to process the OPDS feed",
+            "timeout": "There was a network timeout, please try again later"
         }
     },
     "publication": {

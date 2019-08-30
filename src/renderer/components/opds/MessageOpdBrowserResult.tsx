@@ -7,17 +7,23 @@
 
 import * as React from "react";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+interface IProps {
+    title: string;
+    message?: string;
+}
 
-export class Empty extends React.Component<TranslatorProps> {
-    public render(): React.ReactElement<{}>  {
-        const { __ } = this.props;
+const style: React.CSSProperties = {
+    textAlign: "center",
+};
+
+export default class MessageOpdBrowserResult extends React.Component<IProps> {
+    public render(): React.ReactElement<{}> {
+        const { message, title } = this.props;
         return (
-            <div>
-                <p>{ __("opds.empty")}</p>
+            <div style={style}>
+                <h3>{title}</h3>
+                {message && <p>{message}</p>}
             </div>
         );
     }
 }
-
-export default withTranslator(Empty);
