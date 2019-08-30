@@ -5,32 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
+import classnames from "classnames";
 import * as queryString from "query-string";
-
+import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
-
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
-import classnames from "classnames";
-
-import UpdateBookmarkForm from "./UpdateBookmarkForm";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-import { SectionData } from "./sideMenu/sideMenuData";
-
-import SideMenu from "./sideMenu/SideMenu";
-
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import { withApi } from "readium-desktop/renderer/components/utils/api";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import SideMenu from "./sideMenu/SideMenu";
+import { SectionData } from "./sideMenu/sideMenuData";
+import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
 interface Props extends TranslatorProps {
     open: boolean;
@@ -102,7 +91,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         );
     }
 
-    private createTOCRenderList(TOC: any[]): JSX.Element {
+    private createTOCRenderList(TOC: Link[]): JSX.Element {
         return <ul className={styles.chapters_content}>
             { TOC.map((content, i: number) => {
                 return (
