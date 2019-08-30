@@ -143,6 +143,7 @@
             "annotations": "Annotations",
             "bookmarks": "Marque-pages",
             "illustrations": "Table des Illustrations",
+            "landmark": "Repères",
             "toc": "Table des matières "
         },
         "navigation": {

@@ -74,13 +74,13 @@ export class ReaderMenu extends React.Component<Props, State> {
                 disabled: !publication.TOC || publication.TOC.length === 0,
             },
             {
-                title: __("reader.marks.illustrations"),
-                content: <></>,
-                disabled: !publication.LOI || publication.LOI.length === 0,
+                title: __("reader.marks.landmark"),
+                content: this.createTOCRenderList(publication.Landmarks),
+                disabled: !publication.Landmarks || publication.Landmarks.length === 0,
             },
             {
                 title: __("reader.marks.bookmarks"),
-                content: this.createLandmarkList(),
+                content: this.createBookmarkList(),
                 disabled: !bookmarks || bookmarks.length === 0,
             },
             {
@@ -163,7 +163,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         </ul>;
     }
 
-    private createLandmarkList(): JSX.Element[] {
+    private createBookmarkList(): JSX.Element[] {
         if (this.props.publication && this.props.bookmarks) {
             const { bookmarkToUpdate } = this.state;
             return this.props.bookmarks.map((bookmark, i) =>
