@@ -16,6 +16,8 @@ import * as classNames from "classnames";
 
 import { parseQueryString } from "readium-desktop/utils/url";
 
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+
 import * as styles from "readium-desktop/renderer/assets/styles/breadcrumb.css";
 
 export interface BreadCrumbItem {
@@ -24,33 +26,40 @@ export interface BreadCrumbItem {
     state?: any;
 }
 
-interface BreadCrumbProps {
+interface BreadCrumbProps extends TranslatorProps {
     breadcrumb: BreadCrumbItem[];
     search: any;
     className?: string;
 }
 
-export default class BreadCrumb extends React.Component<BreadCrumbProps, undefined> {
+class BreadCrumb extends React.Component<BreadCrumbProps, undefined> {
     public render(): React.ReactElement<{}> {
-        const { breadcrumb } = this.props;
+        const { breadcrumb, __ } = this.props;
         const search = parseQueryString(this.props.search);
         return (
             <div className={classNames([styles.breadcrumb, this.props.className])}>
                 { breadcrumb.length >= 2 &&
-                    <Link to={{
-                        pathname: breadcrumb[breadcrumb.length - 2].path,
-                        search: `?displayType=${search.displayType}`,
-                    }}>
+                    <Link
+                        to={{
+                            pathname: breadcrumb[breadcrumb.length - 2].path,
+                            search: `?displayType=${search.displayType}`,
+                        }}
+                        title={__("opds.back")}
+                    >
                         <SVG svg={ArrowIcon}/>
                     </Link>
                 }
                 {breadcrumb && breadcrumb.map((item, index) =>
                     item.path && index !== breadcrumb.length - 1 ?
-                        <Link key={index} to={{
-                            pathname: item.path,
-                            search: `?displayType=${search.displayType}`,
-                            state: item.state,
-                        }}>{ item.name } /</Link>
+                        <Link
+                            key={index}
+                            to={{
+                                pathname: item.path,
+                                search: `?displayType=${search.displayType}`,
+                                state: item.state,
+                            }}
+                            title={ item.name }
+                        >{ item.name } /</Link>
                     :
                         <span key={index} >{ item.name }</span>,
                 )}
@@ -58,3 +67,5 @@ export default class BreadCrumb extends React.Component<BreadCrumbProps, undefin
         );
     }
 }
+
+export default withTranslator(BreadCrumb);
