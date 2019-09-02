@@ -23,7 +23,7 @@ export interface ApiOperationDefinition {
     callProp?: string;
     resultProp?: string;
     resultIsRejectProp?: string;
-    buildRequestData?: any;
+    buildRequestData?: (props: any) => unknown[];
     onLoad?: boolean; // Load in component did mount, default true
 }
 
@@ -62,7 +62,7 @@ export function withApi<Props>(WrappedComponent: ComponentConstructor<Props & Ap
 
         // Create call method
         const caller = (props: any) => {
-            return (requestData?: any) => {
+            return (...requestData: unknown[]) => {
                 const buildRequestData = operation.buildRequestData;
 
                 if (!requestData && buildRequestData) {
