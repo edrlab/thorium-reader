@@ -182,7 +182,7 @@ export class CatalogService {
     public async deletePublication(publicationIdentifier: string) {
         const store = container.get("store") as Store<any>;
         const publicationApi = container.get("publication-api") as PublicationApi;
-        const publication = await publicationApi.get({ identifier: publicationIdentifier });
+        const publication = await publicationApi.get(publicationIdentifier);
 
         // tslint:disable-next-line: await-promise
         await store.dispatch(closeReaderFromPublication(publication));
