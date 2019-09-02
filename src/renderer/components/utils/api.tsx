@@ -15,6 +15,8 @@ import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
 import { Store } from "redux";
 import * as uuid from "uuid";
 
+import { ComponentClass, StatelessComponent } from "react";
+
 export interface ApiOperationDefinition {
     moduleId: string;
     methodId: string;
@@ -39,14 +41,17 @@ export interface ApiOperationRequest {
 }
 
 export interface ApiProps {
-    operationResults: any;
+    operationResults?: any;
     requestOnLoadData?: any;
     cleanData?: any;
 }
 
+type ComponentConstructor<P> = ComponentClass<P> | StatelessComponent<P>;
+
 // TS4094: private members fail the TS compiler, because:
 // returned type is ConnectedComponentClass<typeof BaseWrapperComponent, any>
-export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
+// tslint:disable-next-line: max-line-length
+export function withApi<Props>(WrappedComponent: ComponentConstructor<Props & ApiProps>, queryConfig: ApiConfig) {
 
     // Create operationRequests
     const operationRequests: ApiOperationRequest[] = [];
