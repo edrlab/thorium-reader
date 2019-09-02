@@ -16,7 +16,7 @@ import { parseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 export function* browseWatcher(): SagaIterator {
     while (true) {
-        const result = yield take(LOCATION_CHANGE);
+        const result: any = yield take(LOCATION_CHANGE);
         const path = result.payload.location.pathname as string;
 
         if (path.startsWith("/opds") && path.indexOf("/browse") > 0 ) {

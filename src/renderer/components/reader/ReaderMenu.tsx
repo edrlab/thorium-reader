@@ -5,32 +5,25 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
+import classnames from "classnames";
 import * as queryString from "query-string";
-
+import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
-
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import { withApi } from "readium-desktop/renderer/components/utils/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/translator";
 
-import classnames from "classnames";
-
-import UpdateBookmarkForm from "./UpdateBookmarkForm";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-import { SectionData } from "./sideMenu/sideMenuData";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { Link } from "@r2-shared-js/models/publication-link";
 
 import SideMenu from "./sideMenu/SideMenu";
-
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import { SectionData } from "./sideMenu/sideMenuData";
+import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
 interface Props extends TranslatorProps {
     open: boolean;
@@ -74,13 +67,13 @@ export class ReaderMenu extends React.Component<Props, State> {
                 disabled: !publication.TOC || publication.TOC.length === 0,
             },
             {
-                title: __("reader.marks.illustrations"),
-                content: <></>,
-                disabled: !publication.LOI || publication.LOI.length === 0,
+                title: __("reader.marks.landmarks"),
+                content: this.createTOCRenderList(publication.Landmarks),
+                disabled: !publication.Landmarks || publication.Landmarks.length === 0,
             },
             {
                 title: __("reader.marks.bookmarks"),
-                content: this.createLandmarkList(),
+                content: this.createBookmarkList(),
                 disabled: !bookmarks || bookmarks.length === 0,
             },
             {
@@ -102,7 +95,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         );
     }
 
-    private createTOCRenderList(TOC: any[]): JSX.Element {
+    private createTOCRenderList(TOC: Link[]): JSX.Element {
         return <ul className={styles.chapters_content}>
             { TOC.map((content, i: number) => {
                 return (
@@ -163,7 +156,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         </ul>;
     }
 
-    private createLandmarkList(): JSX.Element[] {
+    private createBookmarkList(): JSX.Element[] {
         if (this.props.publication && this.props.bookmarks) {
             const { bookmarkToUpdate } = this.state;
             return this.props.bookmarks.map((bookmark, i) =>

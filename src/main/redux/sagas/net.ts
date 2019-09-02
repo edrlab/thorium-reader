@@ -35,7 +35,7 @@ export function* netStatusWatcher(): SagaIterator {
         let actionType = null;
 
         try {
-            const result = yield call(pingHost);
+            const result: any = yield call(pingHost);
             const online = result.alive;
             actionType = online ?
                 netActions.ActionType.Online :

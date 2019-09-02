@@ -155,7 +155,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
 
 export function* readerOpenRequestWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(readerActions.ActionType.OpenRequest);
+        const action: any = yield take(readerActions.ActionType.OpenRequest);
         const publication = action.payload.publication;
 
         // Notify the streamer to create a manifest for this publication
@@ -164,7 +164,7 @@ export function* readerOpenRequestWatcher(): SagaIterator {
         ));
 
         // Wait for the publication to be opened
-        const streamerAction = yield take([
+        const streamerAction: any = yield take([
             streamerActions.ActionType.PublicationOpenSuccess,
             streamerActions.ActionType.PublicationOpenError,
         ]);
@@ -198,7 +198,7 @@ export function* readerOpenRequestWatcher(): SagaIterator {
 
 export function* readerCloseRequestWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(readerActions.ActionType.CloseRequest);
+        const action: any = yield take(readerActions.ActionType.CloseRequest);
         const reader = action.payload.reader;
         const gotoLibrary = action.payload.gotoLibrary;
 
@@ -209,7 +209,7 @@ export function* readerCloseRequestWatcher(): SagaIterator {
 
 export function* closeReaderFromPublicationWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(readerActions.ActionType.CloseFromPublicationRequest);
+        const action: any = yield take(readerActions.ActionType.CloseFromPublicationRequest);
         const publication = action.payload.publication;
         const store: any = container.get("store");
         const readers = (store.getState().reader as ReaderState).readers;
@@ -284,7 +284,7 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
 export function* readerConfigSetRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for save request
-        const action = yield take(readerActions.ActionType.ConfigSetRequest);
+        const action: any = yield take(readerActions.ActionType.ConfigSetRequest);
         const configValue: ReaderConfig = action.payload.config;
         const config = {
             identifier: "reader",
@@ -338,7 +338,7 @@ export function* readerConfigInitWatcher(): SagaIterator {
 export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for app initialization
-        const action = yield take(readerActions.ActionType.BookmarkSaveRequest);
+        const action: any = yield take(readerActions.ActionType.BookmarkSaveRequest);
         const bookmark = action.payload.bookmark as Bookmark;
 
         // Get bookmark manager
@@ -395,7 +395,7 @@ export function* readerFullscreenRequestWatcher(): SagaIterator {
 export function* readerDetachRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for a change mode request
-        const action = yield take(readerActions.ActionType.ModeSetRequest);
+        const action: any = yield take(readerActions.ActionType.ModeSetRequest);
         const readerMode = action.payload.mode;
         const reader = action.payload.reader;
 
