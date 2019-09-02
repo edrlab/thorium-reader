@@ -23,6 +23,23 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 
 export const CATALOG_CONFIG_ID = "catalog";
 
+export interface ICatalogApi {
+    get: () => Promise<CatalogView> | void;
+    addEntry: (entryView: CatalogEntryView) => Promise<CatalogEntryView[]> | void;
+    getEntries: () => Promise<CatalogEntryView[]> | void;
+    updateEntries: (entryView: CatalogEntryView[]) => Promise<CatalogEntryView[]> | void;
+}
+
+export type TCatalogApiGet = ICatalogApi["get"];
+export type TCatalogApiAddEntry = ICatalogApi["addEntry"];
+export type TCatalogGetEntries = ICatalogApi["getEntries"];
+export type TCatalogUpdateEntries = ICatalogApi["updateEntries"];
+
+export type TCatalogApiGet_result = CatalogView;
+export type TCatalogApiAddEntry_result = CatalogEntryView[];
+export type TCatalogGetEntries_result = CatalogEntryView[];
+export type TCatalogUpdateEntries_result = CatalogEntryView[];
+
 @injectable()
 export class CatalogApi {
     @inject("publication-repository")
@@ -103,8 +120,7 @@ export class CatalogApi {
         };
     }
 
-    public async addEntry(data: any): Promise<CatalogEntryView[]> {
-        const entryView = data.entry as CatalogEntryView;
+    public async addEntry(entryView: CatalogEntryView): Promise<CatalogEntryView[]> {
         let entries: any = [];
 
         try {
@@ -160,8 +176,7 @@ export class CatalogApi {
         return entryViews;
     }
 
-    public async updateEntries(data: any): Promise<CatalogEntryView[]> {
-        const entryViews = data.entries as CatalogEntryView[];
+    public async updateEntries(entryViews: CatalogEntryView[]): Promise<CatalogEntryView[]> {
         const entries = entryViews.map((view) => {
             return {
                 title: view.title,
