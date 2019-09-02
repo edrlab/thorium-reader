@@ -22,13 +22,13 @@ export function downloadReducer(
     action: Action<DownloadPayload>,
 ): DownloadState {
     const downloads = state.downloads;
-    const title = oc(action).payload.title(undefined);
+    const url = oc(action).payload.url(undefined);
     switch (action.type) {
         case downloadActions.ActionType.DownloadRequest:
-            downloads.push({title});
+            downloads.push({url});
             return Object.assign({}, state, { downloads });
         case downloadActions.ActionType.DownloadSuccess:
-            const index = downloads.findIndex((value) => value.title === title);
+            const index = downloads.findIndex((value) => value.url === url);
             downloads.splice(index, 1);
             return Object.assign({}, state, { downloads });
         default:

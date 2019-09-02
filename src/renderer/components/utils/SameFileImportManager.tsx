@@ -43,7 +43,7 @@ class SameFileImportManager extends React.Component<Props> {
         if (lastImport !== oldProps.lastImport) {
             const foundInCurrentDownload = downloads.findIndex(
                 (value) => {
-                    return value.title === lastImport.publication.title;
+                    return value.url === lastImport.publication.url;
                 },
             );
             if (foundInCurrentDownload === -1) {

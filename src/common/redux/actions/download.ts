@@ -11,7 +11,7 @@ export enum ActionType {
 }
 
 export interface DownloadPayload {
-    title: string;
+    url: string;
 }
 
 export function addDownload(data: DownloadPayload) {

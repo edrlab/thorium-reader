@@ -81,7 +81,8 @@ export class PublicationApi {
     }
 
     public async importOpdsEntry(data: ImportState): Promise<PublicationView> {
-        this.sendDownloadRequest(data.publication.title);
+        const url = data.publication.url;
+        this.sendDownloadRequest(url);
         // dispatch notification to user with redux
         this.dispatchToastRequest(ToastType.DownloadStarted,
             this.translator.translate("message.download.start", {title: data.publication.title}));
@@ -93,7 +94,7 @@ export class PublicationApi {
             const httpPub = await this.catalogService.importOpdsEntry(data.publication.url, data.downloadSample);
             if (httpPub.isSuccess) {
                 title = httpPub.data.title;
-                this.sendDownloadSuccess(title);
+                this.sendDownloadSuccess(url);
                 returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
             } else {
                 throw new Error(`Http importOpdsEntry error with code
@@ -104,7 +105,7 @@ export class PublicationApi {
                 JSON.parse(Buffer.from(data.publication.base64OpdsPublication, "base64").toString("utf-8"));
             const publication = await this.catalogService.importOpdsPublication(opdsPublication, data.downloadSample);
             title = publication.title;
-            this.sendDownloadSuccess(title);
+            this.sendDownloadSuccess(url);
             returnView =  this.publicationViewConverter.convertDocumentToView(publication);
         }
 
@@ -151,20 +152,20 @@ export class PublicationApi {
         store.dispatch(open(type, message));
     }
 
-    private sendDownloadRequest(title: string) {
+    private sendDownloadRequest(url: string) {
         const store = container.get("store") as Store<any>;
         store.dispatch(downloadActions.addDownload(
             {
-                title,
+                url,
             },
         ));
     }
 
-    private sendDownloadSuccess(title: string) {
+    private sendDownloadSuccess(url: string) {
         const store = container.get("store") as Store<any>;
         store.dispatch(downloadActions.removeDownload(
             {
-                title,
+                url,
             },
         ));
     }
