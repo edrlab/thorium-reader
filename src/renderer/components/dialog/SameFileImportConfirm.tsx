@@ -60,7 +60,7 @@ class SameFileImportConfirm extends React.Component<Props> {
 }
 
 const buildRequestData = (props: Props) => {
-    return { text: props.publication.title };
+    return [ props.publication.title ];
 };
 
 const mapDispatchToProps = (dispatch: any, _props: any) => {

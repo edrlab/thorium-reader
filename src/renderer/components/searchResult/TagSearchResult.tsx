@@ -57,9 +57,7 @@ export class TagSearchResult extends React.Component<TextSearchResultProps, unde
 }
 
 const buildSearchRequestData = (props: TextSearchResultProps): any => {
-    return {
-        tag: (props.match.params as any).value,
-    };
+    return [ (props.match.params as any).value ];
 };
 
 export default withApi(

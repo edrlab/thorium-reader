@@ -136,7 +136,7 @@ const mapDispatchToProps = (dispatch: any, props: CatalogLcpControlsProps) => {
 };
 
 const buildRequestData = (props: CatalogLcpControlsProps) => {
-    return { publication: props.publication };
+    return [ props.publication ];
 };
 
 export default withApi(

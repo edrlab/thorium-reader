@@ -670,11 +670,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 }
 
 const buildBookmarkRequestData = () => {
-    return {
-        publication: {
-            identifier: queryString.parse(location.search).pubId as string,
-        },
-    };
+    return [ queryString.parse(location.search).pubId as string ];
 };
 
 const mapStateToProps = (state: RootState, __: any) => {
@@ -719,9 +715,7 @@ const mapDispatchToProps = (dispatch: any, _props: ReaderProps) => {
 };
 
 const buildRequestData = (_props: ReaderProps) => {
-    return {
-        identifier: queryParams.pubId,
-    };
+    return [ queryParams.pubId ];
 };
 
 export default withApi(

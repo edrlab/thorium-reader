@@ -215,9 +215,7 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const buildRequestData = (props: Props) => {
-    return {
-        identifier: props.publicationIdentifier || props.publication.identifier,
-    };
+    return [ props.publicationIdentifier || props.publication.identifier ];
 };
 
 export default withTranslator(withApi(

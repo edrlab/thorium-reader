@@ -71,9 +71,7 @@ export class TextSearchResult extends React.Component<TextSearchResultProps, und
 }
 
 const buildSearchRequestData = (props: TextSearchResultProps): any => {
-    return {
-        text: (props.match.params as any).value,
-    };
+    return [ (props.match.params as any).value ];
 };
 
 export default withApi(

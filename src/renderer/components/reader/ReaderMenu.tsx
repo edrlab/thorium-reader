@@ -201,7 +201,7 @@ export class ReaderMenu extends React.Component<Props, State> {
 }
 
 const buildBookmarkRequestData = () => {
-    return { publication: { identifier: queryString.parse(location.search).pubId as string } };
+    return [ queryString.parse(location.search).pubId as string ];
 };
 
 export default withApi(
