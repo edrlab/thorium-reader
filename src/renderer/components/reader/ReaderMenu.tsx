@@ -42,6 +42,7 @@ interface State {
 }
 
 export class ReaderMenu extends React.Component<Props, State> {
+    private goToRef: any;
     public constructor(props: Props) {
         super(props);
 
@@ -51,6 +52,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         };
 
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
+        this.handleSubmitPage = this.handleSubmitPage.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -81,9 +83,17 @@ export class ReaderMenu extends React.Component<Props, State> {
                 content: <></>,
                 disabled: true,
             },
+            {
+                content: <>
+                    <input ref={(ref) => this.goToRef = ref} type="number"/>
+                    <button onClick={() => this.handleSubmitPage()}>Go</button>
+                </>,
+                disabled: false,
+                notExtendable: true,
+            },
         ];
 
-        return (
+        return ( <>
             <SideMenu
                 className={styles.chapters_settings}
                 listClassName={styles.chapter_settings_list}
@@ -92,7 +102,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                 toggleMenu={toggleMenu}
                 focusMenuButton={this.props.focusNaviguationMenu}
             />
-        );
+        </> );
     }
 
     private createTOCRenderList(TOC: Link[]): JSX.Element {
@@ -197,6 +207,13 @@ export class ReaderMenu extends React.Component<Props, State> {
 
     private closeBookarkEditForm() {
         this.setState({ bookmarkToUpdate: undefined });
+    }
+
+    private handleSubmitPage() {
+        const page = this.goToRef.value;
+        const url = this.props.publication.Spine2[page].Href;
+        console.log(page, url);
+        this.props.handleLinkClick(undefined, url);
     }
 }
 

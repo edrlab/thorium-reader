@@ -44,6 +44,8 @@ import {
 import { Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
+import * as test from "@r2-navigator-js/electron/renderer/index";
+
 import optionsValues from "./options-values";
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
@@ -348,6 +350,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     public render(): React.ReactElement<{}> {
+        console.log(test);
         const readerMenuProps = {
             open: this.state.menuOpen,
             publication: this.state.publication,
@@ -540,7 +543,9 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private handleLinkClick(event: any, url: string) {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
         if (!url) {
             return;
         }
