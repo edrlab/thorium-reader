@@ -198,7 +198,6 @@ export class ReaderOptions extends React.Component<Props> {
 
     private displayContent() {
         const {__, settings} = this.props;
-        console.log(settings.paged);
         return <>
             <section className={styles.line_tab_content}>
             <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
