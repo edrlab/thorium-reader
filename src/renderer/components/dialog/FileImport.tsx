@@ -37,7 +37,7 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
             const paths = this.props.files.map((file: File) => {
                 return file.path;
             });
-            this.props.importFiles({ paths });
+            this.props.importFiles(paths);
             this.props.closeDialog();
         }
     }

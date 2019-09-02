@@ -105,10 +105,7 @@ export class TagManager extends React.Component<Props, TagManagerState> {
     }
 
     private sendTags(tags: string[]) {
-        this.props.updateTags({
-            identifier: this.props.publicationIdentifier,
-            tags,
-        });
+        this.props.updateTags(this.props.publicationIdentifier, tags);
     }
 
     private handleChangeName(e: any) {

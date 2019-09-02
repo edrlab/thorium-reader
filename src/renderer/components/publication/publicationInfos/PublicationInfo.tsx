@@ -9,9 +9,7 @@ import classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import {
-    TPublicationApiGet, TPublicationApiGet_result,
-} from "readium-desktop/main/api/publication";
+import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
 import TagManager from "readium-desktop/renderer/components/publication/TagManager";
