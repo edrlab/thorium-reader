@@ -16,6 +16,9 @@ import { container } from "readium-desktop/main/di";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { Store } from "redux";
 
+import { downloadActions } from "readium-desktop/common/redux/actions";
+import { ImportState } from "readium-desktop/common/redux/states/import";
+
 @injectable()
 export class PublicationApi {
     @inject("publication-repository")
@@ -77,29 +80,33 @@ export class PublicationApi {
         return this.publicationRepository.getAllTags();
     }
 
-    public async importOpdsEntry(data: any): Promise<PublicationView> {
-
+    public async importOpdsEntry(data: ImportState): Promise<PublicationView> {
+        const url = data.publication.url;
+        this.sendDownloadRequest(url);
         // dispatch notification to user with redux
         this.dispatchToastRequest(ToastType.DownloadStarted,
-            this.translator.translate("message.download.start", {title: data.title}));
+            this.translator.translate("message.download.start", {title: data.publication.title}));
 
         let returnView: PublicationView;
         let title: string;
         // if url exist import new entry by download
-        if (data.url) {
-            const httpPub = await this.catalogService.importOpdsEntry(data.url, data.downloadSample);
+        if (data.publication.url) {
+            const httpPub = await this.catalogService.importOpdsEntry(data.publication.url, data.downloadSample);
             if (httpPub.isSuccess) {
                 title = httpPub.data.title;
+                this.sendDownloadSuccess(url);
                 returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
             } else {
                 throw new Error(`Http importOpdsEntry error with code
                     ${httpPub.statusCode} for ${httpPub.url}`);
             }
         } else {
-            const opdsPublication = JSON.parse(Buffer.from(data.base64OpdsPublication, "base64").toString("utf-8"));
+            const opdsPublication =
+                JSON.parse(Buffer.from(data.publication.base64OpdsPublication, "base64").toString("utf-8"));
             const publication = await this.catalogService.importOpdsPublication(opdsPublication, data.downloadSample);
             title = publication.title;
-            returnView = this.publicationViewConverter.convertDocumentToView(publication);
+            this.sendDownloadSuccess(url);
+            returnView =  this.publicationViewConverter.convertDocumentToView(publication);
         }
 
         // dispatch notification to user with redux
@@ -143,5 +150,23 @@ export class PublicationApi {
     private dispatchToastRequest(type: ToastType, message: string) {
         const store = container.get("store") as Store<any>;
         store.dispatch(open(type, message));
+    }
+
+    private sendDownloadRequest(url: string) {
+        const store = container.get("store") as Store<any>;
+        store.dispatch(downloadActions.addDownload(
+            {
+                url,
+            },
+        ));
+    }
+
+    private sendDownloadSuccess(url: string) {
+        const store = container.get("store") as Store<any>;
+        store.dispatch(downloadActions.removeDownload(
+            {
+                url,
+            },
+        ));
     }
 }

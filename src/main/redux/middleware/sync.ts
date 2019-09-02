@@ -11,6 +11,7 @@ import { syncIpc } from "readium-desktop/common/ipc";
 import {
     apiActions,
     dialogActions,
+    downloadActions,
     i18nActions,
     lcpActions,
     netActions,
@@ -60,6 +61,9 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     updateActions.ActionType.LatestVersionSet,
 
     toastActions.ActionType.OpenRequest,
+
+    downloadActions.ActionType.DownloadRequest,
+    downloadActions.ActionType.DownloadSuccess,
 ];
 
 export const reduxSyncMiddleware: Middleware

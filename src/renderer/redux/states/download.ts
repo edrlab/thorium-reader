@@ -5,9 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export interface Action<Payload = any> {
-    type: string;
-    payload?: Payload;
-    meta?: any;
-    error?: boolean;
+export interface DownloadState {
+    downloads: Download[];
+}
+
+export interface Download {
+    url: string;
 }
