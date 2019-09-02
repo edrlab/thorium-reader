@@ -18,6 +18,8 @@ import { CatalogService } from "readium-desktop/main/services/catalog";
 import { Store } from "redux";
 
 export interface IPublicationApi {
+    // in a future possible typing like this to have buildRequestData return type :
+    // get: (...a: [string]) => Promise<PublicationView> | void;
     get: (identifier: string) => Promise<PublicationView> | void;
     delete: (identifier: string) => Promise<void> | void;
     findAll: () => Promise<PublicationView[]>;
@@ -34,6 +36,9 @@ export interface IPublicationApi {
     exportPublication: (publication: PublicationView, destinationPath: string) => Promise<void> | void;
 }
 
+/**
+ * public async get(identifier: string): Promise<PublicationView> {
+ */
 export type TPublicationApiGet = IPublicationApi["get"];
 export type TPublicationApiDelete = IPublicationApi["delete"];
 export type TPublicationApiFindAll = IPublicationApi["findAll"];
