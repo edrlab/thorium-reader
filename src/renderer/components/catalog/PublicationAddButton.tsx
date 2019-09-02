@@ -6,18 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
+import { TPublicationApiImport } from "readium-desktop/main/api/publication";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import { withApi } from "readium-desktop/renderer/components/utils/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
 interface Props extends TranslatorProps {
-    importFiles?: any;
+    importFiles?: TPublicationApiImport;
 }
 
 export class PublicationAddButton extends React.Component<Props> {
@@ -53,7 +51,7 @@ export class PublicationAddButton extends React.Component<Props> {
         for (const f of files) {
             paths.push(f.path);
         }
-        this.props.importFiles({ paths });
+        this.props.importFiles(paths);
     }
 }
 

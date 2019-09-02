@@ -6,35 +6,26 @@
 // ==LICENSE-END==
 
 import * as moment from "moment";
-
 import * as React from "react";
-
 import { DialogType } from "readium-desktop/common/models/dialog";
-
+import { LsdStatus } from "readium-desktop/common/models/lcp";
+import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
 import { PublicationView } from "readium-desktop/common/views/publication";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
+import { TPublicationApiDelete } from "readium-desktop/main/api/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import { withApi } from "readium-desktop/renderer/components/utils/api";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { lcpReadable } from "readium-desktop/utils/publication";
 
-import uuid = require("uuid");
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
 import { TranslatorProps, withTranslator } from "../utils/translator";
 
-import { LsdStatus } from "readium-desktop/common/models/lcp";
-import { lcpReadable } from "readium-desktop/utils/publication";
-
-import { readerActions } from "readium-desktop/common/redux/actions";
-
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
+import uuid = require("uuid");
 interface PublicationListElementProps extends TranslatorProps {
     publication: PublicationView;
-    deletePublication?: any;
+    deletePublication?: TPublicationApiDelete;
     displayPublicationInfo?: any;
     openDeleteDialog?: any;
     menuContent: any;

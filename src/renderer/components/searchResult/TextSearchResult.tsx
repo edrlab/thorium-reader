@@ -6,29 +6,23 @@
 // ==LICENSE-END==
 
 import * as qs from "query-string";
-
 import * as React from "react";
-
 import { RouteComponentProps } from "react-router-dom";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
+import {
+    TPublicationApiSearch, TPublicationApiSearch_result,
+} from "readium-desktop/main/api/publication";
+import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import { withApi } from "readium-desktop/renderer/components/utils/api";
+import GridView from "readium-desktop/renderer/components/utils/GridView";
+import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
 import Header, { DisplayType } from "../catalog/Header";
 
-import GridView from "readium-desktop/renderer/components/utils/GridView";
-import ListView from "readium-desktop/renderer/components/utils/ListView";
-
-import { Publication } from "readium-desktop/common/models/publication";
-
-import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
-
 interface TextSearchResultProps extends TranslatorProps, RouteComponentProps {
-    searchPublications: any;
-    publications?: Publication[];
+    searchPublications: TPublicationApiSearch;
+    publications?: TPublicationApiSearch_result;
 }
 
 export class TextSearchResult extends React.Component<TextSearchResultProps, undefined> {
@@ -38,9 +32,7 @@ export class TextSearchResult extends React.Component<TextSearchResultProps, und
 
         if (text !== prevText) {
             // Refresh searched publications
-            this.props.searchPublications({
-                text,
-            });
+            this.props.searchPublications(text);
         }
         return true;
     }

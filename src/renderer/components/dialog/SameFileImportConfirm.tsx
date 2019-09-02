@@ -6,19 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
+import { dialogActions } from "readium-desktop/common/redux/actions";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-
+import { TPublicationApiImportOpdsEntry } from "readium-desktop/main/api/publication";
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
-import { dialogActions } from "readium-desktop/common/redux/actions";
-
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-
 interface Props extends TranslatorProps {
     publication: OpdsPublicationView;
-    importOpdsEntry?: (data: any) => any;
+    importOpdsEntry?: TPublicationApiImportOpdsEntry;
     downloadSample?: boolean;
     closeDialog?: any;
 }
@@ -53,12 +50,10 @@ class SameFileImportConfirm extends React.Component<Props> {
 
     private addToCatalog() {
         this.props.importOpdsEntry(
-            {
-                url: this.props.publication.url,
-                base64OpdsPublication: this.props.publication.base64OpdsPublication,
-                downloadSample: this.props.downloadSample,
-                title: this.props.publication.title,
-            },
+            this.props.publication.url,
+            this.props.publication.base64OpdsPublication,
+            this.props.publication.title,
+            this.props.downloadSample,
         );
         this.props.closeDialog();
     }
@@ -90,7 +85,6 @@ export default withApi(
             {
                 moduleId: "publication",
                 methodId: "search",
-                resultProp: "searchResult",
                 buildRequestData,
                 onLoad: true,
             },

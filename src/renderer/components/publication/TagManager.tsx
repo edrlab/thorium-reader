@@ -6,23 +6,22 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-
+import {
+    TPublicationApiUpdateTags, TPublicationApiUpdateTags_result,
+} from "readium-desktop/main/api/publication";
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px-blue.svg";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
+import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/translator";
 
 interface Props extends TranslatorProps {
     publicationIdentifier: string;
     tags: string[];
-    updatedPublication?: PublicationView;
-    updateTags?: (data: {identifier: string, tags: string[]}) => void;
+    updatedPublication?: TPublicationApiUpdateTags_result;
+    updateTags?: TPublicationApiUpdateTags;
     canModifyTag?: boolean;
 }
 

@@ -9,6 +9,7 @@ import * as qs from "query-string";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { TCatalogApiGet, TCatalogApiGet_result } from "readium-desktop/main/api/catalog";
+import { TPublicationApiGetAllTags_result } from "readium-desktop/main/api/publication";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
@@ -19,7 +20,7 @@ import ListView from "./ListView";
 
 interface Props extends TranslatorProps, RouteComponentProps {
     catalog?: TCatalogApiGet_result;
-    tags?: string[];
+    tags?: TPublicationApiGetAllTags_result;
     requestCatalog: TCatalogApiGet;
 }
 

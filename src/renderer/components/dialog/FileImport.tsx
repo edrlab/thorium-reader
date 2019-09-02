@@ -6,18 +6,15 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
+import { TPublicationApiImport } from "readium-desktop/main/api/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
 interface FileImportProps extends TranslatorProps {
     files: any;
-    importFiles?: any;
+    importFiles?: TPublicationApiImport;
     closeDialog?: any;
 }
 

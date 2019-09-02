@@ -6,15 +6,14 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { PublicationView } from "readium-desktop/common/views/publication";
-
+import { TPublicationApiExportPublication } from "readium-desktop/main/api/publication";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
 interface PublicationCardProps extends TranslatorProps {
     publication: PublicationView;
-    exportPublication?: (data: any) => void;
+    exportPublication?: TPublicationApiExportPublication;
     onClick: () => void;
 }
 
@@ -59,7 +58,7 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
         this.props.onClick();
         const destinationPath = event.target.files[0].path;
         const publication = this.props.publication;
-        this.props.exportPublication({ destinationPath, publication });
+        this.props.exportPublication(publication, destinationPath);
     }
 }
 
