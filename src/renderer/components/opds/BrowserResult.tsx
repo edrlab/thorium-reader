@@ -105,7 +105,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
         }
         this.currentUrl = newUrl;
         this.props.cleanData();
-        browse({ url: newUrl });
+        browse(newUrl);
     }
 
     private addSearchTerms(url: string, search: string) {

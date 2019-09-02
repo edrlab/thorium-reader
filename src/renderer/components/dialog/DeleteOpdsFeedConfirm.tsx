@@ -6,20 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
-
+import { TOpdsDeleteFeedApi } from "readium-desktop/main/api/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
 
 interface DeleteOpdsFeedConfirmProps extends TranslatorProps {
     feed?: OpdsFeedView;
-    delete?: any;
+    delete?: TOpdsDeleteFeedApi;
     closeDialog?: any;
 }
 
@@ -53,7 +49,7 @@ export class DeleteOpdsFeedConfirm extends React.Component<DeleteOpdsFeedConfirm
 
     public remove(e: any) {
         e.preventDefault();
-        this.props.delete({ identifier: this.props.feed.identifier });
+        this.props.delete(this.props.feed.identifier);
         this.props.closeDialog();
     }
 }
