@@ -6,6 +6,12 @@
 // ==LICENSE-END==
 
 export interface ImportState {
-    publication: any;
+    publication: ImportOpdsPublication;
     downloadSample: boolean;
+}
+
+export interface ImportOpdsPublication {
+    url: string;
+    base64OpdsPublication: string;
+    title: string;
 }
