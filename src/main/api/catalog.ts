@@ -41,7 +41,7 @@ export type TCatalogGetEntries_result = CatalogEntryView[];
 export type TCatalogUpdateEntries_result = CatalogEntryView[];
 
 @injectable()
-export class CatalogApi {
+export class CatalogApi implements ICatalogApi {
     @inject("publication-repository")
     private readonly publicationRepository!: PublicationRepository;
 
