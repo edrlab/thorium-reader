@@ -670,6 +670,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         settingsValues[name] =  value;
 
         this.setState({settingsValues});
+        console.log(name, givenValue, settingsValues);
 
         this.handleSettingsSave();
     }
