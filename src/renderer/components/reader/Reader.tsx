@@ -17,6 +17,10 @@ import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import {
+    TReaderApiAddBookmark, TReaderApiDeleteBookmark, TReaderApiFindBookmarks,
+    TReaderApiFindBookmarks_result, TReaderApiSetLastReadingLocation,
+} from "readium-desktop/main/api/reader";
+import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
@@ -161,14 +165,14 @@ interface ReaderProps {
     reader?: any;
     mode?: any;
     infoOpen?: boolean;
-    deleteBookmark?: any;
-    addBookmark?: any;
-    findBookmarks: any;
+    deleteBookmark?: TReaderApiDeleteBookmark;
+    addBookmark?: TReaderApiAddBookmark;
+    findBookmarks: TReaderApiFindBookmarks;
     toggleFullscreen?: any;
     closeReader?: any;
     detachReader?: any;
-    setLastReadingLocation: any;
-    bookmarks?: LocatorView[];
+    setLastReadingLocation: TReaderApiSetLastReadingLocation;
+    bookmarks?: TReaderApiFindBookmarks_result;
     displayPublicationInfo?: any;
     publication?: Publication;
 }
@@ -492,18 +496,11 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private saveReadingLocation(loc: LocatorExtended) {
-        this.props.setLastReadingLocation(
-            {
-                publication: {
-                    identifier: queryParams.pubId,
-                },
-                locator: loc.locator,
-            },
-        );
+        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
-        await this.props.findBookmarks({publication: {identifier: this.pubId}});
+        await this.props.findBookmarks(this.pubId);
         this.saveReadingLocation(loc);
         this.setState({currentLocation: getCurrentReadingLocation()});
         // No need to explicitly refresh the bookmarks status here,
@@ -575,18 +572,11 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         await this.checkBookmarks();
         if (this.state.visibleBookmarkList.length > 0) {
             for (const bookmark of this.state.visibleBookmarkList) {
-                this.props.deleteBookmark({
-                    identifier: bookmark.identifier,
-                });
+                this.props.deleteBookmark(bookmark.identifier);
             }
         } else if (this.state.currentLocation) {
             const locator = this.state.currentLocation.locator;
-            this.props.addBookmark({
-                publication: {
-                    identifier: this.pubId,
-                },
-                locator,
-            });
+            this.props.addBookmark(this.pubId, locator);
         }
     }
 

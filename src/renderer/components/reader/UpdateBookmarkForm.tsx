@@ -10,11 +10,12 @@ import * as React from "react";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 
 import { LocatorView } from "readium-desktop/common/views/locator";
+import { TReaderApiUpdateBookmark } from "readium-desktop/main/api/reader";
 
 interface Props {
     close: () => void;
     bookmark: LocatorView;
-    updateBookmark?: any;
+    updateBookmark?: TReaderApiUpdateBookmark;
 }
 
 interface State {
@@ -60,10 +61,9 @@ export class UpdateBookmarkForm extends React.Component<Props, State> {
 
     private submiteBookmark(e: any) {
         e.preventDefault();
-        const name = this.inputRef.current.value;
         const { bookmark, updateBookmark } = this.props;
-        bookmark.name = name;
-        updateBookmark(bookmark);
+        bookmark.name = this.inputRef.current.value;
+        updateBookmark(bookmark.identifier, bookmark.publication.identifier, bookmark.locator, bookmark.name);
         this.props.close();
     }
 }

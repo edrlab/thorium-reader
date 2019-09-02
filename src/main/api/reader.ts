@@ -15,18 +15,51 @@ import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 
 import { LocatorType } from "readium-desktop/common/models/locator";
 
+import { Locator } from "@r2-shared-js/models/locator";
+
+export interface IReaderApi {
+    setLastReadingLocation: (publicationIdentifier: string, locator: Locator) => Promise<LocatorView> | void;
+    getLastReadingLocation: (publicationIdentifier: string) => Promise<LocatorView> | void;
+    findBookmarks: (publicationIdentifier: string) => Promise<LocatorView[]> | void;
+    updateBookmark: (
+        identifier: string,
+        publicationIdentifier: string,
+        locator: Locator,
+        name?: string,
+    ) => Promise<void> | void;
+    addBookmark: (
+        publicationIdentifier: string,
+        locator: Locator,
+        name?: string,
+    ) => Promise<void> | void;
+    deleteBookmark: (identifier: string) => Promise<void> | void;
+}
+
+export type TReaderApiSetLastReadingLocation = IReaderApi["setLastReadingLocation"];
+export type TReaderApiGetLastReadingLocation = IReaderApi["getLastReadingLocation"];
+export type TReaderApiFindBookmarks = IReaderApi["findBookmarks"];
+export type TReaderApiUpdateBookmark = IReaderApi["updateBookmark"];
+export type TReaderApiAddBookmark = IReaderApi["addBookmark"];
+export type TReaderApiDeleteBookmark = IReaderApi["deleteBookmark"];
+
+export type TReaderApiSetLastReadingLocation_result = LocatorView;
+export type TReaderApiGetLastReadingLocation_result = LocatorView;
+export type TReaderApiFindBookmarks_result = LocatorView[];
+export type TReaderApiUpdateBookmark_result = void;
+export type TReaderApiAddBookmark_result = void;
+export type TReaderApiDeleteBookmark_result = void;
+
 @injectable()
-export class ReaderApi {
+export class ReaderApi implements IReaderApi {
     @inject("locator-repository")
     private readonly locatorRepository!: LocatorRepository;
 
     @inject("locator-view-converter")
     private readonly locatorViewConverter!: LocatorViewConverter;
 
-    public async setLastReadingLocation(data: any): Promise<LocatorView> {
-        const { publication, locator } = data;
+    public async setLastReadingLocation(publicationIdentifier: string, locator: Locator): Promise<LocatorView> {
         const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-            publication.identifier,
+            publicationIdentifier,
             LocatorType.LastReadingLocation,
         );
 
@@ -35,7 +68,7 @@ export class ReaderApi {
         if (docs.length === 0) {
             // Create new locator
             newDoc = {
-                publicationIdentifier: publication.identifier,
+                publicationIdentifier,
                 locatorType: LocatorType.LastReadingLocation,
                 locator: Object.assign({}, locator),
             };
@@ -54,10 +87,9 @@ export class ReaderApi {
         return this.locatorViewConverter.convertDocumentToView(savedDoc);
     }
 
-    public async getLastReadingLocation(data: any): Promise<LocatorView> {
-        const { publication } = data;
+    public async getLastReadingLocation(publicationIdentifier: string): Promise<LocatorView> {
         const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-            publication.identifier,
+            publicationIdentifier,
             LocatorType.LastReadingLocation,
         );
 
@@ -68,10 +100,9 @@ export class ReaderApi {
         return this.locatorViewConverter.convertDocumentToView(docs[0]);
     }
 
-    public async findBookmarks(data: any): Promise<LocatorView[]> {
-        const { publication } = data;
+    public async findBookmarks(publicationIdentifier: string): Promise<LocatorView[]> {
         const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-            publication.identifier,
+            publicationIdentifier,
             LocatorType.Bookmark,
         );
 
@@ -80,11 +111,16 @@ export class ReaderApi {
         });
     }
 
-    public async updateBookmark(data: any): Promise<void> {
-        const { publication, locator, identifier, name } = data;
+    public async updateBookmark(
+        identifier: string,
+        publicationIdentifier: string,
+        locator: Locator,
+        name?: string,
+    ): Promise<void> {
+
         const newDoc = {
             identifier,
-            publicationIdentifier: publication.identifier,
+            publicationIdentifier,
             locatorType: LocatorType.Bookmark,
             locator: Object.assign({}, locator),
             name,
@@ -92,10 +128,14 @@ export class ReaderApi {
         await this.locatorRepository.save(newDoc);
     }
 
-    public async addBookmark(data: any): Promise<void> {
-        const { publication, locator, name } = data;
+    public async addBookmark(
+        publicationIdentifier: string,
+        locator: Locator,
+        name?: string,
+    ): Promise<void> {
+
         const doc = {
-            publicationIdentifier: publication.identifier,
+            publicationIdentifier,
             locatorType: LocatorType.Bookmark,
             locator: Object.assign({}, locator),
             name,
@@ -103,8 +143,7 @@ export class ReaderApi {
         await this.locatorRepository.save(doc);
     }
 
-    public async deleteBookmark(data: any): Promise<void> {
-        const { identifier } = data;
+    public async deleteBookmark(identifier: string): Promise<void> {
         await this.locatorRepository.delete(identifier);
     }
 }
