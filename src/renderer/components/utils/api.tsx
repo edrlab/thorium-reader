@@ -46,7 +46,6 @@ export interface IApiOperationRequest {
 export interface IApiMapDispatchToProps {
     requestOnLoadData: () => void;
     cleanData?: () => void;
-    [f: string]: any;
 }
 
 export interface IApiMapStateToProps {
@@ -58,7 +57,7 @@ type TComponentConstructor<P> = ComponentClass<P> | StatelessComponent<P>;
 // TS4094: private members fail the TS compiler, because:
 // returned type is ConnectedComponentClass<typeof BaseWrapperComponent, any>
 // tslint:disable-next-line: max-line-length
-export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & IApiMapStateToProps & IApiMapDispatchToProps>, queryConfig: IApiConfig) {
+export function withApi(WrappedComponent: TComponentConstructor<any>, queryConfig: IApiConfig) {
 
     // Create operationRequests
     const operationRequests: IApiOperationRequest[] = [];
