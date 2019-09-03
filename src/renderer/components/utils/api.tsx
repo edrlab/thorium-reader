@@ -17,10 +17,6 @@ import * as uuid from "uuid";
 
 import { ComponentClass, StatelessComponent } from "react";
 
-export interface IApiMapStateToProps {
-    [idx: string]: any;
-}
-
 interface IApiOperation {
     moduleId: string;
     methodId: string;
@@ -47,16 +43,14 @@ export interface IApiOperationRequest {
     definition: IApiOperationDefinition;
 }
 
-export interface IApiProps {
-    operationResults?: IApiMapStateToProps;
-    requestOnLoadData?: () => void;
-    cleanData?: () => void;
-}
-
-export interface IApiMatchDispatchToProps {
+export interface IApiMapDispatchToProps {
     requestOnLoadData: () => void;
     cleanData?: () => void;
     [f: string]: any;
+}
+
+export interface IApiMapStateToProps {
+    [idx: string]: any;
 }
 
 type TComponentConstructor<P> = ComponentClass<P> | StatelessComponent<P>;
@@ -64,7 +58,7 @@ type TComponentConstructor<P> = ComponentClass<P> | StatelessComponent<P>;
 // TS4094: private members fail the TS compiler, because:
 // returned type is ConnectedComponentClass<typeof BaseWrapperComponent, any>
 // tslint:disable-next-line: max-line-length
-export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & IApiProps>, queryConfig: IApiConfig) {
+export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & IApiMapStateToProps & IApiMapDispatchToProps>, queryConfig: IApiConfig) {
 
     // Create operationRequests
     const operationRequests: IApiOperationRequest[] = [];
@@ -99,18 +93,20 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
                 caller,
                 definition: Object.assign(
                     {},
+                    // default value
                     {
                         callProp: uuid.v4(),
                         resultProp: uuid.v4(),
                         onLoad: false,
                     },
+                    // add operationDefinition
                     operation,
                 ),
             },
         );
     }
 
-    const mapDispatchToProps: MapDispatchToPropsFunction<IApiMatchDispatchToProps, any> = (dispatch, ownProps) => {
+    const mapDispatchToProps: MapDispatchToPropsFunction<IApiMapDispatchToProps, any> = (dispatch, ownProps) => {
         let dispatchToPropsResult = {};
 
         if (queryConfig.mapDispatchToProps != null) {
@@ -173,7 +169,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
         );
     };
 
-    const BaseWrapperComponent = class extends React.Component<IApiProps> {
+    const BaseWrapperComponent = class extends React.Component<IApiMapStateToProps & IApiMapDispatchToProps> {
         public static displayName: string;
 
         // Ideally should be private, but see TS4094 comments in this file
@@ -209,16 +205,8 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
             const translator = container.get("translator") as Translator;
             const translate = translator.translate.bind(translator) as I18nTyped;
 
-            const newProps: any = Object.assign(
-                {},
-                this.props,
-                {
-                    __: translate,
-                    translator,
-                },
-            );
-
             // this condition is never called because operationResults is merged into mapStateToProps L172
+            /*
             if (newProps.operationResults) {
                 for (const key in newProps.operationResults) {
                     if (newProps.operationResults.hasOwnProperty(key)) {
@@ -226,11 +214,24 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
                     }
                 }
             }
+            */
 
+            const operationRequestProps: IApiMapStateToProps = {};
             for (const operationRequest of operationRequests) {
                 const def = operationRequest.definition;
-                newProps[def.callProp] = operationRequest.caller(this.props);
+                operationRequestProps[def.callProp] = operationRequest.caller(this.props);
             }
+
+            // newProps become immutable from props (Readonly type)
+            const newProps = Object.assign(
+                {},
+                this.props,
+                operationRequestProps,
+                {
+                    __: translate,
+                    translator,
+                },
+            );
 
             return (<WrappedComponent { ...newProps } />);
         }
