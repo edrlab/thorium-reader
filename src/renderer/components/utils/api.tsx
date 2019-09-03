@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect, MapDispatchToPropsFunction } from "react-redux";
+import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { container } from "readium-desktop/renderer/di";
@@ -17,9 +17,16 @@ import * as uuid from "uuid";
 
 import { ComponentClass, StatelessComponent } from "react";
 
-export interface ApiOperationDefinition {
+export interface IApiOperationResult {
+    [idx: string]: any;
+}
+
+interface IApiOperation {
     moduleId: string;
     methodId: string;
+}
+
+export interface IApiOperationDefinition extends IApiOperation {
     callProp?: string;
     resultProp?: string;
     resultIsRejectProp?: string;
@@ -27,34 +34,34 @@ export interface ApiOperationDefinition {
     onLoad?: boolean; // Load in component did mount, default true
 }
 
-export interface ApiConfig {
-    operations: ApiOperationDefinition[];
-    refreshTriggers?: any; // Api operation that triggers a new refresh
-    mapStateToProps?: any;
+export interface IApiConfig {
+    operations: IApiOperationDefinition[];
+    refreshTriggers?: IApiOperation[]; // Api operation that triggers a new refresh
+    mapStateToProps?: MapStateToProps<RootState, any, any>;
     mapDispatchToProps?: MapDispatchToPropsFunction<any, any>;
 }
 
-export interface ApiOperationRequest {
+export interface IApiOperationRequest {
     id: string;
     caller?: (props: any) => (...requestData: unknown[]) => void;
-    definition: ApiOperationDefinition;
+    definition: IApiOperationDefinition;
 }
 
-export interface ApiProps {
-    operationResults?: any;
-    requestOnLoadData?: any;
-    cleanData?: any;
+export interface IApiProps {
+    operationResults?: IApiOperationResult;
+    requestOnLoadData?: () => void;
+    cleanData?: () => void;
 }
 
-type ComponentConstructor<P> = ComponentClass<P> | StatelessComponent<P>;
+type TComponentConstructor<P> = ComponentClass<P> | StatelessComponent<P>;
 
 // TS4094: private members fail the TS compiler, because:
 // returned type is ConnectedComponentClass<typeof BaseWrapperComponent, any>
 // tslint:disable-next-line: max-line-length
-export function withApi<Props>(WrappedComponent: ComponentConstructor<Props & ApiProps>, queryConfig: ApiConfig) {
+export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & IApiProps>, queryConfig: IApiConfig) {
 
     // Create operationRequests
-    const operationRequests: ApiOperationRequest[] = [];
+    const operationRequests: IApiOperationRequest[] = [];
     const store = container.get<Store<RootState>>("store");
 
     for (const operation of queryConfig.operations) {
@@ -129,7 +136,7 @@ export function withApi<Props>(WrappedComponent: ComponentConstructor<Props & Ap
         );
     };
 
-    const mapStateToProps = (state: RootState, ownProps: any) => {
+    const mapStateToProps: MapStateToProps<any, any, RootState> = (state, ownProps) => {
         let stateToPropsResult = {};
 
         if (queryConfig.mapStateToProps != null) {
@@ -139,7 +146,7 @@ export function withApi<Props>(WrappedComponent: ComponentConstructor<Props & Ap
             );
         }
 
-        const operationResults: any = {};
+        const operationResults: IApiOperationResult = {};
 
         for (const operationRequest of operationRequests) {
             if (operationRequest.id in state.api.data) {
@@ -160,7 +167,7 @@ export function withApi<Props>(WrappedComponent: ComponentConstructor<Props & Ap
         );
     };
 
-    const BaseWrapperComponent = class extends React.Component<ApiProps, undefined> {
+    const BaseWrapperComponent = class extends React.Component<IApiProps> {
         public static displayName: string;
 
         // Ideally should be private, but see TS4094 comments in this file
@@ -177,7 +184,7 @@ export function withApi<Props>(WrappedComponent: ComponentConstructor<Props & Ap
 
         public componentDidMount() {
             this.props.requestOnLoadData();
-            this.store = container.get("store") as Store<RootState>;
+            this.store = container.get<Store<RootState>>("store");
 
             if (queryConfig.refreshTriggers) {
                 this.stateUpdateUnsubscribe = this.store.subscribe(this.handleStateUpdate);
