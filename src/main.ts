@@ -10,7 +10,6 @@ import { app, ipcMain } from "electron";
 import * as path from "path";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
-import { cli_ } from "readium-desktop/main/cli/commandLine";
 import { cli } from "readium-desktop/main/cli/process";
 import { createWindow } from "readium-desktop/main/createWindow";
 import { container } from "readium-desktop/main/di";
