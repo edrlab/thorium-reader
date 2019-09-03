@@ -53,6 +53,9 @@ yargs
         ,
         (argv) => {
             // if the app is not started or it's the second instance
+            // The boolean app.isReady is true when the second-instance event handler is called
+            // (as guaranteed by the Electron API
+            // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance )
             if (!app.isReady || !gotTheLock) {
                 const promise = cliOpds(argv.title, argv.url);
                 promise.then((isValid) => {
@@ -84,6 +87,9 @@ yargs
         ,
         (argv) => {
             // if the app is not started or it's the second instance
+            // The boolean app.isReady is true when the second-instance event handler is called
+            // (as guaranteed by the Electron API
+            // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance
             if (!app.isReady || !gotTheLock) {
                 const pathArray = glob.sync(argv.path, {
                     absolute: true,
