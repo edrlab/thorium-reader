@@ -19,8 +19,17 @@ import { cli_, cliImport, cliOpds, cliRead } from "./commandLine";
 // Logger
 const debug = debug_("readium-desktop:cli");
 
-// LockSingleInstance
+// single Instance Lock
 const gotTheLock = lockInstance();
+// When gotTheLock is true :
+//  the app is typically launched with the GUI,
+//
+// when gotTheLock is false :
+//  the app normally exits immediately, but in our case,
+//  the pure-CLI (no GUI) code is executed to report CLI message into process.stdout/stderr,
+//  and then exits.
+//  The second-instance event is still received, but the argv is ignored for the CLI,
+//  as it has already been executed by the "second instance" itself (see Yargs handlers).
 
 // main Fucntion variable
 let mainFct: () => void = () => ({});
