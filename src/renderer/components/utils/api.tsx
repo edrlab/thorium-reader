@@ -33,7 +33,7 @@ export interface IApiOperationDefinition extends IApiOperation {
 export interface IApiConfig {
     operations: IApiOperationDefinition[];
     refreshTriggers?: IApiOperation[]; // Api operation that triggers a new refresh
-    mapStateToProps?: MapStateToProps<RootState, any, any>;
+    mapStateToProps?: MapStateToProps<IApiMapStateToProps, any, RootState>;
     mapDispatchToProps?: MapDispatchToPropsFunction<any, any>;
 }
 
@@ -201,7 +201,7 @@ export function withApi(WrappedComponent: TComponentConstructor<any>, queryConfi
         }
 
         public render() {
-            const translator = container.get("translator") as Translator;
+            const translator = container.get<Translator>("translator");
             const translate = translator.translate.bind(translator) as I18nTyped;
 
             // this condition is never called because operationResults is merged into mapStateToProps L172
@@ -226,6 +226,7 @@ export function withApi(WrappedComponent: TComponentConstructor<any>, queryConfi
                 {},
                 this.props,
                 operationRequestProps,
+                // idem that translator.tsx must be removed on code : withTranslator(withApi(...))
                 {
                     __: translate,
                     translator,
