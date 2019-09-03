@@ -36,7 +36,7 @@ export interface ApiConfig {
 
 export interface ApiOperationRequest {
     id: string;
-    caller?: any;
+    caller?: (props: any) => (...requestData: unknown[]) => void;
     definition: ApiOperationDefinition;
 }
 
