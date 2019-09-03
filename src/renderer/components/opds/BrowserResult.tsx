@@ -25,7 +25,6 @@ interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     result?: THttpGetOpdsResultView | string;
     resultIsReject?: boolean;
     cleanData: any;
-    requestOnLoadData: any;
     browse?: TOpdsBrowseApi;
 }
 

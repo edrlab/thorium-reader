@@ -111,7 +111,7 @@ export function withApi<Props>(WrappedComponent: ComponentConstructor<Props & Ap
             {},
             dispatchToPropsResult,
             {
-                requestOnLoadData: (_data: any) => {
+                requestOnLoadData: () => {
                     for (const operationRequest of operationRequests) {
                         if (operationRequest.definition.onLoad) {
                             operationRequest.caller(ownProps)();
