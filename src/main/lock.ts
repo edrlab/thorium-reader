@@ -10,6 +10,7 @@ import { app } from "electron";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 
+import { cli_ } from "./cli/commandLine";
 import { cli } from "./cli/process";
 
 // Logger
@@ -19,6 +20,23 @@ export function lockInstance() {
     const gotTheLock = app.requestSingleInstanceLock();
 
     if (gotTheLock) {
+
+        // https://github.com/electron/electron/blob/master/docs/api/app.md#apprequestsingleinstancelock
+        app.on("will-finish-launching", () => {
+            app.on("open-url", (event, _url) => {
+                event.preventDefault();
+                // Process url: import or open?
+            });
+            app.on("open-file", async (event, filePath) => {
+                event.preventDefault();
+
+                if (!await cli_(filePath)) {
+                    debug(`the open-file event with ${filePath} return an error`);
+                }
+            });
+        });
+
+        // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance
         app.on("second-instance", (_e, commandLine, _workingDir) => {
             // Someone tried to run a second instance, we should focus our window.
             debug("comandLine", commandLine, _workingDir);

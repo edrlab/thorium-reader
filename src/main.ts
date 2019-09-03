@@ -85,20 +85,6 @@ function main() {
         registerProtocol();
     });
 
-    app.on("will-finish-launching", () => {
-        app.on("open-url", (event, _url) => {
-            event.preventDefault();
-            // Process url: import or open?
-        });
-        app.on("open-file", async (event, filePath) => {
-            event.preventDefault();
-
-            if (!await cli_(filePath)) {
-                debug(`the open-file event with ${filePath} return an error`);
-            }
-        });
-    });
-
     // Listen to renderer action
     ipcMain.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
         const store = container.get("store") as Store<any>;
