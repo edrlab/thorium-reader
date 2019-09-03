@@ -120,7 +120,7 @@
         "ext": "epub3",
         "role": "Viewer",
         "mimeType": "application/epub+zip"
-      },
+      }
     ],
     "win": {
       "target": [
