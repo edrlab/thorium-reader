@@ -17,7 +17,7 @@ import * as uuid from "uuid";
 
 import { ComponentClass, StatelessComponent } from "react";
 
-export interface IApiOperationResult {
+export interface IApiMapStateToProps {
     [idx: string]: any;
 }
 
@@ -48,9 +48,15 @@ export interface IApiOperationRequest {
 }
 
 export interface IApiProps {
-    operationResults?: IApiOperationResult;
+    operationResults?: IApiMapStateToProps;
     requestOnLoadData?: () => void;
     cleanData?: () => void;
+}
+
+export interface IApiMatchDispatchToProps {
+    requestOnLoadData: () => void;
+    cleanData?: () => void;
+    [f: string]: any;
 }
 
 type TComponentConstructor<P> = ComponentClass<P> | StatelessComponent<P>;
@@ -104,7 +110,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
         );
     }
 
-    const mapDispatchToProps: MapDispatchToPropsFunction<any, any> = (dispatch, ownProps) => {
+    const mapDispatchToProps: MapDispatchToPropsFunction<IApiMatchDispatchToProps, any> = (dispatch, ownProps) => {
         let dispatchToPropsResult = {};
 
         if (queryConfig.mapDispatchToProps != null) {
@@ -136,7 +142,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
         );
     };
 
-    const mapStateToProps: MapStateToProps<any, any, RootState> = (state, ownProps) => {
+    const mapStateToProps: MapStateToProps<IApiMapStateToProps, any, RootState> = (state, ownProps) => {
         let stateToPropsResult = {};
 
         if (queryConfig.mapStateToProps != null) {
@@ -146,7 +152,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
             );
         }
 
-        const operationResults: IApiOperationResult = {};
+        const operationResults: IApiMapStateToProps = {};
 
         for (const operationRequest of operationRequests) {
             if (operationRequest.id in state.api.data) {
@@ -212,6 +218,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
                 },
             );
 
+            // this condition is never called because operationResults is merged into mapStateToProps L172
             if (newProps.operationResults) {
                 for (const key in newProps.operationResults) {
                     if (newProps.operationResults.hasOwnProperty(key)) {
