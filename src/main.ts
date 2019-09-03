@@ -10,7 +10,6 @@ import { app, ipcMain } from "electron";
 import * as path from "path";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
-import { cli_ } from "readium-desktop/main/cli/commandLine";
 import { cli } from "readium-desktop/main/cli/process";
 import { createWindow } from "readium-desktop/main/createWindow";
 import { container } from "readium-desktop/main/di";
@@ -83,20 +82,6 @@ function main() {
         // launch library window
         await createWindow();
         registerProtocol();
-    });
-
-    app.on("will-finish-launching", () => {
-        app.on("open-url", (event: any, _url: any) => {
-            event.preventDefault();
-            // Process url: import or open?
-        });
-        app.on("open-file", async (event: any, filePath) => {
-            event.preventDefault();
-
-            if (!await cli_(filePath)) {
-                debug(`the open-file event with ${filePath} return an error`);
-            }
-        });
     });
 
     // Listen to renderer action
