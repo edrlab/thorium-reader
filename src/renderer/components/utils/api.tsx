@@ -15,6 +15,8 @@ import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
 import { Store } from "redux";
 import * as uuid from "uuid";
 
+import { ComponentClass, StatelessComponent } from "react";
+
 export interface IApiOperationResult {
     [idx: string]: any;
 }
