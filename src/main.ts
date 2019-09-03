@@ -86,11 +86,11 @@ function main() {
     });
 
     app.on("will-finish-launching", () => {
-        app.on("open-url", (event: any, _url: any) => {
+        app.on("open-url", (event, _url) => {
             event.preventDefault();
             // Process url: import or open?
         });
-        app.on("open-file", async (event: any, filePath) => {
+        app.on("open-file", async (event, filePath) => {
             event.preventDefault();
 
             if (!await cli_(filePath)) {
