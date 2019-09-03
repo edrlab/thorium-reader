@@ -37,9 +37,9 @@ export function lockInstance() {
         });
 
         // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance
-        app.on("second-instance", (_e, commandLine, _workingDir) => {
+        app.on("second-instance", (_e, argv, _workingDir) => {
             // Someone tried to run a second instance, we should focus our window.
-            debug("comandLine", commandLine, _workingDir);
+            debug("comandLine", argv, _workingDir);
 
             const winRegistry = container.get("win-registry") as WinRegistry;
             const win = winRegistry.getWindow(1);
@@ -54,8 +54,8 @@ export function lockInstance() {
             // when the command line doesn't used electron: execute and exit in second instance process
             // when the command has needed to open win electron: execute with below cli function
             // the mainFct is disallow to avoid to generate new mainWindow
-            // remove all -- option arg because isn't handle in ready state app
-            cli(() => ({}), commandLine.filter((arg) => !arg.startsWith("--")));
+            // remove --version and --help because isn't handle in ready state app
+            cli(() => ({}), argv.filter((arg) => !arg.startsWith("--")));
         });
     }
     return gotTheLock;
