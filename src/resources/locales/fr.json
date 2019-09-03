@@ -60,7 +60,7 @@
         "deleteFeed": "Êtes vous sûr de vouloir supprimer ce catalogue ?",
         "deletePublication": "Êtes vous sûr de vouloir supprimer cette publication ?",
         "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub ou .lcpl)",
+        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub)",
         "no": "Non",
         "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
