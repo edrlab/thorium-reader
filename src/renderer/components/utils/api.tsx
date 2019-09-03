@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
+import { connect, MapDispatchToPropsFunction } from "react-redux";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { container } from "readium-desktop/renderer/di";
@@ -31,7 +31,7 @@ export interface ApiConfig {
     operations: ApiOperationDefinition[];
     refreshTriggers?: any; // Api operation that triggers a new refresh
     mapStateToProps?: any;
-    mapDispatchToProps?: any;
+    mapDispatchToProps?: MapDispatchToPropsFunction<any, any>;
 }
 
 export interface ApiOperationRequest {
@@ -55,7 +55,7 @@ export function withApi<Props>(WrappedComponent: ComponentConstructor<Props & Ap
 
     // Create operationRequests
     const operationRequests: ApiOperationRequest[] = [];
-    const store = container.get("store") as Store<RootState>;
+    const store = container.get<Store<RootState>>("store");
 
     for (const operation of queryConfig.operations) {
         const requestId = uuid.v4();
@@ -97,7 +97,7 @@ export function withApi<Props>(WrappedComponent: ComponentConstructor<Props & Ap
         );
     }
 
-    const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+    const mapDispatchToProps: MapDispatchToPropsFunction<any, any> = (dispatch, ownProps) => {
         let dispatchToPropsResult = {};
 
         if (queryConfig.mapDispatchToProps != null) {
