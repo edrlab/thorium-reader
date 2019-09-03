@@ -208,6 +208,7 @@ export class ReaderOptions extends React.Component<Props> {
                             type="radio"
                             name="disposition"
                             onChange={(e) => this.props.handleSettingChange(e, "paged", "false")}
+                            checked={!settings.paged}
                         />
                         <label
                             htmlFor={styles.scroll_option}
@@ -223,7 +224,7 @@ export class ReaderOptions extends React.Component<Props> {
                             type="radio"
                             name="disposition"
                             onChange={(e) => this.props.handleSettingChange(e, "paged", "true")}
-                            defaultChecked={true}
+                            checked={settings.paged}
                         />
                         <label
                             htmlFor={styles.page_option}
