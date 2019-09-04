@@ -13,9 +13,8 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-import { container } from "readium-desktop/main/di";
+import { diMainGet } from "readium-desktop/main/di";
 import { CatalogService } from "readium-desktop/main/services/catalog";
-import { Store } from "redux";
 
 export interface IPublicationApi {
     // in a future possible typing like this to have buildRequestData return type :
@@ -186,12 +185,12 @@ export class PublicationApi implements IPublicationApi {
     }
 
     private dispatchToastRequest(type: ToastType, message: string) {
-        const store = container.get("store") as Store<any>;
+        const store = diMainGet("store");
         store.dispatch(open(type, message));
     }
 
     private sendDownloadRequest(url: string) {
-        const store = container.get("store") as Store<any>;
+        const store = diMainGet("store");
         store.dispatch(downloadActions.addDownload(
             {
                 url,
@@ -200,7 +199,7 @@ export class PublicationApi implements IPublicationApi {
     }
 
     private sendDownloadSuccess(url: string) {
-        const store = container.get("store") as Store<any>;
+        const store = diMainGet("store");
         store.dispatch(downloadActions.removeDownload(
             {
                 url,

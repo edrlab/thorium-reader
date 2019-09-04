@@ -16,15 +16,13 @@ import { closeReaderFromPublication } from "readium-desktop/common/redux/actions
 import { convertMultiLangStringToString } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { PublicationApi } from "readium-desktop/main/api/publication";
 import {
     PublicationDocument, THttpGetPublicationDocument,
 } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-import { container } from "readium-desktop/main/di";
+import { diMainGet } from "readium-desktop/main/di";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 import * as uuid from "uuid";
 import * as xmldom from "xmldom";
@@ -180,8 +178,8 @@ export class CatalogService {
     }
 
     public async deletePublication(publicationIdentifier: string) {
-        const store = container.get("store") as Store<any>;
-        const publicationApi = container.get("publication-api") as PublicationApi;
+        const store = diMainGet("store");
+        const publicationApi = diMainGet("publication-api");
         const publication = await publicationApi.get(publicationIdentifier);
 
         // tslint:disable-next-line: await-promise
