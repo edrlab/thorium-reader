@@ -107,7 +107,7 @@ export class ReaderMenu extends React.Component<Props, State> {
             },
         ];
 
-        return ( <>
+        return (
             <SideMenu
                 className={styles.chapters_settings}
                 listClassName={styles.chapter_settings_list}
@@ -116,7 +116,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                 toggleMenu={toggleMenu}
                 focusMenuButton={this.props.focusNaviguationMenu}
             />
-        </> );
+        );
     }
 
     private createTOCRenderList(TOC: Link[]): JSX.Element {
