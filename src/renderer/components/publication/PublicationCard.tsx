@@ -77,7 +77,7 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                         tabIndex={0}
                         onClick={(e) => this.handleBookClick(e)}
                         onKeyPress={(e) => {
-                            if (e.charCode === 13) { this.handleBookClick(e); }}
+                            if (e.key === "Enter") { this.handleBookClick(e); }}
                         }
                         title={`${publication.title} - ${authors}`}
                     >
