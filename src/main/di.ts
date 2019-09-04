@@ -7,69 +7,53 @@
 
 import "reflect-metadata";
 
-import * as fs from "fs";
-import * as path from "path";
-
 import { app } from "electron";
-import { Store } from "redux";
-
+import * as fs from "fs";
 import { Container } from "inversify";
-
-import { Server } from "@r2-streamer-js/http/server";
-
-import { Translator } from "readium-desktop/common/services/translator";
-import { CatalogService } from "readium-desktop/main/services/catalog";
-import { Downloader } from "readium-desktop/main/services/downloader";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
-
-import { DeviceIdManager } from "readium-desktop/main/services/device";
-import { LcpManager } from "readium-desktop/main/services/lcp";
-
+import * as path from "path";
+import * as PouchDBCore from "pouchdb-core";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
-
-import { initStore } from "readium-desktop/main/redux/store/memory";
-import { streamer } from "readium-desktop/main/streamer";
-
+import { Translator } from "readium-desktop/common/services/translator";
+import { CatalogApi } from "readium-desktop/main/api/catalog";
+import { LcpApi } from "readium-desktop/main/api/lcp";
+import { OpdsApi } from "readium-desktop/main/api/opds";
+import { PublicationApi } from "readium-desktop/main/api/publication";
+import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
+import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { initStore } from "readium-desktop/main/redux/store/memory";
+import { CatalogService } from "readium-desktop/main/services/catalog";
+import { DeviceIdManager } from "readium-desktop/main/services/device";
+import { Downloader } from "readium-desktop/main/services/downloader";
+import { LcpManager } from "readium-desktop/main/services/lcp";
+import { WinRegistry } from "readium-desktop/main/services/win-registry";
+import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { streamer } from "readium-desktop/main/streamer";
+import { _NODE_ENV, _POUCHDB_ADAPTER_NAME } from "readium-desktop/preprocessor-directives";
+import { Store } from "redux";
 
-import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
-import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
-import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+import { Server } from "@r2-streamer-js/http/server";
 
-import { CatalogApi } from "readium-desktop/main/api/catalog";
-import { LcpApi } from "readium-desktop/main/api/lcp";
-import { OpdsApi } from "readium-desktop/main/api/opds";
-import { PublicationApi } from "readium-desktop/main/api/publication";
-
-import {
-    PublicationStorage,
-} from "readium-desktop/main/storage/publication-storage";
-
-import * as PouchDBCore from "pouchdb-core";
-
-import {
-    _NODE_ENV,
-    _POUCHDB_ADAPTER_NAME,
-    // _POUCHDB_ADAPTER_PACKAGE,
-} from "readium-desktop/preprocessor-directives";
 import { ReaderApi } from "./api/reader";
+
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
-// Create container used for dependency injection
-const container = new Container();
-
+//
 // Check that user data directory is created
+//
 const userDataPath = app.getPath("userData");
-
 if (!fs.existsSync(userDataPath)) {
     fs.mkdirSync(userDataPath);
 }
 
+//
 // Create databases
+//
 let PouchDB = (PouchDBCore as any);
 // object ready to use (no "default" property) when:
 // module.exports = PouchDB$2
@@ -154,71 +138,150 @@ const publicationRepositoryPath = path.join(
 if (!fs.existsSync(publicationRepositoryPath)) {
     fs.mkdirSync(publicationRepositoryPath);
 }
+//
+// end of create database
+//
+
+//
+// Depedency Injection
+//
+
+// create Dependency Injection Symbol Table
+const diSymbolTable = {
+    "store": Symbol("store"),
+    "win-registry": Symbol("win-registry"),
+    "translator": Symbol("translator"),
+    "downloader": Symbol("downloader"),
+    "publication-repository": Symbol("publication-repository"),
+    "opds-feed-repository": Symbol("opds-feed-repository"),
+    "locator-repository": Symbol("locator-repository"),
+    "config-repository": Symbol("config-repository"),
+    "lcp-secret-repository": Symbol("lcp-secret-repository"),
+    "publication-view-converter": Symbol("publication-view-converter"),
+    "locator-view-converter": Symbol("locator-view-converter"),
+    "opds-feed-view-converter": Symbol("opds-feed-view-converter"),
+    "publication-storage": Symbol("publication-storage"),
+    "streamer": Symbol("streamer"),
+    "device-id-manager": Symbol("device-id-manager"),
+    "lcp-manager": Symbol("lcp-manager"),
+    "catalog-service": Symbol("catalog-service"),
+    "catalog-api": Symbol("catalog-api"),
+    "publication-api": Symbol("publication-api"),
+    "opds-api": Symbol("opds-api"),
+    "lcp-api": Symbol("lcp-api"),
+    "reader-api": Symbol("reader-api"),
+    "action-serializer": Symbol("action-serializer"),
+};
+
+// Create container used for dependency injection
+const container = new Container();
 
 // Create store
 const store = initStore();
-container.bind<Store<any>>("store").toConstantValue(store);
+container.bind<Store<any>>(diSymbolTable.store).toConstantValue(store);
 
 // Create window registry
-container.bind<WinRegistry>("win-registry").to(WinRegistry).inSingletonScope();
+container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSingletonScope();
 
 // Create translator
-container.bind<Translator>("translator").to(Translator).inSingletonScope();
+container.bind<Translator>(diSymbolTable.translator).to(Translator).inSingletonScope();
 
 // Create downloader
 const downloader = new Downloader(app.getPath("temp"));
-container.bind<Downloader>("downloader").toConstantValue(downloader);
+container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
 
 // Create repositories
-container.bind<PublicationRepository>("publication-repository").toConstantValue(
+container.bind<PublicationRepository>(diSymbolTable["publication-repository"]).toConstantValue(
     publicationRepository,
 );
-container.bind<OpdsFeedRepository>("opds-feed-repository").toConstantValue(
+container.bind<OpdsFeedRepository>(diSymbolTable["opds-feed-repository"]).toConstantValue(
     opdsFeedRepository,
 );
-container.bind<LocatorRepository>("locator-repository").toConstantValue(
+container.bind<LocatorRepository>(diSymbolTable["locator-repository"]).toConstantValue(
     locatorRepository,
 );
-container.bind<ConfigRepository>("config-repository").toConstantValue(
+container.bind<ConfigRepository>(diSymbolTable["config-repository"]).toConstantValue(
     configRepository,
 );
-container.bind<LcpSecretRepository>("lcp-secret-repository").toConstantValue(
+container.bind<LcpSecretRepository>(diSymbolTable["lcp-secret-repository"]).toConstantValue(
     lcpSecretRepository,
 );
 
 // Create converters
-container.bind<PublicationViewConverter>("publication-view-converter").to(PublicationViewConverter).inSingletonScope();
-container.bind<LocatorViewConverter>("locator-view-converter").to(LocatorViewConverter).inSingletonScope();
-container.bind<OpdsFeedViewConverter>("opds-feed-view-converter").to(OpdsFeedViewConverter).inSingletonScope();
+container.bind<PublicationViewConverter>(diSymbolTable["publication-view-converter"])
+    .to(PublicationViewConverter).inSingletonScope();
+container.bind<LocatorViewConverter>(diSymbolTable["locator-view-converter"])
+    .to(LocatorViewConverter).inSingletonScope();
+container.bind<OpdsFeedViewConverter>(diSymbolTable["opds-feed-view-converter"])
+    .to(OpdsFeedViewConverter).inSingletonScope();
 
 // Storage
 const publicationStorage = new PublicationStorage(publicationRepositoryPath);
-container.bind<PublicationStorage>("publication-storage").toConstantValue(
+container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConstantValue(
     publicationStorage,
 );
 
 // Bind services
-container.bind<Server>("streamer").toConstantValue(streamer);
+container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamer);
 
 const deviceIdManager = new DeviceIdManager("Thorium", configRepository);
-container.bind<DeviceIdManager>("device-id-manager").toConstantValue(
+container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantValue(
     deviceIdManager,
 );
 
 // Create lcp manager
-container.bind<LcpManager>("lcp-manager").to(LcpManager).inSingletonScope();
-container.bind<CatalogService>("catalog-service").to(CatalogService).inSingletonScope();
+container.bind<LcpManager>(diSymbolTable["lcp-manager"]).to(LcpManager).inSingletonScope();
+container.bind<CatalogService>(diSymbolTable["catalog-service"]).to(CatalogService).inSingletonScope();
 
 // API
-container.bind<CatalogApi>("catalog-api").to(CatalogApi).inSingletonScope();
-container.bind<PublicationApi>("publication-api").to(PublicationApi).inSingletonScope();
-container.bind<OpdsApi>("opds-api").to(OpdsApi).inSingletonScope();
-container.bind<LcpApi>("lcp-api").to(LcpApi).inSingletonScope();
-container.bind<ReaderApi>("reader-api").to(ReaderApi).inSingletonScope();
+container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingletonScope();
+container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
+container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope();
+container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
+container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
 
 // Create action serializer
-container.bind<ActionSerializer>("action-serializer").to(ActionSerializer).inSingletonScope();
+container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();
+
+//
+// end of create Depedency Injection Container
+//
+
+//
+// Overload container.get with our own type return
+//
+
+// local interface to force type return
+interface IGet {
+    (s: "store"): Store<any>;
+    (s: "win-registry"): WinRegistry;
+    (s: "translator"): Translator;
+    (s: "downloader"): Downloader;
+    (s: "publication-repository"): PublicationRepository;
+    (s: "opds-feed-repository"): OpdsFeedRepository;
+    (s: "locator-repository"): LocatorRepository;
+    (s: "config-repository"): ConfigRepository;
+    (s: "lcp-secret-repository"): LcpSecretRepository;
+    (s: "publication-view-converter"): PublicationViewConverter;
+    (s: "locator-view-converter"): LocatorViewConverter;
+    (s: "opds-feed-view-converter"): OpdsFeedViewConverter;
+    (s: "publication-storage"): PublicationStorage;
+    (s: "streamer"): Server;
+    (s: "device-id-manager"): DeviceIdManager;
+    (s: "lcp-manager"): LcpManager;
+    (s: "catalog-service"): CatalogService;
+    (s: "catalog-api"): CatalogApi;
+    (s: "publication-api"): PublicationApi;
+    (s: "opds-api"): OpdsApi;
+    (s: "lcp-api"): LcpApi;
+    (s: "reader-api"): ReaderApi;
+    (s: "action-serializer"): ActionSerializer;
+}
+
+// export function to get back depedency from container
+const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol]);
 
 export {
-    container,
+    diGet,
+    diSymbolTable,
 };
