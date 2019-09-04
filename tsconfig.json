@@ -53,7 +53,7 @@
     "preserveConstEnums": false,
     "removeComments": true,
     "skipLibCheck": false,
-
+    "no-string-literal": false,
     "module": "commonjs",
     "lib": ["es2017", "es6", "dom"],
     "target": "es6",

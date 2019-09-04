@@ -40,6 +40,7 @@ import { Store } from "redux";
 import { Server } from "@r2-streamer-js/http/server";
 
 import { ReaderApi } from "./api/reader";
+import { RootState } from "./redux/states";
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
@@ -178,7 +179,7 @@ const container = new Container();
 
 // Create store
 const store = initStore();
-container.bind<Store<any>>(diSymbolTable.store).toConstantValue(store);
+container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
 
 // Create window registry
 container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSingletonScope();
@@ -253,7 +254,7 @@ container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSe
 
 // local interface to force type return
 interface IGet {
-    (s: "store"): Store<any>;
+    (s: "store"): Store<RootState>;
     (s: "win-registry"): WinRegistry;
     (s: "translator"): Translator;
     (s: "downloader"): Downloader;
@@ -282,6 +283,6 @@ interface IGet {
 const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol]);
 
 export {
-    diGet,
+    diGet as diMainGet,
     diSymbolTable,
 };
