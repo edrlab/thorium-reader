@@ -24,10 +24,12 @@ export function* processRequest(requestAction: apiActions.ApiAction): SagaIterat
         .get(`${api.moduleId}-api`);
     const apiMethod = apiModule[api.methodId].bind(apiModule);
 
+    debug(api.moduleId, api.methodId, requestAction.payload);
+
     try {
         const result = yield call(
             apiMethod,
-            requestAction.payload,
+            ...requestAction.payload,
         );
 
         yield put(apiActions.buildSuccessAction(requestAction, result));
