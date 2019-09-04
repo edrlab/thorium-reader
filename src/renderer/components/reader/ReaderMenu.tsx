@@ -224,6 +224,9 @@ export class ReaderMenu extends React.Component<Props, State> {
                     ref={(ref) => this.goToRef = ref}
                     type="number"
                     aria-invalid={error}
+                    disabled={!this.props.publication.PageList}
+                    placeholder={__("reader.navigation.goToPlaceHolder")}
+                    alt={__("reader.navigation.goToPlaceHolder")}
                 />
                 <button
                     type="submit"

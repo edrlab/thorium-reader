@@ -153,6 +153,7 @@
             "fullscreenTitle": "mode plein écran",
             "goTo": "Aller à",
             "goToError": "Cette page n'existe pas",
+            "goToPlaceHolder": "Aller à la page",
             "goToTitle": "Changer de page",
             "infoTitle": "informations",
             "openTableOfContentsTitle": "navigation",

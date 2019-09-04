@@ -283,6 +283,7 @@ declare namespace typed_i18n {
     readonly "fullscreenTitle": string,
     readonly "goTo": string,
     readonly "goToError": string,
+    readonly "goToPlaceHolder": string,
     readonly "goToTitle": string,
     readonly "infoTitle": string,
     readonly "openTableOfContentsTitle": string,
@@ -347,6 +348,7 @@ declare namespace typed_i18n {
   readonly "fullscreenTitle": string,
   readonly "goTo": string,
   readonly "goToError": string,
+  readonly "goToPlaceHolder": string,
   readonly "goToTitle": string,
   readonly "infoTitle": string,
   readonly "openTableOfContentsTitle": string,
@@ -360,6 +362,7 @@ declare namespace typed_i18n {
   (_: "reader.navigation.fullscreenTitle", __?: {}): string;
   (_: "reader.navigation.goTo", __?: {}): string;
   (_: "reader.navigation.goToError", __?: {}): string;
+  (_: "reader.navigation.goToPlaceHolder", __?: {}): string;
   (_: "reader.navigation.goToTitle", __?: {}): string;
   (_: "reader.navigation.infoTitle", __?: {}): string;
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;
