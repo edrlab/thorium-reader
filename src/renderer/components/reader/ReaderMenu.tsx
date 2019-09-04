@@ -224,21 +224,12 @@ export class ReaderMenu extends React.Component<Props, State> {
         const error = this.state.pageError;
         return <div className={styles.goToPage}>
             <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
-            {error &&
-                <p
-                    className={styles.goToErrorMessage}
-                    aria-live="assertive"
-                    aria-relevant="all"
-                    role="alert"
-                >
-                    { __("reader.navigation.goToError") }
-                </p>
-            }
             <form onSubmit={this.handleSubmitPage}>
                 <input
                     ref={(ref) => this.goToRef = ref}
                     type="text"
                     aria-invalid={error}
+                    onChange={() => this.setState({pageError: false})}
                     disabled={!this.props.publication.PageList}
                     placeholder={__("reader.navigation.goToPlaceHolder")}
                     alt={__("reader.navigation.goToPlaceHolder")}
@@ -250,6 +241,16 @@ export class ReaderMenu extends React.Component<Props, State> {
                     { __("reader.navigation.goTo") }
                 </button>
             </form>
+            {error &&
+                <p
+                    className={styles.goToErrorMessage}
+                    aria-live="assertive"
+                    aria-relevant="all"
+                    role="alert"
+                >
+                    { __("reader.navigation.goToError") }
+                </p>
+            }
         </div>;
     }
 
