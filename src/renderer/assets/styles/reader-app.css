@@ -953,3 +953,22 @@ input[type=radio] + label {
     padding:0 20px 0px 20px;
   }
 }
+
+.skip_link {
+	position: absolute;
+	left: -2000px;
+
+	&:focus {
+		left: unset;
+		left: 0;
+		width: fit-content;
+		top: 0;
+		opacity: 1;
+		height: unset;
+		z-index: 150;
+		font-size: 1rem;
+		padding: 1rem;
+		color: white;
+		background-color: #0366d6;
+	}
+}
