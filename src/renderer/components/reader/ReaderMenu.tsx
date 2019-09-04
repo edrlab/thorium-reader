@@ -68,7 +68,7 @@ export class ReaderMenu extends React.Component<Props, State> {
             },
             {
                 title: __("reader.marks.landmarks"),
-                content: this.createTOCRenderList(publication.Landmarks),
+                content: publication && publication.Landmarks && this.createTOCRenderList(publication.Landmarks),
                 disabled: !publication.Landmarks || publication.Landmarks.length === 0,
             },
             {
