@@ -59,6 +59,8 @@ if (nodeEnv !== "production") {
                 }
             ),
         ];
+    } else {
+        externals.devtron = "devtron";
     }
 }
 
