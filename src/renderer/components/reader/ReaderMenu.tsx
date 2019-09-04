@@ -41,6 +41,7 @@ interface State {
     openedSection: number;
     bookmarkToUpdate: number;
     pageError: boolean;
+    refreshError: boolean;
 }
 
 export class ReaderMenu extends React.Component<Props, State> {
@@ -52,10 +53,24 @@ export class ReaderMenu extends React.Component<Props, State> {
             openedSection: undefined,
             bookmarkToUpdate: undefined,
             pageError: false,
+            refreshError: false,
         };
 
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
         this.handleSubmitPage = this.handleSubmitPage.bind(this);
+    }
+
+    public componentDidUpdate() {
+        if (this.state.refreshError) {
+            if (this.state.pageError) {
+                this.setState({pageError: false});
+            } else {
+                this.setState({
+                    pageError: true,
+                    refreshError: false,
+                });
+            }
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -250,7 +265,7 @@ export class ReaderMenu extends React.Component<Props, State> {
             this.setState({pageError: false});
             this.props.handleLinkClick(undefined, foundPage.Href);
         } else {
-            this.setState({pageError: true});
+            this.setState({refreshError: true});
         }
     }
 }
