@@ -277,9 +277,12 @@ interface IGet {
     (s: "lcp-api"): LcpApi;
     (s: "reader-api"): ReaderApi;
     (s: "action-serializer"): ActionSerializer;
+    // minor overload type used in api.ts/LN32
+    (s: keyof typeof diSymbolTable): any;
 }
 
 // export function to get back depedency from container
+// the type any for container.get is overloaded by IGet
 const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol]);
 
 export {

@@ -7,22 +7,33 @@
 
 import * as debug_ from "debug";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { container } from "readium-desktop/main/di";
+import { diMainGet, diSymbolTable } from "readium-desktop/main/di";
 import { SagaIterator } from "redux-saga";
 import { all, call, fork, put, take } from "redux-saga/effects";
 
 // Logger
 const debug = debug_("readium-desktop:main#redux/sagas/api");
 
+const getSymbolName = (apiName: string) => {
+    if (apiName.includes("-api")) {
+        const entrie = Object.keys(diSymbolTable)
+            .find((symbolName) => symbolName === apiName) as keyof typeof diSymbolTable;
+        if (entrie) {
+            return entrie;
+        }
+    }
+    throw new Error("Wrong API name called " + apiName);
+};
+
 export function* processRequest(requestAction: apiActions.ApiAction): SagaIterator {
     const { api } = requestAction.meta;
-    const apiModule: any = container
-        .get(`${api.moduleId}-api`);
-    const apiMethod = apiModule[api.methodId].bind(apiModule);
-
-    debug(api.moduleId, api.methodId, requestAction.payload);
 
     try {
+        const apiModule = diMainGet(getSymbolName(api.moduleId));
+        const apiMethod = apiModule[api.methodId].bind(apiModule);
+
+        debug(api.moduleId, api.methodId, requestAction.payload);
+
         const result = yield call(
             apiMethod,
             ...requestAction.payload,
