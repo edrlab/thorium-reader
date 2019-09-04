@@ -5,15 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { container } from "readium-desktop/main/di";
-
 import * as debug_ from "debug";
-
-import { SagaIterator } from "redux-saga";
-
-import { all, call, fork, put, take } from "redux-saga/effects";
-
 import { apiActions } from "readium-desktop/common/redux/actions";
+import { container } from "readium-desktop/main/di";
+import { SagaIterator } from "redux-saga";
+import { all, call, fork, put, take } from "redux-saga/effects";
 
 // Logger
 const debug = debug_("readium-desktop:main#redux/sagas/api");
