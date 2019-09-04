@@ -11,7 +11,6 @@ import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import {
@@ -24,6 +23,8 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
+
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 interface Props extends TranslatorProps {
     open: boolean;
@@ -39,6 +40,7 @@ interface Props extends TranslatorProps {
 interface State {
     openedSection: number;
     bookmarkToUpdate: number;
+    pageError: boolean;
 }
 
 export class ReaderMenu extends React.Component<Props, State> {
@@ -49,6 +51,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         this.state = {
             openedSection: undefined,
             bookmarkToUpdate: undefined,
+            pageError: false,
         };
 
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
@@ -57,7 +60,6 @@ export class ReaderMenu extends React.Component<Props, State> {
 
     public render(): React.ReactElement<{}> {
         const { __, publication, bookmarks, toggleMenu } = this.props;
-
         if (!publication) {
             return <></>;
         }
@@ -84,10 +86,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                 disabled: true,
             },
             {
-                content: <>
-                    <input ref={(ref) => this.goToRef = ref} type="number"/>
-                    <button onClick={() => this.handleSubmitPage()}>Go</button>
-                </>,
+                content: this.buildGoToPageSection(),
                 disabled: false,
                 notExtendable: true,
             },
@@ -205,15 +204,51 @@ export class ReaderMenu extends React.Component<Props, State> {
         return undefined;
     }
 
+    private buildGoToPageSection() {
+        const { __ } = this.props;
+        const error = this.state.pageError;
+        return <div className={styles.goToPage}>
+            <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
+            {error &&
+                <p
+                    className={styles.goToErrorMessage}
+                    aria-live="assertive"
+                    aria-relevant="all"
+                    role="alert"
+                >
+                    { __("reader.navigation.goToError") }
+                </p>
+            }
+            <form onSubmit={this.handleSubmitPage}>
+                <input
+                    ref={(ref) => this.goToRef = ref}
+                    type="number"
+                    aria-invalid={error}
+                />
+                <button
+                    type="submit"
+                    disabled={!this.props.publication.PageList}
+                >
+                    { __("reader.navigation.goTo") }
+                </button>
+            </form>
+        </div>;
+    }
+
     private closeBookarkEditForm() {
         this.setState({ bookmarkToUpdate: undefined });
     }
 
-    private handleSubmitPage() {
-        const page = this.goToRef.value;
-        const url = this.props.publication.Spine2[page].Href;
-        console.log(page, url);
-        this.props.handleLinkClick(undefined, url);
+    private handleSubmitPage(e: any) {
+        e.preventDefault();
+        const pageNbr = this.goToRef.value;
+        const foundPage = this.props.publication.PageList.find((page) => page.Title === pageNbr.toString());
+        if (foundPage) {
+            this.setState({pageError: false});
+            this.props.handleLinkClick(undefined, foundPage.Href);
+        } else {
+            this.setState({pageError: true});
+        }
     }
 }
 
