@@ -260,7 +260,7 @@ export class ReaderMenu extends React.Component<Props, State> {
 
     private handleSubmitPage(e: any) {
         e.preventDefault();
-        const pageNbr = this.goToRef.value;
+        const pageNbr = (this.goToRef.value as string).trim().replace(/\s\s+/g, " ");
         const foundPage = this.props.publication.PageList.find((page) => page.Title === pageNbr);
         if (foundPage) {
             this.setState({pageError: false});
