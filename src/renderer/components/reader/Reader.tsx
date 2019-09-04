@@ -585,7 +585,9 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private handleLinkClick(event: any, url: string) {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
         if (!url) {
             return;
         }
@@ -598,15 +600,20 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         // alternatively, could also use event.code === "Enter"
         // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
         // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
-        if (event.key === "Enter") {
+        if (event && event.key === "Enter") {
             if (this.fastLinkRef) {
                 setTimeout(() => {
-                    this.handleMenuButtonClick();
                     if (this.fastLinkRef) {
                         this.fastLinkRef.focus();
                     }
                 }, 200);
             }
+        }
+
+        if (this.state.menuOpen) {
+            setTimeout(() => {
+                this.handleMenuButtonClick();
+            }, 100);
         }
 
         const newUrl = publicationJsonUrl + "/../" + url;
