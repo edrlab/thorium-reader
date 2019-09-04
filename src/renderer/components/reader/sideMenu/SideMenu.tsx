@@ -67,7 +67,9 @@ export class SideMenu extends React.Component<Props, State> {
                                 onClick={this.handleClickSection}
                                 disabled={section.disabled}
                             />
-                        : section.content,
+                        : <div key={index}>
+                            { section.content }
+                        </div>,
                     )}
                 </ul>
             </AccessibleMenu>

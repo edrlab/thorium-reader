@@ -237,7 +237,7 @@ export class ReaderMenu extends React.Component<Props, State> {
             <form onSubmit={this.handleSubmitPage}>
                 <input
                     ref={(ref) => this.goToRef = ref}
-                    type="number"
+                    type="text"
                     aria-invalid={error}
                     disabled={!this.props.publication.PageList}
                     placeholder={__("reader.navigation.goToPlaceHolder")}
@@ -260,7 +260,7 @@ export class ReaderMenu extends React.Component<Props, State> {
     private handleSubmitPage(e: any) {
         e.preventDefault();
         const pageNbr = this.goToRef.value;
-        const foundPage = this.props.publication.PageList.find((page) => page.Title === pageNbr.toString());
+        const foundPage = this.props.publication.PageList.find((page) => page.Title === pageNbr);
         if (foundPage) {
             this.setState({pageError: false});
             this.props.handleLinkClick(undefined, foundPage.Href);
