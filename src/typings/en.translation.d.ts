@@ -281,6 +281,10 @@ declare namespace typed_i18n {
     readonly "bookmarkTitle": string,
     readonly "detachWindowTitle": string,
     readonly "fullscreenTitle": string,
+    readonly "goTo": string,
+    readonly "goToError": string,
+    readonly "goToPlaceHolder": string,
+    readonly "goToTitle": string,
     readonly "infoTitle": string,
     readonly "openTableOfContentsTitle": string,
     readonly "quitFullscreenTitle": string,
@@ -342,6 +346,10 @@ declare namespace typed_i18n {
   readonly "bookmarkTitle": string,
   readonly "detachWindowTitle": string,
   readonly "fullscreenTitle": string,
+  readonly "goTo": string,
+  readonly "goToError": string,
+  readonly "goToPlaceHolder": string,
+  readonly "goToTitle": string,
   readonly "infoTitle": string,
   readonly "openTableOfContentsTitle": string,
   readonly "quitFullscreenTitle": string,
@@ -352,6 +360,10 @@ declare namespace typed_i18n {
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
   (_: "reader.navigation.detachWindowTitle", __?: {}): string;
   (_: "reader.navigation.fullscreenTitle", __?: {}): string;
+  (_: "reader.navigation.goTo", __?: {}): string;
+  (_: "reader.navigation.goToError", __?: {}): string;
+  (_: "reader.navigation.goToPlaceHolder", __?: {}): string;
+  (_: "reader.navigation.goToTitle", __?: {}): string;
   (_: "reader.navigation.infoTitle", __?: {}): string;
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;
   (_: "reader.navigation.quitFullscreenTitle", __?: {}): string;

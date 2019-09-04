@@ -57,15 +57,19 @@ export class SideMenu extends React.Component<Props, State> {
             toggleMenu={toggleMenu}>
                 <ul id={listClassName}>
                     { sections.map((section, index) =>
-                        <SideMenuSection
-                            open={ openedSection === index }
-                            id={index}
-                            key={index}
-                            title={section.title}
-                            content={section.content}
-                            onClick={this.handleClickSection}
-                            disabled={section.disabled}
-                        />,
+                        !section.notExtendable ?
+                            <SideMenuSection
+                                open={ openedSection === index }
+                                id={index}
+                                key={index}
+                                title={section.title}
+                                content={section.content}
+                                onClick={this.handleClickSection}
+                                disabled={section.disabled}
+                            />
+                        : <div key={index}>
+                            { section.content }
+                        </div>,
                     )}
                 </ul>
             </AccessibleMenu>

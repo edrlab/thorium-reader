@@ -970,5 +970,33 @@ input[type=radio] + label {
 		padding: 1rem;
 		color: white;
 		background-color: #0366d6;
-	}
+  }
+}
+
+.goToPage {
+  text-align: center;
+  & .title {
+    color: black;
+    font-size: 1.1rem;
+  }
+  & .goToErrorMessage {
+    color: red;
+  }
+  & form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & button {
+      border: 1px solid black;
+      border-radius: 5px;
+      background: none;
+      margin: 1rem;
+      padding: 0.5rem;
+    }
+
+    & input {
+      margin: 0;
+    }
+  }
 }

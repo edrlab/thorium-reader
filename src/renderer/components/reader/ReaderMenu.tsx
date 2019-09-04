@@ -11,7 +11,6 @@ import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import {
@@ -24,6 +23,8 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
+
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 interface Props extends TranslatorProps {
     open: boolean;
@@ -39,23 +40,41 @@ interface Props extends TranslatorProps {
 interface State {
     openedSection: number;
     bookmarkToUpdate: number;
+    pageError: boolean;
+    refreshError: boolean;
 }
 
 export class ReaderMenu extends React.Component<Props, State> {
+    private goToRef: any;
     public constructor(props: Props) {
         super(props);
 
         this.state = {
             openedSection: undefined,
             bookmarkToUpdate: undefined,
+            pageError: false,
+            refreshError: false,
         };
 
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
+        this.handleSubmitPage = this.handleSubmitPage.bind(this);
+    }
+
+    public componentDidUpdate() {
+        if (this.state.refreshError) {
+            if (this.state.pageError) {
+                this.setState({pageError: false});
+            } else {
+                this.setState({
+                    pageError: true,
+                    refreshError: false,
+                });
+            }
+        }
     }
 
     public render(): React.ReactElement<{}> {
         const { __, publication, bookmarks, toggleMenu } = this.props;
-
         if (!publication) {
             return <></>;
         }
@@ -80,6 +99,11 @@ export class ReaderMenu extends React.Component<Props, State> {
                 title: __("reader.marks.annotations"),
                 content: <></>,
                 disabled: true,
+            },
+            {
+                content: this.buildGoToPageSection(),
+                disabled: false,
+                notExtendable: true,
             },
         ];
 
@@ -195,8 +219,55 @@ export class ReaderMenu extends React.Component<Props, State> {
         return undefined;
     }
 
+    private buildGoToPageSection() {
+        const { __ } = this.props;
+        const error = this.state.pageError;
+        return <div className={styles.goToPage}>
+            <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
+            <form onSubmit={this.handleSubmitPage}>
+                <input
+                    ref={(ref) => this.goToRef = ref}
+                    type="text"
+                    aria-invalid={error}
+                    onChange={() => this.setState({pageError: false})}
+                    disabled={!this.props.publication.PageList}
+                    placeholder={__("reader.navigation.goToPlaceHolder")}
+                    alt={__("reader.navigation.goToPlaceHolder")}
+                />
+                <button
+                    type="submit"
+                    disabled={!this.props.publication.PageList}
+                >
+                    { __("reader.navigation.goTo") }
+                </button>
+            </form>
+            {error &&
+                <p
+                    className={styles.goToErrorMessage}
+                    aria-live="assertive"
+                    aria-relevant="all"
+                    role="alert"
+                >
+                    { __("reader.navigation.goToError") }
+                </p>
+            }
+        </div>;
+    }
+
     private closeBookarkEditForm() {
         this.setState({ bookmarkToUpdate: undefined });
+    }
+
+    private handleSubmitPage(e: any) {
+        e.preventDefault();
+        const pageNbr = (this.goToRef.value as string).trim().replace(/\s\s+/g, " ");
+        const foundPage = this.props.publication.PageList.find((page) => page.Title === pageNbr);
+        if (foundPage) {
+            this.setState({pageError: false});
+            this.props.handleLinkClick(undefined, foundPage.Href);
+        } else {
+            this.setState({refreshError: true});
+        }
     }
 }
 

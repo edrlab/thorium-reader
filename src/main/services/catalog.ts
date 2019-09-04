@@ -76,7 +76,6 @@ export class CatalogService {
             if (opdsFeedData.isFailure) {
                 return opdsFeedData;
             }
-
             if (opdsFeedData.body.startsWith("<?xml")) {
                 // This is an opds feed in version 1
                 // Convert to opds version 2
