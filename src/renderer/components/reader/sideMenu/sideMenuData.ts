@@ -6,7 +6,8 @@
 // ==LICENSE-END==
 
 export interface SectionData {
-    title: string;
+    title?: string;
     content: any;
     disabled?: boolean;
+    notExtendable?: boolean;
 }

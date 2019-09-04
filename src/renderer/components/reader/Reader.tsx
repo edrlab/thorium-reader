@@ -540,7 +540,9 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private handleLinkClick(event: any, url: string) {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
         if (!url) {
             return;
         }
