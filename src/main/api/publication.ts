@@ -13,7 +13,7 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-import { diMainGet } from "readium-desktop/main/di";
+import { diMainGet, diSymbolTable } from "readium-desktop/main/di";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 
 export interface IPublicationApi {
@@ -62,16 +62,16 @@ export type TPublicationApiExportPublication_result = void;
 
 @injectable()
 export class PublicationApi implements IPublicationApi {
-    @inject("publication-repository")
+    @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    @inject("publication-view-converter")
+    @inject(diSymbolTable["publication-view-converter"])
     private readonly publicationViewConverter!: PublicationViewConverter;
 
-    @inject("catalog-service")
+    @inject(diSymbolTable["catalog-service"])
     private readonly catalogService!: CatalogService;
 
-    @inject("translator")
+    @inject(diSymbolTable["translator"])
     private readonly translator!: Translator;
 
     public async get(identifier: string): Promise<PublicationView> {

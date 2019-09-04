@@ -7,64 +7,52 @@
 
 import * as debug_ from "debug";
 import * as fs from "fs";
-import * as uuid from "uuid";
-
-import { JSON as TAJSON } from "ta-json-x";
-
-import { Server } from "@r2-streamer-js/http/server";
-
 import { inject, injectable } from "inversify";
+import { LcpInfo } from "readium-desktop/common/models/lcp";
+import { Publication } from "readium-desktop/common/models/publication";
+import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
+import {
+    PublicationDocument, THttpGetPublicationDocument,
+} from "readium-desktop/main/db/document/publication";
+import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { diSymbolTable } from "readium-desktop/main/di";
+import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { toSha256Hex } from "readium-desktop/utils/lcp";
+import { injectDataInZip } from "readium-desktop/utils/zip";
+import { JSON as TAJSON } from "ta-json-x";
+import * as uuid from "uuid";
 
 import { lsdRegister } from "@r2-lcp-js/lsd/register";
 import { lsdRenew } from "@r2-lcp-js/lsd/renew";
 import { lsdReturn } from "@r2-lcp-js/lsd/return";
-
-import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
-
-import { Publication } from "readium-desktop/common/models/publication";
-
-import { toSha256Hex } from "readium-desktop/utils/lcp";
-
 import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
-
+import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
 import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
+import { Server } from "@r2-streamer-js/http/server";
 
-import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
-
-import { LcpInfo } from "readium-desktop/common/models/lcp";
-
-import { PublicationDocument, THttpGetPublicationDocument } from "readium-desktop/main/db/document/publication";
-
-import { injectDataInZip } from "readium-desktop/utils/zip";
-
-import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-
-import { DeviceIdManager } from "./device";
-
-import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { LcpSecretDocument } from "../db/document/lcp-secret";
+import { DeviceIdManager } from "./device";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/lcp");
 
 @injectable()
 export class LcpManager {
-    @inject("device-id-manager")
+    @inject(diSymbolTable["device-id-manager"])
     private readonly deviceIdManager!: DeviceIdManager;
 
-    @inject("publication-storage")
+    @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
 
-    @inject("publication-repository")
+    @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    @inject("lcp-secret-repository")
+    @inject(diSymbolTable["lcp-secret-repository"])
     private readonly lcpSecretRepository!: LcpSecretRepository;
 
-    @inject("streamer")
+    @inject(diSymbolTable["streamer"])
     private readonly streamer!: Server;
 
     /**

@@ -5,15 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { inject, injectable} from "inversify";
-
-import { LocatorView } from "readium-desktop/common/views/locator";
-
-import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
-
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-
+import { inject, injectable } from "inversify";
 import { LocatorType } from "readium-desktop/common/models/locator";
+import { LocatorView } from "readium-desktop/common/views/locator";
+import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
+import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
+import { diSymbolTable } from "readium-desktop/main/di";
 
 import { Locator } from "@r2-shared-js/models/locator";
 
@@ -51,10 +48,10 @@ export type TReaderApiDeleteBookmark_result = void;
 
 @injectable()
 export class ReaderApi implements IReaderApi {
-    @inject("locator-repository")
+    @inject(diSymbolTable["locator-repository"])
     private readonly locatorRepository!: LocatorRepository;
 
-    @inject("locator-view-converter")
+    @inject(diSymbolTable["locator-view-converter"])
     private readonly locatorViewConverter!: LocatorViewConverter;
 
     public async setLastReadingLocation(publicationIdentifier: string, locator: Locator): Promise<LocatorView> {

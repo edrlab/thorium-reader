@@ -12,6 +12,7 @@ import { httpGet } from "readium-desktop/common/utils/http";
 import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
+import { diSymbolTable } from "readium-desktop/main/di";
 import { JSON as TAJSON } from "ta-json-x";
 import * as xmldom from "xmldom";
 
@@ -64,10 +65,10 @@ export class OpdsApi implements IOpdsApi {
         return !retBool;
     }
 
-    @inject("opds-feed-repository")
+    @inject(diSymbolTable["opds-feed-repository"])
     private readonly opdsFeedRepository!: OpdsFeedRepository;
 
-    @inject("opds-feed-view-converter")
+    @inject(diSymbolTable["opds-feed-view-converter"])
     private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
 
     public async getFeed(identifier: string): Promise<OpdsFeedView> {

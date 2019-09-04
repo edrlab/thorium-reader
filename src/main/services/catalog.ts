@@ -20,7 +20,7 @@ import {
     PublicationDocument, THttpGetPublicationDocument,
 } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-import { diMainGet } from "readium-desktop/main/di";
+import { diMainGet, diSymbolTable } from "readium-desktop/main/di";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { JSON as TAJSON } from "ta-json-x";
@@ -42,16 +42,16 @@ const debug = debug_("readium-desktop:main#services/catalog");
 
 @injectable()
 export class CatalogService {
-    @inject("downloader")
+    @inject(diSymbolTable["downloader"])
     private readonly downloader!: Downloader;
 
-    @inject("lcp-manager")
+    @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
 
-    @inject("publication-storage")
+    @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
 
-    @inject("publication-repository")
+    @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument> {

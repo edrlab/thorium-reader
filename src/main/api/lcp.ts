@@ -5,25 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { inject, injectable} from "inversify";
-
-import { Store } from "redux";
-
+import { inject, injectable } from "inversify";
 import * as readerActions from "readium-desktop/common/redux/actions/reader";
-
-import { LcpManager } from "readium-desktop/main/services/lcp";
-
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { diSymbolTable } from "readium-desktop/main/di";
+import { LcpManager } from "readium-desktop/main/services/lcp";
+import { Store } from "redux";
 
 @injectable()
 export class LcpApi {
-    @inject("store")
+    @inject(diSymbolTable["store"])
     private readonly store!: Store<any>;
 
-    @inject("publication-repository")
+    @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    @inject("lcp-manager")
+    @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
 
     public async renewPublicationLicense(data: any): Promise<void> {
