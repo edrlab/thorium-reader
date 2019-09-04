@@ -5,21 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { inject, injectable} from "inversify";
-
-import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
-
-import { Translator } from "readium-desktop/common/services/translator";
-
-import { CatalogConfig } from "readium-desktop/main/db/document/config";
-
-import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-
+import { inject, injectable } from "inversify";
 import { LocatorType } from "readium-desktop/common/models/locator";
-
+import { Translator } from "readium-desktop/common/services/translator";
+import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+import { CatalogConfig } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { diSymbolTable } from "readium-desktop/main/di";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
@@ -42,19 +37,19 @@ export type TCatalogUpdateEntries_result = CatalogEntryView[];
 
 @injectable()
 export class CatalogApi implements ICatalogApi {
-    @inject("publication-repository")
+    @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    @inject("config-repository")
+    @inject(diSymbolTable["config-repository"])
     private readonly configRepository!: ConfigRepository;
 
-    @inject("locator-repository")
+    @inject(diSymbolTable["locator-repository"])
     private readonly locatorRepository!: LocatorRepository;
 
-    @inject("publication-view-converter")
+    @inject(diSymbolTable["publication-view-converter"])
     private readonly publicationViewConverter!: PublicationViewConverter;
 
-    @inject("translator")
+    @inject(diSymbolTable["translator"])
     private readonly translator!: Translator;
 
     public async get(): Promise<CatalogView> {
