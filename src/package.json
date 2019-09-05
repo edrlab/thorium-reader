@@ -1,6 +1,6 @@
 {
   "name": "thorium-reader",
-  "version": "1.0.3",
+  "version": "1.0.4-rc.0",
   "description": "Desktop application to read ebooks",
   "keywords": [
     "readium",
