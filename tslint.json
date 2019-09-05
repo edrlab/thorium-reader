@@ -1,6 +1,7 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "no-string-literal": false,
     "no-reference": false,
     "no-floating-promises": true,
     "promise-function-async": true,
