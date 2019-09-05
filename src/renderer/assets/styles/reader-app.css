@@ -629,7 +629,7 @@ p.chapters_description {
 	font-weight: 600;
 	background-color: white;
 	cursor: auto;
-  display:flex;
+  /* display:flex; */
 
   & > span {
     flex: 1;
@@ -639,19 +639,20 @@ p.chapters_description {
     fill: rgb(59, 59, 59);
   }
 
-  &.active {
+  &.active > button {
     & svg {
       transform: rotate(90deg);
     }
   }
 }
-
+/*
 li.div_listitem {
   display:initial !important;
 }
 li.div_listitem button {
 	cursor: pointer !important;
 }
+*/
 
 #read_settings_list .tab_content > div {
 	padding: 0;

@@ -82,13 +82,13 @@ export class ReaderMenu extends React.Component<Props, State> {
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: publication && this.readerLinkTreeList(true, publication.TOC, 0),
+                content: publication && this.renderLinkTree(__("reader.marks.toc"), publication.TOC, 0),
                 disabled: !publication.TOC || publication.TOC.length === 0,
             },
             {
                 title: __("reader.marks.landmarks"),
                 content: publication && publication.Landmarks &&
-                    this.readerLinkTreeList(false, publication.Landmarks, 0),
+                    this.renderLinkList(__("reader.marks.landmarks"), publication.Landmarks),
                 disabled: !publication.Landmarks || publication.Landmarks.length === 0,
             },
             {
@@ -120,19 +120,56 @@ export class ReaderMenu extends React.Component<Props, State> {
         );
     }
 
-    private readerLinkTreeList(isTree: boolean, links: Link[], level: number): JSX.Element {
-        return <ul className={styles.chapters_content} role={isTree ? "tree" : "list"}>
+    private renderLinkList(label: string, links: Link[]): JSX.Element {
+        return <ul
+            aria-label={label}
+            className={styles.chapters_content}
+        >
+            { links.map((link, i: number) => {
+                return (
+                    <li
+                        key={i}
+                        aria-level={1}
+                    >
+                        <a
+                            className={
+                                link.Href ?
+                                    classnames(styles.line, styles.active) :
+                                    classnames(styles.line, styles.active, styles.inert)
+                            }
+                            onClick=
+                                {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
+                            tabIndex={0}
+                            onKeyPress=
+                                {
+                                    (e) => {
+                                        if (link.Href && e.key === "Enter") {
+                                            this.props.handleLinkClick(e, link.Href);
+                                        }
+                                    }
+                                }
+                            data-href={link.Href}
+                        >
+                            <span>{link.Title}</span>
+                        </a>
+                    </li>
+                );
+            })}
+        </ul>;
+    }
+
+    private renderLinkTree(label: string | undefined, links: Link[], level: number): JSX.Element {
+        return <ul
+                    aria-label={label}
+                    className={styles.chapters_content}
+                >
             { links.map((link, i: number) => {
                 return (
                     <li key={`${level}-${i}`}
-                    role={isTree ? "treeitem" : "listitem"}
-                    aria-expanded={isTree ? (link.Children ? "true" : "false") : undefined}
-                    aria-level={level}
                     >
                         {link.Children ? (
                             <>
                                 <a
-                                    role={link.Href ? undefined : "heading"}
                                     className={
                                         link.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
                                     }
@@ -151,11 +188,10 @@ export class ReaderMenu extends React.Component<Props, State> {
                                 >
                                     <span>{link.Title}</span>
                                 </a>
-                                {this.readerLinkTreeList(isTree, link.Children, level + 1)}
+                                {this.renderLinkTree(undefined, link.Children, level + 1)}
                             </>
                         ) : (
                             <a
-                                role={link.Href ? undefined : "heading"}
                                 className={
                                     link.Href ?
                                         classnames(styles.line, styles.active) :

@@ -59,11 +59,13 @@ export class SideMenuSection extends React.Component<Props, State> {
                         <span>{title}</span>
                         <SVG className={styles.menu_section_svg} svg={ArrowIcon} />
                     </button>
-                </li>
-                <li style={this.state.style}
-                    className={open ? classnames([styles.tab_content, styles.div_listitem]) : undefined}>
-                    <div ref={this.sectionRef} className={open ? styles.line_tab_content : undefined}>
-                        {open && content }
+
+                    <div aria-hidden={open ? undefined : true}
+                        style={this.state.style}
+                        className={open ? classnames([styles.tab_content, styles.div_listitem]) : undefined}>
+                        <div ref={this.sectionRef} className={open ? styles.line_tab_content : undefined}>
+                            {open && content }
+                        </div>
                     </div>
                 </li>
             </>

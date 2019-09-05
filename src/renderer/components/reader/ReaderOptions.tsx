@@ -201,8 +201,8 @@ export class ReaderOptions extends React.Component<Props> {
         return <>
             <section className={styles.line_tab_content}>
             <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
-                <ul className={styles.center_in_tab}>
-                    <li className={styles.focus_element}>
+                <div className={styles.center_in_tab}>
+                    <div className={styles.focus_element}>
                         <input
                             id={styles.scroll_option}
                             type="radio"
@@ -217,8 +217,8 @@ export class ReaderOptions extends React.Component<Props> {
                             <SVG svg={DefileIcon}/>
                             {__("reader.settings.scrolled")}
                         </label>
-                    </li>
-                    <li className={styles.focus_element}>
+                    </div>
+                    <div className={styles.focus_element}>
                         <input
                             id={styles.page_option}
                             type="radio"
@@ -233,13 +233,13 @@ export class ReaderOptions extends React.Component<Props> {
                             <SVG svg={PagineIcon}/>
                             {__("reader.settings.paginated")}
                         </label>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </section>
             <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.justification")}</div>
-                <ul className={styles.center_in_tab}>
-                    <li className={styles.focus_element}>
+                <div className={styles.center_in_tab}>
+                    <div className={styles.focus_element}>
                         <input
                             id={"radio-" + styles.option_gauche}
                             name="alignment"
@@ -254,8 +254,8 @@ export class ReaderOptions extends React.Component<Props> {
                             <SVG svg={LeftIcon}/>
                             {__("reader.settings.left")}
                         </label>
-                    </li>
-                    <li className={styles.focus_element}>
+                    </div>
+                    <div className={styles.focus_element}>
                         <input
                             id={"radio-" + styles.option_justif}
                             name="alignment"
@@ -270,13 +270,13 @@ export class ReaderOptions extends React.Component<Props> {
                             <SVG svg={JustifyIcon}/>
                             {__("reader.settings.justify")}
                         </label>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </section>
             <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.column.title")}</div>
-                <ul className={styles.center_in_tab}>
-                    <li className={styles.focus_element}>
+                <div className={styles.center_in_tab}>
+                    <div className={styles.focus_element}>
                         <input
                             id={"radio-" + styles.option_colonne}
                             type="radio"
@@ -295,8 +295,8 @@ export class ReaderOptions extends React.Component<Props> {
                             <SVG svg={AutoIcon}/>
                             {__("reader.settings.column.auto")}
                         </label>
-                    </li>
-                    <li className={styles.focus_element}>
+                    </div>
+                    <div className={styles.focus_element}>
                         <input
                             {...(!settings.paged && { disabled: true })}
                             id={"radio-" + styles.option_colonne1}
@@ -314,8 +314,8 @@ export class ReaderOptions extends React.Component<Props> {
                             <SVG svg={ColumnIcon} title={__("reader.settings.column.oneTitle")}/>
                             {__("reader.settings.column.one")}
                         </label>
-                    </li>
-                    <li className={styles.focus_element}>
+                    </div>
+                    <div className={styles.focus_element}>
                         <input
                             id={"radio-" + styles.option_colonne2}
                             type="radio"
@@ -334,8 +334,8 @@ export class ReaderOptions extends React.Component<Props> {
                             <SVG svg={Column2Icon} title={__("reader.settings.column.twoTitle")}/>
                             {__("reader.settings.column.two")}
                         </label>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </section>
         </>;
     }
