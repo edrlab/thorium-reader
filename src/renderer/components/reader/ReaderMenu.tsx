@@ -119,11 +119,11 @@ export class ReaderMenu extends React.Component<Props, State> {
         );
     }
 
-    private createTOCRenderList(TOC: Link[]): JSX.Element {
+    private createTOCRenderList(TOC: Link[], level?: number): JSX.Element {
         return <ul className={styles.chapters_content}>
             { TOC.map((content, i: number) => {
                 return (
-                    <li key={i}>
+                    <li key={i} aria-level={level ? level : 1}>
                         {content.Children ? (
                             <>
                                 <a
@@ -147,7 +147,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                                 </a>
                                 {content.Children &&
                                     <ul className={styles.chapters_content}>
-                                        {this.createTOCRenderList(content.Children)}
+                                        {this.createTOCRenderList(content.Children, level ? (level + 1) : 2 )}
                                     </ul>
                                 }
                             </>
