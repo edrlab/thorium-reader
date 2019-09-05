@@ -600,14 +600,17 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         // alternatively, could also use event.code === "Enter"
         // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
         // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
-        if (event && event.key === "Enter") {
-            if (this.fastLinkRef) {
-                setTimeout(() => {
-                    if (this.fastLinkRef) {
-                        this.fastLinkRef.focus();
-                    }
-                }, 200);
-            }
+        // if (event && event.key === "Enter") {
+        // }
+        // Screen readers have their own shortcut to activate hyperlinks (e.g. VoiceOver CTRL+OPT+SPACE),
+        // so we must not limit the focus behaviour to app-defined keyboard interaction (i.e. ENTER key)
+        // (note that this means the focus is moved even when TOC items clicked with mouse, which is fine)
+        if (this.fastLinkRef) {
+            setTimeout(() => {
+                if (this.fastLinkRef) {
+                    this.fastLinkRef.focus();
+                }
+            }, 200);
         }
 
         if (this.state.menuOpen) {
