@@ -1,10 +1,13 @@
 @import "./focus-mixin.css";
 
 main {
-    height: auto;
+    height: calc(100vh - 7.75rem);
     width: calc(100% - 120px);
     padding-left: 60px;
     padding-right: 60px;
+	margin-top: 7.75rem;
+	overflow-y: auto;
+	
 	& .title {
 		display: flex;
 		justify-content: space-between;
