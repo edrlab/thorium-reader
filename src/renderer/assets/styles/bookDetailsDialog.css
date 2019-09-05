@@ -178,6 +178,17 @@
         padding: 0;
         border: none;
         background-color: transparent;
+
+        &.addTagButton {
+            font-size: 1rem;
+            font-weight: bold;
+            color: rgb(59, 59, 59);
+            height: auto;
+            width: auto;
+            padding: 0.5rem;
+            border: 1px solid rgb(59, 59, 59);
+            border-radius: 5px;
+        }
     }
 }
 
@@ -210,7 +221,6 @@
 
 .dialog_right #flux_search {
 	margin-bottom:0;
-    border-bottom: 1px solid #c1c1c1;
     margin-left: 0;
     height: auto;
     width: fit-content;
@@ -222,10 +232,10 @@
 	border-radius: 0;
 	border:none;
 	height:35px;
-	/* outline: inherit; */
 	background-color: transparent;
 	color:black;
 	font-size: 0.9rem;
+    border-bottom: 1px solid #c1c1c1;
 }
 
 .tag_inputs::placeholder {

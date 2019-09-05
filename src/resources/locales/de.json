@@ -28,6 +28,7 @@
         },
         "addBookToLib": "Import",
         "addTags": "Ein tag hinzufügen",
+        "addTagsButton": "Hinzufügen",
         "allBooks": "alle Bücher",
         "bookInfo": "Über dieses Buch",
         "delete": "Dauerhaft löschen",

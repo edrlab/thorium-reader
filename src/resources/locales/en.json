@@ -28,6 +28,7 @@
         },
         "addBookToLib": "Import",
         "addTags": "Add a tag",
+        "addTagsButton": "Add",
         "allBooks": "All books",
         "bookInfo": "About this book",
         "delete": "Delete",
