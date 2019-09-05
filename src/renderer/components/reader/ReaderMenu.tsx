@@ -82,12 +82,13 @@ export class ReaderMenu extends React.Component<Props, State> {
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: publication && this.createTOCRenderList(publication.TOC),
+                content: publication && this.readerLinkTreeList(true, publication.TOC, 0),
                 disabled: !publication.TOC || publication.TOC.length === 0,
             },
             {
                 title: __("reader.marks.landmarks"),
-                content: publication && publication.Landmarks && this.createTOCRenderList(publication.Landmarks),
+                content: publication && publication.Landmarks &&
+                    this.readerLinkTreeList(false, publication.Landmarks, 0),
                 disabled: !publication.Landmarks || publication.Landmarks.length === 0,
             },
             {
@@ -119,59 +120,61 @@ export class ReaderMenu extends React.Component<Props, State> {
         );
     }
 
-    private createTOCRenderList(TOC: Link[], level?: number): JSX.Element {
-        return <ul className={styles.chapters_content}>
-            { TOC.map((content, i: number) => {
+    private readerLinkTreeList(isTree: boolean, links: Link[], level: number): JSX.Element {
+        return <ul className={styles.chapters_content} role={isTree ? "tree" : "list"}>
+            { links.map((link, i: number) => {
                 return (
-                    <li key={i} aria-level={level ? level : 1}>
-                        {content.Children ? (
+                    <li key={`${level}-${i}`}
+                    role={isTree ? "treeitem" : "listitem"}
+                    aria-expanded={isTree ? (link.Children ? "true" : "false") : undefined}
+                    aria-level={level}
+                    >
+                        {link.Children ? (
                             <>
                                 <a
+                                    role={link.Href ? undefined : "heading"}
                                     className={
-                                        content.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
+                                        link.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
                                     }
                                     onClick=
-                                        {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
+                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
                                     tabIndex={0}
                                     onKeyPress=
                                         {
                                             (e) => {
-                                                if (content.Href && e.key === "Enter") {
-                                                    this.props.handleLinkClick(e, content.Href);
+                                                if (link.Href && e.key === "Enter") {
+                                                    this.props.handleLinkClick(e, link.Href);
                                                 }
                                             }
                                         }
-                                    data-href={content.Href}
+                                    data-href={link.Href}
                                 >
-                                    <span>{content.Title}</span>
+                                    <span>{link.Title}</span>
                                 </a>
-                                {content.Children &&
-                                    <ul className={styles.chapters_content}>
-                                        {this.createTOCRenderList(content.Children, level ? (level + 1) : 2 )}
-                                    </ul>
-                                }
+                                {this.readerLinkTreeList(isTree, link.Children, level + 1)}
                             </>
                         ) : (
                             <a
+                                role={link.Href ? undefined : "heading"}
                                 className={
-                                    content.Href ?
+                                    link.Href ?
                                         classnames(styles.line, styles.active) :
                                         classnames(styles.line, styles.active, styles.inert)
                                 }
                                 onClick=
-                                    {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
+                                    {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
                                 tabIndex={0}
                                 onKeyPress=
                                     {
                                         (e) => {
-                                            if (content.Href && e.key === "Enter") {
-                                                this.props.handleLinkClick(e, content.Href);
+                                            if (link.Href && e.key === "Enter") {
+                                                this.props.handleLinkClick(e, link.Href);
                                             }
                                         }
                                     }
-                                data-href={content.Href}
+                                data-href={link.Href}
                             >
-                                {content.Title}
+                                <span>{link.Title}</span>
                             </a>
                         )}
                     </li>

@@ -610,7 +610,7 @@ p.chapters_description {
 	font-size: 1.1rem;
 	font-weight: 600;
 	background-color: white;
-	cursor: pointer;
+	cursor: auto;
   display:flex;
 
   & > span {
@@ -626,6 +626,13 @@ p.chapters_description {
       transform: rotate(90deg);
     }
   }
+}
+
+li.div_listitem {
+  display:initial !important;
+}
+li.div_listitem button {
+	cursor: pointer !important;
 }
 
 #read_settings_list .tab_content > div {

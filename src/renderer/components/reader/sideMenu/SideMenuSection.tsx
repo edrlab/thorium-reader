@@ -60,11 +60,12 @@ export class SideMenuSection extends React.Component<Props, State> {
                         <SVG className={styles.menu_section_svg} svg={ArrowIcon} />
                     </button>
                 </li>
-                <div style={this.state.style} className={open ? styles.tab_content : undefined}>
+                <li style={this.state.style}
+                    className={open ? classnames([styles.tab_content, styles.div_listitem]) : undefined}>
                     <div ref={this.sectionRef} className={open ? styles.line_tab_content : undefined}>
                         {open && content }
                     </div>
-                </div>
+                </li>
             </>
         );
     }
