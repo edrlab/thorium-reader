@@ -8,7 +8,6 @@
 import * as React from "react";
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { container } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
@@ -21,25 +20,25 @@ interface IApiOperation {
     methodId: TMethodApi;
 }
 
-export interface IApiOperationDefinition extends IApiOperation {
-    callProp?: string;
-    resultProp?: string;
-    resultIsRejectProp?: string;
-    buildRequestData?: (props: any) => unknown[];
+export interface IApiOperationDefinition<Props> extends IApiOperation {
+    callProp?: keyof Props;
+    resultProp?: keyof Props;
+    resultIsRejectProp?: keyof Props;
+    buildRequestData?: (props: Props) => unknown[];
     onLoad?: boolean; // Load in component did mount, default true
 }
 
-export interface IApiConfig {
-    operations: IApiOperationDefinition[];
+export interface IApiConfig<Props> {
+    operations: Array<IApiOperationDefinition<Props>>;
     refreshTriggers?: IApiOperation[]; // Api operation that triggers a new refresh
-    mapStateToProps?: MapStateToProps<IApiMapStateToProps, any, RootState>;
-    mapDispatchToProps?: MapDispatchToPropsFunction<any, any>;
+    mapStateToProps?: MapStateToProps<any, any, RootState>;
+    mapDispatchToProps?: MapDispatchToPropsFunction<IApiMapDispatchToProps, any>;
 }
 
-export interface IApiOperationRequest {
+export interface IApiOperationRequest<Props> {
     id: string;
-    caller?: (props: any) => (...requestData: unknown[]) => void;
-    definition: IApiOperationDefinition;
+    caller?: (props: Props) => (...requestData: unknown[]) => void;
+    definition: IApiOperationDefinition<Props>;
 }
 
 export interface IApiMapDispatchToProps {
@@ -47,26 +46,25 @@ export interface IApiMapDispatchToProps {
     cleanData?: () => void;
 }
 
-export interface IApiMapStateToProps {
-    [idx: string]: any;
-}
+// tslint:disable-next-line: no-empty-interface
+export interface IApiProps extends IApiMapDispatchToProps {}
 
 type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
 
 // TS4094: private members fail the TS compiler, because:
 // returned type is ConnectedComponentClass<typeof BaseWrapperComponent, any>
 // tslint:disable-next-line: max-line-length
-export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & IApiMapDispatchToProps>, queryConfig: IApiConfig) {
+export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & IApiProps>, queryConfig: IApiConfig<Props>) {
 
     // Create operationRequests
-    const operationRequests: IApiOperationRequest[] = [];
+    const operationRequests: Array<IApiOperationRequest<Props>> = [];
     const store = container.get<Store<RootState>>("store");
 
     for (const operation of queryConfig.operations) {
         const requestId = uuid.v4();
 
         // Create call method
-        const caller = (props: any) => {
+        const caller = (props: Props) => {
             return (...requestData: unknown[]) => {
                 const buildRequestData = operation.buildRequestData;
 
@@ -136,7 +134,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
         );
     };
 
-    const mapStateToProps: MapStateToProps<IApiMapStateToProps, any, RootState> = (state, ownProps) => {
+    const mapStateToProps: MapStateToProps<any, any, RootState> = (state, ownProps) => {
         let stateToPropsResult = {};
 
         if (queryConfig.mapStateToProps != null) {
@@ -146,7 +144,8 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
             );
         }
 
-        const operationResults: IApiMapStateToProps = {};
+        // typed with any because the return type of the function is fulfilled
+        const operationResults: any = {};
 
         for (const operationRequest of operationRequests) {
             if (operationRequest.id in state.api.data) {
@@ -175,7 +174,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
         /* private */ public store: Store<RootState>;
         /* private */ public stateUpdateUnsubscribe: any;
 
-        constructor(props: any) {
+        constructor(props: Props & IApiMapDispatchToProps) {
             super(props);
 
             this.lastSuccess = null;
@@ -200,8 +199,9 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
         }
 
         public render() {
-            const translator = container.get<Translator>("translator");
-            const translate = translator.translate.bind(translator) as I18nTyped;
+            // I remove translator in props replace with "WithTranslator" in each component
+            // const translator = container.get<Translator>("translator");
+            // const translate = translator.translate.bind(translator) as I18nTyped;
 
             // this condition is never called because operationResults is merged into mapStateToProps L172
             /*
@@ -214,7 +214,8 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
             }
             */
 
-            const operationRequestProps: IApiMapStateToProps = {};
+            // typed with any because
+            const operationRequestProps: any = {};
             for (const operationRequest of operationRequests) {
                 const def = operationRequest.definition;
                 operationRequestProps[def.callProp] = operationRequest.caller(this.props);
@@ -226,10 +227,13 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
                 this.props,
                 operationRequestProps,
                 // idem that translator.tsx must be removed on code : withTranslator(withApi(...))
+                // I remove this props because we have to include withTranslator for each component
+                /*
                 {
                     __: translate,
                     translator,
                 },
+                */
             );
 
             return (<WrappedComponent { ...newProps } />);
