@@ -7,10 +7,19 @@
 
 import { inject, injectable } from "inversify";
 import * as readerActions from "readium-desktop/common/redux/actions/reader";
+import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/di";
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { Store } from "redux";
+
+export interface ILcpApi {
+    renewPublicationLicense: (data: any) => Promise<void> | void;
+    registerPublicationLicense: (data: any) => Promise<void> | void;
+    returnPublication: (data: any) => Promise<void> | void;
+    unlockPublicationWithPassphrase: (data: any) => Promise<void> | void;
+    getLsdStatus: (data: any) => Promise<IHttpGetResult<string, any>> | void;
+}
 
 @injectable()
 export class LcpApi {
