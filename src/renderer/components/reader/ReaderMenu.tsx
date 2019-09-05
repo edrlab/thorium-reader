@@ -82,7 +82,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: publication && this.renderLinkTree(__("reader.marks.toc"), publication.TOC, 0),
+                content: publication && this.renderLinkTree(__("reader.marks.toc"), publication.TOC, 1),
                 disabled: !publication.TOC || publication.TOC.length === 0,
             },
             {
@@ -124,12 +124,14 @@ export class ReaderMenu extends React.Component<Props, State> {
         return <ul
             aria-label={label}
             className={styles.chapters_content}
+            role={"list"}
         >
             { links.map((link, i: number) => {
                 return (
                     <li
                         key={i}
                         aria-level={1}
+                        role={"listitem"}
                     >
                         <a
                             className={
@@ -159,16 +161,23 @@ export class ReaderMenu extends React.Component<Props, State> {
     }
 
     private renderLinkTree(label: string | undefined, links: Link[], level: number): JSX.Element {
+        // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
+        const useTree = false;
+
         return <ul
+                    role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
                     aria-label={label}
                     className={styles.chapters_content}
                 >
             { links.map((link, i: number) => {
                 return (
                     <li key={`${level}-${i}`}
+                        role={useTree ? "treeitem" : undefined}
+                        aria-expanded={useTree ? "true" : undefined}
                     >
                         {link.Children ? (
                             <>
+                            <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
                                         link.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
@@ -188,30 +197,34 @@ export class ReaderMenu extends React.Component<Props, State> {
                                 >
                                     <span>{link.Title}</span>
                                 </a>
-                                {this.renderLinkTree(undefined, link.Children, level + 1)}
+                            </div>
+
+                            {this.renderLinkTree(undefined, link.Children, level + 1)}
                             </>
                         ) : (
-                            <a
-                                className={
-                                    link.Href ?
-                                        classnames(styles.line, styles.active) :
-                                        classnames(styles.line, styles.active, styles.inert)
-                                }
-                                onClick=
-                                    {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
-                                tabIndex={0}
-                                onKeyPress=
-                                    {
-                                        (e) => {
-                                            if (link.Href && e.key === "Enter") {
-                                                this.props.handleLinkClick(e, link.Href);
+                            <div role={"heading"} aria-level={level}>
+                                <a
+                                    className={
+                                        link.Href ?
+                                            classnames(styles.line, styles.active) :
+                                            classnames(styles.line, styles.active, styles.inert)
+                                    }
+                                    onClick=
+                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
+                                    tabIndex={0}
+                                    onKeyPress=
+                                        {
+                                            (e) => {
+                                                if (link.Href && e.key === "Enter") {
+                                                    this.props.handleLinkClick(e, link.Href);
+                                                }
                                             }
                                         }
-                                    }
-                                data-href={link.Href}
-                            >
-                                <span>{link.Title}</span>
-                            </a>
+                                    data-href={link.Href}
+                                >
+                                    <span>{link.Title}</span>
+                                </a>
+                            </div>
                         )}
                     </li>
                 );
