@@ -14,10 +14,10 @@ import * as path from "path";
 import * as PouchDBCore from "pouchdb-core";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
-import { CatalogApi } from "readium-desktop/main/api/catalog";
-import { LcpApi } from "readium-desktop/main/api/lcp";
-import { OpdsApi } from "readium-desktop/main/api/opds";
-import { PublicationApi } from "readium-desktop/main/api/publication";
+import { CatalogApi, ICatalogApi } from "readium-desktop/main/api/catalog";
+import { LcpApi, ILcpApi } from "readium-desktop/main/api/lcp";
+import { OpdsApi, IOpdsApi } from "readium-desktop/main/api/opds";
+import { PublicationApi, IPublicationApi } from "readium-desktop/main/api/publication";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
@@ -39,7 +39,7 @@ import { Store } from "redux";
 
 import { Server } from "@r2-streamer-js/http/server";
 
-import { ReaderApi } from "./api/reader";
+import { ReaderApi, IReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
@@ -246,7 +246,9 @@ type TPublicationApi = "publication";
 type TOpdsApi = "opds";
 type TLcpApi = "lcp";
 type TReaderApi = "reader";
-type TApi = TCatalogApi | TPublicationApi | TOpdsApi | TLcpApi | TReaderApi;
+type TModuleApi = TCatalogApi | TPublicationApi | TOpdsApi | TLcpApi | TReaderApi;
+
+type TMethodApi = keyof ICatalogApi | keyof IPublicationApi | keyof IOpdsApi | keyof ILcpApi | keyof IReaderApi;
 
 // Create action serializer
 container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();
@@ -295,5 +297,6 @@ const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(d
 export {
     diGet as diMainGet,
     diSymbolTable,
-    TApi,
+    TModuleApi,
+    TMethodApi,
 };
