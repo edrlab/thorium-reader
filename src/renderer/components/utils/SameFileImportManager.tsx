@@ -17,45 +17,51 @@ import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 
 import { withApi } from "./api";
 
-import { ImportState } from "readium-desktop/common/redux/states/import";
+import { ImportOpdsPublication, ImportState } from "readium-desktop/common/redux/states/import";
+import { Download } from "readium-desktop/renderer/redux/states/download";
 
 interface Props  {
     lastImport?: ImportState;
-    displayImportDialog?: any;
-    search?: any;
-    searchResult?: any;
-    importOpdsEntry?: any;
+    displayImportDialog?: (publication: ImportOpdsPublication, downloadSample: boolean) => void;
+    search?: (data: any) => void;
+    searchResult?: any[];
+    importOpdsEntry?: (data: ImportState) => void;
+    downloads?: Download[];
 }
 
 class SameFileImportManager extends React.Component<Props> {
     public componentDidUpdate(oldProps: Props) {
-        const { searchResult, lastImport } = this.props;
-        if (!lastImport) {
-            return;
-        }
-
+        const { searchResult, lastImport, downloads } = this.props;
         if (searchResult !== oldProps.searchResult) {
             if (searchResult.length === 0) {
-                this.props.importOpdsEntry(
-                    {
-                        url: lastImport.publication.url,
-                        base64OpdsPublication: lastImport.publication.base64OpdsPublication,
-                        downloadSample: lastImport.downloadSample,
-                        title: lastImport.publication.title,
-                    },
-                );
+                this.importOpds();
             } else {
                 this.props.displayImportDialog(lastImport.publication, lastImport.downloadSample );
             }
         }
 
         if (lastImport !== oldProps.lastImport) {
-            this.props.search({text: lastImport.publication.title});
+            const foundInCurrentDownload = downloads.findIndex(
+                (value) => {
+                    return value.url === lastImport.publication.url;
+                },
+            );
+            if (foundInCurrentDownload === -1) {
+                this.props.search({text: lastImport.publication.title});
+            } else {
+                this.props.displayImportDialog(lastImport.publication, lastImport.downloadSample );
+            }
         }
     }
 
     public render(): React.ReactElement<{}> {
         return (<></>);
+    }
+
+    private importOpds() {
+        const { lastImport } = this.props;
+
+        this.props.importOpdsEntry(lastImport);
     }
 }
 
@@ -76,6 +82,7 @@ const mapDispatchToProps = (dispatch: any) => {
 const mapStateToProps = (state: RootState) => {
     return {
         lastImport: state.import,
+        downloads: state.download.downloads,
     };
 };
 

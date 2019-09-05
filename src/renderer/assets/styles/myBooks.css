@@ -1,10 +1,13 @@
 @import "./focus-mixin.css";
 
 main {
-    height: auto;
+    height: calc(100vh - 7.75rem);
     width: calc(100% - 120px);
     padding-left: 60px;
     padding-right: 60px;
+	margin-top: 7.75rem;
+	overflow-y: auto;
+	
 	& .title {
 		display: flex;
 		justify-content: space-between;
@@ -170,7 +173,7 @@ main {
 }
 
 .list_book_title {
-	display: inline-block;
+	display: flex;
 	width: calc(70% - 50px);
 }
 
@@ -242,6 +245,13 @@ main {
 .publicationLine {
 	display: flex;
 	align-items: center;
+	& > .publicationLineLink {
+		flex: 1;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		padding-left: 0.3125rem;
+	}
 	& p {
 		white-space: nowrap;
 		overflow: hidden;
@@ -368,7 +378,7 @@ main {
 	background-color: #CECECE;
 }
 #value {
-	font: 0.9rem "Open Sans", sans-serif;
+	font-size: 0.9rem;
 	align-items: center;
 	position: relative;
 	top: 9px;
@@ -376,9 +386,10 @@ main {
 }
 
 #sortMenu button{
-	width: 5em;
+	width: unset;
 	height: 2em;
-	font: 0.9rem "Open Sans", sans-serif;
+	font-size: 0.9rem;
+	padding: 0 0.3125rem;
 }
 
 #content {
@@ -416,17 +427,21 @@ main {
 }
 
 .noPublicationHelp {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	text-align: center;
-	& svg {
-		height: 20rem;
-		opacity: 0.2;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border: 1px #5C5C5C dashed;
+    min-height: 17rem;
+    max-width: 43rem;
+    margin: 2rem auto;
+    box-sizing: border-box;
+	color: #5C5C5C;
+	& p {
+		font-size: 1.1rem;
+	}
+	& p:last-child {
+		font-size: 1rem;
 	}
 }
 

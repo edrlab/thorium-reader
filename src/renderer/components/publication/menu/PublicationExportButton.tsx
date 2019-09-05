@@ -41,6 +41,7 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
         return (
                 <span>
                     <input
+                        role="menuitem"
                         id={ id }
                         ref={ this.exportInputRef }
                         type="file"

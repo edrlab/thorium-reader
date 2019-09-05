@@ -29,6 +29,12 @@ interface RouteList {
     [path: string]: Route;
 }
 
+export interface IOpdsBrowse {
+    opdsId: string;
+    level: string;
+    name: string;
+}
+
 export const routes: RouteList = {
     "/opds": {
         path: "/opds",

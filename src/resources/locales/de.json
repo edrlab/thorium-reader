@@ -1,12 +1,11 @@
 {
     "accessibility": {
-        "bookAuthor": "Buchautorin",
-        "bookPublisher": "Buchverlag",
-        "bookReleaseDate": "Buchfreigabedatum",
-        "bookTitle": "Titel des Buches",
+        "bookMenu": "Menü",
         "closeDialog": "Schließen",
         "homeMenu": "Startmenü",
         "importFile": "importieren einer epub-datei",
+        "leftSlideButton": "Scrolle nach links unten",
+        "rightSlideButton": "Scrolle nach rechts unten",
         "searchBook": "Suche nach einem Buch, einem Tag oder einer Art von Literatur",
         "skipLink": "Gehe zum Inhalt"
     },
@@ -27,9 +26,8 @@
             "button": "",
             "title": ""
         },
-        "addBookToLib": "zur Bibliothek hinzufügen",
+        "addBookToLib": "Import",
         "addTags": "Ein tag hinzufügen",
-        "addTeaserToLib": "den Extrakt zur Bibliothek hinzufügen",
         "allBooks": "alle Bücher",
         "bookInfo": "Über dieses Buch",
         "delete": "Dauerhaft löschen",
@@ -45,8 +43,10 @@
         "id": "Benutzername",
         "lang": "Sprache",
         "moreInfo": "mehr Informationen",
-        "myBooks": "meine Bücher",
-        "noPublicationHelp": "",
+        "myBooks": "Meine Bücher",
+        "noPublicationHelpL1": "Drop EPUB-Dateien in diesem Fenster",
+        "noPublicationHelpL2": "oder benutzen Sie die taste \"+\" oben.",
+        "noPublicationHelpL3": "LCP-geschützte Dateien werden unterstützt.",
         "publisher": "Herausgeber",
         "readBook": "Lesen",
         "released": "veröffentlicht am",
@@ -57,9 +57,10 @@
     "dialog": {
         "alreadyAdd": "Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
         "closeModalWindow": "Dieses modale Fenster schließen",
-        "delete": "Willst du diese Publikation wirklich löschen?",
+        "deleteFeed": "Willst du diese Publikation wirklich Katalog ?",
+        "deletePublication": "Willst du diese Publikation wirklich löschen ?",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-        "importError": "ein Fehler ist aufgetreten, überprüfen Sie Ihre Dateiendung (.epub or .lcpl).",
+        "importError": "ein Fehler ist aufgetreten, überprüfen Sie Ihre Dateiendung (.epub).",
         "no": "Nein",
         "renew": "",
         "return": "",
@@ -68,7 +69,7 @@
     },
     "header": {
         "allBooks": "Alle bücher",
-        "books": "meine Bücher",
+        "books": "Meine Bücher",
         "catalogs": "Kataloge",
         "gridTitle": "Buchumschläge in einem Raster präsentieren",
         "home": "Hauptmenü",
@@ -89,8 +90,8 @@
     },
     "message": {
         "download": {
-            "start": "Der Download von {{title}} hat begonnen",
-            "success": "Der Download von {{title}} wurde abgeschlossen"
+            "start": "Der Download von {{- title}} hat begonnen",
+            "success": "Der Download von {{- title}} wurde abgeschlossen"
         },
         "import": {
             "success": ""
@@ -101,7 +102,6 @@
             "addButton": "Hinzufügen",
             "name": "Feed-Name:",
             "namePlaceholder": "",
-            "pasteUrl": "die URL eines Futters einfügen",
             "title": "Feed hinzufügen",
             "url": "Feed-Link:",
             "urlPlaceholder": ""
@@ -109,13 +109,18 @@
         "addMenu": "OPDS-Feed hinzufügen",
         "back": "Zurück",
         "breadcrumbRoot": "",
+        "empty": "Keine Publikation gefunden",
         "menu": {
             "aboutBook": "über dieses Buch",
             "addExtract": "zur Lib hinzufügen",
-            "addTeaser": "Extrakt zur Lib hinzufügen",
             "goBuyBook": "dieses Buch kaufen",
             "goLoanBook": "dieses Buch ausleihen",
             "goSubBook": "abonnieren"
+        },
+        "network": {
+            "error": "Ein Fehler ist aufgetreten",
+            "reject": "Beim Versuch, den OPDS-Feed zu verarbeiten, ist ein unerwarteter Fehler aufgetreten.",
+            "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut"
         }
     },
     "publication": {
@@ -138,6 +143,7 @@
             "annotations": "Annotationen",
             "bookmarks": "Lesezeichen",
             "illustrations": "Illustrationstabelle",
+            "landmarks": "Landmarks",
             "toc": "inhaltsverzeichnis"
         },
         "navigation": {
@@ -145,6 +151,10 @@
             "bookmarkTitle": "bookmark",
             "detachWindowTitle": "das Fenster lösen",
             "fullscreenTitle": "fullscreen mode",
+            "goTo": "Gehe zu",
+            "goToError": "Diese Seite existiert nicht",
+            "goToPlaceHolder": "Gehe zur Seite",
+            "goToTitle": "Gehe zur Seite",
             "infoTitle": "Informationen",
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "",

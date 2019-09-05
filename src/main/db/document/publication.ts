@@ -10,6 +10,7 @@ import { File } from "readium-desktop/common/models/file";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
+import { IHttpGetResult } from "readium-desktop/common/utils/http";
 
 interface Resources {
     filePublication: string;
@@ -26,3 +27,5 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     customCover?: CustomCover;
     lcp?: LcpInfo;
 }
+
+export type THttpGetPublicationDocument = IHttpGetResult<string, PublicationDocument>;

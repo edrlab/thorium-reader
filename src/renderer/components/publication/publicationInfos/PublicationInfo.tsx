@@ -117,13 +117,16 @@ export class PublicationInfo extends React.Component<Props, State> {
                 }
             </div>
             <div className={ styles.dialog_right }>
-                <h2>{ publication.title }</h2>
+                <h2 className={ styles.allowUserSelect }>{ publication.title }</h2>
                 <div>
-                    <p className={ styles.author }>{ authors }</p>
+                    <p className={ classNames(styles.allowUserSelect, styles.author) }>{ authors }</p>
 
                     {
                         (formatedPublishedDate) ?
-                        (<p><span>{__("catalog.released")}</span> { formatedPublishedDate }</p>) : (<></>)
+                        (<p>
+                            <span>{__("catalog.released")}
+                            </span> <i className={ styles.allowUserSelect }>{ formatedPublishedDate }</i>
+                        </p>) : (<></>)
                     }
                     <div className={styles.tags}>
                         <div className={styles.tag_list}>
@@ -148,7 +151,7 @@ export class PublicationInfo extends React.Component<Props, State> {
                         >
                             <p
                                 ref={(ref) => this.descriptionRef = ref}
-                                className={styles.description}
+                                className={ classNames(styles.allowUserSelect, styles.description) }
                             >
                                 { publication.description }
                             </p>
@@ -164,7 +167,8 @@ export class PublicationInfo extends React.Component<Props, State> {
 
                     <p>
                         { formatedPublishers &&
-                            <><span>{__("catalog.publisher")}</span> { formatedPublishers } <br/></>
+                            <><span>{__("catalog.publisher")}
+                            </span> <i className={ styles.allowUserSelect }>{ formatedPublishers }</i> <br/></>
                         }
                         <span>{__("catalog.lang")}</span> {
                             publication.languages &&
@@ -176,11 +180,12 @@ export class PublicationInfo extends React.Component<Props, State> {
                                 const note = (lang !== ll) ? ` (${lang})` : "";
                                 const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");
                                 // tslint:disable-next-line:max-line-length
-                                return <i key={"lang-" + index} title={lang}>{ll + note + suffix}</i>;
+                                return <i key={"lang-" + index} title={lang} className={ styles.allowUserSelect }>{ll + note + suffix}</i>;
                                 // return <></>;
                             })
                         } <br/>
-                        <span>{__("catalog.id")}</span> { publication.workIdentifier } <br/>
+                        <span>{__("catalog.id")}
+                        </span> <i className={ styles.allowUserSelect }>{ publication.workIdentifier }</i> <br/>
                     </p>
                 </div>
             </div>

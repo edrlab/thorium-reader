@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import * as ping from "ping";
-import { delay, SagaIterator } from "redux-saga";
-import { call, put, select, take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
+import { call, delay, put, select, take } from "redux-saga/effects";
 
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { appActions, netActions } from "readium-desktop/main/redux/actions";
@@ -35,7 +35,7 @@ export function* netStatusWatcher(): SagaIterator {
         let actionType = null;
 
         try {
-            const result = yield call(pingHost);
+            const result: any = yield call(pingHost);
             const online = result.alive;
             actionType = online ?
                 netActions.ActionType.Online :
@@ -61,6 +61,6 @@ export function* netStatusWatcher(): SagaIterator {
             yield put({ type: actionType });
         }
 
-        yield call(delay, 5000);
+        yield delay(5000);
     }
 }

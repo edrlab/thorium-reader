@@ -1,23 +1,21 @@
 declare namespace typed_i18n {
   interface TFunction {
   (_: "accessibility", __?: {}): {
-  readonly "bookAuthor": string,
-  readonly "bookPublisher": string,
-  readonly "bookReleaseDate": string,
-  readonly "bookTitle": string,
+  readonly "bookMenu": string,
   readonly "closeDialog": string,
   readonly "homeMenu": string,
   readonly "importFile": string,
+  readonly "leftSlideButton": string,
+  readonly "rightSlideButton": string,
   readonly "searchBook": string,
   readonly "skipLink": string
 };
-  (_: "accessibility.bookAuthor", __?: {}): string;
-  (_: "accessibility.bookPublisher", __?: {}): string;
-  (_: "accessibility.bookReleaseDate", __?: {}): string;
-  (_: "accessibility.bookTitle", __?: {}): string;
+  (_: "accessibility.bookMenu", __?: {}): string;
   (_: "accessibility.closeDialog", __?: {}): string;
   (_: "accessibility.homeMenu", __?: {}): string;
   (_: "accessibility.importFile", __?: {}): string;
+  (_: "accessibility.leftSlideButton", __?: {}): string;
+  (_: "accessibility.rightSlideButton", __?: {}): string;
   (_: "accessibility.searchBook", __?: {}): string;
   (_: "accessibility.skipLink", __?: {}): string;
   (_: "app", __?: {}): {
@@ -52,7 +50,6 @@ declare namespace typed_i18n {
   readonly "about": { readonly "button": string, readonly "title": string },
   readonly "addBookToLib": string,
   readonly "addTags": string,
-  readonly "addTeaserToLib": string,
   readonly "allBooks": string,
   readonly "bookInfo": string,
   readonly "delete": string,
@@ -69,7 +66,9 @@ declare namespace typed_i18n {
   readonly "lang": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
-  readonly "noPublicationHelp": string,
+  readonly "noPublicationHelpL1": string,
+  readonly "noPublicationHelpL2": string,
+  readonly "noPublicationHelpL3": string,
   readonly "publisher": string,
   readonly "readBook": string,
   readonly "released": string,
@@ -82,7 +81,6 @@ declare namespace typed_i18n {
   (_: "catalog.about.title", __?: {}): string;
   (_: "catalog.addBookToLib", __?: {}): string;
   (_: "catalog.addTags", __?: {}): string;
-  (_: "catalog.addTeaserToLib", __?: {}): string;
   (_: "catalog.allBooks", __?: {}): string;
   (_: "catalog.bookInfo", __?: {}): string;
   (_: "catalog.delete", __?: {}): string;
@@ -97,7 +95,9 @@ declare namespace typed_i18n {
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
-  (_: "catalog.noPublicationHelp", __?: {}): string;
+  (_: "catalog.noPublicationHelpL1", __?: {}): string;
+  (_: "catalog.noPublicationHelpL2", __?: {}): string;
+  (_: "catalog.noPublicationHelpL3", __?: {}): string;
   (_: "catalog.publisher", __?: {}): string;
   (_: "catalog.readBook", __?: {}): string;
   (_: "catalog.released", __?: {}): string;
@@ -107,7 +107,8 @@ declare namespace typed_i18n {
   (_: "dialog", __?: {}): {
   readonly "alreadyAdd": string,
   readonly "closeModalWindow": string,
-  readonly "delete": string,
+  readonly "deleteFeed": string,
+  readonly "deletePublication": string,
   readonly "import": string,
   readonly "importError": string,
   readonly "no": string,
@@ -118,7 +119,8 @@ declare namespace typed_i18n {
 };
   (_: "dialog.alreadyAdd", __?: {}): string;
   (_: "dialog.closeModalWindow", __?: {}): string;
-  (_: "dialog.delete", __?: {}): string;
+  (_: "dialog.deleteFeed", __?: {}): string;
+  (_: "dialog.deletePublication", __?: {}): string;
   (_: "dialog.import", __?: {}): string;
   (_: "dialog.importError", __?: {}): string;
   (_: "dialog.no", __?: {}): string; (_: "dialog.renew", __?: {}): string;
@@ -184,7 +186,6 @@ declare namespace typed_i18n {
     readonly "addButton": string,
     readonly "name": string,
     readonly "namePlaceholder": string,
-    readonly "pasteUrl": string,
     readonly "title": string,
     readonly "url": string,
     readonly "urlPlaceholder": string
@@ -192,20 +193,24 @@ declare namespace typed_i18n {
   readonly "addMenu": string,
   readonly "back": string,
   readonly "breadcrumbRoot": string,
+  readonly "empty": string,
   readonly "menu": {
     readonly "aboutBook": string,
     readonly "addExtract": string,
-    readonly "addTeaser": string,
     readonly "goBuyBook": string,
     readonly "goLoanBook": string,
     readonly "goSubBook": string
+  },
+  readonly "network": {
+    readonly "error": string,
+    readonly "reject": string,
+    readonly "timeout": string
   }
 };
   (_: "opds.addForm", __?: {}): {
   readonly "addButton": string,
   readonly "name": string,
   readonly "namePlaceholder": string,
-  readonly "pasteUrl": string,
   readonly "title": string,
   readonly "url": string,
   readonly "urlPlaceholder": string
@@ -213,26 +218,32 @@ declare namespace typed_i18n {
   (_: "opds.addForm.addButton", __?: {}): string;
   (_: "opds.addForm.name", __?: {}): string;
   (_: "opds.addForm.namePlaceholder", __?: {}): string;
-  (_: "opds.addForm.pasteUrl", __?: {}): string;
   (_: "opds.addForm.title", __?: {}): string;
   (_: "opds.addForm.url", __?: {}): string;
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string; (_: "opds.back", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
+  (_: "opds.empty", __?: {}): string;
   (_: "opds.menu", __?: {}): {
   readonly "aboutBook": string,
   readonly "addExtract": string,
-  readonly "addTeaser": string,
   readonly "goBuyBook": string,
   readonly "goLoanBook": string,
   readonly "goSubBook": string
 };
   (_: "opds.menu.aboutBook", __?: {}): string;
   (_: "opds.menu.addExtract", __?: {}): string;
-  (_: "opds.menu.addTeaser", __?: {}): string;
   (_: "opds.menu.goBuyBook", __?: {}): string;
   (_: "opds.menu.goLoanBook", __?: {}): string;
   (_: "opds.menu.goSubBook", __?: {}): string;
+  (_: "opds.network", __?: {}): {
+  readonly "error": string,
+  readonly "reject": string,
+  readonly "timeout": string
+};
+  (_: "opds.network.error", __?: {}): string;
+  (_: "opds.network.reject", __?: {}): string;
+  (_: "opds.network.timeout", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "deleteButton": string,
   readonly "expiredLcp": string,
@@ -262,6 +273,7 @@ declare namespace typed_i18n {
     readonly "annotations": string,
     readonly "bookmarks": string,
     readonly "illustrations": string,
+    readonly "landmarks": string,
     readonly "toc": string
   },
   readonly "navigation": {
@@ -269,6 +281,10 @@ declare namespace typed_i18n {
     readonly "bookmarkTitle": string,
     readonly "detachWindowTitle": string,
     readonly "fullscreenTitle": string,
+    readonly "goTo": string,
+    readonly "goToError": string,
+    readonly "goToPlaceHolder": string,
+    readonly "goToTitle": string,
     readonly "infoTitle": string,
     readonly "openTableOfContentsTitle": string,
     readonly "quitFullscreenTitle": string,
@@ -317,17 +333,23 @@ declare namespace typed_i18n {
   readonly "annotations": string,
   readonly "bookmarks": string,
   readonly "illustrations": string,
+  readonly "landmarks": string,
   readonly "toc": string
 };
   (_: "reader.marks.annotations", __?: {}): string;
   (_: "reader.marks.bookmarks", __?: {}): string;
   (_: "reader.marks.illustrations", __?: {}): string;
+  (_: "reader.marks.landmarks", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
   (_: "reader.navigation", __?: {}): {
   readonly "backHomeTitle": string,
   readonly "bookmarkTitle": string,
   readonly "detachWindowTitle": string,
   readonly "fullscreenTitle": string,
+  readonly "goTo": string,
+  readonly "goToError": string,
+  readonly "goToPlaceHolder": string,
+  readonly "goToTitle": string,
   readonly "infoTitle": string,
   readonly "openTableOfContentsTitle": string,
   readonly "quitFullscreenTitle": string,
@@ -338,6 +360,10 @@ declare namespace typed_i18n {
   (_: "reader.navigation.bookmarkTitle", __?: {}): string;
   (_: "reader.navigation.detachWindowTitle", __?: {}): string;
   (_: "reader.navigation.fullscreenTitle", __?: {}): string;
+  (_: "reader.navigation.goTo", __?: {}): string;
+  (_: "reader.navigation.goToError", __?: {}): string;
+  (_: "reader.navigation.goToPlaceHolder", __?: {}): string;
+  (_: "reader.navigation.goToTitle", __?: {}): string;
   (_: "reader.navigation.infoTitle", __?: {}): string;
   (_: "reader.navigation.openTableOfContentsTitle", __?: {}): string;
   (_: "reader.navigation.quitFullscreenTitle", __?: {}): string;

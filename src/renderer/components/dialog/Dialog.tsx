@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 
@@ -26,15 +27,29 @@ interface Props extends TranslatorProps {
 }
 
 export class Dialog extends React.Component<Props, undefined> {
+    private appElement: HTMLElement;
+    private appOverlayElement: HTMLElement;
+    private rootElement: HTMLElement;
+
     public constructor(props: Props) {
         super(props);
+
+        this.appElement = document.getElementById("app");
+        this.appOverlayElement = document.getElementById("app-overlay");
+        this.rootElement = document.createElement("div");
 
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
     public componentDidMount() {
+        this.appElement.setAttribute("aria-hidden", "true");
+        this.appOverlayElement.appendChild(this.rootElement);
+
         document.addEventListener("keydown", this.handleKeyPress);
     }
     public componentWillUnmount() {
+        this.appElement.setAttribute("aria-hidden", "false");
+        this.appOverlayElement.removeChild(this.rootElement);
+
         document.removeEventListener("keydown", this.handleKeyPress);
     }
 
@@ -42,42 +57,44 @@ export class Dialog extends React.Component<Props, undefined> {
         const content = this.props.children;
         const className = this.props.className;
         const { __ } = this.props;
-
-        return (
-            <FocusLock>
-                <div
-                    id="dialog"
-                    role="dialog"
-                    aria-labelledby="dialog-title"
-                    aria-describedby="dialog-desc"
-                    aria-modal="true"
-                    aria-hidden={this.props.open ? "false" : "true"}
-                    tabIndex={-1}
-                    className={styles.c_dialog}
-                    style={{visibility: this.props.open ? "visible" : "hidden"}}
-                >
-                    <div onClick={this.props.close} className={styles.c_dialog_background} />
+        return ReactDOM.createPortal(
+            (
+                <FocusLock>
                     <div
-                        role="document"
-                        id={this.props.id}
-                        className={classNames(className, styles.c_dialog__box)}
+                        id="dialog"
+                        role="dialog"
+                        aria-labelledby="dialog-title"
+                        aria-describedby="dialog-desc"
+                        aria-modal="true"
+                        aria-hidden={this.props.open ? "false" : "true"}
+                        tabIndex={-1}
+                        className={styles.c_dialog}
+                        style={{visibility: this.props.open ? "visible" : "hidden"}}
                     >
-                        { content && <>
-                            { content }
-                        </>}
-                        <button
-                            className={styles.close_button}
-                            type="button"
-                            aria-label={__("accessibility.closeDialog")}
-                            title={__("dialog.closeModalWindow")}
-                            data-dismiss="dialog"
-                            onClick={this.props.close}
+                        <div onClick={this.props.close} className={styles.c_dialog_background} />
+                        <div
+                            role="document"
+                            id={this.props.id}
+                            className={classNames(className, styles.c_dialog__box)}
                         >
-                            <SVG svg={QuitIcon}/>
-                        </button>
+                            { content && <>
+                                { content }
+                            </>}
+                            <button
+                                className={styles.close_button}
+                                type="button"
+                                aria-label={__("accessibility.closeDialog")}
+                                title={__("dialog.closeModalWindow")}
+                                data-dismiss="dialog"
+                                onClick={this.props.close}
+                            >
+                                <SVG svg={QuitIcon}/>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </FocusLock>
+                </FocusLock>
+            ),
+            this.rootElement,
         );
     }
 

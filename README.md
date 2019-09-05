@@ -4,7 +4,7 @@
 
 TravisCI, `develop` branch:
 
-[![Build Status](https://travis-ci.org/edrlab/readium-desktop.svg?branch=master)](https://travis-ci.org/edrlab/readium-desktop)
+[![Build Status](https://travis-ci.org/readium/readium-desktop.svg?branch=master)](https://travis-ci.org/readium/readium-desktop)
 
 ## Prerequisites
 
@@ -81,10 +81,26 @@ To do it, launch the powershell as an administrator and type:
 npm install -g windows-build-tools
 ```
 
-## Import file from command line
+## Command line
 
 ```
-npm run build:dev:main && npm run start:dev:main:electron -- --import-file=<path to epub or lcpl file>
+Thorium Reader <cmd> [args]
+
+Commands:
+  Thorium Reader opds <title> <url>  import opds feed
+  Thorium Reader import <path>       import epub or lpcl file
+  Thorium Reader read <title>        searches already-imported publications with
+                                     the provided TITLE, and opens the reader
+                                     with the first match
+  Thorium Reader [path]              default command                   [default]
+  Thorium Reader completion          generate completion script
+
+Positionals:
+  path  path of your publication, it can be an absolute, relative path  [string]
+
+Options:
+  --version  Show version number                                       [boolean]
+  --help     Show help                                                 [boolean]
 ```
 
 ## Issues
@@ -149,66 +165,25 @@ Leveldown is fast and is shipped in the production environment.
 http://www.feedbooks.com/books/top.atom?category=FBFIC019000
 ```
 
-## Debug in VS Code (method 1)
+## Debug main process from Visual Studio Code (renderer windows from web inspectors)
 
-Note that this method does not work if the WebPack bundle(s) generated for renderer process(es)
-contain external package references (typically, using Hot Module Reload and WebPack's development server,
-combined with "externals" optimization in order to minimize bundle size and compile times).
-This is because the VSCode "launch" configuration of Electron results in invoking the Electron binary CLI
-with a single Javascript file as main parameter, instead of the "." convention (which seeks for suitable "main" in package.json or index.js).
-For some reason, the `require()` context given by Electron in renderer processes is very sensitive to this seemingly minute difference,
-and external node_module fetches simply fail. See method 2 below.
+Simply use the pre-defined "__ LAUNCH ATTACH" definition in `launch.json`, which will perform the required build steps ; via the regular WebPack configuration, including the dev server ; in order to prepare the main and renderer process bundles for debugging (there is a 30s timeout just in case compiling takes too long, but this may need to be increased on slow computers). The automatically-called prerequisite for this launch configuration is `tasks.json` "launch:attach", which is an asynchronous task (see the `npm run vscode:launch:attach` in `package.json`), thus why the debugger attachment waits for some time before giving-up. This launch configuration supports source maps, and the relative TypeScript file paths in compiler console messages can be clicked to reach into the source directly (for example when the renderer HotModulReload file watcher kicks-in, and generates errors). Note that the CLI functionality of Thorium / readium-desktop is bypassed in this special debugging mode, to avoid conflicts with Electron/Chromium's own command line parameters.
 
-Launcher:
+There is an alternative "__ LAUNCH HOT" definition in `launch.json` which leverages VSCode's ability to automatically bind a debugger instance and work out the TypeScript source mapping. The automatically-called prerequisite for this launch configuration is `npm run vscode:launch:hot` in `package.json` (or the equivalent `tasks.json` "launch:hot" definition). Note that in this case, the WebPack dev servers are started in external shells, instead of VSCode's integrated console or terminals.
 
-```
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Launch Program",
-      "type": "node",
-      "request": "launch",
-      "cwd": "${workspaceRoot}",
-      "program": "${workspaceRoot}/src/main.ts",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
-      "windows": {
-        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
-      },
-      "args" : ["."],
-      "outFiles": [
-        "${workspaceRoot}/dist/main.js"
-      ],
-      "sourceMaps": true,
-      "env": {
-        "DEBUG": "r2:*",
-        "NODE_ENV": "development"
-      }
-    }
-  ]
-}
-```
+In both cases, the main process automatically enters debugging mode, and breakpoints can be set early on. However, because there may be several renderer processes to debug ; typically: the library/bookshelf view, and the reader view(s) ; two separate launch tasks are defined: "CHROME DEBUG 1 (BOOKSHELF)" and "CHROME DEBUG 2 (READER)". They must be invoked manually in order to choose which target Chromium tab to debug into. Note that the web inspector of any Electron BrowserWindows can be opened at the same time, for example to use the React or Redux dev tools.
 
-Launch command, either:
-1) `npm run build` (generates main and renderer process bundles in ./dist/)
-2) `npm run build:dev:main && npm run start:dev:renderer-reader` (generates main process bundle in ./dist/, and starts the WebPack Hot Module Reload servers for each renderer process)
+Important note: in order to debug into the Electron renderer process(es), the "Debugger for Chrome" extension must be installed in Visual Studio Code. More information:
 
-Then launch debugger in vs code
+* https://github.com/Microsoft/vscode-chrome-debug
+* https://electronjs.org/docs/tutorial/debugging-main-process-vscode
+* https://github.com/microsoft/vscode-recipes/tree/master/Electron
 
+## Localization / UI translations
 
-## Debug in VS Code (method 2)
+https://github.com/readium/readium-desktop/tree/develop/src/resources/locales
 
-Launcher:
-
-```
-{
-  "name": "Attach (--remote-debugging-port=25575)",
-  "type": "node",
-  "request": "attach",
-  "port": 25575
-}
-```
-
-Launch command: `npm run start:vscode`
-
-Then launch debugger in vs code
+* `npm run i18n-sort` => ensure locales JSON files are "canonical" (sorted keys, consistent indentation and trailing line break)
+* `npm run i18n-scan` => ensure locales JSON files have no missing keys and no superfluous/unused keys (this command analyzes the source code to search for well-known `i18next` usage patterns)
+* `npm run i18n-check` => ensure "secondary" locales JSON files have no missing keys and no superfluous keys, relative to the "primary" English translation. Missing keys are automatically added with an empty string value, redundant keys are removed.
+* `npm run i18n-typed` => rebuilds the TypeScript types for the locales JSON files (this enables static compiler checks)

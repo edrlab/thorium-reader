@@ -10,7 +10,25 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { JsonMap } from "readium-desktop/typings/json";
 import { Store } from "redux";
 import * as request from "request";
-import { promisify } from "util";
+import { Url } from "url";
+
+export interface IHttpGetResult<TBody, TData> {
+    readonly isFailure: boolean;
+    readonly isSuccess: boolean;
+    readonly isTimeout: boolean;
+    readonly url: string | Url;
+    readonly timeoutConnect?: boolean;
+    readonly responseUrl?: string;
+    readonly statusCode?: number;
+    readonly statusMessage?: string;
+    readonly contentType?: string;
+    readonly body?: TBody;
+    data?: TData;
+}
+
+type THttpGetCallback<T1, T2> =
+    (result: IHttpGetResult<T1, T2>) =>
+        IHttpGetResult<T1, T2> | Promise<IHttpGetResult<T1, T2>>;
 
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
@@ -18,10 +36,14 @@ type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalU
 /**
  * @param url url of your GET request
  * @param options request options
+ * @param callback callback to set data from body
  * @returns body of url response. 'String' type returned in many cases except for options.json = true
  */
-// tslint:disable-next-line: max-line-length
-export async function httpGet<T extends JsonMap | string = string>(url: string, options?: TRequestCoreOptionsOptionalUriUrl): Promise<T> {
+export async function httpGet<TBody extends JsonMap | string = string , TData = string>(
+    url: string | Url,
+    options?: TRequestCoreOptionsOptionalUriUrl,
+    callback?: THttpGetCallback<TBody, TData>,
+): Promise<IHttpGetResult<TBody, TData>> {
     options = options || {} as TRequestCoreOptionsOptionalUriUrl;
     options.headers = options.headers || {};
 
@@ -38,7 +60,7 @@ export async function httpGet<T extends JsonMap | string = string>(url: string, 
                 "user-agent": "readium-desktop",
                 "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
             });
-    const requestOptions = Object.assign(
+    const requestOptions: TRequestCoreOptionsRequiredUriUrl = Object.assign(
         {},
         options,
         {
@@ -47,20 +69,41 @@ export async function httpGet<T extends JsonMap | string = string>(url: string, 
             encoding: undefined,
             headers,
         },
-    ) as TRequestCoreOptionsRequiredUriUrl;
+    );
 
-    const promisifiedRequest = promisify<TRequestCoreOptionsRequiredUriUrl, request.Response>(request);
-    const response = await promisifiedRequest(requestOptions);
+    const result: IHttpGetResult<TBody, TData> =
+        await new Promise((resolve, reject) => {
+            request(requestOptions, (err, response) => {
+                if (err) {
+                    if (err.code === "ETIMEDOUT") {
+                        resolve({
+                            isTimeout: true,
+                            timeoutConnect: err.connect,
+                            isFailure: true,
+                            isSuccess: false,
+                            url: requestOptions.url,
+                        });
+                    }
+                    reject(err);
+                    return ;
+                }
+                resolve({
+                    isTimeout: false,
+                    isFailure: response.statusCode < 200 || response.statusCode >= 300,
+                    isSuccess: response.statusCode >= 200 && response.statusCode < 300,
+                    url: requestOptions.url,
+                    responseUrl: response.url,
+                    statusCode: response.statusCode,
+                    statusMessage: response.statusMessage,
+                    body: response.body,
+                    data: callback ? undefined : response.body,
+                    contentType: response.caseless.get("Content-Type"),
+                });
+            });
+        });
 
-    if (!response) {
-        throw new Error(`No HTTP response?! ${url}`);
+    if (callback) {
+        return (await Promise.all([callback(result)]))[0];
     }
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-        const b = response.body ? JSON.stringify(response.body) : "";
-        throw new Error(`HTTP response status code: ${url} => ${response.statusCode} => ${b}`);
-    }
-    if (!response.body) {
-        throw new Error(`HTTP no body?! ${url} => ${response.statusCode}`);
-    }
-    return response.body;
+    return result;
 }

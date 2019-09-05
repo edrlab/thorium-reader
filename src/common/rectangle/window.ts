@@ -13,6 +13,8 @@ import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { debounce } from "readium-desktop/utils/debounce";
 import { AppWindow, AppWindowType } from "../models/win";
 
+import { ConfigDocument } from "readium-desktop/main/db/document/config";
+
 // Logger
 const debug = debug_("readium-desktop:common:rectangle:window");
 
@@ -21,8 +23,8 @@ const defaultRectangle = (): Rectangle => (
     {
         height: 600,
         width: 800,
-        x: screen.getPrimaryDisplay().workAreaSize.width / 3,
-        y: screen.getPrimaryDisplay().workAreaSize.height / 3,
+        x: Math.round(screen.getPrimaryDisplay().workAreaSize.width / 3),
+        y: Math.round(screen.getPrimaryDisplay().workAreaSize.height / 3),
     });
 
 export type t_savedWindowsRectangle = typeof savedWindowsRectangle;
@@ -39,6 +41,7 @@ export const savedWindowsRectangle = async (rectangle: Rectangle) => {
     }
     return rectangle;
 };
+const debounceSavedWindowsRectangle = debounce<t_savedWindowsRectangle>(savedWindowsRectangle, 500);
 
 export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rectangle> => {
 
@@ -55,17 +58,23 @@ export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rect
             return rectangle;
         } else {
             const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
-            const rectangle = await configRepository.get(configIdKey);
+            let rectangle: ConfigDocument | undefined;
+            try {
+                rectangle = await configRepository.get(configIdKey);
+            } catch (err) {
+                // ignore
+            }
             if (rectangle && rectangle.value) {
                 debug("get window rectangle position from db :", rectangle.value);
                 return rectangle.value;
             }
-            return await savedWindowsRectangle(defaultRectangle());
         }
     } catch (e) {
         debug("get error", e);
-        return defaultRectangle();
     }
+
+    debug("default window rectangle");
+    return defaultRectangle();
 };
 
 export interface IOnWindowMoveResize {
@@ -76,8 +85,6 @@ export interface IOnWindowMoveResize {
 // handler to attach and detach move/resize event to win
 export const onWindowMoveResize = (win: BrowserWindow): IOnWindowMoveResize => {
     const handler = () => {
-        const debounceSavedWindowsRectangle =
-            debounce<t_savedWindowsRectangle>(savedWindowsRectangle, 500);
         debounceSavedWindowsRectangle(win.getBounds());
     };
 

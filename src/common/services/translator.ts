@@ -5,19 +5,90 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as i18n from "i18next";
-import { injectable} from "inversify";
+import { injectable } from "inversify";
 
 import * as deCatalog from "readium-desktop/resources/locales/de.json";
 import * as enCatalog from "readium-desktop/resources/locales/en.json";
 import * as frCatalog from "readium-desktop/resources/locales/fr.json";
 
-import * as deLang from "readium-desktop/resources/locale-names/enLang.json";
+import * as deLang from "readium-desktop/resources/locale-names/deLang.json";
 import * as enLang from "readium-desktop/resources/locale-names/enLang.json";
 import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
 import { TFunction } from "readium-desktop/typings/en.translation";
 
-const initI18n = i18n.init({
+// -----------------------------------------------------------
+// i18next Typescript definitions woes:
+
+// https://github.com/i18next/i18next/pull/1291
+// https://github.com/i18next/i18next/issues/1271
+// https://github.com/i18next/i18next/issues/1177
+
+// import i18next from "i18next"; // Fails because of esModuleInterop
+// import i18n from "i18next"; // Fails because of esModuleInterop
+
+import { i18n } from "i18next"; // just the TypeScript type
+
+// (default i18next package.json is "module" ESM (i18next/dist/esm/i18next),
+// but may also be "main" CJS (i18next/dist/cjs/i18next),
+// depending on WebPack bundler strategy matrix: DEV vs. PROD, and MAIN vs. RENDERER
+
+// ##### technique 1:
+import * as i18next from "i18next";
+//
+// ##### technique 2:
+// import i18next = require("i18next");
+//
+// ##### technique 3:
+// tslint:disable-next-line: no-var-requires
+// const i18next: i18n = require("i18next");
+//
+// DEV:
+// MAIN => i18next.createInstance(),
+// RENDERER => i18next.default.createInstance()
+//
+// PROD:
+// MAIN => i18next.default.createInstance(),
+// RENDERER => i18next.default.createInstance()
+
+// ##### technique 4 (force CJS):
+// tslint:disable-next-line: no-var-requires
+// const i18next: i18n = require("i18next/dist/cjs/i18next");
+//
+// DEV:
+// MAIN => i18next.createInstance(),
+// RENDERER => i18next.createInstance()
+//
+// PROD:
+// MAIN => i18next.createInstance(),
+// RENDERER => i18next.createInstance()
+
+// ##### technique 5 (force ESM):
+// tslint:disable-next-line: no-var-requires
+// const i18next: i18n = require("i18next/dist/esm/i18next");
+//
+// DEV:
+// MAIN => fail
+// RENDERER => fail
+//
+// PROD:
+// MAIN => i18next.default.createInstance(),
+// RENDERER => i18next.default.createInstance()
+
+let i18nextInstance: i18n | undefined;
+if (i18next.createInstance) {
+    i18nextInstance = i18next.createInstance();
+
+} else if (((i18next as any).default as i18n).createInstance) {
+    i18nextInstance = ((i18next as any).default as i18n).createInstance();
+
+} else { // Fallback for TS compiler only (not an actual runtime occurrence)
+    i18nextInstance = i18next;
+}
+// -----------------------------------------------------------
+
+// https://www.i18next.com/overview/configuration-options
+i18nextInstance.init({
+    debug: false,
     resources: {
         en: {
             translation: enCatalog,
@@ -29,15 +100,36 @@ const initI18n = i18n.init({
             translation: deCatalog,
         },
     },
+    // lng: undefined,
     fallbackLng: "en",
+    // whitelist: LANGUAGE_KEYS,
+    // nonExplicitWhitelist: true,
+    // load: "all",
+    // preload: LANGUAGE_KEYS,
+    // lowerCaseLng: false,
+    // saveMissing: true,
+    // missingKeyHandler: (lng, ns, key, fallbackValue, updateMissing, options) => {
+    //     if (!options || !options.ignoreMissingKey) {
+    //         winston.info('i18next missingKey: ' + key);
+    //     }
+    //     return key;
+    // },
+}).then((_t) => {
+    // noop
+}).catch((err) => {
+    console.log(err);
 });
 
-initI18n.addResourceBundle("en", "translation", enLang, true);
-initI18n.addResourceBundle("fr", "translation", frLang, true);
-initI18n.addResourceBundle("de", "translation", deLang, true);
+i18nextInstance.addResourceBundle("en", "translation", enLang, true);
+i18nextInstance.addResourceBundle("fr", "translation", frLang, true);
+i18nextInstance.addResourceBundle("de", "translation", deLang, true);
 
-const initI18nEN = initI18n.cloneInstance();
-initI18nEN.changeLanguage("en");
+const i18nextInstanceEN = i18nextInstance.cloneInstance();
+i18nextInstanceEN.changeLanguage("en").then((_t) => {
+    // noop
+}).catch((err) => {
+    console.log(err);
+});
 
 export enum AvailableLanguages {
     en = "English",
@@ -62,8 +154,12 @@ export class Translator {
 
     public setLocale(locale: string) {
         this.locale = locale;
-        if (initI18n.language !== this.locale) {
-            initI18n.changeLanguage(this.locale);
+        if (i18nextInstance.language !== this.locale) {
+            i18nextInstance.changeLanguage(this.locale).then((_t) => {
+                // noop
+            }).catch((err) => {
+                console.log(err);
+            });
         }
     }
 
@@ -114,9 +210,9 @@ export class Translator {
     }
 
     private _translate(message: string, options: any = {}): any {
-        const label = initI18n.t(message, options);
+        const label = i18nextInstance.t(message, options);
         if (!label || !label.length) {
-            return initI18nEN.t(message, options);
+            return i18nextInstanceEN.t(message, options);
         }
         return label;
     }

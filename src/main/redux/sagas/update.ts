@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { delay, SagaIterator } from "redux-saga";
-import { call, put, take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
+import { call, delay, put, take } from "redux-saga/effects";
 
-import { httpGet } from "readium-desktop/common/utils/http";
+import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
 
 import { appActions } from "readium-desktop/main/redux/actions";
 
@@ -27,12 +27,20 @@ export function* updateStatusWatcher(): SagaIterator {
 
     while (true) {
         try {
-            const result: string = yield call(() => httpGet(
+            const result: IHttpGetResult<string, any> = yield call(() => httpGet(
                 LATEST_VERSION_URL,
-                {timeout: 5000},
+                {
+                    timeout: 5000,
+                    json: true,
+                },
             ));
 
-            const jsonObj = JSON.parse(result);
+            if (result.isFailure) {
+                throw new Error(`Http get error with code
+                    ${result.statusCode} for ${result.url}`);
+            }
+
+            const jsonObj = result.data;
 
             if (jsonObj.id && jsonObj.html_url) {
                 const latestVersion = jsonObj.tag_name;
@@ -49,6 +57,6 @@ export function* updateStatusWatcher(): SagaIterator {
         }
 
         // Try to retrieve latest version every 20 minutes
-        yield call(delay, 120000);
+        yield delay(120000);
     }
 }

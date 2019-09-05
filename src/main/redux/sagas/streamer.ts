@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import * as path from "path";
 import * as portfinder from "portfinder";
 import { SagaIterator } from "redux-saga";
-import { call, put, select, take } from "redux-saga/effects";
+import { all, call, put, select, take } from "redux-saga/effects";
 
 import { Server } from "@r2-streamer-js/http/server";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
@@ -99,7 +99,7 @@ export function* stopRequestWatcher(): SagaIterator {
 
 export function* publicationOpenRequestWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(streamerActions.ActionType.PublicationOpenRequest);
+        const action: any = yield take(streamerActions.ActionType.PublicationOpenRequest);
         const publicationRepository = container.get("publication-repository") as PublicationRepository;
         const publicationViewConverter = container.get("publication-view-converter") as PublicationViewConverter;
         const lcpManager = container.get("lcp-manager") as LcpManager;
@@ -134,7 +134,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
             yield put(streamerActions.start());
 
             // Wait for streamer
-            const streamerStartAction = yield take([
+            const streamerStartAction: any = yield take([
                 streamerActions.ActionType.StartSuccess,
                 streamerActions.ActionType.StartError,
             ]);
@@ -156,7 +156,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
 
-        let parsedEpub;
+        let parsedEpub: any;
         try {
             // Test if publication contains LCP drm
             parsedEpub = yield call(
@@ -189,7 +189,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                         action.payload.publication.identifier,
                     );
 
-                    const lsdStatus = yield call(
+                    const lsdStatus: any = yield call(
                         lcpManager.getLsdStatus.bind(lcpManager),
                         publication,
                     );
@@ -237,7 +237,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
 
 export function* publicationCloseRequestWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(streamerActions.ActionType.PublicationCloseRequest);
+        const action: any = yield take(streamerActions.ActionType.PublicationCloseRequest);
         const publicationRepository = container.get("publication-repository") as PublicationRepository;
 
         // Get publication
@@ -281,10 +281,10 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
 }
 
 export function* watchers() {
-    yield [
-        stopRequestWatcher(),
-        startRequestWatcher(),
-        publicationOpenRequestWatcher(),
-        publicationCloseRequestWatcher(),
-    ];
+    yield all([
+        call(stopRequestWatcher),
+        call(startRequestWatcher),
+        call(publicationOpenRequestWatcher),
+        call(publicationCloseRequestWatcher),
+    ]);
 }

@@ -6,22 +6,18 @@
 // ==LICENSE-END==
 
 import { inject, injectable } from "inversify";
-
+import { ToastType } from "readium-desktop/common/models/toast";
+import { open } from "readium-desktop/common/redux/actions/toast";
+import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
-
-import { CatalogService } from "readium-desktop/main/services/catalog";
-
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-
 import { container } from "readium-desktop/main/di";
-
+import { CatalogService } from "readium-desktop/main/services/catalog";
 import { Store } from "redux";
 
-import { ToastType } from "readium-desktop/common/models/toast";
-
-import { open } from "readium-desktop/common/redux/actions/toast";
+import { downloadActions } from "readium-desktop/common/redux/actions";
+import { ImportState } from "readium-desktop/common/redux/states/import";
 
 @injectable()
 export class PublicationApi {
@@ -33,6 +29,9 @@ export class PublicationApi {
 
     @inject("catalog-service")
     private readonly catalogService!: CatalogService;
+
+    @inject("translator")
+    private readonly translator!: Translator;
 
     public async get(data: any): Promise<PublicationView> {
         const { identifier } = data;
@@ -81,17 +80,39 @@ export class PublicationApi {
         return this.publicationRepository.getAllTags();
     }
 
-    public async importOpdsEntry(data: any) {
-        const { url, base64OpdsPublication, downloadSample, title } = data;
-        this.dispatchToastRequest(ToastType.DownloadStarted, "message.download.start", title);
-        let publication;
-        if (url) {
-            publication = await this.catalogService.importOpdsEntry(url, downloadSample);
+    public async importOpdsEntry(data: ImportState): Promise<PublicationView> {
+        const url = data.publication.url;
+        this.sendDownloadRequest(url);
+        // dispatch notification to user with redux
+        this.dispatchToastRequest(ToastType.DownloadStarted,
+            this.translator.translate("message.download.start", {title: data.publication.title}));
+
+        let returnView: PublicationView;
+        let title: string;
+        // if url exist import new entry by download
+        if (data.publication.url) {
+            const httpPub = await this.catalogService.importOpdsEntry(data.publication.url, data.downloadSample);
+            if (httpPub.isSuccess) {
+                title = httpPub.data.title;
+                this.sendDownloadSuccess(url);
+                returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
+            } else {
+                throw new Error(`Http importOpdsEntry error with code
+                    ${httpPub.statusCode} for ${httpPub.url}`);
+            }
         } else {
-            const opdsPublication = JSON.parse(Buffer.from(base64OpdsPublication, "base64").toString("utf-8"));
-            publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample);
+            const opdsPublication =
+                JSON.parse(Buffer.from(data.publication.base64OpdsPublication, "base64").toString("utf-8"));
+            const publication = await this.catalogService.importOpdsPublication(opdsPublication, data.downloadSample);
+            title = publication.title;
+            this.sendDownloadSuccess(url);
+            returnView =  this.publicationViewConverter.convertDocumentToView(publication);
         }
-        this.dispatchToastRequest(ToastType.DownloadComplete, "message.download.success", publication.title);
+
+        // dispatch notification to user with redux
+        this.dispatchToastRequest(ToastType.DownloadComplete,
+            this.translator.translate("message.download.success", {title}));
+        return returnView;
     }
 
     public async import(data: any): Promise<PublicationView[]> {
@@ -109,7 +130,8 @@ export class PublicationApi {
 
         return newDocs.map((doc) => {
             const publication = this.publicationViewConverter.convertDocumentToView(doc);
-            this.dispatchToastRequest(ToastType.DownloadComplete, "message.import.success", publication.title);
+            this.dispatchToastRequest(ToastType.DownloadComplete,
+                this.translator.translate("message.import.success", {title: publication.title}));
             return publication;
         });
     }
@@ -127,12 +149,25 @@ export class PublicationApi {
         this.catalogService.exportPublication(publication, destinationPath);
     }
 
-    private dispatchToastRequest(type: ToastType, message: string, title: string) {
+    private dispatchToastRequest(type: ToastType, message: string) {
         const store = container.get("store") as Store<any>;
-        store.dispatch(open(type,
+        store.dispatch(open(type, message));
+    }
+
+    private sendDownloadRequest(url: string) {
+        const store = container.get("store") as Store<any>;
+        store.dispatch(downloadActions.addDownload(
             {
-                message,
-                messageProps: {title},
+                url,
+            },
+        ));
+    }
+
+    private sendDownloadSuccess(url: string) {
+        const store = container.get("store") as Store<any>;
+        store.dispatch(downloadActions.removeDownload(
+            {
+                url,
             },
         ));
     }

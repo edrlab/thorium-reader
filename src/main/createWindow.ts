@@ -6,25 +6,29 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { BrowserWindow, Menu, shell } from "electron";
+import { app, BrowserWindow, Menu, shell } from "electron";
 import * as path from "path";
 import { AppWindowType } from "readium-desktop/common/models/win";
 import {
-    getWindowsRectangle, savedWindowsRectangle,
+    getWindowsRectangle,
 } from "readium-desktop/common/rectangle/window";
-import { Translator } from "readium-desktop/common/services/translator";
 import { container } from "readium-desktop/main/di";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import {
-    _PACKAGING, _RENDERER_APP_BASE_URL, IS_DEV,
+    _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
-import { debounce } from "readium-desktop/utils/debounce";
+
+import { setMenu } from "./menu";
 
 // Logger
 const debug = debug_("readium-desktop:createWindow");
 
+// Global reference to the main window,
+// so the garbage collector doesn't close it.
+let mainWindow: BrowserWindow = null;
+
 // Opens the main window, with a native menu bar.
-export async function createWindow({ mainWindow }: { mainWindow: BrowserWindow }) {
+export async function createWindow() {
     mainWindow = new BrowserWindow({
         ...(await getWindowsRectangle()),
         minWidth: 800,
@@ -37,6 +41,37 @@ export async function createWindow({ mainWindow }: { mainWindow: BrowserWindow }
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+
+    if (IS_DEV) {
+        mainWindow.webContents.on("context-menu", (_ev, params) => {
+            const { x, y } = params;
+            Menu.buildFromTemplate([{
+                label: "Inspect element",
+                click: () => {
+                    mainWindow.webContents.inspectElement(x, y);
+                },
+            }]).popup({window: mainWindow});
+        });
+
+        mainWindow.webContents.on("did-finish-load", () => {
+            const {
+                default: installExtension,
+                REACT_DEVELOPER_TOOLS,
+                REDUX_DEVTOOLS,
+            } = require("electron-devtools-installer");
+
+            [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
+                installExtension(extension)
+                    .then((name: string) => debug("Added Extension: ", name))
+                    .catch((err: any) => debug("An error occurred: ", err));
+            });
+        });
+
+        if (_VSCODE_LAUNCH !== "true") {
+            mainWindow.webContents.openDevTools({ mode: "detach" });
+        }
+    }
+
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindow = winRegistry.registerWindow(mainWindow, AppWindowType.Library);
 
@@ -57,30 +92,7 @@ export async function createWindow({ mainWindow }: { mainWindow: BrowserWindow }
 
     mainWindow.loadURL(rendererBaseUrl);
 
-    // Create the app menu on mac os to allow copy paste
-    if (process.platform === "darwin") {
-        initDarwin();
-    }
-
-    if (IS_DEV) {
-        const {
-            default: installExtension,
-            REACT_DEVELOPER_TOOLS,
-            REDUX_DEVTOOLS,
-        } = require("electron-devtools-installer");
-
-        [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
-            installExtension(extension)
-                .then((name: string) => debug("Added Extension: ", name))
-                .catch((err: any) => debug("An error occurred: ", err));
-        });
-
-        // Open dev tools in development environment
-        mainWindow.webContents.openDevTools();
-    } else {
-        // Remove menu bar
-        mainWindow.setMenu(null);
-    }
+    setMenu(mainWindow);
 
     // Redirect link to an external browser
     const handleRedirect = (event: any, url: any) => {
@@ -101,60 +113,15 @@ export async function createWindow({ mainWindow }: { mainWindow: BrowserWindow }
     // mainWindow.webContents.session.clearStorageData();
 
     mainWindow.on("closed", () => {
+        // note that winRegistry still contains a reference to mainWindow, so won't necessarily be garbage-collected
         mainWindow = null;
     });
-
-    const debounceSavedWindowsRectangle = debounce(savedWindowsRectangle, 500);
-
-    mainWindow.on("move", () =>
-        debounceSavedWindowsRectangle(mainWindow.getBounds()));
 }
 
-export function initDarwin() {
-    const translator = container.get("translator") as Translator;
-    const template: Electron.MenuItemConstructorOptions[] = [
-        {
-            label: "Thorium",
-            submenu: [
-                {
-                    role: "quit",
-                    label: translator.translate("app.quit"),
-                },
-            ],
-        },
-        {
-            label: translator.translate("app.edit.title"),
-            role: "edit",
-            submenu: [
-                {
-                    role: "undo",
-                    label: translator.translate("app.edit.undo"),
-                },
-                {
-                    role: "redo",
-                    label: translator.translate("app.edit.redo"),
-                },
-                {
-                    type: "separator",
-                },
-                {
-                    role: "cut",
-                    label: translator.translate("app.edit.cut"),
-                },
-                {
-                    role: "copy",
-                    label: translator.translate("app.edit.copy"),
-                },
-                {
-                    role: "paste",
-                    label: translator.translate("app.edit.paste"),
-                },
-                {
-                    role: "selectall",
-                    label: translator.translate("app.edit.selectAll"),
-                },
-            ],
-        },
-    ];
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-}
+// On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
+// windows open.
+app.on("activate", async () => {
+    if (mainWindow === null) {
+        await createWindow();
+    }
+});

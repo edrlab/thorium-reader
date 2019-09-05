@@ -20,6 +20,7 @@ export interface ApiOperationDefinition {
     methodId: string;
     callProp?: string;
     resultProp?: string;
+    resultIsRejectProp?: string;
     buildRequestData?: any;
     onLoad?: boolean; // Load in component did mount, default true
 }
@@ -140,6 +141,10 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
                 const result = state.api.data[operationRequest.id].result;
                 const resultProp = operationRequest.definition.resultProp;
                 operationResults[resultProp] = result;
+
+                const resultIsReject = state.api.data[operationRequest.id].resultIsReject;
+                const resultIsRejectProp = operationRequest.definition.resultIsRejectProp;
+                operationResults[resultIsRejectProp] = resultIsReject;
             }
         }
 
@@ -151,6 +156,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
     };
 
     const BaseWrapperComponent = class extends React.Component<ApiProps, undefined> {
+        public static displayName: string;
 
         // Ideally should be private, but see TS4094 comments in this file
         /* private */ public lastSuccess: ApiLastSuccess;
@@ -252,6 +258,9 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
             }
         }
     };
+
+    BaseWrapperComponent.displayName =
+        `withApi(${WrappedComponent.displayName || WrappedComponent.name || "Component"})`;
 
     return connect(mapStateToProps, mapDispatchToProps)(BaseWrapperComponent);
 }

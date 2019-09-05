@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { BrowserWindow } from "electron";
+import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Publication } from "readium-desktop/common/models/publication";
@@ -21,7 +21,7 @@ import { appActions, streamerActions } from "readium-desktop/main/redux/actions"
 import { ReaderState } from "readium-desktop/main/redux/states/reader";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import {
-    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, IS_DEV,
+    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
@@ -31,6 +31,8 @@ import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-windo
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { ActionWithSender } from "readium-desktop/common/models/sync";
+
+import { setMenu } from "readium-desktop/main/menu";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -54,6 +56,19 @@ async function openReader(publication: Publication, manifestUrl: string) {
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
     });
+
+    if (IS_DEV) {
+        readerWindow.webContents.on("context-menu", (_ev, params) => {
+            const { x, y } = params;
+            Menu.buildFromTemplate([{
+                label: "Inspect element",
+                click: () => {
+                    readerWindow.webContents.inspectElement(x, y);
+                },
+            }]).popup({window: readerWindow});
+        });
+    }
+
     const winRegistry = container.get("win-registry") as WinRegistry;
     const appWindows = winRegistry.getWindows();
 
@@ -129,19 +144,18 @@ async function openReader(publication: Publication, manifestUrl: string) {
 
     readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
 
-    if (IS_DEV) {
-        readerWindow.webContents.openDevTools();
-    } else {
-        // Remove menu bar
-        readerWindow.setMenu(null);
+    if (IS_DEV && _VSCODE_LAUNCH !== "true") {
+        readerWindow.webContents.openDevTools({ mode: "detach" });
     }
+
+    setMenu(readerWindow);
 
     return reader;
 }
 
 export function* readerOpenRequestWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(readerActions.ActionType.OpenRequest);
+        const action: any = yield take(readerActions.ActionType.OpenRequest);
         const publication = action.payload.publication;
 
         // Notify the streamer to create a manifest for this publication
@@ -150,7 +164,7 @@ export function* readerOpenRequestWatcher(): SagaIterator {
         ));
 
         // Wait for the publication to be opened
-        const streamerAction = yield take([
+        const streamerAction: any = yield take([
             streamerActions.ActionType.PublicationOpenSuccess,
             streamerActions.ActionType.PublicationOpenError,
         ]);
@@ -184,7 +198,7 @@ export function* readerOpenRequestWatcher(): SagaIterator {
 
 export function* readerCloseRequestWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(readerActions.ActionType.CloseRequest);
+        const action: any = yield take(readerActions.ActionType.CloseRequest);
         const reader = action.payload.reader;
         const gotoLibrary = action.payload.gotoLibrary;
 
@@ -195,7 +209,7 @@ export function* readerCloseRequestWatcher(): SagaIterator {
 
 export function* closeReaderFromPublicationWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(readerActions.ActionType.CloseFromPublicationRequest);
+        const action: any = yield take(readerActions.ActionType.CloseFromPublicationRequest);
         const publication = action.payload.publication;
         const store: any = container.get("store");
         const readers = (store.getState().reader as ReaderState).readers;
@@ -270,7 +284,7 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
 export function* readerConfigSetRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for save request
-        const action = yield take(readerActions.ActionType.ConfigSetRequest);
+        const action: any = yield take(readerActions.ActionType.ConfigSetRequest);
         const configValue: ReaderConfig = action.payload.config;
         const config = {
             identifier: "reader",
@@ -324,7 +338,7 @@ export function* readerConfigInitWatcher(): SagaIterator {
 export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for app initialization
-        const action = yield take(readerActions.ActionType.BookmarkSaveRequest);
+        const action: any = yield take(readerActions.ActionType.BookmarkSaveRequest);
         const bookmark = action.payload.bookmark as Bookmark;
 
         // Get bookmark manager
@@ -381,7 +395,7 @@ export function* readerFullscreenRequestWatcher(): SagaIterator {
 export function* readerDetachRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for a change mode request
-        const action = yield take(readerActions.ActionType.ModeSetRequest);
+        const action: any = yield take(readerActions.ActionType.ModeSetRequest);
         const readerMode = action.payload.mode;
         const reader = action.payload.reader;
 
@@ -413,13 +427,13 @@ export function* readerDetachRequestWatcher(): SagaIterator {
 
 export function* watchers() {
     yield all([
-        readerBookmarkSaveRequestWatcher(),
-        readerCloseRequestWatcher(),
-        readerConfigInitWatcher(),
-        readerConfigSetRequestWatcher(),
-        readerOpenRequestWatcher(),
-        readerFullscreenRequestWatcher(),
-        readerDetachRequestWatcher(),
-        closeReaderFromPublicationWatcher(),
+        call(readerBookmarkSaveRequestWatcher),
+        call(readerCloseRequestWatcher),
+        call(readerConfigInitWatcher),
+        call(readerConfigSetRequestWatcher),
+        call(readerOpenRequestWatcher),
+        call(readerFullscreenRequestWatcher),
+        call(readerDetachRequestWatcher),
+        call(closeReaderFromPublicationWatcher),
     ]);
 }

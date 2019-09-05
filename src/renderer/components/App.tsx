@@ -59,8 +59,8 @@ export default class App extends React.Component<any, undefined> {
                 {
                     files: acceptedFiles.filter((file) => {
                             const ext = path.extname(file.path);
-                            return (ext === ".epub" ||
-                            ext === ".lcpl");
+                            return (/\.epub[3]?$/.test(ext) /*||
+                            ext === ".lcpl"*/);
                     })
                     .map((file) => {
                         return {
@@ -96,8 +96,7 @@ export default class App extends React.Component<any, undefined> {
                                     {...rootProps}
                                     style={{
                                         position: "absolute",
-                                        overflowX: "hidden",
-                                        paddingTop: 124,
+                                        overflow: "hidden",
                                         top: 0,
                                         bottom: 0,
                                         left: 0,

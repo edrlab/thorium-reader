@@ -164,3 +164,37 @@
         }
     }
 }
+
+.cover {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 5%;
+
+    & p {
+        word-break: break-all;
+        display: -webkit-inline-box;
+        -webkit-line-clamp: 3;
+         /* autoprefixer: ignore next */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-align: center;
+        margin: 10px 5%;
+        color: black;
+    }
+
+    & .box {
+        border: 1px black solid;
+        width: 100%;
+        height: 100%;
+        line-height: inital;
+    }
+    & .title {
+        margin-top: 10%;
+    }
+    & .author {
+        font-size: 90%;
+        bottom: 10px;
+    }
+}

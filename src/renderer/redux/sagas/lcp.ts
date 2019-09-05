@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { SagaIterator } from "redux-saga";
-import { put, take } from "redux-saga/effects";
+import { all, call, put, take } from "redux-saga/effects";
 
 import { lcpActions } from "readium-desktop/common/redux/actions";
 
@@ -16,7 +16,7 @@ import { DialogType } from "readium-desktop/common/models/dialog";
 
 export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
     while (true) {
-        const action = yield take(lcpActions.ActionType.UserKeyCheckRequest);
+        const action: any = yield take(lcpActions.ActionType.UserKeyCheckRequest);
 
         const { hint, publication } = action.payload;
 
@@ -25,7 +25,7 @@ export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
 }
 
 export function* watchers() {
-    yield [
-        lcpUserKeyCheckRequestWatcher(),
-    ];
+    yield all([
+        call(lcpUserKeyCheckRequestWatcher),
+    ]);
 }

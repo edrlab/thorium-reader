@@ -7,6 +7,6 @@
 
 export interface OpdsFeed {
     identifier?: string;
-    name: string;
+    title: string;
     url: string;
 }

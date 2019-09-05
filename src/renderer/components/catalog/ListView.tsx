@@ -58,7 +58,7 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                             (<></>)
                         }
                         </section>
-                    ) : <></>;
+                    ) : <div key={ entryIndex } aria-hidden="true" style={{display: "none"}}></div>;
             })
             }
             { entriesEmpty &&

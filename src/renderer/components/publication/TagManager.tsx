@@ -92,10 +92,16 @@ export class TagManager extends React.Component<Props, TagManagerState> {
     private addTag(e: any) {
         e.preventDefault();
         const { tags } = this.state;
-        if (this.state.nameNewTag && tags.indexOf(this.state.nameNewTag) < 0) {
-            tags.push(this.state.nameNewTag);
-            this.sendTags(tags);
+
+        if (this.state.nameNewTag) {
+            const normalizedTagName = this.state.nameNewTag.trim().replace(/\s\s+/g, " ");
+
+            if (normalizedTagName.length && tags.indexOf(normalizedTagName) < 0) {
+                tags.push(normalizedTagName);
+                this.sendTags(tags);
+            }
         }
+
         this.setState({ nameNewTag: "" });
     }
 

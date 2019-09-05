@@ -5,28 +5,26 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { injectable } from "inversify";
-
 import * as moment from "moment";
-
 import {
-    OpdsFeedView,
-    OpdsLinkView,
-    OpdsPublicationView,
-    OpdsResultType,
-    OpdsResultView,
+    convertContributorArrayToStringArray, convertMultiLangStringToString,
+} from "readium-desktop/common/utils";
+import { httpGet } from "readium-desktop/common/utils/http";
+import {
+    OpdsFeedView, OpdsLinkView, OpdsPublicationView, OpdsResultType, OpdsResultView,
 } from "readium-desktop/common/views/opds";
-
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
+import { resolve } from "url";
+import * as convert from "xml-js";
 
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
-import {
-    convertContributorArrayToStringArray,
-    convertMultiLangStringToString,
-} from "readium-desktop/common/utils";
+// Logger
+const debug = debug_("readium-desktop:main#services/lcp");
 
 import { CoverView } from "readium-desktop/common/views/publication";
 
@@ -152,9 +150,9 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public convertOpdsFeedToView(feed: OPDSFeed): OpdsResultView {
+    public async convertOpdsFeedToView(feed: OPDSFeed, url: string): Promise<OpdsResultView> {
         const title = convertMultiLangStringToString(feed.Metadata.Title);
-        let type = OpdsResultType.NavigationFeed;
+        let type = OpdsResultType.Empty;
         let navigation: OpdsLinkView[] | undefined;
         let publications: OpdsPublicationView[] | undefined;
 
@@ -164,10 +162,19 @@ export class OpdsFeedViewConverter {
             publications = feed.Publications.map((item) => {
                 return this.convertOpdsPublicationToView(item);
             });
-        } else {
+        } else if (feed.Navigation) {
             // result page containing navigation
+            type = OpdsResultType.NavigationFeed;
             navigation = feed.Navigation.map((item) => {
                 return this.convertOpdsLinkToView(item);
+            });
+
+            // concatenate all relative path to an absolute URL path
+            navigation = navigation.map((nav) => {
+                if (nav.url && !/^https?:\/\//.exec(nav.url)) {
+                    nav.url = resolve(url, nav.url);
+                }
+                return nav;
             });
         }
 
@@ -176,7 +183,39 @@ export class OpdsFeedViewConverter {
             type,
             publications,
             navigation,
+            searchUrl: await this.getSearchUrlFromOpds1Feed(feed),
         };
     }
 
+    private async getSearchUrlFromOpds1Feed(feed: OPDSFeed): Promise<string| undefined> {
+        // https://github.com/readium/readium-desktop/issues/296#issuecomment-502134459
+
+        let searchUrl: string | undefined;
+        try {
+            if (feed.Links) {
+                const searchLink = feed.Links.find((value) => value.Rel[0] === "search");
+                if (searchLink.TypeLink === "application/opds+json") {
+                    searchUrl = searchLink.Href;
+                } else {
+                    const searchLinkFeedData = await httpGet(searchLink.Href);
+                    if (searchLinkFeedData.isFailure) {
+                        return undefined;
+                    }
+                    const result = convert.xml2js(searchLinkFeedData.data, { compact: true }) as convert.ElementCompact;
+
+                    if (result) {
+                        const doc = result.OpenSearchDescription;
+                        searchUrl = doc.Url.find((value: any) => {
+                            return value._attributes && value._attributes.type === "application/atom+xml";
+                        })._attributes.template;
+                    }
+                }
+            }
+        } catch (e) {
+            debug("getSearchUrlFromOpds1Feed", e);
+        }
+        // if searchUrl is not found return undefined
+        // User will be can't use search form
+        return searchUrl;
+    }
 }
