@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
-import { TApi } from "readium-desktop/main/di";
+import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { container } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
@@ -17,8 +17,8 @@ import { Store } from "redux";
 import * as uuid from "uuid";
 
 interface IApiOperation {
-    moduleId: TApi;
-    methodId: string;
+    moduleId: TModuleApi;
+    methodId: TMethodApi;
 }
 
 export interface IApiOperationDefinition extends IApiOperation {
@@ -51,7 +51,7 @@ export interface IApiMapStateToProps {
     [idx: string]: any;
 }
 
-type TComponentConstructor<P> = ComponentClass<P> | StatelessComponent<P>;
+type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
 
 // TS4094: private members fail the TS compiler, because:
 // returned type is ConnectedComponentClass<typeof BaseWrapperComponent, any>
