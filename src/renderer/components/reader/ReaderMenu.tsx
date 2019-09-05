@@ -73,8 +73,12 @@ export class ReaderMenu extends React.Component<Props, State> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, publication, bookmarks, toggleMenu } = this.props;
+        const { __, open, publication, bookmarks, toggleMenu } = this.props;
         if (!publication) {
+            return <></>;
+        }
+
+        if (!open) {
             return <></>;
         }
 

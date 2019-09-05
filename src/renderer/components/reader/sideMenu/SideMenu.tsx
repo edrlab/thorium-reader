@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import * as ReactDOM from "react-dom";
 import AccessibleMenu from "readium-desktop/renderer/components/utils/menu/AccessibleMenu";
 import {
     TranslatorProps, withTranslator,
@@ -29,14 +29,32 @@ interface State {
 }
 
 export class SideMenu extends React.Component<Props, State> {
+    private appElement: HTMLElement;
+    private appOverlayElement: HTMLElement;
+    private rootElement: HTMLElement;
+
     public constructor(props: Props) {
         super(props);
+
+        this.appElement = document.getElementById("app");
+        this.appOverlayElement = document.getElementById("app-overlay");
+        this.rootElement = document.createElement("div");
 
         this.state = {
             openedSection: undefined,
         };
 
         this.handleClickSection = this.handleClickSection.bind(this);
+    }
+
+    public componentDidMount() {
+        this.appElement.setAttribute("aria-hidden", "true");
+        this.appOverlayElement.appendChild(this.rootElement);
+    }
+
+    public componentWillUnmount() {
+        this.appElement.setAttribute("aria-hidden", "false");
+        this.appOverlayElement.removeChild(this.rootElement);
     }
 
     public render(): React.ReactElement<{}> {
@@ -47,35 +65,35 @@ export class SideMenu extends React.Component<Props, State> {
             return <></>;
         }
 
-        return (<>
-            <AccessibleMenu
-            dontCloseWhenClickOutside
-            focusMenuButton = {this.props.focusMenuButton}
-            className={className}
-            visible={open}
-            toggleMenu={toggleMenu}>
-                <ul id={listClassName}>
-                    { sections.map((section, index) =>
-                        !section.notExtendable ?
-                            <SideMenuSection
-                                open={ openedSection === index }
-                                id={index}
-                                key={index}
-                                title={section.title}
-                                content={section.content}
-                                onClick={this.handleClickSection}
-                                disabled={section.disabled}
-                            />
-                        : <li key={index}>
-                            { section.content }
-                        </li>,
-                    )}
-                </ul>
-            </AccessibleMenu>
-            { open &&
-                <div aria-hidden={true} className={styles.menu_background} onClick={() => toggleMenu()}/>
-            }
-        </>);
+        return ReactDOM.createPortal(
+            (
+                <AccessibleMenu
+                dontCloseWhenClickOutside
+                focusMenuButton = {this.props.focusMenuButton}
+                className={className}
+                visible={open}
+                toggleMenu={toggleMenu}>
+                    <ul id={listClassName}>
+                        { sections.map((section, index) =>
+                            !section.notExtendable ?
+                                <SideMenuSection
+                                    open={ openedSection === index }
+                                    id={index}
+                                    key={index}
+                                    title={section.title}
+                                    content={section.content}
+                                    onClick={this.handleClickSection}
+                                    disabled={section.disabled}
+                                />
+                            : <li key={index}>
+                                { section.content }
+                            </li>,
+                        )}
+                    </ul>
+                </AccessibleMenu>
+            ),
+            this.rootElement,
+        );
     }
 
     private handleClickSection(id: number) {

@@ -62,9 +62,13 @@ export class ReaderOptions extends React.Component<Props> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, settings, toggleMenu } = this.props;
+        const { __, open, settings, toggleMenu } = this.props;
 
         if (!settings) {
+            return <></>;
+        }
+
+        if (!open) {
             return <></>;
         }
 
