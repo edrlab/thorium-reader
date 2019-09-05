@@ -9,16 +9,15 @@ import * as React from "react";
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
+import { TApi } from "readium-desktop/main/di";
 import { container } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
 import { Store } from "redux";
 import * as uuid from "uuid";
 
-import { ComponentClass, StatelessComponent } from "react";
-
 interface IApiOperation {
-    moduleId: string;
+    moduleId: TApi;
     methodId: string;
 }
 
