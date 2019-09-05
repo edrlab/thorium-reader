@@ -282,7 +282,6 @@ export class ReaderOptions extends React.Component<Props> {
                             type="radio"
                             name="column"
                             {...(!settings.paged && {disabled: true})}
-                            role="link"
                             onChange={(e) =>
                             this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
                             checked={this.props.settings.colCount === colCountEnum.auto}
@@ -303,7 +302,6 @@ export class ReaderOptions extends React.Component<Props> {
                             id={"radio-" + styles.option_colonne1}
                             type="radio"
                             name="column"
-                            role="link"
                             onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
                             checked={this.props.settings.colCount === colCountEnum.one}
                         />
@@ -323,7 +321,6 @@ export class ReaderOptions extends React.Component<Props> {
                             type="radio"
                             name="column"
                             {...(!settings.paged && { disabled: true })}
-                            role="link"
                             onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
                             checked={this.props.settings.colCount === colCountEnum.two}
                         />
