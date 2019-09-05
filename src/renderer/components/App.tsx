@@ -96,8 +96,7 @@ export default class App extends React.Component<any, undefined> {
                                     {...rootProps}
                                     style={{
                                         position: "absolute",
-                                        overflowX: "hidden",
-                                        paddingTop: 124,
+                                        overflow: "hidden",
                                         top: 0,
                                         bottom: 0,
                                         left: 0,
