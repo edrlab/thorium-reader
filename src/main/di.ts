@@ -241,6 +241,13 @@ container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope(
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
 
+type TCatalogApi = "catalog";
+type TPublicationApi = "publication";
+type TOpdsApi = "opds";
+type TLcpApi = "lcp";
+type TReaderApi = "reader";
+type TApi = TCatalogApi | TPublicationApi | TOpdsApi | TLcpApi | TReaderApi;
+
 // Create action serializer
 container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();
 
@@ -288,4 +295,5 @@ const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(d
 export {
     diGet as diMainGet,
     diSymbolTable,
+    TApi,
 };
