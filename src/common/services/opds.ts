@@ -48,7 +48,7 @@ export class OPDSParser {
                         files: [],
                     };
 
-                    if (publication.authors) {
+                    if (entry.authors) {
                         // Fill authors
                         for (const author of entry.authors) {
                             publication.authors.push({
