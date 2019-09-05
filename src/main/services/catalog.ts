@@ -281,6 +281,8 @@ export class CatalogService {
             .from(JSON.stringify(jsonParsedPublication))
             .toString("base64");
 
+        // It's not correctly typed here
+        // see PublicationDocument interface and BaseRepository both is wrong typed
         const pubDocument = {
             identifier: uuid.v4(),
             resources: {
