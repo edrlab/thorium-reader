@@ -145,11 +145,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                                 >
                                     <span>{content.Title}</span>
                                 </a>
-                                {content.Children &&
-                                    <ul className={styles.chapters_content}>
-                                        {this.createTOCRenderList(content.Children)}
-                                    </ul>
-                                }
+                                {this.createTOCRenderList(content.Children)}
                             </>
                         ) : (
                             <a
