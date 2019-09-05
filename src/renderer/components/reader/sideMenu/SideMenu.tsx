@@ -67,7 +67,7 @@ export class SideMenu extends React.Component<Props, State> {
                                 onClick={this.handleClickSection}
                                 disabled={section.disabled}
                             />
-                        : <li key={index} className={styles.div_listitem}>
+                        : <li key={index}>
                             { section.content }
                         </li>,
                     )}

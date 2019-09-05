@@ -62,7 +62,7 @@ export class SideMenuSection extends React.Component<Props, State> {
 
                     <div aria-hidden={open ? undefined : true}
                         style={this.state.style}
-                        className={open ? classnames([styles.tab_content, styles.div_listitem]) : undefined}>
+                        className={open ? classnames([styles.tab_content]) : undefined}>
                         <div ref={this.sectionRef} className={open ? styles.line_tab_content : undefined}>
                             {open && content }
                         </div>
