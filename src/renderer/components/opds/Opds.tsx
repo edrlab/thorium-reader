@@ -9,7 +9,7 @@ import * as React from "react";
 
 import OpdsAddForm from "./OpdsAddForm";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import FeedList from "./FeedList";

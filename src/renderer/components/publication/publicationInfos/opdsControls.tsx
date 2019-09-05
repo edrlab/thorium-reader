@@ -11,10 +11,10 @@ import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 
 import * as importAction from "readium-desktop/common/redux/actions/import";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 interface CatalogControlsProps extends TranslatorProps {
     publication: OpdsPublicationView;

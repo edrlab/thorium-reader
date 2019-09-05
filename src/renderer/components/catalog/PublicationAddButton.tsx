@@ -9,10 +9,10 @@ import * as React from "react";
 import { TPublicationApiImport } from "readium-desktop/main/api/publication";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 interface Props extends TranslatorProps {
     importFiles?: TPublicationApiImport;

@@ -17,7 +17,7 @@ import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLay
 
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import SVG from "../utils/SVG";

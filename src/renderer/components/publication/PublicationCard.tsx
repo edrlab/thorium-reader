@@ -16,10 +16,10 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 import Cover from "readium-desktop/renderer/components/publication/Cover";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 

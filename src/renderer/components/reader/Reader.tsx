@@ -26,7 +26,7 @@ import {
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import { container, lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";

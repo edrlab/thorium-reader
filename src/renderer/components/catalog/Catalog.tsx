@@ -11,8 +11,8 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { TCatalogApiGet, TCatalogApiGet_result } from "readium-desktop/main/api/catalog";
 import { TPublicationApiGetAllTags_result } from "readium-desktop/main/api/publication";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import GridView from "./GridView";
 import Header, { DisplayType } from "./Header";

@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { RouteComponentProps } from "react-router-dom";
 
 import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 

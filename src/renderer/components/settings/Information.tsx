@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import { promisify } from "util";
 
 import { _PACKAGING } from "readium-desktop/preprocessor-directives";

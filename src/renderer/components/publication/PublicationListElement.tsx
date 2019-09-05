@@ -15,12 +15,12 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublicationApiDelete } from "readium-desktop/main/api/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { lcpReadable } from "readium-desktop/utils/publication";
 
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 import uuid = require("uuid");
 interface PublicationListElementProps extends TranslatorProps {

@@ -16,7 +16,7 @@ import {
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Download } from "readium-desktop/renderer/redux/states/download";
 
-import { withApi } from "./api";
+import { withApi } from "./hoc/api";
 
 interface Props  {
     lastImport?: ImportState;

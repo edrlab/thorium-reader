@@ -10,11 +10,11 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { OpdsResultType, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { TOpdsBrowseApi } from "readium-desktop/main/api/opds";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import { parseQueryString } from "readium-desktop/utils/url";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
@@ -132,7 +132,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     }
 }
 
-export default withTranslator(withApi(
+export default withTranslator<BrowserResultProps>(withApi<BrowserResultProps>(
     withRouter(BrowserResult),
     {
         operations: [

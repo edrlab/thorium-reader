@@ -21,7 +21,7 @@ import * as QuitFullscreenIcon from "readium-desktop/renderer/assets/icons/sharp
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { ReaderMode } from "readium-desktop/common/models/reader";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";

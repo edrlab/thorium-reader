@@ -10,8 +10,8 @@ import { dialogActions } from "readium-desktop/common/redux/actions";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { TPublicationApiImportOpdsEntry } from "readium-desktop/main/api/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 interface Props extends TranslatorProps {
     publication: OpdsPublicationView;

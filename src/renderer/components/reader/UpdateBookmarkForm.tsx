@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 
 import { LocatorView } from "readium-desktop/common/views/locator";
 import { TReaderApiUpdateBookmark } from "readium-desktop/main/api/reader";

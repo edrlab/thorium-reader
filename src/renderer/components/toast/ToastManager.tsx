@@ -19,7 +19,7 @@ import Toast from "./Toast";
 
 import * as DownloadIcon from "readium-desktop/renderer/assets/icons/download.svg";
 
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 

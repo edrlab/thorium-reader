@@ -8,8 +8,8 @@
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublicationApiExportPublication } from "readium-desktop/main/api/publication";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 interface PublicationCardProps extends TranslatorProps {
     publication: PublicationView;

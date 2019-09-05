@@ -13,7 +13,7 @@ import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import { TranslatorProps, withTranslator } from "./translator";
+import { TranslatorProps, withTranslator } from "./hoc/translator";
 
 interface Props extends TranslatorProps {
     content: JSX.Element[];

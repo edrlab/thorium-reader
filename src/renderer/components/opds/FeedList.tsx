@@ -13,19 +13,19 @@ import { OpdsFeedView } from "readium-desktop/common/views/opds";
 import { TOpdsFindAllFeedApi_result } from "readium-desktop/main/api/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
-interface OpdsListProps extends TranslatorProps {
+interface IFeedListProps extends TranslatorProps {
     feeds?: TOpdsFindAllFeedApi_result;
     deleteFeed?: any;
     openDeleteDialog?: any;
     openToast?: any;
 }
 
-export class FeedList extends React.Component<OpdsListProps, null> {
+export class FeedList extends React.Component<IFeedListProps, null> {
     public render(): React.ReactElement<{}>  {
         if (!this.props.feeds) {
             return <></>;
@@ -83,7 +83,7 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default withApi(
+export default withApi<IFeedListProps>(
     FeedList,
     {
         operations: [

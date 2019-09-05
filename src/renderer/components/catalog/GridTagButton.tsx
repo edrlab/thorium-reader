@@ -11,7 +11,7 @@ import {
     TPublicationApiFindByTag, TPublicationApiFindByTag_result,
 } from "readium-desktop/main/api/publication";
 
-import { withApi } from "../utils/api";
+import { withApi } from "../utils/hoc/api";
 
 interface ButtonTagProps {
     name: string;

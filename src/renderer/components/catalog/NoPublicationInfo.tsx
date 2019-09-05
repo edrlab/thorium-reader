@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 

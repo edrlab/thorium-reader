@@ -22,7 +22,7 @@ import PublicationAddButton from "./PublicationAddButton";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 export enum DisplayType {
     Grid = "grid",

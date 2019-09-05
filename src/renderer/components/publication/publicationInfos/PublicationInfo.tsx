@@ -13,10 +13,10 @@ import { TPublicationApiGet_result } from "readium-desktop/main/api/publication"
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
 import TagManager from "readium-desktop/renderer/components/publication/TagManager";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { oc } from "ts-optchain";
 

@@ -7,7 +7,7 @@
 
 import * as React from "react";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import { connect } from "react-redux";
 

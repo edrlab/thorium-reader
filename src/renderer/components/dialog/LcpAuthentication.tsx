@@ -7,11 +7,11 @@
 
 import * as React from "react";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 
 interface Props extends TranslatorProps {
     publication: any;

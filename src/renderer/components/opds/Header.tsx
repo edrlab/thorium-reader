@@ -15,7 +15,7 @@ import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import { parseQueryString } from "readium-desktop/utils/url";
 import SearchForm from "./SearchForm";
