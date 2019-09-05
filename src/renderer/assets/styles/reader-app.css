@@ -629,7 +629,6 @@ p.chapters_description {
 	font-weight: 600;
 	background-color: white;
 	cursor: auto;
-  /* display:flex; */
 
   & > span {
     flex: 1;
@@ -645,14 +644,6 @@ p.chapters_description {
     }
   }
 }
-/*
-li.div_listitem {
-  display:initial !important;
-}
-li.div_listitem button {
-	cursor: pointer !important;
-}
-*/
 
 #read_settings_list .tab_content > div {
 	padding: 0;
