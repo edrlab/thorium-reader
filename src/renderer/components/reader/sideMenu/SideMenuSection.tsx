@@ -6,15 +6,12 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
-import classnames from "classnames";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/translator";
 
 interface Props extends TranslatorProps {
     open?: boolean;
@@ -52,7 +49,7 @@ export class SideMenuSection extends React.Component<Props, State> {
         return (
             <>
                 <li
-                    className={open ? classnames([styles.active]) : undefined}
+                    className={open ? styles.active : undefined}
                     key={id}
                 >
                     <button onClick={() => onClick(id)} disabled={disabled}>
@@ -62,7 +59,7 @@ export class SideMenuSection extends React.Component<Props, State> {
 
                     <div aria-hidden={open ? undefined : true}
                         style={this.state.style}
-                        className={open ? classnames([styles.tab_content]) : undefined}>
+                        className={open ? styles.tab_content : undefined}>
                         <div ref={this.sectionRef} className={open ? styles.line_tab_content : undefined}>
                             {open && content }
                         </div>
