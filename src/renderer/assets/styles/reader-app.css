@@ -8,6 +8,24 @@
   --sideButtonColor: rgb(130, 130, 130, 0.5);
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font: 1.1rem "Open Sans", sans-serif;
+	background:#fbfbfb;
+}
+
+button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+}
+
 .root {
   position: absolute;
   top: 0;
