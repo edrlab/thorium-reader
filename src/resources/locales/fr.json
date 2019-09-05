@@ -94,6 +94,7 @@
             "success": "Le téléchargement de {{- title}} est terminé."
         },
         "import": {
+            "fail": "L'importation de {{- path}} a échoué. Vérifier que le fichier est valide",
             "success": "L'import de {{- title}} est terminé."
         }
     },

@@ -272,66 +272,60 @@ export class CatalogService {
 
     private async importEpubFile(filePath: string): Promise<PublicationDocument> {
         debug("Parse publication - START", filePath);
-        try {
-            const parsedPublication: Epub = await EpubParsePromise(filePath);
-            debug("Parse publication - END", filePath);
+        const parsedPublication: Epub = await EpubParsePromise(filePath);
+        debug("Parse publication - END", filePath);
 
-            // FIXME: Title could be an array instead of a simple string
-            // Store publication in db
-            const jsonParsedPublication = TAJSON.serialize(parsedPublication);
-            const b64ParsedPublication = Buffer
-                .from(JSON.stringify(jsonParsedPublication))
-                .toString("base64");
+        // FIXME: Title could be an array instead of a simple string
+        // Store publication in db
+        const jsonParsedPublication = TAJSON.serialize(parsedPublication);
+        const b64ParsedPublication = Buffer
+            .from(JSON.stringify(jsonParsedPublication))
+            .toString("base64");
 
-            const pubDocument = {
-                identifier: uuid.v4(),
-                resources: {
-                    filePublication: b64ParsedPublication,
-                    opdsPublication: null,
-                },
-                title: convertMultiLangStringToString(parsedPublication.Metadata.Title),
-                tags: [],
-                files: [],
-                coverFile: null,
-                customCover: null,
-            } as PublicationDocument;
+        const pubDocument = {
+            identifier: uuid.v4(),
+            resources: {
+                filePublication: b64ParsedPublication,
+                opdsPublication: null,
+            },
+            title: convertMultiLangStringToString(parsedPublication.Metadata.Title),
+            tags: [],
+            files: [],
+            coverFile: null,
+            customCover: null,
+        } as PublicationDocument;
 
-            // Store publication on filesystem
-            debug("[START] Store publication on filesystem", filePath);
-            const files = await this.publicationStorage.storePublication(
-                pubDocument.identifier, filePath,
-            );
-            debug("[END] Store publication on filesystem - END", filePath);
+        // Store publication on filesystem
+        debug("[START] Store publication on filesystem", filePath);
+        const files = await this.publicationStorage.storePublication(
+            pubDocument.identifier, filePath,
+        );
+        debug("[END] Store publication on filesystem - END", filePath);
 
-            // Add extracted files to document
+        // Add extracted files to document
 
-            for (const file of files) {
-                if (file.contentType.startsWith("image")) {
-                    pubDocument.coverFile = file;
-                } else {
-                    pubDocument.files.push(file);
-                }
+        for (const file of files) {
+            if (file.contentType.startsWith("image")) {
+                pubDocument.coverFile = file;
+            } else {
+                pubDocument.files.push(file);
             }
-
-            if (pubDocument.coverFile === null) {
-                debug("No cover found, generate custom one", filePath);
-                // No cover file found
-                // Generate a random custom cover
-                pubDocument.customCover = RandomCustomCovers[
-                    Math.floor(Math.random() * RandomCustomCovers.length)
-                ];
-            }
-
-            debug("[START] Store publication in database", filePath);
-            const newPubDocument = await this.publicationRepository.save(pubDocument);
-            debug("[END] Store publication in database", filePath);
-
-            debug("Publication imported", filePath);
-            return newPubDocument;
-        } catch (error) {
-            debug("Import EPUB File - ERROR", error);
         }
 
-        return undefined;
+        if (pubDocument.coverFile === null) {
+            debug("No cover found, generate custom one", filePath);
+            // No cover file found
+            // Generate a random custom cover
+            pubDocument.customCover = RandomCustomCovers[
+                Math.floor(Math.random() * RandomCustomCovers.length)
+            ];
+        }
+
+        debug("[START] Store publication in database", filePath);
+        const newPubDocument = await this.publicationRepository.save(pubDocument);
+        debug("[END] Store publication in database", filePath);
+
+        debug("Publication imported", filePath);
+        return newPubDocument;
     }
 }

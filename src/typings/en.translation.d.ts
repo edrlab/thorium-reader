@@ -174,12 +174,13 @@ declare namespace typed_i18n {
     readonly "start": string,
     readonly "success": string
   },
-  readonly "import": { readonly "success": string }
+  readonly "import": { readonly "fail": string, readonly "success": string }
 };
   (_: "message.download", __?: {}): { readonly "start": string, readonly "success": string };
   (_: "message.download.start", __?: {}): string;
   (_: "message.download.success", __?: {}): string;
-  (_: "message.import", __?: {}): { readonly "success": string };
+  (_: "message.import", __?: {}): { readonly "fail": string, readonly "success": string };
+  (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {

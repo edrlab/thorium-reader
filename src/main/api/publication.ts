@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { open } from "readium-desktop/common/redux/actions/toast";
@@ -18,6 +19,9 @@ import { Store } from "redux";
 
 import { downloadActions } from "readium-desktop/common/redux/actions";
 import { ImportState } from "readium-desktop/common/redux/states/import";
+
+// Logger
+const debug = debug_("readium-desktop:main#services/catalog");
 
 @injectable()
 export class PublicationApi {
@@ -122,8 +126,14 @@ export class PublicationApi {
         const newDocs = [];
 
         for (const path of paths) {
-            const newDoc = await this.catalogService.importFile(path);
-            newDocs.push(newDoc);
+            try {
+                const newDoc = await this.catalogService.importFile(path);
+                newDocs.push(newDoc);
+            } catch (error) {
+                debug(`Import file - FAIL : ${path}`, error);
+                this.dispatchToastRequest(ToastType.DownloadFailed,
+                    this.translator.translate("message.import.fail", {path}));
+            }
         }
 
         return newDocs.map((doc) => {
