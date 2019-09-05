@@ -12,6 +12,9 @@ import { Store } from "redux";
 import * as request from "request";
 import { Url } from "url";
 
+type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
+type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
+
 export interface IHttpGetResult<TBody, TData> {
     readonly isFailure: boolean;
     readonly isSuccess: boolean;
@@ -29,9 +32,6 @@ export interface IHttpGetResult<TBody, TData> {
 type THttpGetCallback<T1, T2> =
     (result: IHttpGetResult<T1, T2>) =>
         IHttpGetResult<T1, T2> | Promise<IHttpGetResult<T1, T2>>;
-
-type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
-type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
 
 /**
  * @param url url of your GET request
