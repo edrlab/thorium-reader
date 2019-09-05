@@ -11,6 +11,7 @@ import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import { withApi } from "readium-desktop/renderer/components/utils/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import {
@@ -23,8 +24,6 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
-
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 interface Props extends TranslatorProps {
     open: boolean;
@@ -82,12 +81,13 @@ export class ReaderMenu extends React.Component<Props, State> {
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: publication && this.createTOCRenderList(publication.TOC),
+                content: publication && this.renderLinkTree(__("reader.marks.toc"), publication.TOC, 1),
                 disabled: !publication.TOC || publication.TOC.length === 0,
             },
             {
                 title: __("reader.marks.landmarks"),
-                content: publication && publication.Landmarks && this.createTOCRenderList(publication.Landmarks),
+                content: publication && publication.Landmarks &&
+                    this.renderLinkList(__("reader.marks.landmarks"), publication.Landmarks),
                 disabled: !publication.Landmarks || publication.Landmarks.length === 0,
             },
             {
@@ -119,56 +119,111 @@ export class ReaderMenu extends React.Component<Props, State> {
         );
     }
 
-    private createTOCRenderList(TOC: Link[]): JSX.Element {
-        return <ul className={styles.chapters_content}>
-            { TOC.map((content, i: number) => {
+    private renderLinkList(label: string, links: Link[]): JSX.Element {
+        return <ul
+            aria-label={label}
+            className={styles.chapters_content}
+            role={"list"}
+        >
+            { links.map((link, i: number) => {
                 return (
-                    <li key={i}>
-                        {content.Children ? (
+                    <li
+                        key={i}
+                        aria-level={1}
+                        role={"listitem"}
+                    >
+                        <a
+                            className={
+                                link.Href ?
+                                    classnames(styles.line, styles.active) :
+                                    classnames(styles.line, styles.active, styles.inert)
+                            }
+                            onClick=
+                                {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
+                            tabIndex={0}
+                            onKeyPress=
+                                {
+                                    (e) => {
+                                        if (link.Href && e.key === "Enter") {
+                                            this.props.handleLinkClick(e, link.Href);
+                                        }
+                                    }
+                                }
+                            data-href={link.Href}
+                        >
+                            <span>{link.Title}</span>
+                        </a>
+                    </li>
+                );
+            })}
+        </ul>;
+    }
+
+    private renderLinkTree(label: string | undefined, links: Link[], level: number): JSX.Element {
+        // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
+        const useTree = false;
+
+        return <ul
+                    role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
+                    aria-label={label}
+                    className={styles.chapters_content}
+                >
+            { links.map((link, i: number) => {
+                return (
+                    <li key={`${level}-${i}`}
+                        role={useTree ? "treeitem" : undefined}
+                        aria-expanded={useTree ? "true" : undefined}
+                    >
+                        {link.Children ? (
                             <>
+                            <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
-                                        content.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
+                                        link.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
                                     }
                                     onClick=
-                                        {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
+                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
                                     tabIndex={0}
                                     onKeyPress=
                                         {
                                             (e) => {
-                                                if (content.Href && e.key === "Enter") {
-                                                    this.props.handleLinkClick(e, content.Href);
+                                                if (link.Href && e.key === "Enter") {
+                                                    this.props.handleLinkClick(e, link.Href);
                                                 }
                                             }
                                         }
-                                    data-href={content.Href}
+                                    data-href={link.Href}
                                 >
-                                    <span>{content.Title}</span>
+                                    <span>{link.Title}</span>
                                 </a>
-                                {this.createTOCRenderList(content.Children)}
+                            </div>
+
+                            {this.renderLinkTree(undefined, link.Children, level + 1)}
                             </>
                         ) : (
-                            <a
-                                className={
-                                    content.Href ?
-                                        classnames(styles.line, styles.active) :
-                                        classnames(styles.line, styles.active, styles.inert)
-                                }
-                                onClick=
-                                    {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
-                                tabIndex={0}
-                                onKeyPress=
-                                    {
-                                        (e) => {
-                                            if (content.Href && e.key === "Enter") {
-                                                this.props.handleLinkClick(e, content.Href);
+                            <div role={"heading"} aria-level={level}>
+                                <a
+                                    className={
+                                        link.Href ?
+                                            classnames(styles.line, styles.active) :
+                                            classnames(styles.line, styles.active, styles.inert)
+                                    }
+                                    onClick=
+                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
+                                    tabIndex={0}
+                                    onKeyPress=
+                                        {
+                                            (e) => {
+                                                if (link.Href && e.key === "Enter") {
+                                                    this.props.handleLinkClick(e, link.Href);
+                                                }
                                             }
                                         }
-                                    }
-                                data-href={content.Href}
-                            >
-                                {content.Title}
-                            </a>
+                                    data-href={link.Href}
+                                >
+                                    <span>{link.Title}</span>
+                                </a>
+                            </div>
                         )}
                     </li>
                 );
