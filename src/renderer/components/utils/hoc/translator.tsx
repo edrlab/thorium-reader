@@ -16,8 +16,9 @@ export interface TranslatorProps {
 
 type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
 
-export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Props & TranslatorProps>) {
+export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Props>) {
     const WrapperComponent = class extends React.Component<TranslatorProps> {
+        public static displayName: string;
         public render() {
             const translator = container.get("translator") as Translator;
             const translate = translator.translate.bind(translator) as I18nTyped;
@@ -34,5 +35,7 @@ export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Pr
         }
     };
 
+    WrapperComponent.displayName =
+        `withTranslator(${WrappedComponent.displayName || WrappedComponent.name || "Component"})`;
     return WrapperComponent;
 }
