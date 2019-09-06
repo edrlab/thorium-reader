@@ -23,6 +23,8 @@ import BreadCrumb, { BreadCrumbItem } from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
 import Header from "./Header";
 
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+
 // Logger
 // const debug = debug_("readium-desktop:src/renderer/components/opds/browser");
 
@@ -45,8 +47,12 @@ export class Browser extends React.Component<Props> {
         const secondaryHeader = <Header displayType={parsedResult.displayType}/>;
 
         return (
-            <LibraryLayout secondaryHeader={secondaryHeader}>
-                <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search} />
+            <LibraryLayout secondaryHeader={secondaryHeader} mainClassName={styles.opdsBrowse}>
+                <BreadCrumb
+                    className={styles.opdsBrowseBreadcrumb}
+                    breadcrumb={breadcrumb}
+                    search={this.props.location.search}
+                />
                 {url &&
                     <BrowserResult url={url} />
                 }
