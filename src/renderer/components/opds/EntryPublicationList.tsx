@@ -6,30 +6,23 @@
 // ==LICENSE-END==
 
 import * as qs from "query-string";
-
 import * as React from "react";
-
 import { connect } from "react-redux";
-
 import { RouteComponentProps, withRouter } from "react-router-dom";
-
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
 import GridView from "readium-desktop/renderer/components/utils/GridView";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-
-interface EntryPublicationListProps extends RouteComponentProps {
+interface IProps extends RouteComponentProps {
     publications: OpdsPublicationView[];
 }
 
-export class EntryPublicationList extends React.Component<EntryPublicationListProps, undefined> {
-    public render(): React.ReactElement<{}> {
-        let DisplayView: any = GridView;
+class EntryPublicationList extends React.Component<IProps> {
+    public render() {
+        let DisplayView: React.ComponentClass<any> = GridView;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
@@ -40,19 +33,17 @@ export class EntryPublicationList extends React.Component<EntryPublicationListPr
         }
 
         return (
-            <div>
-                { this.props.publications ?
-                    <DisplayView publications={ this.props.publications } isOpdsView={true}/>
-                : <Loader/>}
-            </div>
+            <>
+                {this.props.publications ?
+                    <DisplayView publications={this.props.publications} isOpdsView={true} />
+                    : <Loader />}
+            </>
         );
     }
 }
 
-const mapStateToProps = (state: RootState, __: any) => {
-    return {
-        location: state.router.location,
-    };
-};
+const mapStateToProps = (state: RootState) => ({
+    location: state.router.location,
+});
 
-export default withRouter(connect(mapStateToProps, undefined)(EntryPublicationList));
+export default (connect(mapStateToProps)(withRouter(EntryPublicationList)));

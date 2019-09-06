@@ -59,7 +59,6 @@ export default withApi(
             {
                 moduleId: "catalog",
                 methodId: "get",
-                callProp: "requestCatalog",
                 resultProp: "catalog",
                 onLoad: true,
             },
