@@ -28,6 +28,7 @@
         },
         "addBookToLib": "Import",
         "addTags": "Ein tag hinzufügen",
+        "addTagsButton": "Hinzufügen",
         "allBooks": "alle Bücher",
         "bookInfo": "Über dieses Buch",
         "delete": "Dauerhaft löschen",
@@ -94,7 +95,8 @@
             "success": "Der Download von {{- title}} wurde abgeschlossen"
         },
         "import": {
-            "success": ""
+            "fail": "Der Import von {{- path}} ist fehlgeschlagen. Stellen Sie sicher, dass die Datei gültig ist",
+            "success": "Der Import von {{- title}} ist abgeschlossen."
         }
     },
     "opds": {

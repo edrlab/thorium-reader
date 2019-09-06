@@ -28,6 +28,7 @@
         },
         "addBookToLib": "Import",
         "addTags": "Add a tag",
+        "addTagsButton": "Add",
         "allBooks": "All books",
         "bookInfo": "About this book",
         "delete": "Delete",
@@ -94,6 +95,7 @@
             "success": "The download of {{- title}} is finished."
         },
         "import": {
+            "fail": "The import of {{- path}} failed. Verify that the file is valid",
             "success": "The import of {{- title}} is finished."
         }
     },

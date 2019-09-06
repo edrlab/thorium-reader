@@ -15,7 +15,7 @@ import { ToastState } from "readium-desktop/common/redux/states/toast";
 
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import Toast from "./Toast";
+import Toast, {ToastType as CompToastType} from "./Toast";
 
 import * as DownloadIcon from "readium-desktop/renderer/assets/icons/download.svg";
 
@@ -67,6 +67,8 @@ export class ToastManager extends React.Component<Props, State> {
                             return this.buildFileImportToast(toast, id);
                         case ToastType.DownloadStarted:
                             return this.buildFileImportStartToast(toast, id);
+                        case ToastType.DownloadFailed:
+                            return this.buildFileImportFailToast(toast, id);
                         default:
                             return (<></>);
                     }
@@ -95,6 +97,18 @@ export class ToastManager extends React.Component<Props, State> {
                 key={id}
                 icon={ DownloadIcon }
                 close={ () => this.close(id) }
+            />
+        );
+    }
+
+    private buildFileImportFailToast(toast: ToastState, id: string) {
+        return (
+            <Toast
+                message={toast.data}
+                key={id}
+                icon={ DownloadIcon }
+                close={ () => this.close(id) }
+                type={CompToastType.Error}
             />
         );
     }

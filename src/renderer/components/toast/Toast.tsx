@@ -16,6 +16,13 @@ import { TranslatorProps, withTranslator } from "../utils/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 
+export enum ToastType {
+    Error,
+    Default,
+    Success,
+
+}
+
 interface Props extends TranslatorProps {
     close: (id: string) => void;
     className?: string;
@@ -23,6 +30,7 @@ interface Props extends TranslatorProps {
     icon?: any;
     message?: string;
     displaySystemNotification: boolean;
+    type?: ToastType;
 }
 
 interface State {
@@ -61,12 +69,29 @@ export class Toast extends React.Component<Props, State> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { icon } = this.props;
+        const { icon, type } = this.props;
         const { willLeave, toRemove } = this.state;
+
+        let typeClassName: string;
+        switch (type) {
+            case ToastType.Error:
+                typeClassName = styles.error;
+                break;
+            case ToastType.Success:
+                typeClassName = styles.success;
+                break;
+            default:
+                break;
+        }
         return (
             <div
                 ref={(ref) => this.ref = ref}
-                className={classNames(styles.toast, willLeave && styles.leave, toRemove && styles.toRemove)}
+                className={classNames(
+                    styles.toast,
+                    willLeave && styles.leave,
+                    toRemove && styles.toRemove,
+                    typeClassName,
+                )}
             >
                 { icon && <SVG className={styles.icon} svg={icon} /> }
                 <p>{ this.props.message }</p>
