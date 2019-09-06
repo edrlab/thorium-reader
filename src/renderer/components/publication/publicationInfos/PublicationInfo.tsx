@@ -65,7 +65,8 @@ export class PublicationInfo extends React.Component<Props, State> {
         if (this.props.publicationIdentifier) {
             this.props.getPublicationFromId();
         }
-        this.needSeeMoreButton();
+
+        setTimeout(this.needSeeMoreButton.bind(this), 1);
     }
 
     public componentDidUpdate(oldProps: Props) {
