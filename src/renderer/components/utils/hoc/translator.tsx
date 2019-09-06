@@ -10,8 +10,8 @@ import { I18nTyped, Translator } from "readium-desktop/common/services/translato
 import { container } from "readium-desktop/renderer/di";
 
 export interface TranslatorProps {
-    __: I18nTyped;
-    translator: Translator;
+    __?: I18nTyped;
+    translator?: Translator;
 }
 
 type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
