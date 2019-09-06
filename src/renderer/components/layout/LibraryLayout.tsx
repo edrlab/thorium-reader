@@ -20,10 +20,13 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import * as qs from "query-string";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
+import classNames from "classnames";
+
 interface LibraryLayoutProps extends RouteComponentProps {
     dialogOpen?: boolean;
     secondaryHeader?: any;
     title?: string;
+    mainClassName?: string;
 }
 
 class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
@@ -56,7 +59,7 @@ class LibraryLayout extends React.Component<LibraryLayoutProps, undefined> {
                 { this.props.secondaryHeader }
                 <main
                     id="main"
-                    className={styles.main}
+                    className={classNames(styles.main, this.props.mainClassName)}
                     role="main"
                 >
                     <a ref={(ref) => this.fastLinkRef = ref} id="main-content" aria-hidden tabIndex={-1}></a>
