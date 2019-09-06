@@ -49,20 +49,27 @@ class BreadCrumb extends React.Component<BreadCrumbProps, undefined> {
                         <SVG svg={ArrowIcon}/>
                     </Link>
                 }
-                {breadcrumb && breadcrumb.map((item, index) =>
-                    item.path && index !== breadcrumb.length - 1 ?
-                        <Link
-                            key={index}
-                            to={{
-                                pathname: item.path,
-                                search: `?displayType=${search.displayType}`,
-                                state: item.state,
-                            }}
-                            title={ item.name }
-                        >{ item.name } /</Link>
-                    :
-                        <span key={index} >{ item.name }</span>,
-                )}
+                <div>
+                    {breadcrumb && breadcrumb.map((item, index) =>
+                        item.path && index !== breadcrumb.length - 1 ?
+                            <>
+                                <Link
+                                    key={index}
+                                    to={{
+                                        pathname: item.path,
+                                        search: `?displayType=${search.displayType}`,
+                                        state: item.state,
+                                    }}
+                                    title={ item.name }
+                                >
+                                    { item.name }
+                                </Link>
+                                <span> / </span>
+                            </>
+                        :
+                            <span key={index} >{ item.name }</span>,
+                    )}
+                </div>
             </div>
         );
     }
