@@ -202,6 +202,7 @@
 	border-radius: 3px;
 	border: 1px solid #67A3E0;
 	color: #67A3E0;
+    margin: 0.3rem 0;
 }
 
 .dialog_right .tags li:not(:first-child) {
