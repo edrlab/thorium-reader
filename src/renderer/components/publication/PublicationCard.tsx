@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import { LsdStatus } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -22,7 +23,6 @@ import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { lcpReadable } from "readium-desktop/utils/publication";
-import { connect } from 'react-redux';
 
 interface PublicationCardProps extends TranslatorProps {
     publication: PublicationView;

@@ -7,6 +7,7 @@
 
 import * as moment from "moment";
 import * as React from "react";
+import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import { LsdStatus } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -19,10 +20,11 @@ import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { lcpReadable } from "readium-desktop/utils/publication";
 
-import AccessibleMenu from "../utils/menu/AccessibleMenu";
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+import AccessibleMenu from "../utils/menu/AccessibleMenu";
 
 import uuid = require("uuid");
+
 interface PublicationListElementProps extends TranslatorProps {
     publication: PublicationView;
     deletePublication?: TPublicationApiDelete;
@@ -142,7 +144,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open(
@@ -174,8 +176,8 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => 
     };
 };
 
-export default withTranslator(withApi(
-    PublicationListElement,
+export default connect(mapDispatchToProps)(withApi(
+    withTranslator(PublicationListElement),
     {
         operations: [
             {
@@ -184,6 +186,5 @@ export default withTranslator(withApi(
                 callProp: "deletePublication",
             },
         ],
-        mapDispatchToProps,
     },
 ));

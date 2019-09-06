@@ -135,8 +135,8 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     }
 }
 
-export default withTranslator<BrowserResultProps>(withApi<BrowserResultProps>(
-    withRouter(BrowserResult),
+export default withApi(
+    withTranslator(withRouter(BrowserResult)),
     {
         operations: [
             {
@@ -148,4 +148,4 @@ export default withTranslator<BrowserResultProps>(withApi<BrowserResultProps>(
             },
         ],
     },
-));
+);
