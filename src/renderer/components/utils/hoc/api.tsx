@@ -25,14 +25,12 @@ export interface IApiOperationDefinition<Props> extends IApiOperation {
     resultProp?: keyof Props;
     resultIsRejectProp?: keyof Props;
     buildRequestData?: (props: Props) => unknown[];
-    onLoad?: boolean; // Load in component did mount, default true
+    onLoad?: boolean; // Load in component did mount, default false
 }
 
 export interface IApiConfig<Props> {
     operations: Array<IApiOperationDefinition<Props>>;
     refreshTriggers?: IApiOperation[]; // Api operation that triggers a new refresh
-    mapStateToProps?: MapStateToProps<any, any, RootState>;
-    mapDispatchToProps?: MapDispatchToPropsFunction<any, any>;
 }
 
 export interface IApiOperationRequest<Props> {
@@ -47,7 +45,7 @@ export interface IApiMapDispatchToProps {
 }
 
 // tslint:disable-next-line: no-empty-interface
-export interface IApiProps extends IApiMapDispatchToProps {}
+export interface ApiProps extends IApiMapDispatchToProps {}
 
 type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
 
@@ -102,20 +100,8 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, que
         );
     }
 
-    const mapDispatchToProps: MapDispatchToPropsFunction<any, any> = (dispatch, ownProps) => {
-        let dispatchToPropsResult = {};
-
-        if (queryConfig.mapDispatchToProps != null) {
-            dispatchToPropsResult = queryConfig.mapDispatchToProps(
-                dispatch,
-                ownProps,
-            );
-        }
-
-        return Object.assign(
-            {},
-            dispatchToPropsResult,
-            {
+    const mapDispatchToProps: MapDispatchToPropsFunction<IApiMapDispatchToProps, any> = (dispatch, ownProps) => {
+        return {
                 requestOnLoadData: () => {
                     for (const operationRequest of operationRequests) {
                         if (operationRequest.definition.onLoad) {
@@ -130,19 +116,10 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, que
                         );
                     }
                 },
-            },
-        );
+            };
     };
 
-    const mapStateToProps: MapStateToProps<any, any, RootState> = (state, ownProps) => {
-        let stateToPropsResult = {};
-
-        if (queryConfig.mapStateToProps != null) {
-            stateToPropsResult = queryConfig.mapStateToProps(
-                state,
-                ownProps,
-            );
-        }
+    const mapStateToProps: MapStateToProps<Props, any, RootState> = (state) => {
 
         // typed with any because the return type of the function is fulfilled
         const operationResults: any = {};
@@ -161,7 +138,6 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, que
 
         return Object.assign(
             {},
-            stateToPropsResult,
             operationResults,
         );
     };
@@ -199,22 +175,6 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, que
         }
 
         public render() {
-            // I remove translator in props replace with "WithTranslator" in each component
-            // const translator = container.get<Translator>("translator");
-            // const translate = translator.translate.bind(translator) as I18nTyped;
-
-            // this condition is never called because operationResults is merged into mapStateToProps L172
-            /*
-            if (newProps.operationResults) {
-                for (const key in newProps.operationResults) {
-                    if (newProps.operationResults.hasOwnProperty(key)) {
-                        newProps[key] = newProps.operationResults[key];
-                    }
-                }
-            }
-            */
-
-            // typed with any because
             const operationRequestProps: any = {};
             for (const operationRequest of operationRequests) {
                 const def = operationRequest.definition;
@@ -226,14 +186,6 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, que
                 {},
                 this.props,
                 operationRequestProps,
-                // idem that translator.tsx must be removed on code : withTranslator(withApi(...))
-                // I remove this props because we have to include withTranslator for each component
-                /*
-                {
-                    __: translate,
-                    translator,
-                },
-                */
             );
 
             return (<WrappedComponent { ...newProps } />);
