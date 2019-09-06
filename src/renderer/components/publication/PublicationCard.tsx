@@ -6,27 +6,22 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { DialogType } from "readium-desktop/common/models/dialog";
 import { LsdStatus } from "readium-desktop/common/models/lcp";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
+import { PublicationView } from "readium-desktop/common/views/publication";
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
 import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
-
-import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-
-import { lcpReadable } from "readium-desktop/utils/publication";
-
-import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { lcpReadable } from "readium-desktop/utils/publication";
 
 interface PublicationCardProps extends TranslatorProps {
     publication: PublicationView;
