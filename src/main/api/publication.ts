@@ -128,7 +128,9 @@ export class PublicationApi {
         for (const path of paths) {
             try {
                 const newDoc = await this.catalogService.importFile(path);
-                newDocs.push(newDoc);
+                if (newDoc) {
+                    newDocs.push(newDoc);
+                }
             } catch (error) {
                 debug(`Import file - FAIL : ${path}`, error);
                 this.dispatchToastRequest(ToastType.DownloadFailed,
