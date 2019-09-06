@@ -8,4 +8,5 @@
 export enum ToastType {
     DownloadComplete = "download-complete",
     DownloadStarted = "download-started",
+    DownloadFailed = "download-failed",
 }

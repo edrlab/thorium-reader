@@ -84,7 +84,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
                         tabIndex={0}
                         onClick={(e) => this.handleBookClick(e)}
                         onKeyPress={(e) => {
-                            if (e.charCode === 13) { this.handleBookClick(e); }}
+                            if (e.key === "Enter") { this.handleBookClick(e); }}
                         }
                     >
                         <div className={styles.list_book_title}>

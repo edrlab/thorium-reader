@@ -12,10 +12,10 @@ import {
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px-blue.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 interface Props extends TranslatorProps {
     publicationIdentifier: string;
@@ -76,6 +76,12 @@ export class TagManager extends React.Component<Props, TagManagerState> {
                             onChange={this.handleChangeName}
                             value={this.state.nameNewTag}
                         />
+                        <button
+                            type="submit"
+                            className={styles.addTagButton}
+                        >
+                            { __("catalog.addTagsButton")}
+                        </button>
                     </form>
                 }
             </div>

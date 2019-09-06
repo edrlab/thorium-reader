@@ -8,6 +8,24 @@
   --sideButtonColor: rgb(130, 130, 130, 0.5);
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font: 1.1rem "Open Sans", sans-serif;
+	background:#fbfbfb;
+}
+
+button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+}
+
 .root {
   position: absolute;
   top: 0;
@@ -610,8 +628,7 @@ p.chapters_description {
 	font-size: 1.1rem;
 	font-weight: 600;
 	background-color: white;
-	cursor: pointer;
-  display:flex;
+	cursor: auto;
 
   & > span {
     flex: 1;
@@ -621,7 +638,7 @@ p.chapters_description {
     fill: rgb(59, 59, 59);
   }
 
-  &.active {
+  &.active > button {
     & svg {
       transform: rotate(90deg);
     }
@@ -951,5 +968,52 @@ input[type=radio] + label {
     margin:10px 0 0 0;
     font-size: 0.8rem;
     padding:0 20px 0px 20px;
+  }
+}
+
+.skip_link {
+	position: absolute;
+	left: -2000px;
+
+	&:focus {
+		left: unset;
+		left: 0;
+		width: fit-content;
+		top: 0;
+		opacity: 1;
+		height: unset;
+		z-index: 150;
+		font-size: 1rem;
+		padding: 1rem;
+		color: white;
+		background-color: #0366d6;
+  }
+}
+
+.goToPage {
+  text-align: center;
+  & .title {
+    color: black;
+    font-size: 1.1rem;
+  }
+  & .goToErrorMessage {
+    color: red;
+  }
+  & form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & button {
+      border: 1px solid black;
+      border-radius: 5px;
+      background: none;
+      margin: 1rem;
+      padding: 0.5rem;
+    }
+
+    & input {
+      margin: 0;
+    }
   }
 }

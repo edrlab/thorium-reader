@@ -27,12 +27,15 @@ import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
 import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 import { container, lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 
-import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
+import {
+    IEventPayload_R2_EVENT_READIUMCSS, IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
+} from "@r2-navigator-js/electron/common/events";
 import {
     colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
 } from "@r2-navigator-js/electron/common/readium-css-settings";
@@ -43,7 +46,7 @@ import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/que
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssOnOff, setEpubReadingSystemInfo,
-    setReadingLocationSaver, setReadiumCssJsonGetter,
+    setKeyDownEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -180,6 +183,8 @@ interface ReaderProps {
 const defaultLocale = "fr";
 
 export class Reader extends React.Component<ReaderProps, ReaderState> {
+    private fastLinkRef: any;
+
     @lazyInject("store")
     private store: Store<RootState>;
 
@@ -251,6 +256,12 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     public async componentDidMount() {
+        // queryParams.focusInside
+        const focusInside = queryString.parse(location.search).focusInside === "true";
+        if (focusInside) {
+            this.fastLinkRef.focus();
+        }
+
         this.setState({
             publicationJsonUrl,
         });
@@ -298,16 +309,6 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
             window.document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
         }, true);
 
-        window.document.addEventListener("keydown", (ev: KeyboardEvent) => {
-            if (this.state.shortcutEnable) {
-                if (ev.keyCode === 37) { // left
-                    navLeftOrRight(true);
-                } else if (ev.keyCode === 39) { // right
-                    navLeftOrRight(false);
-                }
-            }
-        });
-
         // TODO: this is a short-term hack.
         // Can we instead subscribe to Redux action type == ActionType.CloseRequest,
         // but narrow it down specically to a reader window instance (not application-wide)
@@ -340,6 +341,39 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 
         const publication = await this.loadPublicationIntoViewport(locator);
         this.setState({publication});
+
+        const keyDownEventHandler = (ev: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => {
+            // DEPRECATED
+            // if (ev.keyCode === 37 || ev.keyCode === 39) { // left / right
+            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
+            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
+            const leftKey = ev.code === "ArrowLeft";
+            const rightKey = ev.code === "ArrowRight";
+            if (leftKey || rightKey) {
+                const noModifierKeys = !ev.ctrlKey && !ev.shiftKey && !ev.altKey && !ev.metaKey;
+                const spineNavModifierKeys = ev.ctrlKey && ev.shiftKey;
+                if (noModifierKeys || spineNavModifierKeys) {
+                    navLeftOrRight(leftKey, spineNavModifierKeys);
+                    if (spineNavModifierKeys) {
+                        if (this.fastLinkRef) {
+                            setTimeout(() => {
+                                if (this.fastLinkRef) {
+                                    this.fastLinkRef.focus();
+                                }
+                            }, 200);
+                        }
+                    }
+                }
+            }
+        };
+        setKeyDownEventHandler(keyDownEventHandler);
+        window.document.addEventListener("keydown", (ev: KeyboardEvent) => {
+            if (this.state.shortcutEnable) {
+                keyDownEventHandler(ev);
+            }
+        });
+
         setReadingLocationSaver(this.handleReadingLocationChange);
 
         setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
@@ -372,6 +406,11 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 
         return (
                 <div>
+                    <SkipLink
+                        className={styles.skip_link}
+                        anchorId="main-content"
+                        label={this.translator.translate("accessibility.skipLink")}
+                    />
                     <div className={styles.root}>
                         <ReaderHeader
                             infoOpen={this.props.infoOpen}
@@ -392,9 +431,15 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
                         />
                         <div className={styles.content_root}>
                             <div className={styles.reader}>
-                                <div className={styles.publication_viewport_container}>
+                                <main
+                                    id="main"
+                                    role="main"
+                                    className={styles.publication_viewport_container}>
+                                    <a ref={(ref) => this.fastLinkRef = ref}
+                                        id="main-content"
+                                        aria-hidden tabIndex={-1}></a>
                                     <div id="publication_viewport" className={styles.publication_viewport}> </div>
-                                </div>
+                                </main>
                             </div>
                         </div>
                         <ReaderFooter
@@ -537,10 +582,40 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private handleLinkClick(event: any, url: string) {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
         if (!url) {
             return;
         }
+
+        // DEPRECATED
+        // event.charCode === 13
+        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/charCode
+        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+        // alternatively, could also use event.code === "Enter"
+        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
+        // if (event && event.key === "Enter") {
+        // }
+        // Screen readers have their own shortcut to activate hyperlinks (e.g. VoiceOver CTRL+OPT+SPACE),
+        // so we must not limit the focus behaviour to app-defined keyboard interaction (i.e. ENTER key)
+        // (note that this means the focus is moved even when TOC items clicked with mouse, which is fine)
+        if (this.fastLinkRef) {
+            setTimeout(() => {
+                if (this.fastLinkRef) {
+                    this.fastLinkRef.focus();
+                }
+            }, 200);
+        }
+
+        if (this.state.menuOpen) {
+            setTimeout(() => {
+                this.handleMenuButtonClick();
+            }, 100);
+        }
+
         const newUrl = publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
 

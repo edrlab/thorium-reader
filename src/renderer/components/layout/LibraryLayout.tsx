@@ -20,6 +20,7 @@ interface IProps extends RouteComponentProps {
     dialogOpen?: boolean;
     secondaryHeader?: React.ReactElement;
     title?: string;
+    mainClassName?: string;
 }
 
 class LibraryLayout extends React.Component<IProps> {
@@ -52,7 +53,7 @@ class LibraryLayout extends React.Component<IProps> {
                 { this.props.secondaryHeader }
                 <main
                     id="main"
-                    className={styles.main}
+                    className={classNames(styles.main, this.props.mainClassName)}
                     role="main"
                 >
                     <a ref={(ref) => this.fastLinkRef = ref} id="main-content" aria-hidden tabIndex={-1}></a>

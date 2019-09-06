@@ -21,6 +21,14 @@
     animation-name: start;
     animation-duration: 0.5s;
 
+    &.error {
+        background: rgba(255, 0, 0, 0.1);
+    }
+
+    &.success {
+        background: rgba(0, 255, 0, 0.1);
+    }
+
     & p {
         margin: 0;
         flex: 1;

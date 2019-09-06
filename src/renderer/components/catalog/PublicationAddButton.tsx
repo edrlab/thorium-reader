@@ -35,7 +35,7 @@ export class PublicationAddButton extends React.Component<Props> {
                     aria-label={__("accessibility.importFile")}
                     onChange={ this.importFile }
                     multiple
-                    accept=".lcpl, .epub, .epub3"
+                    accept=".epub, .epub3"
                 />
                 <label htmlFor="epubInput">
                     <SVG svg={ PlusIcon } title={__("header.importTitle")}/>

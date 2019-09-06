@@ -41,23 +41,41 @@ interface Props extends TranslatorProps {
 interface State {
     openedSection: number;
     bookmarkToUpdate: number;
+    pageError: boolean;
+    refreshError: boolean;
 }
 
 export class ReaderMenu extends React.Component<Props, State> {
+    private goToRef: any;
     public constructor(props: Props) {
         super(props);
 
         this.state = {
             openedSection: undefined,
             bookmarkToUpdate: undefined,
+            pageError: false,
+            refreshError: false,
         };
 
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
+        this.handleSubmitPage = this.handleSubmitPage.bind(this);
+    }
+
+    public componentDidUpdate() {
+        if (this.state.refreshError) {
+            if (this.state.pageError) {
+                this.setState({pageError: false});
+            } else {
+                this.setState({
+                    pageError: true,
+                    refreshError: false,
+                });
+            }
+        }
     }
 
     public render(): React.ReactElement<{}> {
         const { __, publication, bookmarks, toggleMenu } = this.props;
-
         if (!publication) {
             return <></>;
         }
@@ -65,12 +83,13 @@ export class ReaderMenu extends React.Component<Props, State> {
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: publication && this.createTOCRenderList(publication.TOC),
+                content: publication && this.renderLinkTree(__("reader.marks.toc"), publication.TOC, 1),
                 disabled: !publication.TOC || publication.TOC.length === 0,
             },
             {
                 title: __("reader.marks.landmarks"),
-                content: this.createTOCRenderList(publication.Landmarks),
+                content: publication && publication.Landmarks &&
+                    this.renderLinkList(__("reader.marks.landmarks"), publication.Landmarks),
                 disabled: !publication.Landmarks || publication.Landmarks.length === 0,
             },
             {
@@ -82,6 +101,11 @@ export class ReaderMenu extends React.Component<Props, State> {
                 title: __("reader.marks.annotations"),
                 content: <></>,
                 disabled: true,
+            },
+            {
+                content: this.buildGoToPageSection(),
+                disabled: false,
+                notExtendable: true,
             },
         ];
 
@@ -97,60 +121,111 @@ export class ReaderMenu extends React.Component<Props, State> {
         );
     }
 
-    private createTOCRenderList(TOC: Link[]): JSX.Element {
-        return <ul className={styles.chapters_content}>
-            { TOC.map((content, i: number) => {
+    private renderLinkList(label: string, links: Link[]): JSX.Element {
+        return <ul
+            aria-label={label}
+            className={styles.chapters_content}
+            role={"list"}
+        >
+            { links.map((link, i: number) => {
                 return (
-                    <li key={i}>
-                        {content.Children ? (
+                    <li
+                        key={i}
+                        aria-level={1}
+                        role={"listitem"}
+                    >
+                        <a
+                            className={
+                                link.Href ?
+                                    classnames(styles.line, styles.active) :
+                                    classnames(styles.line, styles.active, styles.inert)
+                            }
+                            onClick=
+                                {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
+                            tabIndex={0}
+                            onKeyPress=
+                                {
+                                    (e) => {
+                                        if (link.Href && e.key === "Enter") {
+                                            this.props.handleLinkClick(e, link.Href);
+                                        }
+                                    }
+                                }
+                            data-href={link.Href}
+                        >
+                            <span>{link.Title}</span>
+                        </a>
+                    </li>
+                );
+            })}
+        </ul>;
+    }
+
+    private renderLinkTree(label: string | undefined, links: Link[], level: number): JSX.Element {
+        // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
+        const useTree = false;
+
+        return <ul
+                    role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
+                    aria-label={label}
+                    className={styles.chapters_content}
+                >
+            { links.map((link, i: number) => {
+                return (
+                    <li key={`${level}-${i}`}
+                        role={useTree ? "treeitem" : undefined}
+                        aria-expanded={useTree ? "true" : undefined}
+                    >
+                        {link.Children ? (
                             <>
+                            <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
-                                        content.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
+                                        link.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
                                     }
                                     onClick=
-                                        {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
+                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
                                     tabIndex={0}
                                     onKeyPress=
                                         {
                                             (e) => {
-                                                if (content.Href && e.charCode === 13) {
-                                                    this.props.handleLinkClick(e, content.Href);
+                                                if (link.Href && e.key === "Enter") {
+                                                    this.props.handleLinkClick(e, link.Href);
                                                 }
                                             }
                                         }
-                                    data-href={content.Href}
+                                    data-href={link.Href}
                                 >
-                                    <span>{content.Title}</span>
+                                    <span>{link.Title}</span>
                                 </a>
-                                {content.Children &&
-                                    <ul className={styles.chapters_content}>
-                                        {this.createTOCRenderList(content.Children)}
-                                    </ul>
-                                }
+                            </div>
+
+                            {this.renderLinkTree(undefined, link.Children, level + 1)}
                             </>
                         ) : (
-                            <a
-                                className={
-                                    content.Href ?
-                                        classnames(styles.line, styles.active) :
-                                        classnames(styles.line, styles.active, styles.inert)
-                                }
-                                onClick=
-                                    {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
-                                tabIndex={0}
-                                onKeyPress=
-                                    {
-                                        (e) => {
-                                            if (content.Href && e.charCode === 13) {
-                                                this.props.handleLinkClick(e, content.Href);
+                            <div role={"heading"} aria-level={level}>
+                                <a
+                                    className={
+                                        link.Href ?
+                                            classnames(styles.line, styles.active) :
+                                            classnames(styles.line, styles.active, styles.inert)
+                                    }
+                                    onClick=
+                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
+                                    tabIndex={0}
+                                    onKeyPress=
+                                        {
+                                            (e) => {
+                                                if (link.Href && e.key === "Enter") {
+                                                    this.props.handleLinkClick(e, link.Href);
+                                                }
                                             }
                                         }
-                                    }
-                                data-href={content.Href}
-                            >
-                                {content.Title}
-                            </a>
+                                    data-href={link.Href}
+                                >
+                                    <span>{link.Title}</span>
+                                </a>
+                            </div>
                         )}
                     </li>
                 );
@@ -195,8 +270,55 @@ export class ReaderMenu extends React.Component<Props, State> {
         return undefined;
     }
 
+    private buildGoToPageSection() {
+        const { __ } = this.props;
+        const error = this.state.pageError;
+        return <div className={styles.goToPage}>
+            <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
+            <form onSubmit={this.handleSubmitPage}>
+                <input
+                    ref={(ref) => this.goToRef = ref}
+                    type="text"
+                    aria-invalid={error}
+                    onChange={() => this.setState({pageError: false})}
+                    disabled={!this.props.publication.PageList}
+                    placeholder={__("reader.navigation.goToPlaceHolder")}
+                    alt={__("reader.navigation.goToPlaceHolder")}
+                />
+                <button
+                    type="submit"
+                    disabled={!this.props.publication.PageList}
+                >
+                    { __("reader.navigation.goTo") }
+                </button>
+            </form>
+            {error &&
+                <p
+                    className={styles.goToErrorMessage}
+                    aria-live="assertive"
+                    aria-relevant="all"
+                    role="alert"
+                >
+                    { __("reader.navigation.goToError") }
+                </p>
+            }
+        </div>;
+    }
+
     private closeBookarkEditForm() {
         this.setState({ bookmarkToUpdate: undefined });
+    }
+
+    private handleSubmitPage(e: any) {
+        e.preventDefault();
+        const pageNbr = (this.goToRef.value as string).trim().replace(/\s\s+/g, " ");
+        const foundPage = this.props.publication.PageList.find((page) => page.Title === pageNbr);
+        if (foundPage) {
+            this.setState({pageError: false});
+            this.props.handleLinkClick(undefined, foundPage.Href);
+        } else {
+            this.setState({refreshError: true});
+        }
     }
 }
 

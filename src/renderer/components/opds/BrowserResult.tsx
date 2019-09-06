@@ -20,6 +20,8 @@ import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
     result?: THttpGetOpdsResultView | string;
@@ -89,7 +91,9 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
             }
         }
 
-        return content;
+        return <div className={styles.opdsBrowseContent}>
+            { content }
+        </div>;
     }
 
     private browseOpds() {

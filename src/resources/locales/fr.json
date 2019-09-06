@@ -28,6 +28,7 @@
         },
         "addBookToLib": "Importer",
         "addTags": "Ajouter un tag",
+        "addTagsButton": "Ajouter",
         "allBooks": "Tous les livres",
         "bookInfo": "Fiche livre",
         "delete": "Supprimer",
@@ -60,7 +61,7 @@
         "deleteFeed": "Êtes vous sûr de vouloir supprimer ce catalogue ?",
         "deletePublication": "Êtes vous sûr de vouloir supprimer cette publication ?",
         "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub ou .lcpl)",
+        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub)",
         "no": "Non",
         "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
@@ -94,6 +95,7 @@
             "success": "Le téléchargement de {{- title}} est terminé."
         },
         "import": {
+            "fail": "L'importation de {{- path}} a échoué. Vérifier que le fichier est valide",
             "success": "L'import de {{- title}} est terminé."
         }
     },
@@ -151,6 +153,10 @@
             "bookmarkTitle": "marque-page",
             "detachWindowTitle": "détacher la fenêtre",
             "fullscreenTitle": "mode plein écran",
+            "goTo": "Aller à",
+            "goToError": "Cette page n'existe pas",
+            "goToPlaceHolder": "Entrer un numéro de page",
+            "goToTitle": "Aller à la page",
             "infoTitle": "informations",
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "quitter le mode plein écran",
