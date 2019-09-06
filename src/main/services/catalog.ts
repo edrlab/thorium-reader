@@ -59,11 +59,13 @@ export class CatalogService {
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument> {
         const ext = path.extname(filePath);
 
+        debug("Import File - START");
         if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
             return this.importLcplFile(filePath);
         } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
             return this.importEpubFile(filePath);
         }
+        debug("Import File - END");
 
         return null;
     }
