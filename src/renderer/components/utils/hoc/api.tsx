@@ -32,7 +32,7 @@ export interface IApiConfig<Props> {
     operations: Array<IApiOperationDefinition<Props>>;
     refreshTriggers?: IApiOperation[]; // Api operation that triggers a new refresh
     mapStateToProps?: MapStateToProps<any, any, RootState>;
-    mapDispatchToProps?: MapDispatchToPropsFunction<IApiMapDispatchToProps, any>;
+    mapDispatchToProps?: MapDispatchToPropsFunction<any, any>;
 }
 
 export interface IApiOperationRequest<Props> {
@@ -54,7 +54,7 @@ type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessCompone
 // TS4094: private members fail the TS compiler, because:
 // returned type is ConnectedComponentClass<typeof BaseWrapperComponent, any>
 // tslint:disable-next-line: max-line-length
-export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & IApiProps>, queryConfig: IApiConfig<Props>) {
+export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, queryConfig: IApiConfig<Props>) {
 
     // Create operationRequests
     const operationRequests: Array<IApiOperationRequest<Props>> = [];
@@ -102,7 +102,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
         );
     }
 
-    const mapDispatchToProps: MapDispatchToPropsFunction<IApiMapDispatchToProps, any> = (dispatch, ownProps) => {
+    const mapDispatchToProps: MapDispatchToPropsFunction<any, any> = (dispatch, ownProps) => {
         let dispatchToPropsResult = {};
 
         if (queryConfig.mapDispatchToProps != null) {
@@ -166,7 +166,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
         );
     };
 
-    const BaseWrapperComponent = class extends React.Component<Props & IApiMapDispatchToProps> {
+    const BaseWrapperComponent = class extends React.Component<any> {
         public static displayName: string;
 
         // Ideally should be private, but see TS4094 comments in this file
@@ -174,7 +174,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<Props & I
         /* private */ public store: Store<RootState>;
         /* private */ public stateUpdateUnsubscribe: any;
 
-        constructor(props: Props & IApiMapDispatchToProps) {
+        constructor(props: any) {
             super(props);
 
             this.lastSuccess = null;
