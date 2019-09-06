@@ -164,6 +164,7 @@
     & > div {
 	    display: inline-block;
         margin-left: 15px;
+        flex: 1;
     }
     & > span {
         align-self: flex-start;
@@ -224,11 +225,14 @@
     margin-left: 0;
     height: auto;
     width: fit-content;
+    display: flex;
+    width: 100%;
 }
 
 .tag_inputs {
 	position: relative;
-	width:300px;
+	max-width:300px;
+    flex: 1;
 	border-radius: 0;
 	border:none;
 	height:35px;
