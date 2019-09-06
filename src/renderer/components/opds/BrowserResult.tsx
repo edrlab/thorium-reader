@@ -10,23 +10,22 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { OpdsResultType, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { TOpdsBrowseApi } from "readium-desktop/main/api/opds";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import Loader from "readium-desktop/renderer/components/utils/Loader";
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import { ApiProps, withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { parseQueryString } from "readium-desktop/utils/url";
+
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-
-interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
+interface BrowserResultProps extends RouteComponentProps, ApiProps, TranslatorProps {
     url: string;
     result?: THttpGetOpdsResultView | string;
     resultIsReject?: boolean;
-    cleanData: any;
     browse?: TOpdsBrowseApi;
 }
 
