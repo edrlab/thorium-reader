@@ -72,7 +72,7 @@ export function apiFetch<T extends TApiMethodName>(path: T, ...requestData: Para
 }
 
 const test = () => {
-    apiFetch("catalog/addEntry", null).then((data) => {
+    apiFetch("publication/importOpdsEntry", null).then((data) => {
         // body
     });
 };
