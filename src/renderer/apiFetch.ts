@@ -57,7 +57,7 @@ export function apiFetch<T extends TApiMethodName>(path: T, ...requestData: Para
                         if (state.api.data[requestId].resultIsReject) {
                             rejectSubscribe(result);
                         }
-                        resolveSubscribe(result);
+                        resolveSubscribe(Object.assign({}, result));
                     }
                 }
             });
