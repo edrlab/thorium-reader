@@ -15,21 +15,21 @@ import { diSymbolTable } from "readium-desktop/main/di";
 import { Locator } from "@r2-shared-js/models/locator";
 
 export interface IReaderApi {
-    setLastReadingLocation: (publicationIdentifier: string, locator: Locator) => Promise<LocatorView> | void;
-    getLastReadingLocation: (publicationIdentifier: string) => Promise<LocatorView> | void;
-    findBookmarks: (publicationIdentifier: string) => Promise<LocatorView[]> | void;
+    setLastReadingLocation: (publicationIdentifier: string, locator: Locator) => Promise<LocatorView>;
+    getLastReadingLocation: (publicationIdentifier: string) => Promise<LocatorView>;
+    findBookmarks: (publicationIdentifier: string) => Promise<LocatorView[]>;
     updateBookmark: (
         identifier: string,
         publicationIdentifier: string,
         locator: Locator,
         name?: string,
-    ) => Promise<void> | void;
+    ) => Promise<void>;
     addBookmark: (
         publicationIdentifier: string,
         locator: Locator,
         name?: string,
-    ) => Promise<void> | void;
-    deleteBookmark: (identifier: string) => Promise<void> | void;
+    ) => Promise<void>;
+    deleteBookmark: (identifier: string) => Promise<void>;
 }
 
 export type TReaderApiSetLastReadingLocation = IReaderApi["setLastReadingLocation"];

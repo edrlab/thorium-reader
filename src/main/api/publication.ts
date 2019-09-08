@@ -20,20 +20,20 @@ import { CatalogService } from "readium-desktop/main/services/catalog";
 export interface IPublicationApi {
     // in a future possible typing like this to have buildRequestData return type :
     // get: (...a: [string]) => Promise<PublicationView> | void;
-    get: (identifier: string) => Promise<PublicationView> | void;
-    delete: (identifier: string) => Promise<void> | void;
+    get: (identifier: string) => Promise<PublicationView>;
+    delete: (identifier: string) => Promise<void>;
     findAll: () => Promise<PublicationView[]>;
-    findByTag: (tag: string) => Promise<PublicationView[]> | void;
-    updateTags: (identifier: string, tags: string[]) => Promise<PublicationView> | void;
-    getAllTags: () => Promise<string[]> | void;
+    findByTag: (tag: string) => Promise<PublicationView[]>;
+    updateTags: (identifier: string, tags: string[]) => Promise<PublicationView>;
+    getAllTags: () => Promise<string[]>;
     importOpdsEntry: (
         url: string,
         base64OpdsPublication: string,
         title: string,
-        downloadSample?: boolean) => Promise<PublicationView> | void;
-    import: (paths: string[]) => Promise<PublicationView[]> | void;
-    search: (title: string) => Promise<PublicationView[]> | void;
-    exportPublication: (publication: PublicationView, destinationPath: string) => Promise<void> | void;
+        downloadSample?: boolean) => Promise<PublicationView>;
+    import: (paths: string[]) => Promise<PublicationView[]>;
+    search: (title: string) => Promise<PublicationView[]>;
+    exportPublication: (publication: PublicationView, destinationPath: string) => Promise<void>;
 }
 
 /**

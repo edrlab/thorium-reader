@@ -19,10 +19,10 @@ import { diSymbolTable } from "readium-desktop/main/di";
 export const CATALOG_CONFIG_ID = "catalog";
 
 export interface ICatalogApi {
-    get: () => Promise<CatalogView> | void;
-    addEntry: (entryView: CatalogEntryView) => Promise<CatalogEntryView[]> | void;
-    getEntries: () => Promise<CatalogEntryView[]> | void;
-    updateEntries: (entryView: CatalogEntryView[]) => Promise<CatalogEntryView[]> | void;
+    get: () => Promise<CatalogView>;
+    addEntry: (entryView: CatalogEntryView) => Promise<CatalogEntryView[]>;
+    getEntries: () => Promise<CatalogEntryView[]>;
+    updateEntries: (entryView: CatalogEntryView[]) => Promise<CatalogEntryView[]>;
 }
 
 export type TCatalogApiGet = ICatalogApi["get"];

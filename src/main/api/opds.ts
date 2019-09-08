@@ -25,12 +25,12 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 const debug = debug_("readium-desktop:src/main/api/opds");
 
 export interface IOpdsApi {
-    getFeed: (identifier: string) => Promise<OpdsFeedView> | void;
-    deleteFeed: (identifier: string) => Promise<void> | void;
-    findAllFeeds: () => Promise<OpdsFeedView[]> | void;
-    addFeed: (data: OpdsFeed) => Promise<OpdsFeedView> | void;
-    updateFeed: (data: OpdsFeed) => Promise<OpdsFeedView> | void;
-    browse: (url: string) => Promise<THttpGetOpdsResultView> | void;
+    getFeed: (identifier: string) => Promise<OpdsFeedView>;
+    deleteFeed: (identifier: string) => Promise<void>;
+    findAllFeeds: () => Promise<OpdsFeedView[]>;
+    addFeed: (data: OpdsFeed) => Promise<OpdsFeedView>;
+    updateFeed: (data: OpdsFeed) => Promise<OpdsFeedView>;
+    browse: (url: string) => Promise<THttpGetOpdsResultView>;
 }
 
 export type TOpdsApiGetFeed = IOpdsApi["getFeed"];
