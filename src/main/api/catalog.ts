@@ -35,6 +35,13 @@ export type TCatalogApiAddEntry_result = CatalogEntryView[];
 export type TCatalogGetEntries_result = CatalogEntryView[];
 export type TCatalogUpdateEntries_result = CatalogEntryView[];
 
+export interface ICatalogModuleApi {
+    "catalog/get": TCatalogApiGet;
+    "catalog/addEntry": TCatalogApiAddEntry;
+    "catalog/getEntries": TCatalogGetEntries;
+    "catalog/updateEntries": TCatalogUpdateEntries;
+}
+
 @injectable()
 export class CatalogApi implements ICatalogApi {
     @inject(diSymbolTable["publication-repository"])

@@ -46,6 +46,15 @@ export type TReaderApiUpdateBookmark_result = void;
 export type TReaderApiAddBookmark_result = void;
 export type TReaderApiDeleteBookmark_result = void;
 
+export interface IReaderModuleApi {
+    "reader/setLastReadingLocation": TReaderApiSetLastReadingLocation;
+    "reader/getLastReadingLocation": TReaderApiGetLastReadingLocation;
+    "reader/findBookmarks": TReaderApiFindBookmarks;
+    "reader/updateBookmark": TReaderApiUpdateBookmark;
+    "reader/addBookmark": TReaderApiAddBookmark;
+    "reader/deleteBookmark": TReaderApiDeleteBookmark;
+}
+
 @injectable()
 export class ReaderApi implements IReaderApi {
     @inject(diSymbolTable["locator-repository"])

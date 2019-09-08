@@ -21,6 +21,20 @@ export interface ILcpApi {
     getLsdStatus: (data: any) => Promise<IHttpGetResult<string, any>> | void;
 }
 
+export type TLcpApiRenewPublicationLicense = ILcpApi["renewPublicationLicense"];
+export type TLcpApiRegisterPublicationLicense = ILcpApi["registerPublicationLicense"];
+export type TLcpApiReturnPublication = ILcpApi["returnPublication"];
+export type TLcpApiUnlockPublicationWithPassphrase = ILcpApi["unlockPublicationWithPassphrase"];
+export type TLcpApiGgetLsdStatus = ILcpApi["getLsdStatus"];
+
+export interface ILcpModuleApi {
+    "lcp/renewPublicationLicense": TLcpApiRenewPublicationLicense;
+    "lcp/registerPublicationLicense": TLcpApiRegisterPublicationLicense;
+    "lcp/returnPublication": TLcpApiReturnPublication;
+    "lcp/unlockPublicationWithPassphrase": TLcpApiUnlockPublicationWithPassphrase;
+    "lcp/getLsdStatus": TLcpApiGgetLsdStatus;
+}
+
 @injectable()
 export class LcpApi {
     @inject(diSymbolTable["store"])

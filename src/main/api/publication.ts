@@ -61,6 +61,19 @@ export type TPublicationApiImport_result = PublicationView[];
 export type TPublicationApiSearch_result = PublicationView[];
 export type TPublicationApiExportPublication_result = void;
 
+export interface IPublicationModuleApi {
+    "publicationget": TPublicationApiGet;
+    "publicationdelete": TPublicationApiDelete;
+    "publicationfindAll": TPublicationApiFindAll;
+    "publicationfindByTag": TPublicationApiFindByTag;
+    "publicationupdateTags": TPublicationApiUpdateTags;
+    "publicationgetAllTags": TPublicationApiGetAllTags;
+    "publicationimportOpdsEntry": TPublicationApiImportOpdsEntry;
+    "publicationimport": TPublicationApiImport;
+    "publicationsearch": TPublicationApiSearch;
+    "publicationexportPublication": TPublicationApiExportPublication;
+}
+
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
 

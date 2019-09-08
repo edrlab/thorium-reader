@@ -33,19 +33,28 @@ export interface IOpdsApi {
     browse: (url: string) => Promise<THttpGetOpdsResultView> | void;
 }
 
-export type TOpdsGetFeedApi = IOpdsApi["getFeed"];
-export type TOpdsDeleteFeedApi = IOpdsApi["deleteFeed"];
-export type TOpdsFindAllFeedApi = IOpdsApi["findAllFeeds"];
-export type TOpdsAddFeedApi = IOpdsApi["addFeed"];
-export type TOpdsUpdateFeedApi = IOpdsApi["updateFeed"];
-export type TOpdsBrowseApi = IOpdsApi["browse"];
+export type TOpdsApiGetFeed = IOpdsApi["getFeed"];
+export type TOpdsApiDeleteFeed = IOpdsApi["deleteFeed"];
+export type TOpdsApiFindAllFeed = IOpdsApi["findAllFeeds"];
+export type TOpdsApiAddFeed = IOpdsApi["addFeed"];
+export type TOpdsApiUpdateFeed = IOpdsApi["updateFeed"];
+export type TOpdsApiBrowse = IOpdsApi["browse"];
 
-export type TOpdsGetFeedApi_result = OpdsFeedView;
-export type TOpdsDeleteFeedApi_result = void;
-export type TOpdsFindAllFeedApi_result = OpdsFeedView[];
-export type TOpdsAddFeedApi_result = OpdsFeedView;
-export type TOpdsUpdateFeedApi_result = OpdsFeedView;
-export type TOpdsBrowseApi_result = THttpGetOpdsResultView;
+export type TOpdsApiGetFeed_result = OpdsFeedView;
+export type TOpdsApiDeleteFeed_result = void;
+export type TOpdsApiFindAllFeed_result = OpdsFeedView[];
+export type TOpdsApiAddFeed_result = OpdsFeedView;
+export type TOpdsApiUpdateFeed_result = OpdsFeedView;
+export type TOpdsApiBrowse_result = THttpGetOpdsResultView;
+
+export interface IOpdsModuleApi {
+    "opds/getFeed": TOpdsApiGetFeed;
+    "opds/deleteFeed": TOpdsApiDeleteFeed;
+    "opds/findAllFeeds": TOpdsApiFindAllFeed;
+    "opds/addFeed": TOpdsApiAddFeed;
+    "opds/updateFeed": TOpdsApiUpdateFeed;
+    "opds/browse": TOpdsApiBrowse;
+}
 
 @injectable()
 export class OpdsApi implements IOpdsApi {
