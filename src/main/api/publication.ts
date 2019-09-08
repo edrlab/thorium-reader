@@ -62,16 +62,16 @@ export type TPublicationApiSearch_result = PublicationView[];
 export type TPublicationApiExportPublication_result = void;
 
 export interface IPublicationModuleApi {
-    "publicationget": TPublicationApiGet;
-    "publicationdelete": TPublicationApiDelete;
-    "publicationfindAll": TPublicationApiFindAll;
-    "publicationfindByTag": TPublicationApiFindByTag;
-    "publicationupdateTags": TPublicationApiUpdateTags;
-    "publicationgetAllTags": TPublicationApiGetAllTags;
-    "publicationimportOpdsEntry": TPublicationApiImportOpdsEntry;
-    "publicationimport": TPublicationApiImport;
-    "publicationsearch": TPublicationApiSearch;
-    "publicationexportPublication": TPublicationApiExportPublication;
+    "publication/get": TPublicationApiGet;
+    "publication/delete": TPublicationApiDelete;
+    "publication/findAll": TPublicationApiFindAll;
+    "publication/findByTag": TPublicationApiFindByTag;
+    "publication/updateTags": TPublicationApiUpdateTags;
+    "publication/getAllTags": TPublicationApiGetAllTags;
+    "publication/importOpdsEntry": TPublicationApiImportOpdsEntry;
+    "publication/import": TPublicationApiImport;
+    "publication/search": TPublicationApiSearch;
+    "publication/exportPublication": TPublicationApiExportPublication;
 }
 
 // Logger
