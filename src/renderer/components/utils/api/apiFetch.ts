@@ -14,7 +14,7 @@ import { Store, Unsubscribe } from "redux";
 import * as uuid from "uuid";
 
 /**
- * Obtain the return type from Promise of a function type
+ * Obtain the promise return type of a function type
  */
 type ReturnPromiseType<T extends (...args: any) => any> = T extends (...args: any) => Promise<infer R> ? R : any;
 
@@ -71,6 +71,8 @@ export function apiFetch<T extends TApiMethodName>(path: T, ...requestData: Para
     });
 }
 
-apiFetch("catalog/addEntry", null).then((data) => {
-
-})
+const test = () => {
+    apiFetch("catalog/addEntry", null).then((data) => {
+        // body
+    });
+};
