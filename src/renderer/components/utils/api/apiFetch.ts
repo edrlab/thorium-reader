@@ -13,8 +13,13 @@ import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
 import { Store, Unsubscribe } from "redux";
 import * as uuid from "uuid";
 
-export function apiFetch(path: TApiMethodName, ...requestData: unknown[]) {
-    return new Promise<TApiMethod[typeof path]>((resolve, reject) => {
+/**
+ * Obtain the return type from Promise of a function type
+ */
+type ReturnPromiseType<T extends (...args: any) => any> = T extends (...args: any) => Promise<infer R> ? R : any;
+
+export function apiFetch<T extends TApiMethodName>(path: T, ...requestData: Parameters<TApiMethod[T]>) {
+    return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
         const store = container.get<Store<RootState>>("store");
         const requestId = uuid.v4();
         const moduleId = path.split("/")[0];
@@ -31,7 +36,7 @@ export function apiFetch(path: TApiMethodName, ...requestData: unknown[]) {
             ),
         );
 
-        const promise = new Promise<TApiMethod[typeof path]>((resolveSubscribe, rejectSubscribe) => {
+        const promise = new Promise<ReturnPromiseType<TApiMethod[T]>>((resolveSubscribe, rejectSubscribe) => {
             storeUnsubscribe = store.subscribe(() => {
                 const state = store.getState();
                 const apiLastSuccess = state.api.lastSuccess;
@@ -65,3 +70,7 @@ export function apiFetch(path: TApiMethodName, ...requestData: unknown[]) {
         }).finally(() => storeUnsubscribe && storeUnsubscribe());
     });
 }
+
+apiFetch("catalog/addEntry", null).then((data) => {
+
+})
