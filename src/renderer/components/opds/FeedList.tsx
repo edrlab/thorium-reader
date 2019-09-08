@@ -18,10 +18,9 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
-interface IFeedListProps extends TranslatorProps {
+interface IFeedListProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
     feeds?: TOpdsFindAllFeedApi_result;
     deleteFeed?: any;
-    openDeleteDialog?: any;
     openToast?: any;
 }
 
