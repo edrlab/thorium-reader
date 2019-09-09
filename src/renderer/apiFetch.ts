@@ -57,7 +57,8 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
                         if (state.api.data[requestId].resultIsReject) {
                             rejectSubscribe(result);
                         }
-                        resolveSubscribe(Object.assign({}, result));
+                        const resResolve = typeof result === "object" ? Object.assign({}, result) : result;
+                        resolveSubscribe(resResolve);
                     }
                 }
             });
