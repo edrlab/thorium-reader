@@ -18,7 +18,7 @@ import * as uuid from "uuid";
  */
 type ReturnPromiseType<T extends (...args: any) => any> = T extends (...args: any) => Promise<infer R> ? R : any;
 
-export function apiFetch<T extends TApiMethodName>(path: T, ...requestData: Parameters<TApiMethod[T]>) {
+export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData: Parameters<TApiMethod[T]>) {
     return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
         const store = container.get<Store<RootState>>("store");
         const requestId = uuid.v4();
@@ -63,11 +63,20 @@ export function apiFetch<T extends TApiMethodName>(path: T, ...requestData: Para
             });
         });
 
+        const timeout = setTimeout(() => reject("API Timeout"), 5000);
+
+        // The linter doesn't accept .finaly(). Why ? Is it a Bug ?
+        // tslint:disable-next-line: no-floating-promises
         promise.then((result) => {
             resolve(result);
         }).catch((error) => {
             reject(error);
-        }).finally(() => storeUnsubscribe && storeUnsubscribe());
+        }).finally(() => {
+            if (storeUnsubscribe) {
+                storeUnsubscribe();
+            }
+            clearTimeout(timeout);
+        });
     });
 }
 
