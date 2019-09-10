@@ -100,9 +100,10 @@ function computeReadiumCssJsonMessage(_publication: Publication, _link: Link | u
 
         noFootnotes: settings.noFootnotes,
 
+        // warning I have modified the test condition to works with the type align
         textAlign: settings.align === "left" ? textAlignEnum.left :
             (settings.align === "right" ? textAlignEnum.right :
-            (settings.align === "justify" ? textAlignEnum.justify : textAlignEnum.start)),
+            (settings.align === "center" ? textAlignEnum.justify : textAlignEnum.start)),
 
         textColor: readiumCSSDefaults.textColor,
 
