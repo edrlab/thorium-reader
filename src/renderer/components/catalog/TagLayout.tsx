@@ -6,15 +6,12 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
-
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import Menu from "../utils/menu/Menu";
-import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+import Menu from "../utils/menu/Menu";
 import GridTagButton from "./GridTagButton";
 
 interface TagProps extends TranslatorProps {

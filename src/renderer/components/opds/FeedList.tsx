@@ -82,7 +82,7 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default withApi<IFeedListProps>(
+export default withApi(
     FeedList,
     {
         operations: [

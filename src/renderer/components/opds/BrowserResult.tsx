@@ -9,7 +9,7 @@ import * as qs from "qs";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { OpdsResultType, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
-import { TOpdsBrowseApi } from "readium-desktop/main/api/opds";
+import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import { ApiProps, withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import {
@@ -26,7 +26,7 @@ interface BrowserResultProps extends RouteComponentProps, ApiProps, TranslatorPr
     url: string;
     result?: THttpGetOpdsResultView | string;
     resultIsReject?: boolean;
-    browse?: TOpdsBrowseApi;
+    browse?: TOpdsApiBrowse;
 }
 
 export class BrowserResult extends React.Component<BrowserResultProps, null> {

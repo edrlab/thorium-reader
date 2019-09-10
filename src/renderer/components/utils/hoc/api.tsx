@@ -6,64 +6,58 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
+import { connect } from "react-redux";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
+import { I18nTyped } from "readium-desktop/common/services/translator";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
 import { Store } from "redux";
 import * as uuid from "uuid";
 
-interface IApiOperation {
-    moduleId: TModuleApi;
-    methodId: TMethodApi;
+export interface ApiOperationDefinition {
+    moduleId: string;
+    methodId: string;
+    callProp?: string;
+    resultProp?: string;
+    resultIsRejectProp?: string;
+    buildRequestData?: any;
+    onLoad?: boolean; // Load in component did mount, default true
 }
 
-export interface IApiOperationDefinition<Props> extends IApiOperation {
-    callProp?: keyof Props;
-    resultProp?: keyof Props;
-    resultIsRejectProp?: keyof Props;
-    buildRequestData?: (props: Props) => unknown[];
-    onLoad?: boolean; // Load in component did mount, default false
+export interface ApiConfig {
+    operations: ApiOperationDefinition[];
+    refreshTriggers?: any; // Api operation that triggers a new refresh
+    mapStateToProps?: any;
+    mapDispatchToProps?: any;
 }
 
-export interface IApiConfig<Props> {
-    operations: Array<IApiOperationDefinition<Props>>;
-    refreshTriggers?: IApiOperation[]; // Api operation that triggers a new refresh
-}
-
-export interface IApiOperationRequest<Props> {
+export interface ApiOperationRequest {
     id: string;
-    caller?: (props: Props) => (...requestData: unknown[]) => void;
-    definition: IApiOperationDefinition<Props>;
+    caller?: any;
+    definition: ApiOperationDefinition;
 }
 
-export interface IApiMapDispatchToProps {
-    requestOnLoadData: () => void;
-    cleanData?: () => void;
+export interface ApiProps {
+    operationResults: any;
+    requestOnLoadData?: any;
+    cleanData?: any;
 }
-
-// tslint:disable-next-line: no-empty-interface
-export interface ApiProps extends IApiMapDispatchToProps {}
-
-type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
 
 // TS4094: private members fail the TS compiler, because:
 // returned type is ConnectedComponentClass<typeof BaseWrapperComponent, any>
-// tslint:disable-next-line: max-line-length
-export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, queryConfig: IApiConfig<Props>) {
+export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
 
     // Create operationRequests
-    const operationRequests: Array<IApiOperationRequest<Props>> = [];
+    const operationRequests: ApiOperationRequest[] = [];
     const store = diRendererGet("store");
 
     for (const operation of queryConfig.operations) {
         const requestId = uuid.v4();
 
         // Create call method
-        const caller = (props: Props) => {
-            return (...requestData: unknown[]) => {
+        const caller = (props: any) => {
+            return (requestData?: any) => {
                 const buildRequestData = operation.buildRequestData;
 
                 if (!requestData && buildRequestData) {
@@ -87,22 +81,32 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, que
                 caller,
                 definition: Object.assign(
                     {},
-                    // default value
                     {
                         callProp: uuid.v4(),
                         resultProp: uuid.v4(),
                         onLoad: false,
                     },
-                    // add operationDefinition
                     operation,
                 ),
             },
         );
     }
 
-    const mapDispatchToProps: MapDispatchToPropsFunction<IApiMapDispatchToProps, any> = (dispatch, ownProps) => {
-        return {
-                requestOnLoadData: () => {
+    const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+        let dispatchToPropsResult = {};
+
+        if (queryConfig.mapDispatchToProps != null) {
+            dispatchToPropsResult = queryConfig.mapDispatchToProps(
+                dispatch,
+                ownProps,
+            );
+        }
+
+        return Object.assign(
+            {},
+            dispatchToPropsResult,
+            {
+                requestOnLoadData: (_data: any) => {
                     for (const operationRequest of operationRequests) {
                         if (operationRequest.definition.onLoad) {
                             operationRequest.caller(ownProps)();
@@ -116,12 +120,20 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, que
                         );
                     }
                 },
-            };
+            },
+        );
     };
 
-    const mapStateToProps: MapStateToProps<Props, any, RootState> = (state) => {
+    const mapStateToProps = (state: RootState, ownProps: any) => {
+        let stateToPropsResult = {};
 
-        // typed with any because the return type of the function is fulfilled
+        if (queryConfig.mapStateToProps != null) {
+            stateToPropsResult = queryConfig.mapStateToProps(
+                state,
+                ownProps,
+            );
+        }
+
         const operationResults: any = {};
 
         for (const operationRequest of operationRequests) {
@@ -138,11 +150,12 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, que
 
         return Object.assign(
             {},
+            stateToPropsResult,
             operationResults,
         );
     };
 
-    const BaseWrapperComponent = class extends React.Component<any> {
+    const BaseWrapperComponent = class extends React.Component<ApiProps, undefined> {
         public static displayName: string;
 
         // Ideally should be private, but see TS4094 comments in this file
@@ -175,18 +188,30 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, que
         }
 
         public render() {
-            const operationRequestProps: any = {};
-            for (const operationRequest of operationRequests) {
-                const def = operationRequest.definition;
-                operationRequestProps[def.callProp] = operationRequest.caller(this.props);
-            }
+            const translator = diRendererGet("translator");
+            const translate = translator.translate.bind(translator) as I18nTyped;
 
-            // newProps become immutable from props (Readonly type)
-            const newProps = Object.assign(
+            const newProps: any = Object.assign(
                 {},
                 this.props,
-                operationRequestProps,
+                {
+                    __: translate,
+                    translator,
+                },
             );
+
+            if (newProps.operationResults) {
+                for (const key in newProps.operationResults) {
+                    if (newProps.operationResults.hasOwnProperty(key)) {
+                        newProps[key] = newProps.operationResults[key];
+                    }
+                }
+            }
+
+            for (const operationRequest of operationRequests) {
+                const def = operationRequest.definition;
+                newProps[def.callProp] = operationRequest.caller(this.props);
+            }
 
             return (<WrappedComponent { ...newProps } />);
         }

@@ -80,8 +80,10 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
     });
 }
 
+/*
 const test = () => {
     apiFetch("publication/importOpdsEntry", null).then((data) => {
         // body
     });
 };
+*/
