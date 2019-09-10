@@ -241,6 +241,7 @@ container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope(
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
 
+// module typing
 type TCatalogApi = "catalog";
 type TPublicationApi = "publication";
 type TOpdsApi = "opds";
@@ -248,6 +249,7 @@ type TLcpApi = "lcp";
 type TReaderApi = "reader";
 type TModuleApi = TCatalogApi | TPublicationApi | TOpdsApi | TLcpApi | TReaderApi;
 
+// typing all api method
 type TMethodApi = keyof ICatalogApi | keyof IPublicationApi | keyof IOpdsApi | keyof ILcpApi | keyof IReaderApi;
 
 // Create action serializer
