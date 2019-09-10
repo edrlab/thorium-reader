@@ -28,7 +28,7 @@ import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFoote
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
 import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
-import { container, lazyInject } from "readium-desktop/renderer/di";
+import { diRendererGet, diSymbolTable, lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
@@ -70,7 +70,7 @@ const queryParams = getURLQueryParams();
 // TODO: centralize this code, currently duplicated
 // see src/main/streamer.js
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
-    const store = (container.get("store") as Store<any>);
+    const store = diRendererGet("store");
     let settings = store.getState().reader.config;
     if (settings.value) {
         settings = settings.value;
@@ -185,10 +185,10 @@ const defaultLocale = "fr";
 export class Reader extends React.Component<ReaderProps, ReaderState> {
     private fastLinkRef: any;
 
-    @lazyInject("store")
+    @lazyInject(diSymbolTable.store)
     private store: Store<RootState>;
 
-    @lazyInject("translator")
+    @lazyInject(diSymbolTable.history)
     private translator: Translator;
 
     private pubId: string;

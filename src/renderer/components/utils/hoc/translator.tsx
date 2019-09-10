@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
-import { container } from "readium-desktop/renderer/di";
+import { diRendererGet } from "readium-desktop/renderer/di";
 
 export interface TranslatorProps {
     __?: I18nTyped;
@@ -20,7 +20,7 @@ export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Pr
     const WrapperComponent = class extends React.Component<TranslatorProps> {
         public static displayName: string;
         public render() {
-            const translator = container.get("translator") as Translator;
+            const translator = diRendererGet("translator");
             const translate = translator.translate.bind(translator) as I18nTyped;
 
             const newProps: any = Object.assign(

@@ -6,23 +6,18 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { lazyInject } from "readium-desktop/renderer/di";
-
-import { Translator } from "readium-desktop/common/services/translator";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
-
+import { Translator } from "readium-desktop/common/services/translator";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import { diSymbolTable, lazyInject } from "readium-desktop/renderer/di";
 
 interface ICoverProps {
     publication: PublicationView;
 }
 
 export default class Cover extends React.Component<ICoverProps, null> {
-    @lazyInject("translator")
+    @lazyInject(diSymbolTable.translator)
     private translator: Translator;
 
     public render(): React.ReactElement<{}>  {

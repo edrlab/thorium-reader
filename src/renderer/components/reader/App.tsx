@@ -6,21 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { Store } from "redux";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
-import { lazyInject } from "readium-desktop/renderer/di";
-
 import { Provider } from "react-redux";
+import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
+import { diSymbolTable, lazyInject } from "readium-desktop/renderer/di";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { Store } from "redux";
 
 import Reader from "./Reader";
 
-import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
-
 export default class App extends React.Component<any, undefined> {
-    @lazyInject("store")
+    @lazyInject(diSymbolTable.store)
     private store: Store<RootState>;
 
     public render(): React.ReactElement<{}> {

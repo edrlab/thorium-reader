@@ -15,8 +15,6 @@ import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
@@ -288,8 +286,7 @@ export function* readerConfigSetRequestWatcher(): SagaIterator {
         };
 
         // Get reader settings
-        const configRepository = container
-            .get("config-repository") as ConfigRepository;
+        const configRepository = diMainGet("config-repository");
 
         try {
             yield call(() => configRepository.save(config));
@@ -337,8 +334,7 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
         const bookmark = action.payload.bookmark as Bookmark;
 
         // Get bookmark manager
-        const locatorRepository = container
-            .get("locator-repository") as LocatorRepository;
+        const locatorRepository = diMainGet("locator-repository");
 
         try {
             const locator = {

@@ -7,10 +7,9 @@
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
-import { container } from "readium-desktop/renderer/di";
-import { RootState } from "readium-desktop/renderer/redux/states";
+import { diRendererGet } from "readium-desktop/renderer/di";
 import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
-import { Store, Unsubscribe } from "redux";
+import { Unsubscribe } from "redux";
 import * as uuid from "uuid";
 
 /**
@@ -20,7 +19,7 @@ type ReturnPromiseType<T extends (...args: any) => any> = T extends (...args: an
 
 export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData: Parameters<TApiMethod[T]>) {
     return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
-        const store = container.get<Store<RootState>>("store");
+        const store = diRendererGet("store");
         const requestId = uuid.v4();
         const moduleId = path.split("/")[0];
         const methodId = path.split("/")[1];

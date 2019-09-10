@@ -11,34 +11,22 @@ import "react-dropdown/style.css";
 import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Store } from "redux";
-
-import { container } from "readium-desktop/renderer/di";
+import { syncIpc, winIpc } from "readium-desktop/common/ipc";
+// import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { ActionSerializer } from "readium-desktop/common/services/serializer";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import App from "readium-desktop/renderer/components/reader/App";
+import { diRendererGet } from "readium-desktop/renderer/di";
 import { winInit } from "readium-desktop/renderer/redux/actions/win";
 import { WinStatus } from "readium-desktop/renderer/redux/states/win";
 
-import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-
-import App from "readium-desktop/renderer/components/reader/App";
-
+import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
-    initGlobalConverters_GENERIC,
-    initGlobalConverters_SHARED,
+    initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 
-import {
-    initGlobalConverters_OPDS,
-} from "@r2-opds-js/opds/init-globals";
-
-// import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
-
-import { ActionWithSender } from "readium-desktop/common/models/sync";
-
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
-
 import { EventPayload } from "./common/ipc/sync";
-
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 let devTron: any;
 let axe: any;
@@ -69,7 +57,7 @@ if (IS_DEV) {
 let hasBeenRenderered = false;
 
 // Init redux store
-const store = (container.get("store") as Store<any>);
+const store = diRendererGet("store");
 
 // Render React App component
 function render() {

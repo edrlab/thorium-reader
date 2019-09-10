@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect, MapDispatchToPropsFunction, MapStateToProps } from "react-redux";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
-import { container } from "readium-desktop/renderer/di";
+import { diRendererGet } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
 import { Store } from "redux";
@@ -56,7 +56,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, que
 
     // Create operationRequests
     const operationRequests: Array<IApiOperationRequest<Props>> = [];
-    const store = container.get<Store<RootState>>("store");
+    const store = diRendererGet("store");
 
     for (const operation of queryConfig.operations) {
         const requestId = uuid.v4();
@@ -159,7 +159,7 @@ export function withApi<Props>(WrappedComponent: TComponentConstructor<any>, que
 
         public componentDidMount() {
             this.props.requestOnLoadData();
-            this.store = container.get<Store<RootState>>("store");
+            this.store = diRendererGet("store");
 
             if (queryConfig.refreshTriggers) {
                 this.stateUpdateUnsubscribe = this.store.subscribe(this.handleStateUpdate);
