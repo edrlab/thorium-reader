@@ -13,7 +13,6 @@ import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import App from "readium-desktop/renderer/components/App";
 import { diRendererGet } from "readium-desktop/renderer/di";
