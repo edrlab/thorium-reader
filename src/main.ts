@@ -12,7 +12,7 @@ import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { cli } from "readium-desktop/main/cli/process";
 import { createWindow } from "readium-desktop/main/createWindow";
-import { diGet } from "readium-desktop/main/di";
+import { diMainGet } from "readium-desktop/main/di";
 import { initApp, registerProtocol } from "readium-desktop/main/init";
 import {
     _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH,
@@ -85,8 +85,8 @@ function main() {
 
     // Listen to renderer action
     ipcMain.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
-        const store = diGet("store");
-        const actionSerializer = diGet("action-serializer");
+        const store = diMainGet("store");
+        const actionSerializer = diMainGet("action-serializer");
 
         switch (data.type) {
             case syncIpc.EventType.RendererAction:

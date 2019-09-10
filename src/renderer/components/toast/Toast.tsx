@@ -20,7 +20,6 @@ export enum ToastType {
     Error,
     Default,
     Success,
-
 }
 
 interface Props extends TranslatorProps {
@@ -29,7 +28,7 @@ interface Props extends TranslatorProps {
     id?: string;
     icon?: any;
     message?: string;
-    displaySystemNotification: boolean;
+    displaySystemNotification?: boolean;
     type?: ToastType;
 }
 

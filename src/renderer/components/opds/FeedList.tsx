@@ -10,16 +10,16 @@ import { Link } from "react-router-dom";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
-import { TOpdsFindAllFeedApi_result } from "readium-desktop/main/api/opds";
+import { TOpdsApiFindAllFeed_result } from "readium-desktop/main/api/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 interface IFeedListProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    feeds?: TOpdsFindAllFeedApi_result;
+    feeds?: TOpdsApiFindAllFeed_result;
     deleteFeed?: any;
     openToast?: any;
 }

@@ -94,7 +94,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
 
 // Request main process for a new id
 ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
-    const actionSerializer = container.get("action-serializer") as ActionSerializer;
+    const actionSerializer = diRendererGet("action-serializer");
 
     switch (data.type) {
         case syncIpc.EventType.MainAction:

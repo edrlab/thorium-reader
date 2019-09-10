@@ -16,8 +16,8 @@ export interface TranslatorProps {
 
 type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessComponent<P>;
 
-export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Props>) {
-    const WrapperComponent = class extends React.Component<TranslatorProps> {
+export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Props & TranslatorProps>) {
+    const WrapperComponent = class extends React.Component<Props & TranslatorProps> {
         public static displayName: string;
         public render() {
             const translator = diRendererGet("translator");
