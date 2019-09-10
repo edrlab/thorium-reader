@@ -13,8 +13,13 @@ import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
 import { Store, Unsubscribe } from "redux";
 import * as uuid from "uuid";
 
-export function apiFetch(path: TApiMethodName, ...requestData: unknown[]) {
-    return new Promise<TApiMethod[typeof path]>((resolve, reject) => {
+/**
+ * Obtain the promise return type of a function type
+ */
+type ReturnPromiseType<T extends (...args: any) => any> = T extends (...args: any) => Promise<infer R> ? R : any;
+
+export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData: Parameters<TApiMethod[T]>) {
+    return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
         const store = container.get<Store<RootState>>("store");
         const requestId = uuid.v4();
         const moduleId = path.split("/")[0];
@@ -31,7 +36,7 @@ export function apiFetch(path: TApiMethodName, ...requestData: unknown[]) {
             ),
         );
 
-        const promise = new Promise<TApiMethod[typeof path]>((resolveSubscribe, rejectSubscribe) => {
+        const promise = new Promise<ReturnPromiseType<TApiMethod[T]>>((resolveSubscribe, rejectSubscribe) => {
             storeUnsubscribe = store.subscribe(() => {
                 const state = store.getState();
                 const apiLastSuccess = state.api.lastSuccess;
@@ -52,16 +57,32 @@ export function apiFetch(path: TApiMethodName, ...requestData: unknown[]) {
                         if (state.api.data[requestId].resultIsReject) {
                             rejectSubscribe(result);
                         }
-                        resolveSubscribe(result);
+                        const resResolve = typeof result === "object" ? Object.assign({}, result) : result;
+                        resolveSubscribe(resResolve);
                     }
                 }
             });
         });
 
+        const timeout = setTimeout(() => reject("API Timeout"), 5000);
+
+        // The linter doesn't accept .finaly(). Why ? Is it a Bug ?
+        // tslint:disable-next-line: no-floating-promises
         promise.then((result) => {
             resolve(result);
         }).catch((error) => {
             reject(error);
-        }).finally(() => storeUnsubscribe && storeUnsubscribe());
+        }).finally(() => {
+            if (storeUnsubscribe) {
+                storeUnsubscribe();
+            }
+            clearTimeout(timeout);
+        });
     });
 }
+
+const test = () => {
+    apiFetch("publication/importOpdsEntry", null).then((data) => {
+        // body
+    });
+};
