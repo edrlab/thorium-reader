@@ -14,7 +14,8 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-import { diMainGet, diSymbolTable } from "readium-desktop/main/di";
+import { diMainGet } from "readium-desktop/main/di";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 
 export interface IPublicationApi {

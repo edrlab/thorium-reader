@@ -9,7 +9,7 @@ import { inject, injectable } from "inversify";
 import * as readerActions from "readium-desktop/common/redux/actions/reader";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-import { diSymbolTable } from "readium-desktop/main/di";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { Store } from "redux";
 

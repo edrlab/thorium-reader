@@ -16,7 +16,7 @@ import {
 } from "readium-desktop/main/db/document/publication";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-import { diSymbolTable } from "readium-desktop/main/di";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { injectDataInZip } from "readium-desktop/utils/zip";

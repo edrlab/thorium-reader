@@ -10,7 +10,7 @@ import { LocatorType } from "readium-desktop/common/models/locator";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-import { diSymbolTable } from "readium-desktop/main/di";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 
 import { Locator } from "@r2-shared-js/models/locator";
 
