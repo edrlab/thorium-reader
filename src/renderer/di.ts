@@ -7,24 +7,15 @@
 
 import "reflect-metadata";
 
-import { Store } from "redux";
-
+import { createHashHistory, History } from "history";
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
-
-import { createHashHistory, History } from "history";
-
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
+import { diRendererSymbolTable as diSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { initStore } from "readium-desktop/renderer/redux/store/memory";
-
-const diSymbolTable = {
-    "history": Symbol("history"),
-    "store": Symbol("store"),
-    "translator": Symbol("translator"),
-    "action-serializer": Symbol("action-serializer"),
-};
+import { Store } from "redux";
 
 // Create container used for dependency injection
 const container = new Container();
@@ -65,7 +56,6 @@ const {
 
 export {
     diGet as diRendererGet,
-    diSymbolTable,
     lazyInject,
     lazyInjectNamed,
     lazyInjectTagged,
