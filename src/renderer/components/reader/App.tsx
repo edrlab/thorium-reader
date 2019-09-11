@@ -5,17 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import "reflect-metadata";
+
 import * as React from "react";
 import { Provider } from "react-redux";
 import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
-import { diSymbolTable, lazyInject } from "readium-desktop/renderer/di";
+import { lazyInject } from "readium-desktop/renderer/di";
+import { diRendererSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 
 import Reader from "./Reader";
 
 export default class App extends React.Component<any, undefined> {
-    @lazyInject(diSymbolTable.store)
+    @lazyInject(diRendererSymbolTable.store)
     private store: Store<RootState>;
 
     public render(): React.ReactElement<{}> {

@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import "reflect-metadata";
+
 import { ConnectedRouter } from "connected-react-router";
 import { History } from "history";
 import * as path from "path";
@@ -16,19 +18,19 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
 import PageManager from "readium-desktop/renderer/components/PageManager";
-import { diSymbolTable, lazyInject } from "readium-desktop/renderer/di";
+import { lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
-
+import { diRendererSymbolTable } from "../diSymbolTable";
 import ToastManager from "./toast/ToastManager";
 import SameFileImportManager from "./utils/SameFileImportManager";
 
 export default class App extends React.Component<any, undefined> {
 
-    @lazyInject(diSymbolTable.store)
+    @lazyInject(diRendererSymbolTable.store)
     private store: Store<RootState>;
 
-    @lazyInject(diSymbolTable.history)
+    @lazyInject(diRendererSymbolTable.history)
     private history: History;
 
     constructor(props: any) {

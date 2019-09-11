@@ -5,19 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import "reflect-metadata";
+
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
-import { diSymbolTable, lazyInject } from "readium-desktop/renderer/di";
+import { lazyInject } from "readium-desktop/renderer/di";
+import { diRendererSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 
 interface ICoverProps {
     publication: PublicationView;
 }
 
 export default class Cover extends React.Component<ICoverProps, null> {
-    @lazyInject(diSymbolTable.translator)
+    @lazyInject(diRendererSymbolTable.translator)
     private translator: Translator;
 
     public render(): React.ReactElement<{}>  {
