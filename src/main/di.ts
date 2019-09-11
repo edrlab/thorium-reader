@@ -1,4 +1,3 @@
-import { diSymbolTable } from './diSymbolTable';
 // ==LICENSE-BEGIN==
 // Copyright 2017 European Digital Reading Lab. All rights reserved.
 // Licensed to the Readium Foundation under one or more contributor license agreements.
@@ -27,6 +26,7 @@ import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secr
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
