@@ -37,7 +37,7 @@ export interface ILcpModuleApi {
 
 @injectable()
 export class LcpApi {
-    @inject(diSymbolTable["store"])
+    @inject(diSymbolTable.store)
     private readonly store!: Store<any>;
 
     @inject(diSymbolTable["publication-repository"])

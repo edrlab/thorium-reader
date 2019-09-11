@@ -43,7 +43,7 @@ const debug = debug_("readium-desktop:main#services/catalog");
 
 @injectable()
 export class CatalogService {
-    @inject(diSymbolTable["downloader"])
+    @inject(diSymbolTable.downloader)
     private readonly downloader!: Downloader;
 
     @inject(diSymbolTable["lcp-manager"])

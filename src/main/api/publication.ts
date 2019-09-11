@@ -89,7 +89,7 @@ export class PublicationApi implements IPublicationApi {
     @inject(diSymbolTable["catalog-service"])
     private readonly catalogService!: CatalogService;
 
-    @inject(diSymbolTable["translator"])
+    @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
     public async get(identifier: string): Promise<PublicationView> {

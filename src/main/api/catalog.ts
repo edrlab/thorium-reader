@@ -56,7 +56,7 @@ export class CatalogApi implements ICatalogApi {
     @inject(diSymbolTable["publication-view-converter"])
     private readonly publicationViewConverter!: PublicationViewConverter;
 
-    @inject(diSymbolTable["translator"])
+    @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
     public async get(): Promise<CatalogView> {

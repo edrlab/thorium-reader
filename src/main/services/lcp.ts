@@ -52,7 +52,7 @@ export class LcpManager {
     @inject(diSymbolTable["lcp-secret-repository"])
     private readonly lcpSecretRepository!: LcpSecretRepository;
 
-    @inject(diSymbolTable["streamer"])
+    @inject(diSymbolTable.streamer)
     private readonly streamer!: Server;
 
     /**
