@@ -16,12 +16,10 @@ import { all, call, fork, put, take } from "redux-saga/effects";
 const debug = debug_("readium-desktop:main#redux/sagas/api");
 
 const getSymbolName = (apiName: string) => {
-    if (apiName.includes("-api")) {
-        const entrie = Object.keys(diSymbolTable)
-            .find((symbolName) => symbolName === apiName) as keyof typeof diSymbolTable;
-        if (entrie) {
-            return entrie;
-        }
+    const entrie = Object.keys(diSymbolTable)
+        .find((symbolName) => symbolName === `${apiName}-api`) as keyof typeof diSymbolTable;
+    if (entrie) {
+        return entrie;
     }
     throw new Error("Wrong API name called " + apiName);
 };
@@ -37,7 +35,7 @@ export function* processRequest(requestAction: apiActions.ApiAction): SagaIterat
 
         const result = yield call(
             apiMethod,
-            ...requestAction.payload,
+            ...(requestAction.payload || []),
         );
 
         yield put(apiActions.buildSuccessAction(requestAction, result));
