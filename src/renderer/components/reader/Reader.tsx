@@ -29,6 +29,7 @@ import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeade
 import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 import { diRendererGet, lazyInject } from "readium-desktop/renderer/di";
+import { diRendererSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
@@ -52,7 +53,6 @@ import { Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import optionsValues from "./options-values";
-import { diRendererSymbolTable } from 'readium-desktop/renderer/diSymbolTable';
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
