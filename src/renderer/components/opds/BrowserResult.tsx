@@ -59,8 +59,6 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         const { browserError, browserResult } = this.state;
         let content = (<Loader />);
 
-        console.log(browserError, browserResult);
-
         if (browserError) {
             content = (
                 <MessageOpdBrowserResult
