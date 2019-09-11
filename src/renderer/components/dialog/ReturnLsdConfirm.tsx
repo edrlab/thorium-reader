@@ -6,20 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-
 import { PublicationView } from "readium-desktop/common/views/publication";
-
+import { TLcpApiReturnPublication } from "readium-desktop/main/api/lcp";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 interface LsdReturnConfirmProps extends TranslatorProps {
     publication?: PublicationView;
-    returnPublication?: any;
+    returnPublication?: TLcpApiReturnPublication;
     closeDialog?: any;
 }
 
