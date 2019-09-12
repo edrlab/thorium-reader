@@ -6,15 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { TOpdsApiAddFeed } from "readium-desktop/main/api/opds";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface Props extends TranslatorProps {
-    addFeed?: TOpdsApiAddFeed;
-    closeDialog?: any;
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface State {
@@ -22,7 +23,7 @@ interface State {
     url: string;
 }
 
-export class OpdsFeedAddForm extends React.Component<Props, State> {
+class OpdsFeedAddForm extends React.Component<IProps, State> {
     constructor(props: any) {
         super(props);
 
@@ -81,11 +82,15 @@ export class OpdsFeedAddForm extends React.Component<Props, State> {
         this.setState(change);
     }
 
-    public add(e: any) {
+    public async add(e: any) {
         e.preventDefault();
         const title = this.state.name;
         const url = this.state.url;
-        this.props.addFeed({ title, url});
+        try {
+            await apiFetch("opds/addFeed", { title, url});
+        } catch (e) {
+            console.error("Error to fetch api opds/findAllFeeds", e);
+        }
         this.props.closeDialog();
     }
 
@@ -94,9 +99,9 @@ export class OpdsFeedAddForm extends React.Component<Props, State> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any, _ownProps: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
-        closeDialog: (_data: any) => {
+        closeDialog: () => {
             dispatch(
                 dialogActions.close(),
             );
@@ -104,7 +109,9 @@ const mapDispatchToProps = (dispatch: any, _ownProps: any) => {
     };
 };
 
-export default withApi(
+export default connect(undefined, mapDispatchToProps)(withTranslator(OpdsFeedAddForm));
+/*
+withApi(
     OpdsFeedAddForm,
     {
         operations: [
@@ -117,3 +124,4 @@ export default withApi(
         mapDispatchToProps,
     },
 );
+*/
