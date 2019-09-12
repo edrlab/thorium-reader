@@ -219,7 +219,6 @@ const buildRequestData = (props: Props) => {
     return [ props.publicationIdentifier || props.publication.identifier ];
 };
 
-// no needed withTranslator is was already included in withApi
 export default withTranslator(withApi(
     PublicationInfo,
     {
