@@ -6,34 +6,54 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
 import { TOpdsApiFindAllFeed_result } from "readium-desktop/main/api/opds";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IFeedListProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    feeds?: TOpdsApiFindAllFeed_result;
-    deleteFeed?: any;
-    openToast?: any;
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-export class FeedList extends React.Component<IFeedListProps, null> {
+interface IState {
+    feedsResult: TOpdsApiFindAllFeed_result | undefined;
+}
+
+class FeedList extends React.Component<IProps, IState> {
+
+    constructor(props: IProps) {
+        super(props);
+        this.state = {
+            feedsResult: undefined,
+        };
+    }
+
+    public async componentDidMount() {
+        try {
+            const feedsResult = await apiFetch("opds/findAllFeeds");
+            this.setState({feedsResult});
+        } catch (e) {
+            console.error("Error to fetch api opds/findAllFeeds", e);
+        }
+    }
+
     public render(): React.ReactElement<{}>  {
-        if (!this.props.feeds) {
+        if (!this.state.feedsResult) {
             return <></>;
         }
 
         return (
             <section className={styles.opds_list}>
                 <ul>
-                    { this.props.feeds.map((item, index) => {
+                    { this.state.feedsResult.map((item, index) => {
                         return (
                             <li key={"feed-" + index}>
                                 <Link
@@ -63,13 +83,13 @@ export class FeedList extends React.Component<IFeedListProps, null> {
         );
     }
 
-    private deleteFeed(event: any, feed: OpdsFeedView) {
+    private deleteFeed(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, feed: OpdsFeedView) {
         event.preventDefault();
         this.props.openDeleteDialog(feed);
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         // feed was typed to string, it appears that the right type is OpdsFeedView
         // Redux state isn't typed
@@ -84,7 +104,9 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default withApi(
+export default connect(undefined, mapDispatchToProps)(FeedList);
+
+    /*withApi(
     FeedList,
     {
         operations: [
@@ -108,3 +130,4 @@ export default withApi(
         mapDispatchToProps,
     },
 );
+*/
