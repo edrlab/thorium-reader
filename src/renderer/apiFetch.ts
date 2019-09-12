@@ -25,6 +25,7 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
         const methodId = path.split("/")[1];
         let lastSuccess: ApiLastSuccess | undefined;
         let storeUnsubscribe: Unsubscribe| undefined;
+        let timeout: NodeJS.Timeout | undefined;
 
         store.dispatch(
             apiActions.buildRequestAction(
@@ -59,10 +60,12 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
                         resolveSubscribe(request.result);
                     }
                 }
+
+                // handle promise<void>
+                timeout = setTimeout(() => resolve(), 5000);
             });
         });
 
-        const timeout = setTimeout(() => reject("API Timeout"), 5000);
 
         // The linter doesn't accept .finaly(). Why ? Is it a Bug ?
         // tslint:disable-next-line: no-floating-promises
@@ -74,7 +77,9 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
             if (storeUnsubscribe) {
                 storeUnsubscribe();
             }
-            clearTimeout(timeout);
+            if (timeout) {
+                clearTimeout(timeout);
+            }
         });
     });
 }
