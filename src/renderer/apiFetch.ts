@@ -7,6 +7,7 @@
 
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
+import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
 import { Unsubscribe } from "redux";
@@ -21,11 +22,11 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
     return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
         const store = diRendererGet("store");
         const requestId = uuid.v4();
-        const moduleId = path.split("/")[0];
-        const methodId = path.split("/")[1];
+        const moduleId = path.split("/")[0] as TModuleApi;
+        const methodId = path.split("/")[1] as TMethodApi;
         let lastSuccess: ApiLastSuccess | undefined;
         let storeUnsubscribe: Unsubscribe| undefined;
-        let timeout: NodeJS.Timeout | undefined;
+        let timeout: number | undefined;
 
         store.dispatch(
             apiActions.buildRequestAction(
@@ -60,10 +61,9 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
                 }
 
                 // handle promise<void>
-                timeout = setTimeout(() => reject("API Timeout"), 5000);
+                timeout = window.setTimeout(() => reject("API Timeout"), 5000);
             });
         });
-
 
         // The linter doesn't accept .finaly(). Why ? Is it a Bug ?
         // tslint:disable-next-line: no-floating-promises
