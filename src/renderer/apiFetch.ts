@@ -10,13 +10,9 @@ import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
+import { ReturnPromiseType } from "readium-desktop/typings/pierre";
 import { Unsubscribe } from "redux";
 import * as uuid from "uuid";
-
-/**
- * Obtain the promise return type of a function type
- */
-export type ReturnPromiseType<T extends (...args: any) => any> = T extends (...args: any) => Promise<infer R> ? R : any;
 
 export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData: Parameters<TApiMethod[T]>) {
     return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
@@ -81,11 +77,3 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
         });
     });
 }
-
-/*
-const test = () => {
-    apiFetch("publication/importOpdsEntry", null).then((data) => {
-        // body
-    });
-};
-*/

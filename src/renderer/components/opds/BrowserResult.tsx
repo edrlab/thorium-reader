@@ -10,12 +10,13 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { OpdsResultType } from "readium-desktop/common/views/opds";
 import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
-import { apiFetch, ReturnPromiseType } from "readium-desktop/renderer/apiFetch";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
+import { ReturnPromiseType } from "readium-desktop/typings/pierre";
 import { parseQueryString } from "readium-desktop/utils/url";
 
 import EntryList from "./EntryList";
