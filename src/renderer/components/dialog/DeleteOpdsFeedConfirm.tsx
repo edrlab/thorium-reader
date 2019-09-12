@@ -6,20 +6,22 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
-import { TOpdsApiDeleteFeed } from "readium-desktop/main/api/opds";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TMouseEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface DeleteOpdsFeedConfirmProps extends TranslatorProps {
-    feed?: OpdsFeedView;
-    delete?: TOpdsApiDeleteFeed;
-    closeDialog?: any;
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+    feed: OpdsFeedView;
 }
 
-export class DeleteOpdsFeedConfirm extends React.Component<DeleteOpdsFeedConfirmProps, undefined> {
+class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
 
     public constructor(props: any) {
         super(props);
@@ -29,9 +31,6 @@ export class DeleteOpdsFeedConfirm extends React.Component<DeleteOpdsFeedConfirm
 
     public render(): React.ReactElement<{}> {
         const {__} = this.props;
-        if (!this.props.feed) {
-            return <></>;
-        }
 
         return (
             <div>
@@ -47,14 +46,16 @@ export class DeleteOpdsFeedConfirm extends React.Component<DeleteOpdsFeedConfirm
         );
     }
 
-    public remove(e: any) {
+    public remove(e: TMouseEvent) {
         e.preventDefault();
-        this.props.delete(this.props.feed.identifier);
+        apiFetch("opds/deleteFeed", this.props.feed.identifier).catch((error) => {
+            console.error(`Error to fetch opds/deleteFeed`, error);
+        });
         this.props.closeDialog();
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         closeDialog: () => {
             dispatch(
@@ -64,7 +65,8 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default withApi(
+export default connect(undefined, mapDispatchToProps)(withTranslator(DeleteOpdsFeedConfirm));
+/*
     DeleteOpdsFeedConfirm,
     {
         operations: [
@@ -77,3 +79,4 @@ export default withApi(
         mapDispatchToProps,
     },
 );
+*/
