@@ -13,6 +13,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
@@ -82,7 +83,7 @@ class OpdsFeedAddForm extends React.Component<IProps, State> {
         this.setState(change);
     }
 
-    public async add(e: any) {
+    public async add(e: TMouseEvent) {
         e.preventDefault();
         const title = this.state.name;
         const url = this.state.url;

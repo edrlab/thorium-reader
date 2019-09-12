@@ -13,12 +13,15 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
 import { TOpdsApiFindAllFeed_result } from "readium-desktop/main/api/opds";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiRefresh } from "readium-desktop/renderer/apiRefresh";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
+import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { Unsubscribe } from "redux";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
 }
@@ -28,32 +31,37 @@ interface IState {
 }
 
 class FeedList extends React.Component<IProps, IState> {
+    private unsubscribe: Unsubscribe;
 
     constructor(props: IProps) {
         super(props);
         this.state = {
             feedsResult: undefined,
         };
+
+        this.loadFeeds = this.loadFeeds.bind(this);
     }
 
     public async componentDidMount() {
-        try {
-            const feedsResult = await apiFetch("opds/findAllFeeds");
-            this.setState({feedsResult});
-        } catch (e) {
-            console.error("Error to fetch api opds/findAllFeeds", e);
-        }
+        this.unsubscribe = apiRefresh([
+            "opds/addFeed",
+            "opds/deleteFeed",
+            "opds/updateFeed",
+        ], this.loadFeeds);
     }
 
-    public render(): React.ReactElement<{}>  {
+    public componentWillUnmount() {
+        this.unsubscribe();
+    }
+
+    public render(): React.ReactElement<{}> {
         if (!this.state.feedsResult) {
             return <></>;
         }
-
         return (
             <section className={styles.opds_list}>
                 <ul>
-                    { this.state.feedsResult.map((item, index) => {
+                    {this.state.feedsResult.map((item, index) => {
                         return (
                             <li key={"feed-" + index}>
                                 <Link
@@ -65,7 +73,7 @@ class FeedList extends React.Component<IProps, IState> {
                                         ),
                                     }}
                                 >
-                                    <p>{ item.title }</p>
+                                    <p>{item.title}</p>
                                 </Link>
                                 <button
                                     onClick={(e) => this.deleteFeed(e, item)}
@@ -83,9 +91,18 @@ class FeedList extends React.Component<IProps, IState> {
         );
     }
 
-    private deleteFeed(event: React.MouseEvent<HTMLButtonElement, MouseEvent>, feed: OpdsFeedView) {
+    private deleteFeed(event: TMouseEvent, feed: OpdsFeedView) {
         event.preventDefault();
         this.props.openDeleteDialog(feed);
+    }
+
+    private async loadFeeds() {
+        try {
+            const feedsResult = await apiFetch("opds/findAllFeeds");
+            this.setState({ feedsResult });
+        } catch (e) {
+            console.error("Error to fetch api opds/findAllFeeds", e);
+        }
     }
 }
 
@@ -106,28 +123,28 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
 
 export default connect(undefined, mapDispatchToProps)(FeedList);
 
-    /*withApi(
-    FeedList,
-    {
-        operations: [
-            {
-                moduleId: "opds",
-                methodId: "findAllFeeds",
-                resultProp: "feeds",
-                onLoad: true,
-            },
-        ],
-        refreshTriggers: [
-            {
-                moduleId: "opds",
-                methodId: "addFeed",
-            },
-            {
-                moduleId: "opds",
-                methodId: "deleteFeed",
-            },
-        ],
-        mapDispatchToProps,
-    },
+/*withApi(
+FeedList,
+{
+    operations: [
+        {
+            moduleId: "opds",
+            methodId: "findAllFeeds",
+            resultProp: "feeds",
+            onLoad: true,
+        },
+    ],
+    refreshTriggers: [
+        {
+            moduleId: "opds",
+            methodId: "addFeed",
+        },
+        {
+            moduleId: "opds",
+            methodId: "deleteFeed",
+        },
+    ],
+    mapDispatchToProps,
+},
 );
 */
