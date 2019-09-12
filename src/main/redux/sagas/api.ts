@@ -16,10 +16,10 @@ import { all, call, fork, put, take } from "redux-saga/effects";
 const debug = debug_("readium-desktop:main#redux/sagas/api");
 
 const getSymbolName = (apiName: string) => {
-    const entrie = Object.keys(diSymbolTable)
+    const entry = Object.keys(diSymbolTable)
         .find((symbolName) => symbolName === `${apiName}-api`) as keyof typeof diSymbolTable;
-    if (entrie) {
-        return entrie;
+    if (entry) {
+        return entry;
     }
     throw new Error("Wrong API name called " + apiName);
 };
