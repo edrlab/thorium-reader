@@ -50,19 +50,17 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
                 lastSuccess = apiLastSuccess;
 
                 const meta = apiLastSuccess.action.meta.api;
-                if (moduleId === meta.moduleId && methodId === meta.methodId) {
-                    if (state.api.data[requestId] && state.api.data[requestId].result) {
-                        const request = Object.assign({}, state.api.data[requestId]);
-                        store.dispatch(apiActions.clean(requestId));
-                        if (request.resultIsReject) {
-                            rejectSubscribe(request.result);
-                        }
-                        resolveSubscribe(request.result);
+                if (moduleId === meta.moduleId && methodId === meta.methodId && state.api.data[requestId]) {
+                    const request = Object.assign({}, state.api.data[requestId]);
+                    store.dispatch(apiActions.clean(requestId));
+                    if (request.resultIsReject) {
+                        rejectSubscribe(request.result);
                     }
+                    resolveSubscribe(request.result);
                 }
 
                 // handle promise<void>
-                timeout = setTimeout(() => resolve(), 5000);
+                timeout = setTimeout(() => reject("API Timeout"), 5000);
             });
         });
 
