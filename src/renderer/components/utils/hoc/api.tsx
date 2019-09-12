@@ -67,8 +67,8 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
                 store.dispatch(
                     apiActions.buildRequestAction(
                         requestId,
-                        operation.moduleId,
-                        operation.methodId,
+                        operation.moduleId as any,
+                        operation.methodId as any,
                         requestData,
                     ),
                 );
