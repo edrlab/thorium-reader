@@ -8,6 +8,7 @@
 import classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
+import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
@@ -18,20 +19,19 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { TDispatch } from "readium-desktop/typings/redux";
 import { oc } from "ts-optchain";
 
 import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls";
 
-interface Props extends TranslatorProps {
+interface Props extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
     publicationIdentifier: string;
     isOpds?: boolean;
     publication?: TPublicationApiGet_result;
-    closeDialog?: any;
     getPublicationFromId?: () => void;
     hideControls?: boolean;
-    lastAction: any;
 }
 
 interface State {
@@ -199,7 +199,7 @@ export class PublicationInfo extends React.Component<Props, State> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         closeDialog: () => {
             dispatch(
@@ -220,7 +220,7 @@ const buildRequestData = (props: Props) => {
 };
 
 // no needed withTranslator is was already included in withApi
-export default withTranslator(withApi(
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(withApi(
     PublicationInfo,
     {
         operations: [
@@ -232,7 +232,5 @@ export default withTranslator(withApi(
                 buildRequestData,
             },
         ],
-        mapDispatchToProps,
-        mapStateToProps,
     },
-));
+)));
