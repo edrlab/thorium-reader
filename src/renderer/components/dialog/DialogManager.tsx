@@ -6,19 +6,15 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { connect } from "react-redux";
-
 import { DialogType } from "readium-desktop/common/models/dialog";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { DialogState } from "readium-desktop/common/redux/states/dialog";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
 import Information from "readium-desktop/renderer/components/settings/Information";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { TDispatch } from "readium-desktop/typings/redux";
+
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
 import DeletePublicationConfirm from "./DeletePublicationConfirm";
 import Dialog from "./Dialog";
@@ -27,20 +23,12 @@ import LcpAuthentication from "./LcpAuthentication";
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
 import RenewLsdConfirm from "./RenewLsdConfirm";
 import ReturnLsdConfirm from "./ReturnLsdConfirm";
-
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import SameFileImportConfirm from "./SameFileImportConfirm";
 
-interface DialogManagerProps  {
-    dialog?: DialogState;
-    closeDialog?: any;
+interface IProps extends ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-export class DialogManager extends React.Component<DialogManagerProps, undefined> {
-    constructor(props: any) {
-        super(props);
-    }
-
+class DialogManager extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const dialog = this.props.dialog;
 
@@ -229,7 +217,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         closeDialog: () => {
             // TODO: this is a short-term hack.
