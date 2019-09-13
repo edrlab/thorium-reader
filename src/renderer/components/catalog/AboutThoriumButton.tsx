@@ -6,23 +6,20 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
-
 import { connect } from "react-redux";
-
 import { DialogType } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
-
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface Props extends TranslatorProps {
-    displayPublicationInfo: () => void;
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-class AboutThoriumButton extends React.Component<Props> {
+class AboutThoriumButton extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
@@ -37,7 +34,7 @@ class AboutThoriumButton extends React.Component<Props> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         displayPublicationInfo: () => {
             dispatch(dialogActions.open(
