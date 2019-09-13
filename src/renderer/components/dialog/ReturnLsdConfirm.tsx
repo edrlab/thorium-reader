@@ -6,29 +6,29 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { TLcpApiReturnPublication } from "readium-desktop/main/api/lcp";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 
-interface LsdReturnConfirmProps extends TranslatorProps {
-    publication?: PublicationView;
-    returnPublication?: TLcpApiReturnPublication;
-    closeDialog?: any;
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+    publication: PublicationView;
 }
 
-export class LsdReturnConfirm extends React.Component<LsdReturnConfirmProps, undefined> {
+class LsdReturnConfirm extends React.Component<IProps> {
 
-    public constructor(props: any) {
+    public constructor(props: IProps) {
         super(props);
 
         this.remove = this.remove.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
-        const {__} = this.props;
+        const { __ } = this.props;
         if (!this.props.publication) {
             return <></>;
         }
@@ -49,10 +49,12 @@ export class LsdReturnConfirm extends React.Component<LsdReturnConfirmProps, und
 
     public remove(e: any) {
         e.preventDefault();
-        this.props.returnPublication({
+        apiFetch("lcp/renewPublicationLicense", {
             publication: {
                 identifier: this.props.publication.identifier,
             },
+        }).catch((error) => {
+            console.error(`Error to fetch lcp/renewPublicationLicense`, error);
         });
         this.props.closeDialog();
     }
@@ -68,7 +70,8 @@ const mapDispatchToProps = (dispatch: any, _props: any) => {
     };
 };
 
-export default withApi(
+export default connect(undefined, mapDispatchToProps)(withTranslator(LsdReturnConfirm));
+/*withApi(
     LsdReturnConfirm,
     {
         operations: [
@@ -80,4 +83,4 @@ export default withApi(
         ],
         mapDispatchToProps,
     },
-);
+);*/

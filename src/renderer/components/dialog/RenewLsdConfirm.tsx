@@ -18,7 +18,7 @@ import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    publication?: PublicationView;
+    publication: PublicationView;
 }
 
 class RenewLsdConfirm extends React.Component<IProps> {
