@@ -30,7 +30,7 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const {__} = this.props;
+        const { __ } = this.props;
 
         return (
             <div>
@@ -39,8 +39,8 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
                     <span>{this.props.feed.title}</span>
                 </p>
                 <div>
-                    <button onClick={ this.remove }>{__("dialog.yes")}</button>
-                    <button className={styles.primary} onClick={ this.props.closeDialog }>{__("dialog.no")}</button>
+                    <button onClick={this.remove}>{__("dialog.yes")}</button>
+                    <button className={styles.primary} onClick={this.props.closeDialog}>{__("dialog.no")}</button>
                 </div>
             </div>
         );
