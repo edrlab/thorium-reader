@@ -36,9 +36,9 @@ const headerNav = [
     },
 ];
 
-export interface HeaderProps extends RouteComponentProps, TranslatorProps { }
+interface IProps extends RouteComponentProps, TranslatorProps { }
 
-export class Header extends React.Component<HeaderProps, undefined> {
+class Header extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
