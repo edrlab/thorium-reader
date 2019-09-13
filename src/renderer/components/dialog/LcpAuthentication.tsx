@@ -8,6 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import {
     TranslatorProps, withTranslator,
@@ -16,8 +17,7 @@ import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    // what is the type of publication ? code:noany
-    publication: any;
+    publication: PublicationView;
     hint: string;
 }
 
