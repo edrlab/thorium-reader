@@ -6,16 +6,11 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { connect } from "react-redux";
-
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-
 import { RouteComponentProps, withRouter } from "react-router-dom";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
 import { OpdsLinkView } from "readium-desktop/common/views/opds";
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 import Entry from "./Entry";
 
@@ -25,13 +20,13 @@ interface IProps extends RouteComponentProps {
 }
 
 class EntryList extends React.Component<IProps> {
-    public render(): React.ReactElement<{}>  {
+    public render(): React.ReactElement<{}> {
         return (
             <section id={styles.flux_list}>
                 <ul>
-                    { this.props.entries.map((entry) =>
-                        <li key={ entry.url } >
-                            <Entry entry={ entry } level={ this.props.level } />
+                    {this.props.entries.map((entry, index) =>
+                        <li key={index} >
+                            <Entry entry={entry} level={this.props.level} />
                         </li>,
                     )}
                 </ul>
