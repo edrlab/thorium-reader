@@ -67,11 +67,11 @@ class DialogManager extends React.Component<IProps> {
     private buildOpdsFeedAddFormDialog() {
         return (
             <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
-                id={ styles.opds_form_dialog }
+                open={true}
+                close={this.props.closeDialog}
+                id={styles.opds_form_dialog}
             >
-                <OpdsFeedAddForm/>
+                <OpdsFeedAddForm />
             </Dialog>
         );
     }
@@ -79,13 +79,13 @@ class DialogManager extends React.Component<IProps> {
     private buildPublicationShowDialog() {
         return (
             <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
+                open={true}
+                close={this.props.closeDialog}
             >
                 <PublicationInfo
-                    publicationIdentifier={ this.props.dialog.data.publicationIdentifier }
-                    publication={ this.props.dialog.data.publication }
-                    isOpds={ this.props.dialog.data.isOpds }
+                    publicationIdentifier={this.props.dialog.data.publicationIdentifier}
+                    publication={this.props.dialog.data.publication}
+                    isOpds={this.props.dialog.data.isOpds}
                 />
             </Dialog>
         );
@@ -94,12 +94,12 @@ class DialogManager extends React.Component<IProps> {
     private buildReaderPublicationShowDialog() {
         return (
             <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
+                open={true}
+                close={this.props.closeDialog}
             >
                 <PublicationInfo
-                    publication={ this.props.dialog.data.publication }
-                    hideControls={ true }
+                    publication={this.props.dialog.data.publication}
+                    hideControls={true}
                 />
             </Dialog>
         );
@@ -108,12 +108,12 @@ class DialogManager extends React.Component<IProps> {
     private buildFileImportDialog() {
         return (
             <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
+                open={true}
+                close={this.props.closeDialog}
                 id={styles.add_dialog}
             >
                 <FileImport
-                    files={ this.props.dialog.data.files }
+                    files={this.props.dialog.data.files}
                 />
             </Dialog>
         );
@@ -122,12 +122,12 @@ class DialogManager extends React.Component<IProps> {
     private buildDeletePublicationConfirmDialog() {
         return (
             <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
+                open={true}
+                close={this.props.closeDialog}
                 id={styles.choice_dialog}
             >
                 <DeletePublicationConfirm
-                    publication={ this.props.dialog.data.publication }
+                    publication={this.props.dialog.data.publication}
                 />
             </Dialog>
         );
@@ -136,12 +136,12 @@ class DialogManager extends React.Component<IProps> {
     private buildDeleteOpdsFeedConfirmDialog() {
         return (
             <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
+                open={true}
+                close={this.props.closeDialog}
                 id={styles.choice_dialog}
             >
                 <DeleteOpdsFeedConfirm
-                    feed={ this.props.dialog.data.feed }
+                    feed={this.props.dialog.data.feed}
                 />
             </Dialog>
         );
@@ -150,13 +150,13 @@ class DialogManager extends React.Component<IProps> {
     private buildLcpAuthenticationDialog() {
         return (
             <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
+                open={true}
+                close={this.props.closeDialog}
                 id={styles.lcp_dialog}
             >
                 <LcpAuthentication
-                    publication={ this.props.dialog.data.publication }
-                    hint={ this.props.dialog.data.hint }
+                    publication={this.props.dialog.data.publication}
+                    hint={this.props.dialog.data.hint}
                 />
             </Dialog>
         );
@@ -165,12 +165,12 @@ class DialogManager extends React.Component<IProps> {
     private buildLsdRenewConfirmDialog() {
         return (
             <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
+                open={true}
+                close={this.props.closeDialog}
                 id={styles.choice_dialog}
             >
                 <RenewLsdConfirm
-                    publication={ this.props.dialog.data.publication }
+                    publication={this.props.dialog.data.publication}
                 />
             </Dialog>
         );
@@ -179,12 +179,12 @@ class DialogManager extends React.Component<IProps> {
     private buildLsdReturnConfirmDialog() {
         return (
             <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
+                open={true}
+                close={this.props.closeDialog}
                 id={styles.choice_dialog}
             >
                 <ReturnLsdConfirm
-                    publication={ this.props.dialog.data.publication }
+                    publication={this.props.dialog.data.publication}
                 />
             </Dialog>
         );
@@ -193,13 +193,13 @@ class DialogManager extends React.Component<IProps> {
     private buildSameFileImportConfirmDialog() {
         return (
             <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
+                open={true}
+                close={this.props.closeDialog}
                 id={styles.choice_dialog}
             >
                 <SameFileImportConfirm
-                    publication={ this.props.dialog.data.publication }
-                    downloadSample={ this.props.dialog.data.downloadSample }
+                    publication={this.props.dialog.data.publication}
+                    downloadSample={this.props.dialog.data.downloadSample}
                 />
             </Dialog>
         );
@@ -208,10 +208,10 @@ class DialogManager extends React.Component<IProps> {
     private buildAboutThoriumDialog() {
         return (
             <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
+                open={true}
+                close={this.props.closeDialog}
             >
-                <Information/>
+                <Information />
             </Dialog>
         );
     }
