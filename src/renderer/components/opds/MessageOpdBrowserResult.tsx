@@ -12,6 +12,9 @@ interface IProps {
     message?: string;
 }
 
+/**
+ * code:cssincode
+ */
 const style: React.CSSProperties = {
     textAlign: "center",
 };
