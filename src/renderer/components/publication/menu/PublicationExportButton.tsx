@@ -9,7 +9,7 @@ import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublicationApiExportPublication } from "readium-desktop/main/api/publication";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 interface IProps extends TranslatorProps {
     publication: PublicationView;
@@ -65,7 +65,7 @@ class PublicationExportButton extends React.Component<IProps> {
     }
 }
 
-export default PublicationExportButton;
+export default withTranslator(PublicationExportButton);
 /*withApi(
     PublicationExportButton,
     {

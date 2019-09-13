@@ -73,7 +73,9 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
-        this.unsubscribe();
+        if (this.props.publicationIdentifier) {
+            this.unsubscribe();
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -202,7 +204,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 
     private getPublicationFromId() {
-        apiFetch("publication/get", this.props.publicationIdentifier || this.state.publication.identifier)
+        apiFetch("publication/get", this.props.publicationIdentifier || this..publication.identifier)
             .then((publication) => this.setState({ publication }))
             .catch((error) => {
                 console.error(`Error to fetch publication/get`, error);
