@@ -11,71 +11,74 @@ import * as React from "react";
 import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiRefresh } from "readium-desktop/renderer/apiRefresh";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
 import TagManager from "readium-desktop/renderer/components/publication/TagManager";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { Unsubscribe } from "redux";
 import { oc } from "ts-optchain";
 
 import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls";
 
-interface Props extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
     publicationIdentifier: string;
     isOpds?: boolean;
-    publication?: TPublicationApiGet_result;
-    getPublicationFromId?: () => void;
     hideControls?: boolean;
 }
 
-interface State {
+interface IState {
     seeMore: boolean;
     needSeeMore: boolean;
+    publication: TPublicationApiGet_result | undefined;
 }
 
-export class PublicationInfo extends React.Component<Props, State> {
+class PublicationInfo extends React.Component<IProps, IState> {
     private descriptionWrapperRef: any;
     private descriptionRef: any;
+    private unsubscribe: Unsubscribe;
 
-    public constructor(props: Props) {
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {
             seeMore: false,
             needSeeMore: false,
+            publication: undefined,
         };
         this.toggleSeeMore = this.toggleSeeMore.bind(this);
+        this.getPublicationFromId = this.getPublicationFromId.bind(this);
     }
 
     public componentDidMount() {
         if (this.props.publicationIdentifier) {
-            this.props.getPublicationFromId();
+            this.unsubscribe = apiRefresh([
+                "publication/updateTags",
+            ], this.getPublicationFromId);
         }
 
         setTimeout(this.needSeeMoreButton.bind(this), 1);
     }
 
-    public componentDidUpdate(oldProps: Props) {
-        if (oldProps.publication !== this.props.publication) {
-            this.needSeeMoreButton();
-        }
+    public componentDidUpdate(_oldProps: IProps) {
+        this.needSeeMoreButton();
 
-        if (oldProps.lastAction !== this.props.lastAction
-            && this.props.lastAction.moduleId === "publication"
-            && this.props.lastAction.methodId === "updateTags"
-        ) {
-            this.props.getPublicationFromId();
-        }
+    }
+
+    public componentWillUnmount() {
+        this.unsubscribe();
     }
 
     public render(): React.ReactElement<{}> {
-        const { publication, __, translator } = this.props;
+        const { __, translator } = this.props;
+        const { publication } = this.state;
 
         if (!publication) {
             return (<></>);
@@ -99,95 +102,95 @@ export class PublicationInfo extends React.Component<Props, State> {
 
         return (
             <>
-            <div className={ styles.dialog_left }>
-                <div className={ styles.image_wrapper }>
-                    <div>
-                        <Cover publication={ publication } />
+                <div className={styles.dialog_left}>
+                    <div className={styles.image_wrapper}>
+                        <div>
+                            <Cover publication={publication} />
+                        </div>
                     </div>
-                </div>
-                { !this.props.hideControls &&
-                    <Controls publication={ this.props.publication }/>
-                }
-            </div>
-            <div className={ styles.dialog_right }>
-                <h2 className={ styles.allowUserSelect }>{ publication.title }</h2>
-                <div>
-                    <p className={ classNames(styles.allowUserSelect, styles.author) }>{ authors }</p>
-
-                    {
-                        (formatedPublishedDate) ?
-                        (<p>
-                            <span>{__("catalog.released")}
-                            </span> <i className={ styles.allowUserSelect }>{ formatedPublishedDate }</i>
-                        </p>) : (<></>)
+                    {!this.props.hideControls &&
+                        <Controls publication={publication} />
                     }
-                    <div className={styles.tags}>
-                        <div className={styles.tag_list}>
-                            <span>Tags</span>
-                            <TagManager
-                                publicationIdentifier={this.props.publication.identifier}
-                                tags={this.props.publication.tags}
-                                canModifyTag={!this.props.isOpds}
-                            />
-                        </div>
-                    </div>
-
-                    {publication.description && <>
-                        <h3>{__("catalog.description")}</h3>
-                        <div
-                            ref={(ref) => this.descriptionWrapperRef = ref}
-                            className={classNames(
-                                styles.descriptionWrapper,
-                                this.state.needSeeMore && styles.hideEnd,
-                                this.state.seeMore && styles.seeMore,
-                            )}
-                        >
-                            <p
-                                ref={(ref) => this.descriptionRef = ref}
-                                className={ classNames(styles.allowUserSelect, styles.description) }
-                            >
-                                { publication.description }
-                            </p>
-                        </div>
-                        { this.state.needSeeMore &&
-                            <button aria-hidden className={styles.seeMoreButton} onClick={this.toggleSeeMore}>
-                                { this.state.seeMore ? __("publication.seeLess") : __("publication.seeMore") }
-                            </button>
-                        }
-                    </>}
-
-                    <h3>{__("catalog.moreInfo")}</h3>
-
-                    <p>
-                        { formatedPublishers &&
-                            <><span>{__("catalog.publisher")}
-                            </span> <i className={ styles.allowUserSelect }>{ formatedPublishers }</i> <br/></>
-                        }
-                        <span>{__("catalog.lang")}</span> {
-                            publication.languages &&
-                            publication.languages
-                            .map((lang: string, index: number) => {
-                                const l = lang.split("-")[0];
-                                // tslint:disable-next-line:max-line-length
-                                const ll = ((__(`languages.${l}` as any) as unknown) as string).replace(`languages.${l}`, lang);
-                                const note = (lang !== ll) ? ` (${lang})` : "";
-                                const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");
-                                // tslint:disable-next-line:max-line-length
-                                return <i key={"lang-" + index} title={lang} className={ styles.allowUserSelect }>{ll + note + suffix}</i>;
-                                // return <></>;
-                            })
-                        } <br/>
-                        <span>{__("catalog.id")}
-                        </span> <i className={ styles.allowUserSelect }>{ publication.workIdentifier }</i> <br/>
-                    </p>
                 </div>
-            </div>
+                <div className={styles.dialog_right}>
+                    <h2 className={styles.allowUserSelect}>{publication.title}</h2>
+                    <div>
+                        <p className={classNames(styles.allowUserSelect, styles.author)}>{authors}</p>
+
+                        {
+                            (formatedPublishedDate) ?
+                                (<p>
+                                    <span>{__("catalog.released")}
+                                    </span> <i className={styles.allowUserSelect}>{formatedPublishedDate}</i>
+                                </p>) : (<></>)
+                        }
+                        <div className={styles.tags}>
+                            <div className={styles.tag_list}>
+                                <span>Tags</span>
+                                <TagManager
+                                    publicationIdentifier={publication.identifier}
+                                    tags={publication.tags}
+                                    canModifyTag={!this.props.isOpds}
+                                />
+                            </div>
+                        </div>
+
+                        {publication.description && <>
+                            <h3>{__("catalog.description")}</h3>
+                            <div
+                                ref={(ref) => this.descriptionWrapperRef = ref}
+                                className={classNames(
+                                    styles.descriptionWrapper,
+                                    this.state.needSeeMore && styles.hideEnd,
+                                    this.state.seeMore && styles.seeMore,
+                                )}
+                            >
+                                <p
+                                    ref={(ref) => this.descriptionRef = ref}
+                                    className={classNames(styles.allowUserSelect, styles.description)}
+                                >
+                                    {publication.description}
+                                </p>
+                            </div>
+                            {this.state.needSeeMore &&
+                                <button aria-hidden className={styles.seeMoreButton} onClick={this.toggleSeeMore}>
+                                    {this.state.seeMore ? __("publication.seeLess") : __("publication.seeMore")}
+                                </button>
+                            }
+                        </>}
+
+                        <h3>{__("catalog.moreInfo")}</h3>
+
+                        <p>
+                            {formatedPublishers &&
+                                <><span>{__("catalog.publisher")}
+                                </span> <i className={styles.allowUserSelect}>{formatedPublishers}</i> <br /></>
+                            }
+                            <span>{__("catalog.lang")}</span> {
+                                publication.languages &&
+                                publication.languages
+                                    .map((lang: string, index: number) => {
+                                        const l = lang.split("-")[0];
+                                        // tslint:disable-next-line:max-line-length
+                                        const ll = ((__(`languages.${l}` as any) as unknown) as string).replace(`languages.${l}`, lang);
+                                        const note = (lang !== ll) ? ` (${lang})` : "";
+                                        const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");
+                                        // tslint:disable-next-line:max-line-length
+                                        return <i key={"lang-" + index} title={lang} className={styles.allowUserSelect}>{ll + note + suffix}</i>;
+                                        // return <></>;
+                                    })
+                            } <br />
+                            <span>{__("catalog.id")}
+                            </span> <i className={styles.allowUserSelect}>{publication.workIdentifier}</i> <br />
+                        </p>
+                    </div>
+                </div>
             </>
         );
     }
 
     private toggleSeeMore() {
-        this.setState({seeMore: !this.state.seeMore});
+        this.setState({ seeMore: !this.state.seeMore });
     }
 
     private needSeeMoreButton() {
@@ -195,7 +198,15 @@ export class PublicationInfo extends React.Component<Props, State> {
             return;
         }
         const need = this.descriptionWrapperRef.offsetHeight < this.descriptionRef.offsetHeight;
-        this.setState({needSeeMore: need});
+        this.setState({ needSeeMore: need });
+    }
+
+    private getPublicationFromId() {
+        apiFetch("publication/get", this.props.publicationIdentifier || this.state.publication.identifier)
+            .then((publication) => this.setState({ publication }))
+            .catch((error) => {
+                console.error(`Error to fetch publication/get`, error);
+            });
     }
 }
 
@@ -215,22 +226,19 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-const buildRequestData = (props: Props) => {
-    return [ props.publicationIdentifier || props.publication.identifier ];
-};
-
 // no needed withTranslator is was already included in withApi
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(withApi(
-    PublicationInfo,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "get",
-                resultProp: "publication",
-                callProp: "getPublicationFromId",
-                buildRequestData,
-            },
-        ],
-    },
-)));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationInfo));
+    /*withApi(
+PublicationInfo,
+{
+    operations: [
+        {
+            moduleId: "publication",
+            methodId: "get",
+            resultProp: "publication",
+            callProp: "getPublicationFromId",
+            buildRequestData,
+        },
+    ],
+},
+)));*/
