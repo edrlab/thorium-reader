@@ -6,20 +6,21 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { TPublicationApiDelete } from "readium-desktop/main/api/publication";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface DeletePublicationConfirmProps extends TranslatorProps {
-    publication?: PublicationView;
-    delete?: TPublicationApiDelete;
-    closeDialog?: any;
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+    publication: PublicationView;
 }
 
-export class DeletePublicationConfirm extends React.Component<DeletePublicationConfirmProps, undefined> {
+class DeletePublicationConfirm extends React.Component<IProps> {
 
     public constructor(props: any) {
         super(props);
@@ -49,14 +50,16 @@ export class DeletePublicationConfirm extends React.Component<DeletePublicationC
 
     public remove(e: any) {
         e.preventDefault();
-        this.props.delete(this.props.publication.identifier);
+        apiFetch("publication/delete", this.props.publication.identifier).catch((error) => {
+            console.error(`Error to fetch publication/delete`, error);
+        });
         this.props.closeDialog();
     }
 }
 
-const mapDispatchToProps = (dispatch: any, _ownProps: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
-        closeDialog: (_data: any) => {
+        closeDialog: () => {
             dispatch(
                 dialogActions.close(),
             );
@@ -64,7 +67,8 @@ const mapDispatchToProps = (dispatch: any, _ownProps: any) => {
     };
 };
 
-export default withApi(
+export default connect(undefined, mapDispatchToProps)(withTranslator(DeletePublicationConfirm));
+/*withApi(
     DeletePublicationConfirm,
     {
         operations: [
@@ -76,4 +80,4 @@ export default withApi(
         ],
         mapDispatchToProps,
     },
-);
+);*/
