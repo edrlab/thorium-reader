@@ -6,38 +6,41 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { TPublicationApiImport } from "readium-desktop/main/api/publication";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 
-interface FileImportProps extends TranslatorProps {
-    files: any;
-    importFiles?: TPublicationApiImport;
-    closeDialog?: any;
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+    files: File[];
 }
 
-export class FileImport extends React.Component<FileImportProps, undefined> {
-    constructor(props: any) {
+class FileImport extends React.Component<IProps, undefined> {
+    constructor(props: IProps) {
         super(props);
+
         this.importFiles = this.importFiles.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
         return (
-            <div>
-                { this.buildBasicFileImportList() }
-            </div>
+            <>
+                {this.buildBasicFileImportList()}
+            </>
         );
     }
 
     private importFiles() {
         if (this.props.files) {
-            const paths = this.props.files.map((file: File) => {
+            const paths = this.props.files.map((file) => {
                 return file.path;
             });
-            this.props.importFiles(paths);
+            apiFetch("publication/import", paths).catch((error) => {
+                console.error(`Error to fetch publication/import`, error);
+            });
             this.props.closeDialog();
         }
     }
@@ -52,20 +55,20 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
         return (
             <>
                 <div>
-                    <p>{ this.props.__("dialog.import") }</p>
+                    <p>{this.props.__("dialog.import")}</p>
                     <ul>
-                        { files.map((file: File, i: number) => {
+                        {files.map((file: File, i: number) => {
                             return (
-                                <li key={ i }>{ file.name }</li>
+                                <li key={i}>{file.name}</li>
                             );
                         })}
                     </ul>
                 </div>
                 <div>
-                    <button className={ styles.primary } onClick={ this.importFiles }>
-                        { this.props.__("dialog.yes") }
+                    <button className={styles.primary} onClick={this.importFiles}>
+                        {this.props.__("dialog.yes")}
                     </button>
-                    <button onClick={ this.props.closeDialog }>{this.props.__("dialog.no") }</button>
+                    <button onClick={this.props.closeDialog}>{this.props.__("dialog.no")}</button>
                 </div>
             </>
         );
@@ -82,7 +85,8 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default withApi(
+export default connect(undefined, mapDispatchToProps)(withTranslator(FileImport));
+/*withApi(
     FileImport,
     {
         operations: [
@@ -94,4 +98,4 @@ export default withApi(
         ],
         mapDispatchToProps,
     },
-);
+);*/
