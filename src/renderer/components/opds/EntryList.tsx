@@ -19,18 +19,18 @@ import { OpdsLinkView } from "readium-desktop/common/views/opds";
 
 import Entry from "./Entry";
 
-interface EntryListProps extends RouteComponentProps {
+interface IProps extends RouteComponentProps {
     level?: number;
     entries: OpdsLinkView[];
 }
 
-export class EntryList extends React.Component<EntryListProps, null> {
+class EntryList extends React.Component<IProps> {
     public render(): React.ReactElement<{}>  {
         return (
             <section id={styles.flux_list}>
                 <ul>
-                    { this.props.entries.map((entry: any, index: any) =>
-                        <li key={ index } >
+                    { this.props.entries.map((entry) =>
+                        <li key={ entry.url } >
                             <Entry entry={ entry } level={ this.props.level } />
                         </li>,
                     )}
@@ -40,12 +40,8 @@ export class EntryList extends React.Component<EntryListProps, null> {
     }
 }
 
-const mapStateToProps = (state: RootState, __: any) => {
-    const level = state.opds.browser.navigation.length + 1;
+const mapStateToProps = (state: RootState) => ({
+    level: state.opds.browser.navigation.length + 1,
+});
 
-    return {
-        level,
-    };
-};
-
-export default withRouter(connect(mapStateToProps, undefined)(EntryList));
+export default connect(mapStateToProps, undefined)(withRouter(EntryList));
