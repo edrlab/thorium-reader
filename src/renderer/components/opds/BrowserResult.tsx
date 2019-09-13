@@ -103,7 +103,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         }
 
         return <div className={styles.opdsBrowseContent}>
-            { content }
+            {content}
         </div>;
     }
 
