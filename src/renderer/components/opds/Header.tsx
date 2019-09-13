@@ -23,17 +23,20 @@ export enum DisplayType {
     List = "list",
 }
 
-interface HeaderProps extends RouteComponentProps, TranslatorProps {
-    displayType?: DisplayType;
+interface IProps extends RouteComponentProps, TranslatorProps {
+    displayType: DisplayType;
 }
 
-export class Header extends React.Component<HeaderProps, undefined> {
+class Header extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         const search = parseQueryString(this.props.location.search.replace("?", ""));
         const displayType = search.displayType || DisplayType.Grid;
         delete(search.displayType);
 
+        /**
+         * Why css style is apply in code and not imported from css ressource ?
+         */
         return (
             <SecondaryHeader>
                 { displayType &&
