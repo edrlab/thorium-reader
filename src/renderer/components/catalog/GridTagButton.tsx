@@ -7,30 +7,17 @@
 
 import * as React from "react";
 import { Link } from "react-router-dom";
-import {
-    TPublicationApiFindByTag, TPublicationApiFindByTag_result,
-} from "readium-desktop/main/api/publication";
 
-import { withApi } from "../utils/hoc/api";
-
-interface ButtonTagProps {
+interface IProps {
     name: string;
-    tag?: TPublicationApiFindByTag_result;
-    findByTag?: TPublicationApiFindByTag;
 }
 
-export class GridTagButton extends React.Component<ButtonTagProps> {
+class GridTagButton extends React.Component<IProps> {
 
     public constructor(props: any) {
         super(props);
 
     }
-
-    /*public componentDidMount() {
-        console.log("mon tag: ", this.props.name);
-        this.props.findByTag({ tag: this.props.name});
-        console.log("books: ", this.props.tag.length);
-    }*/
 
     public render(): React.ReactElement<{}> {
         return (
@@ -45,7 +32,8 @@ export class GridTagButton extends React.Component<ButtonTagProps> {
     }
 }
 
-export default withApi(
+export default GridTagButton;
+/*withApi(
     GridTagButton,
     {
         operations: [
@@ -57,4 +45,4 @@ export default withApi(
             },
         ],
     },
-);
+);*/

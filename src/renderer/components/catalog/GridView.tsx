@@ -7,9 +7,8 @@
 
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
-
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 import Slider from "readium-desktop/renderer/components/utils/Slider";
@@ -18,8 +17,6 @@ import AboutThoriumButton from "./AboutThoriumButton";
 import NoPublicationInfo from "./NoPublicationInfo";
 import SortMenu from "./SortMenu";
 import TagLayout from "./TagLayout";
-
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];

@@ -8,3 +8,5 @@
 export type TMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
 
 export type TFormEvent = React.FormEvent<HTMLFormElement>;
+
+export type TChangeEvent = React.ChangeEvent<HTMLInputElement>;
