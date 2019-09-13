@@ -6,34 +6,34 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { TLcpApiUnlockPublicationWithPassphrase } from "readium-desktop/main/api/lcp";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TFormEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface Props extends TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+    // what is the type of publication ? code:noany
     publication: any;
     hint: string;
-    unlockPublicationWithPassphrase?: TLcpApiUnlockPublicationWithPassphrase;
-    closeDialog?: any;
-    sendLCPError?: any;
 }
 
-interface State {
-    password: string;
+interface IState {
+    password: string | undefined;
 }
 
-export class LCPAuthentication extends React.Component<Props, State> {
-    public constructor(props: any) {
+export class LCPAuthentication extends React.Component<IProps, IState> {
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {
             password: undefined,
         };
 
-        this.submite = this.submite.bind(this);
+        this.submit = this.submit.bind(this);
         this.close = this.close.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
     }
@@ -51,7 +51,7 @@ export class LCPAuthentication extends React.Component<Props, State> {
                     { __("library.lcp.sentence") }
                     <span>{ __("library.lcp.hint", { hint: this.props.hint }) }</span>
                 </p>
-                <form onSubmit={ this.submite }>
+                <form onSubmit={ this.submit }>
                     <input type="password" onChange={this.onPasswordChange} placeholder={__("library.lcp.password")}/>
                     <div>
                         <input
@@ -66,16 +66,18 @@ export class LCPAuthentication extends React.Component<Props, State> {
         );
     }
 
-    private onPasswordChange(e: any) {
+    private onPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
         this.setState({ password: e.target.value});
     }
 
-    private submite(e: any) {
+    private submit(e: TFormEvent) {
         e.preventDefault();
 
-        this.props.unlockPublicationWithPassphrase({
+        apiFetch("lcp/unlockPublicationWithPassphrase", {
             publication: this.props.publication,
             passphrase: this.state.password,
+        }).catch((error) => {
+            console.error(`Error to fetch opds/deleteFeed`, error);
         });
         this.props.closeDialog();
     }
@@ -85,7 +87,7 @@ export class LCPAuthentication extends React.Component<Props, State> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         closeDialog: () => {
             dispatch(
@@ -101,7 +103,8 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default withApi(
+export default connect(undefined, mapDispatchToProps)(withTranslator(LCPAuthentication));
+/*withApi(
     withTranslator(LCPAuthentication),
     {
         operations: [
@@ -113,4 +116,4 @@ export default withApi(
         ],
         mapDispatchToProps,
     },
-);
+);*/
