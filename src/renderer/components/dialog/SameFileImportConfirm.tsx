@@ -6,21 +6,22 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-import { TPublicationApiImportOpdsEntry } from "readium-desktop/main/api/publication";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface Props extends TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
     publication: OpdsPublicationView;
-    importOpdsEntry?: TPublicationApiImportOpdsEntry;
     downloadSample?: boolean;
-    closeDialog?: any;
 }
 
-class SameFileImportConfirm extends React.Component<Props> {
+class SameFileImportConfirm extends React.Component<IProps> {
     public constructor(props: any) {
         super(props);
 
@@ -31,12 +32,12 @@ class SameFileImportConfirm extends React.Component<Props> {
         this.addToCatalog = this.addToCatalog.bind(this);
     }
 
-    public render(): React.ReactElement<{}>  {
+    public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
             <div>
                 <p>
-                {__("dialog.alreadyAdd")}
+                    {__("dialog.alreadyAdd")}
                     <span>{this.props.publication.title}</span>
                 </p>
                 <p>{__("dialog.sure")}</p>
@@ -49,21 +50,19 @@ class SameFileImportConfirm extends React.Component<Props> {
     }
 
     private addToCatalog() {
-        this.props.importOpdsEntry(
+        apiFetch("publication/importOpdsEntry",
             this.props.publication.url,
             this.props.publication.base64OpdsPublication,
             this.props.publication.title,
             this.props.downloadSample,
-        );
+        ).catch((error) => {
+            console.error(`Error to fetch publication/importOpdsEntry`, error);
+        });
         this.props.closeDialog();
     }
 }
 
-const buildRequestData = (props: Props) => {
-    return [ props.publication.title ];
-};
-
-const mapDispatchToProps = (dispatch: any, _props: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         closeDialog: () => {
             dispatch(
@@ -73,7 +72,8 @@ const mapDispatchToProps = (dispatch: any, _props: any) => {
     };
 };
 
-export default withApi(
+export default connect(undefined, mapDispatchToProps)(withTranslator(SameFileImportConfirm));
+/*withApi(
     SameFileImportConfirm,
     {
         operations: [
@@ -91,4 +91,4 @@ export default withApi(
         ],
         mapDispatchToProps,
     },
-);
+);*/
