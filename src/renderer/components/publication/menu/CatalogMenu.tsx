@@ -17,19 +17,18 @@ import PublicationExportButton from "./PublicationExportButton";
 
 import { connect } from "react-redux";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TDispatch } from 'readium-desktop/typings/redux';
 
-interface Props extends TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
     publication: PublicationView;
-    displayPublicationInfo?: any;
-    openDeleteDialog?: any;
     toggleMenu?: () => void;
 }
 
-interface State {
+interface IState {
     menuOpen: boolean;
 }
 
-class CatalogMenu extends React.Component<Props, State> {
+class CatalogMenu extends React.Component<IProps, IState> {
     constructor(props: any) {
         super(props);
 
@@ -41,23 +40,23 @@ class CatalogMenu extends React.Component<Props, State> {
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
-    public render(): React.ReactElement<{}>  {
+    public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
             <>
                 <button role="menuitem"
-                    onClick={this.displayPublicationInfo }
+                    onClick={this.displayPublicationInfo}
                 >
-                    { __("catalog.bookInfo")}
+                    {__("catalog.bookInfo")}
                 </button>
                 <button role="menuitem"
-                    onClick={ this.deletePublication }
+                    onClick={this.deletePublication}
                 >
-                    { __("catalog.delete")}
+                    {__("catalog.delete")}
                 </button>
                 <PublicationExportButton
-                    onClick={ this.props.toggleMenu }
-                    publication={ this.props.publication }
+                    onClick={this.props.toggleMenu}
+                    publication={this.props.publication}
                 />
             </>
         );
@@ -72,7 +71,7 @@ class CatalogMenu extends React.Component<Props, State> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open(
@@ -82,7 +81,7 @@ const mapDispatchToProps = (dispatch: any) => {
                 },
             ));
         },
-        openDeleteDialog: (publication: string) => {
+        openDeleteDialog: (publication: PublicationView) => {
             dispatch(dialogActions.open(
                 DialogType.DeletePublicationConfirm,
                 {
@@ -93,4 +92,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default withTranslator(connect(null, mapDispatchToProps)(CatalogMenu)) as any;
+export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogMenu));
