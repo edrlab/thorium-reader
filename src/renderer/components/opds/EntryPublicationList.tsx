@@ -17,7 +17,7 @@ import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
 interface IProps extends RouteComponentProps {
-    publications: OpdsPublicationView[];
+    publications: OpdsPublicationView[] | undefined;
 }
 
 class EntryPublicationList extends React.Component<IProps> {
@@ -46,4 +46,4 @@ const mapStateToProps = (state: RootState) => ({
     location: state.router.location,
 });
 
-export default (connect(mapStateToProps)(withRouter(EntryPublicationList)));
+export default connect(mapStateToProps)(withRouter(EntryPublicationList));
