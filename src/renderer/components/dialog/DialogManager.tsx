@@ -12,7 +12,12 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
 import DeletePublicationConfirm from "./DeletePublicationConfirm";
 import FileImport from "./FileImport";
+import Information from "./Information";
+import LcpAuthentication from "./LcpAuthentication";
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
+import RenewLsdConfirm from "./RenewLsdConfirm";
+import ReturnLsdConfirm from "./ReturnLsdConfirm";
+import SameFileImportConfirm from "./SameFileImportConfirm";
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
 }
@@ -31,6 +36,11 @@ class DialogManager extends React.Component<IProps> {
                 <FileImport></FileImport>
                 <DeletePublicationConfirm></DeletePublicationConfirm>
                 <DeleteOpdsFeedConfirm></DeleteOpdsFeedConfirm>
+                <LcpAuthentication></LcpAuthentication>
+                <RenewLsdConfirm></RenewLsdConfirm>
+                <ReturnLsdConfirm></ReturnLsdConfirm>
+                <SameFileImportConfirm></SameFileImportConfirm>
+                <Information></Information>
             </>
         );
 

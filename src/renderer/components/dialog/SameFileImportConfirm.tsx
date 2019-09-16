@@ -7,18 +7,19 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogType } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    publication: OpdsPublicationView;
-    downloadSample?: boolean;
+import Dialog from "./Dialog";
+
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 class SameFileImportConfirm extends React.Component<IProps> {
@@ -33,19 +34,25 @@ class SameFileImportConfirm extends React.Component<IProps> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
+        if (!this.props.open) {
+            return (<></>);
+        }
+
+        const { __, closeDialog } = this.props;
         return (
-            <div>
-                <p>
-                    {__("dialog.alreadyAdd")}
-                    <span>{this.props.publication.title}</span>
-                </p>
-                <p>{__("dialog.sure")}</p>
+            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
                 <div>
-                    <button onClick={this.addToCatalog}>{__("dialog.yes")}</button>
-                    <button className={styles.primary} onClick={this.props.closeDialog}>{__("dialog.no")}</button>
+                    <p>
+                        {__("dialog.alreadyAdd")}
+                        <span>{this.props.publication.title}</span>
+                    </p>
+                    <p>{__("dialog.sure")}</p>
+                    <div>
+                        <button onClick={this.addToCatalog}>{__("dialog.yes")}</button>
+                        <button className={styles.primary} onClick={closeDialog}>{__("dialog.no")}</button>
+                    </div>
                 </div>
-            </div>
+            </Dialog>
         );
     }
 
@@ -72,7 +79,15 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(SameFileImportConfirm));
+const mapStateToProps = (state: RootState) => ({
+    ...{
+        open: state.dialog.type === "same-file-import-confirm",
+    }, ...state.dialog.data as DialogType["same-file-import-confirm"],
+});
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(SameFileImportConfirm));
 /*withApi(
     SameFileImportConfirm,
     {

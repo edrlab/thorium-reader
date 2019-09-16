@@ -15,6 +15,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { Download } from "readium-desktop/renderer/redux/states/download";
 
 import { withApi } from "./hoc/api";
+import { TDispatch } from 'readium-desktop/typings/redux';
 
 interface Props  {
     lastImport?: ImportState;
@@ -59,10 +60,10 @@ class SameFileImportManager extends React.Component<Props> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     // lot of type issue : the type publicaiton has 3 different type !!
     return {
-        displayImportDialog: (publication: any, downloadSample: boolean) => {
+        displayImportDialog: (publication: ImportOpdsPublication, downloadSample: boolean) => {
             dispatch(dialogActions.open("same-file-import-confirm",
                 {
                     publication,

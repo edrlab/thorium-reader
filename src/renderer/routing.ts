@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import Information from "./components/settings/Information";
 import LanguageSettings from "./components/settings/LanguageSettings";
 
 import Catalog from "./components/catalog/Catalog";
@@ -54,12 +53,13 @@ export const routes: RouteList = {
         title: "Settings: Languages",
         component: LanguageSettings,
     },
+    /*
     "/settings/information": {
         path: "/settings/information",
         exact: false,
         title: "Information",
         component: Information,
-    },
+    },*/
     "/settings": {
         path: "/settings",
         exact: false,

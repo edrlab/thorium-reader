@@ -7,18 +7,20 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
-import { TFormEvent } from "readium-desktop/typings/react";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { TChangeEvent, TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    publication: PublicationView;
-    hint: string;
+import Dialog from "./Dialog";
+
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -34,40 +36,44 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         };
 
         this.submit = this.submit.bind(this);
-        this.close = this.close.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
-        if (!this.props.publication) {
+        if (!this.props.open || !this.props.publication) {
             return <></>;
         }
 
-        const { __ } = this.props;
-
+        const { __, closeDialog } = this.props;
         return (
-            <div>
-                <p>
-                    { __("library.lcp.sentence") }
-                    <span>{ __("library.lcp.hint", { hint: this.props.hint }) }</span>
-                </p>
-                <form onSubmit={ this.submit }>
-                    <input type="password" onChange={this.onPasswordChange} placeholder={__("library.lcp.password")}/>
-                    <div>
+            <Dialog open={true} close={closeDialog} id={styles.lcp_dialog}>
+                <div>
+                    <p>
+                        {__("library.lcp.sentence")}
+                        <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
+                    </p>
+                    <form onSubmit={this.submit}>
                         <input
-                            type="submit"
-                            value={ __("library.lcp.submit") }
-                            disabled={!this.state.password && true}
+                            type="password"
+                            onChange={this.onPasswordChange}
+                            placeholder={__("library.lcp.password")}
                         />
-                        <button onClick={ this.close }>{ __("library.lcp.cancel") }</button>
-                    </div>
-                </form>
-            </div>
+                        <div>
+                            <input
+                                type="submit"
+                                value={__("library.lcp.submit")}
+                                disabled={!this.state.password}
+                            />
+                            <button onClick={closeDialog}>{__("library.lcp.cancel")}</button>
+                        </div>
+                    </form>
+                </div>
+            </Dialog>
         );
     }
 
-    private onPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({ password: e.target.value});
+    private onPasswordChange(e: TChangeEvent) {
+        this.setState({ password: e.target.value });
     }
 
     private submit(e: TFormEvent) {
@@ -82,9 +88,6 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         this.props.closeDialog();
     }
 
-    private close() {
-        this.props.closeDialog();
-    }
 }
 
 const mapDispatchToProps = (dispatch: TDispatch) => {
@@ -103,7 +106,13 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(LCPAuthentication));
+const mapStateToProps = (state: RootState) => ({
+    ...{
+        open: state.dialog.type === "lcp-authentication",
+    }, ...state.dialog.data as DialogType["lcp-authentication"],
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LCPAuthentication));
 /*withApi(
     withTranslator(LCPAuthentication),
     {

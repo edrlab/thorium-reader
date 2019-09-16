@@ -7,16 +7,20 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { TMouseEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    publication: PublicationView;
+import Dialog from "./Dialog";
+
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 class LsdReturnConfirm extends React.Component<IProps> {
@@ -28,26 +32,28 @@ class LsdReturnConfirm extends React.Component<IProps> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
-        if (!this.props.publication) {
+        if (this.props.open || !this.props.publication) {
             return <></>;
         }
 
+        const { __, closeDialog } = this.props;
         return (
-            <div>
-                <p>
-                    {__("dialog.return")}
-                    <span>{this.props.publication.title}</span>
-                </p>
+            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
                 <div>
-                    <button onClick={this.remove}>{__("dialog.yes")}</button>
-                    <button className={styles.primary} onClick={this.props.closeDialog}>{__("dialog.no")}</button>
+                    <p>
+                        {__("dialog.return")}
+                        <span>{this.props.publication.title}</span>
+                    </p>
+                    <div>
+                        <button onClick={this.remove}>{__("dialog.yes")}</button>
+                        <button className={styles.primary} onClick={closeDialog}>{__("dialog.no")}</button>
+                    </div>
                 </div>
-            </div>
+            </Dialog>
         );
     }
 
-    public remove(e: any) {
+    public remove(e: TMouseEvent) {
         e.preventDefault();
         apiFetch("lcp/renewPublicationLicense", {
             publication: {
@@ -60,7 +66,7 @@ class LsdReturnConfirm extends React.Component<IProps> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any, _props: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         closeDialog: () => {
             dispatch(
@@ -70,7 +76,13 @@ const mapDispatchToProps = (dispatch: any, _props: any) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(LsdReturnConfirm));
+const mapStateToProps = (state: RootState) => ({
+    ...{
+        open: state.dialog.type === "lsd-return-confirm",
+    }, ...state.dialog.data as DialogType["lsd-return-confirm"],
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LsdReturnConfirm));
 /*withApi(
     LsdReturnConfirm,
     {

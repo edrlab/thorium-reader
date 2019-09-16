@@ -7,18 +7,20 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    publication: PublicationView;
+import Dialog from "./Dialog";
+
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 class RenewLsdConfirm extends React.Component<IProps> {
@@ -29,22 +31,24 @@ class RenewLsdConfirm extends React.Component<IProps> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
-        if (!this.props.publication) {
+        if (this.props.open || !this.props.publication) {
             return <></>;
         }
 
+        const { __, closeDialog } = this.props;
         return (
-            <div>
-                <p>
-                    {__("dialog.renew")}
-                    <span>{this.props.publication.title}</span>
-                </p>
+            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
                 <div>
-                    <button className={styles.primary} onClick={this.renew}>{__("dialog.yes")}</button>
-                    <button onClick={this.props.closeDialog}>{__("dialog.no")}</button>
+                    <p>
+                        {__("dialog.renew")}
+                        <span>{this.props.publication.title}</span>
+                    </p>
+                    <div>
+                        <button className={styles.primary} onClick={this.renew}>{__("dialog.yes")}</button>
+                        <button onClick={closeDialog}>{__("dialog.no")}</button>
+                    </div>
                 </div>
-            </div>
+            </Dialog>
         );
     }
 
@@ -71,7 +75,13 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(RenewLsdConfirm));
+const mapStateToProps = (state: RootState) => ({
+    ...{
+        open: state.dialog.type === "lsd-renew-confirm",
+    }, ...state.dialog.data as DialogType["lsd-renew-confirm"],
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(RenewLsdConfirm));
 /*withApi(
     RenewLsdConfirm,
     {

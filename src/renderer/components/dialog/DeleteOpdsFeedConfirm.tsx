@@ -32,8 +32,11 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, closeDialog } = this.props;
+        if (!this.props.open) {
+            return (<></>);
+        }
 
+        const { __, closeDialog } = this.props;
         return (
             <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
             <div>
