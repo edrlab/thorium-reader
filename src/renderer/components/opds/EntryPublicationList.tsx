@@ -22,7 +22,7 @@ interface IProps extends RouteComponentProps {
 
 class EntryPublicationList extends React.Component<IProps> {
     public render() {
-        let DisplayView: React.ComponentClass<any> = GridView;
+        let DisplayView = GridView;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);

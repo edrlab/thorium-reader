@@ -18,12 +18,12 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 
 import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
 
-interface GridViewProps extends RouteComponentProps {
+interface IProps {
     publications: PublicationView[];
     isOpdsView?: boolean;
 }
 
-export default class GridView extends React.Component<GridViewProps, undefined> {
+export default class GridView extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         let MenuContent = CatalogMenu;
         if ( this.props.isOpdsView ) {

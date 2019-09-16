@@ -763,6 +763,8 @@ const mapDispatchToProps = (dispatch: any, _props: ReaderProps) => {
         detachReader: (reader: any) => {
             dispatch(readerActions.detach(reader));
         },
+        /*
+        // not used
         displayPublicationInfo: (that: Reader) => {
             // TODO: subscribe to Redux action type == ActionType.CloseRequest
             // in order to reset shortcutEnable to true? Problem: must be specific to this reader window.
@@ -776,7 +778,7 @@ const mapDispatchToProps = (dispatch: any, _props: ReaderProps) => {
                     publication: that.props.publication,
                 },
             ));
-        },
+        },*/
     };
 };
 

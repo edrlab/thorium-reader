@@ -5,16 +5,41 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export enum DialogType {
-    FileImport = "file-import",
-    PublicationInfo = "publication-info",
-    PublicationInfoReader = "publication-info-reader",
-    OpdsFeedAddForm = "opds-feed-add-form",
-    DeletePublicationConfirm = "delete-publication-confirm",
-    DeleteOpdsFeedConfirm = "delete-opds-feed-confirm",
-    LcpAuthentication = "lcp-authentication",
-    LsdReturnConfirm = "lsd-return-confirm",
-    LsdRenewConfirm = "lsd-renew-confirm",
-    SameFileImportConfirm = "same-file-import-confirm",
-    AboutThorium = "about-thorium",
+import { OpdsFeedView, OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { PublicationView } from "readium-desktop/common/views/publication";
+
+interface IPubInfo {
+    isOpds: boolean;
+    publication: OpdsPublicationView | PublicationView;
+    publicationIdentifier: string;
+}
+
+export interface DialogType {
+    "file-import": {
+        files: File[];
+    };
+    "publication-info": IPubInfo;
+    "publication-info-reader": IPubInfo;
+    "opds-feed-add-form": void;
+    "delete-publication-confirm": {
+        publication: PublicationView;
+    };
+    "delete-opds-feed-confirm": {
+        feed: OpdsFeedView;
+    };
+    "lcp-authentication": {
+        publication: PublicationView;
+        hint: string;
+    };
+    "lsd-return-confirm": {
+        publication: PublicationView;
+    };
+    "lsd-renew-confirm": {
+        publication: PublicationView;
+    };
+    "same-file-import-confirm": {
+        publication: PublicationView;
+        downloadSample: boolean;
+    };
+    "about-thorium": void;
 }

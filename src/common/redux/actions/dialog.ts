@@ -6,13 +6,14 @@
 // ==LICENSE-END==
 
 import { DialogType } from "readium-desktop/common/models/dialog";
+import { IDialogStateData } from "readium-desktop/common/redux/states/dialog";
 
 export enum ActionType {
     OpenRequest = "DIALOG_OPEN_REQUEST",
     CloseRequest = "DIALOG_CLOSE_REQUEST",
 }
 
-export function open(type: DialogType, data: any) {
+export function open<T extends keyof DialogType>(type: T, data: DialogType[T]) {
     return {
         type: ActionType.OpenRequest,
         payload: { type, data },
