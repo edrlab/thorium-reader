@@ -62,10 +62,10 @@ class SameFileImportManager extends React.Component<Props> {
 }
 
 const mapDispatchToProps = (dispatch: any) => {
+    // lot of type issue : the type publicaiton has 3 different type !!
     return {
         displayImportDialog: (publication: OpdsPublicationView, downloadSample: boolean) => {
-            dispatch(dialogActions.open(
-                DialogType.SameFileImportConfirm,
+            dispatch(dialogActions.open("same-file-import-confirm",
                 {
                     publication,
                     downloadSample,

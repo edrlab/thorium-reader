@@ -42,8 +42,7 @@ export default class App extends React.Component<any, undefined> {
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
         this.store.dispatch(
-            dialogActions.open(
-                DialogType.FileImport,
+            dialogActions.open("file-import",
                 {
                     files: acceptedFiles.filter((file) => {
                             const ext = path.extname(file.path);

@@ -15,6 +15,7 @@ import {
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+    // IFileImport[]
     files: File[];
 }
 

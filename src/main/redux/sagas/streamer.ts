@@ -195,8 +195,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                             parsedEpub.LCP.Encryption.UserKey.TextHint,
                         ));
                     } else {
-                        yield put(dialogActions.open(
-                            DialogType.PublicationInfo,
+                        yield put(dialogActions.open("publication-info",
                             {
                                 publicationIdentifier: publication.identifier,
                             },

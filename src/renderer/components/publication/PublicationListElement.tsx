@@ -147,8 +147,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
 const mapDispatchToProps = (dispatch: any) => {
     return {
         displayPublicationInfo: (publication: PublicationView) => {
-            dispatch(dialogActions.open(
-                DialogType.PublicationInfo,
+            dispatch(dialogActions.open("publication-info",
                 {
                     publication,
                     isOpds: true,
@@ -165,9 +164,8 @@ const mapDispatchToProps = (dispatch: any) => {
                 },
             });
         },
-        openDeleteDialog: (publication: string) => {
-            dispatch(dialogActions.open(
-                DialogType.DeletePublicationConfirm,
+        openDeleteDialog: (publication: PublicationView) => {
+            dispatch(dialogActions.open("delete-publication-confirm",
                 {
                     publication,
                 },

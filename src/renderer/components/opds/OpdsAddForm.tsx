@@ -38,7 +38,7 @@ export class OpdsAddForm extends React.Component<Props> {
 const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         openOpdsFeedAddForm: () => {
-            dispatch(dialogActions.open(DialogType.OpdsFeedAddForm, {}));
+            dispatch(dialogActions.open("opds-feed-add-form", {}));
         },
     };
 };

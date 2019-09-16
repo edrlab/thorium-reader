@@ -111,8 +111,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
         // feed was typed to string, it appears that the right type is OpdsFeedView
         // Redux state isn't typed
         openDeleteDialog: (feed: OpdsFeedView) => {
-            dispatch(dialogActions.open(
-                DialogType.DeleteOpdsFeedConfirm,
+            dispatch(dialogActions.open("delete-opds-feed-confirm",
                 {
                     feed,
                 },

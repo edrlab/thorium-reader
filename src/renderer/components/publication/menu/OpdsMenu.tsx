@@ -90,8 +90,7 @@ export class PublicationCard extends React.Component<IProps> {
 const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         displayPublicationInfo: (publication: OpdsPublicationView) => {
-            dispatch(dialogActions.open(
-                DialogType.PublicationInfo,
+            dispatch(dialogActions.open("publication-info",
                 {
                     publication,
                     isOpds: true,

@@ -78,8 +78,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
             });
         },
         openDeleteDialog: (publication: PublicationView) => {
-            dispatch(dialogActions.open(
-                DialogType.DeletePublicationConfirm,
+            dispatch(dialogActions.open("delete-publication-confirm",
                 {
                     publication,
                 },

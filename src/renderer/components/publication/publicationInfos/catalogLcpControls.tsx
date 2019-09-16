@@ -121,24 +121,21 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IProps) => {
             });
         },
         openDeleteDialog: (publication: PublicationView) => {
-            dispatch(dialogActions.open(
-                DialogType.DeletePublicationConfirm,
+            dispatch(dialogActions.open("delete-publication-confirm",
                 {
                     publication,
                 },
             ));
         },
         openRenewDialog: () => {
-            dispatch(dialogActions.open(
-                DialogType.LsdRenewConfirm,
+            dispatch(dialogActions.open("lsd-renew-confirm",
                 {
                     publication: props.publication,
                 },
             ));
         },
         openReturnDialog: () => {
-            dispatch(dialogActions.open(
-                DialogType.LsdReturnConfirm,
+            dispatch(dialogActions.open("lsd-return-confirm",
                 {
                     publication: props.publication,
                 },

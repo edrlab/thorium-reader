@@ -5,14 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { lcpActions } from "readium-desktop/common/redux/actions";
+import { open } from "readium-desktop/common/redux/actions/dialog";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
-
-import { lcpActions } from "readium-desktop/common/redux/actions";
-
-import { open } from "readium-desktop/common/redux/actions/dialog";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
 
 export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
     while (true) {
@@ -20,7 +16,12 @@ export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
 
         const { hint, publication } = action.payload;
 
-        yield put(open(DialogType.LcpAuthentication, {publication, hint}));
+        yield put(open("lcp-authentication",
+            {
+                publication,
+                hint,
+            },
+        ));
     }
 }
 

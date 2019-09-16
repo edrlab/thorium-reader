@@ -9,18 +9,23 @@ import { OpdsFeedView, OpdsPublicationView } from "readium-desktop/common/views/
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 interface IPubInfo {
-    isOpds: boolean;
-    publication: OpdsPublicationView | PublicationView;
-    publicationIdentifier: string;
+    isOpds?: boolean;
+    publication?: OpdsPublicationView | PublicationView;
+    publicationIdentifier?: string;
+}
+
+interface IFileImport {
+    name: string;
+    path: string;
 }
 
 export interface DialogType {
     "file-import": {
-        files: File[];
+        files: IFileImport[];
     };
     "publication-info": IPubInfo;
     "publication-info-reader": IPubInfo;
-    "opds-feed-add-form": void;
+    "opds-feed-add-form": {};
     "delete-publication-confirm": {
         publication: PublicationView;
     };
@@ -41,5 +46,5 @@ export interface DialogType {
         publication: PublicationView;
         downloadSample: boolean;
     };
-    "about-thorium": void;
+    "about-thorium": {};
 }
