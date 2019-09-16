@@ -9,6 +9,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
+import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
+import DeletePublicationConfirm from "./DeletePublicationConfirm";
 import FileImport from "./FileImport";
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
 
@@ -27,6 +29,8 @@ class DialogManager extends React.Component<IProps> {
             <>
                 <OpdsFeedAddForm></OpdsFeedAddForm>
                 <FileImport></FileImport>
+                <DeletePublicationConfirm></DeletePublicationConfirm>
+                <DeleteOpdsFeedConfirm></DeleteOpdsFeedConfirm>
             </>
         );
 

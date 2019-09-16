@@ -7,18 +7,20 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { OpdsFeedView } from "readium-desktop/common/views/opds";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    feed: OpdsFeedView;
+import Dialog from "./Dialog";
+
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
@@ -30,9 +32,10 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
+        const { __, closeDialog } = this.props;
 
         return (
+            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
             <div>
                 <p>
                     {__("dialog.deleteFeed")}
@@ -43,6 +46,7 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
                     <button className={styles.primary} onClick={this.props.closeDialog}>{__("dialog.no")}</button>
                 </div>
             </div>
+            </Dialog>
         );
     }
 
@@ -65,7 +69,12 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(DeleteOpdsFeedConfirm));
+const mapStateToProps = (state: RootState) => ({
+    open: state.dialog.type === "delete-opds-feed-confirm",
+    feed: (state.dialog.data as DialogType["delete-opds-feed-confirm"]).feed,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(DeleteOpdsFeedConfirm));
 /*
     DeleteOpdsFeedConfirm,
     {

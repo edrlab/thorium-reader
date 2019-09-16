@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { IFileImport, DialogType } from "readium-desktop/common/models/dialog";
+import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";

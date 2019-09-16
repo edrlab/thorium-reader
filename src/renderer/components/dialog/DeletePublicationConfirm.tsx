@@ -7,48 +7,53 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    publication: PublicationView;
+import Dialog from "./Dialog";
+
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 class DeletePublicationConfirm extends React.Component<IProps> {
 
-    public constructor(props: any) {
+    public constructor(props: IProps) {
         super(props);
 
         this.remove = this.remove.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
-        const {__} = this.props;
-        if (!this.props.publication) {
+        if (!this.props.open || !this.props.publication) {
             return <></>;
         }
 
+        const { __, closeDialog } = this.props;
         return (
-            <div>
-                <p>
-                    {__("dialog.deletePublication")}
-                    <span>{this.props.publication.title}</span>
-                </p>
+            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
                 <div>
-                    <button onClick={this.remove}>{__("dialog.yes")}</button>
-                    <button className={styles.primary} onClick={this.props.closeDialog}>{__("dialog.no")}</button>
+                    <p>
+                        {__("dialog.deletePublication")}
+                        <span>{this.props.publication.title}</span>
+                    </p>
+                    <div>
+                        <button onClick={this.remove}>{__("dialog.yes")}</button>
+                        <button className={styles.primary} onClick={closeDialog}>{__("dialog.no")}</button>
+                    </div>
                 </div>
-            </div>
+            </Dialog>
         );
     }
 
-    public remove(e: any) {
+    public remove(e: TMouseEvent) {
         e.preventDefault();
         apiFetch("publication/delete", this.props.publication.identifier).catch((error) => {
             console.error(`Error to fetch publication/delete`, error);
@@ -67,7 +72,12 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(DeletePublicationConfirm));
+const mapStateToProps = (state: RootState) => ({
+    open: state.dialog.type === "delete-publication-confirm",
+    publication: (state.dialog.data as DialogType["delete-publication-confirm"]).publication,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(DeletePublicationConfirm));
 /*withApi(
     DeletePublicationConfirm,
     {
