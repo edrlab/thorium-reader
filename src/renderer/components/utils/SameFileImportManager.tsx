@@ -6,10 +6,8 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { ImportOpdsPublication, ImportState } from "readium-desktop/common/redux/states/import";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import {
     TPublicationApiImportOpdsEntry, TPublicationApiSearch,
 } from "readium-desktop/main/api/publication";
@@ -64,7 +62,7 @@ class SameFileImportManager extends React.Component<Props> {
 const mapDispatchToProps = (dispatch: any) => {
     // lot of type issue : the type publicaiton has 3 different type !!
     return {
-        displayImportDialog: (publication: OpdsPublicationView, downloadSample: boolean) => {
+        displayImportDialog: (publication: any, downloadSample: boolean) => {
             dispatch(dialogActions.open("same-file-import-confirm",
                 {
                     publication,

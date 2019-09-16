@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import * as path from "path";
 import * as portfinder from "portfinder";
-import { DialogType } from "readium-desktop/common/models/dialog";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";

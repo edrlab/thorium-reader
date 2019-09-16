@@ -19,7 +19,7 @@ interface IProps {
 
 export default class ListView extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
-        let MenuContent = CatalogMenu;
+        let MenuContent: any = CatalogMenu;
         if ( this.props.isOpdsView ) {
             MenuContent = OpdsMenu;
         }

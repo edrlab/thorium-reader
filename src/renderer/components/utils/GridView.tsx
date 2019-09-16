@@ -9,8 +9,6 @@ import * as React from "react";
 
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 
-import { RouteComponentProps} from "react-router-dom";
-
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/components/publication/menu/OpdsMenu";
 
@@ -25,7 +23,7 @@ interface IProps {
 
 export default class GridView extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
-        let MenuContent = CatalogMenu;
+        let MenuContent: any = CatalogMenu;
         if ( this.props.isOpdsView ) {
             MenuContent = OpdsMenu;
         }

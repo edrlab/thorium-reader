@@ -8,7 +8,6 @@
 import * as moment from "moment";
 import * as React from "react";
 import { connect } from "react-redux";
-import { DialogType } from "readium-desktop/common/models/dialog";
 import { LsdStatus } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";

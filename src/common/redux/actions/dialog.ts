@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import { DialogType } from "readium-desktop/common/models/dialog";
-import { IDialogStateData } from "readium-desktop/common/redux/states/dialog";
 
 export enum ActionType {
     OpenRequest = "DIALOG_OPEN_REQUEST",

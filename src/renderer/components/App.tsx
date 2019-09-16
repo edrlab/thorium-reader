@@ -13,7 +13,6 @@ import * as path from "path";
 import * as React from "react";
 import Dropzone from "react-dropzone";
 import { Provider } from "react-redux";
-import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";

@@ -7,7 +7,6 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { DialogType } from "readium-desktop/common/models/dialog";
 import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
@@ -24,7 +23,7 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends TranslatorProps {
     publication: PublicationView;
 }
 
@@ -32,8 +31,8 @@ interface IState {
     lsdStatus: LsdStatus | undefined;
 }
 
-class CatalogLcpControls extends React.Component<IProps, IState> {
-    public constructor(props: IProps) {
+class CatalogLcpControls extends React.Component<IProps & ReturnType<typeof mapDispatchToProps>, IState> {
+    public constructor(props: any) {
         super(props);
 
         this.state = {

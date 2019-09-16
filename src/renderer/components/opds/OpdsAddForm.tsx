@@ -7,7 +7,6 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";

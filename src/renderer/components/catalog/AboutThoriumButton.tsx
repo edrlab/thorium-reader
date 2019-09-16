@@ -7,7 +7,6 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { DialogType } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";

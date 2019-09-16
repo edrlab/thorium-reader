@@ -8,11 +8,9 @@
 import * as path from "path";
 import * as queryString from "query-string";
 import * as React from "react";
-import { DialogType } from "readium-desktop/common/models/dialog";
 import { Publication } from "readium-desktop/common/models/publication";
 import { ReaderConfig as ReadiumCSS } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 import { LocatorView } from "readium-desktop/common/views/locator";
@@ -744,7 +742,7 @@ const mapStateToProps = (state: RootState, __: any) => {
         reader: state.reader.reader,
         mode: state.reader.mode,
         infoOpen: state.dialog.open &&
-        state.dialog.type === DialogType.PublicationInfoReader,
+        state.dialog.type === "publication-info-reader",
     };
 };
 

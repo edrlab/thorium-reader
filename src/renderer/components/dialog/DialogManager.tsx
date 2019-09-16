@@ -7,25 +7,12 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { DialogType } from "readium-desktop/common/models/dialog";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
-import Information from "readium-desktop/renderer/components/settings/Information";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { TDispatch } from "readium-desktop/typings/redux";
 
-import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
-import DeletePublicationConfirm from "./DeletePublicationConfirm";
-import Dialog from "./Dialog";
 import FileImport from "./FileImport";
-import LcpAuthentication from "./LcpAuthentication";
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
-import RenewLsdConfirm from "./RenewLsdConfirm";
-import ReturnLsdConfirm from "./ReturnLsdConfirm";
-import SameFileImportConfirm from "./SameFileImportConfirm";
 
-interface IProps extends ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+interface IProps extends ReturnType<typeof mapStateToProps> {
 }
 
 class DialogManager extends React.Component<IProps> {
@@ -36,34 +23,16 @@ class DialogManager extends React.Component<IProps> {
             return (<></>);
         }
 
-        switch (dialog.type) {
-            case DialogType.FileImport:
-                return this.buildFileImportDialog();
-            case DialogType.PublicationInfo:
-                return this.buildPublicationShowDialog();
-            case DialogType.PublicationInfoReader:
-                return this.buildReaderPublicationShowDialog();
-            case DialogType.OpdsFeedAddForm:
-                return this.buildOpdsFeedAddFormDialog();
-            case DialogType.DeletePublicationConfirm:
-                return this.buildDeletePublicationConfirmDialog();
-            case DialogType.DeleteOpdsFeedConfirm:
-                return this.buildDeleteOpdsFeedConfirmDialog();
-            case DialogType.LcpAuthentication:
-                return this.buildLcpAuthenticationDialog();
-            case DialogType.LsdRenewConfirm:
-                return this.buildLsdRenewConfirmDialog();
-            case DialogType.LsdReturnConfirm:
-                return this.buildLsdReturnConfirmDialog();
-            case DialogType.SameFileImportConfirm:
-                return this.buildSameFileImportConfirmDialog();
-            case DialogType.AboutThorium:
-                return this.buildAboutThoriumDialog();
-            default:
-                return (<></>);
-        }
+        return (
+            <>
+                <OpdsFeedAddForm></OpdsFeedAddForm>
+                <FileImport></FileImport>
+            </>
+        );
+
     }
 
+    /*
     private buildOpdsFeedAddFormDialog() {
         return (
             <Dialog
@@ -215,8 +184,10 @@ class DialogManager extends React.Component<IProps> {
             </Dialog>
         );
     }
+    */
 }
 
+/*
 const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         closeDialog: () => {
@@ -231,6 +202,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
         },
     };
 };
+*/
 
 const mapStateToProps = (state: RootState) => {
     return {
@@ -238,4 +210,4 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DialogManager);
+export default connect(mapStateToProps)(DialogManager);

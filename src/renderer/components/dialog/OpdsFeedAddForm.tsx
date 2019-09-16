@@ -13,19 +13,22 @@ import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+import Dialog from "./Dialog";
+
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 interface State {
-    name: string;
-    url: string;
+    name: string | undefined;
+    url: string | undefined;
 }
 
 class OpdsFeedAddForm extends React.Component<IProps, State> {
-    constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -34,70 +37,69 @@ class OpdsFeedAddForm extends React.Component<IProps, State> {
         };
 
         this.add = this.add.bind(this);
-        this.close = this.close.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
-        const {__} = this.props;
+        if (!this.props.open) {
+            return (<></>);
+        }
+
+        const { __, closeDialog } = this.props;
         const { name, url } = this.state;
         return (
-            <div>
-                <h2>{__("opds.addMenu")}</h2>
-                <form>
-                    <div className={styles.field}>
-                        <label>{__("opds.addForm.name")}</label>
-                        <input
-                            onChange={(e) => this.onFieldChange("name", e.target.value)}
-                            type="text"
-                            aria-label={__("opds.addForm.name")}
-                            placeholder={__("opds.addForm.namePlaceholder")}
-                            defaultValue={name}
-                        />
-                    </div>
-                    <div className={styles.field}>
-                        <label>{__("opds.addForm.url")}</label>
-                        <input
-                            onChange={(e) => this.onFieldChange("url", e.target.value)}
-                            type="text"
-                            aria-label={__("opds.addForm.url")}
-                            placeholder={__("opds.addForm.urlPlaceholder")}
-                            defaultValue={url}
-                        />
-                    </div>
-                    <div>
-                        <input
-                            disabled={!name || !url}
-                            type="submit"
-                            value={__("opds.addForm.addButton")}
-                            onClick={ this.add }
-                        />
-                        <button onClick={this.close}>{__("opds.back")}</button>
-                    </div>
-                </form>
-            </div>
+            <Dialog open={true} close={closeDialog} id={styles.opds_form_dialog}>
+                <div>
+                    <h2>{__("opds.addMenu")}</h2>
+                    <form>
+                        <div className={styles.field}>
+                            <label>{__("opds.addForm.name")}</label>
+                            <input
+                                onChange={(e) => this.setState({
+                                    name: e.target.value,
+                                })}
+                                type="text"
+                                aria-label={__("opds.addForm.name")}
+                                placeholder={__("opds.addForm.namePlaceholder")}
+                                defaultValue={name}
+                            />
+                        </div>
+                        <div className={styles.field}>
+                            <label>{__("opds.addForm.url")}</label>
+                            <input
+                                onChange={(e) => this.setState({
+                                    url: e.target.value,
+                                })}
+                                type="text"
+                                aria-label={__("opds.addForm.url")}
+                                placeholder={__("opds.addForm.urlPlaceholder")}
+                                defaultValue={url}
+                            />
+                        </div>
+                        <div>
+                            <input
+                                disabled={!name || !url}
+                                type="submit"
+                                value={__("opds.addForm.addButton")}
+                                onClick={this.add}
+                            />
+                            <button onClick={closeDialog}>{__("opds.back")}</button>
+                        </div>
+                    </form>
+                </div>
+            </Dialog>
         );
     }
 
-    public onFieldChange(name: string, value: any) {
-        const change: any = {[name]: value};
-        this.setState(change);
-    }
-
-    public async add(e: TMouseEvent) {
+    public add(e: TMouseEvent) {
         e.preventDefault();
         const title = this.state.name;
         const url = this.state.url;
-        try {
-            await apiFetch("opds/addFeed", { title, url});
-        } catch (e) {
-            console.error("Error to fetch api opds/findAllFeeds", e);
-        }
+        apiFetch("opds/addFeed", { title, url }).catch((err) => {
+            console.error("Error to fetch api opds/findAllFeeds", err);
+        });
         this.props.closeDialog();
     }
 
-    private close() {
-        this.props.closeDialog();
-    }
 }
 
 const mapDispatchToProps = (dispatch: TDispatch) => {
@@ -110,7 +112,11 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(OpdsFeedAddForm));
+const mapStateToProps = (state: RootState) => ({
+    open: state.dialog.type === "opds-feed-add-form",
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OpdsFeedAddForm));
 /*
 withApi(
     OpdsFeedAddForm,

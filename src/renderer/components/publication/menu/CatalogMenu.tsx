@@ -6,18 +6,15 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-
+import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
 import { PublicationView } from "readium-desktop/common/views/publication";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 import PublicationExportButton from "./PublicationExportButton";
-
-import { connect } from "react-redux";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
-import { TDispatch } from 'readium-desktop/typings/redux';
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
     publication: PublicationView;
