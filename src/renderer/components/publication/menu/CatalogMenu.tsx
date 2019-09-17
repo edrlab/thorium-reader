@@ -74,6 +74,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
             dispatch(dialogActions.open("publication-info",
                 {
                     publicationIdentifier: publication.identifier,
+                    opdsPublication: undefined,
                 },
             ));
         },

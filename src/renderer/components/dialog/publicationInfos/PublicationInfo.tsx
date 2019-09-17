@@ -9,7 +9,9 @@ import classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import { apiRefresh } from "readium-desktop/renderer/apiRefresh";
@@ -24,14 +26,12 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 import { oc } from "ts-optchain";
 
+import Dialog from "../Dialog";
 import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
-    publicationIdentifier: string;
-    isOpds?: boolean;
-    hideControls?: boolean;
 }
 
 interface IState {
@@ -67,11 +67,6 @@ class PublicationInfo extends React.Component<IProps, IState> {
         setTimeout(this.needSeeMoreButton.bind(this), 1);
     }
 
-    public componentDidUpdate(_oldProps: IProps) {
-        this.needSeeMoreButton();
-
-    }
-
     public componentWillUnmount() {
         if (this.props.publicationIdentifier) {
             this.unsubscribe();
@@ -79,60 +74,84 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, translator } = this.props;
-        const { publication } = this.state;
-
-        if (!publication) {
+        const isOpds = typeof this.props.opdsPublication === "object";
+        // OPDSPublicationView can be cast to Publication type in this case without transformation
+        const publication = isOpds ? this.props.opdsPublication as PublicationView : this.state.publication;
+        if (!this.props.open || !publication) {
             return (<></>);
         }
 
+        const { __, translator } = this.props;
+        const controlsComponent = (() => {
+            if (this.props.displayControls) {
+                if (isOpds) {
+                    return (<OpdsControls publication={publication} />);
+                }
+                if (publication.lcp) {
+                    return (<CatalogLcpControls publication={publication} />);
+                }
+                return (<CatalogControls publication={publication} />);
+            }
+            return (<></>);
+        })();
         const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
         const formatedPublishers = oc(publication).publishers([]).join(", ");
-        let formatedPublishedDate = null;
-
-        let Controls: any = CatalogControls;
-        if (this.props.isOpds) {
-            Controls = OpdsControls;
-        }
-        if (publication.lcp) {
-            Controls = CatalogLcpControls;
-        }
-
-        if (publication.publishedAt) {
-            formatedPublishedDate = moment(publication.publishedAt).format("L");
-        }
+        const formatedPublishedDateComponent = (() => {
+            if (publication.publishedAt) {
+                const date = moment(publication.publishedAt).format("L");
+                if (date) {
+                    return (
+                        <p>
+                            <span>{__("catalog.released")}
+                            </span> <i className={styles.allowUserSelect}>{date}</i>
+                        </p>
+                    );
+                }
+            }
+            return (<></>);
+        })();
+        const publicationLanguageComponent = (() => {
+            if (publication.languages) {
+                return publication.languages
+                    .map((lang: string, index: number) => {
+                        const l = lang.split("-")[0];
+                        const ll = ((__(`languages.${l}` as any) as unknown) as string).replace(`languages.${l}`, lang);
+                        const note = (lang !== ll) ? ` (${lang})` : "";
+                        const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");
+                        return <i
+                            key={"lang-" + index}
+                            title={lang}
+                            className={styles.allowUserSelect}
+                        >
+                            {ll + note + suffix}
+                        </i>;
+                    });
+            }
+            return (<></>);
+        })();
 
         return (
-            <>
+            <Dialog open={true} close={this.props.closeDialog}>
                 <div className={styles.dialog_left}>
                     <div className={styles.image_wrapper}>
                         <div>
                             <Cover publication={publication} />
                         </div>
                     </div>
-                    {!this.props.hideControls &&
-                        <Controls publication={publication} />
-                    }
+                    {controlsComponent}
                 </div>
                 <div className={styles.dialog_right}>
                     <h2 className={styles.allowUserSelect}>{publication.title}</h2>
                     <div>
                         <p className={classNames(styles.allowUserSelect, styles.author)}>{authors}</p>
-
-                        {
-                            (formatedPublishedDate) ?
-                                (<p>
-                                    <span>{__("catalog.released")}
-                                    </span> <i className={styles.allowUserSelect}>{formatedPublishedDate}</i>
-                                </p>) : (<></>)
-                        }
+                        {formatedPublishedDateComponent}
                         <div className={styles.tags}>
                             <div className={styles.tag_list}>
                                 <span>Tags</span>
                                 <TagManager
                                     publicationIdentifier={publication.identifier}
                                     tags={publication.tags}
-                                    canModifyTag={!this.props.isOpds}
+                                    canModifyTag={!isOpds}
                                 />
                             </div>
                         </div>
@@ -168,26 +187,13 @@ class PublicationInfo extends React.Component<IProps, IState> {
                                 <><span>{__("catalog.publisher")}
                                 </span> <i className={styles.allowUserSelect}>{formatedPublishers}</i> <br /></>
                             }
-                            <span>{__("catalog.lang")}</span> {
-                                publication.languages &&
-                                publication.languages
-                                    .map((lang: string, index: number) => {
-                                        const l = lang.split("-")[0];
-                                        // tslint:disable-next-line:max-line-length
-                                        const ll = ((__(`languages.${l}` as any) as unknown) as string).replace(`languages.${l}`, lang);
-                                        const note = (lang !== ll) ? ` (${lang})` : "";
-                                        const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");
-                                        // tslint:disable-next-line:max-line-length
-                                        return <i key={"lang-" + index} title={lang} className={styles.allowUserSelect}>{ll + note + suffix}</i>;
-                                        // return <></>;
-                                    })
-                            } <br />
+                            <span>{__("catalog.lang")}</span>{publicationLanguageComponent}<br />
                             <span>{__("catalog.id")}
                             </span> <i className={styles.allowUserSelect}>{publication.workIdentifier}</i> <br />
                         </p>
                     </div>
                 </div>
-            </>
+            </Dialog>
         );
     }
 
@@ -204,11 +210,9 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 
     private getPublicationFromId() {
-        apiFetch("publication/get", this.props.publicationIdentifier /*|| (this.publication.identifier any*/)
+        apiFetch("publication/get", this.props.publicationIdentifier)
             .then((publication) => this.setState({ publication }))
-            .catch((error) => {
-                console.error(`Error to fetch publication/get`, error);
-            });
+            .catch((error) => console.error(`Error to fetch publication/get`, error));
     }
 }
 
@@ -222,25 +226,28 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-const mapStateToProps = (state: RootState) => {
-    return {
-        lastAction: state.api.lastSuccess.action.meta.api,
-    };
-};
+const mapStateToProps = (state: RootState) => ({
+    ...{
+        open: state.dialog.type === "publication-info" || state.dialog.type === "publication-info-reader",
+        displayControls: state.dialog.type === "publication-info",
+    },
+    ...(state.dialog.data as DialogType["publication-info"]),
+    ...(state.dialog.data as DialogType["publication-info-reader"]),
+});
 
 // no needed withTranslator is was already included in withApi
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationInfo));
     /*withApi(
 PublicationInfo,
 {
-    operations: [
-        {
-            moduleId: "publication",
-            methodId: "get",
-            resultProp: "publication",
-            callProp: "getPublicationFromId",
-            buildRequestData,
-        },
-    ],
+operations: [
+{
+    moduleId: "publication",
+    methodId: "get",
+    resultProp: "publication",
+    callProp: "getPublicationFromId",
+    buildRequestData,
+},
+],
 },
 )));*/

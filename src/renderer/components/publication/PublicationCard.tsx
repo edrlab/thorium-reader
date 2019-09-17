@@ -157,18 +157,18 @@ const mapDispatchToProps = (dispatch: any, props: PublicationCardProps) => {
             });
         },
         openInfosDialog: (publication: PublicationView) => {
-            // lot of type issue, fix that
             if (props.isOpds) {
                 dispatch(dialogActions.open("publication-info",
                     {
-                        publication,
-                        isOpds: props.isOpds,
+                        opdsPublication: publication,
+                        publicationIdentifier: undefined,
                     },
                 ));
             } else {
                 dispatch(dialogActions.open("publication-info",
                     {
                         publicationIdentifier: publication.identifier,
+                        opdsPublication: undefined,
                     },
                 ));
             }

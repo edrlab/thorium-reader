@@ -91,8 +91,8 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
         displayPublicationInfo: (publication: OpdsPublicationView) => {
             dispatch(dialogActions.open("publication-info",
                 {
-                    publication,
-                    isOpds: true,
+                    opdsPublication: publication,
+                    publicationIdentifier: undefined,
                 },
             ));
         },

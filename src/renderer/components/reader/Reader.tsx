@@ -10,7 +10,7 @@ import * as queryString from "query-string";
 import * as React from "react";
 import { Publication } from "readium-desktop/common/models/publication";
 import { ReaderConfig as ReadiumCSS } from "readium-desktop/common/models/reader";
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { readerActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 import { LocatorView } from "readium-desktop/common/views/locator";
@@ -51,6 +51,7 @@ import { Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import optionsValues from "./options-values";
+import { TPublicationApiGet_result } from 'readium-desktop/main/api/publication';
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
@@ -177,7 +178,7 @@ interface ReaderProps {
     setLastReadingLocation: TReaderApiSetLastReadingLocation;
     bookmarks?: TReaderApiFindBookmarks_result;
     displayPublicationInfo?: any;
-    publication?: Publication;
+    publication?: TPublicationApiGet_result;
 }
 const defaultLocale = "fr";
 
@@ -761,8 +762,6 @@ const mapDispatchToProps = (dispatch: any, _props: ReaderProps) => {
         detachReader: (reader: any) => {
             dispatch(readerActions.detach(reader));
         },
-        /*
-        // not used
         displayPublicationInfo: (that: Reader) => {
             // TODO: subscribe to Redux action type == ActionType.CloseRequest
             // in order to reset shortcutEnable to true? Problem: must be specific to this reader window.
@@ -770,13 +769,13 @@ const mapDispatchToProps = (dispatch: any, _props: ReaderProps) => {
             that.setState({
                 shortcutEnable: false,
             });
-            dispatch(dialogActions.open(
-                DialogType.PublicationInfoReader,
+            dispatch(dialogActions.open("publication-info-reader",
                 {
-                    publication: that.props.publication,
+                    publicationIdentifier: that.props.publication.identifier,
+                    opdsPublication: undefined,
                 },
             ));
-        },*/
+        },
     };
 };
 

@@ -15,6 +15,7 @@ import FileImport from "./FileImport";
 import Information from "./Information";
 import LcpAuthentication from "./LcpAuthentication";
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
+import PublicationInfo from "./publicationInfos/PublicationInfo";
 import RenewLsdConfirm from "./RenewLsdConfirm";
 import ReturnLsdConfirm from "./ReturnLsdConfirm";
 import SameFileImportConfirm from "./SameFileImportConfirm";
@@ -41,6 +42,7 @@ class DialogManager extends React.Component<IProps> {
                 <ReturnLsdConfirm></ReturnLsdConfirm>
                 <SameFileImportConfirm></SameFileImportConfirm>
                 <Information></Information>
+                <PublicationInfo></PublicationInfo>
             </>
         );
 

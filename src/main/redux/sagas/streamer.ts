@@ -197,6 +197,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                         yield put(dialogActions.open("publication-info",
                             {
                                 publicationIdentifier: publication.identifier,
+                                opdsPublication: undefined,
                             },
                         ));
                     }

@@ -85,8 +85,6 @@ const mapStateToProps = (state: RootState) => ({
     }, ...state.dialog.data as DialogType["same-file-import-confirm"],
 });
 
-
-
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(SameFileImportConfirm));
 /*withApi(
     SameFileImportConfirm,

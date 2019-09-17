@@ -10,9 +10,8 @@ import { OpdsFeedView, OpdsPublicationView } from "readium-desktop/common/views/
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 interface IPubInfo {
-    isOpds?: boolean;
-    publication?: OpdsPublicationView | PublicationView;
-    publicationIdentifier?: string;
+    opdsPublication: OpdsPublicationView | undefined;
+    publicationIdentifier: string | undefined;
 }
 
 interface IFileImport {
