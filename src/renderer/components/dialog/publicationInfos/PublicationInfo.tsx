@@ -216,9 +216,15 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IProps) => {
     return {
         closeDialog: () => {
+            if (props.publicationInfoReader) {
+                // TODO: this is a short-term hack.
+                // Can we instead subscribe to Redux action type == ActionType.CloseRequest,
+                // but narrow it down specically to the window instance (not application-wide)
+                window.document.dispatchEvent(new Event("Thorium:DialogClose"));
+            }
             dispatch(
                 dialogActions.close(),
             );
@@ -230,6 +236,7 @@ const mapStateToProps = (state: RootState) => ({
     ...{
         open: state.dialog.type === "publication-info" || state.dialog.type === "publication-info-reader",
         displayControls: state.dialog.type === "publication-info",
+        publicationInfoReader: state.dialog.type === "publication-info-reader",
     },
     ...(state.dialog.data as DialogType["publication-info"]),
     ...(state.dialog.data as DialogType["publication-info-reader"]),
@@ -242,11 +249,11 @@ PublicationInfo,
 {
 operations: [
 {
-    moduleId: "publication",
-    methodId: "get",
-    resultProp: "publication",
-    callProp: "getPublicationFromId",
-    buildRequestData,
+moduleId: "publication",
+methodId: "get",
+resultProp: "publication",
+callProp: "getPublicationFromId",
+buildRequestData,
 },
 ],
 },
