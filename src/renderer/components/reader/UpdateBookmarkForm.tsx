@@ -6,16 +6,13 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-
 import { LocatorView } from "readium-desktop/common/views/locator";
-import { TReaderApiUpdateBookmark } from "readium-desktop/main/api/reader";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { TFormEvent } from "readium-desktop/typings/react";
 
 interface Props {
     close: () => void;
     bookmark: LocatorView;
-    updateBookmark?: TReaderApiUpdateBookmark;
 }
 
 interface State {
@@ -59,16 +56,24 @@ export class UpdateBookmarkForm extends React.Component<Props, State> {
         );
     }
 
-    private submiteBookmark(e: any) {
+    private submiteBookmark(e: TFormEvent) {
         e.preventDefault();
-        const { bookmark, updateBookmark } = this.props;
+        const { bookmark } = this.props;
         bookmark.name = this.inputRef.current.value;
-        updateBookmark(bookmark.identifier, bookmark.publication.identifier, bookmark.locator, bookmark.name);
+        //        updateBookmark(bookmark.identifier, bookmark.publication.identifier, bookmark.locator, bookmark.name);
+        apiFetch("reader/updateBookmark",
+            bookmark.identifier,
+            bookmark.publication.identifier,
+            bookmark.locator,
+            bookmark.name,
+        )
+            .catch((error) => console.error("Error to fetch api reader/updateBookmark", error));
         this.props.close();
     }
 }
 
-export default withApi(
+export default UpdateBookmarkForm;
+/*withApi(
     UpdateBookmarkForm,
     {
         operations: [
@@ -79,4 +84,4 @@ export default withApi(
             },
         ],
     },
-);
+);*/

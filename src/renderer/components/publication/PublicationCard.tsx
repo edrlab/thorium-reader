@@ -21,6 +21,7 @@ import {
 import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { TDispatch } from "readium-desktop/typings/redux";
 import { lcpReadable } from "readium-desktop/utils/publication";
 
 import CatalogMenu from "./menu/CatalogMenu";
@@ -154,7 +155,7 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         openReader: (publication: PublicationView) => {
             dispatch({
