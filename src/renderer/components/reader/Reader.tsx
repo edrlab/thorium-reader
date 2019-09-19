@@ -8,28 +8,27 @@
 import * as path from "path";
 import * as queryString from "query-string";
 import * as React from "react";
+import { connect } from "react-redux";
 import { ReaderConfig as ReadiumCSS } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
-import { Translator } from "readium-desktop/common/services/translator";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
-import {
-    TReaderApiAddBookmark, TReaderApiDeleteBookmark, TReaderApiFindBookmarks,
-    TReaderApiFindBookmarks_result, TReaderApiSetLastReadingLocation,
-} from "readium-desktop/main/api/reader";
+import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
 import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiRefresh } from "readium-desktop/renderer/apiRefresh";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 import { diRendererGet, lazyInject } from "readium-desktop/renderer/di";
 import { diRendererSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { Store } from "redux";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { Store, Unsubscribe } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 
 import {
@@ -50,10 +49,8 @@ import {
 import { Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import optionsValues from "./options-values";
-import { connect } from 'react-redux';
-import { withTranslator, TranslatorProps } from '../utils/hoc/translator';
-import { TDispatch } from 'readium-desktop/typings/redux';
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
@@ -66,7 +63,6 @@ import { TDispatch } from 'readium-desktop/typings/redux';
 //     secure: true,
 //     supportFetchAPI: true,
 // });
-
 
 /**
  * WHY lot of const variable not in constructor ?
@@ -188,7 +184,7 @@ interface IState {
     indexes: any;
     visibleBookmarkList: LocatorView[];
     currentLocation: LocatorExtended;
-    bookmarks: TReaderApiFindBookmarks_result;
+    bookmarks: TReaderApiFindBookmarks_result | undefined;
 }
 
 // WHY ??
@@ -208,6 +204,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
     // private translator: Translator;
 
     private pubId: string;
+    private unsubscribe: Unsubscribe;
 
     constructor(props: any) {
         super(props);
@@ -256,6 +253,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             fullscreen: false,
             visibleBookmarkList: [],
             currentLocation: undefined,
+            bookmarks: undefined,
         };
 
         this.pubId = queryString.parse(location.search).pubId as string;
@@ -270,7 +268,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
         this.handleToggleBookmark = this.handleToggleBookmark.bind(this);
         this.goToLocator = this.goToLocator.bind(this);
         this.handleLinkClick = this.handleLinkClick.bind(this);
-
+        this.findBookmarks = this.findBookmarks.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
@@ -291,7 +289,6 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
                 lcpPass: this.state.lcpPass + " [" + lcpHint + "]",
             });
         }
-
 
         // What is the point of this redux store subscribe ?
         // the locale is already set
@@ -400,11 +397,26 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
         setReadingLocationSaver(this.handleReadingLocationChange);
 
         setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
+
+        this.unsubscribe = apiRefresh([
+            "reader/deleteBookmark",
+            "reader/updateBookmark",
+        ], this.findBookmarks);
+
+        apiFetch("publication/get", queryParams.pubId)
+            .then((publicationInfo) => this.setState({publicationInfo}))
+            .catch((error) => console.error("Error to fetch api publication/get", error));
     }
 
     public async componentDidUpdate(_oldProps: IProps, oldState: IState) {
         if (oldState.bookmarks !== this.state.bookmarks) {
             await this.checkBookmarks();
+        }
+    }
+
+    public componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
         }
     }
 
@@ -570,11 +582,14 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
     }
 
     private saveReadingLocation(loc: LocatorExtended) {
-        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
+//        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
+        apiFetch("reader/setLastReadingLocation", queryParams.pubId, loc.locator)
+            .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
+
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
-        await this.props.findBookmarks(this.pubId);
+        this.findBookmarks();
         this.saveReadingLocation(loc);
         this.setState({currentLocation: getCurrentReadingLocation()});
         // No need to explicitly refresh the bookmarks status here,
@@ -676,11 +691,21 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
         await this.checkBookmarks();
         if (this.state.visibleBookmarkList.length > 0) {
             for (const bookmark of this.state.visibleBookmarkList) {
-                this.props.deleteBookmark(bookmark.identifier);
+//                this.props.deleteBookmark(bookmark.identifier);
+                try {
+                    await apiFetch("reader/deleteBookmark", bookmark.identifier);
+                } catch (e) {
+                    console.error("Error to fetch api reader/deleteBookmark", e);
+                }
             }
         } else if (this.state.currentLocation) {
             const locator = this.state.currentLocation.locator;
-            this.props.addBookmark(this.pubId, locator);
+//            this.props.addBookmark(this.pubId, locator);
+            try {
+                await apiFetch("reader/addBookmark", this.pubId, locator);
+            } catch (e) {
+                console.error("Error to fetch api reader/addBookmark", e);
+            }
         }
     }
 
@@ -761,11 +786,19 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
         this.setState({ settingsValues });
         this.handleSettingsSave();
     }
+
+    private findBookmarks() {
+        apiFetch("reader/findBookmarks", this.pubId)
+            .then((bookmarks) => this.setState({bookmarks}))
+            .catch((error) => console.error("Error to fetch api reader/findBookmarks", error));
+    }
 }
 
+/*
 const buildBookmarkRequestData = () => {
     return [ queryString.parse(location.search).pubId as string ];
 };
+*/
 
 const mapStateToProps = (state: RootState, __: any) => {
     return {
