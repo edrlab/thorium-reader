@@ -83,7 +83,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                                         <PublicationCard
                                             key={ pub.identifier }
                                             publication={ pub }
-                                            menuContent={ CatalogMenu }
+                                            MenuContent={ CatalogMenu }
                                         />,
                                     )}
                                 />
