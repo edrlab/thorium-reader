@@ -809,7 +809,7 @@ const mapStateToProps = (state: RootState, __: any) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: TDispatch, _props: IProps) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         toggleFullscreen: (fullscreenOn: boolean) => {
             if (fullscreenOn) {

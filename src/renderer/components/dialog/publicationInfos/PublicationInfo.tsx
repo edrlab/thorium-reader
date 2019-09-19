@@ -31,7 +31,7 @@ import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -216,10 +216,12 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch, props: IProps) => {
+// props is typed with any because connect has a bad interpretation of IProps
+// IProps has a circular reference in this case
+const mapDispatchToProps = (dispatch: TDispatch, props: any) => {
     return {
         closeDialog: () => {
-            if (props.publicationInfoReader) {
+            if ((props as IProps).publicationInfoReader) {
                 // TODO: this is a short-term hack.
                 // Can we instead subscribe to Redux action type == ActionType.CloseRequest,
                 // but narrow it down specically to the window instance (not application-wide)
@@ -242,7 +244,6 @@ const mapStateToProps = (state: RootState) => ({
     ...(state.dialog.data as DialogType["publication-info-reader"]),
 });
 
-// no needed withTranslator is was already included in withApi
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationInfo));
     /*withApi(
 PublicationInfo,
