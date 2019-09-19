@@ -6,15 +6,11 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
-
+import { PublicationView } from "readium-desktop/common/views/publication";
+import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/components/publication/menu/OpdsMenu";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
-import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
+import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 
 interface IProps {
     publications: PublicationView[];
@@ -23,19 +19,16 @@ interface IProps {
 
 export default class GridView extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
-        let MenuContent: any = CatalogMenu;
-        if ( this.props.isOpdsView ) {
-            MenuContent = OpdsMenu;
-        }
+        const { isOpdsView } = this.props;
 
         return (
             <div className={styles.card_wrapper}>
                 {this.props.publications.map((pub, index) =>
                     <PublicationCard
-                        key={-index }
+                        key={-index}
                         publication={pub}
-                        menuContent={MenuContent}
-                        isOpds={this.props.isOpdsView}
+                        MenuContent={isOpdsView ? OpdsMenu : CatalogMenu}
+                        isOpds={isOpdsView}
                     />,
                 )}
                 {[...Array(6).keys()].map((__, index) => {
