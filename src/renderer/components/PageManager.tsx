@@ -6,9 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { Route, Switch } from "react-router-dom";
-
 import { routes } from "readium-desktop/renderer/routing";
 
 interface States {
@@ -17,7 +15,7 @@ interface States {
 
 export default class PageManager extends React.Component<{}, States> {
 
-    public constructor(props: any) {
+    public constructor(props: {}) {
         super(props);
 
         this.state = {

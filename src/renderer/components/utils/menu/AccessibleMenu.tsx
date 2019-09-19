@@ -6,26 +6,24 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import FocusLock from "react-focus-lock";
-
 import OutsideClickAlerter from "readium-desktop/renderer/components/utils/OutsideClickAlerter";
 
 interface Props {
-    className?: any;
+    className?: string;
     visible: boolean;
-    toggleMenu: any;
+    toggleMenu: () => void;
     dontCloseWhenClickOutside?: boolean;
     focusMenuButton?: () => void;
 }
 
 interface State {
     inFocus: boolean;
-    triggerElem: any;
+    triggerElem: Element | undefined;
 }
 
 export default class AccessibleMenu extends React.Component<Props, State> {
-    private containerRef: any;
+    private containerRef: React.RefObject<HTMLDivElement>;
     private ismounted = false;
 
     public constructor(props: Props) {
@@ -33,7 +31,7 @@ export default class AccessibleMenu extends React.Component<Props, State> {
 
         this.state = {
             inFocus: false,
-            triggerElem: null,
+            triggerElem: undefined,
         };
 
         this.containerRef = React.createRef();
@@ -82,6 +80,8 @@ export default class AccessibleMenu extends React.Component<Props, State> {
             && this.state.triggerElem
         ) {
             if (this.state.triggerElem != null) {
+                // WHY ?
+                // @ts-ignore
                 this.state.triggerElem.focus();
             }
         }
@@ -105,7 +105,7 @@ export default class AccessibleMenu extends React.Component<Props, State> {
         );
     }
 
-    private handleKey(event: any) {
+    private handleKey(event: KeyboardEvent) {
         if (event.key === "Escape" || (!this.state.inFocus && (event.shiftKey && event.key === "Tab"))) {
             this.props.toggleMenu();
             if (this.props.focusMenuButton) {
@@ -134,11 +134,13 @@ export default class AccessibleMenu extends React.Component<Props, State> {
         }
     }
 
-    private handleFocus(event: any) {
+    private handleFocus(event: Event) {
         const focusedNode = event.target;
 
         if (this.containerRef
             && this.containerRef.current
+        // WHY ?
+        // @ts-ignore
             && this.containerRef.current.contains(focusedNode)
         ) {
             if (this.ismounted) {
