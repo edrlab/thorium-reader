@@ -400,7 +400,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
 
         this.unsubscribe = apiRefresh([
             "reader/deleteBookmark",
-            "reader/updateBookmark",
+            "reader/addBookmark",
         ], this.findBookmarks);
 
         apiFetch("publication/get", queryParams.pubId)
