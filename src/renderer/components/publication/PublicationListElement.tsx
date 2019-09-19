@@ -12,49 +12,61 @@ import { LsdStatus } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { TPublicationApiDelete } from "readium-desktop/main/api/publication";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TDispatch } from "readium-desktop/typings/redux";
 import { lcpReadable } from "readium-desktop/utils/publication";
+import * as uuid from "uuid";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
 
-import uuid = require("uuid");
-
-interface PublicationListElementProps extends TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapDispatchToProps> {
     publication: PublicationView;
-    deletePublication?: TPublicationApiDelete;
-    displayPublicationInfo?: any;
-    openDeleteDialog?: any;
-    menuContent: any;
-    openReader: (publication: PublicationView) => void;
-    lsdStatus: LsdStatus;
-    isOpds: boolean;
+    menuContent: JSX.Element;
+    isOpds?: boolean;
 }
 
-interface PublicationListElementState {
+interface IState {
     menuOpen: boolean;
+    lsdStatus: LsdStatus | undefined;
 }
 
-export class PublicationListElement extends React.Component<PublicationListElementProps, PublicationListElementState> {
+export class PublicationListElement extends React.Component<IProps, IState> {
     private menuId: string;
     private buttonRef: any;
 
-    constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
             menuOpen: false,
+            lsdStatus: undefined,
         };
 
-        this.deletePublication = this.deletePublication.bind(this);
+        // this.deletePublication = this.deletePublication.bind(this);
         this.toggleMenu = this.toggleMenu.bind(this);
         this.focusButton = this.focusButton.bind(this);
 
         this.menuId = "menu-" + uuid.v4();
+    }
+
+    public componentDidMount() {
+        const { publication } = this.props;
+        if (publication.lcp) {
+            // currently getLsdStatus in LCP API is broken
+            // HttpGet is badly handle
+            // FIX ME in a next PR
+            apiFetch("lcp/getLsdStatus", { publication })
+                .then((request) => {
+                    if (request.isSuccess) {
+                        this.setState({ lsdStatus: request.data });
+                    }
+                })
+                .catch((error) => console.error("Error to fetch api lcp/getLsdStatus", error));
+        }
     }
 
     public render(): React.ReactElement<{}>  {
@@ -118,10 +130,17 @@ export class PublicationListElement extends React.Component<PublicationListEleme
         );
     }
 
+    /**
+     * deletePublication isn't used
+     * this method has the same name that api CallProp
+     * What is the point ?
+     */
+    /*
     private deletePublication(e: any) {
         e.preventDefault();
         this.props.openDeleteDialog(this.props.publication);
     }
+    */
 
     private toggleMenu() {
         this.setState({menuOpen: !this.state.menuOpen});
@@ -133,7 +152,8 @@ export class PublicationListElement extends React.Component<PublicationListEleme
 
     private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
-        const { publication, lsdStatus } = this.props;
+        const { publication } = this.props;
+        const { lsdStatus } = this.state;
 
         if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
             this.props.displayPublicationInfo(publication);
@@ -143,7 +163,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open("publication-info",
@@ -173,7 +193,8 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapDispatchToProps)(withApi(
+export default connect(undefined, mapDispatchToProps)(withTranslator(PublicationListElement));
+/*(withApi(
     withTranslator(PublicationListElement),
     {
         operations: [
@@ -184,4 +205,4 @@ export default connect(mapDispatchToProps)(withApi(
             },
         ],
     },
-));
+));*/
