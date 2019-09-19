@@ -8,22 +8,55 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { TPublicationApiFindAll_result } from "readium-desktop/main/api/publication";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiRefresh } from "readium-desktop/renderer/apiRefresh";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import GridView from "readium-desktop/renderer/components/utils/GridView";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
 
-interface AllPublicationPageProps extends TranslatorProps, RouteComponentProps {
-    publications?: TPublicationApiFindAll_result;
+interface IProps extends TranslatorProps, RouteComponentProps {
 }
 
-export class AllPublicationPage extends React.Component<AllPublicationPageProps, undefined> {
+interface IState {
+    publications: TPublicationApiFindAll_result | undefined;
+}
+
+export class AllPublicationPage extends React.Component<IProps, IState> {
+    private unsubscribe: Unsubscribe;
+
+    constructor(props: IProps) {
+        super(props);
+        this.state = {
+            publications: undefined,
+        };
+    }
+
+    public componentDidMount() {
+        this.unsubscribe = apiRefresh([
+            "publication/import",
+            "publication/delete",
+            "catalog/addEntry",
+            "publication/updateTags",
+        ], () => {
+            apiFetch("publication/findAll")
+                .then((publications) => this.setState({publications}))
+                .catch((error) => console.error("Error to fetch api publication/findAll", error));
+        });
+    }
+
+    public componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
         let DisplayView: any = GridView;
         const displayType = this.props.location.state;
@@ -46,25 +79,26 @@ export class AllPublicationPage extends React.Component<AllPublicationPageProps,
             typeview = DisplayType.Grid;
         }
 
-        const secondaryHeader = <Header displayType={ typeview } />;
+        const secondaryHeader = <Header displayType={typeview} />;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <div>
                     <BreadCrumb
                         search={this.props.location.search}
-                        breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title as string}]}
+                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title as string }]}
                     />
-                    { this.props.publications ?
-                        <DisplayView publications={ this.props.publications } />
-                    : <></>}
+                    {this.state.publications ?
+                        <DisplayView publications={this.state.publications} />
+                        : <></>}
                 </div>
             </LibraryLayout>
         );
     }
 }
 
-export default withTranslator(withApi(
+export default withTranslator(AllPublicationPage);
+/*(withApi(
     AllPublicationPage,
     {
         operations: [
@@ -95,3 +129,4 @@ export default withTranslator(withApi(
         ],
     },
 ));
+*/
