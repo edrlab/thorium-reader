@@ -152,6 +152,7 @@ export class PublicationApi implements IPublicationApi {
         if (url) {
             const httpPub = await this.catalogService.importOpdsEntry(url, downloadSample);
             if (httpPub.isSuccess) {
+                titleView = httpPub.data.title;
                 this.sendDownloadSuccess(url);
                 returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
             } else {
