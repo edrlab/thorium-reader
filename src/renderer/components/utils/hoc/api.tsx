@@ -57,7 +57,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
 
         // Create call method
         const caller = (props: any) => {
-            return (requestData?: any) => {
+            return (...requestData: any) => {
                 const buildRequestData = operation.buildRequestData;
 
                 if (!requestData && buildRequestData) {
