@@ -33,7 +33,10 @@ export function* processRequest(requestAction: apiActions.ApiAction): SagaIterat
 
         debug(api.moduleId, api.methodId, requestAction.payload);
 
-        const result = yield call(
+        const result = typeof requestAction.payload === "string" ? yield call(
+            apiMethod,
+            requestAction.payload,
+        ) : yield call(
             apiMethod,
             ...(requestAction.payload || []),
         );
