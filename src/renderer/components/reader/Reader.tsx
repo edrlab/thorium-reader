@@ -189,7 +189,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     @lazyInject(diRendererSymbolTable.store)
     private store: Store<RootState>;
 
-    @lazyInject(diRendererSymbolTable.history)
+    @lazyInject(diRendererSymbolTable.translator)
     private translator: Translator;
 
     private pubId: string;
