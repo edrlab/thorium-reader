@@ -5,6 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Dispatch, Action } from "redux";
+import { Action, Dispatch } from "redux";
 
-export type TDispatch = Dispatch<Action>
+export type TDispatch = Dispatch<Action>;
