@@ -35,7 +35,7 @@ class EntryPublicationList extends React.Component<IProps> {
         return (
             <>
                 {this.props.publications ?
-                    <DisplayView publications={this.props.publications as any} isOpdsView={true} />
+                    <DisplayView publications={this.props.publications} isOpdsView={true} />
                     : <Loader />}
             </>
         );
