@@ -6,11 +6,8 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import * as styles from "readium-desktop/renderer/assets/styles/slider.css";
-
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/slider.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { TranslatorProps, withTranslator } from "./hoc/translator";

@@ -400,7 +400,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
 
         this.unsubscribe = apiRefresh([
             "reader/deleteBookmark",
-            "reader/updateBookmark",
+            "reader/addBookmark",
         ], this.findBookmarks);
 
         apiFetch("publication/get", queryParams.pubId)
@@ -809,7 +809,7 @@ const mapStateToProps = (state: RootState, __: any) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: TDispatch, _props: IProps) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         toggleFullscreen: (fullscreenOn: boolean) => {
             if (fullscreenOn) {

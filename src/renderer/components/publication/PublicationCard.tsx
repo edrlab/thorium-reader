@@ -11,39 +11,40 @@ import { LsdStatus } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { apiFetch } from "readium-desktop/renderer/apiFetch";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { TDispatch } from "readium-desktop/typings/redux";
 import { lcpReadable } from "readium-desktop/utils/publication";
 
-interface PublicationCardProps extends TranslatorProps {
+import CatalogMenu from "./menu/CatalogMenu";
+import OpdsMenu from "./menu/OpdsMenu";
+
+interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
     publication: PublicationView;
-    menuContent: any;
+    MenuContent: typeof OpdsMenu | typeof CatalogMenu;
     isOpds?: boolean;
-    InfoDialogIsOpen?: boolean;
-    openInfosDialog?: (data: any) => void;
-    openReader?: (data: any) => void;
-    lsdStatus?: LsdStatus;
-    getLsdStatus?: (data: any) => void;
 }
 
-interface PublicationCardState {
+interface IState {
     menuOpen: boolean;
+    lsdStatus: LsdStatus | undefined;
 }
 
-class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
-    public constructor(props: any) {
+class PublicationCard extends React.Component<IProps, IState> {
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {
             menuOpen: false,
+            lsdStatus: undefined,
         };
         this.toggleMenu = this.toggleMenu.bind(this);
         this.openCloseMenu = this.openCloseMenu.bind(this);
@@ -51,16 +52,24 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
     }
 
     public componentDidMount() {
-        const { publication, getLsdStatus } = this.props;
+        const { publication } = this.props;
         if (publication.lcp) {
-            getLsdStatus({publication});
+            // currently getLsdStatus in LCP API is broken
+            // HttpGet is badly handle
+            // FIX ME in a next PR
+            apiFetch("lcp/getLsdStatus", { publication })
+                .then((request) => {
+                    if (request.isSuccess) {
+                        this.setState({ lsdStatus: request.data });
+                    }
+                })
+                .catch((error) => console.error("Error to fetch api lcp/getLsdStatus", error));
         }
     }
 
-    public render(): React.ReactElement<{}>  {
-        const { __, publication, translator } = this.props;
+    public render(): React.ReactElement<{}> {
+        const { __, publication, translator, MenuContent } = this.props;
         const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
-        const MenuContent = this.props.menuContent;
 
         return (
             <div className={styles.block_book}
@@ -72,27 +81,28 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                         tabIndex={0}
                         onClick={(e) => this.handleBookClick(e)}
                         onKeyPress={(e) => {
-                            if (e.key === "Enter") { this.handleBookClick(e); }}
+                            if (e.key === "Enter") { this.handleBookClick(e); }
+                        }
                         }
                         title={`${publication.title} - ${authors}`}
                     >
-                        <Cover publication={ publication } />
+                        <Cover publication={publication} />
                     </a>
                 </div>
                 <div className={styles.legend}>
                     <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
                         <p aria-hidden className={styles.book_title}>
-                            { this.truncateTitle(publication.title) }
+                            {this.truncateTitle(publication.title)}
                         </p>
                         <p aria-hidden className={styles.book_author}>
                             {authors}
                         </p>
                     </a>
                     <Menu
-                        button={(<SVG title={__("accessibility.bookMenu")} svg={MenuIcon}/>)}
+                        button={(<SVG title={__("accessibility.bookMenu")} svg={MenuIcon} />)}
                         content={(
                             <div className={styles.menu}>
-                                <MenuContent toggleMenu={this.toggleMenu} publication={publication}/>
+                                <MenuContent toggleMenu={this.toggleMenu} publication={publication} />
                             </div>
                         )}
                         open={this.state.menuOpen}
@@ -106,16 +116,17 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
     }
 
     private openCloseMenu() {
-        this.setState({menuOpen: !this.state.menuOpen});
+        this.setState({ menuOpen: !this.state.menuOpen });
     }
 
     private toggleMenu() {
-        this.setState({menuOpen: !this.state.menuOpen});
+        this.setState({ menuOpen: !this.state.menuOpen });
     }
 
     private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
-        const { publication, lsdStatus } = this.props;
+        const { publication } = this.props;
+        const { lsdStatus } = this.state;
 
         if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
             this.props.openInfosDialog(publication);
@@ -140,11 +151,11 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
 const mapStateToProps = (state: RootState) => {
     return {
         InfoDialogIsOpen: state.dialog.open &&
-        state.dialog.type === "publication-info",
+            state.dialog.type === "publication-info",
     };
 };
 
-const mapDispatchToProps = (dispatch: any, props: PublicationCardProps) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         openReader: (publication: PublicationView) => {
             dispatch({
@@ -157,26 +168,18 @@ const mapDispatchToProps = (dispatch: any, props: PublicationCardProps) => {
             });
         },
         openInfosDialog: (publication: PublicationView) => {
-            if (props.isOpds) {
-                dispatch(dialogActions.open("publication-info",
-                    {
-                        opdsPublication: publication,
-                        publicationIdentifier: undefined,
-                    },
-                ));
-            } else {
-                dispatch(dialogActions.open("publication-info",
-                    {
-                        publicationIdentifier: publication.identifier,
-                        opdsPublication: undefined,
-                    },
-                ));
-            }
+            dispatch(dialogActions.open("publication-info",
+                {
+                    opdsPublication: publication.identifier ? undefined : publication,
+                    publicationIdentifier: publication.identifier ? publication.identifier : undefined,
+                },
+            ));
         },
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withApi(
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationCard));
+    /*(withApi(
     withTranslator(PublicationCard),
     {
         operations: [
@@ -188,4 +191,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(withApi(
             },
         ],
     },
-));
+));*/
