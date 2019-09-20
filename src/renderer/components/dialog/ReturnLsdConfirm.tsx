@@ -32,7 +32,7 @@ class LsdReturnConfirm extends React.Component<IProps> {
     }
 
     public render(): React.ReactElement<{}> {
-        if (this.props.open || !this.props.publication) {
+        if (!this.props.open || !this.props.publication) {
             return <></>;
         }
 
