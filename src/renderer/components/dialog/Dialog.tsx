@@ -15,7 +15,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-
 import FocusLock from "react-focus-lock";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 import classNames = require("classnames");
 

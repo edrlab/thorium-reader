@@ -8,21 +8,20 @@
 import * as qs from "query-string";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-
-import { CatalogView} from "readium-desktop/common/views/catalog";
-
+import { TCatalogApiGet, TCatalogApiGet_result } from "readium-desktop/main/api/catalog";
+import { TPublicationApiGetAllTags_result } from "readium-desktop/main/api/publication";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-import Header, { DisplayType } from "./Header";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import GridView from "./GridView";
+import Header, { DisplayType } from "./Header";
 import ListView from "./ListView";
 
 interface Props extends TranslatorProps, RouteComponentProps {
-    catalog?: CatalogView;
-    tags?: string[];
-    requestCatalog: any;
+    catalog?: TCatalogApiGet_result;
+    tags?: TPublicationApiGetAllTags_result;
+    requestCatalog: TCatalogApiGet;
 }
 
 export class Catalog extends React.Component<Props> {
@@ -60,7 +59,6 @@ export default withApi(
             {
                 moduleId: "catalog",
                 methodId: "get",
-                callProp: "requestCatalog",
                 resultProp: "catalog",
                 onLoad: true,
             },

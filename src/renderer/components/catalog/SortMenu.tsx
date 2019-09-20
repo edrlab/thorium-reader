@@ -8,7 +8,7 @@
 import * as React from "react";
 
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
-import {  TranslatorProps, withTranslator } from "../utils/translator";
+import {  TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 interface SortMenuProps extends TranslatorProps {
         onClickAlphaSort?: () => void;

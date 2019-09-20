@@ -16,7 +16,7 @@ import * as classNames from "classnames";
 
 import { parseQueryString } from "readium-desktop/utils/url";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/breadcrumb.css";
 

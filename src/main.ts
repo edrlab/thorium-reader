@@ -9,13 +9,14 @@ import * as debug_ from "debug";
 import { app, ipcMain } from "electron";
 import * as path from "path";
 import { syncIpc } from "readium-desktop/common/ipc";
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { cli } from "readium-desktop/main/cli/process";
 import { createWindow } from "readium-desktop/main/createWindow";
-import { container } from "readium-desktop/main/di";
+import { diMainGet } from "readium-desktop/main/di";
 import { initApp, registerProtocol } from "readium-desktop/main/init";
-import { _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directives";
-import { Store } from "redux";
+import {
+    _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH,
+} from "readium-desktop/preprocessor-directives";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
@@ -23,8 +24,6 @@ import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
-
-import { ActionWithSender } from "readium-desktop/common/models/sync";
 
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
@@ -86,8 +85,8 @@ function main() {
 
     // Listen to renderer action
     ipcMain.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
-        const store = container.get("store") as Store<any>;
-        const actionSerializer = container.get("action-serializer") as ActionSerializer;
+        const store = diMainGet("store");
+        const actionSerializer = diMainGet("action-serializer");
 
         switch (data.type) {
             case syncIpc.EventType.RendererAction:

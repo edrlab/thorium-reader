@@ -7,8 +7,7 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
-import { container } from "readium-desktop/main/di";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
+import { diMainGet } from "readium-desktop/main/di";
 
 import { cli_ } from "./cli/commandLine";
 import { cli } from "./cli/process";
@@ -41,7 +40,7 @@ export function lockInstance() {
             // Someone tried to run a second instance, we should focus our window.
             debug("comandLine", argv, _workingDir);
 
-            const winRegistry = container.get("win-registry") as WinRegistry;
+            const winRegistry = diMainGet("win-registry");
             const win = winRegistry.getWindow(1);
             if (win && win.win) {
                 if (win.win.isMinimized()) {

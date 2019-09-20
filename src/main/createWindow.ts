@@ -9,11 +9,8 @@ import * as debug_ from "debug";
 import { app, BrowserWindow, Menu, shell } from "electron";
 import * as path from "path";
 import { AppWindowType } from "readium-desktop/common/models/win";
-import {
-    getWindowsRectangle,
-} from "readium-desktop/common/rectangle/window";
-import { container } from "readium-desktop/main/di";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
+import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
+import { diMainGet } from "readium-desktop/main/di";
 import {
     _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
@@ -72,7 +69,7 @@ export async function createWindow() {
         }
     }
 
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const winRegistry = diMainGet("win-registry");
     const appWindow = winRegistry.registerWindow(mainWindow, AppWindowType.Library);
 
     // watch to record window rectangle position in the db

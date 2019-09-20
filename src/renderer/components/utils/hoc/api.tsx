@@ -8,8 +8,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
-import { container } from "readium-desktop/renderer/di";
+import { I18nTyped } from "readium-desktop/common/services/translator";
+import { diRendererGet } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
 import { Store } from "redux";
@@ -50,7 +50,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
 
     // Create operationRequests
     const operationRequests: ApiOperationRequest[] = [];
-    const store = container.get("store") as Store<RootState>;
+    const store = diRendererGet("store");
 
     for (const operation of queryConfig.operations) {
         const requestId = uuid.v4();
@@ -172,7 +172,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
 
         public componentDidMount() {
             this.props.requestOnLoadData();
-            this.store = container.get("store") as Store<RootState>;
+            this.store = diRendererGet("store");
 
             if (queryConfig.refreshTriggers) {
                 this.stateUpdateUnsubscribe = this.store.subscribe(this.handleStateUpdate);
@@ -188,7 +188,7 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
         }
 
         public render() {
-            const translator = container.get("translator") as Translator;
+            const translator = diRendererGet("translator");
             const translate = translator.translate.bind(translator) as I18nTyped;
 
             const newProps: any = Object.assign(

@@ -5,30 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
-
-import { syncIpc } from "readium-desktop/common/ipc";
-import {
-    apiActions,
-    dialogActions,
-    downloadActions,
-    i18nActions,
-    lcpActions,
-    netActions,
-    readerActions,
-    toastActions,
-    updateActions,
-} from "readium-desktop/common/redux/actions";
-import { container } from "readium-desktop/main/di";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
-
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
-
-import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
-
 import * as debug_ from "debug";
-
+import { syncIpc } from "readium-desktop/common/ipc";
+import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { AppWindow } from "readium-desktop/common/models/win";
+import {
+    apiActions, dialogActions, downloadActions, i18nActions, lcpActions, netActions, readerActions,
+    toastActions, updateActions,
+} from "readium-desktop/common/redux/actions";
+import { diMainGet } from "readium-desktop/main/di";
+import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 const debug = debug_("readium-desktop:sync");
 
@@ -80,11 +66,11 @@ export const reduxSyncMiddleware: Middleware
     }
 
     // Send this action to all the registered renderer processes
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const winRegistry = diMainGet("win-registry");
     const windows = winRegistry.getWindows();
 
     // Get action serializer
-    const actionSerializer = container.get("action-serializer") as ActionSerializer;
+    const actionSerializer = diMainGet("action-serializer");
 
     for (const appWin of Object.values(windows)) {
         const appWindow = appWin as AppWindow;

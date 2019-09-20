@@ -14,7 +14,7 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Publication } from "@r2-shared-js/models/publication";
 
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 interface Props extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;

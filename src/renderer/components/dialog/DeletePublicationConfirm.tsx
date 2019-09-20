@@ -6,20 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
 import { PublicationView } from "readium-desktop/common/views/publication";
-
+import { TPublicationApiDelete } from "readium-desktop/main/api/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 interface DeletePublicationConfirmProps extends TranslatorProps {
     publication?: PublicationView;
-    delete?: any;
+    delete?: TPublicationApiDelete;
     closeDialog?: any;
 }
 
@@ -53,7 +49,7 @@ export class DeletePublicationConfirm extends React.Component<DeletePublicationC
 
     public remove(e: any) {
         e.preventDefault();
-        this.props.delete({ identifier: this.props.publication.identifier });
+        this.props.delete(this.props.publication.identifier);
         this.props.closeDialog();
     }
 }

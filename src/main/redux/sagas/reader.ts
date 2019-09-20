@@ -11,15 +11,14 @@ import * as path from "path";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Publication } from "readium-desktop/common/models/publication";
 import { Bookmark, Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-import { container } from "readium-desktop/main/di";
+import { diMainGet } from "readium-desktop/main/di";
+import { setMenu } from "readium-desktop/main/menu";
 import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
 import { ReaderState } from "readium-desktop/main/redux/states/reader";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
@@ -29,10 +28,6 @@ import { all, call, put, take } from "redux-saga/effects";
 import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-
-import { ActionWithSender } from "readium-desktop/common/models/sync";
-
-import { setMenu } from "readium-desktop/main/menu";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -69,7 +64,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
         });
     }
 
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const winRegistry = diMainGet("win-registry");
     const appWindows = winRegistry.getWindows();
 
     // If this is the only window, hide library window by default
@@ -126,8 +121,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
     readerUrl += `?pub=${encodedManifestUrl}&pubId=${publication.identifier}`;
 
     // Get publication last reading location
-    const locatorRepository = container
-        .get("locator-repository") as LocatorRepository;
+    const locatorRepository = diMainGet("locator-repository");
     const locators = await locatorRepository
         .findByPublicationIdentifierAndLocatorType(
             publication.identifier,
@@ -211,7 +205,7 @@ export function* closeReaderFromPublicationWatcher(): SagaIterator {
     while (true) {
         const action: any = yield take(readerActions.ActionType.CloseFromPublicationRequest);
         const publication = action.payload.publication;
-        const store: any = container.get("store");
+        const store = diMainGet("store");
         const readers = (store.getState().reader as ReaderState).readers;
 
         for (const reader of Object.values(readers)) {
@@ -248,7 +242,7 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
         return;
     }
 
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const winRegistry = diMainGet("win-registry");
     const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
 
     if (gotoLibrary) {
@@ -292,8 +286,7 @@ export function* readerConfigSetRequestWatcher(): SagaIterator {
         };
 
         // Get reader settings
-        const configRepository = container
-            .get("config-repository") as ConfigRepository;
+        const configRepository = diMainGet("config-repository");
 
         try {
             yield call(() => configRepository.save(config));
@@ -313,8 +306,7 @@ export function* readerConfigInitWatcher(): SagaIterator {
     // Wait for app initialization
     yield take(appActions.ActionType.InitSuccess);
 
-    const configRepository: ConfigRepository = container
-        .get("config-repository") as ConfigRepository;
+    const configRepository = diMainGet("config-repository");
 
     try {
         const readerConfig = yield call(() => configRepository.get("reader"));
@@ -342,8 +334,7 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
         const bookmark = action.payload.bookmark as Bookmark;
 
         // Get bookmark manager
-        const locatorRepository = container
-            .get("locator-repository") as LocatorRepository;
+        const locatorRepository = diMainGet("locator-repository");
 
         try {
             const locator = {
@@ -385,7 +376,7 @@ export function* readerFullscreenRequestWatcher(): SagaIterator {
 
         // Get browser window
         const sender = action.sender;
-        const winRegistry = container.get("win-registry") as WinRegistry;
+        const winRegistry = diMainGet("win-registry");
         const appWindow = winRegistry.getWindowByIdentifier(sender.winId);
         const browerWindow = appWindow.win as BrowserWindow;
         browerWindow.setFullScreen(fullscreen);
@@ -400,7 +391,7 @@ export function* readerDetachRequestWatcher(): SagaIterator {
         const reader = action.payload.reader;
 
         if (readerMode === ReaderMode.Detached) {
-            const winRegistry = container.get("win-registry") as WinRegistry;
+            const winRegistry = diMainGet("win-registry");
             const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
 
             const appWindows = winRegistry.getWindows();

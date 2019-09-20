@@ -12,7 +12,7 @@ import classNames = require("classnames");
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 
@@ -20,7 +20,6 @@ export enum ToastType {
     Error,
     Default,
     Success,
-
 }
 
 interface Props extends TranslatorProps {
@@ -29,7 +28,7 @@ interface Props extends TranslatorProps {
     id?: string;
     icon?: any;
     message?: string;
-    displaySystemNotification: boolean;
+    displaySystemNotification?: boolean;
     type?: ToastType;
 }
 

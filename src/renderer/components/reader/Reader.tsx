@@ -17,14 +17,19 @@ import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { Translator } from "readium-desktop/common/services/translator";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import {
+    TReaderApiAddBookmark, TReaderApiDeleteBookmark, TReaderApiFindBookmarks,
+    TReaderApiFindBookmarks_result, TReaderApiSetLastReadingLocation,
+} from "readium-desktop/main/api/reader";
+import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
-import { container, lazyInject } from "readium-desktop/renderer/di";
+import { diRendererGet, lazyInject } from "readium-desktop/renderer/di";
+import { diRendererSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
@@ -66,7 +71,7 @@ const queryParams = getURLQueryParams();
 // TODO: centralize this code, currently duplicated
 // see src/main/streamer.js
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
-    const store = (container.get("store") as Store<any>);
+    const store = diRendererGet("store");
     let settings = store.getState().reader.config;
     if (settings.value) {
         settings = settings.value;
@@ -112,6 +117,7 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 
         noFootnotes: settings.noFootnotes,
 
+        // warning I have modified the test condition to works with the type align
         textAlign: settings.align === "left" ? textAlignEnum.left :
             (settings.align === "right" ? textAlignEnum.right :
             (settings.align === "justify" ? textAlignEnum.justify : textAlignEnum.start)),
@@ -164,27 +170,26 @@ interface ReaderProps {
     reader?: any;
     mode?: any;
     infoOpen?: boolean;
-    deleteBookmark?: any;
-    addBookmark?: any;
-    findBookmarks: any;
+    deleteBookmark?: TReaderApiDeleteBookmark;
+    addBookmark?: TReaderApiAddBookmark;
+    findBookmarks: TReaderApiFindBookmarks;
     toggleFullscreen?: any;
     closeReader?: any;
     detachReader?: any;
-    setLastReadingLocation: any;
-    bookmarks?: LocatorView[];
+    setLastReadingLocation: TReaderApiSetLastReadingLocation;
+    bookmarks?: TReaderApiFindBookmarks_result;
     displayPublicationInfo?: any;
     publication?: Publication;
 }
-
 const defaultLocale = "fr";
 
 export class Reader extends React.Component<ReaderProps, ReaderState> {
     private fastLinkRef: any;
 
-    @lazyInject("store")
+    @lazyInject(diRendererSymbolTable.store)
     private store: Store<RootState>;
 
-    @lazyInject("translator")
+    @lazyInject(diRendererSymbolTable.history)
     private translator: Translator;
 
     private pubId: string;
@@ -537,18 +542,11 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
     }
 
     private saveReadingLocation(loc: LocatorExtended) {
-        this.props.setLastReadingLocation(
-            {
-                publication: {
-                    identifier: queryParams.pubId,
-                },
-                locator: loc.locator,
-            },
-        );
+        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
-        await this.props.findBookmarks({publication: {identifier: this.pubId}});
+        await this.props.findBookmarks(this.pubId);
         this.saveReadingLocation(loc);
         this.setState({currentLocation: getCurrentReadingLocation()});
         // No need to explicitly refresh the bookmarks status here,
@@ -650,18 +648,11 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
         await this.checkBookmarks();
         if (this.state.visibleBookmarkList.length > 0) {
             for (const bookmark of this.state.visibleBookmarkList) {
-                this.props.deleteBookmark({
-                    identifier: bookmark.identifier,
-                });
+                this.props.deleteBookmark(bookmark.identifier);
             }
         } else if (this.state.currentLocation) {
             const locator = this.state.currentLocation.locator;
-            this.props.addBookmark({
-                publication: {
-                    identifier: this.pubId,
-                },
-                locator,
-            });
+            this.props.addBookmark(this.pubId, locator);
         }
     }
 
@@ -745,11 +736,7 @@ export class Reader extends React.Component<ReaderProps, ReaderState> {
 }
 
 const buildBookmarkRequestData = () => {
-    return {
-        publication: {
-            identifier: queryString.parse(location.search).pubId as string,
-        },
-    };
+    return [ queryString.parse(location.search).pubId as string ];
 };
 
 const mapStateToProps = (state: RootState, __: any) => {
@@ -794,9 +781,7 @@ const mapDispatchToProps = (dispatch: any, _props: ReaderProps) => {
 };
 
 const buildRequestData = (_props: ReaderProps) => {
-    return {
-        identifier: queryParams.pubId,
-    };
+    return [ queryParams.pubId ];
 };
 
 export default withApi(

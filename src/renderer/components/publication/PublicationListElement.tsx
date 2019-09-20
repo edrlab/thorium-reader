@@ -6,35 +6,28 @@
 // ==LICENSE-END==
 
 import * as moment from "moment";
-
 import * as React from "react";
-
+import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
-
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
-import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-
-import uuid = require("uuid");
-import AccessibleMenu from "../utils/menu/AccessibleMenu";
-import { TranslatorProps, withTranslator } from "../utils/translator";
-
 import { LsdStatus } from "readium-desktop/common/models/lcp";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { TPublicationApiDelete } from "readium-desktop/main/api/publication";
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { lcpReadable } from "readium-desktop/utils/publication";
 
-import { readerActions } from "readium-desktop/common/redux/actions";
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+import AccessibleMenu from "../utils/menu/AccessibleMenu";
 
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import uuid = require("uuid");
 
 interface PublicationListElementProps extends TranslatorProps {
     publication: PublicationView;
-    deletePublication?: any;
+    deletePublication?: TPublicationApiDelete;
     displayPublicationInfo?: any;
     openDeleteDialog?: any;
     menuContent: any;
@@ -151,7 +144,7 @@ export class PublicationListElement extends React.Component<PublicationListEleme
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
         displayPublicationInfo: (publication: PublicationView) => {
             dispatch(dialogActions.open(
@@ -183,8 +176,8 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => 
     };
 };
 
-export default withTranslator(withApi(
-    PublicationListElement,
+export default connect(mapDispatchToProps)(withApi(
+    withTranslator(PublicationListElement),
     {
         operations: [
             {
@@ -193,6 +186,5 @@ export default withTranslator(withApi(
                 callProp: "deletePublication",
             },
         ],
-        mapDispatchToProps,
     },
 ));

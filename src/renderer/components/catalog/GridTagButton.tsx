@@ -6,15 +6,17 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { PublicationView } from "readium-desktop/common/views/publication";
-import { withApi } from "../utils/api";
-
 import { Link } from "react-router-dom";
+import {
+    TPublicationApiFindByTag, TPublicationApiFindByTag_result,
+} from "readium-desktop/main/api/publication";
+
+import { withApi } from "../utils/hoc/api";
 
 interface ButtonTagProps {
     name: string;
-    tag?: PublicationView[];
-    findByTag?: (data: { tag: string }) => PublicationView[];
+    tag?: TPublicationApiFindByTag_result;
+    findByTag?: TPublicationApiFindByTag;
 }
 
 export class GridTagButton extends React.Component<ButtonTagProps> {

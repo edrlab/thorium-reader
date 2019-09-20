@@ -5,39 +5,31 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { oc } from "ts-optchain";
-
+import classNames from "classnames";
 import * as moment from "moment";
-
 import * as React from "react";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
+import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
+import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
 import TagManager from "readium-desktop/renderer/components/publication/TagManager";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { oc } from "ts-optchain";
 
 import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
-import classNames from "classnames";
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-
 interface Props extends TranslatorProps {
     publicationIdentifier: string;
     isOpds?: boolean;
-    publication?: PublicationView;
+    publication?: TPublicationApiGet_result;
     closeDialog?: any;
-    getPublicationFromId?: any;
+    getPublicationFromId?: () => void;
     hideControls?: boolean;
     lastAction: any;
 }
@@ -224,9 +216,7 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const buildRequestData = (props: Props) => {
-    return {
-        identifier: props.publicationIdentifier || props.publication.identifier,
-    };
+    return [ props.publicationIdentifier || props.publication.identifier ];
 };
 
 export default withTranslator(withApi(

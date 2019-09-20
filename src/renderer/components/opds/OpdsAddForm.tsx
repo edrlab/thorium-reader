@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import SVG from "readium-desktop/renderer/components/utils/SVG";

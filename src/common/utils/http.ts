@@ -5,10 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { container } from "readium-desktop/main/di";
-import { RootState } from "readium-desktop/main/redux/states";
+import { diMainGet } from "readium-desktop/main/di";
 import { JsonMap } from "readium-desktop/typings/json";
-import { Store } from "redux";
 import * as request from "request";
 import { Url } from "url";
 
@@ -54,7 +52,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
         });
     }
 
-    const store = container.get("store") as Store<RootState>;
+    const store = diMainGet("store");
     const locale = store.getState().i18n.locale;
     const headers = Object.assign(headerFromOptions, {
                 "user-agent": "readium-desktop",

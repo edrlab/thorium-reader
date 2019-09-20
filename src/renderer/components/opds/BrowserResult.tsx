@@ -9,26 +9,24 @@ import * as qs from "qs";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { OpdsResultType, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
-import { TOpdsBrowseApi } from "readium-desktop/main/api/opds";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import Loader from "readium-desktop/renderer/components/utils/Loader";
+import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import { ApiProps, withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { parseQueryString } from "readium-desktop/utils/url";
+
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-
-interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
+interface BrowserResultProps extends RouteComponentProps, ApiProps, TranslatorProps {
     url: string;
     result?: THttpGetOpdsResultView | string;
     resultIsReject?: boolean;
-    cleanData: any;
-    requestOnLoadData: any;
-    browse?: TOpdsBrowseApi;
+    browse?: TOpdsApiBrowse;
 }
 
 export class BrowserResult extends React.Component<BrowserResultProps, null> {
@@ -109,7 +107,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
         }
         this.currentUrl = newUrl;
         this.props.cleanData();
-        browse({ url: newUrl });
+        browse(newUrl);
     }
 
     private addSearchTerms(url: string, search: string) {
@@ -137,8 +135,8 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     }
 }
 
-export default withTranslator(withApi(
-    withRouter(BrowserResult),
+export default withApi(
+    withTranslator(withRouter(BrowserResult)),
     {
         operations: [
             {
@@ -150,4 +148,4 @@ export default withTranslator(withApi(
             },
         ],
     },
-));
+);

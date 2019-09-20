@@ -6,26 +6,24 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { DialogType } from "readium-desktop/common/models/dialog";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-
-import { withApi } from "./api";
-
 import { ImportOpdsPublication, ImportState } from "readium-desktop/common/redux/states/import";
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import {
+    TPublicationApiImportOpdsEntry, TPublicationApiSearch,
+} from "readium-desktop/main/api/publication";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { Download } from "readium-desktop/renderer/redux/states/download";
+
+import { withApi } from "./hoc/api";
 
 interface Props  {
     lastImport?: ImportState;
     displayImportDialog?: (publication: ImportOpdsPublication, downloadSample: boolean) => void;
-    search?: (data: any) => void;
-    searchResult?: any[];
-    importOpdsEntry?: (data: ImportState) => void;
+    search?: TPublicationApiSearch;
+    searchResult?: TPublicationApiImportOpdsEntry;
+    importOpdsEntry?: TPublicationApiImportOpdsEntry;
     downloads?: Download[];
 }
 
@@ -34,7 +32,11 @@ class SameFileImportManager extends React.Component<Props> {
         const { searchResult, lastImport, downloads } = this.props;
         if (searchResult !== oldProps.searchResult) {
             if (searchResult.length === 0) {
-                this.importOpds();
+                this.props.importOpdsEntry(
+                    lastImport.publication.url,
+                    lastImport.publication.base64OpdsPublication,
+                    lastImport.publication.title,
+                    lastImport.downloadSample);
             } else {
                 this.props.displayImportDialog(lastImport.publication, lastImport.downloadSample );
             }
@@ -47,7 +49,7 @@ class SameFileImportManager extends React.Component<Props> {
                 },
             );
             if (foundInCurrentDownload === -1) {
-                this.props.search({text: lastImport.publication.title});
+                this.props.search(lastImport.publication.title);
             } else {
                 this.props.displayImportDialog(lastImport.publication, lastImport.downloadSample );
             }
@@ -56,12 +58,6 @@ class SameFileImportManager extends React.Component<Props> {
 
     public render(): React.ReactElement<{}> {
         return (<></>);
-    }
-
-    private importOpds() {
-        const { lastImport } = this.props;
-
-        this.props.importOpdsEntry(lastImport);
     }
 }
 

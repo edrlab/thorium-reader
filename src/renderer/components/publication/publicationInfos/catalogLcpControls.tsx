@@ -6,24 +6,20 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
+import { DialogType } from "readium-desktop/common/models/dialog";
+import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
-
-import { readerActions } from "readium-desktop/common/redux/actions";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
-
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 interface CatalogLcpControlsProps extends TranslatorProps {
     publication: PublicationView;
@@ -136,7 +132,7 @@ const mapDispatchToProps = (dispatch: any, props: CatalogLcpControlsProps) => {
 };
 
 const buildRequestData = (props: CatalogLcpControlsProps) => {
-    return { publication: props.publication };
+    return [ props.publication ];
 };
 
 export default withApi(

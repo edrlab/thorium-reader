@@ -8,15 +8,17 @@
 import classnames from "classnames";
 import * as queryString from "query-string";
 import * as React from "react";
-import { LocatorView } from "readium-desktop/common/views/locator";
+import {
+    TReaderApiDeleteBookmark, TReaderApiFindBookmarks_result,
+} from "readium-desktop/main/api/reader";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
@@ -29,9 +31,9 @@ interface Props extends TranslatorProps {
     open: boolean;
     publication: R2Publication;
     handleLinkClick: (event: any, url: string) => void;
-    bookmarks: LocatorView[];
+    bookmarks: TReaderApiFindBookmarks_result;
     handleBookmarkClick: (locator: any) => void;
-    deleteBookmark?: any;
+    deleteBookmark?: TReaderApiDeleteBookmark;
     toggleMenu: any;
     focusNaviguationMenu: () => void;
 }
@@ -259,9 +261,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                     <button onClick={() => this.setState({bookmarkToUpdate: i})}>
                         <SVG svg={ EditIcon }/>
                     </button>
-                    <button onClick={() => this.props.deleteBookmark({
-                        identifier: bookmark.identifier,
-                    })}>
+                    <button onClick={() => this.props.deleteBookmark(bookmark.identifier)}>
                         <SVG svg={ DeleteIcon }/>
                     </button>
                 </div>,
@@ -323,7 +323,7 @@ export class ReaderMenu extends React.Component<Props, State> {
 }
 
 const buildBookmarkRequestData = () => {
-    return { publication: { identifier: queryString.parse(location.search).pubId as string } };
+    return [ queryString.parse(location.search).pubId as string ];
 };
 
 export default withApi(

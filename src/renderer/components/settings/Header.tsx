@@ -15,7 +15,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import {
     TranslatorProps,
     withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 
 interface Props extends TranslatorProps {
     section: number;

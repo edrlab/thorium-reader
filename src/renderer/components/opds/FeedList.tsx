@@ -6,34 +6,25 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { Link } from "react-router-dom";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import { OpdsFeedView } from "readium-desktop/common/views/opds";
-
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
+import { OpdsFeedView } from "readium-desktop/common/views/opds";
+import { TOpdsApiFindAllFeed_result } from "readium-desktop/main/api/opds";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
-interface OpdsListProps extends TranslatorProps {
-    feeds?: OpdsFeedView[];
+interface IFeedListProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+    feeds?: TOpdsApiFindAllFeed_result;
     deleteFeed?: any;
-    openDeleteDialog?: any;
     openToast?: any;
 }
 
-export class FeedList extends React.Component<OpdsListProps, null> {
+export class FeedList extends React.Component<IFeedListProps, null> {
     public render(): React.ReactElement<{}>  {
         if (!this.props.feeds) {
             return <></>;
@@ -80,7 +71,9 @@ export class FeedList extends React.Component<OpdsListProps, null> {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        openDeleteDialog: (feed: string) => {
+        // feed was typed to string, it appears that the right type is OpdsFeedView
+        // Redux state isn't typed
+        openDeleteDialog: (feed: OpdsFeedView) => {
             dispatch(dialogActions.open(
                 DialogType.DeleteOpdsFeedConfirm,
                 {

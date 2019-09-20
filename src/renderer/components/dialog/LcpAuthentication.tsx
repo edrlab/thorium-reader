@@ -6,17 +6,17 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import { TLcpApiUnlockPublicationWithPassphrase } from "readium-desktop/main/api/lcp";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 
 interface Props extends TranslatorProps {
     publication: any;
     hint: string;
-    unlockPublicationWithPassphrase?: any;
+    unlockPublicationWithPassphrase?: TLcpApiUnlockPublicationWithPassphrase;
     closeDialog?: any;
     sendLCPError?: any;
 }

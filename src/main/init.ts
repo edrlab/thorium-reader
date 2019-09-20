@@ -16,18 +16,13 @@ import {
 } from "readium-desktop/common/redux/actions";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
-import { AvailableLanguages } from "readium-desktop/common/services/translator";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { container } from "readium-desktop/main/di";
-import { appInit } from "readium-desktop/main/redux/actions/app";
-import { RootState } from "readium-desktop/main/redux/states";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
-import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { Store } from "redux";
-
-import { ReaderStateConfig, ReaderStateMode, ReaderStateReader } from "readium-desktop/main/redux/states/reader";
-
 import { UpdateState } from "readium-desktop/common/redux/states/update";
+import { AvailableLanguages } from "readium-desktop/common/services/translator";
+import { diMainGet } from "readium-desktop/main/di";
+import { appInit } from "readium-desktop/main/redux/actions/app";
+import {
+    ReaderStateConfig, ReaderStateMode, ReaderStateReader,
+} from "readium-desktop/main/redux/states/reader";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -35,7 +30,7 @@ const debug = debug_("readium-desktop:main");
 // Callback called when a window is opened
 const winOpenCallback = (appWindow: AppWindow) => {
     // Send information to the new window
-    const store = container.get("store") as Store<RootState>;
+    const store = diMainGet("store");
     const webContents = appWindow.win.webContents;
 
     // Send the id to the new window
@@ -139,8 +134,8 @@ const winOpenCallback = (appWindow: AppWindow) => {
 
 // Callback called when a window is closed
 const winCloseCallback = (appWindow: AppWindow) => {
-    const store = container.get("store") as Store<RootState>;
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const store = diMainGet("store");
+    const winRegistry = diMainGet("win-registry");
     const appWindows = winRegistry.getWindows();
 
     // if multiple windows are open & library are closed. all other windows are closed
@@ -181,10 +176,10 @@ const winCloseCallback = (appWindow: AppWindow) => {
 
 // Initialize application
 export function initApp() {
-    const store = container.get("store") as Store<RootState>;
+    const store = diMainGet("store");
     store.dispatch(appInit());
 
-    const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
+    const configRepository = diMainGet("config-repository");
     configRepository.get("i18n").then((i18nLocale) => {
         if (i18nLocale && i18nLocale.value && i18nLocale.value.locale) {
             store.dispatch(setLocale(i18nLocale.value.locale));
@@ -199,7 +194,7 @@ export function initApp() {
         debug(`create i18n key in configRepository with ${lang} locale`);
     });
 
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const winRegistry = diMainGet("win-registry");
     winRegistry.registerOpenCallback(winOpenCallback);
     winRegistry.registerCloseCallback(winCloseCallback);
     app.setAppUserModelId("io.github.edrlab.thorium");
@@ -209,7 +204,7 @@ export function registerProtocol() {
     protocol.registerFileProtocol("store", (request, callback) => {
         // Extract publication item relative url
         const relativeUrl = request.url.substr(6);
-        const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
+        const pubStorage = diMainGet("publication-storage");
         const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
         callback(filePath);
     });

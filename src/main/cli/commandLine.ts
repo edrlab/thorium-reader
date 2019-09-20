@@ -6,20 +6,15 @@
 // ==LICENSE-END==
 
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-import { container } from "readium-desktop/main/di";
-import { RootState } from "readium-desktop/main/redux/states";
-import { CatalogService } from "readium-desktop/main/services/catalog";
-import { Store } from "redux";
+import { diMainGet } from "readium-desktop/main/di";
 import { URL } from "url";
 import { isArray } from "util";
 
 export async function cli_(filePath: string) {
     // import and read publication
-    const catalogService = container.get("catalog-service") as CatalogService;
+    const catalogService = diMainGet("catalog-service");
     const publication = await catalogService.importFile(filePath);
-    const store = container.get("store") as Store<RootState>;
+    const store = diMainGet("store");
     if (publication) {
         store.dispatch({
             type: readerActions.ActionType.OpenRequest,
@@ -41,7 +36,7 @@ export async function cliImport(filePath: string[] | string) {
     const filePathArray = isArray(filePath) ? filePath : [filePath];
 
     for (const fp of filePathArray) {
-        const catalogService = container.get("catalog-service") as CatalogService;
+        const catalogService = diMainGet("catalog-service");
         if (!await catalogService.importFile(fp)) {
             returnValue = false;
         }
@@ -53,7 +48,7 @@ export async function cliOpds(title: string, url: string) {
     // save an opds feed with title and url in the db
     const hostname = (new URL(url)).hostname;
     if (hostname) {
-        const opdsRepository = container.get("opds-feed-repository") as OpdsFeedRepository;
+        const opdsRepository = diMainGet("opds-feed-repository");
         await opdsRepository.save({ title, url });
         return true;
     }
@@ -62,10 +57,10 @@ export async function cliOpds(title: string, url: string) {
 
 export async function cliRead(title: string) {
     // get the publication id then open it in reader
-    const publicationRepo = container.get("publication-repository") as PublicationRepository;
+    const publicationRepo = diMainGet("publication-repository");
     const publication = await publicationRepo.searchByTitle(title);
     if (publication && publication.length) {
-        const store = container.get("store") as Store<RootState>;
+        const store = diMainGet("store");
         store.dispatch({
             type: readerActions.ActionType.OpenRequest,
             payload: {

@@ -6,18 +6,15 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
+import { TPublicationApiImport } from "readium-desktop/main/api/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 interface FileImportProps extends TranslatorProps {
     files: any;
-    importFiles?: any;
+    importFiles?: TPublicationApiImport;
     closeDialog?: any;
 }
 
@@ -40,7 +37,7 @@ export class FileImport extends React.Component<FileImportProps, undefined> {
             const paths = this.props.files.map((file: File) => {
                 return file.path;
             });
-            this.props.importFiles({ paths });
+            this.props.importFiles(paths);
             this.props.closeDialog();
         }
     }

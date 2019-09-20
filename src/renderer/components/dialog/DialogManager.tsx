@@ -223,10 +223,7 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
                 open={ true }
                 close={ this.props.closeDialog }
             >
-                <Information
-                    publication={ this.props.dialog.data.publication }
-                    downloadSample={ this.props.dialog.data.downloadSample }
-                />
+                <Information/>
             </Dialog>
         );
     }

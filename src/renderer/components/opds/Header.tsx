@@ -6,18 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
-
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
-
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-
+import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
 import { parseQueryString } from "readium-desktop/utils/url";
+
 import SearchForm from "./SearchForm";
 
 export enum DisplayType {

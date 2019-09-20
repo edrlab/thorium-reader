@@ -7,10 +7,10 @@
 
 import * as React from "react";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-import AccessibleMenu from "readium-desktop/renderer/components/utils/menu/AccessibleMenu";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import AccessibleMenu from "readium-desktop/renderer/components/utils/menu/AccessibleMenu";
 
 import { SectionData } from "./sideMenuData";
 import SideMenuSection from "./SideMenuSection";

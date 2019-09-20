@@ -13,7 +13,7 @@ import { OpdsLinkView } from "readium-desktop/common/views/opds";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { parseQueryString } from "readium-desktop/utils/url";
