@@ -184,8 +184,7 @@ export class CatalogService {
         const publicationApi = diMainGet("publication-api");
         const publication = await publicationApi.get(publicationIdentifier);
 
-        // tslint:disable-next-line: await-promise
-        await store.dispatch(closeReaderFromPublication(publication));
+        store.dispatch(closeReaderFromPublication(publication));
 
         // Remove from database
         await this.publicationRepository.delete(publicationIdentifier);
