@@ -56,7 +56,7 @@ yargs
             // The boolean app.isReady is true when the second-instance event handler is called
             // (as guaranteed by the Electron API
             // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance )
-            if (!app.isReady || !gotTheLock) {
+            if (!app.isReady() || !gotTheLock) {
                 const promise = cliOpds(argv.title, argv.url);
                 promise.then((isValid) => {
                     if (isValid) {
@@ -90,7 +90,7 @@ yargs
             // The boolean app.isReady is true when the second-instance event handler is called
             // (as guaranteed by the Electron API
             // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance
-            if (!app.isReady || !gotTheLock) {
+            if (!app.isReady() || !gotTheLock) {
                 const pathArray = glob.sync(argv.path, {
                     absolute: true,
                     realpath: true,
@@ -180,7 +180,13 @@ yargs
             }
         },
     )
-    .help();
+    .help()
+    .fail((msg, err) => {
+        if (!app.isReady() || !gotTheLock) {
+            process.stdout.write(`${msg || ""}${msg ? "" : "\n"}${err || ""}\n`);
+            app.exit(1);
+        }
+    });
 
 /**
  * main entry of thorium
@@ -189,9 +195,11 @@ yargs
  */
 export function cli(main: () => void, processArgv = process.argv) {
     mainFct = main;
-    yargs.parse(processArgv
+    const argFormated = processArgv
         .filter((arg) => knownOption(arg) || !arg.startsWith("--"))
-        .slice((_PACKAGING === "0") ? 2 : 1));
+        .slice((_PACKAGING === "0") ? 2 : 1);
+    debug("processArgv", processArgv, "arg", argFormated);
+    yargs.parse(argFormated);
 }
 
 // arrow function to filter declared option in yargs
