@@ -126,13 +126,21 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <li
                                 {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                             >
-                                <button
-                                    className={styles.menu_button}
+                                <input
+                                    id="bookmarkButton"
+                                    className={styles.bookmarkButton}
+                                    type="radio"
+                                    checked={this.props.isOnBookmark}
                                     onClick={this.props.toggleBookmark}
-                                    {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                                    onChange={() => null}
+                                    aria-label={ __("reader.navigation.bookmarkTitle")}
+                                />
+                                <label
+                                    htmlFor="bookmarkButton"
+                                    className={styles.menu_button}
                                 >
                                     <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
-                                </button>
+                                </label>
                             </li>
                             <li
                             {...(this.props.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
