@@ -84,16 +84,16 @@ npm install -g windows-build-tools
 ## Command line
 
 ```
-Thorium Reader <cmd> [args]
+thorium <cmd> [args]
 
 Commands:
-  Thorium Reader opds <title> <url>  import opds feed
-  Thorium Reader import <path>       import epub or lpcl file
-  Thorium Reader read <title>        searches already-imported publications with
-                                     the provided TITLE, and opens the reader
-                                     with the first match
-  Thorium Reader [path]              default command                   [default]
-  Thorium Reader completion          generate completion script
+  thorium opds <title> <url>  import opds feed
+  thorium import <path>       import epub or lpcl file
+  thorium read <title>        searches already-imported publications with the
+                              provided TITLE, and opens the reader with the
+                              first match
+  thorium [path]              import and read an epub or lcpl file     [default]
+  thorium completion          generate bash completion script
 
 Positionals:
   path  path of your publication, it can be an absolute, relative path  [string]

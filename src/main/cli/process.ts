@@ -145,7 +145,7 @@ yargs
         },
     )
     .command("$0 [path]",
-        "default command",
+        "import and read an epub or lcpl file",
         (y) =>
             y.positional("path", {
                 describe: "path of your publication, it can be an absolute, relative path",
