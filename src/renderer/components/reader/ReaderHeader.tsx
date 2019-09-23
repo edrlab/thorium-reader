@@ -129,10 +129,9 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 <input
                                     id="bookmarkButton"
                                     className={styles.bookmarkButton}
-                                    type="radio"
+                                    type="checkbox"
                                     checked={this.props.isOnBookmark}
-                                    onClick={this.props.toggleBookmark}
-                                    onChange={() => null}
+                                    onChange={this.props.toggleBookmark}
                                     aria-label={ __("reader.navigation.bookmarkTitle")}
                                 />
                                 <label
