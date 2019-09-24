@@ -123,7 +123,8 @@
             "error": "Une erreur est survenue",
             "reject": "Désolé, une erreur inattendue s'est produite lors de la tentative de traitement du flux OPDS.",
             "timeout": "Le flux OPDS met du temps à répondre, veuillez réessayer plus tard",
-            "noInternet": "Pas d'internet\n\nEssayez de vérifier le câble réseau, le modem, le routeur ou la wifi"
+            "noInternet": "Pas d'internet",
+            "noInternetMessage": "Essayez de vérifier le câble réseau, le modem, le routeur ou la wifi"
         }
     },
     "publication": {
