@@ -49,7 +49,7 @@ export class SideMenuSection extends React.Component<Props, State> {
         return (
             <>
                 <li
-                    className={open ? styles.active : undefined}
+                    className={open && !disabled ? styles.active : undefined}
                     key={id}
                 >
                     <button onClick={() => onClick(id)} disabled={disabled}>
@@ -59,7 +59,7 @@ export class SideMenuSection extends React.Component<Props, State> {
 
                     <div aria-hidden={open ? undefined : true}
                         style={this.state.style}
-                        className={open ? styles.tab_content : undefined}>
+                        className={open && !disabled ? styles.tab_content : undefined}>
                         <div ref={this.sectionRef} className={open ? styles.line_tab_content : undefined}>
                             {open && content }
                         </div>
