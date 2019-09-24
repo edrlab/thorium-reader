@@ -52,6 +52,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
             content = (
                 <MessageOpdBrowserResult
                     title={__("opds.network.noInternet")}
+                    message={__("opds.network.noInternetMessage")}
                 />
             );
         } else if (resultIsReject) {

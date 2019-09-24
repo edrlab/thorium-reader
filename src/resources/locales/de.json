@@ -123,7 +123,8 @@
             "error": "Ein Fehler ist aufgetreten",
             "reject": "Beim Versuch, den OPDS-Feed zu verarbeiten, ist ein unerwarteter Fehler aufgetreten.",
             "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut",
-            "noInternet": "Kein Internet\n\nVersuchen Sie: Überprüfen Sie das Netzwerkkabel, das Modem, den Router oder das WLAN"
+            "noInternet": "Kein Internet",
+            "noInternetMessage": "Versuchen Sie: Überprüfen Sie das Netzwerkkabel, das Modem, den Router oder das WLAN"
         }
     },
     "publication": {
