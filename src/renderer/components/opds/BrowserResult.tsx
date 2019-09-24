@@ -48,7 +48,13 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
         const { result, resultIsReject, __ } = this.props;
         let content = (<Loader />);
 
-        if (resultIsReject) {
+        if (!navigator.onLine) {
+            content = (
+                <MessageOpdBrowserResult
+                    title={__("opds.network.noInternet")}
+                />
+            );
+        } else if (resultIsReject) {
             content = (
                 <MessageOpdBrowserResult
                     title={__("opds.network.reject")}
@@ -91,7 +97,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
         }
 
         return <div className={styles.opdsBrowseContent}>
-            { content }
+            {content}
         </div>;
     }
 

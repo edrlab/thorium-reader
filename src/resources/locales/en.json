@@ -122,7 +122,8 @@
         "network": {
             "error": "Unable to access to opds feed",
             "reject": "Sorry, there was an unexpected error when trying to process the OPDS feed",
-            "timeout": "There was a network timeout, please try again later"
+            "timeout": "There was a network timeout, please try again later",
+            "noInternet": "No internet\n\nTry : checking the network cable, modem, router or wifi"
         }
     },
     "publication": {
