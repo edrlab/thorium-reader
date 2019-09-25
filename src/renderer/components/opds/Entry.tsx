@@ -23,11 +23,6 @@ class Entry extends React.Component<EntryProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { entry } = this.props;
 
-        // why ? entry is required
-        if (!entry) {
-            return <></>;
-        }
-
         // Build feedBreadcrumb
         const { level, match } = this.props;
         const rootFeedIdentifier = match.params.opdsId;
