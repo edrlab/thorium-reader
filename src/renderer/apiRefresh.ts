@@ -9,13 +9,14 @@ import { TApiMethodName } from "readium-desktop/main/api/api.type";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
+import { Unsubscribe } from "redux";
 
 /**
  * subscribe to redux to automaticaly execute callback when any path in parameter is called on IPC
  *
  * don't forget to unsubscribe with the return value of function
  */
-export function apiRefresh(pathArrayToRefresh: TApiMethodName[], cb: () => void | Promise<void>) {
+export function apiRefresh(pathArrayToRefresh: TApiMethodName[], cb: () => void | Promise<void>): Unsubscribe {
     const store = diRendererGet("store");
     let lastSuccess: ApiLastSuccess | undefined;
 
