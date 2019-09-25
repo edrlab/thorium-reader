@@ -41,17 +41,19 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
             browserError: undefined,
             browserResult: undefined,
         };
+
+        this.goto = this.goto.bind(this);
     }
 
     public componentDidMount() {
-        this.browseOpds();
+        this.browseOpds(this.props.url);
     }
 
     public componentDidUpdate(prevProps: BrowserResultProps) {
         if (prevProps.url !== this.props.url ||
             prevProps.location.search !== this.props.location.search) {
             // New url to browse
-            this.browseOpds();
+            this.browseOpds(this.props.url);
         }
     }
 
@@ -84,7 +86,12 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
                         break;
                     case OpdsResultType.PublicationFeed:
                         content = (
-                            <EntryPublicationList publications={browserResult.data.publications} />
+                            <EntryPublicationList
+                                publications={browserResult.data.publications}
+                                goto={this.goto}
+                                nextUrl={browserResult.data.nextPageUrl}
+                                previousUrl={browserResult.data.previousPageUrl}
+                            />
                         );
                         break;
                     case OpdsResultType.Empty:
@@ -114,8 +121,8 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         </div>;
     }
 
-    private browseOpds() {
-        const { url, location } = this.props;
+    private browseOpds(url: string) {
+        const { location } = this.props;
         const { browserResult } = this.state;
         const oldQs = parseQueryString(url.split("?")[1]);
         const search = qs.parse(location.search.replace("?", "")).search;
@@ -166,6 +173,10 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
             }
             return newUrl;
         }
+    }
+
+    private goto(url?: string) {
+        this.browseOpds(url);
     }
 }
 

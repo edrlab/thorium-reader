@@ -125,7 +125,9 @@
             "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut",
             "noInternet": "Kein Internet",
             "noInternetMessage": "Versuchen Sie: Überprüfen Sie das Netzwerkkabel, das Modem, den Router oder das WLAN"
-        }
+        },
+        "next": "Nächster",
+        "previous": "Bisherige"
     },
     "publication": {
         "deleteButton": "Löschen",

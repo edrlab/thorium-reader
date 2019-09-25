@@ -6,23 +6,32 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { RouteComponentProps } from "react-router-dom";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/components/publication/menu/OpdsMenu";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 
-interface IProps {
+interface Props extends RouteComponentProps {
     publications: PublicationView[];
     isOpdsView?: boolean;
 }
 
-export default class GridView extends React.Component<IProps> {
+export default class GridView extends React.Component<Props, undefined> {
+    private ref: HTMLDivElement;
+
+    public componentDidUpdate(oldProps: Props) {
+        if (this.props.publications !== oldProps.publications) {
+            this.goOnTop();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
         const { isOpdsView } = this.props;
 
         return (
-            <div className={styles.card_wrapper}>
+            <div ref={(ref) => this.ref = ref} className={styles.card_wrapper}>
                 {this.props.publications.map((pub, index) =>
                     <PublicationCard
                         key={-index}
@@ -36,5 +45,9 @@ export default class GridView extends React.Component<IProps> {
                 })}
             </div>
         );
+    }
+
+    private goOnTop() {
+        this.ref.scrollIntoView();
     }
 }

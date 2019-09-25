@@ -10,20 +10,25 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-import { PublicationView } from "readium-desktop/common/views/publication";
 import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 import GridView from "readium-desktop/renderer/components/utils/GridView";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
+import PageNavigation from "./PageNavigation";
+
 interface IProps extends RouteComponentProps {
     publications: OpdsPublicationView[] | undefined;
+    goto: (url?: string) => void;
+    nextUrl: string;
+    previousUrl: string;
 }
 
 class EntryPublicationList extends React.Component<IProps> {
     public render() {
-        let DisplayView = GridView;
+        const { goto, nextUrl, previousUrl } = this.props;
+        let DisplayView: React.ComponentClass<any> = GridView;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
@@ -39,7 +44,14 @@ class EntryPublicationList extends React.Component<IProps> {
         return (
             <>
                 {this.props.publications ?
-                    <DisplayView publications={this.props.publications as PublicationView[]} isOpdsView={true} />
+                    <>
+                        <DisplayView publications={this.props.publications} isOpdsView={true} />
+                        <PageNavigation
+                            goto={goto}
+                            nextUrl={nextUrl}
+                            previousUrl={previousUrl}
+                        />
+                    </>
                     : <Loader />}
             </>
         );

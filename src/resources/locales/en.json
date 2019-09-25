@@ -125,7 +125,9 @@
             "timeout": "There was a network timeout, please try again later",
             "noInternet": "No internet",
             "noInternetMessage": "Try : checking the network cable, modem, router or wifi"
-        }
+        },
+        "next": "Next",
+        "previous": "Previous"
     },
     "publication": {
         "deleteButton": "Delete from the bookshelf",

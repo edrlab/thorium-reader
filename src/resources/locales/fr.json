@@ -125,7 +125,9 @@
             "timeout": "Le flux OPDS met du temps à répondre, veuillez réessayer plus tard",
             "noInternet": "Pas d'internet",
             "noInternetMessage": "Essayez de vérifier le câble réseau, le modem, le routeur ou la wifi"
-        }
+        },
+        "next": "Suivant",
+        "previous": "Précédent"
     },
     "publication": {
         "deleteButton": "Supprimer de la bibliothèque",

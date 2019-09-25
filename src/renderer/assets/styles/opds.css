@@ -146,3 +146,36 @@
         flex: 1;
     }
 }
+
+.opds_page_navigation {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+
+    & button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 10rem;
+        height: auto;
+        font-size: 1.1rem;
+        font-weight: bold;
+        padding: 0.9375rem 1.25rem;
+        border: 1px black solid;
+        border-radius: 5px;
+        background-color: #EDEDED;
+
+        &:first-child {
+            margin-right: 1rem;
+        }
+
+        & svg {
+            height: 1.1rem;
+            fill: black;
+        }
+    }
+
+    & div {
+        width: 10rem;
+    }
+}

@@ -23,6 +23,8 @@ import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
+import { oc } from "ts-optchain";
+
 // Logger
 const debug = debug_("readium-desktop:main#services/lcp");
 
@@ -153,6 +155,8 @@ export class OpdsFeedViewConverter {
         let type = OpdsResultType.Empty;
         let navigation: OpdsLinkView[] | undefined;
         let publications: OpdsPublicationView[] | undefined;
+        let nextPageUrl: string;
+        let previousPageUrl: string;
 
         if (feed.Publications) {
             // result page containing publications
@@ -160,6 +164,11 @@ export class OpdsFeedViewConverter {
             publications = feed.Publications.map((item) => {
                 return this.convertOpdsPublicationToView(item);
             });
+
+            if (feed.Links) {
+                nextPageUrl = oc(feed.Links.find((link) => link.Rel[0] === "next")).Href(undefined);
+                previousPageUrl = oc(feed.Links.find((link) => link.Rel[0] === "previous")).Href(undefined);
+            }
         } else if (feed.Navigation) {
             // result page containing navigation
             type = OpdsResultType.NavigationFeed;
@@ -182,6 +191,8 @@ export class OpdsFeedViewConverter {
             publications,
             navigation,
             searchUrl: await this.getSearchUrlFromOpds1Feed(feed),
+            nextPageUrl,
+            previousPageUrl,
         };
     }
 
