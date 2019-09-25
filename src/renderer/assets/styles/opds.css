@@ -167,6 +167,15 @@
 
         &:first-child {
             margin-right: 1rem;
+            & svg {
+                margin-right: 1rem;
+            }
+        }
+
+        &:last-child {
+            & svg {
+                margin-left: 1rem;
+            }
         }
 
         & svg {
