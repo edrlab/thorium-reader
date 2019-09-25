@@ -44,10 +44,8 @@ export class PublicationAddButton extends React.Component<TranslatorProps> {
         const files = event.target.files;
         const paths: string[] = [];
 
-        // files: FileList doesn't have [symbol.interator()]
-        // tslint:disable-next-line: prefer-for-of
-        for (let i = 0; i < files.length; i++) {
-            paths.push(files[i].path);
+        for (const f of files) {
+            paths.push(f.path);
         }
         apiFetch("publication/import", paths).catch((error) => {
             console.error(`Error to fetch publication/import`, error);
