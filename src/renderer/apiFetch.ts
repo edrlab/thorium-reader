@@ -10,7 +10,7 @@ import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
-import { ReturnPromiseType } from "readium-desktop/typings/pierre";
+import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { Unsubscribe } from "redux";
 import * as uuid from "uuid";
 
