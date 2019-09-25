@@ -35,8 +35,8 @@ export function apiRefresh(pathArrayToRefresh: TApiMethodName[], cb: () => void 
         lastSuccess = apiLastSuccess;
 
         const meta = apiLastSuccess.action.meta.api;
-        if (pathArrayToRefresh.find((path) => {
-            const splitPath = path.split("/");
+        if (pathArrayToRefresh.find((apiPath) => {
+            const splitPath = apiPath.split("/");
             const moduleId = splitPath[0] as TModuleApi;
             const methodId = splitPath[1] as TMethodApi;
             return meta.methodId === methodId && meta.moduleId === moduleId;
