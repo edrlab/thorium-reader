@@ -207,17 +207,12 @@ declare namespace typed_i18n {
   readonly "network": {
     readonly "error": string,
     readonly "reject": string,
-<<<<<<< HEAD
     readonly "timeout": string,
     readonly "noInternet": string,
     readonly "noInternetMessage": string
-  }
-=======
-    readonly "timeout": string
   },
   readonly "next": string,
   readonly "previous": string
->>>>>>> add pagination in opds feed result
 };
   (_: "opds.addForm", __?: {}): {
   readonly "addButton": string,
@@ -258,12 +253,10 @@ declare namespace typed_i18n {
   (_: "opds.network.error", __?: {}): string;
   (_: "opds.network.reject", __?: {}): string;
   (_: "opds.network.timeout", __?: {}): string;
-<<<<<<< HEAD
   (_: "opds.network.noInternet", __?: {}): string;
   (_: "opds.network.noInternetMessage", __?: {}): string;
-=======
-  (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
->>>>>>> add pagination in opds feed result
+  (_: "opds.next", __?: {}): string;
+  (_: "opds.previous", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "deleteButton": string,
   readonly "expiredLcp": string,
