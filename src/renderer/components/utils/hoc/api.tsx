@@ -57,10 +57,10 @@ export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
 
         // Create call method
         const caller = (props: any) => {
-            return (requestData?: any) => {
+            return (...requestData: unknown[]) => {
                 const buildRequestData = operation.buildRequestData;
 
-                if (!requestData && buildRequestData) {
+                if (!requestData.length && buildRequestData) {
                     requestData = buildRequestData(props);
                 }
 

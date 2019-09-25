@@ -10,6 +10,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 import GridView from "readium-desktop/renderer/components/utils/GridView";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
@@ -32,10 +33,13 @@ class EntryPublicationList extends React.Component<IProps> {
             }
         }
 
+        // force cast on PublicationView[]
+        // It's an hack from no typing to static typing
+        // FIX ME in the future
         return (
             <>
                 {this.props.publications ?
-                    <DisplayView publications={this.props.publications as any} isOpdsView={true} />
+                    <DisplayView publications={this.props.publications as PublicationView[]} isOpdsView={true} />
                     : <Loader />}
             </>
         );
