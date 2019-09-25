@@ -18,8 +18,9 @@ export async function apiFetch<T extends TApiMethodName>(apiPath: T, ...requestD
     return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
         const store = diRendererGet("store");
         const requestId = uuid.v4();
-        const moduleId = apiPath.split("/")[0] as TModuleApi;
-        const methodId = apiPath.split("/")[1] as TMethodApi;
+        const splitPath = apiPath.split("/");
+        const moduleId = splitPath[0] as TModuleApi;
+        const methodId = splitPath[1] as TMethodApi;
         let lastSuccess: ApiLastSuccess | undefined;
         let storeUnsubscribe: Unsubscribe| undefined;
         let timeoutId: number | undefined;
