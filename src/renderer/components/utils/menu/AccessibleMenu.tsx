@@ -141,12 +141,19 @@ export default class AccessibleMenu extends React.Component<Props, State> {
     }
 
     private handleFocus(event: Event) {
-        const focusedNode = event.target;
+        /**
+         * Event.target is a generic DOM property,
+         * which does not only apply to HTML (also SVG, XML, etc.).
+         * However, in Thorium we know that the UI is implemented in HTML markup
+         * (with the odd SVG image here and there),
+         * so we can safely cast the appropriate type for better static / compile-time checking.
+         * https://developer.mozilla.org/en-US/docs/Web/API/Event/target
+         * https://developer.mozilla.org/en-US/docs/Web/API/Event
+         */
+        const focusedNode = event.target as HTMLElement;
 
         if (this.containerRef
             && this.containerRef.current
-            // WHY ?
-            // @ts-ignore
             && this.containerRef.current.contains(focusedNode)
         ) {
             if (this.ismounted) {
