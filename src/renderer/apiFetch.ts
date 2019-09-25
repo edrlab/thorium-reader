@@ -22,7 +22,7 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
         const methodId = path.split("/")[1] as TMethodApi;
         let lastSuccess: ApiLastSuccess | undefined;
         let storeUnsubscribe: Unsubscribe| undefined;
-        let timeoutId: ReturnType<typeof window.setTimeout> | undefined;
+        let timeoutId: number | undefined;
 
         store.dispatch(
             apiActions.buildRequestAction(
