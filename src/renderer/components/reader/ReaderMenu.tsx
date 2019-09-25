@@ -8,6 +8,7 @@
 import classnames from "classnames";
 import * as queryString from "query-string";
 import * as React from "react";
+import { LocatorView } from "readium-desktop/common/views/locator";
 import {
     TReaderApiDeleteBookmark, TReaderApiFindBookmarks_result,
 } from "readium-desktop/main/api/reader";
@@ -237,15 +238,14 @@ export class ReaderMenu extends React.Component<Props, State> {
         if (this.props.publication && this.props.bookmarks) {
             const { bookmarkToUpdate } = this.state;
             return this.props.bookmarks.map((bookmark, i) =>
-                <div
+                <button
+                    tabIndex={0}
                     className={styles.bookmarks_line}
                     key={i}
+                    onClick={(e) => this.handleBookmarkClick(e, bookmark)}
                 >
                     <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
-                    <div
-                        className={styles.chapter_marker}
-                        onClick={() => this.props.handleBookmarkClick(bookmark.locator)}
-                    >
+                    <div className={styles.chapter_marker}>
                         { bookmarkToUpdate === i ?
                             <UpdateBookmarkForm
                                 close={ this.closeBookarkEditForm }
@@ -264,7 +264,7 @@ export class ReaderMenu extends React.Component<Props, State> {
                     <button onClick={() => this.props.deleteBookmark(bookmark.identifier)}>
                         <SVG svg={ DeleteIcon }/>
                     </button>
-                </div>,
+                </button>,
             );
         }
         return undefined;
@@ -319,6 +319,11 @@ export class ReaderMenu extends React.Component<Props, State> {
         } else {
             this.setState({refreshError: true});
         }
+    }
+
+    private handleBookmarkClick(e: any, bookmark: LocatorView) {
+        e.preventDefault();
+        this.props.handleBookmarkClick(bookmark.locator);
     }
 }
 
