@@ -62,8 +62,6 @@ export async function apiFetch<T extends TApiMethodName>(apiPath: T, ...requestD
             });
         });
 
-        // The linter doesn't accept .finaly(). Why ? Is it a Bug ?
-        // tslint:disable-next-line: no-floating-promises
         promise.then((result) => {
             resolve(result);
         }).catch((error) => {
