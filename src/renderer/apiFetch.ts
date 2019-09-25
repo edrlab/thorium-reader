@@ -22,7 +22,7 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
         const methodId = path.split("/")[1] as TMethodApi;
         let lastSuccess: ApiLastSuccess | undefined;
         let storeUnsubscribe: Unsubscribe| undefined;
-        let timeout: number | undefined;
+        let timeoutId: ReturnType<typeof window.setTimeout> | undefined;
 
         store.dispatch(
             apiActions.buildRequestAction(
@@ -57,7 +57,7 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
                 }
 
                 // handle promise<void>
-                timeout = window.setTimeout(() => reject("API Timeout"), 5000);
+                timeoutId = window.setTimeout(() => reject("API Timeout"), 5000);
             });
         });
 
@@ -71,8 +71,8 @@ export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData
             if (storeUnsubscribe) {
                 storeUnsubscribe();
             }
-            if (timeout) {
-                clearTimeout(timeout);
+            if (timeoutId) {
+                clearTimeout(timeoutId);
             }
         });
     });
