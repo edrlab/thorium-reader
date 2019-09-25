@@ -19,7 +19,7 @@ interface Props {
 
 interface State {
     inFocus: boolean;
-    triggerElem: Element | undefined;
+    triggerElem: HTMLElement | undefined;
 }
 
 export default class AccessibleMenu extends React.Component<Props, State> {
@@ -69,8 +69,16 @@ export default class AccessibleMenu extends React.Component<Props, State> {
             document.addEventListener("keydown", this.handleKey);
             document.addEventListener("focusin", this.handleFocus);
             if (this.ismounted) {
+                /**
+                 * document.activeElement is a DOM property (HTML, SVG, XML, etc.)
+                 * https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement
+                 * https://developer.mozilla.org/en-US/docs/Web/API/Document
+                 *
+                 * But in our case, we know that the Thorium UI is built with HTML markup (+ a few SVG images),
+                 * so we can cast the correct type for better compile-time checking.
+                 */
                 this.setState({
-                    triggerElem: document.activeElement,
+                    triggerElem: document.activeElement as HTMLElement,
                 });
             }
         }
@@ -80,8 +88,6 @@ export default class AccessibleMenu extends React.Component<Props, State> {
             && this.state.triggerElem
         ) {
             if (this.state.triggerElem != null) {
-                // WHY ?
-                // @ts-ignore
                 this.state.triggerElem.focus();
             }
         }
@@ -98,7 +104,7 @@ export default class AccessibleMenu extends React.Component<Props, State> {
                     className={this.props.className}
                 >
                     <FocusLock disabled={disabled} autoFocus={!disabled}>
-                        { this.props.children }
+                        {this.props.children}
                     </FocusLock>
                 </div>
             </OutsideClickAlerter>
@@ -139,13 +145,13 @@ export default class AccessibleMenu extends React.Component<Props, State> {
 
         if (this.containerRef
             && this.containerRef.current
-        // WHY ?
-        // @ts-ignore
+            // WHY ?
+            // @ts-ignore
             && this.containerRef.current.contains(focusedNode)
         ) {
             if (this.ismounted) {
                 this.setState({
-                inFocus: true,
+                    inFocus: true,
                 });
             }
         }
