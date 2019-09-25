@@ -32,7 +32,7 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        if (!this.props.open) {
+        if (!this.props.open || !this.props.feed) {
             return (<></>);
         }
 
