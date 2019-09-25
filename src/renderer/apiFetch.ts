@@ -14,12 +14,12 @@ import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { Unsubscribe } from "redux";
 import * as uuid from "uuid";
 
-export async function apiFetch<T extends TApiMethodName>(path: T, ...requestData: Parameters<TApiMethod[T]>) {
+export async function apiFetch<T extends TApiMethodName>(apiPath: T, ...requestData: Parameters<TApiMethod[T]>) {
     return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
         const store = diRendererGet("store");
         const requestId = uuid.v4();
-        const moduleId = path.split("/")[0] as TModuleApi;
-        const methodId = path.split("/")[1] as TMethodApi;
+        const moduleId = apiPath.split("/")[0] as TModuleApi;
+        const methodId = apiPath.split("/")[1] as TMethodApi;
         let lastSuccess: ApiLastSuccess | undefined;
         let storeUnsubscribe: Unsubscribe| undefined;
         let timeoutId: number | undefined;
