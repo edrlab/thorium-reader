@@ -60,7 +60,14 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         const { browserError, browserResult } = this.state;
         let content = (<Loader />);
 
-        if (browserError) {
+        if (!navigator.onLine) {
+            content = (
+                <MessageOpdBrowserResult
+                    title={__("opds.network.noInternet")}
+                    message={__("opds.network.noInternetMessage")}
+                />
+            );
+        } else if (browserError) {
             content = (
                 <MessageOpdBrowserResult
                     title={__("opds.network.reject")}

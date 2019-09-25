@@ -174,7 +174,6 @@ interface IState {
     settingsOpen: boolean;
     settingsValues: ReadiumCSS;
     shortcutEnable: boolean;
-    fontSizeIndex: number;
     landmarksOpen: boolean;
     landmarkTabOpen: number;
     publicationData: R2Publication | undefined;
@@ -242,9 +241,8 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             },
             shortcutEnable: true,
             indexes: {
-                fontSize: 0, pageMargins: 0, wordSpacing: 0, letterSpacing: 0, paraSpacing: 0,
+                fontSize: 3, pageMargins: 0, wordSpacing: 0, letterSpacing: 0, paraSpacing: 0,
             },
-            fontSizeIndex: 3,
             landmarksOpen: false,
             landmarkTabOpen: 0,
             publicationData: undefined,
