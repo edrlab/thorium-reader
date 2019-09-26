@@ -63,17 +63,15 @@ export class OpdsFeedAddForm extends React.Component<Props, State> {
             <div>
                 <h2>{__("opds.addMenu")}</h2>
                 <form>
-                    {
-                        this.state.opdsFeedList &&
-                        <select
-                            id="opdsFeedList"
-                            onChange={this.onSelectOpdsFeedChange}
-                            value={this.state.selectValue}
-                        >
-                            <option key={"opdsFeedList"} value={this.defaultSelectValue}>Custom choice</option>
-                            {this.setOpdsFeedInSelectOption("opdsFeedList")}
-                        </select>
-                    }
+                    <select
+                        id="opdsFeedList"
+                        onChange={this.onSelectOpdsFeedChange}
+                        value={this.state.selectValue}
+                        disabled={this.state.opdsFeedList === undefined}
+                    >
+                        <option key={"opdsFeedList"} value={this.defaultSelectValue}>Custom choice</option>
+                        {this.setOpdsFeedInSelectOption("opdsFeedList")}
+                    </select>
                     <div className={styles.field}>
                         <label>{__("opds.addForm.name")}</label>
                         <input
