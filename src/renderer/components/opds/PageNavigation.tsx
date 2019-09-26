@@ -22,6 +22,20 @@ interface Props extends TranslatorProps {
 }
 
 class PageNavigation extends React.Component<Props> {
+    public constructor(props: Props) {
+        super(props);
+
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+    }
+
+    public componentDidMount() {
+        document.addEventListener("keydown", this.handleKeyDown);
+    }
+
+    public componentWillUnmount() {
+        document.removeEventListener("keydown", this.handleKeyDown);
+    }
+
     public render() {
         const { goto, nextUrl, previousUrl, __ } = this.props;
 
@@ -41,6 +55,18 @@ class PageNavigation extends React.Component<Props> {
                 : <div/>}
             </div>
         );
+    }
+
+    private handleKeyDown(e: KeyboardEvent) {
+        const { goto, nextUrl, previousUrl } = this.props;
+        const withModifierKeys = e.shiftKey && e.ctrlKey;
+        if (withModifierKeys) {
+            if (e.key === "ArrowLeft") {
+                goto(previousUrl);
+            } else if (e.key === "ArrowRight") {
+                goto(nextUrl);
+            }
+        }
     }
 }
 
