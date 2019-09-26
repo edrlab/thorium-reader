@@ -20,46 +20,88 @@ interface Props extends TranslatorProps {
 interface State {
     name: string;
     url: string;
+    opdsFeedList: {
+        [name: string]: string;
+    } | undefined;
+    selectValue: string;
 }
 
 export class OpdsFeedAddForm extends React.Component<Props, State> {
-    constructor(props: any) {
+    private defaultSelectValue = "undefined";
+    private opdsFeedListServerUrl = "http://thorium-opds.edrlab.org/";
+
+    constructor(props: Props) {
         super(props);
 
         this.state = {
-            name: undefined,
-            url: undefined,
+            name: "",
+            url: "",
+            opdsFeedList: undefined,
+            selectValue: this.defaultSelectValue,
         };
 
         this.add = this.add.bind(this);
         this.close = this.close.bind(this);
+        this.onSelectOpdsFeedChange = this.onSelectOpdsFeedChange.bind(this);
+    }
+
+    public async componentDidMount() {
+        try {
+            const response = await fetch(this.opdsFeedListServerUrl);
+            const json = await response.json();
+            this.setState({ opdsFeedList: json });
+
+        } catch {
+            // ignore
+        }
     }
 
     public render(): React.ReactElement<{}> {
-        const {__} = this.props;
+        const { __ } = this.props;
         const { name, url } = this.state;
         return (
             <div>
                 <h2>{__("opds.addMenu")}</h2>
                 <form>
+                    {
+                        this.state.opdsFeedList &&
+                        <select
+                            id="opdsFeedList"
+                            onChange={this.onSelectOpdsFeedChange}
+                            value={this.state.selectValue}
+                        >
+                            <option key={"opdsFeedList"} value={this.defaultSelectValue}>Custom choice</option>
+                            {this.setOpdsFeedInSelectOption("opdsFeedList")}
+                        </select>
+                    }
                     <div className={styles.field}>
                         <label>{__("opds.addForm.name")}</label>
                         <input
-                            onChange={(e) => this.onFieldChange("name", e.target.value)}
+                            onChange={(e) => this.setState({
+                                name: e.target.value,
+                            })}
+                            onKeyUp={() => this.setState({
+                                selectValue: this.defaultSelectValue,
+                            })}
                             type="text"
                             aria-label={__("opds.addForm.name")}
                             placeholder={__("opds.addForm.namePlaceholder")}
-                            defaultValue={name}
+                            value={name}
                         />
                     </div>
                     <div className={styles.field}>
                         <label>{__("opds.addForm.url")}</label>
                         <input
-                            onChange={(e) => this.onFieldChange("url", e.target.value)}
+                            onChange={(e) => this.setState({
+                                url: e.target.value,
+                            })}
+                            onKeyUp={() => this.setState({
+                                selectValue: this.defaultSelectValue,
+                            })}
                             type="text"
                             aria-label={__("opds.addForm.url")}
                             placeholder={__("opds.addForm.urlPlaceholder")}
-                            defaultValue={url}
+                            value={url}
                         />
                     </div>
                     <div>
@@ -67,7 +109,7 @@ export class OpdsFeedAddForm extends React.Component<Props, State> {
                             disabled={!name || !url}
                             type="submit"
                             value={__("opds.addForm.addButton")}
-                            onClick={ this.add }
+                            onClick={this.add}
                         />
                         <button onClick={this.close}>{__("opds.back")}</button>
                     </div>
@@ -76,21 +118,44 @@ export class OpdsFeedAddForm extends React.Component<Props, State> {
         );
     }
 
-    public onFieldChange(name: string, value: any) {
-        const change: any = {[name]: value};
-        this.setState(change);
-    }
-
     public add(e: any) {
         e.preventDefault();
         const title = this.state.name;
         const url = this.state.url;
-        this.props.addFeed({ title, url});
+        this.props.addFeed({ title, url });
         this.props.closeDialog();
     }
 
     private close() {
         this.props.closeDialog();
+    }
+
+    private setOpdsFeedInSelectOption(reactKey: string) {
+        if (this.state.opdsFeedList) {
+            return Object.entries(this.state.opdsFeedList)
+                .map(([name, url], idx) =>
+                    <option key={`${reactKey}-${idx}`} value={url}>{name}</option>);
+        }
+        return [];
+    }
+
+    private onSelectOpdsFeedChange(e: React.ChangeEvent<HTMLSelectElement>) {
+        const url = e.target.value;
+        const name = Object.keys(this.state.opdsFeedList)
+            .find((nameFind) => this.state.opdsFeedList[nameFind] === url);
+        if (name) {
+            this.setState({
+                name,
+                url,
+                selectValue: url,
+            });
+        } else {
+            this.setState({
+                name: "",
+                url: "",
+                selectValue: this.defaultSelectValue,
+            });
+        }
     }
 }
 
