@@ -13,12 +13,13 @@ import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
+import { OpdsResultUrls } from "readium-desktop/common/views/opds";
+
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
 interface Props extends TranslatorProps {
     goto: (urld: string) => void;
-    nextUrl?: string;
-    previousUrl?: string;
+    urls: OpdsResultUrls;
 }
 
 class PageNavigation extends React.Component<Props> {
@@ -37,34 +38,45 @@ class PageNavigation extends React.Component<Props> {
     }
 
     public render() {
-        const { goto, nextUrl, previousUrl, __ } = this.props;
-
+        const { goto, urls, __ } = this.props;
+        const { nextPage, previousPage, lastPage, firstPage } = urls;
         return (
             <div className={styles.opds_page_navigation}>
-                { previousUrl ?
-                    <button onClick={() => goto(previousUrl)}>
+                { firstPage ?
+                    <button onClick={() => goto(firstPage)}>
+                        {__("opds.firstPage")}
+                    </button>
+                : <div/> }
+                { previousPage ?
+                    <button onClick={() => goto(previousPage)}>
                         <SVG svg={ArrowLeftIcon} />
                         {__("opds.previous")}
                     </button>
                 : <div/> }
-                { nextUrl ?
-                    <button onClick={() => goto(nextUrl)}>
+                { nextPage ?
+                    <button onClick={() => goto(nextPage)}>
                         {__("opds.next")}
                         <SVG svg={ArrowRightIcon} />
                     </button>
                 : <div/>}
+                { lastPage ?
+                    <button onClick={() => goto(lastPage)}>
+                        {__("opds.lastPage")}
+                    </button>
+                : <div/> }
             </div>
         );
     }
 
     private handleKeyDown(e: KeyboardEvent) {
-        const { goto, nextUrl, previousUrl } = this.props;
+        const { goto, urls } = this.props;
+        const { nextPage, previousPage } = urls;
         const withModifierKeys = e.shiftKey && e.ctrlKey;
         if (withModifierKeys) {
             if (e.key === "ArrowLeft") {
-                goto(previousUrl);
+                goto(previousPage);
             } else if (e.key === "ArrowRight") {
-                goto(nextUrl);
+                goto(nextPage);
             }
         }
     }

@@ -197,6 +197,8 @@ declare namespace typed_i18n {
   readonly "back": string,
   readonly "breadcrumbRoot": string,
   readonly "empty": string,
+  readonly "firstPage": string,
+  readonly "lastPage": string,
   readonly "menu": {
     readonly "aboutBook": string,
     readonly "addExtract": string,
@@ -206,10 +208,10 @@ declare namespace typed_i18n {
   },
   readonly "network": {
     readonly "error": string,
-    readonly "reject": string,
-    readonly "timeout": string,
     readonly "noInternet": string,
-    readonly "noInternetMessage": string
+    readonly "noInternetMessage": string,
+    readonly "reject": string,
+    readonly "timeout": string
   },
   readonly "next": string,
   readonly "previous": string
@@ -230,7 +232,8 @@ declare namespace typed_i18n {
   (_: "opds.addForm.urlPlaceholder", __?: {}): string;
   (_: "opds.addMenu", __?: {}): string; (_: "opds.back", __?: {}): string;
   (_: "opds.breadcrumbRoot", __?: {}): string;
-  (_: "opds.empty", __?: {}): string;
+  (_: "opds.empty", __?: {}): string; (_: "opds.firstPage", __?: {}): string;
+  (_: "opds.lastPage", __?: {}): string;
   (_: "opds.menu", __?: {}): {
   readonly "aboutBook": string,
   readonly "addExtract": string,
@@ -245,18 +248,17 @@ declare namespace typed_i18n {
   (_: "opds.menu.goSubBook", __?: {}): string;
   (_: "opds.network", __?: {}): {
   readonly "error": string,
-  readonly "reject": string,
-  readonly "timeout": string,
   readonly "noInternet": string,
-  readonly "noInternetMessage": string
+  readonly "noInternetMessage": string,
+  readonly "reject": string,
+  readonly "timeout": string
 };
   (_: "opds.network.error", __?: {}): string;
-  (_: "opds.network.reject", __?: {}): string;
-  (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.network.noInternet", __?: {}): string;
   (_: "opds.network.noInternetMessage", __?: {}): string;
-  (_: "opds.next", __?: {}): string;
-  (_: "opds.previous", __?: {}): string;
+  (_: "opds.network.reject", __?: {}): string;
+  (_: "opds.network.timeout", __?: {}): string;
+  (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "deleteButton": string,
   readonly "expiredLcp": string,

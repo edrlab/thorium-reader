@@ -13,7 +13,12 @@ import {
 } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
 import {
-    OpdsFeedView, OpdsLinkView, OpdsPublicationView, OpdsResultType, OpdsResultView,
+    OpdsFeedView,
+    OpdsLinkView,
+    OpdsPublicationView,
+    OpdsResultType,
+    OpdsResultUrls,
+    OpdsResultView,
 } from "readium-desktop/common/views/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { resolve } from "url";
@@ -155,8 +160,8 @@ export class OpdsFeedViewConverter {
         let type = OpdsResultType.Empty;
         let navigation: OpdsLinkView[] | undefined;
         let publications: OpdsPublicationView[] | undefined;
-        let nextPageUrl: string;
-        let previousPageUrl: string;
+
+        let urls: OpdsResultUrls = {};
 
         if (feed.Publications) {
             // result page containing publications
@@ -166,12 +171,13 @@ export class OpdsFeedViewConverter {
             });
 
             if (feed.Links) {
-                nextPageUrl = oc(feed.Links.find((link) =>
-                    link.Rel && link.Rel.includes("next"),
-                )).Href(undefined);
-                previousPageUrl = oc(feed.Links.find((link) =>
-                    link.Rel && link.Rel.includes("previous"),
-                )).Href(undefined);
+                urls = {
+                    search: await this.getSearchUrlFromOpds1Feed(feed),
+                    nextPage: this.getUrlFromFeed(feed, "next"),
+                    previousPage: this.getUrlFromFeed(feed, "previous"),
+                    firstPage: this.getUrlFromFeed(feed, "first"),
+                    lastPage: this.getUrlFromFeed(feed, "last"),
+                };
             }
         } else if (feed.Navigation) {
             // result page containing navigation
@@ -194,10 +200,14 @@ export class OpdsFeedViewConverter {
             type,
             publications,
             navigation,
-            searchUrl: await this.getSearchUrlFromOpds1Feed(feed),
-            nextPageUrl,
-            previousPageUrl,
+            urls,
         };
+    }
+
+    private getUrlFromFeed(feed: OPDSFeed, linkRel: string): string {
+        return oc(feed.Links.find((link) =>
+            link.Rel && link.Rel.includes(linkRel),
+        )).Href(undefined);
     }
 
     private async getSearchUrlFromOpds1Feed(feed: OPDSFeed): Promise<string| undefined> {

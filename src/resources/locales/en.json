@@ -112,6 +112,8 @@
         "back": "Back",
         "breadcrumbRoot": "Catalogs",
         "empty": "No publication found",
+        "firstPage": "First",
+        "lastPage": "Last",
         "menu": {
             "aboutBook": "About this book",
             "addExtract": "Import the extract",
@@ -121,10 +123,10 @@
         },
         "network": {
             "error": "Unable to access to opds feed",
-            "reject": "Sorry, there was an unexpected error when trying to process the OPDS feed",
-            "timeout": "There was a network timeout, please try again later",
             "noInternet": "No internet",
-            "noInternetMessage": "Try : checking the network cable, modem, router or wifi"
+            "noInternetMessage": "Try : checking the network cable, modem, router or wifi",
+            "reject": "Sorry, there was an unexpected error when trying to process the OPDS feed",
+            "timeout": "There was a network timeout, please try again later"
         },
         "next": "Next",
         "previous": "Previous"

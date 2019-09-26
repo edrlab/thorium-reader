@@ -166,7 +166,6 @@
         background-color: #EDEDED;
 
         &:first-child {
-            margin-right: 1rem;
             & svg {
                 margin-right: 1rem;
             }
@@ -176,6 +175,10 @@
             & svg {
                 margin-left: 1rem;
             }
+        }
+
+        &:not(:last-child) {
+            margin-right: 1rem;
         }
 
         & svg {

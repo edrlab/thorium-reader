@@ -9,7 +9,7 @@ import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { OpdsPublicationView, OpdsResultUrls } from "readium-desktop/common/views/opds";
 import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 import GridView from "readium-desktop/renderer/components/utils/GridView";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
@@ -19,15 +19,15 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import PageNavigation from "./PageNavigation";
 
 interface IProps extends RouteComponentProps {
-    publications: OpdsPublicationView[] | undefined;
-    goto: (url?: string) => void;
-    nextUrl: string;
-    previousUrl: string;
+    publications: OpdsPublicationView[];
+    goto: (url: string) => void;
+    urls: OpdsResultUrls;
 }
 
 class EntryPublicationList extends React.Component<IProps> {
     public render() {
-        const { goto, nextUrl, previousUrl } = this.props;
+        const { goto, urls } = this.props;
+
         let DisplayView: React.ComponentClass<any> = GridView;
 
         if (this.props.location) {
@@ -48,8 +48,7 @@ class EntryPublicationList extends React.Component<IProps> {
                         <DisplayView publications={this.props.publications} isOpdsView={true} />
                         <PageNavigation
                             goto={goto}
-                            nextUrl={nextUrl}
-                            previousUrl={previousUrl}
+                            urls={urls}
                         />
                     </>
                     : <Loader />}
