@@ -23,7 +23,7 @@ export default class GridView extends React.Component<Props, undefined> {
 
     public componentDidUpdate(oldProps: Props) {
         if (this.props.publications !== oldProps.publications) {
-            this.goOnTop();
+            this.scrollToTop();
         }
     }
 
@@ -47,7 +47,7 @@ export default class GridView extends React.Component<Props, undefined> {
         );
     }
 
-    private goOnTop() {
+    private scrollToTop() {
         this.ref.scrollIntoView();
     }
 }

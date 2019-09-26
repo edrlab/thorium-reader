@@ -166,8 +166,12 @@ export class OpdsFeedViewConverter {
             });
 
             if (feed.Links) {
-                nextPageUrl = oc(feed.Links.find((link) => link.Rel[0] === "next")).Href(undefined);
-                previousPageUrl = oc(feed.Links.find((link) => link.Rel[0] === "previous")).Href(undefined);
+                nextPageUrl = oc(feed.Links.find((link) =>
+                    link.Rel && link.Rel.includes("next"),
+                )).Href(undefined);
+                previousPageUrl = oc(feed.Links.find((link) =>
+                    link.Rel && link.Rel.includes("previous"),
+                )).Href(undefined);
             }
         } else if (feed.Navigation) {
             // result page containing navigation

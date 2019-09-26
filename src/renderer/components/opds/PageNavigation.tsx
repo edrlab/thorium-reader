@@ -16,9 +16,9 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
 interface Props extends TranslatorProps {
-    goto: (url?: string) => void;
-    nextUrl: string;
-    previousUrl: string;
+    goto: (urld: string) => void;
+    nextUrl?: string;
+    previousUrl?: string;
 }
 
 class PageNavigation extends React.Component<Props> {
