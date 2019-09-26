@@ -18,7 +18,7 @@ import { OpdsResultUrls } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
 interface Props extends TranslatorProps {
-    goto: (urld: string) => void;
+    goto: (url: string) => void;
     urls: OpdsResultUrls;
 }
 
