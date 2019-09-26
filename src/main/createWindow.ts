@@ -33,7 +33,7 @@ export async function createWindow() {
         webPreferences: {
             devTools: IS_DEV,
             nodeIntegration: true, // Required to use IPC
-            webSecurity: false,
+            webSecurity: true,
             allowRunningInsecureContent: false,
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
