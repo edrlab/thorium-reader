@@ -73,9 +73,9 @@ class PageNavigation extends React.Component<Props> {
         const { nextPage, previousPage } = urls;
         const withModifierKeys = e.shiftKey && e.ctrlKey;
         if (withModifierKeys) {
-            if (e.key === "ArrowLeft") {
+            if (e.key === "ArrowLeft" && previousPage) {
                 goto(previousPage);
-            } else if (e.key === "ArrowRight") {
+            } else if (e.key === "ArrowRight" && nextPage) {
                 goto(nextPage);
             }
         }
