@@ -238,33 +238,37 @@ export class ReaderMenu extends React.Component<Props, State> {
         if (this.props.publication && this.props.bookmarks) {
             const { bookmarkToUpdate } = this.state;
             return this.props.bookmarks.map((bookmark, i) =>
-                <button
-                    tabIndex={0}
+                <div
                     className={styles.bookmarks_line}
                     key={i}
-                    onClick={(e) => this.handleBookmarkClick(e, bookmark)}
                 >
-                    <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
-                    <div className={styles.chapter_marker}>
-                        { bookmarkToUpdate === i ?
-                            <UpdateBookmarkForm
-                                close={ this.closeBookarkEditForm }
-                                bookmark={ bookmark }
-                            />
-                        :
-                            bookmark.name ? bookmark.name : <>Bookmark {i}</>
-                        }
-                        <div className={styles.gauge}>
-                            <div className={styles.fill}></div>
+                    <button
+                        className={styles.bookmark_infos}
+                        tabIndex={0}
+                        onClick={(e) => this.handleBookmarkClick(e, bookmark)}
+                    >
+                        <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
+                        <div className={styles.chapter_marker}>
+                            { bookmarkToUpdate === i ?
+                                <UpdateBookmarkForm
+                                    close={ this.closeBookarkEditForm }
+                                    bookmark={ bookmark }
+                                />
+                            :
+                                bookmark.name ? bookmark.name : <>Bookmark {i}</>
+                            }
+                            <div className={styles.gauge}>
+                                <div className={styles.fill}></div>
+                            </div>
                         </div>
-                    </div>
+                    </button>
                     <button onClick={() => this.setState({bookmarkToUpdate: i})}>
                         <SVG svg={ EditIcon }/>
                     </button>
                     <button onClick={() => this.props.deleteBookmark(bookmark.identifier)}>
                         <SVG svg={ DeleteIcon }/>
                     </button>
-                </button>,
+                </div>,
             );
         }
         return undefined;
