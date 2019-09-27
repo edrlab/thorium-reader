@@ -36,7 +36,7 @@ class Header extends React.Component<IProps> {
 
         /**
          * Why css style is apply in code and not imported from css ressource ?
-         * code:cssincode
+         * FIXME : css in code
          */
         return (
             <SecondaryHeader>

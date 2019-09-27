@@ -13,7 +13,7 @@ interface IProps {
 }
 
 /**
- * code:cssincode
+ * FIXME : css in code
  */
 const style: React.CSSProperties = {
     textAlign: "center",

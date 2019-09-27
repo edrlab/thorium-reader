@@ -78,7 +78,7 @@ export default class App extends React.Component<any, undefined> {
                             {({getRootProps, getInputProps}) => {
                                 const rootProps = getRootProps({onClick: (e) => e.stopPropagation()});
                                 rootProps.tabIndex = -1;
-                                // code:cssincode
+                                // FIXME : css in code
                                 return <div
                                     {...rootProps}
                                     style={{
