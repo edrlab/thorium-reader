@@ -27,6 +27,9 @@ class PublicationExportButton extends React.Component<IProps> {
             menuOpen: false,
         };
         this.exportInputRef = React.createRef();
+
+        this.checkCancel = this.checkCancel.bind(this);
+        this.onOpenInput = this.onOpenInput.bind(this);
     }
 
     public componentDidMount() {
@@ -47,8 +50,12 @@ class PublicationExportButton extends React.Component<IProps> {
                         type="file"
                         multiple
                         onChange={ this.onExport }
+                        onClick={this.onOpenInput}
                     />
-                    <label htmlFor={ id }>
+                    <label
+                        htmlFor={ id }
+                        onClick={this.onOpenInput}
+                    >
                         { __("catalog.export")}
                     </label>
                 </span>
@@ -62,6 +69,15 @@ class PublicationExportButton extends React.Component<IProps> {
         apiAction("publication/exportPublication", publication, destinationPath).catch((error) => {
             console.error(`Error to fetch publication/exportPublication`, error);
         });
+    }
+
+    private onOpenInput() {
+        document.body.onfocus = this.checkCancel.bind(this);
+    }
+
+    private checkCancel() {
+        this.props.onClick();
+        document.body.onfocus = null;
     }
 }
 
