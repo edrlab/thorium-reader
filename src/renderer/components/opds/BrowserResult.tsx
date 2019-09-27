@@ -128,6 +128,13 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         }
 
         this.currentUrl = newUrl;
+
+        // reset browserResult to display loader spinner
+        this.setState({
+            browserResult: undefined,
+        });
+
+        // fetch newUrl
         apiAction("opds/browse", newUrl).then((result) => this.setState({
             browserResult: result,
             browserError: undefined,
