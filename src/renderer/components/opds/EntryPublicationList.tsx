@@ -9,7 +9,7 @@ import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsPublicationView, OpdsResultUrls } from "readium-desktop/common/views/opds";
+import { OpdsPublicationView, OpdsResultPageInfos, OpdsResultUrls } from "readium-desktop/common/views/opds";
 import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 import GridView from "readium-desktop/renderer/components/utils/GridView";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
@@ -22,11 +22,12 @@ interface IProps extends RouteComponentProps {
     publications: OpdsPublicationView[];
     goto: (url: string) => void;
     urls: OpdsResultUrls;
+    page: OpdsResultPageInfos;
 }
 
 class EntryPublicationList extends React.Component<IProps> {
     public render() {
-        const { goto, urls } = this.props;
+        const { goto, urls, page } = this.props;
 
         let DisplayView: React.ComponentClass<any> = GridView;
 
@@ -49,6 +50,7 @@ class EntryPublicationList extends React.Component<IProps> {
                         <PageNavigation
                             goto={goto}
                             urls={urls}
+                            page={page}
                         />
                     </>
                     : <Loader />}

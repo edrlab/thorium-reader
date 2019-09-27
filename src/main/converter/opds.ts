@@ -16,6 +16,7 @@ import {
     OpdsFeedView,
     OpdsLinkView,
     OpdsPublicationView,
+    OpdsResultPageInfos,
     OpdsResultType,
     OpdsResultUrls,
     OpdsResultView,
@@ -162,6 +163,7 @@ export class OpdsFeedViewConverter {
         let publications: OpdsPublicationView[] | undefined;
 
         let urls: OpdsResultUrls = {};
+        let page: OpdsResultPageInfos;
 
         if (feed.Publications) {
             // result page containing publications
@@ -195,12 +197,20 @@ export class OpdsFeedViewConverter {
             });
         }
 
+        if (feed.Metadata) {
+            page = {
+                numberOfItems: feed.Metadata.NumberOfItems,
+                itemsPerPage: feed.Metadata.ItemsPerPage,
+            };
+        }
+
         return {
             title,
             type,
             publications,
             navigation,
             urls,
+            page,
         };
     }
 

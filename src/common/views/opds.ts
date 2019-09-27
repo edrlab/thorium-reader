@@ -52,6 +52,7 @@ export interface OpdsResultView {
     navigation?: OpdsLinkView[];
     publications?: OpdsPublicationView[];
     urls: OpdsResultUrls;
+    page?: OpdsResultPageInfos;
 }
 
 export interface OpdsResultUrls {
@@ -60,6 +61,11 @@ export interface OpdsResultUrls {
     firstPage?: string;
     lastPage?: string;
     search?: string;
+}
+
+export interface OpdsResultPageInfos {
+    numberOfItems: number;
+    itemsPerPage: number;
 }
 
 export type THttpGetOpdsResultView = IHttpGetResult<string, OpdsResultView>;

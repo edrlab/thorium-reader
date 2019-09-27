@@ -90,6 +90,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
                                 publications={browserResult.data.publications}
                                 goto={this.goto}
                                 urls={browserResult.data.urls}
+                                page={browserResult.data.page}
                             />
                         );
                         break;
