@@ -54,7 +54,7 @@
     "removeComments": true,
     "skipLibCheck": false,
     "module": "commonjs",
-    "lib": ["es2017", "es6", "dom"],
+    "lib": ["es2017", "es6", "dom", "dom.iterable"],
     "target": "es6",
     "jsx": "react",
     "experimentalDecorators": true,

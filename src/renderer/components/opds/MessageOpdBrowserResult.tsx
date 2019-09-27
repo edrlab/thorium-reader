@@ -12,6 +12,9 @@ interface IProps {
     message?: string;
 }
 
+/**
+ * FIXME : css in code
+ */
 const style: React.CSSProperties = {
     textAlign: "center",
 };

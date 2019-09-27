@@ -13,11 +13,9 @@ import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import { RootState } from "readium-desktop/renderer/redux/states";
-
 import LibraryHeader from "./LibraryHeader";
 
-interface IProps extends RouteComponentProps {
-    dialogOpen?: boolean;
+interface IProps extends RouteComponentProps, ReturnType<typeof mapStateToProps> {
     secondaryHeader?: React.ReactElement;
     title?: string;
     mainClassName?: string;

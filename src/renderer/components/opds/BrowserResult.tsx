@@ -8,29 +8,40 @@
 import * as qs from "qs";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsResultType, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
+import { OpdsResultType } from "readium-desktop/common/views/opds";
 import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-import { ApiProps, withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
+import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { parseQueryString } from "readium-desktop/utils/url";
 
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
-interface BrowserResultProps extends RouteComponentProps, ApiProps, TranslatorProps {
+interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
-    result?: THttpGetOpdsResultView | string;
-    resultIsReject?: boolean;
-    browse?: TOpdsApiBrowse;
 }
 
-export class BrowserResult extends React.Component<BrowserResultProps, null> {
+interface IState {
+    browserResult: ReturnPromiseType<TOpdsApiBrowse> | undefined;
+    browserError: string | undefined;
+}
+
+export class BrowserResult extends React.Component<BrowserResultProps, IState> {
     private currentUrl: string;
+
+    constructor(props: BrowserResultProps) {
+        super(props);
+        this.state = {
+            browserError: undefined,
+            browserResult: undefined,
+        };
+    }
 
     public componentDidMount() {
         this.browseOpds();
@@ -45,7 +56,8 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { result, resultIsReject, __ } = this.props;
+        const { __ } = this.props;
+        const { browserError, browserResult } = this.state;
         let content = (<Loader />);
 
         if (!navigator.onLine) {
@@ -55,24 +67,24 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
                     message={__("opds.network.noInternetMessage")}
                 />
             );
-        } else if (resultIsReject) {
+        } else if (browserError) {
             content = (
                 <MessageOpdBrowserResult
                     title={__("opds.network.reject")}
-                    message={JSON.stringify(result)}
+                    message={browserError}
                 />
             );
-        } else if (typeof result === "object" && result) {
-            if (result.isSuccess) {
-                switch (result.data.type) {
+        } else if (browserResult) {
+            if (browserResult.isSuccess) {
+                switch (browserResult.data.type) {
                     case OpdsResultType.NavigationFeed:
                         content = (
-                            <EntryList entries={result.data.navigation} />
+                            <EntryList entries={browserResult.data.navigation} />
                         );
                         break;
                     case OpdsResultType.PublicationFeed:
                         content = (
-                            <EntryPublicationList publications={result.data.publications} />
+                            <EntryPublicationList publications={browserResult.data.publications} />
                         );
                         break;
                     case OpdsResultType.Empty:
@@ -83,7 +95,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
                     default:
                         break;
                 }
-            } else if (result.isTimeout) {
+            } else if (browserResult.isTimeout) {
                 content = (
                     <MessageOpdBrowserResult title={__("opds.network.timeout")} />
                 );
@@ -91,7 +103,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
                 content = (
                     <MessageOpdBrowserResult
                         title={__("opds.network.error")}
-                        message={`${result.statusCode || "unknow error code"} : ${result.statusMessage || ""}`}
+                        message={`${browserResult.statusCode || "unknow error code"} : ${browserResult.statusMessage || ""}`}
                     />
                 );
             }
@@ -103,18 +115,33 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     }
 
     private browseOpds() {
-        const { url, location, result, browse } = this.props;
+        const { url, location } = this.props;
+        const { browserResult } = this.state;
         const oldQs = parseQueryString(url.split("?")[1]);
         const search = qs.parse(location.search.replace("?", "")).search;
         let newUrl = url;
-        if (search && result && typeof result === "object" && result.isSuccess && result.data.searchUrl) {
-            newUrl = result.data.searchUrl;
+
+        if (search && browserResult && browserResult.isSuccess && browserResult.data.searchUrl) {
+            newUrl = browserResult.data.searchUrl;
             newUrl = this.addSearchTerms(newUrl, search) +
                 Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
         }
+
         this.currentUrl = newUrl;
-        this.props.cleanData();
-        browse(newUrl);
+
+        // reset browserResult to display loader spinner
+        this.setState({
+            browserResult: undefined,
+        });
+
+        // fetch newUrl
+        apiAction("opds/browse", newUrl).then((result) => this.setState({
+            browserResult: result,
+            browserError: undefined,
+        })).catch((error) => this.setState({
+            browserResult: undefined,
+            browserError: error,
+        }));
     }
 
     private addSearchTerms(url: string, search: string) {
@@ -142,8 +169,8 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
     }
 }
 
-export default withApi(
-    withTranslator(withRouter(BrowserResult)),
+export default withTranslator(withRouter(BrowserResult));
+/*
     {
         operations: [
             {
@@ -156,3 +183,4 @@ export default withApi(
         ],
     },
 );
+*/

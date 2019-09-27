@@ -6,86 +6,91 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
+import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { TLcpApiUnlockPublicationWithPassphrase } from "readium-desktop/main/api/lcp";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { TChangeEvent, TFormEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface Props extends TranslatorProps {
-    publication: any;
-    hint: string;
-    unlockPublicationWithPassphrase?: TLcpApiUnlockPublicationWithPassphrase;
-    closeDialog?: any;
-    sendLCPError?: any;
+import Dialog from "./Dialog";
+
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-interface State {
-    password: string;
+interface IState {
+    password: string | undefined;
 }
 
-export class LCPAuthentication extends React.Component<Props, State> {
-    public constructor(props: any) {
+export class LCPAuthentication extends React.Component<IProps, IState> {
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {
             password: undefined,
         };
 
-        this.submite = this.submite.bind(this);
-        this.close = this.close.bind(this);
+        this.submit = this.submit.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
-        if (!this.props.publication) {
+        if (!this.props.open || !this.props.publication) {
             return <></>;
         }
 
-        const { __ } = this.props;
-
+        const { __, closeDialog } = this.props;
         return (
-            <div>
-                <p>
-                    { __("library.lcp.sentence") }
-                    <span>{ __("library.lcp.hint", { hint: this.props.hint }) }</span>
-                </p>
-                <form onSubmit={ this.submite }>
-                    <input type="password" onChange={this.onPasswordChange} placeholder={__("library.lcp.password")}/>
-                    <div>
+            <Dialog open={true} close={closeDialog} id={styles.lcp_dialog}>
+                <div>
+                    <p>
+                        {__("library.lcp.sentence")}
+                        <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
+                    </p>
+                    <form onSubmit={this.submit}>
                         <input
-                            type="submit"
-                            value={ __("library.lcp.submit") }
-                            disabled={!this.state.password && true}
+                            type="password"
+                            onChange={this.onPasswordChange}
+                            placeholder={__("library.lcp.password")}
                         />
-                        <button onClick={ this.close }>{ __("library.lcp.cancel") }</button>
-                    </div>
-                </form>
-            </div>
+                        <div>
+                            <input
+                                type="submit"
+                                value={__("library.lcp.submit")}
+                                disabled={!this.state.password}
+                            />
+                            <button onClick={closeDialog}>{__("library.lcp.cancel")}</button>
+                        </div>
+                    </form>
+                </div>
+            </Dialog>
         );
     }
 
-    private onPasswordChange(e: any) {
-        this.setState({ password: e.target.value});
+    private onPasswordChange(e: TChangeEvent) {
+        this.setState({ password: e.target.value });
     }
 
-    private submite(e: any) {
+    private submit(e: TFormEvent) {
         e.preventDefault();
 
-        this.props.unlockPublicationWithPassphrase({
+        apiAction("lcp/unlockPublicationWithPassphrase", {
             publication: this.props.publication,
             passphrase: this.state.password,
+        }).catch((error) => {
+            console.error(`Error to fetch opds/deleteFeed`, error);
         });
         this.props.closeDialog();
     }
 
-    private close() {
-        this.props.closeDialog();
-    }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         closeDialog: () => {
             dispatch(
@@ -101,16 +106,10 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default withApi(
-    withTranslator(LCPAuthentication),
-    {
-        operations: [
-            {
-                moduleId: "lcp",
-                methodId: "unlockPublicationWithPassphrase",
-                callProp: "unlockPublicationWithPassphrase",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);
+const mapStateToProps = (state: RootState) => ({
+    ...{
+        open: state.dialog.type === "lcp-authentication",
+    }, ...state.dialog.data as DialogType["lcp-authentication"],
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LCPAuthentication));

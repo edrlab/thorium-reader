@@ -5,12 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import Cover from "./Cover";
-import PublicationCard from "./PublicationCard";
-import PublicationListElement from "./PublicationListElement";
-
-export {
-    PublicationListElement,
-    PublicationCard,
-    Cover,
-};
+/**
+ * Obtain the promise return type of a function type
+ */
+export type ReturnPromiseType<T extends (...args: any) => any> = T extends (...args: any) => Promise<infer R> ? R : any;

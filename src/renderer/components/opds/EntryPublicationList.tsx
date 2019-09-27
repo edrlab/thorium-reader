@@ -10,6 +10,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 import GridView from "readium-desktop/renderer/components/utils/GridView";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
@@ -17,12 +18,12 @@ import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
 interface IProps extends RouteComponentProps {
-    publications: OpdsPublicationView[];
+    publications: OpdsPublicationView[] | undefined;
 }
 
 class EntryPublicationList extends React.Component<IProps> {
     public render() {
-        let DisplayView: React.ComponentClass<any> = GridView;
+        let DisplayView = GridView;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
@@ -32,10 +33,13 @@ class EntryPublicationList extends React.Component<IProps> {
             }
         }
 
+        // force cast on PublicationView[]
+        // It's an hack from no typing to static typing
+        // FIX ME in the future
         return (
             <>
                 {this.props.publications ?
-                    <DisplayView publications={this.props.publications} isOpdsView={true} />
+                    <DisplayView publications={this.props.publications as PublicationView[]} isOpdsView={true} />
                     : <Loader />}
             </>
         );
@@ -46,4 +50,4 @@ const mapStateToProps = (state: RootState) => ({
     location: state.router.location,
 });
 
-export default (connect(mapStateToProps)(withRouter(EntryPublicationList)));
+export default connect(mapStateToProps)(withRouter(EntryPublicationList));

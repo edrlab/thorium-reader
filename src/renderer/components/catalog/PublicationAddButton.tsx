@@ -6,20 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { TPublicationApiImport } from "readium-desktop/main/api/publication";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TChangeEvent } from "readium-desktop/typings/react";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
-interface Props extends TranslatorProps {
-    importFiles?: TPublicationApiImport;
-}
-
-export class PublicationAddButton extends React.Component<Props> {
-    public constructor(props: Props) {
+export class PublicationAddButton extends React.Component<TranslatorProps> {
+    public constructor(props: TranslatorProps) {
         super(props);
 
         this.importFile = this.importFile.bind(this);
@@ -44,26 +40,17 @@ export class PublicationAddButton extends React.Component<Props> {
         );
     }
 
-    private importFile(event: any) {
+    private importFile(event: TChangeEvent) {
         const files = event.target.files;
         const paths: string[] = [];
 
         for (const f of files) {
             paths.push(f.path);
         }
-        this.props.importFiles(paths);
+        apiAction("publication/import", paths).catch((error) => {
+            console.error(`Error to fetch publication/import`, error);
+        });
     }
 }
 
-export default withTranslator(withApi(
-    PublicationAddButton,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "import",
-                callProp: "importFiles",
-            },
-        ],
-    },
-));
+export default withTranslator(PublicationAddButton);

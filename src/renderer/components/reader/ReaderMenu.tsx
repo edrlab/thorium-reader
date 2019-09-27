@@ -9,17 +9,18 @@ import classnames from "classnames";
 import * as queryString from "query-string";
 import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
-import {
-    TReaderApiDeleteBookmark, TReaderApiFindBookmarks_result,
-} from "readium-desktop/main/api/reader";
+import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TFormEvent } from "readium-desktop/typings/react";
+import { Unsubscribe } from "redux";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
@@ -28,27 +29,27 @@ import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
-interface Props extends TranslatorProps {
+interface IProps extends TranslatorProps {
     open: boolean;
     publication: R2Publication;
     handleLinkClick: (event: any, url: string) => void;
-    bookmarks: TReaderApiFindBookmarks_result;
     handleBookmarkClick: (locator: any) => void;
-    deleteBookmark?: TReaderApiDeleteBookmark;
     toggleMenu: any;
     focusNaviguationMenu: () => void;
 }
 
-interface State {
+interface IState {
     openedSection: number;
     bookmarkToUpdate: number;
     pageError: boolean;
     refreshError: boolean;
+    bookmarks: TReaderApiFindBookmarks_result | undefined;
 }
 
-export class ReaderMenu extends React.Component<Props, State> {
+export class ReaderMenu extends React.Component<IProps, IState> {
     private goToRef: any;
-    public constructor(props: Props) {
+    private unsubscribe: Unsubscribe;
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -56,10 +57,23 @@ export class ReaderMenu extends React.Component<Props, State> {
             bookmarkToUpdate: undefined,
             pageError: false,
             refreshError: false,
+            bookmarks: undefined,
         };
 
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
         this.handleSubmitPage = this.handleSubmitPage.bind(this);
+    }
+
+    public componentDidMount() {
+        this.unsubscribe = apiSubscribe([
+            "reader/addBookmark",
+            "reader/deleteBookmark",
+            "reader/updateBookmark",
+        ], () => {
+            apiAction("reader/findBookmarks", queryString.parse(location.search).pubId as string)
+            .then((bookmarks) => this.setState({bookmarks}))
+            .catch((error) => console.error("Error to fetch api reader/findBookmark", error));
+        });
     }
 
     public componentDidUpdate() {
@@ -75,8 +89,15 @@ export class ReaderMenu extends React.Component<Props, State> {
         }
     }
 
+    public componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
-        const { __, publication, bookmarks, toggleMenu } = this.props;
+        const { __, publication, toggleMenu } = this.props;
+        const { bookmarks } = this.state;
         if (!publication) {
             return <></>;
         }
@@ -235,9 +256,9 @@ export class ReaderMenu extends React.Component<Props, State> {
     }
 
     private createBookmarkList(): JSX.Element[] {
-        if (this.props.publication && this.props.bookmarks) {
+        if (this.props.publication && this.state.bookmarks) {
             const { bookmarkToUpdate } = this.state;
-            return this.props.bookmarks.map((bookmark, i) =>
+            return this.state.bookmarks.map((bookmark, i) =>
                 <div
                     className={styles.bookmarks_line}
                     key={i}
@@ -266,13 +287,18 @@ export class ReaderMenu extends React.Component<Props, State> {
                     <button onClick={() => this.setState({bookmarkToUpdate: i})}>
                         <SVG svg={ EditIcon }/>
                     </button>
-                    <button onClick={() => this.props.deleteBookmark(bookmark.identifier)}>
+                    <button onClick={() => this.deleteBookmark(bookmark.identifier)}>
                         <SVG svg={ DeleteIcon }/>
                     </button>
                 </div>,
             );
         }
         return undefined;
+    }
+
+    private deleteBookmark = (bookmarkId: string) => {
+        apiAction("reader/deleteBookmark", bookmarkId)
+            .catch((error) => console.error("Error to fetch api reader/deleteBookmark", error));
     }
 
     private buildGoToPageSection() {
@@ -314,7 +340,7 @@ export class ReaderMenu extends React.Component<Props, State> {
         this.setState({ bookmarkToUpdate: undefined });
     }
 
-    private handleSubmitPage(e: any) {
+    private handleSubmitPage(e: TFormEvent) {
         e.preventDefault();
         const pageNbr = (this.goToRef.value as string).trim().replace(/\s\s+/g, " ");
         const foundPage = this.props.publication.PageList.find((page) => page.Title === pageNbr);
@@ -332,40 +358,4 @@ export class ReaderMenu extends React.Component<Props, State> {
     }
 }
 
-const buildBookmarkRequestData = () => {
-    return [ queryString.parse(location.search).pubId as string ];
-};
-
-export default withApi(
-    withTranslator(ReaderMenu),
-    {
-        operations: [
-            {
-                moduleId: "reader",
-                methodId: "findBookmarks",
-                resultProp: "bookmarks",
-                buildRequestData: buildBookmarkRequestData,
-                onLoad: true,
-            },
-            {
-                moduleId: "reader",
-                methodId: "deleteBookmark",
-                callProp: "deleteBookmark",
-            },
-        ],
-        refreshTriggers: [
-            {
-                moduleId: "reader",
-                methodId: "addBookmark",
-            },
-            {
-                moduleId: "reader",
-                methodId: "deleteBookmark",
-            },
-            {
-                moduleId: "reader",
-                methodId: "updateBookmark",
-            },
-        ],
-    },
-);
+export default withTranslator(ReaderMenu);
