@@ -53,12 +53,17 @@ export async function apiFetch<T extends TApiMethodName>(apiPath: T, ...requestD
                     store.dispatch(apiActions.clean(requestId));
                     if (request.resultIsReject) {
                         rejectSubscribe(request.result);
+                        return ;
                     }
                     resolveSubscribe(request.result);
+                    return ;
                 }
 
                 // handle promise<void>
-                timeoutId = window.setTimeout(() => reject("API Timeout"), 5000);
+                timeoutId = window.setTimeout(() => {
+                    timeoutId = undefined;
+                    rejectSubscribe("API Timeout");
+                }, 5000);
             });
         });
 
