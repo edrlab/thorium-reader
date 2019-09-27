@@ -5,262 +5,266 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-import { connect } from "react-redux";
-import { apiActions } from "readium-desktop/common/redux/actions";
-import { I18nTyped } from "readium-desktop/common/services/translator";
-import { diRendererGet } from "readium-desktop/renderer/di";
-import { RootState } from "readium-desktop/renderer/redux/states";
-import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
-import { Store } from "redux";
-import * as uuid from "uuid";
+/**
+ * Replace with apiFetch.ts and apiRefresh.ts
+ */
 
-export interface ApiOperationDefinition {
-    moduleId: string;
-    methodId: string;
-    callProp?: string;
-    resultProp?: string;
-    resultIsRejectProp?: string;
-    buildRequestData?: any;
-    onLoad?: boolean; // Load in component did mount, default true
-}
+// import * as React from "react";
+// import { connect } from "react-redux";
+// import { apiActions } from "readium-desktop/common/redux/actions";
+// import { I18nTyped } from "readium-desktop/common/services/translator";
+// import { diRendererGet } from "readium-desktop/renderer/di";
+// import { RootState } from "readium-desktop/renderer/redux/states";
+// import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
+// import { Store } from "redux";
+// import * as uuid from "uuid";
 
-export interface ApiConfig {
-    operations: ApiOperationDefinition[];
-    refreshTriggers?: any; // Api operation that triggers a new refresh
-    mapStateToProps?: any;
-    mapDispatchToProps?: any;
-}
+// export interface ApiOperationDefinition {
+//     moduleId: string;
+//     methodId: string;
+//     callProp?: string;
+//     resultProp?: string;
+//     resultIsRejectProp?: string;
+//     buildRequestData?: any;
+//     onLoad?: boolean; // Load in component did mount, default true
+// }
 
-export interface ApiOperationRequest {
-    id: string;
-    caller?: any;
-    definition: ApiOperationDefinition;
-}
+// export interface ApiConfig {
+//     operations: ApiOperationDefinition[];
+//     refreshTriggers?: any; // Api operation that triggers a new refresh
+//     mapStateToProps?: any;
+//     mapDispatchToProps?: any;
+// }
 
-export interface ApiProps {
-    operationResults: any;
-    requestOnLoadData?: any;
-    cleanData?: any;
-}
+// export interface ApiOperationRequest {
+//     id: string;
+//     caller?: any;
+//     definition: ApiOperationDefinition;
+// }
 
-// TS4094: private members fail the TS compiler, because:
-// returned type is ConnectedComponentClass<typeof BaseWrapperComponent, any>
-export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
+// export interface ApiProps {
+//     operationResults: any;
+//     requestOnLoadData?: any;
+//     cleanData?: any;
+// }
 
-    // Create operationRequests
-    const operationRequests: ApiOperationRequest[] = [];
-    const store = diRendererGet("store");
+// // TS4094: private members fail the TS compiler, because:
+// // returned type is ConnectedComponentClass<typeof BaseWrapperComponent, any>
+// export function withApi(WrappedComponent: any, queryConfig: ApiConfig) {
 
-    for (const operation of queryConfig.operations) {
-        const requestId = uuid.v4();
+//     // Create operationRequests
+//     const operationRequests: ApiOperationRequest[] = [];
+//     const store = diRendererGet("store");
 
-        // Create call method
-        const caller = (props: any) => {
-            return (...requestData: unknown[]) => {
-                const buildRequestData = operation.buildRequestData;
+//     for (const operation of queryConfig.operations) {
+//         const requestId = uuid.v4();
 
-                if (!requestData.length && buildRequestData) {
-                    requestData = buildRequestData(props);
-                }
+//         // Create call method
+//         const caller = (props: any) => {
+//             return (...requestData: unknown[]) => {
+//                 const buildRequestData = operation.buildRequestData;
 
-                store.dispatch(
-                    apiActions.buildRequestAction(
-                        requestId,
-                        operation.moduleId as any,
-                        operation.methodId as any,
-                        requestData,
-                    ),
-                );
-            };
-        };
+//                 if (!requestData.length && buildRequestData) {
+//                     requestData = buildRequestData(props);
+//                 }
 
-        operationRequests.push(
-            {
-                id: requestId,
-                caller,
-                definition: Object.assign(
-                    {},
-                    {
-                        callProp: uuid.v4(),
-                        resultProp: uuid.v4(),
-                        onLoad: false,
-                    },
-                    operation,
-                ),
-            },
-        );
-    }
+//                 store.dispatch(
+//                     apiActions.buildRequestAction(
+//                         requestId,
+//                         operation.moduleId as any,
+//                         operation.methodId as any,
+//                         requestData,
+//                     ),
+//                 );
+//             };
+//         };
 
-    const mapDispatchToProps = (dispatch: any, ownProps: any) => {
-        let dispatchToPropsResult = {};
+//         operationRequests.push(
+//             {
+//                 id: requestId,
+//                 caller,
+//                 definition: Object.assign(
+//                     {},
+//                     {
+//                         callProp: uuid.v4(),
+//                         resultProp: uuid.v4(),
+//                         onLoad: false,
+//                     },
+//                     operation,
+//                 ),
+//             },
+//         );
+//     }
 
-        if (queryConfig.mapDispatchToProps != null) {
-            dispatchToPropsResult = queryConfig.mapDispatchToProps(
-                dispatch,
-                ownProps,
-            );
-        }
+//     const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+//         let dispatchToPropsResult = {};
 
-        return Object.assign(
-            {},
-            dispatchToPropsResult,
-            {
-                requestOnLoadData: (_data: any) => {
-                    for (const operationRequest of operationRequests) {
-                        if (operationRequest.definition.onLoad) {
-                            operationRequest.caller(ownProps)();
-                        }
-                    }
-                },
-                cleanData: () => {
-                    for (const operationRequest of operationRequests) {
-                        dispatch(
-                            apiActions.clean(operationRequest.id),
-                        );
-                    }
-                },
-            },
-        );
-    };
+//         if (queryConfig.mapDispatchToProps != null) {
+//             dispatchToPropsResult = queryConfig.mapDispatchToProps(
+//                 dispatch,
+//                 ownProps,
+//             );
+//         }
 
-    const mapStateToProps = (state: RootState, ownProps: any) => {
-        let stateToPropsResult = {};
+//         return Object.assign(
+//             {},
+//             dispatchToPropsResult,
+//             {
+//                 requestOnLoadData: (_data: any) => {
+//                     for (const operationRequest of operationRequests) {
+//                         if (operationRequest.definition.onLoad) {
+//                             operationRequest.caller(ownProps)();
+//                         }
+//                     }
+//                 },
+//                 cleanData: () => {
+//                     for (const operationRequest of operationRequests) {
+//                         dispatch(
+//                             apiActions.clean(operationRequest.id),
+//                         );
+//                     }
+//                 },
+//             },
+//         );
+//     };
 
-        if (queryConfig.mapStateToProps != null) {
-            stateToPropsResult = queryConfig.mapStateToProps(
-                state,
-                ownProps,
-            );
-        }
+//     const mapStateToProps = (state: RootState, ownProps: any) => {
+//         let stateToPropsResult = {};
 
-        const operationResults: any = {};
+//         if (queryConfig.mapStateToProps != null) {
+//             stateToPropsResult = queryConfig.mapStateToProps(
+//                 state,
+//                 ownProps,
+//             );
+//         }
 
-        for (const operationRequest of operationRequests) {
-            if (operationRequest.id in state.api.data) {
-                const result = state.api.data[operationRequest.id].result;
-                const resultProp = operationRequest.definition.resultProp;
-                operationResults[resultProp] = result;
+//         const operationResults: any = {};
 
-                const resultIsReject = state.api.data[operationRequest.id].resultIsReject;
-                const resultIsRejectProp = operationRequest.definition.resultIsRejectProp;
-                operationResults[resultIsRejectProp] = resultIsReject;
-            }
-        }
+//         for (const operationRequest of operationRequests) {
+//             if (operationRequest.id in state.api.data) {
+//                 const result = state.api.data[operationRequest.id].result;
+//                 const resultProp = operationRequest.definition.resultProp;
+//                 operationResults[resultProp] = result;
 
-        return Object.assign(
-            {},
-            stateToPropsResult,
-            operationResults,
-        );
-    };
+//                 const resultIsReject = state.api.data[operationRequest.id].resultIsReject;
+//                 const resultIsRejectProp = operationRequest.definition.resultIsRejectProp;
+//                 operationResults[resultIsRejectProp] = resultIsReject;
+//             }
+//         }
 
-    const BaseWrapperComponent = class extends React.Component<ApiProps, undefined> {
-        public static displayName: string;
+//         return Object.assign(
+//             {},
+//             stateToPropsResult,
+//             operationResults,
+//         );
+//     };
 
-        // Ideally should be private, but see TS4094 comments in this file
-        /* private */ public lastSuccess: ApiLastSuccess;
-        /* private */ public store: Store<RootState>;
-        /* private */ public stateUpdateUnsubscribe: any;
+//     const BaseWrapperComponent = class extends React.Component<ApiProps, undefined> {
+//         public static displayName: string;
 
-        constructor(props: any) {
-            super(props);
+//         // Ideally should be private, but see TS4094 comments in this file
+//         /* private */ public lastSuccess: ApiLastSuccess;
+//         /* private */ public store: Store<RootState>;
+//         /* private */ public stateUpdateUnsubscribe: any;
 
-            this.lastSuccess = null;
-            this.handleStateUpdate = this.handleStateUpdate.bind(this);
-        }
+//         constructor(props: any) {
+//             super(props);
 
-        public componentDidMount() {
-            this.props.requestOnLoadData();
-            this.store = diRendererGet("store");
+//             this.lastSuccess = null;
+//             this.handleStateUpdate = this.handleStateUpdate.bind(this);
+//         }
 
-            if (queryConfig.refreshTriggers) {
-                this.stateUpdateUnsubscribe = this.store.subscribe(this.handleStateUpdate);
-            }
-        }
+//         public componentDidMount() {
+//             this.props.requestOnLoadData();
+//             this.store = diRendererGet("store");
 
-        public componentWillUnmount() {
-            if (this.stateUpdateUnsubscribe) {
-                this.stateUpdateUnsubscribe();
-            }
+//             if (queryConfig.refreshTriggers) {
+//                 this.stateUpdateUnsubscribe = this.store.subscribe(this.handleStateUpdate);
+//             }
+//         }
 
-            this.props.cleanData();
-        }
+//         public componentWillUnmount() {
+//             if (this.stateUpdateUnsubscribe) {
+//                 this.stateUpdateUnsubscribe();
+//             }
 
-        public render() {
-            const translator = diRendererGet("translator");
-            const translate = translator.translate.bind(translator) as I18nTyped;
+//             this.props.cleanData();
+//         }
 
-            const newProps: any = Object.assign(
-                {},
-                this.props,
-                {
-                    __: translate,
-                    translator,
-                },
-            );
+//         public render() {
+//             const translator = diRendererGet("translator");
+//             const translate = translator.translate.bind(translator) as I18nTyped;
 
-            if (newProps.operationResults) {
-                for (const key in newProps.operationResults) {
-                    if (newProps.operationResults.hasOwnProperty(key)) {
-                        newProps[key] = newProps.operationResults[key];
-                    }
-                }
-            }
+//             const newProps: any = Object.assign(
+//                 {},
+//                 this.props,
+//                 {
+//                     __: translate,
+//                     translator,
+//                 },
+//             );
 
-            for (const operationRequest of operationRequests) {
-                const def = operationRequest.definition;
-                newProps[def.callProp] = operationRequest.caller(this.props);
-            }
+//             if (newProps.operationResults) {
+//                 for (const key in newProps.operationResults) {
+//                     if (newProps.operationResults.hasOwnProperty(key)) {
+//                         newProps[key] = newProps.operationResults[key];
+//                     }
+//                 }
+//             }
 
-            return (<WrappedComponent { ...newProps } />);
-        }
+//             for (const operationRequest of operationRequests) {
+//                 const def = operationRequest.definition;
+//                 newProps[def.callProp] = operationRequest.caller(this.props);
+//             }
 
-        // Ideally should be private, but see TS4094 comments in this file
-        /* private */ public handleStateUpdate() {
-            const state = this.store.getState();
-            const apiLastSuccess = state.api.lastSuccess;
+//             return (<WrappedComponent { ...newProps } />);
+//         }
 
-            if (!apiLastSuccess) {
-                return;
-            }
+//         // Ideally should be private, but see TS4094 comments in this file
+//         /* private */ public handleStateUpdate() {
+//             const state = this.store.getState();
+//             const apiLastSuccess = state.api.lastSuccess;
 
-            const lastSuccessDate = (this.lastSuccess && this.lastSuccess.date) || 0;
+//             if (!apiLastSuccess) {
+//                 return;
+//             }
 
-            if (apiLastSuccess.date <= lastSuccessDate) {
-                return;
-            }
+//             const lastSuccessDate = (this.lastSuccess && this.lastSuccess.date) || 0;
 
-            // New api success
-            this.lastSuccess = apiLastSuccess;
+//             if (apiLastSuccess.date <= lastSuccessDate) {
+//                 return;
+//             }
 
-            // Need to refresh the component
-            const meta = apiLastSuccess.action.meta.api;
+//             // New api success
+//             this.lastSuccess = apiLastSuccess;
 
-            const lastAction = {
-                moduleId: meta.moduleId,
-                methodId: meta.methodId,
-            };
+//             // Need to refresh the component
+//             const meta = apiLastSuccess.action.meta.api;
 
-            let refresh = false;
+//             const lastAction = {
+//                 moduleId: meta.moduleId,
+//                 methodId: meta.methodId,
+//             };
 
-            for (const triggerAction of queryConfig.refreshTriggers) {
-                if (
-                    triggerAction.moduleId === lastAction.moduleId
-                    && triggerAction.methodId === lastAction.methodId
-                ) {
-                    refresh = true;
-                    break;
-                }
-            }
-            if (refresh) {
-                this.props.requestOnLoadData();
-            }
-        }
-    };
+//             let refresh = false;
 
-    BaseWrapperComponent.displayName =
-        `withApi(${WrappedComponent.displayName || WrappedComponent.name || "Component"})`;
+//             for (const triggerAction of queryConfig.refreshTriggers) {
+//                 if (
+//                     triggerAction.moduleId === lastAction.moduleId
+//                     && triggerAction.methodId === lastAction.methodId
+//                 ) {
+//                     refresh = true;
+//                     break;
+//                 }
+//             }
+//             if (refresh) {
+//                 this.props.requestOnLoadData();
+//             }
+//         }
+//     };
 
-    return connect(mapStateToProps, mapDispatchToProps)(BaseWrapperComponent);
-}
+//     BaseWrapperComponent.displayName =
+//         `withApi(${WrappedComponent.displayName || WrappedComponent.name || "Component"})`;
+
+//     return connect(mapStateToProps, mapDispatchToProps)(BaseWrapperComponent);
+// }
