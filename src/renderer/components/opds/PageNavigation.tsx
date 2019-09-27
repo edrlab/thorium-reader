@@ -25,6 +25,8 @@ interface Props extends TranslatorProps {
 
 class PageNavigation extends React.Component<Props> {
     private currentPage: number = 1;
+    private lastShortkeyDate: number;
+
     public constructor(props: Props) {
         super(props);
 
@@ -33,6 +35,12 @@ class PageNavigation extends React.Component<Props> {
         this.previousPage = this.previousPage.bind(this);
         this.lastPage = this.lastPage.bind(this);
         this.firstPage = this.firstPage.bind(this);
+    }
+
+    public componentDidUpdate(oldProps: Props) {
+        if ( this.props.urls !== oldProps.urls) {
+            this.lastShortkeyDate = undefined;
+        }
     }
 
     public componentDidMount() {
@@ -82,11 +90,13 @@ class PageNavigation extends React.Component<Props> {
         const { urls } = this.props;
         const { nextPage, previousPage } = urls;
         const withModifierKeys = e.shiftKey && e.ctrlKey;
-        if (withModifierKeys) {
+        if (withModifierKeys && (!this.lastShortkeyDate || this.lastShortkeyDate < (Date.now() - 2000))) {
             if (e.key === "ArrowLeft" && previousPage) {
                 this.previousPage();
+                this.lastShortkeyDate = Date.now();
             } else if (e.key === "ArrowRight" && nextPage) {
                 this.nextPage();
+                this.lastShortkeyDate = Date.now();
             }
         }
     }
