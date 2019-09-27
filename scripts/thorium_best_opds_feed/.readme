@@ -1,0 +1,4 @@
+
+npm install --global surge
+
+surge THIS_FOLDER thorium-reader.surge.sh
