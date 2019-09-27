@@ -107,7 +107,7 @@ export class CatalogService {
             try {
                 opdsFeedData.data = await this.importOpdsPublication(opdsPublication, downloadSample);
             } catch (error) {
-                debug("Unable to retrieve opds publication", error);
+                debug("Unable to retrieve opds publication", opdsPublication, error);
                 throw new Error("Unable to retrieve opds publication: " + error);
             }
             return opdsFeedData;

@@ -100,7 +100,7 @@ export class Downloader {
         }
 
         const headers = Object.assign(headerFromOptions, {
-            // "user-agent": "readium-desktop",
+            "user-agent": "readium-desktop",
             "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
         });
         const requestOptions: TRequestCoreOptionsRequiredUriUrl = Object.assign(
