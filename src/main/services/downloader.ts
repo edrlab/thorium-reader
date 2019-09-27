@@ -5,18 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
-
 import * as debug_ from "debug";
 import * as fs from "fs";
+import { injectable } from "inversify";
 import * as path from "path";
+import { Download } from "readium-desktop/common/models/download";
+import { DownloadStatus } from "readium-desktop/common/models/downloadable";
+import { diMainGet } from "readium-desktop/main/di";
 import * as request from "request";
 import { tmpNameSync } from "tmp";
 import { URL } from "url";
 import * as uuid from "uuid";
 
-import { Download } from "readium-desktop/common/models/download";
-import { DownloadStatus } from "readium-desktop/common/models/downloadable";
+type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
+type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
 
 // Logger
 const debug = debug_("readium-desktop:main#services/downloader");
@@ -72,6 +74,7 @@ export class Downloader {
     public async processDownload(
         identifier: string,
         progressListener?: DownloadProgressListener,
+        options?: TRequestCoreOptionsOptionalUriUrl,
     ): Promise<Download> {
         // Retrieve download
         const download = this.downloads[identifier];
@@ -83,21 +86,48 @@ export class Downloader {
         // Last time we poll the request progress
         let progressLastTime = new Date();
 
-        // 5 seconds of timeout
-        const requestStream = request.get(
-            download.srcUrl,
+        const store = diMainGet("store");
+        const locale = store.getState().i18n.locale;
+
+        options = options || {} as TRequestCoreOptionsOptionalUriUrl;
+        options.headers = options.headers || {};
+
+        const headerFromOptions = {};
+        for (const [key, value] of Object.entries(options.headers)) {
+            Object.assign(headerFromOptions, {
+                [key.toLowerCase()]: value,
+            });
+        }
+
+        const headers = Object.assign(headerFromOptions, {
+            "user-agent": "readium-desktop",
+            "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
+        });
+        const requestOptions: TRequestCoreOptionsRequiredUriUrl = Object.assign(
             {timeout: 5000},
+            options,
+            {
+                url: download.srcUrl,
+                method: "GET",
+                encoding: undefined,
+                headers,
+            },
         );
+
+        const requestStream = request(requestOptions);
 
         return new Promise<Download>((resolve, reject) => {
             requestStream.on("response", (response) => {
                 if (response.statusCode < 200 || response.statusCode > 299) {
                     // Unable to download the resource
                     download.status = DownloadStatus.Failed;
+                    download.progress = 0;
+                    download.downloadedSize = 0;
                     debug("Error while downloading resource", download, response.statusCode);
                     outputStream.end(null, null, () => {
-                        reject("Error while downloading resource");
+                        reject("Error while downloading resource: " + response.statusCode);
                     });
+                    return;
                 }
 
                 download.status = DownloadStatus.Downloading;
@@ -153,6 +183,9 @@ export class Downloader {
             requestStream.on("error", (error) => {
                 // Download error
                 download.status = DownloadStatus.Failed;
+                // keep existing (just in case error is half-way through download)
+                // download.progress = 0;
+                // download.downloadedSize = 0;
                 outputStream.end(null, null, () => {
                     return reject(error);
                 });
