@@ -262,23 +262,27 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     className={styles.bookmarks_line}
                     key={i}
                 >
-                    <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
-                    <div
-                        className={styles.chapter_marker}
-                        onClick={() => this.props.handleBookmarkClick(bookmark.locator)}
+                    { bookmarkToUpdate === i &&
+                        <UpdateBookmarkForm
+                            close={ this.closeBookarkEditForm }
+                            bookmark={ bookmark }
+                        />
+                    }
+                    <button
+                        className={styles.bookmark_infos}
+                        tabIndex={0}
+                        onClick={(e) => this.handleBookmarkClick(e, bookmark)}
                     >
-                        { bookmarkToUpdate === i ?
-                            <UpdateBookmarkForm
-                                close={ this.closeBookarkEditForm }
-                                bookmark={ bookmark }
-                            />
-                        :
-                            bookmark.name ? bookmark.name : <>Bookmark {i}</>
-                        }
-                        <div className={styles.gauge}>
-                            <div className={styles.fill}></div>
+                        <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
+                        <div className={styles.chapter_marker}>
+                            <p className={styles.bookmark_name}>
+                                {bookmark.name ? bookmark.name : `Bookmark ${i}`}
+                            </p>
+                            <div className={styles.gauge}>
+                                <div className={styles.fill}></div>
+                            </div>
                         </div>
-                    </div>
+                    </button>
                     <button onClick={() => this.setState({bookmarkToUpdate: i})}>
                         <SVG svg={ EditIcon }/>
                     </button>
@@ -345,6 +349,11 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         } else {
             this.setState({refreshError: true});
         }
+    }
+
+    private handleBookmarkClick(e: any, bookmark: LocatorView) {
+        e.preventDefault();
+        this.props.handleBookmarkClick(bookmark.locator);
     }
 }
 
