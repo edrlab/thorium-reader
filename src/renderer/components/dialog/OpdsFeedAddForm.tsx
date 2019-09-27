@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
@@ -94,7 +94,7 @@ class OpdsFeedAddForm extends React.Component<IProps, State> {
         e.preventDefault();
         const title = this.state.name;
         const url = this.state.url;
-        apiFetch("opds/addFeed", { title, url }).catch((err) => {
+        apiAction("opds/addFeed", { title, url }).catch((err) => {
             console.error("Error to fetch api opds/findAllFeeds", err);
         });
         this.props.closeDialog();

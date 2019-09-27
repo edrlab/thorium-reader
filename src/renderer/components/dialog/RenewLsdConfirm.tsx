@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
@@ -54,7 +54,7 @@ class RenewLsdConfirm extends React.Component<IProps> {
 
     public renew(e: TMouseEvent) {
         e.preventDefault();
-        apiFetch("lcp/renewPublicationLicense", {
+        apiAction("lcp/renewPublicationLicense", {
             publication: {
                 identifier: this.props.publication.identifier,
             },

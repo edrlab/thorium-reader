@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
@@ -79,7 +79,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
     private submit(e: TFormEvent) {
         e.preventDefault();
 
-        apiFetch("lcp/unlockPublicationWithPassphrase", {
+        apiAction("lcp/unlockPublicationWithPassphrase", {
             publication: this.props.publication,
             passphrase: this.state.password,
         }).catch((error) => {

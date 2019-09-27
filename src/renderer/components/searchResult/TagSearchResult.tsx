@@ -9,7 +9,7 @@ import * as qs from "query-string";
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { TPublicationApiFindByTag_result } from "readium-desktop/main/api/publication";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
@@ -44,7 +44,7 @@ export class TagSearchResult extends React.Component<IProps, IState> {
             "publication/updateTags",
             "catalog/addEntry",
         ], () => {
-            apiFetch("publication/findByTag", (this.props.match.params as any).value)
+            apiAction("publication/findByTag", (this.props.match.params as any).value)
                 .then((publications) => this.setState({publications}))
                 .catch((error) => console.error("Error to fetch api publication/findByTag", error));
         });

@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
@@ -35,12 +35,12 @@ class SameFileImportManager extends React.Component<IProps> {
 
     private search() {
         const { lastImport } = this.props;
-        apiFetch("publication/search", lastImport.publication.title)
+        apiAction("publication/search", lastImport.publication.title)
             .then((searchResult) => {
                 if (searchResult && searchResult.length) {
                     this.props.displayImportDialog(lastImport.publication, lastImport.downloadSample);
                 } else {
-                    apiFetch("publication/importOpdsEntry",
+                    apiAction("publication/importOpdsEntry",
                         lastImport.publication.url,
                         lastImport.publication.base64OpdsPublication,
                         lastImport.publication.title,

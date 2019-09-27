@@ -8,7 +8,7 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { TPublicationApiFindAll_result } from "readium-desktop/main/api/publication";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
@@ -45,7 +45,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
             "catalog/addEntry",
             "publication/updateTags",
         ], () => {
-            apiFetch("publication/findAll")
+            apiAction("publication/findAll")
                 .then((publications) => this.setState({publications}))
                 .catch((error) => console.error("Error to fetch api publication/findAll", error));
         });

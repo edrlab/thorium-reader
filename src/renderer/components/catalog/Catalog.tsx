@@ -10,7 +10,7 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { TCatalogApiGet_result } from "readium-desktop/main/api/catalog";
 import { TPublicationApiGetAllTags_result } from "readium-desktop/main/api/publication";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
@@ -49,12 +49,12 @@ class Catalog extends React.Component<IProps, IState> {
             "publication/updateTags",
             "reader/setLastReadingLocation",
         ], () => {
-            apiFetch("catalog/get")
+            apiAction("catalog/get")
                 .then((catalog) => this.setState({ catalog }))
                 .catch((error) => {
                     console.error(`Error to fetch catalog/get`, error);
                 });
-            apiFetch("publication/getAllTags")
+            apiAction("publication/getAllTags")
                 .then((tags) => this.setState({ tags }))
                 .catch((error) => {
                     console.error(`Error to fetch publication/getAllTags`, error);

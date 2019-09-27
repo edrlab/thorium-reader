@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
@@ -66,7 +66,7 @@ class FileImport extends React.Component<IProps, undefined> {
             const paths = this.props.files.map((file) => {
                 return file.path;
             });
-            apiFetch("publication/import", paths).catch((error) => {
+            apiAction("publication/import", paths).catch((error) => {
                 console.error(`Error to fetch publication/import`, error);
             });
             this.props.closeDialog();

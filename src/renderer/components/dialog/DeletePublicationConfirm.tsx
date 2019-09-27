@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
@@ -55,7 +55,7 @@ class DeletePublicationConfirm extends React.Component<IProps> {
 
     public remove(e: TMouseEvent) {
         e.preventDefault();
-        apiFetch("publication/delete", this.props.publication.identifier).catch((error) => {
+        apiAction("publication/delete", this.props.publication.identifier).catch((error) => {
             console.error(`Error to fetch publication/delete`, error);
         });
         this.props.closeDialog();

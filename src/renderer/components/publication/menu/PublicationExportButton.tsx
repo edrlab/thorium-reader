@@ -8,7 +8,7 @@
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublicationApiExportPublication } from "readium-desktop/main/api/publication";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 interface IProps extends TranslatorProps {
@@ -59,7 +59,7 @@ class PublicationExportButton extends React.Component<IProps> {
         this.props.onClick();
         const destinationPath = event.target.files[0].path;
         const publication = this.props.publication;
-        apiFetch("publication/exportPublication", publication, destinationPath).catch((error) => {
+        apiAction("publication/exportPublication", publication, destinationPath).catch((error) => {
             console.error(`Error to fetch publication/exportPublication`, error);
         });
     }

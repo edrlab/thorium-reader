@@ -9,7 +9,7 @@ import classnames from "classnames";
 import * as queryString from "query-string";
 import * as React from "react";
 import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
@@ -69,7 +69,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             "reader/deleteBookmark",
             "reader/updateBookmark",
         ], () => {
-            apiFetch("reader/findBookmarks", queryString.parse(location.search).pubId as string)
+            apiAction("reader/findBookmarks", queryString.parse(location.search).pubId as string)
             .then((bookmarks) => this.setState({bookmarks}))
             .catch((error) => console.error("Error to fetch api reader/findBookmark", error));
         });
@@ -292,7 +292,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private deleteBookmark = (bookmarkId: string) => {
-        apiFetch("reader/deleteBookmark", bookmarkId)
+        apiAction("reader/deleteBookmark", bookmarkId)
             .catch((error) => console.error("Error to fetch api reader/deleteBookmark", error));
     }
 

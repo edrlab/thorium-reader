@@ -12,7 +12,7 @@ import { LsdStatus } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
@@ -59,7 +59,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
             // currently getLsdStatus in LCP API is broken
             // HttpGet is badly handle
             // FIX ME in a next PR
-            apiFetch("lcp/getLsdStatus", { publication })
+            apiAction("lcp/getLsdStatus", { publication })
                 .then((request) => {
                     if (request.isSuccess) {
                         this.setState({ lsdStatus: request.data });

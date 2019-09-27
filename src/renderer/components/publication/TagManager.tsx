@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { TPublicationApiUpdateTags_result } from "readium-desktop/main/api/publication";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px-blue.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
@@ -112,7 +112,7 @@ export class TagManager extends React.Component<Props, TagManagerState> {
 
     private sendTags(tags: string[]) {
 //        this.props.updateTags(this.props.publicationIdentifier, tags);
-        apiFetch("publication/updateTags", this.props.publicationIdentifier, tags)
+        apiAction("publication/updateTags", this.props.publicationIdentifier, tags)
             .catch((error) => console.error("Error to fetch api publication/updateTags", error));
     }
 

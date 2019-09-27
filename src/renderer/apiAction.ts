@@ -14,7 +14,7 @@ import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { Unsubscribe } from "redux";
 import * as uuid from "uuid";
 
-export async function apiFetch<T extends TApiMethodName>(apiPath: T, ...requestData: Parameters<TApiMethod[T]>) {
+export async function apiAction<T extends TApiMethodName>(apiPath: T, ...requestData: Parameters<TApiMethod[T]>) {
     return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
         const store = diRendererGet("store");
         const requestId = uuid.v4();

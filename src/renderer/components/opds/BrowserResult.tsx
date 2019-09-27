@@ -10,7 +10,7 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { OpdsResultType } from "readium-desktop/common/views/opds";
 import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import {
     TranslatorProps, withTranslator,
@@ -128,7 +128,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         }
 
         this.currentUrl = newUrl;
-        apiFetch("opds/browse", newUrl).then((result) => this.setState({
+        apiAction("opds/browse", newUrl).then((result) => this.setState({
             browserResult: result,
             browserError: undefined,
         })).catch((error) => this.setState({

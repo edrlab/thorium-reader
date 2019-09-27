@@ -9,7 +9,7 @@ import * as qs from "query-string";
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { TPublicationApiSearch_result } from "readium-desktop/main/api/publication";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
@@ -98,7 +98,7 @@ export class TextSearchResult extends React.Component<IProps, IState> {
     }
 
     private searchPublications = (text: string = (this.props.match.params as any).value) => {
-        apiFetch("publication/search", text)
+        apiAction("publication/search", text)
             .then((publications) => this.setState({publications}))
             .catch((error) => console.error("Error to fetch api publication/search", error));
     }

@@ -18,7 +18,7 @@ import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader"
 import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
@@ -401,7 +401,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             "reader/addBookmark",
         ], this.findBookmarks);
 
-        apiFetch("publication/get", queryParams.pubId)
+        apiAction("publication/get", queryParams.pubId)
             .then((publicationInfo) => this.setState({publicationInfo}))
             .catch((error) => console.error("Error to fetch api publication/get", error));
     }
@@ -581,7 +581,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
 
     private saveReadingLocation(loc: LocatorExtended) {
 //        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
-        apiFetch("reader/setLastReadingLocation", queryParams.pubId, loc.locator)
+        apiAction("reader/setLastReadingLocation", queryParams.pubId, loc.locator)
             .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
 
     }
@@ -691,7 +691,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             for (const bookmark of this.state.visibleBookmarkList) {
 //                this.props.deleteBookmark(bookmark.identifier);
                 try {
-                    await apiFetch("reader/deleteBookmark", bookmark.identifier);
+                    await apiAction("reader/deleteBookmark", bookmark.identifier);
                 } catch (e) {
                     console.error("Error to fetch api reader/deleteBookmark", e);
                 }
@@ -700,7 +700,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             const locator = this.state.currentLocation.locator;
 //            this.props.addBookmark(this.pubId, locator);
             try {
-                await apiFetch("reader/addBookmark", this.pubId, locator);
+                await apiAction("reader/addBookmark", this.pubId, locator);
             } catch (e) {
                 console.error("Error to fetch api reader/addBookmark", e);
             }
@@ -786,7 +786,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
     }
 
     private findBookmarks() {
-        apiFetch("reader/findBookmarks", this.pubId)
+        apiAction("reader/findBookmarks", this.pubId)
             .then((bookmarks) => this.setState({bookmarks}))
             .catch((error) => console.error("Error to fetch api reader/findBookmarks", error));
     }

@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
@@ -55,7 +55,7 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
 
     public remove(e: TMouseEvent) {
         e.preventDefault();
-        apiFetch("opds/deleteFeed", this.props.feed.identifier).catch((error) => {
+        apiAction("opds/deleteFeed", this.props.feed.identifier).catch((error) => {
             console.error(`Error to fetch opds/deleteFeed`, error);
         });
         this.props.closeDialog();

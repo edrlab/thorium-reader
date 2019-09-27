@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { TFormEvent } from "readium-desktop/typings/react";
 
 interface Props {
@@ -61,7 +61,7 @@ export class UpdateBookmarkForm extends React.Component<Props, State> {
         const { bookmark } = this.props;
         bookmark.name = this.inputRef.current.value;
         //        updateBookmark(bookmark.identifier, bookmark.publication.identifier, bookmark.locator, bookmark.name);
-        apiFetch("reader/updateBookmark",
+        apiAction("reader/updateBookmark",
             bookmark.identifier,
             bookmark.publication.identifier,
             bookmark.locator,

@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
@@ -57,7 +57,7 @@ class SameFileImportConfirm extends React.Component<IProps> {
     }
 
     private addToCatalog() {
-        apiFetch("publication/importOpdsEntry",
+        apiAction("publication/importOpdsEntry",
             this.props.publication.url,
             this.props.publication.base64OpdsPublication,
             this.props.publication.title,

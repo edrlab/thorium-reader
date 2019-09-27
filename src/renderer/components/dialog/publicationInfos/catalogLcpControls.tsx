@@ -11,7 +11,7 @@ import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
@@ -45,7 +45,7 @@ class CatalogLcpControls extends React.Component<IProps & ReturnType<typeof mapD
 
     public componentDidMount() {
         // don't forget to handle httpRequest in frontend
-        apiFetch("lcp/getLsdStatus", {publication: this.props.publication})
+        apiAction("lcp/getLsdStatus", {publication: this.props.publication})
         .then((request) => this.setState({lsdStatus: request.data}))
         .catch((error) => {
             console.error(`Error to fetch lcp/getLsdStatus`, error);

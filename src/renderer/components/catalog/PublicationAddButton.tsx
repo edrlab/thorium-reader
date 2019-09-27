@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
@@ -47,7 +47,7 @@ export class PublicationAddButton extends React.Component<TranslatorProps> {
         for (const f of files) {
             paths.push(f.path);
         }
-        apiFetch("publication/import", paths).catch((error) => {
+        apiAction("publication/import", paths).catch((error) => {
             console.error(`Error to fetch publication/import`, error);
         });
     }

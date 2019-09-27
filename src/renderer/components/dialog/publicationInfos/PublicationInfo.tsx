@@ -13,7 +13,7 @@ import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
@@ -210,7 +210,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 
     private getPublicationFromId() {
-        apiFetch("publication/get", this.props.publicationIdentifier)
+        apiAction("publication/get", this.props.publicationIdentifier)
             .then((publication) => this.setState({ publication }))
             .catch((error) => console.error(`Error to fetch publication/get`, error));
     }

@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
 import { TOpdsApiFindAllFeed_result } from "readium-desktop/main/api/opds";
-import { apiFetch } from "readium-desktop/renderer/apiFetch";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
@@ -97,7 +97,7 @@ class FeedList extends React.Component<IProps, IState> {
 
     private async loadFeeds() {
         try {
-            const feedsResult = await apiFetch("opds/findAllFeeds");
+            const feedsResult = await apiAction("opds/findAllFeeds");
             this.setState({ feedsResult });
         } catch (e) {
             console.error("Error to fetch api opds/findAllFeeds", e);
