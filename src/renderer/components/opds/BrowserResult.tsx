@@ -170,17 +170,3 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
 }
 
 export default withTranslator(withRouter(BrowserResult));
-/*
-    {
-        operations: [
-            {
-                moduleId: "opds",
-                methodId: "browse",
-                resultProp: "result",
-                resultIsRejectProp: "resultIsReject",
-                callProp: "browse",
-            },
-        ],
-    },
-);
-*/

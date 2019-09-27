@@ -78,17 +78,3 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(DeleteOpdsFeedConfirm));
-/*
-    DeleteOpdsFeedConfirm,
-    {
-        operations: [
-            {
-                moduleId: "opds",
-                methodId: "deleteFeed",
-                callProp: "delete",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);
-*/
