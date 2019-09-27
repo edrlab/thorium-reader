@@ -8,6 +8,7 @@
 import classnames from "classnames";
 import * as queryString from "query-string";
 import * as React from "react";
+import { LocatorView } from "readium-desktop/common/views/locator";
 import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
