@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 /**
- * Replace with apiFetch.ts and apiRefresh.ts
+ * Replace with apiFetch.ts and apiSubscribe.ts
  */
 
 // import * as React from "react";

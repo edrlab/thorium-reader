@@ -10,7 +10,7 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { TPublicationApiFindByTag_result } from "readium-desktop/main/api/publication";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
-import { apiRefresh } from "readium-desktop/renderer/apiRefresh";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import GridView from "readium-desktop/renderer/components/utils/GridView";
@@ -38,7 +38,7 @@ export class TagSearchResult extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        this.unsubscribe = apiRefresh([
+        this.unsubscribe = apiSubscribe([
             "publication/delete",
             "publication/import",
             "publication/updateTags",

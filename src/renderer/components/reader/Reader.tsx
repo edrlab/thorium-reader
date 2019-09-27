@@ -19,7 +19,7 @@ import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
-import { apiRefresh } from "readium-desktop/renderer/apiRefresh";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
@@ -396,7 +396,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
 
         setEpubReadingSystemInfo({ name: _APP_NAME, version: _APP_VERSION });
 
-        this.unsubscribe = apiRefresh([
+        this.unsubscribe = apiSubscribe([
             "reader/deleteBookmark",
             "reader/addBookmark",
         ], this.findBookmarks);

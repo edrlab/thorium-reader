@@ -11,7 +11,7 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import { TCatalogApiGet_result } from "readium-desktop/main/api/catalog";
 import { TPublicationApiGetAllTags_result } from "readium-desktop/main/api/publication";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
-import { apiRefresh } from "readium-desktop/renderer/apiRefresh";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { Unsubscribe } from "redux";
@@ -41,7 +41,7 @@ class Catalog extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        this.unsubscribe = apiRefresh([
+        this.unsubscribe = apiSubscribe([
             "publication/import",
             "publication/importOpdsEntry",
             "publication/delete",

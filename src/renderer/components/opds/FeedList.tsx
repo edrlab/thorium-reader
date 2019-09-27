@@ -12,7 +12,7 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
 import { TOpdsApiFindAllFeed_result } from "readium-desktop/main/api/opds";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
-import { apiRefresh } from "readium-desktop/renderer/apiRefresh";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
@@ -42,7 +42,7 @@ class FeedList extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
-        this.unsubscribe = apiRefresh([
+        this.unsubscribe = apiSubscribe([
             "opds/addFeed",
             "opds/deleteFeed",
             "opds/updateFeed",

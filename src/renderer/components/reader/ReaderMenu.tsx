@@ -10,7 +10,7 @@ import * as queryString from "query-string";
 import * as React from "react";
 import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
 import { apiFetch } from "readium-desktop/renderer/apiFetch";
-import { apiRefresh } from "readium-desktop/renderer/apiRefresh";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
@@ -64,7 +64,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        this.unsubscribe = apiRefresh([
+        this.unsubscribe = apiSubscribe([
             "reader/addBookmark",
             "reader/deleteBookmark",
             "reader/updateBookmark",

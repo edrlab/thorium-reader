@@ -16,7 +16,7 @@ import { Unsubscribe } from "redux";
  *
  * don't forget to unsubscribe with the return value of function
  */
-export function apiRefresh(pathArrayToRefresh: TApiMethodName[], cb: () => void | Promise<void>): Unsubscribe {
+export function apiSubscribe(pathArrayToRefresh: TApiMethodName[], cb: () => void | Promise<void>): Unsubscribe {
     const store = diRendererGet("store");
     let lastSuccess: ApiLastSuccess | undefined;
 
