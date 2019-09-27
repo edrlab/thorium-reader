@@ -242,6 +242,12 @@ export class ReaderMenu extends React.Component<Props, State> {
                     className={styles.bookmarks_line}
                     key={i}
                 >
+                    { bookmarkToUpdate === i &&
+                        <UpdateBookmarkForm
+                            close={ this.closeBookarkEditForm }
+                            bookmark={ bookmark }
+                        />
+                    }
                     <button
                         className={styles.bookmark_infos}
                         tabIndex={0}
@@ -249,14 +255,9 @@ export class ReaderMenu extends React.Component<Props, State> {
                     >
                         <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
                         <div className={styles.chapter_marker}>
-                            { bookmarkToUpdate === i ?
-                                <UpdateBookmarkForm
-                                    close={ this.closeBookarkEditForm }
-                                    bookmark={ bookmark }
-                                />
-                            :
-                                bookmark.name ? bookmark.name : <>Bookmark {i}</>
-                            }
+                            <p className={styles.bookmark_name}>
+                                {bookmark.name ? bookmark.name : `Bookmark ${i}`}
+                            </p>
                             <div className={styles.gauge}>
                                 <div className={styles.fill}></div>
                             </div>
