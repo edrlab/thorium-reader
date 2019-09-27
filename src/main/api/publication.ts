@@ -160,9 +160,16 @@ export class PublicationApi implements IPublicationApi {
                     ${httpPub.statusCode} for ${httpPub.url}`);
             }
         } else {
-            const opdsPublication =
+            const opdsPublication = // OPDSPublication
                 JSON.parse(Buffer.from(base64OpdsPublication, "base64").toString("utf-8"));
-            const publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample);
+            let publication;
+            try {
+                publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample);
+            } catch (error) {
+                debug(`importOpdsPublication - FAIL`, opdsPublication, error);
+                this.dispatchToastRequest(ToastType.DownloadFailed, `[${error}]`);
+                throw new Error(`importOpdsPublication ${error}`);
+            }
             titleView = publication.title;
             this.sendDownloadSuccess(url);
             returnView = this.publicationViewConverter.convertDocumentToView(publication);
