@@ -144,18 +144,3 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IProps) => {
 };
 
 export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogLcpControls));
-/*withApi(
-    withTranslator(CatalogLcpControls),
-    {
-        mapDispatchToProps,
-        operations: [
-            {
-                moduleId: "lcp",
-                methodId: "getLsdStatus",
-                resultProp: "lsdStatus",
-                buildRequestData,
-                onLoad: true,
-            },
-        ],
-    },
-);*/

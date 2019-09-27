@@ -117,18 +117,3 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OpdsFeedAddForm));
-/*
-withApi(
-    OpdsFeedAddForm,
-    {
-        operations: [
-            {
-                moduleId: "opds",
-                methodId: "addFeed",
-                callProp: "addFeed",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);
-*/

@@ -98,35 +98,3 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
 }
 
 export default withTranslator(AllPublicationPage);
-/*(withApi(
-    AllPublicationPage,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "findAll",
-                resultProp: "publications",
-                onLoad: true,
-            },
-        ],
-        refreshTriggers: [
-            {
-                moduleId: "publication",
-                methodId: "import",
-            },
-            {
-                moduleId: "publication",
-                methodId: "delete",
-            },
-            {
-                moduleId: "catalog",
-                methodId: "addEntry",
-            },
-            {
-                moduleId: "publication",
-                methodId: "updateTags",
-            },
-        ],
-    },
-));
-*/

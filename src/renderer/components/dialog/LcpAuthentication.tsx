@@ -113,16 +113,3 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LCPAuthentication));
-/*withApi(
-    withTranslator(LCPAuthentication),
-    {
-        operations: [
-            {
-                moduleId: "lcp",
-                methodId: "unlockPublicationWithPassphrase",
-                callProp: "unlockPublicationWithPassphrase",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);*/

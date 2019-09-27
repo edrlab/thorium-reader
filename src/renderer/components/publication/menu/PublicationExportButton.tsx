@@ -66,15 +66,3 @@ class PublicationExportButton extends React.Component<IProps> {
 }
 
 export default withTranslator(PublicationExportButton);
-/*withApi(
-    PublicationExportButton,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "exportPublication",
-                callProp: "exportPublication",
-            },
-        ],
-    },
-);*/

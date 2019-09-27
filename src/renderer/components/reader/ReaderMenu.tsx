@@ -358,43 +358,4 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 }
 
-/*
-const buildBookmarkRequestData = () => {
-    return [ queryString.parse(location.search).pubId as string ];
-};
-*/
-
 export default withTranslator(ReaderMenu);
-/*withApi(
-    withTranslator(ReaderMenu),
-    {
-        operations: [
-            {
-                moduleId: "reader",
-                methodId: "findBookmarks",
-                resultProp: "bookmarks",
-                buildRequestData: buildBookmarkRequestData,
-                onLoad: true,
-            },
-            {
-                moduleId: "reader",
-                methodId: "deleteBookmark",
-                callProp: "deleteBookmark",
-            },
-        ],
-        refreshTriggers: [
-            {
-                moduleId: "reader",
-                methodId: "addBookmark",
-            },
-            {
-                moduleId: "reader",
-                methodId: "deleteBookmark",
-            },
-            {
-                moduleId: "reader",
-                methodId: "updateBookmark",
-            },
-        ],
-    },
-);*/

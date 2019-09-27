@@ -90,16 +90,3 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(FileImport));
-/*withApi(
-    FileImport,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "import",
-                callProp: "importFiles",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);*/

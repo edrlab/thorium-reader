@@ -33,16 +33,3 @@ class GridTagButton extends React.Component<IProps> {
 }
 
 export default GridTagButton;
-/*withApi(
-    GridTagButton,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "findByTag",
-                callProp: "findByTag",
-                resultProp: "tag",
-            },
-        ],
-    },
-);*/

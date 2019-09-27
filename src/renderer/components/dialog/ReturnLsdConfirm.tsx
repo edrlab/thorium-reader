@@ -83,16 +83,3 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LsdReturnConfirm));
-/*withApi(
-    LsdReturnConfirm,
-    {
-        operations: [
-            {
-                moduleId: "lcp",
-                methodId: "returnPublication",
-                callProp: "returnPublication",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);*/

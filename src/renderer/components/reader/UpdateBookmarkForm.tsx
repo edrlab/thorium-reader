@@ -73,15 +73,3 @@ export class UpdateBookmarkForm extends React.Component<Props, State> {
 }
 
 export default UpdateBookmarkForm;
-/*withApi(
-    UpdateBookmarkForm,
-    {
-        operations: [
-            {
-                moduleId: "reader",
-                methodId: "updateBookmark",
-                callProp: "updateBookmark",
-            },
-        ],
-    },
-);*/

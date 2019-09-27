@@ -82,16 +82,3 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(RenewLsdConfirm));
-/*withApi(
-    RenewLsdConfirm,
-    {
-        operations: [
-            {
-                moduleId: "lcp",
-                methodId: "renewPublicationLicense",
-                callProp: "renewPublicationLicense",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);*/

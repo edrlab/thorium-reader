@@ -245,17 +245,3 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationInfo));
-    /*withApi(
-PublicationInfo,
-{
-operations: [
-{
-moduleId: "publication",
-methodId: "get",
-resultProp: "publication",
-callProp: "getPublicationFromId",
-buildRequestData,
-},
-],
-},
-)));*/

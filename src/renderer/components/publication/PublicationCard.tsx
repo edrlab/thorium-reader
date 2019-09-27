@@ -179,16 +179,3 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationCard));
-    /*(withApi(
-    withTranslator(PublicationCard),
-    {
-        operations: [
-            {
-                moduleId: "lcp",
-                methodId: "getLsdStatus",
-                callProp: "getLsdStatus",
-                resultProp: "lsdStatus",
-            },
-        ],
-    },
-));*/

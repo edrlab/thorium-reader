@@ -75,23 +75,3 @@ const mapStateToProps = (state: RootState) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SameFileImportManager);
-/*withApi(
-    SameFileImportManager,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "importOpdsEntry",
-                callProp: "importOpdsEntry",
-            },
-            {
-                moduleId: "publication",
-                methodId: "search",
-                resultProp: "searchResult",
-                callProp: "search",
-            },
-        ],
-        mapStateToProps,
-        mapDispatchToProps,
-    },
-);*/

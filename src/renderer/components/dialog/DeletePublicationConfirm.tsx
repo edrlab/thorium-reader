@@ -78,16 +78,3 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(DeletePublicationConfirm));
-/*withApi(
-    DeletePublicationConfirm,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "delete",
-                callProp: "delete",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);*/

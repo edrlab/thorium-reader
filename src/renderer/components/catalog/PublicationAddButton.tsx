@@ -54,15 +54,3 @@ export class PublicationAddButton extends React.Component<TranslatorProps> {
 }
 
 export default withTranslator(PublicationAddButton);
-/*withTranslator(withApi(
-    PublicationAddButton,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "import",
-                callProp: "importFiles",
-            },
-        ],
-    },
-));*/

@@ -122,17 +122,3 @@ export class TagManager extends React.Component<Props, TagManagerState> {
 }
 
 export default withTranslator(TagManager);
-/*(withApi(
-    TagManager,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "updateTags",
-                resultProp: "updatedPublication",
-                callProp: "updateTags",
-            },
-        ],
-    },
-));
-*/

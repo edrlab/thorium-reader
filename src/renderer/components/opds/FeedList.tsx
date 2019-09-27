@@ -120,29 +120,3 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
 };
 
 export default connect(undefined, mapDispatchToProps)(FeedList);
-
-/*withApi(
-FeedList,
-{
-    operations: [
-        {
-            moduleId: "opds",
-            methodId: "findAllFeeds",
-            resultProp: "feeds",
-            onLoad: true,
-        },
-    ],
-    refreshTriggers: [
-        {
-            moduleId: "opds",
-            methodId: "addFeed",
-        },
-        {
-            moduleId: "opds",
-            methodId: "deleteFeed",
-        },
-    ],
-    mapDispatchToProps,
-},
-);
-*/

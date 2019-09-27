@@ -194,15 +194,3 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
 };
 
 export default connect(undefined, mapDispatchToProps)(withTranslator(PublicationListElement));
-/*(withApi(
-    withTranslator(PublicationListElement),
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "delete",
-                callProp: "deletePublication",
-            },
-        ],
-    },
-));*/

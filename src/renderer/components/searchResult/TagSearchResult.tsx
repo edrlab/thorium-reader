@@ -96,36 +96,3 @@ const buildSearchRequestData = (props: TextSearchResultProps): any => {
 */
 
 export default withTranslator(TagSearchResult);
-/*withApi(
-    TagSearchResult,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "findByTag",
-                buildRequestData: buildSearchRequestData,
-                resultProp: "publications",
-                onLoad: true,
-            },
-        ],
-        refreshTriggers: [
-            {
-                moduleId: "publication",
-                methodId: "import",
-            },
-            {
-                moduleId: "publication",
-                methodId: "delete",
-            },
-            {
-                moduleId: "catalog",
-                methodId: "addEntry",
-            },
-            {
-                moduleId: "publication",
-                methodId: "updateTags",
-            },
-        ],
-    },
-);
-*/
