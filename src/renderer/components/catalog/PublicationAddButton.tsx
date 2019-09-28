@@ -47,6 +47,10 @@ export class PublicationAddButton extends React.Component<TranslatorProps> {
         for (const f of files) {
             paths.push(f.path);
         }
+
+        event.target.value = "";
+        event.target.files = null;
+
         apiAction("publication/import", paths).catch((error) => {
             console.error(`Error to fetch publication/import`, error);
         });
