@@ -36,7 +36,7 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public convertOpdsLinkToView(link: OPDSLink): OpdsLinkView {
+    public convertOpdsLinkToView(link: OPDSLink, url: string): OpdsLinkView {
         // Title could be defined on multiple lines
         // Only keep the first one
         let title = link.Title;
@@ -45,12 +45,13 @@ export class OpdsFeedViewConverter {
 
         return  {
             title,
-            url: link.Href,
+            url: link.Href && !/^https?:\/\//.exec(link.Href) ?
+                resolve(url, link.Href) : link.Href,
             publicationCount: (link.Children) ? link.Children.length : null,
         };
     }
 
-    public convertOpdsPublicationToView(publication: OPDSPublication): OpdsPublicationView {
+    public convertOpdsPublicationToView(publication: OPDSPublication, url: string): OpdsPublicationView {
         const metadata = publication.Metadata;
         const title = convertMultiLangStringToString(metadata.Title);
         const authors = convertContributorArrayToStringArray(metadata.Author);
@@ -76,7 +77,7 @@ export class OpdsFeedViewConverter {
         }
 
         // Get odps entry
-        let url = null;
+        let urlPublication: string | undefined;
         let sampleUrl = null;
         const links = publication.Links.filter(
             (link: any) => {
@@ -96,7 +97,8 @@ export class OpdsFeedViewConverter {
 
         let base64OpdsPublication = null;
         if (links.length > 0) {
-            url = links[0].Href;
+            urlPublication = links[0].Href && !/^https?:\/\//.exec(links[0].Href) ?
+                resolve(url, links[0].Href) : links[0].Href;
         } else {
             base64OpdsPublication = Buffer
             .from(JSON.stringify(publication))
@@ -138,7 +140,7 @@ export class OpdsFeedViewConverter {
             languages: metadata.Language,
             publishedAt,
             cover,
-            url,
+            url: urlPublication,
             buyUrl: buyLink && buyLink.Href,
             borrowUrl: borrowLink && borrowLink.Href,
             subscribeUrl: subscribeLink && subscribeLink.Href,
@@ -158,13 +160,13 @@ export class OpdsFeedViewConverter {
             // result page containing publications
             type = OpdsResultType.PublicationFeed;
             publications = feed.Publications.map((item) => {
-                return this.convertOpdsPublicationToView(item);
+                return this.convertOpdsPublicationToView(item, url);
             });
         } else if (feed.Navigation) {
             // result page containing navigation
             type = OpdsResultType.NavigationFeed;
             navigation = feed.Navigation.map((item) => {
-                return this.convertOpdsLinkToView(item);
+                return this.convertOpdsLinkToView(item, url);
             });
 
             // concatenate all relative path to an absolute URL path
