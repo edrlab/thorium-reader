@@ -18,13 +18,13 @@ import { OpdsResultPageInfos, OpdsResultUrls } from "readium-desktop/common/view
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
 interface Props extends TranslatorProps {
-    goto: (url: string) => void;
+    goto: (url: string, page: number) => void;
     urls: OpdsResultUrls;
     page: OpdsResultPageInfos;
+    currentPage: number;
 }
 
 class PageNavigation extends React.Component<Props> {
-    private currentPage: number = 1;
     private lastShortkeyDate: number;
 
     public constructor(props: Props) {
@@ -54,6 +54,7 @@ class PageNavigation extends React.Component<Props> {
     public render() {
         const { page, urls, __ } = this.props;
         const { nextPage, previousPage, lastPage, firstPage } = urls;
+
         return (
             <div className={styles.opds_page_navigation}>
                 <span/>
@@ -80,7 +81,7 @@ class PageNavigation extends React.Component<Props> {
                     </button>
                 }
                 { page ?
-                    <span>{this.currentPage} / {this.totalPage()}</span>
+                    <span>{this.props.currentPage} / {this.totalPage()}</span>
                 : <span/>}
             </div>
         );
@@ -102,24 +103,20 @@ class PageNavigation extends React.Component<Props> {
     }
 
     private nextPage() {
-        this.props.goto(this.props.urls.nextPage);
-        this.currentPage += 1;
+        this.props.goto(this.props.urls.nextPage, this.props.currentPage + 1);
     }
 
     private previousPage() {
-        this.props.goto(this.props.urls.nextPage);
-        this.currentPage -= 1;
+        this.props.goto(this.props.urls.previousPage, this.props.currentPage - 1);
     }
 
     private lastPage() {
         const { goto, urls } = this.props;
-        goto(urls.lastPage);
-        this.currentPage += this.totalPage();
+        goto(urls.lastPage, this.totalPage());
     }
 
     private firstPage() {
-        this.props.goto(this.props.urls.firstPage);
-        this.currentPage = 1;
+        this.props.goto(this.props.urls.firstPage, 1);
     }
 
     private totalPage() {

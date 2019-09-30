@@ -30,6 +30,7 @@ interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
 interface IState {
     browserResult: ReturnPromiseType<TOpdsApiBrowse> | undefined;
     browserError: string | undefined;
+    currentResultPage: number;
 }
 
 export class BrowserResult extends React.Component<BrowserResultProps, IState> {
@@ -40,6 +41,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         this.state = {
             browserError: undefined,
             browserResult: undefined,
+            currentResultPage: 1,
         };
 
         this.goto = this.goto.bind(this);
@@ -91,6 +93,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
                                 goto={this.goto}
                                 urls={browserResult.data.urls}
                                 page={browserResult.data.page}
+                                currentPage={this.state.currentResultPage}
                             />
                         );
                         break;
@@ -176,8 +179,9 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         }
     }
 
-    private goto(url?: string) {
+    private goto(url: string, page: number) {
         this.browseOpds(url);
+        this.setState({currentResultPage: page});
     }
 }
 

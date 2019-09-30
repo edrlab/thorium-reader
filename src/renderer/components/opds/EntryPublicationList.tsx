@@ -20,14 +20,15 @@ import PageNavigation from "./PageNavigation";
 
 interface IProps extends RouteComponentProps {
     publications: OpdsPublicationView[];
-    goto: (url: string) => void;
+    goto: (url: string, page: number) => void;
     urls: OpdsResultUrls;
     page: OpdsResultPageInfos;
+    currentPage: number;
 }
 
 class EntryPublicationList extends React.Component<IProps> {
     public render() {
-        const { goto, urls, page } = this.props;
+        const { urls, page } = this.props;
 
         let DisplayView: React.ComponentClass<any> = GridView;
 
@@ -48,9 +49,10 @@ class EntryPublicationList extends React.Component<IProps> {
                     <>
                         <DisplayView publications={this.props.publications} isOpdsView={true} />
                         <PageNavigation
-                            goto={goto}
+                            goto={this.props.goto}
                             urls={urls}
                             page={page}
+                            currentPage={this.props.currentPage}
                         />
                     </>
                     : <Loader />}
