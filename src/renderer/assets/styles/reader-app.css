@@ -536,6 +536,10 @@ button {
       & .bookmark_name {
         margin: 0;
         height: 21px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 10rem;
       }
     }
   }
