@@ -125,6 +125,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
     }
 
     private browseOpds(url: string) {
+        this.setState({browserResult: undefined});
         const { location } = this.props;
         const { browserResult } = this.state;
         const oldQs = parseQueryString(url.split("?")[1]);
