@@ -8,19 +8,19 @@
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublicationApiExportPublication } from "readium-desktop/main/api/publication";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
-interface PublicationCardProps extends TranslatorProps {
+interface IProps extends TranslatorProps {
     publication: PublicationView;
     exportPublication?: TPublicationApiExportPublication;
     onClick: () => void;
 }
 
-class PublicationExportButton extends React.Component<PublicationCardProps> {
-    private exportInputRef: any;
+class PublicationExportButton extends React.Component<IProps> {
+    private exportInputRef: React.RefObject<any>;
 
-    constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -30,6 +30,7 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
     }
 
     public componentDidMount() {
+        // Property 'directory' does not exist on type 'HTMLInputElement'
         this.exportInputRef.current.directory = true;
         this.exportInputRef.current.webkitdirectory = true;
     }
@@ -58,19 +59,10 @@ class PublicationExportButton extends React.Component<PublicationCardProps> {
         this.props.onClick();
         const destinationPath = event.target.files[0].path;
         const publication = this.props.publication;
-        this.props.exportPublication(publication, destinationPath);
+        apiAction("publication/exportPublication", publication, destinationPath).catch((error) => {
+            console.error(`Error to fetch publication/exportPublication`, error);
+        });
     }
 }
 
-export default withApi(
-    PublicationExportButton,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "exportPublication",
-                callProp: "exportPublication",
-            },
-        ],
-    },
-);
+export default withTranslator(PublicationExportButton);

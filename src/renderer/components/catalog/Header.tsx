@@ -29,11 +29,11 @@ export enum DisplayType {
     List = "list",
 }
 
-interface Props extends RouteComponentProps, TranslatorProps {
+interface IProps extends RouteComponentProps, TranslatorProps {
     displayType: DisplayType;
 }
 
-export class Header extends React.Component<Props, undefined> {
+class Header extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (

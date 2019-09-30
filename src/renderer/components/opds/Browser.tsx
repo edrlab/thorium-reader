@@ -9,7 +9,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsLinkView } from "readium-desktop/common/views/opds";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
@@ -28,12 +27,11 @@ import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 // Logger
 // const debug = debug_("readium-desktop:src/renderer/components/opds/browser");
 
-interface Props extends RouteComponentProps<IOpdsBrowse>, TranslatorProps {
-    navigation: OpdsLinkView[];
+interface IProps extends RouteComponentProps<IOpdsBrowse>, TranslatorProps, ReturnType<typeof mapStateToProps> {
 }
 
-export class Browser extends React.Component<Props> {
-    public render(): React.ReactElement<Props>  {
+class Browser extends React.Component<IProps> {
+    public render(): React.ReactElement<IProps>  {
         const breadcrumb = this.buildBreadcrumb();
         let url: string | undefined;
 
@@ -108,12 +106,8 @@ export class Browser extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: RootState, __: any) => {
-    const navigation = state.opds.browser.navigation;
+const mapStateToProps = (state: RootState) => ({
+    navigation: state.opds.browser.navigation,
+});
 
-    return {
-        navigation,
-    };
-};
-
-export default withRouter(withTranslator(connect(mapStateToProps, undefined)(Browser)));
+export default connect(mapStateToProps, undefined)(withRouter(withTranslator(Browser)));

@@ -8,33 +8,61 @@
 import * as qs from "query-string";
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
-import {
-    TPublicationApiSearch, TPublicationApiSearch_result,
-} from "readium-desktop/main/api/publication";
+import { TPublicationApiSearch_result } from "readium-desktop/main/api/publication";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import GridView from "readium-desktop/renderer/components/utils/GridView";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
 
-interface TextSearchResultProps extends TranslatorProps, RouteComponentProps {
-    searchPublications: TPublicationApiSearch;
-    publications?: TPublicationApiSearch_result;
+interface IProps extends TranslatorProps, RouteComponentProps {
 }
 
-export class TextSearchResult extends React.Component<TextSearchResultProps, undefined> {
-    public componentDidUpdate(prevProps: any, _prevState: any, _snapshot?: any): boolean {
+interface IState {
+    publications: TPublicationApiSearch_result | undefined;
+}
+
+export class TextSearchResult extends React.Component<IProps, IState> {
+    private unsubscribe: Unsubscribe;
+
+    constructor(props: IProps) {
+        super(props);
+
+        this.state = {
+            publications: undefined,
+        };
+    }
+
+    public componentDidMount() {
+        this.unsubscribe = apiSubscribe([
+            "publication/import",
+            "publication/delete",
+            "catalog/addEntry",
+            "publication/updateTags",
+        ], this.searchPublications);
+    }
+
+    public componentDidUpdate(prevProps: IProps) {
         const text = (this.props.match.params as any).value;
         const prevText = (prevProps.match.params as any).value;
 
         if (text !== prevText) {
             // Refresh searched publications
-            this.props.searchPublications(text);
+            this.searchPublications();
         }
-        return true;
+    }
+
+    public componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -61,49 +89,25 @@ export class TextSearchResult extends React.Component<TextSearchResultProps, und
                         search={this.props.location.search}
                         breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title as string}]}
                     />
-                    { this.props.publications ?
-                        <DisplayView publications={ this.props.publications } />
+                    { this.state.publications ?
+                        <DisplayView publications={ this.state.publications } />
                     : <></>}
                 </div>
             </LibraryLayout>
         );
     }
+
+    private searchPublications = (text: string = (this.props.match.params as any).value) => {
+        apiAction("publication/search", text)
+            .then((publications) => this.setState({publications}))
+            .catch((error) => console.error("Error to fetch api publication/search", error));
+    }
 }
 
+/*
 const buildSearchRequestData = (props: TextSearchResultProps): any => {
     return [ (props.match.params as any).value ];
 };
+*/
 
-export default withApi(
-    TextSearchResult,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "search",
-                buildRequestData: buildSearchRequestData,
-                callProp: "searchPublications",
-                resultProp: "publications",
-                onLoad: true,
-            },
-        ],
-        refreshTriggers: [
-            {
-                moduleId: "publication",
-                methodId: "import",
-            },
-            {
-                moduleId: "publication",
-                methodId: "delete",
-            },
-            {
-                moduleId: "catalog",
-                methodId: "addEntry",
-            },
-            {
-                moduleId: "publication",
-                methodId: "updateTags",
-            },
-        ],
-    },
-);
+export default withTranslator(TextSearchResult);

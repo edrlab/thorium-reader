@@ -6,25 +6,22 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-
+import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as importAction from "readium-desktop/common/redux/actions/import";
-
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TMouseEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
-
-interface PublicationCardProps extends TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
     publication: OpdsPublicationView;
-    displayPublicationInfo?: (data: any) => any;
-    verifyImport?: (publication: OpdsPublicationView, downloadSample?: boolean) => void;
 }
 
-export class PublicationCard extends React.Component<PublicationCardProps> {
-    public constructor(props: any) {
+export class PublicationCard extends React.Component<IProps> {
+    public constructor(props: IProps) {
         super(props);
 
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
@@ -78,25 +75,24 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
         );
     }
 
-    private onAddToCatalogClick(e: any, downloadSample?: boolean) {
+    private onAddToCatalogClick(e: TMouseEvent, downloadSample?: boolean) {
         e.preventDefault();
         this.props.verifyImport(this.props.publication, downloadSample);
     }
 
-    private displayPublicationInfo(e: any) {
+    private displayPublicationInfo(e: TMouseEvent) {
         e.preventDefault();
         this.props.displayPublicationInfo(this.props.publication);
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         displayPublicationInfo: (publication: OpdsPublicationView) => {
-            dispatch(dialogActions.open(
-                DialogType.PublicationInfo,
+            dispatch(dialogActions.open("publication-info",
                 {
-                    publication,
-                    isOpds: true,
+                    opdsPublication: publication,
+                    publicationIdentifier: undefined,
                 },
             ));
         },
@@ -111,10 +107,4 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
     };
 };
 
-export default withTranslator(withApi(
-    PublicationCard,
-    {
-        operations: [],
-        mapDispatchToProps,
-    },
-));
+export default connect(undefined, mapDispatchToProps)(withTranslator(PublicationCard));

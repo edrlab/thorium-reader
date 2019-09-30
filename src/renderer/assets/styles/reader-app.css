@@ -265,13 +265,15 @@ button {
       color:#c1c1c1;
       border-right:1px solid #c1c1c1;
 
-      & > button {
+      & > .menu_button {
         width: inherit;
         height: 60px;
         color:inherit;
         background-color: transparent;
         border: none;
         cursor: pointer;
+        display: inline-flex;
+        align-items: center;
 
         & svg {
           width:30px;
@@ -284,6 +286,19 @@ button {
         color:black;
         border-bottom:3px solid black;
         padding-bottom:15px;
+      }
+
+      & .bookmarkButton {
+        position: absolute;
+        left: -2000px;
+
+        &:checked + label.menu_button {
+          background-color: rgb(193, 193, 193);
+        }
+
+        &:focus + label.menu_button {
+          @mixin R2_MIXIN_FOCUS_OUTLINE;
+        }
       }
     }
 
@@ -499,6 +514,30 @@ button {
     font-size: 1rem;
     border-bottom: 1px solid #e5e5e5;
     display: flex;
+    position: relative;
+
+    & form {
+      position: absolute;
+      z-index: 100;
+      height: 21px;
+      width: 155px;
+      left: 2.2rem;
+      & input {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+    }
+
+    & .bookmark_infos {
+      flex: 1;
+      display: flex;
+
+      & .bookmark_name {
+        margin: 0;
+        height: 21px;
+      }
+    }
   }
 }
 
@@ -535,7 +574,6 @@ p.chapters_description {
 	padding:20px 0 20px 0;
 	font-size: 1rem;
 	border-bottom: 1px solid #e5e5e5;
-  cursor: pointer;
 
   & > button {
     border: none;
