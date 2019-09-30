@@ -15,6 +15,7 @@ import { httpGet } from "readium-desktop/common/utils/http";
 import {
     OpdsFeedView, OpdsLinkView, OpdsPublicationView, OpdsResultType, OpdsResultView,
 } from "readium-desktop/common/views/opds";
+import { CoverView } from "readium-desktop/common/views/publication";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { resolve } from "url";
 import * as convert from "xml-js";
@@ -24,7 +25,10 @@ import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
 // Logger
-const debug = debug_("readium-desktop:main#services/lcp");
+const debug = debug_("readium-desktop:main/converter/opds");
+
+const urlPathResolve = (from: string, to: string) =>
+        to && !/^https?:\/\//.exec(to) ? resolve(from, to) : to;
 
 @injectable()
 export class OpdsFeedViewConverter {
@@ -45,8 +49,7 @@ export class OpdsFeedViewConverter {
 
         return  {
             title,
-            url: link.Href && !/^https?:\/\//.exec(link.Href) ?
-                resolve(url, link.Href) : link.Href,
+            url: urlPathResolve(url, link.Href),
             publicationCount: (link.Children) ? link.Children.length : null,
         };
     }
@@ -68,11 +71,12 @@ export class OpdsFeedViewConverter {
             publishedAt = moment(metadata.PublicationDate).toISOString();
         }
 
-        let cover = null;
+        let cover: CoverView | undefined;
 
         if (publication.Images && publication.Images.length > 0) {
+            const urlCover = publication.Images[0].Href;
             cover = {
-                url: publication.Images[0].Href,
+                url: urlPathResolve(url, urlCover),
             };
         }
 
@@ -97,8 +101,7 @@ export class OpdsFeedViewConverter {
 
         let base64OpdsPublication = null;
         if (links.length > 0) {
-            urlPublication = links[0].Href && !/^https?:\/\//.exec(links[0].Href) ?
-                resolve(url, links[0].Href) : links[0].Href;
+            urlPublication = urlPathResolve(url, links[0].Href);
         } else {
             base64OpdsPublication = Buffer
             .from(JSON.stringify(publication))
@@ -171,9 +174,7 @@ export class OpdsFeedViewConverter {
 
             // concatenate all relative path to an absolute URL path
             navigation = navigation.map((nav) => {
-                if (nav.url && !/^https?:\/\//.exec(nav.url)) {
-                    nav.url = resolve(url, nav.url);
-                }
+                nav.url = urlPathResolve(url, nav.url);
                 return nav;
             });
         }
