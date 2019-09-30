@@ -60,8 +60,9 @@ export class UpdateBookmarkForm extends React.Component<Props, State> {
         e.preventDefault();
         const { bookmark } = this.props;
         const value: string = this.inputRef.current.value;
-        if (value.length > 0 && value.trim().length > 0) {
-            bookmark.name = value.trim();
+        const normalizedValue = value.trim().replace(/\s\s+/g, " ");
+        if (value.length > 0 && normalizedValue.length > 0) {
+            bookmark.name = normalizedValue;
             apiAction("reader/updateBookmark",
                 bookmark.identifier,
                 bookmark.publication.identifier,
