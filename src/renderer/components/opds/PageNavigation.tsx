@@ -81,7 +81,7 @@ class PageNavigation extends React.Component<Props> {
                     </button>
                 }
                 { page ?
-                    <span>{this.props.currentPage} / {this.totalPage()}</span>
+                    <span className={styles.page_count}>{this.props.currentPage} / {this.totalPage()}</span>
                 : <span/>}
             </div>
         );
