@@ -6,22 +6,21 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/components/publication/menu/OpdsMenu";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 
-interface Props extends RouteComponentProps {
+interface IProps {
     publications: PublicationView[];
     isOpdsView?: boolean;
 }
 
-export default class GridView extends React.Component<Props, undefined> {
+export default class GridView extends React.Component<IProps> {
     private ref: HTMLDivElement;
 
-    public componentDidUpdate(oldProps: Props) {
+    public componentDidUpdate(oldProps: IProps) {
         if (this.props.publications !== oldProps.publications) {
             this.scrollToTop();
         }
