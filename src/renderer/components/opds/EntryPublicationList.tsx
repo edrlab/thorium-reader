@@ -19,10 +19,10 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import PageNavigation from "./PageNavigation";
 
 interface IProps extends RouteComponentProps {
-    publications: OpdsPublicationView[];
+    publications: OpdsPublicationView[] | undefined;
     goto: (url: string, page: number) => void;
     urls: OpdsResultUrls;
-    page: OpdsResultPageInfos;
+    page?: OpdsResultPageInfos;
     currentPage: number;
 }
 

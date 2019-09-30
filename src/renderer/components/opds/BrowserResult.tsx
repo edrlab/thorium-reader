@@ -131,9 +131,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         const oldQs = parseQueryString(url.split("?")[1]);
         const search = qs.parse(location.search.replace("?", "")).search;
         let newUrl = url;
-        if (search && browserResult && typeof browserResult === "object"
-            && browserResult.isSuccess && browserResult.data.urls.search
-        ) {
+        if (search && browserResult && browserResult.isSuccess && browserResult.data.urls.search) {
             newUrl = browserResult.data.urls.search;
             newUrl = this.addSearchTerms(newUrl, search) +
                 Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
