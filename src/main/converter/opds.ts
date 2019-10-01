@@ -29,8 +29,6 @@ import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
-import { oc } from "ts-optchain";
-
 // Logger
 const debug = debug_("readium-desktop:main#services/lcp");
 
