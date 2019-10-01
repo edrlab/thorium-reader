@@ -49,11 +49,12 @@ export class SideMenu extends React.Component<Props, State> {
 
         return (<>
             <AccessibleMenu
-            dontCloseWhenClickOutside
-            focusMenuButton = {this.props.focusMenuButton}
-            className={className}
-            visible={open}
-            toggleMenu={toggleMenu}>
+                dontCloseWhenClickOutside
+                focusMenuButton = {this.props.focusMenuButton}
+                className={className}
+                visible={open}
+                toggleMenu={toggleMenu}
+            >
                 <ul id={listClassName}>
                     { sections.map((section, index) =>
                         !section.notExtendable ?
