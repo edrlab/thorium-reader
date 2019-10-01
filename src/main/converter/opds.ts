@@ -214,10 +214,9 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    private getUrlFromFeed(feed: OPDSFeed, linkRel: string): string {
-        return oc(feed.Links.find((link) =>
-            link.Rel && link.Rel.includes(linkRel),
-        )).Href(undefined);
+    private getUrlFromFeed(feed: OPDSFeed, linkRel: string): string | undefined {
+        const linkWithRel = feed.Links.find((link) => link.Rel && link.Rel.includes(linkRel));
+        return linkWithRel ? linkWithRel.Href : undefined;
     }
 
     private async getSearchUrlFromOpds1Feed(feed: OPDSFeed): Promise<string| undefined> {
