@@ -59,15 +59,18 @@ export class UpdateBookmarkForm extends React.Component<Props, State> {
     private submiteBookmark(e: TFormEvent) {
         e.preventDefault();
         const { bookmark } = this.props;
-        bookmark.name = this.inputRef.current.value;
-        //        updateBookmark(bookmark.identifier, bookmark.publication.identifier, bookmark.locator, bookmark.name);
-        apiAction("reader/updateBookmark",
-            bookmark.identifier,
-            bookmark.publication.identifier,
-            bookmark.locator,
-            bookmark.name,
-        )
-            .catch((error) => console.error("Error to fetch api reader/updateBookmark", error));
+        const value: string = this.inputRef.current.value;
+        const normalizedValue = value.trim().replace(/\s\s+/g, " ");
+        if (normalizedValue.length > 0) {
+            bookmark.name = normalizedValue;
+            apiAction("reader/updateBookmark",
+                bookmark.identifier,
+                bookmark.publication.identifier,
+                bookmark.locator,
+                bookmark.name,
+            ).catch((error) => console.error("Error to fetch api reader/updateBookmark", error));
+        }
+
         this.props.close();
     }
 }
