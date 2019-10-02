@@ -12,8 +12,10 @@ import { OpdsResultType } from "readium-desktop/common/views/opds";
 import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import { BreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
 import {
-    TranslatorProps, withTranslator,
+    TranslatorProps,
+    withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
@@ -25,6 +27,7 @@ import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
+    breadcrumb: BreadCrumbItem[];
 }
 
 interface IState {
@@ -56,6 +59,10 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
             prevProps.location.search !== this.props.location.search) {
             // New url to browse
             this.browseOpds(this.props.url);
+        }
+
+        if (this.props.breadcrumb !== prevProps.breadcrumb) {
+            this.setState({currentResultPage: 1});
         }
     }
 
