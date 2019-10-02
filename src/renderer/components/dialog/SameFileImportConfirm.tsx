@@ -61,6 +61,7 @@ class SameFileImportConfirm extends React.Component<IProps> {
             this.props.publication.url,
             this.props.publication.base64OpdsPublication,
             this.props.publication.title,
+            this.props.publication.tags,
             this.props.downloadSample,
         ).catch((error) => {
             console.error(`Error to fetch publication/importOpdsEntry`, error);

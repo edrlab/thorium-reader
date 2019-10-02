@@ -69,7 +69,7 @@ export class CatalogService {
         return null;
     }
 
-    public async importOpdsEntry(url: string, downloadSample: boolean): Promise<THttpGetPublicationDocument> {
+    public async importOpdsEntry(url: string, downloadSample: boolean, tags?: string[]): Promise<THttpGetPublicationDocument> {
         debug("Import OPDS publication", url);
         return await httpGet(url, {}, async (opdsFeedData) => {
             let opdsPublication: OPDSPublication = null;
@@ -105,7 +105,7 @@ export class CatalogService {
                 throw new Error("Unable to retrieve opds publication");
             }
             try {
-                opdsFeedData.data = await this.importOpdsPublication(opdsPublication, downloadSample);
+                opdsFeedData.data = await this.importOpdsPublication(opdsPublication, downloadSample, tags);
             } catch (error) {
                 debug("Unable to retrieve opds publication", opdsPublication, error);
                 throw new Error("Unable to retrieve opds publication: " + error);
@@ -115,7 +115,7 @@ export class CatalogService {
     }
 
     public async importOpdsPublication(
-        opdsPublication: OPDSPublication, downloadSample: boolean,
+        opdsPublication: OPDSPublication, downloadSample: boolean, tags?: string[]
     ): Promise<PublicationDocument> {
         // Retrieve the download (acquisition) url
         let downloadUrl = null;
@@ -178,6 +178,7 @@ export class CatalogService {
                     filePublication: publicationDocument.resources.filePublication,
                     opdsPublication: b64OpdsPublication,
                 },
+                tags,
             },
         );
 

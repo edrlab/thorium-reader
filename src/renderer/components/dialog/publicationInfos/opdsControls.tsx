@@ -8,6 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import * as importAction from "readium-desktop/common/redux/actions/import";
+import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
@@ -30,14 +31,14 @@ export class OpdsControls extends React.Component<IProps> {
 
         return publication.isFree ? (
             <button
-                onClick={() => verifyImport(publication)}
+                onClick={() => verifyImport(publication as ImportOpdsPublication)}
                 className={styles.lire}
             >
                 {__("catalog.addBookToLib")}
             </button>
         ) : publication.hasSample && (
             <button
-                onClick={() => verifyImport(publication, true)}
+                onClick={() => verifyImport(publication as ImportOpdsPublication, true)}
                 className={styles.lire}
             >
                 {__("opds.menu.addExtract")}
@@ -48,7 +49,9 @@ export class OpdsControls extends React.Component<IProps> {
 
 const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
-        verifyImport: (publication: OpdsPublicationView, downloadSample?: boolean) => {
+        // src/common/redux/states/import.ts
+        // FIXME : REDUX ISN'T TYPED, resolve this force cast
+        verifyImport: (publication: ImportOpdsPublication, downloadSample?: boolean) => {
             dispatch(importAction.verifyImport(
                 {
                     publication,
