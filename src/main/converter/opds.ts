@@ -169,16 +169,6 @@ export class OpdsFeedViewConverter {
             publications = feed.Publications.map((item) => {
                 return this.convertOpdsPublicationToView(item);
             });
-
-            if (feed.Links) {
-                urls = {
-                    search: await this.getSearchUrlFromOpds1Feed(feed),
-                    nextPage: this.getUrlFromFeed(feed, "next"),
-                    previousPage: this.getUrlFromFeed(feed, "previous"),
-                    firstPage: this.getUrlFromFeed(feed, "first"),
-                    lastPage: this.getUrlFromFeed(feed, "last"),
-                };
-            }
         } else if (feed.Navigation) {
             // result page containing navigation
             type = OpdsResultType.NavigationFeed;
@@ -193,6 +183,15 @@ export class OpdsFeedViewConverter {
                 }
                 return nav;
             });
+        }
+        if (feed.Links) {
+            urls = {
+                search: await this.getSearchUrlFromOpds1Feed(feed),
+                nextPage: this.getUrlFromFeed(feed, "next"),
+                previousPage: this.getUrlFromFeed(feed, "previous"),
+                firstPage: this.getUrlFromFeed(feed, "first"),
+                lastPage: this.getUrlFromFeed(feed, "last"),
+            };
         }
 
         if (feed.Metadata) {
