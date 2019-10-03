@@ -31,6 +31,7 @@ export interface IPublicationApi {
         url: string,
         base64OpdsPublication: string,
         title: string,
+        tags: string[],
         downloadSample?: boolean) => Promise<PublicationView>;
     import: (paths: string[]) => Promise<PublicationView[]>;
     search: (title: string) => Promise<PublicationView[]>;
@@ -135,10 +136,14 @@ export class PublicationApi implements IPublicationApi {
         return this.publicationRepository.getAllTags();
     }
 
+    // FIXME : call from this interface ImportOpdsPublication that is cast from OpdsPublicationView.
+    // OpdsPublicationView has many undefined that is not reported to this function call.
+    // Potential crash to fix
     public async importOpdsEntry(
         url: string,
         base64OpdsPublication: string,
         title: string,
+        tags?: string[],
         downloadSample = false): Promise<PublicationView> {
 
         this.sendDownloadRequest(url);
@@ -150,21 +155,25 @@ export class PublicationApi implements IPublicationApi {
         let titleView: string;
         // if url exist import new entry by download
         if (url) {
-            const httpPub = await this.catalogService.importOpdsEntry(url, downloadSample);
+            const httpPub = await this.catalogService.importOpdsEntry(url, downloadSample, tags);
             if (httpPub.isSuccess) {
                 titleView = httpPub.data.title;
                 this.sendDownloadSuccess(url);
                 returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
             } else {
+                // FIXME : Why no dispatchToastRequest here ?
                 throw new Error(`Http importOpdsEntry error with code
                     ${httpPub.statusCode} for ${httpPub.url}`);
             }
         } else {
+            // FIXME : base64OpdsPublication can be undefined
             const opdsPublication = // OPDSPublication
                 JSON.parse(Buffer.from(base64OpdsPublication, "base64").toString("utf-8"));
             let publication;
             try {
-                publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample);
+                // FIXME : opdsPublication is any and
+                // importOpdsPublication first param type is OPDSPublication what is a CLASS ??
+                publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample, tags);
             } catch (error) {
                 debug(`importOpdsPublication - FAIL`, opdsPublication, error);
                 this.dispatchToastRequest(ToastType.DownloadFailed, `[${error}]`);

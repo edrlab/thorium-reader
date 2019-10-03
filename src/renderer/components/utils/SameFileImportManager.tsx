@@ -44,6 +44,7 @@ class SameFileImportManager extends React.Component<IProps> {
                         lastImport.publication.url,
                         lastImport.publication.base64OpdsPublication,
                         lastImport.publication.title,
+                        lastImport.publication.tags,
                         lastImport.downloadSample,
                     ).catch((error) => {
                         console.error(`Error to fetch api publication/importOpdsEntry`, error);

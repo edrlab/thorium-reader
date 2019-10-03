@@ -10,8 +10,11 @@ export interface ImportState {
     downloadSample: boolean;
 }
 
+// FIXME : SHOULD BE linked with OpdsPublicationView (undefined)
+
 export interface ImportOpdsPublication {
     url: string;
     base64OpdsPublication: string;
     title: string;
+    tags: string[];
 }
