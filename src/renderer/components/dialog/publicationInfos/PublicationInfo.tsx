@@ -64,7 +64,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
             ], this.getPublicationFromId);
         }
 
-        setTimeout(this.needSeeMoreButton.bind(this), 1);
+        setTimeout(this.needSeeMoreButton.bind(this), 500);
     }
 
     public componentWillUnmount() {
