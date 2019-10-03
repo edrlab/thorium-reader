@@ -370,7 +370,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             const rightKey = ev.code === "ArrowRight";
             if (leftKey || rightKey) {
                 const noModifierKeys = !ev.ctrlKey && !ev.shiftKey && !ev.altKey && !ev.metaKey;
-                const spineNavModifierKeys = ev.ctrlKey && ev.shiftKey;
+                const spineNavModifierKeys = ev.ctrlKey && ev.shiftKey && ev.altKey;
                 if (noModifierKeys || spineNavModifierKeys) {
                     navLeftOrRight(leftKey, spineNavModifierKeys);
                     if (spineNavModifierKeys) {
