@@ -566,6 +566,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             "publication_viewport",
             preloadPath,
             locator,
+            true,
         );
 
         return publication;
