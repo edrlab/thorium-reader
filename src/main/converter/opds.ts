@@ -28,7 +28,7 @@ import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 const debug = debug_("readium-desktop:main/converter/opds");
 
 const urlPathResolve = (from: string, to: string) =>
-        to && !/^https?:\/\//.exec(to) ? resolve(from, to) : to;
+        to && !/^https?:\/\//.exec(to) && !/^data:\/\//.exec(to) ? resolve(from, to) : to;
 
 @injectable()
 export class OpdsFeedViewConverter {
