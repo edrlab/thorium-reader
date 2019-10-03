@@ -69,7 +69,11 @@ export class CatalogService {
         return null;
     }
 
-    public async importOpdsEntry(url: string, downloadSample: boolean, tags?: string[]): Promise<THttpGetPublicationDocument> {
+    public async importOpdsEntry(
+        url: string,
+        downloadSample: boolean,
+        tags?: string[],
+    ): Promise<THttpGetPublicationDocument> {
         debug("Import OPDS publication", url);
         return await httpGet(url, {}, async (opdsFeedData) => {
             let opdsPublication: OPDSPublication = null;
@@ -115,7 +119,9 @@ export class CatalogService {
     }
 
     public async importOpdsPublication(
-        opdsPublication: OPDSPublication, downloadSample: boolean, tags?: string[]
+        opdsPublication: OPDSPublication,
+        downloadSample: boolean,
+        tags?: string[],
     ): Promise<PublicationDocument> {
         // Retrieve the download (acquisition) url
         let downloadUrl = null;
