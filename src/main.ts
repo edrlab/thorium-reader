@@ -99,4 +99,12 @@ function main() {
                 break;
         }
     });
+
+    app.on("accessibility-support-changed", (_ev, accessibilitySupportEnabled) => {
+        debug(`accessibilitySupportEnabled: ${accessibilitySupportEnabled}`);
+    });
+    // setInterval(() => {
+    //     const a11y = app.isAccessibilitySupportEnabled();
+    //     debug(`isAccessibilitySupportEnabled: ${a11y}`);
+    // }, 500);
 }
