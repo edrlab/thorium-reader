@@ -6,13 +6,13 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import OpdsAddForm from "./OpdsAddForm";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
-
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+
 import FeedList from "./FeedList";
+import OpdsAddForm from "./OpdsAddForm";
 
 class Opds extends React.Component<TranslatorProps> {
     public render(): React.ReactElement<{}>  {

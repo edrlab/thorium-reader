@@ -5,7 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// ERROR in [at-loader] ./node_modules/file-selector/dist/file.d.ts:3:18
-// TS2430: Interface 'FileWithPath' incorrectly extends interface 'File'.
-// Property 'path' is optional in type 'FileWithPath' but required in type 'File'.
-declare module "file-selector";
+export type TMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
+
+export type TFormEvent = React.FormEvent<HTMLFormElement>;
+
+export type TChangeEvent = React.ChangeEvent<HTMLInputElement>;

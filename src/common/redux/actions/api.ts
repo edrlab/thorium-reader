@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
+import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 
 export enum ActionType {
     Clean = "API_CLEAN",
@@ -16,8 +17,8 @@ export enum ActionType {
 
 export interface ApiMeta {
     requestId: string;
-    moduleId: string;
-    methodId: string;
+    moduleId: TModuleApi;
+    methodId: TMethodApi;
 }
 
 export interface ApiActionMeta {
@@ -80,8 +81,8 @@ export function buildErrorAction(
  */
 export function buildRequestAction(
     apiRequestId: string,
-    apiModuleId: string,
-    apiMethodId: string,
+    apiModuleId: TModuleApi,
+    apiMethodId: TMethodApi,
     payload?: any,
 ): ApiAction {
     return {

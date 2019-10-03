@@ -6,40 +6,55 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { DialogType } from "readium-desktop/common/models/dialog";
+import { connect } from "react-redux";
 import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TMouseEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface CatalogLcpControlsProps extends TranslatorProps {
+interface IProps extends TranslatorProps {
     publication: PublicationView;
-    openReader?: any;
-    openDeleteDialog?: any;
-    openReturnDialog?: any;
-    openRenewDialog?: any;
-    lsdStatus?: LsdStatus;
 }
 
-export class CatalogLcpControls extends React.Component<CatalogLcpControlsProps, undefined> {
+interface IState {
+    lsdStatus: LsdStatus | undefined;
+}
+
+class CatalogLcpControls extends React.Component<IProps & ReturnType<typeof mapDispatchToProps>, IState> {
     public constructor(props: any) {
         super(props);
+
+        this.state = {
+            lsdStatus: undefined,
+        };
 
         this.handleRead = this.handleRead.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
     }
 
+    public componentDidMount() {
+        // don't forget to handle httpRequest in frontend
+        apiAction("lcp/getLsdStatus", {publication: this.props.publication})
+        .then((request) => this.setState({lsdStatus: request.data}))
+        .catch((error) => {
+            console.error(`Error to fetch lcp/getLsdStatus`, error);
+        });
+    }
+
     public render(): React.ReactElement<{}> {
-        const { __, publication, lsdStatus } = this.props;
+        const { __, publication } = this.props;
+        const { lsdStatus } = this.state;
 
         if (!publication) {
             return (<></>);
@@ -80,19 +95,19 @@ export class CatalogLcpControls extends React.Component<CatalogLcpControlsProps,
         );
     }
 
-    private deletePublication(e: any) {
+    private deletePublication(e: TMouseEvent) {
         e.preventDefault();
         this.props.openDeleteDialog(this.props.publication);
     }
 
-    private handleRead(e: any) {
+    private handleRead(e: TMouseEvent) {
         e.preventDefault();
 
         this.props.openReader(this.props.publication);
     }
 }
 
-const mapDispatchToProps = (dispatch: any, props: CatalogLcpControlsProps) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IProps) => {
     return {
         openReader: (publication: PublicationView) => {
             dispatch({
@@ -104,25 +119,22 @@ const mapDispatchToProps = (dispatch: any, props: CatalogLcpControlsProps) => {
                 },
             });
         },
-        openDeleteDialog: (publication: string) => {
-            dispatch(dialogActions.open(
-                DialogType.DeletePublicationConfirm,
+        openDeleteDialog: (publication: PublicationView) => {
+            dispatch(dialogActions.open("delete-publication-confirm",
                 {
                     publication,
                 },
             ));
         },
         openRenewDialog: () => {
-            dispatch(dialogActions.open(
-                DialogType.LsdRenewConfirm,
+            dispatch(dialogActions.open("lsd-renew-confirm",
                 {
                     publication: props.publication,
                 },
             ));
         },
         openReturnDialog: () => {
-            dispatch(dialogActions.open(
-                DialogType.LsdReturnConfirm,
+            dispatch(dialogActions.open("lsd-return-confirm",
                 {
                     publication: props.publication,
                 },
@@ -131,22 +143,4 @@ const mapDispatchToProps = (dispatch: any, props: CatalogLcpControlsProps) => {
     };
 };
 
-const buildRequestData = (props: CatalogLcpControlsProps) => {
-    return [ props.publication ];
-};
-
-export default withApi(
-    withTranslator(CatalogLcpControls),
-    {
-        mapDispatchToProps,
-        operations: [
-            {
-                moduleId: "lcp",
-                methodId: "getLsdStatus",
-                resultProp: "lsdStatus",
-                buildRequestData,
-                onLoad: true,
-            },
-        ],
-    },
-);
+export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogLcpControls));

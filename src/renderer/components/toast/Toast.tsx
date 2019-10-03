@@ -6,15 +6,13 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import classNames = require("classnames");
-
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
-import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
+import classNames = require("classnames");
 
 export enum ToastType {
     Error,
@@ -22,7 +20,7 @@ export enum ToastType {
     Success,
 }
 
-interface Props extends TranslatorProps {
+interface IProps extends TranslatorProps {
     close: (id: string) => void;
     className?: string;
     id?: string;
@@ -32,15 +30,15 @@ interface Props extends TranslatorProps {
     type?: ToastType;
 }
 
-interface State {
+interface IState {
     willLeave: boolean;
     toRemove: boolean;
 }
 
-export class Toast extends React.Component<Props, State> {
+export class Toast extends React.Component<IProps, IState> {
     private ref: any;
 
-    public constructor(props: Props) {
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {

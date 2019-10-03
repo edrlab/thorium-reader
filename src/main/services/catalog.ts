@@ -104,7 +104,12 @@ export class CatalogService {
                 debug("Unable to retrieve opds publication", opdsPublication);
                 throw new Error("Unable to retrieve opds publication");
             }
-            opdsFeedData.data = await this.importOpdsPublication(opdsPublication, downloadSample);
+            try {
+                opdsFeedData.data = await this.importOpdsPublication(opdsPublication, downloadSample);
+            } catch (error) {
+                debug("Unable to retrieve opds publication", opdsPublication, error);
+                throw new Error("Unable to retrieve opds publication: " + error);
+            }
             return opdsFeedData;
         });
     }

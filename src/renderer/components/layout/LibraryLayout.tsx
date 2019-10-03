@@ -13,14 +13,23 @@ import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import { RootState } from "readium-desktop/renderer/redux/states";
-
 import LibraryHeader from "./LibraryHeader";
 
-interface IProps extends RouteComponentProps {
-    dialogOpen?: boolean;
+interface IProps extends RouteComponentProps, ReturnType<typeof mapStateToProps> {
     secondaryHeader?: React.ReactElement;
     title?: string;
     mainClassName?: string;
+
+    // since React 16.10.0 (was not needed in 16.9.0)
+    children?: React.ReactNode; // JSX.Element[] | JSX.Element
+    // SEE @types/react/index.d.ts:
+    // ------
+    // React.Props<T> is now deprecated, which means that the `children`
+    // property is not available on `P` by default, even though you can
+    // always pass children as variadic arguments to `createElement`.
+    // In the future, if we can define its call signature conditionally
+    // on the existence of `children` in `P`, then we should remove this.
+    // readonly props: Readonly<P> & Readonly<{ children?: ReactNode }>;
 }
 
 class LibraryLayout extends React.Component<IProps> {

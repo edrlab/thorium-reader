@@ -6,12 +6,10 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import * as LoaderIcon from "readium-desktop/renderer/assets/icons/loader.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/loader.css";
 
 import SVG from "./SVG";
-
-import * as styles from "readium-desktop/renderer/assets/styles/loader.css";
 
 export default class Loader extends React.Component<{}, null> {
     public render(): React.ReactElement<{}>  {

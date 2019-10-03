@@ -6,22 +6,20 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-
+import { connect } from "react-redux";
 import * as importAction from "readium-desktop/common/redux/actions/import";
-
-import { withApi } from "readium-desktop/renderer/components/utils/hoc/api";
-
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface CatalogControlsProps extends TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
     publication: OpdsPublicationView;
-    verifyImport?: (publication: OpdsPublicationView, downloadSample?: boolean) => void;
 }
 
-export class OpdsControls extends React.Component<CatalogControlsProps, undefined> {
+export class OpdsControls extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { publication, verifyImport } = this.props;
         const { __ } = this.props;
@@ -48,9 +46,9 @@ export class OpdsControls extends React.Component<CatalogControlsProps, undefine
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
-        verifyImport: (publication: OpdsPublicationView, downloadSample: boolean) => {
+        verifyImport: (publication: OpdsPublicationView, downloadSample?: boolean) => {
             dispatch(importAction.verifyImport(
                 {
                     publication,
@@ -61,10 +59,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default withTranslator(withApi(
-    OpdsControls,
-    {
-        operations: [],
-        mapDispatchToProps,
-    },
-));
+export default connect(undefined, mapDispatchToProps)(withTranslator(OpdsControls));
