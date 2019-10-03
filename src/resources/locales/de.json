@@ -112,6 +112,8 @@
         "back": "Zurück",
         "breadcrumbRoot": "",
         "empty": "Keine Publikation gefunden",
+        "firstPage": "Zuerst",
+        "lastPage": "Zuletzt",
         "menu": {
             "aboutBook": "über dieses Buch",
             "addExtract": "zur Lib hinzufügen",
@@ -121,11 +123,13 @@
         },
         "network": {
             "error": "Ein Fehler ist aufgetreten",
-            "reject": "Beim Versuch, den OPDS-Feed zu verarbeiten, ist ein unerwarteter Fehler aufgetreten.",
-            "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut",
             "noInternet": "Kein Internet",
-            "noInternetMessage": "Versuchen Sie: Überprüfen Sie das Netzwerkkabel, das Modem, den Router oder das WLAN"
-        }
+            "noInternetMessage": "Versuchen Sie: Überprüfen Sie das Netzwerkkabel, das Modem, den Router oder das WLAN",
+            "reject": "Beim Versuch, den OPDS-Feed zu verarbeiten, ist ein unerwarteter Fehler aufgetreten.",
+            "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut"
+        },
+        "next": "Nächster",
+        "previous": "Bisherige"
     },
     "publication": {
         "deleteButton": "Löschen",

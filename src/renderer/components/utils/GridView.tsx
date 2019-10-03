@@ -18,11 +18,19 @@ interface IProps {
 }
 
 export default class GridView extends React.Component<IProps> {
+    private ref: HTMLDivElement;
+
+    public componentDidUpdate(oldProps: IProps) {
+        if (this.props.publications !== oldProps.publications) {
+            this.scrollToTop();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
         const { isOpdsView } = this.props;
 
         return (
-            <div className={styles.card_wrapper}>
+            <div ref={(ref) => this.ref = ref} className={styles.card_wrapper}>
                 {this.props.publications.map((pub, index) =>
                     <PublicationCard
                         key={-index}
@@ -36,5 +44,9 @@ export default class GridView extends React.Component<IProps> {
                 })}
             </div>
         );
+    }
+
+    private scrollToTop() {
+        this.ref.scrollIntoView();
     }
 }

@@ -52,7 +52,7 @@ class Browser extends React.Component<IProps> {
                     search={this.props.location.search}
                 />
                 {url &&
-                    <BrowserResult url={url} />
+                    <BrowserResult url={url} breadcrumb={breadcrumb}/>
                 }
             </LibraryLayout>
         );

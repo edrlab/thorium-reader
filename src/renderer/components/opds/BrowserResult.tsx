@@ -12,8 +12,10 @@ import { OpdsResultType } from "readium-desktop/common/views/opds";
 import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import { BreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
 import {
-    TranslatorProps, withTranslator,
+    TranslatorProps,
+    withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
@@ -25,11 +27,13 @@ import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
+    breadcrumb: BreadCrumbItem[];
 }
 
 interface IState {
     browserResult: ReturnPromiseType<TOpdsApiBrowse> | undefined;
     browserError: string | undefined;
+    currentResultPage: number;
 }
 
 export class BrowserResult extends React.Component<BrowserResultProps, IState> {
@@ -40,18 +44,25 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         this.state = {
             browserError: undefined,
             browserResult: undefined,
+            currentResultPage: 1,
         };
+
+        this.goto = this.goto.bind(this);
     }
 
     public componentDidMount() {
-        this.browseOpds();
+        this.browseOpds(this.props.url);
     }
 
     public componentDidUpdate(prevProps: BrowserResultProps) {
         if (prevProps.url !== this.props.url ||
             prevProps.location.search !== this.props.location.search) {
             // New url to browse
-            this.browseOpds();
+            this.browseOpds(this.props.url);
+        }
+
+        if (this.props.breadcrumb !== prevProps.breadcrumb) {
+            this.setState({currentResultPage: 1});
         }
     }
 
@@ -84,7 +95,13 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
                         break;
                     case OpdsResultType.PublicationFeed:
                         content = (
-                            <EntryPublicationList publications={browserResult.data.publications} />
+                            <EntryPublicationList
+                                publications={browserResult.data.publications}
+                                goto={this.goto}
+                                urls={browserResult.data.urls}
+                                page={browserResult.data.page}
+                                currentPage={this.state.currentResultPage}
+                            />
                         );
                         break;
                     case OpdsResultType.Empty:
@@ -114,15 +131,14 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         </div>;
     }
 
-    private browseOpds() {
-        const { url, location } = this.props;
+    private browseOpds(url: string) {
+        const { location } = this.props;
         const { browserResult } = this.state;
         const oldQs = parseQueryString(url.split("?")[1]);
         const search = qs.parse(location.search.replace("?", "")).search;
         let newUrl = url;
-
-        if (search && browserResult && browserResult.isSuccess && browserResult.data.searchUrl) {
-            newUrl = browserResult.data.searchUrl;
+        if (search && browserResult && browserResult.isSuccess && browserResult.data.urls.search) {
+            newUrl = browserResult.data.urls.search;
             newUrl = this.addSearchTerms(newUrl, search) +
                 Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
         }
@@ -166,6 +182,11 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
             }
             return newUrl;
         }
+    }
+
+    private goto(url: string, page: number) {
+        this.browseOpds(url);
+        this.setState({currentResultPage: page});
     }
 }
 
