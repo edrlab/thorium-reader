@@ -284,6 +284,7 @@ button {
 
     & ul.menu_option {
       float: right;
+      display: flex;
 
       & > li {
         border-left: 1px solid #c1c1c1;
