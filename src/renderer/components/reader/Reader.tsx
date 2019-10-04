@@ -52,6 +52,8 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import optionsValues from "./options-values";
 
+import * as classNames from "classnames";
+
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
 // import { webFrame } from "electron";
@@ -445,7 +447,11 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
                         anchorId="main-content"
                         label={this.props.__("accessibility.skipLink")}
                     />
-                    <div className={styles.root}>
+                    <div className={classNames(
+                        styles.root,
+                        this.state.settingsValues.night && styles.nightMode,
+                        this.state.settingsValues.sepia && styles.sepiaMode,
+                    )}>
                         <ReaderHeader
                             infoOpen={this.props.infoOpen}
                             menuOpen={this.state.menuOpen}
