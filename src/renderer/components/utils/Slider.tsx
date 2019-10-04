@@ -54,12 +54,14 @@ class Slider extends React.Component<Props, State> {
     public componentDidUpdate() {
         if (this.state.refreshVisible) {
             this.contentElRefs.map((element, index) => {
-                const buttonList = element.getElementsByTagName("button");
-                for (const button of buttonList) {
-                    if (!this.isElementVisible(index)) {
-                        button.tabIndex = "-1";
-                    } else {
-                        button.tabIndex = "0";
+                if (element) {
+                    const buttonList = element.getElementsByTagName("button");
+                    for (const button of buttonList) {
+                        if (!this.isElementVisible(index)) {
+                            button.tabIndex = "-1";
+                        } else {
+                            button.tabIndex = "0";
+                        }
                     }
                 }
             });
