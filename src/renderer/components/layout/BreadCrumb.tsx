@@ -56,10 +56,12 @@ class BreadCrumb extends React.Component<IProps> {
                             }}
                             title={item.name}
                         >
-                            {`${item.name} /`}
+                            {`${decodeURI(item.name)} /`}
                         </Link>
                         :
-                        <span key={index} >{item.name}</span>,
+                        <span key={index}>
+                            { decodeURI(item.name) }
+                        </span>,
                 )}
             </div>
         );
