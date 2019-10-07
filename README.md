@@ -25,6 +25,9 @@ This project would have not seen the light without the financial help of the fol
 - CNL (Centre National du livre), France
 - Ministère de la Culture, France
 
+![library](img/library.png)
+![publicqtion info](img/info.png)
+![reader](img/reader.png)
 
 
 ## Build status
