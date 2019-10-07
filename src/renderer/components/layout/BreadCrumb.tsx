@@ -45,8 +45,9 @@ class BreadCrumb extends React.Component<IProps> {
                         <SVG svg={ArrowIcon} />
                     </Link>
                 }
-                {breadcrumb && breadcrumb.map((item, index) =>
-                    item.path && index !== breadcrumb.length - 1 ?
+                {breadcrumb && breadcrumb.map((item, index) => {
+                    const name = decodeURI(item.name);
+                    return (item.path && index !== breadcrumb.length - 1 ?
                         <Link
                             key={index}
                             to={{
@@ -54,15 +55,16 @@ class BreadCrumb extends React.Component<IProps> {
                                 search: `?displayType=${search.displayType}`,
                                 state: item.state,
                             }}
-                            title={item.name}
+                            title={name}
                         >
-                            {`${decodeURI(item.name)} /`}
+                            {`${decodeURI(name)} /`}
                         </Link>
                         :
                         <span key={index}>
-                            { decodeURI(item.name) }
-                        </span>,
-                )}
+                            { decodeURI(name) }
+                        </span>
+                    );
+                })}
             </div>
         );
     }
