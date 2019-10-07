@@ -6,24 +6,17 @@
 // ==LICENSE-END==
 
 import { injectable } from "inversify";
-
 import * as moment from "moment";
-
+import { convertContributorArrayToStringArray } from "readium-desktop/common/utils";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { JSON as TAJSON } from "ta-json-x";
 
 import { Publication as Epub } from "@r2-shared-js/models/publication";
 
-import { PublicationView } from "readium-desktop/common/views/publication";
-
-import {
-    convertContributorArrayToStringArray,
-} from "readium-desktop/common/utils";
-
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-
 @injectable()
 export class PublicationViewConverter {
-    public convertDocumentToView(document: PublicationDocument): any {
+    public convertDocumentToView(document: PublicationDocument): PublicationView {
         const b64ParsedPublication = document.resources.filePublication;
         const jsonParsedPublication = Buffer
             .from(b64ParsedPublication, "base64")

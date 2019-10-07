@@ -5,20 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-
 import * as classNames from "classnames";
-
+import * as React from "react";
 import { withRouter } from "react-router";
-
-import { Link } from "react-router-dom";
-
-import { RouteComponentProps } from "react-router-dom";
-
-import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
+import { Link, RouteComponentProps } from "react-router-dom";
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 
 const headerNav = [
     {
@@ -41,9 +36,9 @@ const headerNav = [
     },
 ];
 
-export interface HeaderProps extends RouteComponentProps, TranslatorProps { }
+interface IProps extends RouteComponentProps, TranslatorProps { }
 
-export class Header extends React.Component<HeaderProps, undefined> {
+class Header extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 

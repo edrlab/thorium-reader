@@ -20,13 +20,13 @@ import * as PagineIcon from "readium-desktop/renderer/assets/icons/pagine.svg";
 
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import { colCountEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
+import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 
 import optionsValues from "./options-values";
 
 import classNames = require("classnames");
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { SectionData } from "./sideMenu/sideMenuData";
 
 import SideMenu from "./sideMenu/SideMenu";
@@ -35,14 +35,17 @@ import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 
+import { ReaderConfig } from "readium-desktop/common/models/reader";
+
 interface Props extends TranslatorProps {
     open: boolean;
-    settings: any;
+    settings: ReaderConfig;
     indexes: {fontSize: number, pageMargins: number, wordSpacing: number, letterSpacing: number, lineHeight: number};
     handleSettingChange: (event: any, name: string, value?: any) => void;
     handleIndexChange: (event: any, name: string, value?: any) => void;
     setSettings: (settings: any) => void;
     toggleMenu: any;
+    focusSettingMenuButton: () => void;
 }
 
 enum themeType {
@@ -52,8 +55,6 @@ enum themeType {
 }
 
 export class ReaderOptions extends React.Component<Props> {
-    private sectionRefList: any = [];
-
     public constructor(props: Props) {
         super(props);
 
@@ -93,63 +94,62 @@ export class ReaderOptions extends React.Component<Props> {
                 open={this.props.open}
                 sections={sections}
                 toggleMenu={toggleMenu}
+                focusMenuButton={this.props.focusSettingMenuButton}
             />
         );
     }
 
     private themeContent() {
-        const {__} = this.props;
-
+        const {__, settings} = this.props;
+        const withoutTheme = !settings.sepia && !settings.night;
         return (
-            <>
-                <div ref={this.sectionRefList[0]} id={styles.themes_list}>
-                    <div>
-                        <input
+            <div id={styles.themes_list}>
+                <div>
+                    <input
                         id={"radio-" + themeType.Without}
                         type="radio"
                         name="theme"
                         onChange={() => this.handleChooseTheme(themeType.Without)}
-                        {...(!this.props.settings.sepia && !this.props.settings.night
-                        && {checked: true})}
-                        />
-                        <label htmlFor={"radio-" + themeType.Without}>
-                            {this.props.settings.predefined && <SVG svg={DoneIcon} ariaHidden/>}
-                            { __("reader.settings.theme.name.Neutral")}
-                        </label>
-                    </div>
-                    <div>
-                        <input
+                        {...(withoutTheme && {checked: true})}
+                    />
+                    <label htmlFor={"radio-" + themeType.Without}>
+                        {withoutTheme && <SVG svg={DoneIcon} ariaHidden/>}
+                        { __("reader.settings.theme.name.Neutral")}
+                    </label>
+                </div>
+                <div>
+                    <input
                         id={"radio-" + themeType.Sepia}
                         type="radio"
                         name="theme"
                         onChange={() => this.handleChooseTheme(themeType.Sepia)}
-                        {...(this.props.settings.sepia && {checked: true})}
-                        />
-                        <label htmlFor={"radio-" + themeType.Sepia}>
-                            {this.props.settings.sepia && <SVG svg={DoneIcon} ariaHidden/>}
-                            { __("reader.settings.theme.name.Sepia")}
-                        </label>
-                    </div>
-                    <div>
-                        <input
+                        {...(settings.sepia && {checked: true})}
+                    />
+                    <label htmlFor={"radio-" + themeType.Sepia}>
+                        {settings.sepia && <SVG svg={DoneIcon} ariaHidden/>}
+                        { __("reader.settings.theme.name.Sepia")}
+                    </label>
+                </div>
+                <div>
+                    <input
                         id={"radio-" + themeType.Night}
                         type="radio"
                         name="theme"
                         onChange={() => this.handleChooseTheme(themeType.Night)}
-                        {...(this.props.settings.night && {checked: true})}
-                        />
-                        <label htmlFor={"radio-" + themeType.Night}>
-                            {this.props.settings.night && <SVG svg={DoneIcon} ariaHidden/>}
-                            { __("reader.settings.theme.name.Night")}
-                        </label>
-                    </div>
+                        {...(settings.night && {checked: true})}
+                    />
+                    <label htmlFor={"radio-" + themeType.Night}>
+                        {settings.night && <SVG svg={DoneIcon} ariaHidden/>}
+                        { __("reader.settings.theme.name.Night")}
+                    </label>
                 </div>
-            </>
+            </div>
         );
     }
 
     private textContent() {
         const {__, settings} = this.props;
+
         return <>
             <div className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.fontSize")}</div>
@@ -157,7 +157,7 @@ export class ReaderOptions extends React.Component<Props> {
                     <span className={styles.slider_marker} >a</span>
                     <input type="range"
                         onChange={(e) => this.props.handleIndexChange(e, "fontSize")}
-                        id="taille_texte"
+                        id="text_length"
                         min={0}
                         max={optionsValues.fontSize.length - 1}
                         value={this.props.indexes.fontSize}
@@ -197,90 +197,144 @@ export class ReaderOptions extends React.Component<Props> {
     private displayContent() {
         const {__, settings} = this.props;
         return <>
-            <div className={styles.line_tab_content}>
-                <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
+            <section className={styles.line_tab_content}>
+            <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
                 <div className={styles.center_in_tab}>
-                    <button
-                        id={styles.scroll_option} role="link"
-                        className={this.getButtonClassName("paged", false)}
-                        onClick={(e) => this.props.handleSettingChange(e, "paged", "false")}
-                    >
-                        <SVG svg={DefileIcon} title={__("reader.settings.scrolled")}/>
-                        {__("reader.settings.scrolled")}
-                    </button>
-                    <button
-                        id={styles.page_option} role="link"
-                        className={this.getButtonClassName("paged", true)}
-                        onClick={(e) => this.props.handleSettingChange(e, "paged", "true")}
-                    >
-                        <SVG svg={PagineIcon} title={__("reader.settings.paginated")}/>
-                        {__("reader.settings.paginated")}
-                    </button>
+                    <div className={styles.focus_element}>
+                        <input
+                            id={styles.scroll_option}
+                            type="radio"
+                            name="disposition"
+                            onChange={(e) => this.props.handleSettingChange(e, "paged", "false")}
+                            checked={!settings.paged}
+                        />
+                        <label
+                            htmlFor={styles.scroll_option}
+                            className={this.getButtonClassName("paged", false)}
+                        >
+                            <SVG svg={DefileIcon}/>
+                            {__("reader.settings.scrolled")}
+                        </label>
+                    </div>
+                    <div className={styles.focus_element}>
+                        <input
+                            id={styles.page_option}
+                            type="radio"
+                            name="disposition"
+                            onChange={(e) => this.props.handleSettingChange(e, "paged", "true")}
+                            checked={settings.paged}
+                        />
+                        <label
+                            htmlFor={styles.page_option}
+                            className={this.getButtonClassName("paged", true)}
+                        >
+                            <SVG svg={PagineIcon}/>
+                            {__("reader.settings.paginated")}
+                        </label>
+                    </div>
                 </div>
-                </div>
-                <div className={styles.line_tab_content}>
+            </section>
+            <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.justification")}</div>
                 <div className={styles.center_in_tab}>
-                    <button
-                        id={styles.option_gauche} role="link"
-                        className={this.getButtonClassName("align", "left")}
-                        onClick={(e) => this.props.handleSettingChange(e, "align", "left")}
-                    >
-                        <SVG svg={LeftIcon} title={__("reader.settings.left")}/>
-                        {__("reader.settings.left")}
-                    </button>
-                    <button
-                        id={styles.option_justif} role="link"
-                        className={this.getButtonClassName("align", "justify")}
-                        onClick={(e) => this.props.handleSettingChange(e, "align", "justify")}
-                    >
-                        <SVG svg={JustifyIcon} title={__("reader.settings.justify")}/>
-                        {__("reader.settings.justify")}
-                    </button>
+                    <div className={styles.focus_element}>
+                        <input
+                            id={"radio-" + styles.option_gauche}
+                            name="alignment"
+                            type="radio"
+                            onChange={(e) => this.props.handleSettingChange(e, "align", "left")}
+                            checked={settings.align === textAlignEnum.left}
+                        />
+                        <label
+                            htmlFor={"radio-" + styles.option_gauche}
+                            className={this.getButtonClassName("align", "left")}
+                        >
+                            <SVG svg={LeftIcon}/>
+                            {__("reader.settings.left")}
+                        </label>
+                    </div>
+                    <div className={styles.focus_element}>
+                        <input
+                            id={"radio-" + styles.option_justif}
+                            name="alignment"
+                            type="radio"
+                            onChange={(e) => this.props.handleSettingChange(e, "align", "justify")}
+                            checked={settings.align === textAlignEnum.justify}
+                        />
+                        <label
+                            htmlFor={"radio-" + styles.option_justif}
+                            className={this.getButtonClassName("align", "justify")}
+                        >
+                            <SVG svg={JustifyIcon}/>
+                            {__("reader.settings.justify")}
+                        </label>
+                    </div>
                 </div>
-            </div>
-            <div className={styles.line_tab_content}>
+            </section>
+            <section className={styles.line_tab_content}>
                 <div className={styles.subheading}>{__("reader.settings.column.title")}</div>
                 <div className={styles.center_in_tab}>
-                    <button
-                        id={styles.option_colonne}
-                        className={this.getButtonClassName("colCount",
-                        !settings.paged ? null : colCountEnum.auto,
-                        !settings.paged && styles.disable)}
-                        {...(!settings.paged && {disabled: true})}
-                        role="link"
-                        onClick={(e) =>
+                    <div className={styles.focus_element}>
+                        <input
+                            id={"radio-" + styles.option_colonne}
+                            type="radio"
+                            name="column"
+                            {...(!settings.paged && {disabled: true})}
+                            onChange={(e) =>
                             this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
-                    >
-                        <SVG svg={AutoIcon} title={__("reader.settings.column.auto")}/>
-                        {__("reader.settings.column.auto")}
-                    </button>
-                    <button
-                        className={this.getButtonClassName("colCount",
-                        !settings.paged ? null : colCountEnum.one,
-                        !settings.paged && styles.disable)}
-                        {...(!settings.paged && { disabled: true })}
-                        id={styles.option_colonne1}
-                        role="link"
-                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
-                    >
-                        <SVG svg={ColumnIcon} title={__("reader.settings.column.one")}/>
-                        {__("reader.settings.column.one")}
-                    </button>
-                    <button
-                        className={this.getButtonClassName("colCount",
-                        !settings.paged ? null : colCountEnum.two,
-                        !settings.paged && styles.disable)}
-                        id={styles.option_colonne2}
-                        {...(!settings.paged && { disabled: true })}
-                        role="link"
-                        onClick={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
-                    >
-                        <SVG svg={Column2Icon} title={__("reader.settings.column.two")}/>
-                        {__("reader.settings.column.two")}
-                    </button>
+                            checked={settings.colCount === colCountEnum.auto}
+                        />
+                        <label
+                            htmlFor={"radio-" + styles.option_colonne}
+                            className={this.getButtonClassName("colCount",
+                            !settings.paged ? null : colCountEnum.auto,
+                            !settings.paged && styles.disable)}
+                        >
+                            <SVG svg={AutoIcon}/>
+                            {__("reader.settings.column.auto")}
+                        </label>
+                    </div>
+                    <div className={styles.focus_element}>
+                        <input
+                            {...(!settings.paged && { disabled: true })}
+                            id={"radio-" + styles.option_colonne1}
+                            type="radio"
+                            name="column"
+                            onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
+                            checked={settings.colCount === colCountEnum.one}
+                        />
+                        <label
+                            htmlFor={"radio-" + styles.option_colonne1}
+                            className={this.getButtonClassName("colCount",
+                            !settings.paged ? null : colCountEnum.one,
+                            !settings.paged && styles.disable)}
+                        >
+                            <SVG svg={ColumnIcon} title={__("reader.settings.column.oneTitle")}/>
+                            {__("reader.settings.column.one")}
+                        </label>
+                    </div>
+                    <div className={styles.focus_element}>
+                        <input
+                            id={"radio-" + styles.option_colonne2}
+                            type="radio"
+                            name="column"
+                            {...(!settings.paged && { disabled: true })}
+                            onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
+                            checked={settings.colCount === colCountEnum.two}
+                        />
+                        <label
+                            htmlFor={"radio-" + styles.option_colonne2}
+                            className={this.getButtonClassName("colCount",
+                                !settings.paged ? null : colCountEnum.two,
+                                !settings.paged && styles.disable)
+                            }
+                        >
+                            <SVG svg={Column2Icon} title={__("reader.settings.column.twoTitle")}/>
+                            {__("reader.settings.column.two")}
+                        </label>
+                    </div>
                 </div>
-            </div>
+            </section>
         </>;
     }
 
@@ -294,8 +348,7 @@ export class ReaderOptions extends React.Component<Props> {
                 <input
                     type="range"
                     onChange={(e) => this.props.handleIndexChange(e, "pageMargins")}
-                    title="Valeur des marges"
-                    id="taille_texte"
+                    id="text_length"
                     min={0}
                     max={optionsValues.pageMargins.length - 1}
                     value={this.props.indexes.pageMargins}
@@ -315,8 +368,7 @@ export class ReaderOptions extends React.Component<Props> {
                 <input
                     type="range"
                     onChange={(e) => this.props.handleIndexChange(e, "wordSpacing")}
-                    title="Valeur des marges"
-                    id="taille_texte"
+                    id="text_length"
                     min={0}
                     max={optionsValues.wordSpacing.length - 1}
                     value={this.props.indexes.wordSpacing}
@@ -336,8 +388,7 @@ export class ReaderOptions extends React.Component<Props> {
                 <input
                     type="range"
                     onChange={(e) => this.props.handleIndexChange(e, "letterSpacing")}
-                    title="Valeur des marges"
-                    id="taille_texte"
+                    id="text_length"
                     min={0}
                     max={optionsValues.letterSpacing.length - 1}
                     value={this.props.indexes.letterSpacing}
@@ -357,8 +408,7 @@ export class ReaderOptions extends React.Component<Props> {
                 <input
                     type="range"
                     onChange={(e) => this.props.handleIndexChange(e, "lineHeight")}
-                    title="Valeur des marges"
-                    id="taille_texte"
+                    id="text_length"
                     min={0}
                     max={optionsValues.lineHeight.length - 1}
                     value={this.props.indexes.lineHeight}
@@ -376,14 +426,10 @@ export class ReaderOptions extends React.Component<Props> {
 
     private handleChooseTheme(theme: themeType) {
         const values = this.props.settings;
-        let neutral = false;
         let sepia = false;
         let night = false;
 
         switch (theme) {
-            case themeType.Without:
-                neutral = true;
-                break;
             case themeType.Night:
                 night = true;
                 break;
@@ -391,7 +437,6 @@ export class ReaderOptions extends React.Component<Props> {
                 sepia = true;
                 break;
         }
-        values.predefined = neutral;
         values.sepia = sepia;
         values.night = night;
 
@@ -414,6 +459,8 @@ export class ReaderOptions extends React.Component<Props> {
         let classname = "";
         if (property === value) {
             classname = styles.active;
+        } else {
+            classname = styles.notUsed;
         }
         return classNames(classname, additionalClassName);
     }

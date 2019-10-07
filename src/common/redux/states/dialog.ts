@@ -7,8 +7,11 @@
 
 import { DialogType } from "readium-desktop/common/models/dialog";
 
-export interface DialogState {
+export interface IDialogStateData<T extends keyof DialogType = keyof DialogType> {
+    type: T;
+    data: DialogType[T];
+}
+
+export interface DialogState extends IDialogStateData {
     open: boolean;
-    type: DialogType;
-    data: any;
 }

@@ -6,22 +6,18 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
-
 import { Link } from "react-router-dom";
-
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
 import {
-    TranslatorProps,
-    withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 
-interface Props extends TranslatorProps {
+interface IProps extends TranslatorProps {
     section: number;
 }
 
-export class SettingsHeader extends React.Component<Props, undefined> {
+export class SettingsHeader extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 

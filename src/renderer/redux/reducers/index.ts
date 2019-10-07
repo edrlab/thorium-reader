@@ -17,13 +17,11 @@ import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 
-import { readerReducer } from "./reader";
-
-import { winReducer } from "./win";
-
 import { apiReducer } from "./api";
-
+import { downloadReducer } from "./download";
 import { opdsReducer } from "./opds";
+import { readerReducer } from "./reader";
+import { winReducer } from "./win";
 
 import { History } from "history";
 
@@ -39,4 +37,5 @@ export const rootReducer = (history: History) => combineReducers({
     router: connectRouter(history),
     import: importReducer,
     toast: toastReducer,
+    download: downloadReducer,
 });

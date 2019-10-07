@@ -5,25 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Store } from "redux";
-
+import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
+import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { AppWindow } from "readium-desktop/common/models/win";
 import {
-    apiActions,
-    dialogActions,
-    i18nActions,
-    lcpActions,
-    netActions,
-    readerActions,
-    toastActions,
-    updateActions,
+    apiActions, dialogActions, downloadActions, i18nActions, lcpActions, netActions, readerActions,
+    toastActions, updateActions,
 } from "readium-desktop/common/redux/actions";
-import { container } from "readium-desktop/main/di";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
+import { diMainGet } from "readium-desktop/main/di";
+import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
-
-import { SenderType } from "readium-desktop/common/models/sync";
+const debug = debug_("readium-desktop:sync");
 
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
@@ -54,10 +47,18 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     updateActions.ActionType.LatestVersionSet,
 
     toastActions.ActionType.OpenRequest,
+
+    downloadActions.ActionType.DownloadRequest,
+    downloadActions.ActionType.DownloadSuccess,
 ];
 
-export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action: any) => {
-    console.log("### action type", action.type);
+export const reduxSyncMiddleware: Middleware
+    = (_store: MiddlewareAPI<Dispatch<AnyAction>>) =>
+    (next: Dispatch<ActionWithSender>) =>
+    ((action: ActionWithSender) => {
+
+    debug("### action type", action.type);
+
     // Test if the action must be sent to the rendeder processes
     if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
         // Do not send
@@ -65,13 +66,15 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
     }
 
     // Send this action to all the registered renderer processes
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const winRegistry = diMainGet("win-registry");
     const windows = winRegistry.getWindows();
 
     // Get action serializer
-    const actionSerializer = container.get("action-serializer") as ActionSerializer;
+    const actionSerializer = diMainGet("action-serializer");
 
-    for (const appWindow of Object.values(windows)) {
+    for (const appWin of Object.values(windows)) {
+        const appWindow = appWin as AppWindow;
+
         // Notifies renderer process
         const win = appWindow.win;
         const winId = appWindow.identifier;
@@ -93,11 +96,11 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
                 sender: {
                     type: SenderType.Main,
                 },
-            });
+            } as syncIpc.EventPayload);
         } catch (error) {
-            console.log("Windows does not exist", winId);
+            console.error("Windows does not exist", winId);
         }
     }
 
     return next(action);
-};
+}) as Dispatch<ActionWithSender>;

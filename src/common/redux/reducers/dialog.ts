@@ -6,19 +6,19 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-
 import { ActionType } from "readium-desktop/common/redux/actions/dialog";
+import { DialogState, IDialogStateData } from "readium-desktop/common/redux/states/dialog";
 
-const initialState: any = {
+const initialState: DialogState = {
     open: false,
-    type: null,
-    data: null,
+    type: undefined,
+    data: undefined,
 };
 
 // The dialog reducer.
 export function dialogReducer(
-    state: any = initialState,
-    action: Action,
+    state: DialogState = initialState,
+    action: Action<IDialogStateData>,
 ) {
     switch (action.type) {
         case ActionType.OpenRequest:

@@ -7,7 +7,6 @@
 
 import { Contributor } from "./contributor";
 import { CustomCover } from "./custom-cover";
-import { Downloadable } from "./downloadable";
 import { File } from "./file";
 import { Identifiable } from "./identifiable";
 import { Language } from "./language";

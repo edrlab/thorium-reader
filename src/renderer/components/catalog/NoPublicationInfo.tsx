@@ -6,13 +6,9 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
-import { TranslatorProps, withTranslator } from "../utils/translator";
-
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 class NoPublicationInfo extends React.Component<TranslatorProps> {
     public render(): React.ReactElement<{}> {
@@ -20,8 +16,9 @@ class NoPublicationInfo extends React.Component<TranslatorProps> {
         return (
             <>
                 <div className={styles.noPublicationHelp}>
-                    <SVG svg={AddIcon}/>
-                    <p>{__("catalog.noPublicationHelp")}</p>
+                    <p>{__("catalog.noPublicationHelpL1")}</p>
+                    <p>{__("catalog.noPublicationHelpL2")}</p>
+                    { /*<p>{__("catalog.noPublicationHelpL3")}</p> */ }
                 </div>
             </>
         );

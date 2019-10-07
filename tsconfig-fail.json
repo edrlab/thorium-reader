@@ -1,0 +1,4 @@
+{
+  "strictNullChecks": true,
+  "strictPropertyInitialization": true,
+}

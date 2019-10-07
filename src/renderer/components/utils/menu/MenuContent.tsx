@@ -21,21 +21,25 @@ interface MenuContentProps {
 }
 
 export default class MenuContent extends React.Component<MenuContentProps, undefined> {
+    private appElement: HTMLElement;
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;
 
     public constructor(props: any) {
         super(props);
 
+        this.appElement = document.getElementById("app");
         this.appOverlayElement = document.getElementById("app-overlay");
         this.rootElement = document.createElement("div");
     }
 
     public componentDidMount() {
+        this.appElement.setAttribute("aria-hidden", "true");
         this.appOverlayElement.appendChild(this.rootElement);
     }
 
     public componentWillUnmount() {
+        this.appElement.setAttribute("aria-hidden", "false");
         this.appOverlayElement.removeChild(this.rootElement);
     }
 
@@ -48,6 +52,8 @@ export default class MenuContent extends React.Component<MenuContentProps, undef
                         style={this.props.menuStyle}
                         id={this.props.id}
                         aria-hidden={!this.props.open}
+                        role="menu"
+                        aria-expanded={this.props.open}
                         ref={(ref) => setContentRef && setContentRef(ref)}
                     >
                         {this.props.children}

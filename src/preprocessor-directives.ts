@@ -20,6 +20,9 @@ export const _NODE_MODULE_RELATIVE_URL = __NODE_MODULE_RELATIVE_URL__;
 declare const __PACKAGING__: string;
 export const _PACKAGING = __PACKAGING__;
 
+declare const __VSCODE_LAUNCH__: string;
+export const _VSCODE_LAUNCH = __VSCODE_LAUNCH__;
+
 declare const __POUCHDB_ADAPTER_NAME__: string;
 export const _POUCHDB_ADAPTER_NAME = __POUCHDB_ADAPTER_NAME__;
 
@@ -34,6 +37,9 @@ export const _GIT_DATE = __GIT_DATE__;
 
 declare const __APP_VERSION__: string;
 export const _APP_VERSION = __APP_VERSION__;
+
+declare const __APP_NAME__: string;
+export const _APP_NAME = __APP_NAME__;
 
 // This ones needs to be inlined, no var allowed (because otherwise: dynamic require() import!)
 // declare const __POUCHDB_ADAPTER_PACKAGE__: string;

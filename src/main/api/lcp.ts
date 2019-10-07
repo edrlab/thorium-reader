@@ -5,26 +5,46 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { inject, injectable} from "inversify";
-
+import { inject, injectable } from "inversify";
+import * as readerActions from "readium-desktop/common/redux/actions/reader";
+import { IHttpGetResult } from "readium-desktop/common/utils/http";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { LcpManager } from "readium-desktop/main/services/lcp";
 import { Store } from "redux";
 
-import * as readerActions from "readium-desktop/common/redux/actions/reader";
+export interface ILcpApi {
+    renewPublicationLicense: (data: any) => Promise<void>;
+    registerPublicationLicense: (data: any) => Promise<void>;
+    returnPublication: (data: any) => Promise<void>;
+    unlockPublicationWithPassphrase: (data: any) => Promise<void>;
+    getLsdStatus: (data: any) => Promise<IHttpGetResult<string, any>>;
+}
 
-import { LcpManager } from "readium-desktop/main/services/lcp";
+export type TLcpApiRenewPublicationLicense = ILcpApi["renewPublicationLicense"];
+export type TLcpApiRegisterPublicationLicense = ILcpApi["registerPublicationLicense"];
+export type TLcpApiReturnPublication = ILcpApi["returnPublication"];
+export type TLcpApiUnlockPublicationWithPassphrase = ILcpApi["unlockPublicationWithPassphrase"];
+export type TLcpApiGgetLsdStatus = ILcpApi["getLsdStatus"];
 
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+export interface ILcpModuleApi {
+    "lcp/renewPublicationLicense": TLcpApiRenewPublicationLicense;
+    "lcp/registerPublicationLicense": TLcpApiRegisterPublicationLicense;
+    "lcp/returnPublication": TLcpApiReturnPublication;
+    "lcp/unlockPublicationWithPassphrase": TLcpApiUnlockPublicationWithPassphrase;
+    "lcp/getLsdStatus": TLcpApiGgetLsdStatus;
+}
 
 @injectable()
 export class LcpApi {
-    @inject("store")
-    private store: Store<any>;
+    @inject(diSymbolTable.store)
+    private readonly store!: Store<any>;
 
-    @inject("publication-repository")
-    private publicationRepository: PublicationRepository;
+    @inject(diSymbolTable["publication-repository"])
+    private readonly publicationRepository!: PublicationRepository;
 
-    @inject("lcp-manager")
-    private lcpManager: LcpManager;
+    @inject(diSymbolTable["lcp-manager"])
+    private readonly lcpManager!: LcpManager;
 
     public async renewPublicationLicense(data: any): Promise<void> {
         const { publication } = data;

@@ -1,3 +1,5 @@
+@import "./variable.css";
+
 .c_dialog {
     position: fixed;
     z-index: 102;
@@ -116,7 +118,7 @@
                 background-color: #417dc7;
             }
             &:disabled {
-                background-color: #ADAEAE;
+                background-color: var(--disabled-color);
                 cursor: not-allowed;
             }
         }

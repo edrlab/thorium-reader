@@ -6,22 +6,21 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-
+import { connect } from "react-redux";
 import * as importAction from "readium-desktop/common/redux/actions/import";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
+import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface CatalogControlsProps extends TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
     publication: OpdsPublicationView;
-    verifyImport?: (publication: OpdsPublicationView, downloadSample?: boolean) => void;
 }
 
-export class OpdsControls extends React.Component<CatalogControlsProps, undefined> {
+export class OpdsControls extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { publication, verifyImport } = this.props;
         const { __ } = this.props;
@@ -32,25 +31,27 @@ export class OpdsControls extends React.Component<CatalogControlsProps, undefine
 
         return publication.isFree ? (
             <button
-                onClick={() => verifyImport(publication)}
+                onClick={() => verifyImport(publication as ImportOpdsPublication)}
                 className={styles.lire}
             >
-                {__("catalog.addTeaser")}
+                {__("catalog.addBookToLib")}
             </button>
         ) : publication.hasSample && (
             <button
-                onClick={() => verifyImport(publication, true)}
+                onClick={() => verifyImport(publication as ImportOpdsPublication, true)}
                 className={styles.lire}
             >
-                {__("catalog.addTeaserToLib")}
+                {__("opds.menu.addExtract")}
             </button>
         );
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
-        verifyImport: (publication: OpdsPublicationView, downloadSample: boolean) => {
+        // src/common/redux/states/import.ts
+        // FIXME : REDUX ISN'T TYPED, resolve this force cast
+        verifyImport: (publication: ImportOpdsPublication, downloadSample?: boolean) => {
             dispatch(importAction.verifyImport(
                 {
                     publication,
@@ -61,10 +62,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default withTranslator(withApi(
-    OpdsControls,
-    {
-        operations: [],
-        mapDispatchToProps,
-    },
-));
+export default connect(undefined, mapDispatchToProps)(withTranslator(OpdsControls));

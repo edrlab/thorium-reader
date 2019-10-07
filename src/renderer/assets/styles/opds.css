@@ -1,31 +1,21 @@
 /* FORM */
 
 .opds_form {
-    & p {
-        display: block;
-        position: relative;
-        padding-top: 0;
-        padding-bottom: 10px;
-        font-weight: 700;
-    }
-
-    & form {
-        border-bottom: 1px solid #c1c1c1;
-        margin-left:0;
-        height:auto;
-        margin-bottom:50px;
-        display: inline-block;
-
-        & input {
-            position: relative;
-            width: 300px;
-            border-radius: 0;
-            border: none;
-            height: 35px;
-            /* outline: inherit; */
-            background-color: transparent;
-            color: black;
-            font-size: 0.9rem;
+    & button {
+        font-size: 1rem;
+        border: 1px solid black;
+        border-radius: 0.3125rem;
+        color: black;
+        width: auto;
+        height: auto;
+        padding: 0.625rem;
+        display: flex;
+        align-items: center;
+        
+        & svg {
+            width: 0.9375rem;
+            height: 0.9375rem;
+            margin-right: 1rem;
         }
     }
 }
@@ -34,10 +24,11 @@
 
 .opds_list {
     display: flex;
-   	width:100%;
+   	width: 100%;
   	flex-flow: row wrap;
   	height: auto;
   	justify-content: space-between;
+    margin-top: 3rem;
     & ul {
         display: flex;
         flex-flow: row wrap;
@@ -62,6 +53,8 @@
                     color:white;
                     font-size: 1.5rem;
                     font-weight: bold;
+                    overflow-wrap: break-word;
+                    padding: 1rem;
                 }
             }
             & button {
@@ -131,4 +124,83 @@
     margin: 0 -60px;
     padding: 30px 60px;
     margin-bottom: 20px;
+}
+
+.opdsBrowse {
+    overflow-y: hidden;
+    padding: 0;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+
+    & .opdsBrowseBreadcrumb {
+        padding: 30px 60px;
+        flex-wrap: wrap;
+        & > div {
+            flex: 1;
+        }
+    }
+    & .opdsBrowseContent {
+        padding: 0 60px;
+        overflow-y: auto;
+        flex: 1;
+    }
+}
+
+.opds_page_navigation {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    & button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 10rem;
+        height: auto;
+        font-size: 1.1rem;
+        font-weight: bold;
+        padding: 0.9375rem 1.25rem;
+        border: 1px black solid;
+        border-radius: 5px;
+        background-color: #EDEDED;
+
+        &:first-child {
+            & svg {
+                margin-right: 1rem;
+            }
+        }
+
+        &:last-child {
+            & svg {
+                margin-left: 1rem;
+            }
+        }
+
+        &:not(:last-child) {
+            margin-right: 1rem;
+        }
+
+        & svg {
+            height: 1.1rem;
+            fill: black;
+        }
+    }
+
+    & div {
+        width: 10rem;
+    }
+
+    & span {
+        width: 5rem;
+        font-size: 1.2rem;
+    }
+
+    & .page_count {
+        position: absolute;
+        bottom: 1.2rem;
+        right: 2rem;
+    }
 }

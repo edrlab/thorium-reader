@@ -6,35 +6,28 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { connect } from "react-redux";
-
 import { ToastType } from "readium-desktop/common/models/toast";
-
 import { ToastState } from "readium-desktop/common/redux/states/toast";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
-import Toast from "./Toast";
-
 import * as DownloadIcon from "readium-desktop/renderer/assets/icons/download.svg";
-
-import { TranslatorProps, withTranslator } from "../utils/translator";
-
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
-
+import { RootState } from "readium-desktop/renderer/redux/states";
 import * as uuid from "uuid";
 
-interface Props extends TranslatorProps {
-    toast?: ToastState;
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+import Toast, { ToastType as CompToastType } from "./Toast";
+
+interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface State {
-    toastList: any;
+    toastList: {
+        [id: string]: ToastState;
+    };
 }
 
-export class ToastManager extends React.Component<Props, State> {
-    constructor(props: any) {
+export class ToastManager extends React.Component<IProps, State> {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -44,7 +37,7 @@ export class ToastManager extends React.Component<Props, State> {
         this.close = this.close.bind(this);
     }
 
-    public componentDidUpdate(oldProps: Props) {
+    public componentDidUpdate(oldProps: IProps) {
         const { toast } = this.props;
         if (toast !== oldProps.toast) {
             const id = uuid.v4();
@@ -65,19 +58,22 @@ export class ToastManager extends React.Component<Props, State> {
                             return this.buildFileImportToast(toast, id);
                         case ToastType.DownloadStarted:
                             return this.buildFileImportStartToast(toast, id);
+                        case ToastType.DownloadFailed:
+                            return this.buildFileImportFailToast(toast, id);
                         default:
                             return (<></>);
                     }
                 }
+                return undefined;
             })}
         </div>;
     }
 
     private buildFileImportToast(toast: ToastState, id: string) {
-        const { __ } = this.props;
         return (
             <Toast
-                message={__(toast.data.message, toast.data.messageProps)}
+                message={toast.data}
+                key={id}
                 icon={ DownloadIcon }
                 close={ () => this.close(id) }
                 displaySystemNotification
@@ -86,12 +82,24 @@ export class ToastManager extends React.Component<Props, State> {
     }
 
     private buildFileImportStartToast(toast: ToastState, id: string) {
-        const { __ } = this.props;
         return (
             <Toast
-                message={__(toast.data.message, toast.data.messageProps)}
+                message={toast.data}
+                key={id}
                 icon={ DownloadIcon }
                 close={ () => this.close(id) }
+            />
+        );
+    }
+
+    private buildFileImportFailToast(toast: ToastState, id: string) {
+        return (
+            <Toast
+                message={toast.data}
+                key={id}
+                icon={ DownloadIcon }
+                close={ () => this.close(id) }
+                type={CompToastType.Error}
             />
         );
     }

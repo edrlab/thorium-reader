@@ -8,23 +8,29 @@
 import * as moment from "moment";
 
 import { ActionType, ApiAction } from "readium-desktop/common/redux/actions/api";
+import { ApiState } from "readium-desktop/renderer/redux/states/api";
 
-const initialState: any = {
+const initialState: ApiState<any> = {
     data: {},
     lastSuccess: null,
 };
 
 // The api reducer.
 export function apiReducer(
-    state: any = initialState,
+    state: ApiState<any> = initialState,
     action: ApiAction,
 ) {
+    const resultIsReject = action.type === ActionType.Error;
+
     switch (action.type) {
+        case ActionType.Error:
         case ActionType.Success:
             const data = state.data;
             const now = moment.now();
+            // Why here is it not immutable ?
             data[action.meta.api.requestId] = {
                 result: action.payload,
+                resultIsReject,
                 requestId: action.meta.api.requestId,
                 moduleId: action.meta.api.moduleId,
                 methodId: action.meta.api.methodId,

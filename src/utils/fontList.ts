@@ -7,8 +7,6 @@
 
 import { Font } from "readium-desktop/common/models/font";
 
-const ID_PREFIX = "fontselect_";
-
 const fontList: Font[] =
 [{
     id: "DEFAULT",

@@ -7,34 +7,45 @@
 
 import "reflect-metadata";
 
-import { Store } from "redux";
-
+import { createHashHistory, History } from "history";
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
-
-import { createHashHistory, History } from "history";
-
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
+import { diRendererSymbolTable as diSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { initStore } from "readium-desktop/renderer/redux/store/memory";
+import { Store } from "redux";
 
+// Create container used for dependency injection
 const container = new Container();
 
 // Create store
 const history: History = createHashHistory();
-container.bind<History>("history").toConstantValue(history);
+container.bind<History>(diSymbolTable.history).toConstantValue(history);
 
 const store = initStore(history);
-container.bind<Store<RootState>>("store").toConstantValue(store);
+container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
 
 // Create translator
 const translator = new Translator();
-container.bind<Translator>("translator").toConstantValue(translator);
+container.bind<Translator>(diSymbolTable.translator).toConstantValue(translator);
 
 // Create action serializer
 const actionSerializer = new ActionSerializer();
-container.bind<ActionSerializer>("action-serializer").toConstantValue(actionSerializer);
+container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).toConstantValue(actionSerializer);
+
+// local interface to force type return
+interface IGet {
+    (s: "history"): History;
+    (s: "store"): Store<RootState>;
+    (s: "translator"): Translator;
+    (s: "action-serializer"): ActionSerializer;
+}
+
+// export function to get back depedency from container
+// the type any for container.get is overloaded by IGet
+const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(diSymbolTable[symbol]);
 
 const {
     lazyInject,
@@ -44,7 +55,7 @@ const {
 } = getDecorators(container);
 
 export {
-    container,
+    diGet as diRendererGet,
     lazyInject,
     lazyInjectNamed,
     lazyInjectTagged,

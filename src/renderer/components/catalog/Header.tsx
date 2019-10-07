@@ -22,18 +22,18 @@ import PublicationAddButton from "./PublicationAddButton";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 export enum DisplayType {
     Grid = "grid",
     List = "list",
 }
 
-interface Props extends RouteComponentProps, TranslatorProps {
+interface IProps extends RouteComponentProps, TranslatorProps {
     displayType: DisplayType;
 }
 
-export class Header extends React.Component<Props, undefined> {
+class Header extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
@@ -53,26 +53,26 @@ export class Header extends React.Component<Props, undefined> {
                     <SVG svg={ListIcon} ariaHidden/>
                 </Link>
                 <SearchForm />
-                {this.AllBooksButton(window.location.hash, __)}
+                {this.AllBooksButton(window.location.hash)}
                 <PublicationAddButton />
             </SecondaryHeader>
         );
     }
 
-    private AllBooksButton(hash: any, __: any) {
-        if (hash === "#/library" || hash === "#/" ||
-        hash === "#/library?displayType=grid" || hash === "#/?displayType=grid" ||
-        hash === "#/library?displayType=list" || hash === "#/?displayType=list") {
+    private AllBooksButton(hash: string) {
+        const search = hash.search("search");
+        if (search === -1) {
             return (
                 <Link
-                id={styles.all_link_button}
-                to={{pathname: "/library/search/all",
-                state: {
-                    displaytype: this.props.displayType as DisplayType,
-                },
-                }}
+                    id={styles.all_link_button}
+                    to={{
+                        pathname: "/library/search/all",
+                        state: {
+                            displaytype: this.props.displayType as DisplayType,
+                        },
+                    }}
                 >
-                    {__("header.allBooks")}
+                    {this.props.__("header.allBooks")}
                 </Link>
             );
         }

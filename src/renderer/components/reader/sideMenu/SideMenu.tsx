@@ -6,15 +6,14 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import AccessibleMenu from "readium-desktop/renderer/components/utils/menu/AccessibleMenu";
 
 import { SectionData } from "./sideMenuData";
 import SideMenuSection from "./SideMenuSection";
-
-import AccessibleMenu from "readium-desktop/renderer/components/utils/menu/AccessibleMenu";
-
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 
 interface Props extends TranslatorProps {
     open: boolean;
@@ -22,6 +21,7 @@ interface Props extends TranslatorProps {
     className: string;
     listClassName: string;
     toggleMenu: any;
+    focusMenuButton: () => void;
 }
 
 interface State {
@@ -40,7 +40,7 @@ export class SideMenu extends React.Component<Props, State> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, open, sections, className, listClassName, toggleMenu } = this.props;
+        const { open, sections, className, listClassName, toggleMenu } = this.props;
         const { openedSection } = this.state;
 
         if (!open) {
@@ -48,18 +48,28 @@ export class SideMenu extends React.Component<Props, State> {
         }
 
         return (<>
-            <AccessibleMenu dontCloseWhenClickOutside className={className} visible={open} toggleMenu={toggleMenu}>
+            <AccessibleMenu
+                dontCloseWhenClickOutside
+                focusMenuButton = {this.props.focusMenuButton}
+                className={className}
+                visible={open}
+                toggleMenu={toggleMenu}
+            >
                 <ul id={listClassName}>
                     { sections.map((section, index) =>
-                        <SideMenuSection
-                            open={ openedSection === index }
-                            id={index}
-                            key={index}
-                            title={section.title}
-                            content={section.content}
-                            onClick={this.handleClickSection}
-                            disabled={section.disabled}
-                        />,
+                        !section.notExtendable ?
+                            <SideMenuSection
+                                open={ openedSection === index }
+                                id={index}
+                                key={index}
+                                title={section.title}
+                                content={section.content}
+                                onClick={this.handleClickSection}
+                                disabled={section.disabled}
+                            />
+                        : <li key={index}>
+                            { section.content }
+                        </li>,
                     )}
                 </ul>
             </AccessibleMenu>

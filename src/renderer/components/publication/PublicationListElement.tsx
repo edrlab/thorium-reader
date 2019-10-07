@@ -6,63 +6,74 @@
 // ==LICENSE-END==
 
 import * as moment from "moment";
-
 import * as React from "react";
-
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-
+import { connect } from "react-redux";
+import { LsdStatus } from "readium-desktop/common/models/lcp";
+import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
 import { PublicationView } from "readium-desktop/common/views/publication";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TDispatch } from "readium-desktop/typings/redux";
+import { lcpReadable } from "readium-desktop/utils/publication";
+import * as uuid from "uuid";
 
-import uuid = require("uuid");
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
-import { TranslatorProps, withTranslator } from "../utils/translator";
 
-interface PublicationListElementProps extends TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapDispatchToProps> {
     publication: PublicationView;
-    deletePublication?: any;
-    displayPublicationInfo?: any;
-    openDeleteDialog?: any;
-    menuContent: any;
+    menuContent: JSX.Element;
+    isOpds?: boolean;
 }
 
-interface PublicationListElementState {
+interface IState {
     menuOpen: boolean;
+    lsdStatus: LsdStatus | undefined;
 }
 
-export class PublicationListElement extends React.Component<PublicationListElementProps, PublicationListElementState> {
+export class PublicationListElement extends React.Component<IProps, IState> {
     private menuId: string;
     private buttonRef: any;
 
-    constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
             menuOpen: false,
+            lsdStatus: undefined,
         };
 
-        this.deletePublication = this.deletePublication.bind(this);
-        this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
+        // this.deletePublication = this.deletePublication.bind(this);
         this.toggleMenu = this.toggleMenu.bind(this);
         this.focusButton = this.focusButton.bind(this);
 
         this.menuId = "menu-" + uuid.v4();
     }
 
+    public componentDidMount() {
+        const { publication } = this.props;
+        if (publication.lcp) {
+            // currently getLsdStatus in LCP API is broken
+            // HttpGet is badly handle
+            // FIX ME in a next PR
+            apiAction("lcp/getLsdStatus", { publication })
+                .then((request) => {
+                    if (request.isSuccess) {
+                        this.setState({ lsdStatus: request.data });
+                    }
+                })
+                .catch((error) => console.error("Error to fetch api lcp/getLsdStatus", error));
+        }
+    }
+
     public render(): React.ReactElement<{}>  {
         const pub = this.props.publication;
         const formatedPublishers = pub.publishers.join(", ");
         let formatedPublishedYear = "";
-        const { __, translator } = this.props;
+        const { translator } = this.props;
 
         if (pub.publishedAt) {
             formatedPublishedYear = "" + moment(pub.publishedAt).year();
@@ -70,29 +81,37 @@ export class PublicationListElement extends React.Component<PublicationListEleme
 
         return (
             <>
-                <div className={styles.list_book_title}>
-                <p className={styles.book_title} aria-label={ __("accessibility.bookTitle")}>{ pub.title }</p>
-                <p
-                    className={`${styles.book_author} ${styles.lightgrey}`}
-                    aria-label={ __("accessibility.bookAuthor")}
-                >
-                    {pub.authors.map((author) => translator.translateContentField(author)).join(", ")}
-                </p>
+                <div className={styles.publicationLine}>
+                    <button
+                        type="button"
+                        aria-expanded={this.state.menuOpen}
+                        aria-controls={this.menuId}
+                        title={this.props.publication.title}
+                        onClick={this.toggleMenu}
+                        ref={(ref) => this.buttonRef = ref}
+                    >
+                        <SVG svg={MenuIcon}/>
+                    </button>
+                    <a
+                        className={styles.publicationLineLink}
+                        tabIndex={0}
+                        onClick={(e) => this.handleBookClick(e)}
+                        onKeyPress={(e) => {
+                            if (e.key === "Enter") { this.handleBookClick(e); }}
+                        }
+                    >
+                        <div className={styles.list_book_title}>
+                        <p className={styles.book_title}>{ pub.title }</p>
+                        <p className={`${styles.book_author} ${styles.lightgrey}`}>
+                            {pub.authors.map((author) => translator.translateContentField(author)).join(", ")}
+                        </p>
+                        </div>
+                        <p className={styles.infos_sup}>
+                        { formatedPublishedYear}</p>
+                        <p className={styles.infos_sup}>
+                        { formatedPublishers }</p>
+                    </a>
                 </div>
-                <p className={styles.infos_sup} aria-label={ __("accessibility.bookReleaseDate")}>
-                { formatedPublishedYear}</p>
-                <p className={styles.infos_sup} aria-label={ __("accessibility.bookPublisher")}>
-                { formatedPublishers }</p>
-                <button
-                    type="button"
-                    aria-expanded={this.state.menuOpen}
-                    aria-controls={this.menuId}
-                    title={this.props.publication.title}
-                    onClick={this.toggleMenu}
-                    ref={(ref) => this.buttonRef = ref}
-                >
-                    <SVG svg={MenuIcon}/>
-                </button>
                 { this.state.menuOpen &&
                     <AccessibleMenu
                         toggleMenu={this.toggleMenu}
@@ -111,15 +130,17 @@ export class PublicationListElement extends React.Component<PublicationListEleme
         );
     }
 
+    /**
+     * deletePublication isn't used
+     * this method has the same name that api CallProp
+     * What is the point ?
+     */
+    /*
     private deletePublication(e: any) {
         e.preventDefault();
         this.props.openDeleteDialog(this.props.publication);
     }
-
-    private displayPublicationInfo(e: any) {
-        e.preventDefault();
-        this.props.displayPublicationInfo(this.props.publication);
-    }
+    */
 
     private toggleMenu() {
         this.setState({menuOpen: !this.state.menuOpen});
@@ -128,23 +149,42 @@ export class PublicationListElement extends React.Component<PublicationListEleme
     private focusButton() {
         this.buttonRef.focus();
     }
+
+    private handleBookClick(e: React.SyntheticEvent) {
+        e.preventDefault();
+        const { publication } = this.props;
+        const { lsdStatus } = this.state;
+
+        if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
+            this.props.displayPublicationInfo(publication);
+        } else {
+            this.props.openReader(publication);
+        }
+    }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         displayPublicationInfo: (publication: PublicationView) => {
-            dispatch(dialogActions.open(
-                DialogType.PublicationInfo,
+            dispatch(dialogActions.open("publication-info",
                 {
+                    opdsPublication: publication,
+                    publicationIdentifier: undefined,
+                },
+            ));
+        },
+        openReader: (publication: PublicationView) => {
+            dispatch({
+                type: readerActions.ActionType.OpenRequest,
+                payload: {
                     publication: {
                         identifier: publication.identifier,
                     },
                 },
-            ));
+            });
         },
-        openDeleteDialog: (publication: string) => {
-            dispatch(dialogActions.open(
-                DialogType.DeletePublicationConfirm,
+        openDeleteDialog: (publication: PublicationView) => {
+            dispatch(dialogActions.open("delete-publication-confirm",
                 {
                     publication,
                 },
@@ -153,16 +193,4 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationListElementProps) => 
     };
 };
 
-export default withTranslator(withApi(
-    PublicationListElement,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "delete",
-                callProp: "deletePublication",
-            },
-        ],
-        mapDispatchToProps,
-    },
-));
+export default connect(undefined, mapDispatchToProps)(withTranslator(PublicationListElement));

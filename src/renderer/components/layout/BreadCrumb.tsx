@@ -5,16 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-
-import { Link } from "react-router-dom";
-
-import * as styles from "readium-desktop/renderer/assets/styles/breadcrumb.css";
-
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
 import * as classNames from "classnames";
+import * as React from "react";
+import { Link } from "react-router-dom";
+import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/breadcrumb.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { parseQueryString } from "readium-desktop/utils/url";
 
 export interface BreadCrumbItem {
     name: string;
@@ -22,33 +22,48 @@ export interface BreadCrumbItem {
     state?: any;
 }
 
-interface BreadCrumbProps {
+interface IProps extends TranslatorProps {
     breadcrumb: BreadCrumbItem[];
-    search: any;
+    search: string;
     className?: string;
 }
 
-export default class BreadCrumb extends React.Component<BreadCrumbProps, undefined> {
+class BreadCrumb extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
-        const { breadcrumb } = this.props;
+        const { breadcrumb, __ } = this.props;
+        const search = parseQueryString(this.props.search);
         return (
-            <div className={classNames([styles.breadcrumb, this.props.className])}>
-                { this.props.breadcrumb.length >= 2 &&
-                    <Link to={{pathname: breadcrumb[breadcrumb.length - 2].path, search: this.props.search}}>
-                        <SVG svg={ArrowIcon}/>
+            <div className={classNames(styles.breadcrumb, this.props.className)}>
+                {breadcrumb.length >= 2 &&
+                    <Link
+                        to={{
+                            pathname: breadcrumb[breadcrumb.length - 2].path,
+                            search: `?displayType=${search.displayType}`,
+                        }}
+                        title={__("opds.back")}
+                    >
+                        <SVG svg={ArrowIcon} />
                     </Link>
                 }
-                {this.props.breadcrumb && this.props.breadcrumb.map((item, index) =>
-                    item.path ?
-                        <Link key={index} to={{
-                            pathname: item.path,
-                            search: this.props.search,
-                            state: item.state,
-                        }}>{ item.name } /</Link>
-                    :
-                        <span key={index} >{ item.name }</span>,
+                {breadcrumb && breadcrumb.map((item, index) =>
+                    item.path && index !== breadcrumb.length - 1 ?
+                        <Link
+                            key={index}
+                            to={{
+                                pathname: item.path,
+                                search: `?displayType=${search.displayType}`,
+                                state: item.state,
+                            }}
+                            title={item.name}
+                        >
+                            {`${item.name} /`}
+                        </Link>
+                        :
+                        <span key={index} >{item.name}</span>,
                 )}
             </div>
         );
     }
 }
+
+export default withTranslator(BreadCrumb);

@@ -6,32 +6,24 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { connect } from "react-redux";
-
-import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
 import { readerActions } from "readium-desktop/common/redux/actions";
-
+import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-
+import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface CatalogControlsProps extends TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
     publication: PublicationView;
-    openReader?: any;
-    openDeleteDialog?: any;
 }
 
-export class CatalogControls extends React.Component<CatalogControlsProps, undefined> {
-    public constructor(props: any) {
+export class CatalogControls extends React.Component<IProps> {
+    public constructor(props: IProps) {
         super(props);
 
         this.handleRead = this.handleRead.bind(this);
@@ -47,12 +39,12 @@ export class CatalogControls extends React.Component<CatalogControlsProps, undef
 
         return (
             <>
-                <button onClick={this.handleRead} className={styles.lire}>{ __("catalog.readBook")}</button>
+                <button onClick={this.handleRead} className={styles.lire}>{__("catalog.readBook")}</button>
                 <ul className={styles.liens}>
                     <li>
-                        <button onClick={ this.deletePublication }>
-                            <SVG svg={DeleteIcon} ariaHidden/>
-                            { __("catalog.deleteBook")}
+                        <button onClick={this.deletePublication}>
+                            <SVG svg={DeleteIcon} ariaHidden />
+                            {__("catalog.deleteBook")}
                         </button>
                     </li>
                 </ul>
@@ -72,7 +64,7 @@ export class CatalogControls extends React.Component<CatalogControlsProps, undef
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __: CatalogControlsProps) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         openReader: (publication: PublicationView) => {
             dispatch({
@@ -84,9 +76,8 @@ const mapDispatchToProps = (dispatch: any, __: CatalogControlsProps) => {
                 },
             });
         },
-        openDeleteDialog: (publication: string) => {
-            dispatch(dialogActions.open(
-                DialogType.DeletePublicationConfirm,
+        openDeleteDialog: (publication: PublicationView) => {
+            dispatch(dialogActions.open("delete-publication-confirm",
                 {
                     publication,
                 },
@@ -95,4 +86,4 @@ const mapDispatchToProps = (dispatch: any, __: CatalogControlsProps) => {
     };
 };
 
-export default withTranslator(connect(undefined, mapDispatchToProps)(CatalogControls));
+export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogControls));

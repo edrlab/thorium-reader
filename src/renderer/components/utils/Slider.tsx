@@ -6,14 +6,13 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import * as styles from "readium-desktop/renderer/assets/styles/slider.css";
-
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/slider.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-interface Props {
+import { TranslatorProps, withTranslator } from "./hoc/translator";
+
+interface Props extends TranslatorProps {
     content: JSX.Element[];
     className?: string;
 }
@@ -23,7 +22,7 @@ interface State {
     refreshVisible: boolean;
 }
 
-export default class Slider extends React.Component<Props, State> {
+class Slider extends React.Component<Props, State> {
     private contentRef: any;
     private contentElRefs: any[] = [];
     private wrapperRef: any;
@@ -55,12 +54,22 @@ export default class Slider extends React.Component<Props, State> {
     public componentDidUpdate() {
         if (this.state.refreshVisible) {
             this.contentElRefs.map((element, index) => {
-                const buttonList = element.getElementsByTagName("button");
-                for (const button of buttonList) {
-                    if (!this.isElementVisible(index)) {
-                        button.tabIndex = "-1";
-                    } else {
-                        button.tabIndex = "0";
+                /*The this.contentElRefs array is automatically populated in the render() > createContent() function,
+                via the div element's ref callback (ref={(ref) => this.contentElRefs[index] = ref}),
+                which can be invoked with null during the element's "unmount"
+                lifecycle (see https://reactjs.org/docs/refs-and-the-dom.html ).
+                Consequently, we need to check for possibly-null values in the this.contentElRefs array,
+                in this componentDidUpdate() function. However, we can safely ignore usages of this.contentElRefs
+                in the moveInView() and isElementVisible() functions, as these are guaranteed to be invoked when
+                the element is still "mounted" (see the onFocus callback).*/
+                if (element) {
+                    const buttonList = element.getElementsByTagName("button");
+                    for (const button of buttonList) {
+                        if (!this.isElementVisible(index)) {
+                            button.tabIndex = "-1";
+                        } else {
+                            button.tabIndex = "0";
+                        }
                     }
                 }
             });
@@ -69,7 +78,7 @@ export default class Slider extends React.Component<Props, State> {
     }
 
     public render(): React.ReactElement<{}>  {
-        const className = this.props.className;
+        const { className, __ } = this.props;
 
         const list = this.createContent();
         let max = 0;
@@ -85,8 +94,12 @@ export default class Slider extends React.Component<Props, State> {
         return (
             <div className={(className ? className + " " : "") + styles.wrapper}>
                 {this.state.position < 0 ?
-                    <button className={styles.back} onClick={this.handleMove.bind(this, false)}>
-                        <SVG svg={ArrowRightIcon} title=""/>
+                    <button
+                        aria-label={__("accessibility.leftSlideButton")}
+                        className={styles.back}
+                        onClick={this.handleMove.bind(this, false)}
+                    >
+                        <SVG svg={ArrowRightIcon}/>
                     </button>
                 : <div className={styles.button_substitute}/>
                 }
@@ -96,8 +109,11 @@ export default class Slider extends React.Component<Props, State> {
                     </div>
                 </div>
                 {this.state.position > max ?
-                    <button onClick={this.handleMove.bind(this, true)}>
-                        <SVG svg={ArrowRightIcon} title=""/>
+                    <button
+                        onClick={this.handleMove.bind(this, true)}
+                        aria-label={__("accessibility.rightSlideButton")}
+                    >
+                        <SVG svg={ArrowRightIcon}/>
                     </button>
                 : <div className={styles.button_substitute}/>
                 }
@@ -124,8 +140,8 @@ export default class Slider extends React.Component<Props, State> {
     private moveInView(elementId: number) {
         const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
         const element = this.contentElRefs[elementId];
-        let elementPosition = -element.offsetLeft;
 
+        let elementPosition = -element.offsetLeft;
         const isVisible = this.isElementVisible(elementId);
         if (!isVisible) {
             elementPosition = elementPosition > 0 ? 0 : elementPosition < max ? max : elementPosition;
@@ -171,3 +187,5 @@ export default class Slider extends React.Component<Props, State> {
         this.setState({refreshVisible: true});
     }
 }
+
+export default withTranslator(Slider);

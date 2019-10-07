@@ -6,56 +6,63 @@
 // ==LICENSE-END==
 
 import * as qs from "query-string";
-
 import * as React from "react";
-
 import { connect } from "react-redux";
-
 import { RouteComponentProps, withRouter } from "react-router-dom";
-
-import Header, { DisplayType } from "readium-desktop/renderer/components/opds/Header";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
+import { OpdsPublicationView, OpdsResultPageInfos, OpdsResultUrls } from "readium-desktop/common/views/opds";
+import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 import GridView from "readium-desktop/renderer/components/utils/GridView";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import PageNavigation from "./PageNavigation";
 
-interface EntryPublicationListProps extends RouteComponentProps {
-    publications: OpdsPublicationView[];
+interface IProps extends RouteComponentProps {
+    publications: OpdsPublicationView[] | undefined;
+    goto: (url: string, page: number) => void;
+    urls: OpdsResultUrls;
+    page?: OpdsResultPageInfos;
+    currentPage: number;
 }
 
-export class EntryPublicationList extends React.Component<EntryPublicationListProps, undefined> {
-    public render(): React.ReactElement<{}> {
-        let DisplayView: any = GridView;
-        let displayType = DisplayType.Grid;
+class EntryPublicationList extends React.Component<IProps> {
+    public render() {
+        const { urls, page } = this.props;
+
+        let DisplayView: React.ComponentClass<any> = GridView;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
 
             if (parsedResult.displayType === DisplayType.List) {
                 DisplayView = ListView;
-                displayType = DisplayType.List;
             }
         }
 
+        // force cast on PublicationView[]
+        // It's an hack from no typing to static typing
+        // FIX ME in the future
         return (
-            <div>
-                <Header displayType={ displayType } />
-                { this.props.publications ?
-                    <DisplayView publications={ this.props.publications } isOpdsView={true}/>
-                : <Loader/>}
-            </div>
+            <>
+                {this.props.publications ?
+                    <>
+                        <DisplayView publications={this.props.publications} isOpdsView={true} />
+                        <PageNavigation
+                            goto={this.props.goto}
+                            urls={urls}
+                            page={page}
+                            currentPage={this.props.currentPage}
+                        />
+                    </>
+                    : <Loader />}
+            </>
         );
     }
 }
 
-const mapStateToProps = (state: RootState, __: any) => {
-    return {
-        location: state.router.location,
-    };
-};
+const mapStateToProps = (state: RootState) => ({
+    location: state.router.location,
+});
 
-export default withRouter(connect(mapStateToProps, undefined)(EntryPublicationList));
+export default connect(mapStateToProps)(withRouter(EntryPublicationList));

@@ -1,7 +1,6 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-import * as PouchDB from "pouchdb-core";
 
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
 
@@ -9,8 +8,8 @@ import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
-let repository: OpdsFeedRepository = null;
-let db: PouchDB.Database = null;
+let repository: OpdsFeedRepository | null = null;
+let db: PouchDB.Database | null = null;
 const now = moment.now();
 
 const dbDocIdentifier1 = "feed-1";
@@ -43,16 +42,25 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
+    if (!db) {
+        return;
+    }
     repository = null;
     await clearDatabase(db);
 });
 
 test("repository.findAll", async () => {
+    if (!repository) {
+        return;
+    }
     const result = await repository.findAll();
     expect(result.length).toBe(2);
 });
 
 test("repository.get - found", async () => {
+    if (!repository) {
+        return;
+    }
     const result = await repository.get("feed-1");
     expect(result.identifier).toBe("feed-1");
     expect(result.title).toBe("Feed 1");
@@ -60,6 +68,9 @@ test("repository.get - found", async () => {
 });
 
 test("repository.get - not found", async () => {
+    if (!repository) {
+        return;
+    }
     // Test unknown key
     try {
         await repository.get("feed-3");
@@ -70,6 +81,9 @@ test("repository.get - not found", async () => {
 });
 
 test("repository.save create", async () => {
+    if (!repository) {
+        return;
+    }
     const dbDoc = {
         identifier: "new-feed",
         title: "New feed",
@@ -85,6 +99,9 @@ test("repository.save create", async () => {
 });
 
 test("repository.save update", async () => {
+    if (!repository) {
+        return;
+    }
     const dbDoc = {
         identifier: "feed-1",
         title: "New feed",
@@ -100,6 +117,9 @@ test("repository.save update", async () => {
 });
 
 test("repository.delete", async () => {
+    if (!db || !repository) {
+        return;
+    }
     const result = await db.get("opds-feed_feed-1") as any;
     expect(result.identifier).toBe("feed-1");
 
