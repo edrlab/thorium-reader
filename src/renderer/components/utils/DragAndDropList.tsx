@@ -7,8 +7,6 @@
 
 import * as React from "react";
 
-import * as styles from "readium-desktop/renderer/assets/styles/dragAndDropList.css";
-
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 interface DragAndDropListProps {

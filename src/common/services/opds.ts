@@ -29,7 +29,7 @@ export class OPDSParser {
     /**
      * Parse OPDS feed and returns a catalog
      */
-    public parse(opdsFeed: string): Promise<Catalog> {
+    public async parse(opdsFeed: string): Promise<Catalog> {
         return this.parser
             .parse(opdsFeed)
             .then((feed: AcquisitionFeed) => {

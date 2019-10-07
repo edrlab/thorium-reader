@@ -12,7 +12,7 @@ export enum ActionType {
     CloseRequest = "DIALOG_CLOSE_REQUEST",
 }
 
-export function open(type: DialogType, data: any) {
+export function open<T extends keyof DialogType>(type: T, data: DialogType[T]) {
     return {
         type: ActionType.OpenRequest,
         payload: { type, data },

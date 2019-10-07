@@ -6,22 +6,19 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import PublicationListElement from "readium-desktop/renderer/components/publication/PublicationListElement";
 
 import NoPublicationInfo from "./NoPublicationInfo";
 
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
-interface ListViewProps {
+interface IProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
 }
 
-export default class ListView extends React.Component<ListViewProps, undefined> {
+export default class ListView extends React.Component<IProps> {
 
     public render(): React.ReactElement<{}> {
         const entriesEmpty = this.props.catalogEntries.filter((entry) => entry.publications.length > 0).length === 0;
@@ -34,7 +31,7 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                         {
                             entryIndex <= 1 ? (
                                 <div className={styles.title}>
-                                    <h1>{ entry.title }</h1>
+                                    <h2>{ entry.title }</h2>
                                 </div>
                             ) :
                             (<></>)
@@ -58,7 +55,7 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                             (<></>)
                         }
                         </section>
-                    ) : <></>;
+                    ) : <div key={ entryIndex } aria-hidden="true" style={{display: "none"}}></div>;
             })
             }
             { entriesEmpty &&

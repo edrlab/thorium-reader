@@ -1,10 +1,6 @@
-.main {
-    margin-top: 120px;
-    height: auto;
-    width: calc(100% - 120px);
-    padding-left: 60px;
-    padding-right: 60px;
+@import "./focus-mixin.css";
 
+.main {
     & ul {
         padding: 0;
         margin: 0;
@@ -87,7 +83,7 @@
 		left: -2000px;
 
 		&:focus + label {
-			outline: -webkit-focus-ring-color auto 5px;
+			@mixin R2_MIXIN_FOCUS_OUTLINE;
 		}
 	}
 }
@@ -155,7 +151,7 @@ input.pref_tag_inputs {
 	border:none;
 	border-bottom: 1px solid #c1c1c1;
 	height:35px;
-	outline: inherit;
+	/* outline: inherit; */
 	background-color: transparent;
 	color:black;
 	font-size: 0.9rem;

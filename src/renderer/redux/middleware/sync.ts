@@ -6,20 +6,11 @@
 // ==LICENSE-END==
 
 import { ipcRenderer } from "electron";
-import { Store } from "redux";
-
 import { syncIpc } from "readium-desktop/common/ipc";
-import {
-    apiActions,
-    i18nActions,
-    readerActions,
-} from "readium-desktop/common/redux/actions";
-
-import { SenderType } from "readium-desktop/common/models/sync";
-
-import { container } from "readium-desktop/renderer/di";
-
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
+import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { apiActions, i18nActions, readerActions } from "readium-desktop/common/redux/actions";
+import { diRendererGet } from "readium-desktop/renderer/di";
+import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: any = [
@@ -37,7 +28,11 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     i18nActions.ActionType.Set,
 ];
 
-export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action: any) => {
+export const reduxSyncMiddleware: Middleware
+    = (store: MiddlewareAPI<Dispatch<AnyAction>>) =>
+    (next: Dispatch<ActionWithSender>) =>
+    ((action: ActionWithSender) => {
+
     // Does this action must be sent to the main process
     if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
         // Do not send
@@ -50,7 +45,7 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
     }
 
     // Get action serializer
-    const actionSerializer = container.get("action-serializer") as ActionSerializer;
+    const actionSerializer = diRendererGet("action-serializer");
 
     // Send this action to the main process
     ipcRenderer.send(syncIpc.CHANNEL, {
@@ -62,7 +57,7 @@ export const reduxSyncMiddleware = (store: Store<any>) => (next: any) => (action
             type: SenderType.Renderer,
             winId: store.getState().win.winId,
         },
-    });
+    } as syncIpc.EventPayload);
 
     return next(action);
-};
+}) as Dispatch<ActionWithSender>;

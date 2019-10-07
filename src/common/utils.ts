@@ -5,20 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as request from "request";
-
-export async function httpGet(url: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-        request(url, (error, response, body) => {
-            if (error) {
-                reject(error);
-            }
-
-            resolve(body);
-        });
-    });
-}
-
 export function convertMultiLangStringToString(item: any): string {
     if (typeof(item) === "string") {
         return item;
@@ -42,18 +28,8 @@ export function convertContributorArrayToStringArray(items: any): string[] {
     }
 
     const itemParts = items.map((item: any) => {
-        if (typeof(item.Name) === "object") {
-            return Object.values(item.Name);
-        }
-
-        return [item.Name];
+        return item.Name;
     });
 
-    let newItems: any = [];
-
-    for (const itemPart of itemParts) {
-        newItems = newItems.concat(itemPart);
-    }
-
-    return newItems;
+    return itemParts;
 }

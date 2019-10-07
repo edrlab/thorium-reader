@@ -9,14 +9,14 @@ import { SagaIterator } from "redux-saga";
 
 import { LOCATION_CHANGE } from "connected-react-router";
 
-import { put, take } from "redux-saga/effects";
+import { all, call, put, take } from "redux-saga/effects";
 
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 export function* browseWatcher(): SagaIterator {
     while (true) {
-        const result = yield take(LOCATION_CHANGE);
+        const result: any = yield take(LOCATION_CHANGE);
         const path = result.payload.location.pathname as string;
 
         if (path.startsWith("/opds") && path.indexOf("/browse") > 0 ) {
@@ -28,7 +28,7 @@ export function* browseWatcher(): SagaIterator {
 }
 
 export function* watchers() {
-    yield [
-        browseWatcher(),
-    ];
+    yield all([
+        call(browseWatcher),
+    ]);
 }

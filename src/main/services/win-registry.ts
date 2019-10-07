@@ -5,12 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as uuid from "uuid";
-
 import { BrowserWindow } from "electron";
 import { injectable } from "inversify";
-
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
+import { onWindowMoveResize } from "readium-desktop/common/rectangle/window";
+import * as uuid from "uuid";
 
 export interface WinDictionary {
     [winId: number]: AppWindow;
@@ -50,10 +49,11 @@ export class WinRegistry {
      */
     public registerWindow(win: BrowserWindow, type: AppWindowType): AppWindow {
         const winId = win.id;
-        const appWindow = {
+        const appWindow: AppWindow = {
             identifier: uuid.v4(),
             type,
             win,
+            onWindowMoveResize: onWindowMoveResize(win),
         };
         this.windows[winId] = appWindow;
 
@@ -95,7 +95,7 @@ export class WinRegistry {
     public getWindow(winId: number): AppWindow {
         if (!(winId in this.windows)) {
             // Window not found
-            return;
+            return undefined;
         }
 
         return this.windows[winId];

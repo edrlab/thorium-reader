@@ -5,32 +5,58 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as qs from "query-string";
-
 import * as React from "react";
-
 import { RouteComponentProps } from "react-router-dom";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
+import { TPublicationApiFindAll_result } from "readium-desktop/main/api/publication";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
+import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import GridView from "readium-desktop/renderer/components/utils/GridView";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
 
-import GridView from "readium-desktop/renderer/components/utils/GridView";
-import ListView from "readium-desktop/renderer/components/utils/ListView";
-
-import { Publication } from "readium-desktop/common/models/publication";
-
-import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
-
-interface AllPublicationPageProps extends TranslatorProps, RouteComponentProps {
-    publications?: Publication[];
+interface IProps extends TranslatorProps, RouteComponentProps {
 }
 
-export class AllPublicationPage extends React.Component<AllPublicationPageProps, undefined> {
+interface IState {
+    publications: TPublicationApiFindAll_result | undefined;
+}
+
+export class AllPublicationPage extends React.Component<IProps, IState> {
+    private unsubscribe: Unsubscribe;
+
+    constructor(props: IProps) {
+        super(props);
+        this.state = {
+            publications: undefined,
+        };
+    }
+
+    public componentDidMount() {
+        this.unsubscribe = apiSubscribe([
+            "publication/import",
+            "publication/delete",
+            "catalog/addEntry",
+            "publication/updateTags",
+        ], () => {
+            apiAction("publication/findAll")
+                .then((publications) => this.setState({publications}))
+                .catch((error) => console.error("Error to fetch api publication/findAll", error));
+        });
+    }
+
+    public componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
         let DisplayView: any = GridView;
         const displayType = this.props.location.state;
@@ -53,52 +79,22 @@ export class AllPublicationPage extends React.Component<AllPublicationPageProps,
             typeview = DisplayType.Grid;
         }
 
-        const secondaryHeader = <Header displayType={ typeview } />;
+        const secondaryHeader = <Header displayType={typeview} />;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <div>
                     <BreadCrumb
                         search={this.props.location.search}
-                        breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title as string}]}
+                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title as string }]}
                     />
-                    { this.props.publications ?
-                        <DisplayView publications={ this.props.publications } />
-                    : <></>}
+                    {this.state.publications ?
+                        <DisplayView publications={this.state.publications} />
+                        : <></>}
                 </div>
             </LibraryLayout>
         );
     }
 }
 
-export default withTranslator(withApi(
-    AllPublicationPage,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "findAll",
-                resultProp: "publications",
-                onLoad: true,
-            },
-        ],
-        refreshTriggers: [
-            {
-                moduleId: "publication",
-                methodId: "import",
-            },
-            {
-                moduleId: "publication",
-                methodId: "delete",
-            },
-            {
-                moduleId: "catalog",
-                methodId: "addEntry",
-            },
-            {
-                moduleId: "publication",
-                methodId: "updateTags",
-            },
-        ],
-    },
-));
+export default withTranslator(AllPublicationPage);

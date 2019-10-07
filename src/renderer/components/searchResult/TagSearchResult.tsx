@@ -6,35 +6,60 @@
 // ==LICENSE-END==
 
 import * as qs from "query-string";
-
 import * as React from "react";
-
 import { RouteComponentProps } from "react-router-dom";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
+import { TPublicationApiFindByTag_result } from "readium-desktop/main/api/publication";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
+import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import GridView from "readium-desktop/renderer/components/utils/GridView";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
+import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
 
-import GridView from "readium-desktop/renderer/components/utils/GridView";
-import ListView from "readium-desktop/renderer/components/utils/ListView";
-
-import { Publication } from "readium-desktop/common/models/publication";
-
-import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
-
-interface TextSearchResultProps extends TranslatorProps, RouteComponentProps {
-    publications?: Publication[];
+interface IProps extends TranslatorProps, RouteComponentProps {
 }
 
-export class TagSearchResult extends React.Component<TextSearchResultProps, undefined> {
+interface IState {
+    publications: TPublicationApiFindByTag_result | undefined;
+}
+
+export class TagSearchResult extends React.Component<IProps, IState> {
+    private unsubscribe: Unsubscribe;
+
+    constructor(props: IProps) {
+        super(props);
+        this.state = {
+            publications: undefined,
+        };
+    }
+
+    public componentDidMount() {
+        this.unsubscribe = apiSubscribe([
+            "publication/delete",
+            "publication/import",
+            "publication/updateTags",
+            "catalog/addEntry",
+        ], () => {
+            apiAction("publication/findByTag", (this.props.match.params as any).value)
+                .then((publications) => this.setState({publications}))
+                .catch((error) => console.error("Error to fetch api publication/findByTag", error));
+        });
+    }
+
+    public componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
-
+        const { __ } = this.props;
         const title = (this.props.match.params as any).value;
 
         if (this.props.location) {
@@ -53,10 +78,10 @@ export class TagSearchResult extends React.Component<TextSearchResultProps, unde
                 <div>
                     <BreadCrumb
                         search={this.props.location.search}
-                        breadcrumb={[{name: "Mes livres", path: "/library"}, {name: title as string}]}
+                        breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title as string}]}
                     />
-                    { this.props.publications ?
-                        <DisplayView publications={ this.props.publications } />
+                    { this.state.publications ?
+                        <DisplayView publications={ this.state.publications } />
                     : <></>}
                 </div>
             </LibraryLayout>
@@ -64,41 +89,10 @@ export class TagSearchResult extends React.Component<TextSearchResultProps, unde
     }
 }
 
+/*
 const buildSearchRequestData = (props: TextSearchResultProps): any => {
-    return {
-        tag: (props.match.params as any).value,
-    };
+    return [ (props.match.params as any).value ];
 };
+*/
 
-export default withApi(
-    TagSearchResult,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "findByTag",
-                buildRequestData: buildSearchRequestData,
-                resultProp: "publications",
-                onLoad: true,
-            },
-        ],
-        refreshTriggers: [
-            {
-                moduleId: "publication",
-                methodId: "import",
-            },
-            {
-                moduleId: "publication",
-                methodId: "delete",
-            },
-            {
-                moduleId: "catalog",
-                methodId: "addEntry",
-            },
-            {
-                moduleId: "publication",
-                methodId: "updateTags",
-            },
-        ],
-    },
-);
+export default withTranslator(TagSearchResult);

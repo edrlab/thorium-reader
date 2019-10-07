@@ -6,48 +6,24 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { connect } from "react-redux";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { DialogState } from "readium-desktop/common/redux/states/dialog";
-
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import Dialog from "./Dialog";
-
-import FileImport from "./FileImport";
-
-import OpdsFeedAddForm from "./OpdsFeedAddForm";
-
-import DeletePublicationConfirm from "./DeletePublicationConfirm";
-
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
-
+import DeletePublicationConfirm from "./DeletePublicationConfirm";
+import FileImport from "./FileImport";
+import Information from "./Information";
 import LcpAuthentication from "./LcpAuthentication";
-
-import ReturnLsdConfirm from "./ReturnLsdConfirm";
-
+import OpdsFeedAddForm from "./OpdsFeedAddForm";
+import PublicationInfo from "./publicationInfos/PublicationInfo";
 import RenewLsdConfirm from "./RenewLsdConfirm";
-
-import PublicationInfo from "readium-desktop/renderer/components/publication/publicationInfos/PublicationInfo";
-
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import ReturnLsdConfirm from "./ReturnLsdConfirm";
 import SameFileImportConfirm from "./SameFileImportConfirm";
 
-interface DialogManagerProps  {
-    dialog?: DialogState;
-    closeDialog?: any;
+interface IProps extends ReturnType<typeof mapStateToProps> {
 }
 
-export class DialogManager extends React.Component<DialogManagerProps, undefined> {
-    constructor(props: any) {
-        super(props);
-    }
-
+class DialogManager extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const dialog = this.props.dialog;
 
@@ -55,185 +31,23 @@ export class DialogManager extends React.Component<DialogManagerProps, undefined
             return (<></>);
         }
 
-        switch (dialog.type) {
-            case DialogType.FileImport:
-                return this.buildFileImportDialog();
-            case DialogType.PublicationInfo:
-                return this.buildPublicationShowDialog();
-            case DialogType.PublicationInfoReader:
-                return this.buildReaderPublicationShowDialog();
-            case DialogType.OpdsFeedAddForm:
-                return this.buildOpdsFeedAddFormDialog();
-            case DialogType.DeletePublicationConfirm:
-                return this.buildDeletePublicationConfirmDialog();
-            case DialogType.DeleteOpdsFeedConfirm:
-                return this.buildDeleteOpdsFeedConfirmDialog();
-            case DialogType.LcpAuthentication:
-                return this.buildLcpAuthenticationDialog();
-            case DialogType.LsdRenewConfirm:
-                return this.buildLsdRenewConfirmDialog();
-            case DialogType.LsdReturnConfirm:
-                return this.buildLsdReturnConfirmDialog();
-            case DialogType.SameFileImportConfirm:
-                return this.buildSameFileImportConfirmDialog();
-            default:
-                return (<></>);
-        }
-    }
-
-    private buildOpdsFeedAddFormDialog() {
         return (
-            <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
-                id={ styles.opds_form_dialog }
-            >
-                <OpdsFeedAddForm
-                    url={ this.props.dialog.data.opds.url }
-                />
-            </Dialog>
+            <>
+                <OpdsFeedAddForm></OpdsFeedAddForm>
+                <FileImport></FileImport>
+                <DeletePublicationConfirm></DeletePublicationConfirm>
+                <DeleteOpdsFeedConfirm></DeleteOpdsFeedConfirm>
+                <LcpAuthentication></LcpAuthentication>
+                <RenewLsdConfirm></RenewLsdConfirm>
+                <ReturnLsdConfirm></ReturnLsdConfirm>
+                <SameFileImportConfirm></SameFileImportConfirm>
+                <Information></Information>
+                <PublicationInfo></PublicationInfo>
+            </>
         );
-    }
 
-    private buildPublicationShowDialog() {
-        return (
-            <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
-            >
-                <PublicationInfo
-                    publicationIdentifier={ this.props.dialog.data.publicationIdentifier }
-                    publication={ this.props.dialog.data.publication }
-                    isOpds={ this.props.dialog.data.isOpds }
-                />
-            </Dialog>
-        );
-    }
-
-    private buildReaderPublicationShowDialog() {
-        return (
-            <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
-            >
-                <PublicationInfo
-                    publication={ this.props.dialog.data.publication }
-                    hideControls={ true }
-                />
-            </Dialog>
-        );
-    }
-
-    private buildFileImportDialog() {
-        return (
-            <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
-                id={styles.add_dialog}
-            >
-                <FileImport
-                    files={ this.props.dialog.data.files }
-                />
-            </Dialog>
-        );
-    }
-
-    private buildDeletePublicationConfirmDialog() {
-        return (
-            <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
-                id={styles.choice_dialog}
-            >
-                <DeletePublicationConfirm
-                    publication={ this.props.dialog.data.publication }
-                />
-            </Dialog>
-        );
-    }
-
-    private buildDeleteOpdsFeedConfirmDialog() {
-        return (
-            <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
-                id={styles.choice_dialog}
-            >
-                <DeleteOpdsFeedConfirm
-                    feed={ this.props.dialog.data.feed }
-                />
-            </Dialog>
-        );
-    }
-
-    private buildLcpAuthenticationDialog() {
-        return (
-            <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
-                id={styles.lcp_dialog}
-            >
-                <LcpAuthentication
-                    publication={ this.props.dialog.data.publication }
-                    hint={ this.props.dialog.data.hint }
-                />
-            </Dialog>
-        );
-    }
-
-    private buildLsdRenewConfirmDialog() {
-        return (
-            <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
-                id={styles.choice_dialog}
-            >
-                <RenewLsdConfirm
-                    publication={ this.props.dialog.data.publication }
-                />
-            </Dialog>
-        );
-    }
-
-    private buildLsdReturnConfirmDialog() {
-        return (
-            <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
-                id={styles.choice_dialog}
-            >
-                <ReturnLsdConfirm
-                    publication={ this.props.dialog.data.publication }
-                />
-            </Dialog>
-        );
-    }
-
-    private buildSameFileImportConfirmDialog() {
-        return (
-            <Dialog
-                open={ true }
-                close={ this.props.closeDialog }
-                id={styles.choice_dialog}
-            >
-                <SameFileImportConfirm
-                    publication={ this.props.dialog.data.publication }
-                    downloadSample={ this.props.dialog.data.downloadSample }
-                />
-            </Dialog>
-        );
     }
 }
-
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        closeDialog: () => {
-            dispatch(
-                dialogActions.close(),
-            );
-        },
-    };
-};
 
 const mapStateToProps = (state: RootState) => {
     return {
@@ -241,4 +55,4 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DialogManager);
+export default connect(mapStateToProps)(DialogManager);

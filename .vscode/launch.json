@@ -1,0 +1,137 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "LAUNCH HOT",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/src/main.ts",
+      "stopOnEntry": false,
+      "cwd": "${workspaceRoot}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "launch:hot",
+      "args": [
+        "."
+      ],
+      "env": {
+        "DEBUG": "r2:*,readium-desktop:*",
+        "NODE_DEBUG": "1",
+        "NODE_ENV": "development",
+        "BUILD_ENV": "dev",
+        "VSCODE_LAUNCH": "true"
+      },
+      "console": "internalConsole",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceRoot}/dist/main.js"
+      ],
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+      },
+      "protocol": "inspector",
+      "skipFiles": [
+        "browser/init.js"
+      ],
+      "smartStep": true,
+      "outputCapture": "std",
+      "runtimeArgs": [
+        "--remote-debugging-port=9223",
+        "--enable-logging",
+        "--nolazy"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "BOOKSHELF - WEBPACK DEV SERVER",
+      "program": "${workspaceFolder}/node_modules/.bin/webpack-dev-server",
+      "args": [
+        "--config",
+        "webpack.config.renderer.js"
+      ],
+      "env": {
+        "DEBUG": "r2:*,readium-desktop:*",
+        "NODE_DEBUG": "1",
+        "NODE_ENV": "development",
+        "BUILD_ENV": "dev",
+        "VSCODE_LAUNCH": "true"
+      },
+      "stopOnEntry": false,
+      "cwd": "${workspaceRoot}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "externalTerminal",
+      "timeout": 35000
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "READER - WEBPACK DEV SERVER",
+      "program": "${workspaceFolder}/node_modules/.bin/webpack-dev-server",
+      "args": [
+        "--config",
+        "webpack.config.reader.js"
+      ],
+      "env": {
+        "DEBUG": "r2:*,readium-desktop:*",
+        "NODE_DEBUG": "1",
+        "NODE_ENV": "development",
+        "BUILD_ENV": "dev",
+        "VSCODE_LAUNCH": "true"
+      },
+      "stopOnEntry": false,
+      "cwd": "${workspaceRoot}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "externalTerminal",
+      "timeout": 35000
+    },
+    {
+      "name": "LAUNCH ATTACH - MAIN",
+      "preLaunchTask": "launch:attach",
+      "timeout": 30000,
+      "type": "node",
+      "request": "attach",
+      "port": 25575,
+      "protocol": "inspector",
+      "skipFiles": [
+        "browser/init.js"
+      ],
+      "smartStep": true,
+      "cwd": "${workspaceRoot}"
+    },
+    {
+      "name": "CHROME DEBUG 1 (BOOKSHELF)",
+      "timeout": 40000,
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true
+    },
+    {
+      "name": "CHROME DEBUG 2 (READER)",
+      "timeout": 40000,
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true
+    }
+  ],
+  "compounds": [
+    {
+      "name": "__ LAUNCH ATTACH",
+      "configurations": [
+        "LAUNCH ATTACH - MAIN"
+      ]
+    },
+    {
+      "name": "__ LAUNCH HOT",
+      "configurations": [
+        "LAUNCH HOT",
+        "BOOKSHELF - WEBPACK DEV SERVER",
+        "READER - WEBPACK DEV SERVER"
+      ]
+    }
+  ]
+}

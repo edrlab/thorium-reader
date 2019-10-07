@@ -35,7 +35,7 @@ let externals = {
     "bindings": "bindings",
     "leveldown": "leveldown",
     "fsevents": "fsevents",
-    "conf": "conf"
+    "conf": "conf",
 }
 if (nodeEnv !== "production") {
     // // externals = Object.assign(externals, {
@@ -59,6 +59,8 @@ if (nodeEnv !== "production") {
                 }
             ),
         ];
+    } else {
+        externals.devtron = "devtron";
     }
 }
 
@@ -115,7 +117,10 @@ let config = Object.assign({}, {
     devServer: {
         contentBase: __dirname,
         hot: true,
-        watchContentBase: true
+        watchContentBase: true,
+        watchOptions: {
+            ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/]
+        },
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -135,7 +140,7 @@ if (nodeEnv !== "production") {
     // Renderer config for DEV environment
     config = Object.assign({}, config, {
         // Enable sourcemaps for debugging webpack's output.
-        devtool: "source-map",
+        devtool: "inline-source-map",
 
         devServer: {
             contentBase: __dirname,
@@ -144,6 +149,9 @@ if (nodeEnv !== "production") {
             },
             hot: true,
             watchContentBase: true,
+            watchOptions: {
+                ignored: [/dist/, /docs/, /scripts/, /test/, /node_modules/, /external-assets/]
+            },
             port,
         },
     });
@@ -155,6 +163,7 @@ if (nodeEnv !== "production") {
     config.module.rules.push({
         test: /\.css$/,
         use: [
+            "css-hot-loader",
             MiniCssExtractPlugin.loader,
             {
                 loader: "css-loader",
@@ -167,12 +176,14 @@ if (nodeEnv !== "production") {
         ],
     });
 } else {
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^devtron$/ }));
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^react-axe$/ }));
+
     // Minify and uglify in production environment
     //config.plugins.push(new UglifyJsPlugin());
     config.module.rules.push({
         test: /\.css$/,
         use: [
-            "css-hot-loader",
             MiniCssExtractPlugin.loader,
             {
                 loader: "css-loader",

@@ -5,40 +5,59 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { inject, injectable} from "inversify";
-
-import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
-
-import { Translator } from "readium-desktop/common/services/translator";
-
-import { CatalogConfig } from "readium-desktop/main/db/document/config";
-
-import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-
+import { inject, injectable } from "inversify";
 import { LocatorType } from "readium-desktop/common/models/locator";
-
+import { Translator } from "readium-desktop/common/services/translator";
+import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+import { CatalogConfig } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
+export interface ICatalogApi {
+    get: () => Promise<CatalogView>;
+    addEntry: (entryView: CatalogEntryView) => Promise<CatalogEntryView[]>;
+    getEntries: () => Promise<CatalogEntryView[]>;
+    updateEntries: (entryView: CatalogEntryView[]) => Promise<CatalogEntryView[]>;
+}
+
+export type TCatalogApiGet = ICatalogApi["get"];
+export type TCatalogApiAddEntry = ICatalogApi["addEntry"];
+export type TCatalogGetEntries = ICatalogApi["getEntries"];
+export type TCatalogUpdateEntries = ICatalogApi["updateEntries"];
+
+export type TCatalogApiGet_result = CatalogView;
+export type TCatalogApiAddEntry_result = CatalogEntryView[];
+export type TCatalogGetEntries_result = CatalogEntryView[];
+export type TCatalogUpdateEntries_result = CatalogEntryView[];
+
+export interface ICatalogModuleApi {
+    "catalog/get": TCatalogApiGet;
+    "catalog/addEntry": TCatalogApiAddEntry;
+    "catalog/getEntries": TCatalogGetEntries;
+    "catalog/updateEntries": TCatalogUpdateEntries;
+}
+
 @injectable()
-export class CatalogApi {
-    @inject("publication-repository")
-    private publicationRepository: PublicationRepository;
+export class CatalogApi implements ICatalogApi {
+    @inject(diSymbolTable["publication-repository"])
+    private readonly publicationRepository!: PublicationRepository;
 
-    @inject("config-repository")
-    private configRepository: ConfigRepository;
+    @inject(diSymbolTable["config-repository"])
+    private readonly configRepository!: ConfigRepository;
 
-    @inject("locator-repository")
-    private locatorRepository: LocatorRepository;
+    @inject(diSymbolTable["locator-repository"])
+    private readonly locatorRepository!: LocatorRepository;
 
-    @inject("publication-view-converter")
-    private publicationViewConverter: PublicationViewConverter;
+    @inject(diSymbolTable["publication-view-converter"])
+    private readonly publicationViewConverter!: PublicationViewConverter;
 
-    @inject("translator")
-    private translator: Translator;
+    @inject(diSymbolTable.translator)
+    private readonly translator!: Translator;
 
     public async get(): Promise<CatalogView> {
         const __ = this.translator.translate.bind(this.translator);
@@ -98,8 +117,7 @@ export class CatalogApi {
         };
     }
 
-    public async addEntry(data: any): Promise<CatalogEntryView[]> {
-        const entryView = data.entry as CatalogEntryView;
+    public async addEntry(entryView: CatalogEntryView): Promise<CatalogEntryView[]> {
         let entries: any = [];
 
         try {
@@ -155,8 +173,7 @@ export class CatalogApi {
         return entryViews;
     }
 
-    public async updateEntries(data: any): Promise<CatalogEntryView[]> {
-        const entryViews = data.entries as CatalogEntryView[];
+    public async updateEntries(entryViews: CatalogEntryView[]): Promise<CatalogEntryView[]> {
         const entries = entryViews.map((view) => {
             return {
                 title: view.title,

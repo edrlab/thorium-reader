@@ -1,3 +1,5 @@
+@import "./focus-mixin.css";
+
 .block_book_list {
 	display: block;
 	width: calc(100% + 120px);
@@ -125,19 +127,19 @@
     & button, & a, & span label {
         text-decoration: none;
         color: black;
-        flex: 1;
-        padding: 0.5rem;
+        padding: 0.7rem;
         text-align: center;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 40px;
+        height: 2.5rem;
         box-sizing: border-box;
-        width:100%;
+        width: 100%;
         font-size: 0.9rem;
         opacity: 1;
         margin: 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-block;
 
         &:hover {
             background-color: #CECECE;
@@ -158,7 +160,41 @@
         }
 
         & input:focus + label {
-            outline: -webkit-focus-ring-color auto 5px;
+            @mixin R2_MIXIN_FOCUS_OUTLINE;
         }
+    }
+}
+
+.cover {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 5%;
+
+    & p {
+        word-break: break-all;
+        display: -webkit-inline-box;
+        -webkit-line-clamp: 3;
+         /* autoprefixer: ignore next */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-align: center;
+        margin: 10px 5%;
+        color: black;
+    }
+
+    & .box {
+        border: 1px black solid;
+        width: 100%;
+        height: 100%;
+        line-height: inital;
+    }
+    & .title {
+        margin-top: 10%;
+    }
+    & .author {
+        font-size: 90%;
+        bottom: 10px;
     }
 }

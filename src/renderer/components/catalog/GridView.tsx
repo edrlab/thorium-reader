@@ -7,18 +7,16 @@
 
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
-
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
-
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 import Slider from "readium-desktop/renderer/components/utils/Slider";
 
-import GridTagLayout from "./GridTagLayout";
+import AboutThoriumButton from "./AboutThoriumButton";
 import NoPublicationInfo from "./NoPublicationInfo";
 import SortMenu from "./SortMenu";
-
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import TagLayout from "./TagLayout";
 
 interface GridViewProps extends RouteComponentProps {
     catalogEntries: CatalogEntryView[];
@@ -40,7 +38,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         super(props);
 
         this.state = {
-            tabTags: this.props.tags.slice(),
+            tabTags: this.props.tags ? this.props.tags.slice() : [],
             status: SortStatus.Count,
         };
         this.sortByAlpha = this.sortByAlpha.bind(this);
@@ -66,38 +64,38 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         return (
             <>
                 { this.props.catalogEntries.map((entry, EntryIndex: number) => {
-                        return entry.publications.length > 0 ? (
-                            <section key={ EntryIndex }>
-                            {
+                    return entry.publications.length > 0 ? (
+                        <section key={ EntryIndex }>
+                        {
 
-                                EntryIndex <= 1 ? (
-                                <div className={ styles.title }>
-                                    <h1>{ entry.title }</h1>
-                                </div>
-                                ) :
-                                (<></>)
-                            }
-                            {
-                                EntryIndex <= 1 ? (
-                                    <Slider
-                                        className={ styles.slider }
-                                        content={ entry.publications.map((pub) =>
-                                            <PublicationCard
-                                                key={ pub.identifier }
-                                                publication={ pub }
-                                                menuContent={ CatalogMenu }
-                                            />,
-                                        )}
-                                    />
-                                ) :
-                                (<></>)
-                            }
+                            EntryIndex <= 1 ? (
+                            <div className={ styles.title }>
+                                <h2>{ entry.title }</h2>
+                            </div>
+                            ) :
+                            (<></>)
+                        }
+                        {
+                            EntryIndex <= 1 ? (
+                                <Slider
+                                    className={ styles.slider }
+                                    content={ entry.publications.map((pub) =>
+                                        <PublicationCard
+                                            key={ pub.identifier }
+                                            publication={ pub }
+                                            MenuContent={ CatalogMenu }
+                                        />,
+                                    )}
+                                />
+                            ) :
+                            (<></>)
+                        }
 
-                            </section>
-                        ) : <></>;
+                        </section>
+                    ) : <div key={ EntryIndex } aria-hidden="true" style={{display: "none"}}></div>;
                 })}
                 { this.state.tabTags.length > 0 &&
-                    <GridTagLayout
+                    <TagLayout
                     tags={this.state.tabTags}
                     content={
                         <SortMenu
@@ -106,10 +104,10 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                         />}
                     />
                 }
-
                 { this.state.tabTags.length === 0 && entriesEmpty &&
                     <NoPublicationInfo />
                 }
+                <AboutThoriumButton />
             </>
         );
     }

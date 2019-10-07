@@ -1,18 +1,50 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "no-string-literal": true,
+    "no-reference": false,
+    "no-floating-promises": false,
+    "promise-function-async": true,
+    "await-promise": true,
+    "no-unused-expression": true,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-trailing-underscore",
+      "allow-pascal-case"
+    ],
+    "object-literal-sort-keys": false,
     "ordered-imports": [
       true,
       {
         "import-sources-order": "case-insensitive",
-        "named-imports-order": "case-insensitive"
+        "named-imports-order": "case-insensitive",
+        "__named-imports-order": "lowercase-last"
       }
     ],
-    "object-literal-sort-keys": false,
-    "interface-name": [false],
-    "no-unused-variable": [true],
-    "no-console": [false],
-    "forin": false,
-    "prefer-for-of": false
+    "no-console": [
+      false
+    ],
+    "interface-name": [
+      false
+    ]
+  },
+  "jsRules": {
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "case-insensitive",
+        "named-imports-order": "case-insensitive",
+        "__named-imports-order": "lowercase-last"
+      }
+    ]
+  },
+  "rulesDirectory": [],
+  "linterOptions": {
+    "exclude": [
+      "src/typings/en.translation.d.ts"
+    ]
   }
 }

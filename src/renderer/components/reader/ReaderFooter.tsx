@@ -6,21 +6,15 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { Translator } from "readium-desktop/common/services/translator";
-import { lazyInject } from "readium-desktop/renderer/di";
-
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
-
-import { Publication } from "r2-shared-js/dist/es6-es2015/src/models/publication";
-
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
+import { Publication } from "@r2-shared-js/models/publication";
 
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 interface Props extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;
@@ -56,9 +50,6 @@ export class ReaderFooter extends React.Component<Props, States> {
         const { __ } = this.props;
         const { moreInfo } = this.state;
 
-        const spineIndex = publication.Spine.findIndex(
-            (value) => value.Href === currentLocation.locator.href,
-        );
         const spineTitle = currentLocation.locator.title;
         let afterCurrentLocation = false;
 

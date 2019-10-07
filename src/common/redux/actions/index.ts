@@ -7,12 +7,14 @@
 
 import * as apiActions from "./api";
 import * as dialogActions from "./dialog";
+import * as downloadActions from "./download";
 import * as i18nActions from "./i18n";
 import * as importActions from "./import";
 import * as lcpActions from "./lcp";
 import * as loggerActions from "./logger";
 import * as netActions from "./net";
 import * as readerActions from "./reader";
+import * as toastActions from "./toast";
 import * as updateActions from "./update";
 
 export {
@@ -25,4 +27,6 @@ export {
     lcpActions,
     updateActions,
     importActions,
+    toastActions,
+    downloadActions,
 };

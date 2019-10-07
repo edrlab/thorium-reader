@@ -6,67 +6,40 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { connect } from "react-redux";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
+import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface OpdsAddFormProps extends TranslatorProps {
-    openOpdsFeedAddForm?: any;
+interface Props extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-export class OpdsAddForm extends React.Component<OpdsAddFormProps, undefined> {
-    private formRef: any;
+export class OpdsAddForm extends React.Component<Props> {
 
-    public constructor(props: any) {
-        super(props);
-
-        this.formRef = React.createRef();
-
-        this.add = this.add.bind(this);
-    }
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (
             <section className={ styles.opds_form }>
-                <p> { __("opds.addForm.title")} </p>
-                <form ref={this.formRef} onSubmit={ this.add }>
-                    <input
-                        name="url"
-                        type="text"
-                        placeholder={ __("opds.addForm.pasteUrl")}
-                        title={ __("opds.addForm.pasteUrl")}
-                        defaultValue=""
-                    />
-                </form>
+                <button onClick={this.props.openOpdsFeedAddForm}>
+                    <SVG svg={AddIcon}/>
+                    <span>{ __("opds.addForm.title")}</span>
+                </button>
             </section>
         );
     }
-
-    private add(e: any) {
-        e.preventDefault();
-        const url = this.formRef.current.url.value;
-        this.props.openOpdsFeedAddForm(url);
-        this.formRef.current.url.value = "";
-    }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
-        openOpdsFeedAddForm: (url: string) => {
-            dispatch(dialogActions.open(
-                DialogType.OpdsFeedAddForm,
-                {
-                    opds: { url },
-                },
-            ));
+        openOpdsFeedAddForm: () => {
+            dispatch(dialogActions.open("opds-feed-add-form", {}));
         },
     };
 };
 
-export default withTranslator(connect(undefined, mapDispatchToProps)(OpdsAddForm));
+export default connect(undefined, mapDispatchToProps)(withTranslator(OpdsAddForm));

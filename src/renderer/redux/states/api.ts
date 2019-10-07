@@ -15,14 +15,15 @@ interface PageState<T> {
 
 export interface ApiDataResponse<T> {
     result: (T | PageState<T>);
+    resultIsReject?: boolean;
     date: number;
     requestId: string;
-    module: string;
     methodId: string;
+    moduleId: string;
 }
 
-export interface ApiDataState {
-    [id: string]: ApiDataResponse<any>;
+export interface ApiDataState<T> {
+    [id: string]: ApiDataResponse<T>;
 }
 
 export interface ApiLastSuccess {
@@ -30,7 +31,7 @@ export interface ApiLastSuccess {
     date: number;
 }
 
-export interface ApiState {
+export interface ApiState<T> {
     lastSuccess: ApiLastSuccess;
-    data: ApiDataState;
+    data: ApiDataState<T>;
 }

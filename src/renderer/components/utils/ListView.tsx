@@ -6,24 +6,20 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import PublicationListElement from "readium-desktop/renderer/components/publication/PublicationListElement";
-
-import { Publication } from "readium-desktop/common/models/publication";
-
+import { PublicationView } from "readium-desktop/common/views/publication";
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/components/publication/menu/OpdsMenu";
+import PublicationListElement from "readium-desktop/renderer/components/publication/PublicationListElement";
 
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
-interface ListViewProps {
-    publications: Publication[];
+interface IProps {
+    publications: PublicationView[];
     isOpdsView?: boolean;
 }
 
-export default class ListView extends React.Component<ListViewProps, undefined> {
+export default class ListView extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
-        let MenuContent = CatalogMenu;
+        let MenuContent: any = CatalogMenu;
         if ( this.props.isOpdsView ) {
             MenuContent = OpdsMenu;
         }
@@ -38,6 +34,7 @@ export default class ListView extends React.Component<ListViewProps, undefined> 
                                 <PublicationListElement
                                     publication={pub}
                                     menuContent={<MenuContent publication={pub}/>}
+                                    isOpds={this.props.isOpdsView}
                                 />
                             </li>
                         );

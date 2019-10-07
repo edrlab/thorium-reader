@@ -1,31 +1,37 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 import * as React from "react";
-
 import FocusLock from "react-focus-lock";
-
 import OutsideClickAlerter from "readium-desktop/renderer/components/utils/OutsideClickAlerter";
 
 interface Props {
-    className?: any;
+    className?: string;
     visible: boolean;
-    toggleMenu: any;
+    toggleMenu: () => void;
     dontCloseWhenClickOutside?: boolean;
     focusMenuButton?: () => void;
 }
 
 interface State {
     inFocus: boolean;
-    triggerElem: any;
+    triggerElem: HTMLElement | undefined;
 }
 
 export default class AccessibleMenu extends React.Component<Props, State> {
-    private containerRef: any;
+    private containerRef: React.RefObject<HTMLDivElement>;
+    private ismounted = false;
 
     public constructor(props: Props) {
         super(props);
 
         this.state = {
             inFocus: false,
-            triggerElem: null,
+            triggerElem: undefined,
         };
 
         this.containerRef = React.createRef();
@@ -35,6 +41,7 @@ export default class AccessibleMenu extends React.Component<Props, State> {
     }
 
     public componentDidMount() {
+        this.ismounted = true;
         if (this.props.visible) {
             document.addEventListener("keydown", this.handleKey);
             document.addEventListener("focusin", this.handleFocus);
@@ -42,6 +49,7 @@ export default class AccessibleMenu extends React.Component<Props, State> {
     }
 
     public componentWillUnmount() {
+        this.ismounted = false;
         if (this.props.visible) {
             document.removeEventListener("keydown", this.handleKey);
             document.removeEventListener("focusin", this.handleFocus);
@@ -52,17 +60,27 @@ export default class AccessibleMenu extends React.Component<Props, State> {
         if (!this.props.visible && oldProps.visible) {
             document.removeEventListener("keydown", this.handleKey);
             document.removeEventListener("focusin", this.handleFocus);
-
-            this.setState({
-                inFocus: false,
-            });
+            if (this.ismounted) {
+                this.setState({
+                    inFocus: false,
+                });
+            }
         } else if (this.props.visible && !oldProps.visible) {
             document.addEventListener("keydown", this.handleKey);
             document.addEventListener("focusin", this.handleFocus);
-
-            this.setState({
-                triggerElem: document.activeElement,
-            });
+            if (this.ismounted) {
+                /**
+                 * document.activeElement is a DOM property (HTML, SVG, XML, etc.)
+                 * https://developer.mozilla.org/en-US/docs/Web/API/DocumentOrShadowRoot/activeElement
+                 * https://developer.mozilla.org/en-US/docs/Web/API/Document
+                 *
+                 * But in our case, we know that the Thorium UI is built with HTML markup (+ a few SVG images),
+                 * so we can cast the correct type for better compile-time checking.
+                 */
+                this.setState({
+                    triggerElem: document.activeElement as HTMLElement,
+                });
+            }
         }
 
         if (prevState.inFocus
@@ -86,26 +104,33 @@ export default class AccessibleMenu extends React.Component<Props, State> {
                     className={this.props.className}
                 >
                     <FocusLock disabled={disabled} autoFocus={!disabled}>
-                        { this.props.children }
+                        {this.props.children}
                     </FocusLock>
                 </div>
             </OutsideClickAlerter>
         );
     }
 
-    private handleKey(event: any) {
+    private handleKey(event: KeyboardEvent) {
         if (event.key === "Escape" || (!this.state.inFocus && (event.shiftKey && event.key === "Tab"))) {
             this.props.toggleMenu();
-            this.props.focusMenuButton();
-            this.setState({
-                inFocus: false,
-            });
+            if (this.props.focusMenuButton) {
+                this.props.focusMenuButton();
+            }
+            if (this.ismounted) {
+                this.setState({
+                    inFocus: false,
+                });
+            }
         }
         if (event.key === "Tab" && !this.state.inFocus) {
             event.preventDefault();
-            this.setState({
-                inFocus: true,
-            });
+            if (this.ismounted) {
+                this.setState({
+                    inFocus: true,
+                });
+            }
+
         }
     }
 
@@ -115,16 +140,27 @@ export default class AccessibleMenu extends React.Component<Props, State> {
         }
     }
 
-    private handleFocus(event: any) {
-        const focusedNode = event.target;
+    private handleFocus(event: Event) {
+        /**
+         * Event.target is a generic DOM property,
+         * which does not only apply to HTML (also SVG, XML, etc.).
+         * However, in Thorium we know that the UI is implemented in HTML markup
+         * (with the odd SVG image here and there),
+         * so we can safely cast the appropriate type for better static / compile-time checking.
+         * https://developer.mozilla.org/en-US/docs/Web/API/Event/target
+         * https://developer.mozilla.org/en-US/docs/Web/API/Event
+         */
+        const focusedNode = event.target as HTMLElement;
 
         if (this.containerRef
             && this.containerRef.current
             && this.containerRef.current.contains(focusedNode)
         ) {
-            this.setState({
-                inFocus: true,
-            });
+            if (this.ismounted) {
+                this.setState({
+                    inFocus: true,
+                });
+            }
         }
     }
 }

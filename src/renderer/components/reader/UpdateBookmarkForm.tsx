@@ -6,15 +6,13 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
 import { LocatorView } from "readium-desktop/common/views/locator";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import { TFormEvent } from "readium-desktop/typings/react";
 
 interface Props {
     close: () => void;
     bookmark: LocatorView;
-    updateBookmark?: any;
 }
 
 interface State {
@@ -58,25 +56,23 @@ export class UpdateBookmarkForm extends React.Component<Props, State> {
         );
     }
 
-    private submiteBookmark(e: any) {
+    private submiteBookmark(e: TFormEvent) {
         e.preventDefault();
-        const name = this.inputRef.current.value;
-        const { bookmark, updateBookmark } = this.props;
-        bookmark.name = name;
-        updateBookmark(bookmark);
+        const { bookmark } = this.props;
+        const value: string = this.inputRef.current.value;
+        const normalizedValue = value.trim().replace(/\s\s+/g, " ");
+        if (normalizedValue.length > 0) {
+            bookmark.name = normalizedValue;
+            apiAction("reader/updateBookmark",
+                bookmark.identifier,
+                bookmark.publication.identifier,
+                bookmark.locator,
+                bookmark.name,
+            ).catch((error) => console.error("Error to fetch api reader/updateBookmark", error));
+        }
+
         this.props.close();
     }
 }
 
-export default withApi(
-    UpdateBookmarkForm,
-    {
-        operations: [
-            {
-                moduleId: "reader",
-                methodId: "updateBookmark",
-                callProp: "updateBookmark",
-            },
-        ],
-    },
-);
+export default UpdateBookmarkForm;

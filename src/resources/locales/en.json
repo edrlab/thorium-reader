@@ -1,270 +1,219 @@
 {
-    "catalog": {
-      "entry": {
-        "continueReading": "Resume reading",
-        "lastAdditions": "Recently added"
-      },
-      "myBooks": "My books",
-      "allBooks": "All books",
-      "bookInfo": "About this book",
-      "delete": "Delete definitively",
-      "export": "Export",
-      "released": "Published on",
-      "description": "Description",
-      "moreInfo": "More Info",
-      "publisher": "Publisher",
-      "lang": "Language",
-      "id": "Identifier",
-      "addBookToLib": "Add book to library",
-      "addTeaserToLib": "Add the extract book to library",
-      "addTags": "Add tag",
-      "readBook": "Read",
-      "deleteBook": "delete from the library",
-      "tags": "My tags",
-      "sort": "sort by",
-      "tagCount": "Tag count",
-      "emptyTagList": "You have still not added tags to the books.",
-      "noPublicationHelp": "To import ebooks, drag&drop EPUB files here or use the plus button in the menu above."
+    "accessibility": {
+        "bookMenu": "Menu",
+        "closeDialog": "Close",
+        "homeMenu": "Reading view menu",
+        "importFile": "Import a publication",
+        "leftSlideButton": "Slide the list to the left",
+        "rightSlideButton": "Slide the list to the right",
+        "searchBook": "Search by title",
+        "skipLink": "Skip to content"
     },
-    "library": {
-        "heading": "Library",
-        "add": "Add to the library",
-        "startDownload": "A download started.",
-        "cancelDownload": "A download canceled.",
-        "endDownload": "A download ended.",
-        "svg" : {
-          "list": "List",
-          "card": "Cards",
-          "showParaphrase": "Show paraphrase"
+    "app": {
+        "edit": {
+            "copy": "Copy",
+            "cut": "Cut",
+            "paste": "Paste",
+            "redo": "Redo",
+            "selectAll": "Select all",
+            "title": "Edit",
+            "undo": "Undo"
         },
-        "lcp": {
-          "title": "LCP Verification",
-          "sentence": "This publication needs a LCP password to be opened: ",
-          "submit": "Submit",
-          "cancel": "Cancel",
-          "hint": "(Hint : {{hint}})",
-          "password": "Password",
-          "informations": {
-            "title": "LCP Informations",
-            "close": "Close",
-            "provider": "Provider:",
-            "issued": "Creation date:",
-            "updated": "Updated:",
-            "right": {
-              "title": "Rights",
-              "start": "Start:",
-              "end": "End:",
-              "copy": "Copy number:",
-              "print": "Print number:"
-            }
-          }
-        }
+        "quit": "Quit Thorium"
     },
-    "publication": {
-      "expiredLcp": "This book can't be read because the LCP license has expired.",
-      "revokedLcp": "This book can't be read because the LCP license has been revoked.",
-      "returnedLcp": "This book can't be read because the LCP license has been returned.",
-      "downloadButton": "Download",
-      "readButton": "Read",
-      "deleteButton": "Delete from the library",
-      "infoButton": "LCP Informations",
-      "renewButton": "Renew",
-      "renewSentence": "Are you sure you want to renew this publication?",
-      "returnButton": "Return",
-      "returnSentence": "Are you sure you want to return this publication?",
-      "cancelDownloadButton": "Cancel",
-      "progressDownload": "Downloading",
-      "endDownload": "Download completed",
-      "failedDownload": "Download Failed",
-      "canceledDownload": "Download Canceled"
-    },
-    "toolbar": {
-        "about": "About",
-        "help":"Help",
-        "news":"What's new?",
-        "sync":"Synchronize the library",
-        "svg": {
-          "help": "Help",
-          "news": "News",
-          "addEpub": "Add an EPUB",
-          "opds": "Opds",
-          "others": "Others"
-        }
-    },
-    "update": {
-        "available": "Update available!"
+    "catalog": {
+        "about": {
+            "button": "More information",
+            "title": "About Thorium"
+        },
+        "addBookToLib": "Import",
+        "addTags": "Add a tag",
+        "addTagsButton": "Add",
+        "allBooks": "All books",
+        "bookInfo": "About this book",
+        "delete": "Delete",
+        "deleteBook": "Delete from the bookshelf",
+        "deleteTag": "Delete the tag",
+        "description": "Description",
+        "emptyTagList": "You have no tagged ebook.",
+        "entry": {
+            "continueReading": "Resume reading",
+            "lastAdditions": "Recently added"
+        },
+        "export": "Export",
+        "id": "Identifier",
+        "lang": "Language",
+        "moreInfo": "More Info",
+        "myBooks": "My books",
+        "noPublicationHelpL1": "Drop EPUB files in this window",
+        "noPublicationHelpL2": "or use the \"+\" button above.",
+        "noPublicationHelpL3": "LCP protected files are supported.",
+        "publisher": "Publisher",
+        "readBook": "Read",
+        "released": "Published on",
+        "sort": "Sort by",
+        "tagCount": "Tag count",
+        "tags": "My tags"
     },
     "dialog": {
-      "yes": "Yes",
-      "no": "No",
-      "delete": "Do you really want to delete this publication?",
-      "import": "Do you really want to import those EPUB files :",
-      "return": "Do you really want to return the licence for this publication?",
-      "deleteOpds": "Do you really want to delete this opds feed?",
-      "renew": "Do you really want to renew the licence for this publication?",
-      "closeModalWindow": "Close this modal window"
-    },
-    "opds": {
-      "download": "Download",
-      "settings": "Settings",
-      "addMenu": "Add OPDS feed",
-      "formError": "Please, fill all the fields",
-      "back": "Back",
-      "downloadError": "An error occurred while retrieving the feed.",
-      "svg": {
-        "opds": "Opds"
-      },
-      "addForm": {
-        "title": "Add a feed",
-        "pasteUrl": "paste url of a feed",
-        "addButton": "Add",
-        "updateSentence": "You can update the fields.",
-        "addSentence": "What OPDS feed would you like to add?",
-        "delete": "Delete the feed",
-        "update": "Update",
-        "name": "Name :",
-        "url": "Link :",
-        "namePlaceholder": "Name",
-        "urlPlaceholder": "Link"
-      },
-      "authentication": {
-        "username": "Username :",
-        "password": "Password :",
-        "loginButton": "Login",
-        "sentence": "Please, log in to access to the contents"
-      },
-      "menu": {
-        "aboutBook": "About this book",
-        "addLib": "Add this book to the librairy",
-        "goBuyBook": "Buy this book",
-        "goLoanBook": "Borrow this book",
-        "goSubBook": "Subscribe",
-        "addTeaser": "Add extract to the librairy"
-      },
-      "breadcrumbRoot": "Catalogs"
-    },
-    "reader": {
-      "navigation": {
-        "backHomeTitle": "back to home",
-        "infoTitle": "informations",
-        "detachWindowTitle": "detach the window",
-        "fullscreenTitle": "open fullscreen mode",
-        "bookmarkTitle": "bookmark",
-        "openTableOfContentsTitle": "table of contents",
-        "quitFullscreenTitle": "quit fullscreen mode",
-        "settingsTitle": "settings",
-        "readBookTitle": "start reading the book"
-      },
-      "footerInfo": {
-        "moreInfo": "more informations",
-        "lessInfo":  "less informations"
-      },
-      "settings": {
-        "title": "Settings",
-        "theme": {
-          "title": "Theme",
-          "predefined": "Predefined themes",
-          "myTheme": "My themes",
-          "create": "Create a theme",
-          "name": {
-            "Neutral": "Neutral",
-            "Sepia": "Sepia",
-            "Night": "Night"
-          }
-        },
-        "text": "Text",
-        "left": "Left",
-        "justify": "Justified",
-        "column": {
-          "title": "Column",
-          "auto": "Automatic",
-          "one": "1 column",
-          "two": "2 columns"
-        },
-        "spacing": "Spacing",
-        "margin": "Margin",
-        "wordSpacing": "Word spacing",
-        "lineSpacing": "Line spacing",
-        "letterSpacing": "Letter spacing",
-        "accessibility": "Accessibility",
-        "disposition": {
-          "title": "Disposition",
-          "with": "With",
-          "without": "Without"
-        },
-        "right": "Right",
-        "font": "Font",
-        "DefaultFont": "Default font",
-        "fontSize": "Font size",
-        "display": "Display",
-        "justification": "Alignement",
-        "scrolled": "Scrollable",
-        "paginated": "Paginated"
-      },
-      "marks": {
-        "landmarks": "Landmarks",
-        "illustrations": "Illustrations",
-        "toc": "Table of content",
-        "annotations": "Annotations"
-      },
-      "svg": {
-        "contentTable": "Content Table",
-        "night": "Night",
-        "settings": "Settings",
-        "left": "Left",
-        "right": "Right",
-        "alignLeft": "Left align",
-        "alignCenter": "Center align",
-        "alignRight": "Right align",
-        "document": "Paginated",
-        "continue": "Scrolled",
-        "landmark": "Landmark"
-      }
-    },
-    "message": {
-      "download": {
-        "success": "The download of {{title}} is finished.",
-        "start": "The download of {{title}} began."
-      },
-      "lcp": {
-        "renewSuccess": "The LCP license of {{title}} has been renewed.",
-        "renewError": "An error occurred when renewing the LCP license of {{title}}.",
-        "returnSuccess": "The LCP license of {{title}} has been returned",
-        "returnError": "An error occurred when returning the LCP license of {{title}}.",
-        "passphraseError": "Unable to unlock publication {{publicationTitle}}"
-      }
-    },
-    "settings": {
-      "manageTags": "Manage tags",
-      "uiLanguage": "UI language",
-      "information": "Information",
-      "language": {
-        "languageChoice": "Language choice"
-      }
+        "alreadyAdd": "It seems that you have already added this publication to your bookshelf.",
+        "closeModalWindow": "Close this modal window",
+        "deleteFeed": "Do you really want to delete this catalog ?",
+        "deletePublication": "Do you really want to delete this publication ?",
+        "import": "Do you really want to import those files :",
+        "importError": "an error occured, verify your file extension (.epub)",
+        "no": "No",
+        "renew": "Do you really want to renew the licence for this publication?",
+        "return": "Do you really want to return the licence for this publication?",
+        "sure": "Are you sure you want to add it again ?",
+        "yes": "Yes"
     },
     "header": {
-      "books": "My Books",
-      "catalogs": "Catalogs",
-      "settings": "Settings",
-      "allBooks": "All books",
-      "gridTitle": "Books cover in a gridview",
-      "listTitle": "Books cover in a listview",
-      "searchPlaceholder": "Search",
-      "searchTitle": "Start the search",
-      "importTitle": "Import a book"
-
+        "allBooks": "All books",
+        "books": "My Books",
+        "catalogs": "Catalogs",
+        "gridTitle": "Grid view",
+        "home": "Bookshelf menu",
+        "importTitle": "Import a publication",
+        "listTitle": "List view",
+        "searchPlaceholder": "Search",
+        "searchTitle": "Start a search",
+        "settings": "Settings"
     },
-    "accessibility": {
-      "skipLink": "Skip to content",
-      "importFile": "Import an epub file",
-      "searchBook": "Search a book, a tag or type of a literature",
-      "closeDialog": "Close",
-      "bookTitle": "Book title",
-      "bookAuthor": "Book author",
-      "bookReleaseDate": "Book release date",
-      "bookPublisher": "Book publisher",
-      "homeMenu": "Home menu"
-
+    "library": {
+        "lcp": {
+            "cancel": "Cancel",
+            "hint": "(Hint : {{hint}})",
+            "password": "Passphrase",
+            "sentence": "This publication needs an LCP passphrase to be opened: ",
+            "submit": "Submit"
+        }
+    },
+    "message": {
+        "download": {
+            "start": "The download of {{- title}} has begun.",
+            "success": "The download of {{- title}} is finished."
+        },
+        "import": {
+            "fail": "The import of {{- path}} failed. Verify that the file is valid",
+            "success": "The import of {{- title}} is finished."
+        }
+    },
+    "opds": {
+        "addForm": {
+            "addButton": "Add",
+            "name": "Name :",
+            "namePlaceholder": "Name",
+            "title": "Add an OPDS feed",
+            "url": "Link :",
+            "urlPlaceholder": "Link"
+        },
+        "addMenu": "Add OPDS feed",
+        "back": "Back",
+        "breadcrumbRoot": "Catalogs",
+        "empty": "No publication found",
+        "firstPage": "First",
+        "lastPage": "Last",
+        "menu": {
+            "aboutBook": "About this book",
+            "addExtract": "Import the extract",
+            "goBuyBook": "Buy this book",
+            "goLoanBook": "Borrow this book",
+            "goSubBook": "Subscribe"
+        },
+        "network": {
+            "error": "Unable to access to opds feed",
+            "noInternet": "No internet",
+            "noInternetMessage": "Try : checking the network cable, modem, router or wifi",
+            "reject": "Sorry, there was an unexpected error when trying to process the OPDS feed",
+            "timeout": "There was a network timeout, please try again later"
+        },
+        "next": "Next",
+        "previous": "Previous"
+    },
+    "publication": {
+        "deleteButton": "Delete from the bookshelf",
+        "expiredLcp": "This book can't be read because the LCP license has expired.",
+        "readButton": "Read",
+        "renewButton": "Renew",
+        "returnButton": "Return",
+        "returnedLcp": "This book can't be read because the LCP license has been returned.",
+        "revokedLcp": "This book can't be read because the LCP license has been revoked.",
+        "seeLess": "See less",
+        "seeMore": "See more"
+    },
+    "reader": {
+        "footerInfo": {
+            "lessInfo": "less information",
+            "moreInfo": "more information"
+        },
+        "marks": {
+            "annotations": "Annotations",
+            "bookmarks": "Bookmarks",
+            "illustrations": "Table of illustrations",
+            "landmarks": "Landmarks",
+            "toc": "Table of Contents"
+        },
+        "navigation": {
+            "backHomeTitle": "back to the bookshelf",
+            "bookmarkTitle": "bookmark",
+            "detachWindowTitle": "detach the window",
+            "fullscreenTitle": "open fullscreen mode",
+            "goTo": "Go to",
+            "goToError": "This page break does not exist",
+            "goToPlaceHolder": "Enter a page number",
+            "goToTitle": "Go to page",
+            "infoTitle": "information",
+            "openTableOfContentsTitle": "navigation",
+            "quitFullscreenTitle": "quit fullscreen mode",
+            "readBookTitle": "start reading the book",
+            "settingsTitle": "settings"
+        },
+        "settings": {
+            "column": {
+                "auto": "Automatic",
+                "one": "1 col",
+                "oneTitle": "one column",
+                "title": "Columns",
+                "two": "2 cols",
+                "twoTitle": "two columns"
+            },
+            "display": "Display",
+            "disposition": {
+                "title": "Disposition"
+            },
+            "font": "Font",
+            "fontSize": "Font size",
+            "justification": "Alignement",
+            "justify": "Justify",
+            "left": "Left",
+            "letterSpacing": "Letter spacing",
+            "lineSpacing": "Line spacing",
+            "margin": "Margin",
+            "paginated": "Paginated",
+            "scrolled": "Scrollable",
+            "spacing": "Spacing",
+            "text": "Text",
+            "theme": {
+                "name": {
+                    "Neutral": "Neutral",
+                    "Night": "Night",
+                    "Sepia": "Sepia"
+                },
+                "title": "Theme"
+            },
+            "wordSpacing": "Word spacing"
+        },
+        "svg": {
+            "left": "Left",
+            "right": "Right"
+        }
+    },
+    "settings": {
+        "information": "Information",
+        "language": {
+            "languageChoice": "Language choice"
+        },
+        "uiLanguage": "Language of the user interface"
     }
-
 }

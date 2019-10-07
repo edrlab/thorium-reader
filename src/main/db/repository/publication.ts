@@ -18,8 +18,6 @@ const TAG_INDEX = "tag_index";
 
 const TITLE_INDEX = "title_index";
 
-const IDENTIFIER_INDEX = "identifier_index";
-
 import {
     convertMultiLangStringToString,
 } from "readium-desktop/common/utils";

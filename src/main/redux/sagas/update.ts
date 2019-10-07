@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { delay, SagaIterator } from "redux-saga";
-import { call, put, select, take } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
+import { call, delay, put, take } from "redux-saga/effects";
 
-import { requestGet } from "readium-desktop/utils/http";
+import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
 
 import { appActions } from "readium-desktop/main/redux/actions";
 
@@ -27,23 +27,29 @@ export function* updateStatusWatcher(): SagaIterator {
 
     while (true) {
         try {
-            const result = yield call(() => requestGet(
+            const result: IHttpGetResult<string, any> = yield call(() => httpGet(
                 LATEST_VERSION_URL,
-                {timeout: 5000},
+                {
+                    timeout: 5000,
+                    json: true,
+                },
             ));
 
-            if (result.response.statusCode === 200) {
-                const jsonObj = JSON.parse(result.response.body);
+            if (result.isFailure) {
+                throw new Error(`Http get error with code
+                    ${result.statusCode} for ${result.url}`);
+            }
 
-                if (jsonObj.id && jsonObj.html_url) {
-                    const latestVersion = jsonObj.tag_name;
+            const jsonObj = result.data;
 
-                    if (latestVersion > CURRENT_VERSION) {
-                        yield put(updateActions.setLatestVersion(
-                            jsonObj.tag_name,
-                            jsonObj.html_url,
-                        ));
-                    }
+            if (jsonObj.id && jsonObj.html_url) {
+                const latestVersion = jsonObj.tag_name;
+
+                if (latestVersion > CURRENT_VERSION) {
+                    yield put(updateActions.setLatestVersion(
+                        jsonObj.tag_name,
+                        jsonObj.html_url,
+                    ));
                 }
             }
         } catch (error) {
@@ -51,6 +57,6 @@ export function* updateStatusWatcher(): SagaIterator {
         }
 
         // Try to retrieve latest version every 20 minutes
-        yield call(delay, 120000);
+        yield delay(120000);
     }
 }
