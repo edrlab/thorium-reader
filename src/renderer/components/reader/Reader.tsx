@@ -45,6 +45,8 @@ import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssOnOff, setEpubReadingSystemInfo,
     setKeyDownEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
+    ttsListen, ttsNext, ttsPause, ttsPlay, ttsPrevious, ttsResume,
+    TTSStateEnum, ttsStop,
 } from "@r2-navigator-js/electron/renderer/index";
 import { Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -426,6 +428,8 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
     public setTTSState(newTtsState: TTSStateEnum) {
         console.log("set tts state was called");
         this.setState({ttsState : newTtsState});
+    }
+
     public async componentDidUpdate(_oldProps: IProps, oldState: IState) {
         if (oldState.bookmarks !== this.state.bookmarks) {
             await this.checkBookmarks();

@@ -106,6 +106,11 @@ export class CatalogApi implements ICatalogApi {
                 totalCount: lastReadPublicationViews.length,
                 publications: lastReadPublicationViews,
             },
+            {
+                title: __("catalog.entry.lastAdditions"),
+                totalCount: lastAddedPublicationViews.length,
+                publications: lastAddedPublicationViews,
+            },
         ];
 
         // Concat user entries
