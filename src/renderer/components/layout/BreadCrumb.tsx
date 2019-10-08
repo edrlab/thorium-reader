@@ -46,7 +46,7 @@ class BreadCrumb extends React.Component<IProps> {
                     </Link>
                 }
                 {breadcrumb && breadcrumb.map((item, index) => {
-                    const name = decodeURI(item.name);
+                    const name = item.name;
                     return (item.path && index !== breadcrumb.length - 1 ?
                         <Link
                             key={index}
@@ -57,11 +57,11 @@ class BreadCrumb extends React.Component<IProps> {
                             }}
                             title={name}
                         >
-                            {`${decodeURI(name)} /`}
+                            {`${name} /`}
                         </Link>
                         :
                         <span key={index}>
-                            { decodeURI(name) }
+                            {name}
                         </span>
                     );
                 })}
