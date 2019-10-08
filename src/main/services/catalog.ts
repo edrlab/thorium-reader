@@ -256,6 +256,8 @@ export class CatalogService {
         let destinationPath: string = (electron as any).dialog.showOpenDialog(mainWindow, {
             properties: ["openDirectory"],
         })[0];
+
+        // If the selected path is a file then choose the directory containing this file
         const isFile = !fs.lstatSync(destinationPath).isDirectory();
         if (isFile) {
             const splitedPath = destinationPath.split("/");
