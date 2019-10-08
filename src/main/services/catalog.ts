@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import * as electron from "electron";
+import { dialog } from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
 import * as path from "path";
@@ -253,17 +253,12 @@ export class CatalogService {
         }
 
         // Open a dialog to select a folder then copy the publication in it
-        let destinationPath: string = (electron as any).dialog.showOpenDialog(mainWindow, {
+        let destinationPath: string = dialog.showOpenDialog(mainWindow, {
             properties: ["openDirectory"],
         })[0];
 
         // If the selected path is a file then choose the directory containing this file
-        const isFile = !fs.lstatSync(destinationPath).isDirectory();
-        if (isFile) {
-            const splitedPath = destinationPath.split("/");
-            splitedPath.splice(splitedPath.length - 1);
-            destinationPath = splitedPath.join("/");
-        }
+        destinationPath = path.dirname(destinationPath);
         this.publicationStorage.copyPublicationToPath(publication, destinationPath);
     }
 
