@@ -75,7 +75,7 @@ class Browser extends React.Component<IProps> {
             const link = navigation[0];
             if (link) {
                 breadcrumb.push({
-                    name: link.title,
+                    name: decodeURI(link.title),
                     path: buildOpdsBrowserRoute(
                         rootFeedIdentifier,
                         link.title,
@@ -85,7 +85,7 @@ class Browser extends React.Component<IProps> {
                 });
             }
             breadcrumb.push({
-                name: search,
+                name: decodeURI(search),
             });
             return breadcrumb;
         }
