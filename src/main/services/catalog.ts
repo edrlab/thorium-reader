@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import * as electron from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
 import * as path from "path";
@@ -241,7 +242,26 @@ export class CatalogService {
         return await this.publicationRepository.save(newPub);
     }
 
-    public exportPublication(publication: PublicationView, destinationPath: string) {
+    public async exportPublication(publication: PublicationView) {
+        // Get main window
+        const winRegistry = diMainGet("win-registry");
+        let mainWindow;
+        for (const window of (Object.values(winRegistry.getWindows())) as any) {
+            if (window.type === "library") {
+                mainWindow = window;
+            }
+        }
+
+        // Open a dialog to select a folder then copy the publication in it
+        let destinationPath: string = (electron as any).dialog.showOpenDialog(mainWindow, {
+            properties: ["openDirectory"],
+        })[0];
+        const isFile = !fs.lstatSync(destinationPath).isDirectory();
+        if (isFile) {
+            const splitedPath = destinationPath.split("/");
+            splitedPath.splice(splitedPath.length - 1);
+            destinationPath = splitedPath.join("/");
+        }
         this.publicationStorage.copyPublicationToPath(publication, destinationPath);
     }
 

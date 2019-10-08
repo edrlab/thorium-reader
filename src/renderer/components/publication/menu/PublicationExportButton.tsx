@@ -14,70 +14,28 @@ import { TranslatorProps, withTranslator } from "readium-desktop/renderer/compon
 interface IProps extends TranslatorProps {
     publication: PublicationView;
     exportPublication?: TPublicationApiExportPublication;
-    onClick: () => void;
 }
 
 class PublicationExportButton extends React.Component<IProps> {
-    private exportInputRef: React.RefObject<any>;
-
-    constructor(props: IProps) {
-        super(props);
-
-        this.state = {
-            menuOpen: false,
-        };
-        this.exportInputRef = React.createRef();
-
-        this.checkCancel = this.checkCancel.bind(this);
-        this.onOpenInput = this.onOpenInput.bind(this);
-    }
-
-    public componentDidMount() {
-        // Property 'directory' does not exist on type 'HTMLInputElement'
-        this.exportInputRef.current.directory = true;
-        this.exportInputRef.current.webkitdirectory = true;
-    }
-
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
-        const id = "exportInput" + this.props.publication.identifier;
         return (
                 <span>
-                    <input
+                    <button
                         role="menuitem"
-                        id={ id }
-                        ref={ this.exportInputRef }
-                        type="file"
-                        multiple
-                        onChange={ this.onExport }
-                        onClick={this.onOpenInput}
-                    />
-                    <label
-                        htmlFor={ id }
-                        onClick={this.onOpenInput}
+                        onClick={this.onExport}
                     >
                         { __("catalog.export")}
-                    </label>
+                    </button>
                 </span>
         );
     }
 
-    private onExport = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.onClick();
-        const destinationPath = event.target.files[0].path;
+    private onExport = () => {
         const publication = this.props.publication;
-        apiAction("publication/exportPublication", publication, destinationPath).catch((error) => {
+        apiAction("publication/exportPublication", publication).catch((error) => {
             console.error(`Error to fetch publication/exportPublication`, error);
         });
-    }
-
-    private onOpenInput() {
-        document.body.onfocus = this.checkCancel.bind(this);
-    }
-
-    private checkCancel() {
-        this.props.onClick();
-        document.body.onfocus = null;
     }
 }
 
