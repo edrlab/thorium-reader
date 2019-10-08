@@ -258,7 +258,9 @@ export class CatalogService {
         })[0];
 
         // If the selected path is a file then choose the directory containing this file
-        destinationPath = path.dirname(destinationPath);
+        if (fs.statSync(destinationPath).isFile()) {
+            destinationPath = path.dirname(destinationPath);
+        }
         this.publicationStorage.copyPublicationToPath(publication, destinationPath);
     }
 
