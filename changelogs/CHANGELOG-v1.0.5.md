@@ -17,10 +17,20 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `v1.0.4`:
 https://github.com/readium/readium-desktop/compare/v1.0.4...develop
 
-=> **42** GitHub Pull Requests or high-level Git commits.
+=> **52** GitHub Pull Requests or high-level Git commits.
 
 Here is the complete list of commits, ordered by descending date:
 
+* [(_)](https://github.com/readium/readium-desktop/commit/d30dd198e5a937bcfa9509588ce947df4de1c3cb) __fix(ui):__ improved publication list view, row items alignement (PR [#777](https://github.com/readium/readium-desktop/pull/777) Fixes [#691](https://github.com/readium/readium-desktop/issues/691))
+* [(_)](https://github.com/readium/readium-desktop/commit/e5ba1f4b348d9c264fed1ea59a8d390d516dad16) __fix(CLI):__ MacOS command line argument with single dash/hyphen `-psn` is now filtered out (PR [#775](https://github.com/readium/readium-desktop/pull/775))
+* [(_)](https://github.com/readium/readium-desktop/commit/e0d3e935d290cd11e2befc6abdc49c32560bcdd3) __hotfix(lint):__ fixes minor linting errors introduced by the previous commit (electron-builder patch)
+* [(_)](https://github.com/readium/readium-desktop/commit/d2b55b3ee127d6472cfc17e23ab03694741d2a17) __fix:__ Windows AppX electron-builder patch to support fileAssociations (Fixes [#697](https://github.com/readium/readium-desktop/issues/697))
+* [(_)](https://github.com/readium/readium-desktop/commit/da141ac7982023119463b2cd6e21c9837f74d68e) __hotfix(npm):__ package updates to include latest r2-navigator-js component which fixes support for javascript: hyperlinks.
+* [(_)](https://github.com/readium/readium-desktop/commit/852b82637490ee9fee32a4b6de25924b91dbfb10) __chore:__ replace MSI with NSIS electron-builder target for Windows installer (PR [#776](https://github.com/readium/readium-desktop/pull/776))
+* [(_)](https://github.com/readium/readium-desktop/commit/a3fdddedeefc48b4f9ef354f7261a9dfa9ebe3c2) __fix:__ publication export (PR [#746](https://github.com/readium/readium-desktop/pull/746) Fixes [#724](https://github.com/readium/readium-desktop/issues/724))
+* [(_)](https://github.com/readium/readium-desktop/commit/6005000b8f4203b6fdc062701a77af44bcfc40ba) __fix(ui):__ "go to page" disabled mouse cursor (PR [#774](https://github.com/readium/readium-desktop/pull/774) Fixes [#760](https://github.com/readium/readium-desktop/issues/760))
+* [(_)](https://github.com/readium/readium-desktop/commit/b3f68839a107ddb11c0756d4b2362aa40b05034a) __hotfix(npm):__ the "inner" package.json was lacking the yargs update, follow-up to PR [#771](https://github.com/readium/readium-desktop/pull/771)
+* [(_)](https://github.com/readium/readium-desktop/commit/af8500a23348826d40c328c79c10e6e0fb4a0b85) __fix(opds):__ breadcrumb path for search keywords was percent-encoded (PR [#767](https://github.com/readium/readium-desktop/pull/767) Fixes [#751](https://github.com/readium/readium-desktop/issues/751))
 * [(_)](https://github.com/readium/readium-desktop/commit/7f688e733dd86f6c2839447c32326d0605a1b4ef) __chore(npm):__ latest "safe" package updates, minor semver + one safe major (PR [#771](https://github.com/readium/readium-desktop/pull/771))
 * [(_)](https://github.com/readium/readium-desktop/commit/29d55105f1d750166932a5d9ab00700e82380bc2) __fix:__ in library view, deleting + scrolling publications does not crash anymore (PR [#768](https://github.com/readium/readium-desktop/pull/768) Fixes [#750](https://github.com/readium/readium-desktop/issues/750))
 * [(_)](https://github.com/readium/readium-desktop/commit/555ad7eca571559da976c7439ad9feb9d50d1e57) __fix(ui):__ corrected hairline misalignment of icon buttons in reader window (PR [#764](https://github.com/readium/readium-desktop/pull/764) Fixes [#741](https://github.com/readium/readium-desktop/issues/741))
