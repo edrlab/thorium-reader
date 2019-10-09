@@ -14,7 +14,8 @@
   "scripts": {
     "clean": "rimraf dist && rimraf release",
     "test": "jest --verbose --runInBand",
-    "__postinstall": "npm rebuild --runtime=electron --target=3.1.13 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "patch-electron-builder": "ncp scripts/electron-builder-patch/AppxTarget.js node_modules/app-builder-lib/out/targets/AppxTarget.js",
+    "__postinstall": "npm run patch-electron-builder && npm rebuild --runtime=electron --target=3.1.13 --disturl=https://atom.io/download/atom-shell --build-from-source",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
     "build:prod": "npm run lint && npm run build",
     "build:dev:main": "webpack --config webpack.config.main.js",
