@@ -253,15 +253,18 @@ export class CatalogService {
         }
 
         // Open a dialog to select a folder then copy the publication in it
-        let destinationPath: string = dialog.showOpenDialog(mainWindow, {
+        const destinationPathes: string[] = dialog.showOpenDialog(mainWindow, {
             properties: ["openDirectory"],
-        })[0];
+        });
 
-        // If the selected path is a file then choose the directory containing this file
-        if (fs.statSync(destinationPath).isFile()) {
-            destinationPath = path.dirname(destinationPath);
+        if (destinationPathes && destinationPathes.length > 0) {
+            let destinationPath = destinationPathes[0];
+            // If the selected path is a file then choose the directory containing this file
+            if (fs.statSync(destinationPath).isFile()) {
+                destinationPath = path.dirname(destinationPath);
+            }
+            this.publicationStorage.copyPublicationToPath(publication, destinationPath);
         }
-        this.publicationStorage.copyPublicationToPath(publication, destinationPath);
     }
 
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {
