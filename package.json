@@ -125,7 +125,7 @@
     "win": {
       "target": [
         "appx",
-        "msi"
+        "nsis"
       ],
       "icon": "dist/assets/icons/icon.ico"
     },
