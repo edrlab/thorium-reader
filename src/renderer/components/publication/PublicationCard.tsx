@@ -46,7 +46,6 @@ class PublicationCard extends React.Component<IProps, IState> {
             menuOpen: false,
             lsdStatus: undefined,
         };
-        this.toggleMenu = this.toggleMenu.bind(this);
         this.openCloseMenu = this.openCloseMenu.bind(this);
         this.truncateTitle = this.truncateTitle.bind(this);
     }
@@ -102,7 +101,7 @@ class PublicationCard extends React.Component<IProps, IState> {
                         button={(<SVG title={__("accessibility.bookMenu")} svg={MenuIcon} />)}
                         content={(
                             <div className={styles.menu}>
-                                <MenuContent toggleMenu={this.toggleMenu} publication={publication} />
+                                <MenuContent publication={publication} />
                             </div>
                         )}
                         open={this.state.menuOpen}
@@ -116,10 +115,6 @@ class PublicationCard extends React.Component<IProps, IState> {
     }
 
     private openCloseMenu() {
-        this.setState({ menuOpen: !this.state.menuOpen });
-    }
-
-    private toggleMenu() {
         this.setState({ menuOpen: !this.state.menuOpen });
     }
 

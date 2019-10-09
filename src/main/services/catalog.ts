@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { dialog } from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
 import * as path from "path";
@@ -241,8 +242,29 @@ export class CatalogService {
         return await this.publicationRepository.save(newPub);
     }
 
-    public exportPublication(publication: PublicationView, destinationPath: string) {
-        this.publicationStorage.copyPublicationToPath(publication, destinationPath);
+    public async exportPublication(publication: PublicationView) {
+        // Get main window
+        const winRegistry = diMainGet("win-registry");
+        let mainWindow;
+        for (const window of (Object.values(winRegistry.getWindows())) as any) {
+            if (window.type === "library") {
+                mainWindow = window;
+            }
+        }
+
+        // Open a dialog to select a folder then copy the publication in it
+        const destinationPathes: string[] = dialog.showOpenDialog(mainWindow, {
+            properties: ["openDirectory"],
+        });
+
+        if (destinationPathes && destinationPathes.length > 0) {
+            let destinationPath = destinationPathes[0];
+            // If the selected path is a file then choose the directory containing this file
+            if (fs.statSync(destinationPath).isFile()) {
+                destinationPath = path.dirname(destinationPath);
+            }
+            this.publicationStorage.copyPublicationToPath(publication, destinationPath);
+        }
     }
 
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {
