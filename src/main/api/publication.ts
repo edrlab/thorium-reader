@@ -35,7 +35,7 @@ export interface IPublicationApi {
         downloadSample?: boolean) => Promise<PublicationView>;
     import: (paths: string[]) => Promise<PublicationView[]>;
     search: (title: string) => Promise<PublicationView[]>;
-    exportPublication: (publication: PublicationView, destinationPath: string) => Promise<void>;
+    exportPublication: (publication: PublicationView) => Promise<void>;
 }
 
 /**
@@ -222,8 +222,8 @@ export class PublicationApi implements IPublicationApi {
         });
     }
 
-    public async exportPublication(publication: PublicationView, destinationPath: string): Promise<void> {
-        this.catalogService.exportPublication(publication, destinationPath);
+    public async exportPublication(publication: PublicationView): Promise<void> {
+        this.catalogService.exportPublication(publication);
     }
 
     private dispatchToastRequest(type: ToastType, message: string) {

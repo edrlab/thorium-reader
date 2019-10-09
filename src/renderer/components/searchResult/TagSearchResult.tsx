@@ -89,10 +89,4 @@ export class TagSearchResult extends React.Component<IProps, IState> {
     }
 }
 
-/*
-const buildSearchRequestData = (props: TextSearchResultProps): any => {
-    return [ (props.match.params as any).value ];
-};
-*/
-
 export default withTranslator(TagSearchResult);

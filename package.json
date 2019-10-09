@@ -14,13 +14,14 @@
   "scripts": {
     "clean": "rimraf dist && rimraf release",
     "test": "jest --verbose --runInBand",
-    "__postinstall": "npm rebuild --runtime=electron --target=3.1.13 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "patch-electron-builder": "ncp scripts/electron-builder-patch/AppxTarget.js node_modules/app-builder-lib/out/targets/AppxTarget.js",
+    "__postinstall": "npm run patch-electron-builder && npm rebuild --runtime=electron --target=3.1.13 --disturl=https://atom.io/download/atom-shell --build-from-source",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
     "build:prod": "npm run lint && npm run build",
     "build:dev:main": "webpack --config webpack.config.main.js",
     "start": "npm run build:prod && cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "lint:ts": "tslint --project tsconfig.json -c tslint.json './src/**/*.ts' './src/**/*.tsx' './test/**/*.ts' './test/**/*.tsx'",
-    "lint:editorconfig": "eclint check '**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*'",
+    "lint:editorconfig": "eclint check '**/*' '!scripts/electron-builder-patch/**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer-reader": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:reader\"",
     "start:dev:renderer": "webpack-dev-server --config webpack.config.renderer.js",
@@ -125,7 +126,7 @@
     "win": {
       "target": [
         "appx",
-        "msi"
+        "nsis"
       ],
       "icon": "dist/assets/icons/icon.ico"
     },
@@ -187,7 +188,7 @@
     "qs": "^6.9.0",
     "query-string": "^6.8.3",
     "r2-lcp-js": "^1.0.14",
-    "r2-navigator-js": "^1.0.35",
+    "r2-navigator-js": "^1.0.36",
     "r2-opds-js": "^1.0.15",
     "r2-shared-js": "^1.0.18",
     "r2-streamer-js": "^1.0.18",

@@ -1026,5 +1026,9 @@ input[type=radio] + label {
     & input {
       margin: 0;
     }
+
+    & *:disabled {
+      cursor: not-allowed;
+    }
   }
 }

@@ -196,7 +196,7 @@ yargs
 export function cli(main: () => void, processArgv = process.argv) {
     mainFct = main;
     const argFormated = processArgv
-        .filter((arg) => knownOption(arg) || !arg.startsWith("--"))
+        .filter((arg) => knownOption(arg) || !arg.startsWith("-"))
         .slice((_PACKAGING === "0") ? 2 : 1);
     debug("processArgv", processArgv, "arg", argFormated);
     yargs.parse(argFormated);
