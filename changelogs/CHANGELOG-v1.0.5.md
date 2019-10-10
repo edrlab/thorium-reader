@@ -2,13 +2,29 @@
 
 ## Summary
 
-Version `1.0.5` was released on **XX October 2019**.
+Version `1.0.5` was released on **10 October 2019**.
 
 This release includes the following (notable) new features, improvements and bug fixes:
 
-* XX
-* XX
-* XX
+* Screen reader compatibility: the webview that renders EPUB HTML documents is now hard-refreshed to ensure NVDA, etc. track DOM changes reliably
+* Keyboard interaction: SHIFT+CTRL+ALT LEFT/RIGHT-ARROW to quickly navigate previous/next spine items (works on Windows, including with NVDA, but minus ALT on MacOS for VoiceOver compatibility)
+* File extension `.epub` association (EPUB "open with" or double-click to launch from Windows File explorer, MacOS Finder, and Linux desktop managers)
+* Fixed interaction problems in publication import (mouse vs. keyboard bugs)
+* Fixed broken publication export
+* Added OPDS feed pagination, including search results
+* Publications imported from OPDS catalogs now have an initial list of (user-editable) tags extracted from the feed metadata
+* Corrected handling of OPDS relative URLs
+* Detection of internet connectivity, friendlier messages during OPDS navigation
+* Support for `javascript:` hyperlinks in EPUB HTML documents
+* Protection against broken hyperlinks in non-valid EPUBs (HTTP 404)
+* Improved feedback during publication download, error cases
+* Added dark and sepia colour themes in User Interface (was only in EPUB documents)
+* Fixed Command Line Interface on MacOS
+* Bookmarks labels now checked for empty string
+* Publication info dialog has a "see more" expand/collapse button for long descriptions (library and reader views)
+* Fixed crash when removing publication in scroll list
+* Miscellaneous User Interface improvements and bug fixes: publication list alignment, goto page, OPDS search breadcrumb, bookmark display (long label ellipsis, padding), reader view settings initial state
+* Significant under-the-hood code refactorings to improve the developer experience and the robustness of the codebase (TypeScript strict typing, error handling / border cases)
 
 (previous [v1.0.4 changelog](./CHANGELOG-v1.0.4.md))
 
