@@ -15,12 +15,13 @@ This release includes the following (notable) new features, improvements and bug
 ## Full Change Log
 
 Git commit diff since `v1.0.4`:
-https://github.com/readium/readium-desktop/compare/v1.0.4...develop
+https://github.com/readium/readium-desktop/compare/v1.0.4...v1.0.5
 
-=> **52** GitHub Pull Requests or high-level Git commits.
+=> **53** GitHub Pull Requests or high-level Git commits.
 
 Here is the complete list of commits, ordered by descending date:
 
+* [(_)](https://github.com/readium/readium-desktop/commit/c692b34ad0882cf106908e9869bd41a7a1469dbf) __chore(doc):__ README (PR [#778](https://github.com/readium/readium-desktop/pull/778))
 * [(_)](https://github.com/readium/readium-desktop/commit/d30dd198e5a937bcfa9509588ce947df4de1c3cb) __fix(ui):__ improved publication list view, row items alignement (PR [#777](https://github.com/readium/readium-desktop/pull/777) Fixes [#691](https://github.com/readium/readium-desktop/issues/691))
 * [(_)](https://github.com/readium/readium-desktop/commit/e5ba1f4b348d9c264fed1ea59a8d390d516dad16) __fix(CLI):__ MacOS command line argument with single dash/hyphen `-psn` is now filtered out (PR [#775](https://github.com/readium/readium-desktop/pull/775))
 * [(_)](https://github.com/readium/readium-desktop/commit/e0d3e935d290cd11e2befc6abdc49c32560bcdd3) __hotfix(lint):__ fixes minor linting errors introduced by the previous commit (electron-builder patch)
@@ -74,9 +75,9 @@ Here is the complete list of commits, ordered by descending date:
 * [(_)](https://github.com/readium/readium-desktop/commit/bfda8ee8de4a0c2b6005bcfc9ac5d4415c8bd54f) __fix:__ OPDS breadcrumb line-breaking path separators (PR [#688](https://github.com/readium/readium-desktop/pull/688) Fixes [#621](https://github.com/readium/readium-desktop/issues/621))
 * [(_)](https://github.com/readium/readium-desktop/commit/c98698e21174802edb4f62ebc228c1961cb14d37) __chore:__ version bump 1.0.5-rc.0
 
-__Tips__:
+__Developer Notes__:
 
 * The [standard-changelog](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/standard-changelog) utility (`npx standard-changelog --first-release`) somehow only generates a limited number of commits, so we use a one-liner command line / shell script instead:
-* `git --no-pager log --decorate=short --pretty=oneline v1.0.4...develop | cut -d " " -f 1- | sed -En '/^([0-9a-zA-Z]+)[[:space:]]([^:]+):(.+)$/!p;s//\1 __\2:__\3/p' | sed -En 's/^(.+)$/* \1/p' | sed -En '/PR[[:space:]]*#([0-9]+)/!p;s//PR [#\1](https:\/\/github.com\/readium\/readium-desktop\/pull\/\1)/gp' | sed -En '/\(#([0-9]+)/!p;s//(PR [#\1](https:\/\/github.com\/readium\/readium-desktop\/pull\/\1)/gp' | sed -En '/(Fixes|See|Fix|Fixed)[[:space:]]*#([0-9]+)/!p;s//\1 [#\2](https:\/\/github.com\/readium\/readium-desktop\/issues\/\2)/gp' | sed -En '/^.[[:space:]]([0-9a-zA-Z]+)[[:space:]]/!p;s//* [(_)](https:\/\/github.com\/readium\/readium-desktop\/commit\/\1) /p' | sed -En '/[[:space:]]#([0-9]+)/!p;s// [#\1](https:\/\/github.com\/readium\/readium-desktop\/issues\/\1)/gp'`
+* `git --no-pager log --decorate=short --pretty=oneline v1.0.4...v1.0.5 | cut -d " " -f 1- | sed -En '/^([0-9a-zA-Z]+)[[:space:]]([^:]+):(.+)$/!p;s//\1 __\2:__\3/p' | sed -En 's/^(.+)$/* \1/p' | sed -En '/PR[[:space:]]*#([0-9]+)/!p;s//PR [#\1](https:\/\/github.com\/readium\/readium-desktop\/pull\/\1)/gp' | sed -En '/\(#([0-9]+)/!p;s//(PR [#\1](https:\/\/github.com\/readium\/readium-desktop\/pull\/\1)/gp' | sed -En '/(Fixes|See|Fix|Fixed)[[:space:]]*#([0-9]+)/!p;s//\1 [#\2](https:\/\/github.com\/readium\/readium-desktop\/issues\/\2)/gp' | sed -En '/^.[[:space:]]([0-9a-zA-Z]+)[[:space:]]/!p;s//* [(_)](https:\/\/github.com\/readium\/readium-desktop\/commit\/\1) /p' | sed -En '/[[:space:]]#([0-9]+)/!p;s// [#\1](https:\/\/github.com\/readium\/readium-desktop\/issues\/\1)/gp'`
 * ...append `| pbcopy` on MacOS to copy the result into the clipboard.
 * ...append `| wc -l` to verify that the result actually matches the number of Git commits.
