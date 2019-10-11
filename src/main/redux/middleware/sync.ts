@@ -7,11 +7,22 @@
 
 import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
-import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import {
+    ActionWithSender,
+    SenderType,
+} from "readium-desktop/common/models/sync";
 import { AppWindow } from "readium-desktop/common/models/win";
 import {
-    apiActions, dialogActions, downloadActions, i18nActions, lcpActions, netActions, readerActions,
-    toastActions, updateActions,
+    apiActions,
+    dialogActions,
+    downloadActions,
+    i18nActions,
+    lcpActions,
+    netActions,
+    readerActions,
+    styleActions,
+    toastActions,
+    updateActions,
 } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
@@ -50,6 +61,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
 
     downloadActions.ActionType.DownloadRequest,
     downloadActions.ActionType.DownloadSuccess,
+
+    styleActions.ActionType.HighContrastChanged,
 ];
 
 export const reduxSyncMiddleware: Middleware
