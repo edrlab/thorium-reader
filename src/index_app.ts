@@ -7,7 +7,7 @@
 
 import "font-awesome/css/font-awesome.css";
 
-import { ipcRenderer } from "electron";
+import { ipcRenderer, systemPreferences } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
@@ -23,6 +23,8 @@ import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
+import { highContrastChanged } from "./common/redux/actions/style";
+import { HighContrastColors } from "./renderer/redux/states/style";
 
 // import { consoleRedirect } from "@r2-navigator-js/electron/renderer/common/console-redirect";
 if (IS_DEV) {
@@ -105,6 +107,18 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
             ));
             break;
     }
+});
+
+// TODO change for the event of high constrast scheme when the migration of Electron 6 is finished
+systemPreferences.on("inverted-color-scheme-changed", (__, enabled) => {
+    const colors: HighContrastColors = {
+        background: systemPreferences.getColor("window"),
+        text: systemPreferences.getColor("window-text"),
+        buttonBackground: systemPreferences.getColor("button-text"),
+        buttonText: systemPreferences.getColor("button-text"),
+        highlight: systemPreferences.getColor("highlight-text"),
+    };
+    store.dispatch(highContrastChanged(enabled, colors));
 });
 
 if (IS_DEV) {
