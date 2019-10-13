@@ -32,10 +32,13 @@
   },
   "homepage": "https://github.com/edrlab/readium-desktop",
   "dependencies": {
-    "bindings": "^1.3.1",
-    "leveldown": "5.*.*",
-    "pouchdb-adapter-leveldb": "7.0.*",
+    "bindings": "^1.5.0",
+    "leveldown": "5.0.2",
+    "pouchdb-adapter-leveldb": "^7.1.1",
     "yargs": "^14.2.0"
+  },
+  "resolutions": {
+    "leveldown": "5.0.2"
   },
   "devDependencies": {
   },

@@ -253,17 +253,18 @@ export class CatalogService {
         }
 
         // Open a dialog to select a folder then copy the publication in it
-        const destinationPathes: string[] = dialog.showOpenDialog(mainWindow, {
+        const res = await dialog.showOpenDialog(mainWindow, {
             properties: ["openDirectory"],
         });
-
-        if (destinationPathes && destinationPathes.length > 0) {
-            let destinationPath = destinationPathes[0];
-            // If the selected path is a file then choose the directory containing this file
-            if (fs.statSync(destinationPath).isFile()) {
-                destinationPath = path.dirname(destinationPath);
+        if (!res.canceled) {
+            if (res.filePaths && res.filePaths.length > 0) {
+                let destinationPath = res.filePaths[0];
+                // If the selected path is a file then choose the directory containing this file
+                if (fs.statSync(destinationPath).isFile()) {
+                    destinationPath = path.dirname(destinationPath);
+                }
+                this.publicationStorage.copyPublicationToPath(publication, destinationPath);
             }
-            this.publicationStorage.copyPublicationToPath(publication, destinationPath);
         }
     }
 
