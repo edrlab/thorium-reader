@@ -15,7 +15,8 @@
     "clean": "rimraf dist && rimraf release",
     "test": "jest --verbose --runInBand",
     "patch-electron-builder": "ncp scripts/electron-builder-patch/AppxTarget.js node_modules/app-builder-lib/out/targets/AppxTarget.js",
-    "__postinstall": "npm run patch-electron-builder && npm rebuild --runtime=electron --target=6.0.12 --disturl=https://atom.io/download/atom-shell --build-from-source",
+    "__postinstall": "npm run patch-electron-builder && npm rebuild --runtime=electron --target=6.0.12 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
+    "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
     "build:prod": "npm run lint && npm run build",
     "build:dev:main": "webpack --config webpack.config.main.js",
@@ -285,10 +286,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "optionalDependencies": {
-    "leveldown": "5.0.2",
+    "leveldown": "^5.3.0",
     "pouchdb-adapter-leveldb": "^7.1.1"
-  },
-  "resolutions": {
-    "leveldown": "5.0.2"
   }
 }
