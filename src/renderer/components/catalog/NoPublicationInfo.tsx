@@ -18,7 +18,7 @@ class NoPublicationInfo extends React.Component<TranslatorProps> {
                 <div className={styles.noPublicationHelp}>
                     <p>{__("catalog.noPublicationHelpL1")}</p>
                     <p>{__("catalog.noPublicationHelpL2")}</p>
-                    { /*<p>{__("catalog.noPublicationHelpL3")}</p> */ }
+                    <p>{__("catalog.noPublicationHelpL3")}</p>
                 </div>
             </>
         );
