@@ -112,6 +112,7 @@ export class CatalogService {
     }
 
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
+        // FIXME : Why when i import an opds publication already imported, with the same crc32
         try {
             const crc32 = await extractCrc32OnZip(filePath);
             const publicationArray = await this.publicationRepository.findByCrc32(crc32);
