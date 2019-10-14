@@ -11,9 +11,9 @@ import * as unzipper from "unzipper";
 
 export async function extractCrc32OnZip(filePath: string) {
     let checksum = 0;
-    return new Promise<number>((resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
         const fd = fs.createReadStream(filePath);
-        fd.on("end", () => resolve(checksum));
+        fd.on("end", () => resolve(checksum.toString(16)));
 
         const zipStream = fd.pipe(unzipper.Parse());
         zipStream.on("entry", (entry: unzipper.Entry) => {

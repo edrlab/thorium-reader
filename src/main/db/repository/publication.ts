@@ -18,6 +18,8 @@ const TAG_INDEX = "tag_index";
 
 const TITLE_INDEX = "title_index";
 
+const CRC32_INDEX = "crc32_index";
+
 import {
     convertMultiLangStringToString,
 } from "readium-desktop/common/utils";
@@ -38,12 +40,16 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                 fields: ["tags"],
                 name: TAG_INDEX,
             },
+            {
+                fields: ["crc32"],
+                name: CRC32_INDEX,
+            },
         ];
         super(db, "publication", indexes);
     }
 
-    public async findByCrc32(crc32: number): Promise<PublicationDocument[]> {
-        return this.findBy({ crc32: { $eq: crc32 }});
+    public async findByCrc32(crc32: string): Promise<PublicationDocument[]> {
+        return this.findBy({ crc32: { $elemMatch: { $eq: crc32 }}});
     }
 
     public async findByTag(tag: string): Promise<PublicationDocument[]> {

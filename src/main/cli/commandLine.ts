@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { readerActions } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
 import { URL } from "url";
 import { isArray } from "util";
@@ -18,21 +17,9 @@ export async function cli_(filePath: string) {
     //
     // add a new field crc32 in publication-repo
     // add a new method in catalogService
+    //
     const catalogService = diMainGet("catalog-service");
-    const publication = await catalogService.importFile(filePath);
-    const store = diMainGet("store");
-    if (publication) {
-        store.dispatch({
-            type: readerActions.ActionType.OpenRequest,
-            payload: {
-                publication: {
-                    identifier: publication.identifier,
-                },
-            },
-        });
-        return true;
-    }
-    return false;
+    return catalogService.openFile(filePath);
 }
 
 export async function cliImport(filePath: string[] | string) {
@@ -62,19 +49,6 @@ export async function cliOpds(title: string, url: string) {
 
 export async function cliRead(title: string) {
     // get the publication id then open it in reader
-    const publicationRepo = diMainGet("publication-repository");
-    const publication = await publicationRepo.searchByTitle(title);
-    if (publication && publication.length) {
-        const store = diMainGet("store");
-        store.dispatch({
-            type: readerActions.ActionType.OpenRequest,
-            payload: {
-                publication: {
-                    identifier: publication[0].identifier,
-                },
-            },
-        });
-        return true;
-    }
-    return false;
+    const catalogService = diMainGet("catalog-service");
+    return catalogService.openTitle(title);
 }

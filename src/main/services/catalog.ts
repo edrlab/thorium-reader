@@ -63,7 +63,21 @@ export class CatalogService {
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
 
-    // FIXME : add openTitle service here
+    public async openTitle(title: string) {
+        const publication = await this.publicationRepository.searchByTitle(title);
+        if (publication && publication.length) {
+            this.store.dispatch({
+                type: readerActions.ActionType.OpenRequest,
+                payload: {
+                    publication: {
+                        identifier: publication[0].identifier,
+                    },
+                },
+            });
+            return true;
+        }
+        return false;
+    }
 
     public async openFile(filePath: string): Promise<boolean> {
         let publication: PublicationDocument | undefined;
@@ -97,18 +111,25 @@ export class CatalogService {
         return false;
     }
 
-    public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument> {
-        const ext = path.extname(filePath);
+    public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
+        try {
+            const crc32 = await extractCrc32OnZip(filePath);
+            const publicationArray = await this.publicationRepository.findByCrc32(crc32);
+            debug(publicationArray, crc32);
+            if (publicationArray && publicationArray.length) {
+                return publicationArray[0];
+            }
+        } catch (_e) {
+            // ignore
+        }
 
-        debug("Import File - START");
+        const ext = path.extname(filePath);
         if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
             return this.importLcplFile(filePath);
         } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
             return this.importEpubFile(filePath);
         }
-        debug("Import File - END");
-
-        return null;
+        return undefined;
     }
 
     public async importOpdsEntry(
@@ -366,7 +387,9 @@ export class CatalogService {
             files: [],
             coverFile: null,
             customCover: null,
+            crc32: await extractCrc32OnZip(filePath),
         } as PublicationDocument;
+        debug(pubDocument);
 
         // Store publication on filesystem
         debug("[START] Store publication on filesystem", filePath);

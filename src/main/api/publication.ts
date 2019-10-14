@@ -17,6 +17,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
+import { extractCrc32OnZip } from "../crc";
 
 export interface IPublicationApi {
     // in a future possible typing like this to have buildRequestData return type :
@@ -196,21 +197,34 @@ export class PublicationApi implements IPublicationApi {
 
         for (const path of paths) {
             try {
-                const newDoc = await this.catalogService.importFile(path);
-                if (newDoc) {
-                    newDocs.push(newDoc);
+                const crc32 = await extractCrc32OnZip(path);
+                const publicationArray = await this.publicationRepository.findByCrc32(crc32);
+                if (publicationArray && publicationArray.length) {
+                    const publication = publicationArray[0];
+                    newDocs.push(publication);
+                    this.dispatchToastRequest(ToastType.DownloadComplete,
+                        this.translator.translate("message.import.alreadyImport", { title: publication.title }));
+                    continue;
+                }
+            } catch (_e) {
+                // ignore
+            }
+            try {
+                const publication = await this.catalogService.importFile(path);
+                if (publication) {
+                    newDocs.push(publication);
+                    this.dispatchToastRequest(ToastType.DownloadComplete,
+                        this.translator.translate("message.import.success", { title: publication.title }));
                 }
             } catch (error) {
                 debug(`Import file - FAIL : ${path}`, error);
                 this.dispatchToastRequest(ToastType.DownloadFailed,
-                    this.translator.translate("message.import.fail", {path}));
+                    this.translator.translate("message.import.fail", { path }));
             }
         }
 
         return newDocs.map((doc) => {
             const publication = this.publicationViewConverter.convertDocumentToView(doc);
-            this.dispatchToastRequest(ToastType.DownloadComplete,
-                this.translator.translate("message.import.success", { title: publication.title }));
             return publication;
         });
     }
