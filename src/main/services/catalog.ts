@@ -56,6 +56,10 @@ export class CatalogService {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
+    public async openFile(filePath: string) {
+        // ignore
+    }
+
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument> {
         const ext = path.extname(filePath);
 

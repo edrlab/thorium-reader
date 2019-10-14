@@ -12,6 +12,12 @@ import { isArray } from "util";
 
 export async function cli_(filePath: string) {
     // import and read publication
+    // 1 try to generate crc32 if fail import them also
+    // 2 check if exist in db
+    // import or read it
+    //
+    // add a new field crc32 in publication-repo
+    // add a new method in catalogService
     const catalogService = diMainGet("catalog-service");
     const publication = await catalogService.importFile(filePath);
     const store = diMainGet("store");
