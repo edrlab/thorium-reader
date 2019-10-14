@@ -13,6 +13,7 @@ import * as path from "path";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { Publication } from "readium-desktop/common/models/publication";
+import { readerActions } from "readium-desktop/common/redux/actions";
 import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
 import { convertMultiLangStringToString } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
@@ -24,6 +25,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 import * as uuid from "uuid";
 import * as xmldom from "xmldom";
@@ -35,7 +37,9 @@ import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
+import { extractCrc32OnZip } from "../crc";
 import { diMainGet } from "../di";
+import { RootState } from "../redux/states";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
 
@@ -56,8 +60,41 @@ export class CatalogService {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    public async openFile(filePath: string) {
-        // ignore
+    @inject(diSymbolTable.store)
+    private readonly store!: Store<RootState>;
+
+    // FIXME : add openTitle service here
+
+    public async openFile(filePath: string): Promise<boolean> {
+        let publication: PublicationDocument | undefined;
+        try {
+            const crc32 = await extractCrc32OnZip(filePath);
+            const publicationArray = await this.publicationRepository.findByCrc32(crc32);
+            if (publicationArray && publicationArray.length) {
+                publication = publicationArray[0];
+            }
+        } catch (_e) {
+            // ignore
+        }
+        if (!publication) {
+            try {
+                publication = await this.importFile(filePath);
+            } catch (_e) {
+                // ignore
+            }
+        }
+        if (publication) {
+            this.store.dispatch({
+                type: readerActions.ActionType.OpenRequest,
+                payload: {
+                    publication: {
+                        identifier: publication.identifier,
+                    },
+                },
+            });
+            return true;
+        }
+        return false;
     }
 
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument> {

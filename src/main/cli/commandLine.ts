@@ -30,10 +30,9 @@ export async function cli_(filePath: string) {
                 },
             },
         });
-    } else {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }
 
 export async function cliImport(filePath: string[] | string) {
@@ -75,8 +74,7 @@ export async function cliRead(title: string) {
                 },
             },
         });
-    } else {
-        return false;
+        return true;
     }
-    return true;
+    return false;
 }

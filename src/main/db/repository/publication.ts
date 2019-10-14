@@ -42,6 +42,10 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
         super(db, "publication", indexes);
     }
 
+    public async findByCrc32(crc32: number): Promise<PublicationDocument[]> {
+        return this.findBy({ crc32: { $eq: crc32 }});
+    }
+
     public async findByTag(tag: string): Promise<PublicationDocument[]> {
         return this.findBy({ tags: { $elemMatch: { $eq: tag }}});
     }
