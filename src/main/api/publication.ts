@@ -209,22 +209,22 @@ export class PublicationApi implements IPublicationApi {
                     newDocs.push(publication);
                     this.dispatchToastRequest(ToastType.DownloadComplete,
                         this.translator.translate("message.import.alreadyImport", { title: publication.title }));
-                    continue;
+                } else {
+                    try {
+                        const publication = await this.catalogService.importFile(filePath);
+                        if (publication) {
+                            newDocs.push(publication);
+                            this.dispatchToastRequest(ToastType.DownloadComplete,
+                                this.translator.translate("message.import.success", { title: publication.title }));
+                        }
+                    } catch (error) {
+                        debug(`Import file - FAIL : ${filePath}`, error);
+                        this.dispatchToastRequest(ToastType.DownloadFailed,
+                            this.translator.translate("message.import.fail", { filePath }));
+                    }
                 }
             } catch (_e) {
                 // ignore
-            }
-            try {
-                const publication = await this.catalogService.importFile(filePath);
-                if (publication) {
-                    newDocs.push(publication);
-                    this.dispatchToastRequest(ToastType.DownloadComplete,
-                        this.translator.translate("message.import.success", { title: publication.title }));
-                }
-            } catch (error) {
-                debug(`Import file - FAIL : ${filePath}`, error);
-                this.dispatchToastRequest(ToastType.DownloadFailed,
-                    this.translator.translate("message.import.fail", { filePath }));
             }
         }
 

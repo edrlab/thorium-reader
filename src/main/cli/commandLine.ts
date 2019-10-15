@@ -30,15 +30,16 @@ function openReader(publication: PublicationView | PublicationView[]) {
     return false;
 }
 
-async function openTitle(title: string) {
+async function openTitleFromCli(title: string) {
     const publicationApi = diMainGet("publication-api");
     const publication = await publicationApi.search(title);
     return openReader(publication);
 }
 
-async function openFile(filePath: string): Promise<boolean> {
+// used also in lock.ts on mac
+export async function openFileFromCli(filePath: string): Promise<boolean> {
     const publicationApi = diMainGet("publication-api");
-    const publication = await publicationApi.import([filePath]);
+    const publication = await publicationApi.import(filePath);
     return openReader(publication);
 }
 
@@ -51,7 +52,7 @@ export async function cli_(filePath: string) {
     // add a new field crc32 in publication-repo
     // add a new method in catalogService
     //
-    return await openFile(filePath);
+    return await openFileFromCli(filePath);
 }
 
 export async function cliImport(filePath: string[] | string) {
@@ -81,5 +82,5 @@ export async function cliOpds(title: string, url: string) {
 
 export async function cliRead(title: string) {
     // get the publication id then open it in reader
-    return await openTitle(title);
+    return await openTitleFromCli(title);
 }

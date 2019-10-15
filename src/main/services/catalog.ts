@@ -13,7 +13,6 @@ import * as path from "path";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { Publication } from "readium-desktop/common/models/publication";
-import { readerActions } from "readium-desktop/common/redux/actions";
 import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
 import { convertMultiLangStringToString } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
@@ -25,7 +24,6 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 import * as uuid from "uuid";
 import * as xmldom from "xmldom";
@@ -39,7 +37,6 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
 import { extractCrc32OnZip } from "../crc";
 import { diMainGet } from "../di";
-import { RootState } from "../redux/states";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
 
