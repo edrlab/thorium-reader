@@ -3,9 +3,9 @@
 .opds_form {
     & button {
         font-size: 1rem;
-        border: 1px solid black;
+        border: 1px solid var(--button-text-color);
         border-radius: 0.3125rem;
-        color: black;
+        color: var(--button-text-color);
         width: auto;
         height: auto;
         padding: 0.625rem;
@@ -39,7 +39,7 @@
             margin-bottom:30px;
             position: relative;
             list-style: none;
-            & > a {
+            & .opds_list_link {
                 height: 100%;
                 width: 100%;
                 border-radius: 33px;
@@ -71,6 +71,13 @@
     }
 }
 
+:global(#high_contrast) {
+    & .opds_list_link {
+        background: var(--button-background-color);
+        border: 1px solid var(--button-text-color);
+    }
+}
+
 /* ELEMENT */
 
 #flux_list {
@@ -88,7 +95,7 @@
             justify-content: space-between;
             width: 100%;
             text-decoration: none;
-            color: black;
+            color: var(--button-text-color);
             & .flux_title {
                 font-weight: 600;
             }
@@ -185,7 +192,7 @@
 
         & svg {
             height: 1.1rem;
-            fill: black;
+            fill: var(--button-text-color);
         }
     }
 

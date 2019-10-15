@@ -1,6 +1,34 @@
 :root {
+  --background-color: white;
+  --secondary-background-color: #fbfbfb;
   --main-color: #4d4d4d;
   --secondary-color: white;
 
-  --disabled-color: #767676
+  --main-text-color: black;
+  --secondary-text-color: grey;
+
+  --button-background-color: rgba(0, 0, 0, 0);
+  --button-text-color: black;
+  --unactive-button-text-color: #767676;
+
+  --disabled-color: #767676;
+}
+
+:global(#high_contrast) {
+    --hc-background-color: black;
+    --hc-text-color: white;
+
+    --background-color: var(--hc-background-color);
+    --secondary-background-color: var(--hc-background-color);
+    --main-color: #4d4d4d;
+    --secondary-color: var(--hc-text-color);
+
+    --main-text-color: var(--hc-text-color);
+    --secondary-text-color: var(--hc-text-color);
+
+    --button-background-color: rgba(0, 0, 0, 0);
+    --button-text-color: var(--hc-text-color);
+    --unactive-button-text-color: var(--hc-text-color);
+
+    --disabled-color: red;
 }

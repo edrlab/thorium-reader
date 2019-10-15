@@ -71,6 +71,7 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.url,
                                         ),
                                     }}
+                                    className={styles.opds_list_link}
                                 >
                                     <p>{item.title}</p>
                                 </Link>

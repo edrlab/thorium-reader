@@ -11,9 +11,10 @@
     border: 1px grey solid;
     border-right: none;
     width: 20rem;
-    height: 4.125rem;
+    min-height: 4.125rem;
+    height: fit-content;
 
-    background: white;
+    background: var(--background-color);
 
     display: flex;
     align-items: center;
@@ -62,6 +63,12 @@
     border: none;
     overflow: hidden;
     transition: height 0.1s, padding 0.1s, margin 0.1s;
+}
+
+:global(#high_contrast) {
+    & .toast {
+        border: 1px solid var(--main-text-color);
+    }
 }
 
 @keyframes start {

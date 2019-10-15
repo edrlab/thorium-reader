@@ -14,8 +14,15 @@
 	float:left;
 }
 
-.block_book_list:nth-child(odd){
-	background-color: #f3f3f3;
+:global(#high_contrast) {
+	& .block_book_list:nth-child(odd) {
+		background-color: var(--background-color);
+	}
+
+    & .menu {
+        box-shadow: none;
+        border: 1px solid var(--button-text-color);
+    }
 }
 
 .block_book_list .icon_seemore {
@@ -110,7 +117,7 @@
 
         &.book_author {
             font-weight: 300;
-            color:#616161;
+            color: var(--secondary-text-color);
         }
     }
 }
@@ -120,13 +127,13 @@
     width: 180px;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: var(--background-color);
     font-size: 0.9rem;
     box-shadow: 0px 0px 10px 0px #cfcfcf;
     overflow: hidden;
     & button, & a, & span label {
         text-decoration: none;
-        color: black;
+        color: var(--button-text-color);
         padding: 0.7rem;
         text-align: center;
         cursor: pointer;
@@ -181,7 +188,7 @@
         overflow: hidden;
         text-align: center;
         margin: 10px 5%;
-        color: black;
+        color: var(--main-text-color);
     }
 
     & .box {

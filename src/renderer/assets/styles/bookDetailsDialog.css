@@ -2,62 +2,6 @@
   user-select: text;
 }
 
-.c_dialog {
-    position: fixed;
-    z-index: 100;
-    top: 0;
-    left:0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    padding: 0;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    background-color: rgba(0,0,0,0.5);
-    transition: .2s;
-    min-width: 700px;
-}
-
-.c_dialog_background {
-    position: fixed;
-    z-index: 102;
-    top: 0;
-    left:0;
-    right: 0;
-    bottom: 0;
-    filter: blur(2px);
-}
-
-.c_dialog__box {
-    z-index: 102;
-    display: flex;
-    width:90%;
-    max-width: 92rem;
-    margin: 100px auto 20px 5rem;
-    padding: 60px;
-    background-color: white;
-    overflow-y: auto;
-    overflow-x: hidden;
-    align-content: flex-start;
-    color: #3B3B3B;
-    position: relative;
-}
-
-.c_dialog__box button {
-	position: absolute;
-    top: 15px;
-    right: 15px;
-    height: 50px;
-    display: block;
-    width: 50px;
-    cursor: pointer;
-    fill: #3B3B3B;
-}
-
-.c_dialog__box button svg {
-	width: 80%;
-}
-
 .dialog_left {
 	width: 33%;
 	height: fit-content;
@@ -111,123 +55,124 @@
     }
 }
 
-.dialog_right {
-    height: fit-content;
-	width:77%;
-	padding:0 30px 0 54px;
-}
+:global(#high_contrast) {
+    & .dialog_left {
+        & img {
+            box-shadow: none;
+        }
 
-.dialog_right .author {
-    font-size: 1.3rem;
-    margin-bottom: 30px;
-}
-
-.dialog_right h2 {
-    margin-bottom: 0px;
-	font-weight: 600;
-    font-size: 1.4rem;
-}
-
-.c_dialog[aria-hidden="true"] {
-  visibility: hidden;
-  opacity: 0;
-}
-
-.dialog_right p {
-	margin-top: 0px;
-    margin-bottom: 3px;
-    font-weight: 300;
-    font-size: 1.1rem;
-}
-
-.dialog_right span {
-	font-weight: 600;
-    font-size: 1.1rem;
-}
-
-.dialog_right .description {
-	font-size: 0.95rem;
-}
-
-.dialog_right .tags {
-	font-size: 1rem;
-}
-
-.dialog_right .tags ul {
-	display: inline-block;
-    padding-left: 0;
-    margin-top: 0;
-}
-
-.dialog_right .tags .tag_list {
-    display: flex;
-    & > div {
-	    display: inline-block;
-        margin-left: 15px;
-        flex: 1;
-    }
-    & > span {
-        align-self: flex-start;
-        margin-top: 8px;
-	    font-weight: 600;
-    }
-
-    & button {
-        width: 20px;
-        height: 20px;
-        margin-left: 1rem;
-        padding: 0;
-        border: none;
-        background-color: transparent;
-
-        &.addTagButton {
-            font-size: 1rem;
-            font-weight: bold;
-            color: rgb(59, 59, 59);
-            height: auto;
-            width: auto;
-            padding: 0.5rem;
-            border: 1px solid rgb(59, 59, 59);
-            border-radius: 5px;
+        & .lire {
+            box-shadow: none;
         }
     }
 }
 
-.dialog_right .tags li {
-	display: inline-flex;
-    align-items: center;
-	background-color: #E7F1FB;
-	padding: 2px 6px;
-	font-size: 1.1rem;
-	border-radius: 3px;
-	border: 1px solid #67A3E0;
-	color: #67A3E0;
-    margin: 0.3rem 0;
-}
+.dialog_right {
+    height: fit-content;
+	width:77%;
+	padding:0 30px 0 54px;
 
-.dialog_right .tags li:not(:first-child) {
-    margin-left: 10px;
-}
+    & .author {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+    }
+    & h2 {
+        margin-bottom: 0px;
+        font-weight: 600;
+        font-size: 1.4rem;
+    }
+    & p {
+        margin-top: 0px;
+        margin-bottom: 3px;
+        font-weight: 300;
+        font-size: 1.1rem;
+    }
+    & span {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    & .description {
+        font-size: 0.95rem;
+    }
+    & .tags {
+        font-size: 1rem;
 
-.dialog_right .tags li svg {
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	vertical-align: top;
-}
+        & ul {
+            display: inline-block;
+            padding-left: 0;
+            margin-top: 0;
+        }
 
-.dialog_right h3 {
-	font-weight: 600;
-	margin-top: 30px;
-}
+        & .tag_list {
+            display: flex;
+            & > div {
+                display: inline-block;
+                margin-left: 15px;
+                flex: 1;
+            }
+            & > span {
+                align-self: flex-start;
+                margin-top: 8px;
+                font-weight: 600;
+            }
 
-.dialog_right #flux_search {
-	margin-bottom:0;
-    margin-left: 0;
-    height: auto;
-    width: fit-content;
-    display: flex;
-    width: 100%;
+            & button {
+                width: 20px;
+                height: 20px;
+                margin-left: 1rem;
+                padding: 0;
+                border: none;
+                background-color: transparent;
+
+                &.addTagButton {
+                    font-size: 1rem;
+                    font-weight: bold;
+                    color: rgb(59, 59, 59);
+                    height: auto;
+                    width: auto;
+                    padding: 0.5rem;
+                    border: 1px solid rgb(59, 59, 59);
+                    border-radius: 5px;
+                }
+            }
+        }
+        & li {
+            display: inline-flex;
+            align-items: center;
+            background-color: #E7F1FB;
+            padding: 2px 6px;
+            font-size: 1.1rem;
+            border-radius: 3px;
+            border: 1px solid #67A3E0;
+            color: #67A3E0;
+            margin: 0.3rem 0;
+
+            &:not(:first-child) {
+                margin-left: 10px;
+            }
+
+            & svg {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                vertical-align: top;
+            }
+        }
+    }
+
+    & h3 {
+        font-weight: 600;
+        margin-top: 30px;
+    }
+
+    & #flux_search {
+        margin-bottom:0;
+        margin-left: 0;
+        height: auto;
+        width: fit-content;
+        display: flex;
+        width: 100%;
+    }
 }
 
 .tag_inputs {
@@ -238,20 +183,26 @@
 	border:none;
 	height:35px;
 	background-color: transparent;
-	color:black;
+	color: var(--button-text-color);
 	font-size: 0.9rem;
     border-bottom: 1px solid #c1c1c1;
-}
 
-.tag_inputs::placeholder {
-	font-size: 0.9rem;
-	font-weight: 300;
-	color:#c1c1c1;
+    &::placeholder {
+        font-size: 0.9rem;
+        font-weight: 300;
+        color:#c1c1c1;
+    }
 }
 
 .image_wrapper {
     width: 100%;
     position: relative;
+
+    &:before{
+        content: "";
+        display: block;
+        padding-top: 140%;
+    }
 
     & > div {
         position: absolute;
@@ -268,12 +219,6 @@
             display: block;
         }
     }
-}
-
-.image_wrapper:before{
-    content: "";
-    display: block;
-    padding-top: 140%;
 }
 
 .descriptionWrapper {
