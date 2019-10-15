@@ -17,8 +17,9 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
+import { isArray } from "util";
+
 import { extractCrc32OnZip } from "../crc";
-import { isArray } from 'util';
 
 export interface IPublicationApi {
     // in a future possible typing like this to have buildRequestData return type :
