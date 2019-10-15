@@ -60,60 +60,10 @@ export class CatalogService {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    @inject(diSymbolTable.store)
-    private readonly store!: Store<RootState>;
-
-    public async openTitle(title: string) {
-        const publication = await this.publicationRepository.searchByTitle(title);
-        if (publication && publication.length) {
-            this.store.dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication[0].identifier,
-                    },
-                },
-            });
-            return true;
-        }
-        return false;
-    }
-
-    public async openFile(filePath: string): Promise<boolean> {
-        let publication: PublicationDocument | undefined;
-        try {
-            const crc32 = await extractCrc32OnZip(filePath);
-            const publicationArray = await this.publicationRepository.findByCrc32(crc32);
-            if (publicationArray && publicationArray.length) {
-                publication = publicationArray[0];
-            }
-        } catch (_e) {
-            // ignore
-        }
-        if (!publication) {
-            try {
-                publication = await this.importFile(filePath);
-            } catch (_e) {
-                // ignore
-            }
-        }
-        if (publication) {
-            this.store.dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
-                },
-            });
-            return true;
-        }
-        return false;
-    }
-
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
         // FIXME : Why when i re-import an opds publication, with the same crc32, findByCrc32 return an empty array
         // whereas when i import publication it works well in publictionApi.
+        /*
         try {
             const crc32 = await extractCrc32OnZip(filePath);
             const publicationArray = await this.publicationRepository.findByCrc32(crc32);
@@ -124,6 +74,7 @@ export class CatalogService {
         } catch (_e) {
             // ignore
         }
+        */
 
         const ext = path.extname(filePath);
         if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {

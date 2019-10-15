@@ -18,6 +18,7 @@ import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { extractCrc32OnZip } from "../crc";
+import { isArray } from 'util';
 
 export interface IPublicationApi {
     // in a future possible typing like this to have buildRequestData return type :
@@ -34,7 +35,7 @@ export interface IPublicationApi {
         title: string,
         tags: string[],
         downloadSample?: boolean) => Promise<PublicationView>;
-    import: (paths: string[]) => Promise<PublicationView[]>;
+    import: (filePaths: string[]) => Promise<PublicationView[]>;
     search: (title: string) => Promise<PublicationView[]>;
     exportPublication: (publication: PublicationView) => Promise<void>;
 }
@@ -191,13 +192,16 @@ export class PublicationApi implements IPublicationApi {
         return returnView;
     }
 
-    public async import(paths: string[]): Promise<PublicationView[]> {
+    public async import(filePathArray: string | string[]): Promise<PublicationView[]> {
+        if (!isArray(filePathArray)) {
+            filePathArray = [filePathArray];
+        }
         // returns all publications linked to this import
         const newDocs = [];
 
-        for (const path of paths) {
+        for (const filePath of filePathArray) {
             try {
-                const crc32 = await extractCrc32OnZip(path);
+                const crc32 = await extractCrc32OnZip(filePath);
                 const publicationArray = await this.publicationRepository.findByCrc32(crc32);
                 if (publicationArray && publicationArray.length) {
                     const publication = publicationArray[0];
@@ -210,16 +214,16 @@ export class PublicationApi implements IPublicationApi {
                 // ignore
             }
             try {
-                const publication = await this.catalogService.importFile(path);
+                const publication = await this.catalogService.importFile(filePath);
                 if (publication) {
                     newDocs.push(publication);
                     this.dispatchToastRequest(ToastType.DownloadComplete,
                         this.translator.translate("message.import.success", { title: publication.title }));
                 }
             } catch (error) {
-                debug(`Import file - FAIL : ${path}`, error);
+                debug(`Import file - FAIL : ${filePath}`, error);
                 this.dispatchToastRequest(ToastType.DownloadFailed,
-                    this.translator.translate("message.import.fail", { path }));
+                    this.translator.translate("message.import.fail", { filePath }));
             }
         }
 
