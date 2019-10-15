@@ -23,7 +23,6 @@ declare module "*.png" {
 declare module "ping";
 
 declare module "yazl";
-declare module "yauzl";
 
 declare module "pouchdb-adapter-leveldb";
 declare module "readium-desktop/pouchdb/jsondown-adapter";

@@ -204,7 +204,8 @@ export class PublicationApi implements IPublicationApi {
             try {
                 const crc32 = await extractCrc32OnZip(filePath);
                 const publicationArray = await this.publicationRepository.findByCrc32(crc32);
-                if (publicationArray && publicationArray.length) {
+                debug(publicationArray, crc32);
+                if (crc32 && publicationArray && publicationArray.length) {
                     const publication = publicationArray[0];
                     newDocs.push(publication);
                     this.dispatchToastRequest(ToastType.DownloadComplete,
