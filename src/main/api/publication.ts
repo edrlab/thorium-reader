@@ -35,7 +35,7 @@ export interface IPublicationApi {
         title: string,
         tags: string[],
         downloadSample?: boolean) => Promise<PublicationView>;
-    import: (filePaths: string[]) => Promise<PublicationView[]>;
+    import: (filePathArray: string | string[]) => Promise<PublicationView[]>;
     search: (title: string) => Promise<PublicationView[]>;
     exportPublication: (publication: PublicationView) => Promise<void>;
 }
