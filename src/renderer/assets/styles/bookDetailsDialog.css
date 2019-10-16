@@ -156,6 +156,7 @@
                 width: 20px;
                 height: 20px;
                 vertical-align: top;
+                fill: #67A3E0;
             }
         }
     }
@@ -251,4 +252,17 @@
     height: auto;
     float: right;
     margin-top: 1rem;
+}
+
+:global(#high_contrast) {
+    & .tags {
+        & li {
+            background-color: var(--background-color);
+            color: var(--main-text-color);
+            border-color: var(--main-text-color);
+            & button svg {
+                fill: var(--main-text-color);
+            }
+        }
+    }
 }

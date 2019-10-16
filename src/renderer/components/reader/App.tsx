@@ -21,6 +21,10 @@ export default class App extends React.Component<any, undefined> {
     @lazyInject(diRendererSymbolTable.store)
     private store: Store<RootState>;
 
+    public componentDidMount() {
+        document.getElementsByTagName("html")[0].id = "high_contrast";
+    }
+
     public render(): React.ReactElement<{}> {
         return (
             <Provider store={ this.store }>

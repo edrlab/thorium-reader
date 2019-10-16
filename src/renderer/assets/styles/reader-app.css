@@ -9,13 +9,15 @@
   --reader-mainColor: white;
   --reader-secondaryColor: white;
   --reader-fontColor: #000;
+  --reader-unused-font-color: #757575;
   --reader-separatorColor: #c1c1c1;
   --reader-menuPartColor: #F8F8F8;
   --reader-menuPartTitleColor: #ededed;
   --reader-menuPartTitleHoverColor: #d8d8d8;
+  --reader-header-active-color: rgb(193, 193, 193);
 }
 
-.nightMode {
+html:not(:global(#high_contrast)) .nightMode {
   --reader-mainColor: #000;
   --reader-secondaryColor: #151515;
   --reader-fontColor: white;
@@ -25,7 +27,7 @@
   --reader-menuPartTitleHoverColor: #1c1c1c;
 }
 
-.sepiaMode {
+html:not(:global(#high_contrast)) .sepiaMode {
   --reader-mainColor: #faf4e8;
   --reader-secondaryColor: #faf4e8;
   --reader-fontColor: #121212;
@@ -33,6 +35,49 @@
   --reader-menuPartColor: #ece6da;
   --reader-menuPartTitleColor: #e8dac5;
   --reader-menuPartTitleHoverColor: #d8d8d8;
+}
+
+:global(#high_contrast) {
+  --reader-mainColor: var(--background-color);
+  --reader-secondaryColor: var(--background-color);
+  --reader-fontColor: var(--main-text-color);
+  --reader-unused-font-color: var(--main-text-color);
+  --reader-separatorColor: var(--main-text-color);
+  --reader-menuPartColor: var(--background-color);
+  --reader-menuPartTitleColor: var(--background-color);
+  --reader-menuPartTitleHoverColor: var(--background-color);
+  --reader-header-active-color: var(--button-background-color);
+
+  button, label {
+    color: var(--button-text-color) !important;
+    background-color: var(--button-background-color) !important;
+    border-color: var(--button-text-color) !important;
+
+    & svg {
+      fill: var(--button-text-color) !important;
+    }
+  }
+
+  & *:disabled, & .disable {
+    color: var(--disabled-color) !important;
+    border-color: var(--disabled-color) !important;
+
+    & svg {
+      fill: var(--disabled-color) !important;
+    }
+  }
+
+  & #arrow_box {
+    border: 1px solid var(--main-text-color);
+  }
+
+  & .blue {
+    background-color: var(--button-background-color);
+  }
+
+  & .active {
+    border: 1px solid var(--reader-fontColor);
+  }
 }
 
 body {
@@ -289,6 +334,10 @@ button {
       & > li {
         border-left: 1px solid #c1c1c1;
         border-right: none;
+
+        &.active {
+          background-color: var(--reader-header-active-color);
+        }
       }
     }
 
@@ -328,7 +377,7 @@ button {
         left: -2000px;
 
         &:checked + label.menu_button {
-          background-color: rgb(193, 193, 193);
+          background-color: var(--reader-header-active-color);
         }
 
         &:focus + label.menu_button {
@@ -746,14 +795,14 @@ p.chapters_description {
   }
 
   & .disable {
-    fill: var(--disabled-color);
-    color: var(--disabled-color);
     cursor: default;
   }
 
   & .notUsed {
-    fill: var(--disabled-color);
-    color: var(--disabled-color);
+    color: var(--reader-unused-font-color);
+    & svg {
+      fill: var(--reader-unused-font-color);
+    }
   }
 
   & li {
@@ -940,9 +989,9 @@ input[type=radio] + label {
 	padding: 10px 0 5px 0;
 	margin: -76px 0 0 0;
 	left:50%;
-	background: white;
+	background: var(--reader-mainColor);
 	font-size: 16px;
-	color: black;
+	color: var(--reader-fontColor);
 	text-align: center;
 	-webkit-box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
 	-moz-box-shadow: 0px 0px 46px 0px rgba(0,0,0,0.12);
