@@ -18,10 +18,10 @@ main {
 			display: flex;
     		align-items: center;
 
-			color: black;
+			color: var(--button-text-color);
 			text-decoration: none;
 			border-radius: 2px;
-			border: 1px solid black;
+			border: 1px solid var(--button-text-color);
 			font-size: 0.8rem;
 			padding: 2px 8px 2px 8px;
 
@@ -58,26 +58,32 @@ main {
 	& > *:first-child {
 		margin-right: 1rem;
 	}
+
+	& .unactive {
+		& svg {
+			fill: var(--unactive-button-text-color);
+		}
+	}
 }
 
 #all_link_button {
-		display: inline;
-		border: 1px solid black;
-		padding: 8px 15px 8px 15px;
-		border-radius: 5px;
-		margin-left: 1.5rem;
-		text-align: center;
-		color: black;
-		text-decoration: none;
-		font-size: 0.9rem;
-		font: 14px Arial;
-		overflow: hidden;
-		z-index: -1;
-		& svg {
-			top: 0px;
-			height: 15px;
-			margin-left: 0px;
-		}
+	display: inline;
+	border: 1px solid var(--button-text-color);
+	padding: 8px 15px 8px 15px;
+	border-radius: 5px;
+	margin-left: 1.5rem;
+	text-align: center;
+	color: var(--button-tet-color);
+	text-decoration: none;
+	font-size: 0.9rem;
+	font: 14px Arial;
+	overflow: hidden;
+	z-index: -1;
+	& svg {
+		top: 0px;
+		height: 15px;
+		margin-left: 0px;
+	}
 }
 
 .addEpubButton {
@@ -96,11 +102,9 @@ main {
 	}
 
 	& label {
-		/*width: 35px;
-		height: 35px;*/
 		padding: 7px 10px 3px 10px;
 		cursor: pointer;
-		border: 1px solid black;
+		border: 1px solid var(--button-text-color);
 		border-radius: 5px;
 
 		&:hover {
@@ -145,8 +149,21 @@ main {
     cursor: pointer;
 }
 
-.block_book_list:nth-child(odd){
+.block_book_list:nth-child(odd) {
 	background-color: #f3f3f3;
+}
+
+:global(#high_contrast) {
+	& .block_book_list {
+		border-bottom: 1px solid var(--main-text-color);
+
+		&:first-child {
+			border-top: 1px solid var(--main-text-color);
+		}
+		&:nth-child(odd) {
+			background-color: var(--background-color);
+		}
+	}
 }
 
 .block_book_list button svg {
@@ -159,6 +176,7 @@ main {
 .block_book_list .book_title {
 	display: inline-block;
 	font-weight: 600;
+	max-width: 75%;
 }
 
 .block_book_list .book_author {
@@ -169,7 +187,7 @@ main {
 .block_book_list .infos_sup {
 	display: inline-block;
 	width:15%;
-	color:grey;
+	color: var(--secondary-text-color);
 }
 
 .list_book_title {
@@ -202,7 +220,7 @@ main {
 	transition: height 0.5s;
     margin-left: 10px;
     & a, & span label, & button {
-        border: 1px solid black;
+        border: 1px solid var(--button-text-color);
 		padding: 4px;
 		display: inline-block;
 		cursor: pointer;
@@ -238,19 +256,24 @@ main {
 
 	& a {
 		text-decoration: none;
-		color: black;
+		color: var(--main-text-color);
 	}
 }
 
 .publicationLine {
 	display: flex;
 	align-items: center;
+	position: relative;
+
 	& > .publicationLineLink {
 		flex: 1;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
 		padding-left: 0.3125rem;
+		position: absolute;
+		left: 3.125rem;
+    	right: 0;
 	}
 	& p {
 		white-space: nowrap;
@@ -278,26 +301,6 @@ main {
 	}
 }
 
-#tag_search {
-	border-bottom: 1px solid #c1c1c1;
-	margin-left:0;
-	height:auto;
-	margin-bottom:50px;
-	display: none;
-}
-
-#tag_inputs {
-	position: relative;
-	width:300px;
-	border-radius: 0;
-	border:none;
-	height:35px;
-	/* outline: inherit; */
-	background-color: transparent;
-	color:black;
-	font-size: 0.9rem;
-}
-
 .tag_inputs {
 	position: relative;
 	width:300px;
@@ -306,16 +309,8 @@ main {
 	height:35px;
 	/* outline: inherit; */
 	background-color: transparent;
-	color:black;
+	color: var(--main-text-color);
 	font-size: 0.9rem;
-}
-
-#tag_search .launch{
-	position: relative;
-	width:35px;
-	vertical-align: top;
-	background: none;
-	border: none;
 }
 
 /*GRIDTAG LAYOUT*/
@@ -324,7 +319,7 @@ main {
 	margin: 2.0em 1.0em 4.0em 0;
 	font: 1.1rem "Open Sans", sans-serif;
 	font-weight: bolder;
-	background: #fbfbfb;
+	background: var(--background-color);
 }
 
 #sortMenu {
@@ -360,7 +355,7 @@ main {
 
 #sortType button {
 	text-decoration: none;
-	color: black;
+	color: var(--button-text-color);
 	flex: 1;
 	text-align: center;
 	cursor: pointer;
@@ -455,9 +450,9 @@ main {
 	}
 	& button {
 		font-size: 1rem;
-		border: 1px solid black;
+		border: 1px solid var(--button-text-color);
 		border-radius: 5px;
-		color: black;
+		color: var(--button-text-color);
 		width: auto;
 		height: auto;
 		padding: 10px;

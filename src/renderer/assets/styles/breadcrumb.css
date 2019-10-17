@@ -25,3 +25,9 @@
         margin: 0 2px;
     }
 }
+
+:global(#high_contrast) {
+    & .breadcrumb {
+        color: var(--main-text-color);
+    }
+}

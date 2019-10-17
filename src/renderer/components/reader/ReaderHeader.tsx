@@ -124,7 +124,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                         }
                         <ul className={styles.menu_option}>
                             <li
-                                {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                                className={this.props.isOnBookmark && styles.active}
                             >
                                 <input
                                     id="bookmarkButton"
@@ -142,7 +142,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 </label>
                             </li>
                             <li
-                            {...(this.props.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                                className={this.props.settingsOpen && styles.active}
                             >
                                 <button
                                 className={styles.menu_button}
@@ -155,7 +155,7 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                 focusSettingMenuButton={this.focusSettingMenuButton}/>
                             </li>
                             <li
-                            {...(this.props.menuOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
+                                className={this.props.menuOpen && styles.active}
                             >
                                 <button
                                     className={styles.menu_button}

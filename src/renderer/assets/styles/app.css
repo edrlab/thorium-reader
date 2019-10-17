@@ -1,4 +1,5 @@
 @import "./focus.css";
+@import "./variable.css";
 
 :root {
   user-select: none;
@@ -9,7 +10,8 @@ body {
   padding: 0;
   width: 100%;
   font: 1.1rem "Open Sans", sans-serif;
-	background:#fbfbfb;
+	background: var(--secondary-background-color);
+  color: var(--main-text-color);
 }
 
 .commonButton {
@@ -32,15 +34,52 @@ button {
     border: 0;
     height: 30px;
     width: 30px;
-    fill: black;
+    fill: var(--button-text-color);
     margin: 3px;
     cursor: pointer;
+    color: var(--button-text-color);
 
     &:hover {
       opacity: 1;
     }
 }
 
+svg {
+  fill: var(--main-text-color);
+}
+
 .primary {
   color: rgb(0, 188, 212);
+}
+
+:global(#high_contrast) {
+  box-shadow: none;
+
+  & button {
+    color: var(--button-text-color) !important;
+    background-color: var(--button-background-color) !important;
+    border-color: var(--button-text-color) !important;
+
+    &:disabled {
+      color: var(--disabled-color) !important;
+      border-color: var(--disabled-color) !important;
+    }
+
+    &:hover {
+      background-color: var(--button-background-color) !important;
+    }
+  }
+  & svg {
+    fill: var(--button-text-color) !important;
+  }
+
+  & a {
+    &:disabled {
+      color: var(--disabled-color) !important;
+    }
+  }
+
+  & label:hover {
+    background-color: inherit !important;
+  }
 }

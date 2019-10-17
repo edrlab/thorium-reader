@@ -172,11 +172,11 @@ function setMenuDarwin(win?: BrowserWindow) {
                     // click: () => { app.quit(); },
                     label: translator.translate("app.quit"),
                 },
-            ],
+            ] as Electron.MenuItemConstructorOptions[],
         },
         {
             label: translator.translate("app.edit.title"),
-            role: "edit",
+            role: "editMenu",
             submenu: [
                 {
                     role: "undo",
@@ -217,7 +217,7 @@ function setMenuDarwin(win?: BrowserWindow) {
                     // selector: "selectAll:",
                     label: translator.translate("app.edit.selectAll"),
                 },
-            ],
+            ] as Electron.MenuItemConstructorOptions[],
         },
     ];
     if (IS_DEV) {

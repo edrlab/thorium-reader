@@ -18,7 +18,6 @@ import PublicationExportButton from "./PublicationExportButton";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
     publication: PublicationView;
-    toggleMenu?: () => void;
 }
 
 interface IState {
@@ -52,7 +51,6 @@ class CatalogMenu extends React.Component<IProps, IState> {
                     {__("catalog.delete")}
                 </button>
                 <PublicationExportButton
-                    onClick={this.props.toggleMenu}
                     publication={this.props.publication}
                 />
             </>

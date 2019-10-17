@@ -6,23 +6,19 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
 
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
 import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
-
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import PublicationAddButton from "./PublicationAddButton";
 import SearchForm from "./SearchForm";
 
-import PublicationAddButton from "./PublicationAddButton";
-
+import * as classNames from "classnames";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 export enum DisplayType {
     Grid = "grid",
@@ -40,14 +36,14 @@ class Header extends React.Component<IProps> {
             <SecondaryHeader id={styles.catalog_header}>
                 <Link
                     to={{search: "displayType=grid"}}
-                    style={(this.props.displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
+                    className={classNames(this.props.displayType !== DisplayType.Grid && styles.unactive)}
                     title={__("header.gridTitle")}
                 >
                     <SVG svg={GridIcon} ariaHidden/>
                 </Link>
                 <Link
                     to={{search: "displayType=list"}}
-                    style={this.props.displayType !== DisplayType.List ? {fill: "grey"} : {}}
+                    className={classNames(this.props.displayType !== DisplayType.List && styles.unactive)}
                     title={__("header.listTitle")}
                 >
                     <SVG svg={ListIcon} ariaHidden/>
