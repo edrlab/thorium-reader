@@ -198,40 +198,11 @@ export class PublicationApi implements IPublicationApi {
             filePathArray = [filePathArray];
         }
         // returns all publications linked to this import
-        const newDocs = [];
-
-        for (const filePath of filePathArray) {
-            try {
-                const crc32 = await extractCrc32OnZip(filePath);
-                const publicationArray = await this.publicationRepository.findByCrc32(crc32);
-                if (crc32 && publicationArray && publicationArray.length) {
-                    const publication = publicationArray[0];
-                    newDocs.push(publication);
-                    this.dispatchToastRequest(ToastType.DownloadComplete,
-                        this.translator.translate("message.import.alreadyImport", { title: publication.title }));
-                } else {
-                    try {
-                        const publication = await this.catalogService.importFile(filePath);
-                        if (publication) {
-                            newDocs.push(publication);
-                            this.dispatchToastRequest(ToastType.DownloadComplete,
-                                this.translator.translate("message.import.success", { title: publication.title }));
-                        }
-                    } catch (error) {
-                        debug(`Import file - FAIL : ${filePath}`, error);
-                        this.dispatchToastRequest(ToastType.DownloadFailed,
-                            this.translator.translate("message.import.fail", { filePath }));
-                    }
-                }
-            } catch (_e) {
-                // ignore
-            }
-        }
-
-        return newDocs.map((doc) => {
-            const publication = this.publicationViewConverter.convertDocumentToView(doc);
-            return publication;
-        });
+        const pubsRawPromise = filePathArray.map((filePath) => this.catalogService.importFile(filePath));
+        const pubsRaw = await Promise.all(pubsRawPromise);
+        const pubs = pubsRaw.filter((pub) => pub);
+        const pubsView = pubs.map((pub) => this.publicationViewConverter.convertDocumentToView(pub));
+        return pubsView;
     }
 
     public async search(title: string): Promise<PublicationView[]> {

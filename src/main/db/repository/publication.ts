@@ -18,7 +18,7 @@ const TAG_INDEX = "tag_index";
 
 const TITLE_INDEX = "title_index";
 
-const CRC32_INDEX = "crc32_index";
+const HASH_INDEX = "hash_index";
 
 import {
     convertMultiLangStringToString,
@@ -41,15 +41,15 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                 name: TAG_INDEX,
             },
             {
-                fields: ["crc32"],
-                name: CRC32_INDEX,
+                fields: ["hash"],
+                name: HASH_INDEX,
             },
         ];
         super(db, "publication", indexes);
     }
 
-    public async findByCrc32(crc32: string): Promise<PublicationDocument[]> {
-        return this.findBy({ crc32: { $eq: crc32 }});
+    public async findByHashId(hash: string): Promise<PublicationDocument[]> {
+        return this.findBy({ hash: { $eq: hash }});
     }
 
     public async findByTag(tag: string): Promise<PublicationDocument[]> {

@@ -24,6 +24,8 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 import * as uuid from "uuid";
 import * as xmldom from "xmldom";
@@ -39,6 +41,9 @@ import { extractCrc32OnZip } from "../crc";
 import { diMainGet } from "../di";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
+import { ToastType } from 'readium-desktop/common/models/toast';
+import { open } from 'readium-desktop/common/redux/actions/toast';
+import { Translator } from 'readium-desktop/common/services/translator';
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -57,14 +62,40 @@ export class CatalogService {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
+    @inject(diSymbolTable.store)
+    private readonly store!: Store<RootState>;
+
+    @inject(diSymbolTable.translator)
+    private readonly translator!: Translator;
+
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
-        const ext = path.extname(filePath);
-        if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
-            return this.importLcplFile(filePath);
-        } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
-            return this.importEpubFile(filePath);
+        let publication: PublicationDocument | undefined;
+
+        const hash = await extractCrc32OnZip(filePath);
+        const publicationArray = await this.publicationRepository.findByHashId(hash);
+        if (publicationArray && publicationArray.length) {
+            publication = publicationArray[0];
+            this.store.dispatch(open(ToastType.DownloadComplete,
+                this.translator.translate("message.import.alreadyImport", { title: publication.title })));
+        } else {
+
+            try {
+                const ext = path.extname(filePath);
+                if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
+                    publication = await this.importLcplFile(filePath);
+                } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
+                    publication = await this.importEpubFile(filePath);
+                }
+                this.store.dispatch(open(ToastType.DownloadComplete,
+                    this.translator.translate("message.import.success", { title: publication.title })));
+            } catch (error) {
+                debug(`Import file - FAIL : ${filePath}`, error);
+                this.store.dispatch(open(ToastType.DownloadFailed,
+                    this.translator.translate("message.import.fail", { filePath })));
+            }
         }
-        return undefined;
+
+        return publication;
     }
 
     public async importOpdsEntry(
@@ -323,7 +354,7 @@ export class CatalogService {
             files: [],
             coverFile: null,
             customCover: null,
-            crc32: await extractCrc32OnZip(filePath),
+            hash: await extractCrc32OnZip(filePath),
         } as PublicationDocument;
         debug(pubDocument);
 

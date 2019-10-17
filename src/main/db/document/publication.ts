@@ -26,7 +26,7 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     coverFile?: File;
     customCover?: CustomCover;
     lcp?: LcpInfo;
-    crc32: string;
+    hash: string;
 }
 
 export type THttpGetPublicationDocument = IHttpGetResult<string, PublicationDocument>;
