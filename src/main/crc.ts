@@ -30,8 +30,7 @@ export async function extractCrc32OnZip(filePath: string) {
                 data.readEntry();
             });
             data.on("end", () => {
-                const sortArray = fileArray.sort((a, b) => a[0] === b[0] ? 0 : a[0] < b[0] ? -1 : 1);
-                const checksum = sortArray.reduce((prev, curr) => prev + curr[1].toString(16), "");
+                const checksum = fileArray.reduce((prev, curr) => prev + curr[1].toString(16) + "|", "|");
                 const hash = crypto.createHash("sha1").update(checksum).digest("hex");
                 debug(filePath, hash);
                 process.nextTick(() => data.close());
