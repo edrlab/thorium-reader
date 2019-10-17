@@ -22,6 +22,7 @@ export async function extractCrc32OnZip(filePath: string) {
                 reject(err);
                 return;
             }
+            // throw entry event
             data.readEntry();
 
             data.on("error", (e) => reject(e));
