@@ -58,21 +58,6 @@ export class CatalogService {
     private readonly publicationRepository!: PublicationRepository;
 
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
-        // FIXME : Why when i re-import an opds publication, with the same crc32, findByCrc32 return an empty array
-        // whereas when i import publication it works well in publictionApi.
-        /*
-        try {
-            const crc32 = await extractCrc32OnZip(filePath);
-            const publicationArray = await this.publicationRepository.findByCrc32(crc32);
-            debug(publicationArray, crc32);
-            if (publicationArray && publicationArray.length) {
-                return publicationArray[0];
-            }
-        } catch (_e) {
-            // ignore
-        }
-        */
-
         const ext = path.extname(filePath);
         if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
             return this.importLcplFile(filePath);
