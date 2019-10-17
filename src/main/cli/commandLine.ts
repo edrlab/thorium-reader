@@ -30,7 +30,7 @@ function openReader(publication: PublicationView | PublicationView[]) {
     return false;
 }
 
-async function openTitleFromCli(title: string) {
+export async function openTitleFromCli(title: string) {
     const publicationApi = diMainGet("publication-api");
     const publication = await publicationApi.search(title);
     return openReader(publication);
@@ -41,18 +41,6 @@ export async function openFileFromCli(filePath: string): Promise<boolean> {
     const publicationApi = diMainGet("publication-api");
     const publication = await publicationApi.import(filePath);
     return openReader(publication);
-}
-
-export async function cli_(filePath: string) {
-    // import and read publication
-    // 1 try to generate crc32 if fail import them also
-    // 2 check if exist in db
-    // import or read it
-    //
-    // add a new field crc32 in publication-repo
-    // add a new method in catalogService
-    //
-    return await openFileFromCli(filePath);
 }
 
 export async function cliImport(filePath: string[] | string) {
@@ -78,9 +66,4 @@ export async function cliOpds(title: string, url: string) {
         return true;
     }
     return false;
-}
-
-export async function cliRead(title: string) {
-    // get the publication id then open it in reader
-    return await openTitleFromCli(title);
 }
