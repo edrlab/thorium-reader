@@ -203,6 +203,8 @@ export class CatalogService {
             .from(JSON.stringify(jsonOpdsPublication))
             .toString("base64");
 
+        debug(publicationDocument.hash);
+
         // Merge with the original publication
         publicationDocument = Object.assign(
             {},
@@ -215,6 +217,9 @@ export class CatalogService {
                 tags,
             },
         );
+
+
+        debug(publicationDocument.hash);
 
         return this.publicationRepository.save(publicationDocument);
     }
@@ -355,7 +360,7 @@ export class CatalogService {
             customCover: null,
             hash: await extractCrc32OnZip(filePath),
         } as PublicationDocument;
-        debug(pubDocument);
+        debug(pubDocument.hash);
 
         // Store publication on filesystem
         debug("[START] Store publication on filesystem", filePath);

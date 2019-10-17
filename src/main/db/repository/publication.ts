@@ -114,6 +114,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                 coverFile: dbDoc.coverFile,
                 customCover: dbDoc.customCover,
                 lcp: dbDoc.lcp,
+                hash: dbDoc.hash,
             },
         );
     }
