@@ -110,7 +110,7 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
 });
 
 // TODO change for the event of high constrast scheme when the migration of Electron 6 is finished
-systemPreferences.on("inverted-color-scheme-changed", (__, enabled) => {
+systemPreferences.on("high-contrast-color-scheme-changed", (__, enabled) => {
     const colors: HighContrastColors = {
         background: systemPreferences.getColor("window"),
         text: systemPreferences.getColor("window-text"),
@@ -118,6 +118,9 @@ systemPreferences.on("inverted-color-scheme-changed", (__, enabled) => {
         buttonText: systemPreferences.getColor("button-text"),
         highlight: systemPreferences.getColor("highlight-text"),
     };
+    console.log("=================================");
+    console.log(colors);
+    console.log("=================================");
     store.dispatch(highContrastChanged(enabled, colors));
 });
 
