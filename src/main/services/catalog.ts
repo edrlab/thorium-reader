@@ -203,8 +203,6 @@ export class CatalogService {
             .from(JSON.stringify(jsonOpdsPublication))
             .toString("base64");
 
-        debug(publicationDocument.hash);
-
         // Merge with the original publication
         publicationDocument = Object.assign(
             {},
@@ -217,10 +215,6 @@ export class CatalogService {
                 tags,
             },
         );
-
-
-        debug(publicationDocument.hash);
-
         return this.publicationRepository.save(publicationDocument);
     }
 
