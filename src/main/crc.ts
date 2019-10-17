@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { crc32 } from "crc";
+import * as crypto from "crypto";
 import * as debug_ from "debug";
 import * as yauzl from "yauzl";
 
@@ -31,9 +31,10 @@ export async function extractCrc32OnZip(filePath: string) {
             });
             data.on("end", () => {
                 const sortArray = fileArray.sort((a, b) => a[0] === b[0] ? 0 : a[0] < b[0] ? -1 : 1);
-                const checksum = sortArray.reduce((prev, curr) => crc32(curr[1].toString(16), prev), 0);
-                debug(filePath, checksum.toString(16));
-                resolve(checksum.toString(16));
+                const checksum = sortArray.reduce((prev, curr) => prev + curr[1].toString(16), "");
+                const hash = crypto.createHash("sha1").update(checksum).digest("hex");
+                debug(filePath, hash);
+                resolve(hash);
             });
         });
     });
