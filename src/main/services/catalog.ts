@@ -13,7 +13,10 @@ import * as path from "path";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { Publication } from "readium-desktop/common/models/publication";
+import { ToastType } from "readium-desktop/common/models/toast";
 import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
+import { open } from "readium-desktop/common/redux/actions/toast";
+import { Translator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -41,9 +44,6 @@ import { extractCrc32OnZip } from "../crc";
 import { diMainGet } from "../di";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
-import { ToastType } from 'readium-desktop/common/models/toast';
-import { open } from 'readium-desktop/common/redux/actions/toast';
-import { Translator } from 'readium-desktop/common/services/translator';
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -71,30 +71,29 @@ export class CatalogService {
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
         let publication: PublicationDocument | undefined;
 
-        const hash = await extractCrc32OnZip(filePath);
-        const publicationArray = await this.publicationRepository.findByHashId(hash);
-        if (publicationArray && publicationArray.length) {
-            publication = publicationArray[0];
-            this.store.dispatch(open(ToastType.DownloadComplete,
-                this.translator.translate("message.import.alreadyImport", { title: publication.title })));
-        } else {
-
-            try {
-                const ext = path.extname(filePath);
-                if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
-                    publication = await this.importLcplFile(filePath);
-                } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
-                    publication = await this.importEpubFile(filePath);
-                }
+        try {
+            const hash = await extractCrc32OnZip(filePath);
+            const publicationArray = await this.publicationRepository.findByHashId(hash);
+            debug(publicationArray, hash);
+            if (publicationArray && publicationArray.length) {
+                publication = publicationArray[0];
                 this.store.dispatch(open(ToastType.DownloadComplete,
-                    this.translator.translate("message.import.success", { title: publication.title })));
-            } catch (error) {
-                debug(`Import file - FAIL : ${filePath}`, error);
-                this.store.dispatch(open(ToastType.DownloadFailed,
-                    this.translator.translate("message.import.fail", { filePath })));
+                    this.translator.translate("message.import.alreadyImport", { title: publication.title })));
+            } else {
+                    const ext = path.extname(filePath);
+                    if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
+                        publication = await this.importLcplFile(filePath);
+                    } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
+                        publication = await this.importEpubFile(filePath);
+                    }
+                    this.store.dispatch(open(ToastType.DownloadComplete,
+                        this.translator.translate("message.import.success", { title: publication.title })));
             }
+        } catch (error) {
+            debug("ImportFile (hash + import) fail with :" + filePath, error);
+            this.store.dispatch(open(ToastType.DownloadFailed,
+                this.translator.translate("message.import.fail", { filePath })));
         }
-
         return publication;
     }
 

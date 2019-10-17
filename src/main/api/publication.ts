@@ -19,8 +19,6 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { isArray } from "util";
 
-import { extractCrc32OnZip } from "../crc";
-
 export interface IPublicationApi {
     // in a future possible typing like this to have buildRequestData return type :
     // get: (...a: [string]) => Promise<PublicationView> | void;
@@ -155,12 +153,10 @@ export class PublicationApi implements IPublicationApi {
             this.translator.translate("message.download.start", { title }));
 
         let returnView: PublicationView;
-        let titleView: string;
         // if url exist import new entry by download
         if (url) {
             const httpPub = await this.catalogService.importOpdsEntry(url, downloadSample, tags);
             if (httpPub.isSuccess) {
-                titleView = httpPub.data.title;
                 this.sendDownloadSuccess(url);
                 returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
             } else {
@@ -182,14 +178,9 @@ export class PublicationApi implements IPublicationApi {
                 this.dispatchToastRequest(ToastType.DownloadFailed, `[${error}]`);
                 throw new Error(`importOpdsPublication ${error}`);
             }
-            titleView = publication.title;
             this.sendDownloadSuccess(url);
             returnView = this.publicationViewConverter.convertDocumentToView(publication);
         }
-
-        // dispatch notification to user with redux
-        this.dispatchToastRequest(ToastType.DownloadComplete,
-            this.translator.translate("message.download.success", { title: titleView }));
         return returnView;
     }
 
