@@ -29,21 +29,52 @@ export class OpdsControls extends React.Component<IProps> {
             return <></>;
         }
 
-        return publication.isFree ? (
-            <button
-                onClick={() => verifyImport(publication as ImportOpdsPublication)}
-                className={styles.lire}
-            >
-                {__("catalog.addBookToLib")}
-            </button>
-        ) : publication.hasSample && (
-            <button
-                onClick={() => verifyImport(publication as ImportOpdsPublication, true)}
-                className={styles.lire}
-            >
-                {__("opds.menu.addExtract")}
-            </button>
-        );
+        return <>
+            {publication.isFree ? (
+                <button
+                    onClick={() => verifyImport(publication as ImportOpdsPublication)}
+                    className={styles.lire}
+                >
+                    {__("catalog.addBookToLib")}
+                </button>
+            ) : publication.hasSample && (
+                <button
+                    onClick={() => verifyImport(publication as ImportOpdsPublication, true)}
+                    className={styles.lire}
+                >
+                    {__("opds.menu.addExtract")}
+                </button>
+            )}
+            <ul className={styles.liens}>
+                { publication.buyUrl &&
+                    <li>
+                        <a role="menuitem"
+                            href={publication.buyUrl}
+                        >
+                            {__("opds.menu.goBuyBook")}
+                        </a>
+                    </li>
+                }
+                { publication.borrowUrl &&
+                    <li>
+                        <a role="menuitem"
+                            href={publication.borrowUrl}
+                        >
+                            {__("opds.menu.goLoanBook")}
+                        </a>
+                    </li>
+                }
+                { publication.subscribeUrl &&
+                    <li>
+                        <a role="menuitem"
+                            href={publication.subscribeUrl}
+                        >
+                            {__("opds.menu.goSubBook")}
+                        </a>
+                    </li>
+                }
+            </ul>
+        </>;
     }
 }
 
