@@ -8,7 +8,7 @@
 import classNames from "classnames";
 import * as qs from "query-string";
 import * as React from "react";
-import { Helmet } from "react-helmet";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
@@ -52,23 +52,25 @@ class LibraryLayout extends React.Component<IProps> {
         }
 
         return (
-            <div
-                style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} }
-            >
-                <Helmet>
-                    <title>{ helmetTitle }</title>
-                </Helmet>
-                <LibraryHeader />
-                { this.props.secondaryHeader }
-                <main
-                    id="main"
-                    className={classNames(styles.main, this.props.mainClassName)}
-                    role="main"
+            <HelmetProvider>
+                <div
+                    style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} }
                 >
-                    <a ref={(ref) => this.fastLinkRef = ref} id="main-content" aria-hidden tabIndex={-1}></a>
-                    { this.props.children }
-                </main>
-            </div>
+                    <Helmet>
+                        <title>{ helmetTitle }</title>
+                    </Helmet>
+                    <LibraryHeader />
+                    { this.props.secondaryHeader }
+                    <main
+                        id="main"
+                        className={classNames(styles.main, this.props.mainClassName)}
+                        role="main"
+                    >
+                        <a ref={(ref) => this.fastLinkRef = ref} id="main-content" aria-hidden tabIndex={-1}></a>
+                        { this.props.children }
+                    </main>
+                </div>
+            </HelmetProvider>
         );
     }
 }
