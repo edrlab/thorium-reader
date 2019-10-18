@@ -1,3 +1,4 @@
+import { PublicationDocument } from 'readium-desktop/main/db/document/publication';
 // ==LICENSE-BEGIN==
 // Copyright 2017 European Digital Reading Lab. All rights reserved.
 // Licensed to the Readium Foundation under one or more contributor license agreements.
@@ -185,12 +186,13 @@ export class PublicationApi implements IPublicationApi {
     }
 
     public async import(filePathArray: string | string[]): Promise<PublicationView[]> {
+
         if (!isArray(filePathArray)) {
             filePathArray = [filePathArray];
         }
         // returns all publications linked to this import
         const pubsRawPromise = filePathArray.map((filePath) => this.catalogService.importFile(filePath));
-        const pubsRaw = await Promise.all(pubsRawPromise);
+        const pubsRaw = await PromiseRunAllIgnoreReject(pubsRawPromise);
         const pubs = pubsRaw.filter((pub) => pub);
         const pubsView = pubs.map((pub) => this.publicationViewConverter.convertDocumentToView(pub));
         return pubsView;
