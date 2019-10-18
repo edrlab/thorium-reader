@@ -68,9 +68,9 @@ script:
 # asarUnpack
 #  - 'sed -i -e s/\\.node\"/._node_\"/g package.json && cat package.json'
   - 'if [[ "$TRAVIS_OS_NAME_" == "linux" ]]; then
-    npm run package:linux && ls -als release && ls -als release/linux-unpacked ;
+    sed -i -e s/\\.node\"/._node_\"/g package.json && cat package.json && npm run package:linux && ls -als release && ls -als release/linux-unpacked ;
     elif [[ "$TRAVIS_OS_NAME_" == "osx" ]]; then
-    npm run package:mac && ls -als release && ls -als release/mac ;
+    sed -i -e s/\\.node\"/._node_\"/g package.json && cat package.json && npm run package:mac && ls -als release && ls -als release/mac ;
     elif [[ "$TRAVIS_OS_NAME_" == "windows" ]]; then
     sed -i -e "s/        \"appx\",//g" package.json && cat package.json && docker run --rm
     --env-file <(env | grep -iE "DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_")
@@ -101,8 +101,6 @@ after_failure:
 # https://docs.travis-ci.com/user/deployment/
 before_deploy:
   - export TRAVIS_TAG="latest-$TRAVIS_OS_NAME_"
-  - rm release/**/elevate.exe
-  - rm release/**/thorium.exe
   - node scripts/release-github.js
 # - git config --local user.name "danielweck"
 # - git config --local user.email "daniel.weck@gmail.com"
@@ -135,11 +133,8 @@ deploy:
   file:
     - "release/**/*.AppImage"
     - "release/**/*.deb"
-    - "release/**/*.msi"
-    - "release/**/*.exe"
+    - "release/*.exe"
     - "release/**/*.dmg"
-    - "!release/**/elevate.exe"
-    - "!release/**/thorium.exe"
   skip_cleanup: true
 # name: "[$TRAVIS_TAG] continuous test build (pre-release)"
   prerelease: true
