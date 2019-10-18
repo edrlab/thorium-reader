@@ -287,6 +287,8 @@ declare namespace typed_i18n {
   readonly "marks": {
     readonly "annotations": string,
     readonly "bookmarks": string,
+    readonly "delete": string,
+    readonly "edit": string,
     readonly "illustrations": string,
     readonly "landmarks": string,
     readonly "toc": string
@@ -347,12 +349,16 @@ declare namespace typed_i18n {
   (_: "reader.marks", __?: {}): {
   readonly "annotations": string,
   readonly "bookmarks": string,
+  readonly "delete": string,
+  readonly "edit": string,
   readonly "illustrations": string,
   readonly "landmarks": string,
   readonly "toc": string
 };
   (_: "reader.marks.annotations", __?: {}): string;
   (_: "reader.marks.bookmarks", __?: {}): string;
+  (_: "reader.marks.delete", __?: {}): string;
+  (_: "reader.marks.edit", __?: {}): string;
   (_: "reader.marks.illustrations", __?: {}): string;
   (_: "reader.marks.landmarks", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
