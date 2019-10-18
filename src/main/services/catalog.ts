@@ -13,6 +13,7 @@ import * as path from "path";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { Publication } from "readium-desktop/common/models/publication";
+import { exportDialogClose, exportDialogOpen } from "readium-desktop/common/redux/actions/export";
 import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
 import { convertMultiLangStringToString } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
@@ -243,6 +244,7 @@ export class CatalogService {
     }
 
     public async exportPublication(publication: PublicationView) {
+        const store = diMainGet("store");
         // Get main window
         const winRegistry = diMainGet("win-registry");
         let mainWindow;
@@ -251,11 +253,12 @@ export class CatalogService {
                 mainWindow = window;
             }
         }
-
+        store.dispatch(exportDialogOpen());
         // Open a dialog to select a folder then copy the publication in it
         const res = await dialog.showOpenDialog(mainWindow, {
             properties: ["openDirectory"],
         });
+        store.dispatch(exportDialogClose());
         if (!res.canceled) {
             if (res.filePaths && res.filePaths.length > 0) {
                 let destinationPath = res.filePaths[0];

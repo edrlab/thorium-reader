@@ -107,7 +107,7 @@ class PublicationCard extends React.Component<IProps, IState> {
                         open={this.state.menuOpen}
                         dir="right"
                         toggle={this.openCloseMenu}
-                        infoDialogIsOpen={this.props.InfoDialogIsOpen}
+                        focusButton={this.props.dialogOpen}
                     />
                 </div>
             </div>
@@ -145,8 +145,10 @@ class PublicationCard extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: RootState) => {
     return {
-        InfoDialogIsOpen: state.dialog.open &&
-            state.dialog.type === "publication-info",
+        dialogOpen: (state.dialog.open && (
+            state.dialog.type === "publication-info" ||
+            state.dialog.type === "delete-publication-confirm")) ||
+            state.export.dialogOpen,
     };
 };
 

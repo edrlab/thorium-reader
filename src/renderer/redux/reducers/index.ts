@@ -19,6 +19,7 @@ import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 
 import { apiReducer } from "./api";
 import { downloadReducer } from "./download";
+import { exportReducer } from "./export";
 import { opdsReducer } from "./opds";
 import { readerReducer } from "./reader";
 import { winReducer } from "./win";
@@ -38,4 +39,5 @@ export const rootReducer = (history: History) => combineReducers({
     import: importReducer,
     toast: toastReducer,
     download: downloadReducer,
+    export: exportReducer,
 });

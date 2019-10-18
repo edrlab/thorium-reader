@@ -9,6 +9,7 @@ import { RouterState } from "connected-react-router";
 
 import { ApiState } from "./api";
 import { DownloadState } from "./download";
+import { ExportState } from "./export";
 import { OpdsState } from "./opds";
 import { ReaderState } from "./reader";
 import { WinState } from "./win";
@@ -35,4 +36,5 @@ export interface RootState {
     import: ImportState;
     toast: ToastState;
     download: DownloadState;
+    export: ExportState;
 }

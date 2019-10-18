@@ -23,7 +23,7 @@ interface MenuProps {
     dir: string; // Direction of menu: right or left
     toggle: () => void;
     focusMenuButton?: (ref: React.RefObject<HTMLButtonElement>, currentMenuId: string) => void;
-    infoDialogIsOpen?: boolean;
+    focusButton?: boolean;
 }
 
 interface MenuState {
@@ -50,11 +50,10 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
         if (this.props.open && !oldProps.open) {
             this.refreshStyle();
         }
-        if (oldProps.infoDialogIsOpen === true &&
-            oldProps.infoDialogIsOpen !== this.props.infoDialogIsOpen &&
-            this.menuButtonRef) {
-                this.menuButtonRef.current.focus();
-            }
+
+        if (oldProps.focusButton && !this.props.focusButton && this.menuButtonRef) {
+            this.menuButtonRef.current.focus();
+        }
     }
 
     public render(): React.ReactElement<{}> {
