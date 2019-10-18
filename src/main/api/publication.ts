@@ -1,4 +1,3 @@
-import { PublicationDocument } from 'readium-desktop/main/db/document/publication';
 // ==LICENSE-BEGIN==
 // Copyright 2017 European Digital Reading Lab. All rights reserved.
 // Licensed to the Readium Foundation under one or more contributor license agreements.
