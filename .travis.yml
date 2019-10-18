@@ -88,16 +88,22 @@ after_success:
   - 'ls -als dist'
   - 'ls -als release'
   - 'ls -als release/mac'
+  - 'ls -R release/mac/thorium.app/Contents/Resources/app.asar.unpacked'
   - 'ls -als release/linux-unpacked'
+  - 'ls -Rals release/linux-unpacked/resources/app.asar.unpacked'
   - 'ls -als release/win-unpacked'
+  - 'ls -Rals release/win-unpacked/resources/app.asar.unpacked'
 after_failure:
   - 'pwd'
   - 'ls -als'
   - 'ls -als dist'
   - 'ls -als release'
   - 'ls -als release/mac'
+  - 'ls -Rals release/mac/thorium.app/Contents/Resources/app.asar.unpacked'
   - 'ls -als release/linux-unpacked'
+  - 'ls -Rals release/linux-unpacked/resources/app.asar.unpacked'
   - 'ls -als release/win-unpacked'
+  - 'ls -Rals release/win-unpacked/resources/app.asar.unpacked'
 # https://docs.travis-ci.com/user/deployment/
 before_deploy:
   - export TRAVIS_TAG="latest-$TRAVIS_OS_NAME_"
