@@ -226,20 +226,23 @@ export class OpdsFeedViewConverter {
         try {
             if (feed.Links) {
                 const searchLink = feed.Links.find((value) => value.Rel[0] === "search");
-                if (searchLink.TypeLink === "application/opds+json") {
-                    searchUrl = searchLink.Href;
-                } else {
-                    const searchLinkFeedData = await httpGet(searchLink.Href);
-                    if (searchLinkFeedData.isFailure) {
-                        return undefined;
-                    }
-                    const result = convert.xml2js(searchLinkFeedData.data, { compact: true }) as convert.ElementCompact;
+                if (searchLink) {
+                    if (searchLink.TypeLink === "application/opds+json") {
+                        searchUrl = searchLink.Href;
+                    } else {
+                        const searchLinkFeedData = await httpGet(searchLink.Href);
+                        if (searchLinkFeedData.isFailure) {
+                            return undefined;
+                        }
+                        const result = convert.xml2js(searchLinkFeedData.data,
+                            { compact: true }) as convert.ElementCompact;
 
-                    if (result) {
-                        const doc = result.OpenSearchDescription;
-                        searchUrl = doc.Url.find((value: any) => {
-                            return value._attributes && value._attributes.type === "application/atom+xml";
-                        })._attributes.template;
+                        if (result) {
+                            const doc = result.OpenSearchDescription;
+                            searchUrl = doc.Url.find((value: any) => {
+                                return value._attributes && value._attributes.type === "application/atom+xml";
+                            })._attributes.template;
+                        }
                     }
                 }
             }
@@ -247,7 +250,7 @@ export class OpdsFeedViewConverter {
             debug("getSearchUrlFromOpds1Feed", e);
         }
         // if searchUrl is not found return undefined
-        // User will be can't use search form
+        // The user will not be able to use the search form
         return searchUrl;
     }
 }
