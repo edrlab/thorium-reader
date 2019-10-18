@@ -398,14 +398,14 @@ main {
 }
 
 #content > * {
-  background: #ebebeb;
-  color: #595959;
-  text-decoration: none;
+  	background: var(--button-background-color);
+	color: var(--button-text-color);
+	text-decoration: none;
 	font-size: 0.9rem;
 	padding: 7px;
 	text-align: center;
 	border-radius: 3px;
-	border: 2px solid #a6a6a6;
+	border: 2px solid var(--button-text-color);
 }
 
 #count {
