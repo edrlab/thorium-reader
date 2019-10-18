@@ -9,6 +9,7 @@ import { inject, injectable } from "inversify";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { CatalogConfig } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
@@ -62,15 +63,6 @@ export class CatalogApi implements ICatalogApi {
     public async get(): Promise<CatalogView> {
         const __ = this.translator.translate.bind(this.translator);
 
-        // Last added publications
-        const lastAddedPublications = await this.publicationRepository.find({
-            limit: 10,
-            sort: [ { createdAt: "desc" } ],
-        });
-        const lastAddedPublicationViews = lastAddedPublications.map((doc) => {
-            return this.publicationViewConverter.convertDocumentToView(doc);
-        });
-
         // Last read publicatons
         const lastLocators = await this.locatorRepository.findBy(
             { locatorType: LocatorType.LastReadingLocation },
@@ -97,6 +89,18 @@ export class CatalogApi implements ICatalogApi {
             lastReadPublicationViews.push(
                 this.publicationViewConverter.convertDocumentToView(pubDoc),
             );
+        }
+
+        // Last added publications without publcation already on last read list
+        const lastAddedPublications = await this.publicationRepository.find({
+            limit: 10,
+            sort: [ { createdAt: "desc" } ],
+        });
+        const lastAddedPublicationViews: PublicationView[] = [];
+        for (const doc of lastAddedPublications) {
+            if (!lastReadPublicationViews.find((lastDoc) => lastDoc.identifier === doc.identifier)) {
+                lastAddedPublicationViews.push(this.publicationViewConverter.convertDocumentToView(doc));
+            }
         }
 
         // Dynamic entries
