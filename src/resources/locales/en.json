@@ -180,7 +180,7 @@
             },
             "display": "Display",
             "disposition": {
-                "title": "Disposition"
+                "title": "Layout"
             },
             "font": "Font",
             "fontSize": "Font size",
