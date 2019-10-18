@@ -11,6 +11,8 @@ import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 
 import { connectRouter } from "connected-react-router";
 
+import { History } from "history";
+
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { importReducer } from "readium-desktop/common/redux/reducers/import";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
@@ -21,9 +23,8 @@ import { apiReducer } from "./api";
 import { downloadReducer } from "./download";
 import { opdsReducer } from "./opds";
 import { readerReducer } from "./reader";
+import { styleReducer } from "./style";
 import { winReducer } from "./win";
-
-import { History } from "history";
 
 export const rootReducer = (history: History) => combineReducers({
     i18n: i18nReducer,
@@ -38,4 +39,5 @@ export const rootReducer = (history: History) => combineReducers({
     import: importReducer,
     toast: toastReducer,
     download: downloadReducer,
+    style: styleReducer,
 });

@@ -20,4 +20,6 @@ export interface HighContrastColors {
     buttonBackground: string;
     buttonText: string;
     highlight: string;
+    highlightText: string;
+    disabled: string;
 }

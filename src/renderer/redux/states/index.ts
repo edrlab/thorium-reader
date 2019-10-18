@@ -11,6 +11,7 @@ import { ApiState } from "./api";
 import { DownloadState } from "./download";
 import { OpdsState } from "./opds";
 import { ReaderState } from "./reader";
+import { StyleState } from "./style";
 import { WinState } from "./win";
 
 import { DialogState } from "readium-desktop/common/redux/states/dialog";
@@ -35,4 +36,5 @@ export interface RootState {
     import: ImportState;
     toast: ToastState;
     download: DownloadState;
+    style: StyleState;
 }

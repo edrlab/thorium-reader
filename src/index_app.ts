@@ -7,24 +7,21 @@
 
 import "font-awesome/css/font-awesome.css";
 
-import { ipcRenderer, systemPreferences } from "electron";
+import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-// import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { winInit } from "readium-desktop/common/redux/actions/win";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import App from "readium-desktop/renderer/components/App";
 import { diRendererGet } from "readium-desktop/renderer/di";
-import { winInit } from "readium-desktop/renderer/redux/actions/win";
 import { WinStatus } from "readium-desktop/renderer/redux/states/win";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
-import { highContrastChanged } from "./common/redux/actions/style";
-import { HighContrastColors } from "./renderer/redux/states/style";
 
 // import { consoleRedirect } from "@r2-navigator-js/electron/renderer/common/console-redirect";
 if (IS_DEV) {
@@ -107,21 +104,6 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
             ));
             break;
     }
-});
-
-// TODO change for the event of high constrast scheme when the migration of Electron 6 is finished
-systemPreferences.on("high-contrast-color-scheme-changed", (__, enabled) => {
-    const colors: HighContrastColors = {
-        background: systemPreferences.getColor("window"),
-        text: systemPreferences.getColor("window-text"),
-        buttonBackground: systemPreferences.getColor("button-text"),
-        buttonText: systemPreferences.getColor("button-text"),
-        highlight: systemPreferences.getColor("highlight-text"),
-    };
-    console.log("=================================");
-    console.log(colors);
-    console.log("=================================");
-    store.dispatch(highContrastChanged(enabled, colors));
 });
 
 if (IS_DEV) {

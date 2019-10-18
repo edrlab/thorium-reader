@@ -10,6 +10,7 @@ import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { apiActions, i18nActions, readerActions } from "readium-desktop/common/redux/actions";
 import { diRendererGet } from "readium-desktop/renderer/di";
+import { winActions } from "readium-desktop/renderer/redux/actions";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 // Actions that can be synchronized
@@ -26,6 +27,8 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     readerActions.ActionType.FullscreenOnRequest,
 
     i18nActions.ActionType.Set,
+
+    winActions.ActionType.InitSuccess,
 ];
 
 export const reduxSyncMiddleware: Middleware

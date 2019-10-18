@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { app, protocol } from "electron";
+import { app, protocol, systemPreferences } from "electron";
 import * as path from "path";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
@@ -23,6 +23,9 @@ import { appInit } from "readium-desktop/main/redux/actions/app";
 import {
     ReaderStateConfig, ReaderStateMode, ReaderStateReader,
 } from "readium-desktop/main/redux/states/reader";
+
+import { highContrastChanged } from "readium-desktop/common/redux/actions/style";
+import { HighContrastColors } from "readium-desktop/renderer/redux/states/style";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -178,6 +181,19 @@ const winCloseCallback = (appWindow: AppWindow) => {
 export function initApp() {
     const store = diMainGet("store");
     store.dispatch(appInit());
+
+    systemPreferences.on("high-contrast-color-scheme-changed", (__, enabled) => {
+        const colors: HighContrastColors = {
+            background: systemPreferences.getColor("window"),
+            text: systemPreferences.getColor("window-text"),
+            buttonBackground: systemPreferences.getColor("window"),
+            buttonText: systemPreferences.getColor("button-text"),
+            highlight: systemPreferences.getColor("highlight"),
+            highlightText: systemPreferences.getColor("highlight-text"),
+            disabled: systemPreferences.getColor("disabled-text"),
+        };
+        store.dispatch(highContrastChanged(enabled, colors));
+    });
 
     const configRepository = diMainGet("config-repository");
     configRepository.get("i18n").then((i18nLocale) => {

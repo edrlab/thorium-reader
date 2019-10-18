@@ -17,6 +17,9 @@
 :global(#high_contrast) {
     --hc-background-color: black;
     --hc-text-color: white;
+    --hc-button-text-color: white;
+    --hc-highlight: black;
+    --hc-highlight-text: white;
 
     --background-color: var(--hc-background-color);
     --secondary-background-color: var(--hc-background-color);
@@ -26,9 +29,9 @@
     --main-text-color: var(--hc-text-color);
     --secondary-text-color: var(--hc-text-color);
 
-    --button-background-color: rgba(0, 0, 0, 0);
-    --button-text-color: var(--hc-text-color);
-    --unactive-button-text-color: var(--hc-text-color);
+    --button-background-color: transparent;
+    --button-text-color: var(--hc-button-text-color);
+    --unactive-button-text-color: var(--hc-button-text-color);
 
     --disabled-color: red;
 }

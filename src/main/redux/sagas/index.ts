@@ -7,21 +7,14 @@
 
 import { all, call } from "redux-saga/effects";
 
-import { appInitWatcher } from "./app";
-
-import { netStatusWatcher } from "./net";
-
-import * as reader from "./reader";
-
 import * as api from "./api";
-
+import { appInitWatcher } from "./app";
 import * as i18n from "./i18n";
-
+import { netStatusWatcher } from "./net";
+import * as reader from "./reader";
 import * as streamer from "./streamer";
-
-import {
-    updateStatusWatcher,
-} from "./update";
+import { updateStatusWatcher } from "./update";
+import { winInitSuccessWatcher } from "./win";
 
 export function* rootSaga() {
     yield all([
@@ -44,5 +37,8 @@ export function* rootSaga() {
 
         // Update checker
         call(updateStatusWatcher),
+
+        // Window
+        call(winInitSuccessWatcher),
     ]);
 }

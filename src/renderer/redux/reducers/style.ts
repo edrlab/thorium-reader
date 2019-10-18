@@ -19,6 +19,8 @@ const initialState: StyleState = {
             buttonBackground: undefined,
             buttonText: undefined,
             highlight: undefined,
+            highlightText: undefined,
+            disabled: undefined,
         },
     },
 };
@@ -29,7 +31,9 @@ export function styleReducer(
 ): StyleState {
     switch (action.type) {
         case styleActions.ActionType.HighContrastChanged:
-            return Object.assign({}, state, action.payload);
+            return Object.assign({}, state, {
+                highContrast: action.payload,
+            });
         default:
             return state;
     }

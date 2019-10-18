@@ -21,6 +21,8 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import { diRendererSymbolTable } from "../diSymbolTable";
 import ToastManager from "./toast/ToastManager";
+
+import HighContrastManager from "./utils/HighContrastManager";
 import SameFileImportManager from "./utils/SameFileImportManager";
 
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
@@ -66,9 +68,6 @@ export default class App extends React.Component<any, undefined> {
         window.document.documentElement.addEventListener("mousedown", (_ev: MouseEvent) => {
             window.document.documentElement.classList.remove("R2_CSS_CLASS__KEYBOARD_INTERACT");
         }, true);
-
-        document.getElementsByTagName("html")[0].id = "high_contrast";
-        console.log(styles);
     }
 
     public render(): React.ReactElement < {} > {
@@ -99,6 +98,7 @@ export default class App extends React.Component<any, undefined> {
                                     <DialogManager/>
                                     <SameFileImportManager/>
                                     <ToastManager/>
+                                    <HighContrastManager />
                                 </div>;
                             }}
                         </Dropzone>

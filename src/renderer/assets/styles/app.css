@@ -82,4 +82,15 @@ svg {
   & label:hover {
     background-color: inherit !important;
   }
+
+  & input {
+    color: var(--button-text-color) !important;
+    background-color: var(--button-background-color) !important;
+    border-color: var(--button-text-color) !important;
+  }
+
+  & *::selection {
+    color: var(--hc-highlight-text) !important;
+    background: var(--hc-highlight) !important;
+  }
 }

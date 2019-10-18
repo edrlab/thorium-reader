@@ -14,6 +14,7 @@ import { lazyInject } from "readium-desktop/renderer/di";
 import { diRendererSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
+import HighContrastManager from "../utils/HighContrastManager";
 
 import Reader from "./Reader";
 
@@ -21,16 +22,13 @@ export default class App extends React.Component<any, undefined> {
     @lazyInject(diRendererSymbolTable.store)
     private store: Store<RootState>;
 
-    public componentDidMount() {
-        document.getElementsByTagName("html")[0].id = "high_contrast";
-    }
-
     public render(): React.ReactElement<{}> {
         return (
             <Provider store={ this.store }>
                 <div>
                     <Reader/>
                     <DialogManager />
+                    <HighContrastManager />
                 </div>
             </Provider>
         );
