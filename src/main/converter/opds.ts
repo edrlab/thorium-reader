@@ -106,12 +106,15 @@ export class OpdsFeedViewConverter {
 
         // Get odps entry
         let urlPublication: string | undefined;
+        // FIXME why declaration many lines before, null value and no typed ??
         let sampleUrl = null;
+        // FIXME why any ?
         const links = publication.Links.filter(
             (link: any) => {
                 return (link.TypeLink.indexOf(";type=entry;profile=opds-catalog") > 0);
             },
         );
+        // FIXME why any ?
         const sampleLinks = publication.Links.filter(
             (link: any) => {
                 return (link.Rel[0] === "http://opds-spec.org/acquisition/sample"
