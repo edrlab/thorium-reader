@@ -17,7 +17,7 @@
     "patch-electron-builder": "ncp scripts/electron-builder-patch/AppxTarget.js node_modules/app-builder-lib/out/targets/AppxTarget.js",
     "__postinstall": "npm run rmLevelDownPrebuilds && npm run patch-electron-builder && npm rebuild --runtime=electron --target=6.0.12 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
     "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
-    "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\"",
+    "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\" && rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\"",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
     "build:prod": "npm run lint && npm run build",
     "build:dev:main": "webpack --config webpack.config.main.js",
@@ -177,7 +177,7 @@
     "debug": "^4.1.1",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.4",
-    "i18next": "^17.2.0",
+    "i18next": "^17.3.0",
     "inversify": "^5.0.1",
     "inversify-inject-decorators": "^3.1.0",
     "jsondown": "^1.0.0",
@@ -227,7 +227,7 @@
     "@types/express": "^4.17.1",
     "@types/glob": "^7.1.1",
     "@types/jest": "^24.0.19",
-    "@types/node": "^12.11.1",
+    "@types/node": "^12.11.2",
     "@types/pouchdb-core": "^7.0.4",
     "@types/qs": "^6.5.3",
     "@types/query-string": "^6.3.0",
@@ -235,7 +235,7 @@
     "@types/react-beautiful-dnd": "^11.0.3",
     "@types/react-dom": "^16.9.2",
     "@types/react-helmet-async": "^1.0.1",
-    "@types/react-redux": "^7.1.4",
+    "@types/react-redux": "^7.1.5",
     "@types/react-router": "^5.1.2",
     "@types/react-router-dom": "^5.1.0",
     "@types/redux": "^3.6.31",
@@ -289,7 +289,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "optionalDependencies": {
-    "leveldown": "^5.3.0",
+    "leveldown": "^5.4.0",
     "pouchdb-adapter-leveldb": "^7.1.1"
   }
 }
