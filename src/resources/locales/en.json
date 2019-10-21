@@ -96,7 +96,8 @@
         },
         "import": {
             "fail": "The import of {{- path}} failed. Verify that the file is valid",
-            "success": "The import of {{- title}} is finished."
+            "success": "The import of {{- title}} is finished.",
+            "alreadyImport": "{{- title}} was already imported"
         }
     },
     "opds": {

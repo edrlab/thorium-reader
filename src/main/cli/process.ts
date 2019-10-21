@@ -14,7 +14,7 @@ import { lockInstance } from "readium-desktop/main/lock";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import * as yargs from "yargs";
 
-import { cli_, cliImport, cliOpds, cliRead } from "./commandLine";
+import { cliImport, cliOpds, openFileFromCli, openTitleFromCli } from "./commandLine";
 
 // Logger
 const debug = debug_("readium-desktop:cli");
@@ -126,7 +126,7 @@ yargs
                 mainFct();
                 app.whenReady().then(async () => {
                     try {
-                        if (!await cliRead(argv.title)) {
+                        if (!await openTitleFromCli(argv.title)) {
                             const errorMessage = `There is no publication title match for \"${argv.title}\"`;
                             throw new Error(errorMessage);
                         }
@@ -161,7 +161,7 @@ yargs
                 if (argv.path) {
                     app.whenReady().then(async () => {
                         try {
-                            if (!await cli_(argv.path)) {
+                            if (!await openFileFromCli(argv.path)) {
                                 const errorMessage = `Import failed for the publication path : ${argv.path}`;
                                 throw new Error(errorMessage);
                             }

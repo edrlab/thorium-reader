@@ -7,13 +7,10 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+interface IProps extends ReturnType<typeof mapStateToProps> {
 }
 
 class SameFileImportManager extends React.Component<IProps> {
@@ -22,9 +19,15 @@ class SameFileImportManager extends React.Component<IProps> {
 
         if (lastImport !== oldProps.lastImport) {
             if (downloads.findIndex((value) => value.url === lastImport.publication.url) < 0) {
-                this.search();
-            } else {
-                this.props.displayImportDialog(lastImport.publication, lastImport.downloadSample );
+                apiAction("publication/importOpdsEntry",
+                    lastImport.publication.url,
+                    lastImport.publication.base64OpdsPublication,
+                    lastImport.publication.title,
+                    lastImport.publication.tags,
+                    lastImport.downloadSample,
+                ).catch((error) => {
+                    console.error(`Error to fetch api publication/importOpdsEntry`, error);
+                });
             }
         }
     }
@@ -32,41 +35,7 @@ class SameFileImportManager extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         return (<></>);
     }
-
-    private search() {
-        const { lastImport } = this.props;
-        apiAction("publication/search", lastImport.publication.title)
-            .then((searchResult) => {
-                if (searchResult && searchResult.length) {
-                    this.props.displayImportDialog(lastImport.publication, lastImport.downloadSample);
-                } else {
-                    apiAction("publication/importOpdsEntry",
-                        lastImport.publication.url,
-                        lastImport.publication.base64OpdsPublication,
-                        lastImport.publication.title,
-                        lastImport.publication.tags,
-                        lastImport.downloadSample,
-                    ).catch((error) => {
-                        console.error(`Error to fetch api publication/importOpdsEntry`, error);
-                    });
-                }
-            })
-            .catch((e) => console.error("Error to fetch api publication/search", e));
-    }
 }
-
-const mapDispatchToProps = (dispatch: TDispatch) => {
-    return {
-        displayImportDialog: (publication: ImportOpdsPublication, downloadSample: boolean) => {
-            dispatch(dialogActions.open("same-file-import-confirm",
-                {
-                    publication,
-                    downloadSample,
-                },
-            ));
-        },
-    };
-};
 
 const mapStateToProps = (state: RootState) => {
     return {
@@ -75,4 +44,4 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SameFileImportManager);
+export default connect(mapStateToProps)(SameFileImportManager);

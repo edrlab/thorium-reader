@@ -13,10 +13,11 @@ import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
     publication: OpdsPublicationView;
 }
 
@@ -28,7 +29,8 @@ export class PublicationCard extends React.Component<IProps> {
     }
 
     public render(): React.ReactElement<{}>  {
-        const { publication, __ } = this.props;
+        const { publication, __, buttonIsDisabled } = this.props;
+        console.log(buttonIsDisabled);
         return (
             <>
                 <button role="menuitem"
@@ -39,6 +41,7 @@ export class PublicationCard extends React.Component<IProps> {
                 { publication.isFree &&
                     <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e) }
+                        disabled={buttonIsDisabled}
                     >
                         {__("catalog.addBookToLib")}
                     </button>
@@ -107,4 +110,11 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(PublicationCard));
+// any because recursive type doesn't works
+const mapStateToProps = (state: RootState, props: any) => {
+    return {
+        buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.publication.url) > -1,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationCard));

@@ -244,6 +244,7 @@
     "@types/uuid": "^3.4.5",
     "@types/xmldom": "^0.1.29",
     "@types/yargs": "^13.0.3",
+    "@types/yauzl": "^2.9.1",
     "awesome-typescript-loader": "^5.2.1",
     "concurrently": "^5.0.0",
     "copy-webpack-plugin": "^5.0.4",

@@ -14,15 +14,16 @@ import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialo
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
     publication: OpdsPublicationView;
 }
 
 export class OpdsControls extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
-        const { publication, verifyImport } = this.props;
+        const { publication, verifyImport, buttonIsDisabled } = this.props;
         const { __ } = this.props;
 
         if (!publication) {
@@ -33,6 +34,7 @@ export class OpdsControls extends React.Component<IProps> {
             <button
                 onClick={() => verifyImport(publication as ImportOpdsPublication)}
                 className={styles.lire}
+                disabled={buttonIsDisabled}
             >
                 {__("catalog.addBookToLib")}
             </button>
@@ -62,4 +64,11 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(OpdsControls));
+// any because recursive type doesn't works
+const mapStateToProps = (state: RootState, props: any) => {
+    return {
+        buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.publication.url) > -1,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OpdsControls));
