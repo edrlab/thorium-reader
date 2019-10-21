@@ -151,9 +151,11 @@
         "marks": {
             "annotations": "Annotations",
             "bookmarks": "Marque-pages",
+            "delete": "Supprimer",
+            "edit": "Editer",
             "illustrations": "Table des Illustrations",
             "landmarks": "Repères",
-            "toc": "Table des matières "
+            "toc": "Table des matières"
         },
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",

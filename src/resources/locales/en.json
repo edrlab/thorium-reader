@@ -151,6 +151,8 @@
         "marks": {
             "annotations": "Annotations",
             "bookmarks": "Bookmarks",
+            "delete": "Delete",
+            "edit": "Edit",
             "illustrations": "Table of illustrations",
             "landmarks": "Landmarks",
             "toc": "Table of Contents"

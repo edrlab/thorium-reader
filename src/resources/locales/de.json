@@ -150,6 +150,8 @@
         "marks": {
             "annotations": "Annotationen",
             "bookmarks": "Lesezeichen",
+            "delete": "Löschen",
+            "edit": "Bearbeiten",
             "illustrations": "Illustrationstabelle",
             "landmarks": "Landmarks",
             "toc": "inhaltsverzeichnis"
