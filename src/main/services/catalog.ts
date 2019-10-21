@@ -195,6 +195,7 @@ export class CatalogService {
         );
         debug("[END] Download publication", downloadUrl, newDownload);
         // Import downloaded publication in catalog
+        // FIXME: can be undefined type
         let publicationDocument = await this.importFile(download.dstPath, isLcpFile);
 
         // Add opds publication serialization to resources
