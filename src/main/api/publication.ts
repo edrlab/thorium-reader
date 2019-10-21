@@ -11,6 +11,7 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { downloadActions } from "readium-desktop/common/redux/actions";
 import { open } from "readium-desktop/common/redux/actions/toast";
 import { Translator } from "readium-desktop/common/services/translator";
+import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
@@ -191,11 +192,16 @@ export class PublicationApi implements IPublicationApi {
         }
         // returns all publications linked to this import
         const pubsRawPromise = filePathArray.map((filePath) => this.catalogService.importFile(filePath));
-        const pubsRaw = await PromiseAllSettled(pubsRawPromise);
-        const pubs = pubsRaw.filter((pub) => pub.status === "fulfilled" && pub.value);
-        // https://github.com/microsoft/TypeScript/issues/16069 : no inference type on filter
-        const pubsView = pubs.map((pub) => this.publicationViewConverter.convertDocumentToView((pub as any).value));
-        return pubsView;
+        try {
+            const pubsRaw = await PromiseAllSettled(pubsRawPromise);
+            const pubs = pubsRaw.filter((pub) => pub.status === "fulfilled" && pub.value);
+            // https://github.com/microsoft/TypeScript/issues/16069 : no inference type on filter
+            const pubsView = pubs.map((pub) => this.publicationViewConverter.convertDocumentToView((pub as any).value));
+            return pubsView;
+        } catch (e) {
+            debug("EROROROROR", e);
+        }
+        return undefined;
     }
 
     public async search(title: string): Promise<PublicationView[]> {

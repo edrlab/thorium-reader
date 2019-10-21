@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-async function PromiseAllSettled<T>(promises: Array<Promise<T>>): Promise<Array<({
+export async function PromiseAllSettled<T>(promises: Array<Promise<T>>): Promise<Array<({
     status: "fulfilled";
     value: T;
 } | {
