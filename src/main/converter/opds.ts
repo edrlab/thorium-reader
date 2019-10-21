@@ -77,13 +77,31 @@ export class OpdsFeedViewConverter {
             publishedAt = moment(metadata.PublicationDate).toISOString();
         }
 
+        // CoverView object
         let cover: CoverView | undefined;
 
         if (publication.Images && publication.Images.length > 0) {
-            const urlCover = publication.Images[0].Href;
-            cover = {
-                url: urlPathResolve(url, urlCover),
-            };
+            const imagesLink = publication.Images.filter(
+                (link) => link.TypeLink === "image/png" || link.TypeLink === "image/jpeg");
+
+            const thumbnailLink = imagesLink.filter(
+                (img) => img.Rel.filter(
+                    (rel) => rel === "http://opds-spec.org/image/thumbnail"))[0];
+            const thumbnailUrl = (thumbnailLink && thumbnailLink.Href) ?
+                urlPathResolve(url, thumbnailLink.Href) : undefined;
+
+            const coverLink = imagesLink.filter(
+                (img) => img.Rel.filter(
+                    (rel) => rel === "http://opds-spec.org/image"))[0];
+            const coverUrl = (coverLink && coverLink.Href) ?
+                urlPathResolve(url, coverLink.Href) : undefined;
+
+            if (coverUrl || thumbnailUrl) {
+                cover = {
+                    thumbnailUrl,
+                    coverUrl,
+                };
+            }
         }
 
         // Get odps entry
