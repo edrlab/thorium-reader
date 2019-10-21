@@ -220,11 +220,11 @@ export class CatalogService {
     }
 
     public async deletePublication(publicationIdentifier: string) {
-        const store = diMainGet("store");
         const publicationApi = diMainGet("publication-api");
+        // FIXME: Call publication Api in service ??
         const publication = await publicationApi.get(publicationIdentifier);
 
-        store.dispatch(closeReaderFromPublication(publication));
+        this.store.dispatch(closeReaderFromPublication(publication));
 
         // Remove from database
         await this.publicationRepository.delete(publicationIdentifier);

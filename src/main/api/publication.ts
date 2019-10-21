@@ -191,9 +191,10 @@ export class PublicationApi implements IPublicationApi {
         }
         // returns all publications linked to this import
         const pubsRawPromise = filePathArray.map((filePath) => this.catalogService.importFile(filePath));
-        const pubsRaw = await PromiseRunAllIgnoreReject(pubsRawPromise);
-        const pubs = pubsRaw.filter((pub) => pub);
-        const pubsView = pubs.map((pub) => this.publicationViewConverter.convertDocumentToView(pub));
+        const pubsRaw = await PromiseAllSettled(pubsRawPromise);
+        const pubs = pubsRaw.filter((pub) => pub.status === "fulfilled" && pub.value);
+        // https://github.com/microsoft/TypeScript/issues/16069 : no inference type on filter
+        const pubsView = pubs.map((pub) => this.publicationViewConverter.convertDocumentToView((pub as any).value));
         return pubsView;
     }
 

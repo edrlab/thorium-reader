@@ -5,16 +5,27 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// used in publcation api import fct
-async function PromiseRunAllIgnoreReject<T>(promise: Array<Promise<T>>) {
-    const retArray = [];
-    for (const i of promise) {
-        try {
-            retArray.push(await i);
-        } catch (e) {
-            // ignore;
-
-        }
-    }
-    return retArray;
+async function PromiseAllSettled<T>(promises: Array<Promise<T>>): Promise<Array<({
+    status: "fulfilled";
+    value: T;
+} | {
+    status: "rejected";
+    reason: any;
+})>> {
+    return Promise.all(
+        promises.map((promise) =>
+            promise
+                .then<{
+                    status: "fulfilled";
+                    value: T;
+                }>((value) => ({
+                    status: "fulfilled",
+                    value,
+                }))
+                .catch((reason) => ({
+                    status: "rejected",
+                    reason,
+                })),
+        ),
+    );
 }
