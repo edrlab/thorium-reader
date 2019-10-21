@@ -67,10 +67,12 @@ script:
   - 'env | grep -iE "DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_"'
 # asarUnpack
 #  - 'sed -i -e s/\\.node\"/._node_\"/g package.json && cat package.json'
+  - 'sed -i -e "s/^ [ ]*\"leveldown\": .*$//g" package.json && cat package.json && sed -i -e "s/^ [ ]*\"leveldown\": .*$//g" src/package.json && cat src/package.json'
+  - 'sed -i -e "s/^ [ ]*\"pouchdb-adapter-leveldb\": .*$//g" package.json && cat package.json && sed -i -e "s/^ [ ]*\"pouchdb-adapter-leveldb\": .*$//g" src/package.json && cat src/package.json'
   - 'if [[ "$TRAVIS_OS_NAME_" == "linux" ]]; then
-    sed -i -e s/\\.node\"/._node_\"/g package.json && cat package.json && npm run package:linux && ls -als release && ls -als release/linux-unpacked ;
+    npm run package:linux && ls -als release && ls -als release/linux-unpacked ;
     elif [[ "$TRAVIS_OS_NAME_" == "osx" ]]; then
-    sed -i -e s/\\.node\"/._node_\"/g package.json && cat package.json && npm run package:mac && ls -als release && ls -als release/mac ;
+    npm run package:mac && ls -als release && ls -als release/mac ;
     elif [[ "$TRAVIS_OS_NAME_" == "windows" ]]; then
     sed -i -e "s/        \"appx\",//g" package.json && cat package.json && docker run --rm
     --env-file <(env | grep -iE "DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_")
