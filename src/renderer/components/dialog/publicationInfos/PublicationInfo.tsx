@@ -38,6 +38,7 @@ interface IState {
     seeMore: boolean;
     needSeeMore: boolean;
     publication: TPublicationApiGet_result | undefined;
+    coverZoom: boolean;
 }
 
 class PublicationInfo extends React.Component<IProps, IState> {
@@ -52,6 +53,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
             seeMore: false,
             needSeeMore: false,
             publication: undefined,
+            coverZoom: false,
         };
         this.toggleSeeMore = this.toggleSeeMore.bind(this);
         this.getPublicationFromId = this.getPublicationFromId.bind(this);
@@ -130,12 +132,14 @@ class PublicationInfo extends React.Component<IProps, IState> {
             return (<></>);
         })();
 
-        return (
-            <Dialog open={true} close={this.props.closeDialog}>
+        const renderInfo = () =>
+            <>
                 <div className={styles.dialog_left}>
                     <div className={styles.image_wrapper}>
                         <div>
-                            <Cover publication={publication} />
+                            <Cover publication={publication} onclick={() => this.setState({
+                                coverZoom: !this.state.coverZoom,
+                            })}/>
                         </div>
                     </div>
                     {controlsComponent}
@@ -193,6 +197,16 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         </p>
                     </div>
                 </div>
+            </>;
+
+        return (
+            <Dialog open={true} close={this.props.closeDialog}>
+                { this.state.coverZoom ?
+                    <Cover publication={publication} coverTypeUrl="coverUrl" onclick={() => this.setState({
+                        coverZoom: !this.state.coverZoom,
+                    })}/>
+                    : renderInfo()
+                }
             </Dialog>
         );
     }

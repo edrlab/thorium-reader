@@ -9,20 +9,22 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
-import { PublicationView } from "readium-desktop/common/views/publication";
+import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 interface IProps extends TranslatorProps {
     publication: PublicationView;
+    coverTypeUrl?: keyof CoverView | undefined;
+    onclick?: () => void;
 }
 
 class Cover extends React.Component<IProps, null> {
 
     public render(): React.ReactElement<{}>  {
 
-        if (this.props.publication.cover == null) {
+        if (!this.props.publication.cover) {
             let authors = "";
 
             for (const author of this.props.publication.authors) {
@@ -51,7 +53,9 @@ class Cover extends React.Component<IProps, null> {
                 </div>
             );
         } else {
-            return <img src={this.props.publication.cover.url}/>;
+            return <img onClick={this.props.onclick} src={this.props.coverTypeUrl ?
+                this.props.publication.cover[this.props.coverTypeUrl] :
+                this.props.publication.cover.thumbnailUrl || this.props.publication.cover.coverUrl}/>;
         }
     }
 }
