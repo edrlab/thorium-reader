@@ -7,14 +7,9 @@
 
 import * as crypto from "crypto";
 import * as fs from "fs";
-
-import { container } from "readium-desktop/main/di";
-
 import { Publication } from "readium-desktop/common/models/publication";
-
-import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-
 import { httpGet } from "readium-desktop/common/utils/http";
+import { diMainGet } from "readium-desktop/main/di";
 import { injectDataInZip } from "readium-desktop/utils/zip";
 
 export function toSha256Hex(data: string) {
@@ -26,7 +21,7 @@ export function toSha256Hex(data: string) {
 export async function injectLcpl(publication: Publication, lcpl: string) {
     // FIXME: do not use services in utils
     // Get epub file from publication
-    const pubStorage = container.get("publication-storage") as PublicationStorage;
+    const pubStorage = diMainGet("publication-storage");
     const epubPath = pubStorage.getPublicationEpubPath(publication.identifier);
     // Inject lcpl in a temporary zip
     await injectDataInZip(

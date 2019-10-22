@@ -12,10 +12,12 @@ const isDev = nodeEnv === "development";
 
 const isVisualStudioCodeLaunch = process.env.VSCODE_LAUNCH || "false";
 
-const pouchDbAdapterName = isDev ?
+const skipLevelDown = isDev || process.env.TRAVIS_OS_NAME_;
+
+const pouchDbAdapterName = skipLevelDown ?
     "jsondown" : "leveldb";
 
-const pouchDbAdapterPackage = isDev ?
+const pouchDbAdapterPackage = skipLevelDown ?
     "readium-desktop/pouchdb/jsondown-adapter" : "pouchdb-adapter-leveldb";
 
 const rendererAppBaseUrl = isDev ?

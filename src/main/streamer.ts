@@ -6,38 +6,23 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import * as path from "path";
-
+import { app } from "electron";
 import * as express from "express";
-
-import {
-    colCountEnum,
-    IReadiumCSS,
-    readiumCSSDefaults,
-    textAlignEnum,
-} from "@r2-navigator-js/electron/common/readium-css-settings";
-import {
-    _NODE_MODULE_RELATIVE_URL,
-    _PACKAGING,
-} from "readium-desktop/preprocessor-directives";
+import * as path from "path";
+import { diMainGet } from "readium-desktop/main/di";
+import { _NODE_MODULE_RELATIVE_URL, _PACKAGING } from "readium-desktop/preprocessor-directives";
 
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
-import { Link } from "@r2-shared-js/models/publication-link";
-
-import { Publication } from "@r2-shared-js/models/publication";
-
-import { Server } from "@r2-streamer-js/http/server";
-import { Store } from "redux";
-
-import { app } from "electron";
-import { container } from "readium-desktop/main/di";
-
-import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
-
+import {
+    colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
+} from "@r2-navigator-js/electron/common/readium-css-settings";
 import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
-
+import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
+import { Publication } from "@r2-shared-js/models/publication";
+import { Link } from "@r2-shared-js/models/publication-link";
 import { Transformers } from "@r2-shared-js/transform/transformer";
 import { TransformerHTML } from "@r2-shared-js/transform/transformer-html";
+import { Server } from "@r2-streamer-js/http/server";
 
 const debug = debug_("readium-desktop:main#streamer");
 
@@ -69,7 +54,7 @@ debug("readium css path:", rcssPath);
 // see src/renderer/components/reader/ReaderApp.jsx
 function computeReadiumCssJsonMessage(_publication: Publication, _link: Link | undefined):
     IEventPayload_R2_EVENT_READIUMCSS {
-    const store = (container.get("store") as Store<any>);
+    const store = diMainGet("store");
     let settings = store.getState().reader.config;
     if (!settings.value) {
         debug("!settings.value? (MAIN)");

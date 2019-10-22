@@ -28,6 +28,7 @@
         },
         "addBookToLib": "Importer",
         "addTags": "Ajouter un tag",
+        "addTagsButton": "Ajouter",
         "allBooks": "Tous les livres",
         "bookInfo": "Fiche livre",
         "delete": "Supprimer",
@@ -60,7 +61,7 @@
         "deleteFeed": "Êtes vous sûr de vouloir supprimer ce catalogue ?",
         "deletePublication": "Êtes vous sûr de vouloir supprimer cette publication ?",
         "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub ou .lcpl)",
+        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub)",
         "no": "Non",
         "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
@@ -94,7 +95,9 @@
             "success": "Le téléchargement de {{- title}} est terminé."
         },
         "import": {
-            "success": "L'import de {{- title}} est terminé."
+            "fail": "L'importation de {{- path}} a échoué. Vérifier que le fichier est valide",
+            "success": "L'import de {{- title}} est terminé.",
+            "alreadyImport": "{{- title}} est déja importé"
         }
     },
     "opds": {
@@ -109,14 +112,25 @@
         "addMenu": "Ajouter un flux OPDS",
         "back": "Retour",
         "breadcrumbRoot": "Catalogues",
-        "empty": "",
+        "empty": "Aucune publication trouvée",
+        "firstPage": "Première",
+        "lastPage": "Dernière",
         "menu": {
             "aboutBook": "Fiche livre",
             "addExtract": "Importer l'extrait",
             "goBuyBook": "Aller sur la page d'achat",
             "goLoanBook": "Aller sur la page d'emprunt",
             "goSubBook": "Aller sur la page d'abonnement"
-        }
+        },
+        "network": {
+            "error": "Une erreur est survenue",
+            "noInternet": "Pas d'internet",
+            "noInternetMessage": "Essayez de vérifier le câble réseau, le modem, le routeur ou la wifi",
+            "reject": "Désolé, une erreur inattendue s'est produite lors de la tentative de traitement du flux OPDS.",
+            "timeout": "Le flux OPDS met du temps à répondre, veuillez réessayer plus tard"
+        },
+        "next": "Suivant",
+        "previous": "Précédent"
     },
     "publication": {
         "deleteButton": "Supprimer de la bibliothèque",
@@ -137,14 +151,21 @@
         "marks": {
             "annotations": "Annotations",
             "bookmarks": "Marque-pages",
+            "delete": "Supprimer",
+            "edit": "Editer",
             "illustrations": "Table des Illustrations",
-            "toc": "Table des matières "
+            "landmarks": "Repères",
+            "toc": "Table des matières"
         },
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",
             "bookmarkTitle": "marque-page",
             "detachWindowTitle": "détacher la fenêtre",
             "fullscreenTitle": "mode plein écran",
+            "goTo": "Aller à",
+            "goToError": "Cette page n'existe pas",
+            "goToPlaceHolder": "Entrer un numéro de page",
+            "goToTitle": "Aller à la page",
             "infoTitle": "informations",
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "quitter le mode plein écran",

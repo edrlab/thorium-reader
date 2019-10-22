@@ -49,9 +49,23 @@ export enum OpdsResultType {
 export interface OpdsResultView {
     title: string;
     type: OpdsResultType;
-    navigation: OpdsLinkView[];
-    publications: OpdsPublicationView[];
-    searchUrl?: string;
+    navigation?: OpdsLinkView[];
+    publications?: OpdsPublicationView[];
+    urls: OpdsResultUrls;
+    page?: OpdsResultPageInfos;
+}
+
+export interface OpdsResultUrls {
+    nextPage?: string;
+    previousPage?: string;
+    firstPage?: string;
+    lastPage?: string;
+    search?: string;
+}
+
+export interface OpdsResultPageInfos {
+    numberOfItems: number;
+    itemsPerPage: number;
 }
 
 export type THttpGetOpdsResultView = IHttpGetResult<string, OpdsResultView>;

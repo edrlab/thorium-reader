@@ -6,10 +6,9 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { TranslatorProps, withTranslator } from "../utils/translator";
-
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 class NoPublicationInfo extends React.Component<TranslatorProps> {
     public render(): React.ReactElement<{}> {
@@ -19,7 +18,7 @@ class NoPublicationInfo extends React.Component<TranslatorProps> {
                 <div className={styles.noPublicationHelp}>
                     <p>{__("catalog.noPublicationHelpL1")}</p>
                     <p>{__("catalog.noPublicationHelpL2")}</p>
-                    <p>{__("catalog.noPublicationHelpL3")}</p>
+                    { /*<p>{__("catalog.noPublicationHelpL3")}</p> */ }
                 </div>
             </>
         );

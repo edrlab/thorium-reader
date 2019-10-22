@@ -7,13 +7,11 @@
 
 import * as debug_ from "debug";
 import { BrowserWindow, Rectangle, screen } from "electron";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { container } from "readium-desktop/main/di";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
-import { debounce } from "readium-desktop/utils/debounce";
-import { AppWindow, AppWindowType } from "../models/win";
-
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
+import { diMainGet } from "readium-desktop/main/di";
+import { debounce } from "readium-desktop/utils/debounce";
+
+import { AppWindow, AppWindowType } from "../models/win";
 
 // Logger
 const debug = debug_("readium-desktop:common:rectangle:window");
@@ -30,7 +28,7 @@ const defaultRectangle = (): Rectangle => (
 export type t_savedWindowsRectangle = typeof savedWindowsRectangle;
 export const savedWindowsRectangle = async (rectangle: Rectangle) => {
     try {
-        const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
+        const configRepository = diMainGet("config-repository");
         await configRepository.save({
             identifier: configIdKey,
             value: rectangle,
@@ -46,7 +44,7 @@ const debounceSavedWindowsRectangle = debounce<t_savedWindowsRectangle>(savedWin
 export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rectangle> => {
 
     try {
-        const winRegistry = container.get("win-registry") as WinRegistry;
+        const winRegistry = diMainGet("win-registry");
         const windows = Object.values(winRegistry.getWindows()) as AppWindow[];
         const displayArea = screen.getPrimaryDisplay().workAreaSize;
         if (WinType !== AppWindowType.Library && windows.length > 1) {
@@ -57,7 +55,7 @@ export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rect
             rectangle.y %= displayArea.height - rectangle.height;
             return rectangle;
         } else {
-            const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
+            const configRepository = diMainGet("config-repository");
             let rectangle: ConfigDocument | undefined;
             try {
                 rectangle = await configRepository.get(configIdKey);

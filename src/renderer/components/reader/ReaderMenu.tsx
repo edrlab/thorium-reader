@@ -5,64 +5,99 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
+import classnames from "classnames";
 import * as queryString from "query-string";
-
+import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
-
+import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TFormEvent } from "readium-desktop/typings/react";
+import { Unsubscribe } from "redux";
 
-import classnames from "classnames";
-
-import UpdateBookmarkForm from "./UpdateBookmarkForm";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-import { SectionData } from "./sideMenu/sideMenuData";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+import { Link } from "@r2-shared-js/models/publication-link";
 
 import SideMenu from "./sideMenu/SideMenu";
+import { SectionData } from "./sideMenu/sideMenuData";
+import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-
-interface Props extends TranslatorProps {
+interface IProps extends TranslatorProps {
     open: boolean;
     publication: R2Publication;
     handleLinkClick: (event: any, url: string) => void;
-    bookmarks: LocatorView[];
     handleBookmarkClick: (locator: any) => void;
-    deleteBookmark?: any;
     toggleMenu: any;
     focusNaviguationMenu: () => void;
 }
 
-interface State {
+interface IState {
     openedSection: number;
     bookmarkToUpdate: number;
+    pageError: boolean;
+    refreshError: boolean;
+    bookmarks: TReaderApiFindBookmarks_result | undefined;
 }
 
-export class ReaderMenu extends React.Component<Props, State> {
-    public constructor(props: Props) {
+export class ReaderMenu extends React.Component<IProps, IState> {
+    private goToRef: any;
+    private unsubscribe: Unsubscribe;
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {
             openedSection: undefined,
             bookmarkToUpdate: undefined,
+            pageError: false,
+            refreshError: false,
+            bookmarks: undefined,
         };
 
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
+        this.handleSubmitPage = this.handleSubmitPage.bind(this);
+    }
+
+    public componentDidMount() {
+        this.unsubscribe = apiSubscribe([
+            "reader/addBookmark",
+            "reader/deleteBookmark",
+            "reader/updateBookmark",
+        ], () => {
+            apiAction("reader/findBookmarks", queryString.parse(location.search).pubId as string)
+            .then((bookmarks) => this.setState({bookmarks}))
+            .catch((error) => console.error("Error to fetch api reader/findBookmark", error));
+        });
+    }
+
+    public componentDidUpdate() {
+        if (this.state.refreshError) {
+            if (this.state.pageError) {
+                this.setState({pageError: false});
+            } else {
+                this.setState({
+                    pageError: true,
+                    refreshError: false,
+                });
+            }
+        }
+    }
+
+    public componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, publication, bookmarks, toggleMenu } = this.props;
-
+        const { __, publication, toggleMenu } = this.props;
+        const { bookmarks } = this.state;
         if (!publication) {
             return <></>;
         }
@@ -70,23 +105,29 @@ export class ReaderMenu extends React.Component<Props, State> {
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: publication && this.createTOCRenderList(publication.TOC),
+                content: publication && this.renderLinkTree(__("reader.marks.toc"), publication.TOC, 1),
                 disabled: !publication.TOC || publication.TOC.length === 0,
             },
             {
-                title: __("reader.marks.illustrations"),
-                content: <></>,
-                disabled: !publication.LOI || publication.LOI.length === 0,
+                title: __("reader.marks.landmarks"),
+                content: publication && publication.Landmarks &&
+                    this.renderLinkList(__("reader.marks.landmarks"), publication.Landmarks),
+                disabled: !publication.Landmarks || publication.Landmarks.length === 0,
             },
             {
                 title: __("reader.marks.bookmarks"),
-                content: this.createLandmarkList(),
+                content: this.createBookmarkList(),
                 disabled: !bookmarks || bookmarks.length === 0,
             },
             {
                 title: __("reader.marks.annotations"),
                 content: <></>,
                 disabled: true,
+            },
+            {
+                content: this.buildGoToPageSection(),
+                disabled: false,
+                notExtendable: true,
             },
         ];
 
@@ -102,60 +143,111 @@ export class ReaderMenu extends React.Component<Props, State> {
         );
     }
 
-    private createTOCRenderList(TOC: any[]): JSX.Element {
-        return <ul className={styles.chapters_content}>
-            { TOC.map((content, i: number) => {
+    private renderLinkList(label: string, links: Link[]): JSX.Element {
+        return <ul
+            aria-label={label}
+            className={styles.chapters_content}
+            role={"list"}
+        >
+            { links.map((link, i: number) => {
                 return (
-                    <li key={i}>
-                        {content.Children ? (
+                    <li
+                        key={i}
+                        aria-level={1}
+                        role={"listitem"}
+                    >
+                        <a
+                            className={
+                                link.Href ?
+                                    classnames(styles.line, styles.active) :
+                                    classnames(styles.line, styles.active, styles.inert)
+                            }
+                            onClick=
+                                {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
+                            tabIndex={0}
+                            onKeyPress=
+                                {
+                                    (e) => {
+                                        if (link.Href && e.key === "Enter") {
+                                            this.props.handleLinkClick(e, link.Href);
+                                        }
+                                    }
+                                }
+                            data-href={link.Href}
+                        >
+                            <span>{link.Title}</span>
+                        </a>
+                    </li>
+                );
+            })}
+        </ul>;
+    }
+
+    private renderLinkTree(label: string | undefined, links: Link[], level: number): JSX.Element {
+        // VoiceOver support breaks when using the propoer tree[item] ARIA role :(
+        const useTree = false;
+
+        return <ul
+                    role={useTree ? (level <= 1 ? "tree" : "group") : undefined}
+                    aria-label={label}
+                    className={styles.chapters_content}
+                >
+            { links.map((link, i: number) => {
+                return (
+                    <li key={`${level}-${i}`}
+                        role={useTree ? "treeitem" : undefined}
+                        aria-expanded={useTree ? "true" : undefined}
+                    >
+                        {link.Children ? (
                             <>
+                            <div role={"heading"} aria-level={level}>
                                 <a
                                     className={
-                                        content.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
+                                        link.Href ? styles.subheading : classnames(styles.subheading, styles.inert)
                                     }
                                     onClick=
-                                        {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
+                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
                                     tabIndex={0}
                                     onKeyPress=
                                         {
                                             (e) => {
-                                                if (content.Href && e.charCode === 13) {
-                                                    this.props.handleLinkClick(e, content.Href);
+                                                if (link.Href && e.key === "Enter") {
+                                                    this.props.handleLinkClick(e, link.Href);
                                                 }
                                             }
                                         }
-                                    data-href={content.Href}
+                                    data-href={link.Href}
                                 >
-                                    <span>{content.Title}</span>
+                                    <span>{link.Title}</span>
                                 </a>
-                                {content.Children &&
-                                    <ul className={styles.chapters_content}>
-                                        {this.createTOCRenderList(content.Children)}
-                                    </ul>
-                                }
+                            </div>
+
+                            {this.renderLinkTree(undefined, link.Children, level + 1)}
                             </>
                         ) : (
-                            <a
-                                className={
-                                    content.Href ?
-                                        classnames(styles.line, styles.active) :
-                                        classnames(styles.line, styles.active, styles.inert)
-                                }
-                                onClick=
-                                    {content.Href ? (e) => this.props.handleLinkClick(e, content.Href) : undefined}
-                                tabIndex={0}
-                                onKeyPress=
-                                    {
-                                        (e) => {
-                                            if (content.Href && e.charCode === 13) {
-                                                this.props.handleLinkClick(e, content.Href);
+                            <div role={"heading"} aria-level={level}>
+                                <a
+                                    className={
+                                        link.Href ?
+                                            classnames(styles.line, styles.active) :
+                                            classnames(styles.line, styles.active, styles.inert)
+                                    }
+                                    onClick=
+                                        {link.Href ? (e) => this.props.handleLinkClick(e, link.Href) : undefined}
+                                    tabIndex={0}
+                                    onKeyPress=
+                                        {
+                                            (e) => {
+                                                if (link.Href && e.key === "Enter") {
+                                                    this.props.handleLinkClick(e, link.Href);
+                                                }
                                             }
                                         }
-                                    }
-                                data-href={content.Href}
-                            >
-                                {content.Title}
-                            </a>
+                                    data-href={link.Href}
+                                >
+                                    <span>{link.Title}</span>
+                                </a>
+                            </div>
                         )}
                     </li>
                 );
@@ -163,38 +255,41 @@ export class ReaderMenu extends React.Component<Props, State> {
         </ul>;
     }
 
-    private createLandmarkList(): JSX.Element[] {
-        if (this.props.publication && this.props.bookmarks) {
+    private createBookmarkList(): JSX.Element[] {
+        const { __ } = this.props;
+        if (this.props.publication && this.state.bookmarks) {
             const { bookmarkToUpdate } = this.state;
-            return this.props.bookmarks.map((bookmark, i) =>
+            return this.state.bookmarks.map((bookmark, i) =>
                 <div
                     className={styles.bookmarks_line}
                     key={i}
                 >
-                    <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
-                    <div
-                        className={styles.chapter_marker}
-                        onClick={() => this.props.handleBookmarkClick(bookmark.locator)}
+                    { bookmarkToUpdate === i &&
+                        <UpdateBookmarkForm
+                            close={ this.closeBookarkEditForm }
+                            bookmark={ bookmark }
+                        />
+                    }
+                    <button
+                        className={styles.bookmark_infos}
+                        tabIndex={0}
+                        onClick={(e) => this.handleBookmarkClick(e, bookmark)}
                     >
-                        { bookmarkToUpdate === i ?
-                            <UpdateBookmarkForm
-                                close={ this.closeBookarkEditForm }
-                                bookmark={ bookmark }
-                            />
-                        :
-                            bookmark.name ? bookmark.name : <>Bookmark {i}</>
-                        }
-                        <div className={styles.gauge}>
-                            <div className={styles.fill}></div>
+                        <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
+                        <div className={styles.chapter_marker}>
+                            <p className={styles.bookmark_name}>
+                                {bookmark.name ? bookmark.name : `Bookmark ${i}`}
+                            </p>
+                            <div className={styles.gauge}>
+                                <div className={styles.fill}></div>
+                            </div>
                         </div>
-                    </div>
-                    <button onClick={() => this.setState({bookmarkToUpdate: i})}>
-                        <SVG svg={ EditIcon }/>
                     </button>
-                    <button onClick={() => this.props.deleteBookmark({
-                        identifier: bookmark.identifier,
-                    })}>
-                        <SVG svg={ DeleteIcon }/>
+                    <button onClick={() => this.setState({bookmarkToUpdate: i})}>
+                        <SVG title={ __("reader.marks.edit")} svg={ EditIcon }/>
+                    </button>
+                    <button onClick={() => this.deleteBookmark(bookmark.identifier)}>
+                        <SVG title={ __("reader.marks.delete")} svg={ DeleteIcon }/>
                     </button>
                 </div>,
             );
@@ -202,45 +297,66 @@ export class ReaderMenu extends React.Component<Props, State> {
         return undefined;
     }
 
+    private deleteBookmark = (bookmarkId: string) => {
+        apiAction("reader/deleteBookmark", bookmarkId)
+            .catch((error) => console.error("Error to fetch api reader/deleteBookmark", error));
+    }
+
+    private buildGoToPageSection() {
+        const { __ } = this.props;
+        const error = this.state.pageError;
+        return <div className={styles.goToPage}>
+            <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
+            <form onSubmit={this.handleSubmitPage}>
+                <input
+                    ref={(ref) => this.goToRef = ref}
+                    type="text"
+                    aria-invalid={error}
+                    onChange={() => this.setState({pageError: false})}
+                    disabled={!this.props.publication.PageList}
+                    placeholder={__("reader.navigation.goToPlaceHolder")}
+                    alt={__("reader.navigation.goToPlaceHolder")}
+                />
+                <button
+                    type="submit"
+                    disabled={!this.props.publication.PageList}
+                >
+                    { __("reader.navigation.goTo") }
+                </button>
+            </form>
+            {error &&
+                <p
+                    className={styles.goToErrorMessage}
+                    aria-live="assertive"
+                    aria-relevant="all"
+                    role="alert"
+                >
+                    { __("reader.navigation.goToError") }
+                </p>
+            }
+        </div>;
+    }
+
     private closeBookarkEditForm() {
         this.setState({ bookmarkToUpdate: undefined });
     }
+
+    private handleSubmitPage(e: TFormEvent) {
+        e.preventDefault();
+        const pageNbr = (this.goToRef.value as string).trim().replace(/\s\s+/g, " ");
+        const foundPage = this.props.publication.PageList.find((page) => page.Title === pageNbr);
+        if (foundPage) {
+            this.setState({pageError: false});
+            this.props.handleLinkClick(undefined, foundPage.Href);
+        } else {
+            this.setState({refreshError: true});
+        }
+    }
+
+    private handleBookmarkClick(e: any, bookmark: LocatorView) {
+        e.preventDefault();
+        this.props.handleBookmarkClick(bookmark.locator);
+    }
 }
 
-const buildBookmarkRequestData = () => {
-    return { publication: { identifier: queryString.parse(location.search).pubId as string } };
-};
-
-export default withApi(
-    withTranslator(ReaderMenu),
-    {
-        operations: [
-            {
-                moduleId: "reader",
-                methodId: "findBookmarks",
-                resultProp: "bookmarks",
-                buildRequestData: buildBookmarkRequestData,
-                onLoad: true,
-            },
-            {
-                moduleId: "reader",
-                methodId: "deleteBookmark",
-                callProp: "deleteBookmark",
-            },
-        ],
-        refreshTriggers: [
-            {
-                moduleId: "reader",
-                methodId: "addBookmark",
-            },
-            {
-                moduleId: "reader",
-                methodId: "deleteBookmark",
-            },
-            {
-                moduleId: "reader",
-                methodId: "updateBookmark",
-            },
-        ],
-    },
-);
+export default withTranslator(ReaderMenu);

@@ -22,18 +22,18 @@ import PublicationAddButton from "./PublicationAddButton";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 export enum DisplayType {
     Grid = "grid",
     List = "list",
 }
 
-interface Props extends RouteComponentProps, TranslatorProps {
+interface IProps extends RouteComponentProps, TranslatorProps {
     displayType: DisplayType;
 }
 
-export class Header extends React.Component<Props, undefined> {
+class Header extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (

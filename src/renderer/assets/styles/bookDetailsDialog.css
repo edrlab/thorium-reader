@@ -164,6 +164,7 @@
     & > div {
 	    display: inline-block;
         margin-left: 15px;
+        flex: 1;
     }
     & > span {
         align-self: flex-start;
@@ -178,6 +179,17 @@
         padding: 0;
         border: none;
         background-color: transparent;
+
+        &.addTagButton {
+            font-size: 1rem;
+            font-weight: bold;
+            color: rgb(59, 59, 59);
+            height: auto;
+            width: auto;
+            padding: 0.5rem;
+            border: 1px solid rgb(59, 59, 59);
+            border-radius: 5px;
+        }
     }
 }
 
@@ -190,6 +202,7 @@
 	border-radius: 3px;
 	border: 1px solid #67A3E0;
 	color: #67A3E0;
+    margin: 0.3rem 0;
 }
 
 .dialog_right .tags li:not(:first-child) {
@@ -210,22 +223,24 @@
 
 .dialog_right #flux_search {
 	margin-bottom:0;
-    border-bottom: 1px solid #c1c1c1;
     margin-left: 0;
     height: auto;
     width: fit-content;
+    display: flex;
+    width: 100%;
 }
 
 .tag_inputs {
 	position: relative;
-	width:300px;
+	max-width:300px;
+    flex: 1;
 	border-radius: 0;
 	border:none;
 	height:35px;
-	/* outline: inherit; */
 	background-color: transparent;
 	color:black;
 	font-size: 0.9rem;
+    border-bottom: 1px solid #c1c1c1;
 }
 
 .tag_inputs::placeholder {
@@ -246,7 +261,6 @@
         right: 0;
         display: flex;
         align-items: center;
-        cursor: pointer;
         & img {
             max-height: 100%;
             max-width: 100%;

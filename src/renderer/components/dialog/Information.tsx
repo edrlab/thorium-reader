@@ -10,30 +10,28 @@ import { readFile } from "fs";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
-
+import { dialogActions } from "readium-desktop/common/redux/actions";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { _PACKAGING } from "readium-desktop/preprocessor-directives";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { promisify } from "util";
 
-import { _PACKAGING } from "readium-desktop/preprocessor-directives";
+import Dialog from "../dialog/Dialog";
 
-import { RootState } from "readium-desktop/renderer/redux/states";
-
-interface Props extends TranslatorProps {
-    locale: string;
-    setLocale: (locale: string) => void;
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-interface States {
+interface IStates {
     placeholder: any;
 }
 
-export class LanguageSettings extends React.Component<Props, States> {
+export class LanguageSettings extends React.Component<IProps, IStates> {
     private parsedMarkdown: string;
 
-    public constructor(props: Props) {
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -59,20 +57,34 @@ export class LanguageSettings extends React.Component<Props, States> {
     }
 
     public render(): React.ReactElement<{}> {
+        if (!this.props.open) {
+            return (<></>);
+        }
+
         const html = { __html: this.parsedMarkdown };
-        return <div dangerouslySetInnerHTML={html}></div>;
+        return (
+            <Dialog open={true} close={this.props.closeDialog}>
+                <div dangerouslySetInnerHTML={html}></div>
+            </Dialog>
+        );
     }
 }
 
 const mapStateToProps = (state: RootState) => {
     return {
         locale: state.i18n.locale,
+        open: state.dialog.type === "about-thorium",
     };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
         setLocale: (locale: string) => dispatch(setLocale(locale)),
+        closeDialog: () => {
+            dispatch(
+                dialogActions.close(),
+            );
+        },
     };
 };
 

@@ -6,32 +6,31 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-
+import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as importAction from "readium-desktop/common/redux/actions/import";
-
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { TMouseEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-interface PublicationCardProps extends TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
     publication: OpdsPublicationView;
-    displayPublicationInfo?: (data: any) => any;
-    verifyImport?: (publication: OpdsPublicationView, downloadSample?: boolean) => void;
 }
 
-export class PublicationCard extends React.Component<PublicationCardProps> {
-    public constructor(props: any) {
+export class PublicationCard extends React.Component<IProps> {
+    public constructor(props: IProps) {
         super(props);
 
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
-        const { publication, __ } = this.props;
+        const { publication, __, buttonIsDisabled } = this.props;
+        console.log(buttonIsDisabled);
         return (
             <>
                 <button role="menuitem"
@@ -42,6 +41,7 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
                 { publication.isFree &&
                     <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e) }
+                        disabled={buttonIsDisabled}
                     >
                         {__("catalog.addBookToLib")}
                     </button>
@@ -78,25 +78,24 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
         );
     }
 
-    private onAddToCatalogClick(e: any, downloadSample?: boolean) {
+    private onAddToCatalogClick(e: TMouseEvent, downloadSample?: boolean) {
         e.preventDefault();
         this.props.verifyImport(this.props.publication, downloadSample);
     }
 
-    private displayPublicationInfo(e: any) {
+    private displayPublicationInfo(e: TMouseEvent) {
         e.preventDefault();
         this.props.displayPublicationInfo(this.props.publication);
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         displayPublicationInfo: (publication: OpdsPublicationView) => {
-            dispatch(dialogActions.open(
-                DialogType.PublicationInfo,
+            dispatch(dialogActions.open("publication-info",
                 {
-                    publication,
-                    isOpds: true,
+                    opdsPublication: publication,
+                    publicationIdentifier: undefined,
                 },
             ));
         },
@@ -111,10 +110,11 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
     };
 };
 
-export default withTranslator(withApi(
-    PublicationCard,
-    {
-        operations: [],
-        mapDispatchToProps,
-    },
-));
+// any because recursive type doesn't works
+const mapStateToProps = (state: RootState, props: any) => {
+    return {
+        buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.publication.url) > -1,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationCard));

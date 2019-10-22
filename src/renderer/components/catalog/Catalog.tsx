@@ -8,24 +8,64 @@
 import * as qs from "query-string";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-
-import { CatalogView} from "readium-desktop/common/views/catalog";
-
+import { TCatalogApiGet_result } from "readium-desktop/main/api/catalog";
+import { TPublicationApiGetAllTags_result } from "readium-desktop/main/api/publication";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-import Header, { DisplayType } from "./Header";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { Unsubscribe } from "redux";
 
 import GridView from "./GridView";
+import Header, { DisplayType } from "./Header";
 import ListView from "./ListView";
 
-interface Props extends TranslatorProps, RouteComponentProps {
-    catalog?: CatalogView;
-    tags?: string[];
-    requestCatalog: any;
+interface IProps extends TranslatorProps, RouteComponentProps {
 }
 
-export class Catalog extends React.Component<Props> {
+interface IState {
+    catalog: TCatalogApiGet_result | undefined;
+    tags: TPublicationApiGetAllTags_result | undefined;
+}
+
+class Catalog extends React.Component<IProps, IState> {
+    private unsubscribe: Unsubscribe;
+
+    constructor(props: IProps) {
+        super(props);
+
+        this.state = {
+            catalog: undefined,
+            tags: undefined,
+        };
+    }
+
+    public componentDidMount() {
+        this.unsubscribe = apiSubscribe([
+            "publication/import",
+            "publication/importOpdsEntry",
+            "publication/delete",
+            "catalog/addEntry",
+            "publication/updateTags",
+            "reader/setLastReadingLocation",
+        ], () => {
+            apiAction("catalog/get")
+                .then((catalog) => this.setState({ catalog }))
+                .catch((error) => {
+                    console.error(`Error to fetch catalog/get`, error);
+                });
+            apiAction("publication/getAllTags")
+                .then((tags) => this.setState({ tags }))
+                .catch((error) => {
+                    console.error(`Error to fetch publication/getAllTags`, error);
+                });
+        });
+    }
+
+    public componentWillUnmount() {
+        this.unsubscribe();
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         let DisplayView: any = GridView;
@@ -40,62 +80,17 @@ export class Catalog extends React.Component<Props> {
             }
         }
 
-        const secondaryHeader = <Header displayType={ displayType } />;
+        const secondaryHeader = <Header displayType={displayType} />;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
-                    { this.props.catalog &&
-                        <DisplayView catalogEntries={ this.props.catalog.entries }
-                        tags={this.props.tags}/>
-                    }
+                {this.state.catalog &&
+                    <DisplayView catalogEntries={this.state.catalog.entries}
+                        tags={this.state.tags} />
+                }
             </LibraryLayout>
         );
     }
 }
 
-export default withApi(
-    withRouter(Catalog),
-    {
-        operations: [
-            {
-                moduleId: "catalog",
-                methodId: "get",
-                callProp: "requestCatalog",
-                resultProp: "catalog",
-                onLoad: true,
-            },
-            {
-                moduleId: "publication",
-                methodId: "getAllTags",
-                resultProp: "tags",
-                onLoad: true,
-            },
-        ],
-        refreshTriggers: [
-            {
-                moduleId: "publication",
-                methodId: "import",
-            },
-            {
-                moduleId: "publication",
-                methodId: "importOpdsEntry",
-            },
-            {
-                moduleId: "publication",
-                methodId: "delete",
-            },
-            {
-                moduleId: "catalog",
-                methodId: "addEntry",
-            },
-            {
-                moduleId: "publication",
-                methodId: "updateTags",
-            },
-            {
-                moduleId: "reader",
-                methodId: "setLastReadingLocation",
-            },
-        ],
-    },
-);
+export default withTranslator(withRouter(Catalog));

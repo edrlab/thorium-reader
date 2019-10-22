@@ -21,7 +21,7 @@ import * as QuitFullscreenIcon from "readium-desktop/renderer/assets/icons/sharp
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { ReaderMode } from "readium-desktop/common/models/reader";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
@@ -126,13 +126,20 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <li
                                 {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                             >
-                                <button
+                                <input
+                                    id="bookmarkButton"
+                                    className={styles.bookmarkButton}
+                                    type="checkbox"
+                                    checked={this.props.isOnBookmark}
+                                    onChange={this.props.toggleBookmark}
+                                    aria-label={ __("reader.navigation.bookmarkTitle")}
+                                />
+                                <label
+                                    htmlFor="bookmarkButton"
                                     className={styles.menu_button}
-                                    onClick={this.props.toggleBookmark}
-                                    {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                                 >
                                     <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
-                                </button>
+                                </label>
                             </li>
                             <li
                             {...(this.props.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}

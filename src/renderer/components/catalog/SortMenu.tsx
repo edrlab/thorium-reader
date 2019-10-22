@@ -6,41 +6,27 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
-import {  TranslatorProps, withTranslator } from "../utils/translator";
 
-interface SortMenuProps extends TranslatorProps {
-        onClickAlphaSort?: () => void;
-        onClickCountSort?: () => void;
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+
+interface IProps extends TranslatorProps {
+    onClickAlphaSort: () => void;
+    onClickCountSort: () => void;
 }
 
-interface SortMenuState {
-        menuOpen: boolean;
-        value: string;
-}
-
-export class SortMenu extends React.Component<SortMenuProps, SortMenuState> {
-        public constructor(props: any) {
-            super(props);
-
-            this.state = {
-                    menuOpen: false,
-                    value: "",
-            };
-        }
-
-        public render(): React.ReactElement<{}> {
-            const { __ } = this.props;
-            return (
-                    <div id={style.sortType}>
-                        <button role="menuitem"
-                        onClick={this.props.onClickAlphaSort}> A-Z </button>
-                        <button role="menuitem"
-                        onClick={this.props.onClickCountSort}> { __("catalog.tagCount") } </button>
-                    </div>
-            );
-        }
+class SortMenu extends React.Component<IProps> {
+    public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
+        return (
+            <div id={style.sortType}>
+                <button role="menuitem"
+                    onClick={this.props.onClickAlphaSort}> A-Z </button>
+                <button role="menuitem"
+                    onClick={this.props.onClickCountSort}> {__("catalog.tagCount")} </button>
+            </div>
+        );
+    }
 }
 
 export default withTranslator(SortMenu);

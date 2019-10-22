@@ -5,43 +5,39 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// import * as debug_ from "debug";
 import * as React from "react";
-
 import { connect } from "react-redux";
-
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
+import { parseQueryString } from "readium-desktop/utils/url";
+import { IOpdsBrowse } from "src/renderer/routing";
 
 import BreadCrumb, { BreadCrumbItem } from "../layout/BreadCrumb";
-
+import BrowserResult from "./BrowserResult";
 import Header from "./Header";
 
-import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
-import { OpdsLinkView } from "readium-desktop/common/views/opds";
+// Logger
+// const debug = debug_("readium-desktop:src/renderer/components/opds/browser");
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-import BrowserResult from "./BrowserResult";
-
-import { parseQueryString } from "readium-desktop/utils/url";
-
-interface Props extends RouteComponentProps, TranslatorProps {
-    navigation: OpdsLinkView[];
+interface IProps extends RouteComponentProps<IOpdsBrowse>, TranslatorProps, ReturnType<typeof mapStateToProps> {
 }
 
-export class Browser extends React.Component<Props> {
-    public render(): React.ReactElement<Props>  {
+class Browser extends React.Component<IProps> {
+    public render(): React.ReactElement<IProps>  {
         const breadcrumb = this.buildBreadcrumb();
-        let url: string;
-        let search: string;
+        let url: string | undefined;
 
         if (this.props.navigation.length > 0) {
-            const link = this.props.navigation[this.props.navigation.length - 1];
-            search = (this.props.match.params as any).search;
-            url = link.url;
+            // get the last link from navigation array print in breadcrumb
+            url = this.props.navigation[this.props.navigation.length - 1].url;
         }
 
         const parsedResult = parseQueryString(this.props.location.search);
@@ -49,18 +45,22 @@ export class Browser extends React.Component<Props> {
         const secondaryHeader = <Header displayType={parsedResult.displayType}/>;
 
         return (
-            <LibraryLayout secondaryHeader={secondaryHeader}>
-                <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search}/>
-                { url &&
-                    <BrowserResult url={ url } search={search}/>
+            <LibraryLayout secondaryHeader={secondaryHeader} mainClassName={styles.opdsBrowse}>
+                <BreadCrumb
+                    className={styles.opdsBrowseBreadcrumb}
+                    breadcrumb={breadcrumb}
+                    search={this.props.location.search}
+                />
+                {url &&
+                    <BrowserResult url={url} breadcrumb={breadcrumb}/>
                 }
             </LibraryLayout>
         );
     }
 
-    private buildBreadcrumb(): BreadCrumbItem[] {
+    private buildBreadcrumb() {
         const { match, navigation } = this.props;
-        const breadcrumb: any = [];
+        const breadcrumb: BreadCrumbItem[] = [];
         const parsedQuerryString = parseQueryString(this.props.location.search);
         const search = parsedQuerryString.search;
 
@@ -75,7 +75,7 @@ export class Browser extends React.Component<Props> {
             const link = navigation[0];
             if (link) {
                 breadcrumb.push({
-                    name: link.title,
+                    name: decodeURI(link.title),
                     path: buildOpdsBrowserRoute(
                         rootFeedIdentifier,
                         link.title,
@@ -85,7 +85,7 @@ export class Browser extends React.Component<Props> {
                 });
             }
             breadcrumb.push({
-                name: search,
+                name: decodeURI(search),
             });
             return breadcrumb;
         }
@@ -106,12 +106,8 @@ export class Browser extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: RootState, __: any) => {
-    const navigation = state.opds.browser.navigation;
+const mapStateToProps = (state: RootState) => ({
+    navigation: state.opds.browser.navigation,
+});
 
-    return {
-        navigation,
-    };
-};
-
-export default withRouter(withTranslator(connect(mapStateToProps, undefined)(Browser)));
+export default connect(mapStateToProps, undefined)(withRouter(withTranslator(Browser)));

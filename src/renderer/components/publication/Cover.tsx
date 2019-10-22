@@ -5,25 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import "reflect-metadata";
+
 import * as React from "react";
-
-import { lazyInject } from "readium-desktop/renderer/di";
-
-import { Translator } from "readium-desktop/common/services/translator";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
-
+import { PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
-interface ICoverProps {
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+
+interface IProps extends TranslatorProps {
     publication: PublicationView;
 }
 
-export default class Cover extends React.Component<ICoverProps, null> {
-    @lazyInject("translator")
-    private translator: Translator;
+class Cover extends React.Component<IProps, null> {
 
     public render(): React.ReactElement<{}>  {
 
@@ -35,7 +30,7 @@ export default class Cover extends React.Component<ICoverProps, null> {
                 if (authors !== "") {
                     authors += ", ";
                 }
-                authors += this.translator.translateContentField(newAuthor);
+                authors += this.props.translator.translateContentField(newAuthor);
             }
             let colors = this.props.publication.customCover;
             if (colors === undefined) {
@@ -49,7 +44,7 @@ export default class Cover extends React.Component<ICoverProps, null> {
                 <div style={backgroundStyle} className={styles.cover}>
                     <div className={styles.box}>
                         <p aria-hidden className={styles.title}>
-                            {this.translator.translateContentField(this.props.publication.title)}
+                            {this.props.translator.translateContentField(this.props.publication.title)}
                         </p>
                         <p aria-hidden className={styles.author}>{authors}</p>
                     </div>
@@ -60,3 +55,5 @@ export default class Cover extends React.Component<ICoverProps, null> {
         }
     }
 }
+
+export default withTranslator(Cover);

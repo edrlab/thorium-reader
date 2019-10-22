@@ -6,34 +6,39 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 import classNames = require("classnames");
 
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
+export enum ToastType {
+    Error,
+    Default,
+    Success,
+}
 
-import { TranslatorProps, withTranslator } from "../utils/translator";
-
-import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
-
-interface Props extends TranslatorProps {
+interface IProps extends TranslatorProps {
     close: (id: string) => void;
     className?: string;
     id?: string;
     icon?: any;
     message?: string;
-    displaySystemNotification: boolean;
+    displaySystemNotification?: boolean;
+    type?: ToastType;
 }
 
-interface State {
+interface IState {
     willLeave: boolean;
     toRemove: boolean;
 }
 
-export class Toast extends React.Component<Props, State> {
+export class Toast extends React.Component<IProps, IState> {
     private ref: any;
 
-    public constructor(props: Props) {
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -61,12 +66,29 @@ export class Toast extends React.Component<Props, State> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { icon } = this.props;
+        const { icon, type } = this.props;
         const { willLeave, toRemove } = this.state;
+
+        let typeClassName: string;
+        switch (type) {
+            case ToastType.Error:
+                typeClassName = styles.error;
+                break;
+            case ToastType.Success:
+                typeClassName = styles.success;
+                break;
+            default:
+                break;
+        }
         return (
             <div
                 ref={(ref) => this.ref = ref}
-                className={classNames(styles.toast, willLeave && styles.leave, toRemove && styles.toRemove)}
+                className={classNames(
+                    styles.toast,
+                    willLeave && styles.leave,
+                    toRemove && styles.toRemove,
+                    typeClassName,
+                )}
             >
                 { icon && <SVG className={styles.icon} svg={icon} /> }
                 <p>{ this.props.message }</p>

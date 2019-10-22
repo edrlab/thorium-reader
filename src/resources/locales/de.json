@@ -28,6 +28,7 @@
         },
         "addBookToLib": "Import",
         "addTags": "Ein tag hinzufügen",
+        "addTagsButton": "Hinzufügen",
         "allBooks": "alle Bücher",
         "bookInfo": "Über dieses Buch",
         "delete": "Dauerhaft löschen",
@@ -60,7 +61,7 @@
         "deleteFeed": "Willst du diese Publikation wirklich Katalog ?",
         "deletePublication": "Willst du diese Publikation wirklich löschen ?",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-        "importError": "ein Fehler ist aufgetreten, überprüfen Sie Ihre Dateiendung (.epub or .lcpl).",
+        "importError": "ein Fehler ist aufgetreten, überprüfen Sie Ihre Dateiendung (.epub).",
         "no": "Nein",
         "renew": "",
         "return": "",
@@ -94,7 +95,8 @@
             "success": "Der Download von {{- title}} wurde abgeschlossen"
         },
         "import": {
-            "success": ""
+            "fail": "Der Import von {{- path}} ist fehlgeschlagen. Stellen Sie sicher, dass die Datei gültig ist",
+            "success": "Der Import von {{- title}} ist abgeschlossen."
         }
     },
     "opds": {
@@ -109,14 +111,25 @@
         "addMenu": "OPDS-Feed hinzufügen",
         "back": "Zurück",
         "breadcrumbRoot": "",
-        "empty": "",
+        "empty": "Keine Publikation gefunden",
+        "firstPage": "Zuerst",
+        "lastPage": "Zuletzt",
         "menu": {
             "aboutBook": "über dieses Buch",
             "addExtract": "zur Lib hinzufügen",
             "goBuyBook": "dieses Buch kaufen",
             "goLoanBook": "dieses Buch ausleihen",
             "goSubBook": "abonnieren"
-        }
+        },
+        "network": {
+            "error": "Ein Fehler ist aufgetreten",
+            "noInternet": "Kein Internet",
+            "noInternetMessage": "Versuchen Sie: Überprüfen Sie das Netzwerkkabel, das Modem, den Router oder das WLAN",
+            "reject": "Beim Versuch, den OPDS-Feed zu verarbeiten, ist ein unerwarteter Fehler aufgetreten.",
+            "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut"
+        },
+        "next": "Nächster",
+        "previous": "Bisherige"
     },
     "publication": {
         "deleteButton": "Löschen",
@@ -137,7 +150,10 @@
         "marks": {
             "annotations": "Annotationen",
             "bookmarks": "Lesezeichen",
+            "delete": "Löschen",
+            "edit": "Bearbeiten",
             "illustrations": "Illustrationstabelle",
+            "landmarks": "Landmarks",
             "toc": "inhaltsverzeichnis"
         },
         "navigation": {
@@ -145,6 +161,10 @@
             "bookmarkTitle": "bookmark",
             "detachWindowTitle": "das Fenster lösen",
             "fullscreenTitle": "fullscreen mode",
+            "goTo": "Gehe zu",
+            "goToError": "Diese Seite existiert nicht",
+            "goToPlaceHolder": "Gehe zur Seite",
+            "goToTitle": "Gehe zur Seite",
             "infoTitle": "Informationen",
             "openTableOfContentsTitle": "navigation",
             "quitFullscreenTitle": "",

@@ -5,29 +5,37 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { container } from "readium-desktop/main/di";
-
 import * as debug_ from "debug";
-
-import { SagaIterator } from "redux-saga";
-
-import { all, call, fork, put, take } from "redux-saga/effects";
-
 import { apiActions } from "readium-desktop/common/redux/actions";
+import { diMainGet } from "readium-desktop/main/di";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { SagaIterator } from "redux-saga";
+import { all, call, fork, put, take } from "redux-saga/effects";
 
 // Logger
 const debug = debug_("readium-desktop:main#redux/sagas/api");
 
+const getSymbolName = (apiName: string) => {
+    const entry = Object.keys(diSymbolTable)
+        .find((symbolName) => symbolName === `${apiName}-api`) as keyof typeof diSymbolTable;
+    if (entry) {
+        return entry;
+    }
+    throw new Error("Wrong API name called " + apiName);
+};
+
 export function* processRequest(requestAction: apiActions.ApiAction): SagaIterator {
     const { api } = requestAction.meta;
-    const apiModule: any = container
-        .get(`${api.moduleId}-api`);
-    const apiMethod = apiModule[api.methodId].bind(apiModule);
 
     try {
+        const apiModule = diMainGet(getSymbolName(api.moduleId));
+        const apiMethod = apiModule[api.methodId].bind(apiModule);
+
+        debug(api.moduleId, api.methodId, requestAction.payload);
+
         const result = yield call(
             apiMethod,
-            requestAction.payload,
+            ...(requestAction.payload || []),
         );
 
         yield put(apiActions.buildSuccessAction(requestAction, result));

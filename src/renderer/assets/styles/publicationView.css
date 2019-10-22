@@ -6,6 +6,7 @@
     & .card_substitute {
         width: 175px;
         height: 0px;
+        margin-bottom: 0;
     }
 
     & > * {

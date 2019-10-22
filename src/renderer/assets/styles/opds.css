@@ -53,6 +53,8 @@
                     color:white;
                     font-size: 1.5rem;
                     font-weight: bold;
+                    overflow-wrap: break-word;
+                    padding: 1rem;
                 }
             }
             & button {
@@ -122,4 +124,83 @@
     margin: 0 -60px;
     padding: 30px 60px;
     margin-bottom: 20px;
+}
+
+.opdsBrowse {
+    overflow-y: hidden;
+    padding: 0;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+
+    & .opdsBrowseBreadcrumb {
+        padding: 30px 60px;
+        flex-wrap: wrap;
+        & > div {
+            flex: 1;
+        }
+    }
+    & .opdsBrowseContent {
+        padding: 0 60px;
+        overflow-y: auto;
+        flex: 1;
+    }
+}
+
+.opds_page_navigation {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    & button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 10rem;
+        height: auto;
+        font-size: 1.1rem;
+        font-weight: bold;
+        padding: 0.9375rem 1.25rem;
+        border: 1px black solid;
+        border-radius: 5px;
+        background-color: #EDEDED;
+
+        &:first-child {
+            & svg {
+                margin-right: 1rem;
+            }
+        }
+
+        &:last-child {
+            & svg {
+                margin-left: 1rem;
+            }
+        }
+
+        &:not(:last-child) {
+            margin-right: 1rem;
+        }
+
+        & svg {
+            height: 1.1rem;
+            fill: black;
+        }
+    }
+
+    & div {
+        width: 10rem;
+    }
+
+    & span {
+        width: 5rem;
+        font-size: 1.2rem;
+    }
+
+    & .page_count {
+        position: absolute;
+        bottom: 1.2rem;
+        right: 2rem;
+    }
 }

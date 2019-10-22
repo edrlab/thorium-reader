@@ -6,38 +6,37 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
-
-import { RouteComponentProps} from "react-router-dom";
-
+import { PublicationView } from "readium-desktop/common/views/publication";
+import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/components/publication/menu/OpdsMenu";
+import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 
-import { PublicationView } from "readium-desktop/common/views/publication";
-
-import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
-
-interface GridViewProps extends RouteComponentProps {
+interface IProps {
     publications: PublicationView[];
     isOpdsView?: boolean;
 }
 
-export default class GridView extends React.Component<GridViewProps, undefined> {
-    public render(): React.ReactElement<{}> {
-        let MenuContent = CatalogMenu;
-        if ( this.props.isOpdsView ) {
-            MenuContent = OpdsMenu;
+export default class GridView extends React.Component<IProps> {
+    private ref: HTMLDivElement;
+
+    public componentDidUpdate(oldProps: IProps) {
+        if (this.props.publications !== oldProps.publications) {
+            this.scrollToTop();
         }
+    }
+
+    public render(): React.ReactElement<{}> {
+        const { isOpdsView } = this.props;
 
         return (
-            <div className={styles.card_wrapper}>
+            <div ref={(ref) => this.ref = ref} className={styles.card_wrapper}>
                 {this.props.publications.map((pub, index) =>
                     <PublicationCard
-                        key={-index }
+                        key={-index}
                         publication={pub}
-                        menuContent={MenuContent}
-                        isOpds={this.props.isOpdsView}
+                        MenuContent={isOpdsView ? OpdsMenu : CatalogMenu}
+                        isOpds={isOpdsView}
                     />,
                 )}
                 {[...Array(6).keys()].map((__, index) => {
@@ -45,5 +44,9 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                 })}
             </div>
         );
+    }
+
+    private scrollToTop() {
+        this.ref.scrollIntoView();
     }
 }

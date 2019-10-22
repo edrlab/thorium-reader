@@ -6,34 +6,26 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-
+import { OpdsLinkView } from "readium-desktop/common/views/opds";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-
+import { IOpdsBrowse } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
-interface EntryProps extends RouteComponentProps {
-    level: number;
-    entry: any;
+interface EntryProps extends RouteComponentProps<IOpdsBrowse> {
+    level?: number;
+    entry: OpdsLinkView;
 }
 
-export class Entry extends React.Component<EntryProps, undefined> {
+class Entry extends React.Component<EntryProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { entry } = this.props;
 
-        if (!entry) {
-            return <></>;
-        }
-
         // Build feedBreadcrumb
         const { level, match } = this.props;
-        const matchParams = match.params as any;
-        const rootFeedIdentifier = matchParams.opdsId;
+        const rootFeedIdentifier = match.params.opdsId;
         const route = buildOpdsBrowserRoute(
             rootFeedIdentifier,
             entry.title,

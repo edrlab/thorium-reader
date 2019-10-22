@@ -9,14 +9,14 @@ import * as debug_ from "debug";
 import { app, ipcMain } from "electron";
 import * as path from "path";
 import { syncIpc } from "readium-desktop/common/ipc";
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
-import { cli_ } from "readium-desktop/main/cli/commandLine";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { cli } from "readium-desktop/main/cli/process";
 import { createWindow } from "readium-desktop/main/createWindow";
-import { container } from "readium-desktop/main/di";
+import { diMainGet } from "readium-desktop/main/di";
 import { initApp, registerProtocol } from "readium-desktop/main/init";
-import { _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directives";
-import { Store } from "redux";
+import {
+    _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH,
+} from "readium-desktop/preprocessor-directives";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
@@ -25,17 +25,20 @@ import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 
-import { ActionWithSender } from "readium-desktop/common/models/sync";
-
 if (_PACKAGING !== "0") {
     // Disable debug in packaged app
     delete process.env.DEBUG;
     debug_.disable();
 
+    /**
+     * yargs used console and doesn't used process.stdout
+     */
+    /*
     console.log = (_message?: any, ..._optionalParams: any[]) => { return; };
     console.warn = (_message?: any, ..._optionalParams: any[]) => { return; };
     console.error = (_message?: any, ..._optionalParams: any[]) => { return; };
     console.info = (_message?: any, ..._optionalParams: any[]) => { return; };
+    */
 }
 
 // Logger
@@ -80,24 +83,10 @@ function main() {
         registerProtocol();
     });
 
-    app.on("will-finish-launching", () => {
-        app.on("open-url", (event: any, _url: any) => {
-            event.preventDefault();
-            // Process url: import or open?
-        });
-        app.on("open-file", async (event: any, filePath) => {
-            event.preventDefault();
-
-            if (!await cli_(filePath)) {
-                debug(`the open-file event with ${filePath} return an error`);
-            }
-        });
-    });
-
     // Listen to renderer action
     ipcMain.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
-        const store = container.get("store") as Store<any>;
-        const actionSerializer = container.get("action-serializer") as ActionSerializer;
+        const store = diMainGet("store");
+        const actionSerializer = diMainGet("action-serializer");
 
         switch (data.type) {
             case syncIpc.EventType.RendererAction:
@@ -110,4 +99,12 @@ function main() {
                 break;
         }
     });
+
+    app.on("accessibility-support-changed", (_ev, accessibilitySupportEnabled) => {
+        debug(`accessibilitySupportEnabled: ${accessibilitySupportEnabled}`);
+    });
+    // setInterval(() => {
+    //     const a11y = app.isAccessibilitySupportEnabled();
+    //     debug(`isAccessibilitySupportEnabled: ${a11y}`);
+    // }, 500);
 }

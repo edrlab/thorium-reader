@@ -1,9 +1,12 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
 import { BrowserWindow, Menu, webContents } from "electron";
-
-import { Translator } from "readium-desktop/common/services/translator";
-
-import { container } from "readium-desktop/main/di";
-
+import { diMainGet } from "readium-desktop/main/di";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 let _darwinApplicationMenuAlreadySet = false; // application-wide menu, not dependent on individual BrowserWindows
@@ -124,7 +127,7 @@ function setMenuWindowsLinux(win?: BrowserWindow) {
 }
 
 function setMenuDarwin(win?: BrowserWindow) {
-    const translator = container.get("translator") as Translator;
+    const translator = diMainGet("translator");
     const template: Electron.MenuItemConstructorOptions[] = [
         {
             label: "Thorium",
@@ -169,11 +172,11 @@ function setMenuDarwin(win?: BrowserWindow) {
                     // click: () => { app.quit(); },
                     label: translator.translate("app.quit"),
                 },
-            ],
+            ] as Electron.MenuItemConstructorOptions[],
         },
         {
             label: translator.translate("app.edit.title"),
-            role: "edit",
+            role: "editMenu",
             submenu: [
                 {
                     role: "undo",
@@ -214,7 +217,7 @@ function setMenuDarwin(win?: BrowserWindow) {
                     // selector: "selectAll:",
                     label: translator.translate("app.edit.selectAll"),
                 },
-            ],
+            ] as Electron.MenuItemConstructorOptions[],
         },
     ];
     if (IS_DEV) {

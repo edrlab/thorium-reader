@@ -5,12 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import Cover from "./Cover";
-import PublicationCard from "./PublicationCard";
-import PublicationListElement from "./PublicationListElement";
-
-export {
-    PublicationListElement,
-    PublicationCard,
-    Cover,
+export const diRendererSymbolTable = {
+    "history": Symbol("history"),
+    "store": Symbol("store"),
+    "translator": Symbol("translator"),
+    "action-serializer": Symbol("action-serializer"),
 };

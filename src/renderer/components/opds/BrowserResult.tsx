@@ -5,93 +5,159 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as qs from "qs";
 import * as React from "react";
-
 import { RouteComponentProps, withRouter } from "react-router-dom";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
+import { OpdsResultType } from "readium-desktop/common/views/opds";
+import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import { BreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
 import {
-    OpdsResultType,
-    THttpGetOpdsResultView,
-} from "readium-desktop/common/views/opds";
+    TranslatorProps,
+    withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import Loader from "readium-desktop/renderer/components/utils/Loader";
+import { ReturnPromiseType } from "readium-desktop/typings/promise";
+import { parseQueryString } from "readium-desktop/utils/url";
 
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
-import Empty from "./Empty";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
-
-import Loader from "readium-desktop/renderer/components/utils/Loader";
-
-import * as qs from "qs";
-import { parseQueryString } from "readium-desktop/utils/url";
+import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
-    search?: string;
-    result?: THttpGetOpdsResultView;
-    cleanData: any;
-    requestOnLoadData: any;
-    browse?: any;
+    breadcrumb: BreadCrumbItem[];
 }
 
-export class BrowserResult extends React.Component<BrowserResultProps, null> {
+interface IState {
+    browserResult: ReturnPromiseType<TOpdsApiBrowse> | undefined;
+    browserError: string | undefined;
+    currentResultPage: number;
+}
+
+export class BrowserResult extends React.Component<BrowserResultProps, IState> {
     private currentUrl: string;
-    public componentDidMount() {
-        this.browseOpds();
+
+    constructor(props: BrowserResultProps) {
+        super(props);
+        this.state = {
+            browserError: undefined,
+            browserResult: undefined,
+            currentResultPage: 1,
+        };
+
+        this.goto = this.goto.bind(this);
     }
+
+    public componentDidMount() {
+        this.browseOpds(this.props.url);
+    }
+
     public componentDidUpdate(prevProps: BrowserResultProps) {
-        if (prevProps.url !== this.props.url || prevProps.location.search !== this.props.location.search) {
+        if (prevProps.url !== this.props.url ||
+            prevProps.location.search !== this.props.location.search) {
             // New url to browse
-            this.browseOpds();
+            this.browseOpds(this.props.url);
+        }
+
+        if (this.props.breadcrumb !== prevProps.breadcrumb) {
+            this.setState({currentResultPage: 1});
         }
     }
 
-    public render(): React.ReactElement<{}>  {
-        const { result } = this.props;
-        let content = (<Loader/>);
-        if (result && result.isFailure) {
-            // browse error
-        } else if (result) {
-            switch (result.data.type) {
-                case OpdsResultType.NavigationFeed:
-                    content = (
-                        <EntryList entries={ result.data.navigation } />
-                    );
-                    break;
-                case OpdsResultType.PublicationFeed:
-                    content = (
-                        <EntryPublicationList publications={ result.data.publications } />
-                    );
-                    break;
-                case OpdsResultType.Empty:
-                    // TRANSLATE
-                    content = (
-                        <Empty />
-                    );
-                    break;
-                default:
-                    break;
+    public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
+        const { browserError, browserResult } = this.state;
+        let content = (<Loader />);
+
+        if (!navigator.onLine) {
+            content = (
+                <MessageOpdBrowserResult
+                    title={__("opds.network.noInternet")}
+                    message={__("opds.network.noInternetMessage")}
+                />
+            );
+        } else if (browserError) {
+            content = (
+                <MessageOpdBrowserResult
+                    title={__("opds.network.reject")}
+                    message={browserError}
+                />
+            );
+        } else if (browserResult) {
+            if (browserResult.isSuccess) {
+                switch (browserResult.data.type) {
+                    case OpdsResultType.NavigationFeed:
+                        content = (
+                            <EntryList entries={browserResult.data.navigation} />
+                        );
+                        break;
+                    case OpdsResultType.PublicationFeed:
+                        content = (
+                            <EntryPublicationList
+                                publications={browserResult.data.publications}
+                                goto={this.goto}
+                                urls={browserResult.data.urls}
+                                page={browserResult.data.page}
+                                currentPage={this.state.currentResultPage}
+                            />
+                        );
+                        break;
+                    case OpdsResultType.Empty:
+                        content = (
+                            <MessageOpdBrowserResult title={__("opds.empty")} />
+                        );
+                        break;
+                    default:
+                        break;
+                }
+            } else if (browserResult.isTimeout) {
+                content = (
+                    <MessageOpdBrowserResult title={__("opds.network.timeout")} />
+                );
+            } else {
+                content = (
+                    <MessageOpdBrowserResult
+                        title={__("opds.network.error")}
+                        message={`${browserResult.statusCode || "unknow error code"} : ${browserResult.statusMessage || ""}`}
+                    />
+                );
             }
         }
 
-        return content;
+        return <div className={styles.opdsBrowseContent}>
+            {content}
+        </div>;
     }
 
-    private browseOpds() {
-        const {url, location, result, browse} = this.props;
+    private browseOpds(url: string) {
+        const { location } = this.props;
+        const { browserResult } = this.state;
         const oldQs = parseQueryString(url.split("?")[1]);
         const search = qs.parse(location.search.replace("?", "")).search;
         let newUrl = url;
-        if (search && result && result.isSuccess && result.data.searchUrl) {
-            newUrl = result.data.searchUrl;
+        if (search && browserResult && browserResult.isSuccess && browserResult.data.urls.search) {
+            newUrl = browserResult.data.urls.search;
             newUrl = this.addSearchTerms(newUrl, search) +
                 Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
         }
+
         this.currentUrl = newUrl;
-        this.props.cleanData();
-        browse({url: newUrl});
+
+        // reset browserResult to display loader spinner
+        this.setState({
+            browserResult: undefined,
+        });
+
+        // fetch newUrl
+        apiAction("opds/browse", newUrl).then((result) => this.setState({
+            browserResult: result,
+            browserError: undefined,
+        })).catch((error) => this.setState({
+            browserResult: undefined,
+            browserError: error,
+        }));
     }
 
     private addSearchTerms(url: string, search: string) {
@@ -117,18 +183,11 @@ export class BrowserResult extends React.Component<BrowserResultProps, null> {
             return newUrl;
         }
     }
+
+    private goto(url: string, page: number) {
+        this.browseOpds(url);
+        this.setState({currentResultPage: page});
+    }
 }
 
-export default withApi(
-    withRouter(BrowserResult),
-    {
-        operations: [
-            {
-                moduleId: "opds",
-                methodId: "browse",
-                resultProp: "result",
-                callProp: "browse",
-            },
-        ],
-    },
-);
+export default withTranslator(withRouter(BrowserResult));

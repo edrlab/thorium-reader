@@ -7,6 +7,7 @@
 
 import * as apiActions from "./api";
 import * as dialogActions from "./dialog";
+import * as downloadActions from "./download";
 import * as i18nActions from "./i18n";
 import * as importActions from "./import";
 import * as lcpActions from "./lcp";
@@ -27,4 +28,5 @@ export {
     updateActions,
     importActions,
     toastActions,
+    downloadActions,
 };

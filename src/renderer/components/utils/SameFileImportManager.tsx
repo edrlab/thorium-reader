@@ -6,48 +6,29 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
+import { connect } from "react-redux";
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-
-import { withApi } from "./api";
-
-import { ImportState } from "readium-desktop/common/redux/states/import";
-
-interface Props  {
-    lastImport?: ImportState;
-    displayImportDialog?: any;
-    search?: any;
-    searchResult?: any;
-    importOpdsEntry?: any;
+interface IProps extends ReturnType<typeof mapStateToProps> {
 }
 
-class SameFileImportManager extends React.Component<Props> {
-    public componentDidUpdate(oldProps: Props) {
-        const { searchResult, lastImport } = this.props;
-
-        if (searchResult !== oldProps.searchResult) {
-            if (searchResult.length === 0) {
-                this.props.importOpdsEntry(
-                    {
-                        url: lastImport.publication.url,
-                        base64OpdsPublication: lastImport.publication.base64OpdsPublication,
-                        downloadSample: lastImport.downloadSample,
-                        title: lastImport.publication.title,
-                    },
-                );
-            } else {
-                this.props.displayImportDialog(lastImport.publication, lastImport.downloadSample );
-            }
-        }
+class SameFileImportManager extends React.Component<IProps> {
+    public componentDidUpdate(oldProps: IProps) {
+        const { lastImport, downloads } = this.props;
 
         if (lastImport !== oldProps.lastImport) {
-            this.props.search({text: lastImport.publication.title});
+            if (downloads.findIndex((value) => value.url === lastImport.publication.url) < 0) {
+                apiAction("publication/importOpdsEntry",
+                    lastImport.publication.url,
+                    lastImport.publication.base64OpdsPublication,
+                    lastImport.publication.title,
+                    lastImport.publication.tags,
+                    lastImport.downloadSample,
+                ).catch((error) => {
+                    console.error(`Error to fetch api publication/importOpdsEntry`, error);
+                });
+            }
         }
     }
 
@@ -56,43 +37,11 @@ class SameFileImportManager extends React.Component<Props> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        displayImportDialog: (publication: OpdsPublicationView, downloadSample: boolean) => {
-            dispatch(dialogActions.open(
-                DialogType.SameFileImportConfirm,
-                {
-                    publication,
-                    downloadSample,
-                },
-            ));
-        },
-    };
-};
-
 const mapStateToProps = (state: RootState) => {
     return {
         lastImport: state.import,
+        downloads: state.download.downloads,
     };
 };
 
-export default withApi(
-    SameFileImportManager,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "importOpdsEntry",
-                callProp: "importOpdsEntry",
-            },
-            {
-                moduleId: "publication",
-                methodId: "search",
-                resultProp: "searchResult",
-                callProp: "search",
-            },
-        ],
-        mapStateToProps,
-        mapDispatchToProps,
-    },
-);
+export default connect(mapStateToProps)(SameFileImportManager);

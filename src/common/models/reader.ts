@@ -31,7 +31,7 @@ export interface Reader extends Identifiable {
 export interface ReaderConfig {
     [key: string]: any;
     identifier?: string;
-    align: "center"|"left"|"right";
+    align: "justify" | "left" | "right";
     colCount: string;
     dark: false;
     font: string;

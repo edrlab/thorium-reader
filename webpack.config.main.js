@@ -143,6 +143,8 @@ let config = Object.assign({}, {
     ],
 });
 
+config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })); // jsondown (runtimejs, fatfs)
+
 if (nodeEnv !== "production") {
     // Bundle absolute resource paths in the source-map,
     // so VSCode can match the source file.

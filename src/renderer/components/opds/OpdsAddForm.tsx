@@ -7,19 +7,16 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface Props extends TranslatorProps {
-    openOpdsFeedAddForm?: any;
+interface Props extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
 }
 
 export class OpdsAddForm extends React.Component<Props> {
@@ -37,12 +34,12 @@ export class OpdsAddForm extends React.Component<Props> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: any) => {
+const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
         openOpdsFeedAddForm: () => {
-            dispatch(dialogActions.open(DialogType.OpdsFeedAddForm, {}));
+            dispatch(dialogActions.open("opds-feed-add-form", {}));
         },
     };
 };
 
-export default withTranslator(connect(undefined, mapDispatchToProps)(OpdsAddForm));
+export default connect(undefined, mapDispatchToProps)(withTranslator(OpdsAddForm));

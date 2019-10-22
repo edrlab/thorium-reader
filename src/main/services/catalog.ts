@@ -6,87 +6,102 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { dialog } from "electron";
 import * as fs from "fs";
+import { inject, injectable } from "inversify";
 import * as path from "path";
-
+import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
+import { Download } from "readium-desktop/common/models/download";
+import { Publication } from "readium-desktop/common/models/publication";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
+import { open } from "readium-desktop/common/redux/actions/toast";
+import { Translator } from "readium-desktop/common/services/translator";
+import { convertMultiLangStringToString } from "readium-desktop/common/utils";
+import { httpGet } from "readium-desktop/common/utils/http";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import {
+    PublicationDocument, THttpGetPublicationDocument,
+} from "readium-desktop/main/db/document/publication";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
+import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
-
+import * as uuid from "uuid";
 import * as xmldom from "xmldom";
 
-import * as uuid from "uuid";
-
-import {
-    convertOpds1ToOpds2_EntryToPublication,
-} from "@r2-opds-js/opds/converter";
-
-import { inject, injectable} from "inversify";
-
-import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
-import { Publication } from "readium-desktop/common/models/publication";
-
+import { convertOpds1ToOpds2_EntryToPublication } from "@r2-opds-js/opds/converter";
+import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
+import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
-
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
-import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
-
-import { PublicationDocument, THttpGetPublicationDocument } from "readium-desktop/main/db/document/publication";
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-
-import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-
-import { Download } from "readium-desktop/common/models/download";
-
-import { httpGet } from "readium-desktop/common/utils/http";
-import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
-
+import { extractCrc32OnZip } from "../crc";
+import { diMainGet } from "../di";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
-
-import {
-    convertMultiLangStringToString,
-} from "readium-desktop/common/utils";
-
-import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
-import { PublicationView } from "readium-desktop/common/views/publication";
-
-import { container } from "readium-desktop/main/di";
-import { Store } from "redux";
-
-import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
-import { PublicationApi } from "readium-desktop/main/api/publication";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
 
 @injectable()
 export class CatalogService {
-    @inject("downloader")
+    @inject(diSymbolTable.downloader)
     private readonly downloader!: Downloader;
 
-    @inject("lcp-manager")
+    @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
 
-    @inject("publication-storage")
+    @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
 
-    @inject("publication-repository")
+    @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument> {
-        const ext = path.extname(filePath);
+    @inject(diSymbolTable.store)
+    private readonly store!: Store<RootState>;
 
-        if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
-            return this.importLcplFile(filePath);
-        } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
-            return this.importEpubFile(filePath);
+    @inject(diSymbolTable.translator)
+    private readonly translator!: Translator;
+
+    public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
+        let publication: PublicationDocument | undefined;
+
+        try {
+            const hash = await extractCrc32OnZip(filePath);
+            const publicationArray = await this.publicationRepository.findByHashId(hash);
+            debug(publicationArray, hash);
+            if (publicationArray && publicationArray.length) {
+                publication = publicationArray[0];
+                this.store.dispatch(open(ToastType.DownloadComplete,
+                    this.translator.translate("message.import.alreadyImport", { title: publication.title })));
+            } else {
+                    const ext = path.extname(filePath);
+                    if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
+                        publication = await this.importLcplFile(filePath);
+                    } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
+                        publication = await this.importEpubFile(filePath);
+                    }
+                    this.store.dispatch(open(ToastType.DownloadComplete,
+                        this.translator.translate("message.import.success", { title: publication.title })));
+            }
+        } catch (error) {
+            debug("ImportFile (hash + import) fail with :" + filePath, error);
+            this.store.dispatch(open(ToastType.DownloadFailed,
+                this.translator.translate("message.import.fail", { filePath })));
         }
-
-        return null;
+        return publication;
     }
 
-    public async importOpdsEntry(url: string, downloadSample: boolean): Promise<THttpGetPublicationDocument> {
+    public async importOpdsEntry(
+        url: string,
+        downloadSample: boolean,
+        tags?: string[],
+    ): Promise<THttpGetPublicationDocument> {
         debug("Import OPDS publication", url);
         return await httpGet(url, {}, async (opdsFeedData) => {
             let opdsPublication: OPDSPublication = null;
@@ -94,7 +109,6 @@ export class CatalogService {
             if (opdsFeedData.isFailure) {
                 return opdsFeedData;
             }
-
             if (opdsFeedData.body.startsWith("<?xml")) {
                 // This is an opds feed in version 1
                 // Convert to opds version 2
@@ -122,13 +136,20 @@ export class CatalogService {
                 debug("Unable to retrieve opds publication", opdsPublication);
                 throw new Error("Unable to retrieve opds publication");
             }
-            opdsFeedData.data = await this.importOpdsPublication(opdsPublication, downloadSample);
+            try {
+                opdsFeedData.data = await this.importOpdsPublication(opdsPublication, downloadSample, tags);
+            } catch (error) {
+                debug("Unable to retrieve opds publication", opdsPublication, error);
+                throw new Error("Unable to retrieve opds publication: " + error);
+            }
             return opdsFeedData;
         });
     }
 
     public async importOpdsPublication(
-        opdsPublication: OPDSPublication, downloadSample: boolean,
+        opdsPublication: OPDSPublication,
+        downloadSample: boolean,
+        tags?: string[],
     ): Promise<PublicationDocument> {
         // Retrieve the download (acquisition) url
         let downloadUrl = null;
@@ -174,6 +195,7 @@ export class CatalogService {
         );
         debug("[END] Download publication", downloadUrl, newDownload);
         // Import downloaded publication in catalog
+        // FIXME: can be undefined type
         let publicationDocument = await this.importFile(download.dstPath, isLcpFile);
 
         // Add opds publication serialization to resources
@@ -191,19 +213,18 @@ export class CatalogService {
                     filePublication: publicationDocument.resources.filePublication,
                     opdsPublication: b64OpdsPublication,
                 },
+                tags,
             },
         );
-
         return this.publicationRepository.save(publicationDocument);
     }
 
     public async deletePublication(publicationIdentifier: string) {
-        const store = container.get("store") as Store<any>;
-        const publicationApi = container.get("publication-api") as PublicationApi;
-        const publication = await publicationApi.get({ identifier: publicationIdentifier });
+        const publicationApi = diMainGet("publication-api");
+        // FIXME: Call publication Api in service ??
+        const publication = await publicationApi.get(publicationIdentifier);
 
-        // tslint:disable-next-line: await-promise
-        await store.dispatch(closeReaderFromPublication(publication));
+        this.store.dispatch(closeReaderFromPublication(publication));
 
         // Remove from database
         await this.publicationRepository.delete(publicationIdentifier);
@@ -248,8 +269,30 @@ export class CatalogService {
         return await this.publicationRepository.save(newPub);
     }
 
-    public exportPublication(publication: PublicationView, destinationPath: string) {
-        this.publicationStorage.copyPublicationToPath(publication, destinationPath);
+    public async exportPublication(publication: PublicationView) {
+        // Get main window
+        const winRegistry = diMainGet("win-registry");
+        let mainWindow;
+        for (const window of (Object.values(winRegistry.getWindows())) as any) {
+            if (window.type === "library") {
+                mainWindow = window;
+            }
+        }
+
+        // Open a dialog to select a folder then copy the publication in it
+        const res = await dialog.showOpenDialog(mainWindow, {
+            properties: ["openDirectory"],
+        });
+        if (!res.canceled) {
+            if (res.filePaths && res.filePaths.length > 0) {
+                let destinationPath = res.filePaths[0];
+                // If the selected path is a file then choose the directory containing this file
+                if (fs.statSync(destinationPath).isFile()) {
+                    destinationPath = path.dirname(destinationPath);
+                }
+                this.publicationStorage.copyPublicationToPath(publication, destinationPath);
+            }
+        }
     }
 
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {
@@ -310,7 +353,9 @@ export class CatalogService {
             files: [],
             coverFile: null,
             customCover: null,
+            hash: await extractCrc32OnZip(filePath),
         } as PublicationDocument;
+        debug(pubDocument.hash);
 
         // Store publication on filesystem
         debug("[START] Store publication on filesystem", filePath);
