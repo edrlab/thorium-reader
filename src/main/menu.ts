@@ -7,22 +7,41 @@
 
 import { BrowserWindow, Menu, webContents } from "electron";
 import { diMainGet } from "readium-desktop/main/di";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { _CONTINUOUS_INTEGRATION_DEPLOY, IS_DEV } from "readium-desktop/preprocessor-directives";
 
 let _darwinApplicationMenuAlreadySet = false; // application-wide menu, not dependent on individual BrowserWindows
 
-export function setMenu(win?: BrowserWindow) {
+export function setMenu(win: BrowserWindow, isReaderView: boolean) {
     if (process.platform === "darwin") {
         if (!_darwinApplicationMenuAlreadySet) {
-            setMenuDarwin(win);
+            setMenuDarwin(win, isReaderView);
         }
         _darwinApplicationMenuAlreadySet = true;
     } else {
-        setMenuWindowsLinux(win);
+        setMenuWindowsLinux(win, isReaderView);
     }
 }
 
-function devMenu(win?: BrowserWindow): Electron.MenuItemConstructorOptions {
+function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemConstructorOptions {
+    if (_CONTINUOUS_INTEGRATION_DEPLOY) {
+        return {
+            label: "EPUB DEBUG",
+            submenu: [
+                {
+                    label: "OPEN WEB INSPECTOR / DEVELOPER TOOLS",
+                    accelerator: "Shift+Alt+CmdOrCtrl+I",
+                    click: (_item: any, _focusedWindow: any) => {
+                        for (const wc of webContents.getAllWebContents()) {
+                            if (wc.hostWebContents) {
+                                // wc.hostWebContents.id === readerWindow.webContents.id
+                                wc.openDevTools({ mode: "detach" });
+                            }
+                        }
+                    },
+                },
+            ],
+        };
+    }
     return {
         label: "DEV",
         submenu: [
@@ -113,12 +132,11 @@ function devMenu(win?: BrowserWindow): Electron.MenuItemConstructorOptions {
     };
 }
 
-function setMenuWindowsLinux(win?: BrowserWindow) {
-    if (IS_DEV) {
+function setMenuWindowsLinux(win: BrowserWindow, isReaderView: boolean) {
+    if (IS_DEV || (isReaderView && _CONTINUOUS_INTEGRATION_DEPLOY)) {
         const template: Electron.MenuItemConstructorOptions[] = [];
-        if (IS_DEV) {
-            template.push(devMenu(win));
-        }
+        template.push(devMenu(win, isReaderView));
+
         // Menu.setApplicationMenu(Menu.buildFromTemplate(template));
         win.setMenu(Menu.buildFromTemplate(template));
     } else {
@@ -126,7 +144,7 @@ function setMenuWindowsLinux(win?: BrowserWindow) {
     }
 }
 
-function setMenuDarwin(win?: BrowserWindow) {
+function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
     const translator = diMainGet("translator");
     const template: Electron.MenuItemConstructorOptions[] = [
         {
@@ -220,8 +238,8 @@ function setMenuDarwin(win?: BrowserWindow) {
             ] as Electron.MenuItemConstructorOptions[],
         },
     ];
-    if (IS_DEV) {
-        template.push(devMenu(win));
+    if (IS_DEV || (isReaderView && _CONTINUOUS_INTEGRATION_DEPLOY)) {
+        template.push(devMenu(win, isReaderView));
     }
     Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }

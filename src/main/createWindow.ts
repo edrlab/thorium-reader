@@ -89,7 +89,7 @@ export async function createWindow() {
 
     mainWindow.loadURL(rendererBaseUrl);
 
-    setMenu(mainWindow);
+    setMenu(mainWindow, false);
 
     // Redirect link to an external browser
     const handleRedirect = (event: any, url: any) => {
