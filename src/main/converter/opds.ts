@@ -84,14 +84,14 @@ export class OpdsFeedViewConverter {
 
             const thumbnailLink = imagesLinks.filter(
                 (img) => img.Rel.filter(
-                    (rel) => rel === "http://opds-spec.org/image/thumbnail"))[0];
+                    (rel) => rel === "http://opds-spec.org/image/thumbnail").length)[0];
             const thumbnailUrl = thumbnailLink ?
                 urlPathResolve(url, thumbnailLink.Href) :
                 (imagesLinks[0] ? urlPathResolve(url, imagesLinks[0].Href) : undefined);
 
             const coverLink = imagesLinks.filter(
                 (img) => img.Rel.filter(
-                    (rel) => rel === "http://opds-spec.org/image"))[0];
+                    (rel) => rel === "http://opds-spec.org/image").length)[0];
             const coverUrl = coverLink ? urlPathResolve(url, coverLink.Href) : undefined;
 
             if (coverUrl || thumbnailUrl) {
@@ -108,7 +108,7 @@ export class OpdsFeedViewConverter {
         const sampleLinks = publication.Links.filter(
             (link) => link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition/sample"
-                            || relLink === "http://opds-spec.org/acquisition/preview"));
+                            || relLink === "http://opds-spec.org/acquisition/preview").length);
 
         let sampleUrl: string | undefined;
         if (sampleLinks.length > 0) {
@@ -128,20 +128,20 @@ export class OpdsFeedViewConverter {
         const isFree = publication.Links.filter(
             (link) => link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition"
-                    || relLink === "http://opds-spec.org/acquisition/open-access"),
+                    || relLink === "http://opds-spec.org/acquisition/open-access").length,
         ).length > 0;
 
         const buyLink: OPDSLink | undefined = publication.Links.filter(
             (link) => link.Rel.filter(
-                (relLink) => relLink === "http://opds-spec.org/acquisition/buy"))[0];
+                (relLink) => relLink === "http://opds-spec.org/acquisition/buy").length)[0];
 
         const borrowLink: OPDSLink | undefined = publication.Links.filter(
             (link) => link.Rel.filter(
-                (relLink) => relLink === "http://opds-spec.org/acquisition/borrow"))[0];
+                (relLink) => relLink === "http://opds-spec.org/acquisition/borrow").length)[0];
 
         const subscribeLink: OPDSLink | undefined = publication.Links.filter(
             (link) => link.Rel.filter(
-                (relLink) => relLink === "http://opds-spec.org/acquisition/subscribe"))[0];
+                (relLink) => relLink === "http://opds-spec.org/acquisition/subscribe").length)[0];
 
         return {
             title,
@@ -157,7 +157,7 @@ export class OpdsFeedViewConverter {
             buyUrl: buyLink && buyLink.Href,
             borrowUrl: borrowLink && borrowLink.Href,
             subscribeUrl: subscribeLink && subscribeLink.Href,
-            hasSample: sampleUrl && true,
+            hasSample: sampleUrl !== undefined,
             base64OpdsPublication,
             isFree,
         };
