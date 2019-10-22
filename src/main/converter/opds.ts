@@ -65,36 +65,34 @@ export class OpdsFeedViewConverter {
         const title = convertMultiLangStringToString(metadata.Title);
         const authors = convertContributorArrayToStringArray(metadata.Author);
         const publishers = convertContributorArrayToStringArray(metadata.Publisher);
-        let tags: string[] = [];
 
+        let tags: string[] = [];
         if (metadata.Subject) {
             tags = metadata.Subject.map((subject) => convertMultiLangStringToString(subject.Name));
         }
 
-        let publishedAt = null;
-
+        let publishedAt: string | undefined;
         if (metadata.PublicationDate) {
             publishedAt = moment(metadata.PublicationDate).toISOString();
         }
 
         // CoverView object
         let cover: CoverView | undefined;
-
         if (publication.Images && publication.Images.length > 0) {
-            const imagesLink = publication.Images.filter(
+            const imagesLinks = publication.Images.filter(
                 (link) => link.TypeLink === "image/png" || link.TypeLink === "image/jpeg");
 
-            const thumbnailLink = imagesLink.filter(
+            const thumbnailLink = imagesLinks.filter(
                 (img) => img.Rel.filter(
                     (rel) => rel === "http://opds-spec.org/image/thumbnail"))[0];
-            const thumbnailUrl = (thumbnailLink && thumbnailLink.Href) ?
-                urlPathResolve(url, thumbnailLink.Href) : undefined;
+            const thumbnailUrl = thumbnailLink ?
+                urlPathResolve(url, thumbnailLink.Href) :
+                (imagesLinks[0] ? urlPathResolve(url, imagesLinks[0].Href) : undefined);
 
-            const coverLink = imagesLink.filter(
+            const coverLink = imagesLinks.filter(
                 (img) => img.Rel.filter(
                     (rel) => rel === "http://opds-spec.org/image"))[0];
-            const coverUrl = (coverLink && coverLink.Href) ?
-                urlPathResolve(url, coverLink.Href) : undefined;
+            const coverUrl = coverLink ? urlPathResolve(url, coverLink.Href) : undefined;
 
             if (coverUrl || thumbnailUrl) {
                 cover = {
@@ -105,28 +103,20 @@ export class OpdsFeedViewConverter {
         }
 
         // Get odps entry
-        let urlPublication: string | undefined;
-        // FIXME why declaration many lines before, null value and no typed ??
-        let sampleUrl = null;
-        // FIXME why any ?
         const links = publication.Links.filter(
-            (link: any) => {
-                return (link.TypeLink.indexOf(";type=entry;profile=opds-catalog") > 0);
-            },
-        );
-        // FIXME why any ?
+            (link) => link.TypeLink.indexOf(";type=entry;profile=opds-catalog") > 0);
         const sampleLinks = publication.Links.filter(
-            (link: any) => {
-                return (link.Rel[0] === "http://opds-spec.org/acquisition/sample"
-                    || link.Rel[0] === "http://opds-spec.org/acquisition/preview");
-            },
-        );
+            (link) => link.Rel.filter(
+                (relLink) => relLink === "http://opds-spec.org/acquisition/sample"
+                            || relLink === "http://opds-spec.org/acquisition/preview"));
 
+        let sampleUrl: string | undefined;
         if (sampleLinks.length > 0) {
             sampleUrl = sampleLinks[0].Href;
         }
 
-        let base64OpdsPublication = null;
+        let base64OpdsPublication: string | undefined;
+        let urlPublication: string | undefined;
         if (links.length > 0) {
             urlPublication = urlPathResolve(url, links[0].Href);
         } else {
@@ -136,31 +126,24 @@ export class OpdsFeedViewConverter {
         }
 
         const isFree = publication.Links.filter(
-            (link: any) => {
-                return (link.Rel[0] === "http://opds-spec.org/acquisition"
-                    || link.Rel[0] === "http://opds-spec.org/acquisition/open-access");
-            },
+            (link) => link.Rel.filter(
+                (relLink) => relLink === "http://opds-spec.org/acquisition"
+                    || relLink === "http://opds-spec.org/acquisition/open-access"),
         ).length > 0;
 
-        const buyLink = publication.Links.filter(
-            (link: any) => {
-                return (link.Rel[0] === "http://opds-spec.org/acquisition/buy");
-            },
-        )[0];
+        const buyLink: OPDSLink | undefined = publication.Links.filter(
+            (link) => link.Rel.filter(
+                (relLink) => relLink === "http://opds-spec.org/acquisition/buy"))[0];
 
-        const borrowLink = publication.Links.filter(
-            (link: any) => {
-                return (link.Rel[0] === "http://opds-spec.org/acquisition/borrow");
-            },
-        )[0];
+        const borrowLink: OPDSLink | undefined = publication.Links.filter(
+            (link) => link.Rel.filter(
+                (relLink) => relLink === "http://opds-spec.org/acquisition/borrow"))[0];
 
-        const subscribeLink = publication.Links.filter(
-            (link: any) => {
-                return (link.Rel[0] === "http://opds-spec.org/acquisition/subscribe");
-            },
-        )[0];
+        const subscribeLink: OPDSLink | undefined = publication.Links.filter(
+            (link) => link.Rel.filter(
+                (relLink) => relLink === "http://opds-spec.org/acquisition/subscribe"))[0];
 
-        return  {
+        return {
             title,
             authors,
             publishers,
