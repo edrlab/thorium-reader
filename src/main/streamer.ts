@@ -148,8 +148,38 @@ const staticOptions = {
 const MATHJAX_URL_PATH = "math-jax";
 streamer.expressUse("/" + MATHJAX_URL_PATH, express.static(mathJaxPath, staticOptions));
 const transformer = (_publication: Publication, _link: Link, str: string): string => {
-    const url = `${streamer.serverUrl()}/${MATHJAX_URL_PATH}/MathJax.js?config=MML_CHTML,Safe`;
-    const script = `<script type="application/javascript" src="${url}"> </script>`;
-    return str.replace(/<\/head>/, `${script}</head>`);
+
+    const store = diMainGet("store");
+    let settings = store.getState().reader.config;
+    if (!settings.value) {
+        debug("!settings.value? (MAIN)");
+    } else {
+        settings = settings.value;
+    }
+    // debug(settings);
+    debug(`MATHJAX ENABLE: ${settings.enableMathJax}`);
+
+    if (settings.enableMathJax) {
+        const url = `${streamer.serverUrl()}/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`;
+        const script = `
+        <script type="text/javascript">
+window.MathJax = {
+    startup: {
+        ready: () => {
+            console.log('MathJax is loaded, but not yet initialized');
+            window.MathJax.startup.defaultReady();
+            console.log('MathJax is initialized, and the initial typeset is queued');
+            window.MathJax.startup.promise.then(() => {
+                console.log('MathJax initial typesetting complete');
+            });
+        }
+    }
+};
+        </script>
+        <script type="text/javascript" async="async" src="${url}"> </script>`;
+        return str.replace(/<\/head>/, `${script}</head>`);
+    } else {
+        return str;
+    }
 };
 Transformers.instance().add(new TransformerHTML(transformer));

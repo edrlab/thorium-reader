@@ -85,6 +85,10 @@ export class ReaderOptions extends React.Component<Props> {
                 title: __("reader.settings.spacing"),
                 content: this.spacingContent(),
             },
+            {
+                title: "MathJax",
+                content: this.mathJax(),
+            },
         ];
 
         return (
@@ -95,6 +99,19 @@ export class ReaderOptions extends React.Component<Props> {
                 sections={sections}
                 toggleMenu={toggleMenu}
                 focusMenuButton={this.props.focusSettingMenuButton}
+            />
+        );
+    }
+
+    private mathJax() {
+
+        const {settings} = this.props;
+        return (
+            <input
+                id="mathJaxCheckBox"
+                type="checkbox"
+                checked={settings.enableMathJax}
+                onChange={() => this.toggleMathJax()}
             />
         );
     }
@@ -422,6 +439,15 @@ export class ReaderOptions extends React.Component<Props> {
                 </span>
             </div>
         </>;
+    }
+
+    private toggleMathJax() {
+        const values = this.props.settings;
+        values.enableMathJax = !values.enableMathJax;
+        this.props.setSettings(values);
+        setTimeout(() => {
+            window.location.reload();
+        }, 500);
     }
 
     private handleChooseTheme(theme: themeType) {
