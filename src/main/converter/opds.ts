@@ -85,14 +85,13 @@ export class OpdsFeedViewConverter {
             const thumbnailLink = imagesLinks.filter(
                 (img) => img.Rel.filter(
                     (rel) => rel === "http://opds-spec.org/image/thumbnail").length)[0];
-            const thumbnailUrl = thumbnailLink ?
-                urlPathResolve(url, thumbnailLink.Href) :
-                (imagesLinks[0] ? urlPathResolve(url, imagesLinks[0].Href) : undefined);
+            const thumbnailUrl = (thumbnailLink && urlPathResolve(url, thumbnailLink.Href))
+                || (imagesLinks[0] && urlPathResolve(url, imagesLinks[0].Href));
 
             const coverLink = imagesLinks.filter(
                 (img) => img.Rel.filter(
                     (rel) => rel === "http://opds-spec.org/image").length)[0];
-            const coverUrl = coverLink ? urlPathResolve(url, coverLink.Href) : undefined;
+            const coverUrl = coverLink && urlPathResolve(url, coverLink.Href);
 
             if (coverUrl || thumbnailUrl) {
                 cover = {

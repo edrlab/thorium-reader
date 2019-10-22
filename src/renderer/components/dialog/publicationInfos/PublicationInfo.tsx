@@ -137,9 +137,12 @@ class PublicationInfo extends React.Component<IProps, IState> {
                 <div className={styles.dialog_left}>
                     <div className={styles.image_wrapper}>
                         <div>
-                            <Cover publication={publication} onclick={() => this.setState({
-                                coverZoom: !this.state.coverZoom,
-                            })}/>
+                            <Cover
+                                publication={publication}
+                                onclick={() => publication.cover.coverUrl && this.setState({
+                                    coverZoom: !this.state.coverZoom,
+                                })}
+                            />
                         </div>
                     </div>
                     {controlsComponent}
@@ -201,10 +204,10 @@ class PublicationInfo extends React.Component<IProps, IState> {
 
         return (
             <Dialog open={true} close={this.props.closeDialog}>
-                { this.state.coverZoom ?
+                {this.state.coverZoom ?
                     <Cover publication={publication} coverTypeUrl="coverUrl" onclick={() => this.setState({
                         coverZoom: !this.state.coverZoom,
-                    })}/>
+                    })} />
                     : renderInfo()
                 }
             </Dialog>
