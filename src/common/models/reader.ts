@@ -7,6 +7,8 @@
 
 import { BrowserWindow } from "electron";
 
+import { textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
+
 import { Identifiable } from "./identifiable";
 import { Publication } from "./publication";
 
@@ -31,7 +33,7 @@ export interface Reader extends Identifiable {
 export interface ReaderConfig {
     [key: string]: any;
     identifier?: string;
-    align: "justify" | "left" | "right";
+    align: textAlignEnum.justify | textAlignEnum.left | textAlignEnum.right | textAlignEnum.start | "auto";
     colCount: string;
     dark: false;
     font: string;

@@ -792,7 +792,7 @@ p.chapters_description {
   width: 63px;
 }
 
-#option_gauche, #option_justif,
+#option_auto, #option_justif,
 #scroll_option, #page_option {
   display: inline-block;
   text-align: center;
