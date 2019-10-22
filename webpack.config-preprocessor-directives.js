@@ -12,7 +12,9 @@ const isDev = nodeEnv === "development";
 
 const isVisualStudioCodeLaunch = process.env.VSCODE_LAUNCH || "false";
 
-const skipLevelDown = isDev || process.env.TRAVIS_OS_NAME_;
+const isContinuousIntegrationDeploy = process.env.TRAVIS_OS_NAME_ ? true : false;
+
+const skipLevelDown = isDev || isContinuousIntegrationDeploy;
 
 const pouchDbAdapterName = skipLevelDown ?
     "jsondown" : "leveldb";
@@ -45,6 +47,7 @@ const data = {
     __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),
     __RENDERER_APP_BASE_URL__: JSON.stringify(rendererAppBaseUrl),
     __RENDERER_READER_BASE_URL__: JSON.stringify(rendererReaderBaseUrl),
+    __CONTINUOUS_INTEGRATION_DEPLOY__: JSON.stringify(isContinuousIntegrationDeploy),
 };
 
 // we do not replace "process.env.NODE_ENV" at build-time,
