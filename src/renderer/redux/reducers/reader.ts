@@ -5,18 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
-
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { ReaderState } from "readium-desktop/renderer/redux/states/reader";
-
-import { ReaderMode } from "readium-desktop/common/models/reader";
 
 const initialState: ReaderState = {
     reader: undefined,
     mode: ReaderMode.Attached,
     config: {
-        align: "left",
+        align: "auto",
         colCount: "auto",
         dark: false,
         font: "DEFAULT",

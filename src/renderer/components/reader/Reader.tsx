@@ -120,10 +120,10 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
 
         noFootnotes: settings.noFootnotes,
 
-        // warning I have modified the test condition to works with the type align
-        textAlign: settings.align === "left" ? textAlignEnum.left :
-            (settings.align === "right" ? textAlignEnum.right :
-            (settings.align === "justify" ? textAlignEnum.justify : textAlignEnum.start)),
+        textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
+            (settings.align === textAlignEnum.right ? textAlignEnum.right :
+            (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
+            (settings.align === textAlignEnum.start ? textAlignEnum.start : undefined))),
 
         textColor: readiumCSSDefaults.textColor,
 
@@ -225,7 +225,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             contentTableOpen: false,
             settingsOpen: false,
             settingsValues: {
-                align: "left",
+                align: "auto",
                 colCount: "auto",
                 dark: false,
                 font: "DEFAULT",
