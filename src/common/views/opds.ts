@@ -35,6 +35,7 @@ export interface OpdsPublicationView {
 
 export interface OpdsLinkView {
     title: string;
+    subtitle?: string;
     url: string;
     publicationCount?: number;
 }

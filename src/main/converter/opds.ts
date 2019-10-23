@@ -49,14 +49,16 @@ export class OpdsFeedViewConverter {
     public convertOpdsLinkToView(link: OPDSLink, url: string): OpdsLinkView {
         // Title could be defined on multiple lines
         // Only keep the first one
-        let title = link.Title;
-        const titleParts = title.split("\n");
-        title = titleParts[0];
+        const titleParts = link.Title.split("\n").filter((text) => text);
+        const title = titleParts[0].trim();
+        const subtitle = titleParts[1] && titleParts[1].trim();
 
+        // FIXME : Does publicationCount works? I never see it in react
         return  {
             title,
+            subtitle,
             url: urlPathResolve(url, link.Href),
-            publicationCount: (link.Children) ? link.Children.length : null,
+            publicationCount: link.Children && link.Children.length,
         };
     }
 

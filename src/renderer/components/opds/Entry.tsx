@@ -41,9 +41,11 @@ class Entry extends React.Component<EntryProps, undefined> {
                         to={ route }
                     >
                         <span className={styles.flux_title}>{entry.title}</span>
+                        {entry.subtitle ? <span className={styles.flux_subtitle}>{entry.subtitle}</span> : <></>}
                         {
                             (entry.publicationCount) ?
                                 (
+                                    // FIXME livres in french
                                     <span className={styles.flux_subtitle}>
                                         {entry.publicationCount} livres
                                     </span>
