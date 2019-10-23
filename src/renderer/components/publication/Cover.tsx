@@ -17,7 +17,7 @@ import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 interface IProps extends TranslatorProps {
     publication: PublicationView;
     coverTypeUrl?: keyof CoverView | undefined;
-    onclick?: () => void;
+    onClick?: () => void;
     onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
 }
 

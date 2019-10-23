@@ -207,7 +207,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                     <Cover
                         publication={publication}
                         coverTypeUrl="coverUrl"
-                        onclick={this.coverOnClick}
+                        onClick={this.coverOnClick}
                         onKeyPress={this.coverOnKeyPress}
                     /> :
                     renderInfo()
