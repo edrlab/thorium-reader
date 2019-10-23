@@ -38,17 +38,15 @@ class Entry extends React.Component<EntryProps, undefined> {
                 <div>
                     <Link
                         className={styles.flux_infos}
-                        to={ route }
+                        to={route}
                     >
                         <span className={styles.flux_title}>{entry.title}</span>
                         {
-                            (entry.publicationCount) ?
-                                (
-                                    <span className={styles.flux_subtitle}>
-                                        {entry.publicationCount} livres
-                                    </span>
-                                ) :
-                                (<></>)
+                            entry.subtitle && entry.subtitle !== entry.title ?
+                                <span className={styles.flux_subtitle}>
+                                    {entry.subtitle}
+                                </span> :
+                                <></>
                         }
                         <div className={styles.flux_image}>
                             <SVG svg={ArrowIcon} />
