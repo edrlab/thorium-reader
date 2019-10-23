@@ -53,9 +53,15 @@ class Cover extends React.Component<IProps, null> {
                 </div>
             );
         } else {
-            return <img onClick={this.props.onclick} src={this.props.coverTypeUrl ?
-                this.props.publication.cover[this.props.coverTypeUrl] :
-                this.props.publication.cover.thumbnailUrl || this.props.publication.cover.coverUrl}/>;
+            return (
+                <img
+                    className={styles.cover_img}
+                    onClick={this.props.onclick}
+                    src={this.props.coverTypeUrl ?
+                        this.props.publication.cover[this.props.coverTypeUrl] :
+                        this.props.publication.cover.thumbnailUrl || this.props.publication.cover.coverUrl}
+                />
+            );
         }
     }
 }
