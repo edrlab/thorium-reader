@@ -139,9 +139,8 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         <div>
                             <Cover
                                 publication={publication}
-                                onclick={() => publication.cover.coverUrl && this.setState({
-                                    coverZoom: !this.state.coverZoom,
-                                })}
+                                onclick={() => publication.cover.coverUrl && this.coverOnClick()}
+                                onKeyPress={this.coverOnKeyPress}
                             />
                         </div>
                     </div>
@@ -205,14 +204,24 @@ class PublicationInfo extends React.Component<IProps, IState> {
         return (
             <Dialog open={true} close={this.props.closeDialog}>
                 {this.state.coverZoom ?
-                    <Cover publication={publication} coverTypeUrl="coverUrl" onclick={() => this.setState({
-                        coverZoom: !this.state.coverZoom,
-                    })} />
+                    <Cover
+                        publication={publication}
+                        coverTypeUrl="coverUrl"
+                        onclick={this.coverOnClick}
+                        onKeyPress={this.coverOnKeyPress}/>
                     : renderInfo()
                 }
             </Dialog>
         );
     }
+
+    private coverOnKeyPress = (e: React.KeyboardEvent<HTMLImageElement>) =>
+        e.key === "Enter" && this.coverOnClick()
+
+    private coverOnClick = () => this.setState({
+        coverZoom: !this.state.coverZoom,
+    })
+
 
     private toggleSeeMore() {
         this.setState({ seeMore: !this.state.seeMore });

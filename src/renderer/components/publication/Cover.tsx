@@ -18,6 +18,7 @@ interface IProps extends TranslatorProps {
     publication: PublicationView;
     coverTypeUrl?: keyof CoverView | undefined;
     onclick?: () => void;
+    onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
 }
 
 class Cover extends React.Component<IProps, null> {
@@ -55,8 +56,10 @@ class Cover extends React.Component<IProps, null> {
         } else {
             return (
                 <img
+                    tabIndex={0}
                     className={styles.cover_img}
                     onClick={this.props.onclick}
+                    onKeyPress={this.props.onKeyPress}
                     src={this.props.coverTypeUrl ?
                         this.props.publication.cover[this.props.coverTypeUrl] :
                         this.props.publication.cover.thumbnailUrl || this.props.publication.cover.coverUrl}

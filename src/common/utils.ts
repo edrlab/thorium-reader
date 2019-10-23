@@ -9,21 +9,58 @@ import { Contributor } from "r2-shared-js/dist/es6-es2015/src/models/metadata-co
 import { IStringMap } from "r2-shared-js/dist/es6-es2015/src/models/metadata-multilang";
 import { diMainGet } from "readium-desktop/main/di";
 
+// https://github.com/IDPF/epub3-samples/blob/master/30/regime-anticancer-arabic/EPUB/package.opf
+//
+// "author": [
+//     {
+//         "name": {
+//             "ar": "دافيد  خيّاط لبروفيسورا"
+//         }
+//     },
+//     {
+//         "name": {
+//             "ar": "اردو هاتر ناتالي"
+//         }
+//     }
+// ],
+// "translator": {
+//     "name": {
+//         "ar": "فيّاض خليل مارينا"
+//     }
+// },
+// "contributor": {
+//     "name": "Vincent Gros",
+//     "role": "mrk"
+// },
+// "publisher": "Hachette Antoine",
+//
 // tslint:disable-next-line: max-line-length
-// https://readium2.herokuapp.com/pub/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL0lEUEYvZXB1YjMtc2FtcGxlcy9tYXN0ZXIvMzAvcmVnaW1lLWFudGljYW5jZXItYXJhYmljL01FVEEtSU5GL2NvbnRhaW5lci54bWw%3D/manifest.json/show/all
+// https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/contributor-object.schema.json#L7-L24
 // tslint:disable-next-line: max-line-length
 // https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/metadata.schema.json#L15-L32
 export function convertMultiLangStringToString(items: string | IStringMap | undefined): string {
     if (typeof items === "object") {
         const translator = diMainGet("translator");
         const langs = Object.keys(items);
-        const lang = langs.filter((l) => l.includes(translator.getLocale()));
+        const lang = langs.filter((l) =>
+            l.toLowerCase().includes(translator.getLocale().toLowerCase()));
         const localeLang = lang[0];
-        return items[localeLang] || items[langs[0]];
+        return items[localeLang] || items._ || items[langs[0]];
     }
     return items;
 }
 
+// Note that the contributor JSON Schema applies to the serialized format:
+// https://github.com/readium/webpub-manifest/blob/master/schema/contributor.schema.json
+// https://github.com/readium/webpub-manifest/blob/master/schema/contributor-object.schema.json
+//
+// By contrast,
+// the in-memory data model (TypeScript) normalizes single items to one-length arrays,
+// as well as single-string names to expanded object.
+// See:
+// https://github.com/readium/r2-shared-js/blob/develop/test/test-JSON-Contributor.ts
+// https://github.com/readium/r2-shared-js/blob/develop/src/models/metadata-contributor-json-converter.ts
+// https://github.com/readium/r2-shared-js/blob/develop/src/models/metadata-contributor.ts
 export function convertContributorArrayToStringArray(items: Contributor[] | undefined): string[] {
     if (!items) {
         return  [];
