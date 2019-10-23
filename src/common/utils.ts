@@ -14,22 +14,26 @@ import { diMainGet } from "readium-desktop/main/di";
 // "author": [
 //     {
 //         "name": {
-//             "ar": "دافيد  خيّاط لبروفيسورا"
+//             "ar": "دافيد  خيّاط لبروفيسورا",
+//             "fr": "Pr David Khayat"
 //         }
 //     },
 //     {
 //         "name": {
-//             "ar": "اردو هاتر ناتالي"
+//             "ar": "اردو هاتر ناتالي",
+//             "fr": "Nathalie Hutter-Lardeau"
 //         }
 //     }
 // ],
 // "translator": {
 //     "name": {
-//         "ar": "فيّاض خليل مارينا"
+//         "ar": "فيّاض خليل مارينا",
+//         "fr": "Marina Khalil Fayad"
 //     }
 // },
 // "contributor": {
 //     "name": "Vincent Gros",
+//     "sortAs": "Gros, Vincent",
 //     "role": "mrk"
 // },
 // "publisher": "Hachette Antoine",
