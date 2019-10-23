@@ -53,12 +53,10 @@ export class OpdsFeedViewConverter {
         const title = titleParts[0].trim();
         const subtitle = titleParts[1] && titleParts[1].trim();
 
-        // FIXME : Does publicationCount works? I never see it in react
         return  {
             title,
             subtitle,
             url: urlPathResolve(url, link.Href),
-            publicationCount: link.Children && link.Children.length,
         };
     }
 

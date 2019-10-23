@@ -48,16 +48,6 @@ class Entry extends React.Component<EntryProps, undefined> {
                                 </span> :
                                 <></>
                         }
-                        {
-                            (entry.publicationCount) ?
-                                (
-                                    // FIXME livres in french
-                                    <span className={styles.flux_subtitle}>
-                                        {entry.publicationCount}
-                                    </span>
-                                ) :
-                                (<></>)
-                        }
                         <div className={styles.flux_image}>
                             <SVG svg={ArrowIcon} />
                         </div>
