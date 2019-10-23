@@ -140,7 +140,8 @@ function setMenuWindowsLinux(win: BrowserWindow, isReaderView: boolean) {
         // Menu.setApplicationMenu(Menu.buildFromTemplate(template));
         win.setMenu(Menu.buildFromTemplate(template));
     } else {
-        win.setMenu(null);
+        win.removeMenu();
+        // win.setMenu(null);
     }
 }
 
