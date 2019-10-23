@@ -223,7 +223,6 @@ class PublicationInfo extends React.Component<IProps, IState> {
         coverZoom: !this.state.coverZoom,
     })
 
-
     private toggleSeeMore() {
         this.setState({ seeMore: !this.state.seeMore });
     }
