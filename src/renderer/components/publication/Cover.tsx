@@ -58,7 +58,7 @@ class Cover extends React.Component<IProps, null> {
                 <img
                     tabIndex={0}
                     className={styles.cover_img}
-                    onClick={this.props.onclick}
+                    onClick={this.props.onClick}
                     onKeyPress={this.props.onKeyPress}
                     src={this.props.coverTypeUrl ?
                         this.props.publication.cover[this.props.coverTypeUrl] :
