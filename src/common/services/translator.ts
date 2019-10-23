@@ -134,7 +134,7 @@ i18nextInstanceEN.changeLanguage("en").then((_t) => {
 export enum AvailableLanguages {
     en = "English",
     fr = "Français",
-    de = "Deutch",
+    de = "Deutsch",
 }
 
 interface LocalizedContent {
