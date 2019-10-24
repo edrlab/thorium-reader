@@ -239,7 +239,9 @@ function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
             ] as Electron.MenuItemConstructorOptions[],
         },
     ];
-    if (IS_DEV || (isReaderView && _CONTINUOUS_INTEGRATION_DEPLOY)) {
+    // isReaderView never invoked because single app-wide menu, does not depend on BrowserWindows
+    // if (IS_DEV || (isReaderView && _CONTINUOUS_INTEGRATION_DEPLOY)) {
+    if (IS_DEV || _CONTINUOUS_INTEGRATION_DEPLOY) {
         template.push(devMenu(win, isReaderView));
     }
     Menu.setApplicationMenu(Menu.buildFromTemplate(template));
