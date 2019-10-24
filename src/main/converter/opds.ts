@@ -57,6 +57,7 @@ export class OpdsFeedViewConverter {
             title,
             subtitle,
             url: urlPathResolve(url, link.Href),
+            numberOfItems: link.Properties && link.Properties.NumberOfItems,
         };
     }
 

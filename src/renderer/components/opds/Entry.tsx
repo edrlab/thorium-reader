@@ -48,6 +48,15 @@ class Entry extends React.Component<EntryProps, undefined> {
                                 </span> :
                                 <></>
                         }
+                        {
+                            (entry.numberOfItems) ?
+                                (
+                                    <span className={styles.flux_subtitle}>
+                                        {entry.numberOfItems}
+                                    </span>
+                                ) :
+                                (<></>)
+                        }
                         <div className={styles.flux_image}>
                             <SVG svg={ArrowIcon} />
                         </div>
