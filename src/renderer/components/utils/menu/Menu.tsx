@@ -81,7 +81,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
                         setContentRef={(ref) => { this.contentRef = ref; }}
                         focusMenuButton={this.focusMenuButton}
                     >
-                        <span onClick={toggle}>
+                        <span onClick={() => setTimeout(toggle, 1)}>
                             {content}
                         </span>
                     </MenuContent>

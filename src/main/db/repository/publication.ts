@@ -18,6 +18,8 @@ const TAG_INDEX = "tag_index";
 
 const TITLE_INDEX = "title_index";
 
+const HASH_INDEX = "hash_index";
+
 import {
     convertMultiLangStringToString,
 } from "readium-desktop/common/utils";
@@ -38,8 +40,16 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                 fields: ["tags"],
                 name: TAG_INDEX,
             },
+            {
+                fields: ["hash"],
+                name: HASH_INDEX,
+            },
         ];
         super(db, "publication", indexes);
+    }
+
+    public async findByHashId(hash: string): Promise<PublicationDocument[]> {
+        return this.findBy({ hash: { $eq: hash }});
     }
 
     public async findByTag(tag: string): Promise<PublicationDocument[]> {
@@ -104,6 +114,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                 coverFile: dbDoc.coverFile,
                 customCover: dbDoc.customCover,
                 lcp: dbDoc.lcp,
+                hash: dbDoc.hash,
             },
         );
     }

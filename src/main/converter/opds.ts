@@ -49,14 +49,15 @@ export class OpdsFeedViewConverter {
     public convertOpdsLinkToView(link: OPDSLink, url: string): OpdsLinkView {
         // Title could be defined on multiple lines
         // Only keep the first one
-        let title = link.Title;
-        const titleParts = title.split("\n");
-        title = titleParts[0];
+        const titleParts = link.Title.split("\n").filter((text) => text);
+        const title = titleParts[0].trim();
+        const subtitle = titleParts[1] && titleParts[1].trim();
 
         return  {
             title,
+            subtitle,
             url: urlPathResolve(url, link.Href),
-            publicationCount: (link.Children) ? link.Children.length : null,
+            numberOfItems: link.Properties && link.Properties.NumberOfItems,
         };
     }
 
@@ -226,20 +227,23 @@ export class OpdsFeedViewConverter {
         try {
             if (feed.Links) {
                 const searchLink = feed.Links.find((value) => value.Rel[0] === "search");
-                if (searchLink.TypeLink === "application/opds+json") {
-                    searchUrl = searchLink.Href;
-                } else {
-                    const searchLinkFeedData = await httpGet(searchLink.Href);
-                    if (searchLinkFeedData.isFailure) {
-                        return undefined;
-                    }
-                    const result = convert.xml2js(searchLinkFeedData.data, { compact: true }) as convert.ElementCompact;
+                if (searchLink) {
+                    if (searchLink.TypeLink === "application/opds+json") {
+                        searchUrl = searchLink.Href;
+                    } else {
+                        const searchLinkFeedData = await httpGet(searchLink.Href);
+                        if (searchLinkFeedData.isFailure) {
+                            return undefined;
+                        }
+                        const result = convert.xml2js(searchLinkFeedData.data,
+                            { compact: true }) as convert.ElementCompact;
 
-                    if (result) {
-                        const doc = result.OpenSearchDescription;
-                        searchUrl = doc.Url.find((value: any) => {
-                            return value._attributes && value._attributes.type === "application/atom+xml";
-                        })._attributes.template;
+                        if (result) {
+                            const doc = result.OpenSearchDescription;
+                            searchUrl = doc.Url.find((value: any) => {
+                                return value._attributes && value._attributes.type === "application/atom+xml";
+                            })._attributes.template;
+                        }
                     }
                 }
             }
@@ -247,7 +251,7 @@ export class OpdsFeedViewConverter {
             debug("no search url found : error:", e.toString());
         }
         // if searchUrl is not found return undefined
-        // the user will not be able to use the search
+        // The user will not be able to use the search form
         return searchUrl;
     }
 }

@@ -101,10 +101,10 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                         }
                     >
                         <div className={styles.list_book_title}>
-                        <p className={styles.book_title}>{ pub.title }</p>
-                        <p className={`${styles.book_author} ${styles.lightgrey}`}>
-                            {pub.authors.map((author) => translator.translateContentField(author)).join(", ")}
-                        </p>
+                            <p className={styles.book_title}>{ pub.title }</p>
+                            <p className={`${styles.book_author} ${styles.lightgrey}`}>
+                                {pub.authors.map((author) => translator.translateContentField(author)).join(", ")}
+                            </p>
                         </div>
                         <p className={styles.infos_sup}>
                         { formatedPublishedYear}</p>
@@ -129,18 +129,6 @@ export class PublicationListElement extends React.Component<IProps, IState> {
             </>
         );
     }
-
-    /**
-     * deletePublication isn't used
-     * this method has the same name that api CallProp
-     * What is the point ?
-     */
-    /*
-    private deletePublication(e: any) {
-        e.preventDefault();
-        this.props.openDeleteDialog(this.props.publication);
-    }
-    */
 
     private toggleMenu() {
         this.setState({menuOpen: !this.state.menuOpen});

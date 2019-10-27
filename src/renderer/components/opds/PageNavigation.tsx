@@ -80,7 +80,7 @@ class PageNavigation extends React.Component<Props> {
                         {__("opds.lastPage")}
                     </button>
                 }
-                { page ?
+                { page && page.itemsPerPage !== undefined && page.numberOfItems !== undefined ?
                     <span className={styles.page_count}>{this.props.currentPage} / {this.totalPage()}</span>
                 : <span/>}
             </div>

@@ -239,18 +239,18 @@ export class ReaderOptions extends React.Component<Props> {
                 <div className={styles.center_in_tab}>
                     <div className={styles.focus_element}>
                         <input
-                            id={"radio-" + styles.option_gauche}
+                            id={"radio-" + styles.option_auto}
                             name="alignment"
                             type="radio"
-                            onChange={(e) => this.props.handleSettingChange(e, "align", "left")}
-                            checked={settings.align === textAlignEnum.left}
+                            onChange={(e) => this.props.handleSettingChange(e, "align", "auto")}
+                            checked={settings.align === "auto"}
                         />
                         <label
-                            htmlFor={"radio-" + styles.option_gauche}
-                            className={this.getButtonClassName("align", "left")}
+                            htmlFor={"radio-" + styles.option_auto}
+                            className={this.getButtonClassName("align", "auto")}
                         >
                             <SVG svg={LeftIcon}/>
-                            {__("reader.settings.left")}
+                            {__("reader.settings.column.auto")}
                         </label>
                     </div>
                     <div className={styles.focus_element}>
@@ -258,7 +258,7 @@ export class ReaderOptions extends React.Component<Props> {
                             id={"radio-" + styles.option_justif}
                             name="alignment"
                             type="radio"
-                            onChange={(e) => this.props.handleSettingChange(e, "align", "justify")}
+                            onChange={(e) => this.props.handleSettingChange(e, "align", textAlignEnum.justify)}
                             checked={settings.align === textAlignEnum.justify}
                         />
                         <label

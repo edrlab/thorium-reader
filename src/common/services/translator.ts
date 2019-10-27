@@ -134,7 +134,7 @@ i18nextInstanceEN.changeLanguage("en").then((_t) => {
 export enum AvailableLanguages {
     en = "English",
     fr = "Français",
-    de = "Deutch",
+    de = "Deutsch",
 }
 
 interface LocalizedContent {
@@ -155,6 +155,9 @@ export class Translator {
     public setLocale(locale: string) {
         this.locale = locale;
         if (i18nextInstance.language !== this.locale) {
+            // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1800
+            // i18nextInstance.language not instantly ready (because async loadResources()),
+            // but i18nextInstance.isLanguageChangingTo immediately informs which locale i18next is switching to.
             i18nextInstance.changeLanguage(this.locale).then((_t) => {
                 // noop
             }).catch((err) => {

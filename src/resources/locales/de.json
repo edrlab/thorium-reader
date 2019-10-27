@@ -69,7 +69,7 @@
         "yes": "Ja"
     },
     "header": {
-        "allBooks": "Alle bücher",
+        "allBooks": "Alle Bücher",
         "books": "Meine Bücher",
         "catalogs": "Kataloge",
         "gridTitle": "Buchumschläge in einem Raster präsentieren",
@@ -150,6 +150,8 @@
         "marks": {
             "annotations": "Annotationen",
             "bookmarks": "Lesezeichen",
+            "delete": "Löschen",
+            "edit": "Bearbeiten",
             "illustrations": "Illustrationstabelle",
             "landmarks": "Landmarks",
             "toc": "inhaltsverzeichnis"

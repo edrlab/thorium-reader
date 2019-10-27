@@ -56,3 +56,6 @@ export const IS_DEV =
     // ... or when not packaging, check runtime process.env:
     __PACKAGING__ === "0" &&
     (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
+
+declare const __CONTINUOUS_INTEGRATION_DEPLOY__: boolean;
+export const _CONTINUOUS_INTEGRATION_DEPLOY = __CONTINUOUS_INTEGRATION_DEPLOY__;
