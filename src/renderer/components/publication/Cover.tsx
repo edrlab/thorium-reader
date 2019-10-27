@@ -60,6 +60,8 @@ class Cover extends React.Component<IProps, null> {
                     className={styles.cover_img}
                     onClick={this.props.onClick}
                     onKeyPress={this.props.onKeyPress}
+                    role="presentation"
+                    alt="cover image"
                     src={this.props.coverTypeUrl ?
                         this.props.publication.cover[this.props.coverTypeUrl] :
                         this.props.publication.cover.thumbnailUrl || this.props.publication.cover.coverUrl}
