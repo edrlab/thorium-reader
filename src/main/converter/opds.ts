@@ -4,26 +4,19 @@
 // Use of this source code is governed by a BSD-style license
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
-
 import * as debug_ from "debug";
 import { injectable } from "inversify";
 import * as moment from "moment";
 import {
-    convertContributorArrayToStringArray, convertMultiLangStringToString,
+    convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
 } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
 import {
-    OpdsFeedView,
-    OpdsLinkView,
-    OpdsPublicationView,
-    OpdsResultPageInfos,
-    OpdsResultType,
-    OpdsResultUrls,
-    OpdsResultView,
+    OpdsFeedView, OpdsLinkView, OpdsPublicationView, OpdsResultPageInfos, OpdsResultType,
+    OpdsResultUrls, OpdsResultView,
 } from "readium-desktop/common/views/opds";
 import { CoverView } from "readium-desktop/common/views/publication";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
-import { resolve } from "url";
 import * as convert from "xml-js";
 
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
@@ -32,9 +25,6 @@ import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
-
-const urlPathResolve = (from: string, to: string) =>
-        to && !/^https?:\/\//.exec(to) && !/^data:\/\//.exec(to) ? resolve(from, to) : to;
 
 @injectable()
 export class OpdsFeedViewConverter {
@@ -76,6 +66,14 @@ export class OpdsFeedViewConverter {
             publishedAt = moment(metadata.PublicationDate).toISOString();
         }
 
+        // resolve url in publication before extract them
+        if (publication.Links) {
+            publication.Links.forEach((ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href)));
+        }
+        if (publication.Images) {
+            publication.Images.forEach((ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href)));
+        }
+
         // CoverView object
         let cover: CoverView | undefined;
         if (publication.Images && publication.Images.length > 0) {
@@ -85,13 +83,12 @@ export class OpdsFeedViewConverter {
             const thumbnailLink = imagesLinks.filter(
                 (img) => img.Rel.filter(
                     (rel) => rel === "http://opds-spec.org/image/thumbnail").length)[0];
-            const thumbnailUrl = (thumbnailLink && urlPathResolve(url, thumbnailLink.Href))
-                || (imagesLinks[0] && urlPathResolve(url, imagesLinks[0].Href));
+            const thumbnailUrl = (thumbnailLink && thumbnailLink.Href) || (imagesLinks[0] && imagesLinks[0].Href);
 
             const coverLink = imagesLinks.filter(
                 (img) => img.Rel.filter(
                     (rel) => rel === "http://opds-spec.org/image").length)[0];
-            const coverUrl = coverLink && urlPathResolve(url, coverLink.Href);
+            const coverUrl = coverLink && coverLink.Href;
 
             if (coverUrl || thumbnailUrl) {
                 cover = {
@@ -117,8 +114,9 @@ export class OpdsFeedViewConverter {
         let base64OpdsPublication: string | undefined;
         let urlPublication: string | undefined;
         if (links.length > 0) {
-            urlPublication = urlPathResolve(url, links[0].Href);
+            urlPublication = links[0].Href;
         } else {
+            debug(publication);
             base64OpdsPublication = Buffer
             .from(JSON.stringify(publication))
             .toString("base64");
