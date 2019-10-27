@@ -188,13 +188,17 @@ export class OpdsFeedViewConverter {
                 return nav;
             });
         }
+        const getUrlFromFeed = (f: OPDSFeed, linkRel: string): string | undefined => {
+            const linkWithRel = f.Links.find((link) => link.Rel && link.Rel.includes(linkRel));
+            return linkWithRel && linkWithRel.Href;
+        };
         if (feed.Links) {
             urls = {
                 search: await this.getSearchUrlFromOpds1Feed(feed),
-                nextPage: this.getUrlFromFeed(feed, "next"),
-                previousPage: this.getUrlFromFeed(feed, "previous"),
-                firstPage: this.getUrlFromFeed(feed, "first"),
-                lastPage: this.getUrlFromFeed(feed, "last"),
+                nextPage: urlPathResolve(url, getUrlFromFeed(feed, "next")),
+                previousPage: urlPathResolve(url, getUrlFromFeed(feed, "previous")),
+                firstPage: urlPathResolve(url, getUrlFromFeed(feed, "first")),
+                lastPage: urlPathResolve(url, getUrlFromFeed(feed, "last")),
             };
         }
 
@@ -213,11 +217,6 @@ export class OpdsFeedViewConverter {
             urls,
             page,
         };
-    }
-
-    private getUrlFromFeed(feed: OPDSFeed, linkRel: string): string | undefined {
-        const linkWithRel = feed.Links.find((link) => link.Rel && link.Rel.includes(linkRel));
-        return linkWithRel ? linkWithRel.Href : undefined;
     }
 
     private async getSearchUrlFromOpds1Feed(feed: OPDSFeed): Promise<string| undefined> {
