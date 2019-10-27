@@ -244,10 +244,10 @@ export class OpdsFeedViewConverter {
                 }
             }
         } catch (e) {
-            debug("getSearchUrlFromOpds1Feed", e);
+            debug("no search url found : error:", e.toString());
         }
         // if searchUrl is not found return undefined
-        // User will be can't use search form
+        // the user will not be able to use the search
         return searchUrl;
     }
 }
