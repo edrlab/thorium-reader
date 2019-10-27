@@ -202,7 +202,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
             </>;
 
         return (
-            <Dialog open={true} close={this.props.closeDialog}>
+            <Dialog open={true} close={() => this.state.coverZoom ? this.coverOnClick() : this.props.closeDialog()}>
                 {this.state.coverZoom ?
                     <Cover
                         publication={publication}
