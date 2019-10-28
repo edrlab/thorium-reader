@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as importAction from "readium-desktop/common/redux/actions/import";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
@@ -18,7 +18,7 @@ import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
-    publication: OpdsPublicationView;
+    publication: IOpdsPublicationView;
 }
 
 export class PublicationCard extends React.Component<IProps> {
@@ -91,7 +91,7 @@ export class PublicationCard extends React.Component<IProps> {
 
 const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
-        displayPublicationInfo: (publication: OpdsPublicationView) => {
+        displayPublicationInfo: (publication: IOpdsPublicationView) => {
             dispatch(dialogActions.open("publication-info",
                 {
                     opdsPublication: publication,
@@ -99,7 +99,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
                 },
             ));
         },
-        verifyImport: (publication: OpdsPublicationView, downloadSample: boolean) => {
+        verifyImport: (publication: IOpdsPublicationView, downloadSample: boolean) => {
             dispatch(importAction.verifyImport(
                 {
                     publication,

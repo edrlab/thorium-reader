@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { OPDSLink } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-link";
+import { OPDSMetadata } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-metadata";
 
 import { IHttpGetResult } from "../utils/http";
 import { CoverView } from "./publication";
@@ -16,7 +17,7 @@ export interface OpdsFeedView {
     url: string;
 }
 
-export interface OpdsPublicationView {
+export interface IOpdsPublicationView {
     title: string;
     authors: string[];
     publishers?: string[];
@@ -42,12 +43,11 @@ export interface IOpdsNavigationLinkView {
     numberOfItems?: number;
 }
 
-export interface OpdsResultView {
-    title: string;
-    numberOfItems?: number;
-    itemsPerPage?: number;
+export interface IOpdsResultView extends
+    Partial<Pick<OPDSMetadata, "NumberOfItems" | "ItemsPerPage" | "CurrentPage">>,
+    Pick<OPDSMetadata, "Title"> {
     navigation?: IOpdsNavigationLinkView[];
-    publications?: OpdsPublicationView[];
+    publications?: IOpdsPublicationView[];
     links?: IOpdsNavigationLink;
 }
 
@@ -65,4 +65,4 @@ export interface IOpdsNavigationLink {
     bookshelf: TOpdsLinkViewSimplified[];
 }
 
-export type THttpGetOpdsResultView = IHttpGetResult<string, OpdsResultView>;
+export type THttpGetOpdsResultView = IHttpGetResult<string, IOpdsResultView>;

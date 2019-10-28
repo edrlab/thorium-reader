@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import * as importAction from "readium-desktop/common/redux/actions/import";
 import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
@@ -18,7 +18,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
-    publication: OpdsPublicationView;
+    publication: IOpdsPublicationView;
 }
 
 export class OpdsControls extends React.Component<IProps> {

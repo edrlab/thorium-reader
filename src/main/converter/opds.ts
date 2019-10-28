@@ -12,8 +12,8 @@ import {
     convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
 } from "readium-desktop/common/utils";
 import {
-    IOpdsNavigationLink, IOpdsNavigationLinkView, OpdsFeedView, OpdsPublicationView, OpdsResultView,
-    TOpdsLinkViewSimplified,
+    IOpdsNavigationLink, IOpdsNavigationLinkView, IOpdsPublicationView, IOpdsResultView,
+    OpdsFeedView, TOpdsLinkViewSimplified,
 } from "readium-desktop/common/views/opds";
 import { CoverView } from "readium-desktop/common/views/publication";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
@@ -56,7 +56,7 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public convertOpdsPublicationToView(publication: OPDSPublication, url: string): OpdsPublicationView {
+    public convertOpdsPublicationToView(publication: OPDSPublication, url: string): IOpdsPublicationView {
         const metadata = publication.Metadata;
         const title = convertMultiLangStringToString(metadata.Title);
         const authors = convertContributorArrayToStringArray(metadata.Author);
@@ -155,9 +155,9 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public async convertOpdsFeedToView(feed: OPDSFeed, url: string): Promise<OpdsResultView> {
+    public async convertOpdsFeedToView(feed: OPDSFeed, url: string): Promise<IOpdsResultView> {
 
-        let publications: OpdsPublicationView[] | undefined;
+        let publications: IOpdsPublicationView[] | undefined;
         if (feed.Publications) {
             publications = feed.Publications.map((item) => {
                 return this.convertOpdsPublicationToView(item, url);
@@ -185,11 +185,13 @@ export class OpdsFeedViewConverter {
         }
 
         return {
-            title: convertMultiLangStringToString(feed.Metadata.Title),
-            numberOfItems: typeof feed.Metadata.NumberOfItems === "number" &&
+            Title: convertMultiLangStringToString(feed.Metadata.Title),
+            NumberOfItems: typeof feed.Metadata.NumberOfItems === "number" &&
                 feed.Metadata.NumberOfItems,
-            itemsPerPage: typeof feed.Metadata.ItemsPerPage === "number" &&
+            ItemsPerPage: typeof feed.Metadata.ItemsPerPage === "number" &&
                 feed.Metadata.ItemsPerPage,
+            CurrentPage: typeof feed.Metadata.CurrentPage === "number" &&
+                feed.Metadata.CurrentPage,
             publications,
             navigation,
             links,

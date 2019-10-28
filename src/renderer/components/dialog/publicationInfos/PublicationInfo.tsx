@@ -75,7 +75,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const isOpds = typeof this.props.opdsPublication === "object";
-        // OPDSPublicationView can be cast to Publication type in this case without transformation
+        // IOpdsPublicationView can be cast to Publication type in this case without transformation
         const publication = isOpds ? this.props.opdsPublication as PublicationView : this.state.publication;
         if (!this.props.open || !publication) {
             return (<></>);
