@@ -17,7 +17,6 @@ import {
     OpdsLinkView,
     OpdsPublicationView,
     OpdsResultPageInfos,
-    OpdsResultType,
     OpdsResultUrls,
     OpdsResultView,
 } from "readium-desktop/common/views/opds";
@@ -162,35 +161,26 @@ export class OpdsFeedViewConverter {
 
     public async convertOpdsFeedToView(feed: OPDSFeed, url: string): Promise<OpdsResultView> {
         const title = convertMultiLangStringToString(feed.Metadata.Title);
-        let type = OpdsResultType.Empty;
         let navigation: OpdsLinkView[] | undefined;
         let publications: OpdsPublicationView[] | undefined;
 
-        let urls: OpdsResultUrls = {};
-        let page: OpdsResultPageInfos;
 
         if (feed.Publications) {
-            // result page containing publications
-            type = OpdsResultType.PublicationFeed;
             publications = feed.Publications.map((item) => {
                 return this.convertOpdsPublicationToView(item, url);
             });
-        } else if (feed.Navigation) {
-            // result page containing navigation
-            type = OpdsResultType.NavigationFeed;
+        }
+        if (feed.Navigation) {
             navigation = feed.Navigation.map((item) => {
                 return this.convertOpdsLinkToView(item, url);
             });
-
-            // concatenate all relative path to an absolute URL path
-            navigation = navigation.map((nav) => {
-                nav.url = urlPathResolve(url, nav.url);
-                return nav;
-            });
         }
+
+        const urls: OpdsResultUrls = {};
+        let search: string | undefined;
+
         if (feed.Links) {
             urls = {
-                search: await this.getSearchUrlFromOpds1Feed(feed),
                 nextPage: this.getUrlFromFeed(feed, "next"),
                 previousPage: this.getUrlFromFeed(feed, "previous"),
                 firstPage: this.getUrlFromFeed(feed, "first"),
@@ -198,16 +188,13 @@ export class OpdsFeedViewConverter {
             };
         }
 
-        if (feed.Metadata) {
-            page = {
-                numberOfItems: feed.Metadata.NumberOfItems,
-                itemsPerPage: feed.Metadata.ItemsPerPage,
-            };
-        }
-
         return {
             title,
-            type,
+            numberOfItems: typeof feed.Metadata.NumberOfItems === "number" &&
+                feed.Metadata.NumberOfItems,
+            itemsPerPage: typeof feed.Metadata.ItemsPerPage === "number" &&
+                feed.Metadata.ItemsPerPage,
+            search,
             publications,
             navigation,
             urls,

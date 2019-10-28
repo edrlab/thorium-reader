@@ -40,28 +40,22 @@ export interface OpdsLinkView {
     numberOfItems?: number;
 }
 
-export enum OpdsResultType {
-    Entry = "entry",
-    NavigationFeed = "navigation-feed",
-    PublicationFeed = "publication-feed",
-    Empty = "empty",
-}
-
 export interface OpdsResultView {
     title: string;
-    type: OpdsResultType;
+    numberOfItems: number;
+    itemsPerPage: number;
     navigation?: OpdsLinkView[];
     publications?: OpdsPublicationView[];
-    urls: OpdsResultUrls;
+    urls: OpdsNavigationLink;
+    search?: string;
     page?: OpdsResultPageInfos;
 }
 
-export interface OpdsResultUrls {
+export interface OpdsNavigationLink {
     nextPage?: string;
     previousPage?: string;
     firstPage?: string;
     lastPage?: string;
-    search?: string;
 }
 
 export interface OpdsResultPageInfos {
