@@ -30,7 +30,6 @@ export class PublicationCard extends React.Component<IProps> {
 
     public render(): React.ReactElement<{}>  {
         const { publication, __, buttonIsDisabled } = this.props;
-        console.log(buttonIsDisabled);
         return (
             <>
                 <button role="menuitem"

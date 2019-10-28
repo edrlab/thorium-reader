@@ -8,7 +8,7 @@
 import { injectable } from "inversify";
 import * as moment from "moment";
 import { convertContributorArrayToStringArray } from "readium-desktop/common/utils";
-import { PublicationView } from "readium-desktop/common/views/publication";
+import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { JSON as TAJSON } from "ta-json-x";
 
@@ -29,17 +29,17 @@ export class PublicationViewConverter {
         const authors = convertContributorArrayToStringArray(
             epub.Metadata.Author,
         );
-        let publishedAt = null;
 
+        let publishedAt: string | undefined;
         if (epub.Metadata.PublicationDate) {
             publishedAt = moment(epub.Metadata.PublicationDate).toISOString();
         }
 
-        let cover = null;
-
+        let cover: CoverView | undefined;
         if (document.coverFile) {
             cover = {
-                url : document.coverFile.url,
+                thumbnailUrl : document.coverFile.url,
+                coverUrl: document.coverFile.url,
             };
         }
 

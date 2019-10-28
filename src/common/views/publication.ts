@@ -8,7 +8,8 @@
 import { Metadata } from "@r2-shared-js/models/metadata";
 
 export interface CoverView {
-    url: string;
+    coverUrl?: string;
+    thumbnailUrl?: string;
 }
 
 export interface CustomCoverView {
