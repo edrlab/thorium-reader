@@ -5,35 +5,31 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+// import * as debug "debug";
 import { injectable } from "inversify";
 import * as moment from "moment";
 import {
-    convertContributorArrayToStringArray, convertMultiLangStringToString,
+    convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
 } from "readium-desktop/common/utils";
-import { httpGet } from "readium-desktop/common/utils/http";
 import {
-    OpdsFeedView,
-    OpdsLinkView,
-    OpdsPublicationView,
-    OpdsResultPageInfos,
-    OpdsResultUrls,
-    OpdsResultView,
+    IOpdsNavigationLink, IOpdsNavigationLinkView, OpdsFeedView, OpdsPublicationView, OpdsResultView,
+    TOpdsLinkViewSimplified,
 } from "readium-desktop/common/views/opds";
 import { CoverView } from "readium-desktop/common/views/publication";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
-import { resolve } from "url";
-import * as convert from "xml-js";
 
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
 // Logger
-const debug = debug_("readium-desktop:main/converter/opds");
+// const debug = debug_("readium-desktop:main/converter/opds");
 
-const urlPathResolve = (from: string, to: string) =>
-        to && !/^https?:\/\//.exec(to) && !/^data:\/\//.exec(to) ? resolve(from, to) : to;
+const GetSimplifedLinkFromRel = (baseUrl: string, links: OPDSLink[], rel: string): TOpdsLinkViewSimplified[] => {
+    const linksFiltered = links.filter((ln) => ln.Rel[0] && ln.Rel[0] === rel && ln.Href);
+    linksFiltered.forEach((ln) => ln.Href = urlPathResolve(baseUrl, ln.Href));
+    return linksFiltered;
+};
 
 @injectable()
 export class OpdsFeedViewConverter {
@@ -45,7 +41,7 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public convertOpdsLinkToView(link: OPDSLink, url: string): OpdsLinkView {
+    public convertOpdsLinkToView(link: OPDSLink, url: string): IOpdsNavigationLinkView {
         // Title could be defined on multiple lines
         // Only keep the first one
         const titleParts = link.Title.split("\n").filter((text) => text);
@@ -160,85 +156,43 @@ export class OpdsFeedViewConverter {
     }
 
     public async convertOpdsFeedToView(feed: OPDSFeed, url: string): Promise<OpdsResultView> {
-        const title = convertMultiLangStringToString(feed.Metadata.Title);
-        let navigation: OpdsLinkView[] | undefined;
+
         let publications: OpdsPublicationView[] | undefined;
-
-
         if (feed.Publications) {
             publications = feed.Publications.map((item) => {
                 return this.convertOpdsPublicationToView(item, url);
             });
         }
+        let navigation: IOpdsNavigationLinkView[] | undefined;
         if (feed.Navigation) {
             navigation = feed.Navigation.map((item) => {
                 return this.convertOpdsLinkToView(item, url);
             });
         }
 
-        const urls: OpdsResultUrls = {};
-        let search: string | undefined;
-
+        let links: IOpdsNavigationLink | undefined;
         if (feed.Links) {
-            urls = {
-                nextPage: this.getUrlFromFeed(feed, "next"),
-                previousPage: this.getUrlFromFeed(feed, "previous"),
-                firstPage: this.getUrlFromFeed(feed, "first"),
-                lastPage: this.getUrlFromFeed(feed, "last"),
+            links = {
+                next: GetSimplifedLinkFromRel(url, feed.Links, "next"),
+                previous: GetSimplifedLinkFromRel(url, feed.Links, "previous"),
+                first: GetSimplifedLinkFromRel(url, feed.Links, "first"),
+                last: GetSimplifedLinkFromRel(url, feed.Links, "last"),
+                start: GetSimplifedLinkFromRel(url, feed.Links, "start"),
+                up: GetSimplifedLinkFromRel(url, feed.Links, "up"),
+                search: GetSimplifedLinkFromRel(url, feed.Links, "search"),
+                bookshelf: GetSimplifedLinkFromRel(url, feed.Links, "http://opds-spec.org/shelf"),
             };
         }
 
         return {
-            title,
+            title: convertMultiLangStringToString(feed.Metadata.Title),
             numberOfItems: typeof feed.Metadata.NumberOfItems === "number" &&
                 feed.Metadata.NumberOfItems,
             itemsPerPage: typeof feed.Metadata.ItemsPerPage === "number" &&
                 feed.Metadata.ItemsPerPage,
-            search,
             publications,
             navigation,
-            urls,
-            page,
+            links,
         };
-    }
-
-    private getUrlFromFeed(feed: OPDSFeed, linkRel: string): string | undefined {
-        const linkWithRel = feed.Links.find((link) => link.Rel && link.Rel.includes(linkRel));
-        return linkWithRel ? linkWithRel.Href : undefined;
-    }
-
-    private async getSearchUrlFromOpds1Feed(feed: OPDSFeed): Promise<string| undefined> {
-        // https://github.com/readium/readium-desktop/issues/296#issuecomment-502134459
-
-        let searchUrl: string | undefined;
-        try {
-            if (feed.Links) {
-                const searchLink = feed.Links.find((value) => value.Rel[0] === "search");
-                if (searchLink) {
-                    if (searchLink.TypeLink === "application/opds+json") {
-                        searchUrl = searchLink.Href;
-                    } else {
-                        const searchLinkFeedData = await httpGet(searchLink.Href);
-                        if (searchLinkFeedData.isFailure) {
-                            return undefined;
-                        }
-                        const result = convert.xml2js(searchLinkFeedData.data,
-                            { compact: true }) as convert.ElementCompact;
-
-                        if (result) {
-                            const doc = result.OpenSearchDescription;
-                            searchUrl = doc.Url.find((value: any) => {
-                                return value._attributes && value._attributes.type === "application/atom+xml";
-                            })._attributes.template;
-                        }
-                    }
-                }
-            }
-        } catch (e) {
-            debug("getSearchUrlFromOpds1Feed", e);
-        }
-        // if searchUrl is not found return undefined
-        // The user will not be able to use the search form
-        return searchUrl;
     }
 }

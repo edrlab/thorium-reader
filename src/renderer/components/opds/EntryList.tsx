@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsLinkView } from "readium-desktop/common/views/opds";
+import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
@@ -16,7 +16,7 @@ import Entry from "./Entry";
 
 interface IProps extends RouteComponentProps {
     level?: number;
-    entries: OpdsLinkView[];
+    entries: IOpdsNavigationLinkView[];
 }
 
 class EntryList extends React.Component<IProps> {

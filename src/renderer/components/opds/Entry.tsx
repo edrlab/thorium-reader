@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsLinkView } from "readium-desktop/common/views/opds";
+import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
@@ -16,7 +16,7 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 interface EntryProps extends RouteComponentProps<IOpdsBrowse> {
     level?: number;
-    entry: OpdsLinkView;
+    entry: IOpdsNavigationLinkView;
 }
 
 class Entry extends React.Component<EntryProps, undefined> {

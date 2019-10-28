@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { OPDSLink } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-link";
+
 import { IHttpGetResult } from "../utils/http";
 import { CoverView } from "./publication";
 
@@ -33,7 +35,7 @@ export interface OpdsPublicationView {
     cover?: CoverView;
 }
 
-export interface OpdsLinkView {
+export interface IOpdsNavigationLinkView {
     title: string;
     subtitle?: string;
     url: string;
@@ -42,25 +44,25 @@ export interface OpdsLinkView {
 
 export interface OpdsResultView {
     title: string;
-    numberOfItems: number;
-    itemsPerPage: number;
-    navigation?: OpdsLinkView[];
+    numberOfItems?: number;
+    itemsPerPage?: number;
+    navigation?: IOpdsNavigationLinkView[];
     publications?: OpdsPublicationView[];
-    urls: OpdsNavigationLink;
-    search?: string;
-    page?: OpdsResultPageInfos;
+    links?: IOpdsNavigationLink;
 }
 
-export interface OpdsNavigationLink {
-    nextPage?: string;
-    previousPage?: string;
-    firstPage?: string;
-    lastPage?: string;
-}
+type TOpdsLinkViewSimplifiedTitle = Partial<Pick<OPDSLink, "Title">>;
+export type TOpdsLinkViewSimplified = Pick<OPDSLink, "Href" | "TypeLink"> & TOpdsLinkViewSimplifiedTitle;
 
-export interface OpdsResultPageInfos {
-    numberOfItems: number;
-    itemsPerPage: number;
+export interface IOpdsNavigationLink {
+    next: TOpdsLinkViewSimplified[];
+    previous: TOpdsLinkViewSimplified[];
+    first: TOpdsLinkViewSimplified[];
+    last: TOpdsLinkViewSimplified[];
+    start: TOpdsLinkViewSimplified[];
+    up: TOpdsLinkViewSimplified[];
+    search: TOpdsLinkViewSimplified[];
+    bookshelf: TOpdsLinkViewSimplified[];
 }
 
 export type THttpGetOpdsResultView = IHttpGetResult<string, OpdsResultView>;
