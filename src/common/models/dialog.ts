@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
-import { IOpdsPublicationView, IOpdsFeedView } from "readium-desktop/common/views/opds";
+import { IOpdsFeedView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 interface IPubInfo {
