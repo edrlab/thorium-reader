@@ -43,9 +43,10 @@ export interface IOpdsNavigationLinkView {
     numberOfItems?: number;
 }
 
-export interface IOpdsResultView extends
-    Partial<Pick<OPDSMetadata, "NumberOfItems" | "ItemsPerPage" | "CurrentPage">>,
-    Pick<OPDSMetadata, "Title"> {
+export type TOpdsFeedMetadaView = Partial<Pick<OPDSMetadata, "NumberOfItems" | "ItemsPerPage" | "CurrentPage">>;
+
+export interface IOpdsResultView extends Pick<OPDSMetadata, "Title"> {
+    metadata?: TOpdsFeedMetadaView;
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
     links?: IOpdsNavigationLink;

@@ -33,7 +33,6 @@ interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
 interface IState {
     browserResult: ReturnPromiseType<TOpdsApiBrowse> | undefined;
     browserError: string | undefined;
-    currentResultPage: number;
 }
 
 export class BrowserResult extends React.Component<BrowserResultProps, IState> {
@@ -44,10 +43,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         this.state = {
             browserError: undefined,
             browserResult: undefined,
-            currentResultPage: 1,
         };
-
-        this.goto = this.goto.bind(this);
     }
 
     public componentDidMount() {
@@ -59,10 +55,6 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
             prevProps.location.search !== this.props.location.search) {
             // New url to browse
             this.browseOpds(this.props.url);
-        }
-
-        if (this.props.breadcrumb !== prevProps.breadcrumb) {
-            this.setState({currentResultPage: 1});
         }
     }
 
@@ -87,30 +79,22 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
             );
         } else if (browserResult) {
             if (browserResult.isSuccess) {
-                switch (browserResult.data.type) {
-                    case OpdsResultType.NavigationFeed:
-                        content = (
-                            <EntryList entries={browserResult.data.navigation} />
-                        );
-                        break;
-                    case OpdsResultType.PublicationFeed:
-                        content = (
+                if (browserResult.data.navigation) {
+                    content = (
+                        <EntryList entries={browserResult.data.navigation} />
+                    );
+                } else if (browserResult.data.publications) {
+                    content = (
                             <EntryPublicationList
                                 publications={browserResult.data.publications}
-                                goto={this.goto}
-                                urls={browserResult.data.urls}
-                                page={browserResult.data.page}
-                                currentPage={this.state.currentResultPage}
+                                links={browserResult.data.links}
+                                pageInfo={browserResult.data.metadata}
                             />
                         );
-                        break;
-                    case OpdsResultType.Empty:
-                        content = (
-                            <MessageOpdBrowserResult title={__("opds.empty")} />
-                        );
-                        break;
-                    default:
-                        break;
+                } else {
+                    content = (
+                        <MessageOpdBrowserResult title={__("opds.empty")} />
+                    );
                 }
             } else if (browserResult.isTimeout) {
                 content = (
@@ -182,11 +166,6 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
             }
             return newUrl;
         }
-    }
-
-    private goto(url: string, page: number) {
-        this.browseOpds(url);
-        this.setState({currentResultPage: page});
     }
 }
 
