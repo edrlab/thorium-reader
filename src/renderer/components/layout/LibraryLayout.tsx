@@ -46,6 +46,7 @@ class LibraryLayout extends React.Component<IProps> {
     public render() {
         const { title } = this.props;
 
+        // FIXME takes the name 'Thorium' from a constant
         let helmetTitle = "Thorium";
         if (title) {
             helmetTitle += " - " + title;
@@ -54,12 +55,15 @@ class LibraryLayout extends React.Component<IProps> {
         return (
             <HelmetProvider>
                 <div
+                    // FIXME css in the code
                     style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} }
                 >
                     <Helmet>
                         <title>{ helmetTitle }</title>
                     </Helmet>
                     <LibraryHeader />
+                    { // FIXME secondaryHeader can be undefined
+                    }
                     { this.props.secondaryHeader }
                     <main
                         id="main"

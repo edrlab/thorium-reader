@@ -8,7 +8,6 @@
 import * as qs from "qs";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsResultType } from "readium-desktop/common/views/opds";
 import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
@@ -27,7 +26,6 @@ import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
     url: string;
-    breadcrumb: BreadCrumbItem[];
 }
 
 interface IState {
@@ -121,7 +119,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         const oldQs = parseQueryString(url.split("?")[1]);
         const search = qs.parse(location.search.replace("?", "")).search;
         let newUrl = url;
-        if (search && browserResult && browserResult.isSuccess && browserResult.data.urls.search) {
+        if (search && browserResult && browserResult.isSuccess && browserResult.data.links.search) {
             newUrl = browserResult.data.urls.search;
             newUrl = this.addSearchTerms(newUrl, search) +
                 Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
@@ -144,6 +142,9 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         }));
     }
 
+    // TODO : Create a new function to parse the search url in function of TypeLink
+    // currently broken
+    /*
     private addSearchTerms(url: string, search: string) {
         const opds1: boolean = url.search("{searchTerms}") !== -1;
         if (opds1) {
@@ -167,6 +168,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
             return newUrl;
         }
     }
+    */
 }
 
 export default withTranslator(withRouter(BrowserResult));
