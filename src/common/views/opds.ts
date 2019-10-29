@@ -11,7 +11,7 @@ import { OPDSMetadata } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-me
 import { IHttpGetResult } from "../utils/http";
 import { CoverView } from "./publication";
 
-export interface OpdsFeedView {
+export interface IOpdsFeedView {
     identifier: string;
     title: string;
     url: string;

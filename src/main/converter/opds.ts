@@ -14,7 +14,7 @@ import {
 } from "readium-desktop/common/utils";
 import {
     IOpdsNavigationLink, IOpdsNavigationLinkView, IOpdsPublicationView, IOpdsResultView,
-    OpdsFeedView, TOpdsLinkViewSimplified,
+    IOpdsFeedView, TOpdsLinkViewSimplified,
 } from "readium-desktop/common/views/opds";
 import { CoverView } from "readium-desktop/common/views/publication";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
@@ -45,7 +45,7 @@ const GetLinkFromRel = <T extends Link>(links: T[], relValue: string | string[])
 
 @injectable()
 export class OpdsFeedViewConverter {
-    public convertDocumentToView(document: OpdsFeedDocument): OpdsFeedView {
+    public convertDocumentToView(document: OpdsFeedDocument): IOpdsFeedView {
         return {
             identifier: document.identifier,
             title: document.title,

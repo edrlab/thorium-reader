@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { OpdsFeedView } from "readium-desktop/common/views/opds";
+import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { TOpdsApiFindAllFeed_result } from "readium-desktop/main/api/opds";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
@@ -90,7 +90,7 @@ class FeedList extends React.Component<IProps, IState> {
         );
     }
 
-    private deleteFeed(event: TMouseEvent, feed: OpdsFeedView) {
+    private deleteFeed(event: TMouseEvent, feed: IOpdsFeedView) {
         event.preventDefault();
         this.props.openDeleteDialog(feed);
     }
@@ -107,9 +107,9 @@ class FeedList extends React.Component<IProps, IState> {
 
 const mapDispatchToProps = (dispatch: TDispatch) => {
     return {
-        // feed was typed to string, it appears that the right type is OpdsFeedView
+        // feed was typed to string, it appears that the right type is IOpdsFeedView
         // Redux state isn't typed
-        openDeleteDialog: (feed: OpdsFeedView) => {
+        openDeleteDialog: (feed: IOpdsFeedView) => {
             dispatch(dialogActions.open("delete-opds-feed-confirm",
                 {
                     feed,

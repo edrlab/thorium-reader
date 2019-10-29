@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import { httpGet } from "readium-desktop/common/utils/http";
-import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
+import { IOpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
@@ -25,11 +25,11 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 const debug = debug_("readium-desktop:src/main/api/opds");
 
 export interface IOpdsApi {
-    getFeed: (identifier: string) => Promise<OpdsFeedView>;
+    getFeed: (identifier: string) => Promise<IOpdsFeedView>;
     deleteFeed: (identifier: string) => Promise<void>;
-    findAllFeeds: () => Promise<OpdsFeedView[]>;
-    addFeed: (data: OpdsFeed) => Promise<OpdsFeedView>;
-    updateFeed: (data: OpdsFeed) => Promise<OpdsFeedView>;
+    findAllFeeds: () => Promise<IOpdsFeedView[]>;
+    addFeed: (data: OpdsFeed) => Promise<IOpdsFeedView>;
+    updateFeed: (data: OpdsFeed) => Promise<IOpdsFeedView>;
     browse: (url: string) => Promise<THttpGetOpdsResultView>;
 }
 
@@ -40,11 +40,11 @@ export type TOpdsApiAddFeed = IOpdsApi["addFeed"];
 export type TOpdsApiUpdateFeed = IOpdsApi["updateFeed"];
 export type TOpdsApiBrowse = IOpdsApi["browse"];
 
-export type TOpdsApiGetFeed_result = OpdsFeedView;
+export type TOpdsApiGetFeed_result = IOpdsFeedView;
 export type TOpdsApiDeleteFeed_result = void;
-export type TOpdsApiFindAllFeed_result = OpdsFeedView[];
-export type TOpdsApiAddFeed_result = OpdsFeedView;
-export type TOpdsApiUpdateFeed_result = OpdsFeedView;
+export type TOpdsApiFindAllFeed_result = IOpdsFeedView[];
+export type TOpdsApiAddFeed_result = IOpdsFeedView;
+export type TOpdsApiUpdateFeed_result = IOpdsFeedView;
 export type TOpdsApiBrowse_result = THttpGetOpdsResultView;
 
 export interface IOpdsModuleApi {
@@ -80,7 +80,7 @@ export class OpdsApi implements IOpdsApi {
     @inject(diSymbolTable["opds-feed-view-converter"])
     private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
 
-    public async getFeed(identifier: string): Promise<OpdsFeedView> {
+    public async getFeed(identifier: string): Promise<IOpdsFeedView> {
         const doc = await this.opdsFeedRepository.get(identifier);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
@@ -89,19 +89,19 @@ export class OpdsApi implements IOpdsApi {
         await this.opdsFeedRepository.delete(identifier);
     }
 
-    public async findAllFeeds(): Promise<OpdsFeedView[]> {
+    public async findAllFeeds(): Promise<IOpdsFeedView[]> {
         const docs = await this.opdsFeedRepository.findAll();
         return docs.map((doc) => {
             return this.opdsFeedViewConverter.convertDocumentToView(doc);
         });
     }
 
-    public async addFeed(data: OpdsFeed): Promise<OpdsFeedView> {
+    public async addFeed(data: OpdsFeed): Promise<IOpdsFeedView> {
         const doc = await this.opdsFeedRepository.save(data);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
-    public async updateFeed(data: OpdsFeed): Promise<OpdsFeedView> {
+    public async updateFeed(data: OpdsFeed): Promise<IOpdsFeedView> {
         const doc = await this.opdsFeedRepository.save(data);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }

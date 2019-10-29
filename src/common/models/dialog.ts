@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
-import { IOpdsPublicationView, OpdsFeedView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView, IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
 interface IPubInfo {
@@ -30,7 +30,7 @@ export interface DialogType {
         publication: PublicationView;
     };
     "delete-opds-feed-confirm": {
-        feed: OpdsFeedView;
+        feed: IOpdsFeedView;
     };
     "lcp-authentication": {
         publication: PublicationView;
