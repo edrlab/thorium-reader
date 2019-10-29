@@ -63,6 +63,7 @@ export interface IOpdsNavigationLink {
     up: TOpdsLinkViewSimplified[];
     search: TOpdsLinkViewSimplified[];
     bookshelf: TOpdsLinkViewSimplified[];
+    text: TOpdsLinkViewSimplified[];
 }
 
 export type THttpGetOpdsResultView = IHttpGetResult<string, IOpdsResultView>;
