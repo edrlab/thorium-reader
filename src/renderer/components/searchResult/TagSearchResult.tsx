@@ -14,13 +14,16 @@ import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import GridView from "readium-desktop/renderer/components/utils/GridView";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { ILibrarySearchText } from "readium-desktop/renderer/routing";
 import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
 
-interface IProps extends TranslatorProps, RouteComponentProps {
+interface IProps extends TranslatorProps, RouteComponentProps<ILibrarySearchText> {
 }
 
 interface IState {
@@ -44,7 +47,7 @@ export class TagSearchResult extends React.Component<IProps, IState> {
             "publication/updateTags",
             "catalog/addEntry",
         ], () => {
-            apiAction("publication/findByTag", (this.props.match.params as any).value)
+            apiAction("publication/findByTag", this.props.match.params.value)
                 .then((publications) => this.setState({publications}))
                 .catch((error) => console.error("Error to fetch api publication/findByTag", error));
         });
@@ -60,7 +63,7 @@ export class TagSearchResult extends React.Component<IProps, IState> {
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
         const { __ } = this.props;
-        const title = (this.props.match.params as any).value;
+        const title = this.props.match.params.value;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);

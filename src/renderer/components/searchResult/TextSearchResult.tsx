@@ -18,11 +18,12 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { ILibrarySearchText } from "readium-desktop/renderer/routing";
 import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
 
-interface IProps extends TranslatorProps, RouteComponentProps {
+interface IProps extends TranslatorProps, RouteComponentProps<ILibrarySearchText> {
 }
 
 interface IState {
@@ -50,8 +51,8 @@ export class TextSearchResult extends React.Component<IProps, IState> {
     }
 
     public componentDidUpdate(prevProps: IProps) {
-        const text = (this.props.match.params as any).value;
-        const prevText = (prevProps.match.params as any).value;
+        const text = this.props.match.params.value;
+        const prevText = prevProps.match.params.value;
 
         if (text !== prevText) {
             // Refresh searched publications
@@ -69,7 +70,7 @@ export class TextSearchResult extends React.Component<IProps, IState> {
         let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
         const { __ } = this.props;
-        const title = (this.props.match.params as any).value;
+        const title = this.props.match.params.value;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
@@ -97,7 +98,7 @@ export class TextSearchResult extends React.Component<IProps, IState> {
         );
     }
 
-    private searchPublications = (text: string = (this.props.match.params as any).value) => {
+    private searchPublications = (text: string = this.props.match.params.value) => {
         apiAction("publication/search", text)
             .then((publications) => this.setState({publications}))
             .catch((error) => console.error("Error to fetch api publication/search", error));

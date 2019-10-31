@@ -34,6 +34,10 @@ export interface IOpdsBrowse {
     name: string;
 }
 
+export interface ILibrarySearchText {
+    value: string;
+}
+
 export const routes: RouteList = {
     "/opds": {
         path: "/opds",
