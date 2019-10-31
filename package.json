@@ -196,7 +196,7 @@
     "r2-streamer-js": "^1.0.22",
     "r2-utils-js": "^1.0.16",
     "react": "^16.11.0",
-    "react-beautiful-dnd": "^11.0.5",
+    "react-beautiful-dnd": "^12.0.0",
     "react-dom": "^16.11.0",
     "react-dropdown": "^1.6.4",
     "react-dropzone": "^10.1.10",
