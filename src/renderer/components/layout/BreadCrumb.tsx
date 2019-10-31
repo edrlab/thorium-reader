@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as classNames from "classnames";
+import * as qs from "query-string";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
@@ -14,7 +15,6 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { parseQueryString } from "readium-desktop/utils/url";
 
 export interface BreadCrumbItem {
     name: string;
@@ -31,7 +31,7 @@ interface IProps extends TranslatorProps {
 class BreadCrumb extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { breadcrumb, __ } = this.props;
-        const search = parseQueryString(this.props.search);
+        const search = qs.parse(this.props.search);
         return (
             <div className={classNames(styles.breadcrumb, this.props.className)}>
                 {breadcrumb.length >= 2 &&

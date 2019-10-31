@@ -6,23 +6,23 @@
 // ==LICENSE-END==
 
 // import * as debug_ from "debug";
+import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
-import { parseQueryString } from "readium-desktop/utils/url";
 import { IOpdsBrowse } from "src/renderer/routing";
 
+import { DisplayType } from "../catalog/Header";
 import BreadCrumb, { BreadCrumbItem } from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
 import Header from "./Header";
-
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
 // Logger
 // const debug = debug_("readium-desktop:src/renderer/components/opds/browser");
@@ -40,9 +40,9 @@ class Browser extends React.Component<IProps> {
             url = this.props.navigation[this.props.navigation.length - 1].url;
         }
 
-        const parsedResult = parseQueryString(this.props.location.search);
+        const parsedResult = qs.parse(this.props.location.search);
 
-        const secondaryHeader = <Header displayType={parsedResult.displayType}/>;
+        const secondaryHeader = <Header displayType={parsedResult.displayType as DisplayType}/>;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} mainClassName={styles.opdsBrowse}>
@@ -61,8 +61,8 @@ class Browser extends React.Component<IProps> {
     private buildBreadcrumb() {
         const { match, navigation } = this.props;
         const breadcrumb: BreadCrumbItem[] = [];
-        const parsedQuerryString = parseQueryString(this.props.location.search);
-        const search = parsedQuerryString.search;
+        const parsedQuerryString = qs.parse(this.props.location.search);
+        const search = parsedQuerryString.search as string;
 
         // Add root page
         breadcrumb.push({

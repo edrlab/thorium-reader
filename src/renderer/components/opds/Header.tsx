@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as qs from "query-string";
 import * as React from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
@@ -14,7 +15,6 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { parseQueryString } from "readium-desktop/utils/url";
 
 import SearchForm from "./SearchForm";
 
@@ -30,14 +30,9 @@ interface IProps extends RouteComponentProps, TranslatorProps {
 class Header extends React.Component<IProps> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
-        const search = parseQueryString(this.props.location.search.replace("?", ""));
-        const displayType = search.displayType || DisplayType.Grid;
-        delete(search.displayType);
+        const displayType = qs.parse(this.props.location.search).displayType || DisplayType.Grid;
 
-        /**
-         * Why css style is apply in code and not imported from css ressource ?
-         * FIXME : css in code
-         */
+        // FIXME : css in code
         return (
             <SecondaryHeader>
                 { displayType &&
