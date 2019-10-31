@@ -40,7 +40,6 @@ class PageNavigation extends React.Component<Props> {
         const { pageLinks, pageInfo, __ } = this.props;
         const { next, previous, last, first } = pageLinks;
 
-
         return (
             <div className={styles.opds_page_navigation}>
                 <span />

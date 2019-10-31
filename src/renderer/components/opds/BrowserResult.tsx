@@ -5,20 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as qs from "qs";
+// import * as qs from "qs";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-import { BreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
+// import { BreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
 import {
     TranslatorProps,
     withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
-import { parseQueryString } from "readium-desktop/utils/url";
+// import { parseQueryString } from "readium-desktop/utils/url";
 
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
@@ -34,7 +34,7 @@ interface IState {
 }
 
 export class BrowserResult extends React.Component<BrowserResultProps, IState> {
-    private currentUrl: string;
+    // private currentUrl: string;
 
     constructor(props: BrowserResultProps) {
         super(props);
@@ -114,18 +114,20 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
     }
 
     private browseOpds(url: string) {
-        const { location } = this.props;
-        const { browserResult } = this.state;
-        const oldQs = parseQueryString(url.split("?")[1]);
-        const search = qs.parse(location.search.replace("?", "")).search;
-        let newUrl = url;
+        // const { location } = this.props;
+        // const { browserResult } = this.state;
+        // const oldQs = parseQueryString(url.split("?")[1]);
+        // const search = qs.parse(location.search.replace("?", "")).search;
+        const newUrl = url;
+        /*
         if (search && browserResult && browserResult.isSuccess && browserResult.data.links.search) {
-            newUrl = browserResult.data.urls.search;
+            newUrl = browserResult.data.links.search[0].Href;
             newUrl = this.addSearchTerms(newUrl, search) +
                 Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
         }
+        */
 
-        this.currentUrl = newUrl;
+        // this.currentUrl = newUrl;
 
         // reset browserResult to display loader spinner
         this.setState({
