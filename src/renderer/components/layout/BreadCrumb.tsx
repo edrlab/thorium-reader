@@ -38,7 +38,7 @@ class BreadCrumb extends React.Component<IProps> {
                     <Link
                         to={{
                             pathname: breadcrumb[breadcrumb.length - 2].path,
-                            search: `?displayType=${search.displayType}`,
+                            search: `displayType=${search.displayType}`,
                         }}
                         title={__("opds.back")}
                     >
@@ -52,7 +52,7 @@ class BreadCrumb extends React.Component<IProps> {
                             key={index}
                             to={{
                                 pathname: item.path,
-                                search: `?displayType=${search.displayType}`,
+                                search: `displayType=${search.displayType}`,
                                 state: item.state,
                             }}
                             title={name}
