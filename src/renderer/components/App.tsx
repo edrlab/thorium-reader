@@ -44,18 +44,18 @@ export default class App extends React.Component<any, undefined> {
             dialogActions.open("file-import",
                 {
                     files: acceptedFiles.filter((file) => {
-                            const ext = path.extname(file.path);
-                            return (/\.epub[3]?$/.test(ext) /*||
+                        const ext = path.extname(file.path);
+                        return (/\.epub[3]?$/.test(ext) /*||
                             ext === ".lcpl"*/);
                     })
-                    .map((file) => {
-                        return {
-                            name: file.name,
-                            path: file.path,
-                        };
-                    }),
+                        .map((file) => {
+                            return {
+                                name: file.name,
+                                path: file.path,
+                            };
+                        }),
                 },
-        ));
+            ));
     }
 
     public async componentDidMount() {
@@ -67,16 +67,16 @@ export default class App extends React.Component<any, undefined> {
         }, true);
     }
 
-    public render(): React.ReactElement < {} > {
-        return(
-            <Provider store= { this.store } >
-                <ConnectedRouter history={ this.history }>
+    public render(): React.ReactElement<{}> {
+        return (
+            <Provider store={this.store} >
+                <ConnectedRouter history={this.history}>
                     <div className={styles.root}>
                         <Dropzone
-                            onDrop={ this.onDrop }
+                            onDrop={this.onDrop}
                         >
-                            {({getRootProps, getInputProps}) => {
-                                const rootProps = getRootProps({onClick: (e) => e.stopPropagation()});
+                            {({ getRootProps, getInputProps }) => {
+                                const rootProps = getRootProps({ onClick: (e) => e.stopPropagation() });
                                 rootProps.tabIndex = -1;
                                 // FIXME : css in code
                                 return <div
@@ -90,11 +90,11 @@ export default class App extends React.Component<any, undefined> {
                                         right: 0,
                                     }}
                                 >
-                                    <input aria-hidden {...getInputProps({onClick: (evt) => evt.preventDefault()})} />
-                                    <PageManager/>
-                                    <DialogManager/>
-                                    <SameFileImportManager/>
-                                    <ToastManager/>
+                                    <input aria-hidden {...getInputProps({ onClick: (evt) => evt.preventDefault() })} />
+                                    <PageManager />
+                                    <DialogManager />
+                                    <SameFileImportManager />
+                                    <ToastManager />
                                 </div>;
                             }}
                         </Dropzone>
