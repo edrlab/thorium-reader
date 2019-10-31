@@ -69,7 +69,7 @@ class Browser extends React.Component<IProps> {
             name: this.props.__("opds.breadcrumbRoot"),
             path: "/opds",
         });
-        const rootFeedIdentifier = (match.params as any).opdsId;
+        const rootFeedIdentifier = match.params.opdsId;
 
         if (search) {
             const link = navigation[0];
