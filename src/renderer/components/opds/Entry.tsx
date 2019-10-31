@@ -38,7 +38,7 @@ class Entry extends React.Component<EntryProps, undefined> {
                 <div>
                     <Link
                         className={styles.flux_infos}
-                        to={route}
+                        to={{pathname: route, search: this.props.location.search}}
                     >
                         <span className={styles.flux_title}>{entry.title}</span>
                         {
