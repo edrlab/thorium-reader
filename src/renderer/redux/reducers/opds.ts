@@ -33,7 +33,6 @@ export function opdsReducer(
             debug("Level:", level);
             debug("Navigation:", state.browser.navigation);
 
-            // what is the purpose of this line : level = state.browser.navigation.length + 1
             browser.navigation = state.browser.navigation.slice(0, level - 1);
 
             browser.navigation.push({ level, title, url });
