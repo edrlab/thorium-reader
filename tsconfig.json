@@ -41,6 +41,7 @@
     "charset": "utf8",
     "downlevelIteration": false,
     "emitBOM": false,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": false,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
