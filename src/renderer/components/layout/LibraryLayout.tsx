@@ -62,8 +62,6 @@ class LibraryLayout extends React.Component<IProps> {
                         <title>{ helmetTitle }</title>
                     </Helmet>
                     <LibraryHeader />
-                    { // FIXME secondaryHeader can be undefined
-                    }
                     { this.props.secondaryHeader }
                     <main
                         id="main"
