@@ -13,12 +13,19 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TChangeEvent } from "readium-desktop/typings/react";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { apiActions } from 'readium-desktop/common/redux/actions';
 
 export class PublicationAddButton extends React.Component<TranslatorProps> {
     public constructor(props: TranslatorProps) {
         super(props);
 
         this.importFile = this.importFile.bind(this);
+    }
+
+    public componentDidMount() {
+        console.log("didMount");
     }
 
     public render(): React.ReactElement<{}> {
@@ -57,4 +64,24 @@ export class PublicationAddButton extends React.Component<TranslatorProps> {
     }
 }
 
-export default withTranslator(PublicationAddButton);
+const mapStateToProps = (state: any) => {
+    console.log(state.api.data["123"]);
+    return {
+        test: state.api.data["123"]
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    dispatch(
+        apiActions.buildRequestAction(
+            "123",
+            "publication",
+            "import",
+            ["/"],
+        ),
+    );
+    console.log("dispatch ok");
+    return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationAddButton));

@@ -17,9 +17,11 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
-import { Unsubscribe } from "redux";
+import { Unsubscribe, Dispatch } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
+import { RootState } from 'readium-desktop/renderer/redux/states';
+import { Store } from 'redux';
 
 interface IProps extends TranslatorProps, RouteComponentProps {
 }
@@ -52,7 +54,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
-        if (this.unsubscribe) {
+        if (this.unsubscribe) {ß
             this.unsubscribe();
         }
     }
@@ -97,4 +99,35 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(AllPublicationPage);
+const mapStateToProps = (state: Store<RootState>) => {
+
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+
+    const findAll = apiDispatch(dispatch)("publication/findAll", "AllPubComponnent");
+    findAll();
+    return {
+        findAll,
+    }
+}
+
+import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
+import * as uuid from "uuid";
+import { apiActions } from 'readium-desktop/common/redux/actions';
+import { TModuleApi, TMethodApi } from 'readium-desktop/main/di';
+import { connect } from 'react-redux';
+
+export function apiDispatch(dispatch: Dispatch) {
+    return <T extends TApiMethodName>(apiPath: T, requestId: string = uuid.v4()) => {
+      const splitPath = apiPath.split("/");
+      const moduleId = splitPath[0] as TModuleApi;
+      const methodId = splitPath[1] as TMethodApi;
+    
+      return (...requestData: Parameters<TApiMethod[T]>) =>
+        dispatch(apiActions.buildRequestAction(requestId, moduleId, methodId, requestData));
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(AllPublicationPage));
