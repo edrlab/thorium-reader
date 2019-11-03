@@ -142,7 +142,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
         readerWindow.webContents.openDevTools({ mode: "detach" });
     }
 
-    setMenu(readerWindow);
+    setMenu(readerWindow, true);
 
     return reader;
 }

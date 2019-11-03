@@ -38,14 +38,21 @@ class Entry extends React.Component<EntryProps, undefined> {
                 <div>
                     <Link
                         className={styles.flux_infos}
-                        to={ route }
+                        to={route}
                     >
                         <span className={styles.flux_title}>{entry.title}</span>
                         {
-                            (entry.publicationCount) ?
+                            entry.subtitle && entry.subtitle !== entry.title ?
+                                <span className={styles.flux_subtitle}>
+                                    {entry.subtitle}
+                                </span> :
+                                <></>
+                        }
+                        {
+                            (entry.numberOfItems) ?
                                 (
                                     <span className={styles.flux_subtitle}>
-                                        {entry.publicationCount} livres
+                                        {entry.numberOfItems}
                                     </span>
                                 ) :
                                 (<></>)

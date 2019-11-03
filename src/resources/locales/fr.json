@@ -96,7 +96,8 @@
         },
         "import": {
             "fail": "L'importation de {{- path}} a échoué. Vérifier que le fichier est valide",
-            "success": "L'import de {{- title}} est terminé."
+            "success": "L'import de {{- title}} est terminé.",
+            "alreadyImport": "{{- title}} est déja importé"
         }
     },
     "opds": {
@@ -150,9 +151,11 @@
         "marks": {
             "annotations": "Annotations",
             "bookmarks": "Marque-pages",
+            "delete": "Supprimer",
+            "edit": "Editer",
             "illustrations": "Table des Illustrations",
             "landmarks": "Repères",
-            "toc": "Table des matières "
+            "toc": "Table des matières"
         },
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",

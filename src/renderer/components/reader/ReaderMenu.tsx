@@ -256,6 +256,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private createBookmarkList(): JSX.Element[] {
+        const { __ } = this.props;
         if (this.props.publication && this.state.bookmarks) {
             const { bookmarkToUpdate } = this.state;
             return this.state.bookmarks.map((bookmark, i) =>
@@ -285,10 +286,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                         </div>
                     </button>
                     <button onClick={() => this.setState({bookmarkToUpdate: i})}>
-                        <SVG svg={ EditIcon }/>
+                        <SVG title={ __("reader.marks.edit")} svg={ EditIcon }/>
                     </button>
                     <button onClick={() => this.deleteBookmark(bookmark.identifier)}>
-                        <SVG svg={ DeleteIcon }/>
+                        <SVG title={ __("reader.marks.delete")} svg={ DeleteIcon }/>
                     </button>
                 </div>,
             );

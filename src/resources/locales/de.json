@@ -3,7 +3,7 @@
         "bookMenu": "Menü",
         "closeDialog": "Schließen",
         "homeMenu": "Startmenü",
-        "importFile": "importieren einer epub-datei",
+        "importFile": "Importieren einer EPUB-Datei",
         "leftSlideButton": "Scrolle nach links unten",
         "rightSlideButton": "Scrolle nach rechts unten",
         "searchBook": "Suche nach einem Buch, einem Tag oder einer Art von Literatur",
@@ -11,15 +11,15 @@
     },
     "app": {
         "edit": {
-            "copy": "",
-            "cut": "",
-            "paste": "",
-            "redo": "",
-            "selectAll": "",
-            "title": "",
-            "undo": ""
+            "copy": "Kopieren",
+            "cut": "Ausschneiden",
+            "paste": "Einfügen",
+            "redo": "Wiederherstellen",
+            "selectAll": "Alle auswählen",
+            "title": "Bearbeiten",
+            "undo": "Rückgängig"
         },
-        "quit": ""
+        "quit": "Beenden"
     },
     "catalog": {
         "about": {
@@ -27,41 +27,41 @@
             "title": ""
         },
         "addBookToLib": "Import",
-        "addTags": "Ein tag hinzufügen",
+        "addTags": "Ein Tag hinzufügen",
         "addTagsButton": "Hinzufügen",
-        "allBooks": "alle Bücher",
+        "allBooks": "Alle Bücher",
         "bookInfo": "Über dieses Buch",
         "delete": "Dauerhaft löschen",
-        "deleteBook": "aus der Bibliothek löschen",
+        "deleteBook": "Aus der Bibliothek löschen",
         "deleteTag": "Löschen des Tags",
         "description": "Beschreibung",
-        "emptyTagList": "es gibt keine Tags in Büchern.",
+        "emptyTagList": "Es gibt keine Tags in Ihren Büchern.",
         "entry": {
             "continueReading": "Lesen Sie weiter",
-            "lastAdditions": "neueste Ergänzungen"
+            "lastAdditions": "Neueste Ergänzungen"
         },
         "export": "Export",
         "id": "Benutzername",
         "lang": "Sprache",
-        "moreInfo": "mehr Informationen",
+        "moreInfo": "Mehr Informationen",
         "myBooks": "Meine Bücher",
-        "noPublicationHelpL1": "Drop EPUB-Dateien in diesem Fenster",
-        "noPublicationHelpL2": "oder benutzen Sie die taste \"+\" oben.",
+        "noPublicationHelpL1": "EPUB-Dateien in dieses Fenster ziehen",
+        "noPublicationHelpL2": "oder über den Button \"+\" hinzufügen.",
         "noPublicationHelpL3": "LCP-geschützte Dateien werden unterstützt.",
         "publisher": "Herausgeber",
         "readBook": "Lesen",
-        "released": "veröffentlicht am",
-        "sort": "sortieren nach",
-        "tagCount": "Anzahl tags",
-        "tags": "Meine tags"
+        "released": "Veröffentlicht am",
+        "sort": "Sortieren nach",
+        "tagCount": "Anzahl der Tags",
+        "tags": "Meine Tags"
     },
     "dialog": {
         "alreadyAdd": "Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
-        "closeModalWindow": "Dieses modale Fenster schließen",
-        "deleteFeed": "Willst du diese Publikation wirklich Katalog ?",
-        "deletePublication": "Willst du diese Publikation wirklich löschen ?",
+        "closeModalWindow": "Dieses Fenster schließen",
+        "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
+        "deletePublication": "Willst du diese Publikation wirklich löschen?",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-        "importError": "ein Fehler ist aufgetreten, überprüfen Sie Ihre Dateiendung (.epub or .lcpl).",
+        "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung (.epub or .lcpl).",
         "no": "Nein",
         "renew": "",
         "return": "",
@@ -69,23 +69,23 @@
         "yes": "Ja"
     },
     "header": {
-        "allBooks": "Alle bücher",
+        "allBooks": "Alle Bücher",
         "books": "Meine Bücher",
         "catalogs": "Kataloge",
-        "gridTitle": "Buchumschläge in einem Raster präsentieren",
+        "gridTitle": "Bücher in einem Raster präsentieren",
         "home": "Hauptmenü",
         "importTitle": "ein Buch importieren",
-        "listTitle": "Buchumschläge in einer Liste präsentieren",
+        "listTitle": "Bücher in einer Liste präsentieren",
         "searchPlaceholder": "Suche",
-        "searchTitle": "Starten Sie die Suche",
-        "settings": "Settings"
+        "searchTitle": "Suche starten",
+        "settings": "Einstellungen"
     },
     "library": {
         "lcp": {
             "cancel": "Abbrechen",
             "hint": "Dein Kennwort",
             "password": "",
-            "sentence": "Diese Publikation benötigt zum Öffnen ein LCP-Password: ",
+            "sentence": "Diese LCP-geschütze Publikation benötigt zum Öffnen ein Password: ",
             "submit": "Absenden"
         }
     },
@@ -95,7 +95,7 @@
             "success": "Der Download von {{- title}} wurde abgeschlossen"
         },
         "import": {
-            "fail": "Der Import von {{- path}} ist fehlgeschlagen. Stellen Sie sicher, dass die Datei gültig ist",
+            "fail": "Der Import von {{- path}} ist fehlgeschlagen. Stellen Sie sicher, dass die Datei gültig ist.",
             "success": "Der Import von {{- title}} ist abgeschlossen."
         }
     },
@@ -115,11 +115,11 @@
         "firstPage": "Zuerst",
         "lastPage": "Zuletzt",
         "menu": {
-            "aboutBook": "über dieses Buch",
-            "addExtract": "zur Lib hinzufügen",
-            "goBuyBook": "dieses Buch kaufen",
-            "goLoanBook": "dieses Buch ausleihen",
-            "goSubBook": "abonnieren"
+            "aboutBook": "Über dieses Buch",
+            "addExtract": "Zur Bibliothek hinzufügen",
+            "goBuyBook": "Dieses Buch kaufen",
+            "goLoanBook": "Dieses Buch ausleihen",
+            "goSubBook": "Abonnieren"
         },
         "network": {
             "error": "Ein Fehler ist aufgetreten",
@@ -144,52 +144,54 @@
     },
     "reader": {
         "footerInfo": {
-            "lessInfo": "weniger informationen",
-            "moreInfo": "mehr informationen"
+            "lessInfo": "Weniger Informationen",
+            "moreInfo": "Mehr Informationen"
         },
         "marks": {
-            "annotations": "Annotationen",
-            "bookmarks": "Lesezeichen",
+            "annotations": "Meine Anmerkungen",
+            "bookmarks": "Meine Lesezeichen",
+            "delete": "Löschen",
+            "edit": "Bearbeiten",
             "illustrations": "Illustrationstabelle",
-            "landmarks": "Landmarks",
-            "toc": "inhaltsverzeichnis"
+            "landmarks": "Navigationspunkte",
+            "toc": "Inhaltsverzeichnis"
         },
         "navigation": {
-            "backHomeTitle": "zurück zu Hause",
-            "bookmarkTitle": "bookmark",
-            "detachWindowTitle": "das Fenster lösen",
-            "fullscreenTitle": "fullscreen mode",
+            "backHomeTitle": "Zurück zum Bücherregal",
+            "bookmarkTitle": "Lesezeichen setzen",
+            "detachWindowTitle": "Fenster loslösen",
+            "fullscreenTitle": "Vollbildmodus",
             "goTo": "Gehe zu",
             "goToError": "Diese Seite existiert nicht",
             "goToPlaceHolder": "Gehe zur Seite",
             "goToTitle": "Gehe zur Seite",
             "infoTitle": "Informationen",
-            "openTableOfContentsTitle": "navigation",
-            "quitFullscreenTitle": "",
-            "readBookTitle": "mit dem Lesen des Buches beginnen",
-            "settingsTitle": "settings"
+            "openTableOfContentsTitle": "Navigation",
+            "quitFullscreenTitle": "Vollbildmodus beenden",
+            "readBookTitle": "Mit dem Lesen des Buches beginnen",
+            "settingsTitle": "Einstellungen"
         },
         "settings": {
             "column": {
-                "auto": "",
-                "one": "",
-                "oneTitle": "",
-                "title": "",
-                "two": "",
-                "twoTitle": ""
+                "auto": "Automatisch",
+                "one": "1 Spalte",
+                "oneTitle": "1 Spalte",
+                "title": "Spaltendarstellung",
+                "two": "2 Spalten",
+                "twoTitle": "2 Spalten"
             },
             "display": "Lesefluss",
             "disposition": {
                 "title": ""
             },
-            "font": "",
+            "font": "Schriftart",
             "fontSize": "Schriftgröße:",
-            "justification": "",
-            "justify": "",
+            "justification": "Textausrichtung",
+            "justify": "Blocksatz",
             "left": "Linksbündig",
-            "letterSpacing": "",
-            "lineSpacing": "",
-            "margin": "",
+            "letterSpacing": "Buchstabenabstand",
+            "lineSpacing": "Zeilenabstand",
+            "margin": "Seitenränder",
             "paginated": "Seitendarstellung",
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",
@@ -200,9 +202,9 @@
                     "Night": "Nachtzeit",
                     "Sepia": "Sepia"
                 },
-                "title": "Thema"
+                "title": "Motiv"
             },
-            "wordSpacing": ""
+            "wordSpacing": "Wortabstand"
         },
         "svg": {
             "left": "",

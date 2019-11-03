@@ -17,63 +17,44 @@ import * as frLang from "readium-desktop/resources/locale-names/frLang.json";
 import { TFunction } from "readium-desktop/typings/en.translation";
 
 // -----------------------------------------------------------
-// i18next Typescript definitions woes:
+// i18next Typescript definitions woes (esModuleInterop, WebPack bundler):
 
 // https://github.com/i18next/i18next/pull/1291
 // https://github.com/i18next/i18next/issues/1271
 // https://github.com/i18next/i18next/issues/1177
 
-// import i18next from "i18next"; // Fails because of esModuleInterop
-// import i18n from "i18next"; // Fails because of esModuleInterop
+// CHANGES:
+// https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1900
+// https://github.com/i18next/i18next/pull/1352
 
-import { i18n } from "i18next"; // just the TypeScript type
+// import i18next from "i18next"; // the "default" export (unfortunately, WebPack generates i18next_1.default!)
+import { i18n } from "i18next"; // named export: just the TypeScript type
 
-// (default i18next package.json is "module" ESM (i18next/dist/esm/i18next),
-// but may also be "main" CJS (i18next/dist/cjs/i18next),
-// depending on WebPack bundler strategy matrix: DEV vs. PROD, and MAIN vs. RENDERER
+// node_modules/i18next/package.json
+// =>
+// "main" CJS "./dist/cjs/i18next.js",
+// "module" ESM "./dist/esm/i18next.js",
+// ... depends on WebPack bundler strategy, matrix: DEV vs. PROD, and MAIN vs. RENDERER
 
 // ##### technique 1:
-import * as i18next from "i18next";
+// import * as i18next from "i18next";
 //
 // ##### technique 2:
 // import i18next = require("i18next");
 //
 // ##### technique 3:
 // tslint:disable-next-line: no-var-requires
-// const i18next: i18n = require("i18next");
-//
-// DEV:
-// MAIN => i18next.createInstance(),
-// RENDERER => i18next.default.createInstance()
-//
-// PROD:
-// MAIN => i18next.default.createInstance(),
-// RENDERER => i18next.default.createInstance()
+const i18next: i18n = require("i18next");
 
 // ##### technique 4 (force CJS):
 // tslint:disable-next-line: no-var-requires
 // const i18next: i18n = require("i18next/dist/cjs/i18next");
-//
-// DEV:
-// MAIN => i18next.createInstance(),
-// RENDERER => i18next.createInstance()
-//
-// PROD:
-// MAIN => i18next.createInstance(),
-// RENDERER => i18next.createInstance()
 
 // ##### technique 5 (force ESM):
 // tslint:disable-next-line: no-var-requires
 // const i18next: i18n = require("i18next/dist/esm/i18next");
-//
-// DEV:
-// MAIN => fail
-// RENDERER => fail
-//
-// PROD:
-// MAIN => i18next.default.createInstance(),
-// RENDERER => i18next.default.createInstance()
 
+// const i18nextInstance = i18next.createInstance(); // it should be as simple as that :(
 let i18nextInstance: i18n | undefined;
 if (i18next.createInstance) {
     i18nextInstance = i18next.createInstance();
@@ -134,7 +115,7 @@ i18nextInstanceEN.changeLanguage("en").then((_t) => {
 export enum AvailableLanguages {
     en = "English",
     fr = "Français",
-    de = "Deutch",
+    de = "Deutsch",
 }
 
 interface LocalizedContent {
@@ -155,6 +136,9 @@ export class Translator {
     public setLocale(locale: string) {
         this.locale = locale;
         if (i18nextInstance.language !== this.locale) {
+            // https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1800
+            // i18nextInstance.language not instantly ready (because async loadResources()),
+            // but i18nextInstance.isLanguageChangingTo immediately informs which locale i18next is switching to.
             i18nextInstance.changeLanguage(this.locale).then((_t) => {
                 // noop
             }).catch((err) => {

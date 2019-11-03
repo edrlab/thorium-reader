@@ -8,7 +8,9 @@
   ],
   "main": "./main.js",
   "scripts": {
-    "postinstall": "npm rebuild --runtime=electron --target=3.1.13 --disturl=https://atom.io/download/atom-shell --build-from-source"
+    "postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=7.0.1 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
+    "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
+    "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\" && rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\""
   },
   "repository": {
     "type": "git",
@@ -33,12 +35,9 @@
   "homepage": "https://github.com/edrlab/readium-desktop",
   "dependencies": {
     "bindings": "^1.5.0",
-    "leveldown": "5.0.2",
+    "leveldown": "^5.4.1",
     "pouchdb-adapter-leveldb": "^7.1.1",
     "yargs": "^14.2.0"
-  },
-  "resolutions": {
-    "leveldown": "5.0.2"
   },
   "devDependencies": {
   },

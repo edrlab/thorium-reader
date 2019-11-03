@@ -11,12 +11,14 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { downloadActions } from "readium-desktop/common/redux/actions";
 import { open } from "readium-desktop/common/redux/actions/toast";
 import { Translator } from "readium-desktop/common/services/translator";
+import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
+import { isArray } from "util";
 
 export interface IPublicationApi {
     // in a future possible typing like this to have buildRequestData return type :
@@ -33,7 +35,7 @@ export interface IPublicationApi {
         title: string,
         tags: string[],
         downloadSample?: boolean) => Promise<PublicationView>;
-    import: (paths: string[]) => Promise<PublicationView[]>;
+    import: (filePathArray: string | string[]) => Promise<PublicationView[]>;
     search: (title: string) => Promise<PublicationView[]>;
     exportPublication: (publication: PublicationView) => Promise<void>;
 }
@@ -152,12 +154,10 @@ export class PublicationApi implements IPublicationApi {
             this.translator.translate("message.download.start", { title }));
 
         let returnView: PublicationView;
-        let titleView: string;
         // if url exist import new entry by download
         if (url) {
             const httpPub = await this.catalogService.importOpdsEntry(url, downloadSample, tags);
             if (httpPub.isSuccess) {
-                titleView = httpPub.data.title;
                 this.sendDownloadSuccess(url);
                 returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
             } else {
@@ -179,40 +179,24 @@ export class PublicationApi implements IPublicationApi {
                 this.dispatchToastRequest(ToastType.DownloadFailed, `[${error}]`);
                 throw new Error(`importOpdsPublication ${error}`);
             }
-            titleView = publication.title;
             this.sendDownloadSuccess(url);
             returnView = this.publicationViewConverter.convertDocumentToView(publication);
         }
-
-        // dispatch notification to user with redux
-        this.dispatchToastRequest(ToastType.DownloadComplete,
-            this.translator.translate("message.download.success", { title: titleView }));
         return returnView;
     }
 
-    public async import(paths: string[]): Promise<PublicationView[]> {
-        // returns all publications linked to this import
-        const newDocs = [];
+    public async import(filePathArray: string | string[]): Promise<PublicationView[]> {
 
-        for (const path of paths) {
-            try {
-                const newDoc = await this.catalogService.importFile(path);
-                if (newDoc) {
-                    newDocs.push(newDoc);
-                }
-            } catch (error) {
-                debug(`Import file - FAIL : ${path}`, error);
-                this.dispatchToastRequest(ToastType.DownloadFailed,
-                    this.translator.translate("message.import.fail", {path}));
-            }
+        if (!isArray(filePathArray)) {
+            filePathArray = [filePathArray];
         }
-
-        return newDocs.map((doc) => {
-            const publication = this.publicationViewConverter.convertDocumentToView(doc);
-            this.dispatchToastRequest(ToastType.DownloadComplete,
-                this.translator.translate("message.import.success", { title: publication.title }));
-            return publication;
-        });
+        // returns all publications linked to this import
+        const pubsRawPromise = filePathArray.map((filePath) => this.catalogService.importFile(filePath));
+        const pubsRaw = await PromiseAllSettled(pubsRawPromise);
+        const pubs = pubsRaw.filter((pub) => pub.status === "fulfilled" && pub.value);
+        // https://github.com/microsoft/TypeScript/issues/16069 : no inference type on filter
+        const pubsView = pubs.map((pub) => this.publicationViewConverter.convertDocumentToView((pub as any).value));
+        return pubsView;
     }
 
     public async search(title: string): Promise<PublicationView[]> {
