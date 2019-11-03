@@ -50,7 +50,6 @@ matrix:
 #     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 install:
 - npm --global install npm@latest && npm --version && npm ci
-- npm run patch-electron-builder
 - npm run rmLevelDownPrebuilds && npm run rmLevelDown
 # cache: false
 cache:
