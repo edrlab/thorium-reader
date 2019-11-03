@@ -11,7 +11,7 @@ import { ActionType, ApiAction } from "readium-desktop/common/redux/actions/api"
 import { ApiState, ApiDataResponse, LAST_API_SUCCESS_ID } from "readium-desktop/renderer/redux/states/api";
 
 const initialState: ApiState<any> = {
-    ["lastApiSuccess"]: undefined,
+    [LAST_API_SUCCESS_ID]: undefined,
 };
 
 // The api reducer.
