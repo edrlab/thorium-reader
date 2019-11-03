@@ -12,21 +12,24 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { Dispatch } from "redux";
 import * as uuid from "uuid";
 import { ApiResponse, LAST_API_SUCCESS_ID } from 'readium-desktop/renderer/redux/states/api';
+import { ReturnPromiseType } from 'readium-desktop/typings/promise';
 
 export function apiDispatch(dispatch: Dispatch) {
-    return <T extends TApiMethodName>(apiPath: T, requestId: string = uuid.v4()) => {
-      const splitPath = apiPath.split("/");
-      const moduleId = splitPath[0] as TModuleApi;
-      const methodId = splitPath[1] as TMethodApi;
+    return (requestId: string = uuid.v4()) =>
+        <T extends TApiMethodName>(apiPath: T) => {
+            const splitPath = apiPath.split("/");
+            const moduleId = splitPath[0] as TModuleApi;
+            const methodId = splitPath[1] as TMethodApi;
 
-      return (...requestData: Parameters<TApiMethod[T]>) =>
-        dispatch(apiActions.buildRequestAction(requestId, moduleId, methodId, requestData));
-    };
+            return (...requestData: Parameters<TApiMethod[T]>) =>
+                dispatch(apiActions.buildRequestAction(requestId, moduleId, methodId, requestData));
+        };
 }
 
 export function apiState(state: RootState) {
-    return <T extends TApiMethodName>(_apiPath: T, requestId: string): ApiResponse<ReturnType<TApiMethod[T]>> =>
-        state.api[requestId];
+    return (requestId: string) =>
+        <T extends TApiMethodName>(_apiPath: T): ApiResponse<ReturnPromiseType<TApiMethod[T]>> =>
+            state.api[requestId];
 }
 
 export function apiRefreshToState(state: RootState) {
