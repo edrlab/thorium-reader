@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { TPublicationApiFindAll_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
@@ -18,8 +17,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
-import { RootState } from "readium-desktop/renderer/redux/states";
-import { Dispatch, Store, Unsubscribe } from "redux";
+import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
 
@@ -54,7 +52,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
-        if (this.unsubscribe) {ß
+        if (this.unsubscribe) {
             this.unsubscribe();
         }
     }
@@ -99,20 +97,4 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: Store<RootState>) => {
-
-}
-
-const mapDispatchToProps = (dispatch: Dispatch) => {
-
-    const findAll = apiDispatch(dispatch)("publication/findAll", "AllPubComponnent");
-    findAll();
-    return {
-        findAll,
-    }
-}
-
-
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(AllPublicationPage));
+export default withTranslator(AllPublicationPage);
