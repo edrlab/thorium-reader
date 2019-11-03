@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { TPublicationApiFindAll_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
@@ -17,11 +18,10 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import ListView from "readium-desktop/renderer/components/utils/ListView";
-import { Unsubscribe, Dispatch } from "redux";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { Dispatch, Store, Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
-import { RootState } from 'readium-desktop/renderer/redux/states';
-import { Store } from 'redux';
 
 interface IProps extends TranslatorProps, RouteComponentProps {
 }
@@ -112,22 +112,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     }
 }
 
-import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
-import * as uuid from "uuid";
-import { apiActions } from 'readium-desktop/common/redux/actions';
-import { TModuleApi, TMethodApi } from 'readium-desktop/main/di';
-import { connect } from 'react-redux';
 
-export function apiDispatch(dispatch: Dispatch) {
-    return <T extends TApiMethodName>(apiPath: T, requestId: string = uuid.v4()) => {
-      const splitPath = apiPath.split("/");
-      const moduleId = splitPath[0] as TModuleApi;
-      const methodId = splitPath[1] as TMethodApi;
-    
-      return (...requestData: Parameters<TApiMethod[T]>) =>
-        dispatch(apiActions.buildRequestAction(requestId, moduleId, methodId, requestData));
-    }
-}
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(AllPublicationPage));

@@ -27,7 +27,6 @@ export function apiReducer(
         case ActionType.Success:
             const data = state.data;
             const now = moment.now();
-            // Why here is it not immutable ?
             data[action.meta.api.requestId] = {
                 result: action.payload,
                 resultIsReject,
