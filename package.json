@@ -14,8 +14,7 @@
   "scripts": {
     "clean": "rimraf dist && rimraf release",
     "test": "jest --verbose --runInBand",
-    "patch-electron-builder": "ncp scripts/electron-builder-patch/AppxTarget.js node_modules/app-builder-lib/out/targets/AppxTarget.js",
-    "__postinstall": "npm run rmLevelDownPrebuilds && npm run patch-electron-builder && npm rebuild --runtime=electron --target=7.0.0 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
+    "__postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=7.0.0 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
     "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\" && rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\"",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
@@ -23,7 +22,7 @@
     "build:dev:main": "webpack --config webpack.config.main.js",
     "start": "npm run build:prod && cross-env DEBUG=r2:*,readium-desktop:* electron .",
     "lint:ts": "tslint --project tsconfig.json -c tslint.json './src/**/*.ts' './src/**/*.tsx' './test/**/*.ts' './test/**/*.tsx'",
-    "lint:editorconfig": "eclint check '**/*' '!scripts/electron-builder-patch/**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*'",
+    "lint:editorconfig": "eclint check '**/*' '!changelogs/**/*' '!.vscode/**/*' '!.git/**/*' '!node_modules/**/*' '!resources/**/*' '!src/renderer/assets/**/*' '!dist/**/*' '!release/**/*' '!**/.DS_Store' '!src/typings/en.translation.d.*'",
     "lint": "npm run lint:editorconfig && npm run lint:ts",
     "start:dev:renderer-reader": "concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:reader\"",
     "start:dev:renderer": "webpack-dev-server --config webpack.config.renderer.js",
