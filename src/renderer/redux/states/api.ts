@@ -31,4 +31,5 @@ export interface ApiResponse<T> {
 
 export interface ApiState<T> {
     [id: string]: ApiResponse<T>;
+    ["lastApiSuccess"]: ApiResponse<any>;
 }

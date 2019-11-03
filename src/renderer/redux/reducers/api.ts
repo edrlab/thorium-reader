@@ -10,7 +10,9 @@ import * as moment from "moment";
 import { ActionType, ApiAction } from "readium-desktop/common/redux/actions/api";
 import { ApiState, ApiDataResponse } from "readium-desktop/renderer/redux/states/api";
 
-const initialState: ApiState<any> = {};
+const initialState: ApiState<any> = {
+    ["lastApiSuccess"]: undefined,
+};
 
 // The api reducer.
 export function apiReducer<T = any>(
@@ -50,7 +52,11 @@ export function apiReducer<T = any>(
                 requestState.data;
             requestState.lastTime = requestState.data.time;
             requestState.data = data;
-            return { ...state, [requestId]: requestState };
+            return {
+                ...state,
+                [requestId]: requestState,
+                ["lastApiSuccess"]: action.error ? undefined : requestState
+            };
 
         case ActionType.Clean:
             delete state[requestId];
