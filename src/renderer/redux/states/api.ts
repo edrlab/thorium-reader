@@ -5,33 +5,30 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ApiAction } from "readium-desktop/common/redux/actions/api";
+import { CodeError } from 'readium-desktop/common/errors';
 
-interface PageState<T> {
-    totalCount: number;
-    page: number;
-    items: T[];
-}
+// FIXME what is the purpose of this interface ?
+// interface PageState<T> {
+//     totalCount: number;
+//     page: number;
+//     items: T[];
+// }
 
 export interface ApiDataResponse<T> {
-    result: (T | PageState<T>);
-    resultIsReject?: boolean;
-    date: number;
-    requestId: string;
-    methodId: string;
-    moduleId: string;
+    time: number;
+    error: boolean;
+    errorMessage?: CodeError;
+    methodId?: string;
+    moduleId?: string;
+    result?: T;
 }
 
-export interface ApiDataState<T> {
-    [id: string]: ApiDataResponse<T>;
-}
-
-export interface ApiLastSuccess {
-    action: ApiAction;
-    date: number;
+export interface ApiResponse<T> {
+    data: ApiDataResponse<T>;
+    lastSuccess: ApiDataResponse<T> | undefined;
+    lastTime: number
 }
 
 export interface ApiState<T> {
-    lastSuccess: ApiLastSuccess;
-    data: ApiDataState<T>;
+    [id: string]: ApiResponse<T>;
 }

@@ -11,6 +11,7 @@ import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { SagaIterator } from "redux-saga";
 import { all, call, fork, put, take } from "redux-saga/effects";
+import { CodeError } from 'readium-desktop/common/errors';
 
 // Logger
 const debug = debug_("readium-desktop:main#redux/sagas/api");
@@ -38,10 +39,10 @@ export function* processRequest(requestAction: apiActions.ApiAction): SagaIterat
             ...(requestAction.payload || []),
         );
 
-        yield put(apiActions.buildSuccessAction(requestAction, result));
+        yield put(apiActions.buildResultAction(requestAction, result));
     } catch (error) {
         debug(error);
-        yield put(apiActions.buildErrorAction(requestAction, error.message));
+        yield put(apiActions.buildResultAction(requestAction, new CodeError("API-ERROR", error.message)));
     }
 }
 

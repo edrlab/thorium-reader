@@ -7,12 +7,12 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
+import { CodeError } from 'readium-desktop/common/errors';
 
 export enum ActionType {
     Clean = "API_CLEAN",
     Request = "API_REQUEST",
-    Error = "API_ERROR",
-    Success = "API_SUCCESS",
+    Result = "API_RESULT",
 }
 
 export interface ApiMeta {
@@ -40,12 +40,12 @@ export function clean(
     };
 }
 
-export function buildSuccessAction(
+export function buildResultAction(
     requestAction: ApiAction,
     payload: any,
 ): ApiAction {
-    return {
-        type: ActionType.Success,
+    const ret: ApiAction = {
+        type: ActionType.Result,
         payload,
         meta: {
             api: {
@@ -55,30 +55,12 @@ export function buildSuccessAction(
             },
         },
     };
+    if (payload instanceof CodeError) {
+        ret.error = true;
+    }
+    return ret;
 }
 
-export function buildErrorAction(
-    requestAction: ApiAction,
-    payload: any,
-): ApiAction {
-    return {
-        type: ActionType.Error,
-        payload,
-        meta: {
-            api: {
-                requestId: requestAction.meta.api.requestId,
-                moduleId: requestAction.meta.api.moduleId,
-                methodId: requestAction.meta.api.methodId,
-            },
-        },
-        error: true,
-    };
-}
-
-/**
- * Build api request action
- * @param apiName name of api
- */
 export function buildRequestAction(
     apiRequestId: string,
     apiModuleId: TModuleApi,
