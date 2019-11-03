@@ -11,7 +11,7 @@ import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Dispatch } from "redux";
 import * as uuid from "uuid";
-import { ApiResponse } from 'readium-desktop/renderer/redux/states/api';
+import { ApiResponse, LAST_API_SUCCESS_ID } from 'readium-desktop/renderer/redux/states/api';
 
 export function apiDispatch(dispatch: Dispatch) {
     return <T extends TApiMethodName>(apiPath: T, requestId: string = uuid.v4()) => {
@@ -31,7 +31,7 @@ export function apiState(state: RootState) {
 
 export function apiRefreshToState(state: RootState) {
     return (apiPathArray: TApiMethodName[]): Boolean =>
-        state.api["lastApiSuccess"] && state.api["lastApiSuccess"].data.moduleId &&
+        state.api[LAST_API_SUCCESS_ID] && state.api[LAST_API_SUCCESS_ID].data.moduleId &&
         apiPathArray.includes(
-            `${state.api["lastApiSuccess"].data.moduleId}/${state.api["lastApiSuccess"].data.methodId}` as TApiMethodName);
+            `${state.api[LAST_API_SUCCESS_ID].data.moduleId}/${state.api[LAST_API_SUCCESS_ID].data.methodId}` as TApiMethodName);
 }

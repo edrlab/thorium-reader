@@ -14,6 +14,8 @@ import { CodeError } from 'readium-desktop/common/errors';
 //     items: T[];
 // }
 
+export const LAST_API_SUCCESS_ID = "lastApiSuccess";
+
 export interface ApiDataResponse<T> {
     time: number;
     error: boolean;
@@ -31,5 +33,5 @@ export interface ApiResponse<T> {
 
 export interface ApiState<T> {
     [id: string]: ApiResponse<T>;
-    ["lastApiSuccess"]: ApiResponse<any>;
+    [LAST_API_SUCCESS_ID]: ApiResponse<any>;
 }
