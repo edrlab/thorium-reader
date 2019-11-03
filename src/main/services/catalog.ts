@@ -17,7 +17,7 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
 import { open } from "readium-desktop/common/redux/actions/toast";
 import { Translator } from "readium-desktop/common/services/translator";
-import { convertMultiLangStringToString } from "readium-desktop/common/utils";
+import { convertMultiLangStringToString, urlPathResolve } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -125,6 +125,7 @@ export class CatalogService {
                 }
                 const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
                 opdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
+
             } else {
                 opdsPublication = TAJSON.deserialize<OPDSPublication>(
                     JSON.parse(opdsFeedData.body),
@@ -135,6 +136,15 @@ export class CatalogService {
             if (opdsPublication == null) {
                 debug("Unable to retrieve opds publication", opdsPublication);
                 throw new Error("Unable to retrieve opds publication");
+            }
+            // resolve url in publication before extract them
+            if (opdsPublication.Links) {
+                opdsPublication.Links.forEach(
+                    (ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href)));
+            }
+            if (opdsPublication.Images) {
+                opdsPublication.Images.forEach(
+                    (ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href)));
             }
             try {
                 opdsFeedData.data = await this.importOpdsPublication(opdsPublication, downloadSample, tags);

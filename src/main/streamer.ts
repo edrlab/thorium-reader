@@ -103,9 +103,10 @@ function computeReadiumCssJsonMessage(_publication: Publication, _link: Link | u
 
         noFootnotes: settings.noFootnotes,
 
-        textAlign: settings.align === "left" ? textAlignEnum.left :
-            (settings.align === "right" ? textAlignEnum.right :
-            (settings.align === "justify" ? textAlignEnum.justify : textAlignEnum.start)),
+        textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
+            (settings.align === textAlignEnum.right ? textAlignEnum.right :
+            (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
+            (settings.align === textAlignEnum.start ? textAlignEnum.start : undefined))),
 
         textColor: readiumCSSDefaults.textColor,
 

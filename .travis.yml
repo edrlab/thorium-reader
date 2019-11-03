@@ -50,7 +50,6 @@ matrix:
 #     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 install:
 - npm --global install npm@latest && npm --version && npm ci
-- npm run patch-electron-builder
 - npm run rmLevelDownPrebuilds && npm run rmLevelDown
 # cache: false
 cache:
@@ -64,6 +63,8 @@ before_cache:
   - 'rm -rf $HOME/.cache/electron-builder/wine'
 script:
 #  - npm --no-git-tag-version version prepatch && git diff
+  - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${TRAVIS_BUILD_NUMBER}\",/g" package.json && cat package.json | grep -i VERSION'
+  - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${TRAVIS_BUILD_NUMBER}\",/g" src/package.json && cat src/package.json | grep -i VERSION'
   - 'npm --version'
   - 'node --version'
   - 'pwd'

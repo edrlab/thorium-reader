@@ -11,7 +11,7 @@
         padding: 0.625rem;
         display: flex;
         align-items: center;
-        
+
         & svg {
             width: 0.9375rem;
             height: 0.9375rem;
@@ -77,11 +77,11 @@
 	width: calc(100% + 120px);
 	margin-left:-60px;
 	border-top:1px solid #c1c1c1;
-    
+
     & li {
         padding:20px 60px 20px 60px;
         border-bottom: 1px solid #c1c1c1;
-        
+
         & .flux_infos {
             display: inline-flex;
             align-items: center;
@@ -98,6 +98,7 @@
             & .flux_subtitle {
                 font-size: 0.8rem;
                 margin-left:10px;
+                padding-right: 10px;
             }
             & .flux_image {
                 flex: 1;

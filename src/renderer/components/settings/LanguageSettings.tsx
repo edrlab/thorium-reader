@@ -23,21 +23,9 @@ import SVG from "../utils/SVG";
 interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-interface IStates {
-    placeholder: any;
-}
-
-export class LanguageSettings extends React.Component<IProps, IStates> {
-    public constructor(props: IProps) {
-        super(props);
-
-        this.state = {
-            placeholder: undefined,
-        };
-    }
+class LanguageSettings extends React.Component<IProps> {
 
     public render(): React.ReactElement<{}> {
-        // const secondaryHeader = <Header section={2}/>;
         const { __ } = this.props;
         return (
             <>
