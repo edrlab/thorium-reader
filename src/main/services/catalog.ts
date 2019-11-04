@@ -86,7 +86,7 @@ export class CatalogService {
                 if (isLCPLicense) {
                     publication = await this.importLcplFile(filePath);
                 } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
-                    publication = await this.importEpubFile(filePath);
+                    publication = await this.importEpubFile(filePath, hash);
                 }
                 this.store.dispatch(open(ToastType.DownloadComplete,
                     this.translator.translate("message.import.success", { title: publication.title })));
@@ -309,10 +309,10 @@ export class CatalogService {
     }
 
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {
-        const buffer = fs.readFileSync(filePath);
-        const lcpJson = JSON.parse(buffer.toString());
-        const lcp = TAJSON.parse<LCP>(lcpJson) as LCP;
-        lcp.JsonSource = lcpJson;
+        const jsonStr = fs.readFileSync(filePath, { encoding: "utf8" });
+        const lcpJson = JSON.parse(jsonStr);
+        const lcp = TAJSON.deserialize<LCP>(lcpJson, LCP);
+        lcp.JsonSource = jsonStr;
 
         // search the path of the epub file
         let download: Download = null;
@@ -340,12 +340,13 @@ export class CatalogService {
         );
         debug("[END] Download publication", filePath, newDownload);
 
-        // Import downloaded publication
-        const publicationDocument = await this.importEpubFile(download.dstPath);
+        // null so that extractCrc32OnZip() is not unnecessarily invoked
+        const publicationDocument = await this.importEpubFile(download.dstPath, null);
+
         return this.lcpManager.injectLcpl(publicationDocument, lcp);
     }
 
-    private async importEpubFile(filePath: string): Promise<PublicationDocument> {
+    private async importEpubFile(filePath: string, hash?: string): Promise<PublicationDocument> {
         debug("Parse publication - START", filePath);
         const r2Publication = await EpubParsePromise(filePath);
         debug("Parse publication - END", filePath);
@@ -399,7 +400,7 @@ export class CatalogService {
             files: [],
             coverFile: null,
             customCover: null,
-            hash: await extractCrc32OnZip(filePath),
+            hash: hash ? hash : (hash === null ? undefined : await extractCrc32OnZip(filePath)),
             lcp: lcpInfo,
         } as PublicationDocument;
         debug(pubDocument.hash);

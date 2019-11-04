@@ -22,7 +22,7 @@ export class PublicationViewConverter {
             .from(b64ParsedPublication, "base64")
             .toString("utf-8");
         const parsedPublication = JSON.parse(jsonParsedPublication);
-        const r2Publication = TAJSON.deserialize(parsedPublication, R2Publication) as R2Publication;
+        const r2Publication = TAJSON.deserialize<R2Publication>(parsedPublication, R2Publication);
         const publishers = convertContributorArrayToStringArray(
             r2Publication.Metadata.Publisher,
         );

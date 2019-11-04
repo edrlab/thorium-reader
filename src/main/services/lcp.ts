@@ -24,6 +24,8 @@ import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { Server } from "@r2-streamer-js/http/server";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
+import { extractCrc32OnZip } from "../crc";
+
 // import { injectDataInZip } from "readium-desktop/utils/zip";
 // import * as uuid from "uuid";
 // import { LcpSecretDocument } from "../db/document/lcp-secret";
@@ -49,11 +51,11 @@ export class LcpManager {
     @inject(diSymbolTable.streamer)
     private readonly streamer!: Server;
 
-    // @inject(diSymbolTable["device-id-manager"])
-    // private readonly deviceIdManager!: DeviceIdManager;
-
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
+
+    // @inject(diSymbolTable["device-id-manager"])
+    // private readonly deviceIdManager!: DeviceIdManager;
 
     /**
      * Inject lcpl document in publication
@@ -70,7 +72,7 @@ export class LcpManager {
             publicationDocument.identifier,
         );
 
-        const jsonSource = lcp.JsonSource ? lcp.JsonSource : TAJSON.serialize(lcp);
+        const jsonSource = lcp.JsonSource ? lcp.JsonSource : JSON.stringify(TAJSON.serialize(lcp));
 
         // Inject lcpl in a temporary zip
         debug("Inject LCPL - START", epubPath);
@@ -151,6 +153,7 @@ export class LcpManager {
             {},
             publicationDocument,
             {
+                hash: await extractCrc32OnZip(epubPath),
                 resources: {
                     filePublication: b64ParsedPublication,
                     opdsPublication: publicationDocument.resources.opdsPublication,
