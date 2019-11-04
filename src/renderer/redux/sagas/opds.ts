@@ -26,8 +26,6 @@ export function* browseWatcher(): SagaIterator {
             const parsedResult = parseOpdsBrowserRoute(path);
             const { level, title, url } = parsedResult;
             yield put(opdsActions.browse(level, title, url));
-            // dispatch api browse with fixed const requestId
-            // The api result can be found by specific requestId in each componnent
         }
     }
 }
@@ -36,12 +34,17 @@ export function* browseRequestWatcher(): SagaIterator {
     while (true) {
         const action: opdsActions.IActionBrowseRequest =
             yield take(opdsActions.ActionType.BrowseRequest);
-        yield put(apiActions.)
+        yield put(
+            apiActions.buildRequestAction(
+                BROWSE_OPDS_API_REQUEST_ID,
+                "opds", "browse",
+                [action.payload.url]));
     }
 }
 
 export function* watchers() {
     yield all([
         call(browseWatcher),
+        call(browseRequestWatcher),
     ]);
 }
