@@ -25,7 +25,6 @@ import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
 interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
-    url: string;
 }
 
 interface IState {

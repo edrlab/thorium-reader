@@ -24,7 +24,6 @@ export enum DisplayType {
 }
 
 interface IProps extends RouteComponentProps, TranslatorProps {
-    displayType: DisplayType;
 }
 
 class Header extends React.Component<IProps> {

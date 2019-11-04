@@ -6,108 +6,47 @@
 // ==LICENSE-END==
 
 // import * as debug_ from "debug";
-import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
-import { IOpdsBrowse } from "src/renderer/routing";
 
-import { DisplayType } from "../catalog/Header";
-import BreadCrumb, { BreadCrumbItem } from "../layout/BreadCrumb";
+import BreadCrumb from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
 import Header from "./Header";
 
 // Logger
 // const debug = debug_("readium-desktop:src/renderer/components/opds/browser");
 
-interface IProps extends RouteComponentProps<IOpdsBrowse>, TranslatorProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps> {
 }
 
 class Browser extends React.Component<IProps> {
     public render(): React.ReactElement<IProps>  {
-        const breadcrumb = this.buildBreadcrumb();
-        let url: string | undefined;
-
-        if (this.props.navigation.length > 0) {
-            // get the last link from navigation array print in breadcrumb
-            url = this.props.navigation[this.props.navigation.length - 1].url;
-        }
-
-        const parsedResult = qs.parse(this.props.location.search);
-
-        const secondaryHeader = <Header displayType={parsedResult.displayType as DisplayType}/>;
+        const secondaryHeader = <Header/>;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} mainClassName={styles.opdsBrowse}>
                 <BreadCrumb
                     className={styles.opdsBrowseBreadcrumb}
-                    breadcrumb={breadcrumb}
+                    breadcrumb={this.props.breadrumb}
                     search={this.props.location.search}
                 />
-                {url &&
-                    <BrowserResult url={url}/>
+                {this.props.breadrumb.length &&
+                    <BrowserResult/>
                 }
             </LibraryLayout>
         );
     }
-
-    private buildBreadcrumb() {
-        const { match, navigation } = this.props;
-        const breadcrumb: BreadCrumbItem[] = [];
-        const parsedQuerryString = qs.parse(this.props.location.search);
-        const search = parsedQuerryString.search as string;
-
-        // Add root page
-        breadcrumb.push({
-            name: this.props.__("opds.breadcrumbRoot"),
-            path: "/opds",
-        });
-        const rootFeedIdentifier = match.params.opdsId;
-
-        if (search) {
-            const link = navigation[0];
-            if (link) {
-                breadcrumb.push({
-                    name: decodeURI(link.title),
-                    path: buildOpdsBrowserRoute(
-                        rootFeedIdentifier,
-                        link.title,
-                        link.url,
-                        1,
-                    ),
-                });
-            }
-            breadcrumb.push({
-                name: decodeURI(search),
-            });
-            return breadcrumb;
-        }
-
-        navigation.forEach((link, index: number) => {
-            breadcrumb.push({
-                name: link.title,
-                path: buildOpdsBrowserRoute(
-                    rootFeedIdentifier,
-                    link.title,
-                    link.url,
-                    index + 1,
-                ),
-            });
-        });
-
-        return breadcrumb;
-    }
 }
 
 const mapStateToProps = (state: RootState) => ({
-    navigation: state.opds.browser.navigation,
+    breadrumb: state.opds.browser.breadcrumb,
+    location: state.router.location,
 });
 
-export default connect(mapStateToProps, undefined)(withRouter(withTranslator(Browser)));
+export default connect(mapStateToProps, undefined)(withTranslator(Browser));
