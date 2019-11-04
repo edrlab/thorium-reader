@@ -14,8 +14,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 import Entry from "./Entry";
 
-interface IProps extends RouteComponentProps {
-    level?: number;
+interface IProps extends RouteComponentProps, ReturnType<typeof mapStateToProps> {
     entries: IOpdsNavigationLinkView[];
 }
 
@@ -36,7 +35,7 @@ class EntryList extends React.Component<IProps> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-    level: state.opds.browser.navigation.length + 1,
+    level: state.opds.browser.breadcrumb.length + 1,
 });
 
-export default connect(mapStateToProps, undefined)(withRouter(EntryList));
+export default connect(mapStateToProps)(withRouter(EntryList));
