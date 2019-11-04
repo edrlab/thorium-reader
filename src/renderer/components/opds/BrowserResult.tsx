@@ -5,59 +5,28 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as qs from "qs";
 import * as React from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
-import { apiAction } from "readium-desktop/renderer/apiAction";
+import { connect } from "react-redux";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-// import { BreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
 import {
-    TranslatorProps,
-    withTranslator,
+    TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
-import { ReturnPromiseType } from "readium-desktop/typings/promise";
-// import { parseQueryString } from "readium-desktop/utils/url";
+import { apiState } from "readium-desktop/renderer/redux/api/api";
+import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/redux/sagas/opds";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
-interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
+interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps> {
 }
 
-interface IState {
-    browserResult: ReturnPromiseType<TOpdsApiBrowse> | undefined;
-    browserError: string | undefined;
-}
-
-export class BrowserResult extends React.Component<BrowserResultProps, IState> {
-    // private currentUrl: string;
-
-    constructor(props: BrowserResultProps) {
-        super(props);
-        this.state = {
-            browserError: undefined,
-            browserResult: undefined,
-        };
-    }
-
-    public componentDidMount() {
-        this.browseOpds(this.props.url);
-    }
-
-    public componentDidUpdate(prevProps: BrowserResultProps) {
-        if (prevProps.url !== this.props.url ||
-            prevProps.location.search !== this.props.location.search) {
-            // New url to browse
-            this.browseOpds(this.props.url);
-        }
-    }
+export class BrowserResult extends React.Component<IProps> {
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
-        const { browserError, browserResult } = this.state;
+        const { __, browserData } = this.props;
         let content = (<Loader />);
 
         if (!navigator.onLine) {
@@ -67,14 +36,16 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
                     message={__("opds.network.noInternetMessage")}
                 />
             );
-        } else if (browserError) {
+        } else if (browserData && browserData.error) {
             content = (
                 <MessageOpdBrowserResult
                     title={__("opds.network.reject")}
-                    message={browserError}
+                    message={browserData.errorMessage.message}
                 />
             );
-        } else if (browserResult) {
+        } else if (browserData && browserData.result) {
+            const browserResult = browserData.result;
+
             if (browserResult.isSuccess) {
                 if (browserResult.data.navigation) {
                     content = (
@@ -111,65 +82,14 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
             {content}
         </div>;
     }
-
-    private browseOpds(url: string) {
-        // const { location } = this.props;
-        // const { browserResult } = this.state;
-        // const oldQs = parseQueryString(url.split("?")[1]);
-        // const search = qs.parse(location.search.replace("?", "")).search;
-        const newUrl = url;
-        /*
-        if (search && browserResult && browserResult.isSuccess && browserResult.data.links.search) {
-            newUrl = browserResult.data.links.search[0].Href;
-            newUrl = this.addSearchTerms(newUrl, search) +
-                Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
-        }
-        */
-
-        // this.currentUrl = newUrl;
-
-        // reset browserResult to display loader spinner
-        this.setState({
-            browserResult: undefined,
-        });
-
-        // fetch newUrl
-        apiAction("opds/browse", newUrl).then((result) => this.setState({
-            browserResult: result,
-            browserError: undefined,
-        })).catch((error) => this.setState({
-            browserResult: undefined,
-            browserError: error,
-        }));
-    }
-
-    // TODO : Create a new function to parse the search url in function of TypeLink
-    // currently broken
-    /*
-    private addSearchTerms(url: string, search: string) {
-        const opds1: boolean = url.search("{searchTerms}") !== -1;
-        if (opds1) {
-            return url.replace("{searchTerms}", search);
-        } else {
-            const searchTemplate = url.match(/{\?(.*?)}/g);
-            let newUrl = url;
-            if (searchTemplate) {
-                const searchOptions = searchTemplate[0].replace("{?", "").replace("}", "").split(",");
-                newUrl = url.replace(/{\?(.*?)}/g, "?");
-                if (searchOptions.find((value) => value === "query")) {
-                    newUrl += `query=${search}`;
-                }
-            } else {
-                const splitedCurrentUrl = this.currentUrl.split("?");
-                const parsedQueryString = parseQueryString(splitedCurrentUrl[1]);
-                parsedQueryString.query = search;
-                const queryString = Object.keys(parsedQueryString).map((key) => `${key}=${search}`);
-                newUrl = splitedCurrentUrl[0] + "?" + queryString.join("&");
-            }
-            return newUrl;
-        }
-    }
-    */
 }
 
-export default withTranslator(withRouter(BrowserResult));
+const mapStateToProps = (state: RootState) => {
+
+    const apiBrowseData = apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("opds/browse");
+    return {
+        browserData: apiBrowseData && apiBrowseData.data,
+    };
+};
+
+export default connect(mapStateToProps)(withTranslator(BrowserResult));
