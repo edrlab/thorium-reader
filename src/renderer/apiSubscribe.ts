@@ -6,10 +6,10 @@
 // ==LICENSE-END==
 
 import { TApiMethodName } from "readium-desktop/main/api/api.type";
-import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { diRendererGet } from "readium-desktop/renderer/di";
-import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
 import { Unsubscribe } from "redux";
+
+import { LAST_API_SUCCESS_ID } from "./redux/states/api";
 
 /**
  * subscribe to redux to automaticaly execute callback when any path in parameter is called on IPC
@@ -18,30 +18,22 @@ import { Unsubscribe } from "redux";
  */
 export function apiSubscribe(pathArrayToRefresh: TApiMethodName[], cb: () => void | Promise<void>): Unsubscribe {
     const store = diRendererGet("store");
-    let lastSuccess: ApiLastSuccess | undefined;
+    let lastSuccessTime = store.getState().api[LAST_API_SUCCESS_ID].lastTime || 0;
 
     cb();
 
     return store.subscribe(() => {
         const state = store.getState();
-        const apiLastSuccess = state.api.lastSuccess;
-        const lastSuccessDate = (lastSuccess && lastSuccess.date) || 0;
 
-        if (!apiLastSuccess || apiLastSuccess.date <= lastSuccessDate) {
-            return;
-        }
-
-        // New api success
-        lastSuccess = apiLastSuccess;
-
-        const meta = apiLastSuccess.action.meta.api;
-        if (pathArrayToRefresh.find((apiPath) => {
-            const splitPath = apiPath.split("/");
-            const moduleId = splitPath[0] as TModuleApi;
-            const methodId = splitPath[1] as TMethodApi;
-            return meta.methodId === methodId && meta.moduleId === moduleId;
-        })) {
-            cb();
+        if (state.api[LAST_API_SUCCESS_ID].lastTime > lastSuccessTime) {
+            lastSuccessTime = state.api[LAST_API_SUCCESS_ID].lastTime;
+            const data = state.api[LAST_API_SUCCESS_ID].data;
+            if (!data.error) {
+                const path = `${data.moduleId}/${data.methodId}` as TApiMethodName;
+                if (pathArrayToRefresh.includes(path)) {
+                    cb();
+                }
+            }
         }
     });
 }

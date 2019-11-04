@@ -7,17 +7,21 @@
 
 import * as qs from "query-string";
 import * as React from "react";
+import { connect } from "react-redux";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    apiClean, apiDispatch, apiRefreshToState, apiState,
+} from "readium-desktop/renderer/redux/api/api";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { Dispatch } from "redux";
+import * as uuid from "uuid";
 
 import GridView from "./GridView";
 import Header, { DisplayType } from "./Header";
 import ListView from "./ListView";
-import { connect } from 'react-redux';
-import { RootState } from 'readium-desktop/renderer/redux/states';
-import * as uuid from "uuid";
-import { apiState, apiDispatch, apiRefreshToState } from 'readium-desktop/renderer/redux/api/api';
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
@@ -28,6 +32,11 @@ class Catalog extends React.Component<IProps> {
 
     public componentDidMount() {
         this.getFromApi();
+    }
+
+    public componentWillUnmount() {
+        this.props.apiClean(this.catalogGetId);
+        this.props.apiClean(this.publicationGetAllTagId);
     }
 
     public render(): React.ReactElement<{}> {
@@ -84,7 +93,8 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-    api: apiDispatch(dispatch)
+    api: apiDispatch(dispatch),
+    apiClean: apiClean(dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(Catalog));

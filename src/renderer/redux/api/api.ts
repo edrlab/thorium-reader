@@ -9,10 +9,10 @@ import { apiActions } from "readium-desktop/common/redux/actions";
 import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { ApiResponse, LAST_API_SUCCESS_ID } from "readium-desktop/renderer/redux/states/api";
+import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { Dispatch } from "redux";
 import * as uuid from "uuid";
-import { ApiResponse, LAST_API_SUCCESS_ID } from 'readium-desktop/renderer/redux/states/api';
-import { ReturnPromiseType } from 'readium-desktop/typings/promise';
 
 export function apiDispatch(dispatch: Dispatch) {
     return (requestId: string = uuid.v4()) =>
@@ -33,8 +33,13 @@ export function apiState(state: RootState) {
 }
 
 export function apiRefreshToState(state: RootState) {
-    return (apiPathArray: TApiMethodName[]): Boolean =>
+    return (apiPathArray: TApiMethodName[]): boolean =>
         state.api[LAST_API_SUCCESS_ID] && state.api[LAST_API_SUCCESS_ID].data.moduleId &&
         apiPathArray.includes(
+            // tslint:disable-next-line: max-line-length
             `${state.api[LAST_API_SUCCESS_ID].data.moduleId}/${state.api[LAST_API_SUCCESS_ID].data.methodId}` as TApiMethodName);
+}
+
+export function apiClean(dispatch: Dispatch) {
+    return (requestId: string) => dispatch(apiActions.clean(requestId));
 }
