@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { CodeError } from "readium-desktop/common/errors";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
@@ -38,10 +39,10 @@ export function* processRequest(requestAction: apiActions.ApiAction): SagaIterat
             ...(requestAction.payload || []),
         );
 
-        yield put(apiActions.buildSuccessAction(requestAction, result));
+        yield put(apiActions.buildResultAction(requestAction, result));
     } catch (error) {
         debug(error);
-        yield put(apiActions.buildErrorAction(requestAction, error.message));
+        yield put(apiActions.buildResultAction(requestAction, new CodeError("API-ERROR", error.message)));
     }
 }
 

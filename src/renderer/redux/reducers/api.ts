@@ -6,13 +6,13 @@
 // ==LICENSE-END==
 
 import * as moment from "moment";
-
 import { ActionType, ApiAction } from "readium-desktop/common/redux/actions/api";
-import { ApiState } from "readium-desktop/renderer/redux/states/api";
+import {
+    ApiDataResponse, ApiState, LAST_API_SUCCESS_ID,
+} from "readium-desktop/renderer/redux/states/api";
 
 const initialState: ApiState<any> = {
-    data: {},
-    lastSuccess: null,
+    [LAST_API_SUCCESS_ID]: undefined,
 };
 
 // The api reducer.
@@ -20,37 +20,60 @@ export function apiReducer(
     state: ApiState<any> = initialState,
     action: ApiAction,
 ) {
-    const resultIsReject = action.type === ActionType.Error;
 
     switch (action.type) {
-        case ActionType.Error:
-        case ActionType.Success:
-            const data = state.data;
+        case ActionType.Result:
             const now = moment.now();
-            // Why here is it not immutable ?
-            data[action.meta.api.requestId] = {
-                result: action.payload,
-                resultIsReject,
-                requestId: action.meta.api.requestId,
-                moduleId: action.meta.api.moduleId,
-                methodId: action.meta.api.methodId,
-                date: now,
-            };
-            return Object.assign(
-                {},
-                state,
+            const requestId = action.meta.api.requestId;
+            const data: ApiDataResponse<any> = action.error ?
                 {
-                    data,
-                    lastSuccess: {
-                        action,
-                        date: now,
+                    time: now,
+                    error: true,
+                    errorMessage: action.payload,
+                } :
+                {
+                    time: now,
+                    error: false,
+                    methodId: action.meta.api.methodId,
+                    moduleId: action.meta.api.moduleId,
+                    result: action.payload,
+                };
+            let returnState: ApiState<any>;
+            if (!state[requestId]) {
+                returnState = {
+                    ...state,
+                    [requestId]: {
+                        data,
+                        lastSuccess: undefined,
+                        lastTime: 0,
                     },
-                },
-            );
+                };
+            } else {
+                const requestState = { ...state[requestId] };
+                requestState.lastSuccess = requestState.data.error === false &&
+                    requestState.data;
+                requestState.lastTime = requestState.data.time;
+                requestState.data = data;
+                returnState = {
+                    ...state,
+                    [requestId]: requestState,
+                };
+            }
+            if (action.error) {
+                return {
+                    ...returnState,
+                };
+            }
+            return {
+                ...returnState,
+                [LAST_API_SUCCESS_ID]: returnState[requestId],
+            };
+
         case ActionType.Clean:
-            const newState = Object.assign({}, state);
-            delete newState.data[action.payload.requestId];
+            const newState = { ...state };
+            delete newState[action.payload.requestId];
             return newState;
+
         default:
             return state;
     }
