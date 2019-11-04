@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { LOCATION_CHANGE } from "connected-react-router";
+import { LOCATION_CHANGE, LocationChangeAction } from "connected-react-router";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
@@ -19,8 +19,8 @@ export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 // withRouter does not subscribe to location changes like React Redux’s connect does for state changes. Instead, re-renders after location changes propagate out from the <Router> component. This means that withRouter does not re-render on route transitions unless its parent component re-renders.
 export function* browseWatcher(): SagaIterator {
     while (true) {
-        const result = yield take(LOCATION_CHANGE);
-        const path = result.payload.location.pathname as string;
+        const result: LocationChangeAction = yield take(LOCATION_CHANGE);
+        const path = result.payload.location.pathname;
 
         if (path.startsWith("/opds") && path.indexOf("/browse") > 0 ) {
             const parsedResult = parseOpdsBrowserRoute(path);
