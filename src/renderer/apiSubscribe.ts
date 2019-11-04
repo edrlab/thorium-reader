@@ -28,7 +28,7 @@ export function apiSubscribe(pathArrayToRefresh: TApiMethodName[], cb: () => voi
         const lastApiSuccessInSubscribe = state.api[LAST_API_SUCCESS_ID];
 
         if (lastApiSuccessInSubscribe && lastApiSuccessInSubscribe.lastTime > lastSuccessTime) {
-            lastSuccessTime = state.api[LAST_API_SUCCESS_ID].lastTime;
+            lastSuccessTime = lastApiSuccessInSubscribe.lastTime;
             const data = state.api[LAST_API_SUCCESS_ID].data;
             if (!data.error) {
                 const path = `${data.moduleId}/${data.methodId}` as TApiMethodName;
