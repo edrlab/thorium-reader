@@ -8,7 +8,6 @@
 import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
 import { IOpdsPublicationView, IOpdsResultView } from "readium-desktop/common/views/opds";
 import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 import GridView from "readium-desktop/renderer/components/utils/GridView";
@@ -18,7 +17,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 import PageNavigation from "./PageNavigation";
 
-interface IProps extends RouteComponentProps {
+interface IProps extends ReturnType<typeof mapStateToProps> {
     publications: IOpdsPublicationView[] | undefined;
     links: IOpdsResultView["links"];
     pageInfo?: IOpdsResultView["metadata"];
@@ -60,4 +59,4 @@ const mapStateToProps = (state: RootState) => ({
     location: state.router.location,
 });
 
-export default connect(mapStateToProps)(withRouter(EntryPublicationList));
+export default connect(mapStateToProps)(EntryPublicationList);
