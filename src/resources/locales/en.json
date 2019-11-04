@@ -32,7 +32,7 @@
         "allBooks": "All books",
         "bookInfo": "About this book",
         "delete": "Delete",
-        "deleteBook": "Delete from the bookshelf",
+        "deleteBook": "Delete",
         "deleteTag": "Delete the tag",
         "description": "Description",
         "emptyTagList": "You have no tagged ebook.",
@@ -133,9 +133,7 @@
         "previous": "Previous"
     },
     "publication": {
-        "deleteButton": "Delete from the bookshelf",
         "expiredLcp": "This book can't be read because the LCP license has expired.",
-        "readButton": "Read",
         "renewButton": "Renew",
         "returnButton": "Return",
         "returnedLcp": "This book can't be read because the LCP license has been returned.",

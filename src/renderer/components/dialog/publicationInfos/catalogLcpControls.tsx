@@ -65,7 +65,7 @@ class CatalogLcpControls extends React.Component<IProps & ReturnType<typeof mapD
             <>
                 {
                 // lsdStatus && (lsdStatus.status === LsdStatusType.Active ?
-                <button  onClick={this.handleRead} className={styles.lire}>{__("publication.readButton")}</button>
+                <button  onClick={this.handleRead} className={styles.lire}>{__("catalog.readBook")}</button>
                 // : lsdStatus.status === LsdStatusType.Expired ?
                 //     <p style={{color: "red"}}>{__("publication.expiredLcp")}</p>
                 // : lsdStatus.status === LsdStatusType.Revoked ?
@@ -93,7 +93,7 @@ class CatalogLcpControls extends React.Component<IProps & ReturnType<typeof mapD
                     <li>
                         <button onClick={ this.deletePublication }>
                             <SVG svg={DeleteIcon} ariaHidden/>
-                            {__("publication.deleteButton")}
+                            {__("catalog.deleteBook")}
                         </button>
                     </li>
                 </ul>

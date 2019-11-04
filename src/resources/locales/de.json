@@ -31,8 +31,8 @@
         "addTagsButton": "Hinzufügen",
         "allBooks": "Alle Bücher",
         "bookInfo": "Über dieses Buch",
-        "delete": "Dauerhaft löschen",
-        "deleteBook": "Aus der Bibliothek löschen",
+        "delete": "Löschen",
+        "deleteBook": "Löschen",
         "deleteTag": "Löschen des Tags",
         "description": "Beschreibung",
         "emptyTagList": "Es gibt keine Tags in Ihren Büchern.",
@@ -132,9 +132,7 @@
         "previous": "Bisherige"
     },
     "publication": {
-        "deleteButton": "Löschen",
         "expiredLcp": "",
-        "readButton": "Lesen",
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",
         "returnedLcp": "",

@@ -133,9 +133,7 @@
         "previous": "Précédent"
     },
     "publication": {
-        "deleteButton": "Supprimer de la bibliothèque",
         "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",
-        "readButton": "Lire",
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
         "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retourné.",
