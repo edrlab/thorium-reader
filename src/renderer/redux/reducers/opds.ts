@@ -5,13 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+// import * as debug_ from "debug";
 import { Action } from "readium-desktop/common/models/redux";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
-import { OpdsNavigationLink, OpdsState } from "readium-desktop/renderer/redux/states/opds";
+import { OpdsState } from "readium-desktop/renderer/redux/states/opds";
 
 // Logger
-const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
+// const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
 
 const initialState: OpdsState = {
     browser: {
@@ -25,18 +25,13 @@ export function opdsReducer(
 ) {
     switch (action.type) {
         case opdsActions.ActionType.BrowseRequest:
-            const browser = {
-                navigation: [] as OpdsNavigationLink[],
-            };
-
+            const stateNew = { ...state };
             const { level, title, url } = action.payload;
-            debug("Level:", level);
-            debug("Navigation:", state.browser.navigation);
 
-            browser.navigation = state.browser.navigation.slice(0, level - 1);
+            stateNew.browser.navigation = stateNew.browser.navigation.slice(0, level - 1);
+            stateNew.browser.navigation.push({ level, title, url });
+            return stateNew;
 
-            browser.navigation.push({ level, title, url });
-            return Object.assign({}, state, { browser });
         default:
             return state;
     }

@@ -5,14 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { SagaIterator } from "redux-saga";
-
 import { LOCATION_CHANGE } from "connected-react-router";
-
-import { all, call, put, take } from "redux-saga/effects";
-
+import { apiActions } from "readium-desktop/common/redux/actions";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
+import { SagaIterator } from "redux-saga";
+import { all, call, put, take } from "redux-saga/effects";
+
+export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 
 // https://reacttraining.com/react-router/web/api/withRouter
 // tslint:disable-next-line: max-line-length
@@ -26,7 +26,17 @@ export function* browseWatcher(): SagaIterator {
             const parsedResult = parseOpdsBrowserRoute(path);
             const { level, title, url } = parsedResult;
             yield put(opdsActions.browse(level, title, url));
+            // dispatch api browse with fixed const requestId
+            // The api result can be found by specific requestId in each componnent
         }
+    }
+}
+
+export function* browseRequestWatcher(): SagaIterator {
+    while (true) {
+        const action: opdsActions.IActionBrowseRequest =
+            yield take(opdsActions.ActionType.BrowseRequest);
+        yield put(apiActions.)
     }
 }
 
