@@ -65,9 +65,9 @@ class Catalog extends React.Component<IProps> {
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
-                {catalog && catalog.data && catalog.data.result &&
+                {catalog && catalog.data.result &&
                     <DisplayView catalogEntries={catalog.data.result.entries}
-                        tags={(tags && tags.data && tags.data.result) || []} />
+                        tags={(tags && tags.data.result) || []} />
                 }
             </LibraryLayout>
         );
