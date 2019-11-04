@@ -116,7 +116,7 @@ export class OpdsFeedViewConverter {
         const isFree = GetLinkFromRel(publication.Links,
             [
                 "http://opds-spec.org/acquisition",
-                "http://opds-spec.org/acquisition/open-access"
+                "http://opds-spec.org/acquisition/open-access",
             ]).length > 0;
         const buyLink: OPDSLink | undefined = GetLinkFromRel(publication.Links,
             "http://opds-spec.org/acquisition/buy")[0];
