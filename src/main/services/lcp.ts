@@ -342,6 +342,70 @@ export class LcpManager {
     //     });
     // }
 
+    public convertUnlockPublicationResultToString(val: any): string | undefined {
+        let message: string | undefined;
+        if (typeof val === "string") {
+            message = val;
+        } else if (typeof val === "number") {
+            switch (val as number) {
+                case 0: {
+                    message = "NONE: " + val;
+                    break;
+                }
+                case 1: {
+                    message = "INCORRECT PASSPHRASE: " + val;
+                    break;
+                }
+                case 11: {
+                    message = "LICENSE_OUT_OF_DATE: " + val;
+                    break;
+                }
+                case 101: {
+                    message = "CERTIFICATE_REVOKED: " + val;
+                    break;
+                }
+                case 102: {
+                    message = "CERTIFICATE_SIGNATURE_INVALID: " + val;
+                    break;
+                }
+                case 111: {
+                    message = "LICENSE_SIGNATURE_DATE_INVALID: " + val;
+                    break;
+                }
+                case 112: {
+                    message = "LICENSE_SIGNATURE_INVALID: " + val;
+                    break;
+                }
+                case 121: {
+                    message = "CONTEXT_INVALID: " + val;
+                    break;
+                }
+                case 131: {
+                    message = "CONTENT_KEY_DECRYPT_ERROR: " + val;
+                    break;
+                }
+                case 141: {
+                    message = "USER_KEY_CHECK_INVALID: " + val;
+                    break;
+                }
+                case 151: {
+                    message = "CONTENT_DECRYPT_ERROR: " + val;
+                    break;
+                }
+                default: {
+                    message = "Unknown error?! " + val;
+                }
+            }
+        } else if (val && typeof val === "object"
+            // val.toString &&
+            // typeof val.toString === "function"
+            ) {
+                message = (val as object).toString();
+        }
+
+        return message;
+    }
+
     public async unlockPublication(publication: Publication, passphrase: string | undefined):
         Promise<string | number | null | undefined> {
 
@@ -379,9 +443,13 @@ export class LcpManager {
 
         // Get epub file from publication
         const epubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
-        const r2Publication = this.streamer.loadOrGetCachedPublication(epubPath);
+        const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
         if (!r2Publication) {
             debug("unlockPublication !r2Publication ?");
+            return null;
+        }
+        if (!r2Publication.LCP) {
+            debug("unlockPublication !r2Publication.LCP ?");
             return null;
         }
         try {

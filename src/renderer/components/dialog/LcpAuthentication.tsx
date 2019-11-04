@@ -51,7 +51,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                     {
                         this.props.message &&
                         <p>
-                            <span>this.props.message</span>
+                            <span>{this.props.message}</span>
                         </p>
                     }
                     <p>

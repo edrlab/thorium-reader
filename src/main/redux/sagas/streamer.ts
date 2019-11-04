@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import * as path from "path";
 import * as portfinder from "portfinder";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
@@ -19,6 +18,7 @@ import { all, call, put, select, take } from "redux-saga/effects";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Server } from "@r2-streamer-js/http/server";
 
+// import * as path from "path";
 // import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 // Logger
@@ -184,67 +184,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                     publication,
                 );
                 if (typeof unlockPublicationRes !== "undefined") {
-                    let message: string | undefined;
-                    if (unlockPublicationRes !== null) {
-                        if (typeof unlockPublicationRes === "string") {
-                            message = unlockPublicationRes;
-                        } else if (typeof unlockPublicationRes === "number") {
-                            switch (unlockPublicationRes as number) {
-                                case 0: {
-                                    message = "NONE: " + unlockPublicationRes;
-                                    break;
-                                }
-                                case 1: {
-                                    message = "INCORRECT PASSPHRASE: " + unlockPublicationRes;
-                                    break;
-                                }
-                                case 11: {
-                                    message = "LICENSE_OUT_OF_DATE: " + unlockPublicationRes;
-                                    break;
-                                }
-                                case 101: {
-                                    message = "CERTIFICATE_REVOKED: " + unlockPublicationRes;
-                                    break;
-                                }
-                                case 102: {
-                                    message = "CERTIFICATE_SIGNATURE_INVALID: " + unlockPublicationRes;
-                                    break;
-                                }
-                                case 111: {
-                                    message = "LICENSE_SIGNATURE_DATE_INVALID: " + unlockPublicationRes;
-                                    break;
-                                }
-                                case 112: {
-                                    message = "LICENSE_SIGNATURE_INVALID: " + unlockPublicationRes;
-                                    break;
-                                }
-                                case 121: {
-                                    message = "CONTEXT_INVALID: " + unlockPublicationRes;
-                                    break;
-                                }
-                                case 131: {
-                                    message = "CONTENT_KEY_DECRYPT_ERROR: " + unlockPublicationRes;
-                                    break;
-                                }
-                                case 141: {
-                                    message = "USER_KEY_CHECK_INVALID: " + unlockPublicationRes;
-                                    break;
-                                }
-                                case 151: {
-                                    message = "CONTENT_DECRYPT_ERROR: " + unlockPublicationRes;
-                                    break;
-                                }
-                                default: {
-                                    message = "Unknown error?! " + unlockPublicationRes;
-                                }
-                            }
-                        } else if (typeof unlockPublicationRes === "object"
-                            // unlockPublicationRes.toString &&
-                            // typeof unlockPublicationRes.toString === "function"
-                            ) {
-                                message = (unlockPublicationRes as object).toString();
-                        }
-                    }
+                    const message = lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
                     debug(message);
 
                     const publicationViewConverter = diMainGet("publication-view-converter");
