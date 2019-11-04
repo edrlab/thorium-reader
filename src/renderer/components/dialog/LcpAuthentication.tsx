@@ -48,6 +48,12 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         return (
             <Dialog open={true} close={closeDialog} id={styles.lcp_dialog}>
                 <div>
+                    {
+                        this.props.message &&
+                        <p>
+                            <span>this.props.message</span>
+                        </p>
+                    }
                     <p>
                         {__("library.lcp.sentence")}
                         <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
@@ -64,7 +70,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 value={__("library.lcp.submit")}
                                 disabled={!this.state.password}
                             />
-                            <button onClick={closeDialog}>{__("library.lcp.cancel")}</button>
+                            <button
+                                onClick={(e) => { e.preventDefault(); closeDialog(); }}
+                            >{__("library.lcp.cancel")}</button>
                         </div>
                     </form>
                 </div>
@@ -83,8 +91,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
             publication: this.props.publication,
             passphrase: this.state.password,
         }).catch((error) => {
-            console.error(`Error to fetch opds/deleteFeed`, error);
+            console.error(`Error lcp/unlockPublicationWithPassphrase`, error);
         });
+
         this.props.closeDialog();
     }
 

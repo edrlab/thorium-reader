@@ -12,12 +12,13 @@ export enum ActionType {
     UserKeyCheckRequest = "LCP_USER_KEY_CHECK_REQUEST",
 }
 
-export function checkUserKey(publication: PublicationView, hint: string): Action {
+export function checkUserKey(publication: PublicationView, hint: string, message: string | undefined): Action {
     return {
         type: ActionType.UserKeyCheckRequest,
         payload: {
             publication,
             hint,
+            message,
         },
     };
 }

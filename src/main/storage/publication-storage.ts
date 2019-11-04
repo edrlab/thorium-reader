@@ -135,16 +135,17 @@ export class PublicationStorage {
         srcPath: string,
     ): Promise<File> {
         // Extract cover information from srcPath
-        const pub: any = await EpubParsePromise(srcPath);
-        const zipInternal = pub.Internal.find((i: any) => {
+        const r2Publication = await EpubParsePromise(srcPath);
+        // private Internal is very hacky! :(
+        const zipInternal = (r2Publication as any).Internal.find((i: any) => {
             if (i.Name === "zip") {
                 return true;
             }
             return false;
         });
         const zip = zipInternal.Value as IZip;
-        const coverLink = pub.GetCover();
 
+        const coverLink = r2Publication.GetCover();
         if (!coverLink) {
             return null;
         }

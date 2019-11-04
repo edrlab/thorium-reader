@@ -12,7 +12,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
-import { Publication } from "@r2-shared-js/models/publication";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
@@ -20,7 +20,7 @@ interface Props extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;
     fullscreen: boolean;
     currentLocation: LocatorExtended;
-    publication: Publication;
+    r2Publication: R2Publication;
     handleLinkClick: (event: any, url: string) => void;
 }
 
@@ -41,9 +41,9 @@ export class ReaderFooter extends React.Component<Props, States> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { currentLocation, publication } = this.props;
+        const { currentLocation, r2Publication } = this.props;
 
-        if (!publication || !currentLocation) {
+        if (!r2Publication || !currentLocation) {
             return (<></>);
         }
 
@@ -69,7 +69,7 @@ export class ReaderFooter extends React.Component<Props, States> {
                             <div id={styles.current}></div>
                                 <div id={styles.chapters_markers}
                                     className={moreInfo ? styles.more_information : undefined}>
-                                    { publication.Spine.map((value, index) => {
+                                    { r2Publication.Spine.map((value, index) => {
                                         const atCurrentLocation = currentLocation.locator.href === value.Href;
                                         if (atCurrentLocation) {
                                             afterCurrentLocation = true;
@@ -126,16 +126,16 @@ export class ReaderFooter extends React.Component<Props, States> {
     }
 
     private getArrowBoxPosition() {
-        const { currentLocation, publication } = this.props;
+        const { currentLocation, r2Publication } = this.props;
         if (!currentLocation) {
             return undefined;
         }
 
         let spineItemId = 0;
         if (currentLocation) {
-            spineItemId = publication.Spine.findIndex((value) => value.Href === currentLocation.locator.href);
+            spineItemId = r2Publication.Spine.findIndex((value) => value.Href === currentLocation.locator.href);
         }
-        const onePourcent = 100 / publication.Spine.length;
+        const onePourcent = 100 / r2Publication.Spine.length;
         const progression = currentLocation.locator.locations.progression;
         return ((onePourcent * spineItemId) + (onePourcent * progression));
     }

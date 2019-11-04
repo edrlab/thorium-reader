@@ -7,14 +7,10 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { apiAction } from "readium-desktop/renderer/apiAction";
-import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
@@ -23,38 +19,43 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
+// import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
+// import { apiAction } from "readium-desktop/renderer/apiAction";
+// import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
+// import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
+
 interface IProps extends TranslatorProps {
     publication: PublicationView;
 }
 
+// tslint:disable-next-line: no-empty-interface
 interface IState {
-    lsdStatus: LsdStatus | undefined;
+    // lsdStatus: LsdStatus | undefined;
 }
 
 class CatalogLcpControls extends React.Component<IProps & ReturnType<typeof mapDispatchToProps>, IState> {
     public constructor(props: any) {
         super(props);
 
-        this.state = {
-            lsdStatus: undefined,
-        };
+        // this.state = {
+        //     lsdStatus: undefined,
+        // };
 
         this.handleRead = this.handleRead.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
     }
 
     public componentDidMount() {
-        // don't forget to handle httpRequest in frontend
-        apiAction("lcp/getLsdStatus", {publication: this.props.publication})
-        .then((request) => this.setState({lsdStatus: request.data}))
-        .catch((error) => {
-            console.error(`Error to fetch lcp/getLsdStatus`, error);
-        });
+        // apiAction("lcp/getLsdStatus", {publication: this.props.publication})
+        // .then((request) => this.setState({lsdStatus: request.data}))
+        // .catch((error) => {
+        //     console.error(`Error lcp/getLsdStatus`, error);
+        // });
     }
 
     public render(): React.ReactElement<{}> {
         const { __, publication } = this.props;
-        const { lsdStatus } = this.state;
+        // const { lsdStatus } = this.state;
 
         if (!publication) {
             return (<></>);
@@ -62,28 +63,33 @@ class CatalogLcpControls extends React.Component<IProps & ReturnType<typeof mapD
 
         return (
             <>
-                { lsdStatus && (lsdStatus.status === LsdStatusType.Active ?
-                    <button  onClick={this.handleRead} className={styles.lire}>{__("publication.readButton")}</button>
-                : lsdStatus.status === LsdStatusType.Expired ?
-                    <p style={{color: "red"}}>{__("publication.expiredLcp")}</p>
-                : lsdStatus.status === LsdStatusType.Revoked ?
-                    <p style={{color: "red"}}>{__("publication.revokedLcp")}</p>
-                : <p style={{color: "red"}}>{__("publication.returnedLcp")}</p>)}
+                {
+                // lsdStatus && (lsdStatus.status === LsdStatusType.Active ?
+                <button  onClick={this.handleRead} className={styles.lire}>{__("publication.readButton")}</button>
+                // : lsdStatus.status === LsdStatusType.Expired ?
+                //     <p style={{color: "red"}}>{__("publication.expiredLcp")}</p>
+                // : lsdStatus.status === LsdStatusType.Revoked ?
+                //     <p style={{color: "red"}}>{__("publication.revokedLcp")}</p>
+                // : <p style={{color: "red"}}>{__("publication.returnedLcp")}</p>)
+                }
                 <ul className={styles.liens}>
-                    { lsdStatus && lsdStatus.status === LsdStatusType.Expired &&
-                        <li>
-                            <button onClick={ this.props.openRenewDialog }>
-                                <SVG svg={LoopIcon} ariaHidden/>
-                                {__("publication.renewButton")}
-                            </button>
-                        </li>
+                    {
+                        // lsdStatus && lsdStatus.status === LsdStatusType.Expired &&
+                        // <li>
+                        //     <button onClick={ this.props.openRenewDialog }>
+                        //         <SVG svg={LoopIcon} ariaHidden/>
+                        //         {__("publication.renewButton")}
+                        //     </button>
+                        // </li>
                     }
-                    <li>
-                        <button onClick={ this.props.openReturnDialog }>
-                            <SVG svg={ArrowIcon} ariaHidden/>
-                            {__("publication.returnButton")}
-                        </button>
-                    </li>
+                    {
+                        // <li>
+                        //     <button onClick={ this.props.openReturnDialog }>
+                        //         <SVG svg={ArrowIcon} ariaHidden/>
+                        //         {__("publication.returnButton")}
+                        //     </button>
+                        // </li>
+                    }
                     <li>
                         <button onClick={ this.deletePublication }>
                             <SVG svg={DeleteIcon} ariaHidden/>
@@ -107,7 +113,7 @@ class CatalogLcpControls extends React.Component<IProps & ReturnType<typeof mapD
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch, props: IProps) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IProps) => {
     return {
         openReader: (publication: PublicationView) => {
             dispatch({
@@ -126,20 +132,20 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IProps) => {
                 },
             ));
         },
-        openRenewDialog: () => {
-            dispatch(dialogActions.open("lsd-renew-confirm",
-                {
-                    publication: props.publication,
-                },
-            ));
-        },
-        openReturnDialog: () => {
-            dispatch(dialogActions.open("lsd-return-confirm",
-                {
-                    publication: props.publication,
-                },
-            ));
-        },
+        // openRenewDialog: () => {
+        //     dispatch(dialogActions.open("lsd-renew-confirm",
+        //         {
+        //             publication: props.publication,
+        //         },
+        //     ));
+        // },
+        // openReturnDialog: () => {
+        //     dispatch(dialogActions.open("lsd-return-confirm",
+        //         {
+        //             publication: props.publication,
+        //         },
+        //     ));
+        // },
     };
 };
 

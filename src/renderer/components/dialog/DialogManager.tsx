@@ -16,8 +16,9 @@ import Information from "./Information";
 import LcpAuthentication from "./LcpAuthentication";
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
 import PublicationInfo from "./publicationInfos/PublicationInfo";
-import RenewLsdConfirm from "./RenewLsdConfirm";
-import ReturnLsdConfirm from "./ReturnLsdConfirm";
+
+// import RenewLsdConfirm from "./RenewLsdConfirm";
+// import ReturnLsdConfirm from "./ReturnLsdConfirm";
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
 }
@@ -37,8 +38,8 @@ class DialogManager extends React.Component<IProps> {
                 <DeletePublicationConfirm></DeletePublicationConfirm>
                 <DeleteOpdsFeedConfirm></DeleteOpdsFeedConfirm>
                 <LcpAuthentication></LcpAuthentication>
-                <RenewLsdConfirm></RenewLsdConfirm>
-                <ReturnLsdConfirm></ReturnLsdConfirm>
+                {/* <RenewLsdConfirm></RenewLsdConfirm>
+                <ReturnLsdConfirm></ReturnLsdConfirm> */}
                 <Information></Information>
                 <PublicationInfo></PublicationInfo>
             </>

@@ -12,7 +12,6 @@ import { LsdStatus } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
@@ -22,6 +21,8 @@ import * as uuid from "uuid";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
+
+// import { apiAction } from "readium-desktop/renderer/apiAction";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapDispatchToProps> {
     publication: PublicationView;
@@ -54,19 +55,16 @@ export class PublicationListElement extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        const { publication } = this.props;
-        if (publication.lcp) {
-            // currently getLsdStatus in LCP API is broken
-            // HttpGet is badly handle
-            // FIX ME in a next PR
-            apiAction("lcp/getLsdStatus", { publication })
-                .then((request) => {
-                    if (request.isSuccess) {
-                        this.setState({ lsdStatus: request.data });
-                    }
-                })
-                .catch((error) => console.error("Error to fetch api lcp/getLsdStatus", error));
-        }
+        // const { publication } = this.props;
+        // if (publication.lcp) {
+        //     apiAction("lcp/getLsdStatus", { publication })
+        //         .then((request) => {
+        //             if (request.isSuccess) {
+        //                 this.setState({ lsdStatus: request.data });
+        //             }
+        //         })
+        //         .catch((error) => console.error("Error lcp/getLsdStatus", error));
+        // }
     }
 
     public render(): React.ReactElement<{}>  {

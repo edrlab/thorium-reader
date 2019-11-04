@@ -9,7 +9,6 @@ import * as debug_ from "debug";
 import * as path from "path";
 import * as portfinder from "portfinder";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { lcpActions, streamerActions } from "readium-desktop/main/redux/actions";
@@ -17,7 +16,10 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, select, take } from "redux-saga/effects";
 
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Server } from "@r2-streamer-js/http/server";
+
+// import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
@@ -91,28 +93,35 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
     while (true) {
         const action: any = yield take(streamerActions.ActionType.PublicationOpenRequest);
         const publicationRepository = diMainGet("publication-repository");
-        const publicationViewConverter = diMainGet("publication-view-converter");
-        const lcpManager = diMainGet("lcp-manager");
 
         // Get publication
         let publication: PublicationDocument = null;
-
         try {
             publication = yield call(
                 publicationRepository.get.bind(publicationRepository),
                 action.payload.publication.identifier,
             );
         } catch (error) {
+            yield put({
+                type: streamerActions.ActionType.PublicationOpenError,
+                // payload: {
+                //     error,
+                // },
+                error: true,
+                meta: {
+                    publication, // undefined
+                },
+            });
             continue;
         }
-        const publicationView = publicationViewConverter.convertDocumentToView(publication);
 
         // Get epub file from publication
         const pubStorage = diMainGet("publication-storage");
-        const epubPath = path.join(
-            pubStorage.getRootPath(),
-            publication.files[0].url.substr(6),
-        );
+        const epubPath = pubStorage.getPublicationEpubPath(publication.identifier);
+        // const epubPath = path.join(
+        //     pubStorage.getRootPath(),
+        //     publication.files[0].url.substr(6),
+        // );
         debug("Open publication %s", epubPath);
 
         // Start streamer if it's not already started
@@ -146,15 +155,17 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
 
-        let parsedEpub: any;
+        let r2Publication: R2Publication;
         try {
-            // Test if publication contains LCP drm
-            parsedEpub = yield call(
+            r2Publication = yield call(
                 () => streamer.loadOrGetCachedPublication(epubPath),
             );
         } catch (error) {
             yield put({
                 type: streamerActions.ActionType.PublicationOpenError,
+                // payload: {
+                //     error,
+                // },
                 error: true,
                 meta: {
                     publication,
@@ -163,51 +174,163 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
             continue;
         }
 
-        if (parsedEpub.LCP) {
+        if (r2Publication.LCP) {
             debug("### LCP publication");
-            // Test existing secrets on the given publication
+            const lcpManager = diMainGet("lcp-manager");
+
             try {
-                yield call(
+                const unlockPublicationRes: string | number | null | undefined = yield call(
                     lcpManager.unlockPublication.bind(lcpManager),
-                    publication as any,
+                    publication,
                 );
-            } catch (error) {
-                // Get lsd status
-                try {
-                    publication = yield call(
-                        publicationRepository.get.bind(publicationRepository),
-                        action.payload.publication.identifier,
-                    );
+                if (typeof unlockPublicationRes !== "undefined") {
+                    let message: string | undefined;
+                    if (unlockPublicationRes !== null) {
+                        if (typeof unlockPublicationRes === "string") {
+                            message = unlockPublicationRes;
+                        } else if (typeof unlockPublicationRes === "number") {
+                            switch (unlockPublicationRes as number) {
+                                case 0: {
+                                    message = "NONE: " + unlockPublicationRes;
+                                    break;
+                                }
+                                case 1: {
+                                    message = "INCORRECT PASSPHRASE: " + unlockPublicationRes;
+                                    break;
+                                }
+                                case 11: {
+                                    message = "LICENSE_OUT_OF_DATE: " + unlockPublicationRes;
+                                    break;
+                                }
+                                case 101: {
+                                    message = "CERTIFICATE_REVOKED: " + unlockPublicationRes;
+                                    break;
+                                }
+                                case 102: {
+                                    message = "CERTIFICATE_SIGNATURE_INVALID: " + unlockPublicationRes;
+                                    break;
+                                }
+                                case 111: {
+                                    message = "LICENSE_SIGNATURE_DATE_INVALID: " + unlockPublicationRes;
+                                    break;
+                                }
+                                case 112: {
+                                    message = "LICENSE_SIGNATURE_INVALID: " + unlockPublicationRes;
+                                    break;
+                                }
+                                case 121: {
+                                    message = "CONTEXT_INVALID: " + unlockPublicationRes;
+                                    break;
+                                }
+                                case 131: {
+                                    message = "CONTENT_KEY_DECRYPT_ERROR: " + unlockPublicationRes;
+                                    break;
+                                }
+                                case 141: {
+                                    message = "USER_KEY_CHECK_INVALID: " + unlockPublicationRes;
+                                    break;
+                                }
+                                case 151: {
+                                    message = "CONTENT_DECRYPT_ERROR: " + unlockPublicationRes;
+                                    break;
+                                }
+                                default: {
+                                    message = "Unknown error?! " + unlockPublicationRes;
+                                }
+                            }
+                        } else if (typeof unlockPublicationRes === "object"
+                            // unlockPublicationRes.toString &&
+                            // typeof unlockPublicationRes.toString === "function"
+                            ) {
+                                message = (unlockPublicationRes as object).toString();
+                        }
+                    }
+                    debug(message);
 
-                    const lsdStatus: any = yield call(
-                        lcpManager.getLsdStatus.bind(lcpManager),
-                        publication,
-                    );
+                    const publicationViewConverter = diMainGet("publication-view-converter");
+                    const publicationView = publicationViewConverter.convertDocumentToView(publication);
 
-                    if (
-                        lsdStatus.status === "active" ||
-                        lsdStatus.status === "ready"
-                    ) {
-                        // Publication is protected and is not expired
+                    try {
                         yield put(lcpActions.checkUserKey(
                             publicationView,
-                            parsedEpub.LCP.Encryption.UserKey.TextHint,
+                            r2Publication.LCP.Encryption.UserKey.TextHint,
+                            message,
                         ));
-                    } else {
-                        yield put(dialogActions.open("publication-info",
-                            {
-                                publicationIdentifier: publication.identifier,
-                                opdsPublication: undefined,
+
+                        yield put({
+                            type: streamerActions.ActionType.PublicationOpenError,
+                            // payload: {
+                            //     error,
+                            // },
+                            error: true,
+                            meta: {
+                                publication,
                             },
-                        ));
+                        });
+                        continue;
+                    } catch (error) {
+                        debug(error);
+
+                        yield put({
+                            type: streamerActions.ActionType.PublicationOpenError,
+                            // payload: {
+                            //     error,
+                            // },
+                            error: true,
+                            meta: {
+                                publication,
+                            },
+                        });
+                        continue;
                     }
-                } catch (error) {
-                    console.error(error);
                 }
+            } catch (error) {
+                debug(error);
+                // Get lsd status
+                // try {
+                //     publication = yield call(
+                //         publicationRepository.get.bind(publicationRepository),
+                //         action.payload.publication.identifier,
+                //     );
+
+                //     const lsdStatus: any = yield call(
+                //         lcpManager.getLsdStatus.bind(lcpManager),
+                //         publication,
+                //     );
+
+                //     if (
+                //         lsdStatus.status === "active" ||
+                //         lsdStatus.status === "ready"
+                //     ) {
+                //         const publicationViewConverter = diMainGet("publication-view-converter");
+                //         const publicationView = publicationViewConverter.convertDocumentToView(publication);
+
+                //         // Publication is protected and is not expired
+                //         yield put(lcpActions.checkUserKey(
+                //             publicationView,
+                //             r2Publication.LCP.Encryption.UserKey.TextHint,
+                //         ));
+                //     } else {
+                //         yield put(dialogActions.open("publication-info",
+                //             {
+                //                 publicationIdentifier: publication.identifier,
+                //                 opdsPublication: undefined,
+                //             },
+                //         ));
+                //     }
+                // } catch (error) {
+                //     console.error(error);
+                // }
 
                 yield put({
                     type: streamerActions.ActionType.PublicationOpenError,
+                    // payload: {
+                    //     error,
+                    // },
                     error: true,
+                    meta: {
+                        publication,
+                    },
                 });
                 continue;
             }
@@ -250,10 +373,11 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
             // Remove publication from streamer because there is no more readers
             // open for this publication
             // Get epub file from publication
-            const epubPath = path.join(
-                pubStorage.getRootPath(),
-                publication.files[0].url.substr(6),
-            );
+            const epubPath = pubStorage.getPublicationEpubPath(publication.identifier);
+            // const epubPath = path.join(
+            //     pubStorage.getRootPath(),
+            //     publication.files[0].url.substr(6),
+            // );
             streamer.removePublications([epubPath]);
         }
 

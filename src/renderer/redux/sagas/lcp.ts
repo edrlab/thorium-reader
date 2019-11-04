@@ -14,12 +14,13 @@ export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
     while (true) {
         const action: any = yield take(lcpActions.ActionType.UserKeyCheckRequest);
 
-        const { hint, publication } = action.payload;
+        const { hint, publication, message } = action.payload;
 
         yield put(open("lcp-authentication",
             {
                 publication,
                 hint,
+                message,
             },
         ));
     }

@@ -178,7 +178,7 @@ interface IState {
     shortcutEnable: boolean;
     landmarksOpen: boolean;
     landmarkTabOpen: number;
-    publicationData: R2Publication | undefined;
+    r2Publication: R2Publication | undefined;
     publicationInfo: TPublicationApiGet_result | undefined;
     menuOpen: boolean;
     fullscreen: boolean;
@@ -247,7 +247,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             },
             landmarksOpen: false,
             landmarkTabOpen: 0,
-            publicationData: undefined,
+            r2Publication: undefined,
             publicationInfo: undefined,
             menuOpen: false,
             fullscreen: false,
@@ -313,9 +313,9 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
 
                 this.setState({settingsValues: settings, indexes});
 
-                // this.state.publication is initialized in loadPublicationIntoViewport(),
+                // this.state.r2Publication is initialized in loadPublicationIntoViewport(),
                 // which calls installNavigatorDOM() which in turn allows navigator API functions to be called safely
-                if (this.state.publicationData) {
+                if (this.state.r2Publication) {
                     // Push reader config to navigator
                     readiumCssOnOff();
                 }
@@ -359,8 +359,8 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             },
         };
 
-        const publication = await this.loadPublicationIntoViewport(locator);
-        this.setState({publicationData: publication});
+        const r2Publication = await this.loadPublicationIntoViewport(locator);
+        this.setState({r2Publication});
 
         const keyDownEventHandler = (ev: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => {
             // DEPRECATED
@@ -424,7 +424,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
     public render(): React.ReactElement<{}> {
         const readerMenuProps = {
             open: this.state.menuOpen,
-            publication: this.state.publicationData,
+            publication: this.state.r2Publication,
             handleLinkClick: this.handleLinkClick,
             handleBookmarkClick: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
@@ -486,7 +486,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
                             navLeftOrRight={navLeftOrRight}
                             fullscreen={this.state.fullscreen}
                             currentLocation={this.state.currentLocation}
-                            publication={this.state.publicationData}
+                            r2Publication={this.state.r2Publication}
                             handleLinkClick={this.handleLinkClick}
                         />
                     </div>
@@ -534,10 +534,10 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
         if (!publicationJSON) {
             return Promise.reject("!publicationJSON");
         }
-        const publication = TAJSON.deserialize<R2Publication>(publicationJSON, R2Publication);
+        const r2Publication = TAJSON.deserialize<R2Publication>(publicationJSON, R2Publication);
 
-        if (publication.Metadata && publication.Metadata.Title) {
-            const title = this.props.translator.translateContentField(publication.Metadata.Title);
+        if (r2Publication.Metadata && r2Publication.Metadata.Title) {
+            const title = this.props.translator.translateContentField(r2Publication.Metadata.Title);
 
             if (title) {
                 window.document.title = "Thorium - " + title;
@@ -568,7 +568,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
         preloadPath = preloadPath.replace(/\\/g, "/");
 
         installNavigatorDOM(
-            publication as any,
+            r2Publication,
             publicationJsonUrl,
             "publication_viewport",
             preloadPath,
@@ -576,7 +576,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             true,
         );
 
-        return publication;
+        return r2Publication;
     }
 
     private handleMenuButtonClick() {
@@ -609,9 +609,9 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             return;
         }
 
-        // this.state.publication is initialized in loadPublicationIntoViewport(),
+        // this.state.r2Publication is initialized in loadPublicationIntoViewport(),
         // which calls installNavigatorDOM() which in turn allows navigator API functions to be called safely
-        if (!this.state.publicationData) {
+        if (!this.state.r2Publication) {
             return;
         }
 

@@ -12,7 +12,7 @@ import { CoverView, PublicationView } from "readium-desktop/common/views/publica
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { JSON as TAJSON } from "ta-json-x";
 
-import { Publication as Epub } from "@r2-shared-js/models/publication";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 @injectable()
 export class PublicationViewConverter {
@@ -22,17 +22,17 @@ export class PublicationViewConverter {
             .from(b64ParsedPublication, "base64")
             .toString("utf-8");
         const parsedPublication = JSON.parse(jsonParsedPublication);
-        const epub = TAJSON.deserialize(parsedPublication, Epub) as Epub;
+        const r2Publication = TAJSON.deserialize(parsedPublication, R2Publication) as R2Publication;
         const publishers = convertContributorArrayToStringArray(
-            epub.Metadata.Publisher,
+            r2Publication.Metadata.Publisher,
         );
         const authors = convertContributorArrayToStringArray(
-            epub.Metadata.Author,
+            r2Publication.Metadata.Author,
         );
 
         let publishedAt: string | undefined;
-        if (epub.Metadata.PublicationDate) {
-            publishedAt = moment(epub.Metadata.PublicationDate).toISOString();
+        if (r2Publication.Metadata.PublicationDate) {
+            publishedAt = moment(r2Publication.Metadata.PublicationDate).toISOString();
         }
 
         let cover: CoverView | undefined;
@@ -47,16 +47,16 @@ export class PublicationViewConverter {
             identifier: document.identifier,
             title: document.title,
             authors,
-            description: epub.Metadata.Description,
-            languages: epub.Metadata.Language,
+            description: r2Publication.Metadata.Description,
+            languages: r2Publication.Metadata.Language,
             publishers,
-            workIdentifier: epub.Metadata.Identifier,
+            workIdentifier: r2Publication.Metadata.Identifier,
             publishedAt,
             tags: document.tags,
             cover,
             customCover: document.customCover,
             lcp: document.lcp,
-            doc: epub.Metadata,
+            doc: r2Publication.Metadata,
         };
     }
 }

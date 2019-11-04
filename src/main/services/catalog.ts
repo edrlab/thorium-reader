@@ -36,14 +36,14 @@ import * as xmldom from "xmldom";
 import { convertOpds1ToOpds2_EntryToPublication } from "@r2-opds-js/opds/converter";
 import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
-import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
 import { extractCrc32OnZip } from "../crc";
 import { diMainGet } from "../di";
 import { Downloader } from "./downloader";
-import { LcpManager } from "./lcp";
+
+// import { LcpManager } from "./lcp";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -52,9 +52,6 @@ const debug = debug_("readium-desktop:main#services/catalog");
 export class CatalogService {
     @inject(diSymbolTable.downloader)
     private readonly downloader!: Downloader;
-
-    @inject(diSymbolTable["lcp-manager"])
-    private readonly lcpManager!: LcpManager;
 
     @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
@@ -67,6 +64,9 @@ export class CatalogService {
 
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
+
+    // @inject(diSymbolTable["lcp-manager"])
+    // private readonly lcpManager!: LcpManager;
 
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
         let publication: PublicationDocument | undefined;
@@ -82,7 +82,8 @@ export class CatalogService {
             } else {
                     const ext = path.extname(filePath);
                     if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
-                        publication = await this.importLcplFile(filePath);
+                        // publication = await this.importLcplFile(filePath);
+                        throw Error("LCP license not supported (temporarily disabled)");
                     } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
                         publication = await this.importEpubFile(filePath);
                     }
@@ -250,15 +251,16 @@ export class CatalogService {
      * @return: Refreshed publication
      */
     public async refreshPublicationMetadata(publication: Publication) {
-        const pubPath = path.join(
-            this.publicationStorage.getRootPath(),
-            publication.files[0].url.substr(6),
-        );
+        const pubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
+        // const pubPath = path.join(
+        //     this.publicationStorage.getRootPath(),
+        //     publication.files[0].url.substr(6),
+        // );
 
-        const parsedPublication = await EpubParsePromise(pubPath);
+        const r2Publication = await EpubParsePromise(pubPath);
 
         // Searialized parsed epub
-        const jsonParsedPublication = TAJSON.serialize(parsedPublication);
+        const jsonParsedPublication = TAJSON.serialize(r2Publication);
         const b64ParsedPublication = Buffer
             .from(JSON.stringify(jsonParsedPublication))
             .toString("base-64");
@@ -305,49 +307,49 @@ export class CatalogService {
         }
     }
 
-    private async importLcplFile(filePath: string): Promise<PublicationDocument> {
-        const buffer = fs.readFileSync(filePath);
-        const lcpl = JSON.parse(buffer.toString());
+    // private async importLcplFile(filePath: string): Promise<PublicationDocument> {
+    //     const buffer = fs.readFileSync(filePath);
+    //     const lcpl = JSON.parse(buffer.toString());
 
-        // search the path of the epub file
-        let download: Download = null;
+    //     // search the path of the epub file
+    //     let download: Download = null;
 
-        if (lcpl.links) {
-            for (const link of lcpl.links) {
-                if (link.rel === "publication") {
-                    download = this.downloader.addDownload(link.href);
-                }
-            }
-        }
+    //     if (lcpl.links) {
+    //         for (const link of lcpl.links) {
+    //             if (link.rel === "publication") {
+    //                 download = this.downloader.addDownload(link.href);
+    //             }
+    //         }
+    //     }
 
-        if (download == null) {
-            throw new Error("Unable to publication in lcpl file");
-        }
+    //     if (download == null) {
+    //         throw new Error("Unable to publication in lcpl file");
+    //     }
 
-        debug("[START] Download publication", filePath);
-        const newDownload = await this.downloader.processDownload(
-            download.identifier,
-            {
-                onProgress: (dl: Download) => {
-                    debug("[PROGRESS] Downloading publication", dl.progress);
-                },
-            },
-        );
-        debug("[END] Download publication", filePath, newDownload);
+    //     debug("[START] Download publication", filePath);
+    //     const newDownload = await this.downloader.processDownload(
+    //         download.identifier,
+    //         {
+    //             onProgress: (dl: Download) => {
+    //                 debug("[PROGRESS] Downloading publication", dl.progress);
+    //             },
+    //         },
+    //     );
+    //     debug("[END] Download publication", filePath, newDownload);
 
-        // Import downloaded publication
-        const publicationDocument = await this.importEpubFile(download.dstPath);
-        return this.lcpManager.injectLcpl(publicationDocument, lcpl);
-    }
+    //     // Import downloaded publication
+    //     const publicationDocument = await this.importEpubFile(download.dstPath);
+    //     return this.lcpManager.injectLcpl(publicationDocument, lcpl);
+    // }
 
     private async importEpubFile(filePath: string): Promise<PublicationDocument> {
         debug("Parse publication - START", filePath);
-        const parsedPublication: Epub = await EpubParsePromise(filePath);
+        const r2Publication = await EpubParsePromise(filePath);
         debug("Parse publication - END", filePath);
 
         // FIXME: Title could be an array instead of a simple string
         // Store publication in db
-        const jsonParsedPublication = TAJSON.serialize(parsedPublication);
+        const jsonParsedPublication = TAJSON.serialize(r2Publication);
         const b64ParsedPublication = Buffer
             .from(JSON.stringify(jsonParsedPublication))
             .toString("base64");
@@ -358,7 +360,7 @@ export class CatalogService {
                 filePublication: b64ParsedPublication,
                 opdsPublication: null,
             },
-            title: convertMultiLangStringToString(parsedPublication.Metadata.Title),
+            title: convertMultiLangStringToString(r2Publication.Metadata.Title),
             tags: [],
             files: [],
             coverFile: null,

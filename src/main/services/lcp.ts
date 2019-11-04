@@ -6,48 +6,40 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import * as fs from "fs";
 import { inject, injectable } from "inversify";
-import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { Publication } from "readium-desktop/common/models/publication";
-import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
-import {
-    PublicationDocument, THttpGetPublicationDocument,
-} from "readium-desktop/main/db/document/publication";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
-import { injectDataInZip } from "readium-desktop/utils/zip";
-import { JSON as TAJSON } from "ta-json-x";
-import * as uuid from "uuid";
 
-import { lsdRegister } from "@r2-lcp-js/lsd/register";
-import { lsdRenew } from "@r2-lcp-js/lsd/renew";
-import { lsdReturn } from "@r2-lcp-js/lsd/return";
-import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
 import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
-import { Publication as Epub } from "@r2-shared-js/models/publication";
-import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { Server } from "@r2-streamer-js/http/server";
 
-import { LcpSecretDocument } from "../db/document/lcp-secret";
-import { DeviceIdManager } from "./device";
+// import * as uuid from "uuid";
+// import { LcpSecretDocument } from "../db/document/lcp-secret";
+// import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+// import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+// import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
+// import { EpubParsePromise } from "@r2-shared-js/parser/epub";
+// import { DeviceIdManager } from "./device";
+// import * as fs from "fs";
+// import { LcpInfo } from "readium-desktop/common/models/lcp";
+// import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
+// import { THttpGetPublicationDocument } from "readium-desktop/main/db/document/publication";
+// import { injectDataInZip } from "readium-desktop/utils/zip";
+// import { JSON as TAJSON } from "ta-json-x";
+// import { lsdRegister } from "@r2-lcp-js/lsd/register";
+// import { lsdRenew } from "@r2-lcp-js/lsd/renew";
+// import { lsdReturn } from "@r2-lcp-js/lsd/return";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/lcp");
 
 @injectable()
 export class LcpManager {
-    @inject(diSymbolTable["device-id-manager"])
-    private readonly deviceIdManager!: DeviceIdManager;
-
     @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
-
-    @inject(diSymbolTable["publication-repository"])
-    private readonly publicationRepository!: PublicationRepository;
 
     @inject(diSymbolTable["lcp-secret-repository"])
     private readonly lcpSecretRepository!: LcpSecretRepository;
@@ -55,385 +47,452 @@ export class LcpManager {
     @inject(diSymbolTable.streamer)
     private readonly streamer!: Server;
 
-    /**
-     * Inject lcpl document in publication
-     *
-     * @param PublicationDocument Publication document on which we inject the lcpl
-     * @param lcpl: Lcpl object
-     */
-    public async injectLcpl(
-        publicationDocument: PublicationDocument,
-        lcpl: any,
-    ): Promise<PublicationDocument> {
-        // Get epub file path
-        const epubPath = this.publicationStorage.getPublicationEpubPath(
-            publicationDocument.identifier,
-        );
+    // @inject(diSymbolTable["device-id-manager"])
+    // private readonly deviceIdManager!: DeviceIdManager;
 
-        // Inject lcpl in a temporary zip
-        debug("Inject LCPL - START", epubPath);
-        await injectDataInZip(
+    // @inject(diSymbolTable["publication-repository"])
+    // private readonly publicationRepository!: PublicationRepository;
+
+    // /**
+    //  * Inject lcpl document in publication
+    //  *
+    //  * @param PublicationDocument Publication document on which we inject the lcpl
+    //  * @param lcpl: Lcpl object
+    //  */
+    // public async injectLcpl(
+    //     publicationDocument: PublicationDocument,
+    //     lcpl: any,
+    // ): Promise<PublicationDocument> {
+    //     // Get epub file path
+    //     const epubPath = this.publicationStorage.getPublicationEpubPath(
+    //         publicationDocument.identifier,
+    //     );
+
+    //     // Inject lcpl in a temporary zip
+    //     debug("Inject LCPL - START", epubPath);
+    //     await injectDataInZip(
+    //             epubPath,
+    //             epubPath + ".lcp",
+    //             JSON.stringify(lcpl),
+    //             "META-INF/license.lcpl",
+    //     );
+    //     debug("Inject LCPL - END", epubPath);
+
+    //     // Replace epub without LCP with a new one containing LCPL
+    //     fs.unlinkSync(epubPath);
+    //     fs.renameSync(epubPath + ".lcp", epubPath);
+
+    //     debug("Parse publication - START", epubPath);
+    //     const r2Publication = await EpubParsePromise(epubPath);
+    //     let lcpInfo: LcpInfo = null;
+
+    //     if (r2Publication.LCP) {
+    //         // Add Lcp info
+    //         lcpInfo = {
+    //             provider: r2Publication.LCP.Provider,
+    //             issued: r2Publication.LCP.Issued,
+    //             updated: r2Publication.LCP.Updated,
+    //             rights: {
+    //                 copy: r2Publication.LCP.Rights.Copy,
+    //                 print: r2Publication.LCP.Rights.Print,
+    //                 start: r2Publication.LCP.Rights.Start,
+    //                 end: r2Publication.LCP.Rights.End,
+    //             },
+    //         };
+
+    //         // Search for lsd status url
+    //         for (const link of r2Publication.LCP.Links) {
+    //             if (link.Rel === "status") {
+    //                 // This is the lsd status url link
+    //                 lcpInfo.lsd = {
+    //                     statusUrl: link.Href,
+    //                 };
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     debug("Parse publication - END", epubPath);
+
+    //     // FIXME: Title could be an array instead of a simple string
+    //     // Store publication in db
+    //     const jsonParsedPublication = TAJSON.serialize(r2Publication);
+    //     const b64ParsedPublication = Buffer
+    //         .from(JSON.stringify(jsonParsedPublication))
+    //         .toString("base64");
+    //     const newPublicationDocument = Object.assign(
+    //         {},
+    //         publicationDocument,
+    //         {
+    //             resources: {
+    //                 filePublication: b64ParsedPublication,
+    //                 opdsPublication: publicationDocument.resources.opdsPublication,
+    //             },
+    //             lcp: lcpInfo,
+    //         },
+    //     );
+    //     return this.publicationRepository.save(newPublicationDocument);
+    // }
+
+    // public async registerPublicationLicense(
+    //     publicationDocument: PublicationDocument,
+    // ): Promise<PublicationDocument> {
+    //     // Get lsd status
+    //     let lsdStatus = await this.getLsdStatus(publicationDocument);
+    //     if (lsdStatus.isFailure) {
+    //         throw new Error(`Http getLsdStatus error with code
+    //             ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+    //     }
+    //     let newPublicationDocument = await this.updateLsdStatus(
+    //         publicationDocument,
+    //         lsdStatus.data,
+    //     );
+    //     if (newPublicationDocument.isFailure) {
+    //         throw new Error(`Http updateLsdStatus error with code
+    //             ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+    //     }
+
+    //     // Renew
+    //     await lsdRegister(
+    //         lsdStatus.data,
+    //         this.deviceIdManager,
+    //     );
+
+    //     // Update again lsd status
+    //     lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
+    //     if (lsdStatus.isFailure) {
+    //         throw new Error(`Http getLsdStatus error with code
+    //             ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+    //     }
+    //     newPublicationDocument = await this.updateLsdStatus(
+    //         publicationDocument,
+    //         lsdStatus.data,
+    //     );
+    //     if (newPublicationDocument.isFailure) {
+    //         throw new Error(`Http updateLsdStatus error with code
+    //             ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+    //     }
+
+    //     return await this.publicationRepository.get(publicationDocument.identifier);
+    // }
+
+    // public async renewPublicationLicense(
+    //     publicationDocument: PublicationDocument,
+    // ): Promise<PublicationDocument> {
+    //     // Update lsd status
+    //     let lsdStatus = await this.getLsdStatus(publicationDocument);
+    //     if (lsdStatus.isFailure) {
+    //         throw new Error(`Http getLsdStatus error with code
+    //             ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+    //     }
+    //     let newPublicationDocument = await this.updateLsdStatus(
+    //         publicationDocument,
+    //         lsdStatus.data,
+    //     );
+    //     if (newPublicationDocument.isFailure) {
+    //         throw new Error(`Http updateLsdStatus error with code
+    //             ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+    //     }
+    //     // Renew
+    //     await lsdRenew(
+    //         undefined,
+    //         lsdStatus.data,
+    //         this.deviceIdManager,
+    //     );
+
+    //     // Update again lsd status
+    //     lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
+    //     if (lsdStatus.isFailure) {
+    //         throw new Error(`Http getLsdStatus error with code
+    //             ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+    //     }
+    //     newPublicationDocument = await this.updateLsdStatus(
+    //         publicationDocument,
+    //         lsdStatus.data,
+    //     );
+    //     if (newPublicationDocument.isFailure) {
+    //         throw new Error(`Http getLsdStatus error with code
+    //             ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+    //     }
+    //     return await this.publicationRepository.get(publicationDocument.identifier);
+    // }
+
+    // public async returnPublicationLicense(
+    //     publicationDocument: PublicationDocument,
+    // ): Promise<PublicationDocument> {
+    //     // Update lsd status
+    //     let lsdStatus = await this.getLsdStatus(publicationDocument);
+    //     if (lsdStatus.isFailure) {
+    //         throw new Error(`Http getLsdStatus error with code
+    //             ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+    //     }
+    //     let newPublicationDocument = await this.updateLsdStatus(
+    //         publicationDocument,
+    //         lsdStatus.data,
+    //     );
+    //     if (newPublicationDocument.isFailure) {
+    //         throw new Error(`Http getLsdStatus error with code
+    //             ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+    //     }
+    //     // Renew
+    //     await lsdReturn(
+    //         lsdStatus,
+    //         this.deviceIdManager,
+    //     );
+
+    //     // Update again lsd status
+    //     lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
+    //     if (lsdStatus.isFailure) {
+    //         throw new Error(`Http getLsdStatus error with code
+    //             ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+    //     }
+    //     newPublicationDocument = await this.updateLsdStatus(
+    //         publicationDocument,
+    //         lsdStatus.data,
+    //     );
+    //     if (newPublicationDocument.isFailure) {
+    //         throw new Error(`Http updateLsdStatus error with code
+    //             ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+    //     }
+    //     return await this.publicationRepository.get(publicationDocument.identifier);
+    // }
+
+    // public async getLsdStatus(publicationDocument: PublicationDocument): Promise<IHttpGetResult<string, any>> {
+    //     // Get lsd status
+    //     const lsdStatusBodyResponse = await httpGet<string, any>(
+    //         publicationDocument.lcp.lsd.statusUrl,
+    //         {
+    //             json: true,
+    //         },
+    //     );
+    //     return lsdStatusBodyResponse;
+    // }
+
+    // public async updateLsdStatus(
+    //     publicationDocument: PublicationDocument,
+    //     lsdStatus: any,
+    // ): Promise<THttpGetPublicationDocument> {
+    //     // Search LCPL license url
+    //     let lcplUrl: string = null;
+
+    //     for (const link of lsdStatus.links) {
+    //         if (link.rel === "license") {
+    //             // This is the lsd status url link
+    //             lcplUrl = link.href;
+    //             break;
+    //         }
+    //     }
+
+    //     if (!lcplUrl) {
+    //         throw new Error("No lcpl file");
+    //     }
+
+    //     // Download and inject new lcpl file
+    //     return await httpGet(lcplUrl, {}, async (lcplResponse) => {
+    //         if (lcplResponse.isFailure) {
+    //             return lcplResponse;
+    //         }
+    //         const lcpl = JSON.parse(lcplResponse.body);
+    //         let newPublicationDocument = await this.injectLcpl(
+    //             publicationDocument,
+    //             lcpl,
+    //         );
+
+    //         // Update status document
+    //         const updatedLicense = await this.processStatusDocument(
+    //             newPublicationDocument,
+    //         );
+
+    //         if (updatedLicense) {
+    //             newPublicationDocument = await this.injectLcpl(
+    //                 newPublicationDocument,
+    //                 updatedLicense,
+    //             );
+    //         }
+
+    //         lcplResponse.data = newPublicationDocument;
+    //         return lcplResponse;
+    //     });
+    // }
+
+    // private async processStatusDocument(
+    //     publicationDocument: PublicationDocument,
+    // ): Promise<PublicationDocument> {
+    //     // Get lcpl information
+    //     const epubPath = this.publicationStorage.getPublicationEpubPath(
+    //         publicationDocument.identifier,
+    //     );
+    //     const r2Publication: Epub = await EpubParsePromise(epubPath);
+
+    //     return new Promise(async (resolve: any, reject: any) => {
+    //         try {
+    //             await launchStatusDocumentProcessing(
+    //                 r2Publication.LCP,
+    //                 this.deviceIdManager,
+    //                 async (licenseUpdateJson: string | undefined) => {
+    //                     debug("launchStatusDocumentProcessing DONE.");
+    //                     debug("new license", licenseUpdateJson);
+    //                     resolve(licenseUpdateJson);
+    //                 },
+    //             );
+    //             console.log("status document processed");
+    //         } catch (err) {
+    //             debug(err);
+    //             reject(err);
+    //         }
+    //     });
+    // }
+
+    public async unlockPublication(publication: Publication, passphrase: string | undefined):
+        Promise<string | number | null | undefined> {
+
+        // const publicationDocument = await this.publicationRepository.get(publication.identifier);
+        // const lsdStatus = await this.getLsdStatus(publicationDocument);
+        // if (lsdStatus.isFailure) {
+        //     throw new Error(`Http getLsdStatus error with code
+        //         ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        // }
+
+        // if (
+        //     lsdStatus.data.status !== "ready" &&
+        //     lsdStatus.data.status !== "active"
+        // ) {
+        //     await this.updateLsdStatus(publicationDocument, lsdStatus);
+        //     throw new Error("license is not active");
+        // }
+
+        const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
+            publication.identifier,
+        );
+        const secrets = lcpSecretDocs.map((doc: any) => doc.secret).filter((secret) => secret);
+
+        let lcpPasses: string[] | undefined;
+        let passphraseHash: string | undefined;
+        if (passphrase) {
+            passphraseHash = toSha256Hex(passphrase);
+            lcpPasses = [passphraseHash];
+        } else {
+            if (!secrets || !secrets.length) {
+                return null;
+            }
+            lcpPasses = secrets;
+        }
+
+        // Get epub file from publication
+        const epubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
+        const r2Publication = this.streamer.loadOrGetCachedPublication(epubPath);
+        if (!r2Publication) {
+            debug("unlockPublication !r2Publication ?");
+            return null;
+        }
+        try {
+            await doTryLcpPass(
+                this.streamer,
                 epubPath,
-                epubPath + ".lcp",
-                JSON.stringify(lcpl),
-                "META-INF/license.lcpl",
-        );
-        debug("Inject LCPL - END", epubPath);
-
-        // Replace epub without LCP with a new one containing LCPL
-        fs.unlinkSync(epubPath);
-        fs.renameSync(epubPath + ".lcp", epubPath);
-
-        debug("Parse publication - START", epubPath);
-        const parsedPublication: Epub = await EpubParsePromise(epubPath);
-        let lcpInfo: LcpInfo = null;
-
-        if (parsedPublication.LCP) {
-            // Add Lcp info
-            lcpInfo = {
-                provider: parsedPublication.LCP.Provider,
-                issued: parsedPublication.LCP.Issued,
-                updated: parsedPublication.LCP.Updated,
-                rights: {
-                    copy: parsedPublication.LCP.Rights.Copy,
-                    print: parsedPublication.LCP.Rights.Print,
-                    start: parsedPublication.LCP.Rights.Start,
-                    end: parsedPublication.LCP.Rights.End,
-                },
-            };
-
-            // Search for lsd status url
-            for (const link of parsedPublication.LCP.Links) {
-                if (link.Rel === "status") {
-                    // This is the lsd status url link
-                    lcpInfo.lsd = {
-                        statusUrl: link.Href,
-                    };
-                    break;
+                lcpPasses,
+                true, // isSha256Hex
+            );
+            debug("LCP pass okay");
+            if (passphraseHash) {
+                if (!secrets.includes(passphraseHash)) {
+                    await this.lcpSecretRepository.save({
+                        publicationIdentifier: publication.identifier,
+                        secret: passphraseHash,
+                    });
                 }
             }
-        }
-        debug("Parse publication - END", epubPath);
+        } catch (err) {
+            // DRMErrorCode (from r2-lcp-client)
+            // 1 === NO CORRECT PASSPHRASE / UERKEY IN GIVEN ARRAY
+            //     // No error
+            //     NONE = 0,
+            //     /**
+            //         WARNING ERRORS > 10
+            //     **/
+            //     // License is out of date (check start and end date)
+            //     LICENSE_OUT_OF_DATE = 11,
+            //     /**
+            //         CRITICAL ERRORS > 100
+            //     **/
+            //     // Certificate has been revoked in the CRL
+            //     CERTIFICATE_REVOKED = 101,
+            //     // Certificate has not been signed by CA
+            //     CERTIFICATE_SIGNATURE_INVALID = 102,
+            //     // License has been issued by an expired certificate
+            //     LICENSE_SIGNATURE_DATE_INVALID = 111,
+            //     // License signature does not match
+            //     LICENSE_SIGNATURE_INVALID = 112,
+            //     // The drm context is invalid
+            //     CONTEXT_INVALID = 121,
+            //     // Unable to decrypt encrypted content key from user key
+            //     CONTENT_KEY_DECRYPT_ERROR = 131,
+            //     // User key check invalid
+            //     USER_KEY_CHECK_INVALID = 141,
+            //     // Unable to decrypt encrypted content from content key
+            //     CONTENT_DECRYPT_ERROR = 151
 
-        // FIXME: Title could be an array instead of a simple string
-        // Store publication in db
-        const jsonParsedPublication = TAJSON.serialize(parsedPublication);
-        const b64ParsedPublication = Buffer
-            .from(JSON.stringify(jsonParsedPublication))
-            .toString("base64");
-        const newPublicationDocument = Object.assign(
-            {},
-            publicationDocument,
-            {
-                resources: {
-                    filePublication: b64ParsedPublication,
-                    opdsPublication: publicationDocument.resources.opdsPublication,
-                },
-                lcp: lcpInfo,
-            },
-        );
-        return this.publicationRepository.save(newPublicationDocument);
-    }
-
-    public async registerPublicationLicense(
-        publicationDocument: PublicationDocument,
-    ): Promise<PublicationDocument> {
-        // Get lsd status
-        let lsdStatus = await this.getLsdStatus(publicationDocument);
-        if (lsdStatus.isFailure) {
-            throw new Error(`Http getLsdStatus error with code
-                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-        }
-        let newPublicationDocument = await this.updateLsdStatus(
-            publicationDocument,
-            lsdStatus.data,
-        );
-        if (newPublicationDocument.isFailure) {
-            throw new Error(`Http updateLsdStatus error with code
-                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
-        }
-
-        // Renew
-        await lsdRegister(
-            lsdStatus.data,
-            this.deviceIdManager,
-        );
-
-        // Update again lsd status
-        lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
-        if (lsdStatus.isFailure) {
-            throw new Error(`Http getLsdStatus error with code
-                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-        }
-        newPublicationDocument = await this.updateLsdStatus(
-            publicationDocument,
-            lsdStatus.data,
-        );
-        if (newPublicationDocument.isFailure) {
-            throw new Error(`Http updateLsdStatus error with code
-                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
-        }
-
-        return await this.publicationRepository.get(publicationDocument.identifier);
-    }
-
-    public async renewPublicationLicense(
-        publicationDocument: PublicationDocument,
-    ): Promise<PublicationDocument> {
-        // Update lsd status
-        let lsdStatus = await this.getLsdStatus(publicationDocument);
-        if (lsdStatus.isFailure) {
-            throw new Error(`Http getLsdStatus error with code
-                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-        }
-        let newPublicationDocument = await this.updateLsdStatus(
-            publicationDocument,
-            lsdStatus.data,
-        );
-        if (newPublicationDocument.isFailure) {
-            throw new Error(`Http updateLsdStatus error with code
-                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
-        }
-        // Renew
-        await lsdRenew(
-            undefined,
-            lsdStatus.data,
-            this.deviceIdManager,
-        );
-
-        // Update again lsd status
-        lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
-        if (lsdStatus.isFailure) {
-            throw new Error(`Http getLsdStatus error with code
-                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-        }
-        newPublicationDocument = await this.updateLsdStatus(
-            publicationDocument,
-            lsdStatus.data,
-        );
-        if (newPublicationDocument.isFailure) {
-            throw new Error(`Http getLsdStatus error with code
-                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
-        }
-        return await this.publicationRepository.get(publicationDocument.identifier);
-    }
-
-    public async returnPublicationLicense(
-        publicationDocument: PublicationDocument,
-    ): Promise<PublicationDocument> {
-        // Update lsd status
-        let lsdStatus = await this.getLsdStatus(publicationDocument);
-        if (lsdStatus.isFailure) {
-            throw new Error(`Http getLsdStatus error with code
-                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-        }
-        let newPublicationDocument = await this.updateLsdStatus(
-            publicationDocument,
-            lsdStatus.data,
-        );
-        if (newPublicationDocument.isFailure) {
-            throw new Error(`Http getLsdStatus error with code
-                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
-        }
-        // Renew
-        await lsdReturn(
-            lsdStatus,
-            this.deviceIdManager,
-        );
-
-        // Update again lsd status
-        lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
-        if (lsdStatus.isFailure) {
-            throw new Error(`Http getLsdStatus error with code
-                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-        }
-        newPublicationDocument = await this.updateLsdStatus(
-            publicationDocument,
-            lsdStatus.data,
-        );
-        if (newPublicationDocument.isFailure) {
-            throw new Error(`Http updateLsdStatus error with code
-                ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
-        }
-        return await this.publicationRepository.get(publicationDocument.identifier);
-    }
-
-    public async getLsdStatus(publicationDocument: PublicationDocument): Promise<IHttpGetResult<string, any>> {
-        // Get lsd status
-        const lsdStatusBodyResponse = await httpGet<string, any>(
-            publicationDocument.lcp.lsd.statusUrl,
-            {
-                json: true,
-            },
-        );
-        return lsdStatusBodyResponse;
-    }
-
-    public async updateLsdStatus(
-        publicationDocument: PublicationDocument,
-        lsdStatus: any,
-    ): Promise<THttpGetPublicationDocument> {
-        // Search LCPL license url
-        let lcplUrl: string = null;
-
-        for (const link of lsdStatus.links) {
-            if (link.rel === "license") {
-                // This is the lsd status url link
-                lcplUrl = link.href;
-                break;
-            }
-        }
-
-        if (!lcplUrl) {
-            throw new Error("No lcpl file");
-        }
-
-        // Download and inject new lcpl file
-        return await httpGet(lcplUrl, {}, async (lcplResponse) => {
-            if (lcplResponse.isFailure) {
-                return lcplResponse;
-            }
-            const lcpl = JSON.parse(lcplResponse.body);
-            let newPublicationDocument = await this.injectLcpl(
-                publicationDocument,
-                lcpl,
-            );
-
-            // Update status document
-            const updatedLicense = await this.processStatusDocument(
-                newPublicationDocument,
-            );
-
-            if (updatedLicense) {
-                newPublicationDocument = await this.injectLcpl(
-                    newPublicationDocument,
-                    updatedLicense,
-                );
-            }
-
-            lcplResponse.data = newPublicationDocument;
-            return lcplResponse;
-        });
-    }
-
-    public async unlockPublication(publication: Publication): Promise<void> {
-        const publicationDocument = await this.publicationRepository.get(publication.identifier);
-        const lsdStatus = await this.getLsdStatus(publicationDocument);
-        if (lsdStatus.isFailure) {
-            throw new Error(`Http getLsdStatus error with code
-                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-        }
-
-        if (
-            lsdStatus.data.status !== "ready" &&
-            lsdStatus.data.status !== "active"
-        ) {
-            await this.updateLsdStatus(publicationDocument, lsdStatus);
-            throw new Error("license is not active");
-        }
-
-        // Try to unlock publication with stored secrets
-        const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
-            publication.identifier,
-        );
-        const secrets = lcpSecretDocs.map((doc: any) => doc.secret);
-
-        // Get epub file from publication
-        const epubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
-
-        await doTryLcpPass(
-            this.streamer,
-            epubPath,
-            secrets,
-            true,
-        );
-
-        // Register device
-        await this.registerPublicationLicense(publicationDocument);
-    }
-
-    public async unlockPublicationWithPassphrase(publication: Publication, passphrase: string): Promise<void> {
-        const publicationDocument = await this.publicationRepository.get(publication.identifier);
-        const lsdStatus = await this.getLsdStatus(publicationDocument);
-        if (lsdStatus.isFailure) {
-            throw new Error(`Http getLsdStatus error with code
-                ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-        }
-
-        if (
-            lsdStatus.data.status !== "ready" &&
-            lsdStatus.data.status !== "active"
-        ) {
-            await this.updateLsdStatus(publicationDocument, lsdStatus);
-            throw new Error("license is not active");
-        }
-
-        // Get epub file from publication
-        const epubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
-
-        // Create sha256 in hex of passphrase
-        const secret = toSha256Hex(passphrase);
-        await doTryLcpPass(
-            this.streamer,
-            epubPath,
-            [secret],
-            true,
-        );
-
-        // If secret is new store it
-        const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
-            publication.identifier,
-        );
-        const secrets = lcpSecretDocs.map((doc: any) => doc.secret);
-
-        if (!secrets.includes(secret)) {
-            await this.lcpSecretRepository.save({
-                publicationIdentifier: publication.identifier,
-                secret,
-            });
+            return err;
         }
 
         // Register device
-        await this.registerPublicationLicense(publicationDocument);
+        // await this.registerPublicationLicense(publicationDocument);
+
+        return undefined;
     }
 
-    public async storePassphrase(publication: Publication, passphrase: string): Promise<void> {
-        // Create sha256 in hex of passphrase
-        const secret = toSha256Hex(passphrase);
-        const lcpSecretDoc = {
-            identifier: uuid.v4(),
-            publicationIdentifier: publication.identifier,
-            secret,
-        } as LcpSecretDocument;
+    // public async unlockPublicationWithPassphrase(publication: Publication, passphrase: string): Promise<void> {
+    //     // const publicationDocument = await this.publicationRepository.get(publication.identifier);
+    //     // const lsdStatus = await this.getLsdStatus(publicationDocument);
+    //     // if (lsdStatus.isFailure) {
+    //     //     throw new Error(`Http getLsdStatus error with code
+    //     //         ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+    //     // }
 
-        await this.lcpSecretRepository.save(lcpSecretDoc);
-    }
+    //     // if (
+    //     //     lsdStatus.data.status !== "ready" &&
+    //     //     lsdStatus.data.status !== "active"
+    //     // ) {
+    //     //     await this.updateLsdStatus(publicationDocument, lsdStatus);
+    //     //     throw new Error("license is not active");
+    //     // }
 
-    private async processStatusDocument(
-        publicationDocument: PublicationDocument,
-    ): Promise<PublicationDocument> {
-        // Get lcpl information
-        const epubPath = this.publicationStorage.getPublicationEpubPath(
-            publicationDocument.identifier,
-        );
-        const parsedPublication: Epub = await EpubParsePromise(epubPath);
+    //     // Get epub file from publication
+    //     const epubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
 
-        return new Promise(async (resolve: any, reject: any) => {
-            try {
-                await launchStatusDocumentProcessing(
-                    parsedPublication.LCP,
-                    this.deviceIdManager,
-                    async (licenseUpdateJson: string | undefined) => {
-                        debug("launchStatusDocumentProcessing DONE.");
-                        debug("new license", licenseUpdateJson);
-                        resolve(licenseUpdateJson);
-                    },
-                );
-                console.log("status document processed");
-            } catch (err) {
-                debug(err);
-                reject(err);
-            }
-        });
-    }
+    //     // Create sha256 in hex of passphrase
+    //     const secret = toSha256Hex(passphrase);
+    //     await doTryLcpPass(
+    //         this.streamer,
+    //         epubPath,
+    //         [secret],
+    //         true,
+    //     );
+
+    //     // If secret is new store it
+    //     const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
+    //         publication.identifier,
+    //     );
+    //     const secrets = lcpSecretDocs.map((doc: any) => doc.secret);
+
+    //     if (!secrets.includes(secret)) {
+    //         await this.lcpSecretRepository.save({
+    //             publicationIdentifier: publication.identifier,
+    //             secret,
+    //         });
+    //     }
+
+    //     // // Register device
+    //     // await this.registerPublicationLicense(publicationDocument);
+    // }
+
+    // public async storePassphrase(publication: Publication, passphrase: string): Promise<void> {
+    //     // Create sha256 in hex of passphrase
+    //     const secret = toSha256Hex(passphrase);
+    //     const lcpSecretDoc = {
+    //         identifier: uuid.v4(),
+    //         publicationIdentifier: publication.identifier,
+    //         secret,
+    //     } as LcpSecretDocument;
+
+    //     await this.lcpSecretRepository.save(lcpSecretDoc);
+    // }
 }
