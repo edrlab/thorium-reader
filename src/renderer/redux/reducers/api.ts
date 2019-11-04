@@ -6,17 +6,18 @@
 // ==LICENSE-END==
 
 import * as moment from "moment";
-
 import { ActionType, ApiAction } from "readium-desktop/common/redux/actions/api";
-import { ApiState, ApiDataResponse, LAST_API_SUCCESS_ID } from "readium-desktop/renderer/redux/states/api";
+import {
+    ApiDataResponse, ApiState, LAST_API_SUCCESS_ID,
+} from "readium-desktop/renderer/redux/states/api";
 
 const initialState: ApiState<any> = {
     [LAST_API_SUCCESS_ID]: undefined,
 };
 
 // The api reducer.
-export function apiReducer<T = any>(
-    state: ApiState<T> = initialState,
+export function apiReducer(
+    state: ApiState<any> = initialState,
     action: ApiAction,
 ) {
 
@@ -24,7 +25,7 @@ export function apiReducer<T = any>(
         case ActionType.Result:
             const now = moment.now();
             const requestId = action.meta.api.requestId;
-            const data: ApiDataResponse<T> = action.error ?
+            const data: ApiDataResponse<any> = action.error ?
                 {
                     time: now,
                     error: true,
@@ -37,30 +38,41 @@ export function apiReducer<T = any>(
                     moduleId: action.meta.api.moduleId,
                     result: action.payload,
                 };
+            let returnState: ApiState<any>;
             if (!state[requestId]) {
-                return {
+                returnState = {
                     ...state,
                     [requestId]: {
                         data,
                         lastSuccess: undefined,
                         lastTime: 0,
-                    }
+                    },
+                };
+            } else {
+                const requestState = { ...state[requestId] };
+                requestState.lastSuccess = requestState.data.error === false &&
+                    requestState.data;
+                requestState.lastTime = requestState.data.time;
+                requestState.data = data;
+                returnState = {
+                    ...state,
+                    [requestId]: requestState,
                 };
             }
-            const requestState = { ...state[requestId] };
-            requestState.lastSuccess = requestState.data.error === false &&
-                requestState.data;
-            requestState.lastTime = requestState.data.time;
-            requestState.data = data;
+            if (action.error) {
+                return {
+                    ...returnState,
+                };
+            }
             return {
-                ...state,
-                [requestId]: requestState,
-                [LAST_API_SUCCESS_ID]: action.error ? undefined : requestState
+                ...returnState,
+                [LAST_API_SUCCESS_ID]: returnState[requestId],
             };
 
         case ActionType.Clean:
-            delete state[requestId];
-            return Object.assign({}, state);
+            const newState = { ...state };
+            delete newState[action.payload.requestId];
+            return newState;
 
         default:
             return state;

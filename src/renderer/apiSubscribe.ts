@@ -18,14 +18,16 @@ import { LAST_API_SUCCESS_ID } from "./redux/states/api";
  */
 export function apiSubscribe(pathArrayToRefresh: TApiMethodName[], cb: () => void | Promise<void>): Unsubscribe {
     const store = diRendererGet("store");
-    let lastSuccessTime = store.getState().api[LAST_API_SUCCESS_ID].lastTime || 0;
+    const lastApiSuccess = store.getState().api[LAST_API_SUCCESS_ID];
+    let lastSuccessTime = lastApiSuccess && lastApiSuccess.lastTime || 0;
 
     cb();
 
     return store.subscribe(() => {
         const state = store.getState();
+        const lastApiSuccessInSubscribe = state.api[LAST_API_SUCCESS_ID];
 
-        if (state.api[LAST_API_SUCCESS_ID].lastTime > lastSuccessTime) {
+        if (lastApiSuccessInSubscribe && lastApiSuccessInSubscribe.lastTime > lastSuccessTime) {
             lastSuccessTime = state.api[LAST_API_SUCCESS_ID].lastTime;
             const data = state.api[LAST_API_SUCCESS_ID].data;
             if (!data.error) {

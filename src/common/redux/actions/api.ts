@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { CodeError } from "readium-desktop/common/errors";
 import { Action } from "readium-desktop/common/models/redux";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
-import { CodeError } from 'readium-desktop/common/errors';
 
 export enum ActionType {
     Clean = "API_CLEAN",

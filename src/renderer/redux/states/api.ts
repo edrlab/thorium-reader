@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { CodeError } from 'readium-desktop/common/errors';
+import { CodeError } from "readium-desktop/common/errors";
 
 // FIXME what is the purpose of this interface ?
 // interface PageState<T> {
@@ -28,10 +28,10 @@ export interface ApiDataResponse<T> {
 export interface ApiResponse<T> {
     data: ApiDataResponse<T>;
     lastSuccess: ApiDataResponse<T> | undefined;
-    lastTime: number
+    lastTime: number;
 }
 
 export interface ApiState<T> {
     [id: string]: ApiResponse<T>;
-    [LAST_API_SUCCESS_ID]: ApiResponse<any>;
+    [LAST_API_SUCCESS_ID]: ApiResponse<any> | undefined;
 }

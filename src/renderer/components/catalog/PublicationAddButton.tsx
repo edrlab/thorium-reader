@@ -6,15 +6,15 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { apiDispatch } from "readium-desktop/renderer/redux/api/api";
 import { TChangeEvent } from "readium-desktop/typings/react";
+import { Dispatch } from "redux";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { apiDispatch } from 'readium-desktop/renderer/redux/api/api';
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
 

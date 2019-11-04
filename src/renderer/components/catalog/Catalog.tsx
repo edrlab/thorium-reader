@@ -60,14 +60,14 @@ class Catalog extends React.Component<IProps> {
 
         const secondaryHeader = <Header displayType={displayType} />;
 
-        const catalog = this.props.apiData(this.catalogGetId)("catalog/get").data;
-        const tags = this.props.apiData(this.catalogGetId)("publication/getAllTags").data;
+        const catalog = this.props.apiData(this.catalogGetId)("catalog/get");
+        const tags = this.props.apiData(this.publicationGetAllTagId)("publication/getAllTags");
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
-                {catalog && catalog.result &&
-                    <DisplayView catalogEntries={catalog.result.entries}
-                        tags={(tags && tags.result) || []} />
+                {catalog && catalog.data && catalog.data.result &&
+                    <DisplayView catalogEntries={catalog.data.result.entries}
+                        tags={(tags && tags.data && tags.data.result) || []} />
                 }
             </LibraryLayout>
         );
@@ -75,7 +75,7 @@ class Catalog extends React.Component<IProps> {
 
     private getFromApi = () => {
         this.props.api(this.catalogGetId)("catalog/get")();
-        this.props.api(this.publicationGetAllTagId)("publication/getAllTags")()
+        this.props.api(this.publicationGetAllTagId)("publication/getAllTags")();
     }
 }
 

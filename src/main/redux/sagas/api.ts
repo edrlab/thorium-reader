@@ -6,12 +6,12 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { CodeError } from "readium-desktop/common/errors";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { SagaIterator } from "redux-saga";
 import { all, call, fork, put, take } from "redux-saga/effects";
-import { CodeError } from 'readium-desktop/common/errors';
 
 // Logger
 const debug = debug_("readium-desktop:main#redux/sagas/api");
