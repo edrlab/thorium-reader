@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { LcpInfo } from "readium-desktop/common/models/lcp";
+
 import { Metadata } from "@r2-shared-js/models/metadata";
 
 export interface CoverView {
@@ -29,6 +31,6 @@ export interface PublicationView {
     publishedAt?: string; // ISO8601
     cover?: CoverView;
     customCover?: CustomCoverView;
-    lcp: any;
+    lcp?: LcpInfo;
     doc?: Metadata;
 }

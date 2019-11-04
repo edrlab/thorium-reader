@@ -8,7 +8,6 @@
 import * as moment from "moment";
 import * as React from "react";
 import { connect } from "react-redux";
-import { LsdStatus } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -16,12 +15,13 @@ import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { lcpReadable } from "readium-desktop/utils/publication";
 import * as uuid from "uuid";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
 
+// import { LsdStatus } from "readium-desktop/common/models/lcp";
+// import { lcpReadable } from "readium-desktop/utils/publication";
 // import { apiAction } from "readium-desktop/renderer/apiAction";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -32,7 +32,7 @@ interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>,
 
 interface IState {
     menuOpen: boolean;
-    lsdStatus: LsdStatus | undefined;
+    // lsdStatus: LsdStatus | undefined;
 }
 
 export class PublicationListElement extends React.Component<IProps, IState> {
@@ -44,7 +44,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
         this.state = {
             menuOpen: false,
-            lsdStatus: undefined,
+            // lsdStatus: undefined,
         };
 
         // this.deletePublication = this.deletePublication.bind(this);
@@ -139,9 +139,11 @@ export class PublicationListElement extends React.Component<IProps, IState> {
     private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
         const { publication } = this.props;
-        const { lsdStatus } = this.state;
+        // const { lsdStatus } = this.state;
 
-        if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
+        if (this.props.isOpds
+            // || !lcpReadable(publication, lsdStatus)
+            ) {
             this.props.displayPublicationInfo(publication);
         } else {
             this.props.openReader(publication);

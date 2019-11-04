@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Contributor } from "r2-shared-js/dist/es6-es2015/src/models/metadata-contributor";
-import { IStringMap } from "r2-shared-js/dist/es6-es2015/src/models/metadata-multilang";
+import { Contributor } from "@r2-shared-js/models/metadata-contributor";
+import { IStringMap } from "@r2-shared-js/models/metadata-multilang";
 import { diMainGet } from "readium-desktop/main/di";
 import { resolve } from "url";
 

@@ -12,6 +12,7 @@ import { inject, injectable } from "inversify";
 import * as path from "path";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
+import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { Publication } from "readium-desktop/common/models/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
@@ -33,6 +34,7 @@ import { JSON as TAJSON } from "ta-json-x";
 import * as uuid from "uuid";
 import * as xmldom from "xmldom";
 
+import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { convertOpds1ToOpds2_EntryToPublication } from "@r2-opds-js/opds/converter";
 import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
@@ -42,8 +44,7 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 import { extractCrc32OnZip } from "../crc";
 import { diMainGet } from "../di";
 import { Downloader } from "./downloader";
-
-// import { LcpManager } from "./lcp";
+import { LcpManager } from "./lcp";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -65,30 +66,30 @@ export class CatalogService {
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
-    // @inject(diSymbolTable["lcp-manager"])
-    // private readonly lcpManager!: LcpManager;
+    @inject(diSymbolTable["lcp-manager"])
+    private readonly lcpManager!: LcpManager;
 
     public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
         let publication: PublicationDocument | undefined;
 
+        const ext = path.extname(filePath);
+        const isLCPLicense = ext === ".lcpl" || (ext === ".part" && isLcpFile);
         try {
-            const hash = await extractCrc32OnZip(filePath);
-            const publicationArray = await this.publicationRepository.findByHashId(hash);
-            debug(publicationArray, hash);
+            const hash = isLCPLicense ? undefined : await extractCrc32OnZip(filePath);
+            const publicationArray = hash ? await this.publicationRepository.findByHashId(hash) : undefined;
             if (publicationArray && publicationArray.length) {
+                debug(publicationArray, hash);
                 publication = publicationArray[0];
                 this.store.dispatch(open(ToastType.DownloadComplete,
                     this.translator.translate("message.import.alreadyImport", { title: publication.title })));
             } else {
-                    const ext = path.extname(filePath);
-                    if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
-                        // publication = await this.importLcplFile(filePath);
-                        throw Error("LCP license not supported (temporarily disabled)");
-                    } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
-                        publication = await this.importEpubFile(filePath);
-                    }
-                    this.store.dispatch(open(ToastType.DownloadComplete,
-                        this.translator.translate("message.import.success", { title: publication.title })));
+                if (isLCPLicense) {
+                    publication = await this.importLcplFile(filePath);
+                } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
+                    publication = await this.importEpubFile(filePath);
+                }
+                this.store.dispatch(open(ToastType.DownloadComplete,
+                    this.translator.translate("message.import.success", { title: publication.title })));
             }
         } catch (error) {
             debug("ImportFile (hash + import) fail with :" + filePath, error);
@@ -307,40 +308,42 @@ export class CatalogService {
         }
     }
 
-    // private async importLcplFile(filePath: string): Promise<PublicationDocument> {
-    //     const buffer = fs.readFileSync(filePath);
-    //     const lcpl = JSON.parse(buffer.toString());
+    private async importLcplFile(filePath: string): Promise<PublicationDocument> {
+        const buffer = fs.readFileSync(filePath);
+        const lcpJson = JSON.parse(buffer.toString());
+        const lcp = TAJSON.parse<LCP>(lcpJson) as LCP;
+        lcp.JsonSource = lcpJson;
 
-    //     // search the path of the epub file
-    //     let download: Download = null;
+        // search the path of the epub file
+        let download: Download = null;
 
-    //     if (lcpl.links) {
-    //         for (const link of lcpl.links) {
-    //             if (link.rel === "publication") {
-    //                 download = this.downloader.addDownload(link.href);
-    //             }
-    //         }
-    //     }
+        if (lcp.Links) {
+            for (const link of lcp.Links) {
+                if (link.Rel === "publication") {
+                    download = this.downloader.addDownload(link.Href);
+                }
+            }
+        }
 
-    //     if (download == null) {
-    //         throw new Error("Unable to publication in lcpl file");
-    //     }
+        if (download == null) {
+            throw new Error(`Unable to initiate download of LCP publication: ${filePath}`);
+        }
 
-    //     debug("[START] Download publication", filePath);
-    //     const newDownload = await this.downloader.processDownload(
-    //         download.identifier,
-    //         {
-    //             onProgress: (dl: Download) => {
-    //                 debug("[PROGRESS] Downloading publication", dl.progress);
-    //             },
-    //         },
-    //     );
-    //     debug("[END] Download publication", filePath, newDownload);
+        debug("[START] Download publication", filePath);
+        const newDownload = await this.downloader.processDownload(
+            download.identifier,
+            {
+                onProgress: (dl: Download) => {
+                    debug("[PROGRESS] Downloading publication", dl.progress);
+                },
+            },
+        );
+        debug("[END] Download publication", filePath, newDownload);
 
-    //     // Import downloaded publication
-    //     const publicationDocument = await this.importEpubFile(download.dstPath);
-    //     return this.lcpManager.injectLcpl(publicationDocument, lcpl);
-    // }
+        // Import downloaded publication
+        const publicationDocument = await this.importEpubFile(download.dstPath);
+        return this.lcpManager.injectLcpl(publicationDocument, lcp);
+    }
 
     private async importEpubFile(filePath: string): Promise<PublicationDocument> {
         debug("Parse publication - START", filePath);
@@ -354,6 +357,37 @@ export class CatalogService {
             .from(JSON.stringify(jsonParsedPublication))
             .toString("base64");
 
+        let lcpInfo: LcpInfo = null;
+        if (r2Publication.LCP) {
+            // Add Lcp info
+            lcpInfo = {
+                provider: r2Publication.LCP.Provider,
+                issued: r2Publication.LCP.Issued,
+                updated: r2Publication.LCP.Updated,
+                rights: r2Publication.LCP.Rights ? {
+                    copy: r2Publication.LCP.Rights.Copy,
+                    print: r2Publication.LCP.Rights.Print,
+                    start: r2Publication.LCP.Rights.Start,
+                    end: r2Publication.LCP.Rights.End,
+                } : undefined,
+            };
+
+            if (r2Publication.LCP.Links) {
+                // Search for lsd status url
+                for (const link of r2Publication.LCP.Links) {
+                    if (link.Rel === "status") {
+                        // This is the lsd status url link
+                        lcpInfo.lsd = {
+                            statusUrl: link.Href,
+                        };
+                        break;
+                    }
+                }
+            }
+        }
+        debug(">> lcpInfo (importEpubFile):");
+        debug(JSON.stringify(lcpInfo, null, 4));
+
         const pubDocument = {
             identifier: uuid.v4(),
             resources: {
@@ -366,6 +400,7 @@ export class CatalogService {
             coverFile: null,
             customCover: null,
             hash: await extractCrc32OnZip(filePath),
+            lcp: lcpInfo,
         } as PublicationDocument;
         debug(pubDocument.hash);
 

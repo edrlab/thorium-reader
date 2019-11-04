@@ -7,7 +7,6 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { LsdStatus } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -21,11 +20,12 @@ import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { lcpReadable } from "readium-desktop/utils/publication";
 
 import CatalogMenu from "./menu/CatalogMenu";
 import OpdsMenu from "./menu/OpdsMenu";
 
+// import { LsdStatus } from "readium-desktop/common/models/lcp";
+// import { lcpReadable } from "readium-desktop/utils/publication";
 // import { apiAction } from "readium-desktop/renderer/apiAction";
 
 interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -36,7 +36,7 @@ interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, Re
 
 interface IState {
     menuOpen: boolean;
-    lsdStatus: LsdStatus | undefined;
+    // lsdStatus: LsdStatus | undefined;
 }
 
 class PublicationCard extends React.Component<IProps, IState> {
@@ -45,7 +45,7 @@ class PublicationCard extends React.Component<IProps, IState> {
 
         this.state = {
             menuOpen: false,
-            lsdStatus: undefined,
+            // lsdStatus: undefined,
         };
         this.openCloseMenu = this.openCloseMenu.bind(this);
         this.truncateTitle = this.truncateTitle.bind(this);
@@ -119,9 +119,11 @@ class PublicationCard extends React.Component<IProps, IState> {
     private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
         const { publication } = this.props;
-        const { lsdStatus } = this.state;
+        // const { lsdStatus } = this.state;
 
-        if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
+        if (this.props.isOpds
+            // || !lcpReadable(publication, lsdStatus)
+            ) {
             this.props.openInfosDialog(publication);
         } else {
             this.props.openReader(publication);

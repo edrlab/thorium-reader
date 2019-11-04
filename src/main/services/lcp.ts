@@ -6,29 +6,31 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import * as fs from "fs";
 import { inject, injectable } from "inversify";
+import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { Publication } from "readium-desktop/common/models/publication";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
+import { JSON as TAJSON } from "ta-json-x";
 
+import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
+import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { Server } from "@r2-streamer-js/http/server";
+import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
+// import { injectDataInZip } from "readium-desktop/utils/zip";
 // import * as uuid from "uuid";
 // import { LcpSecretDocument } from "../db/document/lcp-secret";
-// import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-// import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 // import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
-// import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 // import { DeviceIdManager } from "./device";
-// import * as fs from "fs";
-// import { LcpInfo } from "readium-desktop/common/models/lcp";
 // import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
 // import { THttpGetPublicationDocument } from "readium-desktop/main/db/document/publication";
-// import { injectDataInZip } from "readium-desktop/utils/zip";
-// import { JSON as TAJSON } from "ta-json-x";
 // import { lsdRegister } from "@r2-lcp-js/lsd/register";
 // import { lsdRenew } from "@r2-lcp-js/lsd/renew";
 // import { lsdReturn } from "@r2-lcp-js/lsd/return";
@@ -50,88 +52,114 @@ export class LcpManager {
     // @inject(diSymbolTable["device-id-manager"])
     // private readonly deviceIdManager!: DeviceIdManager;
 
-    // @inject(diSymbolTable["publication-repository"])
-    // private readonly publicationRepository!: PublicationRepository;
+    @inject(diSymbolTable["publication-repository"])
+    private readonly publicationRepository!: PublicationRepository;
 
-    // /**
-    //  * Inject lcpl document in publication
-    //  *
-    //  * @param PublicationDocument Publication document on which we inject the lcpl
-    //  * @param lcpl: Lcpl object
-    //  */
-    // public async injectLcpl(
-    //     publicationDocument: PublicationDocument,
-    //     lcpl: any,
-    // ): Promise<PublicationDocument> {
-    //     // Get epub file path
-    //     const epubPath = this.publicationStorage.getPublicationEpubPath(
-    //         publicationDocument.identifier,
-    //     );
+    /**
+     * Inject lcpl document in publication
+     *
+     * @param PublicationDocument Publication document on which we inject the lcpl
+     * @param lcpl: Lcpl object
+     */
+    public async injectLcpl(
+        publicationDocument: PublicationDocument,
+        lcp: LCP,
+    ): Promise<PublicationDocument> {
+        // Get epub file path
+        const epubPath = this.publicationStorage.getPublicationEpubPath(
+            publicationDocument.identifier,
+        );
 
-    //     // Inject lcpl in a temporary zip
-    //     debug("Inject LCPL - START", epubPath);
-    //     await injectDataInZip(
-    //             epubPath,
-    //             epubPath + ".lcp",
-    //             JSON.stringify(lcpl),
-    //             "META-INF/license.lcpl",
-    //     );
-    //     debug("Inject LCPL - END", epubPath);
+        const jsonSource = lcp.JsonSource ? lcp.JsonSource : TAJSON.serialize(lcp);
 
-    //     // Replace epub without LCP with a new one containing LCPL
-    //     fs.unlinkSync(epubPath);
-    //     fs.renameSync(epubPath + ".lcp", epubPath);
+        // Inject lcpl in a temporary zip
+        debug("Inject LCPL - START", epubPath);
+        await new Promise((resolve, reject) => {
+            injectBufferInZip(
+                epubPath,
+                epubPath + ".lcp",
+                Buffer.from(jsonSource, "utf8"),
+                "META-INF/license.lcpl",
+                (e: any) => {
+                    debug("injectLcpl - injectBufferInZip ERROR!");
+                    debug(e);
+                    reject(e);
+                },
+                () => {
+                    resolve();
+                });
+        });
+        debug("Inject LCPL - END", epubPath);
 
-    //     debug("Parse publication - START", epubPath);
-    //     const r2Publication = await EpubParsePromise(epubPath);
-    //     let lcpInfo: LcpInfo = null;
+        // Replace epub without LCP with a new one containing LCPL
+        fs.unlinkSync(epubPath);
+        await new Promise((resolve, _reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 200); // to avoid issues with some filesystems (allow extra completion time)
+        });
+        fs.renameSync(epubPath + ".lcp", epubPath);
+        await new Promise((resolve, _reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 200); // to avoid issues with some filesystems (allow extra completion time)
+        });
 
-    //     if (r2Publication.LCP) {
-    //         // Add Lcp info
-    //         lcpInfo = {
-    //             provider: r2Publication.LCP.Provider,
-    //             issued: r2Publication.LCP.Issued,
-    //             updated: r2Publication.LCP.Updated,
-    //             rights: {
-    //                 copy: r2Publication.LCP.Rights.Copy,
-    //                 print: r2Publication.LCP.Rights.Print,
-    //                 start: r2Publication.LCP.Rights.Start,
-    //                 end: r2Publication.LCP.Rights.End,
-    //             },
-    //         };
+        debug("Parse publication - START", epubPath);
+        const r2Publication = await EpubParsePromise(epubPath);
 
-    //         // Search for lsd status url
-    //         for (const link of r2Publication.LCP.Links) {
-    //             if (link.Rel === "status") {
-    //                 // This is the lsd status url link
-    //                 lcpInfo.lsd = {
-    //                     statusUrl: link.Href,
-    //                 };
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     debug("Parse publication - END", epubPath);
+        let lcpInfo: LcpInfo = null;
+        if (r2Publication.LCP) {
+            // Add Lcp info
+            lcpInfo = {
+                provider: r2Publication.LCP.Provider,
+                issued: r2Publication.LCP.Issued,
+                updated: r2Publication.LCP.Updated,
+                rights: r2Publication.LCP.Rights ? {
+                    copy: r2Publication.LCP.Rights.Copy,
+                    print: r2Publication.LCP.Rights.Print,
+                    start: r2Publication.LCP.Rights.Start,
+                    end: r2Publication.LCP.Rights.End,
+                } : undefined,
+            };
 
-    //     // FIXME: Title could be an array instead of a simple string
-    //     // Store publication in db
-    //     const jsonParsedPublication = TAJSON.serialize(r2Publication);
-    //     const b64ParsedPublication = Buffer
-    //         .from(JSON.stringify(jsonParsedPublication))
-    //         .toString("base64");
-    //     const newPublicationDocument = Object.assign(
-    //         {},
-    //         publicationDocument,
-    //         {
-    //             resources: {
-    //                 filePublication: b64ParsedPublication,
-    //                 opdsPublication: publicationDocument.resources.opdsPublication,
-    //             },
-    //             lcp: lcpInfo,
-    //         },
-    //     );
-    //     return this.publicationRepository.save(newPublicationDocument);
-    // }
+            if (r2Publication.LCP.Links) {
+                // Search for lsd status url
+                for (const link of r2Publication.LCP.Links) {
+                    if (link.Rel === "status") {
+                        // This is the lsd status url link
+                        lcpInfo.lsd = {
+                            statusUrl: link.Href,
+                        };
+                        break;
+                    }
+                }
+            }
+        }
+        debug(">> lcpInfo (injectLcpl):");
+        debug(JSON.stringify(lcpInfo, null, 4));
+
+        debug("Parse publication - END", epubPath);
+
+        // FIXME: Title could be an array instead of a simple string
+        // Store publication in db
+        const jsonParsedPublication = TAJSON.serialize(r2Publication);
+        const b64ParsedPublication = Buffer
+            .from(JSON.stringify(jsonParsedPublication))
+            .toString("base64");
+        const newPublicationDocument: PublicationDocument = Object.assign(
+            {},
+            publicationDocument,
+            {
+                resources: {
+                    filePublication: b64ParsedPublication,
+                    opdsPublication: publicationDocument.resources.opdsPublication,
+                },
+                lcp: lcpInfo,
+            },
+        );
+        return this.publicationRepository.save(newPublicationDocument);
+    }
 
     // public async registerPublicationLicense(
     //     publicationDocument: PublicationDocument,

@@ -34,21 +34,21 @@ export interface DeviceConfig {
     [key: string]: any;
 }
 
-export enum LsdStatusType {
-    Active = "active",
-    Expired = "expired",
-    Ready = "ready",
-    Revoked = "revoked",
-}
+// export enum LsdStatusType {
+//     Active = "active",
+//     Expired = "expired",
+//     Ready = "ready",
+//     Revoked = "revoked",
+// }
 
-export interface LsdStatus {
-    events: any[];
-    id: string;
-    links: any[];
-    message: string;
-    status: LsdStatusType;
-    updated: {
-        license: string;
-        status: string;
-    };
-}
+// export interface LsdStatus {
+//     events: any[];
+//     id: string;
+//     links: any[];
+//     message: string;
+//     status: LsdStatusType;
+//     updated: {
+//         license: string;
+//         status: string;
+//     };
+// }
