@@ -16,14 +16,13 @@ import {
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-export interface BreadCrumbItem {
+export interface IBreadCrumbItem {
     name: string;
     path?: string;
-    state?: any;
 }
 
 interface IProps extends TranslatorProps {
-    breadcrumb: BreadCrumbItem[];
+    breadcrumb: IBreadCrumbItem[];
     search: string;
     className?: string;
 }
@@ -53,7 +52,6 @@ class BreadCrumb extends React.Component<IProps> {
                             to={{
                                 pathname: item.path,
                                 search: `displayType=${search.displayType}`,
-                                state: item.state,
                             }}
                             title={name}
                         >

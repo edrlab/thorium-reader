@@ -6,30 +6,39 @@
 // ==LICENSE-END==
 
 // import * as debug_ from "debug";
-import { Action } from "readium-desktop/common/models/redux";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
+import { IActionBrowseRequest } from "readium-desktop/renderer/redux/actions/opds";
 import { OpdsState } from "readium-desktop/renderer/redux/states/opds";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 // Logger
 // const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
 
 const initialState: OpdsState = {
     browser: {
-        navigation: [],
+        breadcrumb: [],
     },
 };
 
 export function opdsReducer(
     state: OpdsState = initialState,
-    action: Action,
+    action: IActionBrowseRequest,
 ) {
     switch (action.type) {
         case opdsActions.ActionType.BrowseRequest:
             const stateNew = { ...state };
-            const { level, title, url } = action.payload;
+            const { level, title, url, rootFeedIdentifier } = action.payload;
 
-            stateNew.browser.navigation = stateNew.browser.navigation.slice(0, level - 1);
-            stateNew.browser.navigation.push({ level, title, url });
+            stateNew.browser.breadcrumb = stateNew.browser.breadcrumb.slice(0, level - 1);
+            stateNew.browser.breadcrumb.push({
+                name: title,
+                path: buildOpdsBrowserRoute(
+                    rootFeedIdentifier,
+                    title,
+                    url,
+                    level,
+                ),
+            });
             return stateNew;
 
         default:

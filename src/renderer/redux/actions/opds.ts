@@ -6,23 +6,19 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { OpdsNavigationLink } from "readium-desktop/renderer/redux/states/opds";
+import { TParseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 export enum ActionType {
     BrowseRequest = "OPDS_BROWSE_REQUEST",
 }
 
 export interface IActionBrowseRequest extends Action {
-    payload: OpdsNavigationLink;
+    payload: TParseOpdsBrowserRoute;
 }
 
-export function browse(level: number, title: string, url: string): Action {
+export function browse(data: TParseOpdsBrowserRoute): Action {
     return {
         type: ActionType.BrowseRequest,
-        payload: {
-            level,
-            title,
-            url,
-        },
+        payload: data,
     };
 }

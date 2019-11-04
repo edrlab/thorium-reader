@@ -24,8 +24,8 @@ export function* browseWatcher(): SagaIterator {
 
         if (path.startsWith("/opds") && path.indexOf("/browse") > 0 ) {
             const parsedResult = parseOpdsBrowserRoute(path);
-            const { level, title, url } = parsedResult;
-            yield put(opdsActions.browse(level, title, url));
+            parsedResult.title = decodeURI(parsedResult.title);
+            yield put(opdsActions.browse(parsedResult));
         }
     }
 }
