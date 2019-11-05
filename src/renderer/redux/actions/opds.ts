@@ -8,17 +8,31 @@
 import { Action } from "readium-desktop/common/models/redux";
 import { TParseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
+import { IOpdsHeaderState } from "../states/opds";
+
 export enum ActionType {
     BrowseRequest = "OPDS_BROWSE_REQUEST",
+    HeaderLinkUpdate = "OPDS_HEADERLINK_UPDATE",
 }
 
 export interface IActionBrowseRequest extends Action {
     payload: TParseOpdsBrowserRoute;
 }
 
-export function browse(data: TParseOpdsBrowserRoute): Action {
+export interface IActionHeaderLinkUpdate extends Action {
+    payload: IOpdsHeaderState;
+}
+
+export function browse(data: TParseOpdsBrowserRoute): IActionBrowseRequest {
     return {
         type: ActionType.BrowseRequest,
+        payload: data,
+    };
+}
+
+export function headerLinkUpdate(data: IOpdsHeaderState): IActionHeaderLinkUpdate {
+    return {
+        type: ActionType.HeaderLinkUpdate,
         payload: data,
     };
 }

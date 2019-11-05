@@ -19,7 +19,7 @@ import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 
 import { apiReducer } from "./api";
 import { downloadReducer } from "./download";
-import { opdsReducer } from "./opds";
+import { opdsBreadcrumbReducer, opdsHeaderLinkReducer } from "./opds";
 import { readerReducer } from "./reader";
 import { winReducer } from "./win";
 
@@ -28,7 +28,12 @@ import { History } from "history";
 export const rootReducer = (history: History) => combineReducers({
     i18n: i18nReducer,
     reader: readerReducer,
-    opds: opdsReducer,
+    opds: combineReducers({
+        browser: combineReducers({
+            breadcrumb: opdsBreadcrumbReducer,
+            header: opdsHeaderLinkReducer,
+        }),
+    }),
     win: winReducer,
     net: netReducer,
     update: updateReducer,
@@ -39,3 +44,5 @@ export const rootReducer = (history: History) => combineReducers({
     toast: toastReducer,
     download: downloadReducer,
 });
+
+export type TRootState = ReturnType<ReturnType<typeof rootReducer>>;
