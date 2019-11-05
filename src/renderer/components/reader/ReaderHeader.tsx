@@ -29,7 +29,8 @@ import ReaderOptions from "./ReaderOptions";
 import {createRef} from "react";
 import ReactDOM = require("react-dom");
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     menuOpen: boolean;
     infoOpen: boolean;
     mode?: ReaderMode;
@@ -47,21 +48,29 @@ interface Props extends TranslatorProps {
     readerOptionsProps: any;
 }
 
-export class ReaderHeader extends React.Component<Props, undefined> {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export class ReaderHeader extends React.Component<IProps, undefined> {
     private enableFullscreenRef = createRef<HTMLButtonElement>();
     private disableFullscreenRef = createRef<HTMLButtonElement>();
     private settingsMenuButtonRef = createRef<HTMLButtonElement>();
     private navigationMenuButtonRef = createRef<HTMLButtonElement>();
     private infoMenuButtonRef = createRef<HTMLButtonElement>();
 
-    public constructor(props: Props) {
+    public constructor(props: IProps) {
         super(props);
 
         this.focusSettingMenuButton = this.focusSettingMenuButton.bind(this);
         this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
     }
 
-    public componentDidUpdate(oldProps: Props) {
+    public componentDidUpdate(oldProps: IProps) {
         if (this.props.fullscreen !== oldProps.fullscreen) {
             if (this.props.fullscreen && this.disableFullscreenRef.current) {
                 this.disableFullscreenRef.current.focus();

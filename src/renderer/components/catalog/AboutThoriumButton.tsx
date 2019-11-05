@@ -15,7 +15,15 @@ import {
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
 class AboutThoriumButton extends React.Component<IProps> {
@@ -33,7 +41,7 @@ class AboutThoriumButton extends React.Component<IProps> {
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         displayPublicationInfo: () => {
             dispatch(dialogActions.open("about-thorium",

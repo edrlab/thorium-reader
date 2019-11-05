@@ -10,20 +10,29 @@ import { LocatorView } from "readium-desktop/common/views/locator";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { TFormEvent } from "readium-desktop/typings/react";
 
-interface Props {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     close: () => void;
     bookmark: LocatorView;
 }
 
-interface State {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     bookmarkToUpdate: { id: number, name: string };
 }
 
-export class UpdateBookmarkForm extends React.Component<Props, State> {
+export class UpdateBookmarkForm extends React.Component<IProps, IState> {
     private inputRef: any;
     private formRef: any;
 
-    public constructor(props: Props) {
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {

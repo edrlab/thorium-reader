@@ -10,12 +10,21 @@ import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 
 import { TranslatorProps, withTranslator } from "./utils/hoc/translator";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     style?: {};
     id?: string;
 }
 
-export class SecondaryHeader extends React.Component<Props, undefined> {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export class SecondaryHeader extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { id, __ } = this.props;
         return (

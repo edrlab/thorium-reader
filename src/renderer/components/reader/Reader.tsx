@@ -149,7 +149,8 @@ const publicationJsonUrl = queryParams.pub.startsWith(READIUM2_ELECTRON_HTTP_PRO
 
 const lcpHint = queryParams.lcpHint;
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     /*
     reader?: any;
     mode?: any;
@@ -165,6 +166,13 @@ interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, Re
     displayPublicationInfo?: any;
     publication?: TPublicationApiGet_result;
     */
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -191,7 +199,7 @@ interface IState {
 // WHY ??
 const defaultLocale = "fr";
 
-export class Reader extends React.Component<IProps & ReturnType<typeof mapDispatchToProps>, IState> {
+export class Reader extends React.Component<IProps, IState> {
     private fastLinkRef: any;
 
     // can be get back with redux-connect props injection
@@ -207,7 +215,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
     private pubId: string;
     private unsubscribe: Unsubscribe;
 
-    constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         // WHY is it sync in init.ts, no ??
@@ -806,7 +814,7 @@ const buildBookmarkRequestData = () => {
 };
 */
 
-const mapStateToProps = (state: RootState, __: any) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         reader: state.reader.reader,
         mode: state.reader.mode,
@@ -815,7 +823,7 @@ const mapStateToProps = (state: RootState, __: any) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         toggleFullscreen: (fullscreenOn: boolean) => {
             if (fullscreenOn) {

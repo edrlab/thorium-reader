@@ -28,10 +28,18 @@ import OpdsMenu from "./menu/OpdsMenu";
 // import { lcpReadable } from "readium-desktop/utils/publication";
 // import { apiAction } from "readium-desktop/renderer/apiAction";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     publication: PublicationView;
     MenuContent: typeof OpdsMenu | typeof CatalogMenu;
     isOpds?: boolean;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -143,14 +151,14 @@ class PublicationCard extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         InfoDialogIsOpen: state.dialog.open &&
             state.dialog.type === "publication-info",
     };
 };
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         openReader: (publication: PublicationView) => {
             dispatch({

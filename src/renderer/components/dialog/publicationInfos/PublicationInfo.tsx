@@ -31,7 +31,15 @@ import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import OpdsControls from "./opdsControls";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -244,7 +252,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
 
 // props is typed with any because connect has a bad interpretation of IProps
 // IProps has a circular reference in this case
-const mapDispatchToProps = (dispatch: TDispatch, props: any) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         closeDialog: () => {
             if ((props as IProps).publicationInfoReader) {
@@ -260,7 +268,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: any) => {
     };
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     ...{
         open: state.dialog.type === "publication-info" || state.dialog.type === "publication-info-reader",
         displayControls: state.dialog.type === "publication-info",

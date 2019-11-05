@@ -10,7 +10,15 @@ import { connect } from "react-redux";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-interface IProps extends ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class SameFileImportManager extends React.Component<IProps> {
@@ -37,7 +45,7 @@ class SameFileImportManager extends React.Component<IProps> {
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         lastImport: state.import,
         downloads: state.download.downloads,

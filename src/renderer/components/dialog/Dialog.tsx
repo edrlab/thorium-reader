@@ -15,11 +15,19 @@ import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 import classNames = require("classnames");
 
-interface IProps extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     open: boolean;
     close: () => void;
     className?: string;
     id?: string;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
 class Dialog extends React.Component<IProps> {

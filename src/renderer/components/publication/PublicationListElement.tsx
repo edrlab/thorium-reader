@@ -24,10 +24,18 @@ import AccessibleMenu from "../utils/menu/AccessibleMenu";
 // import { lcpReadable } from "readium-desktop/utils/publication";
 // import { apiAction } from "readium-desktop/renderer/apiAction";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     publication: PublicationView;
     menuContent: JSX.Element;
     isOpds?: boolean;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -138,46 +146,45 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
     private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
-        const { publication } = this.props;
         // const { lsdStatus } = this.state;
 
         if (this.props.isOpds
             // || !lcpReadable(publication, lsdStatus)
             ) {
-            this.props.displayPublicationInfo(publication);
+            this.props.displayPublicationInfo();
         } else {
-            this.props.openReader(publication);
+            this.props.openReader();
         }
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
-        displayPublicationInfo: (publication: PublicationView) => {
+        displayPublicationInfo: () => {
             dispatch(dialogActions.open("publication-info",
                 {
-                    opdsPublication: publication,
+                    opdsPublication: props.publication,
                     publicationIdentifier: undefined,
                 },
             ));
         },
-        openReader: (publication: PublicationView) => {
+        openReader: () => {
             dispatch({
                 type: readerActions.ActionType.OpenRequest,
                 payload: {
                     publication: {
-                        identifier: publication.identifier,
+                        identifier: props.publication.identifier,
                     },
                 },
             });
         },
-        openDeleteDialog: (publication: PublicationView) => {
-            dispatch(dialogActions.open("delete-publication-confirm",
-                {
-                    publication,
-                },
-            ));
-        },
+        // openDeleteDialog: () => {
+        //     dispatch(dialogActions.open("delete-publication-confirm",
+        //         {
+        //             publication: props.publication,
+        //         },
+        //     ));
+        // },
     };
 };
 

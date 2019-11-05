@@ -14,7 +14,18 @@ import { TChangeEvent } from "readium-desktop/typings/react";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
-export class PublicationAddButton extends React.Component<TranslatorProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export class PublicationAddButton extends React.Component<IProps> {
     public constructor(props: TranslatorProps) {
         super(props);
 

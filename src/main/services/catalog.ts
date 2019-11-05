@@ -414,6 +414,9 @@ export class CatalogService {
                     r2Publication,
                 );
 
+                debug(r2Publication.LCP);
+                debug(r2Publication.LCP.LSD);
+
                 lcpInfo = this.lcpManager.convertLcpLsdInfo(r2Publication.LCP);
 
                 debug(">> lcpInfo + LSD (importEpubFile):");

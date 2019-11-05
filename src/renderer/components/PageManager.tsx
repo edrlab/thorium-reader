@@ -9,11 +9,11 @@ import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 import { routes } from "readium-desktop/renderer/routing";
 
-interface States {
+interface IState {
     activePage: number;
 }
 
-export default class PageManager extends React.Component<{}, States> {
+export default class PageManager extends React.Component<any, IState> {
 
     public constructor(props: {}) {
         super(props);

@@ -37,12 +37,12 @@ export interface DialogType {
         hint: string;
         message: string | undefined;
     };
-    // "lsd-return-confirm": {
-    //     publication: PublicationView;
-    // };
-    // "lsd-renew-confirm": {
-    //     publication: PublicationView;
-    // };
+    "lsd-return-confirm": {
+        publication: PublicationView;
+    };
+    "lsd-renew-confirm": {
+        publication: PublicationView;
+    };
     "same-file-import-confirm": {
         publication: ImportOpdsPublication;
         downloadSample: boolean;

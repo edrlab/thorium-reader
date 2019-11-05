@@ -10,7 +10,8 @@ import * as ReactDOM from "react-dom";
 
 import AccessibleMenu from "./AccessibleMenu";
 
-interface MenuContentProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     id: string;
     open: boolean;
     dir: string;
@@ -20,12 +21,20 @@ interface MenuContentProps {
     setContentRef?: (ref: any) => any;
 }
 
-export default class MenuContent extends React.Component<MenuContentProps, undefined> {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export default class MenuContent extends React.Component<IProps, undefined> {
     private appElement: HTMLElement;
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;
 
-    public constructor(props: any) {
+    public constructor(props: IProps) {
         super(props);
 
         this.appElement = document.getElementById("app");

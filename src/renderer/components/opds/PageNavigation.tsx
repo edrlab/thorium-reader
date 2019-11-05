@@ -17,17 +17,25 @@ import { OpdsResultPageInfos, OpdsResultUrls } from "readium-desktop/common/view
 
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     goto: (url: string, page: number) => void;
     urls: OpdsResultUrls;
     page: OpdsResultPageInfos;
     currentPage: number;
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
 
-class PageNavigation extends React.Component<Props> {
+class PageNavigation extends React.Component<IProps> {
     private lastShortkeyDate: number;
 
-    public constructor(props: Props) {
+    public constructor(props: IProps) {
         super(props);
 
         this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -37,7 +45,7 @@ class PageNavigation extends React.Component<Props> {
         this.firstPage = this.firstPage.bind(this);
     }
 
-    public componentDidUpdate(oldProps: Props) {
+    public componentDidUpdate(oldProps: IProps) {
         if ( this.props.urls !== oldProps.urls) {
             this.lastShortkeyDate = undefined;
         }

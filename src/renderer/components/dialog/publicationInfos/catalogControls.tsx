@@ -18,8 +18,16 @@ import {
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     publication: PublicationView;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
 export class CatalogControls extends React.Component<IProps> {
@@ -54,32 +62,32 @@ export class CatalogControls extends React.Component<IProps> {
 
     private deletePublication(e: any) {
         e.preventDefault();
-        this.props.openDeleteDialog(this.props.publication);
+        this.props.openDeleteDialog();
     }
 
     private handleRead(e: any) {
         e.preventDefault();
 
-        this.props.openReader(this.props.publication);
+        this.props.openReader();
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
-        openReader: (publication: PublicationView) => {
+        openReader: () => {
             dispatch({
                 type: readerActions.ActionType.OpenRequest,
                 payload: {
                     publication: {
-                        identifier: publication.identifier,
+                        identifier: props.publication.identifier,
                     },
                 },
             });
         },
-        openDeleteDialog: (publication: PublicationView) => {
+        openDeleteDialog: () => {
             dispatch(dialogActions.open("delete-publication-confirm",
                 {
-                    publication,
+                    publication: props.publication,
                 },
             ));
         },

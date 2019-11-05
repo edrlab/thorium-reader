@@ -12,9 +12,18 @@ import CatalogMenu from "readium-desktop/renderer/components/publication/menu/Ca
 import OpdsMenu from "readium-desktop/renderer/components/publication/menu/OpdsMenu";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 
-interface IProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     publications: PublicationView[];
     isOpdsView?: boolean;
+}
+
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
 export default class GridView extends React.Component<IProps> {

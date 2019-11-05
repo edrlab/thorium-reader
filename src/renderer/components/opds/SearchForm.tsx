@@ -15,12 +15,21 @@ import {
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TFormEvent } from "readium-desktop/typings/react";
 
-interface IProps extends TranslatorProps, RouteComponentProps {}
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
+}
 
 class SearchForm extends React.Component<IProps> {
     private inputRef: React.RefObject<HTMLInputElement>;
 
-    public constructor(props: any) {
+    public constructor(props: IProps) {
         super(props);
 
         this.inputRef = React.createRef();

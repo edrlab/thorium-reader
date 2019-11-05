@@ -27,7 +27,15 @@ import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 // Logger
 // const debug = debug_("readium-desktop:src/renderer/components/opds/browser");
 
-interface IProps extends RouteComponentProps<IOpdsBrowse>, TranslatorProps, ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse>, ReturnType<typeof mapStateToProps> {
 }
 
 class Browser extends React.Component<IProps> {
@@ -106,7 +114,7 @@ class Browser extends React.Component<IProps> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     navigation: state.opds.browser.navigation,
 });
 

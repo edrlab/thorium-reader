@@ -18,12 +18,20 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 import PageNavigation from "./PageNavigation";
 
-interface IProps extends RouteComponentProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     publications: OpdsPublicationView[] | undefined;
     goto: (url: string, page: number) => void;
     urls: OpdsResultUrls;
     page?: OpdsResultPageInfos;
     currentPage: number;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
 }
 
 class EntryPublicationList extends React.Component<IProps> {
@@ -61,7 +69,7 @@ class EntryPublicationList extends React.Component<IProps> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     location: state.router.location,
 });
 

@@ -15,7 +15,8 @@ import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import LibraryHeader from "./LibraryHeader";
 
-interface IProps extends RouteComponentProps, ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     secondaryHeader?: React.ReactElement;
     title?: string;
     mainClassName?: string;
@@ -30,6 +31,13 @@ interface IProps extends RouteComponentProps, ReturnType<typeof mapStateToProps>
     // In the future, if we can define its call signature conditionally
     // on the existence of `children` in `P`, then we should remove this.
     // readonly props: Readonly<P> & Readonly<{ children?: ReactNode }>;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps, ReturnType<typeof mapStateToProps> {
 }
 
 class LibraryLayout extends React.Component<IProps> {
@@ -75,7 +83,7 @@ class LibraryLayout extends React.Component<IProps> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
         dialogOpen: state.dialog.open,
     });
 

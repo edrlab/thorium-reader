@@ -16,7 +16,8 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;
     fullscreen: boolean;
     currentLocation: LocatorExtended;
@@ -24,13 +25,21 @@ interface Props extends TranslatorProps {
     handleLinkClick: (event: any, url: string) => void;
 }
 
-interface States {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     moreInfo: boolean;
 }
 
-export class ReaderFooter extends React.Component<Props, States> {
+export class ReaderFooter extends React.Component<IProps, IState> {
 
-    public constructor(props: Props) {
+    public constructor(props: IProps) {
         super(props);
 
         this.state =  {

@@ -13,9 +13,17 @@ import PublicationListElement from "readium-desktop/renderer/components/publicat
 
 import NoPublicationInfo from "./NoPublicationInfo";
 
-interface IProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
 export default class ListView extends React.Component<IProps> {

@@ -14,14 +14,23 @@ import * as styles from "readium-desktop/renderer/assets/styles/publication.css"
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
-interface IProps extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     publication: PublicationView;
     coverTypeUrl?: keyof CoverView | undefined;
     onClick?: () => void;
     onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
 }
 
-class Cover extends React.Component<IProps, null> {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+class Cover extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}>  {
 

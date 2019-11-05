@@ -29,13 +29,22 @@ import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
-interface IProps extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     open: boolean;
     r2Publication: R2Publication;
     handleLinkClick: (event: any, url: string) => void;
     handleBookmarkClick: (locator: any) => void;
     toggleMenu: any;
     focusNaviguationMenu: () => void;
+}
+
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
 interface IState {

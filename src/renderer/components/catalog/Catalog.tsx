@@ -20,7 +20,15 @@ import GridView from "./GridView";
 import Header, { DisplayType } from "./Header";
 import ListView from "./ListView";
 
-interface IProps extends TranslatorProps, RouteComponentProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
 }
 
 interface IState {

@@ -37,7 +37,8 @@ import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     open: boolean;
     settings: ReaderConfig;
     indexes: {fontSize: number, pageMargins: number, wordSpacing: number, letterSpacing: number, lineHeight: number};
@@ -48,14 +49,22 @@ interface Props extends TranslatorProps {
     focusSettingMenuButton: () => void;
 }
 
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
 enum themeType {
     Without,
     Sepia,
     Night,
 }
 
-export class ReaderOptions extends React.Component<Props> {
-    public constructor(props: Props) {
+export class ReaderOptions extends React.Component<IProps> {
+    public constructor(props: IProps) {
         super(props);
 
         this.handleChooseTheme = this.handleChooseTheme.bind(this);

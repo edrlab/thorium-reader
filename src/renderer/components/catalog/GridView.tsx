@@ -18,12 +18,20 @@ import NoPublicationInfo from "./NoPublicationInfo";
 import SortMenu from "./SortMenu";
 import TagLayout from "./TagLayout";
 
-interface GridViewProps extends RouteComponentProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
+}
 
-interface GridViewState {
+interface IState {
     tabTags: string[];
     status: SortStatus;
 }
@@ -33,8 +41,8 @@ enum SortStatus {
     Alpha,
 }
 
-export default class GridView extends React.Component<GridViewProps, GridViewState> {
-    public constructor(props: any) {
+export default class GridView extends React.Component<IProps, IState> {
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -45,7 +53,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         this.sortbyCount = this.sortbyCount.bind(this);
     }
 
-    public componentDidUpdate(oldProps: GridViewProps) {
+    public componentDidUpdate(oldProps: IProps) {
         if (this.props.tags !== oldProps.tags) {
             const { status } = this.state;
             switch (status) {

@@ -7,22 +7,31 @@
 
 import * as React from "react";
 
-interface Props {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     onClickOutside: any;
     disabled?: boolean;
 }
 
-export default class OutsideClickAlerter extends React.Component<Props> {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export default class OutsideClickAlerter extends React.Component<IProps> {
     private wrapperRef: any;
 
-    public constructor(props: Props) {
+    public constructor(props: IProps) {
         super(props);
 
         this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
-    public componentDidUpdate(oldProps: Props) {
+    public componentDidUpdate(oldProps: IProps) {
         if (this.props.disabled && !oldProps.disabled) {
             document.removeEventListener("mousedown", this.handleClickOutside);
         } else if (!this.props.disabled && oldProps.disabled) {

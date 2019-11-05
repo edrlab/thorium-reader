@@ -7,17 +7,26 @@
 
 import * as React from "react";
 
-interface MenuButtonProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     menuId: string;
     open: boolean;
     toggle: () => void;
     focusMenuButton?: (ref: React.RefObject<HTMLButtonElement>, menuID: string) => void;
 }
 
-export default class MenuButton extends React.Component<MenuButtonProps, undefined> {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export default class MenuButton extends React.Component<IProps, undefined> {
     private menuButton = React.createRef<HTMLButtonElement>();
 
-    public constructor(props: any) {
+    public constructor(props: IProps) {
         super(props);
 
         this.getFocusBack = this.getFocusBack.bind(this);

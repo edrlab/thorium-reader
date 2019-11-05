@@ -11,9 +11,18 @@ import { TPublicationApiExportPublication } from "readium-desktop/main/api/publi
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
-interface IProps extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     publication: PublicationView;
     exportPublication?: TPublicationApiExportPublication;
+}
+
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
 class PublicationExportButton extends React.Component<IProps> {

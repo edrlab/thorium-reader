@@ -9,7 +9,8 @@ import * as React from "react";
 
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-interface DragAndDropListProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     items: any[];
     elementContent: (item: any, index: number) => any;
     className?: string;
@@ -18,8 +19,16 @@ interface DragAndDropListProps {
     onChange: (list: any) => void;
 }
 
-export default class DragAndDropList extends React.Component<DragAndDropListProps, undefined> {
-    public constructor(props: any) {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export default class DragAndDropList extends React.Component<IProps, undefined> {
+    public constructor(props: IProps) {
         super(props);
 
         this.onDragEnd = this.onDragEnd.bind(this);

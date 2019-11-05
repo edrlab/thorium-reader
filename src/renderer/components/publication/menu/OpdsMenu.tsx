@@ -17,8 +17,16 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     publication: OpdsPublicationView;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 export class PublicationCard extends React.Component<IProps> {
@@ -79,29 +87,29 @@ export class PublicationCard extends React.Component<IProps> {
 
     private onAddToCatalogClick(e: TMouseEvent, downloadSample?: boolean) {
         e.preventDefault();
-        this.props.verifyImport(this.props.publication, downloadSample);
+        this.props.verifyImport(downloadSample);
     }
 
     private displayPublicationInfo(e: TMouseEvent) {
         e.preventDefault();
-        this.props.displayPublicationInfo(this.props.publication);
+        this.props.displayPublicationInfo();
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
-        displayPublicationInfo: (publication: OpdsPublicationView) => {
+        displayPublicationInfo: () => {
             dispatch(dialogActions.open("publication-info",
                 {
-                    opdsPublication: publication,
+                    opdsPublication: props.publication,
                     publicationIdentifier: undefined,
                 },
             ));
         },
-        verifyImport: (publication: OpdsPublicationView, downloadSample: boolean) => {
+        verifyImport: (downloadSample: boolean) => {
             dispatch(importAction.verifyImport(
                 {
-                    publication,
+                    publication: props.publication,
                     downloadSample,
                 },
             ));
@@ -109,8 +117,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-// any because recursive type doesn't works
-const mapStateToProps = (state: RootState, props: any) => {
+const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
         buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.publication.url) > -1,
     };

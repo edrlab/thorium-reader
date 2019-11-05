@@ -7,13 +7,22 @@
 
 import * as React from "react";
 
-interface Props {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     anchorId: string;
     label: string;
     className?: string;
 }
 
-export default class SkipLink extends React.Component<Props> {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export default class SkipLink extends React.Component<IProps> {
     public render(): React.ReactElement<{}>  {
         const { label, className } = this.props;
         return (

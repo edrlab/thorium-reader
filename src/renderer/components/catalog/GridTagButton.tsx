@@ -8,13 +8,21 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-interface IProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     name: string;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
 class GridTagButton extends React.Component<IProps> {
 
-    public constructor(props: any) {
+    public constructor(props: IProps) {
         super(props);
 
     }

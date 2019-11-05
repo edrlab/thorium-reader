@@ -25,9 +25,17 @@ import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
-interface BrowserResultProps extends RouteComponentProps, TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     url: string;
     breadcrumb: BreadCrumbItem[];
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
 }
 
 interface IState {
@@ -36,10 +44,10 @@ interface IState {
     currentResultPage: number;
 }
 
-export class BrowserResult extends React.Component<BrowserResultProps, IState> {
+export class BrowserResult extends React.Component<IProps, IState> {
     private currentUrl: string;
 
-    constructor(props: BrowserResultProps) {
+    constructor(props: IProps) {
         super(props);
         this.state = {
             browserError: undefined,
@@ -54,7 +62,7 @@ export class BrowserResult extends React.Component<BrowserResultProps, IState> {
         this.browseOpds(this.props.url);
     }
 
-    public componentDidUpdate(prevProps: BrowserResultProps) {
+    public componentDidUpdate(prevProps: IProps) {
         if (prevProps.url !== this.props.url ||
             prevProps.location.search !== this.props.location.search) {
             // New url to browse

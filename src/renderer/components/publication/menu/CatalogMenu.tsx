@@ -16,8 +16,16 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import PublicationExportButton from "./PublicationExportButton";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     publication: PublicationView;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -25,7 +33,7 @@ interface IState {
 }
 
 class CatalogMenu extends React.Component<IProps, IState> {
-    constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -58,28 +66,28 @@ class CatalogMenu extends React.Component<IProps, IState> {
     }
 
     private deletePublication() {
-        this.props.openDeleteDialog(this.props.publication);
+        this.props.openDeleteDialog();
     }
 
     private displayPublicationInfo() {
-        this.props.displayPublicationInfo(this.props.publication);
+        this.props.displayPublicationInfo();
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
-        displayPublicationInfo: (publication: PublicationView) => {
+        displayPublicationInfo: () => {
             dispatch(dialogActions.open("publication-info",
                 {
-                    publicationIdentifier: publication.identifier,
+                    publicationIdentifier: props.publication.identifier,
                     opdsPublication: undefined,
                 },
             ));
         },
-        openDeleteDialog: (publication: PublicationView) => {
+        openDeleteDialog: () => {
             dispatch(dialogActions.open("delete-publication-confirm",
                 {
-                    publication,
+                    publication: props.publication,
                 },
             ));
         },

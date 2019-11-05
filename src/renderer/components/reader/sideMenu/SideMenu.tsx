@@ -15,7 +15,8 @@ import AccessibleMenu from "readium-desktop/renderer/components/utils/menu/Acces
 import { SectionData } from "./sideMenuData";
 import SideMenuSection from "./SideMenuSection";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     open: boolean;
     sections: SectionData[];
     className: string;
@@ -24,12 +25,20 @@ interface Props extends TranslatorProps {
     focusMenuButton: () => void;
 }
 
-interface State {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     openedSection: number;
 }
 
-export class SideMenu extends React.Component<Props, State> {
-    public constructor(props: Props) {
+export class SideMenu extends React.Component<IProps, IState> {
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {

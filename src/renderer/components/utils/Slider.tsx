@@ -12,23 +12,32 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 
 import { TranslatorProps, withTranslator } from "./hoc/translator";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     content: JSX.Element[];
     className?: string;
 }
 
-interface State {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     position: number;
     refreshVisible: boolean;
 }
 
-class Slider extends React.Component<Props, State> {
+class Slider extends React.Component<IProps, IState> {
     private contentRef: any;
     private contentElRefs: any[] = [];
     private wrapperRef: any;
     private contentElVisible: boolean[] = [];
 
-    public constructor(props: Props) {
+    public constructor(props: IProps) {
         super(props);
 
         this.state = {

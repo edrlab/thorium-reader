@@ -17,16 +17,24 @@ import * as uuid from "uuid";
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import Toast, { ToastType as CompToastType } from "./Toast";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-interface State {
+interface IState {
     toastList: {
         [id: string]: ToastState;
     };
 }
 
-export class ToastManager extends React.Component<IProps, State> {
+export class ToastManager extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
@@ -111,7 +119,7 @@ export class ToastManager extends React.Component<IProps, State> {
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         toast: state.toast,
     };
