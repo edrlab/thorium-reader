@@ -9,7 +9,7 @@ import { IBreadCrumbItem } from "readium-desktop/renderer/components/layout/Brea
 
 export interface IOpdsHeaderState {
     search?: string;
-    home?: string;
+    start?: string;
     bookshelf?: string;
     self?: string;
     up?: string;
