@@ -14,6 +14,7 @@ import { parseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
+import { getSearchUrlFromOpdsLinks } from 'readium-desktop/renderer/opds/search/search';
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 
@@ -69,9 +70,9 @@ function* updateHeaderLinkWatcher(): SagaIterator {
                     bookshelf: linkViewBookshelf && linkViewBookshelf.Href,
                 }));
 
-                const linkViewSearch = links.search && // call async funct to find search url
+                const linkUrl: string | undefined = yield call(getSearchUrlFromOpdsLinks, links.search);
                 yield put(opdsActions.headerLinkUpdate({
-                    search: linkViewSearch && linkViewSearch.href,
+                    search: linkUrl,
                 }));
             }
         }
