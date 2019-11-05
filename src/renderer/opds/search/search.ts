@@ -22,23 +22,29 @@ export async function getSearchUrlFromOpdsLinks(
             if (atomLink.Href && atomLink.Href.includes("{searchTerms}")) {
                 resolve(atomLink.Href);
             }
+
         } else if (opensearchLink) {
             // tslint:disable-next-line: max-line-length
             // http://examples.net/opds/search/?q={searchTerms}&author={atom:author}&translator={atom:contributor}&title={atom:title}
+
             const xhr = new XMLHttpRequest();
             xhr.open("GET", opensearchLink.Href);
             xhr.addEventListener("loadend", function() {
                 try {
                     const dom = this.responseXML;
                     const urlsElem = dom.documentElement.querySelectorAll("url");
+
                     for (const urlElem of urlsElem.values()) {
                         const type = urlElem.getAttribute("type");
+
                         if (type && type.includes("application/atom+xml")) {
                             const searchUrl = urlElem.getAttribute("template");
+
                             if (searchUrl && searchUrl.includes("{searchTerms}")) {
                                 let searchLink = searchUrl.replace("{atom:author}", "\"\"");
                                 searchLink = searchLink.replace("{atom:contributor}", "\"\"");
                                 searchLink = searchLink.replace("{atom:title}", "\"\"");
+
                                 resolve(searchLink);
                             }
                         }
