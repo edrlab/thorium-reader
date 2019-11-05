@@ -172,13 +172,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IPropsMapState extends IBaseProps, ReturnType<typeof mapStateToProps> {
-}
-// tslint:disable-next-line: no-empty-interface
-interface IPropsMapDispatch extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
-}
-// tslint:disable-next-line: no-empty-interface
-interface IProps extends IPropsMapState, IPropsMapDispatch {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -730,11 +724,11 @@ export class Reader extends React.Component<IProps, IState> {
     }
 
     private handleReaderClose() {
-        this.props.closeReader();
+        this.props.closeReader(this.props.reader);
     }
 
     private handleReaderDetach() {
-        this.props.detachReader();
+        this.props.detachReader(this.props.reader);
     }
 
     private handleFullscreenClick() {
@@ -829,7 +823,7 @@ const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: TDispatch, props: IPropsMapState) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         toggleFullscreen: (fullscreenOn: boolean) => {
             if (fullscreenOn) {
@@ -838,11 +832,11 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IPropsMapState) => {
                 dispatch(readerActions.setFullscreenOff());
             }
         },
-        closeReader: () => {
-            dispatch(readerActions.close(props.reader, true));
+        closeReader: (reader: any) => {
+            dispatch(readerActions.close(reader, true));
         },
-        detachReader: () => {
-            dispatch(readerActions.detach(props.reader));
+        detachReader: (reader: any) => {
+            dispatch(readerActions.detach(reader));
         },
         displayPublicationInfo: (pubId: string) => {
             dispatch(dialogActions.open("publication-info-reader",
