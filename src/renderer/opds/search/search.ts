@@ -49,6 +49,8 @@ export async function getSearchUrlFromOpdsLinks(
                             }
                         }
                     }
+
+                    resolve(undefined);
                 } catch (err) {
                     resolve(undefined);
                 }
