@@ -120,7 +120,6 @@ export class TagManager extends React.Component<IProps, IState> {
     }
 
     private sendTags(tags: string[]) {
-//        this.props.updateTags(this.props.publicationIdentifier, tags);
         apiAction("publication/updateTags", this.props.publicationIdentifier, tags)
             .catch((error) => console.error("Error to fetch api publication/updateTags", error));
     }
