@@ -20,7 +20,15 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import Dialog from "./Dialog";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -99,7 +107,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
 
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         closeDialog: () => {
             dispatch(
@@ -115,7 +123,7 @@ const mapDispatchToProps = (dispatch: TDispatch) => {
     };
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     ...{
         open: state.dialog.type === "lcp-authentication",
     }, ...state.dialog.data as DialogType["lcp-authentication"],

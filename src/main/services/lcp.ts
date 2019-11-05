@@ -203,86 +203,92 @@ export class LcpManager {
     //     return await this.publicationRepository.get(publicationDocument.identifier);
     // }
 
-    // public async renewPublicationLicense(
-    //     publicationDocument: PublicationDocument,
-    // ): Promise<PublicationDocument> {
-    //     // Update lsd status
-    //     let lsdStatus = await this.getLsdStatus(publicationDocument);
-    //     if (lsdStatus.isFailure) {
-    //         throw new Error(`Http getLsdStatus error with code
-    //             ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-    //     }
-    //     let newPublicationDocument = await this.updateLsdStatus(
-    //         publicationDocument,
-    //         lsdStatus.data,
-    //     );
-    //     if (newPublicationDocument.isFailure) {
-    //         throw new Error(`Http updateLsdStatus error with code
-    //             ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
-    //     }
-    //     // Renew
-    //     await lsdRenew(
-    //         undefined,
-    //         lsdStatus.data,
-    //         this.deviceIdManager,
-    //     );
+    public async renewPublicationLicense(
+        publicationDocument: PublicationDocument,
+    ): Promise<PublicationDocument> {
 
-    //     // Update again lsd status
-    //     lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
-    //     if (lsdStatus.isFailure) {
-    //         throw new Error(`Http getLsdStatus error with code
-    //             ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-    //     }
-    //     newPublicationDocument = await this.updateLsdStatus(
-    //         publicationDocument,
-    //         lsdStatus.data,
-    //     );
-    //     if (newPublicationDocument.isFailure) {
-    //         throw new Error(`Http getLsdStatus error with code
-    //             ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
-    //     }
-    //     return await this.publicationRepository.get(publicationDocument.identifier);
-    // }
+        return Promise.resolve(publicationDocument);
 
-    // public async returnPublicationLicense(
-    //     publicationDocument: PublicationDocument,
-    // ): Promise<PublicationDocument> {
-    //     // Update lsd status
-    //     let lsdStatus = await this.getLsdStatus(publicationDocument);
-    //     if (lsdStatus.isFailure) {
-    //         throw new Error(`Http getLsdStatus error with code
-    //             ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-    //     }
-    //     let newPublicationDocument = await this.updateLsdStatus(
-    //         publicationDocument,
-    //         lsdStatus.data,
-    //     );
-    //     if (newPublicationDocument.isFailure) {
-    //         throw new Error(`Http getLsdStatus error with code
-    //             ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
-    //     }
-    //     // Renew
-    //     await lsdReturn(
-    //         lsdStatus,
-    //         this.deviceIdManager,
-    //     );
+        // // Update lsd status
+        // let lsdStatus = await this.getLsdStatus(publicationDocument);
+        // if (lsdStatus.isFailure) {
+        //     throw new Error(`Http getLsdStatus error with code
+        //         ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        // }
+        // let newPublicationDocument = await this.updateLsdStatus(
+        //     publicationDocument,
+        //     lsdStatus.data,
+        // );
+        // if (newPublicationDocument.isFailure) {
+        //     throw new Error(`Http updateLsdStatus error with code
+        //         ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+        // }
+        // // Renew
+        // await lsdRenew(
+        //     undefined,
+        //     lsdStatus.data,
+        //     this.deviceIdManager,
+        // );
 
-    //     // Update again lsd status
-    //     lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
-    //     if (lsdStatus.isFailure) {
-    //         throw new Error(`Http getLsdStatus error with code
-    //             ${lsdStatus.statusCode} for ${lsdStatus.url}`);
-    //     }
-    //     newPublicationDocument = await this.updateLsdStatus(
-    //         publicationDocument,
-    //         lsdStatus.data,
-    //     );
-    //     if (newPublicationDocument.isFailure) {
-    //         throw new Error(`Http updateLsdStatus error with code
-    //             ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
-    //     }
-    //     return await this.publicationRepository.get(publicationDocument.identifier);
-    // }
+        // // Update again lsd status
+        // lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
+        // if (lsdStatus.isFailure) {
+        //     throw new Error(`Http getLsdStatus error with code
+        //         ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        // }
+        // newPublicationDocument = await this.updateLsdStatus(
+        //     publicationDocument,
+        //     lsdStatus.data,
+        // );
+        // if (newPublicationDocument.isFailure) {
+        //     throw new Error(`Http getLsdStatus error with code
+        //         ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+        // }
+        // return await this.publicationRepository.get(publicationDocument.identifier);
+    }
+
+    public async returnPublication(
+        publicationDocument: PublicationDocument,
+    ): Promise<PublicationDocument> {
+
+        return Promise.resolve(publicationDocument);
+
+        // // Update lsd status
+        // let lsdStatus = await this.getLsdStatus(publicationDocument);
+        // if (lsdStatus.isFailure) {
+        //     throw new Error(`Http getLsdStatus error with code
+        //         ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        // }
+        // let newPublicationDocument = await this.updateLsdStatus(
+        //     publicationDocument,
+        //     lsdStatus.data,
+        // );
+        // if (newPublicationDocument.isFailure) {
+        //     throw new Error(`Http getLsdStatus error with code
+        //         ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+        // }
+        // // Renew
+        // await lsdReturn(
+        //     lsdStatus,
+        //     this.deviceIdManager,
+        // );
+
+        // // Update again lsd status
+        // lsdStatus = await this.getLsdStatus(newPublicationDocument.data);
+        // if (lsdStatus.isFailure) {
+        //     throw new Error(`Http getLsdStatus error with code
+        //         ${lsdStatus.statusCode} for ${lsdStatus.url}`);
+        // }
+        // newPublicationDocument = await this.updateLsdStatus(
+        //     publicationDocument,
+        //     lsdStatus.data,
+        // );
+        // if (newPublicationDocument.isFailure) {
+        //     throw new Error(`Http updateLsdStatus error with code
+        //         ${newPublicationDocument.statusCode} for ${newPublicationDocument.url}`);
+        // }
+        // return await this.publicationRepository.get(publicationDocument.identifier);
+    }
 
     // public async getLsdStatus(publicationDocument: PublicationDocument): Promise<IHttpGetResult<string, any>> {
     //     // Get lsd status

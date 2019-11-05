@@ -24,23 +24,23 @@ import { Server } from "@r2-streamer-js/http/server";
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
 
 export interface ILcpApi {
-    // renewPublicationLicense: (data: any) => Promise<void>;
     // registerPublicationLicense: (data: any) => Promise<void>;
-    // returnPublication: (data: any) => Promise<void>;
+    renewPublicationLicense: (data: any) => Promise<void>;
+    returnPublication: (data: any) => Promise<void>;
     // getLsdStatus: (data: any) => Promise<IHttpGetResult<string, any>>;
     unlockPublicationWithPassphrase: (data: any) => Promise<void>;
 }
 
-// export type TLcpApiRenewPublicationLicense = ILcpApi["renewPublicationLicense"];
 // export type TLcpApiRegisterPublicationLicense = ILcpApi["registerPublicationLicense"];
-// export type TLcpApiReturnPublication = ILcpApi["returnPublication"];
+export type TLcpApiRenewPublicationLicense = ILcpApi["renewPublicationLicense"];
+export type TLcpApiReturnPublication = ILcpApi["returnPublication"];
 // export type TLcpApiGgetLsdStatus = ILcpApi["getLsdStatus"];
 export type TLcpApiUnlockPublicationWithPassphrase = ILcpApi["unlockPublicationWithPassphrase"];
 
 export interface ILcpModuleApi {
-    // "lcp/renewPublicationLicense": TLcpApiRenewPublicationLicense;
     // "lcp/registerPublicationLicense": TLcpApiRegisterPublicationLicense;
-    // "lcp/returnPublication": TLcpApiReturnPublication;
+    "lcp/renewPublicationLicense": TLcpApiRenewPublicationLicense;
+    "lcp/returnPublication": TLcpApiReturnPublication;
     // "lcp/getLsdStatus": TLcpApiGgetLsdStatus;
     "lcp/unlockPublicationWithPassphrase": TLcpApiUnlockPublicationWithPassphrase;
 }
@@ -65,13 +65,21 @@ export class LcpApi {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    // public async renewPublicationLicense(data: any): Promise<void> {
-    //     const { publication } = data;
-    //     const publicationDocument = await this.publicationRepository.get(
-    //         publication.identifier,
-    //     );
-    //     await this.lcpManager.renewPublicationLicense(publicationDocument);
-    // }
+    public async renewPublicationLicense(data: any): Promise<void> {
+        const { publication } = data;
+        const publicationDocument = await this.publicationRepository.get(
+            publication.identifier,
+        );
+        await this.lcpManager.renewPublicationLicense(publicationDocument);
+    }
+
+    public async returnPublication(data: any): Promise<void> {
+        const { publication } = data;
+        const publicationDocument = await this.publicationRepository.get(
+            publication.identifier,
+        );
+        await this.lcpManager.returnPublication(publicationDocument);
+    }
 
     // public async registerPublicationLicense(data: any): Promise<void> {
     //     const { publication } = data;
@@ -79,14 +87,6 @@ export class LcpApi {
     //         publication.identifier,
     //     );
     //     await this.lcpManager.registerPublicationLicense(publicationDocument);
-    // }
-
-    // public async returnPublication(data: any): Promise<void> {
-    //     const { publication } = data;
-    //     const publicationDocument = await this.publicationRepository.get(
-    //         publication.identifier,
-    //     );
-    //     await this.lcpManager.returnPublicationLicense(publicationDocument);
     // }
 
     // public async getLsdStatus(data: any) {
