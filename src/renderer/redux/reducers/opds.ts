@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { IBreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
+import { diRendererGet } from "readium-desktop/renderer/di";
 // import * as debug_ from "debug";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import {
@@ -17,8 +18,15 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 // Logger
 // const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
 
+const translator = diRendererGet("translator");
+
+const initBreadcrumb: IBreadCrumbItem[] = [{
+    name: translator.translate("opds.breadcrumbRoot"),
+    path: "/opds",
+}];
+
 export function opdsBreadcrumbReducer(
-    state: IBreadCrumbItem[] = [],
+    state: IBreadCrumbItem[] = initBreadcrumb,
     action: IActionBrowseRequest,
 ) {
     switch (action.type) {
