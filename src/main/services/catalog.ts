@@ -13,7 +13,6 @@ import * as path from "path";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { LcpInfo } from "readium-desktop/common/models/lcp";
-import { Publication } from "readium-desktop/common/models/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
 import { open } from "readium-desktop/common/redux/actions/toast";
@@ -245,42 +244,42 @@ export class CatalogService {
         this.publicationStorage.removePublication(publicationIdentifier);
     }
 
-    /**
-     * Refresh publication metadata
-     *
-     * @param publication Publication to refresh
-     * @return: Refreshed publication
-     */
-    public async refreshPublicationMetadata(publication: Publication) {
-        const pubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
-        // const pubPath = path.join(
-        //     this.publicationStorage.getRootPath(),
-        //     publication.files[0].url.substr(6),
-        // );
+    // /**
+    //  * Refresh publication metadata
+    //  *
+    //  * @param publication Publication to refresh
+    //  * @return: Refreshed publication
+    //  */
+    // public async refreshPublicationMetadata(publication: Publication) {
+    //     const pubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
+    //     // const pubPath = path.join(
+    //     //     this.publicationStorage.getRootPath(),
+    //     //     publication.files[0].url.substr(6),
+    //     // );
 
-        const r2Publication = await EpubParsePromise(pubPath);
+    //     const r2Publication = await EpubParsePromise(pubPath);
 
-        // Searialized parsed epub
-        const jsonParsedPublication = TAJSON.serialize(r2Publication);
-        const b64ParsedPublication = Buffer
-            .from(JSON.stringify(jsonParsedPublication))
-            .toString("base-64");
+    //     // Searialized parsed epub
+    //     const jsonParsedPublication = TAJSON.serialize(r2Publication);
+    //     const b64ParsedPublication = Buffer
+    //         .from(JSON.stringify(jsonParsedPublication))
+    //         .toString("base64");
 
-        // Merge with the original publication
-        const origPub = await this.publicationRepository.get(publication.identifier);
-        const newPub = Object.assign(
-            {},
-            origPub,
-            {
-                resources: {
-                    filePublication: b64ParsedPublication,
-                },
-            },
-        );
+    //     // Merge with the original publication
+    //     const origPub = await this.publicationRepository.get(publication.identifier);
+    //     const newPub = Object.assign(
+    //         {},
+    //         origPub,
+    //         {
+    //             resources: {
+    //                 filePublication: b64ParsedPublication,
+    //             },
+    //         },
+    //     );
 
-        // Store refreshed metadata in db
-        return await this.publicationRepository.save(newPub);
-    }
+    //     // Store refreshed metadata in db
+    //     return await this.publicationRepository.save(newPub);
+    // }
 
     public async exportPublication(publication: PublicationView) {
         // Get main window
@@ -418,11 +417,17 @@ export class CatalogService {
                 debug(r2Publication.LCP.LSD);
 
                 lcpInfo = this.lcpManager.convertLcpLsdInfo(r2Publication.LCP);
+                pubDocument.lcp = lcpInfo;
 
                 debug(">> lcpInfo + LSD (importEpubFile):");
                 debug(JSON.stringify(lcpInfo, null, 4));
             } catch (err) {
                 debug(err);
+            }
+
+            if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+                debug("processStatusDocument LCP updated.");
+                pubDocument.hash = await extractCrc32OnZip(filePath);
             }
         }
 

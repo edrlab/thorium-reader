@@ -19,29 +19,21 @@ import { Store } from "redux";
 
 import { Server } from "@r2-streamer-js/http/server";
 
-// import { IHttpGetResult } from "readium-desktop/common/utils/http";
-
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
 
 export interface ILcpApi {
-    // registerPublicationLicense: (data: any) => Promise<void>;
     renewPublicationLicense: (data: any) => Promise<void>;
     returnPublication: (data: any) => Promise<void>;
-    // getLsdStatus: (data: any) => Promise<IHttpGetResult<string, any>>;
     unlockPublicationWithPassphrase: (data: any) => Promise<void>;
 }
 
-// export type TLcpApiRegisterPublicationLicense = ILcpApi["registerPublicationLicense"];
 export type TLcpApiRenewPublicationLicense = ILcpApi["renewPublicationLicense"];
 export type TLcpApiReturnPublication = ILcpApi["returnPublication"];
-// export type TLcpApiGgetLsdStatus = ILcpApi["getLsdStatus"];
 export type TLcpApiUnlockPublicationWithPassphrase = ILcpApi["unlockPublicationWithPassphrase"];
 
 export interface ILcpModuleApi {
-    // "lcp/registerPublicationLicense": TLcpApiRegisterPublicationLicense;
     "lcp/renewPublicationLicense": TLcpApiRenewPublicationLicense;
     "lcp/returnPublication": TLcpApiReturnPublication;
-    // "lcp/getLsdStatus": TLcpApiGgetLsdStatus;
     "lcp/unlockPublicationWithPassphrase": TLcpApiUnlockPublicationWithPassphrase;
 }
 
@@ -80,19 +72,6 @@ export class LcpApi {
         );
         await this.lcpManager.returnPublication(publicationDocument);
     }
-
-    // public async registerPublicationLicense(data: any): Promise<void> {
-    //     const { publication } = data;
-    //     const publicationDocument = await this.publicationRepository.get(
-    //         publication.identifier,
-    //     );
-    //     await this.lcpManager.registerPublicationLicense(publicationDocument);
-    // }
-
-    // public async getLsdStatus(data: any) {
-    //     const { publication } = data;
-    //     return await this.lcpManager.getLsdStatus(publication);
-    // }
 
     public async unlockPublicationWithPassphrase(data: any) {
         const { publication, passphrase } = data;

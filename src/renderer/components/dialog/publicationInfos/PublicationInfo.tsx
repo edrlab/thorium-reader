@@ -250,8 +250,6 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 }
 
-// props is typed with any because connect has a bad interpretation of IProps
-// IProps has a circular reference in this case
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         closeDialog: () => {

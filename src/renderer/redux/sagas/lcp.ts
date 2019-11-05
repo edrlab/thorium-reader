@@ -11,9 +11,6 @@ import { diRendererGet } from "readium-desktop/renderer/di";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
-// import { PublicationView } from "readium-desktop/common/views/publication";
-// import { ReaderState } from "readium-desktop/renderer/redux/states/reader";
-
 export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
     while (true) {
         const action: any = yield take(lcpActions.ActionType.UserKeyCheckRequest);

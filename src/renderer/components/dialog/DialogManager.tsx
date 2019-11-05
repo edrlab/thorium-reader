@@ -16,9 +16,8 @@ import Information from "./Information";
 import LcpAuthentication from "./LcpAuthentication";
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
 import PublicationInfo from "./publicationInfos/PublicationInfo";
-
-// import RenewLsdConfirm from "./RenewLsdConfirm";
-// import ReturnLsdConfirm from "./ReturnLsdConfirm";
+import RenewLsdConfirm from "./RenewLsdConfirm";
+import ReturnLsdConfirm from "./ReturnLsdConfirm";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -46,8 +45,8 @@ class DialogManager extends React.Component<IProps> {
                 <DeletePublicationConfirm></DeletePublicationConfirm>
                 <DeleteOpdsFeedConfirm></DeleteOpdsFeedConfirm>
                 <LcpAuthentication></LcpAuthentication>
-                {/* <RenewLsdConfirm></RenewLsdConfirm>
-                <ReturnLsdConfirm></ReturnLsdConfirm> */}
+                <RenewLsdConfirm></RenewLsdConfirm>
+                <ReturnLsdConfirm></ReturnLsdConfirm>
                 <Information></Information>
                 <PublicationInfo></PublicationInfo>
             </>

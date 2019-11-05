@@ -24,10 +24,6 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import CatalogMenu from "./menu/CatalogMenu";
 import OpdsMenu from "./menu/OpdsMenu";
 
-// import { LsdStatus } from "readium-desktop/common/models/lcp";
-// import { lcpReadable } from "readium-desktop/utils/publication";
-// import { apiAction } from "readium-desktop/renderer/apiAction";
-
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publication: PublicationView;
@@ -44,7 +40,6 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 interface IState {
     menuOpen: boolean;
-    // lsdStatus: LsdStatus | undefined;
 }
 
 class PublicationCard extends React.Component<IProps, IState> {
@@ -53,23 +48,9 @@ class PublicationCard extends React.Component<IProps, IState> {
 
         this.state = {
             menuOpen: false,
-            // lsdStatus: undefined,
         };
         this.openCloseMenu = this.openCloseMenu.bind(this);
         this.truncateTitle = this.truncateTitle.bind(this);
-    }
-
-    public componentDidMount() {
-        // const { publication } = this.props;
-        // if (publication.lcp) {
-        //     apiAction("lcp/getLsdStatus", { publication })
-        //         .then((request) => {
-        //             if (request.isSuccess) {
-        //                 this.setState({ lsdStatus: request.data });
-        //             }
-        //         })
-        //         .catch((error) => console.error("Error to fetch api lcp/getLsdStatus", error));
-        // }
     }
 
     public render(): React.ReactElement<{}> {
@@ -127,11 +108,8 @@ class PublicationCard extends React.Component<IProps, IState> {
     private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
         const { publication } = this.props;
-        // const { lsdStatus } = this.state;
 
-        if (this.props.isOpds
-            // || !lcpReadable(publication, lsdStatus)
-            ) {
+        if (this.props.isOpds) {
             this.props.openInfosDialog(publication);
         } else {
             this.props.openReader(publication);

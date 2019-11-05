@@ -5,10 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
@@ -21,11 +21,6 @@ import { IOpdsBrowse } from "src/renderer/routing";
 import BreadCrumb, { BreadCrumbItem } from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
 import Header from "./Header";
-
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-
-// Logger
-// const debug = debug_("readium-desktop:src/renderer/components/opds/browser");
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

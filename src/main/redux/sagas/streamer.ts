@@ -18,9 +18,6 @@ import { all, call, put, select, take } from "redux-saga/effects";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Server } from "@r2-streamer-js/http/server";
 
-// import * as path from "path";
-// import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
 
@@ -226,41 +223,6 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                 }
             } catch (error) {
                 debug(error);
-                // Get lsd status
-                // try {
-                //     publication = yield call(
-                //         publicationRepository.get.bind(publicationRepository),
-                //         action.payload.publication.identifier,
-                //     );
-
-                //     const lsdStatus: any = yield call(
-                //         lcpManager.getLsdStatus.bind(lcpManager),
-                //         publication,
-                //     );
-
-                //     if (
-                //         lsdStatus.status === "active" ||
-                //         lsdStatus.status === "ready"
-                //     ) {
-                //         const publicationViewConverter = diMainGet("publication-view-converter");
-                //         const publicationView = publicationViewConverter.convertDocumentToView(publication);
-
-                //         // Publication is protected and is not expired
-                //         yield put(lcpActions.checkUserKey(
-                //             publicationView,
-                //             r2Publication.LCP.Encryption.UserKey.TextHint,
-                //         ));
-                //     } else {
-                //         yield put(dialogActions.open("publication-info",
-                //             {
-                //                 publicationIdentifier: publication.identifier,
-                //                 opdsPublication: undefined,
-                //             },
-                //         ));
-                //     }
-                // } catch (error) {
-                //     console.error(error);
-                // }
 
                 yield put({
                     type: streamerActions.ActionType.PublicationOpenError,

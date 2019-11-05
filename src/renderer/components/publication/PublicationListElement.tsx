@@ -20,10 +20,6 @@ import * as uuid from "uuid";
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
 
-// import { LsdStatus } from "readium-desktop/common/models/lcp";
-// import { lcpReadable } from "readium-desktop/utils/publication";
-// import { apiAction } from "readium-desktop/renderer/apiAction";
-
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publication: PublicationView;
@@ -40,7 +36,6 @@ interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, Retu
 
 interface IState {
     menuOpen: boolean;
-    // lsdStatus: LsdStatus | undefined;
 }
 
 export class PublicationListElement extends React.Component<IProps, IState> {
@@ -52,7 +47,6 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
         this.state = {
             menuOpen: false,
-            // lsdStatus: undefined,
         };
 
         // this.deletePublication = this.deletePublication.bind(this);
@@ -60,19 +54,6 @@ export class PublicationListElement extends React.Component<IProps, IState> {
         this.focusButton = this.focusButton.bind(this);
 
         this.menuId = "menu-" + uuid.v4();
-    }
-
-    public componentDidMount() {
-        // const { publication } = this.props;
-        // if (publication.lcp) {
-        //     apiAction("lcp/getLsdStatus", { publication })
-        //         .then((request) => {
-        //             if (request.isSuccess) {
-        //                 this.setState({ lsdStatus: request.data });
-        //             }
-        //         })
-        //         .catch((error) => console.error("Error lcp/getLsdStatus", error));
-        // }
     }
 
     public render(): React.ReactElement<{}>  {
@@ -146,11 +127,8 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
     private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
-        // const { lsdStatus } = this.state;
 
-        if (this.props.isOpds
-            // || !lcpReadable(publication, lsdStatus)
-            ) {
+        if (this.props.isOpds) {
             this.props.displayPublicationInfo();
         } else {
             this.props.openReader();

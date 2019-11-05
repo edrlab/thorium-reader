@@ -12,7 +12,6 @@ import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-// import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import App from "readium-desktop/renderer/components/reader/App";
@@ -26,6 +25,8 @@ import {
 } from "@r2-shared-js/init-globals";
 
 import { EventPayload } from "./common/ipc/sync";
+
+// import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
 let devTron: any;
 let axe: any;

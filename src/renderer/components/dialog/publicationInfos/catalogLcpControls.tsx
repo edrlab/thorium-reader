@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -23,11 +22,6 @@ import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
-
-// import { apiAction } from "readium-desktop/renderer/apiAction";
-
-// Logger
-const debug = debug_("readium-desktop:renderer:CatalogLcpControls");
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -47,14 +41,9 @@ class CatalogLcpControls extends React.Component<IProps> {
 
         this.handleRead = this.handleRead.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
-    }
 
-    public componentDidMount() {
-        // apiAction("lcp/getLsdStatus", {publication: this.props.publication})
-        // .then((request) => this.setState({lsdStatus: request.data}))
-        // .catch((error) => {
-        //     console.error(`Error lcp/getLsdStatus`, error);
-        // });
+        this.returnPublicationDialog = this.returnPublicationDialog.bind(this);
+        this.renewPublicationDialog = this.renewPublicationDialog.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
@@ -67,10 +56,6 @@ class CatalogLcpControls extends React.Component<IProps> {
         const lsdOkay = publication.lcp &&
             publication.lcp.lsd &&
             publication.lcp.lsd.lsdStatus;
-
-        if (lsdOkay) {
-            debug(publication.lcp.lsd.lsdStatus);
-        }
 
         const lsdStatus = lsdOkay &&
             publication.lcp.lsd.lsdStatus.status ?
@@ -87,8 +72,8 @@ class CatalogLcpControls extends React.Component<IProps> {
             });
         return (
             <>
-                {
-                (lsdStatus === StatusEnum.Active || lsdStatus === StatusEnum.Ready) ?
+                {(!lsdStatus ||
+                (lsdStatus === StatusEnum.Active || lsdStatus === StatusEnum.Ready)) ?
                 <button  onClick={this.handleRead} className={styles.lire}>{__("catalog.readBook")}</button>
                 : (lsdStatus === StatusEnum.Expired ?
                 <p style={{color: "red"}}>{__("publication.expiredLcp")}</p>
@@ -103,7 +88,7 @@ class CatalogLcpControls extends React.Component<IProps> {
                         // lsdStatus === StatusEnum.Expired &&
                         lsdRenewLink &&
                         <li>
-                            <button onClick={ this.props.openRenewDialog }>
+                            <button onClick={ this.renewPublicationDialog }>
                                 <SVG svg={LoopIcon} ariaHidden/>
                                 {__("publication.renewButton")}
                             </button>
@@ -112,7 +97,7 @@ class CatalogLcpControls extends React.Component<IProps> {
                     {
                         lsdReturnLink &&
                         <li>
-                            <button onClick={ this.props.openReturnDialog }>
+                            <button onClick={ this.returnPublicationDialog }>
                                 <SVG svg={ArrowIcon} ariaHidden/>
                                 {__("publication.returnButton")}
                             </button>
@@ -127,6 +112,15 @@ class CatalogLcpControls extends React.Component<IProps> {
                 </ul>
             </>
         );
+    }
+
+    private renewPublicationDialog(e: TMouseEvent) {
+        e.preventDefault();
+        this.props.openRenewDialog();
+    }
+    private returnPublicationDialog(e: TMouseEvent) {
+        e.preventDefault();
+        this.props.openReturnDialog();
     }
 
     private deletePublication(e: TMouseEvent) {
