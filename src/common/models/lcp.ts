@@ -5,14 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export enum UserKeyCheckStatus {
-    Pending,
-    Error,
-    Success,
-}
+import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 
 export interface LsdInfo {
     statusUrl: string;
+    lsdStatus?: LsdStatus;
 }
 
 export interface LcpRights {
@@ -34,21 +31,14 @@ export interface DeviceConfig {
     [key: string]: any;
 }
 
-// export enum LsdStatusType {
-//     Active = "active",
-//     Expired = "expired",
-//     Ready = "ready",
-//     Revoked = "revoked",
-// }
-
-// export interface LsdStatus {
-//     events: any[];
-//     id: string;
-//     links: any[];
-//     message: string;
-//     status: LsdStatusType;
-//     updated: {
-//         license: string;
-//         status: string;
-//     };
-// }
+export interface LsdStatus {
+    events: any[];
+    id: string;
+    links: any[];
+    message: string;
+    status: StatusEnum;
+    updated: {
+        license: string;
+        status: string;
+    };
+}

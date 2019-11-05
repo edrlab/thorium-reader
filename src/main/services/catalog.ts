@@ -351,43 +351,19 @@ export class CatalogService {
         const r2Publication = await EpubParsePromise(filePath);
         debug("Parse publication - END", filePath);
 
+        let lcpInfo: LcpInfo = null;
+        if (r2Publication.LCP) {
+            lcpInfo = this.lcpManager.convertLcpLsdInfo(r2Publication.LCP);
+        }
+        debug(">> lcpInfo (importEpubFile):");
+        debug(JSON.stringify(lcpInfo, null, 4));
+
         // FIXME: Title could be an array instead of a simple string
         // Store publication in db
         const jsonParsedPublication = TAJSON.serialize(r2Publication);
         const b64ParsedPublication = Buffer
             .from(JSON.stringify(jsonParsedPublication))
             .toString("base64");
-
-        let lcpInfo: LcpInfo = null;
-        if (r2Publication.LCP) {
-            // Add Lcp info
-            lcpInfo = {
-                provider: r2Publication.LCP.Provider,
-                issued: r2Publication.LCP.Issued,
-                updated: r2Publication.LCP.Updated,
-                rights: r2Publication.LCP.Rights ? {
-                    copy: r2Publication.LCP.Rights.Copy,
-                    print: r2Publication.LCP.Rights.Print,
-                    start: r2Publication.LCP.Rights.Start,
-                    end: r2Publication.LCP.Rights.End,
-                } : undefined,
-            };
-
-            if (r2Publication.LCP.Links) {
-                // Search for lsd status url
-                for (const link of r2Publication.LCP.Links) {
-                    if (link.Rel === "status") {
-                        // This is the lsd status url link
-                        lcpInfo.lsd = {
-                            statusUrl: link.Href,
-                        };
-                        break;
-                    }
-                }
-            }
-        }
-        debug(">> lcpInfo (importEpubFile):");
-        debug(JSON.stringify(lcpInfo, null, 4));
 
         const pubDocument = {
             identifier: uuid.v4(),
@@ -429,6 +405,22 @@ export class CatalogService {
             pubDocument.customCover = RandomCustomCovers[
                 Math.floor(Math.random() * RandomCustomCovers.length)
             ];
+        }
+
+        if (r2Publication.LCP) {
+            try {
+                await this.lcpManager.processStatusDocument(
+                    pubDocument.identifier,
+                    r2Publication,
+                );
+
+                lcpInfo = this.lcpManager.convertLcpLsdInfo(r2Publication.LCP);
+
+                debug(">> lcpInfo + LSD (importEpubFile):");
+                debug(JSON.stringify(lcpInfo, null, 4));
+            } catch (err) {
+                debug(err);
+            }
         }
 
         debug("[START] Store publication in database", filePath);

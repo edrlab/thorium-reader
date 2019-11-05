@@ -5,16 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as uuid from "uuid";
-
+import * as debug_ from "debug";
 import { injectable } from "inversify";
-
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import * as uuid from "uuid";
 
 import { IDeviceIDManager } from "@r2-lcp-js/lsd/deviceid-manager";
 
 const DEVICE_ID_KEY = "device_id";
 const DEVICE_ID_PREFIX = "device_id_";
+
+const debug = debug_("readium-desktop:main#services/device");
 
 @injectable()
 export class DeviceIdManager implements IDeviceIDManager {
@@ -33,11 +34,20 @@ export class DeviceIdManager implements IDeviceIDManager {
 
     public async checkDeviceID(key: string): Promise<string | undefined> {
         const deviceIdKey = DEVICE_ID_PREFIX + key;
-        return this.getDeviceConfigValue(deviceIdKey);
+        const val = await this.getDeviceConfigValue(deviceIdKey);
+
+        debug("DeviceIdManager checkDeviceID:");
+        debug(key);
+        debug(val);
+
+        return val;
     }
 
     public async getDeviceID(): Promise<string> {
         let deviceId = await this.getDeviceConfigValue(DEVICE_ID_KEY);
+
+        debug("DeviceIdManager getDeviceID:");
+        debug(deviceId);
 
         if (!deviceId) {
             deviceId = uuid.v4();
@@ -48,6 +58,8 @@ export class DeviceIdManager implements IDeviceIDManager {
             };
             config.value[DEVICE_ID_KEY] = deviceId;
             await this.configRepository.save(config);
+
+            debug(config);
         }
 
         return deviceId;
@@ -58,18 +70,17 @@ export class DeviceIdManager implements IDeviceIDManager {
     }
 
     public async recordDeviceID(key: string): Promise<void> {
+        const deviceId = await this.getDeviceID();
         const deviceIdKey = DEVICE_ID_PREFIX + key;
-        let deviceId = await this.getDeviceConfigValue(deviceIdKey);
-
-        if (!deviceId) {
-            // Create new device id
-            deviceId = uuid.v4();
-        }
 
         const deviceConfig = await this.getDeviceConfig();
         const config: any = Object.assign({}, deviceConfig);
         config.value[deviceIdKey] = deviceId;
         await this.configRepository.save(config);
+
+        debug("DeviceIdManager recordDeviceID:");
+        debug(key);
+        debug(config);
     }
 
     private async getDeviceConfig(): Promise<any> {
@@ -85,6 +96,13 @@ export class DeviceIdManager implements IDeviceIDManager {
 
     private async getDeviceConfigValue(key: string): Promise<any> {
         const deviceConfig = await this.getDeviceConfig();
-        return deviceConfig.value[key];
+        const val = deviceConfig.value[key];
+
+        debug("DeviceIdManager getDeviceConfigValue:");
+        debug(key);
+        debug(deviceConfig);
+        debug(val);
+
+        return val;
     }
 }

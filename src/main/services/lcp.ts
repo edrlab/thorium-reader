@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
-import { LcpInfo } from "readium-desktop/common/models/lcp";
+import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { Publication } from "readium-desktop/common/models/publication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
@@ -18,19 +18,21 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { JSON as TAJSON } from "ta-json-x";
 
+import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
+import { lsdLcpUpdateInject } from "@r2-navigator-js/electron/main/lsd-injectlcpl";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { Server } from "@r2-streamer-js/http/server";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 import { extractCrc32OnZip } from "../crc";
+import { DeviceIdManager } from "./device";
 
 // import { injectDataInZip } from "readium-desktop/utils/zip";
 // import * as uuid from "uuid";
 // import { LcpSecretDocument } from "../db/document/lcp-secret";
-// import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
-// import { DeviceIdManager } from "./device";
 // import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
 // import { THttpGetPublicationDocument } from "readium-desktop/main/db/document/publication";
 // import { lsdRegister } from "@r2-lcp-js/lsd/register";
@@ -54,8 +56,8 @@ export class LcpManager {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
-    // @inject(diSymbolTable["device-id-manager"])
-    // private readonly deviceIdManager!: DeviceIdManager;
+    @inject(diSymbolTable["device-id-manager"])
+    private readonly deviceIdManager!: DeviceIdManager;
 
     /**
      * Inject lcpl document in publication
@@ -112,34 +114,29 @@ export class LcpManager {
 
         let lcpInfo: LcpInfo = null;
         if (r2Publication.LCP) {
-            // Add Lcp info
-            lcpInfo = {
-                provider: r2Publication.LCP.Provider,
-                issued: r2Publication.LCP.Issued,
-                updated: r2Publication.LCP.Updated,
-                rights: r2Publication.LCP.Rights ? {
-                    copy: r2Publication.LCP.Rights.Copy,
-                    print: r2Publication.LCP.Rights.Print,
-                    start: r2Publication.LCP.Rights.Start,
-                    end: r2Publication.LCP.Rights.End,
-                } : undefined,
-            };
-
-            if (r2Publication.LCP.Links) {
-                // Search for lsd status url
-                for (const link of r2Publication.LCP.Links) {
-                    if (link.Rel === "status") {
-                        // This is the lsd status url link
-                        lcpInfo.lsd = {
-                            statusUrl: link.Href,
-                        };
-                        break;
-                    }
-                }
-            }
+            lcpInfo = this.convertLcpLsdInfo(r2Publication.LCP);
         }
         debug(">> lcpInfo (injectLcpl):");
         debug(JSON.stringify(lcpInfo, null, 4));
+
+        if (r2Publication.LCP) {
+            try {
+                await this.processStatusDocument(
+                    publicationDocument.identifier,
+                    r2Publication,
+                );
+
+                debug(r2Publication.LCP);
+                debug(r2Publication.LCP.LSD);
+
+                lcpInfo = this.convertLcpLsdInfo(r2Publication.LCP);
+
+                debug(">> lcpInfo + LSD (injectLcpl):");
+                debug(JSON.stringify(lcpInfo, null, 4));
+            } catch (err) {
+                debug(err);
+            }
+        }
 
         debug("Parse publication - END", epubPath);
 
@@ -345,34 +342,6 @@ export class LcpManager {
     //     });
     // }
 
-    // private async processStatusDocument(
-    //     publicationDocument: PublicationDocument,
-    // ): Promise<PublicationDocument> {
-    //     // Get lcpl information
-    //     const epubPath = this.publicationStorage.getPublicationEpubPath(
-    //         publicationDocument.identifier,
-    //     );
-    //     const r2Publication: Epub = await EpubParsePromise(epubPath);
-
-    //     return new Promise(async (resolve: any, reject: any) => {
-    //         try {
-    //             await launchStatusDocumentProcessing(
-    //                 r2Publication.LCP,
-    //                 this.deviceIdManager,
-    //                 async (licenseUpdateJson: string | undefined) => {
-    //                     debug("launchStatusDocumentProcessing DONE.");
-    //                     debug("new license", licenseUpdateJson);
-    //                     resolve(licenseUpdateJson);
-    //                 },
-    //             );
-    //             console.log("status document processed");
-    //         } catch (err) {
-    //             debug(err);
-    //             reject(err);
-    //         }
-    //     });
-    // }
-
     public convertUnlockPublicationResultToString(val: any): string | undefined {
         let message: string | undefined;
         if (typeof val === "string") {
@@ -536,6 +505,130 @@ export class LcpManager {
         // await this.registerPublicationLicense(publicationDocument);
 
         return undefined;
+    }
+
+    public convertLcpLsdInfo(lcp: LCP): LcpInfo {
+
+        const lcpInfo: LcpInfo = {
+            provider: lcp.Provider,
+            issued: lcp.Issued,
+            updated: lcp.Updated,
+            rights: lcp.Rights ? {
+                copy: lcp.Rights.Copy,
+                print: lcp.Rights.Print,
+                start: lcp.Rights.Start,
+                end: lcp.Rights.End,
+            } : undefined,
+        };
+
+        if (lcp.Links) {
+            const statusLink = lcp.Links.find((link) => {
+                return link.Rel === "status";
+            });
+            if (statusLink) {
+                lcpInfo.lsd = {
+                    statusUrl: statusLink.Href,
+                };
+            }
+        }
+
+        if (lcp.LSD && lcpInfo.lsd) {
+            lcpInfo.lsd.lsdStatus = {
+                id: lcp.LSD.ID,
+                status: lcp.LSD.Status,
+                message: lcp.LSD.Message,
+                updated: {
+                    license: lcp.LSD.Updated.License.toISOString(),
+                    status: lcp.LSD.Updated.Status.toISOString(),
+                },
+                events: lcp.LSD.Events ? lcp.LSD.Events.map((ev) => {
+                    return {
+                        id: ev.ID,
+                        name: ev.Name,
+                        timeStamp: ev.TimeStamp.toISOString(),
+                        type: ev.Type, // r2-lcp-js TypeEnum
+                    };
+                }) : undefined,
+                links: lcp.LSD.Links ? lcp.LSD.Links.map((link) => {
+                    return {
+                        length: link.Length,
+                        href: link.Href,
+                        title: link.Title,
+                        type: link.Type,
+                        templated: link.Templated,
+                        profile: link.Profile,
+                        hash: link.Hash,
+                        rel: link.Rel,
+                    };
+                }) : undefined,
+            } as LsdStatus;
+        }
+
+        return lcpInfo;
+    }
+
+    public async processStatusDocument(
+        publicationDocumentIdentifier: string,
+        r2Publication: R2Publication | undefined): Promise<R2Publication> {
+
+        const epubPath = this.publicationStorage.getPublicationEpubPath(
+            publicationDocumentIdentifier,
+        );
+        return this.processStatusDocument_(epubPath, r2Publication);
+    }
+
+    private async processStatusDocument_(
+        epubPath: string,
+        r2Publication: R2Publication | undefined): Promise<R2Publication> {
+
+        if (!r2Publication) {
+            r2Publication = await EpubParsePromise(epubPath);
+        }
+        if (!r2Publication.LCP) {
+            return Promise.reject("processStatusDocument NO LCP data!");
+        }
+
+        return new Promise(async (resolve, reject) => {
+            const callback = async (licenseUpdateJson: string | undefined) => {
+                debug("launchStatusDocumentProcessing DONE.");
+                debug(licenseUpdateJson);
+
+                if (licenseUpdateJson) {
+                    let epubPath_: string;
+                    try {
+                        epubPath_ = await lsdLcpUpdateInject(
+                            licenseUpdateJson,
+                            r2Publication,
+                            epubPath);
+                        debug("EPUB LCP INJECTED: " + epubPath_);
+
+                        try {
+                            // loop to re-init LSD in updated LCP
+                            const r2Pub = await this.processStatusDocument_(epubPath, r2Publication);
+                            resolve(r2Pub);
+                        } catch (err) {
+                            debug(err);
+                            reject(err);
+                        }
+                    } catch (err) {
+                        debug(err);
+                        reject(err);
+                    }
+                } else {
+                    resolve(r2Publication);
+                }
+            };
+            try {
+                await launchStatusDocumentProcessing(
+                    r2Publication.LCP,
+                    this.deviceIdManager,
+                    callback,
+                );
+            } catch (err) {
+                debug(err);
+                reject(err);
+            }
+        });
     }
 
     // public async unlockPublicationWithPassphrase(publication: Publication, passphrase: string): Promise<void> {
