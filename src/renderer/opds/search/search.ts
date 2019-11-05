@@ -10,57 +10,64 @@ import { TOpdsLinkViewSimplified } from "readium-desktop/common/views/opds";
 const findLink = (ln: TOpdsLinkViewSimplified[], type: string) => ln && ln.find((link) =>
     link.TypeLink.includes(type));
 
+const getOpenSearchUrl = async (opensearchLink: TOpdsLinkViewSimplified) =>
+    new Promise<string | undefined>((resolve) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", opensearchLink.Href);
+        xhr.addEventListener("loadend", function() {
+            try {
+                const dom = this.responseXML;
+                const urlsElem = dom.documentElement.querySelectorAll("url");
+
+                for (const urlElem of urlsElem.values()) {
+                    const type = urlElem.getAttribute("type");
+
+                    if (type && type.includes("application/atom+xml")) {
+                        const searchUrl = urlElem.getAttribute("template");
+
+                        if (searchUrl && searchUrl.includes("{searchTerms}")) {
+                            let searchLink = searchUrl.replace("{atom:author}", "\"\"");
+                            searchLink = searchLink.replace("{atom:contributor}", "\"\"");
+                            searchLink = searchLink.replace("{atom:title}", "\"\"");
+
+                            resolve(searchLink);
+                        }
+                    }
+                }
+
+                resolve(undefined);
+            } catch (err) {
+                resolve(undefined);
+            }
+        });
+        xhr.addEventListener("error", () => {
+            resolve(undefined);
+        });
+        xhr.send();
+    });
+
 export async function getSearchUrlFromOpdsLinks(
-    link: TOpdsLinkViewSimplified[] | undefined): Promise<string | undefined> {
+    link: TOpdsLinkViewSimplified[] | undefined) {
 
     const atomLink = findLink(link, "application/atom+xml");
     const opensearchLink = !atomLink && findLink(link, "application/opensearchdescription+xml");
+    const opdsLink = !opensearchLink && findLink(link, "application/opds+json");
 
-    return new Promise<string | undefined>((resolve) => {
-        if (atomLink) {
-            // http://examples.net/opds/search.php?q={searchTerms}
-            if (atomLink.Href && atomLink.Href.includes("{searchTerms}")) {
-                resolve(atomLink.Href);
-            }
+    // http://examples.net/opds/search.php?q={searchTerms}
+    if (atomLink && atomLink.Href && atomLink.Href.includes("{searchTerms}")) {
 
-        } else if (opensearchLink) {
-            // tslint:disable-next-line: max-line-length
-            // http://examples.net/opds/search/?q={searchTerms}&author={atom:author}&translator={atom:contributor}&title={atom:title}
+        return (atomLink.Href);
 
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", opensearchLink.Href);
-            xhr.addEventListener("loadend", function() {
-                try {
-                    const dom = this.responseXML;
-                    const urlsElem = dom.documentElement.querySelectorAll("url");
+    // tslint:disable-next-line: max-line-length
+    // http://examples.net/opds/search/?q={searchTerms}&author={atom:author}&translator={atom:contributor}&title={atom:title}
+    } else if (opensearchLink) {
 
-                    for (const urlElem of urlsElem.values()) {
-                        const type = urlElem.getAttribute("type");
+        return (await getOpenSearchUrl(opensearchLink));
 
-                        if (type && type.includes("application/atom+xml")) {
-                            const searchUrl = urlElem.getAttribute("template");
+    // https://catalog.feedbooks.com/search.json{?query}
+    } else if (opdsLink && opdsLink.Href && opdsLink.Href.includes("{?query")) {
 
-                            if (searchUrl && searchUrl.includes("{searchTerms}")) {
-                                let searchLink = searchUrl.replace("{atom:author}", "\"\"");
-                                searchLink = searchLink.replace("{atom:contributor}", "\"\"");
-                                searchLink = searchLink.replace("{atom:title}", "\"\"");
-
-                                resolve(searchLink);
-                            }
-                        }
-                    }
-
-                    resolve(undefined);
-                } catch (err) {
-                    resolve(undefined);
-                }
-            });
-            xhr.addEventListener("error", () => {
-                resolve(undefined);
-            });
-            xhr.send();
-        } else {
-            resolve(undefined);
-        }
-    });
+        return (opdsLink.Href.split("{")[0].concat("?query={searchTerms}"));
+    }
+    return (undefined);
 }
