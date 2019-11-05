@@ -9,12 +9,12 @@ import { LOCATION_CHANGE, LocationChangeAction } from "connected-react-router";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { TOpdsLinkViewSimplified } from "readium-desktop/common/views/opds";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
+import { getSearchUrlFromOpdsLinks } from "readium-desktop/renderer/opds/search/search";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { SagaIterator } from "redux-saga";
-import { all, call, put, take } from "redux-saga/effects";
-import { getSearchUrlFromOpdsLinks } from 'readium-desktop/renderer/opds/search/search';
+import { all, call, fork, put, take } from "redux-saga/effects";
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 
@@ -70,13 +70,18 @@ function* updateHeaderLinkWatcher(): SagaIterator {
                     bookshelf: linkViewBookshelf && linkViewBookshelf.Href,
                 }));
 
-                const linkUrl: string | undefined = yield call(getSearchUrlFromOpdsLinks, links.search);
-                yield put(opdsActions.headerLinkUpdate({
-                    search: linkUrl,
-                }));
+                // non-blocking searchUrl request
+                yield fork(setSearchLinkInHeader, links.search);
             }
         }
     }
+}
+
+function* setSearchLinkInHeader(link: TOpdsLinkViewSimplified[]): SagaIterator {
+    const linkUrl: string | undefined = yield call(getSearchUrlFromOpdsLinks, link);
+    yield put(opdsActions.headerLinkUpdate({
+        search: linkUrl,
+    }));
 }
 
 export function* watchers() {
