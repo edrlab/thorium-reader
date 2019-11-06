@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import * as readerActions from "readium-desktop/common/redux/actions/reader";
+import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
@@ -57,6 +58,9 @@ export class LcpApi {
     @inject(diSymbolTable["publication-repository"])
     private readonly publicationRepository!: PublicationRepository;
 
+    @inject(diSymbolTable.translator)
+    private readonly translator!: Translator;
+
     public async renewPublicationLicense(data: any): Promise<void> {
         const { publication } = data;
         const publicationDocument = await this.publicationRepository.get(
@@ -79,7 +83,9 @@ export class LcpApi {
             const unlockPublicationRes: string | number | null | undefined =
                 await this.lcpManager.unlockPublication(publication, passphrase);
             if (typeof unlockPublicationRes !== "undefined") {
-                const message = this.lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
+                const message = unlockPublicationRes === 11 ?
+                    this.translator.translate("publication.expiredLcp") :
+                    this.lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
                 debug(message);
                 const publicationDocument = await this.publicationRepository.get(publication.identifier);
                 const publicationView = this.publicationViewConverter.convertDocumentToView(publicationDocument);

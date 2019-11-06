@@ -115,6 +115,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
             continue;
         }
 
+        const translator = diMainGet("translator");
         const lcpManager = diMainGet("lcp-manager");
 
         if (publication.lcp) {
@@ -142,7 +143,6 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                 publication.lcp.lsd.lsdStatus.status !== StatusEnum.Ready &&
                 publication.lcp.lsd.lsdStatus.status !== StatusEnum.Active) {
 
-                const translator = diMainGet("translator");
                 const msg = publication.lcp.lsd.lsdStatus.status === StatusEnum.Expired ?
                     translator.translate("publication.expiredLcp") : (
                     publication.lcp.lsd.lsdStatus.status === StatusEnum.Revoked ?
@@ -237,7 +237,9 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                     publication,
                 );
                 if (typeof unlockPublicationRes !== "undefined") {
-                    const message = lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
+                    const message = unlockPublicationRes === 11 ?
+                        translator.translate("publication.expiredLcp") :
+                        lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
                     debug(message);
 
                     const publicationViewConverter = diMainGet("publication-view-converter");
