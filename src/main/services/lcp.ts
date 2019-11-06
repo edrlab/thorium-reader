@@ -11,12 +11,19 @@ import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { Publication } from "readium-desktop/common/models/publication";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
+import { open } from "readium-desktop/common/redux/actions/toast";
+import { Translator } from "readium-desktop/common/services/translator";
+import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
+import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 
 import { lsdRenew_ } from "@r2-lcp-js/lsd/renew";
@@ -53,6 +60,15 @@ export class LcpManager {
 
     @inject(diSymbolTable["device-id-manager"])
     private readonly deviceIdManager!: DeviceIdManager;
+
+    @inject(diSymbolTable.store)
+    private readonly store!: Store<RootState>;
+
+    @inject(diSymbolTable.translator)
+    private readonly translator!: Translator;
+
+    @inject(diSymbolTable["publication-view-converter"])
+    private readonly publicationViewConverter!: PublicationViewConverter;
 
     /**
      * Inject lcpl document in publication
@@ -177,6 +193,8 @@ export class LcpManager {
         let redoHash = false;
 
         if (r2Publication.LCP) {
+            const publicationView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
+            this.store.dispatch(closeReaderFromPublication(publicationView));
             try {
                 await this.processStatusDocument(
                     publicationDocument.identifier,
@@ -220,23 +238,52 @@ export class LcpManager {
                 renewResponseLsd = await lsdRenew_(endDate, r2Publication.LCP.LSD, this.deviceIdManager);
             } catch (err) {
                 debug(err);
+                const str = this.stringifyLsdError(err);
+                this.store.dispatch(open(ToastType.DownloadFailed,
+                    `LCP [${this.translator.translate("publication.renewButton")}]: ${str}`,
+                    ));
             }
             if (renewResponseLsd) {
+                debug(renewResponseLsd);
                 r2Publication.LCP.LSD = renewResponseLsd;
-
-                debug(r2Publication.LCP);
-                debug(r2Publication.LCP.LSD);
-
                 lcpInfo = this.convertLcpLsdInfo(r2Publication.LCP);
                 publicationDocument.lcp = lcpInfo;
 
+                redoHash = false;
+                try {
+                    await this.processStatusDocument(
+                        publicationDocument.identifier,
+                        r2Publication,
+                    );
+
+                    debug(r2Publication.LCP);
+                    debug(r2Publication.LCP.LSD);
+
+                    lcpInfo = this.convertLcpLsdInfo(r2Publication.LCP);
+                    publicationDocument.lcp = lcpInfo;
+                } catch (err) {
+                    debug(err);
+                }
+
+                if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+                    debug("processStatusDocument LCP updated.");
+                    redoHash = true;
+                }
+
                 debug(">> lcpInfo + LSD-renew (renewPublicationLicense):");
                 debug(JSON.stringify(lcpInfo, null, 4));
+
+                const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
+                    r2Publication.LCP.Rights.End.toISOString() : "";
+                this.store.dispatch(open(ToastType.DownloadComplete,
+                    `LCP [${this.translator.translate("publication.renewButton")}] ${newEndDate}`,
+                    ));
 
                 newPublicationDocument = Object.assign(
                     {},
                     publicationDocument,
                     {
+                        hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
                         lcp: lcpInfo,
                     },
                 );
@@ -266,6 +313,8 @@ export class LcpManager {
         let redoHash = false;
 
         if (r2Publication.LCP) {
+            const publicationView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
+            this.store.dispatch(closeReaderFromPublication(publicationView));
             try {
                 await this.processStatusDocument(
                     publicationDocument.identifier,
@@ -307,23 +356,52 @@ export class LcpManager {
                 returnResponseLsd = await lsdReturn_(r2Publication.LCP.LSD, this.deviceIdManager);
             } catch (err) {
                 debug(err);
+                const str = this.stringifyLsdError(err);
+                this.store.dispatch(open(ToastType.DownloadFailed,
+                    `LCP [${this.translator.translate("publication.returnButton")}]: ${str}`,
+                    ));
             }
             if (returnResponseLsd) {
+                debug(returnResponseLsd);
                 r2Publication.LCP.LSD = returnResponseLsd;
-
-                debug(r2Publication.LCP);
-                debug(r2Publication.LCP.LSD);
-
                 lcpInfo = this.convertLcpLsdInfo(r2Publication.LCP);
                 publicationDocument.lcp = lcpInfo;
 
+                redoHash = false;
+                try {
+                    await this.processStatusDocument(
+                        publicationDocument.identifier,
+                        r2Publication,
+                    );
+
+                    debug(r2Publication.LCP);
+                    debug(r2Publication.LCP.LSD);
+
+                    lcpInfo = this.convertLcpLsdInfo(r2Publication.LCP);
+                    publicationDocument.lcp = lcpInfo;
+                } catch (err) {
+                    debug(err);
+                }
+
+                if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+                    debug("processStatusDocument LCP updated.");
+                    redoHash = true;
+                }
+
                 debug(">> lcpInfo + LSD-return (returnPublicationLicense):");
                 debug(JSON.stringify(lcpInfo, null, 4));
+
+                const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
+                    r2Publication.LCP.Rights.End.toISOString() : "";
+                this.store.dispatch(open(ToastType.DownloadComplete,
+                    `LCP [${this.translator.translate("publication.returnButton")}] ${newEndDate}`,
+                    ));
 
                 newPublicationDocument = Object.assign(
                     {},
                     publicationDocument,
                     {
+                        hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
                         lcp: lcpInfo,
                     },
                 );
@@ -612,5 +690,41 @@ export class LcpManager {
                 reject(err);
             }
         });
+    }
+
+    // HTTP statusCode < 200 || >= 300.
+    // "err" can be:
+    //
+    // a number (HTTP status code) when no response body is available.
+    //
+    // an object with the `httpStatusCode` property (number)
+    // and httpResponseBody (string) when the response body cannot be parsed to JSON.
+    //
+    // an object with the `httpStatusCode` property (number)
+    // and other arbitrary JSON properties,
+    // depending on the server response.
+    // Typically, compliant LCP/LSD servers are expected to return
+    // Problem Details JSON (RFC7807),
+    // which provides `title` `type` and `details` JSON properties.
+    // See https://readium.org/technical/readium-lsd-specification/#31-handling-errors
+    private stringifyLsdError(err: any): string {
+        if (typeof err === "number") {
+            return `${err}`;
+        }
+        if (!err) {
+            return "";
+        }
+        if (typeof err === "object") {
+            if (err.httpStatusCode) {
+                if (err.httpResponseBody) {
+                    return `${err.httpStatusCode} (${err.httpResponseBody})`;
+                }
+                if (err.title && err.detail) {
+                    return `${err.httpStatusCode} (${err.title} - ${err.detail})`;
+                }
+            }
+            return JSON.stringify(err);
+        }
+        return err;
     }
 }
