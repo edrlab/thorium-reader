@@ -8,6 +8,8 @@
 import * as debug_ from "debug";
 import * as portfinder from "portfinder";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { open } from "readium-desktop/common/redux/actions/toast";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { lcpActions, streamerActions } from "readium-desktop/main/redux/actions";
@@ -15,6 +17,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, select, take } from "redux-saga/effects";
 
+import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Server } from "@r2-streamer-js/http/server";
 
@@ -112,6 +115,60 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
             continue;
         }
 
+        const lcpManager = diMainGet("lcp-manager");
+
+        if (publication.lcp) {
+            try {
+                publication = yield call(
+                    () => lcpManager.checkPublicationLicenseUpdate(publication),
+                );
+            } catch (error) {
+                debug(error);
+                // yield put({
+                //     type: streamerActions.ActionType.PublicationOpenError,
+                //     // payload: {
+                //     //     error,
+                //     // },
+                //     error: true,
+                //     meta: {
+                //         publication,
+                //     },
+                // });
+                // continue;
+            }
+
+            if (publication.lcp && publication.lcp.lsd && publication.lcp.lsd.lsdStatus &&
+                publication.lcp.lsd.lsdStatus.status &&
+                publication.lcp.lsd.lsdStatus.status !== StatusEnum.Ready &&
+                publication.lcp.lsd.lsdStatus.status !== StatusEnum.Active) {
+
+                const translator = diMainGet("translator");
+                const msg = publication.lcp.lsd.lsdStatus.status === StatusEnum.Expired ?
+                    translator.translate("publication.expiredLcp") : (
+                    publication.lcp.lsd.lsdStatus.status === StatusEnum.Revoked ?
+                    translator.translate("publication.revokedLcp") : (
+                    publication.lcp.lsd.lsdStatus.status === StatusEnum.Returned ?
+                    translator.translate("publication.returnedLcp") :
+                    translator.translate("publication.expiredLcp") // StatusEnum.Cancelled
+                    ));
+
+                const store = diMainGet("store");
+                store.dispatch(open(ToastType.DownloadFailed, msg));
+
+                yield put({
+                    type: streamerActions.ActionType.PublicationOpenError,
+                    // payload: {
+                    //     error,
+                    // },
+                    error: true,
+                    meta: {
+                        publication,
+                    },
+                });
+                continue;
+            }
+        }
+
         // Get epub file from publication
         const pubStorage = diMainGet("publication-storage");
         const epubPath = pubStorage.getPublicationEpubPath(publication.identifier);
@@ -173,7 +230,6 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
 
         if (r2Publication.LCP) {
             debug("### LCP publication");
-            const lcpManager = diMainGet("lcp-manager");
 
             try {
                 const unlockPublicationRes: string | number | null | undefined = yield call(
