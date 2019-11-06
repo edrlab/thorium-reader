@@ -174,24 +174,30 @@ export class LcpManager {
         return this.publicationRepository.save(newPublicationDocument);
     }
 
-    public async renewPublicationLicense(
+    public async checkPublicationLicenseUpdate(
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
-
         const epubPath = this.publicationStorage.getPublicationEpubPath(
             publicationDocument.identifier,
         );
         const r2Publication = await EpubParsePromise(epubPath);
+        return await this.checkPublicationLicenseUpdate_(publicationDocument, epubPath, r2Publication);
+    }
+
+    public async checkPublicationLicenseUpdate_(
+        publicationDocument: PublicationDocument,
+        epubPath: string,
+        r2Publication: R2Publication,
+    ): Promise<PublicationDocument> {
 
         let lcpInfo: LcpInfo = null;
         if (r2Publication.LCP) {
             lcpInfo = this.convertLcpLsdInfo(r2Publication.LCP);
         }
-        debug(">> lcpInfo (renewPublicationLicense):");
+        debug(">> lcpInfo (checkPublicationLicenseUpdate):");
         debug(JSON.stringify(lcpInfo, null, 4));
 
         let redoHash = false;
-
         if (r2Publication.LCP) {
             const publicationView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
             this.store.dispatch(closeReaderFromPublication(publicationView));
@@ -207,7 +213,7 @@ export class LcpManager {
                 lcpInfo = this.convertLcpLsdInfo(r2Publication.LCP);
                 publicationDocument.lcp = lcpInfo;
 
-                debug(">> lcpInfo + LSD (renewPublicationLicense):");
+                debug(">> lcpInfo + LSD (checkPublicationLicenseUpdate):");
                 debug(JSON.stringify(lcpInfo, null, 4));
             } catch (err) {
                 debug(err);
@@ -219,7 +225,7 @@ export class LcpManager {
             }
         }
 
-        let newPublicationDocument: PublicationDocument = Object.assign(
+        const newPublicationDocument: PublicationDocument = Object.assign(
             {},
             publicationDocument,
             {
@@ -227,9 +233,25 @@ export class LcpManager {
                 lcp: lcpInfo,
             },
         );
+        const newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+        return Promise.resolve(newPubDocument);
+    }
 
-        let newPubDocument = await this.publicationRepository.save(newPublicationDocument);
+    public async renewPublicationLicense(
+        publicationDocument: PublicationDocument,
+    ): Promise<PublicationDocument> {
 
+        const epubPath = this.publicationStorage.getPublicationEpubPath(
+            publicationDocument.identifier,
+        );
+        const r2Publication = await EpubParsePromise(epubPath);
+        let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, epubPath, r2Publication);
+        let lcpInfo: LcpInfo = null;
+        if (r2Publication.LCP) {
+            lcpInfo = this.convertLcpLsdInfo(r2Publication.LCP);
+        }
+
+        let redoHash = false;
         if (r2Publication.LCP && r2Publication.LCP.LSD) {
             const endDateStr: string | undefined = undefined; // TODO: user input?
             const endDate = endDateStr ? moment(endDateStr).toDate() : undefined;
@@ -279,7 +301,7 @@ export class LcpManager {
                     `LCP [${this.translator.translate("publication.renewButton")}] ${newEndDate}`,
                     ));
 
-                newPublicationDocument = Object.assign(
+                const newPublicationDocument = Object.assign(
                     {},
                     publicationDocument,
                     {
@@ -302,54 +324,13 @@ export class LcpManager {
             publicationDocument.identifier,
         );
         const r2Publication = await EpubParsePromise(epubPath);
-
+        let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, epubPath, r2Publication);
         let lcpInfo: LcpInfo = null;
         if (r2Publication.LCP) {
             lcpInfo = this.convertLcpLsdInfo(r2Publication.LCP);
         }
-        debug(">> lcpInfo (returnPublicationLicense):");
-        debug(JSON.stringify(lcpInfo, null, 4));
 
         let redoHash = false;
-
-        if (r2Publication.LCP) {
-            const publicationView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
-            this.store.dispatch(closeReaderFromPublication(publicationView));
-            try {
-                await this.processStatusDocument(
-                    publicationDocument.identifier,
-                    r2Publication,
-                );
-
-                debug(r2Publication.LCP);
-                debug(r2Publication.LCP.LSD);
-
-                lcpInfo = this.convertLcpLsdInfo(r2Publication.LCP);
-                publicationDocument.lcp = lcpInfo;
-
-                debug(">> lcpInfo + LSD (returnPublicationLicense):");
-                debug(JSON.stringify(lcpInfo, null, 4));
-            } catch (err) {
-                debug(err);
-            }
-
-            if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
-                debug("processStatusDocument LCP updated.");
-                redoHash = true;
-            }
-        }
-
-        let newPublicationDocument: PublicationDocument = Object.assign(
-            {},
-            publicationDocument,
-            {
-                hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
-                lcp: lcpInfo,
-            },
-        );
-
-        let newPubDocument = await this.publicationRepository.save(newPublicationDocument);
-
         if (r2Publication.LCP && r2Publication.LCP.LSD) {
             let returnResponseLsd: LSD;
             try {
@@ -397,7 +378,7 @@ export class LcpManager {
                     `LCP [${this.translator.translate("publication.returnButton")}] ${newEndDate}`,
                     ));
 
-                newPublicationDocument = Object.assign(
+                const newPublicationDocument = Object.assign(
                     {},
                     publicationDocument,
                     {
