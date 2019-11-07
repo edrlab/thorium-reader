@@ -32,6 +32,10 @@ interface IProps extends IBaseProps {
 
 class Cover extends React.Component<IProps, undefined> {
 
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}>  {
 
         if (!this.props.publication.cover) {

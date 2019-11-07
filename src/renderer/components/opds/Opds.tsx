@@ -25,7 +25,12 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-class Opds extends React.Component<IProps> {
+class Opds extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (

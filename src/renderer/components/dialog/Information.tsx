@@ -40,7 +40,7 @@ interface IState {
 export class LanguageSettings extends React.Component<IProps, IState> {
     private parsedMarkdown: string;
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {

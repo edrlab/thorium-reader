@@ -26,8 +26,12 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class GridView extends React.Component<IProps> {
+export default class GridView extends React.Component<IProps, undefined> {
     private ref: HTMLDivElement;
+
+    constructor(props: IProps) {
+        super(props);
+    }
 
     public componentDidUpdate(oldProps: IProps) {
         if (this.props.publications !== oldProps.publications) {

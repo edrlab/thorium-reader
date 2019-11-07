@@ -30,7 +30,8 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-class FileImport extends React.Component<IProps> {
+class FileImport extends React.Component<IProps, undefined> {
+
     constructor(props: IProps) {
         super(props);
 

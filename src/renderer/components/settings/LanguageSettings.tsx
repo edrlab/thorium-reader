@@ -31,7 +31,11 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-class LanguageSettings extends React.Component<IProps> {
+class LanguageSettings extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;

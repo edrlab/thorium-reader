@@ -30,7 +30,12 @@ interface IBaseProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class DialogManager extends React.Component<IProps> {
+class DialogManager extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const dialog = this.props.dialog;
 

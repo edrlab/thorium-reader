@@ -29,8 +29,9 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-export class PublicationCard extends React.Component<IProps> {
-    public constructor(props: IProps) {
+export class PublicationCard extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);

@@ -24,6 +24,11 @@ interface IProps extends IBaseProps {
 }
 
 export default class SVG extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}>  {
         const { svg, className, ariaHidden } = this.props;
         return (

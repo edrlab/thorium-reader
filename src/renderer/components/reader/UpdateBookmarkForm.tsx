@@ -32,7 +32,7 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
     private inputRef: any;
     private formRef: any;
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {

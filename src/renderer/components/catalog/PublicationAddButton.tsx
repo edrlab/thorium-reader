@@ -25,8 +25,9 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-export class PublicationAddButton extends React.Component<IProps> {
-    public constructor(props: TranslatorProps) {
+export class PublicationAddButton extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.importFile = this.importFile.bind(this);

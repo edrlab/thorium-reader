@@ -31,9 +31,9 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-class LsdReturnConfirm extends React.Component<IProps> {
+class LsdReturnConfirm extends React.Component<IProps, undefined> {
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.remove = this.remove.bind(this);

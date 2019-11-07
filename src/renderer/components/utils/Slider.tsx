@@ -37,7 +37,7 @@ class Slider extends React.Component<IProps, IState> {
     private wrapperRef: any;
     private contentElVisible: boolean[] = [];
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {

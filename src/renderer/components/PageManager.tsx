@@ -13,9 +13,9 @@ interface IState {
     activePage: number;
 }
 
-export default class PageManager extends React.Component<any, IState> {
+export default class PageManager extends React.Component<{}, IState> {
 
-    public constructor(props: {}) {
+    constructor(props: {}) {
         super(props);
 
         this.state = {

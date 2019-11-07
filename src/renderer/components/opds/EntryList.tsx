@@ -27,7 +27,12 @@ interface IBaseProps {
 interface IProps extends IBaseProps, RouteComponentProps {
 }
 
-class EntryList extends React.Component<IProps> {
+class EntryList extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         return (
             <section id={styles.flux_list}>

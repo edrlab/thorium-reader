@@ -33,8 +33,10 @@ interface IState {
 }
 
 class GridTagLayout extends React.Component<IProps, IState> {
+
     constructor(props: IProps) {
         super(props);
+
         this.state = {
             showMenu: false,
         };

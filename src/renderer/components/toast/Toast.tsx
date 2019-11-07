@@ -47,7 +47,7 @@ interface IState {
 export class Toast extends React.Component<IProps, IState> {
     private ref: any;
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {

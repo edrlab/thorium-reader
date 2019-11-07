@@ -26,10 +26,10 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, RouteComponentProps {
 }
 
-class SearchForm extends React.Component<IProps> {
+class SearchForm extends React.Component<IProps, undefined> {
     private inputRef: React.RefObject<HTMLInputElement>;
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.inputRef = React.createRef();

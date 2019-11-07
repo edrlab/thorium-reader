@@ -63,8 +63,9 @@ enum themeType {
     Night,
 }
 
-export class ReaderOptions extends React.Component<IProps> {
-    public constructor(props: IProps) {
+export class ReaderOptions extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.handleChooseTheme = this.handleChooseTheme.bind(this);

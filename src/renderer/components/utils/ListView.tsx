@@ -26,7 +26,12 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class ListView extends React.Component<IProps> {
+export default class ListView extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         let MenuContent: any = CatalogMenu;
         if ( this.props.isOpdsView ) {

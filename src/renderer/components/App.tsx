@@ -24,7 +24,7 @@ import { diRendererSymbolTable } from "../diSymbolTable";
 import ToastManager from "./toast/ToastManager";
 import SameFileImportManager from "./utils/SameFileImportManager";
 
-export default class App extends React.Component<any, undefined> {
+export default class App extends React.Component<{}, undefined> {
 
     @lazyInject(diRendererSymbolTable.store)
     private store: Store<RootState>;
@@ -32,7 +32,7 @@ export default class App extends React.Component<any, undefined> {
     @lazyInject(diRendererSymbolTable.history)
     private history: History;
 
-    constructor(props: any) {
+    constructor(props: {}) {
         super(props);
 
         this.onDrop = this.onDrop.bind(this);

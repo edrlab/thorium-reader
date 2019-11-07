@@ -35,7 +35,12 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, RouteComponentProps {
 }
 
-class Header extends React.Component<IProps> {
+class Header extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         const search = parseQueryString(this.props.location.search.replace("?", ""));

@@ -21,7 +21,12 @@ interface IBaseProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class SameFileImportManager extends React.Component<IProps> {
+class SameFileImportManager extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public componentDidUpdate(oldProps: IProps) {
         const { lastImport, downloads } = this.props;
 

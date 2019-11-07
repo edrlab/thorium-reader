@@ -17,9 +17,14 @@ import { Store } from "redux";
 
 import Reader from "./Reader";
 
-export default class App extends React.Component<any, undefined> {
+export default class App extends React.Component<{}, undefined> {
+
     @lazyInject(diRendererSymbolTable.store)
     private store: Store<RootState>;
+
+    constructor(props: {}) {
+        super(props);
+    }
 
     public render(): React.ReactElement<{}> {
         return (

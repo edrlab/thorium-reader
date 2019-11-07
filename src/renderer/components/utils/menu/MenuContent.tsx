@@ -34,7 +34,7 @@ export default class MenuContent extends React.Component<IProps, undefined> {
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.appElement = document.getElementById("app");

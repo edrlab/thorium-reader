@@ -22,7 +22,12 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class SkipLink extends React.Component<IProps> {
+export default class SkipLink extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}>  {
         const { label, className } = this.props;
         return (

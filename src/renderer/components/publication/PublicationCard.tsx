@@ -43,7 +43,8 @@ interface IState {
 }
 
 class PublicationCard extends React.Component<IProps, IState> {
-    public constructor(props: IProps) {
+
+    constructor(props: IProps) {
         super(props);
 
         this.state = {

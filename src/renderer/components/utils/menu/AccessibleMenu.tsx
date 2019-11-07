@@ -35,7 +35,7 @@ export default class AccessibleMenu extends React.Component<IProps, IState> {
     private containerRef: React.RefObject<HTMLDivElement>;
     private ismounted = false;
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {

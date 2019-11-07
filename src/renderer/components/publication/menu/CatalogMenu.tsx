@@ -33,6 +33,7 @@ interface IState {
 }
 
 class CatalogMenu extends React.Component<IProps, IState> {
+
     constructor(props: IProps) {
         super(props);
 

@@ -45,8 +45,9 @@ export default class Menu extends React.Component<IProps, IState> {
     private contentRef: any;
     private menuId: string;
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
+
         this.state = {
             contentStyle: {},
         };

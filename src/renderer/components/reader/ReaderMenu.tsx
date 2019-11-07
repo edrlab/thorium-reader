@@ -58,7 +58,8 @@ interface IState {
 export class ReaderMenu extends React.Component<IProps, IState> {
     private goToRef: any;
     private unsubscribe: Unsubscribe;
-    public constructor(props: IProps) {
+
+    constructor(props: IProps) {
         super(props);
 
         this.state = {

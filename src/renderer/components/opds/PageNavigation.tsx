@@ -32,10 +32,10 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-class PageNavigation extends React.Component<IProps> {
+class PageNavigation extends React.Component<IProps, undefined> {
     private lastShortkeyDate: number;
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.handleKeyDown = this.handleKeyDown.bind(this);

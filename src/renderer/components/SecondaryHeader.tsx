@@ -25,6 +25,11 @@ interface IProps extends IBaseProps {
 }
 
 export class SecondaryHeader extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { id, __ } = this.props;
         return (

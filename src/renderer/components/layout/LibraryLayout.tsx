@@ -40,8 +40,12 @@ interface IBaseProps {
 interface IProps extends IBaseProps, RouteComponentProps, ReturnType<typeof mapStateToProps> {
 }
 
-class LibraryLayout extends React.Component<IProps> {
+class LibraryLayout extends React.Component<IProps, undefined> {
     private fastLinkRef: any;
+
+    constructor(props: IProps) {
+        super(props);
+    }
 
     public componentDidMount() {
         const { location } = this.props;

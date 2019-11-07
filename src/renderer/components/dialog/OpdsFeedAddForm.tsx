@@ -36,6 +36,7 @@ interface IState {
 }
 
 class OpdsFeedAddForm extends React.Component<IProps, IState> {
+
     constructor(props: IProps) {
         super(props);
 

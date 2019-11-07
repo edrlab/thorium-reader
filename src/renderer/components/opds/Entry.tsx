@@ -27,7 +27,12 @@ interface IBaseProps {
 interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse> {
 }
 
-class Entry extends React.Component<IProps> {
+class Entry extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}>  {
         const { entry } = this.props;
 

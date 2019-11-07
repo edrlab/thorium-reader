@@ -27,7 +27,11 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-export class OpdsAddForm extends React.Component<IProps> {
+export class OpdsAddForm extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
 
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;

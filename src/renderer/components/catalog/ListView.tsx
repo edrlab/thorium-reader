@@ -26,7 +26,11 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class ListView extends React.Component<IProps> {
+export default class ListView extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
 
     public render(): React.ReactElement<{}> {
         const entriesEmpty = this.props.catalogEntries.filter((entry) => entry.publications.length > 0).length === 0;

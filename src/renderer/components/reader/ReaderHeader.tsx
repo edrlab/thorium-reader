@@ -63,7 +63,7 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
     private navigationMenuButtonRef = createRef<HTMLButtonElement>();
     private infoMenuButtonRef = createRef<HTMLButtonElement>();
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.focusSettingMenuButton = this.focusSettingMenuButton.bind(this);

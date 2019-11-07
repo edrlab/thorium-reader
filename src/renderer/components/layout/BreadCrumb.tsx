@@ -36,7 +36,12 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-class BreadCrumb extends React.Component<IProps> {
+class BreadCrumb extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { breadcrumb, __ } = this.props;
         const search = parseQueryString(this.props.search);

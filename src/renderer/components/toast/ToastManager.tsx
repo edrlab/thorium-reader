@@ -35,6 +35,7 @@ interface IState {
 }
 
 export class ToastManager extends React.Component<IProps, IState> {
+
     constructor(props: IProps) {
         super(props);
 

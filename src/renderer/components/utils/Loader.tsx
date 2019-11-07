@@ -11,7 +11,12 @@ import * as styles from "readium-desktop/renderer/assets/styles/loader.css";
 
 import SVG from "./SVG";
 
-export default class Loader extends React.Component<any, undefined> {
+export default class Loader extends React.Component<{}, undefined> {
+
+    constructor(props: {}) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}>  {
         return (
             <div className={styles.loader}>

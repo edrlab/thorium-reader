@@ -30,12 +30,12 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-class Dialog extends React.Component<IProps> {
+class Dialog extends React.Component<IProps, undefined> {
     private appElement: HTMLElement;
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.appElement = document.getElementById("app");

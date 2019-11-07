@@ -27,7 +27,12 @@ const style: React.CSSProperties = {
     textAlign: "center",
 };
 
-export default class MessageOpdBrowserResult extends React.Component<IProps> {
+export default class MessageOpdBrowserResult extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { message, title } = this.props;
         return (

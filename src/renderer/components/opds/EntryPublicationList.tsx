@@ -34,7 +34,12 @@ interface IBaseProps {
 interface IProps extends IBaseProps, RouteComponentProps {
 }
 
-class EntryPublicationList extends React.Component<IProps> {
+class EntryPublicationList extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render() {
         const { urls, page } = this.props;
 

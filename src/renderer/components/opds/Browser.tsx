@@ -33,7 +33,12 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse>, ReturnType<typeof mapStateToProps> {
 }
 
-class Browser extends React.Component<IProps> {
+class Browser extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<IProps>  {
         const breadcrumb = this.buildBreadcrumb();
         let url: string | undefined;

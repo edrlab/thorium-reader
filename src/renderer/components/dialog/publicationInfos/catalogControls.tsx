@@ -30,8 +30,9 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-export class CatalogControls extends React.Component<IProps> {
-    public constructor(props: IProps) {
+export class CatalogControls extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.handleRead = this.handleRead.bind(this);

@@ -26,7 +26,12 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps {
 }
 
-export class SettingsHeader extends React.Component<IProps> {
+export class SettingsHeader extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 

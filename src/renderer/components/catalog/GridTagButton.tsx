@@ -20,11 +20,10 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-class GridTagButton extends React.Component<IProps> {
+class GridTagButton extends React.Component<IProps, undefined> {
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
-
     }
 
     public render(): React.ReactElement<{}> {

@@ -31,8 +31,9 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-class RenewLsdConfirm extends React.Component<IProps> {
-    public constructor(props: IProps) {
+class RenewLsdConfirm extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.renew = this.renew.bind(this);

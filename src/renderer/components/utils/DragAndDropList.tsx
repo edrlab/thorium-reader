@@ -28,7 +28,8 @@ interface IProps extends IBaseProps {
 }
 
 export default class DragAndDropList extends React.Component<IProps, undefined> {
-    public constructor(props: IProps) {
+
+    constructor(props: IProps) {
         super(props);
 
         this.onDragEnd = this.onDragEnd.bind(this);

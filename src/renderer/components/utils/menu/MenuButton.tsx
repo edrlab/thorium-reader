@@ -26,7 +26,7 @@ interface IProps extends IBaseProps {
 export default class MenuButton extends React.Component<IProps, undefined> {
     private menuButton = React.createRef<HTMLButtonElement>();
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.getFocusBack = this.getFocusBack.bind(this);

@@ -38,7 +38,7 @@ interface IState {
 export class SideMenuSection extends React.Component<IProps, IState> {
     private sectionRef: any = [];
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
         this.state = {
             style: undefined,
