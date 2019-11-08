@@ -11,7 +11,6 @@ import * as path from "path";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
-import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
@@ -390,19 +389,14 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
 export function* readerFullscreenRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for app initialization
-        const action: ActionWithSender = yield take([
-            readerActions.ActionType.FullscreenOffRequest,
-            readerActions.ActionType.FullscreenOnRequest,
-        ]);
-
-        const fullscreen = (action.type === readerActions.ActionType.FullscreenOnRequest);
+        const action = yield* takeTyped(readerActions.fullScreenRequest.build);
 
         // Get browser window
         const sender = action.sender;
         const winRegistry = diMainGet("win-registry");
         const appWindow = winRegistry.getWindowByIdentifier(sender.winId);
         const browerWindow = appWindow.win as BrowserWindow;
-        browerWindow.setFullScreen(fullscreen);
+        browerWindow.setFullScreen(action.payload.full);
     }
 }
 

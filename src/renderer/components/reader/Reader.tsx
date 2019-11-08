@@ -828,9 +828,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         toggleFullscreen: (fullscreenOn: boolean) => {
             if (fullscreenOn) {
-                dispatch(readerActions.setFullscreenOn());
+                dispatch(readerActions.fullScreenRequest.build(true));
             } else {
-                dispatch(readerActions.setFullscreenOff());
+                dispatch(readerActions.fullScreenRequest.build(false));
             }
         },
         closeReader: (reader: any) => {

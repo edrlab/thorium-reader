@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "redux";
+import { Action } from "./redux";
 
 export enum SenderType {
     Main, // Main process
@@ -17,6 +17,10 @@ export interface WindowSender {
     winId: string;
 }
 
-export interface ActionWithSender extends Action<string> {
+export interface WithSender {
     sender: WindowSender;
+}
+
+// tslint:disable-next-line: max-line-length
+export interface ActionWithSender<Type = string, Payload = undefined, Meta = undefined> extends Action<Type, Payload, Meta>, WithSender {
 }

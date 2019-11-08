@@ -37,8 +37,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.ActionType.ConfigSetSuccess,
     readerActions.ActionType.BookmarkSaveError,
     readerActions.ActionType.BookmarkSaveSuccess,
-    readerActions.ActionType.FullscreenOnSuccess,
-    readerActions.ActionType.FullscreenOffSuccess,
+    readerActions.fullScreenRequest.ID,
 
     lcpActions.userKeyCheckRequest.ID,
 

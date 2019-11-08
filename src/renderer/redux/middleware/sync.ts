@@ -22,8 +22,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.detachModeRequest.ID,
     readerActions.configSetRequest.ID,
     readerActions.ActionType.BookmarkSaveRequest,
-    readerActions.ActionType.FullscreenOffRequest,
-    readerActions.ActionType.FullscreenOnRequest,
+    readerActions.fullScreenRequest.ID,
 
     i18nActions.ActionType.Set,
 ];

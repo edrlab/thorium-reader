@@ -98,8 +98,10 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: EventPayload) => {
             store.dispatch(Object.assign(
                 {},
                 actionSerializer.deserialize(data.payload.action),
-                {sender: data.sender} as ActionWithSender,
-            ));
+                {
+                    sender: data.sender,
+                },
+            ) as ActionWithSender);
             break;
     }
 });

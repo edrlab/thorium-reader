@@ -6,17 +6,10 @@
 // ==LICENSE-END==
 
 import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
-import { Action } from "readium-desktop/common/models/redux";
 
 export enum ActionType {
     OpenSuccess = "READER_OPEN_SUCCESS",
     OpenError = "READER_OPEN_ERROR",
-
-    FullscreenOnRequest = "READER_FULLSCREEN_ON_REQUEST",
-    FullscreenOnSuccess = "READER_FULLSCREEN_ON_SUCCESS",
-
-    FullscreenOffRequest = "READER_FULLSCREEN_OFF_REQUEST",
-    FullscreenOffSuccess = "READER_FULLSCREEN_OFF_SUCCESS",
 
     CloseSuccess = "READER_CLOSE_SUCCESS",
     CloseError = "READER_CLOSE_ERROR",
@@ -43,20 +36,4 @@ export interface ActionPayloadReaderMainModeSetSuccess {
 }
 export interface ActionPayloadReaderMainConfigSetSuccess {
     config: ReaderConfig;
-}
-
-export function setFullscreenOn():
-    Action<ActionType.FullscreenOnRequest> {
-
-    return {
-        type: ActionType.FullscreenOnRequest,
-    };
-}
-
-export function setFullscreenOff():
-    Action<ActionType.FullscreenOffRequest> {
-
-    return {
-        type: ActionType.FullscreenOffRequest,
-    };
 }

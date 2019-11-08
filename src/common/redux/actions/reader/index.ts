@@ -9,6 +9,7 @@ import * as closeRequest from "./closeRequest";
 import * as closeRequestFromPublication from "./closeRequestFromPublication";
 import * as configSetRequest from "./configSetRequest";
 import * as detachModeRequest from "./detachModeRequest";
+import * as fullScreenRequest from "./fullScreenRequest";
 import * as openRequest from "./openRequest";
 import * as saveBookmarkRequest from "./saveBookmarkRequest";
 
@@ -19,4 +20,5 @@ export {
     configSetRequest,
     saveBookmarkRequest,
     closeRequestFromPublication,
+    fullScreenRequest,
 };
