@@ -11,8 +11,6 @@ import { textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-sett
 
 import { Identifiable } from "./identifiable";
 
-// import { PublicationModel } from "./publication";
-
 export enum ReaderMode {
     Attached = "attached",
     Detached = "detached",
@@ -25,8 +23,6 @@ export interface Reader extends Identifiable {
     filesystemPath: string;
     manifestUrl: string;
     publicationIdentifier: string;
-    // publicationView: PublicationView;
-    // publicationModel: PublicationModel;
     window: BrowserWindow;
 }
 

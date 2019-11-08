@@ -16,7 +16,7 @@ import { Tag } from "./tag";
 /**
  * A publication
  */
-export interface PublicationModel extends Identifiable {
+export interface Publication extends Identifiable {
     title: string; // note: can be multilingual object map (not just string)
     description: string;
     cover?: File;
