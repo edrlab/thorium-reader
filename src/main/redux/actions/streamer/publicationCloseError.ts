@@ -5,14 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { SagaIterator } from "redux-saga";
-import { put, take } from "redux-saga/effects";
+import { Action } from "readium-desktop/common/models/redux";
 
-import { appActions } from "readium-desktop/main/redux/actions";
+export const ID = "STREAMER_PUBLICATION_CLOSE_ERROR";
 
-export function* appInitWatcher(): SagaIterator {
-    while (true) {
-        yield take(appActions.initRequest.ID);
-        yield put(appActions.initSuccess.build());
-    }
+export function build(error: any):
+    Action<typeof ID, any> {
+
+    return {
+        type: ID,
+        payload: error,
+        error: true,
+    };
 }
+build.toString = () => ID; // Redux StringableActionCreator

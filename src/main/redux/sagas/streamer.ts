@@ -7,11 +7,10 @@
 
 import * as debug_ from "debug";
 import * as portfinder from "portfinder";
-import { Action } from "readium-desktop/common/models/redux";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions/";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { lcpActions, streamerActions } from "readium-desktop/main/redux/actions";
@@ -22,11 +21,6 @@ import { all, call, put, take } from "redux-saga/effects";
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Server } from "@r2-streamer-js/http/server";
-
-import {
-    ActionPayloadStreamer, ActionPayloadStreamerPublicationCloseSuccess,
-    ActionPayloadStreamerPublicationOpenSuccess, ActionPayloadStreamerStartSuccess,
-} from "../actions/streamer";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
@@ -53,45 +47,30 @@ function stopStreamer(streamer: Server) {
 
 export function* startRequestWatcher(): SagaIterator {
     while (true) {
-        yield take(streamerActions.ActionType.StartRequest);
+        yield take(streamerActions.startRequest.ID);
         const streamer = diMainGet("streamer");
 
         try {
             const streamerUrl = yield* callTyped(() => startStreamer(streamer));
-            yield put({
-                type: streamerActions.ActionType.StartSuccess,
-                payload: {
-                    streamerUrl,
-                },
-            } as Action<string, ActionPayloadStreamerStartSuccess>);
+            yield put(streamerActions.startSuccess.build(streamerUrl));
         } catch (error) {
             debug("Unable to start streamer");
-            yield put({
-                type: streamerActions.ActionType.StartError,
-                payload: new Error(error),
-                error: true,
-            });
+            yield put(streamerActions.startError.build(error));
         }
     }
 }
 
 export function* stopRequestWatcher(): SagaIterator {
     while (true) {
-        yield take(streamerActions.ActionType.StopRequest);
+        yield take(streamerActions.stopRequest.ID);
         const streamer = diMainGet("streamer");
 
         try {
             yield call(() => stopStreamer(streamer));
-            yield put({
-                type: streamerActions.ActionType.StopSuccess,
-            });
+            yield put(streamerActions.stopSuccess.build());
         } catch (error) {
             debug("Unable to stop streamer");
-            yield put({
-                type: streamerActions.ActionType.StopError,
-                payload: new Error(error),
-                error: true,
-            });
+            yield put(streamerActions.stopError.build(error));
         }
     }
 }
@@ -99,7 +78,7 @@ export function* stopRequestWatcher(): SagaIterator {
 export function* publicationOpenRequestWatcher(): SagaIterator {
     while (true) {
         // tslint:disable-next-line: max-line-length
-        const action: Action<string, ActionPayloadStreamer> = yield take(streamerActions.ActionType.PublicationOpenRequest);
+        const action = yield* takeTyped(streamerActions.publicationOpenRequest.build);
 
         const publicationRepository = diMainGet("publication-repository");
 
@@ -109,16 +88,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
             // tslint:disable-next-line: max-line-length
             publicationDocument = yield* callTyped(() => publicationRepository.get(action.payload.publicationIdentifier));
         } catch (error) {
-            yield put({
-                type: streamerActions.ActionType.PublicationOpenError,
-                // payload: {
-                //     error,
-                // },
-                error: true,
-                meta: {
-                    publicationDocument, // undefined
-                },
-            });
+            yield put(streamerActions.publicationOpenError.build(error, publicationDocument));
             continue;
         }
 
@@ -161,16 +131,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
 
                 yield put(toastActions.openRequest.build(ToastType.DownloadFailed, msg));
 
-                yield put({
-                    type: streamerActions.ActionType.PublicationOpenError,
-                    // payload: {
-                    //     error,
-                    // },
-                    error: true,
-                    meta: {
-                        publicationDocument,
-                    },
-                });
+                yield put(streamerActions.publicationOpenError.build(msg, publicationDocument));
                 continue;
             }
         }
@@ -190,24 +151,20 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
 
         if (status === StreamerStatus.Stopped) {
             // Streamer is stopped, start it
-            yield put(streamerActions.start());
+            yield put(streamerActions.startRequest.build());
 
             // Wait for streamer
-            const streamerStartAction: Action<string, ActionPayloadStreamerStartSuccess> = yield take([
-                streamerActions.ActionType.StartSuccess,
-                streamerActions.ActionType.StartError,
+            const streamerStartAction = yield take([
+                streamerActions.startSuccess.ID,
+                streamerActions.startError.ID,
             ]);
+            const typedAction = streamerStartAction.error ?
+                streamerStartAction as ReturnType<typeof streamerActions.startSuccess.build> :
+                streamerStartAction as ReturnType<typeof streamerActions.startError.build>;
 
-            if (streamerStartAction.error) {
+            if (typedAction.error) {
                 // Unable to start server
-                yield put({
-                    type: streamerActions.ActionType.PublicationOpenError,
-                    payload: streamerStartAction.payload,
-                    error: true,
-                    meta: {
-                        publicationDocument,
-                    },
-                });
+                yield put(streamerActions.publicationOpenError.build(typedAction.payload, publicationDocument));
                 continue;
             }
         }
@@ -221,16 +178,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                 () => streamer.loadOrGetCachedPublication(epubPath),
             );
         } catch (error) {
-            yield put({
-                type: streamerActions.ActionType.PublicationOpenError,
-                // payload: {
-                //     error,
-                // },
-                error: true,
-                meta: {
-                    publicationDocument,
-                },
-            });
+            yield put(streamerActions.publicationOpenError.build(error, publicationDocument));
             continue;
         }
 
@@ -257,66 +205,33 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                             message,
                         ));
 
-                        yield put({
-                            type: streamerActions.ActionType.PublicationOpenError,
-                            // payload: {
-                            //     error,
-                            // },
-                            error: true,
-                            meta: {
-                                publicationDocument,
-                            },
-                        });
+                        yield put(streamerActions.publicationOpenError.build(message, publicationDocument));
                         continue;
                     } catch (error) {
                         debug(error);
 
-                        yield put({
-                            type: streamerActions.ActionType.PublicationOpenError,
-                            // payload: {
-                            //     error,
-                            // },
-                            error: true,
-                            meta: {
-                                publicationDocument,
-                            },
-                        });
+                        yield put(streamerActions.publicationOpenError.build(error, publicationDocument));
                         continue;
                     }
                 }
             } catch (error) {
                 debug(error);
 
-                yield put({
-                    type: streamerActions.ActionType.PublicationOpenError,
-                    // payload: {
-                    //     error,
-                    // },
-                    error: true,
-                    meta: {
-                        publicationDocument,
-                    },
-                });
+                yield put(streamerActions.publicationOpenError.build(error, publicationDocument));
                 continue;
             }
         }
 
         const manifestUrl = streamer.serverUrl() + manifestPaths[0];
         debug(manifestUrl);
-        yield put({
-            type: streamerActions.ActionType.PublicationOpenSuccess,
-            payload: {
-                publicationDocument,
-                manifestUrl,
-            },
-        } as Action<string, ActionPayloadStreamerPublicationOpenSuccess>);
+        yield put(streamerActions.publicationOpenSuccess.build(publicationDocument, manifestUrl));
     }
 }
 
 export function* publicationCloseRequestWatcher(): SagaIterator {
     while (true) {
         // tslint:disable-next-line: max-line-length
-        const action: Action<string, ActionPayloadStreamer> = yield take(streamerActions.ActionType.PublicationCloseRequest);
+        const action = yield* takeTyped(streamerActions.publicationCloseRequest.build);
 
         const publicationRepository = diMainGet("publication-repository");
 
@@ -347,15 +262,10 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
         }
 
         if (Object.keys(counter).length === 0) {
-            yield put(streamerActions.stop());
+            yield put(streamerActions.stopRequest.build());
         }
 
-        yield put({
-            type: streamerActions.ActionType.PublicationCloseSuccess,
-            payload: {
-                publicationDocument,
-            },
-        } as Action<string, ActionPayloadStreamerPublicationCloseSuccess>);
+        yield put(streamerActions.publicationCloseSuccess.build(publicationDocument));
     }
 }
 

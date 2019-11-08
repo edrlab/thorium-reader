@@ -5,17 +5,25 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Action } from "readium-desktop/common/models/redux";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
-export interface ActionPayloadStreamer {
-    publicationIdentifier: string;
-}
-export interface ActionPayloadStreamerStartSuccess {
-    streamerUrl: string;
-}
-export interface ActionPayloadStreamerPublicationCloseSuccess {
+export const ID = "STREAMER_PUBLICATION_OPEN_ERROR";
+
+export interface Meta {
     publicationDocument: PublicationDocument;
 }
-export interface ActionPayloadStreamerPublicationOpenSuccess extends ActionPayloadStreamerPublicationCloseSuccess {
-    manifestUrl: string;
+
+export function build(error: any, publicationDocument: PublicationDocument | undefined):
+    Action<typeof ID, any, Meta> {
+
+    return {
+        type: ID,
+        payload: error,
+        error: true,
+        meta: {
+            publicationDocument,
+        },
+    };
 }
+build.toString = () => ID; // Redux StringableActionCreator

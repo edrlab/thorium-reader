@@ -5,15 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { StreamerState } from "readium-desktop/main/redux/states/streamer";
-
-import {
-    ActionPayloadStreamer, ActionPayloadStreamerPublicationCloseSuccess,
-    ActionPayloadStreamerPublicationOpenSuccess, ActionPayloadStreamerStartSuccess,
-} from "../actions/streamer";
 
 const initialState: StreamerState = {
     // Streamer base url
@@ -31,30 +25,30 @@ const initialState: StreamerState = {
 
 export function streamerReducer(
     state: StreamerState = initialState,
-    action: Action<string, ActionPayloadStreamer> |
-        Action<string, ActionPayloadStreamerStartSuccess> |
-        Action<string, ActionPayloadStreamerPublicationOpenSuccess> |
-        Action<string, ActionPayloadStreamerPublicationCloseSuccess>,
+    action: ReturnType<typeof streamerActions.startSuccess.build> |
+        ReturnType<typeof streamerActions.publicationOpenSuccess.build> |
+        ReturnType<typeof streamerActions.publicationCloseSuccess.build> |
+        ReturnType<typeof streamerActions.stopSuccess.build>,
 ): StreamerState {
     let pubId = null;
     const newState = Object.assign({}, state);
 
     switch (action.type) {
-        case streamerActions.ActionType.StartSuccess:
-            const act1 = action as Action<string, ActionPayloadStreamerStartSuccess>;
+        case streamerActions.startSuccess.ID:
+            const act1 = action as ReturnType<typeof streamerActions.startSuccess.build>;
             newState.status = StreamerStatus.Running;
             newState.baseUrl = act1.payload.streamerUrl;
             newState.openPublicationCounter = {};
             newState.publicationManifestUrl = {};
             return newState;
-        case streamerActions.ActionType.StopSuccess:
+        case streamerActions.stopSuccess.ID:
             newState.baseUrl = null;
             newState.status = StreamerStatus.Stopped;
             newState.openPublicationCounter = {};
             newState.publicationManifestUrl = {};
             return newState;
-        case streamerActions.ActionType.PublicationOpenSuccess:
-            const act2 = action as Action<string, ActionPayloadStreamerPublicationOpenSuccess>;
+        case streamerActions.publicationOpenSuccess.ID:
+            const act2 = action as ReturnType<typeof streamerActions.publicationOpenSuccess.build>;
             pubId = act2.payload.publicationDocument.identifier;
 
             if (!newState.openPublicationCounter.hasOwnProperty(pubId)) {
@@ -65,8 +59,8 @@ export function streamerReducer(
                 newState.openPublicationCounter[pubId] = state.openPublicationCounter[pubId] + 1;
             }
             return newState;
-        case streamerActions.ActionType.PublicationCloseSuccess:
-            const act3 = action as Action<string, ActionPayloadStreamerPublicationCloseSuccess>;
+        case streamerActions.publicationCloseSuccess.ID:
+            const act3 = action as ReturnType<typeof streamerActions.publicationCloseSuccess.build>;
             pubId = act3.payload.publicationDocument.identifier;
             newState.openPublicationCounter[pubId] = newState.openPublicationCounter[pubId] - 1;
 

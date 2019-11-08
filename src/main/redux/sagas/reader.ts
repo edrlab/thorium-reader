@@ -10,7 +10,6 @@ import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
-import { Action } from "readium-desktop/common/models/redux";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
@@ -30,10 +29,6 @@ import { all, call, put, take } from "redux-saga/effects";
 import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-
-import {
-    ActionPayloadStreamerPublicationCloseSuccess, ActionPayloadStreamerPublicationOpenSuccess,
-} from "../actions/streamer";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -161,24 +156,25 @@ export function* readerOpenRequestWatcher(): SagaIterator {
         const publicationIdentifier = action.payload.publicationIdentifier;
 
         // Notify the streamer to create a manifest for this publication
-        yield put(streamerActions.openPublication(
-            publicationIdentifier,
-        ));
+        yield put(streamerActions.publicationOpenRequest.build(publicationIdentifier));
 
         // Wait for the publication to be opened
-        const streamerAction: Action<string, ActionPayloadStreamerPublicationOpenSuccess> = yield take([
-            streamerActions.ActionType.PublicationOpenSuccess,
-            streamerActions.ActionType.PublicationOpenError,
+        const streamerAction = yield take([
+            streamerActions.publicationOpenSuccess.ID,
+            streamerActions.publicationOpenError.ID,
         ]);
+        const typedAction = streamerAction.error ?
+            streamerAction as ReturnType<typeof streamerActions.publicationOpenError.build> :
+            streamerAction as ReturnType<typeof streamerActions.publicationOpenSuccess.build>;
 
-        if (streamerAction.error) {
+        if (typedAction.error) {
             // Failed to open publication
             // FIXME: Put publication in meta to be FSA compliant
             yield put(readerActions.openError.build(publicationIdentifier));
             continue;
         }
 
-        const manifestUrl = streamerAction.payload.manifestUrl;
+        const manifestUrl = typedAction.payload.manifestUrl;
         const reader = yield* callTyped(
             () => openReader(publicationIdentifier, manifestUrl),
         );
@@ -220,17 +216,18 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
     const publicationIdentifier = reader.publicationIdentifier;
 
     // Notify the streamer that a publication has been closed
-    yield put(streamerActions.closePublication(
-        publicationIdentifier,
-    ));
+    yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
 
     // Wait for the publication to be closed
-    const streamerAction: Action<string, ActionPayloadStreamerPublicationCloseSuccess> = yield take([
-        streamerActions.ActionType.PublicationCloseSuccess,
-        streamerActions.ActionType.PublicationCloseError,
+    const streamerAction = yield take([
+        streamerActions.publicationCloseSuccess.ID,
+        streamerActions.publicationCloseError.ID,
     ]);
+    const typedAction = streamerAction.error ?
+        streamerAction as ReturnType<typeof streamerActions.publicationCloseError.build> :
+        streamerAction as ReturnType<typeof streamerActions.publicationCloseSuccess.build>;
 
-    if (streamerAction.error) {
+    if (typedAction.error) {
         // Failed to close publication
         yield put(readerActions.closeError.build(reader));
         return;
@@ -294,7 +291,7 @@ export function* readerConfigSetRequestWatcher(): SagaIterator {
 
 export function* readerConfigInitWatcher(): SagaIterator {
     // Wait for app initialization
-    yield take(appActions.initSuccess.build);
+    yield take(appActions.initSuccess.ID);
 
     const configRepository: ConfigRepositoryType = diMainGet("config-repository");
 
