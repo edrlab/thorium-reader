@@ -8,23 +8,22 @@
 import { Action } from "readium-desktop/common/models/redux";
 import { UpdateStatus } from "readium-desktop/common/redux/states/update";
 
-export enum ActionType {
-    LatestVersionSet = "UPDATE_LATEST_VERSION_SET",
-}
+export const ID = "UPDATE_LATEST_VERSION_SET";
 
-export interface ActionPayloadLatestVersion {
+export interface Payload {
     status: UpdateStatus;
     latestVersion: string;
     latestVersionUrl: string;
 }
 
-export function setLatestVersion(
+export function build(
     status: UpdateStatus,
     latestVersion: string,
     latestVersionUrl: string,
-): Action<string, ActionPayloadLatestVersion> {
+): Action<typeof ID, Payload> {
+
     return {
-        type: ActionType.LatestVersionSet,
+        type: ID,
         payload: {
             status,
             latestVersion,
@@ -32,3 +31,4 @@ export function setLatestVersion(
         },
     };
 }
+build.toString = () => ID; // Redux StringableActionCreator

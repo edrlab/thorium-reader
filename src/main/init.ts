@@ -21,7 +21,6 @@ import {
     ActionPayloadReaderMain, ActionPayloadReaderMainConfigSetSuccess,
     ActionPayloadReaderMainModeSetSuccess,
 } from "readium-desktop/common/redux/actions/reader";
-import { ActionPayloadLatestVersion } from "readium-desktop/common/redux/actions/update";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { diMainGet } from "readium-desktop/main/di";
@@ -124,13 +123,13 @@ const winOpenCallback = (appWindow: AppWindow) => {
         type: syncIpc.EventType.MainAction,
         payload: {
             action: {
-                type: updateActions.ActionType.LatestVersionSet,
+                type: updateActions.ID,
                 payload: {
                     status: state.update.status,
                     latestVersion: state.update.latestVersion,
                     latestVersionUrl: state.update.latestVersionUrl,
                 },
-            } as Action<string, ActionPayloadLatestVersion>,
+            } as ReturnType<typeof updateActions.build>,
         },
     } as syncIpc.EventPayload);
 };

@@ -43,7 +43,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     i18nActions.ActionType.Set,
 
-    updateActions.ActionType.LatestVersionSet,
+    updateActions.ID,
 
     toastActions.openRequest.ID,
 

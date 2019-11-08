@@ -5,9 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
 import { updateActions } from "readium-desktop/common/redux/actions";
-import { ActionPayloadLatestVersion } from "readium-desktop/common/redux/actions/update";
 import { UpdateState, UpdateStatus } from "readium-desktop/common/redux/states/update";
 
 const initialState: UpdateState = {
@@ -18,10 +16,10 @@ const initialState: UpdateState = {
 
 export function updateReducer(
     state: UpdateState = initialState,
-    action: Action<string, ActionPayloadLatestVersion>,
+    action: ReturnType<typeof updateActions.build>,
 ) {
     switch (action.type) {
-        case updateActions.ActionType.LatestVersionSet:
+        case updateActions.ID:
             return Object.assign({}, state, {
                 status: action.payload.status,
                 latestVersion: action.payload.latestVersion,
