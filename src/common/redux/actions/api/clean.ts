@@ -10,7 +10,7 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "API_CLEAN";
 
 export interface Payload {
-    apiRequestId: string;
+    requestId: string;
 }
 
 export function build(apiRequestId: string): Action<typeof ID, Payload> {
@@ -18,7 +18,7 @@ export function build(apiRequestId: string): Action<typeof ID, Payload> {
     return {
         type: ID,
         payload: {
-            apiRequestId,
+            requestId: apiRequestId,
         },
     };
 }
