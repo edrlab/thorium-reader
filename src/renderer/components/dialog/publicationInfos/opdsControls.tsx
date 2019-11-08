@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import * as importAction from "readium-desktop/common/redux/actions/import";
+import { importActions } from "readium-desktop/common/redux/actions/";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
@@ -64,7 +64,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         verifyImport: (opdsPublicationView: OpdsPublicationView, downloadSample?: boolean) => {
-            dispatch(importAction.verifyImport(
+            dispatch(importActions.verify.build(
                 {
                     opdsPublicationView,
                     downloadSample,

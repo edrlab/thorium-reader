@@ -7,8 +7,8 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { importActions } from "readium-desktop/common/redux/actions/";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as importAction from "readium-desktop/common/redux/actions/import";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import {
     TranslatorProps, withTranslator,
@@ -108,7 +108,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
             ));
         },
         verifyImport: (downloadSample: boolean) => {
-            dispatch(importAction.verifyImport(
+            dispatch(importActions.verify.build(
                 {
                     opdsPublicationView: props.opdsPublicationView,
                     downloadSample,

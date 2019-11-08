@@ -5,21 +5,26 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Action } from "readium-desktop/common/models/redux";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 
-export enum ActionType {
-    ImportVerificationRequest = "IMPORT_VERIFICATION_REQUEST",
-}
+export const ID = "IMPORT_VERIFICATION_REQUEST";
 
-export interface ActionPayloadImportVerificationRequest {
+export interface Payload {
     data: {
         opdsPublicationView: OpdsPublicationView;
         downloadSample: boolean;
     };
 }
-export function verifyImport(data: {opdsPublicationView: OpdsPublicationView, downloadSample: boolean}) {
+
+export function build(data: {opdsPublicationView: OpdsPublicationView, downloadSample: boolean}):
+    Action<typeof ID, Payload> {
+
     return {
-        type: ActionType.ImportVerificationRequest,
-        payload: { data } as ActionPayloadImportVerificationRequest,
+        type: ID,
+        payload: {
+            data,
+        },
     };
 }
+build.toString = () => ID; // Redux StringableActionCreator
