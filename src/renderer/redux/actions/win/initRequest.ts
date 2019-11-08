@@ -7,20 +7,21 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 
-export enum ActionType {
-    InitRequest = "WIN_INIT_REQUEST",
-    InitError = "WIN_INIT_ERROR",
-    InitSuccess = "WIN_INIT_SUCCESS",
-}
+export const ID = "WIN_INIT_REQUEST";
 
-export interface ActionPayloadWin {
+export interface Payload {
     winId: string;
 }
-export function winInit(winId: string): Action<string, ActionPayloadWin> {
+
+export function build(winId: string):
+    Action<typeof ID, Payload> {
+
     return {
-        type: ActionType.InitRequest,
+        type: ID,
         payload: {
             winId,
         },
     };
 }
+build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

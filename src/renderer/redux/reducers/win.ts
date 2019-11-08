@@ -5,9 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
 import { winActions } from "readium-desktop/renderer/redux/actions";
-import { ActionPayloadWin } from "readium-desktop/renderer/redux/actions/win";
 import { WinState, WinStatus } from "readium-desktop/renderer/redux/states/win";
 
 const initialState: WinState = {
@@ -17,18 +15,20 @@ const initialState: WinState = {
 
 export function winReducer(
     state: WinState = initialState,
-    action: Action<string, ActionPayloadWin>,
+    action: winActions.initRequest.TAction |
+        winActions.initSuccess.TAction |
+        winActions.initError.TAction,
 ) {
     switch (action.type) {
-        case winActions.ActionType.InitRequest:
+        case winActions.initRequest.ID:
             return Object.assign({}, state, {
                 winId: action.payload.winId,
             });
-        case winActions.ActionType.InitSuccess:
+        case winActions.initSuccess.ID:
             return Object.assign({}, state, {
                 status: WinStatus.Initialized,
             });
-        case winActions.ActionType.InitError:
+        case winActions.initError.ID:
             return Object.assign({}, state, {
                 status: WinStatus.Error,
             });

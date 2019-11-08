@@ -5,14 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { SagaIterator } from "redux-saga";
-import { put, take } from "redux-saga/effects";
+import * as browseRequest from "./browseRequest";
 
-import { winActions } from "readium-desktop/renderer/redux/actions";
-
-export function* winInitWatcher(): SagaIterator {
-    while (true) {
-        yield take(winActions.initRequest.ID);
-        yield put(winActions.initSuccess.build());
-    }
-}
+export {
+    browseRequest,
+};

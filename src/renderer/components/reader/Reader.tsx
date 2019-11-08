@@ -337,7 +337,7 @@ export class Reader extends React.Component<IProps, IState> {
         }, true);
 
         // TODO: this is a short-term hack.
-        // Can we instead subscribe to Redux action type == ActionType.CloseRequest,
+        // Can we instead subscribe to Redux action type == CloseRequest,
         // but narrow it down specically to a reader window instance (not application-wide)
         window.document.addEventListener("Thorium:DialogClose", (_ev: Event) => {
             this.setState({
@@ -503,7 +503,7 @@ export class Reader extends React.Component<IProps, IState> {
 
     private displayPublicationInfo() {
         if (this.state.publicationInfo) {
-            // TODO: subscribe to Redux action type == ActionType.CloseRequest
+            // TODO: subscribe to Redux action type == CloseRequest
             // in order to reset shortcutEnable to true? Problem: must be specific to this reader window.
             // So instead we subscribe to DOM event "Thorium:DialogClose", but this is a short-term hack!
             this.setState({

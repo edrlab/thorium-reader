@@ -264,7 +264,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
         closeDialog: () => {
             if ((props as IProps).publicationInfoReader) {
                 // TODO: this is a short-term hack.
-                // Can we instead subscribe to Redux action type == ActionType.CloseRequest,
+                // Can we instead subscribe to Redux action CloseRequest,
                 // but narrow it down specically to the window instance (not application-wide)
                 window.document.dispatchEvent(new Event("Thorium:DialogClose"));
             }

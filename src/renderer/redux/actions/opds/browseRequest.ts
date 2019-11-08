@@ -7,18 +7,19 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 
-export enum ActionType {
-    BrowseRequest = "OPDS_BROWSE_REQUEST",
-}
+export const ID = "OPDS_BROWSE_REQUEST";
 
-export interface ActionPayloadOpds {
+export interface Payload {
     level: number;
     title: string;
     url: string;
 }
-export function browse(level: number, title: string, url: string): Action<string, ActionPayloadOpds> {
+
+export function build(level: number, title: string, url: string):
+    Action<typeof ID, Payload> {
+
     return {
-        type: ActionType.BrowseRequest,
+        type: ID,
         payload: {
             level,
             title,
@@ -26,3 +27,5 @@ export function browse(level: number, title: string, url: string): Action<string
         },
     };
 }
+build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;
