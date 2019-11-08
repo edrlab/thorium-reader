@@ -22,18 +22,10 @@ import { Server } from "@r2-streamer-js/http/server";
 
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
 
-export interface PublicationViewPayload {
-    publicationIdentifier: string;
-}
-export interface PublicationViewWithPassphrasePayload {
-    passphrase: string;
-    publicationView: PublicationView;
-}
-
 export interface ILcpApi {
-    renewPublicationLicense: (data: PublicationViewPayload) => Promise<void>;
-    returnPublication: (data: PublicationViewPayload) => Promise<void>;
-    unlockPublicationWithPassphrase: (data: PublicationViewWithPassphrasePayload) => Promise<void>;
+    renewPublicationLicense: (publicationIdentifier: string) => Promise<void>;
+    returnPublication: (publicationIdentifier: string) => Promise<void>;
+    unlockPublicationWithPassphrase: (passphrase: string, publicationView: PublicationView) => Promise<void>;
 }
 
 export type TLcpApiRenewPublicationLicense = ILcpApi["renewPublicationLicense"];
@@ -66,24 +58,21 @@ export class LcpApi {
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
-    public async renewPublicationLicense(data: PublicationViewPayload): Promise<void> {
-        const { publicationIdentifier } = data;
+    public async renewPublicationLicense(publicationIdentifier: string): Promise<void> {
         const publicationDocument = await this.publicationRepository.get(
             publicationIdentifier,
         );
         await this.lcpManager.renewPublicationLicense(publicationDocument);
     }
 
-    public async returnPublication(data: PublicationViewPayload): Promise<void> {
-        const { publicationIdentifier } = data;
+    public async returnPublication(publicationIdentifier: string): Promise<void> {
         const publicationDocument = await this.publicationRepository.get(
             publicationIdentifier,
         );
         await this.lcpManager.returnPublication(publicationDocument);
     }
 
-    public async unlockPublicationWithPassphrase(data: PublicationViewWithPassphrasePayload): Promise<void> {
-        const { publicationView, passphrase } = data;
+    public async unlockPublicationWithPassphrase(passphrase: string, publicationView: PublicationView): Promise<void> {
         try {
             const unlockPublicationRes: string | number | null | undefined =
                 await this.lcpManager.unlockPublication(publicationView.identifier, passphrase);

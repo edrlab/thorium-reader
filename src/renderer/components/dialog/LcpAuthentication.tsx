@@ -96,10 +96,10 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
     private submit(e: TFormEvent) {
         e.preventDefault();
 
-        apiAction("lcp/unlockPublicationWithPassphrase", {
-            publicationView: this.props.publicationView,
-            passphrase: this.state.password,
-        }).catch((error) => {
+        apiAction("lcp/unlockPublicationWithPassphrase",
+            this.state.password,
+            this.props.publicationView,
+        ).catch((error) => {
             console.error(`Error lcp/unlockPublicationWithPassphrase`, error);
         });
 
