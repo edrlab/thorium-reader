@@ -18,16 +18,16 @@ const initialState: ApiState<any> = {
 // The api reducer.
 export function apiReducer(
     state: ApiState<any> = initialState,
-    action: ReturnType<typeof apiActions.error.build> |
-        ReturnType<typeof apiActions.success.build> |
-        ReturnType<typeof apiActions.clean.build>,
+    action: apiActions.error.TAction |
+        apiActions.success.TAction |
+        apiActions.clean.TAction,
 ) {
     const resultIsReject = action.type === apiActions.error.ID;
 
     switch (action.type) {
         case apiActions.error.ID:
         case apiActions.success.ID:
-            const act1 = action as ReturnType<typeof apiActions.success.build>;
+            const act1 = action as apiActions.success.TAction;
             const data = state.data;
             const now = moment.now();
             // Why here is it not immutable ?
@@ -51,7 +51,7 @@ export function apiReducer(
                 },
             );
         case apiActions.clean.ID:
-            const act2 = action as ReturnType<typeof apiActions.clean.build>;
+            const act2 = action as apiActions.clean.TAction;
             const newState = Object.assign({}, state);
             delete newState.data[act2.payload.requestId];
             return newState;

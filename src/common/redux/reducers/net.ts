@@ -14,8 +14,8 @@ const initialState: NetState = {
 
 export function netReducer(
     state: NetState = initialState,
-    action: ReturnType<typeof netActions.offline.build> |
-        ReturnType<typeof netActions.online.build>,
+    action: netActions.offline.TAction |
+        netActions.online.TAction,
 ) {
     switch (action.type) {
         case netActions.offline.ID:

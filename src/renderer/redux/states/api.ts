@@ -27,7 +27,7 @@ export interface ApiDataState<T> {
 }
 
 export interface ApiLastSuccess {
-    action: ReturnType<typeof apiActions.request.build>;
+    action: apiActions.request.TAction;
     date: number;
 }
 

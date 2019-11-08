@@ -17,9 +17,8 @@ const initialState: DialogState = {
 // The dialog reducer.
 export function dialogReducer(
     state: DialogState = initialState,
-    action:
-        ReturnType<typeof dialogActions.openRequest.build> |
-        ReturnType<typeof dialogActions.closeRequest.build>,
+    action: dialogActions.openRequest.TAction |
+        dialogActions.closeRequest.TAction,
 ) {
     switch (action.type) {
         case dialogActions.openRequest.ID:

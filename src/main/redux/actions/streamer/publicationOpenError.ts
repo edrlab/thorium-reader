@@ -27,3 +27,4 @@ export function build(error: any, publicationDocument: PublicationDocument | und
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

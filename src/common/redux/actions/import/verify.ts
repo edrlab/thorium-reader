@@ -28,3 +28,4 @@ export function build(data: {opdsPublicationView: OpdsPublicationView, downloadS
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

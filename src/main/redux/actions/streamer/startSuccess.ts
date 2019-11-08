@@ -23,3 +23,4 @@ export function build(streamerUrl: string):
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

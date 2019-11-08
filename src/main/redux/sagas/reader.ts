@@ -164,8 +164,8 @@ export function* readerOpenRequestWatcher(): SagaIterator {
             streamerActions.publicationOpenError.ID,
         ]);
         const typedAction = streamerAction.error ?
-            streamerAction as ReturnType<typeof streamerActions.publicationOpenError.build> :
-            streamerAction as ReturnType<typeof streamerActions.publicationOpenSuccess.build>;
+            streamerAction as streamerActions.publicationOpenError.TAction :
+            streamerAction as streamerActions.publicationOpenSuccess.TAction;
 
         if (typedAction.error) {
             // Failed to open publication
@@ -224,8 +224,8 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
         streamerActions.publicationCloseError.ID,
     ]);
     const typedAction = streamerAction.error ?
-        streamerAction as ReturnType<typeof streamerActions.publicationCloseError.build> :
-        streamerAction as ReturnType<typeof streamerActions.publicationCloseSuccess.build>;
+        streamerAction as streamerActions.publicationCloseError.TAction :
+        streamerAction as streamerActions.publicationCloseSuccess.TAction;
 
     if (typedAction.error) {
         // Failed to close publication

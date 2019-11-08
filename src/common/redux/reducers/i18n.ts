@@ -15,7 +15,7 @@ const initialState: I18NState = {
 
 export function i18nReducer(
     state: I18NState = initialState,
-    action: ReturnType<typeof i18nActions.setLocale.build>,
+    action: i18nActions.setLocale.TAction,
     ): I18NState {
     switch (action.type) {
         case i18nActions.setLocale.ID:

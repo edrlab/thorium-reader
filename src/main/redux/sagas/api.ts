@@ -25,7 +25,7 @@ const getSymbolName = (apiName: string) => {
     throw new Error("Wrong API name called " + apiName);
 };
 
-export function* processRequest(requestAction: ReturnType<typeof apiActions.request.build>): SagaIterator {
+export function* processRequest(requestAction: apiActions.request.TAction): SagaIterator {
     const { api } = requestAction.meta;
 
     try {

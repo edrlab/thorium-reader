@@ -27,3 +27,4 @@ export function build(api: MetaApi, payload: any):
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

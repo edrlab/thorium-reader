@@ -27,3 +27,4 @@ export function build<T extends keyof DialogType>(type: T, data: DialogType[T]):
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

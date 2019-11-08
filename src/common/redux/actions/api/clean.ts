@@ -23,3 +23,4 @@ export function build(apiRequestId: string): Action<typeof ID, Payload> {
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

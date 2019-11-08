@@ -159,8 +159,8 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                 streamerActions.startError.ID,
             ]);
             const typedAction = streamerStartAction.error ?
-                streamerStartAction as ReturnType<typeof streamerActions.startSuccess.build> :
-                streamerStartAction as ReturnType<typeof streamerActions.startError.build>;
+                streamerStartAction as streamerActions.startSuccess.TAction :
+                streamerStartAction as streamerActions.startError.TAction;
 
             if (typedAction.error) {
                 // Unable to start server

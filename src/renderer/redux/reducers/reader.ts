@@ -29,27 +29,27 @@ const initialState: ReaderState = {
 
 export function readerReducer(
     state: ReaderState = initialState,
-    action: ReturnType<typeof readerActions.closeSuccess.build> |
-        ReturnType<typeof readerActions.openSuccess.build> |
-        ReturnType<typeof readerActions.configSetSuccess.build> |
-        ReturnType<typeof readerActions.detachModeSuccess.build>,
+    action: readerActions.closeSuccess.TAction |
+        readerActions.openSuccess.TAction |
+        readerActions.configSetSuccess.TAction |
+        readerActions.detachModeSuccess.TAction,
 ): ReaderState {
     const newState = Object.assign({}, state);
 
     switch (action.type) {
         case readerActions.openSuccess.ID:
-            const act1 = action as ReturnType<typeof readerActions.openSuccess.build>;
+            const act1 = action as readerActions.openSuccess.TAction;
             newState.reader = act1.payload.reader;
             return newState;
         case readerActions.closeSuccess.ID:
             delete newState.reader;
             return newState;
         case readerActions.detachModeSuccess.ID:
-            const act3 = action as ReturnType<typeof readerActions.detachModeSuccess.build>;
+            const act3 = action as readerActions.detachModeSuccess.TAction;
             newState.mode = act3.payload.mode;
             return newState;
         case readerActions.configSetSuccess.ID:
-            const act4 = action as ReturnType<typeof readerActions.configSetSuccess.build>;
+            const act4 = action as readerActions.configSetSuccess.TAction;
             newState.config = act4.payload.config;
             return newState;
         default:

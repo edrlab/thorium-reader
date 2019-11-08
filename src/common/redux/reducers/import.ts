@@ -16,7 +16,7 @@ const initialState: ImportState = {
 
 export function importReducer(
     state: ImportState = initialState,
-    action: ReturnType<typeof importActions.verify.build>,
+    action: importActions.verify.TAction,
 ) {
     switch (action.type) {
         case importActions.verify.ID:

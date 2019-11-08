@@ -15,8 +15,8 @@ const initialState: DownloadState = {
 
 export function downloadReducer(
     state: DownloadState = initialState,
-    action: ReturnType<typeof downloadActions.request.build> |
-        ReturnType<typeof downloadActions.success.build>,
+    action: downloadActions.request.TAction |
+        downloadActions.success.TAction,
 ): DownloadState {
     const downloads = state.downloads;
     const url = oc(action).payload.url(undefined);

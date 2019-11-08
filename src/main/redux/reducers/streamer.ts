@@ -25,17 +25,17 @@ const initialState: StreamerState = {
 
 export function streamerReducer(
     state: StreamerState = initialState,
-    action: ReturnType<typeof streamerActions.startSuccess.build> |
-        ReturnType<typeof streamerActions.publicationOpenSuccess.build> |
-        ReturnType<typeof streamerActions.publicationCloseSuccess.build> |
-        ReturnType<typeof streamerActions.stopSuccess.build>,
+    action: streamerActions.startSuccess.TAction |
+        streamerActions.publicationOpenSuccess.TAction |
+        streamerActions.publicationCloseSuccess.TAction |
+        streamerActions.stopSuccess.TAction,
 ): StreamerState {
     let pubId = null;
     const newState = Object.assign({}, state);
 
     switch (action.type) {
         case streamerActions.startSuccess.ID:
-            const act1 = action as ReturnType<typeof streamerActions.startSuccess.build>;
+            const act1 = action as streamerActions.startSuccess.TAction;
             newState.status = StreamerStatus.Running;
             newState.baseUrl = act1.payload.streamerUrl;
             newState.openPublicationCounter = {};
@@ -48,7 +48,7 @@ export function streamerReducer(
             newState.publicationManifestUrl = {};
             return newState;
         case streamerActions.publicationOpenSuccess.ID:
-            const act2 = action as ReturnType<typeof streamerActions.publicationOpenSuccess.build>;
+            const act2 = action as streamerActions.publicationOpenSuccess.TAction;
             pubId = act2.payload.publicationDocument.identifier;
 
             if (!newState.openPublicationCounter.hasOwnProperty(pubId)) {
@@ -60,7 +60,7 @@ export function streamerReducer(
             }
             return newState;
         case streamerActions.publicationCloseSuccess.ID:
-            const act3 = action as ReturnType<typeof streamerActions.publicationCloseSuccess.build>;
+            const act3 = action as streamerActions.publicationCloseSuccess.TAction;
             pubId = act3.payload.publicationDocument.identifier;
             newState.openPublicationCounter[pubId] = newState.openPublicationCounter[pubId] - 1;
 

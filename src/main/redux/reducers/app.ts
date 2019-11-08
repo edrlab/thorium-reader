@@ -14,7 +14,7 @@ const initialState: AppState = {
 
 export function appReducer(
     state: AppState = initialState,
-    action: ReturnType<typeof appActions.initSuccess.build>,
+    action: appActions.initSuccess.TAction,
 ) {
     switch (action.type) {
         case appActions.initSuccess.ID:

@@ -28,3 +28,4 @@ export function build(requestId: string, moduleId: TModuleApi, methodId: TMethod
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;

@@ -27,3 +27,4 @@ export function build(type: ToastType, data?: string):
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
+export type TAction = ReturnType<typeof build>;
