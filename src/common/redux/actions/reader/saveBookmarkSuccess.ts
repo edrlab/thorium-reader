@@ -5,26 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Bookmark } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 
-import { Meta, MetaApi } from "./types";
+export const ID = "READER_BOOKMARK_SAVE_SUCCESS";
 
-export const ID = "API_ERROR";
+export interface Payload {
+    bookmark: Bookmark;
+}
 
-export function build(api: MetaApi, error: any):
-    Action<typeof ID, any, Meta> {
+export function build(bookmark: Bookmark):
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,
-        payload: error,
-        meta: {
-            api: {
-                requestId: api.requestId,
-                moduleId: api.moduleId,
-                methodId: api.methodId,
-            },
+        payload: {
+            bookmark,
         },
-        error: true,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

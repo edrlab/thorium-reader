@@ -31,11 +31,15 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.openError.ID,
     readerActions.closeError.ID,
     readerActions.closeSuccess.ID,
+
     readerActions.detachModeSuccess.ID,
+
     readerActions.configSetError.ID,
     readerActions.configSetSuccess.ID,
-    readerActions.ActionType.BookmarkSaveError,
-    readerActions.ActionType.BookmarkSaveSuccess,
+
+    readerActions.saveBookmarkError.ID,
+    readerActions.saveBookmarkSuccess.ID,
+
     readerActions.fullScreenRequest.ID,
 
     lcpActions.userKeyCheckRequest.ID,

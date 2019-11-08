@@ -9,18 +9,12 @@ import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "READER_CONFIG_SET_ERROR";
 
-export interface Payload {
-    error: any;
-}
-
 export function build(error: any):
-    Action<typeof ID, Payload> {
+    Action<typeof ID, any> {
 
     return {
         type: ID,
-        payload: {
-            error,
-        },
+        payload: error,
         error: true,
     };
 }

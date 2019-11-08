@@ -5,9 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export enum ActionType {
+import { Action } from "readium-desktop/common/models/redux";
 
-    BookmarkSaveRequest = "READER_BOOKMARK_SAVE_REQUEST",
-    BookmarkSaveSuccess = "READER_BOOKMARK_SAVE_SUCCESS",
-    BookmarkSaveError = "READER_BOOKMARK_SAVE_ERROR",
+export const ID = "READER_BOOKMARK_SAVE_ERROR";
+
+export function build(error: any):
+    Action<typeof ID, any> {
+
+    return {
+        type: ID,
+        payload: error,
+        error: true,
+    };
 }
+build.toString = () => ID; // Redux StringableActionCreator

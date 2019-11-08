@@ -332,18 +332,9 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
                 locatorType: LocatorType.LastReadingLocation,
             };
             yield call(() => locatorRepository.save(locator));
-            yield put({
-                type: readerActions.ActionType.BookmarkSaveSuccess,
-                payload: {
-                    bookmark,
-                },
-            });
+            yield put(readerActions.saveBookmarkSuccess.build(bookmark));
         } catch (error) {
-            yield put({
-                type: readerActions.ActionType.BookmarkSaveError,
-                payload: new Error(error),
-                error: true,
-            });
+            yield put(readerActions.saveBookmarkError.build(error));
         }
     }
 }

@@ -18,7 +18,9 @@ import * as fullScreenRequest from "./fullScreenRequest";
 import * as openError from "./openError";
 import * as openRequest from "./openRequest";
 import * as openSuccess from "./openSuccess";
+import * as saveBookmarkError from "./saveBookmarkError";
 import * as saveBookmarkRequest from "./saveBookmarkRequest";
+import * as saveBookmarkSuccess from "./saveBookmarkSuccess";
 
 export {
     openRequest,
@@ -33,6 +35,8 @@ export {
     configSetSuccess,
     configSetError,
     saveBookmarkRequest,
+    saveBookmarkSuccess,
+    saveBookmarkError,
     closeRequestFromPublication,
     fullScreenRequest,
 };

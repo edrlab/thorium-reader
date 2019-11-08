@@ -8,7 +8,7 @@
 import { Bookmark } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 
-export const ID = "READER_OPEN_REQUEST";
+export const ID = "READER_BOOKMARK_SAVE_REQUEST";
 
 export interface Payload {
     bookmark: Bookmark;
