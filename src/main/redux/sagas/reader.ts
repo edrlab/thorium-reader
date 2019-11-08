@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import { LocatorType } from "readium-desktop/common/models/locator";
-import { Bookmark, Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
+import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
@@ -18,8 +18,7 @@ import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import {
     ActionPayloadReaderMainConfigSetSuccess, ActionPayloadReaderMainModeSetSuccess,
-    CloseReaderActionPayload, SaveBookmarkActionPayload,
-    SetConfigActionPayload,
+    CloseReaderActionPayload,
 } from "readium-desktop/common/redux/actions/reader";
 import { callTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -300,9 +299,9 @@ type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Tim
 export function* readerConfigSetRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for save request
-        const action: Action<string, SetConfigActionPayload> = yield take(readerActions.ActionType.ConfigSetRequest);
+        const action = yield* takeTyped(readerActions.configSetRequest.build);
 
-        const configValue: ReaderConfig = action.payload.config;
+        const configValue = action.payload.config;
         const config: ConfigDocumentTypeWithoutTimestampable = {
             identifier: READER_CONFIG_ID,
             value: configValue,
@@ -354,9 +353,9 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for app initialization
         // tslint:disable-next-line: max-line-length
-        const action: Action<string, SaveBookmarkActionPayload> = yield take(readerActions.ActionType.BookmarkSaveRequest);
+        const action = yield* takeTyped(readerActions.saveBookmarkRequest.build);
 
-        const bookmark = action.payload.bookmark as Bookmark;
+        const bookmark = action.payload.bookmark;
 
         // Get bookmark manager
         const locatorRepository = diMainGet("locator-repository");

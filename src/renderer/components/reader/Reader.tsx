@@ -747,7 +747,8 @@ export class Reader extends React.Component<IProps, IState> {
     private handleSettingsSave() {
         const values = this.state.settingsValues;
 
-        this.store.dispatch(readerActions.setConfig(values));
+        this.store.dispatch(readerActions.configSetRequest.build(values));
+
         // Push reader config to navigator
         readiumCssOnOff();
     }

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Bookmark, Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
+import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
@@ -29,7 +29,6 @@ export enum ActionType {
     ModeSetSuccess = "READER_MODE_SET_SUCCESS",
     ModeSetError = "READER_MODE_SET_ERROR",
 
-    ConfigSetRequest = "READER_CONFIG_SET_REQUEST",
     ConfigSetSuccess = "READER_CONFIG_SET_SUCCESS",
     ConfigSetError = "READER_CONFIG_SET_ERROR",
 
@@ -46,34 +45,6 @@ export interface ActionPayloadReaderMainModeSetSuccess {
 }
 export interface ActionPayloadReaderMainConfigSetSuccess {
     config: ReaderConfig;
-}
-
-export interface SetConfigActionPayload {
-    config: ReaderConfig;
-}
-export function setConfig(config: ReaderConfig):
-    Action<ActionType.ConfigSetRequest, SetConfigActionPayload> {
-
-    return {
-        type: ActionType.ConfigSetRequest,
-        payload: {
-            config,
-        },
-    };
-}
-
-export interface SaveBookmarkActionPayload {
-    bookmark: Bookmark;
-}
-export function saveBookmark(bookmark: Bookmark):
-    Action<ActionType.BookmarkSaveRequest, SaveBookmarkActionPayload> {
-
-    return {
-        type: ActionType.BookmarkSaveRequest,
-        payload: {
-            bookmark,
-        },
-    };
 }
 
 export interface CloseReaderActionPayload {

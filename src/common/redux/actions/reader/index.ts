@@ -6,11 +6,15 @@
 // ==LICENSE-END==
 
 import * as closeRequest from "./closeRequest";
+import * as configSetRequest from "./configSetRequest";
 import * as detachModeRequest from "./detachModeRequest";
 import * as openRequest from "./openRequest";
+import * as saveBookmarkRequest from "./saveBookmarkRequest";
 
 export {
     openRequest,
     closeRequest,
     detachModeRequest,
+    configSetRequest,
+    saveBookmarkRequest,
 };
