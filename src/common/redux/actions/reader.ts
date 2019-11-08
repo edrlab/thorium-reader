@@ -7,11 +7,6 @@
 
 export enum ActionType {
 
-    ModeSetSuccess = "READER_MODE_SET_SUCCESS",
-    ModeSetError = "READER_MODE_SET_ERROR",
-
-    ConfigSetError = "READER_CONFIG_SET_ERROR",
-
     BookmarkSaveRequest = "READER_BOOKMARK_SAVE_REQUEST",
     BookmarkSaveSuccess = "READER_BOOKMARK_SAVE_SUCCESS",
     BookmarkSaveError = "READER_BOOKMARK_SAVE_ERROR",

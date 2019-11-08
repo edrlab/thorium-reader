@@ -22,6 +22,7 @@ export function build(reader: Reader):
         payload: {
             reader,
         },
+        error: true,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

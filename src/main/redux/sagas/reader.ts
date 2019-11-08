@@ -287,7 +287,7 @@ export function* readerConfigSetRequestWatcher(): SagaIterator {
             yield call(() => configRepository.save(config));
             yield put(readerActions.configSetSuccess.build(configValue));
         } catch (error) {
-            yield put({ type: readerActions.ActionType.ConfigSetError, error: true });
+            yield put(readerActions.configSetError.build(error));
         }
     }
 }
@@ -304,11 +304,7 @@ export function* readerConfigInitWatcher(): SagaIterator {
         // Returns the first reader configuration available in database
         yield put(readerActions.configSetSuccess.build(readerConfigDoc.value));
     } catch (error) {
-        yield put({
-            type: readerActions.ActionType.ConfigSetError,
-            payload: new Error(error),
-            error: true,
-        });
+        yield put(readerActions.configSetError.build(error));
     }
 }
 

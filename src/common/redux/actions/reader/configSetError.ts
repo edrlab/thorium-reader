@@ -7,19 +7,19 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 
-export const ID = "READER_OPEN_ERROR";
+export const ID = "READER_CONFIG_SET_ERROR";
 
 export interface Payload {
-    publicationIdentifier: string;
+    error: any;
 }
 
-export function build(publicationIdentifier: string):
+export function build(error: any):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            publicationIdentifier,
+            error,
         },
         error: true,
     };

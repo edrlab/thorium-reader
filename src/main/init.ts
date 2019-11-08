@@ -129,12 +129,7 @@ const winCloseCallback = (appWindow: AppWindow) => {
     const appWin = Object.values(appWindows)[0];
     if (appWin.type === AppWindowType.Library) {
         // Set reader to attached mode
-        store.dispatch({
-            type: readerActions.ActionType.ModeSetSuccess,
-            payload: {
-                mode: ReaderMode.Attached,
-            },
-        });
+        store.dispatch(readerActions.detachModeSuccess.build(ReaderMode.Attached));
     }
 
     if (

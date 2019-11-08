@@ -9,6 +9,7 @@ import * as closeError from "./closeError";
 import * as closeRequest from "./closeRequest";
 import * as closeRequestFromPublication from "./closeRequestFromPublication";
 import * as closeSuccess from "./closeSuccess";
+import * as configSetError from "./configSetError";
 import * as configSetRequest from "./configSetRequest";
 import * as configSetSuccess from "./configSetSuccess";
 import * as detachModeRequest from "./detachModeRequest";
@@ -30,6 +31,7 @@ export {
     detachModeSuccess,
     configSetRequest,
     configSetSuccess,
+    configSetError,
     saveBookmarkRequest,
     closeRequestFromPublication,
     fullScreenRequest,
