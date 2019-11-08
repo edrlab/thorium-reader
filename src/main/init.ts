@@ -16,7 +16,6 @@ import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, netActions, readerActions, updateActions,
 } from "readium-desktop/common/redux/actions";
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import {
     ActionPayloadReaderMain, ActionPayloadReaderMainConfigSetSuccess,
     ActionPayloadReaderMainModeSetSuccess,
@@ -110,11 +109,11 @@ const winOpenCallback = (appWindow: AppWindow) => {
         type: syncIpc.EventType.MainAction,
         payload: {
             action: {
-                type: i18nActions.ActionType.Set,
+                type: i18nActions.setLocale.ID,
                 payload: {
                     locale: state.i18n.locale,
                 },
-            } as Action<string, i18nActions.PayloadLocale>,
+            } as ReturnType<typeof i18nActions.setLocale.build>,
         },
     } as syncIpc.EventPayload);
 
@@ -123,13 +122,13 @@ const winOpenCallback = (appWindow: AppWindow) => {
         type: syncIpc.EventType.MainAction,
         payload: {
             action: {
-                type: updateActions.ID,
+                type: updateActions.latestVersion.ID,
                 payload: {
                     status: state.update.status,
                     latestVersion: state.update.latestVersion,
                     latestVersionUrl: state.update.latestVersionUrl,
                 },
-            } as ReturnType<typeof updateActions.build>,
+            } as ReturnType<typeof updateActions.latestVersion.build>,
         },
     } as syncIpc.EventPayload);
 };
@@ -185,7 +184,7 @@ export function initApp() {
     const config = configRepository.get(LocaleConfigIdentifier);
     config.then((i18nLocale) => {
         if (i18nLocale && i18nLocale.value && i18nLocale.value.locale) {
-            store.dispatch(setLocale(i18nLocale.value.locale));
+            store.dispatch(i18nActions.setLocale.build(i18nLocale.value.locale));
             debug(`set the locale ${i18nLocale.value.locale}`);
         } else {
             debug(`error on configRepository.get("i18n")): ${i18nLocale}`);
@@ -193,7 +192,7 @@ export function initApp() {
     }).catch(async () => {
         const loc = app.getLocale().split("-")[0];
         const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
-        store.dispatch(setLocale(lang));
+        store.dispatch(i18nActions.setLocale.build(lang));
         debug(`create i18n key in configRepository with ${lang} locale`);
     });
 

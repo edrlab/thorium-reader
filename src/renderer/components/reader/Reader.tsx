@@ -5,13 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as classNames from "classnames";
 import * as path from "path";
 import * as queryString from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { ReaderConfig as ReadiumCSS } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
 import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
@@ -51,8 +52,6 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import optionsValues from "./options-values";
-
-import * as classNames from "classnames";
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
@@ -222,7 +221,7 @@ export class Reader extends React.Component<IProps, IState> {
         const locale = this.store.getState().i18n.locale;
 
         if (locale == null) {
-            this.store.dispatch(setLocale(defaultLocale));
+            this.store.dispatch(i18nActions.setLocale.build(defaultLocale));
         }
 
         this.state = {

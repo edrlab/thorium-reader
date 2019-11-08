@@ -41,9 +41,9 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     lcpActions.userKeyCheckRequest.ID,
 
-    i18nActions.ActionType.Set,
+    i18nActions.setLocale.ID,
 
-    updateActions.ID,
+    updateActions.latestVersion.ID,
 
     toastActions.openRequest.ID,
 

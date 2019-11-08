@@ -11,7 +11,7 @@ import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { _PACKAGING } from "readium-desktop/preprocessor-directives";
 import {
     TranslatorProps, withTranslator,
@@ -88,7 +88,7 @@ const mapStateToProps = (state: RootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        setLocale: (locale: string) => dispatch(setLocale(locale)),
+        setLocale: (locale: string) => dispatch(i18nActions.setLocale.build(locale)),
         closeDialog: () => {
             dispatch(
                 dialogActions.closeRequest.build(),

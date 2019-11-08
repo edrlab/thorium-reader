@@ -16,10 +16,10 @@ const initialState: UpdateState = {
 
 export function updateReducer(
     state: UpdateState = initialState,
-    action: ReturnType<typeof updateActions.build>,
+    action: ReturnType<typeof updateActions.latestVersion.build>,
 ) {
     switch (action.type) {
-        case updateActions.ID:
+        case updateActions.latestVersion.ID:
             return Object.assign({}, state, {
                 status: action.payload.status,
                 latestVersion: action.payload.latestVersion,

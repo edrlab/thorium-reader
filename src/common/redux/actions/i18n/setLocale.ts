@@ -7,22 +7,19 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 
-export enum ActionType {
-    Set = "LOCALE_SET",
-}
+export const ID = "LOCALE_SET";
 
-export interface PayloadLocale {
+export interface Payload {
     locale: string;
 }
 
-export interface ActionLocale extends Action<string, PayloadLocale> {
-}
+export function build(locale: string): Action<typeof ID, Payload> {
 
-export function setLocale(locale: string): ActionLocale {
     return {
-        type: ActionType.Set,
+        type: ID,
         payload: {
             locale,
         },
     };
 }
+build.toString = () => ID; // Redux StringableActionCreator

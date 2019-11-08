@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
@@ -75,7 +75,7 @@ const mapStateToProps = (state: RootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        setLocale: (locale: string) => dispatch(setLocale(locale)),
+        setLocale: (locale: string) => dispatch(i18nActions.setLocale.build(locale)),
     };
 };
 

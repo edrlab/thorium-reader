@@ -24,7 +24,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.ActionType.BookmarkSaveRequest,
     readerActions.fullScreenRequest.ID,
 
-    i18nActions.ActionType.Set,
+    i18nActions.setLocale.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

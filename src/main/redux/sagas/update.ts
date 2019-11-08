@@ -43,7 +43,7 @@ export function* updateStatusWatcher(): SagaIterator {
                 const latestVersion = jsonObj.tag_name;
 
                 if (latestVersion > CURRENT_VERSION) {
-                    yield put(updateActions.build(
+                    yield put(updateActions.latestVersion.build(
                         UpdateStatus.Update,
                         jsonObj.tag_name,
                         jsonObj.html_url,
