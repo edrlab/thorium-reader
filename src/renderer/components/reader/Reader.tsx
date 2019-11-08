@@ -10,7 +10,7 @@ import * as path from "path";
 import * as queryString from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
-import { ReaderConfig as ReadiumCSS } from "readium-desktop/common/models/reader";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
 import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { LocatorView } from "readium-desktop/common/views/locator";
@@ -181,7 +181,7 @@ interface IState {
     lcpPass?: string;
     contentTableOpen: boolean;
     settingsOpen: boolean;
-    settingsValues: ReadiumCSS;
+    settingsValues: ReaderConfig;
     shortcutEnable: boolean;
     landmarksOpen: boolean;
     landmarkTabOpen: number;
@@ -189,7 +189,7 @@ interface IState {
     publicationInfo: TPublicationApiGet_result | undefined;
     menuOpen: boolean;
     fullscreen: boolean;
-    indexes: any;
+    indexes: any; // TODO any?!
     visibleBookmarkList: LocatorView[];
     currentLocation: LocatorExtended;
     bookmarks: TReaderApiFindBookmarks_result | undefined;
@@ -303,7 +303,7 @@ export class Reader extends React.Component<IProps, IState> {
         this.store.subscribe(() => {
             const storeState = this.store.getState();
             this.props.translator.setLocale(storeState.i18n.locale);
-            const settings = storeState.reader.config.value;
+            const settings = storeState.reader.config;
             if (settings && settings !== this.state.settingsValues) {
                 this.props.translator.setLocale(this.store.getState().i18n.locale);
 
@@ -749,7 +749,7 @@ export class Reader extends React.Component<IProps, IState> {
         this.store.dispatch(readerActions.configSetRequest.build(values));
 
         // Push reader config to navigator
-        readiumCssOnOff();
+        // readiumCssOnOff();
     }
 
     private handleSettingsValueChange(event: any, name: string, givenValue?: any) {
@@ -792,7 +792,7 @@ export class Reader extends React.Component<IProps, IState> {
         this.handleSettingsSave();
     }
 
-    private setSettings(settingsValues: ReadiumCSS) {
+    private setSettings(settingsValues: ReaderConfig) {
         if (!settingsValues) {
             return;
         }
