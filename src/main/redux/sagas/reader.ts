@@ -18,7 +18,6 @@ import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import {
     ActionPayloadReaderMainConfigSetSuccess, ActionPayloadReaderMainModeSetSuccess,
-    CloseReaderActionPayload,
 } from "readium-desktop/common/redux/actions/reader";
 import { callTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -27,7 +26,6 @@ import { BaseRepository } from "readium-desktop/main/db/repository/base";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
-import { ReaderState } from "readium-desktop/main/redux/states/reader";
 import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
@@ -219,11 +217,11 @@ export function* readerCloseRequestWatcher(): SagaIterator {
 export function* closeReaderFromPublicationWatcher(): SagaIterator {
     while (true) {
         // tslint:disable-next-line: max-line-length
-        const action: Action<string, CloseReaderActionPayload> = yield take(readerActions.ActionType.CloseFromPublicationRequest);
+        const action = yield* takeTyped(readerActions.closeRequestFromPublication.build);
 
         const publicationView = action.payload.publicationView;
         const store = diMainGet("store");
-        const readers = (store.getState().reader as ReaderState).readers;
+        const readers = store.getState().reader.readers;
 
         for (const reader of Object.values(readers)) {
             if (reader.publicationView.identifier === publicationView.identifier) {

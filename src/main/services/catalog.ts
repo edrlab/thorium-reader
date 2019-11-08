@@ -14,7 +14,7 @@ import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
+import { readerActions } from "readium-desktop/common/redux/actions/";
 import { open } from "readium-desktop/common/redux/actions/toast";
 import { Translator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString, urlPathResolve } from "readium-desktop/common/utils";
@@ -234,7 +234,7 @@ export class CatalogService {
         // FIXME: Call publication Api in service ??
         const publicationView = await publicationApi.get(publicationIdentifier);
 
-        this.store.dispatch(closeReaderFromPublication(publicationView));
+        this.store.dispatch(readerActions.closeRequestFromPublication.build(publicationView));
 
         // Remove from database
         await this.publicationRepository.delete(publicationIdentifier);

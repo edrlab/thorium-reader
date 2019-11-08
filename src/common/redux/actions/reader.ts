@@ -7,7 +7,6 @@
 
 import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
-import { PublicationView } from "readium-desktop/common/views/publication";
 
 export enum ActionType {
     OpenSuccess = "READER_OPEN_SUCCESS",
@@ -22,7 +21,6 @@ export enum ActionType {
     CloseSuccess = "READER_CLOSE_SUCCESS",
     CloseError = "READER_CLOSE_ERROR",
 
-    CloseFromPublicationRequest = "READER_FROM_PUBLICATION_CLOSE_REQUEST",
     CloseFromPublicationSuccess = "READER_FROM_PUBLICATION_CLOSE_SUCCESS",
     CloseFromPublicationError = "READER_FROM_PUBLICATION_CLOSE_ERROR",
 
@@ -45,20 +43,6 @@ export interface ActionPayloadReaderMainModeSetSuccess {
 }
 export interface ActionPayloadReaderMainConfigSetSuccess {
     config: ReaderConfig;
-}
-
-export interface CloseReaderActionPayload {
-    publicationView: PublicationView;
-}
-export function closeReaderFromPublication(publicationView: PublicationView):
-    Action<ActionType.CloseFromPublicationRequest, CloseReaderActionPayload> {
-
-    return {
-        type: ActionType.CloseFromPublicationRequest,
-        payload: {
-            publicationView,
-        },
-    };
 }
 
 export function setFullscreenOn():

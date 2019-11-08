@@ -11,7 +11,7 @@ import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
+import { readerActions } from "readium-desktop/common/redux/actions/";
 import { open } from "readium-desktop/common/redux/actions/toast";
 import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -192,7 +192,7 @@ export class LcpManager {
         let redoHash = false;
         if (r2Publication.LCP) {
             const publicationView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
-            this.store.dispatch(closeReaderFromPublication(publicationView));
+            this.store.dispatch(readerActions.closeRequestFromPublication.build(publicationView));
             try {
                 await this.processStatusDocument(
                     publicationDocument.identifier,
