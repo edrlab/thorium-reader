@@ -26,7 +26,7 @@ export async function apiAction<T extends TApiMethodName>(apiPath: T, ...request
         let timeoutId: number | undefined;
 
         store.dispatch(
-            apiActions.buildRequestAction(
+            apiActions.request.build(
                 requestId,
                 moduleId,
                 methodId,
@@ -50,7 +50,7 @@ export async function apiAction<T extends TApiMethodName>(apiPath: T, ...request
                 const meta = apiLastSuccess.action.meta.api;
                 if (moduleId === meta.moduleId && methodId === meta.methodId && state.api.data[requestId]) {
                     const request = Object.assign({}, state.api.data[requestId]);
-                    store.dispatch(apiActions.clean(requestId));
+                    store.dispatch(apiActions.clean.build(requestId));
                     if (request.resultIsReject) {
                         rejectSubscribe(request.result);
                         return ;

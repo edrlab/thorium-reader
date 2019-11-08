@@ -20,8 +20,8 @@ const debug = debug_("readium-desktop:sync");
 
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: string[] = [
-    apiActions.ActionType.Success,
-    apiActions.ActionType.Error,
+    apiActions.success.ID,
+    apiActions.error.ID,
 
     netActions.offline.ID,
     netActions.online.ID,

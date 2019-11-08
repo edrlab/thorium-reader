@@ -15,7 +15,7 @@ import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 // Actions that can be synchronized
 const SYNCHRONIZABLE_ACTIONS: string[] = [
 
-    apiActions.ActionType.Request,
+    apiActions.request.ID,
 
     readerActions.openRequest.ID,
     readerActions.closeRequest.ID,

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as apiActions from "./api";
+import * as apiActions from "./api/";
 import * as dialogActions from "./dialog/";
 import * as downloadActions from "./download/";
 import * as i18nActions from "./i18n/";
