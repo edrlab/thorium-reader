@@ -12,7 +12,7 @@ import * as moment from "moment";
 import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions } from "readium-desktop/common/redux/actions/";
-import { open } from "readium-desktop/common/redux/actions/toast";
+import { toastActions } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
@@ -253,7 +253,7 @@ export class LcpManager {
             } catch (err) {
                 debug(err);
                 const str = this.stringifyLsdError(err);
-                this.store.dispatch(open(ToastType.DownloadFailed,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadFailed,
                     `LCP [${this.translator.translate("publication.renewButton")}]: ${str}`,
                     ));
             }
@@ -289,7 +289,7 @@ export class LcpManager {
 
                 const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
                     r2Publication.LCP.Rights.End.toISOString() : "";
-                this.store.dispatch(open(ToastType.DownloadComplete,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadComplete,
                     `LCP [${this.translator.translate("publication.renewButton")}] ${newEndDate}`,
                     ));
 
@@ -330,7 +330,7 @@ export class LcpManager {
             } catch (err) {
                 debug(err);
                 const str = this.stringifyLsdError(err);
-                this.store.dispatch(open(ToastType.DownloadFailed,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadFailed,
                     `LCP [${this.translator.translate("publication.returnButton")}]: ${str}`,
                     ));
             }
@@ -366,7 +366,7 @@ export class LcpManager {
 
                 const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
                     r2Publication.LCP.Rights.End.toISOString() : "";
-                this.store.dispatch(open(ToastType.DownloadComplete,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadComplete,
                     `LCP [${this.translator.translate("publication.returnButton")}] ${newEndDate}`,
                     ));
 

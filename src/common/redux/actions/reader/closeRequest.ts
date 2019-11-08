@@ -27,6 +27,3 @@ export function build(reader: Reader, gotoLibrary: boolean = false):
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator
-
-// CloseActionPayload
-// ActionType.CloseRequest

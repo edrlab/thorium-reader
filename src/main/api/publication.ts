@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { downloadActions } from "readium-desktop/common/redux/actions";
-import { open } from "readium-desktop/common/redux/actions/toast";
+import { toastActions } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
 import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -217,7 +217,7 @@ export class PublicationApi implements IPublicationApi {
 
     private dispatchToastRequest(type: ToastType, message: string) {
         const store = diMainGet("store");
-        store.dispatch(open(type, message));
+        store.dispatch(toastActions.openRequest.build(type, message));
     }
 
     private sendDownloadRequest(url: string) {

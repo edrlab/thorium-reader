@@ -46,7 +46,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     updateActions.ActionType.LatestVersionSet,
 
-    toastActions.ActionType.OpenRequest,
+    toastActions.openRequest.ID,
 
     downloadActions.ActionType.DownloadRequest,
     downloadActions.ActionType.DownloadSuccess,

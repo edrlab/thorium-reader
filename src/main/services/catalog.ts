@@ -15,7 +15,7 @@ import { Download } from "readium-desktop/common/models/download";
 import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions } from "readium-desktop/common/redux/actions/";
-import { open } from "readium-desktop/common/redux/actions/toast";
+import { toastActions } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString, urlPathResolve } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
@@ -79,7 +79,7 @@ export class CatalogService {
             if (publicationArray && publicationArray.length) {
                 debug(publicationArray, hash);
                 publicationDocument = publicationArray[0];
-                this.store.dispatch(open(ToastType.DownloadComplete,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadComplete,
                     this.translator.translate("message.import.alreadyImport", { title: publicationDocument.title })));
             } else {
                 if (isLCPLicense) {
@@ -87,12 +87,12 @@ export class CatalogService {
                 } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
                     publicationDocument = await this.importEpubFile(filePath, hash);
                 }
-                this.store.dispatch(open(ToastType.DownloadComplete,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadComplete,
                     this.translator.translate("message.import.success", { title: publicationDocument.title })));
             }
         } catch (error) {
             debug("ImportFile (hash + import) fail with :" + filePath, error);
-            this.store.dispatch(open(ToastType.DownloadFailed,
+            this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadFailed,
                 this.translator.translate("message.import.fail", { filePath })));
         }
         return publicationDocument;

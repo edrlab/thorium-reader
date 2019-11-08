@@ -15,7 +15,7 @@ import * as loggerActions from "./logger";
 import * as netActions from "./net";
 import * as readerActions1 from "./reader";
 import * as readerActions2 from "./reader/index";
-import * as toastActions from "./toast";
+import * as toastActions from "./toast/";
 import * as updateActions from "./update";
 
 const readerActions = {

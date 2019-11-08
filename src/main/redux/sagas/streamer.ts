@@ -10,7 +10,7 @@ import * as portfinder from "portfinder";
 import { Action } from "readium-desktop/common/models/redux";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { open } from "readium-desktop/common/redux/actions/toast";
+import { toastActions } from "readium-desktop/common/redux/actions/";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
@@ -161,7 +161,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                     translator.translate("publication.expiredLcp") // StatusEnum.Cancelled
                     ));
 
-                yield put(open(ToastType.DownloadFailed, msg));
+                yield put(toastActions.openRequest.build(ToastType.DownloadFailed, msg));
 
                 yield put({
                     type: streamerActions.ActionType.PublicationOpenError,
