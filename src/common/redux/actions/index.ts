@@ -11,7 +11,6 @@ import * as downloadActions from "./download/";
 import * as i18nActions from "./i18n/";
 import * as importActions from "./import/";
 import * as lcpActions from "./lcp/";
-import * as loggerActions from "./logger";
 import * as netActions from "./net/";
 import * as readerActions1 from "./reader";
 import * as readerActions2 from "./reader/";
@@ -27,7 +26,6 @@ export {
     apiActions,
     dialogActions,
     i18nActions,
-    loggerActions,
     netActions,
     readerActions,
     lcpActions,
