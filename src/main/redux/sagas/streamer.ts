@@ -102,17 +102,6 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                 );
             } catch (error) {
                 debug(error);
-                // yield put({
-                //     type: streamerActions.ActionType.PublicationOpenError,
-                //     // payload: {
-                //     //     error,
-                //     // },
-                //     error: true,
-                //     meta: {
-                //         publication,
-                //     },
-                // });
-                // continue;
             }
 
             if (publicationDocument.lcp && publicationDocument.lcp.lsd && publicationDocument.lcp.lsd.lsdStatus &&
