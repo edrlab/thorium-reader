@@ -18,7 +18,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     apiActions.ActionType.Request,
 
     readerActions.openRequest.ID,
-    readerActions.ActionType.CloseRequest,
+    readerActions.closeRequest.ID,
     readerActions.ActionType.ModeSetRequest,
     readerActions.ActionType.ConfigSetRequest,
     readerActions.ActionType.BookmarkSaveRequest,

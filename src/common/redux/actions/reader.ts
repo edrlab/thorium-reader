@@ -19,7 +19,6 @@ export enum ActionType {
     FullscreenOffRequest = "READER_FULLSCREEN_OFF_REQUEST",
     FullscreenOffSuccess = "READER_FULLSCREEN_OFF_SUCCESS",
 
-    CloseRequest = "READER_CLOSE_REQUEST",
     CloseSuccess = "READER_CLOSE_SUCCESS",
     CloseError = "READER_CLOSE_ERROR",
 
@@ -48,22 +47,6 @@ export interface ActionPayloadReaderMainModeSetSuccess {
 }
 export interface ActionPayloadReaderMainConfigSetSuccess {
     config: ReaderConfig;
-}
-
-export interface CloseActionPayload {
-    reader: Reader;
-    gotoLibrary: boolean;
-}
-export function close(reader: Reader, gotoLibrary: boolean = false):
-    Action<ActionType.CloseRequest, CloseActionPayload> {
-
-    return {
-        type: ActionType.CloseRequest,
-        payload: {
-            reader,
-            gotoLibrary,
-        },
-    };
 }
 
 export interface DetachActionPayload {

@@ -833,7 +833,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             }
         },
         closeReader: (reader: any) => {
-            dispatch(readerActions.close(reader, true));
+            dispatch(readerActions.closeRequest.build(reader, true));
         },
         detachReader: (reader: any) => {
             dispatch(readerActions.detach(reader));

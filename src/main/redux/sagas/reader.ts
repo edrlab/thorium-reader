@@ -18,7 +18,7 @@ import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import {
     ActionPayloadReaderMainConfigSetSuccess, ActionPayloadReaderMainModeSetSuccess,
-    CloseActionPayload, CloseReaderActionPayload, DetachActionPayload, SaveBookmarkActionPayload,
+    CloseReaderActionPayload, DetachActionPayload, SaveBookmarkActionPayload,
     SetConfigActionPayload,
 } from "readium-desktop/common/redux/actions/reader";
 import { callTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
@@ -208,13 +208,12 @@ export function* readerOpenRequestWatcher(): SagaIterator {
 
 export function* readerCloseRequestWatcher(): SagaIterator {
     while (true) {
-        const action: Action<string, CloseActionPayload> = yield take(readerActions.ActionType.CloseRequest);
+        const action = yield* takeTyped(readerActions.closeRequest.build);
 
         const reader = action.payload.reader;
         const gotoLibrary = action.payload.gotoLibrary;
 
-        const closeFunction = closeReader.bind(closeReader, reader, gotoLibrary);
-        yield call(closeFunction);
+        yield call(() => closeReader(reader, gotoLibrary));
     }
 }
 
@@ -229,8 +228,7 @@ export function* closeReaderFromPublicationWatcher(): SagaIterator {
 
         for (const reader of Object.values(readers)) {
             if (reader.publicationView.identifier === publicationView.identifier) {
-                const closeFunction = closeReader.bind(closeReader, reader, false);
-                yield call(closeFunction);
+                yield call(() => closeReader(reader, false));
             }
         }
     }
