@@ -18,7 +18,7 @@ import {
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { diMainGet } from "readium-desktop/main/di";
-import { appInit } from "readium-desktop/main/redux/actions/app";
+import { appActions } from "readium-desktop/main/redux/actions/";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -146,7 +146,7 @@ const winCloseCallback = (appWindow: AppWindow) => {
 // Initialize application
 export function initApp() {
     const store = diMainGet("store");
-    store.dispatch(appInit());
+    store.dispatch(appActions.initRequest.build());
 
     const configRepository: LocaleConfigRepositoryType = diMainGet("config-repository");
     const config = configRepository.get(LocaleConfigIdentifier);

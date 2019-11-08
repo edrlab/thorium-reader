@@ -7,14 +7,13 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 
-export enum ActionType {
-    InitRequest = "APP_INIT_REQUEST",
-    InitError = "APP_INIT_ERROR",
-    InitSuccess = "APP_INIT_SUCCESS",
-}
+export const ID = "APP_INIT_SUCCESS";
 
-export function appInit(): Action {
+export function build():
+    Action<typeof ID> {
+
     return {
-        type: ActionType.InitRequest,
+        type: ID,
     };
 }
+build.toString = () => ID; // Redux StringableActionCreator

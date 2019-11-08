@@ -294,7 +294,7 @@ export function* readerConfigSetRequestWatcher(): SagaIterator {
 
 export function* readerConfigInitWatcher(): SagaIterator {
     // Wait for app initialization
-    yield take(appActions.ActionType.InitSuccess);
+    yield take(appActions.initSuccess.build);
 
     const configRepository: ConfigRepositoryType = diMainGet("config-repository");
 

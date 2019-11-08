@@ -19,7 +19,7 @@ const CURRENT_VERSION = "v" + _APP_VERSION;
 
 export function* updateStatusWatcher(): SagaIterator {
     // Wait for app init success
-    yield take(appActions.ActionType.InitSuccess);
+    yield take(appActions.initSuccess.build);
 
     while (true) {
         try {

@@ -29,7 +29,7 @@ function getNetStatus(state: RootState): NetStatus {
 
 export function* netStatusWatcher(): SagaIterator {
     // Wait for win init success
-    yield take(appActions.ActionType.InitSuccess);
+    yield take(appActions.initSuccess.build);
 
     while (true) {
         // Ping every 5 seconds
