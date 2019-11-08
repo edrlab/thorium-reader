@@ -141,9 +141,6 @@ export class PublicationApi implements IPublicationApi {
         return this.publicationRepository.getAllTags();
     }
 
-    // FIXME : call from this interface ImportOpdsPublication that is cast from OpdsPublicationView.
-    // OpdsPublicationView has many undefined that is not reported to this function call.
-    // Potential crash to fix
     public async importOpdsEntry(
         url: string,
         r2OpdsPublicationBase64: string,

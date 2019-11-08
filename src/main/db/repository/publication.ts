@@ -115,30 +115,15 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
             console.log("++++++++++++++");
             console.log("++++++++++++++");
             console.log(dbDoc.opdsPublication);
+            // tslint:disable-next-line: max-line-length
+            console.log(JSON.stringify(JSON.parse(Buffer.from(dbDoc.opdsPublication, "base64").toString("utf-8")), null, 4).substr(0, 1000));
             console.log("++++++++++++++");
             console.log("++++++++++++++");
             console.log("++++++++++++++");
             console.log("++++++++++++++");
             console.log("++++++++++++++");
         }
-        // if (dbDoc.resources.opdsPublication) {
-        //     console.log("#############");
-        //     console.log("#############");
-        //     // console.log(dbDoc.resources.opdsPublication);
-        // tslint:disable-next-line: max-line-length
-        //     console.log(JSON.stringify(JSON.parse(Buffer.from(dbDoc.resources.opdsPublication, "base64").toString("utf-8")), null, 4).substr(0, 1000));
-        //     console.log("#############");
-        //     console.log("#############");
-        // }
-        // if (dbDoc.resources.filePublication) {
-        //     console.log("--------------");
-        //     console.log("--------------");
-        //     // console.log(dbDoc.resources.filePublication);
-        // tslint:disable-next-line: max-line-length
-        //     console.log(JSON.stringify(JSON.parse(Buffer.from(dbDoc.resources.filePublication, "base64").toString("utf-8")), null, 4));
-        //     console.log("--------------");
-        //     console.log("--------------");
-        // }
+
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
