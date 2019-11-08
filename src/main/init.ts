@@ -41,14 +41,15 @@ const winOpenCallback = (appWindow: AppWindow) => {
 
     // Init network on window
     const state = store.getState();
-    let netActionType = null;
+    let actionNet = null;
 
     switch (state.net.status) {
         case NetStatus.Online:
-            netActionType = netActions.online.ID;
+            actionNet = netActions.online.build();
             break;
         case NetStatus.Offline:
-            netActionType = netActions.offline.ID;
+        default:
+            actionNet = netActions.offline.build();
             break;
     }
 
@@ -56,9 +57,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: netActionType,
-            } as ReturnType<typeof netActions.offline.build>,
+            action: actionNet,
         },
     } as syncIpc.EventPayload);
 
@@ -79,12 +78,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: readerActions.configSetSuccess.ID,
-                payload: {
-                    config: state.reader.config,
-                },
-            } as ReturnType<typeof readerActions.configSetSuccess.build>,
+            action: readerActions.configSetSuccess.build(state.reader.config),
         },
     } as syncIpc.EventPayload);
 
@@ -92,12 +86,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: readerActions.detachModeSuccess.ID,
-                payload: {
-                    mode: state.reader.mode,
-                },
-            } as ReturnType<typeof readerActions.detachModeSuccess.build>,
+            action: readerActions.detachModeSuccess.build(state.reader.mode),
         },
     } as syncIpc.EventPayload);
 
@@ -105,12 +94,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: i18nActions.setLocale.ID,
-                payload: {
-                    locale: state.i18n.locale,
-                },
-            } as ReturnType<typeof i18nActions.setLocale.build>,
+            action: i18nActions.setLocale.build(state.i18n.locale),
         },
     } as syncIpc.EventPayload);
 
@@ -120,12 +104,11 @@ const winOpenCallback = (appWindow: AppWindow) => {
         payload: {
             action: {
                 type: updateActions.latestVersion.ID,
-                payload: {
-                    status: state.update.status,
-                    latestVersion: state.update.latestVersion,
-                    latestVersionUrl: state.update.latestVersionUrl,
-                },
-            } as ReturnType<typeof updateActions.latestVersion.build>,
+                payload: updateActions.latestVersion.build(
+                    state.update.status,
+                    state.update.latestVersion,
+                    state.update.latestVersionUrl),
+            },
         },
     } as syncIpc.EventPayload);
 };

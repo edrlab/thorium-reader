@@ -33,16 +33,16 @@ export function* netStatusWatcher(): SagaIterator {
 
     while (true) {
         // Ping every 5 seconds
-        let actionType = null;
+        let actionNet = null;
 
         try {
             const result: any = yield call(pingHost); // TODO any?!
             const online = result.alive;
-            actionType = online ?
-                netActions.online.ID :
-                netActions.offline.ID;
+            actionNet = online ?
+                netActions.online.build() :
+                netActions.offline.build();
         } catch (error) {
-            actionType = netActions.offline.ID;
+            actionNet = netActions.offline.build();
         }
 
         const netStatus = yield* selectTyped(getNetStatus);
@@ -50,16 +50,16 @@ export function* netStatusWatcher(): SagaIterator {
         if (
             netStatus === NetStatus.Unknown ||
             (
-                actionType === netActions.offline.ID &&
+                actionNet === netActions.offline.build() &&
                 netStatus === NetStatus.Online
             ) ||
             (
-                actionType === netActions.online.ID &&
+                actionNet === netActions.online.build() &&
                 netStatus === NetStatus.Offline
             )
         ) {
             // Only update status if status change
-            yield put({ type: actionType } as ReturnType<typeof netActions.online.build>);
+            yield put(actionNet);
         }
 
         yield delay(5000);
