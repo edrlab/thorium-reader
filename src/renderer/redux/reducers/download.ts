@@ -5,33 +5,26 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
-
 import { downloadActions } from "readium-desktop/common/redux/actions";
-import { DownloadPayload } from "readium-desktop/common/redux/actions/download";
 import { DownloadState } from "readium-desktop/renderer/redux/states/download";
-
 import { oc } from "ts-optchain";
 
 const initialState: DownloadState = {
     downloads: [],
 };
 
-// tslint:disable-next-line: max-line-length
-type ActionType = Action<downloadActions.ActionType.DownloadRequest, DownloadPayload> | Action<downloadActions.ActionType.DownloadSuccess, DownloadPayload>;
-
 export function downloadReducer(
     state: DownloadState = initialState,
-    // tslint:disable-next-line: max-line-length
-    action: ActionType,
+    action: ReturnType<typeof downloadActions.request.build> |
+        ReturnType<typeof downloadActions.success.build>,
 ): DownloadState {
     const downloads = state.downloads;
     const url = oc(action).payload.url(undefined);
     switch (action.type) {
-        case downloadActions.ActionType.DownloadRequest:
+        case downloadActions.request.ID:
             downloads.push({url});
             return Object.assign({}, state, { downloads });
-        case downloadActions.ActionType.DownloadSuccess:
+        case downloadActions.success.ID:
             const index = downloads.findIndex((value) => value.url === url);
             downloads.splice(index, 1);
             return Object.assign({}, state, { downloads });

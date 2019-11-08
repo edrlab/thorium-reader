@@ -47,8 +47,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     toastActions.openRequest.ID,
 
-    downloadActions.ActionType.DownloadRequest,
-    downloadActions.ActionType.DownloadSuccess,
+    downloadActions.request.ID,
+    downloadActions.success.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

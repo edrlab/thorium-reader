@@ -222,19 +222,11 @@ export class PublicationApi implements IPublicationApi {
 
     private sendDownloadRequest(url: string) {
         const store = diMainGet("store");
-        store.dispatch(downloadActions.addDownload(
-            {
-                url,
-            },
-        ));
+        store.dispatch(downloadActions.request.build(url));
     }
 
     private sendDownloadSuccess(url: string) {
         const store = diMainGet("store");
-        store.dispatch(downloadActions.removeDownload(
-            {
-                url,
-            },
-        ));
+        store.dispatch(downloadActions.success.build(url));
     }
 }
