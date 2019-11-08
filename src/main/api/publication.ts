@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { downloadActions } from "readium-desktop/common/redux/actions";
+import { downloadActions } from "readium-desktop/common/redux/actions/";
 import { toastActions } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
 import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
