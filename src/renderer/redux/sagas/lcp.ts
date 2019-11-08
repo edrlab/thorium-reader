@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { lcpActions } from "readium-desktop/common/redux/actions";
-import { open } from "readium-desktop/common/redux/actions/dialog";
+import { dialogActions } from "readium-desktop/common/redux/actions/";
 import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { SagaIterator } from "redux-saga";
 import { all, call, put } from "redux-saga/effects";
@@ -29,7 +29,7 @@ export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
             continue;
         }
 
-        yield put(open("lcp-authentication",
+        yield put(dialogActions.openRequest.build("lcp-authentication",
             {
                 publicationView,
                 hint,

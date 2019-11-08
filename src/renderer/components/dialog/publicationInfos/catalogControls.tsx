@@ -79,7 +79,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
             dispatch(readerActions.openRequest.build(props.publicationView.identifier));
         },
         openDeleteDialog: () => {
-            dispatch(dialogActions.open("delete-publication-confirm",
+            dispatch(dialogActions.openRequest.build("delete-publication-confirm",
                 {
                     publicationView: props.publicationView,
                 },

@@ -100,7 +100,7 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         displayPublicationInfo: () => {
-            dispatch(dialogActions.open("publication-info",
+            dispatch(dialogActions.openRequest.build("publication-info",
                 {
                     opdsPublicationView: props.opdsPublicationView,
                     publicationIdentifier: undefined,

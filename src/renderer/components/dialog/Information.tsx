@@ -91,7 +91,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         setLocale: (locale: string) => dispatch(setLocale(locale)),
         closeDialog: () => {
             dispatch(
-                dialogActions.close(),
+                dialogActions.closeRequest.build(),
             );
         },
     };

@@ -49,7 +49,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         displayPublicationInfo: () => {
-            dispatch(dialogActions.open("about-thorium",
+            dispatch(dialogActions.openRequest.build("about-thorium",
                 {},
             ));
         },

@@ -269,7 +269,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
                 window.document.dispatchEvent(new Event("Thorium:DialogClose"));
             }
             dispatch(
-                dialogActions.close(),
+                dialogActions.closeRequest.build(),
             );
         },
     };

@@ -147,7 +147,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         // isOpds
         openInfosDialog: (opdsPublicationView: OpdsPublicationView) => {
-            dispatch(dialogActions.open("publication-info",
+            dispatch(dialogActions.openRequest.build("publication-info",
                 {
                     opdsPublicationView,
                     publicationIdentifier: undefined,

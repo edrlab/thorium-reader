@@ -142,21 +142,21 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
             dispatch(readerActions.openRequest.build(props.publicationView.identifier));
         },
         openDeleteDialog: () => {
-            dispatch(dialogActions.open("delete-publication-confirm",
+            dispatch(dialogActions.openRequest.build("delete-publication-confirm",
                 {
                     publicationView: props.publicationView,
                 },
             ));
         },
         openRenewDialog: () => {
-            dispatch(dialogActions.open("lsd-renew-confirm",
+            dispatch(dialogActions.openRequest.build("lsd-renew-confirm",
                 {
                     publicationView: props.publicationView,
                 },
             ));
         },
         openReturnDialog: () => {
-            dispatch(dialogActions.open("lsd-return-confirm",
+            dispatch(dialogActions.openRequest.build("lsd-return-confirm",
                 {
                     publicationView: props.publicationView,
                 },

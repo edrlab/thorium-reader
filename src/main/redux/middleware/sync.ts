@@ -26,7 +26,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     netActions.ActionType.Offline,
     netActions.ActionType.Online,
 
-    dialogActions.ActionType.OpenRequest,
+    dialogActions.openRequest.ID,
 
     readerActions.ActionType.OpenError,
     readerActions.ActionType.CloseError,

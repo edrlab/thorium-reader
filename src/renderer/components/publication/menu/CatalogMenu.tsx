@@ -78,7 +78,7 @@ export class CatalogMenu extends React.Component<IProps, IState> {
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         displayPublicationInfo: () => {
-            dispatch(dialogActions.open("publication-info",
+            dispatch(dialogActions.openRequest.build("publication-info",
                 {
                     publicationIdentifier: (props.publicationView).identifier,
                     opdsPublicationView: undefined,
@@ -86,7 +86,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
             ));
         },
         openDeleteDialog: () => {
-            dispatch(dialogActions.open("delete-publication-confirm",
+            dispatch(dialogActions.openRequest.build("delete-publication-confirm",
                 {
                     publicationView: props.publicationView,
                 },
