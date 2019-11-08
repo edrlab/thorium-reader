@@ -9,6 +9,7 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
@@ -16,7 +17,7 @@ import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publication: PublicationView;
+    publicationViewMaybeOpds: PublicationView | OpdsPublicationView;
     coverTypeUrl?: keyof CoverView | undefined;
     onClick?: () => void;
     onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
@@ -38,18 +39,18 @@ class Cover extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}>  {
 
-        if (!this.props.publication.cover) {
+        if (!this.props.publicationViewMaybeOpds.cover) {
             let authors = "";
 
-            for (const author of this.props.publication.authors) {
+            for (const author of this.props.publicationViewMaybeOpds.authors) {
                 const newAuthor = author;
                 if (authors !== "") {
                     authors += ", ";
                 }
                 authors += this.props.translator.translateContentField(newAuthor);
             }
-            let colors = this.props.publication.customCover;
-            if (colors === undefined) {
+            let colors = (this.props.publicationViewMaybeOpds as PublicationView).customCover;
+            if (!colors) {
                 colors = RandomCustomCovers[0];
             }
             const backgroundStyle = {
@@ -60,7 +61,7 @@ class Cover extends React.Component<IProps, undefined> {
                 <div style={backgroundStyle} className={styles.cover}>
                     <div className={styles.box}>
                         <p aria-hidden className={styles.title}>
-                            {this.props.translator.translateContentField(this.props.publication.title)}
+                            {this.props.translator.translateContentField(this.props.publicationViewMaybeOpds.title)}
                         </p>
                         <p aria-hidden className={styles.author}>{authors}</p>
                     </div>
@@ -76,8 +77,9 @@ class Cover extends React.Component<IProps, undefined> {
                     role="presentation"
                     alt="cover image"
                     src={this.props.coverTypeUrl ?
-                        this.props.publication.cover[this.props.coverTypeUrl] :
-                        this.props.publication.cover.thumbnailUrl || this.props.publication.cover.coverUrl}
+                        this.props.publicationViewMaybeOpds.cover[this.props.coverTypeUrl] :
+                        this.props.publicationViewMaybeOpds.cover.thumbnailUrl ||
+                        this.props.publicationViewMaybeOpds.cover.coverUrl}
                 />
             );
         }

@@ -7,6 +7,8 @@
 
 import * as debug_ from "debug";
 import { injectable } from "inversify";
+import { Timestampable } from "readium-desktop/common/models/timestampable";
+import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import * as uuid from "uuid";
 
@@ -16,6 +18,12 @@ const DEVICE_ID_KEY = "device_id";
 const DEVICE_ID_PREFIX = "device_id_";
 
 const debug = debug_("readium-desktop:main#services/device");
+
+interface StringMap {
+    [key: string]: string;
+}
+type ConfigDocumentType = ConfigDocument<StringMap>;
+type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Timestampable>;
 
 @injectable()
 export class DeviceIdManager implements IDeviceIDManager {
@@ -83,7 +91,7 @@ export class DeviceIdManager implements IDeviceIDManager {
         debug(config);
     }
 
-    private async getDeviceConfig(): Promise<any> {
+    private async getDeviceConfig(): Promise<ConfigDocumentTypeWithoutTimestampable> {
         try {
             return await this.configRepository.get("device");
         } catch (error) {
@@ -94,14 +102,13 @@ export class DeviceIdManager implements IDeviceIDManager {
         }
     }
 
-    private async getDeviceConfigValue(key: string): Promise<any> {
+    private async getDeviceConfigValue(key: string): Promise<string> {
         const deviceConfig = await this.getDeviceConfig();
         const val = deviceConfig.value[key];
 
         debug("DeviceIdManager getDeviceConfigValue:");
-        debug(key);
         debug(deviceConfig);
-        debug(val);
+        debug(`${key} => ${val}`);
 
         return val;
     }

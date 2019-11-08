@@ -6,11 +6,12 @@
 // ==LICENSE-END==
 
 import * as ping from "ping";
-import { SagaIterator } from "redux-saga";
-import { call, delay, put, select, take } from "redux-saga/effects";
-
 import { NetStatus } from "readium-desktop/common/redux/states/net";
+import { selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { appActions, netActions } from "readium-desktop/main/redux/actions";
+import { RootState } from "readium-desktop/main/redux/states";
+import { SagaIterator } from "redux-saga";
+import { call, delay, put, take } from "redux-saga/effects";
 
 const PING_CONFIG = {
     timeout: 5,
@@ -22,7 +23,7 @@ function pingHost() {
     return ping.promise.probe(PINGABLE_HOST, PING_CONFIG);
 }
 
-function getNetStatus(state: any): NetStatus {
+function getNetStatus(state: RootState): NetStatus {
     return state.net.status;
 }
 
@@ -35,7 +36,7 @@ export function* netStatusWatcher(): SagaIterator {
         let actionType = null;
 
         try {
-            const result: any = yield call(pingHost);
+            const result: any = yield call(pingHost); // TODO any?!
             const online = result.alive;
             actionType = online ?
                 netActions.ActionType.Online :
@@ -44,7 +45,7 @@ export function* netStatusWatcher(): SagaIterator {
             actionType = netActions.ActionType.Offline;
         }
 
-        const netStatus = yield select(getNetStatus);
+        const netStatus = yield* selectTyped(getNetStatus);
 
         if (
             netStatus === NetStatus.Unknown ||

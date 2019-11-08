@@ -6,7 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { app, BrowserWindow, Menu, shell } from "electron";
+import { app, BrowserWindow, Event, Menu, shell } from "electron";
 import * as path from "path";
 import { AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
@@ -60,7 +60,7 @@ export async function createWindow() {
             [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
                 installExtension(extension)
                     .then((name: string) => debug("Added Extension: ", name))
-                    .catch((err: any) => debug("An error occurred: ", err));
+                    .catch((err: Error) => debug("An error occurred: ", err));
             });
         });
 
@@ -92,7 +92,7 @@ export async function createWindow() {
     setMenu(mainWindow, false);
 
     // Redirect link to an external browser
-    const handleRedirect = (event: any, url: any) => {
+    const handleRedirect = (event: Event, url: string) => {
         if (url === mainWindow.webContents.getURL()) {
             return;
         }

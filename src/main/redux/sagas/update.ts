@@ -5,18 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { SagaIterator } from "redux-saga";
-import { call, delay, put, take } from "redux-saga/effects";
-
-import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
-
-import { appActions } from "readium-desktop/main/redux/actions";
-
 import { updateActions } from "readium-desktop/common/redux/actions";
-
-import {
-    _APP_VERSION,
-} from "readium-desktop/preprocessor-directives";
+import { UpdateStatus } from "readium-desktop/common/redux/states/update";
+import { callTyped } from "readium-desktop/common/redux/typed-saga";
+import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
+import { appActions } from "readium-desktop/main/redux/actions";
+import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
+import { SagaIterator } from "redux-saga";
+import { delay, put, take } from "redux-saga/effects";
 
 const LATEST_VERSION_URL = "https://api.github.com/repos/edrlab/readium-desktop/releases/latest";
 const CURRENT_VERSION = "v" + _APP_VERSION;
@@ -27,7 +23,8 @@ export function* updateStatusWatcher(): SagaIterator {
 
     while (true) {
         try {
-            const result: IHttpGetResult<string, any> = yield call(() => httpGet(
+            const result: IHttpGetResult<string, any> =
+            yield* callTyped(() => httpGet(
                 LATEST_VERSION_URL,
                 {
                     timeout: 5000,
@@ -47,6 +44,7 @@ export function* updateStatusWatcher(): SagaIterator {
 
                 if (latestVersion > CURRENT_VERSION) {
                     yield put(updateActions.setLatestVersion(
+                        UpdateStatus.Update,
                         jsonObj.tag_name,
                         jsonObj.html_url,
                     ));

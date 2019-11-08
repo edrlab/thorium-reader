@@ -8,6 +8,10 @@
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import {
+    ActionPayloadReaderMain, ActionPayloadReaderMainConfigSetSuccess,
+    ActionPayloadReaderMainModeSetSuccess,
+} from "readium-desktop/common/redux/actions/reader";
 import { ReaderState } from "readium-desktop/main/redux/states/reader";
 
 const initialState: ReaderState = {
@@ -30,22 +34,28 @@ const initialState: ReaderState = {
 
 export function readerReducer(
     state: ReaderState = initialState,
-    action: Action,
+    action: Action<string, ActionPayloadReaderMain> |
+        Action<string, ActionPayloadReaderMainModeSetSuccess> |
+        Action<string, ActionPayloadReaderMainConfigSetSuccess>,
 ): ReaderState {
     const newState = Object.assign({}, state);
 
     switch (action.type) {
         case readerActions.ActionType.OpenSuccess:
-            newState.readers[action.payload.reader.identifier] = action.payload.reader;
+            const act1 = action as Action<string, ActionPayloadReaderMain>;
+            newState.readers[act1.payload.reader.identifier] = act1.payload.reader;
             return newState;
         case readerActions.ActionType.CloseSuccess:
-            delete newState.readers[action.payload.reader.identifier];
+            const act2 = action as Action<string, ActionPayloadReaderMain>;
+            delete newState.readers[act2.payload.reader.identifier];
             return newState;
         case readerActions.ActionType.ModeSetSuccess:
-            newState.mode = action.payload.mode;
+            const act3 = action as Action<string, ActionPayloadReaderMainModeSetSuccess>;
+            newState.mode = act3.payload.mode;
             return newState;
         case readerActions.ActionType.ConfigSetSuccess:
-            newState.config = action.payload.config;
+            const act4 = action as Action<string, ActionPayloadReaderMainConfigSetSuccess>;
+            newState.config = act4.payload.config;
             return newState;
         default:
             return state;

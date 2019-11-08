@@ -10,6 +10,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
@@ -22,7 +23,7 @@ import AccessibleMenu from "../utils/menu/AccessibleMenu";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publication: PublicationView;
+    publicationViewMaybeOpds: PublicationView | OpdsPublicationView;
     menuContent: JSX.Element;
     isOpds?: boolean;
 }
@@ -57,7 +58,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}>  {
-        const pub = this.props.publication;
+        const pub = this.props.publicationViewMaybeOpds;
         const formatedPublishers = pub.publishers.join(", ");
         let formatedPublishedYear = "";
         const { translator } = this.props;
@@ -73,7 +74,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                         type="button"
                         aria-expanded={this.state.menuOpen}
                         aria-controls={this.menuId}
-                        title={this.props.publication.title}
+                        title={pub.title}
                         onClick={this.toggleMenu}
                         ref={(ref) => this.buttonRef = ref}
                     >
@@ -138,31 +139,19 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
+        // isOpds
         displayPublicationInfo: () => {
             dispatch(dialogActions.open("publication-info",
                 {
-                    opdsPublication: props.publication,
+                    opdsPublicationView: props.publicationViewMaybeOpds as OpdsPublicationView,
                     publicationIdentifier: undefined,
                 },
             ));
         },
+        // !isOpds
         openReader: () => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: props.publication.identifier,
-                    },
-                },
-            });
+            dispatch(readerActions.openRequest.build(props.publicationViewMaybeOpds as PublicationView));
         },
-        // openDeleteDialog: () => {
-        //     dispatch(dialogActions.open("delete-publication-confirm",
-        //         {
-        //             publication: props.publication,
-        //         },
-        //     ));
-        // },
     };
 };
 

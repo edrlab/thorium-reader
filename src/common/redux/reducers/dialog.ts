@@ -18,7 +18,7 @@ const initialState: DialogState = {
 // The dialog reducer.
 export function dialogReducer(
     state: DialogState = initialState,
-    action: Action<IDialogStateData>,
+    action: Action<ActionType.OpenRequest | ActionType.CloseRequest, IDialogStateData>,
 ) {
     switch (action.type) {
         case ActionType.OpenRequest:

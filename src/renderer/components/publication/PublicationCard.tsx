@@ -9,6 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
@@ -26,8 +27,7 @@ import OpdsMenu from "./menu/OpdsMenu";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publication: PublicationView;
-    MenuContent: typeof OpdsMenu | typeof CatalogMenu;
+    publicationViewMaybeOpds: PublicationView | OpdsPublicationView;
     isOpds?: boolean;
 }
 // IProps may typically extend:
@@ -55,8 +55,8 @@ class PublicationCard extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, publication, translator, MenuContent } = this.props;
-        const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
+        const { __, publicationViewMaybeOpds, translator, isOpds } = this.props;
+        const authors = publicationViewMaybeOpds.authors.map((author) => translator.translateContentField(author)).join(", ");
 
         return (
             <div className={styles.block_book}
@@ -71,15 +71,15 @@ class PublicationCard extends React.Component<IProps, IState> {
                             if (e.key === "Enter") { this.handleBookClick(e); }
                         }
                         }
-                        title={`${publication.title} - ${authors}`}
+                        title={`${publicationViewMaybeOpds.title} - ${authors}`}
                     >
-                        <Cover publication={publication} />
+                        <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
                     </a>
                 </div>
                 <div className={styles.legend}>
                     <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
                         <p aria-hidden className={styles.book_title}>
-                            {this.truncateTitle(publication.title)}
+                            {this.truncateTitle(publicationViewMaybeOpds.title)}
                         </p>
                         <p aria-hidden className={styles.book_author}>
                             {authors}
@@ -89,7 +89,9 @@ class PublicationCard extends React.Component<IProps, IState> {
                         button={(<SVG title={__("accessibility.bookMenu")} svg={MenuIcon} />)}
                         content={(
                             <div className={styles.menu}>
-                                <MenuContent publication={publication} />
+                                {isOpds ?
+                                <OpdsMenu opdsPublicationView={publicationViewMaybeOpds as OpdsPublicationView} /> :
+                                <CatalogMenu publicationView={publicationViewMaybeOpds as PublicationView} />}
                             </div>
                         )}
                         open={this.state.menuOpen}
@@ -108,12 +110,12 @@ class PublicationCard extends React.Component<IProps, IState> {
 
     private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
-        const { publication } = this.props;
+        const { publicationViewMaybeOpds } = this.props;
 
         if (this.props.isOpds) {
-            this.props.openInfosDialog(publication);
+            this.props.openInfosDialog(publicationViewMaybeOpds as OpdsPublicationView);
         } else {
-            this.props.openReader(publication);
+            this.props.openReader(publicationViewMaybeOpds as PublicationView);
         }
     }
 
@@ -139,21 +141,16 @@ const mapStateToProps = (state: RootState, _props: IBaseProps) => {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        openReader: (publication: PublicationView) => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
-                },
-            });
+        // !isOpds
+        openReader: (publicationView: PublicationView) => {
+            dispatch(readerActions.openRequest.build(publicationView));
         },
-        openInfosDialog: (publication: PublicationView) => {
+        // isOpds
+        openInfosDialog: (opdsPublicationView: OpdsPublicationView) => {
             dispatch(dialogActions.open("publication-info",
                 {
-                    opdsPublication: publication.identifier ? undefined : publication,
-                    publicationIdentifier: publication.identifier ? publication.identifier : undefined,
+                    opdsPublicationView,
+                    publicationIdentifier: undefined,
                 },
             ));
         },

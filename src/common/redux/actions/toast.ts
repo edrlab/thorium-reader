@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Action } from "readium-desktop/common/models/redux";
 import { ToastType } from "readium-desktop/common/models/toast";
 
 export enum ActionType {
@@ -12,9 +13,14 @@ export enum ActionType {
     CloseRequest = "TOAST_CLOSE_REQUEST",
 }
 
+export interface ActionPayloadToast {
+    type: ToastType;
+    data: string | undefined;
+}
+
 export function open(type: ToastType, data?: string) {
     return {
         type: ActionType.OpenRequest,
         payload: { type, data },
-    };
+    } as Action<string, ActionPayloadToast>;
 }

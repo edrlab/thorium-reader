@@ -5,11 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { LocaleConfigIdentifier, LocaleConfigRepositoryType } from "readium-desktop/common/config";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
 import { all, call, take } from "redux-saga/effects";
-
-import { I18NState } from "readium-desktop/common/redux/states/i18n";
 
 export function* localeWatcher() {
     while (true) {
@@ -17,10 +16,10 @@ export function* localeWatcher() {
         const translator = diMainGet("translator");
         translator.setLocale(action.payload.locale);
 
-        const configRepository = diMainGet("config-repository");
+        const configRepository: LocaleConfigRepositoryType = diMainGet("config-repository");
         yield call(() => configRepository.save({
-            identifier: "i18n",
-            value: { locale: action.payload.locale } as I18NState,
+            identifier: LocaleConfigIdentifier,
+            value: { locale: action.payload.locale },
         }));
     }
 }

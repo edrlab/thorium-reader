@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-
 import { loggerActions } from "readium-desktop/common/redux/actions";
+import { ActionPayloadLoggerInfo } from "readium-desktop/common/redux/actions/logger";
 import { LoggerState } from "readium-desktop/common/redux/states/logger";
 
 const initialState: LoggerState = {
@@ -16,7 +16,7 @@ const initialState: LoggerState = {
 
 export function loggerReducer(
     state: LoggerState = initialState,
-    action: Action,
+    action: Action<string, ActionPayloadLoggerInfo>,
 ) {
     switch (action.type) {
         case loggerActions.ActionType.Info:

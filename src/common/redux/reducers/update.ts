@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-
 import { updateActions } from "readium-desktop/common/redux/actions";
+import { ActionPayloadLatestVersion } from "readium-desktop/common/redux/actions/update";
 import { UpdateState, UpdateStatus } from "readium-desktop/common/redux/states/update";
 
 const initialState: UpdateState = {
@@ -18,7 +18,7 @@ const initialState: UpdateState = {
 
 export function updateReducer(
     state: UpdateState = initialState,
-    action: Action,
+    action: Action<string, ActionPayloadLatestVersion>,
 ) {
     switch (action.type) {
         case updateActions.ActionType.LatestVersionSet:

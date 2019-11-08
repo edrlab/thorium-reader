@@ -9,12 +9,22 @@ import * as debug_ from "debug";
 import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import { LocatorType } from "readium-desktop/common/models/locator";
-import { Publication } from "readium-desktop/common/models/publication";
 import { Bookmark, Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
+import { Action } from "readium-desktop/common/models/redux";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import {
+    ActionPayloadReaderMainConfigSetSuccess, ActionPayloadReaderMainModeSetSuccess,
+    CloseActionPayload, CloseReaderActionPayload, DetachActionPayload, SaveBookmarkActionPayload,
+    SetConfigActionPayload,
+} from "readium-desktop/common/redux/actions/reader";
+import { callTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { ConfigDocument } from "readium-desktop/main/db/document/config";
+import { BaseRepository } from "readium-desktop/main/db/repository/base";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
@@ -29,10 +39,14 @@ import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/s
 import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
+import {
+    ActionPayloadStreamerPublicationCloseSuccess, ActionPayloadStreamerPublicationOpenSuccess,
+} from "../actions/streamer";
+
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
 
-async function openReader(publication: Publication, manifestUrl: string) {
+async function openReader(publicationView: PublicationView, manifestUrl: string) {
     debug("create readerWindow");
     // Create reader window
     const readerWindow = new BrowserWindow({
@@ -93,7 +107,7 @@ async function openReader(publication: Publication, manifestUrl: string) {
     // Create reader object
     const reader: Reader = {
         identifier: readerAppWindow.identifier,
-        publication,
+        publicationView,
         manifestUrl,
         filesystemPath: pathDecoded,
         window: readerWindow,
@@ -118,13 +132,13 @@ async function openReader(publication: Publication, manifestUrl: string) {
     }
 
     readerUrl = readerUrl.replace(/\\/g, "/");
-    readerUrl += `?pub=${encodedManifestUrl}&pubId=${publication.identifier}`;
+    readerUrl += `?pub=${encodedManifestUrl}&pubId=${publicationView.identifier}`;
 
     // Get publication last reading location
     const locatorRepository = diMainGet("locator-repository");
     const locators = await locatorRepository
         .findByPublicationIdentifierAndLocatorType(
-            publication.identifier,
+            publicationView.identifier,
             LocatorType.LastReadingLocation,
         );
 
@@ -147,18 +161,20 @@ async function openReader(publication: Publication, manifestUrl: string) {
     return reader;
 }
 
+// type ActionType = Action<readerActions.ActionType.OpenRequest, readerActions.OpenActionPayload>;
+
 export function* readerOpenRequestWatcher(): SagaIterator {
     while (true) {
-        const action: any = yield take(readerActions.ActionType.OpenRequest);
-        const publication = action.payload.publication;
+        const action = yield* takeTyped(readerActions.openRequest.build);
+        const publicationView = action.payload.publicationView;
 
         // Notify the streamer to create a manifest for this publication
         yield put(streamerActions.openPublication(
-            publication,
+            publicationView,
         ));
 
         // Wait for the publication to be opened
-        const streamerAction: any = yield take([
+        const streamerAction: Action<string, ActionPayloadStreamerPublicationOpenSuccess> = yield take([
             streamerActions.ActionType.PublicationOpenSuccess,
             streamerActions.ActionType.PublicationOpenError,
         ]);
@@ -169,15 +185,15 @@ export function* readerOpenRequestWatcher(): SagaIterator {
             yield put({
                 type: readerActions.ActionType.OpenError,
                 payload: {
-                    publication,
+                    publicationView,
                 },
             });
             continue;
         }
 
         const manifestUrl = streamerAction.payload.manifestUrl;
-        const reader: Reader = yield call(
-            () => openReader(publication, manifestUrl),
+        const reader = yield* callTyped(
+            () => openReader(publicationView, manifestUrl),
         );
 
         // Publication is opened in a new reader
@@ -192,7 +208,8 @@ export function* readerOpenRequestWatcher(): SagaIterator {
 
 export function* readerCloseRequestWatcher(): SagaIterator {
     while (true) {
-        const action: any = yield take(readerActions.ActionType.CloseRequest);
+        const action: Action<string, CloseActionPayload> = yield take(readerActions.ActionType.CloseRequest);
+
         const reader = action.payload.reader;
         const gotoLibrary = action.payload.gotoLibrary;
 
@@ -203,13 +220,15 @@ export function* readerCloseRequestWatcher(): SagaIterator {
 
 export function* closeReaderFromPublicationWatcher(): SagaIterator {
     while (true) {
-        const action: any = yield take(readerActions.ActionType.CloseFromPublicationRequest);
-        const publication = action.payload.publication;
+        // tslint:disable-next-line: max-line-length
+        const action: Action<string, CloseReaderActionPayload> = yield take(readerActions.ActionType.CloseFromPublicationRequest);
+
+        const publicationView = action.payload.publicationView;
         const store = diMainGet("store");
         const readers = (store.getState().reader as ReaderState).readers;
 
         for (const reader of Object.values(readers)) {
-            if (reader.publication.identifier === publication.identifier) {
+            if (reader.publicationView.identifier === publicationView.identifier) {
                 const closeFunction = closeReader.bind(closeReader, reader, false);
                 yield call(closeFunction);
             }
@@ -218,15 +237,15 @@ export function* closeReaderFromPublicationWatcher(): SagaIterator {
 }
 
 function* closeReader(reader: Reader, gotoLibrary: boolean) {
-    const publication = reader.publication;
+    const publicationView = reader.publicationView;
 
     // Notify the streamer that a publication has been closed
     yield put(streamerActions.closePublication(
-        publication,
+        publicationView,
     ));
 
     // Wait for the publication to be closed
-    const streamerAction = yield take([
+    const streamerAction: Action<string, ActionPayloadStreamerPublicationCloseSuccess> = yield take([
         streamerActions.ActionType.PublicationCloseSuccess,
         streamerActions.ActionType.PublicationCloseError,
     ]);
@@ -275,27 +294,33 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
     });
 }
 
+const READER_CONFIG_ID = "reader";
+type ConfigDocumentType = ConfigDocument<ReaderConfig>;
+type ConfigRepositoryType = BaseRepository<ConfigDocumentType>;
+type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Timestampable>;
+
 export function* readerConfigSetRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for save request
-        const action: any = yield take(readerActions.ActionType.ConfigSetRequest);
+        const action: Action<string, SetConfigActionPayload> = yield take(readerActions.ActionType.ConfigSetRequest);
+
         const configValue: ReaderConfig = action.payload.config;
-        const config = {
-            identifier: "reader",
+        const config: ConfigDocumentTypeWithoutTimestampable = {
+            identifier: READER_CONFIG_ID,
             value: configValue,
         };
 
         // Get reader settings
-        const configRepository = diMainGet("config-repository");
+        const configRepository: ConfigRepositoryType = diMainGet("config-repository");
 
         try {
             yield call(() => configRepository.save(config));
             yield put({
                 type: readerActions.ActionType.ConfigSetSuccess,
                 payload: {
-                    config,
+                    config: configValue,
                 },
-            });
+            } as Action<string, ActionPayloadReaderMainConfigSetSuccess>);
         } catch (error) {
             yield put({ type: readerActions.ActionType.ConfigSetError, error: true });
         }
@@ -306,18 +331,18 @@ export function* readerConfigInitWatcher(): SagaIterator {
     // Wait for app initialization
     yield take(appActions.ActionType.InitSuccess);
 
-    const configRepository = diMainGet("config-repository");
+    const configRepository: ConfigRepositoryType = diMainGet("config-repository");
 
     try {
-        const readerConfig = yield call(() => configRepository.get("reader"));
+        const readerConfigDoc = yield* callTyped(() => configRepository.get(READER_CONFIG_ID));
 
         // Returns the first reader configuration available in database
         yield put({
             type: readerActions.ActionType.ConfigSetSuccess,
             payload: {
-                config: readerConfig,
+                config: readerConfigDoc.value,
             },
-        });
+        } as Action<string, ActionPayloadReaderMainConfigSetSuccess>);
     } catch (error) {
         yield put({
             type: readerActions.ActionType.ConfigSetError,
@@ -330,7 +355,9 @@ export function* readerConfigInitWatcher(): SagaIterator {
 export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for app initialization
-        const action: any = yield take(readerActions.ActionType.BookmarkSaveRequest);
+        // tslint:disable-next-line: max-line-length
+        const action: Action<string, SaveBookmarkActionPayload> = yield take(readerActions.ActionType.BookmarkSaveRequest);
+
         const bookmark = action.payload.bookmark as Bookmark;
 
         // Get bookmark manager
@@ -338,13 +365,14 @@ export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
 
         try {
             const locator = {
+                // name: "",
                 locator: {
                     href: bookmark.docHref,
                     locations: {
                         cssSelector: bookmark.docSelector,
                     },
                 },
-                publicationIdentifier: bookmark.publication.identifier,
+                publicationIdentifier: bookmark.identifiable.identifier,
                 locatorType: LocatorType.LastReadingLocation,
             };
             yield call(() => locatorRepository.save(locator));
@@ -386,7 +414,8 @@ export function* readerFullscreenRequestWatcher(): SagaIterator {
 export function* readerDetachRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for a change mode request
-        const action: any = yield take(readerActions.ActionType.ModeSetRequest);
+        const action: Action<string, DetachActionPayload> = yield take(readerActions.ActionType.ModeSetRequest);
+
         const readerMode = action.payload.mode;
         const reader = action.payload.reader;
 
@@ -412,7 +441,7 @@ export function* readerDetachRequestWatcher(): SagaIterator {
             payload: {
                 mode: readerMode,
             },
-        });
+        } as Action<string, ActionPayloadReaderMainModeSetSuccess>);
     }
 }
 

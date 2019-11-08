@@ -113,8 +113,8 @@ export class OpdsApi implements IOpdsApi {
         return await httpGet(url, {
             timeout: 10000,
         }, async (opdsFeedData) => {
-            // let opds2Publication: OPDSPublication = null;
-            let opds2Feed: OPDSFeed = null;
+            // let r2OpdsPublication: OPDSPublication = null;
+            let r2OpdsFeed: OPDSFeed = null;
 
             if (opdsFeedData.isFailure) {
                 return opdsFeedData;
@@ -137,14 +137,14 @@ export class OpdsApi implements IOpdsApi {
                 // This is an opds feed in version 1
                 // Convert to opds version 2
                 const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
-                opds2Feed = convertOpds1ToOpds2(opds1Feed);
+                r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
             } else {
-                opds2Feed = TAJSON.deserialize<OPDSFeed>(
+                r2OpdsFeed = TAJSON.deserialize<OPDSFeed>(
                     JSON.parse(opdsFeedData.body),
                     OPDSFeed,
                 );
             }
-            opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsFeedToView(opds2Feed, url);
+            opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url);
             return opdsFeedData;
         });
     }

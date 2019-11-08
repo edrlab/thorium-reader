@@ -19,7 +19,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publication: OpdsPublicationView;
+    opdsPublicationView: OpdsPublicationView;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -29,7 +29,7 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-export class PublicationCard extends React.Component<IProps, undefined> {
+export class OpdsMenu extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);
@@ -38,7 +38,7 @@ export class PublicationCard extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}>  {
-        const { publication, __, buttonIsDisabled } = this.props;
+        const { opdsPublicationView, __, buttonIsDisabled } = this.props;
         return (
             <>
                 <button role="menuitem"
@@ -46,7 +46,7 @@ export class PublicationCard extends React.Component<IProps, undefined> {
                 >
                     {__("opds.menu.aboutBook")}
                 </button>
-                { publication.isFree &&
+                { opdsPublicationView.isFree &&
                     <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e) }
                         disabled={buttonIsDisabled}
@@ -54,28 +54,28 @@ export class PublicationCard extends React.Component<IProps, undefined> {
                         {__("catalog.addBookToLib")}
                     </button>
                 }
-                { publication.buyUrl &&
+                { opdsPublicationView.buyUrl &&
                     <a role="menuitem"
-                        href={publication.buyUrl}
+                        href={opdsPublicationView.buyUrl}
                     >
                         {__("opds.menu.goBuyBook")}
                     </a>
                 }
-                { publication.borrowUrl &&
+                { opdsPublicationView.borrowUrl &&
                     <a role="menuitem"
-                        href={publication.borrowUrl}
+                        href={opdsPublicationView.borrowUrl}
                     >
                         {__("opds.menu.goLoanBook")}
                     </a>
                 }
-                { publication.subscribeUrl &&
+                { opdsPublicationView.subscribeUrl &&
                     <a role="menuitem"
-                        href={publication.subscribeUrl}
+                        href={opdsPublicationView.subscribeUrl}
                     >
                         {__("opds.menu.goSubBook")}
                     </a>
                 }
-                { publication.hasSample &&
+                { opdsPublicationView.hasSample &&
                     <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e, true) }
                     >
@@ -102,7 +102,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
         displayPublicationInfo: () => {
             dispatch(dialogActions.open("publication-info",
                 {
-                    opdsPublication: props.publication,
+                    opdsPublicationView: props.opdsPublicationView,
                     publicationIdentifier: undefined,
                 },
             ));
@@ -110,7 +110,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
         verifyImport: (downloadSample: boolean) => {
             dispatch(importAction.verifyImport(
                 {
-                    publication: props.publication,
+                    opdsPublicationView: props.opdsPublicationView,
                     downloadSample,
                 },
             ));
@@ -120,8 +120,8 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
 
 const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
-        buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.publication.url) > -1,
+        buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.opdsPublicationView.url) > -1,
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationCard));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OpdsMenu));

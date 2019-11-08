@@ -7,23 +7,22 @@
 
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import { open } from "readium-desktop/common/redux/actions/dialog";
-import { diRendererGet } from "readium-desktop/renderer/di";
+import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { SagaIterator } from "redux-saga";
-import { all, call, put, take } from "redux-saga/effects";
+import { all, call, put } from "redux-saga/effects";
+
+import { RootState } from "../states";
 
 export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
     while (true) {
-        const action: any = yield take(lcpActions.ActionType.UserKeyCheckRequest);
+        const action = yield* takeTyped(lcpActions.userKeyCheckRequest.build);
 
-        const { hint, publication, message } = action.payload;
-        // const id1 = (publication as PublicationView).identifier;
+        const { hint, publicationView, message } = action.payload;
 
-        const store = diRendererGet("store");
-        if (store.getState().reader.reader) {
-
-            // const id2 = store.getState().reader.reader.publication.identifier;
-            // const id3 = store.getState().reader.reader.identifier;
-
+        const isReader = yield* selectTyped((state: RootState) => {
+            return typeof state.reader.reader !== "undefined";
+        });
+        if (isReader) {
             // passphrase dialog only in library/bookshelf view
             // already-opened reader BrowserWindows (distinct renderer processes)
             // must not display the popup dialog!
@@ -32,7 +31,7 @@ export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
 
         yield put(open("lcp-authentication",
             {
-                publication,
+                publicationView,
                 hint,
                 message,
             },

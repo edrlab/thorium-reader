@@ -11,6 +11,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
@@ -45,7 +46,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 interface IState {
     seeMore: boolean;
     needSeeMore: boolean;
-    publication: TPublicationApiGet_result | undefined;
+    publicationView: TPublicationApiGet_result | undefined;
     coverZoom: boolean;
 }
 
@@ -60,7 +61,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
         this.state = {
             seeMore: false,
             needSeeMore: false,
-            publication: undefined,
+            publicationView: undefined,
             coverZoom: false,
         };
         this.toggleSeeMore = this.toggleSeeMore.bind(this);
@@ -84,31 +85,37 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const isOpds = typeof this.props.opdsPublication === "object";
-        // OPDSPublicationView can be cast to Publication type in this case without transformation
-        const publication = isOpds ? this.props.opdsPublication as PublicationView : this.state.publication;
-        if (!this.props.open || !publication) {
+
+        // tslint:disable-next-line: max-line-length
+        const opdsPublicationView: OpdsPublicationView = this.props.opdsPublicationView ? this.props.opdsPublicationView : undefined;
+        const normalPublicationView: PublicationView = opdsPublicationView ? undefined : this.state.publicationView;
+        const normalOrOpdsPublicationView = opdsPublicationView ? opdsPublicationView : normalPublicationView;
+
+        if (!this.props.open || (!normalPublicationView && !opdsPublicationView)) {
             return (<></>);
         }
 
         const { __, translator } = this.props;
         const controlsComponent = (() => {
             if (this.props.displayControls) {
-                if (isOpds) {
-                    return (<OpdsControls publication={publication} />);
+                if (opdsPublicationView) {
+                    return (<OpdsControls opdsPublicationView={opdsPublicationView} />);
                 }
-                if (publication.lcp) {
-                    return (<CatalogLcpControls publication={publication} />);
+                if (normalPublicationView.lcp) {
+                    return (<CatalogLcpControls publicationView={normalPublicationView} />);
                 }
-                return (<CatalogControls publication={publication} />);
+                return (<CatalogControls publicationView={normalPublicationView} />);
             }
             return (<></>);
         })();
-        const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
-        const formatedPublishers = oc(publication).publishers([]).join(", ");
+
+        const authors = normalOrOpdsPublicationView.authors.map((author) => {
+            return translator.translateContentField(author);
+        }).join(", ");
+        const formatedPublishers = oc(normalOrOpdsPublicationView).publishers([]).join(", ");
         const formatedPublishedDateComponent = (() => {
-            if (publication.publishedAt) {
-                const date = moment(publication.publishedAt).format("L");
+            if (normalOrOpdsPublicationView.publishedAt) {
+                const date = moment(normalOrOpdsPublicationView.publishedAt).format("L");
                 if (date) {
                     return (
                         <p>
@@ -121,13 +128,13 @@ class PublicationInfo extends React.Component<IProps, IState> {
             return (<></>);
         })();
         const publicationLanguageComponent = (() => {
-            if (publication.languages) {
-                return publication.languages
+            if (normalOrOpdsPublicationView.languages) {
+                return normalOrOpdsPublicationView.languages
                     .map((lang: string, index: number) => {
                         const l = lang.split("-")[0];
                         const ll = ((__(`languages.${l}` as any) as unknown) as string).replace(`languages.${l}`, lang);
                         const note = (lang !== ll) ? ` (${lang})` : "";
-                        const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");
+                        const suffix = ((index < (normalOrOpdsPublicationView.languages.length - 1)) ? ", " : "");
                         return <i
                             key={"lang-" + index}
                             title={lang}
@@ -146,8 +153,8 @@ class PublicationInfo extends React.Component<IProps, IState> {
                     <div className={styles.image_wrapper}>
                         <div>
                             <Cover
-                                publication={publication}
-                                onClick={() => publication.cover.coverUrl && this.coverOnClick()}
+                                publicationViewMaybeOpds={normalOrOpdsPublicationView}
+                                onClick={() => normalOrOpdsPublicationView.cover.coverUrl && this.coverOnClick()}
                                 onKeyPress={this.coverOnKeyPress}
                             />
                         </div>
@@ -155,7 +162,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                     {controlsComponent}
                 </div>
                 <div className={styles.dialog_right}>
-                    <h2 className={styles.allowUserSelect}>{publication.title}</h2>
+                    <h2 className={styles.allowUserSelect}>{normalOrOpdsPublicationView.title}</h2>
                     <div>
                         <p className={classNames(styles.allowUserSelect, styles.author)}>{authors}</p>
                         {formatedPublishedDateComponent}
@@ -163,14 +170,14 @@ class PublicationInfo extends React.Component<IProps, IState> {
                             <div className={styles.tag_list}>
                                 <span>Tags</span>
                                 <TagManager
-                                    publicationIdentifier={publication.identifier}
-                                    tags={publication.tags}
-                                    canModifyTag={!isOpds}
+                                    publicationIdentifier={(normalOrOpdsPublicationView as PublicationView).identifier}
+                                    tags={normalOrOpdsPublicationView.tags}
+                                    canModifyTag={opdsPublicationView ? true : false}
                                 />
                             </div>
                         </div>
 
-                        {publication.description && <>
+                        {normalOrOpdsPublicationView.description && <>
                             <h3>{__("catalog.description")}</h3>
                             <div
                                 ref={(ref) => this.descriptionWrapperRef = ref}
@@ -184,7 +191,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                                     ref={(ref) => this.descriptionRef = ref}
                                     className={classNames(styles.allowUserSelect, styles.description)}
                                 >
-                                    {publication.description}
+                                    {normalOrOpdsPublicationView.description}
                                 </p>
                             </div>
                             {this.state.needSeeMore &&
@@ -203,7 +210,9 @@ class PublicationInfo extends React.Component<IProps, IState> {
                             }
                             <span>{__("catalog.lang")}</span>{publicationLanguageComponent}<br />
                             <span>{__("catalog.id")}
-                            </span> <i className={styles.allowUserSelect}>{publication.workIdentifier}</i> <br />
+                            </span>
+                            <i className={styles.allowUserSelect}>{normalOrOpdsPublicationView.workIdentifier}</i>
+                            <br />
                         </p>
                     </div>
                 </div>
@@ -213,7 +222,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
             <Dialog open={true} close={() => this.state.coverZoom ? this.coverOnClick() : this.props.closeDialog()}>
                 {this.state.coverZoom ?
                     <Cover
-                        publication={publication}
+                        publicationViewMaybeOpds={normalOrOpdsPublicationView}
                         coverTypeUrl="coverUrl"
                         onClick={this.coverOnClick}
                         onKeyPress={this.coverOnKeyPress}
@@ -245,7 +254,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
 
     private getPublicationFromId() {
         apiAction("publication/get", this.props.publicationIdentifier)
-            .then((publication) => this.setState({ publication }))
+            .then((publicationView) => this.setState({ publicationView }))
             .catch((error) => console.error(`Error to fetch publication/get`, error));
     }
 }

@@ -5,14 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Bookmark, Reader, ReaderConfig } from "readium-desktop/common/models/reader";
+import { Bookmark, Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-import { ReaderMode } from "readium-desktop/common/models/reader";
-
 export enum ActionType {
-    OpenRequest = "READER_OPEN_REQUEST",
     OpenSuccess = "READER_OPEN_SUCCESS",
     OpenError = "READER_OPEN_ERROR",
 
@@ -43,16 +40,23 @@ export enum ActionType {
     BookmarkSaveError = "READER_BOOKMARK_SAVE_ERROR",
 }
 
-export function open(publication: PublicationView): Action {
-    return {
-        type: ActionType.OpenRequest,
-        payload: {
-            publication,
-        },
-    };
+export interface ActionPayloadReaderMain {
+    reader: Reader;
+}
+export interface ActionPayloadReaderMainModeSetSuccess {
+    mode: ReaderMode;
+}
+export interface ActionPayloadReaderMainConfigSetSuccess {
+    config: ReaderConfig;
 }
 
-export function close(reader: Reader, gotoLibrary: boolean = false): Action {
+export interface CloseActionPayload {
+    reader: Reader;
+    gotoLibrary: boolean;
+}
+export function close(reader: Reader, gotoLibrary: boolean = false):
+    Action<ActionType.CloseRequest, CloseActionPayload> {
+
     return {
         type: ActionType.CloseRequest,
         payload: {
@@ -62,7 +66,13 @@ export function close(reader: Reader, gotoLibrary: boolean = false): Action {
     };
 }
 
-export function detach(reader: Reader): Action {
+export interface DetachActionPayload {
+    reader: Reader;
+    mode: ReaderMode;
+}
+export function detach(reader: Reader):
+    Action<ActionType.ModeSetRequest, DetachActionPayload> {
+
     return {
         type: ActionType.ModeSetRequest,
         payload: {
@@ -72,7 +82,12 @@ export function detach(reader: Reader): Action {
     };
 }
 
-export function setConfig(config: ReaderConfig): Action {
+export interface SetConfigActionPayload {
+    config: ReaderConfig;
+}
+export function setConfig(config: ReaderConfig):
+    Action<ActionType.ConfigSetRequest, SetConfigActionPayload> {
+
     return {
         type: ActionType.ConfigSetRequest,
         payload: {
@@ -81,7 +96,12 @@ export function setConfig(config: ReaderConfig): Action {
     };
 }
 
-export function saveBookmark(bookmark: Bookmark) {
+export interface SaveBookmarkActionPayload {
+    bookmark: Bookmark;
+}
+export function saveBookmark(bookmark: Bookmark):
+    Action<ActionType.BookmarkSaveRequest, SaveBookmarkActionPayload> {
+
     return {
         type: ActionType.BookmarkSaveRequest,
         payload: {
@@ -90,22 +110,31 @@ export function saveBookmark(bookmark: Bookmark) {
     };
 }
 
-export function closeReaderFromPublication(publication: PublicationView) {
+export interface CloseReaderActionPayload {
+    publicationView: PublicationView;
+}
+export function closeReaderFromPublication(publicationView: PublicationView):
+    Action<ActionType.CloseFromPublicationRequest, CloseReaderActionPayload> {
+
     return {
         type: ActionType.CloseFromPublicationRequest,
         payload: {
-            publication,
+            publicationView,
         },
     };
 }
 
-export function setFullscreenOn() {
+export function setFullscreenOn():
+    Action<ActionType.FullscreenOnRequest> {
+
     return {
         type: ActionType.FullscreenOnRequest,
     };
 }
 
-export function setFullscreenOff() {
+export function setFullscreenOff():
+    Action<ActionType.FullscreenOffRequest> {
+
     return {
         type: ActionType.FullscreenOffRequest,
     };

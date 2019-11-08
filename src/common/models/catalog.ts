@@ -5,12 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Publication } from "./publication";
+import { PublicationModel } from "./publication";
 
 /**
- * A catalog contains a list of publications
+ * A catalog contains a list of PublicationModels
  */
 export interface Catalog {
     title: string;
-    publications: Publication[];
+    publicationModels: PublicationModel[];
 }

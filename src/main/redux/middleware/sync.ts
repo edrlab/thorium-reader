@@ -19,7 +19,7 @@ import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 const debug = debug_("readium-desktop:sync");
 
 // Actions that can be synchronized
-const SYNCHRONIZABLE_ACTIONS: any = [
+const SYNCHRONIZABLE_ACTIONS: string[] = [
     apiActions.ActionType.Success,
     apiActions.ActionType.Error,
 
@@ -40,7 +40,7 @@ const SYNCHRONIZABLE_ACTIONS: any = [
     readerActions.ActionType.FullscreenOnSuccess,
     readerActions.ActionType.FullscreenOffSuccess,
 
-    lcpActions.ActionType.UserKeyCheckRequest,
+    lcpActions.userKeyCheckRequest.ID,
 
     i18nActions.ActionType.Set,
 

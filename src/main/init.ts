@@ -8,21 +8,24 @@
 import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
+import { LocaleConfigIdentifier, LocaleConfigRepositoryType } from "readium-desktop/common/config";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
+import { Action } from "readium-desktop/common/models/redux";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, netActions, readerActions, updateActions,
 } from "readium-desktop/common/redux/actions";
 import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import {
+    ActionPayloadReaderMain, ActionPayloadReaderMainConfigSetSuccess,
+    ActionPayloadReaderMainModeSetSuccess,
+} from "readium-desktop/common/redux/actions/reader";
+import { ActionPayloadLatestVersion } from "readium-desktop/common/redux/actions/update";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
-import { UpdateState } from "readium-desktop/common/redux/states/update";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { diMainGet } from "readium-desktop/main/di";
 import { appInit } from "readium-desktop/main/redux/actions/app";
-import {
-    ReaderStateConfig, ReaderStateMode, ReaderStateReader,
-} from "readium-desktop/main/redux/states/reader";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -72,8 +75,8 @@ const winOpenCallback = (appWindow: AppWindow) => {
                 type: readerActions.ActionType.OpenSuccess,
                 payload: {
                     reader: state.reader.readers[appWindow.identifier],
-                } as ReaderStateReader,
-            },
+                },
+            } as Action<string, ActionPayloadReaderMain>,
         },
     } as syncIpc.EventPayload);
 
@@ -85,8 +88,8 @@ const winOpenCallback = (appWindow: AppWindow) => {
                 type: readerActions.ActionType.ConfigSetSuccess,
                 payload: {
                     config: state.reader.config,
-                } as ReaderStateConfig,
-            },
+                },
+            } as Action<string, ActionPayloadReaderMainConfigSetSuccess>,
         },
     } as syncIpc.EventPayload);
 
@@ -98,8 +101,8 @@ const winOpenCallback = (appWindow: AppWindow) => {
                 type: readerActions.ActionType.ModeSetSuccess,
                 payload: {
                     mode: state.reader.mode,
-                } as ReaderStateMode,
-            },
+                },
+            } as Action<string, ActionPayloadReaderMainModeSetSuccess>,
         },
     } as syncIpc.EventPayload);
 
@@ -111,8 +114,8 @@ const winOpenCallback = (appWindow: AppWindow) => {
                 type: i18nActions.ActionType.Set,
                 payload: {
                     locale: state.i18n.locale,
-                } as i18nActions.PayloadLocale,
-            },
+                },
+            } as Action<string, i18nActions.PayloadLocale>,
         },
     } as syncIpc.EventPayload);
 
@@ -126,8 +129,8 @@ const winOpenCallback = (appWindow: AppWindow) => {
                     status: state.update.status,
                     latestVersion: state.update.latestVersion,
                     latestVersionUrl: state.update.latestVersionUrl,
-                } as UpdateState,
-            },
+                },
+            } as Action<string, ActionPayloadLatestVersion>,
         },
     } as syncIpc.EventPayload);
 };
@@ -179,8 +182,9 @@ export function initApp() {
     const store = diMainGet("store");
     store.dispatch(appInit());
 
-    const configRepository = diMainGet("config-repository");
-    configRepository.get("i18n").then((i18nLocale) => {
+    const configRepository: LocaleConfigRepositoryType = diMainGet("config-repository");
+    const config = configRepository.get(LocaleConfigIdentifier);
+    config.then((i18nLocale) => {
         if (i18nLocale && i18nLocale.value && i18nLocale.value.locale) {
             store.dispatch(setLocale(i18nLocale.value.locale));
             debug(`set the locale ${i18nLocale.value.locale}`);

@@ -131,7 +131,7 @@ const lcpSecretDb = new PouchDB(
 );
 const lcpSecretRepository = new LcpSecretRepository(lcpSecretDb);
 
-// Create filesystem storage for publications
+// Create filesystem storage for pubs
 const publicationRepositoryPath = path.join(
     userDataPath,
     "publications",

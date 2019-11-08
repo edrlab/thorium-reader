@@ -8,7 +8,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import * as importAction from "readium-desktop/common/redux/actions/import";
-import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
@@ -19,7 +18,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publication: OpdsPublicationView;
+    opdsPublicationView: OpdsPublicationView;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -36,24 +35,24 @@ export class OpdsControls extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { publication, verifyImport, buttonIsDisabled } = this.props;
+        const { opdsPublicationView, verifyImport, buttonIsDisabled } = this.props;
         const { __ } = this.props;
 
-        if (!publication) {
+        if (!opdsPublicationView) {
             return <></>;
         }
 
-        return publication.isFree ? (
+        return opdsPublicationView.isFree ? (
             <button
-                onClick={() => verifyImport(publication as ImportOpdsPublication)}
+                onClick={() => verifyImport(opdsPublicationView)}
                 className={styles.lire}
                 disabled={buttonIsDisabled}
             >
                 {__("catalog.addBookToLib")}
             </button>
-        ) : publication.hasSample && (
+        ) : opdsPublicationView.hasSample && (
             <button
-                onClick={() => verifyImport(publication as ImportOpdsPublication, true)}
+                onClick={() => verifyImport(opdsPublicationView, true)}
                 className={styles.lire}
             >
                 {__("opds.menu.addExtract")}
@@ -64,12 +63,10 @@ export class OpdsControls extends React.Component<IProps, undefined> {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        // src/common/redux/states/import.ts
-        // FIXME : REDUX ISN'T TYPED, resolve this force cast
-        verifyImport: (publication: ImportOpdsPublication, downloadSample?: boolean) => {
+        verifyImport: (opdsPublicationView: OpdsPublicationView, downloadSample?: boolean) => {
             dispatch(importAction.verifyImport(
                 {
-                    publication,
+                    opdsPublicationView,
                     downloadSample,
                 },
             ));
@@ -79,7 +76,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
 const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
-        buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.publication.url) > -1,
+        buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.opdsPublicationView.url) > -1,
     };
 };
 

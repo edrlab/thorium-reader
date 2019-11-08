@@ -9,8 +9,9 @@ import { BrowserWindow } from "electron";
 
 import { textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 
+import { PublicationView } from "../views/publication";
 import { Identifiable } from "./identifiable";
-import { Publication } from "./publication";
+// import { PublicationModel } from "./publication";
 
 export enum ReaderMode {
     Attached = "attached",
@@ -23,7 +24,8 @@ export enum ReaderMode {
 export interface Reader extends Identifiable {
     filesystemPath: string;
     manifestUrl: string;
-    publication: Publication;
+    publicationView: PublicationView;
+    // publicationModel: PublicationModel;
     window: BrowserWindow;
 }
 
@@ -31,7 +33,7 @@ export interface Reader extends Identifiable {
  * A reader configuration
  */
 export interface ReaderConfig {
-    [key: string]: any;
+    [key: string]: any; // TODO any?!
     identifier?: string;
     align: textAlignEnum.justify | textAlignEnum.left | textAlignEnum.right | textAlignEnum.start | "auto";
     colCount: string;
@@ -50,9 +52,8 @@ export interface BookmarkCollection {
     [key: string]: Bookmark;
 }
 
-export interface Bookmark {
-    identifier: string;
-    publication: Identifiable;
+export interface Bookmark extends Identifiable {
+    identifiable: Identifiable;
     docHref: string;
     docSelector: string;
 }

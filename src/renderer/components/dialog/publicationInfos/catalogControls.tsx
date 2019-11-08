@@ -20,7 +20,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publication: PublicationView;
+    publicationView: PublicationView;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -40,9 +40,9 @@ export class CatalogControls extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { publication, __ } = this.props;
+        const { publicationView, __ } = this.props;
 
-        if (!publication) {
+        if (!publicationView) {
             return (<></>);
         }
 
@@ -76,19 +76,12 @@ export class CatalogControls extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         openReader: () => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: props.publication.identifier,
-                    },
-                },
-            });
+            dispatch(readerActions.openRequest.build(props.publicationView));
         },
         openDeleteDialog: () => {
             dispatch(dialogActions.open("delete-publication-confirm",
                 {
-                    publication: props.publication,
+                    publicationView: props.publicationView,
                 },
             ));
         },

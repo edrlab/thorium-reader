@@ -33,7 +33,7 @@ interface IProps extends IBaseProps, RouteComponentProps {
 }
 
 interface IState {
-    publications: TPublicationApiFindAll_result | undefined;
+    publicationViews: TPublicationApiFindAll_result | undefined;
 }
 
 export class AllPublicationPage extends React.Component<IProps, IState> {
@@ -42,7 +42,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
-            publications: undefined,
+            publicationViews: undefined,
         };
     }
 
@@ -54,7 +54,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
             "publication/updateTags",
         ], () => {
             apiAction("publication/findAll")
-                .then((publications) => this.setState({publications}))
+                .then((publicationViews) => this.setState({publicationViews}))
                 .catch((error) => console.error("Error to fetch api publication/findAll", error));
         });
     }
@@ -66,7 +66,6 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        let DisplayView: any = GridView;
         const displayType = this.props.location.state;
         let type: any = "";
         let typeview: DisplayType = DisplayType.Grid;
@@ -80,10 +79,8 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         // console.log(`type: ${type}`);
         if (type === DisplayType.List ||
             window.location.hash === "#/library/search/all?displayType=list") {
-            DisplayView = ListView;
             typeview = DisplayType.List;
         } else {
-            DisplayView = GridView;
             typeview = DisplayType.Grid;
         }
 
@@ -96,8 +93,10 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                         search={this.props.location.search}
                         breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title as string }]}
                     />
-                    {this.state.publications ?
-                        <DisplayView publications={this.state.publications} />
+                    {this.state.publicationViews ?
+                        (displayType === DisplayType.Grid ?
+                            <GridView normalOrOpdsPublicationViews={ this.state.publicationViews } /> :
+                            <ListView normalOrOpdsPublicationViews={ this.state.publicationViews } />)
                         : <></>}
                 </div>
             </LibraryLayout>

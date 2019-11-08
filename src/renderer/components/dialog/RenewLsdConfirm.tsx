@@ -40,7 +40,7 @@ class RenewLsdConfirm extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        if (!this.props.open || !this.props.publication) {
+        if (!this.props.open || !this.props.publicationView) {
             return <></>;
         }
 
@@ -50,7 +50,7 @@ class RenewLsdConfirm extends React.Component<IProps, undefined> {
                 <div>
                     <p>
                         {__("dialog.renew")}
-                        <span>{this.props.publication.title}</span>
+                        <span>{this.props.publicationView.title}</span>
                     </p>
                     <div>
                         <button className={styles.primary} onClick={this.renew}>{__("dialog.yes")}</button>
@@ -64,9 +64,7 @@ class RenewLsdConfirm extends React.Component<IProps, undefined> {
     public renew(e: TMouseEvent) {
         e.preventDefault();
         apiAction("lcp/renewPublicationLicense", {
-            publication: {
-                identifier: this.props.publication.identifier,
-            },
+            publicationView: this.props.publicationView,
         }).catch((error) => {
             console.error(`Error API lcp/renewPublicationLicense`, error);
         });

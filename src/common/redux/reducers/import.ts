@@ -6,20 +6,18 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-
-import { ActionType } from "readium-desktop/common/redux/actions/import";
+import { ActionPayloadImportVerificationRequest, ActionType } from "readium-desktop/common/redux/actions/import";
 
 import { ImportState } from "../states/import";
 
 const initialState: ImportState = {
-    publication: undefined,
+    opdsPublicationView: undefined,
     downloadSample: false,
 };
 
-// The dialog reducer.
 export function importReducer(
     state: ImportState = initialState,
-    action: Action,
+    action: Action<string, ActionPayloadImportVerificationRequest>,
 ) {
     switch (action.type) {
         case ActionType.ImportVerificationRequest:
@@ -27,7 +25,7 @@ export function importReducer(
                 {},
                 state,
                 {
-                    publication: action.payload.data.publication,
+                    opdsPublicationView: action.payload.data.opdsPublicationView,
                     downloadSample: action.payload.data.downloadSample,
                 },
             );

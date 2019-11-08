@@ -6,11 +6,14 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
-
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { StreamerState } from "readium-desktop/main/redux/states/streamer";
+
+import {
+    ActionPayloadStreamer, ActionPayloadStreamerPublicationCloseSuccess,
+    ActionPayloadStreamerPublicationOpenSuccess, ActionPayloadStreamerStartSuccess,
+} from "../actions/streamer";
 
 const initialState: StreamerState = {
     // Streamer base url
@@ -28,15 +31,19 @@ const initialState: StreamerState = {
 
 export function streamerReducer(
     state: StreamerState = initialState,
-    action: Action,
+    action: Action<string, ActionPayloadStreamer> |
+        Action<string, ActionPayloadStreamerStartSuccess> |
+        Action<string, ActionPayloadStreamerPublicationOpenSuccess> |
+        Action<string, ActionPayloadStreamerPublicationCloseSuccess>,
 ): StreamerState {
     let pubId = null;
     const newState = Object.assign({}, state);
 
     switch (action.type) {
         case streamerActions.ActionType.StartSuccess:
+            const act1 = action as Action<string, ActionPayloadStreamerStartSuccess>;
             newState.status = StreamerStatus.Running;
-            newState.baseUrl = action.payload.streamerUrl;
+            newState.baseUrl = act1.payload.streamerUrl;
             newState.openPublicationCounter = {};
             newState.publicationManifestUrl = {};
             return newState;
@@ -47,18 +54,20 @@ export function streamerReducer(
             newState.publicationManifestUrl = {};
             return newState;
         case streamerActions.ActionType.PublicationOpenSuccess:
-            pubId = action.payload.publication.identifier;
+            const act2 = action as Action<string, ActionPayloadStreamerPublicationOpenSuccess>;
+            pubId = act2.payload.publicationDocument.identifier;
 
             if (!newState.openPublicationCounter.hasOwnProperty(pubId)) {
                 newState.openPublicationCounter[pubId] = 1;
-                newState.publicationManifestUrl[pubId] = action.payload.manifestUrl;
+                newState.publicationManifestUrl[pubId] = act2.payload.manifestUrl;
             } else {
-                // Increment the number of publications opened with the streamer
+                // Increment the number of pubs opened with the streamer
                 newState.openPublicationCounter[pubId] = state.openPublicationCounter[pubId] + 1;
             }
             return newState;
         case streamerActions.ActionType.PublicationCloseSuccess:
-            pubId = action.payload.publication.identifier;
+            const act3 = action as Action<string, ActionPayloadStreamerPublicationCloseSuccess>;
+            pubId = act3.payload.publicationDocument.identifier;
             newState.openPublicationCounter[pubId] = newState.openPublicationCounter[pubId] - 1;
 
             if (newState.openPublicationCounter[pubId] === 0) {

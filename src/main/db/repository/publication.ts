@@ -49,15 +49,21 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
     }
 
     public async findByHashId(hash: string): Promise<PublicationDocument[]> {
-        return this.findBy({ hash: { $eq: hash }});
+        return this.find({
+            selector: { hash: { $eq: hash }},
+        });
     }
 
     public async findByTag(tag: string): Promise<PublicationDocument[]> {
-        return this.findBy({ tags: { $elemMatch: { $eq: tag }}});
+        return this.find({
+            selector: { tags: { $elemMatch: { $eq: tag }}},
+        });
     }
 
     public async findByTitle(title: string): Promise<PublicationDocument[]> {
-        return this.findBy({ title: { $eq: title }});
+        return this.find({
+            selector: { title: { $eq: title }},
+        });
     }
 
     public async searchByTitle(title: string): Promise<PublicationDocument[]> {
@@ -102,12 +108,46 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
     }
 
     protected convertToDocument(dbDoc: PouchDB.Core.Document<any>): PublicationDocument {
+        if (dbDoc.opdsPublication) {
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log(dbDoc.opdsPublication);
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+        }
+        if (dbDoc.resources.opdsPublication) {
+            console.log("#############");
+            console.log("#############");
+            console.log(dbDoc.resources.opdsPublication);
+            console.log(JSON.stringify(JSON.parse(Buffer.from(dbDoc.resources.opdsPublication, "base64").toString("utf-8")), null, 4));
+            console.log("#############");
+            console.log("#############");
+        }
+        if (dbDoc.resources.filePublication) {
+            console.log("--------------");
+            console.log("--------------");
+            console.log(dbDoc.resources.filePublication);
+            console.log(JSON.stringify(JSON.parse(Buffer.from(dbDoc.resources.filePublication, "base64").toString("utf-8")), null, 4));
+            console.log("--------------");
+            console.log("--------------");
+        }
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
             {
-                resources: dbDoc.resources,
-                opdsPublication: dbDoc.opdsPublication,
+                resources: dbDoc.resources ? {
+                    // legacy names fallback
+                    r2PublicationBase64: dbDoc.resources.r2PublicationBase64 || dbDoc.resources.filePublication,
+                    r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 || dbDoc.resources.opdsPublication,
+                } : undefined,
+                // OPDSPublication? seems unused!
+                // opdsPublication: dbDoc.opdsPublication,
                 title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
                 tags: dbDoc.tags,
                 files: dbDoc.files,

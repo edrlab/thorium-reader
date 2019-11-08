@@ -10,11 +10,11 @@ import * as fs from "fs";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
-import { Publication } from "readium-desktop/common/models/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
 import { open } from "readium-desktop/common/redux/actions/toast";
 import { Translator } from "readium-desktop/common/services/translator";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
@@ -155,19 +155,11 @@ export class LcpManager {
 
         debug("Parse publication - END", epubPath);
 
-        // const jsonParsedPublication = TAJSON.serialize(r2Publication);
-        // const b64ParsedPublication = Buffer
-        //     .from(JSON.stringify(jsonParsedPublication))
-        //     .toString("base64");
         const newPublicationDocument: PublicationDocument = Object.assign(
             {},
             publicationDocument,
             {
                 hash: await extractCrc32OnZip(epubPath),
-                // resources: {
-                //     filePublication: b64ParsedPublication,
-                //     opdsPublication: publicationDocument.resources.opdsPublication,
-                // },
                 lcp: lcpInfo,
             },
         );
@@ -457,11 +449,11 @@ export class LcpManager {
         return message;
     }
 
-    public async unlockPublication(publication: Publication, passphrase: string | undefined):
+    public async unlockPublication(publicationView: PublicationView, passphrase: string | undefined):
         Promise<string | number | null | undefined> {
 
         const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
-            publication.identifier,
+            publicationView.identifier,
         );
         const secrets = lcpSecretDocs.map((doc: any) => doc.secret).filter((secret) => secret);
 
@@ -478,7 +470,7 @@ export class LcpManager {
         }
 
         // Get epub file from publication
-        const epubPath = this.publicationStorage.getPublicationEpubPath(publication.identifier);
+        const epubPath = this.publicationStorage.getPublicationEpubPath(publicationView.identifier);
         const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
         if (!r2Publication) {
             debug("unlockPublication !r2Publication ?");
@@ -499,7 +491,7 @@ export class LcpManager {
             if (passphraseHash) {
                 if (!secrets.includes(passphraseHash)) {
                     await this.lcpSecretRepository.save({
-                        publicationIdentifier: publication.identifier,
+                        publicationIdentifier: publicationView.identifier,
                         secret: passphraseHash,
                     });
                 }

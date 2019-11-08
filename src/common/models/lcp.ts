@@ -28,13 +28,13 @@ export interface LcpInfo {
 }
 
 export interface DeviceConfig {
-    [key: string]: any;
+    [key: string]: any; // TODO any?!
 }
 
 export interface LsdStatus {
-    events: any[];
+    events: any[]; // TODO any?!
     id: string;
-    links: any[];
+    links: any[]; // TODO any?!
     message: string;
     status: StatusEnum;
     updated: {

@@ -77,7 +77,7 @@ class Entry extends React.Component<IProps, undefined> {
                 </div>
                 {/* <Slider
                     content={
-                        publications.map((pub) =>
+                        opdsPublicationViews.map((pub) =>
                             <PublicationCard
                                 key={pub.identifier}
                                 publication={pub}

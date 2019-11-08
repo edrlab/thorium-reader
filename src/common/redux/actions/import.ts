@@ -5,13 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+
 export enum ActionType {
     ImportVerificationRequest = "IMPORT_VERIFICATION_REQUEST",
 }
 
-export function verifyImport(data: {publication: any, downloadSample: boolean}) {
+export interface ActionPayloadImportVerificationRequest {
+    data: {
+        opdsPublicationView: OpdsPublicationView;
+        downloadSample: boolean;
+    };
+}
+export function verifyImport(data: {opdsPublicationView: OpdsPublicationView, downloadSample: boolean}) {
     return {
         type: ActionType.ImportVerificationRequest,
-        payload: { data },
+        payload: { data } as ActionPayloadImportVerificationRequest,
     };
 }

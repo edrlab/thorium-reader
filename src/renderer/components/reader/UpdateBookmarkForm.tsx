@@ -74,7 +74,7 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
             bookmark.name = normalizedValue;
             apiAction("reader/updateBookmark",
                 bookmark.identifier,
-                bookmark.publication.identifier,
+                bookmark.identifiableView.identifier,
                 bookmark.locator,
                 bookmark.name,
             ).catch((error) => console.error("Error to fetch api reader/updateBookmark", error));

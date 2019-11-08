@@ -6,18 +6,22 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { ActionPayloadToast, ActionType } from "readium-desktop/common/redux/actions/toast";
 
-import { ActionType } from "readium-desktop/common/redux/actions/toast";
+export interface ToastState extends ActionPayloadToast {
+    open: boolean;
+}
 
-const initialState: any = {
+const initialState: ToastState = {
     open: false,
-    type: null,
-    data: null,
+    type: ToastType.DownloadComplete,
+    data: undefined,
 };
 
 export function toastReducer(
-    state: any = initialState,
-    action: Action,
+    state: ToastState = initialState,
+    action: Action<string, ActionPayloadToast>,
 ) {
     switch (action.type) {
         case ActionType.OpenRequest:

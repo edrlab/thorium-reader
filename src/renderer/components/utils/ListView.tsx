@@ -6,15 +6,18 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/components/publication/menu/OpdsMenu";
 import PublicationListElement from "readium-desktop/renderer/components/publication/PublicationListElement";
 
+type NormalOrOpdsPublicationView = PublicationView | OpdsPublicationView;
+
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
-    publications: PublicationView[];
+    normalOrOpdsPublicationViews: NormalOrOpdsPublicationView[];
     isOpdsView?: boolean;
 }
 
@@ -33,21 +36,21 @@ export default class ListView extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        let MenuContent: any = CatalogMenu;
-        if ( this.props.isOpdsView ) {
-            MenuContent = OpdsMenu;
-        }
 
         return (
             <>
             {
                 <ul>
-                    { this.props.publications.map((pub, i: number) => {
+                    { this.props.normalOrOpdsPublicationViews.map((pub, i: number) => {
                         return (
                             <li className={styles.block_book_list} key={ i }>
                                 <PublicationListElement
-                                    publication={pub}
-                                    menuContent={<MenuContent publication={pub}/>}
+                                    publicationViewMaybeOpds={pub}
+                                    menuContent={
+                                        this.props.isOpdsView ?
+                                        <OpdsMenu opdsPublicationView={pub as OpdsPublicationView}/> :
+                                        <CatalogMenu publicationView={pub as PublicationView}/>
+                                    }
                                     isOpds={this.props.isOpdsView}
                                 />
                             </li>

@@ -16,13 +16,13 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 @injectable()
 export class PublicationViewConverter {
+
+    // Note: PublicationDocument and PublicationView are both Identifiable, with identical `identifier`
     public convertDocumentToView(document: PublicationDocument): PublicationView {
-        const b64ParsedPublication = document.resources.filePublication;
-        const jsonParsedPublication = Buffer
-            .from(b64ParsedPublication, "base64")
-            .toString("utf-8");
-        const parsedPublication = JSON.parse(jsonParsedPublication);
-        const r2Publication = TAJSON.deserialize<R2Publication>(parsedPublication, R2Publication);
+        const r2PublicationBase64 = document.resources.r2PublicationBase64;
+        const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
+        const r2PublicationJson = JSON.parse(r2PublicationStr);
+        const r2Publication = TAJSON.deserialize<R2Publication>(r2PublicationJson, R2Publication);
         const publishers = convertContributorArrayToStringArray(
             r2Publication.Metadata.Publisher,
         );
@@ -44,7 +44,7 @@ export class PublicationViewConverter {
         }
 
         return {
-            identifier: document.identifier,
+            identifier: document.identifier, // preserve Identifiable identifier
             title: document.title,
             authors,
             description: r2Publication.Metadata.Description,

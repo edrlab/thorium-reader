@@ -23,7 +23,7 @@
 
 * uuid: string (required)
 * title: string
-* publications: Publication[] (required)
+* publicationModels: PublicationModel[] (required)
 
 ### Sample
 
@@ -31,7 +31,7 @@
 {
     uuid: "eb1ec53d-ff1b-4677-bfce-bda326f159f9",
     title: "Classic books",
-    publications: [
+    publicationModels: [
         {
             uuid: "eb1ec53d-ff1b-4677-bfce-bda326f189e9",
             title: "Moby dick"
@@ -40,7 +40,7 @@
 }
 ```
 
-## Publication
+## PublicationModel
 
 ### Interface
 

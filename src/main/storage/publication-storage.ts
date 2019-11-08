@@ -23,7 +23,7 @@ import slugify from "slugify";
 
 import { dialog } from "electron";
 
-// Store publications in a repository on filesystem
+// Store pubs in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
 // publication uuid
 // repository
@@ -84,9 +84,9 @@ export class PublicationStorage {
         );
     }
 
-    public copyPublicationToPath(publication: PublicationView, destinationPath: string) {
-        const publicationPath = `${this.buildPublicationPath(publication.identifier)}/book.epub`;
-        const newFilePath = `${destinationPath}/${slugify(publication.title)}.epub`;
+    public copyPublicationToPath(publicationView: PublicationView, destinationPath: string) {
+        const publicationPath = `${this.buildPublicationPath(publicationView.identifier)}/book.epub`;
+        const newFilePath = `${destinationPath}/${slugify(publicationView.title)}.epub`;
         fs.copyFile(publicationPath, newFilePath, (err) => {
             if (err) {
                 dialog.showMessageBox({

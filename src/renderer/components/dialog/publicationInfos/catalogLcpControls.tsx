@@ -25,7 +25,7 @@ import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publication: PublicationView;
+    publicationView: PublicationView;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -48,27 +48,27 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, publication } = this.props;
+        const { __, publicationView } = this.props;
 
-        if (!publication) {
+        if (!publicationView) {
             return (<></>);
         }
 
-        const lsdOkay = publication.lcp &&
-            publication.lcp.lsd &&
-            publication.lcp.lsd.lsdStatus;
+        const lsdOkay = publicationView.lcp &&
+            publicationView.lcp.lsd &&
+            publicationView.lcp.lsd.lsdStatus;
 
         const lsdStatus = lsdOkay &&
-            publication.lcp.lsd.lsdStatus.status ?
-            publication.lcp.lsd.lsdStatus.status : undefined;
+            publicationView.lcp.lsd.lsdStatus.status ?
+            publicationView.lcp.lsd.lsdStatus.status : undefined;
 
-        const lsdReturnLink = (!lsdOkay || !publication.lcp.lsd.lsdStatus.links) ? undefined :
-            publication.lcp.lsd.lsdStatus.links.find((link) => {
+        const lsdReturnLink = (!lsdOkay || !publicationView.lcp.lsd.lsdStatus.links) ? undefined :
+            publicationView.lcp.lsd.lsdStatus.links.find((link) => {
                 return link.rel === "return";
             });
 
-        const lsdRenewLink = (!lsdOkay || !publication.lcp.lsd.lsdStatus.links) ? undefined :
-            publication.lcp.lsd.lsdStatus.links.find((link) => {
+        const lsdRenewLink = (!lsdOkay || !publicationView.lcp.lsd.lsdStatus.links) ? undefined :
+            publicationView.lcp.lsd.lsdStatus.links.find((link) => {
                 return link.rel === "renew";
             });
         return (
@@ -139,33 +139,26 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         openReader: () => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: props.publication.identifier,
-                    },
-                },
-            });
+            dispatch(readerActions.openRequest.build(props.publicationView));
         },
         openDeleteDialog: () => {
             dispatch(dialogActions.open("delete-publication-confirm",
                 {
-                    publication: props.publication,
+                    publicationView: props.publicationView,
                 },
             ));
         },
         openRenewDialog: () => {
             dispatch(dialogActions.open("lsd-renew-confirm",
                 {
-                    publication: props.publication,
+                    publicationView: props.publicationView,
                 },
             ));
         },
         openReturnDialog: () => {
             dispatch(dialogActions.open("lsd-return-confirm",
                 {
-                    publication: props.publication,
+                    publicationView: props.publicationView,
                 },
             ));
         },

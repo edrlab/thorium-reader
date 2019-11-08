@@ -15,8 +15,7 @@ export interface PayloadLocale {
     locale: string;
 }
 
-export interface ActionLocale extends Action {
-    payload: PayloadLocale;
+export interface ActionLocale extends Action<string, PayloadLocale> {
 }
 
 export function setLocale(locale: string): ActionLocale {

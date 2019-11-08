@@ -13,11 +13,11 @@ import { diRendererGet } from "readium-desktop/renderer/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 // Actions that can be synchronized
-const SYNCHRONIZABLE_ACTIONS: any = [
+const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     apiActions.ActionType.Request,
 
-    readerActions.ActionType.OpenRequest,
+    readerActions.openRequest.ID,
     readerActions.ActionType.CloseRequest,
     readerActions.ActionType.ModeSetRequest,
     readerActions.ActionType.ConfigSetRequest,

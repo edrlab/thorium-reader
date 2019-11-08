@@ -31,12 +31,12 @@ class SameFileImportManager extends React.Component<IProps, undefined> {
         const { lastImport, downloads } = this.props;
 
         if (lastImport !== oldProps.lastImport) {
-            if (downloads.findIndex((value) => value.url === lastImport.publication.url) < 0) {
+            if (downloads.findIndex((value) => value.url === lastImport.opdsPublicationView.url) < 0) {
                 apiAction("publication/importOpdsEntry",
-                    lastImport.publication.url,
-                    lastImport.publication.base64OpdsPublication,
-                    lastImport.publication.title,
-                    lastImport.publication.tags,
+                    lastImport.opdsPublicationView.url,
+                    lastImport.opdsPublicationView.r2OpdsPublicationBase64,
+                    lastImport.opdsPublicationView.title,
+                    lastImport.opdsPublicationView.tags,
                     lastImport.downloadSample,
                 ).catch((error) => {
                     console.error(`Error to fetch api publication/importOpdsEntry`, error);

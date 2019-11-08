@@ -18,7 +18,7 @@ import PublicationExportButton from "./PublicationExportButton";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publication: PublicationView;
+    publicationView: PublicationView;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -32,7 +32,7 @@ interface IState {
     menuOpen: boolean;
 }
 
-class CatalogMenu extends React.Component<IProps, IState> {
+export class CatalogMenu extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -60,7 +60,7 @@ class CatalogMenu extends React.Component<IProps, IState> {
                     {__("catalog.delete")}
                 </button>
                 <PublicationExportButton
-                    publication={this.props.publication}
+                    publicationView={this.props.publicationView}
                 />
             </>
         );
@@ -80,15 +80,15 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
         displayPublicationInfo: () => {
             dispatch(dialogActions.open("publication-info",
                 {
-                    publicationIdentifier: props.publication.identifier,
-                    opdsPublication: undefined,
+                    publicationIdentifier: (props.publicationView).identifier,
+                    opdsPublicationView: undefined,
                 },
             ));
         },
         openDeleteDialog: () => {
             dispatch(dialogActions.open("delete-publication-confirm",
                 {
-                    publication: props.publication,
+                    publicationView: props.publicationView,
                 },
             ));
         },

@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { TPublicationApiUpdateTags_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px-blue.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
@@ -16,11 +15,13 @@ import {
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TChangeEvent, TFormEvent } from "readium-desktop/typings/react";
 
+// import { TPublicationApiUpdateTags_result } from "readium-desktop/main/api/publication";
+
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publicationIdentifier: string;
+    publicationIdentifier: string | undefined; // not defined for OpdsPublicationView
     tags: string[];
-    canModifyTag?: boolean;
+    canModifyTag?: boolean; // false for OpdsPublicationView
 }
 
 // IProps may typically extend:
@@ -34,7 +35,7 @@ interface IProps extends IBaseProps {
 interface IState {
     tags: string[];
     nameNewTag: string;
-    updatedPublication: TPublicationApiUpdateTags_result | undefined;
+    // updatedPublication: TPublicationApiUpdateTags_result | undefined;
 }
 
 export class TagManager extends React.Component<IProps, IState> {
@@ -45,7 +46,7 @@ export class TagManager extends React.Component<IProps, IState> {
         this.state = {
             tags: props.tags ? props.tags : [],
             nameNewTag: "",
-            updatedPublication: undefined,
+            // updatedPublication: undefined,
         };
 
         this.deleteTag = this.deleteTag.bind(this);

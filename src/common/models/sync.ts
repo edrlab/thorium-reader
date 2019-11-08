@@ -17,6 +17,6 @@ export interface WindowSender {
     winId: string;
 }
 
-export interface ActionWithSender extends Action {
+export interface ActionWithSender extends Action<string> {
     sender: WindowSender;
 }

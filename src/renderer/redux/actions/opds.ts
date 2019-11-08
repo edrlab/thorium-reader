@@ -11,7 +11,12 @@ export enum ActionType {
     BrowseRequest = "OPDS_BROWSE_REQUEST",
 }
 
-export function browse(level: number, title: string, url: string): Action {
+export interface ActionPayloadOpds {
+    level: number;
+    title: string;
+    url: string;
+}
+export function browse(level: number, title: string, url: string): Action<string, ActionPayloadOpds> {
     return {
         type: ActionType.BrowseRequest,
         payload: {

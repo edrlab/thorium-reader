@@ -18,7 +18,10 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
+import { JSON as TAJSON } from "ta-json-x";
 import { isArray } from "util";
+
+import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
 export interface IPublicationApi {
     // in a future possible typing like this to have buildRequestData return type :
@@ -31,13 +34,13 @@ export interface IPublicationApi {
     getAllTags: () => Promise<string[]>;
     importOpdsEntry: (
         url: string,
-        base64OpdsPublication: string,
+        r2OpdsPublicationBase64: string,
         title: string,
         tags: string[],
         downloadSample?: boolean) => Promise<PublicationView>;
     import: (filePathArray: string | string[]) => Promise<PublicationView[]>;
     search: (title: string) => Promise<PublicationView[]>;
-    exportPublication: (publication: PublicationView) => Promise<void>;
+    exportPublication: (publicationView: PublicationView) => Promise<void>;
 }
 
 /**
@@ -131,7 +134,7 @@ export class PublicationApi implements IPublicationApi {
     }
 
     /**
-     * List all tags defined in all publications
+     * List all tags defined in all pubs
      *
      */
     public async getAllTags(): Promise<string[]> {
@@ -143,7 +146,7 @@ export class PublicationApi implements IPublicationApi {
     // Potential crash to fix
     public async importOpdsEntry(
         url: string,
-        base64OpdsPublication: string,
+        r2OpdsPublicationBase64: string,
         title: string,
         tags?: string[],
         downloadSample = false): Promise<PublicationView> {
@@ -156,31 +159,30 @@ export class PublicationApi implements IPublicationApi {
         let returnView: PublicationView;
         // if url exist import new entry by download
         if (url) {
-            const httpPub = await this.catalogService.importOpdsEntry(url, downloadSample, tags);
+            const httpPub = await this.catalogService.importPublicationFromOpdsUrl(url, downloadSample, tags);
             if (httpPub.isSuccess) {
                 this.sendDownloadSuccess(url);
                 returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
             } else {
                 // FIXME : Why no dispatchToastRequest here ?
-                throw new Error(`Http importOpdsEntry error with code
+                throw new Error(`Http importPublicationFromOpdsUrl error with code
                     ${httpPub.statusCode} for ${httpPub.url}`);
             }
         } else {
-            // FIXME : base64OpdsPublication can be undefined
-            const opdsPublication = // OPDSPublication
-                JSON.parse(Buffer.from(base64OpdsPublication, "base64").toString("utf-8"));
-            let publication;
+            const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
+            const r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
+            const r2OpdsPublication = TAJSON.deserialize<OPDSPublication>(r2OpdsPublicationJson, OPDSPublication);
+            let publicationDocument;
             try {
-                // FIXME : opdsPublication is any and
-                // importOpdsPublication first param type is OPDSPublication what is a CLASS ??
-                publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample, tags);
+                // tslint:disable-next-line: max-line-length
+                publicationDocument = await this.catalogService.importPublicationFromOpdsDoc(r2OpdsPublication, downloadSample, tags);
             } catch (error) {
-                debug(`importOpdsPublication - FAIL`, opdsPublication, error);
+                debug(`importOpdsPublication - FAIL`, r2OpdsPublication, error);
                 this.dispatchToastRequest(ToastType.DownloadFailed, `[${error}]`);
                 throw new Error(`importOpdsPublication ${error}`);
             }
             this.sendDownloadSuccess(url);
-            returnView = this.publicationViewConverter.convertDocumentToView(publication);
+            returnView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
         }
         return returnView;
     }
@@ -190,24 +192,30 @@ export class PublicationApi implements IPublicationApi {
         if (!isArray(filePathArray)) {
             filePathArray = [filePathArray];
         }
-        // returns all publications linked to this import
-        const pubsRawPromise = filePathArray.map((filePath) => this.catalogService.importFile(filePath));
-        const pubsRaw = await PromiseAllSettled(pubsRawPromise);
-        const pubs = pubsRaw.filter((pub) => pub.status === "fulfilled" && pub.value);
+
+        // tslint:disable-next-line: max-line-length
+        const publicationDocumentPromises = filePathArray.map((filePath) => this.catalogService.importEpubOrLcplFile(filePath));
+        const publicationDocumentPromisesAll = await PromiseAllSettled(publicationDocumentPromises);
+        // tslint:disable-next-line: max-line-length
+        const publicationDocumentPromisesAllResolved = publicationDocumentPromisesAll.filter((publicationDocumentPromise) => {
+            return publicationDocumentPromise.status === "fulfilled" && publicationDocumentPromise.value;
+        });
         // https://github.com/microsoft/TypeScript/issues/16069 : no inference type on filter
-        const pubsView = pubs.map((pub) => this.publicationViewConverter.convertDocumentToView((pub as any).value));
-        return pubsView;
+        const publicationViews = publicationDocumentPromisesAllResolved.map((publicationDocumentWrapper) => {
+            return this.publicationViewConverter.convertDocumentToView((publicationDocumentWrapper as any).value);
+        });
+        return publicationViews;
     }
 
     public async search(title: string): Promise<PublicationView[]> {
-        const docs = await this.publicationRepository.searchByTitle(title);
-        return docs.map((doc) => {
-            return this.publicationViewConverter.convertDocumentToView(doc);
+        const publicationDocuments = await this.publicationRepository.searchByTitle(title);
+        return publicationDocuments.map((publicationDocument) => {
+            return this.publicationViewConverter.convertDocumentToView(publicationDocument);
         });
     }
 
-    public async exportPublication(publication: PublicationView): Promise<void> {
-        this.catalogService.exportPublication(publication);
+    public async exportPublication(publicationView: PublicationView): Promise<void> {
+        this.catalogService.exportPublication(publicationView);
     }
 
     private dispatchToastRequest(type: ToastType, message: string) {

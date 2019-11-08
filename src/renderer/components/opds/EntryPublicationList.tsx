@@ -20,7 +20,7 @@ import PageNavigation from "./PageNavigation";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
-    publications: OpdsPublicationView[] | undefined;
+    opdsPublicationViews: OpdsPublicationView[] | undefined;
     goto: (url: string, page: number) => void;
     urls: OpdsResultUrls;
     page?: OpdsResultPageInfos;
@@ -58,9 +58,9 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
         // FIX ME in the future
         return (
             <>
-                {this.props.publications ?
+                {this.props.opdsPublicationViews ?
                     <>
-                        <DisplayView publications={this.props.publications} isOpdsView={true} />
+                        <DisplayView opdsPublicationViews={this.props.opdsPublicationViews} isOpdsView={true} />
                         <PageNavigation
                             goto={this.props.goto}
                             urls={urls}

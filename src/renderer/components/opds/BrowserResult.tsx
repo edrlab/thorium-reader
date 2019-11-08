@@ -104,7 +104,7 @@ export class BrowserResult extends React.Component<IProps, IState> {
                     case OpdsResultType.PublicationFeed:
                         content = (
                             <EntryPublicationList
-                                publications={browserResult.data.publications}
+                                opdsPublicationViews={browserResult.data.opdsPublicationViews}
                                 goto={this.goto}
                                 urls={browserResult.data.urls}
                                 page={browserResult.data.page}

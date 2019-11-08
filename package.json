@@ -287,6 +287,7 @@
     "ts-jest": "^24.1.0",
     "tslint": "^5.20.0",
     "tslint-language-service": "^0.9.9",
+    "typed-redux-saga": "^0.4.0",
     "typescript": "^3.6.4",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",

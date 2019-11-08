@@ -49,7 +49,7 @@ debug("readium css path:", rcssPath);
 
 // TODO: centralize this code, currently duplicated
 // see src/renderer/components/reader/ReaderApp.jsx
-function computeReadiumCssJsonMessage(_publication: R2Publication, _link: Link | undefined):
+function computeReadiumCssJsonMessage(_r2Publication: R2Publication, _link: Link | undefined):
     IEventPayload_R2_EVENT_READIUMCSS {
     const store = diMainGet("store");
     let settings = store.getState().reader.config;

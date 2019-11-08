@@ -11,20 +11,13 @@ import { diMainGet } from "readium-desktop/main/di";
 import { URL } from "url";
 import { isArray } from "util";
 
-function openReader(publication: PublicationView | PublicationView[]) {
-    if (isArray(publication)) {
-        publication = publication[0];
+function openReader(publicationView: PublicationView | PublicationView[]) {
+    if (isArray(publicationView)) {
+        publicationView = publicationView[0];
     }
-    if (publication) {
+    if (publicationView) {
         const store = diMainGet("store");
-        store.dispatch({
-            type: readerActions.ActionType.OpenRequest,
-            payload: {
-                publication: {
-                    identifier: publication.identifier,
-                },
-            },
-        });
+        store.dispatch(readerActions.openRequest.build(publicationView));
         return true;
     }
     return false;
@@ -32,15 +25,15 @@ function openReader(publication: PublicationView | PublicationView[]) {
 
 export async function openTitleFromCli(title: string) {
     const publicationApi = diMainGet("publication-api");
-    const publication = await publicationApi.search(title);
-    return openReader(publication);
+    const publicationViews = await publicationApi.search(title);
+    return openReader(publicationViews);
 }
 
 // used also in lock.ts on mac
 export async function openFileFromCli(filePath: string): Promise<boolean> {
     const publicationApi = diMainGet("publication-api");
-    const publication = await publicationApi.import(filePath);
-    return openReader(publication);
+    const publicationViews = await publicationApi.import(filePath);
+    return openReader(publicationViews);
 }
 
 export async function cliImport(filePath: string[] | string) {
@@ -50,7 +43,7 @@ export async function cliImport(filePath: string[] | string) {
 
     for (const fp of filePathArray) {
         const catalogService = diMainGet("catalog-service");
-        if (!await catalogService.importFile(fp)) {
+        if (!await catalogService.importEpubOrLcplFile(fp)) {
             returnValue = false;
         }
     }

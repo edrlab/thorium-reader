@@ -9,7 +9,6 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 import Slider from "readium-desktop/renderer/components/utils/Slider";
 
@@ -69,11 +68,14 @@ export default class GridView extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const entriesEmpty = this.props.catalogEntries.filter((entry) => entry.publications.length > 0).length === 0;
+        const entriesEmpty = this.props.catalogEntries.filter((entry) => {
+            return entry.publicationViews.length > 0;
+        }).length === 0;
+
         return (
             <>
                 { this.props.catalogEntries.map((entry, EntryIndex: number) => {
-                    return entry.publications.length > 0 ? (
+                    return entry.publicationViews.length > 0 ? (
                         <section key={ EntryIndex }>
                         {
 
@@ -88,11 +90,10 @@ export default class GridView extends React.Component<IProps, IState> {
                             EntryIndex <= 1 ? (
                                 <Slider
                                     className={ styles.slider }
-                                    content={ entry.publications.map((pub) =>
+                                    content={ entry.publicationViews.map((pub) =>
                                         <PublicationCard
                                             key={ pub.identifier }
-                                            publication={ pub }
-                                            MenuContent={ CatalogMenu }
+                                            publicationViewMaybeOpds={ pub }
                                         />,
                                     )}
                                 />

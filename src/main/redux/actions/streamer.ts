@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-
-import { Publication } from "readium-desktop/common/models/publication";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 export enum ActionType {
     StartRequest = "STREAMER_START_REQUEST",
@@ -27,32 +27,45 @@ export enum ActionType {
     PublicationCloseError = "STREAMER_PUBLICATION_CLOSE_ERROR",
 }
 
+export interface ActionPayloadStreamer {
+    publicationView: PublicationView;
+}
+export interface ActionPayloadStreamerStartSuccess {
+    streamerUrl: string;
+}
+export interface ActionPayloadStreamerPublicationCloseSuccess {
+    publicationDocument: PublicationDocument;
+}
+export interface ActionPayloadStreamerPublicationOpenSuccess extends ActionPayloadStreamerPublicationCloseSuccess {
+    manifestUrl: string;
+}
+
 export function start(): Action {
     return {
         type: ActionType.StartRequest,
-    };
+    } as Action<string>;
 }
 
-export function openPublication(publication: Publication): Action {
+export function openPublication(publicationView: PublicationView) {
     return {
         type: ActionType.PublicationOpenRequest,
         payload: {
-            publication,
+            publicationView,
         },
-    };
+    } as Action<string, ActionPayloadStreamer>;
 }
 
-export function closePublication(publication: Publication): Action {
+export function closePublication(publicationView: PublicationView) {
     return {
         type: ActionType.PublicationCloseRequest,
         payload: {
-            publication,
+            publicationView,
         },
-    };
+    } as Action<string, ActionPayloadStreamer>;
 }
 
 export function stop() {
     return {
         type: ActionType.StopRequest,
-    };
+    } as Action<string>;
 }

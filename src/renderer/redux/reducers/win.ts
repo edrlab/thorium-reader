@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-
 import { winActions } from "readium-desktop/renderer/redux/actions";
+import { ActionPayloadWin } from "readium-desktop/renderer/redux/actions/win";
 import { WinState, WinStatus } from "readium-desktop/renderer/redux/states/win";
 
 const initialState: WinState = {
@@ -17,7 +17,7 @@ const initialState: WinState = {
 
 export function winReducer(
     state: WinState = initialState,
-    action: Action,
+    action: Action<string, ActionPayloadWin>,
 ) {
     switch (action.type) {
         case winActions.ActionType.InitRequest:

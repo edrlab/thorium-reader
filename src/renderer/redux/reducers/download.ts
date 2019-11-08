@@ -17,9 +17,13 @@ const initialState: DownloadState = {
     downloads: [],
 };
 
+// tslint:disable-next-line: max-line-length
+type ActionType = Action<downloadActions.ActionType.DownloadRequest, DownloadPayload> | Action<downloadActions.ActionType.DownloadSuccess, DownloadPayload>;
+
 export function downloadReducer(
     state: DownloadState = initialState,
-    action: Action<DownloadPayload>,
+    // tslint:disable-next-line: max-line-length
+    action: ActionType,
 ): DownloadState {
     const downloads = state.downloads;
     const url = oc(action).payload.url(undefined);

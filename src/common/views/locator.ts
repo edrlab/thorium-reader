@@ -7,12 +7,12 @@
 
 import { Locator, LocatorType } from "readium-desktop/common/models/locator";
 
+import { Identifiable } from "../models/identifiable";
 import { IdentifiableView } from "./base";
 
-export interface LocatorView {
-    identifier: string;
+export interface LocatorView extends Identifiable {
     locator: Locator;
     locatorType: LocatorType;
-    publication: IdentifiableView;
+    identifiableView: IdentifiableView;
     name: string;
 }

@@ -13,7 +13,10 @@ export enum ActionType {
     InitSuccess = "WIN_INIT_SUCCESS",
 }
 
-export function winInit(winId: string): Action {
+export interface ActionPayloadWin {
+    winId: string;
+}
+export function winInit(winId: string): Action<string, ActionPayloadWin> {
     return {
         type: ActionType.InitRequest,
         payload: {

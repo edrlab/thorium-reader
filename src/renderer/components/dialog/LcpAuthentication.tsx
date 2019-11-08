@@ -49,7 +49,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        if (!this.props.open || !this.props.publication) {
+        if (!this.props.open || !this.props.publicationView) {
             return <></>;
         }
 
@@ -97,7 +97,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         e.preventDefault();
 
         apiAction("lcp/unlockPublicationWithPassphrase", {
-            publication: this.props.publication,
+            publicationView: this.props.publicationView,
             passphrase: this.state.password,
         }).catch((error) => {
             console.error(`Error lcp/unlockPublicationWithPassphrase`, error);
@@ -115,12 +115,6 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 dialogActions.close(),
             );
         },
-        // sendLCPError: () => {
-        //     dispatch({
-        //         type: ActionType.UserKeyCheckError,
-        //         error: true,
-        //     });
-        // },
     };
 };
 

@@ -11,7 +11,11 @@ export enum ActionType {
     Info = "LOGGER_INFO",
 }
 
-export function info(message: string): Action {
+export interface ActionPayloadLoggerInfo {
+    message: string;
+}
+
+export function info(message: string): Action<string, ActionPayloadLoggerInfo> {
     return {
         type: ActionType.Info,
         payload: {

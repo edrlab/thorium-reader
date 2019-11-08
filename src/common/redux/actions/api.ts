@@ -25,13 +25,13 @@ export interface ApiActionMeta {
     api: ApiMeta;
 }
 
-export interface ApiAction extends Action {
+export interface ApiAction extends Action<string, any, ApiActionMeta> {
     meta: ApiActionMeta;
 }
 
 export function clean(
     apiRequestId: string,
-): Action {
+): Action<string, any> {
     return {
         type: ActionType.Clean,
         payload: {

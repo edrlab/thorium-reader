@@ -432,7 +432,7 @@ export class Reader extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const readerMenuProps = {
             open: this.state.menuOpen,
-            publication: this.state.r2Publication,
+            r2Publication: this.state.r2Publication,
             handleLinkClick: this.handleLinkClick,
             handleBookmarkClick: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
@@ -532,17 +532,17 @@ export class Reader extends React.Component<IProps, IState> {
             console.log("BAD RESPONSE?!");
         }
 
-        let publicationJSON: any | undefined;
+        let r2PublicationJson: any | undefined;
         try {
-            publicationJSON = await response.json();
+            r2PublicationJson = await response.json();
         } catch (e) {
             console.log(e);
             return Promise.reject(e);
         }
-        if (!publicationJSON) {
-            return Promise.reject("!publicationJSON");
+        if (!r2PublicationJson) {
+            return Promise.reject("!r2PublicationJson");
         }
-        const r2Publication = TAJSON.deserialize<R2Publication>(publicationJSON, R2Publication);
+        const r2Publication = TAJSON.deserialize<R2Publication>(r2PublicationJson, R2Publication);
 
         if (r2Publication.Metadata && r2Publication.Metadata.Title) {
             const title = this.props.translator.translateContentField(r2Publication.Metadata.Title);
@@ -842,7 +842,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(dialogActions.open("publication-info-reader",
                 {
                     publicationIdentifier: pubId,
-                    opdsPublication: undefined,
+                    opdsPublicationView: undefined,
                 },
             ));
         },
