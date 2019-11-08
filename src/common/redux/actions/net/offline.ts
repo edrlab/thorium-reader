@@ -5,7 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export enum ActionType {
-    Online = "NET_ONLINE",
-    Offline = "NET_OFFLINE",
+import { Action } from "readium-desktop/common/models/redux";
+
+export const ID = "NET_OFFLINE";
+
+export function build():
+    Action<typeof ID> {
+
+    return {
+        type: ID,
+    };
 }
+build.toString = () => ID; // Redux StringableActionCreator

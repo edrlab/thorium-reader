@@ -39,10 +39,10 @@ export function* netStatusWatcher(): SagaIterator {
             const result: any = yield call(pingHost); // TODO any?!
             const online = result.alive;
             actionType = online ?
-                netActions.ActionType.Online :
-                netActions.ActionType.Offline;
+                netActions.online.ID :
+                netActions.offline.ID;
         } catch (error) {
-            actionType = netActions.ActionType.Offline;
+            actionType = netActions.offline.ID;
         }
 
         const netStatus = yield* selectTyped(getNetStatus);
@@ -50,16 +50,16 @@ export function* netStatusWatcher(): SagaIterator {
         if (
             netStatus === NetStatus.Unknown ||
             (
-                actionType === netActions.ActionType.Offline &&
+                actionType === netActions.offline.ID &&
                 netStatus === NetStatus.Online
             ) ||
             (
-                actionType === netActions.ActionType.Online &&
+                actionType === netActions.online.ID &&
                 netStatus === NetStatus.Offline
             )
         ) {
             // Only update status if status change
-            yield put({ type: actionType });
+            yield put({ type: actionType } as ReturnType<typeof netActions.online.build>);
         }
 
         yield delay(5000);

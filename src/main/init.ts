@@ -48,10 +48,10 @@ const winOpenCallback = (appWindow: AppWindow) => {
 
     switch (state.net.status) {
         case NetStatus.Online:
-            netActionType = netActions.ActionType.Online;
+            netActionType = netActions.online.ID;
             break;
-        case NetStatus.Online:
-            netActionType = netActions.ActionType.Offline;
+        case NetStatus.Offline:
+            netActionType = netActions.offline.ID;
             break;
     }
 
@@ -61,7 +61,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
         payload: {
             action: {
                 type: netActionType,
-            },
+            } as ReturnType<typeof netActions.offline.build>,
         },
     } as syncIpc.EventPayload);
 

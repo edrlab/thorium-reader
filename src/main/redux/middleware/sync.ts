@@ -23,8 +23,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     apiActions.ActionType.Success,
     apiActions.ActionType.Error,
 
-    netActions.ActionType.Offline,
-    netActions.ActionType.Online,
+    netActions.offline.ID,
+    netActions.online.ID,
 
     dialogActions.openRequest.ID,
 
