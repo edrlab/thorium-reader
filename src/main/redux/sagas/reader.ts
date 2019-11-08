@@ -14,12 +14,13 @@ import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { callTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { BaseRepository } from "readium-desktop/main/db/repository/base";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
+import { RootState } from "readium-desktop/main/redux/states";
 import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
@@ -148,8 +149,6 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     return reader;
 }
 
-// type ActionType = Action<readerActions.ActionType.OpenRequest, readerActions.OpenActionPayload>;
-
 export function* readerOpenRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield* takeTyped(readerActions.openRequest.build);
@@ -201,8 +200,8 @@ export function* closeReaderFromPublicationWatcher(): SagaIterator {
         const action = yield* takeTyped(readerActions.closeRequestFromPublication.build);
 
         const publicationIdentifier = action.payload.publicationIdentifier;
-        const store = diMainGet("store");
-        const readers = store.getState().reader.readers;
+
+        const readers = yield* selectTyped((s: RootState) => s.reader.readers);
 
         for (const reader of Object.values(readers)) {
             if (reader.publicationIdentifier === publicationIdentifier) {
