@@ -172,7 +172,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                                 <TagManager
                                     publicationIdentifier={(normalOrOpdsPublicationView as PublicationView).identifier}
                                     tags={normalOrOpdsPublicationView.tags}
-                                    canModifyTag={opdsPublicationView ? true : false}
+                                    canModifyTag={opdsPublicationView ? false : true}
                                 />
                             </div>
                         </div>
