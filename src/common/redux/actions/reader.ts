@@ -8,7 +8,6 @@
 import { Reader } from "readium-desktop/common/models/reader";
 
 export enum ActionType {
-    OpenSuccess = "READER_OPEN_SUCCESS",
     OpenError = "READER_OPEN_ERROR",
 
     CloseSuccess = "READER_CLOSE_SUCCESS",

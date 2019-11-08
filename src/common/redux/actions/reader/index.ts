@@ -13,10 +13,12 @@ import * as detachModeRequest from "./detachModeRequest";
 import * as detachModeSuccess from "./detachModeSuccess";
 import * as fullScreenRequest from "./fullScreenRequest";
 import * as openRequest from "./openRequest";
+import * as openSuccess from "./openSuccess";
 import * as saveBookmarkRequest from "./saveBookmarkRequest";
 
 export {
     openRequest,
+    openSuccess,
     closeRequest,
     detachModeRequest,
     detachModeSuccess,

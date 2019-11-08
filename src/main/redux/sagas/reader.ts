@@ -189,12 +189,7 @@ export function* readerOpenRequestWatcher(): SagaIterator {
         );
 
         // Publication is opened in a new reader
-        yield put({
-            type: readerActions.ActionType.OpenSuccess,
-            payload: {
-                reader,
-            },
-        });
+        yield put(readerActions.openSuccess.build(reader));
     }
 }
 

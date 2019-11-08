@@ -11,12 +11,10 @@ import * as path from "path";
 import { LocaleConfigIdentifier, LocaleConfigRepositoryType } from "readium-desktop/common/config";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
-import { Action } from "readium-desktop/common/models/redux";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, netActions, readerActions, updateActions,
 } from "readium-desktop/common/redux/actions";
-import { ActionPayloadReaderMain } from "readium-desktop/common/redux/actions/reader";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { diMainGet } from "readium-desktop/main/di";
@@ -65,12 +63,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: readerActions.ActionType.OpenSuccess,
-                payload: {
-                    reader: state.reader.readers[appWindow.identifier],
-                },
-            } as Action<string, ActionPayloadReaderMain>,
+            action: readerActions.openSuccess.build(state.reader.readers[appWindow.identifier]),
         },
     } as syncIpc.EventPayload);
 

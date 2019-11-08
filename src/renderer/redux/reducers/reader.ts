@@ -32,14 +32,15 @@ const initialState: ReaderState = {
 export function readerReducer(
     state: ReaderState = initialState,
     action: Action<string, ActionPayloadReaderMain> |
+        ReturnType<typeof readerActions.openSuccess.build> |
         ReturnType<typeof readerActions.configSetSuccess.build> |
         ReturnType<typeof readerActions.detachModeSuccess.build>,
 ): ReaderState {
     const newState = Object.assign({}, state);
 
     switch (action.type) {
-        case readerActions.ActionType.OpenSuccess:
-            const act1 = action as Action<string, ActionPayloadReaderMain>;
+        case readerActions.openSuccess.ID:
+            const act1 = action as ReturnType<typeof readerActions.openSuccess.build>;
             newState.reader = act1.payload.reader;
             return newState;
         case readerActions.ActionType.CloseSuccess:
