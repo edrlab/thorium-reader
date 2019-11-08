@@ -10,9 +10,7 @@ import { inject, injectable } from "inversify";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import { readerActions } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
-import {
-    PublicationViewPayload, PublicationViewWithPassphrasePayload,
-} from "readium-desktop/common/views/publication";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { LcpManager } from "readium-desktop/main/services/lcp";
@@ -23,6 +21,14 @@ import { Store } from "redux";
 import { Server } from "@r2-streamer-js/http/server";
 
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
+
+export interface PublicationViewPayload {
+    publicationIdentifier: string;
+}
+export interface PublicationViewWithPassphrasePayload {
+    passphrase: string;
+    publicationView: PublicationView;
+}
 
 export interface ILcpApi {
     renewPublicationLicense: (data: PublicationViewPayload) => Promise<void>;
@@ -61,17 +67,17 @@ export class LcpApi {
     private readonly translator!: Translator;
 
     public async renewPublicationLicense(data: PublicationViewPayload): Promise<void> {
-        const { publicationView } = data;
+        const { publicationIdentifier } = data;
         const publicationDocument = await this.publicationRepository.get(
-            publicationView.identifier,
+            publicationIdentifier,
         );
         await this.lcpManager.renewPublicationLicense(publicationDocument);
     }
 
     public async returnPublication(data: PublicationViewPayload): Promise<void> {
-        const { publicationView } = data;
+        const { publicationIdentifier } = data;
         const publicationDocument = await this.publicationRepository.get(
-            publicationView.identifier,
+            publicationIdentifier,
         );
         await this.lcpManager.returnPublication(publicationDocument);
     }
@@ -80,14 +86,13 @@ export class LcpApi {
         const { publicationView, passphrase } = data;
         try {
             const unlockPublicationRes: string | number | null | undefined =
-                await this.lcpManager.unlockPublication(publicationView, passphrase);
+                await this.lcpManager.unlockPublication(publicationView.identifier, passphrase);
             if (typeof unlockPublicationRes !== "undefined") {
                 const message = unlockPublicationRes === 11 ?
                     this.translator.translate("publication.expiredLcp") :
                     this.lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
                 debug(message);
-                // const publicationDocument = await this.publicationRepository.get(publicationView.identifier);
-                // const publicationView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
+
                 const epubPath = this.publicationStorage.getPublicationEpubPath(publicationView.identifier);
                 const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
                 if (!r2Publication.LCP) {
@@ -111,6 +116,6 @@ export class LcpApi {
             return;
         }
 
-        this.store.dispatch(readerActions.openRequest.build(publicationView));
+        this.store.dispatch(readerActions.openRequest.build(publicationView.identifier));
     }
 }

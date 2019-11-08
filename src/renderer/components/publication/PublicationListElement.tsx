@@ -150,7 +150,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
         },
         // !isOpds
         openReader: () => {
-            dispatch(readerActions.openRequest.build(props.publicationViewMaybeOpds as PublicationView));
+            dispatch(readerActions.openRequest.build((props.publicationViewMaybeOpds as PublicationView).identifier));
         },
     };
 };

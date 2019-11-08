@@ -9,8 +9,8 @@ import { BrowserWindow } from "electron";
 
 import { textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 
-import { PublicationView } from "../views/publication";
 import { Identifiable } from "./identifiable";
+
 // import { PublicationModel } from "./publication";
 
 export enum ReaderMode {
@@ -24,7 +24,8 @@ export enum ReaderMode {
 export interface Reader extends Identifiable {
     filesystemPath: string;
     manifestUrl: string;
-    publicationView: PublicationView;
+    publicationIdentifier: string;
+    // publicationView: PublicationView;
     // publicationModel: PublicationModel;
     window: BrowserWindow;
 }

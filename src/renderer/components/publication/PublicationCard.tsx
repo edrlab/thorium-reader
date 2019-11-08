@@ -143,7 +143,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         // !isOpds
         openReader: (publicationView: PublicationView) => {
-            dispatch(readerActions.openRequest.build(publicationView));
+            dispatch(readerActions.openRequest.build(publicationView.identifier));
         },
         // isOpds
         openInfosDialog: (opdsPublicationView: OpdsPublicationView) => {

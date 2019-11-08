@@ -20,13 +20,6 @@ export interface CustomCoverView {
     bottomColor: string;
 }
 
-export interface PublicationViewPayload {
-    publicationView: PublicationView;
-}
-export interface PublicationViewWithPassphrasePayload extends PublicationViewPayload {
-    passphrase: string;
-}
-
 export interface PublicationView extends Identifiable {
     title: string;
     authors: string[];

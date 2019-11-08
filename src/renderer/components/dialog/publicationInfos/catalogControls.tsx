@@ -76,7 +76,7 @@ export class CatalogControls extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         openReader: () => {
-            dispatch(readerActions.openRequest.build(props.publicationView));
+            dispatch(readerActions.openRequest.build(props.publicationView.identifier));
         },
         openDeleteDialog: () => {
             dispatch(dialogActions.open("delete-publication-confirm",

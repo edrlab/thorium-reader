@@ -17,7 +17,7 @@ function openReader(publicationView: PublicationView | PublicationView[]) {
     }
     if (publicationView) {
         const store = diMainGet("store");
-        store.dispatch(readerActions.openRequest.build(publicationView));
+        store.dispatch(readerActions.openRequest.build(publicationView.identifier));
         return true;
     }
     return false;

@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 export enum ActionType {
@@ -28,7 +27,7 @@ export enum ActionType {
 }
 
 export interface ActionPayloadStreamer {
-    publicationView: PublicationView;
+    publicationIdentifier: string;
 }
 export interface ActionPayloadStreamerStartSuccess {
     streamerUrl: string;
@@ -46,20 +45,20 @@ export function start(): Action {
     } as Action<string>;
 }
 
-export function openPublication(publicationView: PublicationView) {
+export function openPublication(publicationIdentifier: string) {
     return {
         type: ActionType.PublicationOpenRequest,
         payload: {
-            publicationView,
+            publicationIdentifier,
         },
     } as Action<string, ActionPayloadStreamer>;
 }
 
-export function closePublication(publicationView: PublicationView) {
+export function closePublication(publicationIdentifier: string) {
     return {
         type: ActionType.PublicationCloseRequest,
         payload: {
-            publicationView,
+            publicationIdentifier,
         },
     } as Action<string, ActionPayloadStreamer>;
 }

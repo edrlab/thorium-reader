@@ -106,10 +106,8 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
         // Get publication
         let publicationDocument: PublicationDocument = null;
         try {
-            publicationDocument = yield* callTyped(
-                publicationRepository.get.bind(publicationRepository),
-                action.payload.publicationView.identifier,
-            );
+            // tslint:disable-next-line: max-line-length
+            publicationDocument = yield* callTyped(() => publicationRepository.get(action.payload.publicationIdentifier));
         } catch (error) {
             yield put({
                 type: streamerActions.ActionType.PublicationOpenError,
@@ -244,7 +242,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
 
             try {
                 const unlockPublicationRes: string | number | null | undefined =
-                    yield* callTyped(() => lcpManager.unlockPublication(publicationView, undefined));
+                    yield* callTyped(() => lcpManager.unlockPublication(publicationDocument.identifier, undefined));
 
                 if (typeof unlockPublicationRes !== "undefined") {
                     const message = unlockPublicationRes === 11 ?
@@ -327,7 +325,7 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
 
         try {
             publicationDocument =
-                yield* callTyped(() => publicationRepository.get(action.payload.publicationView.identifier));
+                yield* callTyped(() => publicationRepository.get(action.payload.publicationIdentifier));
         } catch (error) {
             continue;
         }

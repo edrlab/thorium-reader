@@ -64,7 +64,7 @@ class LsdReturnConfirm extends React.Component<IProps, undefined> {
     public remove(e: TMouseEvent) {
         e.preventDefault();
         apiAction("lcp/returnPublication", {
-            publicationView: this.props.publicationView,
+            publicationIdentifier: this.props.publicationView.identifier,
         }).catch((error) => {
             console.error(`Error API lcp/returnPublication`, error);
         });

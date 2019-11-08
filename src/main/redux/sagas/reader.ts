@@ -19,7 +19,6 @@ import {
     ActionPayloadReaderMainConfigSetSuccess, ActionPayloadReaderMainModeSetSuccess,
 } from "readium-desktop/common/redux/actions/reader";
 import { callTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
-import { PublicationView } from "readium-desktop/common/views/publication";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { BaseRepository } from "readium-desktop/main/db/repository/base";
 import { diMainGet } from "readium-desktop/main/di";
@@ -42,7 +41,7 @@ import {
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
 
-async function openReader(publicationView: PublicationView, manifestUrl: string) {
+async function openReader(publicationIdentifier: string, manifestUrl: string) {
     debug("create readerWindow");
     // Create reader window
     const readerWindow = new BrowserWindow({
@@ -103,7 +102,7 @@ async function openReader(publicationView: PublicationView, manifestUrl: string)
     // Create reader object
     const reader: Reader = {
         identifier: readerAppWindow.identifier,
-        publicationView,
+        publicationIdentifier,
         manifestUrl,
         filesystemPath: pathDecoded,
         window: readerWindow,
@@ -128,13 +127,13 @@ async function openReader(publicationView: PublicationView, manifestUrl: string)
     }
 
     readerUrl = readerUrl.replace(/\\/g, "/");
-    readerUrl += `?pub=${encodedManifestUrl}&pubId=${publicationView.identifier}`;
+    readerUrl += `?pub=${encodedManifestUrl}&pubId=${publicationIdentifier}`;
 
     // Get publication last reading location
     const locatorRepository = diMainGet("locator-repository");
     const locators = await locatorRepository
         .findByPublicationIdentifierAndLocatorType(
-            publicationView.identifier,
+            publicationIdentifier,
             LocatorType.LastReadingLocation,
         );
 
@@ -162,11 +161,11 @@ async function openReader(publicationView: PublicationView, manifestUrl: string)
 export function* readerOpenRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield* takeTyped(readerActions.openRequest.build);
-        const publicationView = action.payload.publicationView;
+        const publicationIdentifier = action.payload.publicationIdentifier;
 
         // Notify the streamer to create a manifest for this publication
         yield put(streamerActions.openPublication(
-            publicationView,
+            publicationIdentifier,
         ));
 
         // Wait for the publication to be opened
@@ -181,7 +180,7 @@ export function* readerOpenRequestWatcher(): SagaIterator {
             yield put({
                 type: readerActions.ActionType.OpenError,
                 payload: {
-                    publicationView,
+                    publicationIdentifier,
                 },
             });
             continue;
@@ -189,7 +188,7 @@ export function* readerOpenRequestWatcher(): SagaIterator {
 
         const manifestUrl = streamerAction.payload.manifestUrl;
         const reader = yield* callTyped(
-            () => openReader(publicationView, manifestUrl),
+            () => openReader(publicationIdentifier, manifestUrl),
         );
 
         // Publication is opened in a new reader
@@ -218,12 +217,12 @@ export function* closeReaderFromPublicationWatcher(): SagaIterator {
         // tslint:disable-next-line: max-line-length
         const action = yield* takeTyped(readerActions.closeRequestFromPublication.build);
 
-        const publicationView = action.payload.publicationView;
+        const publicationIdentifier = action.payload.publicationIdentifier;
         const store = diMainGet("store");
         const readers = store.getState().reader.readers;
 
         for (const reader of Object.values(readers)) {
-            if (reader.publicationView.identifier === publicationView.identifier) {
+            if (reader.publicationIdentifier === publicationIdentifier) {
                 yield call(() => closeReader(reader, false));
             }
         }
@@ -231,11 +230,11 @@ export function* closeReaderFromPublicationWatcher(): SagaIterator {
 }
 
 function* closeReader(reader: Reader, gotoLibrary: boolean) {
-    const publicationView = reader.publicationView;
+    const publicationIdentifier = reader.publicationIdentifier;
 
     // Notify the streamer that a publication has been closed
     yield put(streamerActions.closePublication(
-        publicationView,
+        publicationIdentifier,
     ));
 
     // Wait for the publication to be closed
