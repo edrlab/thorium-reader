@@ -13,9 +13,11 @@ import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import GridView from "readium-desktop/renderer/components/utils/GridView";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
-import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { GridView } from "readium-desktop/renderer/components/utils/GridView";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { ListView } from "readium-desktop/renderer/components/utils/ListView";
 import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";

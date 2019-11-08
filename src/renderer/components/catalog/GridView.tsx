@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
@@ -27,7 +26,7 @@ interface IBaseProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps {
+interface IProps extends IBaseProps {
 }
 
 interface IState {
@@ -40,7 +39,7 @@ enum SortStatus {
     Alpha,
 }
 
-export default class GridView extends React.Component<IProps, IState> {
+export class CatalogGridView extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);

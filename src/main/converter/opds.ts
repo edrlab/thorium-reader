@@ -119,7 +119,6 @@ export class OpdsFeedViewConverter {
             sampleUrl = sampleLinks[0].Href;
         }
 
-        debug(r2OpdsPublication);
         const r2OpdsPublicationJson = TAJSON.serialize(r2OpdsPublication);
         const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
         const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");

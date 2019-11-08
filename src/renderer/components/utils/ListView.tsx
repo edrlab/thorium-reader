@@ -29,7 +29,7 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class ListView extends React.Component<IProps, undefined> {
+export class ListView extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);

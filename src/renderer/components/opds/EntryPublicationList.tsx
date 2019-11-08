@@ -9,10 +9,12 @@ import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsPublicationView, OpdsResultPageInfos, OpdsResultUrls } from "readium-desktop/common/views/opds";
+import {
+    OpdsPublicationView, OpdsResultPageInfos, OpdsResultUrls,
+} from "readium-desktop/common/views/opds";
 import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
-import GridView from "readium-desktop/renderer/components/utils/GridView";
-import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { GridView } from "readium-desktop/renderer/components/utils/GridView";
+import { ListView } from "readium-desktop/renderer/components/utils/ListView";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
@@ -43,13 +45,13 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
     public render() {
         const { urls, page } = this.props;
 
-        let DisplayView: React.ComponentClass<any> = GridView;
+        let displayType = DisplayType.Grid;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
 
             if (parsedResult.displayType === DisplayType.List) {
-                DisplayView = ListView;
+                displayType = DisplayType.List;
             }
         }
 
@@ -60,7 +62,10 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
             <>
                 {this.props.opdsPublicationViews ?
                     <>
-                        <DisplayView opdsPublicationViews={this.props.opdsPublicationViews} isOpdsView={true} />
+                        {displayType === DisplayType.Grid ?
+                        <GridView normalOrOpdsPublicationViews={this.props.opdsPublicationViews} isOpdsView={true} /> :
+                        <ListView normalOrOpdsPublicationViews={this.props.opdsPublicationViews} isOpdsView={true} />
+                        }
                         <PageNavigation
                             goto={this.props.goto}
                             urls={urls}

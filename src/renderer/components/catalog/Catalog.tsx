@@ -13,12 +13,14 @@ import { TPublicationApiGetAllTags_result } from "readium-desktop/main/api/publi
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import { Unsubscribe } from "redux";
 
-import GridView from "./GridView";
+import { CatalogGridView } from "./GridView";
 import Header, { DisplayType } from "./Header";
-import ListView from "./ListView";
+import { CatalogListView } from "./ListView";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -76,14 +78,12 @@ class Catalog extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
-        let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
 
             if (parsedResult.displayType === DisplayType.List) {
-                DisplayView = ListView;
                 displayType = DisplayType.List;
             }
         }
@@ -93,8 +93,11 @@ class Catalog extends React.Component<IProps, IState> {
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
                 {this.state.catalog &&
-                    <DisplayView catalogEntries={this.state.catalog.entries}
-                        tags={this.state.tags} />
+                (displayType === DisplayType.Grid ?
+                    <CatalogGridView catalogEntries={this.state.catalog.entries}
+                        tags={this.state.tags} /> :
+                    <CatalogListView catalogEntries={this.state.catalog.entries}
+                        tags={this.state.tags} />)
                 }
             </LibraryLayout>
         );
