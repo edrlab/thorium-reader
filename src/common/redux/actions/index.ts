@@ -12,15 +12,9 @@ import * as i18nActions from "./i18n/";
 import * as importActions from "./import/";
 import * as lcpActions from "./lcp/";
 import * as netActions from "./net/";
-import * as readerActions1 from "./reader";
-import * as readerActions2 from "./reader/";
+import * as readerActions from "./reader/";
 import * as toastActions from "./toast/";
 import * as updateActions from "./update/";
-
-const readerActions = {
-    ...readerActions1,
-    ...readerActions2,
-};
 
 export {
     apiActions,
