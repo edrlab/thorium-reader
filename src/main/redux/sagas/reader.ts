@@ -174,12 +174,7 @@ export function* readerOpenRequestWatcher(): SagaIterator {
         if (streamerAction.error) {
             // Failed to open publication
             // FIXME: Put publication in meta to be FSA compliant
-            yield put({
-                type: readerActions.ActionType.OpenError,
-                payload: {
-                    publicationIdentifier,
-                },
-            });
+            yield put(readerActions.openError.build(publicationIdentifier));
             continue;
         }
 

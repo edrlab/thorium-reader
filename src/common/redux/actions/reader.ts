@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 export enum ActionType {
-    OpenError = "READER_OPEN_ERROR",
 
     ModeSetSuccess = "READER_MODE_SET_SUCCESS",
     ModeSetError = "READER_MODE_SET_ERROR",

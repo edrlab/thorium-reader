@@ -14,6 +14,7 @@ import * as configSetSuccess from "./configSetSuccess";
 import * as detachModeRequest from "./detachModeRequest";
 import * as detachModeSuccess from "./detachModeSuccess";
 import * as fullScreenRequest from "./fullScreenRequest";
+import * as openError from "./openError";
 import * as openRequest from "./openRequest";
 import * as openSuccess from "./openSuccess";
 import * as saveBookmarkRequest from "./saveBookmarkRequest";
@@ -21,6 +22,7 @@ import * as saveBookmarkRequest from "./saveBookmarkRequest";
 export {
     openRequest,
     openSuccess,
+    openError,
     closeRequest,
     closeSuccess,
     closeError,
