@@ -8,10 +8,7 @@
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import {
-    ActionPayloadReaderMain, ActionPayloadReaderMainConfigSetSuccess,
-    ActionPayloadReaderMainModeSetSuccess,
-} from "readium-desktop/common/redux/actions/reader";
+import { ActionPayloadReaderMain } from "readium-desktop/common/redux/actions/reader";
 import { ReaderState } from "readium-desktop/main/redux/states/reader";
 
 const initialState: ReaderState = {
@@ -35,8 +32,8 @@ const initialState: ReaderState = {
 export function readerReducer(
     state: ReaderState = initialState,
     action: Action<string, ActionPayloadReaderMain> |
-        Action<string, ActionPayloadReaderMainModeSetSuccess> |
-        Action<string, ActionPayloadReaderMainConfigSetSuccess>,
+        ReturnType<typeof readerActions.detachModeSuccess.build> |
+        ReturnType<typeof readerActions.configSetSuccess.build>,
 ): ReaderState {
     const newState = Object.assign({}, state);
 
@@ -49,12 +46,12 @@ export function readerReducer(
             const act2 = action as Action<string, ActionPayloadReaderMain>;
             delete newState.readers[act2.payload.reader.identifier];
             return newState;
-        case readerActions.ActionType.ModeSetSuccess:
-            const act3 = action as Action<string, ActionPayloadReaderMainModeSetSuccess>;
+        case readerActions.detachModeSuccess.ID:
+            const act3 = action as ReturnType<typeof readerActions.detachModeSuccess.build>;
             newState.mode = act3.payload.mode;
             return newState;
-        case readerActions.ActionType.ConfigSetSuccess:
-            const act4 = action as Action<string, ActionPayloadReaderMainConfigSetSuccess>;
+        case readerActions.configSetSuccess.ID:
+            const act4 = action as ReturnType<typeof readerActions.configSetSuccess.build>;
             newState.config = act4.payload.config;
             return newState;
         default:

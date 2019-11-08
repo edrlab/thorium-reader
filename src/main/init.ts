@@ -16,10 +16,7 @@ import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, netActions, readerActions, updateActions,
 } from "readium-desktop/common/redux/actions";
-import {
-    ActionPayloadReaderMain, ActionPayloadReaderMainConfigSetSuccess,
-    ActionPayloadReaderMainModeSetSuccess,
-} from "readium-desktop/common/redux/actions/reader";
+import { ActionPayloadReaderMain } from "readium-desktop/common/redux/actions/reader";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { diMainGet } from "readium-desktop/main/di";
@@ -83,11 +80,11 @@ const winOpenCallback = (appWindow: AppWindow) => {
         type: syncIpc.EventType.MainAction,
         payload: {
             action: {
-                type: readerActions.ActionType.ConfigSetSuccess,
+                type: readerActions.configSetSuccess.ID,
                 payload: {
                     config: state.reader.config,
                 },
-            } as Action<string, ActionPayloadReaderMainConfigSetSuccess>,
+            } as ReturnType<typeof readerActions.configSetSuccess.build>,
         },
     } as syncIpc.EventPayload);
 
@@ -96,11 +93,11 @@ const winOpenCallback = (appWindow: AppWindow) => {
         type: syncIpc.EventType.MainAction,
         payload: {
             action: {
-                type: readerActions.ActionType.ModeSetSuccess,
+                type: readerActions.detachModeSuccess.ID,
                 payload: {
                     mode: state.reader.mode,
                 },
-            } as Action<string, ActionPayloadReaderMainModeSetSuccess>,
+            } as ReturnType<typeof readerActions.detachModeSuccess.build>,
         },
     } as syncIpc.EventPayload);
 

@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
+import { Reader } from "readium-desktop/common/models/reader";
 
 export enum ActionType {
     OpenSuccess = "READER_OPEN_SUCCESS",
@@ -20,7 +20,6 @@ export enum ActionType {
     ModeSetSuccess = "READER_MODE_SET_SUCCESS",
     ModeSetError = "READER_MODE_SET_ERROR",
 
-    ConfigSetSuccess = "READER_CONFIG_SET_SUCCESS",
     ConfigSetError = "READER_CONFIG_SET_ERROR",
 
     BookmarkSaveRequest = "READER_BOOKMARK_SAVE_REQUEST",
@@ -30,10 +29,4 @@ export enum ActionType {
 
 export interface ActionPayloadReaderMain {
     reader: Reader;
-}
-export interface ActionPayloadReaderMainModeSetSuccess {
-    mode: ReaderMode;
-}
-export interface ActionPayloadReaderMainConfigSetSuccess {
-    config: ReaderConfig;
 }

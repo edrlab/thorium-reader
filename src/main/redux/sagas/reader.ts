@@ -15,9 +15,6 @@ import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import {
-    ActionPayloadReaderMainConfigSetSuccess, ActionPayloadReaderMainModeSetSuccess,
-} from "readium-desktop/common/redux/actions/reader";
 import { callTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { BaseRepository } from "readium-desktop/main/db/repository/base";
@@ -308,12 +305,7 @@ export function* readerConfigSetRequestWatcher(): SagaIterator {
 
         try {
             yield call(() => configRepository.save(config));
-            yield put({
-                type: readerActions.ActionType.ConfigSetSuccess,
-                payload: {
-                    config: configValue,
-                },
-            } as Action<string, ActionPayloadReaderMainConfigSetSuccess>);
+            yield put(readerActions.configSetSuccess.build(configValue));
         } catch (error) {
             yield put({ type: readerActions.ActionType.ConfigSetError, error: true });
         }
@@ -330,12 +322,7 @@ export function* readerConfigInitWatcher(): SagaIterator {
         const readerConfigDoc = yield* callTyped(() => configRepository.get(READER_CONFIG_ID));
 
         // Returns the first reader configuration available in database
-        yield put({
-            type: readerActions.ActionType.ConfigSetSuccess,
-            payload: {
-                config: readerConfigDoc.value,
-            },
-        } as Action<string, ActionPayloadReaderMainConfigSetSuccess>);
+        yield put(readerActions.configSetSuccess.build(readerConfigDoc.value));
     } catch (error) {
         yield put({
             type: readerActions.ActionType.ConfigSetError,
@@ -424,12 +411,7 @@ export function* readerDetachRequestWatcher(): SagaIterator {
             readerWindow.win.focus();
         }
 
-        yield put({
-            type: readerActions.ActionType.ModeSetSuccess,
-            payload: {
-                mode: readerMode,
-            },
-        } as Action<string, ActionPayloadReaderMainModeSetSuccess>);
+        yield put(readerActions.detachModeSuccess.build(readerMode));
     }
 }
 
