@@ -29,8 +29,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     dialogActions.openRequest.ID,
 
     readerActions.ActionType.OpenError,
-    readerActions.ActionType.CloseError,
-    readerActions.ActionType.CloseSuccess,
+    readerActions.closeError.ID,
+    readerActions.closeSuccess.ID,
     readerActions.ActionType.ModeSetError,
     readerActions.detachModeSuccess.ID,
     readerActions.ActionType.ConfigSetError,

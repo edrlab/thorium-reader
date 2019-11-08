@@ -6,9 +6,7 @@
 // ==LICENSE-END==
 
 import { ReaderMode } from "readium-desktop/common/models/reader";
-import { Action } from "readium-desktop/common/models/redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { ActionPayloadReaderMain } from "readium-desktop/common/redux/actions/reader";
 import { ReaderState } from "readium-desktop/renderer/redux/states/reader";
 
 const initialState: ReaderState = {
@@ -31,7 +29,7 @@ const initialState: ReaderState = {
 
 export function readerReducer(
     state: ReaderState = initialState,
-    action: Action<string, ActionPayloadReaderMain> |
+    action: ReturnType<typeof readerActions.closeSuccess.build> |
         ReturnType<typeof readerActions.openSuccess.build> |
         ReturnType<typeof readerActions.configSetSuccess.build> |
         ReturnType<typeof readerActions.detachModeSuccess.build>,
@@ -43,7 +41,7 @@ export function readerReducer(
             const act1 = action as ReturnType<typeof readerActions.openSuccess.build>;
             newState.reader = act1.payload.reader;
             return newState;
-        case readerActions.ActionType.CloseSuccess:
+        case readerActions.closeSuccess.ID:
             delete newState.reader;
             return newState;
         case readerActions.detachModeSuccess.ID:

@@ -237,12 +237,7 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
 
     if (streamerAction.error) {
         // Failed to close publication
-        yield put({
-            type: readerActions.ActionType.CloseError,
-            payload: {
-                reader,
-            },
-        });
+        yield put(readerActions.closeError.build(reader));
         return;
     }
 
@@ -271,12 +266,7 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
         readerWindow.win.close();
     }
 
-    yield put({
-        type: readerActions.ActionType.CloseSuccess,
-        payload: {
-            reader,
-        },
-    });
+    yield put(readerActions.closeSuccess.build(reader));
 }
 
 const READER_CONFIG_ID = "reader";

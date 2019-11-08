@@ -5,8 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as closeError from "./closeError";
 import * as closeRequest from "./closeRequest";
 import * as closeRequestFromPublication from "./closeRequestFromPublication";
+import * as closeSuccess from "./closeSuccess";
 import * as configSetRequest from "./configSetRequest";
 import * as configSetSuccess from "./configSetSuccess";
 import * as detachModeRequest from "./detachModeRequest";
@@ -20,6 +22,8 @@ export {
     openRequest,
     openSuccess,
     closeRequest,
+    closeSuccess,
+    closeError,
     detachModeRequest,
     detachModeSuccess,
     configSetRequest,
