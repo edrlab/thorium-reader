@@ -26,7 +26,6 @@ export enum ActionType {
     CloseFromPublicationSuccess = "READER_FROM_PUBLICATION_CLOSE_SUCCESS",
     CloseFromPublicationError = "READER_FROM_PUBLICATION_CLOSE_ERROR",
 
-    ModeSetRequest = "READER_MODE_SET_REQUEST",
     ModeSetSuccess = "READER_MODE_SET_SUCCESS",
     ModeSetError = "READER_MODE_SET_ERROR",
 
@@ -47,22 +46,6 @@ export interface ActionPayloadReaderMainModeSetSuccess {
 }
 export interface ActionPayloadReaderMainConfigSetSuccess {
     config: ReaderConfig;
-}
-
-export interface DetachActionPayload {
-    reader: Reader;
-    mode: ReaderMode;
-}
-export function detach(reader: Reader):
-    Action<ActionType.ModeSetRequest, DetachActionPayload> {
-
-    return {
-        type: ActionType.ModeSetRequest,
-        payload: {
-            reader,
-            mode: ReaderMode.Detached,
-        },
-    };
 }
 
 export interface SetConfigActionPayload {

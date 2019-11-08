@@ -6,9 +6,11 @@
 // ==LICENSE-END==
 
 import * as closeRequest from "./closeRequest";
+import * as detachModeRequest from "./detachModeRequest";
 import * as openRequest from "./openRequest";
 
 export {
     openRequest,
     closeRequest,
+    detachModeRequest,
 };

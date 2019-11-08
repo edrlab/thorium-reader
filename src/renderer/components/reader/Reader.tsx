@@ -836,7 +836,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(readerActions.closeRequest.build(reader, true));
         },
         detachReader: (reader: any) => {
-            dispatch(readerActions.detach(reader));
+            dispatch(readerActions.detachModeRequest.build(reader));
         },
         displayPublicationInfo: (pubId: string) => {
             dispatch(dialogActions.open("publication-info-reader",

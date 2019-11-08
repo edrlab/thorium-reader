@@ -18,7 +18,7 @@ import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import {
     ActionPayloadReaderMainConfigSetSuccess, ActionPayloadReaderMainModeSetSuccess,
-    CloseReaderActionPayload, DetachActionPayload, SaveBookmarkActionPayload,
+    CloseReaderActionPayload, SaveBookmarkActionPayload,
     SetConfigActionPayload,
 } from "readium-desktop/common/redux/actions/reader";
 import { callTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
@@ -412,7 +412,7 @@ export function* readerFullscreenRequestWatcher(): SagaIterator {
 export function* readerDetachRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for a change mode request
-        const action: Action<string, DetachActionPayload> = yield take(readerActions.ActionType.ModeSetRequest);
+        const action = yield* takeTyped(readerActions.detachModeRequest.build);
 
         const readerMode = action.payload.mode;
         const reader = action.payload.reader;
