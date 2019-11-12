@@ -162,7 +162,6 @@ export class CatalogApi implements ICatalogApi {
      * Returns entries without pubs
      */
     public async getEntries(): Promise<CatalogEntryView[]> {
-
         let config: ConfigDocumentType;
         try {
             config = await this.configRepository.get(CATALOG_CONFIG_ID);
