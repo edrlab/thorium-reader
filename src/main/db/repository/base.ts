@@ -33,7 +33,10 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         return this.idPrefix + "_" + documentIdentifier;
     }
 
-    public async save(document: any): Promise<D> {
+    public async save(document:
+        Omit<D, keyof Timestampable | keyof Identifiable> & Partial<Identifiable>):
+        Promise<D> {
+
         let dbDoc = Object.assign(
             {},
             document,
@@ -42,7 +45,7 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
             },
         );
 
-        if (document.identifier == null) {
+        if (!document.identifier) {
             document.identifier = uuid.v4();
         }
 
@@ -50,14 +53,14 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         try {
             const origDbDoc = await this.db.get(
                 this.buildId(document.identifier),
-            ) as any;
+            );
 
             dbDoc = Object.assign(
                 dbDoc,
                 {
                     _id: origDbDoc._id,
                     _rev: origDbDoc._rev,
-                    createdAt: origDbDoc.createdAt,
+                    createdAt: (origDbDoc as any).createdAt,
                 },
             );
         } catch (error) {

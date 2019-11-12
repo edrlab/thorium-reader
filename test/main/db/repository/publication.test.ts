@@ -199,6 +199,11 @@ test("repository.save create", async () => {
         files: [] as any,
         coverFile: null as any,
         customCover: null as any,
+        resources: {
+            r2PublicationBase64: "",
+            r2OpdsPublicationBase64: "",
+        },
+        hash: "",
     };
     const result = await repository.save(dbDoc);
     expect(result.identifier).toBe("new-publication");
@@ -226,6 +231,11 @@ test("repository.save update", async () => {
         files: [] as any,
         coverFile: null as any,
         customCover: null as any,
+        resources: {
+            r2PublicationBase64: "",
+            r2OpdsPublicationBase64: "",
+        },
+        hash: "",
     };
     const result = await repository.save(dbDoc);
     expect(result.identifier).toBe("pub-1");
