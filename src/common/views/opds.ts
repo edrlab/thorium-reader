@@ -5,11 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Identifiable } from "../models/identifiable";
 import { IHttpGetResult } from "../utils/http";
 import { CoverView } from "./publication";
 
-export interface OpdsFeedView {
-    identifier: string;
+export interface OpdsFeedView extends Identifiable {
     title: string;
     url: string;
 }
@@ -29,7 +29,7 @@ export interface OpdsPublicationView {
     subscribeUrl?: string;
     hasSample?: boolean;
     isFree?: boolean;
-    base64OpdsPublication?: string;
+    r2OpdsPublicationBase64?: string;
     cover?: CoverView;
 }
 
@@ -51,7 +51,7 @@ export interface OpdsResultView {
     title: string;
     type: OpdsResultType;
     navigation?: OpdsLinkView[];
-    publications?: OpdsPublicationView[];
+    opdsPublicationViews?: OpdsPublicationView[];
     urls: OpdsResultUrls;
     page?: OpdsResultPageInfos;
 }

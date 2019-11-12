@@ -11,18 +11,19 @@ import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-// import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import App from "readium-desktop/renderer/components/App";
 import { diRendererGet } from "readium-desktop/renderer/di";
-import { winInit } from "readium-desktop/renderer/redux/actions/win";
+import { winActions } from "readium-desktop/renderer/redux/actions/";
 import { WinStatus } from "readium-desktop/renderer/redux/states/win";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
+
+// import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
 // import { consoleRedirect } from "@r2-navigator-js/electron/renderer/common/console-redirect";
 if (IS_DEV) {
@@ -86,7 +87,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
-            store.dispatch(winInit(data.payload.winId));
+            store.dispatch(winActions.initRequest.build(data.payload.winId));
             break;
     }
 });
@@ -101,8 +102,10 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
             store.dispatch(Object.assign(
                 {},
                 actionSerializer.deserialize(data.payload.action),
-                {sender: data.sender} as ActionWithSender,
-            ));
+                {
+                    sender: data.sender,
+                },
+            ) as ActionWithSender);
             break;
     }
 });

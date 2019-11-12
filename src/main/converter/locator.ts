@@ -18,7 +18,7 @@ export class LocatorViewConverter {
             identifier: doc.identifier,
             locator: Object.assign({}, doc.locator),
             locatorType: doc.locatorType,
-            publication: {
+            identifiableView: {
                 identifier: doc.publicationIdentifier,
             },
             name: doc.name,

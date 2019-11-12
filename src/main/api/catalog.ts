@@ -99,7 +99,7 @@ export class CatalogApi implements ICatalogApi {
             );
         }
 
-        // Last added publications without publcation already on last read list
+        // Last added pubs not already on last read list
         const lastAddedPublications = await this.publicationRepository.find({
             limit: 10,
             sort: [ { createdAt: "desc" } ],
@@ -117,12 +117,12 @@ export class CatalogApi implements ICatalogApi {
             {
                 title: __("catalog.entry.continueReading"),
                 totalCount: lastReadPublicationViews.length,
-                publications: lastReadPublicationViews,
+                publicationViews: lastReadPublicationViews,
             },
             {
                 title: __("catalog.entry.lastAdditions"),
                 totalCount: lastAddedPublicationViews.length,
-                publications: lastAddedPublicationViews,
+                publicationViews: lastAddedPublicationViews,
             },
         ];
 
@@ -140,7 +140,7 @@ export class CatalogApi implements ICatalogApi {
 
         try {
             const config = await this.configRepository.get(CATALOG_CONFIG_ID);
-            const catalog = config.value as CatalogConfig;
+            const catalog = config.value;
             entries = catalog.entries;
         } catch (error) {
             // New configuration
@@ -159,7 +159,7 @@ export class CatalogApi implements ICatalogApi {
     }
 
     /**
-     * Returns entries without publications
+     * Returns entries without pubs
      */
     public async getEntries(): Promise<CatalogEntryView[]> {
         let config: ConfigDocumentType;
@@ -169,19 +169,19 @@ export class CatalogApi implements ICatalogApi {
             return [];
         }
 
-        const catalog = config.value as CatalogConfig;
+        const catalog = config.value;
         const entryViews: CatalogEntryView[] = [];
 
         for (const entry of catalog.entries) {
-            const publications = await this.publicationRepository.findByTag(entry.tag);
-            const publicationViews = publications.map((doc) => {
+            const publicationDocuments = await this.publicationRepository.findByTag(entry.tag);
+            const publicationViews = publicationDocuments.map((doc) => {
                 return this.publicationViewConverter.convertDocumentToView(doc);
             });
             entryViews.push(
                 {
                     title: entry.title,
                     tag: entry.tag,
-                    publications: publicationViews,
+                    publicationViews,
                     totalCount: publicationViews.length,
                 },
             );

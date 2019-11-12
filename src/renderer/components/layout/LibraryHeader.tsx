@@ -36,9 +36,23 @@ const headerNav = [
     },
 ];
 
-interface IProps extends RouteComponentProps, TranslatorProps { }
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
+}
 
-class Header extends React.Component<IProps> {
+class Header extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 

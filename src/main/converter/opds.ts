@@ -17,6 +17,7 @@ import {
 } from "readium-desktop/common/views/opds";
 import { CoverView } from "readium-desktop/common/views/publication";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
+import { JSON as TAJSON } from "ta-json-x";
 import * as convert from "xml-js";
 
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
@@ -28,9 +29,11 @@ const debug = debug_("readium-desktop:main/converter/opds");
 
 @injectable()
 export class OpdsFeedViewConverter {
+
+    // Note: OpdsFeedDocument and OpdsFeedView are both Identifiable, with identical `identifier`
     public convertDocumentToView(document: OpdsFeedDocument): OpdsFeedView {
         return {
-            identifier: document.identifier,
+            identifier: document.identifier, // preserve Identifiable identifier
             title: document.title,
             url: document.url,
         };
@@ -51,8 +54,8 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public convertOpdsPublicationToView(publication: OPDSPublication, url: string): OpdsPublicationView {
-        const metadata = publication.Metadata;
+    public convertOpdsPublicationToView(r2OpdsPublication: OPDSPublication, url: string): OpdsPublicationView {
+        const metadata = r2OpdsPublication.Metadata;
         const title = convertMultiLangStringToString(metadata.Title);
         const authors = convertContributorArrayToStringArray(metadata.Author);
         const publishers = convertContributorArrayToStringArray(metadata.Publisher);
@@ -68,17 +71,21 @@ export class OpdsFeedViewConverter {
         }
 
         // resolve url in publication before extract them
-        if (publication.Links) {
-            publication.Links.forEach((ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href)));
+        if (r2OpdsPublication.Links) {
+            r2OpdsPublication.Links.forEach((ln, id, ar) => {
+                return ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href));
+            });
         }
-        if (publication.Images) {
-            publication.Images.forEach((ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href)));
+        if (r2OpdsPublication.Images) {
+            r2OpdsPublication.Images.forEach((ln, id, ar) => {
+                return ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href));
+            });
         }
 
         // CoverView object
         let cover: CoverView | undefined;
-        if (publication.Images && publication.Images.length > 0) {
-            const imagesLinks = publication.Images.filter(
+        if (r2OpdsPublication.Images && r2OpdsPublication.Images.length > 0) {
+            const imagesLinks = r2OpdsPublication.Images.filter(
                 (link) => link.TypeLink === "image/png" || link.TypeLink === "image/jpeg");
 
             const thumbnailLink = imagesLinks.filter(
@@ -100,9 +107,9 @@ export class OpdsFeedViewConverter {
         }
 
         // Get odps entry
-        const links = publication.Links.filter(
+        const links = r2OpdsPublication.Links.filter(
             (link) => link.TypeLink.indexOf(";type=entry;profile=opds-catalog") > 0);
-        const sampleLinks = publication.Links.filter(
+        const sampleLinks = r2OpdsPublication.Links.filter(
             (link) => link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition/sample"
                             || relLink === "http://opds-spec.org/acquisition/preview").length);
@@ -112,32 +119,30 @@ export class OpdsFeedViewConverter {
             sampleUrl = sampleLinks[0].Href;
         }
 
-        let base64OpdsPublication: string | undefined;
+        const r2OpdsPublicationJson = TAJSON.serialize(r2OpdsPublication);
+        const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
+        const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");
+
         let urlPublication: string | undefined;
         if (links.length > 0) {
-            urlPublication = links[0].Href;
-        } else {
-            debug(publication);
-            base64OpdsPublication = Buffer
-            .from(JSON.stringify(publication))
-            .toString("base64");
+            urlPublication = links[0].Href; // TODO why the first?
         }
 
-        const isFree = publication.Links.filter(
+        const isFree = r2OpdsPublication.Links.filter(
             (link) => link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition"
                     || relLink === "http://opds-spec.org/acquisition/open-access").length,
         ).length > 0;
 
-        const buyLink: OPDSLink | undefined = publication.Links.filter(
+        const buyLink: OPDSLink | undefined = r2OpdsPublication.Links.filter(
             (link) => link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition/buy").length)[0];
 
-        const borrowLink: OPDSLink | undefined = publication.Links.filter(
+        const borrowLink: OPDSLink | undefined = r2OpdsPublication.Links.filter(
             (link) => link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition/borrow").length)[0];
 
-        const subscribeLink: OPDSLink | undefined = publication.Links.filter(
+        const subscribeLink: OPDSLink | undefined = r2OpdsPublication.Links.filter(
             (link) => link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition/subscribe").length)[0];
 
@@ -156,30 +161,29 @@ export class OpdsFeedViewConverter {
             borrowUrl: borrowLink && borrowLink.Href,
             subscribeUrl: subscribeLink && subscribeLink.Href,
             hasSample: sampleUrl !== undefined,
-            base64OpdsPublication,
+            r2OpdsPublicationBase64,
             isFree,
         };
     }
 
-    public async convertOpdsFeedToView(feed: OPDSFeed, url: string): Promise<OpdsResultView> {
-        const title = convertMultiLangStringToString(feed.Metadata.Title);
+    public async convertOpdsFeedToView(r2OpdsFeed: OPDSFeed, url: string): Promise<OpdsResultView> {
+        const title = convertMultiLangStringToString(r2OpdsFeed.Metadata.Title);
         let type = OpdsResultType.Empty;
         let navigation: OpdsLinkView[] | undefined;
-        let publications: OpdsPublicationView[] | undefined;
+        let opdsPublicationViews: OpdsPublicationView[] | undefined;
 
         let urls: OpdsResultUrls = {};
         let page: OpdsResultPageInfos;
 
-        if (feed.Publications) {
-            // result page containing publications
+        if (r2OpdsFeed.Publications) {
             type = OpdsResultType.PublicationFeed;
-            publications = feed.Publications.map((item) => {
+            opdsPublicationViews = r2OpdsFeed.Publications.map((item) => {
                 return this.convertOpdsPublicationToView(item, url);
             });
-        } else if (feed.Navigation) {
+        } else if (r2OpdsFeed.Navigation) {
             // result page containing navigation
             type = OpdsResultType.NavigationFeed;
-            navigation = feed.Navigation.map((item) => {
+            navigation = r2OpdsFeed.Navigation.map((item) => {
                 return this.convertOpdsLinkToView(item, url);
             });
 
@@ -189,45 +193,45 @@ export class OpdsFeedViewConverter {
                 return nav;
             });
         }
-        if (feed.Links) {
+        if (r2OpdsFeed.Links) {
             urls = {
-                search: await this.getSearchUrlFromOpds1Feed(feed),
-                nextPage: this.getUrlFromFeed(feed, "next"),
-                previousPage: this.getUrlFromFeed(feed, "previous"),
-                firstPage: this.getUrlFromFeed(feed, "first"),
-                lastPage: this.getUrlFromFeed(feed, "last"),
+                search: await this.getSearchUrlFromOpds1Feed(r2OpdsFeed),
+                nextPage: this.getUrlFromFeed(r2OpdsFeed, "next"),
+                previousPage: this.getUrlFromFeed(r2OpdsFeed, "previous"),
+                firstPage: this.getUrlFromFeed(r2OpdsFeed, "first"),
+                lastPage: this.getUrlFromFeed(r2OpdsFeed, "last"),
             };
         }
 
-        if (feed.Metadata) {
+        if (r2OpdsFeed.Metadata) {
             page = {
-                numberOfItems: feed.Metadata.NumberOfItems,
-                itemsPerPage: feed.Metadata.ItemsPerPage,
+                numberOfItems: r2OpdsFeed.Metadata.NumberOfItems,
+                itemsPerPage: r2OpdsFeed.Metadata.ItemsPerPage,
             };
         }
 
         return {
             title,
             type,
-            publications,
+            opdsPublicationViews,
             navigation,
             urls,
             page,
         };
     }
 
-    private getUrlFromFeed(feed: OPDSFeed, linkRel: string): string | undefined {
-        const linkWithRel = feed.Links.find((link) => link.Rel && link.Rel.includes(linkRel));
+    private getUrlFromFeed(r2OpdsFeed: OPDSFeed, linkRel: string): string | undefined {
+        const linkWithRel = r2OpdsFeed.Links.find((link) => link.Rel && link.Rel.includes(linkRel));
         return linkWithRel ? linkWithRel.Href : undefined;
     }
 
-    private async getSearchUrlFromOpds1Feed(feed: OPDSFeed): Promise<string| undefined> {
+    private async getSearchUrlFromOpds1Feed(r2OpdsFeed: OPDSFeed): Promise<string| undefined> {
         // https://github.com/readium/readium-desktop/issues/296#issuecomment-502134459
 
         let searchUrl: string | undefined;
         try {
-            if (feed.Links) {
-                const searchLink = feed.Links.find((value) => value.Rel[0] === "search");
+            if (r2OpdsFeed.Links) {
+                const searchLink = r2OpdsFeed.Links.find((value) => value.Rel[0] === "search");
                 if (searchLink) {
                     if (searchLink.TypeLink === "application/opds+json") {
                         searchUrl = searchLink.Href;
@@ -241,7 +245,7 @@ export class OpdsFeedViewConverter {
 
                         if (result) {
                             const doc = result.OpenSearchDescription;
-                            searchUrl = doc.Url.find((value: any) => {
+                            searchUrl = doc.Url.find((value: any) => { // TODO any?!
                                 return value._attributes && value._attributes.type === "application/atom+xml";
                             })._attributes.template;
                         }

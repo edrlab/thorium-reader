@@ -17,7 +17,7 @@ import {
 } from "@r2-navigator-js/electron/common/readium-css-settings";
 import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
-import { Publication } from "@r2-shared-js/models/publication";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 import { Server } from "@r2-streamer-js/http/server";
 
@@ -49,7 +49,7 @@ debug("readium css path:", rcssPath);
 
 // TODO: centralize this code, currently duplicated
 // see src/renderer/components/reader/ReaderApp.jsx
-function computeReadiumCssJsonMessage(_publication: Publication, _link: Link | undefined):
+function computeReadiumCssJsonMessage(_r2Publication: R2Publication, _link: Link | undefined):
     IEventPayload_R2_EVENT_READIUMCSS {
     const store = diMainGet("store");
     let settings = store.getState().reader.config;

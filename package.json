@@ -122,6 +122,11 @@
         "ext": "epub3",
         "role": "Viewer",
         "mimeType": "application/epub+zip"
+      },
+      {
+        "ext": "lcpl",
+        "role": "Viewer",
+        "mimeType": "application/vnd.readium.lcp.license.v1.0+json"
       }
     ],
     "win": {
@@ -188,12 +193,12 @@
     "pouchdb-quick-search": "^1.3.0",
     "qs": "^6.9.0",
     "query-string": "^6.8.3",
-    "r2-lcp-js": "^1.0.16",
+    "r2-lcp-js": "^1.0.17",
     "r2-navigator-js": "^1.1.38",
     "r2-opds-js": "^1.0.18",
     "r2-shared-js": "^1.0.23",
     "r2-streamer-js": "^1.0.22",
-    "r2-utils-js": "^1.0.16",
+    "r2-utils-js": "^1.0.17",
     "react": "^16.11.0",
     "react-beautiful-dnd": "^12.0.0",
     "react-dom": "^16.11.0",
@@ -282,6 +287,7 @@
     "ts-jest": "^24.1.0",
     "tslint": "^5.20.0",
     "tslint-language-service": "^0.9.9",
+    "typed-redux-saga": "^0.4.0",
     "typescript": "^3.6.4",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",

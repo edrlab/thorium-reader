@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
@@ -20,10 +20,22 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import SVG from "../utils/SVG";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-class LanguageSettings extends React.Component<IProps> {
+class LanguageSettings extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
@@ -55,15 +67,15 @@ class LanguageSettings extends React.Component<IProps> {
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         locale: state.i18n.locale,
     };
 };
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        setLocale: (locale: string) => dispatch(setLocale(locale)),
+        setLocale: (locale: string) => dispatch(i18nActions.setLocale.build(locale)),
     };
 };
 

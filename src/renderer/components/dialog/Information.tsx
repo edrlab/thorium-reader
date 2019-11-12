@@ -11,27 +11,36 @@ import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { _PACKAGING } from "readium-desktop/preprocessor-directives";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { TDispatch } from "readium-desktop/typings/redux";
 import { promisify } from "util";
 
 import Dialog from "../dialog/Dialog";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-interface IStates {
+interface IState {
     placeholder: any;
 }
 
-export class LanguageSettings extends React.Component<IProps, IStates> {
+export class LanguageSettings extends React.Component<IProps, IState> {
     private parsedMarkdown: string;
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -70,19 +79,19 @@ export class LanguageSettings extends React.Component<IProps, IStates> {
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         locale: state.i18n.locale,
         open: state.dialog.type === "about-thorium",
     };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        setLocale: (locale: string) => dispatch(setLocale(locale)),
+        setLocale: (locale: string) => dispatch(i18nActions.setLocale.build(locale)),
         closeDialog: () => {
             dispatch(
-                dialogActions.close(),
+                dialogActions.closeRequest.build(),
             );
         },
     };

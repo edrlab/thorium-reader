@@ -13,20 +13,34 @@ import PublicationListElement from "readium-desktop/renderer/components/publicat
 
 import NoPublicationInfo from "./NoPublicationInfo";
 
-interface IProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
 
-export default class ListView extends React.Component<IProps> {
+export class CatalogListView extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
 
     public render(): React.ReactElement<{}> {
-        const entriesEmpty = this.props.catalogEntries.filter((entry) => entry.publications.length > 0).length === 0;
+        const entriesEmpty = this.props.catalogEntries.filter((entry) => {
+            return entry.publicationViews.length > 0;
+        }).length === 0;
         return (
             <>
             {
                 this.props.catalogEntries.map((entry, entryIndex: number) => {
-                    return entry.publications.length > 0 ? (
+                    return entry.publicationViews.length > 0 ? (
                         <section key={ entryIndex }>
                         {
                             entryIndex <= 1 ? (
@@ -39,12 +53,12 @@ export default class ListView extends React.Component<IProps> {
                         {
                             entryIndex <= 1 ? (
                                 <ul>
-                                    { entry.publications.map((pub, i: number) => {
+                                    { entry.publicationViews.map((pub, i: number) => {
                                         return (
                                             <li className={styles.block_book_list} key={ i }>
                                                 <PublicationListElement
-                                                    publication={pub}
-                                                    menuContent={<CatalogMenu publication={pub}/>}
+                                                    publicationViewMaybeOpds={pub}
+                                                    menuContent={<CatalogMenu publicationView={pub}/>}
                                                 />
                                             </li>
                                         );

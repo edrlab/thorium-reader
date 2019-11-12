@@ -16,16 +16,25 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import PublicationExportButton from "./PublicationExportButton";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    publication: PublicationView;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    publicationView: PublicationView;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
     menuOpen: boolean;
 }
 
-class CatalogMenu extends React.Component<IProps, IState> {
-    constructor(props: any) {
+export class CatalogMenu extends React.Component<IProps, IState> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -51,35 +60,35 @@ class CatalogMenu extends React.Component<IProps, IState> {
                     {__("catalog.delete")}
                 </button>
                 <PublicationExportButton
-                    publication={this.props.publication}
+                    publicationView={this.props.publicationView}
                 />
             </>
         );
     }
 
     private deletePublication() {
-        this.props.openDeleteDialog(this.props.publication);
+        this.props.openDeleteDialog();
     }
 
     private displayPublicationInfo() {
-        this.props.displayPublicationInfo(this.props.publication);
+        this.props.displayPublicationInfo();
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
-        displayPublicationInfo: (publication: PublicationView) => {
-            dispatch(dialogActions.open("publication-info",
+        displayPublicationInfo: () => {
+            dispatch(dialogActions.openRequest.build("publication-info",
                 {
-                    publicationIdentifier: publication.identifier,
-                    opdsPublication: undefined,
+                    publicationIdentifier: (props.publicationView).identifier,
+                    opdsPublicationView: undefined,
                 },
             ));
         },
-        openDeleteDialog: (publication: PublicationView) => {
-            dispatch(dialogActions.open("delete-publication-confirm",
+        openDeleteDialog: () => {
+            dispatch(dialogActions.openRequest.build("delete-publication-confirm",
                 {
-                    publication,
+                    publicationView: props.publicationView,
                 },
             ));
         },

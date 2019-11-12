@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
-
 import { appActions } from "readium-desktop/main/redux/actions";
 import { AppState, AppStatus } from "readium-desktop/main/redux/states/app";
 
@@ -16,16 +14,12 @@ const initialState: AppState = {
 
 export function appReducer(
     state: AppState = initialState,
-    action: Action,
+    action: appActions.initSuccess.TAction,
 ) {
     switch (action.type) {
-        case appActions.ActionType.InitSuccess:
+        case appActions.initSuccess.ID:
             return Object.assign({}, state, {
                 status: AppStatus.Initialized,
-            });
-        case appActions.ActionType.InitError:
-            return Object.assign({}, state, {
-                status: AppStatus.Error,
             });
         default:
             return state;

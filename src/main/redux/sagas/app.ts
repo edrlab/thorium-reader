@@ -12,7 +12,7 @@ import { appActions } from "readium-desktop/main/redux/actions";
 
 export function* appInitWatcher(): SagaIterator {
     while (true) {
-        yield take(appActions.ActionType.InitRequest);
-        yield put({type: appActions.ActionType.InitSuccess});
+        yield take(appActions.initRequest.ID);
+        yield put(appActions.initSuccess.build());
     }
 }

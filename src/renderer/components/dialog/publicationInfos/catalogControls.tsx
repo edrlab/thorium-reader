@@ -18,12 +18,21 @@ import {
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-    publication: PublicationView;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    publicationView: PublicationView;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-export class CatalogControls extends React.Component<IProps> {
-    public constructor(props: IProps) {
+export class CatalogControls extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.handleRead = this.handleRead.bind(this);
@@ -31,9 +40,9 @@ export class CatalogControls extends React.Component<IProps> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { publication, __ } = this.props;
+        const { publicationView, __ } = this.props;
 
-        if (!publication) {
+        if (!publicationView) {
             return (<></>);
         }
 
@@ -54,32 +63,25 @@ export class CatalogControls extends React.Component<IProps> {
 
     private deletePublication(e: any) {
         e.preventDefault();
-        this.props.openDeleteDialog(this.props.publication);
+        this.props.openDeleteDialog();
     }
 
     private handleRead(e: any) {
         e.preventDefault();
 
-        this.props.openReader(this.props.publication);
+        this.props.openReader();
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
-        openReader: (publication: PublicationView) => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
-                },
-            });
+        openReader: () => {
+            dispatch(readerActions.openRequest.build(props.publicationView.identifier));
         },
-        openDeleteDialog: (publication: PublicationView) => {
-            dispatch(dialogActions.open("delete-publication-confirm",
+        openDeleteDialog: () => {
+            dispatch(dialogActions.openRequest.build("delete-publication-confirm",
                 {
-                    publication,
+                    publicationView: props.publicationView,
                 },
             ));
         },

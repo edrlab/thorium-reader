@@ -8,30 +8,35 @@
 import * as moment from "moment";
 import * as React from "react";
 import { connect } from "react-redux";
-import { LsdStatus } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { lcpReadable } from "readium-desktop/utils/publication";
 import * as uuid from "uuid";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapDispatchToProps> {
-    publication: PublicationView;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    publicationViewMaybeOpds: PublicationView | OpdsPublicationView;
     menuContent: JSX.Element;
     isOpds?: boolean;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
     menuOpen: boolean;
-    lsdStatus: LsdStatus | undefined;
 }
 
 export class PublicationListElement extends React.Component<IProps, IState> {
@@ -43,7 +48,6 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
         this.state = {
             menuOpen: false,
-            lsdStatus: undefined,
         };
 
         // this.deletePublication = this.deletePublication.bind(this);
@@ -53,24 +57,8 @@ export class PublicationListElement extends React.Component<IProps, IState> {
         this.menuId = "menu-" + uuid.v4();
     }
 
-    public componentDidMount() {
-        const { publication } = this.props;
-        if (publication.lcp) {
-            // currently getLsdStatus in LCP API is broken
-            // HttpGet is badly handle
-            // FIX ME in a next PR
-            apiAction("lcp/getLsdStatus", { publication })
-                .then((request) => {
-                    if (request.isSuccess) {
-                        this.setState({ lsdStatus: request.data });
-                    }
-                })
-                .catch((error) => console.error("Error to fetch api lcp/getLsdStatus", error));
-        }
-    }
-
     public render(): React.ReactElement<{}>  {
-        const pub = this.props.publication;
+        const pub = this.props.publicationViewMaybeOpds;
         const formatedPublishers = pub.publishers.join(", ");
         let formatedPublishedYear = "";
         const { translator } = this.props;
@@ -86,7 +74,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                         type="button"
                         aria-expanded={this.state.menuOpen}
                         aria-controls={this.menuId}
-                        title={this.props.publication.title}
+                        title={pub.title}
                         onClick={this.toggleMenu}
                         ref={(ref) => this.buttonRef = ref}
                     >
@@ -140,43 +128,29 @@ export class PublicationListElement extends React.Component<IProps, IState> {
 
     private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
-        const { publication } = this.props;
-        const { lsdStatus } = this.state;
 
-        if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
-            this.props.displayPublicationInfo(publication);
+        if (this.props.isOpds) {
+            this.props.displayPublicationInfo();
         } else {
-            this.props.openReader(publication);
+            this.props.openReader();
         }
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
-        displayPublicationInfo: (publication: PublicationView) => {
-            dispatch(dialogActions.open("publication-info",
+        // isOpds
+        displayPublicationInfo: () => {
+            dispatch(dialogActions.openRequest.build("publication-info",
                 {
-                    opdsPublication: publication,
+                    opdsPublicationView: props.publicationViewMaybeOpds as OpdsPublicationView,
                     publicationIdentifier: undefined,
                 },
             ));
         },
-        openReader: (publication: PublicationView) => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
-                },
-            });
-        },
-        openDeleteDialog: (publication: PublicationView) => {
-            dispatch(dialogActions.open("delete-publication-confirm",
-                {
-                    publication,
-                },
-            ));
+        // !isOpds
+        openReader: () => {
+            dispatch(readerActions.openRequest.build((props.publicationViewMaybeOpds as PublicationView).identifier));
         },
     };
 };

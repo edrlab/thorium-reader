@@ -5,13 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as classNames from "classnames";
 import * as path from "path";
 import * as queryString from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
-import { ReaderConfig as ReadiumCSS } from "readium-desktop/common/models/reader";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
+import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
 import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
@@ -51,8 +52,6 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import optionsValues from "./options-values";
-
-import * as classNames from "classnames";
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
@@ -149,7 +148,8 @@ const publicationJsonUrl = queryParams.pub.startsWith(READIUM2_ELECTRON_HTTP_PRO
 
 const lcpHint = queryParams.lcpHint;
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     /*
     reader?: any;
     mode?: any;
@@ -166,6 +166,13 @@ interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, Re
     publication?: TPublicationApiGet_result;
     */
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+}
 
 interface IState {
     publicationJsonUrl?: string;
@@ -174,15 +181,15 @@ interface IState {
     lcpPass?: string;
     contentTableOpen: boolean;
     settingsOpen: boolean;
-    settingsValues: ReadiumCSS;
+    settingsValues: ReaderConfig;
     shortcutEnable: boolean;
     landmarksOpen: boolean;
     landmarkTabOpen: number;
-    publicationData: R2Publication | undefined;
+    r2Publication: R2Publication | undefined;
     publicationInfo: TPublicationApiGet_result | undefined;
     menuOpen: boolean;
     fullscreen: boolean;
-    indexes: any;
+    indexes: any; // TODO any?!
     visibleBookmarkList: LocatorView[];
     currentLocation: LocatorExtended;
     bookmarks: TReaderApiFindBookmarks_result | undefined;
@@ -191,7 +198,7 @@ interface IState {
 // WHY ??
 const defaultLocale = "fr";
 
-export class Reader extends React.Component<IProps & ReturnType<typeof mapDispatchToProps>, IState> {
+export class Reader extends React.Component<IProps, IState> {
     private fastLinkRef: any;
 
     // can be get back with redux-connect props injection
@@ -207,14 +214,14 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
     private pubId: string;
     private unsubscribe: Unsubscribe;
 
-    constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         // WHY is it sync in init.ts, no ??
         const locale = this.store.getState().i18n.locale;
 
         if (locale == null) {
-            this.store.dispatch(setLocale(defaultLocale));
+            this.store.dispatch(i18nActions.setLocale.build(defaultLocale));
         }
 
         this.state = {
@@ -247,7 +254,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             },
             landmarksOpen: false,
             landmarkTabOpen: 0,
-            publicationData: undefined,
+            r2Publication: undefined,
             publicationInfo: undefined,
             menuOpen: false,
             fullscreen: false,
@@ -296,7 +303,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
         this.store.subscribe(() => {
             const storeState = this.store.getState();
             this.props.translator.setLocale(storeState.i18n.locale);
-            const settings = storeState.reader.config.value;
+            const settings = storeState.reader.config;
             if (settings && settings !== this.state.settingsValues) {
                 this.props.translator.setLocale(this.store.getState().i18n.locale);
 
@@ -313,9 +320,9 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
 
                 this.setState({settingsValues: settings, indexes});
 
-                // this.state.publication is initialized in loadPublicationIntoViewport(),
+                // this.state.r2Publication is initialized in loadPublicationIntoViewport(),
                 // which calls installNavigatorDOM() which in turn allows navigator API functions to be called safely
-                if (this.state.publicationData) {
+                if (this.state.r2Publication) {
                     // Push reader config to navigator
                     readiumCssOnOff();
                 }
@@ -330,7 +337,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
         }, true);
 
         // TODO: this is a short-term hack.
-        // Can we instead subscribe to Redux action type == ActionType.CloseRequest,
+        // Can we instead subscribe to Redux action type == CloseRequest,
         // but narrow it down specically to a reader window instance (not application-wide)
         window.document.addEventListener("Thorium:DialogClose", (_ev: Event) => {
             this.setState({
@@ -359,8 +366,8 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             },
         };
 
-        const publication = await this.loadPublicationIntoViewport(locator);
-        this.setState({publicationData: publication});
+        const r2Publication = await this.loadPublicationIntoViewport(locator);
+        this.setState({r2Publication});
 
         const keyDownEventHandler = (ev: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => {
             // DEPRECATED
@@ -424,7 +431,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
     public render(): React.ReactElement<{}> {
         const readerMenuProps = {
             open: this.state.menuOpen,
-            publication: this.state.publicationData,
+            r2Publication: this.state.r2Publication,
             handleLinkClick: this.handleLinkClick,
             handleBookmarkClick: this.goToLocator,
             toggleMenu: this.handleMenuButtonClick,
@@ -486,7 +493,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
                             navLeftOrRight={navLeftOrRight}
                             fullscreen={this.state.fullscreen}
                             currentLocation={this.state.currentLocation}
-                            publication={this.state.publicationData}
+                            r2Publication={this.state.r2Publication}
                             handleLinkClick={this.handleLinkClick}
                         />
                     </div>
@@ -496,7 +503,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
 
     private displayPublicationInfo() {
         if (this.state.publicationInfo) {
-            // TODO: subscribe to Redux action type == ActionType.CloseRequest
+            // TODO: subscribe to Redux action type == CloseRequest
             // in order to reset shortcutEnable to true? Problem: must be specific to this reader window.
             // So instead we subscribe to DOM event "Thorium:DialogClose", but this is a short-term hack!
             this.setState({
@@ -524,20 +531,20 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             console.log("BAD RESPONSE?!");
         }
 
-        let publicationJSON: any | undefined;
+        let r2PublicationJson: any | undefined;
         try {
-            publicationJSON = await response.json();
+            r2PublicationJson = await response.json();
         } catch (e) {
             console.log(e);
             return Promise.reject(e);
         }
-        if (!publicationJSON) {
-            return Promise.reject("!publicationJSON");
+        if (!r2PublicationJson) {
+            return Promise.reject("!r2PublicationJson");
         }
-        const publication = TAJSON.deserialize<R2Publication>(publicationJSON, R2Publication);
+        const r2Publication = TAJSON.deserialize<R2Publication>(r2PublicationJson, R2Publication);
 
-        if (publication.Metadata && publication.Metadata.Title) {
-            const title = this.props.translator.translateContentField(publication.Metadata.Title);
+        if (r2Publication.Metadata && r2Publication.Metadata.Title) {
+            const title = this.props.translator.translateContentField(r2Publication.Metadata.Title);
 
             if (title) {
                 window.document.title = "Thorium - " + title;
@@ -568,7 +575,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
         preloadPath = preloadPath.replace(/\\/g, "/");
 
         installNavigatorDOM(
-            publication as any,
+            r2Publication,
             publicationJsonUrl,
             "publication_viewport",
             preloadPath,
@@ -576,7 +583,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             true,
         );
 
-        return publication;
+        return r2Publication;
     }
 
     private handleMenuButtonClick() {
@@ -609,9 +616,9 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
             return;
         }
 
-        // this.state.publication is initialized in loadPublicationIntoViewport(),
+        // this.state.r2Publication is initialized in loadPublicationIntoViewport(),
         // which calls installNavigatorDOM() which in turn allows navigator API functions to be called safely
-        if (!this.state.publicationData) {
+        if (!this.state.r2Publication) {
             return;
         }
 
@@ -739,9 +746,10 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
     private handleSettingsSave() {
         const values = this.state.settingsValues;
 
-        this.store.dispatch(readerActions.setConfig(values));
+        this.store.dispatch(readerActions.configSetRequest.build(values));
+
         // Push reader config to navigator
-        readiumCssOnOff();
+        // readiumCssOnOff();
     }
 
     private handleSettingsValueChange(event: any, name: string, givenValue?: any) {
@@ -784,7 +792,7 @@ export class Reader extends React.Component<IProps & ReturnType<typeof mapDispat
         this.handleSettingsSave();
     }
 
-    private setSettings(settingsValues: ReadiumCSS) {
+    private setSettings(settingsValues: ReaderConfig) {
         if (!settingsValues) {
             return;
         }
@@ -806,7 +814,7 @@ const buildBookmarkRequestData = () => {
 };
 */
 
-const mapStateToProps = (state: RootState, __: any) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         reader: state.reader.reader,
         mode: state.reader.mode,
@@ -815,26 +823,26 @@ const mapStateToProps = (state: RootState, __: any) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         toggleFullscreen: (fullscreenOn: boolean) => {
             if (fullscreenOn) {
-                dispatch(readerActions.setFullscreenOn());
+                dispatch(readerActions.fullScreenRequest.build(true));
             } else {
-                dispatch(readerActions.setFullscreenOff());
+                dispatch(readerActions.fullScreenRequest.build(false));
             }
         },
         closeReader: (reader: any) => {
-            dispatch(readerActions.close(reader, true));
+            dispatch(readerActions.closeRequest.build(reader, true));
         },
         detachReader: (reader: any) => {
-            dispatch(readerActions.detach(reader));
+            dispatch(readerActions.detachModeRequest.build(reader));
         },
         displayPublicationInfo: (pubId: string) => {
-            dispatch(dialogActions.open("publication-info-reader",
+            dispatch(dialogActions.openRequest.build("publication-info-reader",
                 {
                     publicationIdentifier: pubId,
-                    opdsPublication: undefined,
+                    opdsPublicationView: undefined,
                 },
             ));
         },

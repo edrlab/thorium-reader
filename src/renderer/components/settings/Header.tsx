@@ -13,11 +13,25 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 
-interface IProps extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     section: number;
 }
 
-export class SettingsHeader extends React.Component<IProps> {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export class SettingsHeader extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 

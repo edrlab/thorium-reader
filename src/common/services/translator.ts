@@ -193,7 +193,7 @@ export class Translator {
         return "";
     }
 
-    private _translate(message: string, options: any = {}): any {
+    private _translate(message: string, options: any = {}): any { // TODO any?!
         const label = i18nextInstance.t(message, options);
         if (!label || !label.length) {
             return i18nextInstanceEN.t(message, options);

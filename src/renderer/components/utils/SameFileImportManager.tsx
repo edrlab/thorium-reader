@@ -10,20 +10,33 @@ import { connect } from "react-redux";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
-interface IProps extends ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class SameFileImportManager extends React.Component<IProps> {
+class SameFileImportManager extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public componentDidUpdate(oldProps: IProps) {
         const { lastImport, downloads } = this.props;
 
         if (lastImport !== oldProps.lastImport) {
-            if (downloads.findIndex((value) => value.url === lastImport.publication.url) < 0) {
+            if (downloads.findIndex((value) => value.url === lastImport.opdsPublicationView.url) < 0) {
                 apiAction("publication/importOpdsEntry",
-                    lastImport.publication.url,
-                    lastImport.publication.base64OpdsPublication,
-                    lastImport.publication.title,
-                    lastImport.publication.tags,
+                    lastImport.opdsPublicationView.url,
+                    lastImport.opdsPublicationView.r2OpdsPublicationBase64,
+                    lastImport.opdsPublicationView.title,
+                    lastImport.opdsPublicationView.tags,
                     lastImport.downloadSample,
                 ).catch((error) => {
                     console.error(`Error to fetch api publication/importOpdsEntry`, error);
@@ -37,7 +50,7 @@ class SameFileImportManager extends React.Component<IProps> {
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         lastImport: state.import,
         downloads: state.download.downloads,

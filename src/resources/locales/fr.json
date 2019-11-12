@@ -61,7 +61,7 @@
         "deleteFeed": "Êtes vous sûr de vouloir supprimer ce catalogue ?",
         "deletePublication": "Êtes vous sûr de vouloir supprimer cette publication ?",
         "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub)",
+        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub ou .lcpl)",
         "no": "Non",
         "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
@@ -133,9 +133,7 @@
         "previous": "Précédent"
     },
     "publication": {
-        "deleteButton": "Supprimer de la bibliothèque",
         "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",
-        "readButton": "Lire",
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
         "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retourné.",

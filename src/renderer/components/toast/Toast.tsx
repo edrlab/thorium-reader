@@ -20,7 +20,8 @@ export enum ToastType {
     Success,
 }
 
-interface IProps extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     close: (id: string) => void;
     className?: string;
     id?: string;
@@ -28,6 +29,14 @@ interface IProps extends TranslatorProps {
     message?: string;
     displaySystemNotification?: boolean;
     type?: ToastType;
+}
+
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
 interface IState {
@@ -38,7 +47,7 @@ interface IState {
 export class Toast extends React.Component<IProps, IState> {
     private ref: any;
 
-    public constructor(props: IProps) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
