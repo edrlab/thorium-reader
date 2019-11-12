@@ -32,10 +32,10 @@ test("opensearch", async () => {
     expect(await getSearchUrlFromOpdsLinks([{
         TypeLink: "application/opensearchdescription+xml",
         Href: "http://static.wolnelektury.pl/opensearch.xml",
-    }])).toBe("http://static.wolnelektury.pl/opensearch.xml");
+    }])).toBe("https://wolnelektury.pl/opds/search/?q={searchTerms}&author=&translator=&title=");
 });
 
-test("search opds2 url multi search", async () => {
+test("opensearch type incorrect", async () => {
     expect(await getSearchUrlFromOpdsLinks([{
         TypeLink: "application/opds+json",
         Href: "http://static.wolnelektury.pl/opensearch.xml",
