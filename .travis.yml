@@ -151,6 +151,7 @@ deploy:
     - "release/**/*.AppImage"
     - "release/**/*.deb"
     - "release/*.exe"
+    - "release/*.7z"
     - "release/**/*.dmg"
   skip_cleanup: true
 # name: "[$TRAVIS_TAG] continuous test build (pre-release)"
