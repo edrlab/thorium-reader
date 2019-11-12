@@ -12,9 +12,12 @@ import { LocatorType } from "readium-desktop/common/models/locator";
 import { Publication } from "readium-desktop/common/models/publication";
 import { Bookmark, Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
+import { ConfigDocument } from "readium-desktop/main/db/document/config";
+import { BaseRepository } from "readium-desktop/main/db/repository/base";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
@@ -275,18 +278,23 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
     });
 }
 
+const READER_CONFIG_ID = "reader";
+type ConfigDocumentType = ConfigDocument<ReaderConfig>;
+type ConfigRepositoryType = BaseRepository<ConfigDocumentType>;
+type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Timestampable>;
+
 export function* readerConfigSetRequestWatcher(): SagaIterator {
     while (true) {
         // Wait for save request
         const action: any = yield take(readerActions.ActionType.ConfigSetRequest);
         const configValue: ReaderConfig = action.payload.config;
-        const config = {
-            identifier: "reader",
+        const config: ConfigDocumentTypeWithoutTimestampable = {
+            identifier: READER_CONFIG_ID,
             value: configValue,
         };
 
         // Get reader settings
-        const configRepository = diMainGet("config-repository");
+        const configRepository: ConfigRepositoryType = diMainGet("config-repository");
 
         try {
             yield call(() => configRepository.save(config));
@@ -309,7 +317,7 @@ export function* readerConfigInitWatcher(): SagaIterator {
     const configRepository = diMainGet("config-repository");
 
     try {
-        const readerConfig = yield call(() => configRepository.get("reader"));
+        const readerConfig = yield call(() => configRepository.get(READER_CONFIG_ID));
 
         // Returns the first reader configuration available in database
         yield put({

@@ -5,16 +5,22 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as uuid from "uuid";
-
 import { injectable } from "inversify";
-
+import { Timestampable } from "readium-desktop/common/models/timestampable";
+import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import * as uuid from "uuid";
 
 import { IDeviceIDManager } from "@r2-lcp-js/lsd/deviceid-manager";
 
 const DEVICE_ID_KEY = "device_id";
 const DEVICE_ID_PREFIX = "device_id_";
+
+interface StringMap {
+    [key: string]: string;
+}
+type ConfigDocumentType = ConfigDocument<StringMap>;
+type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Timestampable>;
 
 @injectable()
 export class DeviceIdManager implements IDeviceIDManager {
@@ -72,7 +78,7 @@ export class DeviceIdManager implements IDeviceIDManager {
         await this.configRepository.save(config);
     }
 
-    private async getDeviceConfig(): Promise<any> {
+    private async getDeviceConfig(): Promise<ConfigDocumentTypeWithoutTimestampable> {
         try {
             return await this.configRepository.get("device");
         } catch (error) {
@@ -83,7 +89,7 @@ export class DeviceIdManager implements IDeviceIDManager {
         }
     }
 
-    private async getDeviceConfigValue(key: string): Promise<any> {
+    private async getDeviceConfigValue(key: string): Promise<string> {
         const deviceConfig = await this.getDeviceConfig();
         return deviceConfig.value[key];
     }
