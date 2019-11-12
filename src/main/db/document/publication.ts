@@ -19,7 +19,7 @@ interface Resources {
 
 export interface PublicationDocument extends Identifiable, Timestampable {
     resources: Resources;
-    opdsPublication: any;
+    // opdsPublication: any; // TODO any?! OPDSPublication? seems unused!
     title: string;
     tags?: string[];
     files?: File[];

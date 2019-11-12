@@ -364,6 +364,9 @@ export class CatalogService {
             coverFile: null,
             customCover: null,
             hash: await extractCrc32OnZip(filePath),
+
+            // OPDSPublication? seems unused!
+            // opdsPublication: undefined,
         } as PublicationDocument;
         debug(pubDocument.hash);
 

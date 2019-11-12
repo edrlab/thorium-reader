@@ -108,6 +108,22 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
     }
 
     protected convertToDocument(dbDoc: PouchDB.Core.Document<any>): PublicationDocument {
+        if (dbDoc.opdsPublication) {
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log(dbDoc.opdsPublication);
+            // tslint:disable-next-line: max-line-length
+            console.log(JSON.stringify(JSON.parse(Buffer.from(dbDoc.opdsPublication, "base64").toString("utf-8")), null, 4).substr(0, 1000));
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+            console.log("++++++++++++++");
+        }
+
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
@@ -117,7 +133,8 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                     r2PublicationBase64: dbDoc.resources.r2PublicationBase64 || dbDoc.resources.filePublication,
                     r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 || dbDoc.resources.opdsPublication,
                 } : undefined,
-                opdsPublication: dbDoc.opdsPublication,
+                // OPDSPublication? seems unused!
+                // opdsPublication: dbDoc.opdsPublication,
                 title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
                 tags: dbDoc.tags,
                 files: dbDoc.files,

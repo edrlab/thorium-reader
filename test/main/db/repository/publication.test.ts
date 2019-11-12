@@ -17,7 +17,8 @@ const dbDoc1 = {
     identifier: dbDocIdentifier1,
     _id: "publication_" + dbDocIdentifier1,
     publication: null as any,
-    opdsPublication: null as any,
+    // OPDSPublication? seems unused!
+    // opdsPublication: null as any,
     title: "Publication 1",
     tags: ["science", "computer"],
     files: [] as any,
@@ -32,7 +33,8 @@ const dbDoc2 = {
     identifier: dbDocIdentifier2,
     _id: "publication_" + dbDocIdentifier2,
     publication: null as any,
-    opdsPublication: null as any,
+    // OPDSPublication? seems unused!
+    // opdsPublication: null as any,
     title: "Publication 2",
     tags: ["node", "computer"],
     files: [] as any,
@@ -193,7 +195,8 @@ test("repository.save create", async () => {
     const dbDoc = {
         identifier: "new-publication",
         publication: null as any,
-        opdsPublication: null as any,
+        // OPDSPublication? seems unused!
+        // opdsPublication: null as any,
         title: "New publication",
         tags: ["scifi"],
         files: [] as any,
@@ -225,7 +228,8 @@ test("repository.save update", async () => {
     const dbDoc = {
         identifier: "pub-1",
         publication: null as any,
-        opdsPublication: null as any,
+        // OPDSPublication? seems unused!
+        // opdsPublication: null as any,
         title: "Publication 1",
         tags: ["computer"],
         files: [] as any,
