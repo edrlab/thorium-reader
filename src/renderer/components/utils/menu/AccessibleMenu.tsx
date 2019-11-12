@@ -9,7 +9,8 @@ import * as React from "react";
 import FocusLock from "react-focus-lock";
 import OutsideClickAlerter from "readium-desktop/renderer/components/utils/OutsideClickAlerter";
 
-interface Props {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     className?: string;
     visible: boolean;
     toggleMenu: () => void;
@@ -17,16 +18,24 @@ interface Props {
     focusMenuButton?: () => void;
 }
 
-interface State {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     inFocus: boolean;
     triggerElem: HTMLElement | undefined;
 }
 
-export default class AccessibleMenu extends React.Component<Props, State> {
+export default class AccessibleMenu extends React.Component<IProps, IState> {
     private containerRef: React.RefObject<HTMLDivElement>;
     private ismounted = false;
 
-    public constructor(props: Props) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -56,7 +65,7 @@ export default class AccessibleMenu extends React.Component<Props, State> {
         }
     }
 
-    public componentDidUpdate(oldProps: Props, prevState: State) {
+    public componentDidUpdate(oldProps: IProps, prevState: IState) {
         if (!this.props.visible && oldProps.visible) {
             document.removeEventListener("keydown", this.handleKey);
             document.removeEventListener("focusin", this.handleFocus);

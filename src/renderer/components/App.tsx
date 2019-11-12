@@ -24,7 +24,7 @@ import { diRendererSymbolTable } from "../diSymbolTable";
 import ToastManager from "./toast/ToastManager";
 import SameFileImportManager from "./utils/SameFileImportManager";
 
-export default class App extends React.Component<any, undefined> {
+export default class App extends React.Component<{}, undefined> {
 
     @lazyInject(diRendererSymbolTable.store)
     private store: Store<RootState>;
@@ -32,7 +32,7 @@ export default class App extends React.Component<any, undefined> {
     @lazyInject(diRendererSymbolTable.history)
     private history: History;
 
-    constructor(props: any) {
+    constructor(props: {}) {
         super(props);
 
         this.onDrop = this.onDrop.bind(this);
@@ -41,12 +41,12 @@ export default class App extends React.Component<any, undefined> {
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
         this.store.dispatch(
-            dialogActions.open("file-import",
+            dialogActions.openRequest.build("file-import",
                 {
                     files: acceptedFiles.filter((file) => {
                             const ext = path.extname(file.path);
-                            return (/\.epub[3]?$/.test(ext) /*||
-                            ext === ".lcpl"*/);
+                            return (/\.epub[3]?$/.test(ext) ||
+                            ext === ".lcpl");
                     })
                     .map((file) => {
                         return {

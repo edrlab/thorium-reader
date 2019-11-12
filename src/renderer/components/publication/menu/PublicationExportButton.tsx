@@ -11,12 +11,26 @@ import { TPublicationApiExportPublication } from "readium-desktop/main/api/publi
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
-interface IProps extends TranslatorProps {
-    publication: PublicationView;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    publicationView: PublicationView;
     exportPublication?: TPublicationApiExportPublication;
 }
 
-class PublicationExportButton extends React.Component<IProps> {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+class PublicationExportButton extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (
@@ -32,8 +46,8 @@ class PublicationExportButton extends React.Component<IProps> {
     }
 
     private onExport = () => {
-        const publication = this.props.publication;
-        apiAction("publication/exportPublication", publication).catch((error) => {
+        const publicationView = this.props.publicationView;
+        apiAction("publication/exportPublication", publicationView).catch((error) => {
             console.error(`Error to fetch publication/exportPublication`, error);
         });
     }

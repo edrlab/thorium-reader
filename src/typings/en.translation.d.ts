@@ -269,9 +269,7 @@ declare namespace typed_i18n {
   (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "publication", __?: {}): {
-  readonly "deleteButton": string,
   readonly "expiredLcp": string,
-  readonly "readButton": string,
   readonly "renewButton": string,
   readonly "returnButton": string,
   readonly "returnedLcp": string,
@@ -279,9 +277,7 @@ declare namespace typed_i18n {
   readonly "seeLess": string,
   readonly "seeMore": string
 };
-  (_: "publication.deleteButton", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
-  (_: "publication.readButton", __?: {}): string;
   (_: "publication.renewButton", __?: {}): string;
   (_: "publication.returnButton", __?: {}): string;
   (_: "publication.returnedLcp", __?: {}): string;

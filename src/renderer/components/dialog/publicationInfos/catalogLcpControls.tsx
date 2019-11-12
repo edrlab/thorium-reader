@@ -7,11 +7,9 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { LsdStatus, LsdStatusType } from "readium-desktop/common/models/lcp";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-right.svg";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
@@ -23,71 +21,93 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps {
-    publication: PublicationView;
+import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
+
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    publicationView: PublicationView;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-interface IState {
-    lsdStatus: LsdStatus | undefined;
-}
+class CatalogLcpControls extends React.Component<IProps, undefined> {
 
-class CatalogLcpControls extends React.Component<IProps & ReturnType<typeof mapDispatchToProps>, IState> {
-    public constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
-
-        this.state = {
-            lsdStatus: undefined,
-        };
 
         this.handleRead = this.handleRead.bind(this);
         this.deletePublication = this.deletePublication.bind(this);
-    }
 
-    public componentDidMount() {
-        // don't forget to handle httpRequest in frontend
-        apiAction("lcp/getLsdStatus", {publication: this.props.publication})
-        .then((request) => this.setState({lsdStatus: request.data}))
-        .catch((error) => {
-            console.error(`Error to fetch lcp/getLsdStatus`, error);
-        });
+        this.returnPublicationDialog = this.returnPublicationDialog.bind(this);
+        this.renewPublicationDialog = this.renewPublicationDialog.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, publication } = this.props;
-        const { lsdStatus } = this.state;
+        const { __, publicationView } = this.props;
 
-        if (!publication) {
+        if (!publicationView) {
             return (<></>);
         }
 
+        const lsdOkay = publicationView.lcp &&
+            publicationView.lcp.lsd &&
+            publicationView.lcp.lsd.lsdStatus;
+
+        const lsdStatus = lsdOkay &&
+            publicationView.lcp.lsd.lsdStatus.status ?
+            publicationView.lcp.lsd.lsdStatus.status : undefined;
+
+        const lsdReturnLink = (!lsdOkay || !publicationView.lcp.lsd.lsdStatus.links) ? undefined :
+            publicationView.lcp.lsd.lsdStatus.links.find((link) => {
+                return link.rel === "return";
+            });
+
+        const lsdRenewLink = (!lsdOkay || !publicationView.lcp.lsd.lsdStatus.links) ? undefined :
+            publicationView.lcp.lsd.lsdStatus.links.find((link) => {
+                return link.rel === "renew";
+            });
         return (
             <>
-                { lsdStatus && (lsdStatus.status === LsdStatusType.Active ?
-                    <button  onClick={this.handleRead} className={styles.lire}>{__("publication.readButton")}</button>
-                : lsdStatus.status === LsdStatusType.Expired ?
-                    <p style={{color: "red"}}>{__("publication.expiredLcp")}</p>
-                : lsdStatus.status === LsdStatusType.Revoked ?
-                    <p style={{color: "red"}}>{__("publication.revokedLcp")}</p>
-                : <p style={{color: "red"}}>{__("publication.returnedLcp")}</p>)}
+                {(!lsdStatus ||
+                (lsdStatus === StatusEnum.Active || lsdStatus === StatusEnum.Ready)) ?
+                <button  onClick={this.handleRead} className={styles.lire}>{__("catalog.readBook")}</button>
+                : (lsdStatus === StatusEnum.Expired ?
+                <p style={{color: "red"}}>{__("publication.expiredLcp")}</p>
+                : ((lsdStatus === StatusEnum.Revoked || lsdStatus === StatusEnum.Cancelled) ?
+                <p style={{color: "red"}}>{__("publication.revokedLcp")}</p>
+                : (lsdStatus === StatusEnum.Returned ?
+                <p style={{color: "red"}}>{__("publication.returnedLcp")}</p> :
+                <p style={{color: "red"}}>{`LCP LSD: ${lsdStatus}`}</p>
+                )))}
                 <ul className={styles.liens}>
-                    { lsdStatus && lsdStatus.status === LsdStatusType.Expired &&
+                    {
+                        // lsdStatus === StatusEnum.Expired &&
+                        lsdRenewLink &&
                         <li>
-                            <button onClick={ this.props.openRenewDialog }>
+                            <button onClick={ this.renewPublicationDialog }>
                                 <SVG svg={LoopIcon} ariaHidden/>
                                 {__("publication.renewButton")}
                             </button>
                         </li>
                     }
-                    <li>
-                        <button onClick={ this.props.openReturnDialog }>
-                            <SVG svg={ArrowIcon} ariaHidden/>
-                            {__("publication.returnButton")}
-                        </button>
-                    </li>
+                    {
+                        lsdReturnLink &&
+                        <li>
+                            <button onClick={ this.returnPublicationDialog }>
+                                <SVG svg={ArrowIcon} ariaHidden/>
+                                {__("publication.returnButton")}
+                            </button>
+                        </li>
+                    }
                     <li>
                         <button onClick={ this.deletePublication }>
                             <SVG svg={DeleteIcon} ariaHidden/>
-                            {__("publication.deleteButton")}
+                            {__("catalog.deleteBook")}
                         </button>
                     </li>
                 </ul>
@@ -95,48 +115,50 @@ class CatalogLcpControls extends React.Component<IProps & ReturnType<typeof mapD
         );
     }
 
+    private renewPublicationDialog(e: TMouseEvent) {
+        e.preventDefault();
+        this.props.openRenewDialog();
+    }
+    private returnPublicationDialog(e: TMouseEvent) {
+        e.preventDefault();
+        this.props.openReturnDialog();
+    }
+
     private deletePublication(e: TMouseEvent) {
         e.preventDefault();
-        this.props.openDeleteDialog(this.props.publication);
+        this.props.openDeleteDialog();
     }
 
     private handleRead(e: TMouseEvent) {
         e.preventDefault();
 
-        this.props.openReader(this.props.publication);
+        this.props.openReader();
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch, props: IProps) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
-        openReader: (publication: PublicationView) => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
-                },
-            });
+        openReader: () => {
+            dispatch(readerActions.openRequest.build(props.publicationView.identifier));
         },
-        openDeleteDialog: (publication: PublicationView) => {
-            dispatch(dialogActions.open("delete-publication-confirm",
+        openDeleteDialog: () => {
+            dispatch(dialogActions.openRequest.build("delete-publication-confirm",
                 {
-                    publication,
+                    publicationView: props.publicationView,
                 },
             ));
         },
         openRenewDialog: () => {
-            dispatch(dialogActions.open("lsd-renew-confirm",
+            dispatch(dialogActions.openRequest.build("lsd-renew-confirm",
                 {
-                    publication: props.publication,
+                    publicationView: props.publicationView,
                 },
             ));
         },
         openReturnDialog: () => {
-            dispatch(dialogActions.open("lsd-return-confirm",
+            dispatch(dialogActions.openRequest.build("lsd-return-confirm",
                 {
-                    publication: props.publication,
+                    publicationView: props.publicationView,
                 },
             ));
         },

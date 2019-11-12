@@ -20,18 +20,27 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import Dialog from "./Dialog";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-class RenewLsdConfirm extends React.Component<IProps> {
-    public constructor(props: any) {
+class RenewLsdConfirm extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.renew = this.renew.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
-        if (!this.props.open || !this.props.publication) {
+        if (!this.props.open || !this.props.publicationView) {
             return <></>;
         }
 
@@ -41,7 +50,7 @@ class RenewLsdConfirm extends React.Component<IProps> {
                 <div>
                     <p>
                         {__("dialog.renew")}
-                        <span>{this.props.publication.title}</span>
+                        <span>{this.props.publicationView.title}</span>
                     </p>
                     <div>
                         <button className={styles.primary} onClick={this.renew}>{__("dialog.yes")}</button>
@@ -54,28 +63,24 @@ class RenewLsdConfirm extends React.Component<IProps> {
 
     public renew(e: TMouseEvent) {
         e.preventDefault();
-        apiAction("lcp/renewPublicationLicense", {
-            publication: {
-                identifier: this.props.publication.identifier,
-            },
-        }).catch((error) => {
-            console.error(`Error to fetch lcp/renewPublicationLicense`, error);
+        apiAction("lcp/renewPublicationLicense", this.props.publicationView.identifier).catch((error) => {
+            console.error(`Error API lcp/renewPublicationLicense`, error);
         });
         this.props.closeDialog();
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         closeDialog: () => {
             dispatch(
-                dialogActions.close(),
+                dialogActions.closeRequest.build(),
             );
         },
     };
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     ...{
         open: state.dialog.type === "lsd-renew-confirm",
     }, ...state.dialog.data as DialogType["lsd-renew-confirm"],

@@ -8,21 +8,17 @@
 import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
+import { LocaleConfigIdentifier, LocaleConfigRepositoryType } from "readium-desktop/common/config";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, netActions, readerActions, updateActions,
 } from "readium-desktop/common/redux/actions";
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
-import { UpdateState } from "readium-desktop/common/redux/states/update";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { diMainGet } from "readium-desktop/main/di";
-import { appInit } from "readium-desktop/main/redux/actions/app";
-import {
-    ReaderStateConfig, ReaderStateMode, ReaderStateReader,
-} from "readium-desktop/main/redux/states/reader";
+import { appActions } from "readium-desktop/main/redux/actions/";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -43,14 +39,15 @@ const winOpenCallback = (appWindow: AppWindow) => {
 
     // Init network on window
     const state = store.getState();
-    let netActionType = null;
+    let actionNet = null;
 
     switch (state.net.status) {
         case NetStatus.Online:
-            netActionType = netActions.ActionType.Online;
+            actionNet = netActions.online.build();
             break;
-        case NetStatus.Online:
-            netActionType = netActions.ActionType.Offline;
+        case NetStatus.Offline:
+        default:
+            actionNet = netActions.offline.build();
             break;
     }
 
@@ -58,9 +55,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: netActionType,
-            },
+            action: actionNet,
         },
     } as syncIpc.EventPayload);
 
@@ -68,12 +63,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: readerActions.ActionType.OpenSuccess,
-                payload: {
-                    reader: state.reader.readers[appWindow.identifier],
-                } as ReaderStateReader,
-            },
+            action: readerActions.openSuccess.build(state.reader.readers[appWindow.identifier]),
         },
     } as syncIpc.EventPayload);
 
@@ -81,12 +71,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: readerActions.ActionType.ConfigSetSuccess,
-                payload: {
-                    config: state.reader.config,
-                } as ReaderStateConfig,
-            },
+            action: readerActions.configSetSuccess.build(state.reader.config),
         },
     } as syncIpc.EventPayload);
 
@@ -94,12 +79,15 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: readerActions.ActionType.ModeSetSuccess,
-                payload: {
-                    mode: state.reader.mode,
-                } as ReaderStateMode,
-            },
+            action: readerActions.detachModeSuccess.build(state.reader.mode),
+        },
+    } as syncIpc.EventPayload);
+
+    // Send locale
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: i18nActions.setLocale.build(state.i18n.locale),
         },
     } as syncIpc.EventPayload);
 
@@ -108,25 +96,11 @@ const winOpenCallback = (appWindow: AppWindow) => {
         type: syncIpc.EventType.MainAction,
         payload: {
             action: {
-                type: i18nActions.ActionType.Set,
-                payload: {
-                    locale: state.i18n.locale,
-                } as i18nActions.PayloadLocale,
-            },
-        },
-    } as syncIpc.EventPayload);
-
-    // Send locale
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: {
-                type: updateActions.ActionType.LatestVersionSet,
-                payload: {
-                    status: state.update.status,
-                    latestVersion: state.update.latestVersion,
-                    latestVersionUrl: state.update.latestVersionUrl,
-                } as UpdateState,
+                type: updateActions.latestVersion.ID,
+                payload: updateActions.latestVersion.build(
+                    state.update.status,
+                    state.update.latestVersion,
+                    state.update.latestVersionUrl),
             },
         },
     } as syncIpc.EventPayload);
@@ -155,12 +129,7 @@ const winCloseCallback = (appWindow: AppWindow) => {
     const appWin = Object.values(appWindows)[0];
     if (appWin.type === AppWindowType.Library) {
         // Set reader to attached mode
-        store.dispatch({
-            type: readerActions.ActionType.ModeSetSuccess,
-            payload: {
-                mode: ReaderMode.Attached,
-            },
-        });
+        store.dispatch(readerActions.detachModeSuccess.build(ReaderMode.Attached));
     }
 
     if (
@@ -177,12 +146,13 @@ const winCloseCallback = (appWindow: AppWindow) => {
 // Initialize application
 export function initApp() {
     const store = diMainGet("store");
-    store.dispatch(appInit());
+    store.dispatch(appActions.initRequest.build());
 
-    const configRepository = diMainGet("config-repository");
-    configRepository.get("i18n").then((i18nLocale) => {
+    const configRepository: LocaleConfigRepositoryType = diMainGet("config-repository");
+    const config = configRepository.get(LocaleConfigIdentifier);
+    config.then((i18nLocale) => {
         if (i18nLocale && i18nLocale.value && i18nLocale.value.locale) {
-            store.dispatch(setLocale(i18nLocale.value.locale));
+            store.dispatch(i18nActions.setLocale.build(i18nLocale.value.locale));
             debug(`set the locale ${i18nLocale.value.locale}`);
         } else {
             debug(`error on configRepository.get("i18n")): ${i18nLocale}`);
@@ -190,7 +160,7 @@ export function initApp() {
     }).catch(async () => {
         const loc = app.getLocale().split("-")[0];
         const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
-        store.dispatch(setLocale(lang));
+        store.dispatch(i18nActions.setLocale.build(lang));
         debug(`create i18n key in configRepository with ${lang} locale`);
     });
 

@@ -13,13 +13,13 @@ import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 
 interface Resources {
-    filePublication: string;
-    opdsPublication: string;
+    r2PublicationBase64?: string;
+    r2OpdsPublicationBase64?: string;
 }
 
 export interface PublicationDocument extends Identifiable, Timestampable {
     resources: Resources;
-    opdsPublication: any;
+    // opdsPublication: any; // TODO any?! OPDSPublication? seems unused!
     title: string;
     tags?: string[];
     files?: File[];
@@ -28,5 +28,6 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     lcp?: LcpInfo;
     hash: string;
 }
+export type PublicationDocumentWithoutTimestampable = Omit<PublicationDocument, keyof Timestampable>;
 
 export type THttpGetPublicationDocument = IHttpGetResult<string, PublicationDocument>;

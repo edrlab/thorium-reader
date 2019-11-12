@@ -29,13 +29,22 @@ import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
-interface IProps extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     open: boolean;
-    publication: R2Publication;
+    r2Publication: R2Publication;
     handleLinkClick: (event: any, url: string) => void;
     handleBookmarkClick: (locator: any) => void;
     toggleMenu: any;
     focusNaviguationMenu: () => void;
+}
+
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
 interface IState {
@@ -49,7 +58,8 @@ interface IState {
 export class ReaderMenu extends React.Component<IProps, IState> {
     private goToRef: any;
     private unsubscribe: Unsubscribe;
-    public constructor(props: IProps) {
+
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -96,23 +106,23 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, publication, toggleMenu } = this.props;
+        const { __, r2Publication, toggleMenu } = this.props;
         const { bookmarks } = this.state;
-        if (!publication) {
+        if (!r2Publication) {
             return <></>;
         }
 
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: publication && this.renderLinkTree(__("reader.marks.toc"), publication.TOC, 1),
-                disabled: !publication.TOC || publication.TOC.length === 0,
+                content: r2Publication && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1),
+                disabled: !r2Publication.TOC || r2Publication.TOC.length === 0,
             },
             {
                 title: __("reader.marks.landmarks"),
-                content: publication && publication.Landmarks &&
-                    this.renderLinkList(__("reader.marks.landmarks"), publication.Landmarks),
-                disabled: !publication.Landmarks || publication.Landmarks.length === 0,
+                content: r2Publication && r2Publication.Landmarks &&
+                    this.renderLinkList(__("reader.marks.landmarks"), r2Publication.Landmarks),
+                disabled: !r2Publication.Landmarks || r2Publication.Landmarks.length === 0,
             },
             {
                 title: __("reader.marks.bookmarks"),
@@ -257,7 +267,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
     private createBookmarkList(): JSX.Element[] {
         const { __ } = this.props;
-        if (this.props.publication && this.state.bookmarks) {
+        if (this.props.r2Publication && this.state.bookmarks) {
             const { bookmarkToUpdate } = this.state;
             return this.state.bookmarks.map((bookmark, i) =>
                 <div
@@ -313,13 +323,13 @@ export class ReaderMenu extends React.Component<IProps, IState> {
                     type="text"
                     aria-invalid={error}
                     onChange={() => this.setState({pageError: false})}
-                    disabled={!this.props.publication.PageList}
+                    disabled={!this.props.r2Publication.PageList}
                     placeholder={__("reader.navigation.goToPlaceHolder")}
                     alt={__("reader.navigation.goToPlaceHolder")}
                 />
                 <button
                     type="submit"
-                    disabled={!this.props.publication.PageList}
+                    disabled={!this.props.r2Publication.PageList}
                 >
                     { __("reader.navigation.goTo") }
                 </button>
@@ -344,7 +354,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     private handleSubmitPage(e: TFormEvent) {
         e.preventDefault();
         const pageNbr = (this.goToRef.value as string).trim().replace(/\s\s+/g, " ");
-        const foundPage = this.props.publication.PageList.find((page) => page.Title === pageNbr);
+        const foundPage = this.props.r2Publication.PageList.find((page) => page.Title === pageNbr);
         if (foundPage) {
             this.setState({pageError: false});
             this.props.handleLinkClick(undefined, foundPage.Href);

@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
-
 import { netActions } from "readium-desktop/common/redux/actions";
 import { NetState, NetStatus } from "readium-desktop/common/redux/states/net";
 
@@ -16,14 +14,15 @@ const initialState: NetState = {
 
 export function netReducer(
     state: NetState = initialState,
-    action: Action,
+    action: netActions.offline.TAction |
+        netActions.online.TAction,
 ) {
     switch (action.type) {
-        case netActions.ActionType.Offline:
+        case netActions.offline.ID:
             return Object.assign({}, state, {
                 status: NetStatus.Offline,
             });
-        case netActions.ActionType.Online:
+        case netActions.online.ID:
             return Object.assign({}, state, {
                 status: NetStatus.Online,
             });

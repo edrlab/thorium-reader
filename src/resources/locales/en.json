@@ -32,7 +32,7 @@
         "allBooks": "All books",
         "bookInfo": "About this book",
         "delete": "Delete",
-        "deleteBook": "Delete from the bookshelf",
+        "deleteBook": "Delete",
         "deleteTag": "Delete the tag",
         "description": "Description",
         "emptyTagList": "You have no tagged ebook.",
@@ -61,7 +61,7 @@
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
         "import": "Do you really want to import those files :",
-        "importError": "an error occured, verify your file extension (.epub)",
+        "importError": "an error occured, verify your file extension (.epub or .lcpl)",
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",
@@ -133,9 +133,7 @@
         "previous": "Previous"
     },
     "publication": {
-        "deleteButton": "Delete from the bookshelf",
         "expiredLcp": "This book can't be read because the LCP license has expired.",
-        "readButton": "Read",
         "renewButton": "Renew",
         "returnButton": "Return",
         "returnedLcp": "This book can't be read because the LCP license has been returned.",

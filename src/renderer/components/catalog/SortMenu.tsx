@@ -10,12 +10,25 @@ import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
-interface IProps extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     onClickAlphaSort: () => void;
     onClickCountSort: () => void;
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
 
-class SortMenu extends React.Component<IProps> {
+class SortMenu extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (

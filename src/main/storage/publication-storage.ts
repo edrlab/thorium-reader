@@ -23,7 +23,7 @@ import slugify from "slugify";
 
 import { dialog } from "electron";
 
-// Store publications in a repository on filesystem
+// Store pubs in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
 // publication uuid
 // repository
@@ -84,9 +84,9 @@ export class PublicationStorage {
         );
     }
 
-    public copyPublicationToPath(publication: PublicationView, destinationPath: string) {
-        const publicationPath = `${this.buildPublicationPath(publication.identifier)}/book.epub`;
-        const newFilePath = `${destinationPath}/${slugify(publication.title)}.epub`;
+    public copyPublicationToPath(publicationView: PublicationView, destinationPath: string) {
+        const publicationPath = `${this.buildPublicationPath(publicationView.identifier)}/book.epub`;
+        const newFilePath = `${destinationPath}/${slugify(publicationView.title)}.epub`;
         fs.copyFile(publicationPath, newFilePath, (err) => {
             if (err) {
                 dialog.showMessageBox({
@@ -135,16 +135,17 @@ export class PublicationStorage {
         srcPath: string,
     ): Promise<File> {
         // Extract cover information from srcPath
-        const pub: any = await EpubParsePromise(srcPath);
-        const zipInternal = pub.Internal.find((i: any) => {
+        const r2Publication = await EpubParsePromise(srcPath);
+        // private Internal is very hacky! :(
+        const zipInternal = (r2Publication as any).Internal.find((i: any) => {
             if (i.Name === "zip") {
                 return true;
             }
             return false;
         });
         const zip = zipInternal.Value as IZip;
-        const coverLink = pub.GetCover();
 
+        const coverLink = r2Publication.GetCover();
         if (!coverLink) {
             return null;
         }
