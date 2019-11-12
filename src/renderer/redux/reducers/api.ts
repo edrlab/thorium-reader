@@ -7,7 +7,7 @@
 
 import * as moment from "moment";
 
-import { ActionType, ApiAction } from "readium-desktop/common/redux/actions/api";
+import { apiActions } from "readium-desktop/common/redux/actions/";
 import { ApiState } from "readium-desktop/renderer/redux/states/api";
 
 const initialState: ApiState<any> = {
@@ -18,22 +18,25 @@ const initialState: ApiState<any> = {
 // The api reducer.
 export function apiReducer(
     state: ApiState<any> = initialState,
-    action: ApiAction,
+    action: apiActions.error.TAction |
+        apiActions.success.TAction |
+        apiActions.clean.TAction,
 ) {
-    const resultIsReject = action.type === ActionType.Error;
+    const resultIsReject = action.type === apiActions.error.ID;
 
     switch (action.type) {
-        case ActionType.Error:
-        case ActionType.Success:
+        case apiActions.error.ID:
+        case apiActions.success.ID:
+            const act1 = action as apiActions.success.TAction;
             const data = state.data;
             const now = moment.now();
             // Why here is it not immutable ?
-            data[action.meta.api.requestId] = {
-                result: action.payload,
+            data[act1.meta.api.requestId] = {
+                result: act1.payload,
                 resultIsReject,
-                requestId: action.meta.api.requestId,
-                moduleId: action.meta.api.moduleId,
-                methodId: action.meta.api.methodId,
+                requestId: act1.meta.api.requestId,
+                moduleId: act1.meta.api.moduleId,
+                methodId: act1.meta.api.methodId,
                 date: now,
             };
             return Object.assign(
@@ -47,9 +50,10 @@ export function apiReducer(
                     },
                 },
             );
-        case ActionType.Clean:
+        case apiActions.clean.ID:
+            const act2 = action as apiActions.clean.TAction;
             const newState = Object.assign({}, state);
-            delete newState.data[action.payload.requestId];
+            delete newState.data[act2.payload.requestId];
             return newState;
         default:
             return state;

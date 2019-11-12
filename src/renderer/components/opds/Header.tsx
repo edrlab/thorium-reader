@@ -6,18 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
-
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
-
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-
+import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
 import { parseQueryString } from "readium-desktop/utils/url";
+
 import SearchForm from "./SearchForm";
 
 export enum DisplayType {
@@ -25,17 +23,34 @@ export enum DisplayType {
     List = "list",
 }
 
-interface HeaderProps extends RouteComponentProps, TranslatorProps {
-    displayType?: DisplayType;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    displayType: DisplayType;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
 }
 
-export class Header extends React.Component<HeaderProps, undefined> {
+class Header extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         const search = parseQueryString(this.props.location.search.replace("?", ""));
         const displayType = search.displayType || DisplayType.Grid;
         delete(search.displayType);
 
+        /**
+         * Why css style is apply in code and not imported from css ressource ?
+         * FIXME : css in code
+         */
         return (
             <SecondaryHeader>
                 { displayType &&

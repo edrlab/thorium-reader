@@ -5,41 +5,50 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { container } from "readium-desktop/main/di";
-
 import * as debug_ from "debug";
-
-import { SagaIterator } from "redux-saga";
-
-import { all, call, fork, put, take } from "redux-saga/effects";
-
 import { apiActions } from "readium-desktop/common/redux/actions";
+import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { diMainGet } from "readium-desktop/main/di";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { SagaIterator } from "redux-saga";
+import { all, call, fork, put } from "redux-saga/effects";
 
 // Logger
 const debug = debug_("readium-desktop:main#redux/sagas/api");
 
-export function* processRequest(requestAction: apiActions.ApiAction): SagaIterator {
+const getSymbolName = (apiName: string) => {
+    const entry = Object.keys(diSymbolTable)
+        .find((symbolName) => symbolName === `${apiName}-api`) as keyof typeof diSymbolTable;
+    if (entry) {
+        return entry;
+    }
+    throw new Error("Wrong API name called " + apiName);
+};
+
+export function* processRequest(requestAction: apiActions.request.TAction): SagaIterator {
     const { api } = requestAction.meta;
-    const apiModule: any = container
-        .get(`${api.moduleId}-api`);
-    const apiMethod = apiModule[api.methodId].bind(apiModule);
 
     try {
+        const apiModule = diMainGet(getSymbolName(api.moduleId));
+        const apiMethod = apiModule[api.methodId].bind(apiModule);
+
+        debug(api.moduleId, api.methodId, requestAction.payload);
+
         const result = yield call(
             apiMethod,
-            requestAction.payload,
+            ...(requestAction.payload || []),
         );
 
-        yield put(apiActions.buildSuccessAction(requestAction, result));
+        yield put(apiActions.success.build(api, result));
     } catch (error) {
         debug(error);
-        yield put(apiActions.buildErrorAction(requestAction, error.message));
+        yield put(apiActions.error.build(api, error.message));
     }
 }
 
 export function* requestWatcher() {
     while (true) {
-        const action: apiActions.ApiAction = yield take(apiActions.ActionType.Request);
+        const action = yield* takeTyped(apiActions.request.build);
         yield fork(processRequest, action);
     }
 }

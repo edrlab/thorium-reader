@@ -6,22 +6,32 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
-
 import { Link } from "react-router-dom";
-
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
 import {
-    TranslatorProps,
-    withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     section: number;
 }
 
-export class SettingsHeader extends React.Component<Props, undefined> {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export class SettingsHeader extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 

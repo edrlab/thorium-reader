@@ -17,7 +17,8 @@ const dbDoc1 = {
     identifier: dbDocIdentifier1,
     _id: "publication_" + dbDocIdentifier1,
     publication: null as any,
-    opdsPublication: null as any,
+    // OPDSPublication? seems unused!
+    // opdsPublication: null as any,
     title: "Publication 1",
     tags: ["science", "computer"],
     files: [] as any,
@@ -32,7 +33,8 @@ const dbDoc2 = {
     identifier: dbDocIdentifier2,
     _id: "publication_" + dbDocIdentifier2,
     publication: null as any,
-    opdsPublication: null as any,
+    // OPDSPublication? seems unused!
+    // opdsPublication: null as any,
     title: "Publication 2",
     tags: ["node", "computer"],
     files: [] as any,
@@ -73,6 +75,7 @@ test("repository.find limit 1", async () => {
     }
     const result = await repository.find({
         limit: 1,
+        selector: {},
     });
     expect(result.length).toBe(1);
 });
@@ -83,6 +86,7 @@ test("repository.find sort by createdAt", async () => {
     }
     const result = await repository.find({
         sort: [{ createdAt: "asc" }],
+        selector: {},
     });
     expect(result.length).toBe(2);
     expect(result[0].identifier).toBe("pub-2");
@@ -191,12 +195,18 @@ test("repository.save create", async () => {
     const dbDoc = {
         identifier: "new-publication",
         publication: null as any,
-        opdsPublication: null as any,
+        // OPDSPublication? seems unused!
+        // opdsPublication: null as any,
         title: "New publication",
         tags: ["scifi"],
         files: [] as any,
         coverFile: null as any,
         customCover: null as any,
+        resources: {
+            r2PublicationBase64: "",
+            r2OpdsPublicationBase64: "",
+        },
+        hash: "",
     };
     const result = await repository.save(dbDoc);
     expect(result.identifier).toBe("new-publication");
@@ -218,12 +228,18 @@ test("repository.save update", async () => {
     const dbDoc = {
         identifier: "pub-1",
         publication: null as any,
-        opdsPublication: null as any,
+        // OPDSPublication? seems unused!
+        // opdsPublication: null as any,
         title: "Publication 1",
         tags: ["computer"],
         files: [] as any,
         coverFile: null as any,
         customCover: null as any,
+        resources: {
+            r2PublicationBase64: "",
+            r2OpdsPublicationBase64: "",
+        },
+        hash: "",
     };
     const result = await repository.save(dbDoc);
     expect(result.identifier).toBe("pub-1");

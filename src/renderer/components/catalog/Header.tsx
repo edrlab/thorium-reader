@@ -22,18 +22,31 @@ import PublicationAddButton from "./PublicationAddButton";
 
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
 export enum DisplayType {
     Grid = "grid",
     List = "list",
 }
 
-interface Props extends RouteComponentProps, TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     displayType: DisplayType;
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
+}
 
-export class Header extends React.Component<Props, undefined> {
+class Header extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (

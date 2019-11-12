@@ -28,6 +28,7 @@
         },
         "addBookToLib": "Importer",
         "addTags": "Ajouter un tag",
+        "addTagsButton": "Ajouter",
         "allBooks": "Tous les livres",
         "bookInfo": "Fiche livre",
         "delete": "Supprimer",
@@ -60,7 +61,7 @@
         "deleteFeed": "Êtes vous sûr de vouloir supprimer ce catalogue ?",
         "deletePublication": "Êtes vous sûr de vouloir supprimer cette publication ?",
         "import": "Etes vous sûr de vouloir importer ce(s) fichier(s) EPUB :",
-        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub)",
+        "importError": "une erreur s'est produite, vérifiez l'extension de votre fichier (.epub ou .lcpl)",
         "no": "Non",
         "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
@@ -94,7 +95,9 @@
             "success": "Le téléchargement de {{- title}} est terminé."
         },
         "import": {
-            "success": "L'import de {{- title}} est terminé."
+            "fail": "L'importation de {{- path}} a échoué. Vérifier que le fichier est valide",
+            "success": "L'import de {{- title}} est terminé.",
+            "alreadyImport": "{{- title}} est déja importé"
         }
     },
     "opds": {
@@ -110,6 +113,8 @@
         "back": "Retour",
         "breadcrumbRoot": "Catalogues",
         "empty": "Aucune publication trouvée",
+        "firstPage": "Première",
+        "lastPage": "Dernière",
         "menu": {
             "aboutBook": "Fiche livre",
             "addExtract": "Importer l'extrait",
@@ -119,14 +124,16 @@
         },
         "network": {
             "error": "Une erreur est survenue",
+            "noInternet": "Pas d'internet",
+            "noInternetMessage": "Essayez de vérifier le câble réseau, le modem, le routeur ou la wifi",
             "reject": "Désolé, une erreur inattendue s'est produite lors de la tentative de traitement du flux OPDS.",
             "timeout": "Le flux OPDS met du temps à répondre, veuillez réessayer plus tard"
-        }
+        },
+        "next": "Suivant",
+        "previous": "Précédent"
     },
     "publication": {
-        "deleteButton": "Supprimer de la bibliothèque",
         "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",
-        "readButton": "Lire",
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
         "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retourné.",
@@ -142,9 +149,11 @@
         "marks": {
             "annotations": "Annotations",
             "bookmarks": "Marque-pages",
+            "delete": "Supprimer",
+            "edit": "Editer",
             "illustrations": "Table des Illustrations",
             "landmarks": "Repères",
-            "toc": "Table des matières "
+            "toc": "Table des matières"
         },
         "navigation": {
             "backHomeTitle": "retour à la bibliothèque",

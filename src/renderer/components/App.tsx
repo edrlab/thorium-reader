@@ -5,47 +5,34 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "react";
-
-import * as path from "path";
-
-import { Store } from "redux";
-
-import { History } from "history";
+import "reflect-metadata";
 
 import { ConnectedRouter } from "connected-react-router";
-
+import { History } from "history";
+import * as path from "path";
+import * as React from "react";
 import Dropzone from "react-dropzone";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
-import { lazyInject } from "readium-desktop/renderer/di";
-
-import PageManager from "readium-desktop/renderer/components/PageManager";
-
 import { Provider } from "react-redux";
-
-import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
-
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-
+import * as styles from "readium-desktop/renderer/assets/styles/app.css";
+import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
+import PageManager from "readium-desktop/renderer/components/PageManager";
+import { lazyInject } from "readium-desktop/renderer/di";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { Store } from "redux";
+import { diRendererSymbolTable } from "../diSymbolTable";
+import ToastManager from "./toast/ToastManager";
 import SameFileImportManager from "./utils/SameFileImportManager";
 
-import ToastManager from "./toast/ToastManager";
+export default class App extends React.Component<{}, undefined> {
 
-import * as styles from "readium-desktop/renderer/assets/styles/app.css";
-
-export default class App extends React.Component<any, undefined> {
-
-    @lazyInject("store")
+    @lazyInject(diRendererSymbolTable.store)
     private store: Store<RootState>;
 
-    @lazyInject("history")
+    @lazyInject(diRendererSymbolTable.history)
     private history: History;
 
-    constructor(props: any) {
+    constructor(props: {}) {
         super(props);
 
         this.onDrop = this.onDrop.bind(this);
@@ -54,13 +41,12 @@ export default class App extends React.Component<any, undefined> {
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
         this.store.dispatch(
-            dialogActions.open(
-                DialogType.FileImport,
+            dialogActions.openRequest.build("file-import",
                 {
                     files: acceptedFiles.filter((file) => {
                             const ext = path.extname(file.path);
-                            return (/\.epub[3]?$/.test(ext) /*||
-                            ext === ".lcpl"*/);
+                            return (/\.epub[3]?$/.test(ext) ||
+                            ext === ".lcpl");
                     })
                     .map((file) => {
                         return {
@@ -92,6 +78,7 @@ export default class App extends React.Component<any, undefined> {
                             {({getRootProps, getInputProps}) => {
                                 const rootProps = getRootProps({onClick: (e) => e.stopPropagation()});
                                 rootProps.tabIndex = -1;
+                                // FIXME : css in code
                                 return <div
                                     {...rootProps}
                                     style={{

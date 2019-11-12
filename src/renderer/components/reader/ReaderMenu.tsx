@@ -9,14 +9,18 @@ import classnames from "classnames";
 import * as queryString from "query-string";
 import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
+import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TFormEvent } from "readium-desktop/typings/react";
+import { Unsubscribe } from "redux";
 
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
@@ -25,27 +29,37 @@ import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     open: boolean;
-    publication: R2Publication;
+    r2Publication: R2Publication;
     handleLinkClick: (event: any, url: string) => void;
-    bookmarks: LocatorView[];
     handleBookmarkClick: (locator: any) => void;
-    deleteBookmark?: any;
     toggleMenu: any;
     focusNaviguationMenu: () => void;
 }
 
-interface State {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     openedSection: number;
     bookmarkToUpdate: number;
     pageError: boolean;
     refreshError: boolean;
+    bookmarks: TReaderApiFindBookmarks_result | undefined;
 }
 
-export class ReaderMenu extends React.Component<Props, State> {
+export class ReaderMenu extends React.Component<IProps, IState> {
     private goToRef: any;
-    public constructor(props: Props) {
+    private unsubscribe: Unsubscribe;
+
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -53,10 +67,23 @@ export class ReaderMenu extends React.Component<Props, State> {
             bookmarkToUpdate: undefined,
             pageError: false,
             refreshError: false,
+            bookmarks: undefined,
         };
 
         this.closeBookarkEditForm = this.closeBookarkEditForm.bind(this);
         this.handleSubmitPage = this.handleSubmitPage.bind(this);
+    }
+
+    public componentDidMount() {
+        this.unsubscribe = apiSubscribe([
+            "reader/addBookmark",
+            "reader/deleteBookmark",
+            "reader/updateBookmark",
+        ], () => {
+            apiAction("reader/findBookmarks", queryString.parse(location.search).pubId as string)
+            .then((bookmarks) => this.setState({bookmarks}))
+            .catch((error) => console.error("Error to fetch api reader/findBookmark", error));
+        });
     }
 
     public componentDidUpdate() {
@@ -72,9 +99,16 @@ export class ReaderMenu extends React.Component<Props, State> {
         }
     }
 
+    public componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
-        const { __, open, publication, bookmarks, toggleMenu } = this.props;
-        if (!publication) {
+        const { __, r2Publication, toggleMenu } = this.props;
+        const { bookmarks } = this.state;
+        if (!r2Publication) {
             return <></>;
         }
 
@@ -85,14 +119,14 @@ export class ReaderMenu extends React.Component<Props, State> {
         const sections: SectionData[] = [
             {
                 title: __("reader.marks.toc"),
-                content: publication && this.renderLinkTree(__("reader.marks.toc"), publication.TOC, 1),
-                disabled: !publication.TOC || publication.TOC.length === 0,
+                content: r2Publication && this.renderLinkTree(__("reader.marks.toc"), r2Publication.TOC, 1),
+                disabled: !r2Publication.TOC || r2Publication.TOC.length === 0,
             },
             {
                 title: __("reader.marks.landmarks"),
-                content: publication && publication.Landmarks &&
-                    this.renderLinkList(__("reader.marks.landmarks"), publication.Landmarks),
-                disabled: !publication.Landmarks || publication.Landmarks.length === 0,
+                content: r2Publication && r2Publication.Landmarks &&
+                    this.renderLinkList(__("reader.marks.landmarks"), r2Publication.Landmarks),
+                disabled: !r2Publication.Landmarks || r2Publication.Landmarks.length === 0,
             },
             {
                 title: __("reader.marks.bookmarks"),
@@ -236,42 +270,50 @@ export class ReaderMenu extends React.Component<Props, State> {
     }
 
     private createBookmarkList(): JSX.Element[] {
-        if (this.props.publication && this.props.bookmarks) {
+        const { __ } = this.props;
+        if (this.props.r2Publication && this.state.bookmarks) {
             const { bookmarkToUpdate } = this.state;
-            return this.props.bookmarks.map((bookmark, i) =>
+            return this.state.bookmarks.map((bookmark, i) =>
                 <div
                     className={styles.bookmarks_line}
                     key={i}
                 >
-                    <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
-                    <div
-                        className={styles.chapter_marker}
-                        onClick={() => this.props.handleBookmarkClick(bookmark.locator)}
+                    { bookmarkToUpdate === i &&
+                        <UpdateBookmarkForm
+                            close={ this.closeBookarkEditForm }
+                            bookmark={ bookmark }
+                        />
+                    }
+                    <button
+                        className={styles.bookmark_infos}
+                        tabIndex={0}
+                        onClick={(e) => this.handleBookmarkClick(e, bookmark)}
                     >
-                        { bookmarkToUpdate === i ?
-                            <UpdateBookmarkForm
-                                close={ this.closeBookarkEditForm }
-                                bookmark={ bookmark }
-                            />
-                        :
-                            bookmark.name ? bookmark.name : <>Bookmark {i}</>
-                        }
-                        <div className={styles.gauge}>
-                            <div className={styles.fill}></div>
+                        <img src="src/renderer/assets/icons/outline-bookmark-24px-grey.svg" alt=""/>
+                        <div className={styles.chapter_marker}>
+                            <p className={styles.bookmark_name}>
+                                {bookmark.name ? bookmark.name : `Bookmark ${i}`}
+                            </p>
+                            <div className={styles.gauge}>
+                                <div className={styles.fill}></div>
+                            </div>
                         </div>
-                    </div>
-                    <button onClick={() => this.setState({bookmarkToUpdate: i})}>
-                        <SVG svg={ EditIcon }/>
                     </button>
-                    <button onClick={() => this.props.deleteBookmark({
-                        identifier: bookmark.identifier,
-                    })}>
-                        <SVG svg={ DeleteIcon }/>
+                    <button onClick={() => this.setState({bookmarkToUpdate: i})}>
+                        <SVG title={ __("reader.marks.edit")} svg={ EditIcon }/>
+                    </button>
+                    <button onClick={() => this.deleteBookmark(bookmark.identifier)}>
+                        <SVG title={ __("reader.marks.delete")} svg={ DeleteIcon }/>
                     </button>
                 </div>,
             );
         }
         return undefined;
+    }
+
+    private deleteBookmark = (bookmarkId: string) => {
+        apiAction("reader/deleteBookmark", bookmarkId)
+            .catch((error) => console.error("Error to fetch api reader/deleteBookmark", error));
     }
 
     private buildGoToPageSection() {
@@ -285,13 +327,13 @@ export class ReaderMenu extends React.Component<Props, State> {
                     type="text"
                     aria-invalid={error}
                     onChange={() => this.setState({pageError: false})}
-                    disabled={!this.props.publication.PageList}
+                    disabled={!this.props.r2Publication.PageList}
                     placeholder={__("reader.navigation.goToPlaceHolder")}
                     alt={__("reader.navigation.goToPlaceHolder")}
                 />
                 <button
                     type="submit"
-                    disabled={!this.props.publication.PageList}
+                    disabled={!this.props.r2Publication.PageList}
                 >
                     { __("reader.navigation.goTo") }
                 </button>
@@ -313,10 +355,10 @@ export class ReaderMenu extends React.Component<Props, State> {
         this.setState({ bookmarkToUpdate: undefined });
     }
 
-    private handleSubmitPage(e: any) {
+    private handleSubmitPage(e: TFormEvent) {
         e.preventDefault();
         const pageNbr = (this.goToRef.value as string).trim().replace(/\s\s+/g, " ");
-        const foundPage = this.props.publication.PageList.find((page) => page.Title === pageNbr);
+        const foundPage = this.props.r2Publication.PageList.find((page) => page.Title === pageNbr);
         if (foundPage) {
             this.setState({pageError: false});
             this.props.handleLinkClick(undefined, foundPage.Href);
@@ -324,42 +366,11 @@ export class ReaderMenu extends React.Component<Props, State> {
             this.setState({refreshError: true});
         }
     }
+
+    private handleBookmarkClick(e: any, bookmark: LocatorView) {
+        e.preventDefault();
+        this.props.handleBookmarkClick(bookmark.locator);
+    }
 }
 
-const buildBookmarkRequestData = () => {
-    return { publication: { identifier: queryString.parse(location.search).pubId as string } };
-};
-
-export default withApi(
-    withTranslator(ReaderMenu),
-    {
-        operations: [
-            {
-                moduleId: "reader",
-                methodId: "findBookmarks",
-                resultProp: "bookmarks",
-                buildRequestData: buildBookmarkRequestData,
-                onLoad: true,
-            },
-            {
-                moduleId: "reader",
-                methodId: "deleteBookmark",
-                callProp: "deleteBookmark",
-            },
-        ],
-        refreshTriggers: [
-            {
-                moduleId: "reader",
-                methodId: "addBookmark",
-            },
-            {
-                moduleId: "reader",
-                methodId: "deleteBookmark",
-            },
-            {
-                moduleId: "reader",
-                methodId: "updateBookmark",
-            },
-        ],
-    },
-);
+export default withTranslator(ReaderMenu);

@@ -6,31 +6,35 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-
+import { connect } from "react-redux";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
 import { PublicationView } from "readium-desktop/common/views/publication";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 import PublicationExportButton from "./PublicationExportButton";
 
-import { connect } from "react-redux";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-interface Props extends TranslatorProps {
-    publication: PublicationView;
-    displayPublicationInfo?: any;
-    openDeleteDialog?: any;
-    toggleMenu?: () => void;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    publicationView: PublicationView;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-interface State {
+interface IState {
     menuOpen: boolean;
 }
 
-class CatalogMenu extends React.Component<Props, State> {
-    constructor(props: any) {
+export class CatalogMenu extends React.Component<IProps, IState> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -41,56 +45,54 @@ class CatalogMenu extends React.Component<Props, State> {
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
-    public render(): React.ReactElement<{}>  {
+    public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
             <>
                 <button role="menuitem"
-                    onClick={this.displayPublicationInfo }
+                    onClick={this.displayPublicationInfo}
                 >
-                    { __("catalog.bookInfo")}
+                    {__("catalog.bookInfo")}
                 </button>
                 <button role="menuitem"
-                    onClick={ this.deletePublication }
+                    onClick={this.deletePublication}
                 >
-                    { __("catalog.delete")}
+                    {__("catalog.delete")}
                 </button>
                 <PublicationExportButton
-                    onClick={ this.props.toggleMenu }
-                    publication={ this.props.publication }
+                    publicationView={this.props.publicationView}
                 />
             </>
         );
     }
 
     private deletePublication() {
-        this.props.openDeleteDialog(this.props.publication);
+        this.props.openDeleteDialog();
     }
 
     private displayPublicationInfo() {
-        this.props.displayPublicationInfo(this.props.publication);
+        this.props.displayPublicationInfo();
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
-        displayPublicationInfo: (publication: PublicationView) => {
-            dispatch(dialogActions.open(
-                DialogType.PublicationInfo,
+        displayPublicationInfo: () => {
+            dispatch(dialogActions.openRequest.build("publication-info",
                 {
-                    publicationIdentifier: publication.identifier,
+                    publicationIdentifier: (props.publicationView).identifier,
+                    opdsPublicationView: undefined,
                 },
             ));
         },
-        openDeleteDialog: (publication: string) => {
-            dispatch(dialogActions.open(
-                DialogType.DeletePublicationConfirm,
+        openDeleteDialog: () => {
+            dispatch(dialogActions.openRequest.build("delete-publication-confirm",
                 {
-                    publication,
+                    publicationView: props.publicationView,
                 },
             ));
         },
     };
 };
 
-export default withTranslator(connect(null, mapDispatchToProps)(CatalogMenu)) as any;
+export default connect(undefined, mapDispatchToProps)(withTranslator(CatalogMenu));

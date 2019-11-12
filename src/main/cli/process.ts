@@ -14,7 +14,7 @@ import { lockInstance } from "readium-desktop/main/lock";
 import { _APP_NAME, _APP_VERSION, _PACKAGING } from "readium-desktop/preprocessor-directives";
 import * as yargs from "yargs";
 
-import { cli_, cliImport, cliOpds, cliRead } from "./commandLine";
+import { cliImport, cliOpds, openFileFromCli, openTitleFromCli } from "./commandLine";
 
 // Logger
 const debug = debug_("readium-desktop:cli");
@@ -56,7 +56,7 @@ yargs
             // The boolean app.isReady is true when the second-instance event handler is called
             // (as guaranteed by the Electron API
             // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance )
-            if (!app.isReady || !gotTheLock) {
+            if (!app.isReady() || !gotTheLock) {
                 const promise = cliOpds(argv.title, argv.url);
                 promise.then((isValid) => {
                     if (isValid) {
@@ -90,7 +90,7 @@ yargs
             // The boolean app.isReady is true when the second-instance event handler is called
             // (as guaranteed by the Electron API
             // https://github.com/electron/electron/blob/master/docs/api/app.md#event-second-instance
-            if (!app.isReady || !gotTheLock) {
+            if (!app.isReady() || !gotTheLock) {
                 const pathArray = glob.sync(argv.path, {
                     absolute: true,
                     realpath: true,
@@ -126,7 +126,7 @@ yargs
                 mainFct();
                 app.whenReady().then(async () => {
                     try {
-                        if (!await cliRead(argv.title)) {
+                        if (!await openTitleFromCli(argv.title)) {
                             const errorMessage = `There is no publication title match for \"${argv.title}\"`;
                             throw new Error(errorMessage);
                         }
@@ -145,7 +145,7 @@ yargs
         },
     )
     .command("$0 [path]",
-        "default command",
+        "import and read an epub or lcpl file",
         (y) =>
             y.positional("path", {
                 describe: "path of your publication, it can be an absolute, relative path",
@@ -161,7 +161,7 @@ yargs
                 if (argv.path) {
                     app.whenReady().then(async () => {
                         try {
-                            if (!await cli_(argv.path)) {
+                            if (!await openFileFromCli(argv.path)) {
                                 const errorMessage = `Import failed for the publication path : ${argv.path}`;
                                 throw new Error(errorMessage);
                             }
@@ -180,7 +180,13 @@ yargs
             }
         },
     )
-    .help();
+    .help()
+    .fail((msg, err) => {
+        if (!app.isReady() || !gotTheLock) {
+            process.stdout.write(`${msg || ""}${msg ? "" : "\n"}${err || ""}\n`);
+            app.exit(1);
+        }
+    });
 
 /**
  * main entry of thorium
@@ -189,9 +195,11 @@ yargs
  */
 export function cli(main: () => void, processArgv = process.argv) {
     mainFct = main;
-    yargs.parse(processArgv
-        .filter((arg) => knownOption(arg) || !arg.startsWith("--"))
-        .slice((_PACKAGING === "0") ? 2 : 1));
+    const argFormated = processArgv
+        .filter((arg) => knownOption(arg) || !arg.startsWith("-"))
+        .slice((_PACKAGING === "0") ? 2 : 1);
+    debug("processArgv", processArgv, "arg", argFormated);
+    yargs.parse(argFormated);
 }
 
 // arrow function to filter declared option in yargs

@@ -8,12 +8,13 @@
 import * as React from "react";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     open?: boolean;
     disabled?: boolean;
     content?: any;
@@ -22,14 +23,22 @@ interface Props extends TranslatorProps {
     id: number;
 }
 
-interface State {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     style: any;
 }
 
-export class SideMenuSection extends React.Component<Props, State> {
+export class SideMenuSection extends React.Component<IProps, IState> {
     private sectionRef: any = [];
 
-    public constructor(props: Props) {
+    constructor(props: IProps) {
         super(props);
         this.state = {
             style: undefined,
@@ -49,7 +58,7 @@ export class SideMenuSection extends React.Component<Props, State> {
         return (
             <>
                 <li
-                    className={open ? styles.active : undefined}
+                    className={open && !disabled ? styles.active : undefined}
                     key={id}
                 >
                     <button onClick={() => onClick(id)} disabled={disabled}>
@@ -59,7 +68,7 @@ export class SideMenuSection extends React.Component<Props, State> {
 
                     <div aria-hidden={open ? undefined : true}
                         style={this.state.style}
-                        className={open ? styles.tab_content : undefined}>
+                        className={open && !disabled ? styles.tab_content : undefined}>
                         <div ref={this.sectionRef} className={open ? styles.line_tab_content : undefined}>
                             {open && content }
                         </div>

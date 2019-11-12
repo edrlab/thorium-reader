@@ -5,15 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsLinkView } from "readium-desktop/common/views/opds";
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { parseQueryString } from "readium-desktop/utils/url";
@@ -23,15 +22,24 @@ import BreadCrumb, { BreadCrumbItem } from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
 import Header from "./Header";
 
-// Logger
-// const debug = debug_("readium-desktop:src/renderer/components/opds/browser");
-
-interface Props extends RouteComponentProps<IOpdsBrowse>, TranslatorProps {
-    navigation: OpdsLinkView[];
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse>, ReturnType<typeof mapStateToProps> {
 }
 
-export class Browser extends React.Component<Props> {
-    public render(): React.ReactElement<Props>  {
+class Browser extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
+    public render(): React.ReactElement<IProps>  {
         const breadcrumb = this.buildBreadcrumb();
         let url: string | undefined;
 
@@ -45,10 +53,14 @@ export class Browser extends React.Component<Props> {
         const secondaryHeader = <Header displayType={parsedResult.displayType}/>;
 
         return (
-            <LibraryLayout secondaryHeader={secondaryHeader}>
-                <BreadCrumb breadcrumb={breadcrumb} search={this.props.location.search} />
+            <LibraryLayout secondaryHeader={secondaryHeader} mainClassName={styles.opdsBrowse}>
+                <BreadCrumb
+                    className={styles.opdsBrowseBreadcrumb}
+                    breadcrumb={breadcrumb}
+                    search={this.props.location.search}
+                />
                 {url &&
-                    <BrowserResult url={url} />
+                    <BrowserResult url={url} breadcrumb={breadcrumb}/>
                 }
             </LibraryLayout>
         );
@@ -71,7 +83,7 @@ export class Browser extends React.Component<Props> {
             const link = navigation[0];
             if (link) {
                 breadcrumb.push({
-                    name: link.title,
+                    name: decodeURI(link.title),
                     path: buildOpdsBrowserRoute(
                         rootFeedIdentifier,
                         link.title,
@@ -81,7 +93,7 @@ export class Browser extends React.Component<Props> {
                 });
             }
             breadcrumb.push({
-                name: search,
+                name: decodeURI(search),
             });
             return breadcrumb;
         }
@@ -102,12 +114,8 @@ export class Browser extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: RootState, __: any) => {
-    const navigation = state.opds.browser.navigation;
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+    navigation: state.opds.browser.navigation,
+});
 
-    return {
-        navigation,
-    };
-};
-
-export default withRouter(withTranslator(connect(mapStateToProps, undefined)(Browser)));
+export default connect(mapStateToProps, undefined)(withRouter(withTranslator(Browser)));

@@ -18,6 +18,8 @@ const TAG_INDEX = "tag_index";
 
 const TITLE_INDEX = "title_index";
 
+const HASH_INDEX = "hash_index";
+
 import {
     convertMultiLangStringToString,
 } from "readium-desktop/common/utils";
@@ -38,16 +40,30 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                 fields: ["tags"],
                 name: TAG_INDEX,
             },
+            {
+                fields: ["hash"],
+                name: HASH_INDEX,
+            },
         ];
         super(db, "publication", indexes);
     }
 
+    public async findByHashId(hash: string): Promise<PublicationDocument[]> {
+        return this.find({
+            selector: { hash: { $eq: hash }},
+        });
+    }
+
     public async findByTag(tag: string): Promise<PublicationDocument[]> {
-        return this.findBy({ tags: { $elemMatch: { $eq: tag }}});
+        return this.find({
+            selector: { tags: { $elemMatch: { $eq: tag }}},
+        });
     }
 
     public async findByTitle(title: string): Promise<PublicationDocument[]> {
-        return this.findBy({ title: { $eq: title }});
+        return this.find({
+            selector: { title: { $eq: title }},
+        });
     }
 
     public async searchByTitle(title: string): Promise<PublicationDocument[]> {
@@ -96,14 +112,20 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
             {},
             super.convertToMinimalDocument(dbDoc),
             {
-                resources: dbDoc.resources,
-                opdsPublication: dbDoc.opdsPublication,
+                resources: dbDoc.resources ? {
+                    // legacy names fallback
+                    r2PublicationBase64: dbDoc.resources.r2PublicationBase64 || dbDoc.resources.filePublication,
+                    r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 || dbDoc.resources.opdsPublication,
+                } : undefined,
+                // OPDSPublication? seems unused!
+                // opdsPublication: dbDoc.opdsPublication,
                 title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
                 tags: dbDoc.tags,
                 files: dbDoc.files,
                 coverFile: dbDoc.coverFile,
                 customCover: dbDoc.customCover,
                 lcp: dbDoc.lcp,
+                hash: dbDoc.hash,
             },
         );
     }

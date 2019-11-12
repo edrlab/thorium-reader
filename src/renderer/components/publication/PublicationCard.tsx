@@ -6,66 +6,57 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-import { LsdStatus } from "readium-desktop/common/models/lcp";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
+import { connect } from "react-redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
-import { withApi } from "readium-desktop/renderer/components/utils/api";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
-
-import { lcpReadable } from "readium-desktop/utils/publication";
-
-import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface PublicationCardProps extends TranslatorProps {
-    publication: PublicationView;
-    menuContent: any;
+import CatalogMenu from "./menu/CatalogMenu";
+import OpdsMenu from "./menu/OpdsMenu";
+
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    publicationViewMaybeOpds: PublicationView | OpdsPublicationView;
     isOpds?: boolean;
-    InfoDialogIsOpen?: boolean;
-    openInfosDialog?: (data: any) => void;
-    openReader?: (data: any) => void;
-    lsdStatus?: LsdStatus;
-    getLsdStatus?: (data: any) => void;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-interface PublicationCardState {
+interface IState {
     menuOpen: boolean;
 }
 
-class PublicationCard extends React.Component<PublicationCardProps, PublicationCardState> {
-    public constructor(props: any) {
+class PublicationCard extends React.Component<IProps, IState> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
             menuOpen: false,
         };
-        this.toggleMenu = this.toggleMenu.bind(this);
         this.openCloseMenu = this.openCloseMenu.bind(this);
         this.truncateTitle = this.truncateTitle.bind(this);
     }
 
-    public componentDidMount() {
-        const { publication, getLsdStatus } = this.props;
-        if (publication.lcp) {
-            getLsdStatus({publication});
-        }
-    }
-
-    public render(): React.ReactElement<{}>  {
-        const { __, publication, translator } = this.props;
-        const authors = publication.authors.map((author) => translator.translateContentField(author)).join(", ");
-        const MenuContent = this.props.menuContent;
+    public render(): React.ReactElement<{}> {
+        const { __, publicationViewMaybeOpds, translator, isOpds } = this.props;
+        const authors = publicationViewMaybeOpds.authors.map((author) => translator.translateContentField(author)).join(", ");
 
         return (
             <div className={styles.block_book}
@@ -77,27 +68,30 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
                         tabIndex={0}
                         onClick={(e) => this.handleBookClick(e)}
                         onKeyPress={(e) => {
-                            if (e.key === "Enter") { this.handleBookClick(e); }}
+                            if (e.key === "Enter") { this.handleBookClick(e); }
                         }
-                        title={`${publication.title} - ${authors}`}
+                        }
+                        title={`${publicationViewMaybeOpds.title} - ${authors}`}
                     >
-                        <Cover publication={ publication } />
+                        <Cover publicationViewMaybeOpds={publicationViewMaybeOpds} />
                     </a>
                 </div>
                 <div className={styles.legend}>
                     <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
                         <p aria-hidden className={styles.book_title}>
-                            { this.truncateTitle(publication.title) }
+                            {this.truncateTitle(publicationViewMaybeOpds.title)}
                         </p>
                         <p aria-hidden className={styles.book_author}>
                             {authors}
                         </p>
                     </a>
                     <Menu
-                        button={(<SVG title={__("accessibility.bookMenu")} svg={MenuIcon}/>)}
+                        button={(<SVG title={__("accessibility.bookMenu")} svg={MenuIcon} />)}
                         content={(
                             <div className={styles.menu}>
-                                <MenuContent toggleMenu={this.toggleMenu} publication={publication}/>
+                                {isOpds ?
+                                <OpdsMenu opdsPublicationView={publicationViewMaybeOpds as OpdsPublicationView} /> :
+                                <CatalogMenu publicationView={publicationViewMaybeOpds as PublicationView} />}
                             </div>
                         )}
                         open={this.state.menuOpen}
@@ -111,21 +105,17 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
     }
 
     private openCloseMenu() {
-        this.setState({menuOpen: !this.state.menuOpen});
-    }
-
-    private toggleMenu() {
-        this.setState({menuOpen: !this.state.menuOpen});
+        this.setState({ menuOpen: !this.state.menuOpen });
     }
 
     private handleBookClick(e: React.SyntheticEvent) {
         e.preventDefault();
-        const { publication, lsdStatus } = this.props;
+        const { publicationViewMaybeOpds } = this.props;
 
-        if (this.props.isOpds || !lcpReadable(publication, lsdStatus)) {
-            this.props.openInfosDialog(publication);
+        if (this.props.isOpds) {
+            this.props.openInfosDialog(publicationViewMaybeOpds as OpdsPublicationView);
         } else {
-            this.props.openReader(publication);
+            this.props.openReader(publicationViewMaybeOpds as PublicationView);
         }
     }
 
@@ -142,58 +132,29 @@ class PublicationCard extends React.Component<PublicationCardProps, PublicationC
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         InfoDialogIsOpen: state.dialog.open &&
-        state.dialog.type === DialogType.PublicationInfo,
+            state.dialog.type === "publication-info",
     };
 };
 
-const mapDispatchToProps = (dispatch: any, props: PublicationCardProps) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        openReader: (publication: PublicationView) => {
-            dispatch({
-                type: readerActions.ActionType.OpenRequest,
-                payload: {
-                    publication: {
-                        identifier: publication.identifier,
-                    },
-                },
-            });
+        // !isOpds
+        openReader: (publicationView: PublicationView) => {
+            dispatch(readerActions.openRequest.build(publicationView.identifier));
         },
-        openInfosDialog: (publication: PublicationView) => {
-            if (props.isOpds) {
-                dispatch(dialogActions.open(
-                    DialogType.PublicationInfo,
-                    {
-                        publication,
-                        isOpds: props.isOpds,
-                    },
-                ));
-            } else {
-                dispatch(dialogActions.open(
-                    DialogType.PublicationInfo,
-                    {
-                        publicationIdentifier: publication.identifier,
-                    },
-                ));
-            }
+        // isOpds
+        openInfosDialog: (opdsPublicationView: OpdsPublicationView) => {
+            dispatch(dialogActions.openRequest.build("publication-info",
+                {
+                    opdsPublicationView,
+                    publicationIdentifier: undefined,
+                },
+            ));
         },
     };
 };
 
-export default withApi(
-    withTranslator(PublicationCard),
-    {
-        mapStateToProps,
-        mapDispatchToProps,
-        operations: [
-            {
-                moduleId: "lcp",
-                methodId: "getLsdStatus",
-                callProp: "getLsdStatus",
-                resultProp: "lsdStatus",
-            },
-        ],
-    },
-);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationCard));

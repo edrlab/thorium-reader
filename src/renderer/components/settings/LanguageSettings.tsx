@@ -6,44 +6,38 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
-
-import { AvailableLanguages } from "readium-desktop/common/services/translator";
-
 import { connect } from "react-redux";
-
-import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
+import { i18nActions } from "readium-desktop/common/redux/actions/";
+import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
+import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { TDispatch } from "readium-desktop/typings/redux";
+
 import SVG from "../utils/SVG";
 
-import { RootState } from "readium-desktop/renderer/redux/states";
-
-interface Props extends TranslatorProps {
-    locale: string;
-    setLocale: (locale: string) => void;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-interface States {
-    placeholder: any;
-}
+class LanguageSettings extends React.Component<IProps, undefined> {
 
-export class LanguageSettings extends React.Component<Props, States> {
-    public constructor(props: Props) {
+    constructor(props: IProps) {
         super(props);
-
-        this.state = {
-            placeholder: undefined,
-        };
     }
 
     public render(): React.ReactElement<{}> {
-        // const secondaryHeader = <Header section={2}/>;
         const { __ } = this.props;
         return (
             <>
@@ -73,15 +67,15 @@ export class LanguageSettings extends React.Component<Props, States> {
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         locale: state.i18n.locale,
     };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        setLocale: (locale: string) => dispatch(setLocale(locale)),
+        setLocale: (locale: string) => dispatch(i18nActions.setLocale.build(locale)),
     };
 };
 

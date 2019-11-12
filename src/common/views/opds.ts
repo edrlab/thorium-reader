@@ -5,11 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { Identifiable } from "../models/identifiable";
 import { IHttpGetResult } from "../utils/http";
 import { CoverView } from "./publication";
 
-export interface OpdsFeedView {
-    identifier: string;
+export interface OpdsFeedView extends Identifiable {
     title: string;
     url: string;
 }
@@ -29,14 +29,15 @@ export interface OpdsPublicationView {
     subscribeUrl?: string;
     hasSample?: boolean;
     isFree?: boolean;
-    base64OpdsPublication?: string;
+    r2OpdsPublicationBase64?: string;
     cover?: CoverView;
 }
 
 export interface OpdsLinkView {
     title: string;
+    subtitle?: string;
     url: string;
-    publicationCount?: number;
+    numberOfItems?: number;
 }
 
 export enum OpdsResultType {
@@ -50,8 +51,22 @@ export interface OpdsResultView {
     title: string;
     type: OpdsResultType;
     navigation?: OpdsLinkView[];
-    publications?: OpdsPublicationView[];
-    searchUrl?: string;
+    opdsPublicationViews?: OpdsPublicationView[];
+    urls: OpdsResultUrls;
+    page?: OpdsResultPageInfos;
+}
+
+export interface OpdsResultUrls {
+    nextPage?: string;
+    previousPage?: string;
+    firstPage?: string;
+    lastPage?: string;
+    search?: string;
+}
+
+export interface OpdsResultPageInfos {
+    numberOfItems: number;
+    itemsPerPage: number;
 }
 
 export type THttpGetOpdsResultView = IHttpGetResult<string, OpdsResultView>;

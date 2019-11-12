@@ -6,20 +6,31 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TFormEvent } from "readium-desktop/typings/react";
 
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
+}
 
-interface SearchProps extends RouteComponentProps, TranslatorProps {}
+class Search extends React.Component<IProps, undefined> {
 
-export class Search extends React.Component<SearchProps, undefined> {
-    private inputRef: any;
+    private inputRef: React.RefObject<HTMLInputElement>;
 
-    public constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         this.inputRef = React.createRef();
@@ -34,16 +45,16 @@ export class Search extends React.Component<SearchProps, undefined> {
                     type="search"
                     id="menu_search"
                     aria-label={__("accessibility.searchBook")}
-                    placeholder={ __("header.searchPlaceholder")}
+                    placeholder={__("header.searchPlaceholder")}
                 />
                 <button id={styles.search_img}>
-                    <SVG svg={SearchIcon} title={ __("header.searchTitle")}/>
+                    <SVG svg={SearchIcon} title={__("header.searchTitle")} />
                 </button>
             </form>
         );
     }
 
-    public search(e: any) {
+    public search(e: TFormEvent) {
         e.preventDefault();
         const value = this.inputRef.current.value;
         if (!value) {

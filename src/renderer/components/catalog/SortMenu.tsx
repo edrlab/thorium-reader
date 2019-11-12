@@ -6,41 +6,40 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
-import {  TranslatorProps, withTranslator } from "../utils/translator";
 
-interface SortMenuProps extends TranslatorProps {
-        onClickAlphaSort?: () => void;
-        onClickCountSort?: () => void;
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    onClickAlphaSort: () => void;
+    onClickCountSort: () => void;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
-interface SortMenuState {
-        menuOpen: boolean;
-        value: string;
-}
+class SortMenu extends React.Component<IProps, undefined> {
 
-export class SortMenu extends React.Component<SortMenuProps, SortMenuState> {
-        public constructor(props: any) {
-            super(props);
+    constructor(props: IProps) {
+        super(props);
+    }
 
-            this.state = {
-                    menuOpen: false,
-                    value: "",
-            };
-        }
-
-        public render(): React.ReactElement<{}> {
-            const { __ } = this.props;
-            return (
-                    <div id={style.sortType}>
-                        <button role="menuitem"
-                        onClick={this.props.onClickAlphaSort}> A-Z </button>
-                        <button role="menuitem"
-                        onClick={this.props.onClickCountSort}> { __("catalog.tagCount") } </button>
-                    </div>
-            );
-        }
+    public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
+        return (
+            <div id={style.sortType}>
+                <button role="menuitem"
+                    onClick={this.props.onClickAlphaSort}> A-Z </button>
+                <button role="menuitem"
+                    onClick={this.props.onClickCountSort}> {__("catalog.tagCount")} </button>
+            </div>
+        );
+    }
 }
 
 export default withTranslator(SortMenu);

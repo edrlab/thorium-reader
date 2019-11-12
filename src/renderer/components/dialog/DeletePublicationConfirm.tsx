@@ -6,78 +6,83 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
+import { connect } from "react-redux";
+import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { TMouseEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface DeletePublicationConfirmProps extends TranslatorProps {
-    publication?: PublicationView;
-    delete?: any;
-    closeDialog?: any;
+import Dialog from "./Dialog";
+
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-export class DeletePublicationConfirm extends React.Component<DeletePublicationConfirmProps, undefined> {
+class DeletePublicationConfirm extends React.Component<IProps, undefined> {
 
-    public constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         this.remove = this.remove.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
-        const {__} = this.props;
-        if (!this.props.publication) {
+        if (!this.props.open || !this.props.publicationView) {
             return <></>;
         }
 
+        const { __, closeDialog } = this.props;
         return (
-            <div>
-                <p>
-                    {__("dialog.deletePublication")}
-                    <span>{this.props.publication.title}</span>
-                </p>
+            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
                 <div>
-                    <button onClick={this.remove}>{__("dialog.yes")}</button>
-                    <button className={styles.primary} onClick={this.props.closeDialog}>{__("dialog.no")}</button>
+                    <p>
+                        {__("dialog.deletePublication")}
+                        <span>{this.props.publicationView.title}</span>
+                    </p>
+                    <div>
+                        <button onClick={this.remove}>{__("dialog.yes")}</button>
+                        <button className={styles.primary} onClick={closeDialog}>{__("dialog.no")}</button>
+                    </div>
                 </div>
-            </div>
+            </Dialog>
         );
     }
 
-    public remove(e: any) {
+    public remove(e: TMouseEvent) {
         e.preventDefault();
-        this.props.delete({ identifier: this.props.publication.identifier });
+        apiAction("publication/delete", this.props.publicationView.identifier).catch((error) => {
+            console.error(`Error to fetch publication/delete`, error);
+        });
         this.props.closeDialog();
     }
 }
 
-const mapDispatchToProps = (dispatch: any, _ownProps: any) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        closeDialog: (_data: any) => {
+        closeDialog: () => {
             dispatch(
-                dialogActions.close(),
+                dialogActions.closeRequest.build(),
             );
         },
     };
 };
 
-export default withApi(
-    DeletePublicationConfirm,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "delete",
-                callProp: "delete",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+    open: state.dialog.type === "delete-publication-confirm",
+    publicationView: (state.dialog.data as DialogType["delete-publication-confirm"]).publicationView,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(DeletePublicationConfirm));

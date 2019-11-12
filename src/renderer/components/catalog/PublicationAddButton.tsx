@@ -6,22 +6,28 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
-
-import SVG from "readium-desktop/renderer/components/utils/SVG";
-
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TChangeEvent } from "readium-desktop/typings/react";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
-interface Props extends TranslatorProps {
-    importFiles?: any;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
-export class PublicationAddButton extends React.Component<Props> {
-    public constructor(props: Props) {
+export class PublicationAddButton extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.importFile = this.importFile.bind(this);
@@ -37,7 +43,7 @@ export class PublicationAddButton extends React.Component<Props> {
                     aria-label={__("accessibility.importFile")}
                     onChange={ this.importFile }
                     multiple
-                    accept=".epub, .epub3"
+                    accept=".lcpl, .epub, .epub3"
                 />
                 <label htmlFor="epubInput">
                     <SVG svg={ PlusIcon } title={__("header.importTitle")}/>
@@ -46,26 +52,21 @@ export class PublicationAddButton extends React.Component<Props> {
         );
     }
 
-    private importFile(event: any) {
+    private importFile(event: TChangeEvent) {
         const files = event.target.files;
         const paths: string[] = [];
 
         for (const f of files) {
             paths.push(f.path);
         }
-        this.props.importFiles({ paths });
+
+        event.target.value = "";
+        event.target.files = null;
+
+        apiAction("publication/import", paths).catch((error) => {
+            console.error(`Error to fetch publication/import`, error);
+        });
     }
 }
 
-export default withTranslator(withApi(
-    PublicationAddButton,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "import",
-                callProp: "importFiles",
-            },
-        ],
-    },
-));
+export default withTranslator(PublicationAddButton);

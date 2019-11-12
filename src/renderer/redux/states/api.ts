@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ApiAction } from "readium-desktop/common/redux/actions/api";
+import { apiActions } from "readium-desktop/common/redux/actions/";
 
 interface PageState<T> {
     totalCount: number;
@@ -27,7 +27,7 @@ export interface ApiDataState<T> {
 }
 
 export interface ApiLastSuccess {
-    action: ApiAction;
+    action: apiActions.request.TAction;
     date: number;
 }
 

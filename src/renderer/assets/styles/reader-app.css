@@ -4,8 +4,35 @@
 
 :root {
   user-select: none;
-
   --sideButtonColor: rgb(130, 130, 130, 0.5);
+
+  --reader-mainColor: white;
+  --reader-secondaryColor: white;
+  --reader-fontColor: #000;
+  --reader-separatorColor: #c1c1c1;
+  --reader-menuPartColor: #F8F8F8;
+  --reader-menuPartTitleColor: #ededed;
+  --reader-menuPartTitleHoverColor: #d8d8d8;
+}
+
+.nightMode {
+  --reader-mainColor: #000;
+  --reader-secondaryColor: #151515;
+  --reader-fontColor: white;
+  --reader-separatorColor: #565656;
+  --reader-menuPartColor: #353535;
+  --reader-menuPartTitleColor: #151515;
+  --reader-menuPartTitleHoverColor: #1c1c1c;
+}
+
+.sepiaMode {
+  --reader-mainColor: #faf4e8;
+  --reader-secondaryColor: #faf4e8;
+  --reader-fontColor: #121212;
+  --reader-separatorColor: #b3b3b3;
+  --reader-menuPartColor: #ece6da;
+  --reader-menuPartTitleColor: #e8dac5;
+  --reader-menuPartTitleHoverColor: #d8d8d8;
 }
 
 body {
@@ -13,7 +40,6 @@ body {
   padding: 0;
   width: 100%;
   font: 1.1rem "Open Sans", sans-serif;
-	background:#fbfbfb;
 }
 
 button {
@@ -37,6 +63,10 @@ button {
   flex-direction: column;
 
   overflow: hidden;
+
+  background-color: var(--reader-mainColor);
+  color: var(--reader-fontColor);
+  fill: var(--reader-fontColor);
 
   & input[type=range] {
     position: relative;
@@ -67,7 +97,7 @@ button {
   & .slider_marker {
     position: relative;
     vertical-align: middle;
-    color:#6B6B6B;
+    color: var(--reader-fontColor);
   }
 }
 
@@ -191,7 +221,7 @@ button {
 
     & a {
       text-decoration: none;
-      color: black;
+      color: var(--reader-fontColor);
 
       &:hover {
         text-decoration: underline;
@@ -214,7 +244,7 @@ button {
   cursor: pointer;
 
   &:hover {
-    color: black;
+    color: var(--reader-fontColor);
     background-color: rgba(255, 255, 255, 0.600);
   }
 }
@@ -237,7 +267,7 @@ button {
 	padding-top:0;
 	padding-bottom:0;
 	height:auto;
-	background-color: white;
+	background-color: var(--reader-secondaryColor);
 	-webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
 	-moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
 	box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.19);
@@ -248,8 +278,13 @@ button {
     padding: 0;
     margin: 0;
 
-    & .menu_option {
+    & li {
+      border-color: var(--reader-separatorColor);
+    }
+
+    & ul.menu_option {
       float: right;
+      display: flex;
 
       & > li {
         border-left: 1px solid #c1c1c1;
@@ -265,13 +300,15 @@ button {
       color:#c1c1c1;
       border-right:1px solid #c1c1c1;
 
-      & > button {
+      & > .menu_button {
         width: inherit;
         height: 60px;
         color:inherit;
         background-color: transparent;
         border: none;
         cursor: pointer;
+        display: inline-flex;
+        align-items: center;
 
         & svg {
           width:30px;
@@ -284,6 +321,19 @@ button {
         color:black;
         border-bottom:3px solid black;
         padding-bottom:15px;
+      }
+
+      & .bookmarkButton {
+        position: absolute;
+        left: -2000px;
+
+        &:checked + label.menu_button {
+          background-color: rgb(193, 193, 193);
+        }
+
+        &:focus + label.menu_button {
+          @mixin R2_MIXIN_FOCUS_OUTLINE;
+        }
       }
     }
 
@@ -313,6 +363,8 @@ button {
 	background-color: white;
 	z-index:100;
   font-family: Arial;
+  color: var(--reader-fontColor);
+  background-color: var(--reader-secondaryColor);
 
   & > div > ul {
     border: 0;
@@ -326,7 +378,6 @@ button {
       padding: 0;
       border-bottom: 1px solid #e5e5e5;
       font-weight: 600;
-      background-color: white;
       cursor: pointer;
       width: 100%;
 
@@ -335,7 +386,6 @@ button {
         border-bottom: 1px solid #e5e5e5;
         font-size: 1.1rem;
         font-weight: 600;
-        background-color: white;
         cursor: pointer;
         display: flex;
         border: none;
@@ -343,6 +393,7 @@ button {
         justify-content: space-between;
         align-items: center;
         margin: 0;
+        color: var(--reader-fontColor);
         &:disabled {
           color: grey;
           cursor: auto;
@@ -363,7 +414,8 @@ button {
 
 .tab_content {
 	position: relative;
-	background-color: #F8F8F8;
+	background-color: var(--reader-menuPartColor);
+  color: var(--reader-fontColor);
   overflow: hidden;
   transition: max-height 0.5s;
 
@@ -380,40 +432,6 @@ button {
 			text-align: center;
 		}
 	}
-}
-
-#insidebook_search {
-	display: inline-block;
-	border-bottom: 1px solid #c1c1c1;
-	height:auto;
-	margin-top:10px;
-	width:70%;
-	margin-left:15%;
-}
-
-#book_search {
-  position: relative;
-  border-radius: 0;
-  border:none;
-  height:35px;
-  /* outline: inherit; */
-  color:black;
-  font-size: 1rem;
-  width:calc(100% - 35px);
-}
-
-#book_search::placeholder {
-  font-size: 1rem;
-  font-weight: 300;
-  color:#c1c1c1;
-  overflow: visible;
-}
-
-#insidebook_search #launch{
-	position: relative;
-	width:35px;
-	float:right;
-	vertical-align: top;
 }
 
 .go_to_page {
@@ -453,7 +471,7 @@ button {
 
   & .subheading:not(.inert) {
     &:hover {
-      background-color: #d8d8d8 !important;
+      background-color: var(--reader-menuPartTitleHoverColor) !important;
     }
   }
 
@@ -469,7 +487,7 @@ button {
 
 #chapter_settings_list {
   & .subheading {
-    background-color: #EDEDED;
+    background-color: var(--reader-menuPartTitleColor);
     padding:20px;
     margin-bottom: 10px;
   }
@@ -477,7 +495,7 @@ button {
     cursor: pointer;
   }
   & .line.active {
-    color:black;
+    color: var(--reader-fontColor);
   }
   & .bookmarks_line {
     width:calc(100% - 40px);
@@ -488,6 +506,36 @@ button {
     font-size: 1rem;
     border-bottom: 1px solid #e5e5e5;
     display: flex;
+    position: relative;
+
+    & form {
+      position: absolute;
+      z-index: 100;
+      height: 21px;
+      width: 155px;
+      left: 2.2rem;
+      & input {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+    }
+
+    & .bookmark_infos {
+      flex: 1;
+      display: flex;
+
+      & .bookmark_name {
+        margin: 0;
+        height: 21px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 10rem;
+        color: var(--reader-fontColor);
+        text-align: left;
+      }
+    }
   }
 }
 
@@ -524,7 +572,6 @@ p.chapters_description {
 	padding:20px 0 20px 0;
 	font-size: 1rem;
 	border-bottom: 1px solid #e5e5e5;
-  cursor: pointer;
 
   & > button {
     border: none;
@@ -591,7 +638,6 @@ p.chapters_description {
 		font-size: 1.25em;
 		height: 1.2rem;
 		width: 14rem;
-		background: #e5e5e5;
 		cursor: pointer;
 
 		& svg {
@@ -616,7 +662,6 @@ p.chapters_description {
 	border-bottom: 1px solid #e5e5e5;
 	font-size: 1.1rem;
 	font-weight: 600;
-	background-color: white;
 	cursor: auto;
 
   & > span {
@@ -624,7 +669,7 @@ p.chapters_description {
   }
   & > svg {
     height: 20px;
-    fill: rgb(59, 59, 59);
+    fill: var(--reader-fontColor);
   }
 
   &.active > button {
@@ -637,20 +682,6 @@ p.chapters_description {
 #read_settings_list .tab_content > div {
 	padding: 0;
   border-bottom: none;
-}
-
-.read_settings {
-  width: 21rem;
-  z-index: 20;
-	border-left: 1px solid #e5e5e5;
-	position: fixed;
-	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch;
-	top:60px;
-	right:0;
-	height: calc(100vh - 60px);
-	background-color: white;
-  color: rgb(59, 59, 59);
 }
 
 .center_in_tab {
@@ -687,10 +718,10 @@ p.chapters_description {
   }
 
   & .active {
-    color: black;
+    color: var(--reader-fontColor);;
 
     & svg {
-      fill: black;
+      fill: var(--reader-fontColor);
     }
   }
 
@@ -750,7 +781,7 @@ p.chapters_description {
   width: 63px;
 }
 
-#option_gauche, #option_justif,
+#option_auto, #option_justif,
 #scroll_option, #page_option {
   display: inline-block;
   text-align: center;
@@ -759,27 +790,6 @@ p.chapters_description {
   vertical-align: baseline;
   height: 15px;
   width: 20px;
-}
-
-
-
-.separateur {
-	margin-top:20px;
-	margin-bottom:20px;
-	border-bottom:1px solid #c1c1c1;
-	width:100%;
-	height:1px;
-}
-
-.lire_creertheme {
-	position: relative;
-	width:auto;
-	padding:5px 20px 5px 20px;
-	font-size: 1rem;
-	background-color: white;
-	border:1px solid #c1c1c1;
-  text-decoration: none;
-  color: black;
 }
 
 input[type=number] {
@@ -810,7 +820,7 @@ input[type=radio] + label {
 	font-weight: 600;
 	text-align: left;
   margin-bottom: 1rem;
-  color: rgb(59, 59, 59);
+  color: var(--reader-fontColor);
 }
 
 .line_tab_content select {
@@ -837,6 +847,7 @@ input[type=radio] + label {
     bottom: 0;
     right: 0;
     left: 0;
+    background-color: var(--reader-mainColor);
 
     & .arrows {
       float: right;
@@ -858,10 +869,9 @@ input[type=radio] + label {
     }
 
     & .track_reading_wrapper {
-          background-color: white;
           padding: 1rem 8rem 1rem 5rem;
           bottom: 0;
-          margin-top: 2rem;
+          margin-top: 1rem;
     }
 }
 
@@ -982,7 +992,7 @@ input[type=radio] + label {
 .goToPage {
   text-align: center;
   & .title {
-    color: black;
+    color: var(--reader-fontColor);
     font-size: 1.1rem;
   }
   & .goToErrorMessage {
@@ -999,10 +1009,15 @@ input[type=radio] + label {
       background: none;
       margin: 1rem;
       padding: 0.5rem;
+      color: var(--reader-fontColor);
     }
 
     & input {
       margin: 0;
+    }
+
+    & *:disabled {
+      cursor: not-allowed;
     }
   }
 }

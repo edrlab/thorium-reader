@@ -6,32 +6,40 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { connect } from "react-redux";
-
-import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-
 import { RouteComponentProps, withRouter } from "react-router-dom";
-
-import { RootState } from "readium-desktop/renderer/redux/states";
-
 import { OpdsLinkView } from "readium-desktop/common/views/opds";
+import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 import Entry from "./Entry";
 
-interface EntryListProps extends RouteComponentProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     level?: number;
     entries: OpdsLinkView[];
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
+}
 
-export class EntryList extends React.Component<EntryListProps, null> {
-    public render(): React.ReactElement<{}>  {
+class EntryList extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
+    public render(): React.ReactElement<{}> {
         return (
             <section id={styles.flux_list}>
                 <ul>
-                    { this.props.entries.map((entry: any, index: any) =>
-                        <li key={ index } >
-                            <Entry entry={ entry } level={ this.props.level } />
+                    {this.props.entries.map((entry, index) =>
+                        <li key={index} >
+                            <Entry entry={entry} level={this.props.level} />
                         </li>,
                     )}
                 </ul>
@@ -40,12 +48,8 @@ export class EntryList extends React.Component<EntryListProps, null> {
     }
 }
 
-const mapStateToProps = (state: RootState, __: any) => {
-    const level = state.opds.browser.navigation.length + 1;
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+    level: state.opds.browser.navigation.length + 1,
+});
 
-    return {
-        level,
-    };
-};
-
-export default withRouter(connect(mapStateToProps, undefined)(EntryList));
+export default connect(mapStateToProps, undefined)(withRouter(EntryList));

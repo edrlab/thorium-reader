@@ -6,32 +6,38 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import * as styles from "readium-desktop/renderer/assets/styles/slider.css";
-
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/slider.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import { TranslatorProps, withTranslator } from "./translator";
+import { TranslatorProps, withTranslator } from "./hoc/translator";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     content: JSX.Element[];
     className?: string;
 }
 
-interface State {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     position: number;
     refreshVisible: boolean;
 }
 
-class Slider extends React.Component<Props, State> {
+class Slider extends React.Component<IProps, IState> {
     private contentRef: any;
     private contentElRefs: any[] = [];
     private wrapperRef: any;
     private contentElVisible: boolean[] = [];
 
-    public constructor(props: Props) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -57,12 +63,22 @@ class Slider extends React.Component<Props, State> {
     public componentDidUpdate() {
         if (this.state.refreshVisible) {
             this.contentElRefs.map((element, index) => {
-                const buttonList = element.getElementsByTagName("button");
-                for (const button of buttonList) {
-                    if (!this.isElementVisible(index)) {
-                        button.tabIndex = "-1";
-                    } else {
-                        button.tabIndex = "0";
+                /*The this.contentElRefs array is automatically populated in the render() > createContent() function,
+                via the div element's ref callback (ref={(ref) => this.contentElRefs[index] = ref}),
+                which can be invoked with null during the element's "unmount"
+                lifecycle (see https://reactjs.org/docs/refs-and-the-dom.html ).
+                Consequently, we need to check for possibly-null values in the this.contentElRefs array,
+                in this componentDidUpdate() function. However, we can safely ignore usages of this.contentElRefs
+                in the moveInView() and isElementVisible() functions, as these are guaranteed to be invoked when
+                the element is still "mounted" (see the onFocus callback).*/
+                if (element) {
+                    const buttonList = element.getElementsByTagName("button");
+                    for (const button of buttonList) {
+                        if (!this.isElementVisible(index)) {
+                            button.tabIndex = "-1";
+                        } else {
+                            button.tabIndex = "0";
+                        }
                     }
                 }
             });

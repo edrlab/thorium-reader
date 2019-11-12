@@ -6,33 +6,34 @@
 // ==LICENSE-END==
 
 import { readerActions } from "readium-desktop/common/redux/actions";
-import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-import { container } from "readium-desktop/main/di";
-import { RootState } from "readium-desktop/main/redux/states";
-import { CatalogService } from "readium-desktop/main/services/catalog";
-import { Store } from "redux";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { diMainGet } from "readium-desktop/main/di";
 import { URL } from "url";
 import { isArray } from "util";
 
-export async function cli_(filePath: string) {
-    // import and read publication
-    const catalogService = container.get("catalog-service") as CatalogService;
-    const publication = await catalogService.importFile(filePath);
-    const store = container.get("store") as Store<RootState>;
-    if (publication) {
-        store.dispatch({
-            type: readerActions.ActionType.OpenRequest,
-            payload: {
-                publication: {
-                    identifier: publication.identifier,
-                },
-            },
-        });
-    } else {
-        return false;
+function openReader(publicationView: PublicationView | PublicationView[]) {
+    if (isArray(publicationView)) {
+        publicationView = publicationView[0];
     }
-    return true;
+    if (publicationView) {
+        const store = diMainGet("store");
+        store.dispatch(readerActions.openRequest.build(publicationView.identifier));
+        return true;
+    }
+    return false;
+}
+
+export async function openTitleFromCli(title: string) {
+    const publicationApi = diMainGet("publication-api");
+    const publicationViews = await publicationApi.search(title);
+    return openReader(publicationViews);
+}
+
+// used also in lock.ts on mac
+export async function openFileFromCli(filePath: string): Promise<boolean> {
+    const publicationApi = diMainGet("publication-api");
+    const publicationViews = await publicationApi.import(filePath);
+    return openReader(publicationViews);
 }
 
 export async function cliImport(filePath: string[] | string) {
@@ -41,8 +42,8 @@ export async function cliImport(filePath: string[] | string) {
     const filePathArray = isArray(filePath) ? filePath : [filePath];
 
     for (const fp of filePathArray) {
-        const catalogService = container.get("catalog-service") as CatalogService;
-        if (!await catalogService.importFile(fp)) {
+        const catalogService = diMainGet("catalog-service");
+        if (!await catalogService.importEpubOrLcplFile(fp)) {
             returnValue = false;
         }
     }
@@ -53,29 +54,9 @@ export async function cliOpds(title: string, url: string) {
     // save an opds feed with title and url in the db
     const hostname = (new URL(url)).hostname;
     if (hostname) {
-        const opdsRepository = container.get("opds-feed-repository") as OpdsFeedRepository;
+        const opdsRepository = diMainGet("opds-feed-repository");
         await opdsRepository.save({ title, url });
         return true;
     }
     return false;
-}
-
-export async function cliRead(title: string) {
-    // get the publication id then open it in reader
-    const publicationRepo = container.get("publication-repository") as PublicationRepository;
-    const publication = await publicationRepo.searchByTitle(title);
-    if (publication && publication.length) {
-        const store = container.get("store") as Store<RootState>;
-        store.dispatch({
-            type: readerActions.ActionType.OpenRequest,
-            payload: {
-                publication: {
-                    identifier: publication[0].identifier,
-                },
-            },
-        });
-    } else {
-        return false;
-    }
-    return true;
 }

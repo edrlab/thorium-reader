@@ -1,32 +1,54 @@
-import { BrowserWindow, Menu, webContents } from "electron";
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
 
-import { Translator } from "readium-desktop/common/services/translator";
-
-import { container } from "readium-desktop/main/di";
-
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { BrowserWindow, Menu, MenuItem, webContents } from "electron";
+import { diMainGet } from "readium-desktop/main/di";
+import { _CONTINUOUS_INTEGRATION_DEPLOY, IS_DEV } from "readium-desktop/preprocessor-directives";
 
 let _darwinApplicationMenuAlreadySet = false; // application-wide menu, not dependent on individual BrowserWindows
 
-export function setMenu(win?: BrowserWindow) {
+export function setMenu(win: BrowserWindow, isReaderView: boolean) {
     if (process.platform === "darwin") {
         if (!_darwinApplicationMenuAlreadySet) {
-            setMenuDarwin(win);
+            setMenuDarwin(win, isReaderView);
         }
         _darwinApplicationMenuAlreadySet = true;
     } else {
-        setMenuWindowsLinux(win);
+        setMenuWindowsLinux(win, isReaderView);
     }
 }
 
-function devMenu(win?: BrowserWindow): Electron.MenuItemConstructorOptions {
+function devMenu(win: BrowserWindow, _isReaderView: boolean): Electron.MenuItemConstructorOptions {
+    if (_CONTINUOUS_INTEGRATION_DEPLOY) {
+        return {
+            label: "EPUB DEBUG",
+            submenu: [
+                {
+                    label: "OPEN WEB INSPECTOR / DEVELOPER TOOLS",
+                    accelerator: "Shift+Alt+CmdOrCtrl+I",
+                    click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
+                        for (const wc of webContents.getAllWebContents()) {
+                            if (wc.hostWebContents) {
+                                // wc.hostWebContents.id === readerWindow.webContents.id
+                                wc.openDevTools({ mode: "detach" });
+                            }
+                        }
+                    },
+                },
+            ],
+        };
+    }
     return {
         label: "DEV",
         submenu: [
             {
                 label: "RELOAD WINDOW",
                 accelerator: "CmdOrCtrl+R",
-                click: (_item: any, focusedWindow: any) => {
+                click: (_item: MenuItem, focusedWindow: BrowserWindow) => {
                     if (focusedWindow) {
                         focusedWindow.webContents.reload();
                     } else {
@@ -47,7 +69,7 @@ function devMenu(win?: BrowserWindow): Electron.MenuItemConstructorOptions {
             {
                 label: "TOGGLE DEV TOOLS",
                 accelerator: "Alt+CmdOrCtrl+I",
-                click: (_item: any, focusedWindow: any) => {
+                click: (_item: MenuItem, focusedWindow: BrowserWindow) => {
                     if (focusedWindow) {
                         focusedWindow.webContents.toggleDevTools();
                     } else {
@@ -71,7 +93,7 @@ function devMenu(win?: BrowserWindow): Electron.MenuItemConstructorOptions {
             {
                 label: "OPEN ALL DEV TOOLS",
                 accelerator: "Shift+Alt+CmdOrCtrl+I",
-                click: (_item: any, _focusedWindow: any) => {
+                click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
                     const arr = BrowserWindow.getAllWindows();
                     arr.forEach((bww) => {
                         bww.webContents.openDevTools({ mode: "detach" });
@@ -81,7 +103,7 @@ function devMenu(win?: BrowserWindow): Electron.MenuItemConstructorOptions {
             {
                 label: "OPEN ALL R2-NAVIGATOR DEV TOOLS",
                 accelerator: "Shift+Alt+CmdOrCtrl+I",
-                click: (_item: any, _focusedWindow: any) => {
+                click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
                     for (const wc of webContents.getAllWebContents()) {
                         if (wc.hostWebContents) {
                             // wc.hostWebContents.id === readerWindow.webContents.id
@@ -96,7 +118,7 @@ function devMenu(win?: BrowserWindow): Electron.MenuItemConstructorOptions {
             {
                 label: "INJECT AXE A11Y CHECKER",
                 accelerator: "Shift+Alt+CmdOrCtrl+A",
-                click: (_item: any, _focusedWindow: any) => {
+                click: (_item: MenuItem, _focusedWindow: BrowserWindow) => {
                     const arr = BrowserWindow.getAllWindows();
                     arr.forEach((bww) => {
                         bww.webContents.openDevTools({ mode: "detach" });
@@ -110,21 +132,21 @@ function devMenu(win?: BrowserWindow): Electron.MenuItemConstructorOptions {
     };
 }
 
-function setMenuWindowsLinux(win?: BrowserWindow) {
-    if (IS_DEV) {
+function setMenuWindowsLinux(win: BrowserWindow, isReaderView: boolean) {
+    if (IS_DEV || (isReaderView && _CONTINUOUS_INTEGRATION_DEPLOY)) {
         const template: Electron.MenuItemConstructorOptions[] = [];
-        if (IS_DEV) {
-            template.push(devMenu(win));
-        }
+        template.push(devMenu(win, isReaderView));
+
         // Menu.setApplicationMenu(Menu.buildFromTemplate(template));
         win.setMenu(Menu.buildFromTemplate(template));
     } else {
-        win.setMenu(null);
+        win.removeMenu();
+        // win.setMenu(null);
     }
 }
 
-function setMenuDarwin(win?: BrowserWindow) {
-    const translator = container.get("translator") as Translator;
+function setMenuDarwin(win: BrowserWindow, isReaderView: boolean) {
+    const translator = diMainGet("translator");
     const template: Electron.MenuItemConstructorOptions[] = [
         {
             label: "Thorium",
@@ -169,11 +191,11 @@ function setMenuDarwin(win?: BrowserWindow) {
                     // click: () => { app.quit(); },
                     label: translator.translate("app.quit"),
                 },
-            ],
+            ] as Electron.MenuItemConstructorOptions[],
         },
         {
             label: translator.translate("app.edit.title"),
-            role: "edit",
+            role: "editMenu",
             submenu: [
                 {
                     role: "undo",
@@ -214,11 +236,13 @@ function setMenuDarwin(win?: BrowserWindow) {
                     // selector: "selectAll:",
                     label: translator.translate("app.edit.selectAll"),
                 },
-            ],
+            ] as Electron.MenuItemConstructorOptions[],
         },
     ];
-    if (IS_DEV) {
-        template.push(devMenu(win));
+    // isReaderView never invoked because single app-wide menu, does not depend on BrowserWindows
+    // if (IS_DEV || (isReaderView && _CONTINUOUS_INTEGRATION_DEPLOY)) {
+    if (IS_DEV || _CONTINUOUS_INTEGRATION_DEPLOY) {
+        template.push(devMenu(win, isReaderView));
     }
     Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }

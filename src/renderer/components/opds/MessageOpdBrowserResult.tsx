@@ -7,16 +7,32 @@
 
 import * as React from "react";
 
-interface IProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     title: string;
     message?: string;
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
 
+/**
+ * FIXME : css in code
+ */
 const style: React.CSSProperties = {
     textAlign: "center",
 };
 
-export default class MessageOpdBrowserResult extends React.Component<IProps> {
+export default class MessageOpdBrowserResult extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { message, title } = this.props;
         return (

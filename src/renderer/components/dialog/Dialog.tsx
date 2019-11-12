@@ -7,31 +7,35 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
-import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-
-import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
-
 import FocusLock from "react-focus-lock";
-
+import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
+import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TranslatorProps, withTranslator } from "../utils/translator";
+import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 import classNames = require("classnames");
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     open: boolean;
     close: () => void;
     className?: string;
     id?: string;
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
 
-export class Dialog extends React.Component<Props, undefined> {
+class Dialog extends React.Component<IProps, undefined> {
     private appElement: HTMLElement;
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;
 
-    public constructor(props: Props) {
+    constructor(props: IProps) {
         super(props);
 
         this.appElement = document.getElementById("app");
@@ -69,7 +73,7 @@ export class Dialog extends React.Component<Props, undefined> {
                         aria-hidden={this.props.open ? "false" : "true"}
                         tabIndex={-1}
                         className={styles.c_dialog}
-                        style={{visibility: this.props.open ? "visible" : "hidden"}}
+                        style={{ visibility: this.props.open ? "visible" : "hidden" }}
                     >
                         <div onClick={this.props.close} className={styles.c_dialog_background} />
                         <div
@@ -77,8 +81,8 @@ export class Dialog extends React.Component<Props, undefined> {
                             id={this.props.id}
                             className={classNames(className, styles.c_dialog__box)}
                         >
-                            { content && <>
-                                { content }
+                            {content && <>
+                                {content}
                             </>}
                             <button
                                 className={styles.close_button}
@@ -88,7 +92,7 @@ export class Dialog extends React.Component<Props, undefined> {
                                 data-dismiss="dialog"
                                 onClick={this.props.close}
                             >
-                                <SVG svg={QuitIcon}/>
+                                <SVG svg={QuitIcon} />
                             </button>
                         </div>
                     </div>
@@ -98,7 +102,7 @@ export class Dialog extends React.Component<Props, undefined> {
         );
     }
 
-    private handleKeyPress(e: any) {
+    private handleKeyPress(e: KeyboardEvent) {
         if (e.key === "Escape") {
             this.props.close();
         }

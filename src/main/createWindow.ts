@@ -6,14 +6,11 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { app, BrowserWindow, Menu, shell } from "electron";
+import { app, BrowserWindow, Event, Menu, shell } from "electron";
 import * as path from "path";
 import { AppWindowType } from "readium-desktop/common/models/win";
-import {
-    getWindowsRectangle,
-} from "readium-desktop/common/rectangle/window";
-import { container } from "readium-desktop/main/di";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
+import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
+import { diMainGet } from "readium-desktop/main/di";
 import {
     _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
@@ -36,7 +33,7 @@ export async function createWindow() {
         webPreferences: {
             devTools: IS_DEV,
             nodeIntegration: true, // Required to use IPC
-            webSecurity: false,
+            webSecurity: true,
             allowRunningInsecureContent: false,
         },
         icon: path.join(__dirname, "assets/icons/icon.png"),
@@ -63,7 +60,7 @@ export async function createWindow() {
             [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
                 installExtension(extension)
                     .then((name: string) => debug("Added Extension: ", name))
-                    .catch((err: any) => debug("An error occurred: ", err));
+                    .catch((err: Error) => debug("An error occurred: ", err));
             });
         });
 
@@ -72,7 +69,7 @@ export async function createWindow() {
         }
     }
 
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const winRegistry = diMainGet("win-registry");
     const appWindow = winRegistry.registerWindow(mainWindow, AppWindowType.Library);
 
     // watch to record window rectangle position in the db
@@ -92,10 +89,10 @@ export async function createWindow() {
 
     mainWindow.loadURL(rendererBaseUrl);
 
-    setMenu(mainWindow);
+    setMenu(mainWindow, false);
 
     // Redirect link to an external browser
-    const handleRedirect = (event: any, url: any) => {
+    const handleRedirect = (event: Event, url: string) => {
         if (url === mainWindow.webContents.getURL()) {
             return;
         }

@@ -11,7 +11,7 @@ export interface CatalogEntryView {
     title: string;
     tag?: string;
     totalCount?: number;
-    publications?: PublicationView[];
+    publicationViews?: PublicationView[];
 }
 
 export interface CatalogView {

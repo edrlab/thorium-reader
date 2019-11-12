@@ -6,32 +6,39 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { DialogType } from "readium-desktop/common/models/dialog";
-
+import { connect } from "react-redux";
+import { importActions } from "readium-desktop/common/redux/actions/";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as importAction from "readium-desktop/common/redux/actions/import";
-
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { TMouseEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
-
-interface PublicationCardProps extends TranslatorProps {
-    publication: OpdsPublicationView;
-    displayPublicationInfo?: (data: any) => any;
-    verifyImport?: (publication: OpdsPublicationView, downloadSample?: boolean) => void;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    opdsPublicationView: OpdsPublicationView;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-export class PublicationCard extends React.Component<PublicationCardProps> {
-    public constructor(props: any) {
+export class OpdsMenu extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
-        const { publication, __ } = this.props;
+        const { opdsPublicationView, __, buttonIsDisabled } = this.props;
         return (
             <>
                 <button role="menuitem"
@@ -39,35 +46,36 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
                 >
                     {__("opds.menu.aboutBook")}
                 </button>
-                { publication.isFree &&
+                { opdsPublicationView.isFree &&
                     <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e) }
+                        disabled={buttonIsDisabled}
                     >
                         {__("catalog.addBookToLib")}
                     </button>
                 }
-                { publication.buyUrl &&
+                { opdsPublicationView.buyUrl &&
                     <a role="menuitem"
-                        href={publication.buyUrl}
+                        href={opdsPublicationView.buyUrl}
                     >
                         {__("opds.menu.goBuyBook")}
                     </a>
                 }
-                { publication.borrowUrl &&
+                { opdsPublicationView.borrowUrl &&
                     <a role="menuitem"
-                        href={publication.borrowUrl}
+                        href={opdsPublicationView.borrowUrl}
                     >
                         {__("opds.menu.goLoanBook")}
                     </a>
                 }
-                { publication.subscribeUrl &&
+                { opdsPublicationView.subscribeUrl &&
                     <a role="menuitem"
-                        href={publication.subscribeUrl}
+                        href={opdsPublicationView.subscribeUrl}
                     >
                         {__("opds.menu.goSubBook")}
                     </a>
                 }
-                { publication.hasSample &&
+                { opdsPublicationView.hasSample &&
                     <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e, true) }
                     >
@@ -78,32 +86,31 @@ export class PublicationCard extends React.Component<PublicationCardProps> {
         );
     }
 
-    private onAddToCatalogClick(e: any, downloadSample?: boolean) {
+    private onAddToCatalogClick(e: TMouseEvent, downloadSample?: boolean) {
         e.preventDefault();
-        this.props.verifyImport(this.props.publication, downloadSample);
+        this.props.verifyImport(downloadSample);
     }
 
-    private displayPublicationInfo(e: any) {
+    private displayPublicationInfo(e: TMouseEvent) {
         e.preventDefault();
-        this.props.displayPublicationInfo(this.props.publication);
+        this.props.displayPublicationInfo();
     }
 }
 
-const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
-        displayPublicationInfo: (publication: OpdsPublicationView) => {
-            dispatch(dialogActions.open(
-                DialogType.PublicationInfo,
+        displayPublicationInfo: () => {
+            dispatch(dialogActions.openRequest.build("publication-info",
                 {
-                    publication,
-                    isOpds: true,
+                    opdsPublicationView: props.opdsPublicationView,
+                    publicationIdentifier: undefined,
                 },
             ));
         },
-        verifyImport: (publication: OpdsPublicationView, downloadSample: boolean) => {
-            dispatch(importAction.verifyImport(
+        verifyImport: (downloadSample: boolean) => {
+            dispatch(importActions.verify.build(
                 {
-                    publication,
+                    opdsPublicationView: props.opdsPublicationView,
                     downloadSample,
                 },
             ));
@@ -111,10 +118,10 @@ const mapDispatchToProps = (dispatch: any, __1: PublicationCardProps) => {
     };
 };
 
-export default withTranslator(withApi(
-    PublicationCard,
-    {
-        operations: [],
-        mapDispatchToProps,
-    },
-));
+const mapStateToProps = (state: RootState, props: IBaseProps) => {
+    return {
+        buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.opdsPublicationView.url) > -1,
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OpdsMenu));

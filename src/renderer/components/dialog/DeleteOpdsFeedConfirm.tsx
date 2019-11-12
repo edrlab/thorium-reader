@@ -6,78 +6,83 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
+import { connect } from "react-redux";
+import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-
-import { OpdsFeedView } from "readium-desktop/common/views/opds";
-
+import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { TMouseEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
-interface DeleteOpdsFeedConfirmProps extends TranslatorProps {
-    feed?: OpdsFeedView;
-    delete?: any;
-    closeDialog?: any;
+import Dialog from "./Dialog";
+
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-export class DeleteOpdsFeedConfirm extends React.Component<DeleteOpdsFeedConfirmProps, undefined> {
+class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
 
-    public constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         this.remove = this.remove.bind(this);
     }
 
     public render(): React.ReactElement<{}> {
-        const {__} = this.props;
-        if (!this.props.feed) {
-            return <></>;
+        if (!this.props.open || !this.props.feed) {
+            return (<></>);
         }
 
+        const { __, closeDialog } = this.props;
         return (
+            <Dialog open={true} close={closeDialog} id={styles.choice_dialog}>
             <div>
                 <p>
                     {__("dialog.deleteFeed")}
                     <span>{this.props.feed.title}</span>
                 </p>
                 <div>
-                    <button onClick={ this.remove }>{__("dialog.yes")}</button>
-                    <button className={styles.primary} onClick={ this.props.closeDialog }>{__("dialog.no")}</button>
+                    <button onClick={this.remove}>{__("dialog.yes")}</button>
+                    <button className={styles.primary} onClick={this.props.closeDialog}>{__("dialog.no")}</button>
                 </div>
             </div>
+            </Dialog>
         );
     }
 
-    public remove(e: any) {
+    public remove(e: TMouseEvent) {
         e.preventDefault();
-        this.props.delete({ identifier: this.props.feed.identifier });
+        apiAction("opds/deleteFeed", this.props.feed.identifier).catch((error) => {
+            console.error(`Error to fetch opds/deleteFeed`, error);
+        });
         this.props.closeDialog();
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         closeDialog: () => {
             dispatch(
-                dialogActions.close(),
+                dialogActions.closeRequest.build(),
             );
         },
     };
 };
 
-export default withApi(
-    DeleteOpdsFeedConfirm,
-    {
-        operations: [
-            {
-                moduleId: "opds",
-                methodId: "deleteFeed",
-                callProp: "delete",
-            },
-        ],
-        mapDispatchToProps,
-    },
-);
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+    open: state.dialog.type === "delete-opds-feed-confirm",
+    feed: (state.dialog.data as DialogType["delete-opds-feed-confirm"]).feed,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(DeleteOpdsFeedConfirm));

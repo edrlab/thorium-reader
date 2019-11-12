@@ -6,72 +6,51 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { TPublicationApiExportPublication } from "readium-desktop/main/api/publication";
+import { apiAction } from "readium-desktop/renderer/apiAction";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
 
-import { withApi } from "readium-desktop/renderer/components/utils/api";
-import { TranslatorProps } from "readium-desktop/renderer/components/utils/translator";
-
-interface PublicationCardProps extends TranslatorProps {
-    publication: PublicationView;
-    exportPublication?: (data: any) => void;
-    onClick: () => void;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    publicationView: PublicationView;
+    exportPublication?: TPublicationApiExportPublication;
 }
 
-class PublicationExportButton extends React.Component<PublicationCardProps> {
-    private exportInputRef: any;
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
 
-    constructor(props: any) {
+class PublicationExportButton extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
-
-        this.state = {
-            menuOpen: false,
-        };
-        this.exportInputRef = React.createRef();
-    }
-
-    public componentDidMount() {
-        this.exportInputRef.current.directory = true;
-        this.exportInputRef.current.webkitdirectory = true;
     }
 
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
-        const id = "exportInput" + this.props.publication.identifier;
         return (
                 <span>
-                    <input
+                    <button
                         role="menuitem"
-                        id={ id }
-                        ref={ this.exportInputRef }
-                        type="file"
-                        multiple
-                        onChange={ this.onExport }
-                    />
-                    <label htmlFor={ id }>
+                        onClick={this.onExport}
+                    >
                         { __("catalog.export")}
-                    </label>
+                    </button>
                 </span>
         );
     }
 
-    private onExport = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.onClick();
-        const destinationPath = event.target.files[0].path;
-        const publication = this.props.publication;
-        this.props.exportPublication({ destinationPath, publication });
+    private onExport = () => {
+        const publicationView = this.props.publicationView;
+        apiAction("publication/exportPublication", publicationView).catch((error) => {
+            console.error(`Error to fetch publication/exportPublication`, error);
+        });
     }
 }
 
-export default withApi(
-    PublicationExportButton,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "exportPublication",
-                callProp: "exportPublication",
-            },
-        ],
-    },
-);
+export default withTranslator(PublicationExportButton);

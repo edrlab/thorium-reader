@@ -6,18 +6,16 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { Route, Switch } from "react-router-dom";
-
 import { routes } from "readium-desktop/renderer/routing";
 
-interface States {
+interface IState {
     activePage: number;
 }
 
-export default class PageManager extends React.Component<{}, States> {
+export default class PageManager extends React.Component<{}, IState> {
 
-    public constructor(props: any) {
+    constructor(props: {}) {
         super(props);
 
         this.state = {

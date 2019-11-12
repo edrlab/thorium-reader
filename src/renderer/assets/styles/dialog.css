@@ -1,3 +1,5 @@
+@import "./variable.css";
+
 .c_dialog {
     position: fixed;
     z-index: 102;

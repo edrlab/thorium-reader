@@ -7,15 +7,17 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import AccessibleMenu from "readium-desktop/renderer/components/utils/menu/AccessibleMenu";
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/translator";
+} from "readium-desktop/renderer/components/utils/hoc/translator";
+import AccessibleMenu from "readium-desktop/renderer/components/utils/menu/AccessibleMenu";
 
 import { SectionData } from "./sideMenuData";
 import SideMenuSection from "./SideMenuSection";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     open: boolean;
     sections: SectionData[];
     className: string;
@@ -24,16 +26,24 @@ interface Props extends TranslatorProps {
     focusMenuButton: () => void;
 }
 
-interface State {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     openedSection: number;
 }
 
-export class SideMenu extends React.Component<Props, State> {
+export class SideMenu extends React.Component<IProps, IState> {
     private appElement: HTMLElement;
     private appOverlayElement: HTMLElement;
     private rootElement: HTMLElement;
 
-    public constructor(props: Props) {
+    constructor(props: IProps) {
         super(props);
 
         this.appElement = document.getElementById("app");
@@ -64,34 +74,37 @@ export class SideMenu extends React.Component<Props, State> {
         if (!open) {
             return <></>;
         }
-
         return ReactDOM.createPortal(
-            (
-                <AccessibleMenu
+            (<>
+            <AccessibleMenu
                 dontCloseWhenClickOutside
                 focusMenuButton = {this.props.focusMenuButton}
                 className={className}
                 visible={open}
-                toggleMenu={toggleMenu}>
-                    <ul id={listClassName}>
-                        { sections.map((section, index) =>
-                            !section.notExtendable ?
-                                <SideMenuSection
-                                    open={ openedSection === index }
-                                    id={index}
-                                    key={index}
-                                    title={section.title}
-                                    content={section.content}
-                                    onClick={this.handleClickSection}
-                                    disabled={section.disabled}
-                                />
-                            : <li key={index}>
-                                { section.content }
-                            </li>,
-                        )}
-                    </ul>
-                </AccessibleMenu>
-            ),
+                toggleMenu={toggleMenu}
+            >
+                <ul id={listClassName}>
+                    { sections.map((section, index) =>
+                        !section.notExtendable ?
+                            <SideMenuSection
+                                open={ openedSection === index }
+                                id={index}
+                                key={index}
+                                title={section.title}
+                                content={section.content}
+                                onClick={this.handleClickSection}
+                                disabled={section.disabled}
+                            />
+                        : <li key={index}>
+                            { section.content }
+                        </li>,
+                    )}
+                </ul>
+            </AccessibleMenu>
+            { open &&
+                <div aria-hidden={true} className={styles.menu_background} onClick={() => toggleMenu()}/>
+            }
+            </>),
             this.rootElement,
         );
     }

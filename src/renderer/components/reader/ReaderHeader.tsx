@@ -6,9 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-
+import { ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/font-size.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
@@ -17,19 +15,21 @@ import * as DetachIcon from "readium-desktop/renderer/assets/icons/outline-flip_
 import * as InfosIcon from "readium-desktop/renderer/assets/icons/outline-info-24px.svg";
 import * as FullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-crop_free-24px.svg";
 import * as QuitFullscreenIcon from "readium-desktop/renderer/assets/icons/sharp-uncrop_free-24px.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import { ReaderMode } from "readium-desktop/common/models/reader";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import ReaderMenu from "./ReaderMenu";
 import ReaderOptions from "./ReaderOptions";
 
-import {createRef} from "react";
 import ReactDOM = require("react-dom");
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     menuOpen: boolean;
     infoOpen: boolean;
     mode?: ReaderMode;
@@ -43,25 +43,47 @@ interface Props extends TranslatorProps {
     toggleBookmark: any;
     isOnBookmark: boolean;
     displayPublicationInfo: any;
-    readerMenuProps: any;
-    readerOptionsProps: any;
+    readerMenuProps: {
+        open: boolean,
+        r2Publication: R2Publication,
+        handleLinkClick: (event: any, url: string) => void;
+        handleBookmarkClick: (locator: any) => void;
+        toggleMenu: any;
+    };
+    readerOptionsProps: {
+        open: boolean,
+        indexes: any,
+        settings: any,
+        handleSettingChange: any,
+        handleIndexChange: any,
+        setSettings: any,
+        toggleMenu: any,
+    };
 }
 
-export class ReaderHeader extends React.Component<Props, undefined> {
-    private enableFullscreenRef = createRef<HTMLButtonElement>();
-    private disableFullscreenRef = createRef<HTMLButtonElement>();
-    private settingsMenuButtonRef = createRef<HTMLButtonElement>();
-    private navigationMenuButtonRef = createRef<HTMLButtonElement>();
-    private infoMenuButtonRef = createRef<HTMLButtonElement>();
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
 
-    public constructor(props: Props) {
+export class ReaderHeader extends React.Component<IProps, undefined> {
+    private enableFullscreenRef = React.createRef<HTMLButtonElement>();
+    private disableFullscreenRef = React.createRef<HTMLButtonElement>();
+    private settingsMenuButtonRef = React.createRef<HTMLButtonElement>();
+    private navigationMenuButtonRef = React.createRef<HTMLButtonElement>();
+    private infoMenuButtonRef = React.createRef<HTMLButtonElement>();
+
+    constructor(props: IProps) {
         super(props);
 
         this.focusSettingMenuButton = this.focusSettingMenuButton.bind(this);
         this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
     }
 
-    public componentDidUpdate(oldProps: Props) {
+    public componentDidUpdate(oldProps: IProps) {
         if (this.props.fullscreen !== oldProps.fullscreen) {
             if (this.props.fullscreen && this.disableFullscreenRef.current) {
                 this.disableFullscreenRef.current.focus();
@@ -126,13 +148,20 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                             <li
                                 {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                             >
-                                <button
+                                <input
+                                    id="bookmarkButton"
+                                    className={styles.bookmarkButton}
+                                    type="checkbox"
+                                    checked={this.props.isOnBookmark}
+                                    onChange={this.props.toggleBookmark}
+                                    aria-label={ __("reader.navigation.bookmarkTitle")}
+                                />
+                                <label
+                                    htmlFor="bookmarkButton"
                                     className={styles.menu_button}
-                                    onClick={this.props.toggleBookmark}
-                                    {...(this.props.isOnBookmark && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
                                 >
                                     <SVG svg={MarkIcon} title={ __("reader.navigation.bookmarkTitle")}/>
-                                </button>
+                                </label>
                             </li>
                             <li
                             {...(this.props.settingsOpen && {style: {backgroundColor: "rgb(193, 193, 193)"}})}
@@ -156,11 +185,11 @@ export class ReaderHeader extends React.Component<Props, undefined> {
                                     onClick={this.props.handleMenuClick.bind(this)}
                                     ref={this.navigationMenuButtonRef}
                                 >
-                                    <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
+                                <SVG svg={TOCIcon} title={ __("reader.navigation.openTableOfContentsTitle")}/>
                                 </button>
                                 {this.props.readerMenuProps.open &&
                                 <ReaderMenu {...this.props.readerMenuProps}
-                                    focusNaviguationMenu={this.focusNaviguationMenuButton}/>}
+                                focusNaviguationMenu={this.focusNaviguationMenuButton}/>}
                             </li>
                             <li  className={styles.blue}>
                                 <button

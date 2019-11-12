@@ -8,26 +8,17 @@
 import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
+import { LocaleConfigIdentifier, LocaleConfigRepositoryType } from "readium-desktop/common/config";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, netActions, readerActions, updateActions,
 } from "readium-desktop/common/redux/actions";
-import { setLocale } from "readium-desktop/common/redux/actions/i18n";
 import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { container } from "readium-desktop/main/di";
-import { appInit } from "readium-desktop/main/redux/actions/app";
-import { RootState } from "readium-desktop/main/redux/states";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
-import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { Store } from "redux";
-
-import { ReaderStateConfig, ReaderStateMode, ReaderStateReader } from "readium-desktop/main/redux/states/reader";
-
-import { UpdateState } from "readium-desktop/common/redux/states/update";
+import { diMainGet } from "readium-desktop/main/di";
+import { appActions } from "readium-desktop/main/redux/actions/";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -35,7 +26,7 @@ const debug = debug_("readium-desktop:main");
 // Callback called when a window is opened
 const winOpenCallback = (appWindow: AppWindow) => {
     // Send information to the new window
-    const store = container.get("store") as Store<RootState>;
+    const store = diMainGet("store");
     const webContents = appWindow.win.webContents;
 
     // Send the id to the new window
@@ -48,14 +39,15 @@ const winOpenCallback = (appWindow: AppWindow) => {
 
     // Init network on window
     const state = store.getState();
-    let netActionType = null;
+    let actionNet = null;
 
     switch (state.net.status) {
         case NetStatus.Online:
-            netActionType = netActions.ActionType.Online;
+            actionNet = netActions.online.build();
             break;
-        case NetStatus.Online:
-            netActionType = netActions.ActionType.Offline;
+        case NetStatus.Offline:
+        default:
+            actionNet = netActions.offline.build();
             break;
     }
 
@@ -63,9 +55,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: netActionType,
-            },
+            action: actionNet,
         },
     } as syncIpc.EventPayload);
 
@@ -73,12 +63,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: readerActions.ActionType.OpenSuccess,
-                payload: {
-                    reader: state.reader.readers[appWindow.identifier],
-                } as ReaderStateReader,
-            },
+            action: readerActions.openSuccess.build(state.reader.readers[appWindow.identifier]),
         },
     } as syncIpc.EventPayload);
 
@@ -86,12 +71,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: readerActions.ActionType.ConfigSetSuccess,
-                payload: {
-                    config: state.reader.config,
-                } as ReaderStateConfig,
-            },
+            action: readerActions.configSetSuccess.build(state.reader.config),
         },
     } as syncIpc.EventPayload);
 
@@ -99,12 +79,15 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: {
-                type: readerActions.ActionType.ModeSetSuccess,
-                payload: {
-                    mode: state.reader.mode,
-                } as ReaderStateMode,
-            },
+            action: readerActions.detachModeSuccess.build(state.reader.mode),
+        },
+    } as syncIpc.EventPayload);
+
+    // Send locale
+    webContents.send(syncIpc.CHANNEL, {
+        type: syncIpc.EventType.MainAction,
+        payload: {
+            action: i18nActions.setLocale.build(state.i18n.locale),
         },
     } as syncIpc.EventPayload);
 
@@ -113,25 +96,11 @@ const winOpenCallback = (appWindow: AppWindow) => {
         type: syncIpc.EventType.MainAction,
         payload: {
             action: {
-                type: i18nActions.ActionType.Set,
-                payload: {
-                    locale: state.i18n.locale,
-                } as i18nActions.PayloadLocale,
-            },
-        },
-    } as syncIpc.EventPayload);
-
-    // Send locale
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: {
-                type: updateActions.ActionType.LatestVersionSet,
-                payload: {
-                    status: state.update.status,
-                    latestVersion: state.update.latestVersion,
-                    latestVersionUrl: state.update.latestVersionUrl,
-                } as UpdateState,
+                type: updateActions.latestVersion.ID,
+                payload: updateActions.latestVersion.build(
+                    state.update.status,
+                    state.update.latestVersion,
+                    state.update.latestVersionUrl),
             },
         },
     } as syncIpc.EventPayload);
@@ -139,8 +108,8 @@ const winOpenCallback = (appWindow: AppWindow) => {
 
 // Callback called when a window is closed
 const winCloseCallback = (appWindow: AppWindow) => {
-    const store = container.get("store") as Store<RootState>;
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const store = diMainGet("store");
+    const winRegistry = diMainGet("win-registry");
     const appWindows = winRegistry.getWindows();
 
     // if multiple windows are open & library are closed. all other windows are closed
@@ -160,12 +129,7 @@ const winCloseCallback = (appWindow: AppWindow) => {
     const appWin = Object.values(appWindows)[0];
     if (appWin.type === AppWindowType.Library) {
         // Set reader to attached mode
-        store.dispatch({
-            type: readerActions.ActionType.ModeSetSuccess,
-            payload: {
-                mode: ReaderMode.Attached,
-            },
-        });
+        store.dispatch(readerActions.detachModeSuccess.build(ReaderMode.Attached));
     }
 
     if (
@@ -181,13 +145,14 @@ const winCloseCallback = (appWindow: AppWindow) => {
 
 // Initialize application
 export function initApp() {
-    const store = container.get("store") as Store<RootState>;
-    store.dispatch(appInit());
+    const store = diMainGet("store");
+    store.dispatch(appActions.initRequest.build());
 
-    const configRepository: ConfigRepository = container.get("config-repository") as ConfigRepository;
-    configRepository.get("i18n").then((i18nLocale) => {
+    const configRepository: LocaleConfigRepositoryType = diMainGet("config-repository");
+    const config = configRepository.get(LocaleConfigIdentifier);
+    config.then((i18nLocale) => {
         if (i18nLocale && i18nLocale.value && i18nLocale.value.locale) {
-            store.dispatch(setLocale(i18nLocale.value.locale));
+            store.dispatch(i18nActions.setLocale.build(i18nLocale.value.locale));
             debug(`set the locale ${i18nLocale.value.locale}`);
         } else {
             debug(`error on configRepository.get("i18n")): ${i18nLocale}`);
@@ -195,11 +160,11 @@ export function initApp() {
     }).catch(async () => {
         const loc = app.getLocale().split("-")[0];
         const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
-        store.dispatch(setLocale(lang));
+        store.dispatch(i18nActions.setLocale.build(lang));
         debug(`create i18n key in configRepository with ${lang} locale`);
     });
 
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const winRegistry = diMainGet("win-registry");
     winRegistry.registerOpenCallback(winOpenCallback);
     winRegistry.registerCloseCallback(winCloseCallback);
     app.setAppUserModelId("io.github.edrlab.thorium");
@@ -209,7 +174,7 @@ export function registerProtocol() {
     protocol.registerFileProtocol("store", (request, callback) => {
         // Extract publication item relative url
         const relativeUrl = request.url.substr(6);
-        const pubStorage: PublicationStorage = container.get("publication-storage") as PublicationStorage;
+        const pubStorage = diMainGet("publication-storage");
         const filePath: string = path.join(pubStorage.getRootPath(), relativeUrl);
         callback(filePath);
     });

@@ -1,4 +1,15 @@
-# Readium Desktop
+# Thorium Reader
+
+Thorium Reader is an easy to use EPUB reading application for Windows 10/10S, MacOS and Linux. After importing e-books from a directory or OPDS feed, you'll be able to read on any screen size, customize layout settings, navigate via the table of contents or page list, set bookmarks ... A great care is taken to ensure the accessibility of the application for visual impaired people using NVDA, JAWS or Narrator.
+
+Free application. No ads. No private data flowing anywhere.
+
+This project is in constant evolution, corrections and new features will be added soon and your support is welcome for that. The application is based on the open-source Readium Desktop toolkit. It is currently localized in three languages: English, French and German. More languages will come soon.
+
+![library](img/library.png)
+![publicqtion info](img/info.png)
+![reader](img/reader.png)
+
 
 ## Build status
 
@@ -84,16 +95,16 @@ npm install -g windows-build-tools
 ## Command line
 
 ```
-Thorium Reader <cmd> [args]
+thorium <cmd> [args]
 
 Commands:
-  Thorium Reader opds <title> <url>  import opds feed
-  Thorium Reader import <path>       import epub or lpcl file
-  Thorium Reader read <title>        searches already-imported publications with
-                                     the provided TITLE, and opens the reader
-                                     with the first match
-  Thorium Reader [path]              default command                   [default]
-  Thorium Reader completion          generate completion script
+  thorium opds <title> <url>  import opds feed
+  thorium import <path>       import epub or lpcl file
+  thorium read <title>        searches already-imported publications with the
+                              provided TITLE, and opens the reader with the
+                              first match
+  thorium [path]              import and read an epub or lcpl file     [default]
+  thorium completion          generate bash completion script
 
 Positionals:
   path  path of your publication, it can be an absolute, relative path  [string]
@@ -164,6 +175,21 @@ Leveldown is fast and is shipped in the production environment.
 ```
 http://www.feedbooks.com/books/top.atom?category=FBFIC019000
 ```
+
+### JSON Schemas
+
+Readium Web Publication Manifest:
+https://github.com/readium/webpub-manifest/tree/master/schema
+
+OPDS (v2):
+https://github.com/opds-community/drafts/tree/master/schema
+
+LCP:
+https://github.com/readium/lcp-specs/tree/master/schema
+
+Note that `r2-streamer-js` ships a not-too-out-of-date revision of the JSON Schemas, as they are used to validate JSON data when displayed via the browsing / conversion micro-services (which are currently not used in `readium-desktop`):
+
+https://github.com/readium/r2-streamer-js/tree/develop/misc/json-schema
 
 ## Debug main process from Visual Studio Code (renderer windows from web inspectors)
 

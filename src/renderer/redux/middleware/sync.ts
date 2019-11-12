@@ -6,35 +6,25 @@
 // ==LICENSE-END==
 
 import { ipcRenderer } from "electron";
+import { syncIpc } from "readium-desktop/common/ipc";
+import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { apiActions, i18nActions, readerActions } from "readium-desktop/common/redux/actions";
+import { diRendererGet } from "readium-desktop/renderer/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
-import { syncIpc } from "readium-desktop/common/ipc";
-import {
-    apiActions,
-    i18nActions,
-    readerActions,
-} from "readium-desktop/common/redux/actions";
-
-import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
-
-import { container } from "readium-desktop/renderer/di";
-
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
-
 // Actions that can be synchronized
-const SYNCHRONIZABLE_ACTIONS: any = [
+const SYNCHRONIZABLE_ACTIONS: string[] = [
 
-    apiActions.ActionType.Request,
+    apiActions.request.ID,
 
-    readerActions.ActionType.OpenRequest,
-    readerActions.ActionType.CloseRequest,
-    readerActions.ActionType.ModeSetRequest,
-    readerActions.ActionType.ConfigSetRequest,
-    readerActions.ActionType.BookmarkSaveRequest,
-    readerActions.ActionType.FullscreenOffRequest,
-    readerActions.ActionType.FullscreenOnRequest,
+    readerActions.openRequest.ID,
+    readerActions.closeRequest.ID,
+    readerActions.detachModeRequest.ID,
+    readerActions.configSetRequest.ID,
+    readerActions.saveBookmarkRequest.ID,
+    readerActions.fullScreenRequest.ID,
 
-    i18nActions.ActionType.Set,
+    i18nActions.setLocale.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware
@@ -54,7 +44,7 @@ export const reduxSyncMiddleware: Middleware
     }
 
     // Get action serializer
-    const actionSerializer = container.get("action-serializer") as ActionSerializer;
+    const actionSerializer = diRendererGet("action-serializer");
 
     // Send this action to the main process
     ipcRenderer.send(syncIpc.CHANNEL, {

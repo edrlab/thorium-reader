@@ -6,38 +6,50 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
+import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 
-import { RouteComponentProps} from "react-router-dom";
+type NormalOrOpdsPublicationView = PublicationView | OpdsPublicationView;
 
-import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
-import OpdsMenu from "readium-desktop/renderer/components/publication/menu/OpdsMenu";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
-import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
-
-interface GridViewProps extends RouteComponentProps {
-    publications: PublicationView[];
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
+    normalOrOpdsPublicationViews: NormalOrOpdsPublicationView[];
     isOpdsView?: boolean;
 }
 
-export default class GridView extends React.Component<GridViewProps, undefined> {
-    public render(): React.ReactElement<{}> {
-        let MenuContent = CatalogMenu;
-        if ( this.props.isOpdsView ) {
-            MenuContent = OpdsMenu;
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export class GridView extends React.Component<IProps, undefined> {
+    private ref: HTMLDivElement;
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
+    public componentDidUpdate(oldProps: IProps) {
+        if (this.props.normalOrOpdsPublicationViews !== oldProps.normalOrOpdsPublicationViews) {
+            this.scrollToTop();
         }
+    }
+
+    public render(): React.ReactElement<{}> {
+        const { isOpdsView } = this.props;
 
         return (
-            <div className={styles.card_wrapper}>
-                {this.props.publications.map((pub, index) =>
+            <div ref={(ref) => this.ref = ref} className={styles.card_wrapper}>
+                {this.props.normalOrOpdsPublicationViews.map((pub, index) =>
                     <PublicationCard
-                        key={-index }
-                        publication={pub}
-                        menuContent={MenuContent}
-                        isOpds={this.props.isOpdsView}
+                        key={-index}
+                        publicationViewMaybeOpds={pub}
+                        isOpds={isOpdsView}
                     />,
                 )}
                 {[...Array(6).keys()].map((__, index) => {
@@ -45,5 +57,9 @@ export default class GridView extends React.Component<GridViewProps, undefined> 
                 })}
             </div>
         );
+    }
+
+    private scrollToTop() {
+        this.ref.scrollIntoView();
     }
 }

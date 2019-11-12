@@ -5,65 +5,53 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
-
-import { syncIpc } from "readium-desktop/common/ipc";
-import {
-    apiActions,
-    dialogActions,
-    downloadActions,
-    i18nActions,
-    lcpActions,
-    netActions,
-    readerActions,
-    toastActions,
-    updateActions,
-} from "readium-desktop/common/redux/actions";
-import { container } from "readium-desktop/main/di";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
-
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
-
-import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
-
 import * as debug_ from "debug";
-
+import { syncIpc } from "readium-desktop/common/ipc";
+import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { AppWindow } from "readium-desktop/common/models/win";
+import {
+    apiActions, dialogActions, downloadActions, i18nActions, lcpActions, netActions, readerActions,
+    toastActions, updateActions,
+} from "readium-desktop/common/redux/actions";
+import { diMainGet } from "readium-desktop/main/di";
+import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 const debug = debug_("readium-desktop:sync");
 
 // Actions that can be synchronized
-const SYNCHRONIZABLE_ACTIONS: any = [
-    apiActions.ActionType.Success,
-    apiActions.ActionType.Error,
+const SYNCHRONIZABLE_ACTIONS: string[] = [
+    apiActions.success.ID,
+    apiActions.error.ID,
 
-    netActions.ActionType.Offline,
-    netActions.ActionType.Online,
+    netActions.offline.ID,
+    netActions.online.ID,
 
-    dialogActions.ActionType.OpenRequest,
+    dialogActions.openRequest.ID,
 
-    readerActions.ActionType.OpenError,
-    readerActions.ActionType.CloseError,
-    readerActions.ActionType.CloseSuccess,
-    readerActions.ActionType.ModeSetError,
-    readerActions.ActionType.ModeSetSuccess,
-    readerActions.ActionType.ConfigSetError,
-    readerActions.ActionType.ConfigSetSuccess,
-    readerActions.ActionType.BookmarkSaveError,
-    readerActions.ActionType.BookmarkSaveSuccess,
-    readerActions.ActionType.FullscreenOnSuccess,
-    readerActions.ActionType.FullscreenOffSuccess,
+    readerActions.openError.ID,
+    readerActions.closeError.ID,
+    readerActions.closeSuccess.ID,
 
-    lcpActions.ActionType.UserKeyCheckRequest,
+    readerActions.detachModeSuccess.ID,
 
-    i18nActions.ActionType.Set,
+    readerActions.configSetError.ID,
+    readerActions.configSetSuccess.ID,
 
-    updateActions.ActionType.LatestVersionSet,
+    readerActions.saveBookmarkError.ID,
+    readerActions.saveBookmarkSuccess.ID,
 
-    toastActions.ActionType.OpenRequest,
+    readerActions.fullScreenRequest.ID,
 
-    downloadActions.ActionType.DownloadRequest,
-    downloadActions.ActionType.DownloadSuccess,
+    lcpActions.userKeyCheckRequest.ID,
+
+    i18nActions.setLocale.ID,
+
+    updateActions.latestVersion.ID,
+
+    toastActions.openRequest.ID,
+
+    downloadActions.request.ID,
+    downloadActions.success.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware
@@ -80,11 +68,11 @@ export const reduxSyncMiddleware: Middleware
     }
 
     // Send this action to all the registered renderer processes
-    const winRegistry = container.get("win-registry") as WinRegistry;
+    const winRegistry = diMainGet("win-registry");
     const windows = winRegistry.getWindows();
 
     // Get action serializer
-    const actionSerializer = container.get("action-serializer") as ActionSerializer;
+    const actionSerializer = diMainGet("action-serializer");
 
     for (const appWin of Object.values(windows)) {
         const appWindow = appWin as AppWindow;

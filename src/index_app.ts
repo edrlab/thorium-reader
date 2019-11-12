@@ -10,32 +10,20 @@ import "font-awesome/css/font-awesome.css";
 import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Store } from "redux";
-
-import { container } from "readium-desktop/renderer/di";
-import { winInit } from "readium-desktop/renderer/redux/actions/win";
+import { syncIpc, winIpc } from "readium-desktop/common/ipc";
+import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import App from "readium-desktop/renderer/components/App";
+import { diRendererGet } from "readium-desktop/renderer/di";
+import { winActions } from "readium-desktop/renderer/redux/actions/";
 import { WinStatus } from "readium-desktop/renderer/redux/states/win";
 
-import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-
-import App from "readium-desktop/renderer/components/App";
-
+import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
-    initGlobalConverters_GENERIC,
-    initGlobalConverters_SHARED,
+    initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 
-import {
-    initGlobalConverters_OPDS,
-} from "@r2-opds-js/opds/init-globals";
-
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
-
-import { ActionWithSender } from "readium-desktop/common/models/sync";
-
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
-
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 // import { consoleRedirect } from "@r2-navigator-js/electron/renderer/common/console-redirect";
 if (IS_DEV) {
@@ -81,7 +69,7 @@ function render() {
     );
 }
 // Init redux store
-const store = (container.get("store") as Store<any>);
+const store = diRendererGet("store");
 
 store.subscribe(() => {
     const state = store.getState();
@@ -99,14 +87,14 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
-            store.dispatch(winInit(data.payload.winId));
+            store.dispatch(winActions.initRequest.build(data.payload.winId));
             break;
     }
 });
 
 // Request main process for a new id
 ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
-    const actionSerializer = container.get("action-serializer") as ActionSerializer;
+    const actionSerializer = diRendererGet("action-serializer");
 
     switch (data.type) {
         case syncIpc.EventType.MainAction:
@@ -114,8 +102,10 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
             store.dispatch(Object.assign(
                 {},
                 actionSerializer.deserialize(data.payload.action),
-                {sender: data.sender} as ActionWithSender,
-            ));
+                {
+                    sender: data.sender,
+                },
+            ) as ActionWithSender);
             break;
     }
 });

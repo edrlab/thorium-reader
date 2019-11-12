@@ -6,15 +6,31 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 
+import FeedList from "./FeedList";
 import OpdsAddForm from "./OpdsAddForm";
 
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/translator";
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
 
-import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import FeedList from "./FeedList";
+class Opds extends React.Component<IProps, undefined> {
 
-class Opds extends React.Component<TranslatorProps> {
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
         return (

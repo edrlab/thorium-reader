@@ -6,29 +6,25 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { PublicationView } from "readium-desktop/common/views/publication";
-import { withApi } from "../utils/api";
-
 import { Link } from "react-router-dom";
 
-interface ButtonTagProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     name: string;
-    tag?: PublicationView[];
-    findByTag?: (data: { tag: string }) => PublicationView[];
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
-export class GridTagButton extends React.Component<ButtonTagProps> {
+class GridTagButton extends React.Component<IProps, undefined> {
 
-    public constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
-
     }
-
-    /*public componentDidMount() {
-        console.log("mon tag: ", this.props.name);
-        this.props.findByTag({ tag: this.props.name});
-        console.log("books: ", this.props.tag.length);
-    }*/
 
     public render(): React.ReactElement<{}> {
         return (
@@ -43,16 +39,4 @@ export class GridTagButton extends React.Component<ButtonTagProps> {
     }
 }
 
-export default withApi(
-    GridTagButton,
-    {
-        operations: [
-            {
-                moduleId: "publication",
-                methodId: "findByTag",
-                callProp: "findByTag",
-                resultProp: "tag",
-            },
-        ],
-    },
-);
+export default GridTagButton;
