@@ -10,6 +10,8 @@ import { TOpdsLinkViewSimplified } from "readium-desktop/common/views/opds";
 const findLink = (ln: TOpdsLinkViewSimplified[], type: string) => ln && ln.find((link) =>
     link.TypeLink.includes(type));
 
+// tslint:disable-next-line: max-line-length
+// http://examples.net/opds/search/?q={searchTerms}&author={atom:author}&translator={atom:contributor}&title={atom:title}
 const getOpenSearchUrl = async (opensearchLink: TOpdsLinkViewSimplified) =>
     new Promise<string | undefined>((resolve) => {
         const xhr = new XMLHttpRequest();
@@ -24,27 +26,31 @@ const getOpenSearchUrl = async (opensearchLink: TOpdsLinkViewSimplified) =>
 
                     if (type && type.includes("application/atom+xml")) {
                         const searchUrl = urlElem.getAttribute("template");
+                        const url = new URL(searchUrl);
 
-                        if (searchUrl && searchUrl.includes("{searchTerms}")) {
+                        if (url.search.includes(SEARCH_TERM) || url.pathname.includes(SEARCH_TERM)) {
+
+                            // remove search filter not handle yet
                             let searchLink = searchUrl.replace("{atom:author}", "\"\"");
                             searchLink = searchLink.replace("{atom:contributor}", "\"\"");
                             searchLink = searchLink.replace("{atom:title}", "\"\"");
 
                             resolve(searchLink);
+                            return ;
                         }
                     }
                 }
-
-                resolve(undefined);
             } catch (err) {
+                // ignore
+            } finally {
                 resolve(undefined);
             }
         });
-        xhr.addEventListener("error", () => {
-            resolve(undefined);
-        });
+        xhr.addEventListener("error", () => resolve(undefined));
         xhr.send();
     });
+
+const SEARCH_TERM = "{searchTerms}";
 
 export async function getSearchUrlFromOpdsLinks(
     link: TOpdsLinkViewSimplified[] | undefined) {
@@ -53,21 +59,27 @@ export async function getSearchUrlFromOpdsLinks(
     const opensearchLink = !atomLink && findLink(link, "application/opensearchdescription+xml");
     const opdsLink = !opensearchLink && findLink(link, "application/opds+json");
 
-    // http://examples.net/opds/search.php?q={searchTerms}
-    if (atomLink && atomLink.Href && atomLink.Href.includes("{searchTerms}")) {
+    try {
+        // http://examples.net/opds/search.php?q={searchTerms}
+        if (atomLink && atomLink.Href) {
+            const url = new URL(atomLink.Href);
+            if (url.search.includes(SEARCH_TERM) || url.pathname.includes(SEARCH_TERM)) {
+                return (atomLink.Href);
+            }
 
-        return (atomLink.Href);
+            // http://static.wolnelektury.pl/opensearch.xml
+        } else if (opensearchLink) {
+            return (await getOpenSearchUrl(opensearchLink));
 
-    // tslint:disable-next-line: max-line-length
-    // http://examples.net/opds/search/?q={searchTerms}&author={atom:author}&translator={atom:contributor}&title={atom:title}
-    } else if (opensearchLink) {
-
-        return (await getOpenSearchUrl(opensearchLink));
-
-    // https://catalog.feedbooks.com/search.json{?query}
-    } else if (opdsLink && opdsLink.Href && opdsLink.Href.includes("{?query")) {
-
-        return (opdsLink.Href.split("{")[0].concat("?query={searchTerms}"));
+            // https://catalog.feedbooks.com/search.json{?query}
+        } else if (opdsLink && opdsLink.Href) {
+            const url = new URL(opdsLink.Href);
+            if (url.pathname.endsWith("%7B") && url.search.includes("query")) {
+                return (opdsLink.Href.split("{")[0].concat("?query={searchTerms}"));
+            }
+        }
+    } catch {
+        // ignore
     }
     return (undefined);
 }
