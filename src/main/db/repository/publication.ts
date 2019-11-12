@@ -106,7 +106,11 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
             {},
             super.convertToMinimalDocument(dbDoc),
             {
-                resources: dbDoc.resources,
+                resources: dbDoc.resources ? {
+                    // legacy names fallback
+                    r2PublicationBase64: dbDoc.resources.r2PublicationBase64 || dbDoc.resources.filePublication,
+                    r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 || dbDoc.resources.opdsPublication,
+                } : undefined,
                 opdsPublication: dbDoc.opdsPublication,
                 title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
                 tags: dbDoc.tags,
