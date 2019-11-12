@@ -49,15 +49,21 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
     }
 
     public async findByHashId(hash: string): Promise<PublicationDocument[]> {
-        return this.findBy({ hash: { $eq: hash }});
+        return this.find({
+            selector: { hash: { $eq: hash }},
+        });
     }
 
     public async findByTag(tag: string): Promise<PublicationDocument[]> {
-        return this.findBy({ tags: { $elemMatch: { $eq: tag }}});
+        return this.find({
+            selector: { tags: { $elemMatch: { $eq: tag }}},
+        });
     }
 
     public async findByTitle(title: string): Promise<PublicationDocument[]> {
-        return this.findBy({ title: { $eq: title }});
+        return this.find({
+            selector: { title: { $eq: title }},
+        });
     }
 
     public async searchByTitle(title: string): Promise<PublicationDocument[]> {

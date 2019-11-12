@@ -73,6 +73,7 @@ test("repository.find limit 1", async () => {
     }
     const result = await repository.find({
         limit: 1,
+        selector: {},
     });
     expect(result.length).toBe(1);
 });
@@ -83,6 +84,7 @@ test("repository.find sort by createdAt", async () => {
     }
     const result = await repository.find({
         sort: [{ createdAt: "asc" }],
+        selector: {},
     });
     expect(result.length).toBe(2);
     expect(result[0].identifier).toBe("pub-2");

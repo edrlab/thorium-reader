@@ -72,9 +72,9 @@ export class CatalogApi implements ICatalogApi {
         const __ = this.translator.translate.bind(this.translator);
 
         // Last read publicatons
-        const lastLocators = await this.locatorRepository.findBy(
-            { locatorType: LocatorType.LastReadingLocation },
+        const lastLocators = await this.locatorRepository.find(
             {
+                selector: { locatorType: LocatorType.LastReadingLocation },
                 limit: 10,
                 sort: [ { updatedAt: "desc" } ],
             },
@@ -103,6 +103,7 @@ export class CatalogApi implements ICatalogApi {
         const lastAddedPublications = await this.publicationRepository.find({
             limit: 10,
             sort: [ { createdAt: "desc" } ],
+            selector: {},
         });
         const lastAddedPublicationViews: PublicationView[] = [];
         for (const doc of lastAddedPublications) {
