@@ -39,7 +39,7 @@ function readDir(dirName) {
 function readFromPackageJson() {
     var packageJson;
     try {
-        var packageJsonString = fs.readFileSync(path.join(process.cwd(), './package.json'), { encoding: "utf8" });
+        var packageJsonString = fs.readFileSync(path.join(process.cwd(), './package.json'), { encoding: 'utf8' });
         packageJson = JSON.parse(packageJsonString);
     } catch (e){
         return [];
