@@ -220,8 +220,8 @@ export class CatalogService {
             publicationDocument,
             {
                 resources: {
-                    filePublication: publicationDocument.resources.filePublication,
-                    opdsPublication: b64OpdsPublication,
+                    r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
+                    r2OpdsPublicationBase64: b64OpdsPublication,
                 },
                 tags,
             },
@@ -270,7 +270,7 @@ export class CatalogService {
             origPub,
             {
                 resources: {
-                    filePublication: b64ParsedPublication,
+                    r2PublicationBase64: b64ParsedPublication,
                 },
             },
         );
@@ -355,8 +355,8 @@ export class CatalogService {
         const pubDocument = {
             identifier: uuid.v4(),
             resources: {
-                filePublication: b64ParsedPublication,
-                opdsPublication: null,
+                r2PublicationBase64: b64ParsedPublication,
+                r2OpdsPublicationBase64: null,
             },
             title: convertMultiLangStringToString(parsedPublication.Metadata.Title),
             tags: [],

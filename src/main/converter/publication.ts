@@ -17,7 +17,7 @@ import { Publication as Epub } from "@r2-shared-js/models/publication";
 @injectable()
 export class PublicationViewConverter {
     public convertDocumentToView(document: PublicationDocument): PublicationView {
-        const b64ParsedPublication = document.resources.filePublication;
+        const b64ParsedPublication = document.resources.r2PublicationBase64;
         const jsonParsedPublication = Buffer
             .from(b64ParsedPublication, "base64")
             .toString("utf-8");

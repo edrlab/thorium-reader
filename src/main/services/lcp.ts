@@ -126,8 +126,8 @@ export class LcpManager {
             publicationDocument,
             {
                 resources: {
-                    filePublication: b64ParsedPublication,
-                    opdsPublication: publicationDocument.resources.opdsPublication,
+                    r2PublicationBase64: b64ParsedPublication,
+                    r2OpdsPublicationBase64: publicationDocument.resources.r2OpdsPublicationBase64,
                 },
                 lcp: lcpInfo,
             },
