@@ -61,6 +61,7 @@ cache:
     - $HOME/.cache/electron-builder
 before_cache:
   - 'rm -rf $HOME/.cache/electron-builder/wine'
+  - 'rm -f $HOME/.npm/anonymous-cli-metrics.json'
 script:
 #  - npm --no-git-tag-version version prepatch && git diff
   - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${TRAVIS_BUILD_NUMBER}\",/g" package.json && cat package.json | grep -i VERSION'
@@ -89,7 +90,7 @@ script:
     -v ~/.cache/electron-builder:/root/.cache/electron-builder
     electronuserland/builder:wine
     /bin/bash
-    -c "npm run package:win && ls -als release && ls -als release/win-unpacked";
+    -c "(rm -f ~/.npm/anonymous-cli-metrics.json || ls) && npm run package:win && ls -als release && ls -als release/win-unpacked";
     fi;
     fi'
 
