@@ -132,7 +132,11 @@ class PublicationInfo extends React.Component<IProps, IState> {
                 return normalOrOpdsPublicationView.languages
                     .map((lang: string, index: number) => {
                         const l = lang.split("-")[0];
-                        const ll = ((__(`languages.${l}` as any) as unknown) as string).replace(`languages.${l}`, lang);
+
+                        // because dynamic label does not pass typed i18n compilation
+                        const translate = __ as (str: string) => string;
+
+                        const ll = translate(`languages.${l}`).replace(`languages.${l}`, lang);
                         const note = (lang !== ll) ? ` (${lang})` : "";
                         const suffix = ((index < (normalOrOpdsPublicationView.languages.length - 1)) ? ", " : "");
                         return <i
