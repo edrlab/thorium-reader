@@ -28,7 +28,7 @@ export function downloadReducer(
             if (index1 >= 0) {
                 downloads.splice(index1, 1);
             }
-            downloads.push({url: action.payload.url, progress: 0});
+            downloads.push({url: action.payload.url, title: action.payload.title, progress: 0});
             return Object.assign({}, state, { downloads });
         }
         case downloadActions.progress.ID: {

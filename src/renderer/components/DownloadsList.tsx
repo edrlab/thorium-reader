@@ -7,7 +7,6 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
@@ -35,21 +34,20 @@ class DownloadsList extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __, downloadState } = this.props;
         return (
-            <>
-                <LibraryLayout title={__("header.downloads")}>
-                    <div className={styles.section_title}>{ __("header.downloads")}</div>
-                    { (downloadState && downloadState.downloads && downloadState.downloads.length) ?
-                    <></> :
-                    <ul>
-                        {
-                        downloadState.downloads.map((dl) => {
-                            return <li><span>{dl.url}</span> == <span>{dl.progress}</span></li>;
-                        })
-                        }
-                    </ul>
+            <LibraryLayout title={__("header.downloads")}>
+                { (downloadState && downloadState.downloads && downloadState.downloads.length) ?
+                <ul>
+                    {
+                    downloadState.downloads.map((dl, i) => {
+                        return <li key={i}>
+                            <span>[{dl.progress}]</span> <span>{dl.title ? dl.title : dl.url}</span>
+                        </li>;
+                    })
                     }
-                </LibraryLayout>
-            </>
+                </ul> :
+                <></>
+                }
+            </LibraryLayout>
         );
     }
 }

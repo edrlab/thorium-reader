@@ -11,15 +11,17 @@ export const ID = "DOWNLOAD_REQUEST";
 
 export interface Payload {
     url: string;
+    title: string | undefined;
 }
 
-export function build(url: string):
+export function build(url: string, title: string | undefined):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             url,
+            title,
         },
     };
 }

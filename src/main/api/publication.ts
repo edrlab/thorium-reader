@@ -217,7 +217,7 @@ export class PublicationApi implements IPublicationApi {
         store.dispatch(toastActions.openRequest.build(ToastType.Default,
             this.translator.translate("message.download.start", { title })));
 
-        store.dispatch(downloadActions.request.build(url));
+        store.dispatch(downloadActions.request.build(url, title));
     }
 
     private sendDownloadSuccess(url: string, title: string) {

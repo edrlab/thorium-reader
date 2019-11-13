@@ -221,7 +221,7 @@ export class CatalogService {
         this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
             this.translator.translate("message.download.start", { title })));
 
-        this.store.dispatch(downloadActions.request.build(download.srcUrl));
+        this.store.dispatch(downloadActions.request.build(download.srcUrl, title));
 
         debug("[START] Download publication", downloadUrl);
         let newDownload: Download;
@@ -339,7 +339,7 @@ export class CatalogService {
         this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
             this.translator.translate("message.download.start", { title })));
 
-        this.store.dispatch(downloadActions.request.build(download.srcUrl));
+        this.store.dispatch(downloadActions.request.build(download.srcUrl, title));
 
         debug("[START] Download publication", filePath);
         let newDownload: Download;
