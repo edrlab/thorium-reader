@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { ToastType } from "readium-desktop/common/models/toast";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
@@ -13,12 +14,6 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 import classNames = require("classnames");
-
-export enum ToastType {
-    Error,
-    Default,
-    Success,
-}
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

@@ -14,8 +14,9 @@ import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { readerActions } from "readium-desktop/common/redux/actions/";
-import { toastActions } from "readium-desktop/common/redux/actions/";
+import {
+    downloadActions, readerActions, toastActions,
+} from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString, urlPathResolve } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
@@ -79,7 +80,7 @@ export class CatalogService {
             if (publicationArray && publicationArray.length) {
                 debug(publicationArray, hash);
                 publicationDocument = publicationArray[0];
-                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadComplete,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
                     this.translator.translate("message.import.alreadyImport", { title: publicationDocument.title })));
             } else {
                 if (isLCPLicense) {
@@ -87,17 +88,21 @@ export class CatalogService {
                 } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
                     publicationDocument = await this.importEpubFile(filePath, hash);
                 }
-                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadComplete,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
                     this.translator.translate("message.import.success", { title: publicationDocument.title })));
             }
         } catch (error) {
             debug("ImportFile (hash + import) fail with :" + filePath, error);
-            this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadFailed,
-                this.translator.translate("message.import.fail", { filePath })));
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                this.translator.translate("message.import.fail", { path: filePath })));
         }
         return publicationDocument;
     }
 
+    // This function is called from importOpdsEntry() src/main/api/publication.ts
+    // ... which generates:
+    // store.dispatch(toastActions.openRequest)
+    // store.dispatch(downloadActions.request|success|error)
     public async importPublicationFromOpdsUrl(
         url: string,
         downloadSample: boolean,
@@ -157,13 +162,21 @@ export class CatalogService {
         });
     }
 
+    // This function is called from importOpdsEntry() src/main/api/publication.ts
+    // or from this importPublicationFromOpdsUrl()
+    // ... which generate:
+    // store.dispatch(toastActions.openRequest)
+    // store.dispatch(downloadActions.request|success|error)
+    // ... but note that this function also calls importEpubOrLcplFile()
+    // which generate its own toast and download actions!
     public async importPublicationFromOpdsDoc(
         r2OpdsPublication: OPDSPublication,
         downloadSample: boolean,
         tags?: string[],
     ): Promise<PublicationDocument> {
         // Retrieve the download (acquisition) url
-        let downloadUrl = null;
+        let downloadUrl: string | undefined;
+        let title: string | undefined;
         let isLcpFile = false;
 
         for (const link of r2OpdsPublication.Links) {
@@ -171,40 +184,70 @@ export class CatalogService {
                 && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition/sample"
             ) {
                 downloadUrl = link.Href;
+                title = link.Title;
             } else if (
                 link.TypeLink === "application/epub+zip"
                 && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition"
             ) {
                 downloadUrl = link.Href;
+                title = link.Title;
                 break;
             } else if (
                 link.TypeLink === "application/vnd.readium.lcp.license-1.0+json"
                 && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition"
             ) {
                 downloadUrl = link.Href;
+                title = link.Title;
                 isLcpFile = true;
                 break;
             }
         }
 
-        if (downloadUrl == null) {
+        if (!downloadUrl) {
             debug("Unable to get an acquisition url from opds publication", r2OpdsPublication.Links);
             throw new Error("Unable to get acquisition url from opds publication");
         }
 
-        // Download publication
+        if (!title && r2OpdsPublication.Metadata && r2OpdsPublication.Metadata.Title) {
+            title = convertMultiLangStringToString(r2OpdsPublication.Metadata.Title);
+        }
+
         const download: Download = this.downloader.addDownload(downloadUrl);
 
+        if (!title) {
+            title = download.srcUrl;
+        }
+
+        this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
+            this.translator.translate("message.download.start", { title })));
+
+        this.store.dispatch(downloadActions.request.build(download.srcUrl));
+
         debug("[START] Download publication", downloadUrl);
-        const newDownload = await this.downloader.processDownload(
-            download.identifier,
-            {
-                onProgress: (dl: Download) => {
-                    debug("[PROGRESS] Downloading publication", dl.progress);
+        let newDownload: Download;
+        try {
+            newDownload = await this.downloader.processDownload(
+                download.identifier,
+                {
+                    onProgress: (dl: Download) => {
+                        debug("[PROGRESS] Downloading publication", dl.progress);
+                        this.store.dispatch(downloadActions.progress.build(download.srcUrl, dl.progress));
+                    },
                 },
-            },
-        );
+            );
+        } catch (err) {
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                this.translator.translate("message.download.error", { title, err: `[${err}]` })));
+
+            this.store.dispatch(downloadActions.error.build(download.srcUrl));
+            throw err;
+        }
+
+        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+            this.translator.translate("message.download.success", { title })));
+
         debug("[END] Download publication", downloadUrl, newDownload);
+
         // Import downloaded publication in catalog
         // FIXME: can be undefined type
         let publicationDocument = await this.importEpubOrLcplFile(download.dstPath, isLcpFile);
@@ -273,30 +316,57 @@ export class CatalogService {
         lcp.JsonSource = jsonStr;
 
         // search the path of the epub file
-        let download: Download = null;
+        let download: Download | undefined;
 
+        let title: string | undefined;
         if (lcp.Links) {
             for (const link of lcp.Links) {
                 if (link.Rel === "publication") {
+                    title = link.Title;
                     download = this.downloader.addDownload(link.Href);
                 }
             }
         }
 
-        if (download == null) {
+        if (!download) {
             throw new Error(`Unable to initiate download of LCP pub: ${filePath}`);
         }
 
+        if (!title) {
+            title = download.srcUrl;
+        }
+
+        this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
+            this.translator.translate("message.download.start", { title })));
+
+        this.store.dispatch(downloadActions.request.build(download.srcUrl));
+
         debug("[START] Download publication", filePath);
-        const newDownload = await this.downloader.processDownload(
-            download.identifier,
-            {
-                onProgress: (dl: Download) => {
-                    debug("[PROGRESS] Downloading publication", dl.progress);
+        let newDownload: Download;
+        try {
+            newDownload = await this.downloader.processDownload(
+                download.identifier,
+                {
+                    onProgress: (dl: Download) => {
+                        debug("[PROGRESS] Downloading publication", dl.progress);
+                        this.store.dispatch(downloadActions.progress.build(download.srcUrl, dl.progress));
+                    },
                 },
-            },
-        );
+            );
+        } catch (err) {
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                this.translator.translate("message.download.error", { title, err: `[${err}]` })));
+
+            this.store.dispatch(downloadActions.error.build(download.srcUrl));
+            throw err;
+        }
+
+        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+            this.translator.translate("message.download.success", { title })));
+
         debug("[END] Download publication", filePath, newDownload);
+
+        this.store.dispatch(downloadActions.success.build(download.srcUrl));
 
         // null so that extractCrc32OnZip() is not unnecessarily invoked
         const publicationDocument = await this.importEpubFile(download.dstPath, null);

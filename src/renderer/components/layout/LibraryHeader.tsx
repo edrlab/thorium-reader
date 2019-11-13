@@ -36,16 +36,16 @@ const headerNav: NavigationHeader[] = [
         styles: [],
     },
     {
-        route: "/settings",
-        label: "settings",
-        matchRoutes: ["/settings"],
-        styles: [styles.preferences],
-    },
-    {
         route: "/downloads",
         label: "downloads",
         matchRoutes: ["/downloads"],
         styles: [],
+    },
+    {
+        route: "/settings",
+        label: "settings",
+        matchRoutes: ["/settings"],
+        styles: [styles.preferences],
     },
 ];
 

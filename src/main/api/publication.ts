@@ -8,12 +8,12 @@
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { downloadActions } from "readium-desktop/common/redux/actions/";
-import { toastActions } from "readium-desktop/common/redux/actions/";
+import { downloadActions, toastActions } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
-import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
+import { PromiseAllSettled, PromiseFulfilled } from "readium-desktop/common/utils/promise";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
@@ -148,22 +148,17 @@ export class PublicationApi implements IPublicationApi {
         tags?: string[],
         downloadSample = false): Promise<PublicationView> {
 
-        this.sendDownloadRequest(url);
-        // dispatch notification to user with redux
-        this.dispatchToastRequest(ToastType.DownloadStarted,
-            this.translator.translate("message.download.start", { title }));
+        this.sendDownloadRequest(url, title);
 
         let returnView: PublicationView;
-        // if url exist import new entry by download
         if (url) {
             const httpPub = await this.catalogService.importPublicationFromOpdsUrl(url, downloadSample, tags);
             if (httpPub.isSuccess) {
-                this.sendDownloadSuccess(url);
+                this.sendDownloadSuccess(url, title);
                 returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
             } else {
-                // FIXME : Why no dispatchToastRequest here ?
-                throw new Error(`Http importPublicationFromOpdsUrl error with code
-                    ${httpPub.statusCode} for ${httpPub.url}`);
+                debug(`Http importPublicationFromOpdsUrl error with code ${httpPub.statusCode} for ${httpPub.url}`);
+                this.sendDownloadFailure(url, title, `${httpPub.statusCode}`); // throws
             }
         } else {
             const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
@@ -175,10 +170,9 @@ export class PublicationApi implements IPublicationApi {
                 publicationDocument = await this.catalogService.importPublicationFromOpdsDoc(r2OpdsPublication, downloadSample, tags);
             } catch (error) {
                 debug(`importOpdsPublication - FAIL`, r2OpdsPublication, error);
-                this.dispatchToastRequest(ToastType.DownloadFailed, `[${error}]`);
-                throw new Error(`importOpdsPublication ${error}`);
+                this.sendDownloadFailure(url, title, `${error}`); // throws
             }
-            this.sendDownloadSuccess(url);
+            this.sendDownloadSuccess(url, title);
             returnView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
         }
         return returnView;
@@ -193,14 +187,16 @@ export class PublicationApi implements IPublicationApi {
         // tslint:disable-next-line: max-line-length
         const publicationDocumentPromises = filePathArray.map((filePath) => this.catalogService.importEpubOrLcplFile(filePath));
         const publicationDocumentPromisesAll = await PromiseAllSettled(publicationDocumentPromises);
+
+        // https://github.com/microsoft/TypeScript/issues/16069 : no inference type on filter
         // tslint:disable-next-line: max-line-length
         const publicationDocumentPromisesAllResolved = publicationDocumentPromisesAll.filter((publicationDocumentPromise) => {
             return publicationDocumentPromise.status === "fulfilled" && publicationDocumentPromise.value;
-        });
-        // https://github.com/microsoft/TypeScript/issues/16069 : no inference type on filter
+        }) as Array<PromiseFulfilled<PublicationDocument>>;
         const publicationViews = publicationDocumentPromisesAllResolved.map((publicationDocumentWrapper) => {
-            return this.publicationViewConverter.convertDocumentToView((publicationDocumentWrapper as any).value);
+            return this.publicationViewConverter.convertDocumentToView(publicationDocumentWrapper.value);
         });
+
         return publicationViews;
     }
 
@@ -215,18 +211,32 @@ export class PublicationApi implements IPublicationApi {
         this.catalogService.exportPublication(publicationView);
     }
 
-    private dispatchToastRequest(type: ToastType, message: string) {
+    private sendDownloadRequest(url: string, title: string) {
         const store = diMainGet("store");
-        store.dispatch(toastActions.openRequest.build(type, message));
-    }
 
-    private sendDownloadRequest(url: string) {
-        const store = diMainGet("store");
+        store.dispatch(toastActions.openRequest.build(ToastType.Default,
+            this.translator.translate("message.download.start", { title })));
+
         store.dispatch(downloadActions.request.build(url));
     }
 
-    private sendDownloadSuccess(url: string) {
+    private sendDownloadSuccess(url: string, title: string) {
         const store = diMainGet("store");
+
+        store.dispatch(toastActions.openRequest.build(ToastType.Success,
+            this.translator.translate("message.download.success", { title })));
+
         store.dispatch(downloadActions.success.build(url));
+    }
+
+    private sendDownloadFailure(url: string, title: string, error: string) {
+        const store = diMainGet("store");
+
+        store.dispatch(toastActions.openRequest.build(ToastType.Error,
+            this.translator.translate("message.download.error", { title, err: `[${error}]` })));
+
+        store.dispatch(downloadActions.error.build(url));
+
+        throw new Error(error);
     }
 }

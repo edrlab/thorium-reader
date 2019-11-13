@@ -11,4 +11,5 @@ export interface DownloadState {
 
 export interface Download {
     url: string;
+    progress: number; // integer [0, 100]
 }

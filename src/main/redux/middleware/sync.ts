@@ -49,9 +49,12 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     updateActions.latestVersion.ID,
 
     toastActions.openRequest.ID,
+    toastActions.closeRequest.ID,
 
     downloadActions.request.ID,
+    downloadActions.progress.ID,
     downloadActions.success.ID,
+    downloadActions.error.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

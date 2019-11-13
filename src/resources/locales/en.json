@@ -56,7 +56,6 @@
         "tags": "My tags"
     },
     "dialog": {
-        "alreadyAdd": "It seems that you have already added this publication to your bookshelf.",
         "closeModalWindow": "Close this modal window",
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
@@ -65,13 +64,13 @@
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",
-        "sure": "Are you sure you want to add it again ?",
         "yes": "Yes"
     },
     "header": {
         "allBooks": "All books",
         "books": "My Books",
         "catalogs": "Catalogs",
+        "downloads": "Downloads",
         "gridTitle": "Grid view",
         "home": "Bookshelf menu",
         "importTitle": "Import a publication",
@@ -91,13 +90,14 @@
     },
     "message": {
         "download": {
+            "error": "The download of {{- title}} has failed: [{{- err}}]",
             "start": "The download of {{- title}} has begun.",
             "success": "The download of {{- title}} is finished."
         },
         "import": {
+            "alreadyImport": "{{- title}} was already imported",
             "fail": "The import of {{- path}} failed. Verify that the file is valid",
-            "success": "The import of {{- title}} is finished.",
-            "alreadyImport": "{{- title}} was already imported"
+            "success": "The import of {{- title}} is finished."
         }
     },
     "opds": {
@@ -151,7 +151,6 @@
             "bookmarks": "Bookmarks",
             "delete": "Delete",
             "edit": "Edit",
-            "illustrations": "Table of illustrations",
             "landmarks": "Landmarks",
             "toc": "Table of Contents"
         },
@@ -187,7 +186,6 @@
             "fontSize": "Font size",
             "justification": "Alignment",
             "justify": "Justify",
-            "left": "Left",
             "letterSpacing": "Letter spacing",
             "lineSpacing": "Line spacing",
             "margin": "Margin",
@@ -211,10 +209,8 @@
         }
     },
     "settings": {
-        "information": "Information",
         "language": {
             "languageChoice": "Language choice"
-        },
-        "uiLanguage": "Language of the user interface"
+        }
     }
 }

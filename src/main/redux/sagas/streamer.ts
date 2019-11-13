@@ -118,7 +118,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                     translator.translate("publication.expiredLcp") // StatusEnum.Cancelled
                     ));
 
-                yield put(toastActions.openRequest.build(ToastType.DownloadFailed, msg));
+                yield put(toastActions.openRequest.build(ToastType.Error, msg));
 
                 yield put(streamerActions.publicationOpenError.build(msg, publicationDocument));
                 continue;
