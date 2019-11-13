@@ -13,6 +13,7 @@ import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/vie
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { JSON as TAJSON } from "ta-json-x";
 import * as xmldom from "xmldom";
 
@@ -126,16 +127,18 @@ export class OpdsApi implements IOpdsApi {
                 throw new Error(`Not a valid OPDS HTTP Content-Type for ${opdsFeedData.url} (${opdsFeedData.contentType})`);
             }
 
-            // This is an opds feed in version 1
-            // Convert to opds version 2
-            const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
-            if (xmlDom && xmlDom.documentElement) {
+            if (opdsFeedData.body.startsWith("<?xml")) {
+                const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
+
+                if (!xmlDom || !xmlDom.documentElement) {
+                    throw new OpdsParsingError(`Unable to parse ${url}`);
+                }
+
                 const isEntry = xmlDom.documentElement.localName === "entry";
                 if (isEntry) {
-                    throw new Error("OPDS feed is entry");
+                    throw new OpdsParsingError(`This is an OPDS entry ${url}`);
                 }
-                // This is an opds feed in version 1
-                // Convert to opds version 2
+
                 const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
                 r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
             } else {
@@ -144,7 +147,10 @@ export class OpdsApi implements IOpdsApi {
                     OPDSFeed,
                 );
             }
+
+            // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
             opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url);
+
             return opdsFeedData;
         });
     }

@@ -20,7 +20,9 @@ import PageManager from "readium-desktop/renderer/components/PageManager";
 import { lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
+
 import { diRendererSymbolTable } from "../diSymbolTable";
+import DownloadsPanel from "./DownloadsPanel";
 import ToastManager from "./toast/ToastManager";
 import SameFileImportManager from "./utils/SameFileImportManager";
 
@@ -90,6 +92,7 @@ export default class App extends React.Component<{}, undefined> {
                                         right: 0,
                                     }}
                                 >
+                                    <DownloadsPanel/>
                                     <input aria-hidden {...getInputProps({onClick: (evt) => evt.preventDefault()})} />
                                     <PageManager/>
                                     <DialogManager/>

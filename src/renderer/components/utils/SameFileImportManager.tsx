@@ -7,18 +7,24 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { toastActions } from "readium-desktop/common/redux/actions";
 import { apiAction } from "readium-desktop/renderer/apiAction";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps {
+interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 class SameFileImportManager extends React.Component<IProps, undefined> {
@@ -28,19 +34,24 @@ class SameFileImportManager extends React.Component<IProps, undefined> {
     }
 
     public componentDidUpdate(oldProps: IProps) {
-        const { lastImport, downloads } = this.props;
+        const { importState, downloadState } = this.props;
 
-        if (lastImport !== oldProps.lastImport) {
-            if (downloads.findIndex((value) => value.url === lastImport.opdsPublicationView.url) < 0) {
+        if (importState !== oldProps.importState) {
+
+            if (downloadState &&
+                downloadState.downloads &&
+                // tslint:disable-next-line: max-line-length
+                !downloadState.downloads.find((dl) => dl.url === importState.opdsPublicationView.openAccessUrl || dl.url === importState.opdsPublicationView.sampleOrPreviewUrl)) {
+
                 apiAction("publication/importOpdsEntry",
-                    lastImport.opdsPublicationView.url,
-                    lastImport.opdsPublicationView.r2OpdsPublicationBase64,
-                    lastImport.opdsPublicationView.title,
-                    lastImport.opdsPublicationView.tags,
-                    lastImport.downloadSample,
+                    importState.opdsPublicationView.entryUrl,
+                    importState.opdsPublicationView.r2OpdsPublicationBase64,
+                    importState.opdsPublicationView.baseUrl,
                 ).catch((error) => {
                     console.error(`Error to fetch api publication/importOpdsEntry`, error);
                 });
+            } else {
+                this.props.toastAlreadyImport(importState.opdsPublicationView.title);
             }
         }
     }
@@ -52,9 +63,19 @@ class SameFileImportManager extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
-        lastImport: state.import,
-        downloads: state.download.downloads,
+        importState: state.import,
+        downloadState: state.download,
     };
 };
 
-export default connect(mapStateToProps)(SameFileImportManager);
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
+    return {
+        toastAlreadyImport: (title: string | undefined) => {
+            dispatch(
+                toastActions.openRequest.build(ToastType.Success, props.translator.translate("message.import.alreadyImport", { title })),
+            );
+        },
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(SameFileImportManager));

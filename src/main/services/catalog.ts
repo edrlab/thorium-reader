@@ -18,7 +18,7 @@ import {
     downloadActions, readerActions, toastActions,
 } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
-import { convertMultiLangStringToString, urlPathResolve } from "readium-desktop/common/utils";
+import { convertMultiLangStringToString } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -41,6 +41,7 @@ import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
+import { OpdsFeedViewConverter } from "../converter/opds";
 import { extractCrc32OnZip } from "../crc";
 import { diMainGet } from "../di";
 import { Downloader } from "./downloader";
@@ -68,6 +69,9 @@ export class CatalogService {
 
     @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
+
+    @inject(diSymbolTable["opds-feed-view-converter"])
+    private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
 
     public async importEpubOrLcplFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
         let publicationDocument: PublicationDocument | undefined;
@@ -99,35 +103,29 @@ export class CatalogService {
         return publicationDocument;
     }
 
-    // This function is called from importOpdsEntry() src/main/api/publication.ts
-    // ... which generates:
-    // store.dispatch(toastActions.openRequest)
-    // store.dispatch(downloadActions.request|success|error)
     public async importPublicationFromOpdsUrl(
-        url: string,
-        downloadSample: boolean,
-        tags?: string[],
+        entryUrl: string,
     ): Promise<THttpGetPublicationDocument> {
-        debug("Import OPDS publication", url);
-        return await httpGet(url, {}, async (opdsFeedData) => {
+
+        debug("Import OPDS publication", entryUrl);
+
+        return await httpGet(entryUrl, {}, async (opdsFeedData) => {
             let r2OpdsPublication: OPDSPublication = null;
 
             if (opdsFeedData.isFailure) {
                 return opdsFeedData;
             }
             if (opdsFeedData.body.startsWith("<?xml")) {
-                // This is an opds feed in version 1
-                // Convert to opds version 2
                 const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
 
                 if (!xmlDom || !xmlDom.documentElement) {
-                    throw new OpdsParsingError(`Unable to parse ${url}`);
+                    throw new OpdsParsingError(`Unable to parse ${entryUrl}`);
                 }
 
                 const isEntry = xmlDom.documentElement.localName === "entry";
 
                 if (!isEntry) {
-                    throw new OpdsParsingError(`This is not an OPDS entry ${url}`);
+                    throw new OpdsParsingError(`This is not an OPDS entry ${entryUrl}`);
                 }
                 const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
                 r2OpdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
@@ -143,17 +141,10 @@ export class CatalogService {
                 debug("Unable to retrieve opds publication", r2OpdsPublication);
                 throw new Error("Unable to retrieve opds publication");
             }
-            // resolve url in publication before extract them
-            if (r2OpdsPublication.Links) {
-                r2OpdsPublication.Links.forEach(
-                    (ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href)));
-            }
-            if (r2OpdsPublication.Images) {
-                r2OpdsPublication.Images.forEach(
-                    (ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href)));
-            }
+
             try {
-                opdsFeedData.data = await this.importPublicationFromOpdsDoc(r2OpdsPublication, downloadSample, tags);
+                // tslint:disable-next-line: max-line-length
+                opdsFeedData.data = await this.importPublicationFromOpdsDoc(r2OpdsPublication, entryUrl);
             } catch (error) {
                 debug("Unable to retrieve opds publication", r2OpdsPublication, error);
                 throw new Error("Unable to retrieve opds pub: " + error);
@@ -162,64 +153,42 @@ export class CatalogService {
         });
     }
 
-    // This function is called from importOpdsEntry() src/main/api/publication.ts
-    // or from this importPublicationFromOpdsUrl()
-    // ... which generate:
-    // store.dispatch(toastActions.openRequest)
-    // store.dispatch(downloadActions.request|success|error)
-    // ... but note that this function also calls importEpubOrLcplFile()
-    // which generate its own toast and download actions!
     public async importPublicationFromOpdsDoc(
         r2OpdsPublication: OPDSPublication,
-        downloadSample: boolean,
-        tags?: string[],
+        baseUrl: string,
     ): Promise<PublicationDocument> {
-        // Retrieve the download (acquisition) url
-        let downloadUrl: string | undefined;
-        let title: string | undefined;
-        let isLcpFile = false;
 
-        for (const link of r2OpdsPublication.Links) {
-            if (downloadSample && link.TypeLink === "application/epub+zip"
-                && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition/sample"
-            ) {
-                downloadUrl = link.Href;
-                title = link.Title;
-            } else if (
-                link.TypeLink === "application/epub+zip"
-                && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition"
-            ) {
-                downloadUrl = link.Href;
-                title = link.Title;
-                break;
-            } else if (
-                link.TypeLink === "application/vnd.readium.lcp.license-1.0+json"
-                && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition"
-            ) {
-                downloadUrl = link.Href;
-                title = link.Title;
-                isLcpFile = true;
-                break;
-            }
-        }
+        // warning: modifies r2OpdsPublication, makes relative URLs absolute with baseUrl(entryUrl)!
+        const opdsPublicationView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2OpdsPublication, baseUrl);
 
+        const downloadUrl = opdsPublicationView.openAccessUrl ?? opdsPublicationView.sampleOrPreviewUrl;
         if (!downloadUrl) {
             debug("Unable to get an acquisition url from opds publication", r2OpdsPublication.Links);
             throw new Error("Unable to get acquisition url from opds publication");
         }
 
-        if (!title && r2OpdsPublication.Metadata && r2OpdsPublication.Metadata.Title) {
-            title = convertMultiLangStringToString(r2OpdsPublication.Metadata.Title);
+        const downloadLink = r2OpdsPublication.Links.find((l) => {
+            return l.Href === downloadUrl;
+        });
+        let isLcpFile = false;
+        let title = opdsPublicationView.title;
+        if (downloadLink) {
+            isLcpFile = downloadLink.TypeLink === "application/vnd.readium.lcp.license-1.0+json";
+            if (!isLcpFile && downloadLink.TypeLink !== "application/epub+zip") {
+                throw new Error(`OPDS download link is not EPUB! ${downloadUrl} ${downloadLink.TypeLink}`);
+            }
+            if (!title) {
+                title = downloadLink.Title;
+            }
+        }
+        if (!title) {
+            title = downloadUrl;
         }
 
         const download: Download = this.downloader.addDownload(downloadUrl);
 
-        if (!title) {
-            title = download.srcUrl;
-        }
-
-        this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
-            this.translator.translate("message.download.start", { title })));
+        // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
+        //     this.translator.translate("message.download.start", { title })));
 
         this.store.dispatch(downloadActions.request.build(download.srcUrl, title));
 
@@ -243,10 +212,12 @@ export class CatalogService {
             throw err;
         }
 
-        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-            this.translator.translate("message.download.success", { title })));
+        // this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+        //     this.translator.translate("message.download.success", { title })));
 
         debug("[END] Download publication", downloadUrl, newDownload);
+
+        this.store.dispatch(downloadActions.success.build(download.srcUrl));
 
         // Import downloaded publication in catalog
         // FIXME: can be undefined type
@@ -266,7 +237,7 @@ export class CatalogService {
                     r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
                     r2OpdsPublicationBase64,
                 },
-                tags,
+                tags: opdsPublicationView.tags,
             },
         );
         return this.publicationRepository.save(publicationDocument);
@@ -322,8 +293,8 @@ export class CatalogService {
         if (lcp.Links) {
             for (const link of lcp.Links) {
                 if (link.Rel === "publication") {
-                    title = link.Title;
                     download = this.downloader.addDownload(link.Href);
+                    title = link.Title ?? download.srcUrl;
                 }
             }
         }
@@ -332,12 +303,8 @@ export class CatalogService {
             throw new Error(`Unable to initiate download of LCP pub: ${filePath}`);
         }
 
-        if (!title) {
-            title = download.srcUrl;
-        }
-
-        this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
-            this.translator.translate("message.download.start", { title })));
+        // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
+        //     this.translator.translate("message.download.start", { title })));
 
         this.store.dispatch(downloadActions.request.build(download.srcUrl, title));
 
@@ -361,8 +328,8 @@ export class CatalogService {
             throw err;
         }
 
-        this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-            this.translator.translate("message.download.success", { title })));
+        // this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+        //     this.translator.translate("message.download.success", { title })));
 
         debug("[END] Download publication", filePath, newDownload);
 

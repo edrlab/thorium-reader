@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
@@ -25,7 +25,7 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-class DownloadsList extends React.Component<IProps, undefined> {
+class DownloadsPanel extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);
@@ -33,22 +33,26 @@ class DownloadsList extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __, downloadState } = this.props;
-        return (
-            <LibraryLayout title={__("header.downloads")}>
-                { (downloadState && downloadState.downloads && downloadState.downloads.length) ?
-                <ul>
-                    {
-                    downloadState.downloads.map((dl, i) => {
-                        return <li key={i}>
-                            <span>[{dl.progress}%]</span> <span>{dl.title ? dl.title : dl.url}</span>
-                        </li>;
-                    })
-                    }
-                </ul> :
-                <></>
+        if (!downloadState || !downloadState.downloads || !downloadState.downloads.length) {
+            return <></>;
+        }
+        return (<div className={styles.downloadsPanel}
+            aria-live="polite"
+            role="alert"
+            >
+            <div className={styles.section_title}>{ __("header.downloads")}</div>
+            <ul>
+                {
+                downloadState.downloads.map((dl, i) => {
+                    return <li key={i}>
+                        <span className={styles.percent}>{dl.progress}%</span>
+                        <progress max="100" value={dl.progress}>{dl.progress}</progress>
+                        <span className={styles.title}>{dl.title ? dl.title : dl.url}</span>
+                    </li>;
+                })
                 }
-            </LibraryLayout>
-        );
+            </ul>
+        </div>);
     }
 }
 
@@ -64,4 +68,4 @@ const mapDispatchToProps = (_dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(DownloadsList));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(DownloadsPanel));

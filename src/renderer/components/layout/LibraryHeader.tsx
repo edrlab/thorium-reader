@@ -35,12 +35,13 @@ const headerNav: NavigationHeader[] = [
         matchRoutes: ["/opds"],
         styles: [],
     },
-    {
-        route: "/downloads",
-        label: "downloads",
-        matchRoutes: ["/downloads"],
-        styles: [],
-    },
+    // // DownloadsList
+    // {
+    //     route: "/downloads",
+    //     label: "downloads",
+    //     matchRoutes: ["/downloads"],
+    //     styles: [],
+    // },
     {
         route: "/settings",
         label: "settings",
