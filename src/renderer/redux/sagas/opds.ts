@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { LOCATION_CHANGE, LocationChangeAction } from "connected-react-router";
+import * as debug_ from "debug";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { TOpdsLinkViewSimplified } from "readium-desktop/common/views/opds";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
@@ -18,6 +19,9 @@ import { all, call, fork, put, take } from "redux-saga/effects";
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 
+// Logger
+const debug = debug_("readium-desktop:renderer:redux:saga:opds");
+
 // https://reacttraining.com/react-router/web/api/withRouter
 // tslint:disable-next-line: max-line-length
 // withRouter does not subscribe to location changes like React Redux’s connect does for state changes. Instead, re-renders after location changes propagate out from the <Router> component. This means that withRouter does not re-render on route transitions unless its parent component re-renders.
@@ -29,6 +33,7 @@ function* browseWatcher(): SagaIterator {
         if (path.startsWith("/opds") && path.indexOf("/browse") > 0 ) {
             const parsedResult = parseOpdsBrowserRoute(path);
             parsedResult.title = decodeURI(parsedResult.title);
+            debug("request opds browse", parsedResult);
             yield put(opdsActions.browse(parsedResult));
             yield put(apiActions.clean(BROWSE_OPDS_API_REQUEST_ID));
         }
@@ -39,6 +44,7 @@ function* browseRequestWatcher(): SagaIterator {
     while (true) {
         const action: opdsActions.IActionBrowseRequest =
             yield take(opdsActions.ActionType.BrowseRequest);
+        debug("opds browse catched");
         yield put(
             apiActions.buildRequestAction(
                 BROWSE_OPDS_API_REQUEST_ID,
@@ -53,6 +59,7 @@ function* updateHeaderLinkWatcher(): SagaIterator {
         const { requestId } = action.meta.api;
 
         if (requestId === BROWSE_OPDS_API_REQUEST_ID) {
+            debug("opds browse data received");
             const browserResult = action.payload as ReturnPromiseType<TApiMethod["opds/browse"]>;
 
             if (browserResult.isSuccess && browserResult.data && browserResult.data.links) {
@@ -64,11 +71,14 @@ function* updateHeaderLinkWatcher(): SagaIterator {
                 const linkViewUp = findLink(links.up);
                 const linkViewBookshelf = findLink(links.bookshelf);
 
-                yield put(opdsActions.headerLinkUpdate({
+                const putLinks = {
                     start: linkViewStart && linkViewStart.Href,
                     up: linkViewUp && linkViewUp.Href,
                     bookshelf: linkViewBookshelf && linkViewBookshelf.Href,
-                }));
+                };
+                debug("opds browse data received with feed links", putLinks);
+
+                yield put(opdsActions.headerLinkUpdate(putLinks));
 
                 // non-blocking searchUrl request
                 yield fork(setSearchLinkInHeader, links.search);

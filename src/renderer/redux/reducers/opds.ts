@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+// import * as debug_ from "debug";
 import { IBreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
 import { diRendererGet } from "readium-desktop/renderer/di";
-// import * as debug_ from "debug";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import {
     IActionBrowseRequest, IActionHeaderLinkUpdate,
@@ -18,22 +18,22 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 // Logger
 // const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
 
-const translator = diRendererGet("translator");
-
-const initBreadcrumb: IBreadCrumbItem[] = [{
-    name: translator.translate("opds.breadcrumbRoot"),
-    path: "/opds",
-}];
-
 export function opdsBreadcrumbReducer(
-    state: IBreadCrumbItem[] = initBreadcrumb,
+    state: IBreadCrumbItem[] = [],
     action: IActionBrowseRequest,
 ) {
     switch (action.type) {
         case opdsActions.ActionType.BrowseRequest:
             const { level, title, url, rootFeedIdentifier } = action.payload;
-            // the slice() operation clones the array and returns a reference to a new array.
             const stateNew = state.slice(0, level - 1);
+            if (stateNew.length === 0) {
+                const translator = diRendererGet("translator");
+                stateNew.push({
+                    name: translator.translate("opds.breadcrumbRoot"),
+                    path: "/opds",
+                });
+            }
+            // the slice() operation clones the array and returns a reference to a new array.
             stateNew.push({
                 name: title,
                 path: buildOpdsBrowserRoute(
@@ -57,10 +57,9 @@ export function opdsHeaderLinkReducer(
     switch (action.type) {
         case opdsActions.ActionType.HeaderLinkUpdate:
             const stateNew = { ...state };
-            for (const link of Object.entries(stateNew)) {
-                if (link[0]) {
-                    stateNew[link[0] as keyof IOpdsHeaderState] = link[1];
-                }
+            for (const link of Object.entries(action.payload)) {
+                // TODO keep search in memory if the next link doesn't exist
+                stateNew[link[0] as keyof IOpdsHeaderState] = link[1];
             }
 
             return stateNew;

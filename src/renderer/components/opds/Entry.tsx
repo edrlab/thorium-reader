@@ -23,7 +23,6 @@ class Entry extends React.Component<EntryProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { entry } = this.props;
 
-        // Build feedBreadcrumb
         const { level, match } = this.props;
         const rootFeedIdentifier = match.params.opdsId;
         const route = buildOpdsBrowserRoute(
