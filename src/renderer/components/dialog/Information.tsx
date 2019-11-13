@@ -37,7 +37,7 @@ interface IState {
     placeholder: any;
 }
 
-export class LanguageSettings extends React.Component<IProps, IState> {
+export class Information extends React.Component<IProps, IState> {
     private parsedMarkdown: string;
 
     constructor(props: IProps) {
@@ -97,4 +97,4 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LanguageSettings));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(Information));

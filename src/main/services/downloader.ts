@@ -28,7 +28,7 @@ interface DownloadRegistry {
 }
 
 export interface DownloadProgressListener {
-    onProgress: any;
+    onProgress: (dl: Download) => void;
 }
 
 @injectable()
