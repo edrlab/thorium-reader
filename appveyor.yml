@@ -5,7 +5,7 @@ platform:
 
 branches:
   only:
-    - appveyor
+    - develop
 
 skip_tags: true
 
@@ -72,7 +72,7 @@ deploy:
   prerelease: true
   force_update: true
   on:
-    branch: appveyor
+    branch: develop
     APPVEYOR_REPO_TAG: false
 
 artifacts:
