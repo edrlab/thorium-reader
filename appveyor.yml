@@ -24,11 +24,11 @@ environment:
 install:
   - ps: Install-Product node 12 x64
   - node --version && npm --version
-  - node scripts/package-ci-version-bump.js package.json %APPVEYOR_BUILD_NUMBER% && cat package.json | grep -i VERSION'
-  - node scripts/package-ci-version-bump.js src/package.json %APPVEYOR_BUILD_NUMBER% && cat src/package.json | grep -i VERSION'
   - npm --global install npm@latest
   - set PATH=%APPDATA%\npm;%PATH%
   - node --version && npm --version
+  - node scripts/package-ci-patch.js package.json %APPVEYOR_BUILD_NUMBER% && cat package.json | grep -i VERSION' && cat src/package.json
+  - node scripts/package-ci-patch.js src/package.json %APPVEYOR_BUILD_NUMBER% && cat src/package.json | grep -i VERSION' && cat src/package.json
   - npm ci
 build_script:
   - 'echo "TRAVIS_OS_NAME_: %TRAVIS_OS_NAME_%"'
@@ -41,8 +41,6 @@ build_script:
   - 'echo "APPVEYOR_JOB_NAME: %APPVEYOR_JOB_NAME%"'
   - 'echo "APPVEYOR_JOB_NUMBER: %APPVEYOR_JOB_NUMBER%"'
   - 'echo "APPVEYOR_REPO_COMMIT: %APPVEYOR_REPO_COMMIT%"'
-  - node scripts/package-ci-version-bump.js package.json %APPVEYOR_BUILD_NUMBER% && cat package.json | grep -i VERSION'
-  - node scripts/package-ci-version-bump.js src/package.json %APPVEYOR_BUILD_NUMBER% && cat src/package.json | grep -i VERSION'
   - ps: 'if ( $env:APPVEYOR_PULL_REQUEST_NUMBER ) { npm run build:prod } else { npm run package:win }'
   - pwd
   - ls -als
@@ -51,7 +49,7 @@ build_script:
   - ls -als release/win-unpacked
   - ls -Rals release/win-unpacked/resources/app.asar.unpacked
   - exit
-#  - node scripts/release-github.js
+  - node scripts/release-github.js
 deploy:
   tag: 'latest-$(TRAVIS_OS_NAME_)'
   release: '[latest-$(TRAVIS_OS_NAME_)] continuous test build (prerelease)'
@@ -64,7 +62,7 @@ deploy:
   prerelease: true
   force_update: true
   on:
-    branch: develop
+    branch: appveyor
     APPVEYOR_REPO_TAG: false
 
 artifacts:
