@@ -25,7 +25,7 @@ install:
   - ps: Install-Product node 12 x64
   - node --version && npm --version
   - 'echo "SED 1:"'
-  - 'sed -e "s/^  .version.: .(.*).,$/  \"version\": \"\\1.%APPVEYOR_BUILD_NUMBER%\",/g" package.json'
+  - 'sed -e "s/^  .version.: .(.*).,$/  \"version\": \"\1.%APPVEYOR_BUILD_NUMBER%\",/g" package.json'
   - 'echo "SED 2:"'
   - 'sed -e "s/^  .version.: .(.*).,$/  -version-: -\\1.%APPVEYOR_BUILD_NUMBER%-,/g" package.json'
   - 'echo "SED 3:"'
