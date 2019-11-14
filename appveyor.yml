@@ -24,11 +24,16 @@ environment:
 install:
   - ps: Install-Product node 12 x64
   - node --version && npm --version
+  - 'echo "SED 1:"'
+  - 'sed -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.%APPVEYOR_BUILD_NUMBER%\",/g" package.json'
+  - 'echo "SED 2:"'
+  - sed -e 's/^  "version": "\(.*\)",$/  "version": "\\1.%APPVEYOR_BUILD_NUMBER%",/g' package.json
+  - 'echo "SED 3:"'
+  - sed -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.%APPVEYOR_BUILD_NUMBER%\",/g" package.json
   - npm --global install npm@latest
   - set PATH=%APPDATA%\npm;%PATH%
   - node --version && npm --version
-  - 'sed -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.%APPVEYOR_BUILD_NUMBER%\",/g" package.json > package_NEW.json && cat package_NEW.json && mv package_NEW.json package.json && cat package.json | grep -i VERSION'
-  - ps: 'if ( $env:APPVEYOR_PULL_REQUEST_NUMBER ) { echo "PR" } else { echo "NO PR" }'
+#  - ps: 'if ( $env:APPVEYOR_PULL_REQUEST_NUMBER ) { echo "PR" } else { echo "NO PR" }'
 # - npm ci
 build_script:
   - 'echo "TRAVIS_OS_NAME_: %TRAVIS_OS_NAME_%"'
