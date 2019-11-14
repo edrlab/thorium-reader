@@ -92,10 +92,9 @@ script:
     -v ~/.cache/electron-builder:/root/.cache/electron-builder
     electronuserland/builder:wine
     /bin/bash
-    -c "npm run clean";
+    -c "npm run package:win";
     fi;
     fi'
-#    -c "npm run package:win && ls -als release && ls -als release/win-unpacked";
 after_success:
   - 'pwd'
   - 'ls -als'
