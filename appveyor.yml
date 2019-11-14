@@ -7,9 +7,11 @@ branches:
   only:
     - appveyor
 
+skip_tags: true
+
 cache:
   - node_modules
-  - '%USERPROFILE%\.electron'
+#  - '%USERPROFILE%\.electron'
   - '%LOCALAPPDATA%\electron\Cache'
   - '%LOCALAPPDATA%\electron-builder\cache'
 
@@ -22,6 +24,9 @@ environment:
     secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
 
 install:
+  - ls -als changelogs
+  - ps: 'Get-ChildItem -File changelogs | Rename-Item -NewName { $_.Name -replace "-","_" }'
+  - ls -als changelogs
   - ps: Install-Product node 12 x64
   - node --version && npm --version
   - npm --global install npm@latest
@@ -30,7 +35,8 @@ install:
   - node scripts/package-ci-patch.js package.json %APPVEYOR_BUILD_NUMBER% && cat package.json | grep -i VERSION && cat package.json
   - node scripts/package-ci-patch.js src/package.json %APPVEYOR_BUILD_NUMBER% && cat src/package.json | grep -i VERSION && cat src/package.json
   - npm ci
-build_script:
+
+  build_script:
   - 'echo "TRAVIS_OS_NAME_: %TRAVIS_OS_NAME_%"'
   - 'set TRAVIS_TAG=latest-%TRAVIS_OS_NAME_%'
   - 'echo "TRAVIS_TAG: %TRAVIS_TAG%"'
@@ -52,12 +58,15 @@ build_script:
   - ls -als release
   - ls -als release/win-unpacked
   - ls -Rals release/win-unpacked/resources/app.asar.unpacked || pwd
+  - ps: 'Get-ChildItem -File release | Rename-Item -NewName { $_.Name -replace " ","" }'
+  - ls -als release
+
 before_deploy:
   - node scripts/release-github.js
 deploy:
   tag: '$(TRAVIS_TAG)'
   release: '[$(TRAVIS_TAG)] continuous test build (prerelease)'
-  description: 'Appveyor build job: $(APPVEYOR_URL)/project/$(APPVEYOR_REPO_NAME)/builds/$(APPVEYOR_BUILD_ID)'
+  description: 'Appveyor build job: $(APPVEYOR_URL)/project/$(APPVEYOR_ACCOUNT_NAME)/$(APPVEYOR_PROJECT_NAME)/builds/$(APPVEYOR_BUILD_ID)'
   provider: GitHub
   auth_token:
     secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
