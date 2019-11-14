@@ -32,13 +32,13 @@ matrix:
       env:
         - ELECTRON_CACHE=$HOME/.cache/electron
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-    - if: type = push
-      os: linux
-      services: docker
-      language: node_js
-      node_js: "node"
-      env:
-        - TRAVIS_OS_NAME_=windows
+#    - if: type = push
+#      os: linux
+#      services: docker
+#      language: node_js
+#      node_js: "node"
+#      env:
+#        - TRAVIS_OS_NAME_=windows
 # https://www.electron.build/multi-platform-build
 # Switch to TravisCI "native" Windows support when it is ready (the main blocking issue right now is secret ENV vars, which we need to deploy to GitHub)
 # https://travis-ci.community/c/environments/windows
@@ -49,7 +49,17 @@ matrix:
 #     - ELECTRON_CACHE=$HOME/.cache/electron
 #     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 install:
-- npm --global install npm@latest && npm --version && npm ci
+- npm --global install npm@latest && npm --version
+- node scripts/package-ci-patch.js package.json ${TRAVIS_BUILD_NUMBER} && cat package.json | grep -i VERSION && cat package.json
+- node scripts/package-ci-patch.js src/package.json ${TRAVIS_BUILD_NUMBER} && cat src/package.json | grep -i VERSION && cat src/package.json
+#  - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${TRAVIS_BUILD_NUMBER}\",/g" package.json && cat package.json | grep -i VERSION'
+#  - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${TRAVIS_BUILD_NUMBER}\",/g" src/package.json && cat src/package.json | grep -i VERSION'
+#sed -i -e "s/^ [ ]*\"leveldown\": .*$//g" package.json && cat package.json && sed -i -e "s/^ [ ]*\"leveldown\": .*$//g" src/package.json && cat src/package.json &&
+#sed -i -e "s/^ [ ]*\"pouchdb-adapter-leveldb\": .*$//g" package.json && cat package.json && sed -i -e "s/^ [ ]*\"pouchdb-adapter-leveldb\": .*$//g" src/package.json && cat src/package.json &&
+#sed -i -e "s/        \"appx\",//g" package.json && cat package.json &&
+# asarUnpack
+#  - 'sed -i -e s/\\.node\"/._node_\"/g package.json && cat package.json'
+- npm ci
 - npm run rmLevelDownPrebuilds && npm run rmLevelDown
 #- rm -rf $HOME/.cache/
 #- rm -rf $HOME/.npm/
@@ -66,26 +76,20 @@ before_cache:
 #  - 'rm -f $HOME/.npm/anonymous-cli-metrics.json'
 script:
 #  - npm --no-git-tag-version version prepatch && git diff
-  - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${TRAVIS_BUILD_NUMBER}\",/g" package.json && cat package.json | grep -i VERSION'
-  - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${TRAVIS_BUILD_NUMBER}\",/g" src/package.json && cat src/package.json | grep -i VERSION'
   - 'npm --version'
   - 'node --version'
   - 'pwd'
   - 'ls -als'
 #  - 'ls -als node_modules'
   - 'env | grep -iE "DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_"'
-# asarUnpack
-#  - 'sed -i -e s/\\.node\"/._node_\"/g package.json && cat package.json'
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then npm run lint && npm run build; fi'
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-    sed -i -e "s/^ [ ]*\"leveldown\": .*$//g" package.json && cat package.json && sed -i -e "s/^ [ ]*\"leveldown\": .*$//g" src/package.json && cat src/package.json &&
-    sed -i -e "s/^ [ ]*\"pouchdb-adapter-leveldb\": .*$//g" package.json && cat package.json && sed -i -e "s/^ [ ]*\"pouchdb-adapter-leveldb\": .*$//g" src/package.json && cat src/package.json &&
     if [[ "$TRAVIS_OS_NAME_" == "linux" ]]; then
     npm run package:linux && ls -als release && ls -als release/linux-unpacked ;
     elif [[ "$TRAVIS_OS_NAME_" == "osx" ]]; then
     npm run package:mac && ls -als release && ls -als release/mac ;
     elif [[ "$TRAVIS_OS_NAME_" == "windows" ]]; then
-    sed -i -e "s/        \"appx\",//g" package.json && cat package.json && docker run --rm
+    docker run --rm
     --env-file <(env | grep -iE "DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_")
     -v ${PWD}:/project
     -v ~/.cache/electron:/root/.cache/electron

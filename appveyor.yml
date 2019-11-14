@@ -7,9 +7,11 @@ branches:
   only:
     - develop
 
+skip_tags: true
+
 cache:
-  - node_modules
-  - '%USERPROFILE%\.electron'
+#  - node_modules
+#  - '%USERPROFILE%\.electron'
   - '%LOCALAPPDATA%\electron\Cache'
   - '%LOCALAPPDATA%\electron-builder\cache'
 
@@ -24,20 +26,16 @@ environment:
 install:
   - ps: Install-Product node 12 x64
   - node --version && npm --version
-  - 'echo "SED 1:"'
-  - 'sed -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.%APPVEYOR_BUILD_NUMBER%\",/g" package.json'
-  - 'echo "SED 2:"'
-  - sed -e 's/^  "version": "\(.*\)",$/  "version": "\\1.%APPVEYOR_BUILD_NUMBER%",/g' package.json
-  - 'echo "SED 3:"'
-  - sed -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.%APPVEYOR_BUILD_NUMBER%\",/g" package.json
   - npm --global install npm@latest
   - set PATH=%APPDATA%\npm;%PATH%
   - node --version && npm --version
-#  - ps: 'if ( $env:APPVEYOR_PULL_REQUEST_NUMBER ) { echo "PR" } else { echo "NO PR" }'
-# - npm ci
+  - node scripts/package-ci-patch.js package.json %APPVEYOR_BUILD_NUMBER% && cat package.json | grep -i VERSION && cat package.json
+  - node scripts/package-ci-patch.js src/package.json %APPVEYOR_BUILD_NUMBER% && cat src/package.json | grep -i VERSION && cat src/package.json
+  - npm ci
+
 build_script:
   - 'echo "TRAVIS_OS_NAME_: %TRAVIS_OS_NAME_%"'
-  - set TRAVIS_TAG="latest-%TRAVIS_OS_NAME_%"
+  - 'set TRAVIS_TAG=latest-%TRAVIS_OS_NAME_%'
   - 'echo "TRAVIS_TAG: %TRAVIS_TAG%"'
   - 'echo "APPVEYOR_BUILD_ID: %APPVEYOR_BUILD_ID%"'
   - 'echo "APPVEYOR_BUILD_NUMBER: %APPVEYOR_BUILD_NUMBER%"'
@@ -46,26 +44,30 @@ build_script:
   - 'echo "APPVEYOR_JOB_NAME: %APPVEYOR_JOB_NAME%"'
   - 'echo "APPVEYOR_JOB_NUMBER: %APPVEYOR_JOB_NUMBER%"'
   - 'echo "APPVEYOR_REPO_COMMIT: %APPVEYOR_REPO_COMMIT%"'
-  - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${APPVEYOR_BUILD_NUMBER}\",/g" package.json && cat package.json | grep -i VERSION'
-  - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${APPVEYOR_BUILD_NUMBER}\",/g" src/package.json && cat src/package.json | grep -i VERSION'
-  - 'sed -i -e "s/        \"appx\",//g" package.json && cat package.json'
+  - 'echo "APPVEYOR_ACCOUNT_NAME: %APPVEYOR_ACCOUNT_NAME%"'
+  - 'echo "APPVEYOR_PROJECT_NAME: %APPVEYOR_PROJECT_NAME%"'
+  - 'echo "APPVEYOR_REPO_NAME: %APPVEYOR_REPO_NAME%"'
+  - 'echo "APPVEYOR_REPO_BRANCH: %APPVEYOR_REPO_BRANCH%"'
   - ps: 'if ( $env:APPVEYOR_PULL_REQUEST_NUMBER ) { npm run build:prod } else { npm run package:win }'
   - pwd
   - ls -als
   - ls -als dist
   - ls -als release
   - ls -als release/win-unpacked
-  - ls -Rals release/win-unpacked/resources/app.asar.unpacked
-  - exit
-#  - node scripts/release-github.js
+  - ls -Rals release/win-unpacked/resources/app.asar.unpacked || pwd
+  - ps: 'Get-ChildItem -File release | Rename-Item -NewName { $_.Name -replace " ","_" }'
+  - ls -als release
+
+before_deploy:
+  - node scripts/release-github.js
 deploy:
-  tag: 'latest-$(TRAVIS_OS_NAME_)'
-  release: '[latest-$(TRAVIS_OS_NAME_)] continuous test build (prerelease)'
-  description: 'Appveyor build job: $(APPVEYOR_URL)/project/danielweck/readium-desktop'
+  tag: '$(TRAVIS_TAG)'
+  release: '[$(TRAVIS_TAG)] continuous test build (prerelease)'
+  description: 'Appveyor build job: $(APPVEYOR_URL)/project/$(APPVEYOR_ACCOUNT_NAME)/$(APPVEYOR_PROJECT_NAME)/builds/$(APPVEYOR_BUILD_ID)'
   provider: GitHub
   auth_token:
     secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
-  artifact: /release\\.*\.exe/
+  artifact: /.*\.exe/
   draft: false
   prerelease: true
   force_update: true
