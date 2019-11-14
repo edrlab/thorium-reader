@@ -25,11 +25,15 @@ install:
   - ps: Install-Product node 12 x64
   - node --version && npm --version
   - 'echo "SED 1:"'
-  - 'sed -e "s/^  .version.: .\(.*\).,$/  \"version\": \"\1.%APPVEYOR_BUILD_NUMBER%\",/g" package.json'
+  - 'sed -e "s/^.*version.*$/XXXXXXXXXX/g" package.json'
   - 'echo "SED 2:"'
-  - 'sed -e "s/^  .version.: .(.*).,$/  -version-: -\\1.%APPVEYOR_BUILD_NUMBER%-,/g" package.json'
+  - 'sed -e "s/^.*\"version\".*$/YYYYYYYY/g" package.json'
   - 'echo "SED 3:"'
-  - 'sed -e "s/^  .version.: .(.*).,$/  -version-: -\1.%APPVEYOR_BUILD_NUMBER%-,/g" package.json'
+  - 'sed -e "s/^.*\"(version)\".*$/ZZZZZZZZZZZ/g" package.json'
+  - 'echo "SED 4:"'
+  - 'sed -e "s/^.*\"\(version\)\".*$/AAAAAAAAA/g" package.json'
+  - 'echo "SED 5:"'
+  - 'sed -e "s/^.*\"\(version\)\".*$/BBB\\1BBB/g" package.json'
   - npm --global install npm@latest
   - set PATH=%APPDATA%\npm;%PATH%
   - node --version && npm --version
