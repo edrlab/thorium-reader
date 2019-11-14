@@ -36,7 +36,7 @@ install:
   - node scripts/package-ci-patch.js src/package.json %APPVEYOR_BUILD_NUMBER% && cat src/package.json | grep -i VERSION && cat src/package.json
   - npm ci
 
-  build_script:
+build_script:
   - 'echo "TRAVIS_OS_NAME_: %TRAVIS_OS_NAME_%"'
   - 'set TRAVIS_TAG=latest-%TRAVIS_OS_NAME_%'
   - 'echo "TRAVIS_TAG: %TRAVIS_TAG%"'
