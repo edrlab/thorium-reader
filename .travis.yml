@@ -51,18 +51,18 @@ matrix:
 install:
 - npm --global install npm@latest && npm --version && npm ci
 - npm run rmLevelDownPrebuilds && npm run rmLevelDown
-- rm -rf $HOME/.cache/
-- rm -rf $HOME/.npm/
-cache: false
-#cache:
+#- rm -rf $HOME/.cache/
+#- rm -rf $HOME/.npm/
+#cache: false
+cache:
 #  npm: true
-#  directories:
-#    - "$HOME/.npm"
-#    - node_modules
-#    - $HOME/.cache/electron
-#    - $HOME/.cache/electron-builder
-#before_cache:
-#  - 'rm -rf $HOME/.cache/electron-builder/wine'
+  directories:
+    - "$HOME/.npm"
+    - node_modules
+    - $HOME/.cache/electron
+    - $HOME/.cache/electron-builder
+before_cache:
+  - 'rm -rf $HOME/.cache/electron-builder/wine'
 #  - 'rm -f $HOME/.npm/anonymous-cli-metrics.json'
 script:
 #  - npm --no-git-tag-version version prepatch && git diff
@@ -92,10 +92,10 @@ script:
     -v ~/.cache/electron-builder:/root/.cache/electron-builder
     electronuserland/builder:wine
     /bin/bash
-    -c "npm run package:win && ls -als release && ls -als release/win-unpacked";
+    -c "npm run clean";
     fi;
     fi'
-
+#    -c "npm run package:win && ls -als release && ls -als release/win-unpacked";
 after_success:
   - 'pwd'
   - 'ls -als'
