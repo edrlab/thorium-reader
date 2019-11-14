@@ -8,12 +8,12 @@
 import { OpdsFeedView, OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-interface IPubInfo {
+export interface IPubInfo {
     opdsPublicationView: OpdsPublicationView | undefined;
     publicationIdentifier: string | undefined;
 }
 
-interface IFileImport {
+export interface IFileImport {
     name: string;
     path: string;
 }
