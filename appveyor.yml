@@ -23,24 +23,26 @@ environment:
 
 install:
   - ps: Install-Product node 12 x64
-#  - npm --global install npm@latest
+  - node --version && npm --version
+  - npm --global install npm@latest
+  - set PATH=%APPDATA%\npm;%PATH%
   - node --version && npm --version
   - npm ci
 build_script:
-  - 'echo "TRAVIS_OS_NAME_: ${TRAVIS_OS_NAME_}"'
-  - export TRAVIS_TAG="latest-$TRAVIS_OS_NAME_"
-  - 'echo "TRAVIS_TAG: ${TRAVIS_TAG}"'
-  - 'echo "APPVEYOR_BUILD_ID: ${APPVEYOR_BUILD_ID}"'
-  - 'echo "APPVEYOR_BUILD_NUMBER: ${APPVEYOR_BUILD_NUMBER}"'
-  - 'echo "APPVEYOR_BUILD_VERSION: ${APPVEYOR_BUILD_VERSION}"'
-  - 'echo "APPVEYOR_JOB_ID: ${APPVEYOR_JOB_ID}"'
-  - 'echo "APPVEYOR_JOB_NAME: ${APPVEYOR_JOB_NAME}"'
-  - 'echo "APPVEYOR_JOB_NUMBER: ${APPVEYOR_JOB_NUMBER}"'
-  - 'echo "APPVEYOR_REPO_COMMIT: ${APPVEYOR_REPO_COMMIT}"'
+  - 'echo "TRAVIS_OS_NAME_: %TRAVIS_OS_NAME_%"'
+  - set TRAVIS_TAG="latest-%TRAVIS_OS_NAME_%"
+  - 'echo "TRAVIS_TAG: %TRAVIS_TAG%"'
+  - 'echo "APPVEYOR_BUILD_ID: %APPVEYOR_BUILD_ID%"'
+  - 'echo "APPVEYOR_BUILD_NUMBER: %APPVEYOR_BUILD_NUMBER%"'
+  - 'echo "APPVEYOR_BUILD_VERSION: %APPVEYOR_BUILD_VERSION%"'
+  - 'echo "APPVEYOR_JOB_ID: %APPVEYOR_JOB_ID%"'
+  - 'echo "APPVEYOR_JOB_NAME: %APPVEYOR_JOB_NAME%"'
+  - 'echo "APPVEYOR_JOB_NUMBER: %APPVEYOR_JOB_NUMBER%"'
+  - 'echo "APPVEYOR_REPO_COMMIT: %APPVEYOR_REPO_COMMIT%"'
   - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${APPVEYOR_BUILD_NUMBER}\",/g" package.json && cat package.json | grep -i VERSION'
   - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${APPVEYOR_BUILD_NUMBER}\",/g" src/package.json && cat src/package.json | grep -i VERSION'
   - 'sed -i -e "s/        \"appx\",//g" package.json && cat package.json'
-  - 'if [ "$APPVEYOR_PULL_REQUEST_NUMBER" ]; then npm run build:prod; else npm run package:win; fi'
+  - 'ps: if ( $env:APPVEYOR_PULL_REQUEST_NUMBER ) { npm run build:prod } else { npm run package:win }'
   - pwd
   - ls -als
   - ls -als dist
@@ -55,7 +57,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
-  artifact: /release\/.*\.exe/
+  artifact: /release\\.*\.exe/
   draft: false
   prerelease: true
   force_update: true
@@ -64,7 +66,7 @@ deploy:
     APPVEYOR_REPO_TAG: false
 
 artifacts:
-  - path: release/*.exe
+  - path: release\*.exe
     name: Thorium
 
 test: off
