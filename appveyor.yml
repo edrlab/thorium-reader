@@ -32,7 +32,7 @@ install:
   - npm ci
 build_script:
   - 'echo "TRAVIS_OS_NAME_: %TRAVIS_OS_NAME_%"'
-  - set TRAVIS_TAG="latest-%TRAVIS_OS_NAME_%"
+  - 'set TRAVIS_TAG=latest-%TRAVIS_OS_NAME_%'
   - 'echo "TRAVIS_TAG: %TRAVIS_TAG%"'
   - 'echo "APPVEYOR_BUILD_ID: %APPVEYOR_BUILD_ID%"'
   - 'echo "APPVEYOR_BUILD_NUMBER: %APPVEYOR_BUILD_NUMBER%"'
@@ -50,8 +50,8 @@ build_script:
   - ls -Rals release/win-unpacked/resources/app.asar.unpacked || pwd
   - node scripts/release-github.js
 deploy:
-  tag: 'latest-$(TRAVIS_OS_NAME_)'
-  release: '[latest-$(TRAVIS_OS_NAME_)] continuous test build (prerelease)'
+  tag: '$(TRAVIS_TAG)'
+  release: '[$(TRAVIS_TAG)] continuous test build (prerelease)'
   description: 'Appveyor build job: $(APPVEYOR_URL)/project/danielweck/readium-desktop/builds/$(APPVEYOR_BUILD_ID)'
   provider: GitHub
   auth_token:
