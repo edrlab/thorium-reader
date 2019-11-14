@@ -7,21 +7,21 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 
-export const ID = "DOWNLOAD_REQUEST";
+export const ID = "DOWNLOAD_PROGRESS";
 
 export interface Payload {
     url: string;
-    title: string | undefined;
+    progress: number; // integer [0, 100]
 }
 
-export function build(url: string, title: string | undefined):
+export function build(url: string, progress: number):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             url,
-            title,
+            progress,
         },
     };
 }

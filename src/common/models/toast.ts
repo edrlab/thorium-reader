@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 export enum ToastType {
-    DownloadComplete = "download-complete",
-    DownloadStarted = "download-started",
-    DownloadFailed = "download-failed",
+    Success = "toast-success",
+    Default = "toast-default",
+    Error = "toast-error",
 }

@@ -7,22 +7,21 @@
 
 import { Action } from "readium-desktop/common/models/redux";
 
-export const ID = "DOWNLOAD_REQUEST";
+export const ID = "DOWNLOAD_ERROR";
 
 export interface Payload {
     url: string;
-    title: string | undefined;
 }
 
-export function build(url: string, title: string | undefined):
+export function build(url: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             url,
-            title,
         },
+        error: true,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

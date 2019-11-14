@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { importActions } from "readium-desktop/common/redux/actions/";
+import { dialogActions, importActions } from "readium-desktop/common/redux/actions/";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
@@ -42,41 +42,38 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             return <></>;
         }
 
-        return opdsPublicationView.isFree ? (
+        return opdsPublicationView.openAccessUrl || opdsPublicationView.sampleOrPreviewUrl ?
             <button
                 onClick={() => verifyImport(opdsPublicationView)}
                 className={styles.lire}
-                disabled={buttonIsDisabled}
+                disabled={buttonIsDisabled()}
             >
-                {__("catalog.addBookToLib")}
+                {opdsPublicationView.openAccessUrl ?
+                __("catalog.addBookToLib") :
+                __("opds.menu.addExtract")}
             </button>
-        ) : opdsPublicationView.hasSample && (
-            <button
-                onClick={() => verifyImport(opdsPublicationView, true)}
-                className={styles.lire}
-            >
-                {__("opds.menu.addExtract")}
-            </button>
-        );
+        : <></>;
     }
 }
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        verifyImport: (opdsPublicationView: OpdsPublicationView, downloadSample?: boolean) => {
-            dispatch(importActions.verify.build(
-                {
-                    opdsPublicationView,
-                    downloadSample,
-                },
-            ));
+        verifyImport: (opdsPublicationView: OpdsPublicationView) => {
+            dispatch(dialogActions.closeRequest.build());
+            dispatch(importActions.verify.build(opdsPublicationView));
         },
     };
 };
 
 const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
-        buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.opdsPublicationView.url) > -1,
+        buttonIsDisabled: () => {
+            const foundDownload = state.download.downloads.find((dl) => {
+                return dl.url === props.opdsPublicationView.openAccessUrl ||
+                    dl.url === props.opdsPublicationView.sampleOrPreviewUrl;
+            });
+            return foundDownload ? true : false;
+        },
     };
 };
 

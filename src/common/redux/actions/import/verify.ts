@@ -11,19 +11,16 @@ import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 export const ID = "IMPORT_VERIFICATION_REQUEST";
 
 export interface Payload {
-    data: {
-        opdsPublicationView: OpdsPublicationView;
-        downloadSample: boolean;
-    };
+    opdsPublicationView: OpdsPublicationView;
 }
 
-export function build(data: {opdsPublicationView: OpdsPublicationView, downloadSample: boolean}):
+export function build(opdsPublicationView: OpdsPublicationView):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            data,
+            opdsPublicationView,
         },
     };
 }

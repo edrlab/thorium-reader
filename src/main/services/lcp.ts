@@ -247,7 +247,7 @@ export class LcpManager {
             } catch (err) {
                 debug(err);
                 const str = this.stringifyLsdError(err);
-                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadFailed,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                     `LCP [${this.translator.translate("publication.renewButton")}]: ${str}`,
                     ));
             }
@@ -283,7 +283,7 @@ export class LcpManager {
 
                 const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
                     r2Publication.LCP.Rights.End.toISOString() : "";
-                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadComplete,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
                     `LCP [${this.translator.translate("publication.renewButton")}] ${newEndDate}`,
                     ));
 
@@ -324,7 +324,7 @@ export class LcpManager {
             } catch (err) {
                 debug(err);
                 const str = this.stringifyLsdError(err);
-                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadFailed,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                     `LCP [${this.translator.translate("publication.returnButton")}]: ${str}`,
                     ));
             }
@@ -360,7 +360,7 @@ export class LcpManager {
 
                 const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
                     r2Publication.LCP.Rights.End.toISOString() : "";
-                this.store.dispatch(toastActions.openRequest.build(ToastType.DownloadComplete,
+                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
                     `LCP [${this.translator.translate("publication.returnButton")}] ${newEndDate}`,
                     ));
 

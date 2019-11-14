@@ -8,6 +8,5 @@
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 
 export interface ImportState {
-    opdsPublicationView: OpdsPublicationView | undefined;
-    downloadSample: boolean;
+    opdsPublicationView: OpdsPublicationView;
 }
