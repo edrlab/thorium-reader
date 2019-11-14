@@ -10,7 +10,7 @@ branches:
 skip_tags: true
 
 cache:
-  - node_modules
+#  - node_modules
 #  - '%USERPROFILE%\.electron'
   - '%LOCALAPPDATA%\electron\Cache'
   - '%LOCALAPPDATA%\electron-builder\cache'
@@ -24,9 +24,6 @@ environment:
     secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
 
 install:
-  - ls -als changelogs
-  - ps: 'Get-ChildItem -File changelogs | Rename-Item -NewName { $_.Name -replace "-","_" }'
-  - ls -als changelogs
   - ps: Install-Product node 12 x64
   - node --version && npm --version
   - npm --global install npm@latest
@@ -58,7 +55,7 @@ build_script:
   - ls -als release
   - ls -als release/win-unpacked
   - ls -Rals release/win-unpacked/resources/app.asar.unpacked || pwd
-  - ps: 'Get-ChildItem -File release | Rename-Item -NewName { $_.Name -replace " ","" }'
+  - ps: 'Get-ChildItem -File release | Rename-Item -NewName { $_.Name -replace " ","_" }'
   - ls -als release
 
 before_deploy:
