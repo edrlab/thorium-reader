@@ -47,7 +47,7 @@ build_script:
   - ls -als dist
   - ls -als release
   - ls -als release/win-unpacked
-  - ls -Rals release/win-unpacked/resources/app.asar.unpacked
+  - ls -Rals release/win-unpacked/resources/app.asar.unpacked || pwd
   - node scripts/release-github.js
 deploy:
   tag: 'latest-$(TRAVIS_OS_NAME_)'
