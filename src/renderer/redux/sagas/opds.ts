@@ -70,11 +70,13 @@ function* updateHeaderLinkWatcher(): SagaIterator {
                 const linkViewStart = findLink(links.start);
                 const linkViewUp = findLink(links.up);
                 const linkViewBookshelf = findLink(links.bookshelf);
+                const linkViewSelf = findLink(links.self);
 
                 const putLinks = {
                     start: linkViewStart && linkViewStart.Href,
                     up: linkViewUp && linkViewUp.Href,
                     bookshelf: linkViewBookshelf && linkViewBookshelf.Href,
+                    self: linkViewSelf && linkViewSelf.Href,
                 };
                 debug("opds browse data received with feed links", putLinks);
 

@@ -58,8 +58,14 @@ export function opdsHeaderLinkReducer(
         case opdsActions.ActionType.HeaderLinkUpdate:
             const stateNew = { ...state };
             for (const link of Object.entries(action.payload)) {
-                // TODO keep search in memory if the next link doesn't exist
-                stateNew[link[0] as keyof IOpdsHeaderState] = link[1];
+                const key = link[0] as keyof IOpdsHeaderState;
+                if (key === "search") {
+                    if (link[1]) {
+                        stateNew.search = link[1];
+                    }
+                } else {
+                    stateNew[key] = link[1];
+                }
             }
 
             return stateNew;

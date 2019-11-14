@@ -136,6 +136,8 @@ declare namespace typed_i18n {
   readonly "home": string,
   readonly "importTitle": string,
   readonly "listTitle": string,
+  readonly "refreshTitle": string,
+  readonly "homeTitle": string,
   readonly "searchPlaceholder": string,
   readonly "searchTitle": string,
   readonly "settings": string
@@ -147,6 +149,8 @@ declare namespace typed_i18n {
   (_: "header.home", __?: {}): string;
   (_: "header.importTitle", __?: {}): string;
   (_: "header.listTitle", __?: {}): string;
+  (_: "header.refreshTitle", __?: {}): string;
+  (_: "header.homeTitle", __?: {}): string;
   (_: "header.searchPlaceholder", __?: {}): string;
   (_: "header.searchTitle", __?: {}): string;
   (_: "header.settings", __?: {}): string;

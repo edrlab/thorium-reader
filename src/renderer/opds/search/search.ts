@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { TOpdsLinkViewSimplified } from "readium-desktop/common/views/opds";
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import * as request from "request";
 
 const findLink = (ln: TOpdsLinkViewSimplified[], type: string) => ln && ln.find((link) =>

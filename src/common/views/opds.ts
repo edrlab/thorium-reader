@@ -52,19 +52,22 @@ export interface IOpdsResultView extends Pick<OPDSMetadata, "Title"> {
     links?: IOpdsNavigationLink;
 }
 
-type TOpdsLinkViewSimplifiedTitle = Partial<Pick<OPDSLink, "Title">>;
-export type TOpdsLinkViewSimplified = Pick<OPDSLink, "Href" | "TypeLink"> & TOpdsLinkViewSimplifiedTitle;
+export interface IOpdsLinkView {
+    url: string;
+    title?: string | undefined;
+}
 
 export interface IOpdsNavigationLink {
-    next: TOpdsLinkViewSimplified[];
-    previous: TOpdsLinkViewSimplified[];
-    first: TOpdsLinkViewSimplified[];
-    last: TOpdsLinkViewSimplified[];
-    start: TOpdsLinkViewSimplified[];
-    up: TOpdsLinkViewSimplified[];
-    search: TOpdsLinkViewSimplified[];
-    bookshelf: TOpdsLinkViewSimplified[];
-    text: TOpdsLinkViewSimplified[];
+    next: IOpdsLinkView[];
+    previous: IOpdsLinkView[];
+    first: IOpdsLinkView[];
+    last: IOpdsLinkView[];
+    start: IOpdsLinkView[];
+    up: IOpdsLinkView[];
+    search: IOpdsLinkView[];
+    bookshelf: IOpdsLinkView[];
+    text: IOpdsLinkView[];
+    self: IOpdsLinkView[];
 }
 
 export type THttpGetOpdsResultView = IHttpGetResult<string, IOpdsResultView>;

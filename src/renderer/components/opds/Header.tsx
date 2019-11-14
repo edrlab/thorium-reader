@@ -9,7 +9,7 @@ import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar.svg";
+// import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar.svg";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
@@ -107,7 +107,7 @@ class Header extends React.Component<IProps> {
                 <Link
                     to={route}
                 >
-                    <SVG svg={HomeIcon} title={__("header.listTitle")} />
+                    <SVG svg={HomeIcon} title={__("header.homeTitle")} />
                 </Link>
             );
         }
@@ -133,7 +133,7 @@ class Header extends React.Component<IProps> {
                 <Link
                     to={route}
                 >
-                    <SVG svg={RefreshIcon} title={__("header.listTitle")} />
+                    <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                 </Link>
             );
         }
