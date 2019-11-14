@@ -67,7 +67,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
-  artifact: /release\\.*\.exe/
+  artifact: /.*\.exe/
   draft: false
   prerelease: true
   force_update: true
