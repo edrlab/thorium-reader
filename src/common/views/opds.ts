@@ -15,6 +15,8 @@ export interface OpdsFeedView extends Identifiable {
 }
 
 export interface OpdsPublicationView {
+    baseUrl: string;
+    r2OpdsPublicationBase64?: string;
     title: string;
     authors: string[];
     publishers?: string[];
@@ -23,13 +25,12 @@ export interface OpdsPublicationView {
     tags?: string[];
     languages?: string[];
     publishedAt?: string; // ISO8601
-    url?: string;
+    entryUrl?: string;
     buyUrl?: string;
     borrowUrl?: string;
     subscribeUrl?: string;
-    hasSample?: boolean;
-    isFree?: boolean;
-    r2OpdsPublicationBase64?: string;
+    sampleOrPreviewUrl?: string;
+    openAccessUrl?: string;
     cover?: CoverView;
 }
 

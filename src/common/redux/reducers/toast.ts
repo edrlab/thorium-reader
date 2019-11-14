@@ -14,7 +14,7 @@ export interface ToastState extends toastActions.openRequest.Payload {
 
 const initialState: ToastState = {
     open: false,
-    type: ToastType.DownloadComplete,
+    type: ToastType.Success,
     data: undefined,
 };
 

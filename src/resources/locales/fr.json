@@ -56,7 +56,6 @@
         "tags": "Mes tags"
     },
     "dialog": {
-        "alreadyAdd": "Il semblerais que vous ayez déjà ajouté cette publication à votre catalogue.",
         "closeModalWindow": "Fermer cette fenêtre modale",
         "deleteFeed": "Êtes vous sûr de vouloir supprimer ce catalogue ?",
         "deletePublication": "Êtes vous sûr de vouloir supprimer cette publication ?",
@@ -65,13 +64,13 @@
         "no": "Non",
         "renew": "Êtes vous sûr de vouloir renouveler la licence pour ce livre ?",
         "return": "Êtes vous sûr de vouloir retourner la licence pour ce livre ?",
-        "sure": "Êtes vous sûr(e) de vouloir l'ajouter à nouveau ?",
         "yes": "Oui"
     },
     "header": {
         "allBooks": "Tous les livres",
         "books": "Mes Livres",
         "catalogs": "Catalogues",
+        "downloads": "Téléchargements",
         "gridTitle": "Présenter les couvertures de livres en grille",
         "home": "Menu Principal",
         "importTitle": "Importer un livre",
@@ -91,13 +90,14 @@
     },
     "message": {
         "download": {
+            "error": "Le téléchargement de {{- title}} a échoué: [{{- err}}]",
             "start": "Le téléchargement de {{- title}} a commencé.",
             "success": "Le téléchargement de {{- title}} est terminé."
         },
         "import": {
+            "alreadyImport": "{{- title}} est déja importé",
             "fail": "L'importation de {{- path}} a échoué. Vérifier que le fichier est valide",
-            "success": "L'import de {{- title}} est terminé.",
-            "alreadyImport": "{{- title}} est déja importé"
+            "success": "L'import de {{- title}} est terminé."
         }
     },
     "opds": {
@@ -151,7 +151,6 @@
             "bookmarks": "Marque-pages",
             "delete": "Supprimer",
             "edit": "Editer",
-            "illustrations": "Table des Illustrations",
             "landmarks": "Repères",
             "toc": "Table des matières"
         },
@@ -187,7 +186,6 @@
             "fontSize": "Taille du texte",
             "justification": "Alignement",
             "justify": "Justifié",
-            "left": "Gauche",
             "letterSpacing": "Espacement des lettres",
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
@@ -211,10 +209,8 @@
         }
     },
     "settings": {
-        "information": "Informations",
         "language": {
             "languageChoice": "Choix de la langue"
-        },
-        "uiLanguage": "Langue de l'interface"
+        }
     }
 }

@@ -46,12 +46,14 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
                 >
                     {__("opds.menu.aboutBook")}
                 </button>
-                { opdsPublicationView.isFree &&
+                { (opdsPublicationView.sampleOrPreviewUrl || opdsPublicationView.openAccessUrl) &&
                     <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e) }
-                        disabled={buttonIsDisabled}
+                        disabled={buttonIsDisabled()}
                     >
-                        {__("catalog.addBookToLib")}
+                        {opdsPublicationView.openAccessUrl ?
+                            __("catalog.addBookToLib") :
+                            __("opds.menu.addExtract")}
                     </button>
                 }
                 { opdsPublicationView.buyUrl &&
@@ -75,20 +77,13 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
                         {__("opds.menu.goSubBook")}
                     </a>
                 }
-                { opdsPublicationView.hasSample &&
-                    <button role="menuitem"
-                        onClick={ (e) => this.onAddToCatalogClick(e, true) }
-                    >
-                        {__("opds.menu.addExtract")}
-                    </button>
-                }
             </>
         );
     }
 
-    private onAddToCatalogClick(e: TMouseEvent, downloadSample?: boolean) {
+    private onAddToCatalogClick(e: TMouseEvent) {
         e.preventDefault();
-        this.props.verifyImport(downloadSample);
+        this.props.verifyImport();
     }
 
     private displayPublicationInfo(e: TMouseEvent) {
@@ -107,20 +102,21 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
                 },
             ));
         },
-        verifyImport: (downloadSample: boolean) => {
-            dispatch(importActions.verify.build(
-                {
-                    opdsPublicationView: props.opdsPublicationView,
-                    downloadSample,
-                },
-            ));
+        verifyImport: () => {
+            dispatch(importActions.verify.build(props.opdsPublicationView));
         },
     };
 };
 
 const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
-        buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.opdsPublicationView.url) > -1,
+        buttonIsDisabled: () => {
+            const foundDownload = state.download.downloads.find((dl) => {
+                return dl.url === props.opdsPublicationView.openAccessUrl ||
+                    dl.url === props.opdsPublicationView.sampleOrPreviewUrl;
+            });
+            return foundDownload ? true : false;
+        },
     };
 };
 

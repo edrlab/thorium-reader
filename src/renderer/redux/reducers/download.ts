@@ -7,8 +7,9 @@
 
 import { downloadActions } from "readium-desktop/common/redux/actions";
 import { DownloadState } from "readium-desktop/renderer/redux/states/download";
-import { oc } from "ts-optchain";
 
+// TODO: this does not handle multiple same-URL downloads! (different progress?)
+// assumes URL download is unique
 const initialState: DownloadState = {
     downloads: [],
 };
@@ -16,18 +17,35 @@ const initialState: DownloadState = {
 export function downloadReducer(
     state: DownloadState = initialState,
     action: downloadActions.request.TAction |
-        downloadActions.success.TAction,
+        downloadActions.success.TAction |
+        downloadActions.error.TAction |
+        downloadActions.progress.TAction,
 ): DownloadState {
     const downloads = state.downloads;
-    const url = oc(action).payload.url(undefined);
     switch (action.type) {
-        case downloadActions.request.ID:
-            downloads.push({url});
+        case downloadActions.request.ID: {
+            const index1 = downloads.findIndex((dl) => dl.url === action.payload.url);
+            if (index1 >= 0) {
+                downloads.splice(index1, 1);
+            }
+            downloads.push({url: action.payload.url, title: action.payload.title, progress: 0});
             return Object.assign({}, state, { downloads });
+        }
+        case downloadActions.progress.ID: {
+            const index2 = downloads.findIndex((dl) => dl.url === action.payload.url);
+            if (index2 >= 0) {
+                downloads[index2].progress = action.payload.progress;
+            }
+            return Object.assign({}, state, { downloads });
+        }
         case downloadActions.success.ID:
-            const index = downloads.findIndex((value) => value.url === url);
-            downloads.splice(index, 1);
+        case downloadActions.error.ID: {
+            const index3 = downloads.findIndex((dl) => dl.url === action.payload.url);
+            if (index3 >= 0) {
+                downloads.splice(index3, 1);
+            }
             return Object.assign({}, state, { downloads });
+        }
         default:
             return state;
     }

@@ -11,7 +11,6 @@ import { ImportState } from "../states/import";
 
 const initialState: ImportState = {
     opdsPublicationView: undefined,
-    downloadSample: false,
 };
 
 export function importReducer(
@@ -24,8 +23,7 @@ export function importReducer(
                 {},
                 state,
                 {
-                    opdsPublicationView: action.payload.data.opdsPublicationView,
-                    downloadSample: action.payload.data.downloadSample,
+                    opdsPublicationView: action.payload.opdsPublicationView,
                 },
             );
         default:

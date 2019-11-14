@@ -9,13 +9,12 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { ToastState } from "readium-desktop/common/redux/states/toast";
-import * as DownloadIcon from "readium-desktop/renderer/assets/icons/download.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import * as uuid from "uuid";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
-import Toast, { ToastType as CompToastType } from "./Toast";
+import Toast from "./Toast";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -63,12 +62,30 @@ export class ToastManager extends React.Component<IProps, IState> {
                 const toast = toastList[id];
                 if (toast) {
                     switch (toast.type) {
-                        case ToastType.DownloadComplete:
-                            return this.buildFileImportToast(toast, id);
-                        case ToastType.DownloadStarted:
-                            return this.buildFileImportStartToast(toast, id);
-                        case ToastType.DownloadFailed:
-                            return this.buildFileImportFailToast(toast, id);
+                        case ToastType.Success:
+                            return <Toast
+                                message={toast.data}
+                                key={id}
+                                close={ () => this.close(id) }
+                                type={toast.type}
+                                displaySystemNotification
+                            />;
+                        case ToastType.Default:
+                            return <Toast
+                                message={toast.data}
+                                key={id}
+                                close={ () => this.close(id) }
+                                type={toast.type}
+                                displaySystemNotification
+                            />;
+                        case ToastType.Error:
+                            return <Toast
+                                message={toast.data}
+                                key={id}
+                                close={ () => this.close(id) }
+                                type={toast.type}
+                                displaySystemNotification
+                            />;
                         default:
                             return (<></>);
                     }
@@ -76,41 +93,6 @@ export class ToastManager extends React.Component<IProps, IState> {
                 return undefined;
             })}
         </div>;
-    }
-
-    private buildFileImportToast(toast: ToastState, id: string) {
-        return (
-            <Toast
-                message={toast.data}
-                key={id}
-                icon={ DownloadIcon }
-                close={ () => this.close(id) }
-                displaySystemNotification
-            />
-        );
-    }
-
-    private buildFileImportStartToast(toast: ToastState, id: string) {
-        return (
-            <Toast
-                message={toast.data}
-                key={id}
-                icon={ DownloadIcon }
-                close={ () => this.close(id) }
-            />
-        );
-    }
-
-    private buildFileImportFailToast(toast: ToastState, id: string) {
-        return (
-            <Toast
-                message={toast.data}
-                key={id}
-                icon={ DownloadIcon }
-                close={ () => this.close(id) }
-                type={CompToastType.Error}
-            />
-        );
     }
 
     private close(id: string) {

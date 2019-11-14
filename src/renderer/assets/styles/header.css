@@ -30,9 +30,8 @@
 			color: var(--disabled-color);
 			cursor: pointer;
 
-			&:nth-child(2) {
-				margin-left:60px;
-			}
+			margin-right:60px;
+
 			&.active {
 				color:black;
 				border-bottom:3px solid black;
