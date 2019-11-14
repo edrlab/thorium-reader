@@ -120,7 +120,7 @@ after_failure:
 # https://docs.travis-ci.com/user/deployment/
 before_deploy:
   - export TRAVIS_TAG="latest-$TRAVIS_OS_NAME_"
-  - node scripts/release-github.js
+  - 'if [ "$TRAVIS_OS_NAME_" != "windows" ]; then node scripts/release-github.js; fi'
 # - git config --local user.name "danielweck"
 # - git config --local user.email "daniel.weck@gmail.com"
 # - git tag -l --format="%(refname)   %(taggerdate)"

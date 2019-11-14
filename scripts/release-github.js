@@ -17,9 +17,11 @@ const args = process.argv.slice(2);
 console.log("args:");
 console.log(args);
 
+const envCommitSha = process.env.TRAVIS_COMMIT || process.env.APPVEYOR_REPO_COMMIT;
+
 console.log("TRAVIS_COMMIT:");
-console.log(process.env.TRAVIS_COMMIT);
-if (!process.env.TRAVIS_COMMIT) {
+console.log(envCommitSha);
+if (!envCommitSha) {
     console.log("Missing TRAVIS_COMMIT! Abort.");
     process.exit(1);
     return;
@@ -59,6 +61,7 @@ const DEBUG = false;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+const owner_appveyor = "danielweck";
 const owner = "readium";
 const repo = "readium-desktop";
 const tag = process.env.TRAVIS_TAG;
@@ -131,7 +134,7 @@ if (deleteRefRES) {
 }
 
 const message = process.env.TRAVIS_TAG;
-const object = process.env.TRAVIS_COMMIT;
+const object = envCommitSha;
 const type =  "commit";
 const tagger = {
     name: "Daniel Weck",
@@ -181,12 +184,12 @@ if (createTagRES) {
     }
 }
 
-const travisURL = process.env.TRAVIS_JOB_WEB_URL || process.env.TRAVIS_BUILD_WEB_URL;
+const travisURL = process.env.TRAVIS_JOB_WEB_URL || process.env.TRAVIS_BUILD_WEB_URL || `${process.env.APPVEYOR_URL}/project/${owner_appveyor}/${repo}`;
 
 const tag_name = process.env.TRAVIS_TAG;
-const target_commitish = process.env.TRAVIS_COMMIT;
+const target_commitish = envCommitSha;
 const name = `[${tag_name}] continuous test build (prerelease)`;
-const body = `TravisCI build job: ${travisURL}`;
+const body = `TravisCI/Appveyor build job: ${travisURL}`;
 const draft = false;
 const prerelease = true;
 
