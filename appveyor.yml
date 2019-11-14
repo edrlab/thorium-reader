@@ -48,12 +48,11 @@ build_script:
   - ls -als release
   - ls -als release/win-unpacked
   - ls -Rals release/win-unpacked/resources/app.asar.unpacked
-  - exit
   - node scripts/release-github.js
 deploy:
   tag: 'latest-$(TRAVIS_OS_NAME_)'
   release: '[latest-$(TRAVIS_OS_NAME_)] continuous test build (prerelease)'
-  description: 'Appveyor build job: $(APPVEYOR_URL)/project/danielweck/readium-desktop'
+  description: 'Appveyor build job: $(APPVEYOR_URL)/project/danielweck/readium-desktop/builds/$(APPVEYOR_BUILD_ID)'
   provider: GitHub
   auth_token:
     secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3

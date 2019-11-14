@@ -184,7 +184,7 @@ if (createTagRES) {
     }
 }
 
-const travisURL = process.env.TRAVIS_JOB_WEB_URL || process.env.TRAVIS_BUILD_WEB_URL || `${process.env.APPVEYOR_URL}/project/${owner_appveyor}/${repo}`;
+const travisURL = process.env.TRAVIS_JOB_WEB_URL || process.env.TRAVIS_BUILD_WEB_URL || `${process.env.APPVEYOR_URL}/project/${owner_appveyor}/${repo}/builds/${process.env.APPVEYOR_BUILD_ID}`;
 
 const tag_name = process.env.TRAVIS_TAG;
 const target_commitish = envCommitSha;
