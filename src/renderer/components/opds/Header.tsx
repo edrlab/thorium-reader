@@ -57,29 +57,38 @@ class Header extends React.Component<IProps> {
                 {this.home()}
                 {this.refresh()}
                 <SearchForm />
-                {this.bookshelf()}
+                { /*this.bookshelf()*/ }
             </SecondaryHeader>
         );
     }
 
+    // TODO : implement opds feed authentification in thorium
+    /*
     private bookshelf = () => {
         const { bookshelf } = this.props.headerLinks;
         if (bookshelf) {
 
             const { __ } = this.props;
+            const param = this.props.match.params;
+            const route = buildOpdsBrowserRoute(
+                param.opdsId,
+                __("header.listTitle"),
+                bookshelf,
+                parseInt(param.level, 10),
+            );
 
             return (
-                <a
-                    style={{ marginLeft: "16px" }}
-                    href={bookshelf}
+                <Link
+                    to={route}
                 >
                     <SVG svg={AvatarIcon} title={__("header.listTitle")} />
-                </a>
+                </Link>
             );
         }
 
         return undefined;
     }
+    */
 
     private home = () => {
         const { start } = this.props.headerLinks;
@@ -91,12 +100,11 @@ class Header extends React.Component<IProps> {
                 param.opdsId,
                 __("header.listTitle"),
                 start,
-                1,
+                0,
             );
 
             return (
                 <Link
-                    style={{ marginLeft: "16px" }}
                     to={route}
                 >
                     <SVG svg={HomeIcon} title={__("header.listTitle")} />
@@ -113,16 +121,16 @@ class Header extends React.Component<IProps> {
 
             const { __ } = this.props;
             const param = this.props.match.params;
+            const name = this.props.breadcrumb[1] && this.props.breadcrumb[1].name;
             const route = buildOpdsBrowserRoute(
                 param.opdsId,
-                __("header.listTitle"),
+                name,
                 self,
                 parseInt(param.level, 10),
             );
 
             return (
                 <Link
-                    style={{ marginLeft: "16px" }}
                     to={route}
                 >
                     <SVG svg={RefreshIcon} title={__("header.listTitle")} />
@@ -136,6 +144,7 @@ class Header extends React.Component<IProps> {
 
 const mapStateToProps = (state: RootState) => ({
     headerLinks: state.opds.browser.header,
+    breadcrumb: state.opds.browser.breadcrumb,
 });
 
 export default connect(mapStateToProps)(withTranslator(withRouter(Header)));

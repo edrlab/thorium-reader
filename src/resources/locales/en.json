@@ -76,6 +76,8 @@
         "home": "Bookshelf menu",
         "importTitle": "Import a publication",
         "listTitle": "List view",
+        "refreshTitle": "reload",
+        "homeTitle": "home",
         "searchPlaceholder": "Search",
         "searchTitle": "Start a search",
         "settings": "Settings"
