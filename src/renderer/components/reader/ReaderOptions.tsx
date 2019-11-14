@@ -44,8 +44,8 @@ interface IBaseProps extends TranslatorProps {
     indexes: {fontSize: number, pageMargins: number, wordSpacing: number, letterSpacing: number, lineHeight: number};
     handleSettingChange: (event: any, name: string, value?: any) => void;
     handleIndexChange: (event: any, name: string, value?: any) => void;
-    setSettings: (settings: any) => void;
-    toggleMenu: any;
+    setSettings: (settings: ReaderConfig) => void;
+    toggleMenu: () => void;
     focusSettingMenuButton: () => void;
 }
 
@@ -96,7 +96,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                 content: this.spacingContent(),
             },
             {
-                title: "MathJax",
+                title: "MathML",
                 content: this.mathJax(),
             },
         ];
@@ -117,12 +117,15 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
 
         const {settings} = this.props;
         return (
-            <input
-                id="mathJaxCheckBox"
-                type="checkbox"
-                checked={settings.enableMathJax}
-                onChange={() => this.toggleMathJax()}
-            />
+            <div className={styles.mathml_section}>
+                <input
+                    id="mathJaxCheckBox"
+                    type="checkbox"
+                    checked={settings.enableMathJax}
+                    onChange={() => this.toggleMathJax()}
+                />
+                <label htmlFor={"mathJaxCheckBox-"}>MathJax</label>
+            </div>
         );
     }
 
@@ -454,9 +457,13 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     private toggleMathJax() {
         const values = this.props.settings;
         values.enableMathJax = !values.enableMathJax;
+        if (values.enableMathJax) {
+            values.paged = false;
+        }
         this.props.setSettings(values);
         setTimeout(() => {
-            window.location.reload();
+            // window.location.reload();
+            reloadContent();
         }, 500);
     }
 

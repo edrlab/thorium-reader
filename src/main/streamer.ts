@@ -157,7 +157,20 @@ const transformer = (_publication: R2Publication, _link: Link, str: string): str
     } else {
         settings = settings.value;
     }
-    // debug(settings);
+
+    // TODO: blacklist document selector in r2-navigator-js:
+    // <mjx-container xmlns="http://www.w3.org/1999/xhtml"
+    // class = MathJax CtxtMenu_MenuFrame
+    debug("########################");
+    debug("########################");
+    debug("########################");
+    debug("########################");
+    debug("########################");
+    debug("########################");
+    debug("########################");
+    debug("########################");
+    debug("########################");
+    debug(settings);
     debug(`MATHJAX ENABLE: ${settings.enableMathJax}`);
 
     if (settings.enableMathJax) {
