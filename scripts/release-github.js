@@ -133,6 +133,11 @@ if (deleteRefRES) {
     if (DEBUG) console.log(deleteRefRES);
 }
 
+if (process.env.APPVEYOR_REPO_COMMIT) {
+    console.log("Appveyor: skip create tag and release.");
+    process.exit(0);
+}
+
 const message = process.env.TRAVIS_TAG;
 const object = envCommitSha;
 const type =  "commit";
@@ -189,7 +194,7 @@ const travisURL = process.env.TRAVIS_JOB_WEB_URL || process.env.TRAVIS_BUILD_WEB
 const tag_name = process.env.TRAVIS_TAG;
 const target_commitish = envCommitSha;
 const name = `[${tag_name}] continuous test build (prerelease)`;
-const body = `TravisCI/Appveyor build job: ${travisURL}`;
+const body = `Travis build job: ${travisURL}`; // gets replaced by Appveyor script anyway
 const draft = false;
 const prerelease = true;
 

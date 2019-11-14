@@ -41,6 +41,10 @@ build_script:
   - 'echo "APPVEYOR_JOB_NAME: %APPVEYOR_JOB_NAME%"'
   - 'echo "APPVEYOR_JOB_NUMBER: %APPVEYOR_JOB_NUMBER%"'
   - 'echo "APPVEYOR_REPO_COMMIT: %APPVEYOR_REPO_COMMIT%"'
+  - 'echo "APPVEYOR_ACCOUNT_NAME: %APPVEYOR_ACCOUNT_NAME%"'
+  - 'echo "APPVEYOR_PROJECT_NAME: %APPVEYOR_PROJECT_NAME%"'
+  - 'echo "APPVEYOR_REPO_NAME: %APPVEYOR_REPO_NAME%"'
+  - 'echo "APPVEYOR_REPO_BRANCH: %APPVEYOR_REPO_BRANCH%"'
   - ps: 'if ( $env:APPVEYOR_PULL_REQUEST_NUMBER ) { npm run build:prod } else { npm run package:win }'
   - pwd
   - ls -als
@@ -48,11 +52,12 @@ build_script:
   - ls -als release
   - ls -als release/win-unpacked
   - ls -Rals release/win-unpacked/resources/app.asar.unpacked || pwd
+before_deploy:
   - node scripts/release-github.js
 deploy:
   tag: '$(TRAVIS_TAG)'
   release: '[$(TRAVIS_TAG)] continuous test build (prerelease)'
-  description: 'Appveyor build job: $(APPVEYOR_URL)/project/danielweck/readium-desktop/builds/$(APPVEYOR_BUILD_ID)'
+  description: 'Appveyor build job: $(APPVEYOR_URL)/project/$(APPVEYOR_REPO_NAME)/builds/$(APPVEYOR_BUILD_ID)'
   provider: GitHub
   auth_token:
     secure: FPcneTi39lLPzx9eJyempmyiCWbGsJEpQcbDaeqvh48aXqwGmZaIw12iYnLovBu3
