@@ -51,16 +51,18 @@ matrix:
 install:
 - npm --global install npm@latest && npm --version && npm ci
 - npm run rmLevelDownPrebuilds && npm run rmLevelDown
-# cache: false
-cache:
+- rm -rf $HOME/.cache/
+- rm -rf $HOME/.npm/
+cache: false
+#cache:
 #  npm: true
-  directories:
-    - "$HOME/.npm"
+#  directories:
+#    - "$HOME/.npm"
 #    - node_modules
-    - $HOME/.cache/electron
-    - $HOME/.cache/electron-builder
-before_cache:
-  - 'rm -rf $HOME/.cache/electron-builder/wine'
+#    - $HOME/.cache/electron
+#    - $HOME/.cache/electron-builder
+#before_cache:
+#  - 'rm -rf $HOME/.cache/electron-builder/wine'
 #  - 'rm -f $HOME/.npm/anonymous-cli-metrics.json'
 script:
 #  - npm --no-git-tag-version version prepatch && git diff
