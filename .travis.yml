@@ -50,8 +50,8 @@ matrix:
 #     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 install:
 - npm --global install npm@latest && npm --version
-- node scripts/package-ci-patch.js package.json ${TRAVIS_BUILD_NUMBER} && cat package.json | grep -i VERSION' && cat src/package.json
-- node scripts/package-ci-patch.js src/package.json ${TRAVIS_BUILD_NUMBER} && cat src/package.json | grep -i VERSION' && cat src/package.json
+- node scripts/package-ci-patch.js package.json ${TRAVIS_BUILD_NUMBER} && cat package.json | grep -i VERSION && cat package.json
+- node scripts/package-ci-patch.js src/package.json ${TRAVIS_BUILD_NUMBER} && cat src/package.json | grep -i VERSION && cat src/package.json
 #  - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${TRAVIS_BUILD_NUMBER}\",/g" package.json && cat package.json | grep -i VERSION'
 #  - 'sed -i -e "s/^  \"version\": \"\(.*\)\",$/  \"version\": \"\\1.${TRAVIS_BUILD_NUMBER}\",/g" src/package.json && cat src/package.json | grep -i VERSION'
 #sed -i -e "s/^ [ ]*\"leveldown\": .*$//g" package.json && cat package.json && sed -i -e "s/^ [ ]*\"leveldown\": .*$//g" src/package.json && cat src/package.json &&
