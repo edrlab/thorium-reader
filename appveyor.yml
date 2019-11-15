@@ -52,11 +52,11 @@ build_script:
   - pwd
   - ls -als
   - ls -als dist
-  - ls -als release
-  - ls -als release/win-unpacked
+  - ls -als release || pwd
+  - ls -als release/win-unpacked || pwd
   - ls -Rals release/win-unpacked/resources/app.asar.unpacked || pwd
-  - ps: 'Get-ChildItem -File release | Rename-Item -NewName { $_.Name -replace " ","_" }'
-  - ls -als release
+  - ps: 'if ( $env:APPVEYOR_PULL_REQUEST_NUMBER ) { pwd } else { Get-ChildItem -File release | Rename-Item -NewName { $_.Name -replace " ","_" } }'
+  - ls -als release || pwd
 
 before_deploy:
   - node scripts/release-github.js
