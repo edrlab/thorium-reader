@@ -104,7 +104,7 @@ export class Downloader {
             "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
         });
         const requestOptions: TRequestCoreOptionsRequiredUriUrl = Object.assign(
-            {timeout: 5000},
+            {timeout: 25000},
             options,
             {
                 url: download.srcUrl,
