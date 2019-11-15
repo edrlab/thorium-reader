@@ -204,6 +204,8 @@ test("repository.save create", async () => {
         customCover: null as any,
         resources: {
             r2PublicationBase64: "",
+            r2LCPBase64: "",
+            r2LSDBase64: "",
             r2OpdsPublicationBase64: "",
         },
         hash: "",
@@ -237,6 +239,8 @@ test("repository.save update", async () => {
         customCover: null as any,
         resources: {
             r2PublicationBase64: "",
+            r2LCPBase64: "",
+            r2LSDBase64: "",
             r2OpdsPublicationBase64: "",
         },
         hash: "",

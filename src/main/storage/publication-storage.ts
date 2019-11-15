@@ -5,23 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { dialog } from "electron";
 import * as fs from "fs";
+import { injectable } from "inversify";
 import * as path from "path";
-
-import { injectable} from "inversify";
+import { File } from "readium-desktop/common/models/file";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
+import slugify from "slugify";
 
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
-
-import { File } from "readium-desktop/common/models/file";
-import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
-import slugify from "slugify";
-
-import { dialog } from "electron";
 
 // Store pubs in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
@@ -134,8 +129,9 @@ export class PublicationStorage {
         identifier: string,
         srcPath: string,
     ): Promise<File> {
-        // Extract cover information from srcPath
+
         const r2Publication = await EpubParsePromise(srcPath);
+
         // private Internal is very hacky! :(
         const zipInternal = (r2Publication as any).Internal.find((i: any) => {
             if (i.Name === "zip") {
@@ -147,12 +143,17 @@ export class PublicationStorage {
 
         const coverLink = r2Publication.GetCover();
         if (!coverLink) {
+            // after EpubParsePromise, cleanup zip handler
+            r2Publication.freeDestroy();
             return null;
         }
 
         const coverType: string = coverLink.TypeLink;
         const zipStream = await zip.entryStreamPromise(coverLink.Href);
         const zipBuffer = await streamToBufferPromise(zipStream.stream);
+
+        // after EpubParsePromise, cleanup zip handler
+        r2Publication.freeDestroy();
 
         // Remove start dot in extensoion
         const coverExt = path.extname(coverLink.Href).slice(1);
