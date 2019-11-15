@@ -652,16 +652,16 @@ export class LcpManager {
                         const lcplJson = global.JSON.parse(licenseUpdateJson);
                         debug(lcplJson);
 
-                        let lcpl: LCP;
+                        let r2LCP: LCP;
                         try {
-                            lcpl = TAJSON.deserialize<LCP>(lcplJson, LCP);
+                            r2LCP = TAJSON.deserialize<LCP>(lcplJson, LCP);
                         } catch (erorz) {
                             debug(erorz);
                             reject(erorz);
                             return;
                         }
-                        lcpl.JsonSource = licenseUpdateJson;
-                        r2Publication.LCP = lcpl;
+                        r2LCP.JsonSource = licenseUpdateJson;
+                        r2Publication.LCP = r2LCP;
 
                         // will be updated below via another round of processStatusDocument_()
                         r2Publication.LCP.LSD = prevLSD;

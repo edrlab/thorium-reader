@@ -284,15 +284,15 @@ export class CatalogService {
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {
         const jsonStr = fs.readFileSync(filePath, { encoding: "utf8" });
         const lcpJson = JSON.parse(jsonStr);
-        const r2Lcp = TAJSON.deserialize<LCP>(lcpJson, LCP);
-        r2Lcp.JsonSource = jsonStr;
+        const r2LCP = TAJSON.deserialize<LCP>(lcpJson, LCP);
+        r2LCP.JsonSource = jsonStr;
 
         // search the path of the epub file
         let download: Download | undefined;
 
         let title: string | undefined;
-        if (r2Lcp.Links) {
-            for (const link of r2Lcp.Links) {
+        if (r2LCP.Links) {
+            for (const link of r2LCP.Links) {
                 if (link.Rel === "publication") {
                     download = this.downloader.addDownload(link.Href);
                     title = link.Title ?? download.srcUrl;
@@ -339,7 +339,7 @@ export class CatalogService {
         // null so that extractCrc32OnZip() is not unnecessarily invoked
         const publicationDocument = await this.importEpubFile(download.dstPath, null);
 
-        return this.lcpManager.injectLcpl(publicationDocument, r2Lcp);
+        return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
     }
 
     private async importEpubFile(filePath: string, hash?: string): Promise<PublicationDocument> {
