@@ -22,7 +22,7 @@ export function apiDispatch(dispatch: Dispatch) {
             const methodId = splitPath[1] as TMethodApi;
 
             return (...requestData: Parameters<TApiMethod[T]>) =>
-                dispatch(apiActions.buildRequestAction(requestId, moduleId, methodId, requestData));
+                dispatch(apiActions.request.build(requestId, moduleId, methodId, requestData));
         };
 }
 
@@ -41,5 +41,5 @@ export function apiRefreshToState(state: RootState) {
 }
 
 export function apiClean(dispatch: Dispatch) {
-    return (requestId: string) => dispatch(apiActions.clean(requestId));
+    return (requestId: string) => dispatch(apiActions.clean.build(requestId));
 }
