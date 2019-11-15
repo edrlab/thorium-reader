@@ -9,7 +9,6 @@ import { apiActions } from "readium-desktop/common/redux/actions";
 import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { diRendererGet } from "readium-desktop/renderer/di";
-import { ApiLastSuccess } from "readium-desktop/renderer/redux/states/api";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { Unsubscribe } from "redux";
 import * as uuid from "uuid";
@@ -21,8 +20,7 @@ export async function apiAction<T extends TApiMethodName>(apiPath: T, ...request
         const splitPath = apiPath.split("/");
         const moduleId = splitPath[0] as TModuleApi;
         const methodId = splitPath[1] as TMethodApi;
-        let lastSuccess: ApiLastSuccess | undefined;
-        let storeUnsubscribe: Unsubscribe| undefined;
+        let storeUnsubscribe: Unsubscribe | undefined;
         let timeoutId: number | undefined;
 
         store.dispatch(
@@ -37,28 +35,17 @@ export async function apiAction<T extends TApiMethodName>(apiPath: T, ...request
         const promise = new Promise<ReturnPromiseType<TApiMethod[T]>>((resolveSubscribe, rejectSubscribe) => {
             storeUnsubscribe = store.subscribe(() => {
                 const state = store.getState();
-                const apiLastSuccess = state.api.lastSuccess;
-                const lastSuccessDate = (lastSuccess && lastSuccess.date) || 0;
+                const lastTime = (state.api[requestId]?.lastTime) || 0;
 
-                if (!apiLastSuccess || apiLastSuccess.date <= lastSuccessDate) {
-                    return;
-                }
-
-                // New api success
-                lastSuccess = apiLastSuccess;
-
-                const meta = apiLastSuccess.action.meta.api;
-                if (moduleId === meta.moduleId && methodId === meta.methodId && state.api.data[requestId]) {
-                    const request = Object.assign({}, state.api.data[requestId]);
+                if (state.api[requestId]?.data.time > lastTime) {
+                    const data = { ...state.api[requestId].data };
                     store.dispatch(apiActions.clean.build(requestId));
-                    if (request.resultIsReject) {
-                        rejectSubscribe(request.result);
+                    if (data.error) {
+                        rejectSubscribe(data.errorMessage);
                         return ;
                     }
-                    resolveSubscribe(request.result);
-                    return ;
+                    resolveSubscribe(data.result);
                 }
-
                 // handle promise<void>
                 timeoutId = window.setTimeout(() => {
                     timeoutId = undefined;

@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { CodeError } from "readium-desktop/common/errors";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { diMainGet } from "readium-desktop/main/di";
@@ -39,10 +40,10 @@ export function* processRequest(requestAction: apiActions.request.TAction): Saga
             ...(requestAction.payload || []),
         );
 
-        yield put(apiActions.success.build(api, result));
+        yield put(apiActions.result.build(api, result));
     } catch (error) {
         debug(error);
-        yield put(apiActions.error.build(api, error.message));
+        yield put(apiActions.result.build(api, new CodeError("API-ERROR", error.message)));
     }
 }
 
