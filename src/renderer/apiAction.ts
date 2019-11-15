@@ -20,7 +20,7 @@ export async function apiAction<T extends TApiMethodName>(apiPath: T, ...request
         const splitPath = apiPath.split("/");
         const moduleId = splitPath[0] as TModuleApi;
         const methodId = splitPath[1] as TMethodApi;
-        let storeUnsubscribe: Unsubscribe| undefined;
+        let storeUnsubscribe: Unsubscribe | undefined;
         let timeoutId: number | undefined;
 
         store.dispatch(
