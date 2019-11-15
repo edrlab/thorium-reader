@@ -9,34 +9,49 @@ import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsPublicationView, OpdsResultPageInfos, OpdsResultUrls } from "readium-desktop/common/views/opds";
+import {
+    OpdsPublicationView, OpdsResultPageInfos, OpdsResultUrls,
+} from "readium-desktop/common/views/opds";
 import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
-import GridView from "readium-desktop/renderer/components/utils/GridView";
-import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { GridView } from "readium-desktop/renderer/components/utils/GridView";
+import { ListView } from "readium-desktop/renderer/components/utils/ListView";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
 import PageNavigation from "./PageNavigation";
 
-interface IProps extends RouteComponentProps {
-    publications: OpdsPublicationView[] | undefined;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
+    opdsPublicationViews: OpdsPublicationView[] | undefined;
     goto: (url: string, page: number) => void;
     urls: OpdsResultUrls;
     page?: OpdsResultPageInfos;
     currentPage: number;
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
+}
 
-class EntryPublicationList extends React.Component<IProps> {
+class EntryPublicationList extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render() {
         const { urls, page } = this.props;
 
-        let DisplayView: React.ComponentClass<any> = GridView;
+        let displayType = DisplayType.Grid;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
 
             if (parsedResult.displayType === DisplayType.List) {
-                DisplayView = ListView;
+                displayType = DisplayType.List;
             }
         }
 
@@ -45,9 +60,12 @@ class EntryPublicationList extends React.Component<IProps> {
         // FIX ME in the future
         return (
             <>
-                {this.props.publications ?
+                {this.props.opdsPublicationViews ?
                     <>
-                        <DisplayView publications={this.props.publications} isOpdsView={true} />
+                        {displayType === DisplayType.Grid ?
+                        <GridView normalOrOpdsPublicationViews={this.props.opdsPublicationViews} isOpdsView={true} /> :
+                        <ListView normalOrOpdsPublicationViews={this.props.opdsPublicationViews} isOpdsView={true} />
+                        }
                         <PageNavigation
                             goto={this.props.goto}
                             urls={urls}
@@ -61,7 +79,7 @@ class EntryPublicationList extends React.Component<IProps> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     location: state.router.location,
 });
 

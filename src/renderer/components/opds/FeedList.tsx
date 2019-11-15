@@ -22,7 +22,15 @@ import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -105,12 +113,12 @@ class FeedList extends React.Component<IProps, IState> {
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         // feed was typed to string, it appears that the right type is OpdsFeedView
         // Redux state isn't typed
         openDeleteDialog: (feed: OpdsFeedView) => {
-            dispatch(dialogActions.open("delete-opds-feed-confirm",
+            dispatch(dialogActions.openRequest.build("delete-opds-feed-confirm",
                 {
                     feed,
                 },

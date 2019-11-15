@@ -107,7 +107,6 @@ declare namespace typed_i18n {
   (_: "catalog.tagCount", __?: {}): string;
   (_: "catalog.tags", __?: {}): string;
   (_: "dialog", __?: {}): {
-  readonly "alreadyAdd": string,
   readonly "closeModalWindow": string,
   readonly "deleteFeed": string,
   readonly "deletePublication": string,
@@ -116,22 +115,20 @@ declare namespace typed_i18n {
   readonly "no": string,
   readonly "renew": string,
   readonly "return": string,
-  readonly "sure": string,
   readonly "yes": string
 };
-  (_: "dialog.alreadyAdd", __?: {}): string;
   (_: "dialog.closeModalWindow", __?: {}): string;
   (_: "dialog.deleteFeed", __?: {}): string;
   (_: "dialog.deletePublication", __?: {}): string;
   (_: "dialog.import", __?: {}): string;
   (_: "dialog.importError", __?: {}): string;
   (_: "dialog.no", __?: {}): string; (_: "dialog.renew", __?: {}): string;
-  (_: "dialog.return", __?: {}): string; (_: "dialog.sure", __?: {}): string;
-  (_: "dialog.yes", __?: {}): string;
+  (_: "dialog.return", __?: {}): string; (_: "dialog.yes", __?: {}): string;
   (_: "header", __?: {}): {
   readonly "allBooks": string,
   readonly "books": string,
   readonly "catalogs": string,
+  readonly "downloads": string,
   readonly "gridTitle": string,
   readonly "home": string,
   readonly "importTitle": string,
@@ -143,6 +140,7 @@ declare namespace typed_i18n {
   (_: "header.allBooks", __?: {}): string;
   (_: "header.books", __?: {}): string;
   (_: "header.catalogs", __?: {}): string;
+  (_: "header.downloads", __?: {}): string;
   (_: "header.gridTitle", __?: {}): string;
   (_: "header.home", __?: {}): string;
   (_: "header.importTitle", __?: {}): string;
@@ -173,26 +171,32 @@ declare namespace typed_i18n {
   (_: "library.lcp.submit", __?: {}): string;
   (_: "message", __?: {}): {
   readonly "download": {
+    readonly "error": string,
     readonly "start": string,
     readonly "success": string
   },
   readonly "import": {
+    readonly "alreadyImport": string,
     readonly "fail": string,
-    readonly "success": string,
-    readonly "alreadyImport": string
+    readonly "success": string
   }
 };
-  (_: "message.download", __?: {}): { readonly "start": string, readonly "success": string };
+  (_: "message.download", __?: {}): {
+  readonly "error": string,
+  readonly "start": string,
+  readonly "success": string
+};
+  (_: "message.download.error", __?: {}): string;
   (_: "message.download.start", __?: {}): string;
   (_: "message.download.success", __?: {}): string;
   (_: "message.import", __?: {}): {
+  readonly "alreadyImport": string,
   readonly "fail": string,
-  readonly "success": string,
-  readonly "alreadyImport": string
+  readonly "success": string
 };
+  (_: "message.import.alreadyImport", __?: {}): string;
   (_: "message.import.fail", __?: {}): string;
   (_: "message.import.success", __?: {}): string;
-  (_: "message.import.alreadyImport", __?: {}): string;
   (_: "opds", __?: {}): {
   readonly "addForm": {
     readonly "addButton": string,
@@ -269,9 +273,7 @@ declare namespace typed_i18n {
   (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "publication", __?: {}): {
-  readonly "deleteButton": string,
   readonly "expiredLcp": string,
-  readonly "readButton": string,
   readonly "renewButton": string,
   readonly "returnButton": string,
   readonly "returnedLcp": string,
@@ -279,9 +281,7 @@ declare namespace typed_i18n {
   readonly "seeLess": string,
   readonly "seeMore": string
 };
-  (_: "publication.deleteButton", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
-  (_: "publication.readButton", __?: {}): string;
   (_: "publication.renewButton", __?: {}): string;
   (_: "publication.returnButton", __?: {}): string;
   (_: "publication.returnedLcp", __?: {}): string;
@@ -298,7 +298,6 @@ declare namespace typed_i18n {
     readonly "bookmarks": string,
     readonly "delete": string,
     readonly "edit": string,
-    readonly "illustrations": string,
     readonly "landmarks": string,
     readonly "toc": string
   },
@@ -332,7 +331,6 @@ declare namespace typed_i18n {
     readonly "fontSize": string,
     readonly "justification": string,
     readonly "justify": string,
-    readonly "left": string,
     readonly "letterSpacing": string,
     readonly "lineSpacing": string,
     readonly "margin": string,
@@ -360,7 +358,6 @@ declare namespace typed_i18n {
   readonly "bookmarks": string,
   readonly "delete": string,
   readonly "edit": string,
-  readonly "illustrations": string,
   readonly "landmarks": string,
   readonly "toc": string
 };
@@ -368,7 +365,6 @@ declare namespace typed_i18n {
   (_: "reader.marks.bookmarks", __?: {}): string;
   (_: "reader.marks.delete", __?: {}): string;
   (_: "reader.marks.edit", __?: {}): string;
-  (_: "reader.marks.illustrations", __?: {}): string;
   (_: "reader.marks.landmarks", __?: {}): string;
   (_: "reader.marks.toc", __?: {}): string;
   (_: "reader.navigation", __?: {}): {
@@ -414,7 +410,6 @@ declare namespace typed_i18n {
   readonly "fontSize": string,
   readonly "justification": string,
   readonly "justify": string,
-  readonly "left": string,
   readonly "letterSpacing": string,
   readonly "lineSpacing": string,
   readonly "margin": string,
@@ -453,7 +448,6 @@ declare namespace typed_i18n {
   (_: "reader.settings.fontSize", __?: {}): string;
   (_: "reader.settings.justification", __?: {}): string;
   (_: "reader.settings.justify", __?: {}): string;
-  (_: "reader.settings.left", __?: {}): string;
   (_: "reader.settings.letterSpacing", __?: {}): string;
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
@@ -482,15 +476,9 @@ declare namespace typed_i18n {
   (_: "reader.svg", __?: {}): { readonly "left": string, readonly "right": string };
   (_: "reader.svg.left", __?: {}): string;
   (_: "reader.svg.right", __?: {}): string;
-  (_: "settings", __?: {}): {
-  readonly "information": string,
-  readonly "language": { readonly "languageChoice": string },
-  readonly "uiLanguage": string
-};
-  (_: "settings.information", __?: {}): string;
+  (_: "settings", __?: {}): { readonly "language": { readonly "languageChoice": string } };
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
-  (_: "settings.language.languageChoice", __?: {}): string;
-  (_: "settings.uiLanguage", __?: {}): string
+  (_: "settings.language.languageChoice", __?: {}): string
 }
 }
 export = typed_i18n;

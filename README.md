@@ -176,6 +176,21 @@ Leveldown is fast and is shipped in the production environment.
 http://www.feedbooks.com/books/top.atom?category=FBFIC019000
 ```
 
+### JSON Schemas
+
+Readium Web Publication Manifest:
+https://github.com/readium/webpub-manifest/tree/master/schema
+
+OPDS (v2):
+https://github.com/opds-community/drafts/tree/master/schema
+
+LCP:
+https://github.com/readium/lcp-specs/tree/master/schema
+
+Note that `r2-streamer-js` ships a not-too-out-of-date revision of the JSON Schemas, as they are used to validate JSON data when displayed via the browsing / conversion micro-services (which are currently not used in `readium-desktop`):
+
+https://github.com/readium/r2-streamer-js/tree/develop/misc/json-schema
+
 ## Debug main process from Visual Studio Code (renderer windows from web inspectors)
 
 Simply use the pre-defined "__ LAUNCH ATTACH" definition in `launch.json`, which will perform the required build steps ; via the regular WebPack configuration, including the dev server ; in order to prepare the main and renderer process bundles for debugging (there is a 30s timeout just in case compiling takes too long, but this may need to be increased on slow computers). The automatically-called prerequisite for this launch configuration is `tasks.json` "launch:attach", which is an asynchronous task (see the `npm run vscode:launch:attach` in `package.json`), thus why the debugger attachment waits for some time before giving-up. This launch configuration supports source maps, and the relative TypeScript file paths in compiler console messages can be clicked to reach into the source directly (for example when the renderer HotModulReload file watcher kicks-in, and generates errors). Note that the CLI functionality of Thorium / readium-desktop is bypassed in this special debugging mode, to avoid conflicts with Electron/Chromium's own command line parameters.

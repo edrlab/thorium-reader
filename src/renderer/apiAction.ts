@@ -24,7 +24,7 @@ export async function apiAction<T extends TApiMethodName>(apiPath: T, ...request
         let timeoutId: number | undefined;
 
         store.dispatch(
-            apiActions.buildRequestAction(
+            apiActions.request.build(
                 requestId,
                 moduleId,
                 methodId,
@@ -38,7 +38,8 @@ export async function apiAction<T extends TApiMethodName>(apiPath: T, ...request
                 const lastTime = (state.api[requestId] && state.api[requestId].lastTime) || 0;
 
                 if (state.api[requestId] && state.api[requestId].data.time > lastTime) {
-                    const data = state.api[requestId].data;
+                    const data = { ...state.api[requestId].data };
+                    store.dispatch(apiActions.clean.build(requestId));
                     if (data.error) {
                         rejectSubscribe(data.errorMessage);
                         return ;

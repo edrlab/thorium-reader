@@ -5,16 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
 import { OpdsFeedView, OpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-interface IPubInfo {
-    opdsPublication: OpdsPublicationView | undefined;
+export interface IPubInfo {
+    opdsPublicationView: OpdsPublicationView | undefined;
     publicationIdentifier: string | undefined;
 }
 
-interface IFileImport {
+export interface IFileImport {
     name: string;
     path: string;
 }
@@ -27,24 +26,21 @@ export interface DialogType {
     "publication-info-reader": IPubInfo;
     "opds-feed-add-form": {};
     "delete-publication-confirm": {
-        publication: PublicationView;
+        publicationView: PublicationView;
     };
     "delete-opds-feed-confirm": {
         feed: OpdsFeedView;
     };
     "lcp-authentication": {
-        publication: PublicationView;
+        publicationView: PublicationView;
         hint: string;
+        message: string | undefined;
     };
     "lsd-return-confirm": {
-        publication: PublicationView;
+        publicationView: PublicationView;
     };
     "lsd-renew-confirm": {
-        publication: PublicationView;
-    };
-    "same-file-import-confirm": {
-        publication: ImportOpdsPublication;
-        downloadSample: boolean;
+        publicationView: PublicationView;
     };
     "about-thorium": {};
 }

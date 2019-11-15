@@ -5,27 +5,32 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export async function PromiseAllSettled<T>(promises: Array<Promise<T>>): Promise<Array<({
+export interface PromiseFulfilled<T> {
     status: "fulfilled";
     value: T;
-} | {
+}
+export interface PromiseRejected {
     status: "rejected";
     reason: any;
-})>> {
-    return Promise.all(
-        promises.map((promise) =>
-            promise
-                .then<{
-                    status: "fulfilled";
-                    value: T;
-                }>((value) => ({
+}
+
+export async function PromiseAllSettled<T>(promises: Array<Promise<T>>):
+    Promise<Array<(PromiseFulfilled<T> | PromiseRejected)>> {
+
+    const promises_ = promises.map(async (promise) => {
+        return promise
+            .then<PromiseFulfilled<T>>((value) => {
+                return {
                     status: "fulfilled",
                     value,
-                }))
-                .catch((reason) => ({
-                    status: "rejected",
+                };
+            })
+            .catch((reason) => {
+                return {
                     reason,
-                })),
-        ),
-    );
+                    status: "rejected",
+                } as PromiseRejected;
+            });
+    });
+    return Promise.all(promises_);
 }

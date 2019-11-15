@@ -8,6 +8,7 @@
 import * as debug_ from "debug";
 import { BrowserWindow, Rectangle, screen } from "electron";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
+import { BaseRepository } from "readium-desktop/main/db/repository/base";
 import { diMainGet } from "readium-desktop/main/di";
 import { debounce } from "readium-desktop/utils/debounce";
 
@@ -16,7 +17,12 @@ import { AppWindow, AppWindowType } from "../models/win";
 // Logger
 const debug = debug_("readium-desktop:common:rectangle:window");
 
-const configIdKey = "windowRectangle";
+const WINDOW_RECT_CONFIG_ID = "windowRectangle";
+type ConfigDocumentType = ConfigDocument<Rectangle>;
+type ConfigRepositoryType = BaseRepository<ConfigDocumentType>;
+// import { Timestampable } from "readium-desktop/common/models/timestampable";
+// type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Timestampable>;
+
 const defaultRectangle = (): Rectangle => (
     {
         height: 600,
@@ -28,9 +34,9 @@ const defaultRectangle = (): Rectangle => (
 export type t_savedWindowsRectangle = typeof savedWindowsRectangle;
 export const savedWindowsRectangle = async (rectangle: Rectangle) => {
     try {
-        const configRepository = diMainGet("config-repository");
+        const configRepository: ConfigRepositoryType = diMainGet("config-repository");
         await configRepository.save({
-            identifier: configIdKey,
+            identifier: WINDOW_RECT_CONFIG_ID,
             value: rectangle,
         });
         debug("new window rectangle position :", rectangle);
@@ -55,10 +61,10 @@ export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rect
             rectangle.y %= displayArea.height - rectangle.height;
             return rectangle;
         } else {
-            const configRepository = diMainGet("config-repository");
-            let rectangle: ConfigDocument | undefined;
+            const configRepository: ConfigRepositoryType = diMainGet("config-repository");
+            let rectangle: ConfigDocumentType | undefined;
             try {
-                rectangle = await configRepository.get(configIdKey);
+                rectangle = await configRepository.get(WINDOW_RECT_CONFIG_ID);
             } catch (err) {
                 // ignore
             }

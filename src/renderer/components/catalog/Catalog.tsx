@@ -19,11 +19,19 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { Dispatch } from "redux";
 import * as uuid from "uuid";
 
-import GridView from "./GridView";
+import { CatalogGridView } from "./GridView";
 import Header, { DisplayType } from "./Header";
-import ListView from "./ListView";
+import { CatalogListView } from "./ListView";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 class Catalog extends React.Component<IProps> {
@@ -41,7 +49,6 @@ class Catalog extends React.Component<IProps> {
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
-        let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
 
         if (this.props.refresh) {
@@ -53,7 +60,6 @@ class Catalog extends React.Component<IProps> {
             const parsedResult = qs.parse(this.props.location.search);
 
             if (parsedResult.displayType === DisplayType.List) {
-                DisplayView = ListView;
                 displayType = DisplayType.List;
             }
         }
@@ -66,8 +72,11 @@ class Catalog extends React.Component<IProps> {
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
                 {catalog && catalog.data.result &&
-                    <DisplayView catalogEntries={catalog.data.result.entries}
-                        tags={(tags && tags.data.result) || []} />
+                (displayType === DisplayType.Grid ?
+                    <CatalogGridView catalogEntries={catalog.data.result.entries}
+                        tags={(tags && tags.data.result) || []} /> :
+                    <CatalogListView catalogEntries={catalog.data.result.entries}
+                        tags={(tags && tags.data.result) || []} />)
                 }
             </LibraryLayout>
         );

@@ -5,9 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export interface Action<Payload = any> {
-    type: string;
+import { Action as ReduxAction } from "redux";
+
+export interface Action<Type = string, Payload = undefined, Meta = undefined>
+    extends ReduxAction<Type> {
+
     payload?: Payload;
-    meta?: any;
+    meta?: Meta;
     error?: boolean;
 }

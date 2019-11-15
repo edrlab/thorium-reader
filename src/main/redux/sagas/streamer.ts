@@ -6,17 +6,20 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import * as path from "path";
 import * as portfinder from "portfinder";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
-import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { toastActions } from "readium-desktop/common/redux/actions/";
+import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
 import { lcpActions, streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { SagaIterator } from "redux-saga";
-import { all, call, put, select, take } from "redux-saga/effects";
+import { all, call, put, take } from "redux-saga/effects";
 
+import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Server } from "@r2-streamer-js/http/server";
 
 // Logger
@@ -44,101 +47,113 @@ function stopStreamer(streamer: Server) {
 
 export function* startRequestWatcher(): SagaIterator {
     while (true) {
-        yield take(streamerActions.ActionType.StartRequest);
+        yield take(streamerActions.startRequest.ID);
         const streamer = diMainGet("streamer");
 
         try {
-            const streamerUrl = yield call(() => startStreamer(streamer));
-            yield put({
-                type: streamerActions.ActionType.StartSuccess,
-                payload: {
-                    streamerUrl,
-                },
-            });
+            const streamerUrl = yield* callTyped(() => startStreamer(streamer));
+            yield put(streamerActions.startSuccess.build(streamerUrl));
         } catch (error) {
             debug("Unable to start streamer");
-            yield put({
-                type: streamerActions.ActionType.StartError,
-                payload: new Error(error),
-                error: true,
-            });
+            yield put(streamerActions.startError.build(error));
         }
     }
 }
 
 export function* stopRequestWatcher(): SagaIterator {
     while (true) {
-        yield take(streamerActions.ActionType.StopRequest);
+        yield take(streamerActions.stopRequest.ID);
         const streamer = diMainGet("streamer");
 
         try {
             yield call(() => stopStreamer(streamer));
-            yield put({
-                type: streamerActions.ActionType.StopSuccess,
-            });
+            yield put(streamerActions.stopSuccess.build());
         } catch (error) {
             debug("Unable to stop streamer");
-            yield put({
-                type: streamerActions.ActionType.StopError,
-                payload: new Error(error),
-                error: true,
-            });
+            yield put(streamerActions.stopError.build(error));
         }
     }
 }
 
 export function* publicationOpenRequestWatcher(): SagaIterator {
     while (true) {
-        const action: any = yield take(streamerActions.ActionType.PublicationOpenRequest);
+        // tslint:disable-next-line: max-line-length
+        const action = yield* takeTyped(streamerActions.publicationOpenRequest.build);
+
         const publicationRepository = diMainGet("publication-repository");
-        const publicationViewConverter = diMainGet("publication-view-converter");
-        const lcpManager = diMainGet("lcp-manager");
 
         // Get publication
-        let publication: PublicationDocument = null;
-
+        let publicationDocument: PublicationDocument = null;
         try {
-            publication = yield call(
-                publicationRepository.get.bind(publicationRepository),
-                action.payload.publication.identifier,
-            );
+            // tslint:disable-next-line: max-line-length
+            publicationDocument = yield* callTyped(() => publicationRepository.get(action.payload.publicationIdentifier));
         } catch (error) {
+            yield put(streamerActions.publicationOpenError.build(error, publicationDocument));
             continue;
         }
-        const publicationView = publicationViewConverter.convertDocumentToView(publication);
+
+        const translator = diMainGet("translator");
+        const lcpManager = diMainGet("lcp-manager");
+
+        if (publicationDocument.lcp) {
+            try {
+                publicationDocument = yield* callTyped(
+                    () => lcpManager.checkPublicationLicenseUpdate(publicationDocument),
+                );
+            } catch (error) {
+                debug(error);
+            }
+
+            if (publicationDocument.lcp && publicationDocument.lcp.lsd && publicationDocument.lcp.lsd.lsdStatus &&
+                publicationDocument.lcp.lsd.lsdStatus.status &&
+                publicationDocument.lcp.lsd.lsdStatus.status !== StatusEnum.Ready &&
+                publicationDocument.lcp.lsd.lsdStatus.status !== StatusEnum.Active) {
+
+                const msg = publicationDocument.lcp.lsd.lsdStatus.status === StatusEnum.Expired ?
+                    translator.translate("publication.expiredLcp") : (
+                    publicationDocument.lcp.lsd.lsdStatus.status === StatusEnum.Revoked ?
+                    translator.translate("publication.revokedLcp") : (
+                    publicationDocument.lcp.lsd.lsdStatus.status === StatusEnum.Returned ?
+                    translator.translate("publication.returnedLcp") :
+                    translator.translate("publication.expiredLcp") // StatusEnum.Cancelled
+                    ));
+
+                yield put(toastActions.openRequest.build(ToastType.Error, msg));
+
+                yield put(streamerActions.publicationOpenError.build(msg, publicationDocument));
+                continue;
+            }
+        }
 
         // Get epub file from publication
         const pubStorage = diMainGet("publication-storage");
-        const epubPath = path.join(
-            pubStorage.getRootPath(),
-            publication.files[0].url.substr(6),
-        );
+        const epubPath = pubStorage.getPublicationEpubPath(publicationDocument.identifier);
+        // const epubPath = path.join(
+        //     pubStorage.getRootPath(),
+        //     publicationDocument.files[0].url.substr(6),
+        // );
         debug("Open publication %s", epubPath);
 
         // Start streamer if it's not already started
-        const state: RootState =  yield select();
+        const status = yield* selectTyped((s: RootState) => s.streamer.status);
         const streamer = diMainGet("streamer");
 
-        if (state.streamer.status === StreamerStatus.Stopped) {
+        if (status === StreamerStatus.Stopped) {
             // Streamer is stopped, start it
-            yield put(streamerActions.start());
+            yield put(streamerActions.startRequest.build());
 
             // Wait for streamer
-            const streamerStartAction: any = yield take([
-                streamerActions.ActionType.StartSuccess,
-                streamerActions.ActionType.StartError,
+            const streamerStartAction = yield take([
+                streamerActions.startSuccess.ID,
+                streamerActions.startError.ID,
             ]);
+            const typedAction = streamerStartAction.error ?
+                streamerStartAction as streamerActions.startSuccess.TAction :
+                streamerStartAction as streamerActions.startError.TAction;
 
-            if (streamerStartAction.error) {
+            if (typedAction.error) {
                 // Unable to start server
-                yield put({
-                    type: streamerActions.ActionType.PublicationOpenError,
-                    payload: streamerStartAction.payload,
-                    error: true,
-                    meta: {
-                        publication,
-                    },
-                });
+                yield put(streamerActions.publicationOpenError.build(typedAction.payload, publicationDocument));
                 continue;
             }
         }
@@ -146,127 +161,100 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
         // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
 
-        let parsedEpub: any;
+        let r2Publication: R2Publication;
         try {
-            // Test if publication contains LCP drm
-            parsedEpub = yield call(
+            r2Publication = yield* callTyped(
                 () => streamer.loadOrGetCachedPublication(epubPath),
             );
         } catch (error) {
-            yield put({
-                type: streamerActions.ActionType.PublicationOpenError,
-                error: true,
-                meta: {
-                    publication,
-                },
-            });
+            yield put(streamerActions.publicationOpenError.build(error, publicationDocument));
             continue;
         }
 
-        if (parsedEpub.LCP) {
+        if (r2Publication.LCP) {
             debug("### LCP publication");
-            // Test existing secrets on the given publication
+
+            const publicationViewConverter = diMainGet("publication-view-converter");
+            const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+
             try {
-                yield call(
-                    lcpManager.unlockPublication.bind(lcpManager),
-                    publication as any,
-                );
-            } catch (error) {
-                // Get lsd status
-                try {
-                    publication = yield call(
-                        publicationRepository.get.bind(publicationRepository),
-                        action.payload.publication.identifier,
-                    );
+                const unlockPublicationRes: string | number | null | undefined =
+                    yield* callTyped(() => lcpManager.unlockPublication(publicationDocument.identifier, undefined));
 
-                    const lsdStatus: any = yield call(
-                        lcpManager.getLsdStatus.bind(lcpManager),
-                        publication,
-                    );
+                if (typeof unlockPublicationRes !== "undefined") {
+                    const message = unlockPublicationRes === 11 ?
+                        translator.translate("publication.expiredLcp") :
+                        lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
+                    debug(message);
 
-                    if (
-                        lsdStatus.status === "active" ||
-                        lsdStatus.status === "ready"
-                    ) {
-                        // Publication is protected and is not expired
-                        yield put(lcpActions.checkUserKey(
+                    try {
+                        yield put(lcpActions.userKeyCheckRequest.build(
                             publicationView,
-                            parsedEpub.LCP.Encryption.UserKey.TextHint,
+                            r2Publication.LCP.Encryption.UserKey.TextHint,
+                            message,
                         ));
-                    } else {
-                        yield put(dialogActions.open("publication-info",
-                            {
-                                publicationIdentifier: publication.identifier,
-                                opdsPublication: undefined,
-                            },
-                        ));
-                    }
-                } catch (error) {
-                    console.error(error);
-                }
 
-                yield put({
-                    type: streamerActions.ActionType.PublicationOpenError,
-                    error: true,
-                });
+                        yield put(streamerActions.publicationOpenError.build(message, publicationDocument));
+                        continue;
+                    } catch (error) {
+                        debug(error);
+
+                        yield put(streamerActions.publicationOpenError.build(error, publicationDocument));
+                        continue;
+                    }
+                }
+            } catch (error) {
+                debug(error);
+
+                yield put(streamerActions.publicationOpenError.build(error, publicationDocument));
                 continue;
             }
         }
 
         const manifestUrl = streamer.serverUrl() + manifestPaths[0];
         debug(manifestUrl);
-        yield put({
-            type: streamerActions.ActionType.PublicationOpenSuccess,
-            payload: {
-                publication,
-                manifestUrl,
-            },
-        });
+        yield put(streamerActions.publicationOpenSuccess.build(publicationDocument, manifestUrl));
     }
 }
 
 export function* publicationCloseRequestWatcher(): SagaIterator {
     while (true) {
-        const action: any = yield take(streamerActions.ActionType.PublicationCloseRequest);
+        // tslint:disable-next-line: max-line-length
+        const action = yield* takeTyped(streamerActions.publicationCloseRequest.build);
+
         const publicationRepository = diMainGet("publication-repository");
 
         // Get publication
-        let publication: PublicationDocument = null;
+        let publicationDocument: PublicationDocument = null;
 
         try {
-            publication = yield call(
-                publicationRepository.get.bind(publicationRepository),
-                action.payload.publication.identifier,
-            );
+            publicationDocument =
+                yield* callTyped(() => publicationRepository.get(action.payload.publicationIdentifier));
         } catch (error) {
             continue;
         }
 
-        const state: RootState =  yield select();
+        const counter =  yield* selectTyped((s: RootState) => s.streamer.openPublicationCounter);
         const streamer = diMainGet("streamer");
         const pubStorage = diMainGet("publication-storage");
 
-        if (!state.streamer.openPublicationCounter.hasOwnProperty(publication.identifier)) {
+        if (!counter.hasOwnProperty(publicationDocument.identifier)) {
             // Remove publication from streamer because there is no more readers
             // open for this publication
             // Get epub file from publication
-            const epubPath = path.join(
-                pubStorage.getRootPath(),
-                publication.files[0].url.substr(6),
-            );
+            const epubPath = pubStorage.getPublicationEpubPath(publicationDocument.identifier);
+            // const epubPath = path.join(
+            //     pubStorage.getRootPath(),
+            //     publicationDocument.files[0].url.substr(6),
+            // );
             streamer.removePublications([epubPath]);
         }
 
-        if (Object.keys(state.streamer.openPublicationCounter).length === 0) {
-            yield put(streamerActions.stop());
+        if (Object.keys(counter).length === 0) {
+            yield put(streamerActions.stopRequest.build());
         }
 
-        yield put({
-            type: streamerActions.ActionType.PublicationCloseSuccess,
-            payload: {
-                publication,
-            },
-        });
+        yield put(streamerActions.publicationCloseSuccess.build(publicationDocument));
     }
 }
 

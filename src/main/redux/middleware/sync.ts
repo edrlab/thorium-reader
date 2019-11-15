@@ -19,36 +19,41 @@ import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 const debug = debug_("readium-desktop:sync");
 
 // Actions that can be synchronized
-const SYNCHRONIZABLE_ACTIONS: any = [
-    apiActions.ActionType.Result,
+const SYNCHRONIZABLE_ACTIONS: string[] = [
+    apiActions.result.ID,
 
-    netActions.ActionType.Offline,
-    netActions.ActionType.Online,
+    netActions.offline.ID,
+    netActions.online.ID,
 
-    dialogActions.ActionType.OpenRequest,
+    dialogActions.openRequest.ID,
 
-    readerActions.ActionType.OpenError,
-    readerActions.ActionType.CloseError,
-    readerActions.ActionType.CloseSuccess,
-    readerActions.ActionType.ModeSetError,
-    readerActions.ActionType.ModeSetSuccess,
-    readerActions.ActionType.ConfigSetError,
-    readerActions.ActionType.ConfigSetSuccess,
-    readerActions.ActionType.BookmarkSaveError,
-    readerActions.ActionType.BookmarkSaveSuccess,
-    readerActions.ActionType.FullscreenOnSuccess,
-    readerActions.ActionType.FullscreenOffSuccess,
+    readerActions.openError.ID,
+    readerActions.closeError.ID,
+    readerActions.closeSuccess.ID,
 
-    lcpActions.ActionType.UserKeyCheckRequest,
+    readerActions.detachModeSuccess.ID,
 
-    i18nActions.ActionType.Set,
+    readerActions.configSetError.ID,
+    readerActions.configSetSuccess.ID,
 
-    updateActions.ActionType.LatestVersionSet,
+    readerActions.saveBookmarkError.ID,
+    readerActions.saveBookmarkSuccess.ID,
 
-    toastActions.ActionType.OpenRequest,
+    readerActions.fullScreenRequest.ID,
 
-    downloadActions.ActionType.DownloadRequest,
-    downloadActions.ActionType.DownloadSuccess,
+    lcpActions.userKeyCheckRequest.ID,
+
+    i18nActions.setLocale.ID,
+
+    updateActions.latestVersion.ID,
+
+    toastActions.openRequest.ID,
+    toastActions.closeRequest.ID,
+
+    downloadActions.request.ID,
+    downloadActions.progress.ID,
+    downloadActions.success.ID,
+    downloadActions.error.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

@@ -14,12 +14,12 @@ import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { BaseRepository } from "./base";
 
 @injectable()
-export class ConfigRepository extends BaseRepository<ConfigDocument> {
+export class ConfigRepository extends BaseRepository<ConfigDocument<any>> {
     public constructor(db: PouchDB.Database) {
         super(db, "config");
     }
 
-    protected convertToDocument(dbDoc: any): ConfigDocument {
+    protected convertToDocument(dbDoc: any): ConfigDocument<any> {
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),

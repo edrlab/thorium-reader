@@ -9,13 +9,20 @@ import * as classNames from "classnames";
 import * as React from "react";
 import { withRouter } from "react-router";
 import { Link, RouteComponentProps } from "react-router-dom";
+import { I18nTyped } from "readium-desktop/common/services/translator";
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 
-const headerNav = [
+interface NavigationHeader {
+    route: string;
+    label: string;
+    matchRoutes: string[];
+    styles: string[];
+}
+const headerNav: NavigationHeader[] = [
     {
         route: "/library",
         label: "books",
@@ -28,6 +35,13 @@ const headerNav = [
         matchRoutes: ["/opds"],
         styles: [],
     },
+    // // DownloadsList
+    // {
+    //     route: "/downloads",
+    //     label: "downloads",
+    //     matchRoutes: ["/downloads"],
+    //     styles: [],
+    // },
     {
         route: "/settings",
         label: "settings",
@@ -36,9 +50,23 @@ const headerNav = [
     },
 ];
 
-interface IProps extends RouteComponentProps, TranslatorProps { }
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps {
+}
 
-class Header extends React.Component<IProps> {
+class Header extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
@@ -58,11 +86,14 @@ class Header extends React.Component<IProps> {
         </>);
     }
 
-    private buildNavItem(item: any, index: number, __: any) {
-        const jsn = "header." + item.label;
+    private buildNavItem(item: NavigationHeader, index: number, __: I18nTyped) {
         if (!this.props.location) {
             return (<></>);
         }
+
+        // because dynamic label does not pass typed i18n compilation
+        const translate = __ as (str: string) => string;
+
         let styleClasses = [];
         const pathname = this.props.match.path;
 
@@ -79,7 +110,7 @@ class Header extends React.Component<IProps> {
         return (
             <li className={classNames(...styleClasses)} key={ index }>
                 <Link to={ item.route } replace={true}>
-                    { __(jsn) }
+                    { translate("header." + item.label) }
                 </Link>
             </li>
         );

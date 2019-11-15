@@ -109,6 +109,9 @@
             box-shadow: 0px 6px 5px -5px #cfcfcf;
         }
     }
+    & button[disabled] {
+        cursor: not-allowed;
+    }
 }
 
 .dialog_right {

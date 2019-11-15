@@ -46,19 +46,25 @@ export class LocatorRepository extends BaseRepository<LocatorDocument> {
         publicationIdentifier: string,
         locatorType: string,
     ): Promise<LocatorDocument[]> {
-        return this.findBy({ publicationIdentifier, locatorType });
+        return this.find({
+            selector: { publicationIdentifier, locatorType },
+        });
     }
 
     public async findByPublicationIdentifier(
         publicationIdentifier: string,
     ): Promise<LocatorDocument[]> {
-        return this.findBy({ publicationIdentifier });
+        return this.find({
+            selector: { publicationIdentifier },
+        });
     }
 
     public async findByLocatorType(
         locatorType: string,
     ): Promise<LocatorDocument[]> {
-        return this.findBy({ locatorType });
+        return this.find({
+            selector: { locatorType },
+        });
     }
 
     protected convertToDocument(dbDoc: any): LocatorDocument {
