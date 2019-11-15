@@ -52,7 +52,6 @@ class Catalog extends React.Component<IProps> {
         let displayType = DisplayType.Grid;
 
         if (this.props.refresh) {
-            // Can there be an infernal loop here ?
             this.getFromApi();
         }
 
