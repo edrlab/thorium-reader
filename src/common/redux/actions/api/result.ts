@@ -5,11 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { CodeError } from "readium-desktop/common/errors";
 import { Action } from "readium-desktop/common/models/redux";
 
 import { Meta, MetaApi } from "./types";
 
-export const ID = "API_SUCCESS";
+export const ID = "API_RESULT";
 
 export function build(api: MetaApi, payload: any):
     Action<typeof ID, any, Meta> {
@@ -24,6 +25,7 @@ export function build(api: MetaApi, payload: any):
                 methodId: api.methodId,
             },
         },
+        error: payload instanceof CodeError,
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

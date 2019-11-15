@@ -6,13 +6,11 @@
 // ==LICENSE-END==
 
 import * as clean from "./clean";
-import * as error from "./error";
 import * as request from "./request";
-import * as success from "./success";
+import * as result from "./result";
 
 export {
     clean,
     request,
-    error,
-    success,
+    result,
 };
