@@ -35,9 +35,9 @@ export async function apiAction<T extends TApiMethodName>(apiPath: T, ...request
         const promise = new Promise<ReturnPromiseType<TApiMethod[T]>>((resolveSubscribe, rejectSubscribe) => {
             storeUnsubscribe = store.subscribe(() => {
                 const state = store.getState();
-                const lastTime = (state.api[requestId] && state.api[requestId].lastTime) || 0;
+                const lastTime = (state.api[requestId]?.lastTime) || 0;
 
-                if (state.api[requestId] && state.api[requestId].data.time > lastTime) {
+                if (state.api[requestId]?.data.time > lastTime) {
                     const data = { ...state.api[requestId].data };
                     store.dispatch(apiActions.clean.build(requestId));
                     if (data.error) {

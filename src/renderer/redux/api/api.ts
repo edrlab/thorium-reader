@@ -34,7 +34,7 @@ export function apiState(state: RootState) {
 
 export function apiRefreshToState(state: RootState) {
     return (apiPathArray: TApiMethodName[]): boolean =>
-        state.api[LAST_API_SUCCESS_ID] && state.api[LAST_API_SUCCESS_ID].data.moduleId &&
+        state.api[LAST_API_SUCCESS_ID]?.data.moduleId &&
         apiPathArray.includes(
             // tslint:disable-next-line: max-line-length
             `${state.api[LAST_API_SUCCESS_ID].data.moduleId}/${state.api[LAST_API_SUCCESS_ID].data.methodId}` as TApiMethodName);
