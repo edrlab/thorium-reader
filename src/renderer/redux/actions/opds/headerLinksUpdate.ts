@@ -6,16 +6,9 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
+import { IOpdsHeaderState } from "readium-desktop/renderer/redux/states/opds";
 
 export const ID = "OPDS_HEADER_LINKS_UPDATE";
-
-export interface IOpdsHeaderState {
-    search?: string;
-    start?: string;
-    bookshelf?: string;
-    self?: string;
-    up?: string;
-}
 
 export function build(payload: IOpdsHeaderState):
     Action<typeof ID, IOpdsHeaderState> {

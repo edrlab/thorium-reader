@@ -13,8 +13,8 @@ import {
     convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
 } from "readium-desktop/common/utils";
 import {
-    IOpdsFeedView, IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView,
-    IOpdsPublicationView, IOpdsResultView, TOpdsFeedMetadaView, IOpdsFeedMetadataView,
+    IOpdsFeedMetadataView, IOpdsFeedView, IOpdsLinkView, IOpdsNavigationLink,
+    IOpdsNavigationLinkView, IOpdsPublicationView, IOpdsResultView,
 } from "readium-desktop/common/views/opds";
 import { CoverView } from "readium-desktop/common/views/publication";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";

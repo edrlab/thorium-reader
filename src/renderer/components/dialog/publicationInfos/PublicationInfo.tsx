@@ -11,7 +11,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { OpdsPublicationView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
