@@ -12,7 +12,6 @@ import { inject, injectable } from "inversify";
 import * as path from "path";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
-import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import {
     downloadActions, readerActions, toastActions,
@@ -235,6 +234,8 @@ export class CatalogService {
             {
                 resources: {
                     r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
+                    r2LCPBase64: publicationDocument.resources.r2LCPBase64,
+                    r2LSDBase64: publicationDocument.resources.r2LSDBase64,
                     r2OpdsPublicationBase64,
                 },
                 tags: opdsPublicationView.tags,
@@ -283,15 +284,15 @@ export class CatalogService {
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {
         const jsonStr = fs.readFileSync(filePath, { encoding: "utf8" });
         const lcpJson = JSON.parse(jsonStr);
-        const lcp = TAJSON.deserialize<LCP>(lcpJson, LCP);
-        lcp.JsonSource = jsonStr;
+        const r2LCP = TAJSON.deserialize<LCP>(lcpJson, LCP);
+        r2LCP.JsonSource = jsonStr;
 
         // search the path of the epub file
         let download: Download | undefined;
 
         let title: string | undefined;
-        if (lcp.Links) {
-            for (const link of lcp.Links) {
+        if (r2LCP.Links) {
+            for (const link of r2LCP.Links) {
                 if (link.Rel === "publication") {
                     download = this.downloader.addDownload(link.Href);
                     title = link.Title ?? download.srcUrl;
@@ -338,23 +339,16 @@ export class CatalogService {
         // null so that extractCrc32OnZip() is not unnecessarily invoked
         const publicationDocument = await this.importEpubFile(download.dstPath, null);
 
-        return this.lcpManager.injectLcpl(publicationDocument, lcp);
+        return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
     }
 
     private async importEpubFile(filePath: string, hash?: string): Promise<PublicationDocument> {
-        debug("Parse publication - START", filePath);
+
         const r2Publication = await EpubParsePromise(filePath);
-        debug("Parse publication - END", filePath);
+        // after EpubParsePromise, cleanup zip handler
+        // (no need to fetch ZIP data beyond this point)
+        r2Publication.freeDestroy();
 
-        let lcpInfo: LcpInfo = null;
-        if (r2Publication.LCP) {
-            lcpInfo = this.lcpManager.convertLcpLsdInfo(r2Publication.LCP);
-        }
-        debug(">> lcpInfo (importEpubFile):");
-        debug(JSON.stringify(lcpInfo, null, 4));
-
-        // FIXME: Title could be an array instead of a simple string
-        // Store publication in db
         const r2PublicationJson = TAJSON.serialize(r2Publication);
         const r2PublicationStr = JSON.stringify(r2PublicationJson);
         const r2PublicationBase64 = Buffer.from(r2PublicationStr).toString("base64");
@@ -363,7 +357,9 @@ export class CatalogService {
             identifier: uuid.v4(),
             resources: {
                 r2PublicationBase64,
-                r2OpdsPublicationBase64: null,
+                r2LCPBase64: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
+                r2LSDBase64: null, // may be updated via lcpManager.processStatusDocument()
+                r2OpdsPublicationBase64: null, // remains null as publication not originate from OPDS
             },
             title: convertMultiLangStringToString(r2Publication.Metadata.Title),
             tags: [],
@@ -371,11 +367,13 @@ export class CatalogService {
             coverFile: null,
             customCover: null,
             hash: hash ? hash : (hash === null ? undefined : await extractCrc32OnZip(filePath)),
-            lcp: lcpInfo,
+            lcp: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
 
             // OPDSPublication? seems unused!
             // opdsPublication: undefined,
         };
+        this.lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
+
         debug(pubDocument.hash);
 
         // Store publication on filesystem
@@ -414,11 +412,7 @@ export class CatalogService {
                 debug(r2Publication.LCP);
                 debug(r2Publication.LCP.LSD);
 
-                lcpInfo = this.lcpManager.convertLcpLsdInfo(r2Publication.LCP);
-                pubDocument.lcp = lcpInfo;
-
-                debug(">> lcpInfo + LSD (importEpubFile):");
-                debug(JSON.stringify(lcpInfo, null, 4));
+                this.lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
             } catch (err) {
                 debug(err);
             }

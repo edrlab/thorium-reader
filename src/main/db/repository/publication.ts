@@ -116,6 +116,8 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                     // legacy names fallback
                     r2PublicationBase64: dbDoc.resources.r2PublicationBase64 || dbDoc.resources.filePublication,
                     r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 || dbDoc.resources.opdsPublication,
+                    r2LCPBase64: dbDoc.resources.r2LCPBase64,
+                    r2LSDBase64: dbDoc.resources.r2LSDBase64,
                 } : undefined,
                 // OPDSPublication? seems unused!
                 // opdsPublication: dbDoc.opdsPublication,

@@ -14,6 +14,8 @@ import { IHttpGetResult } from "readium-desktop/common/utils/http";
 
 interface Resources {
     r2PublicationBase64?: string;
+    r2LCPBase64?: string;
+    r2LSDBase64?: string;
     r2OpdsPublicationBase64?: string;
 }
 

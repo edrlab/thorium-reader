@@ -25,7 +25,6 @@ import {
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
-import { oc } from "ts-optchain";
 
 import Dialog from "../Dialog";
 import CatalogControls from "./catalogControls";
@@ -109,10 +108,16 @@ class PublicationInfo extends React.Component<IProps, IState> {
             return (<></>);
         })();
 
-        const authors = normalOrOpdsPublicationView.authors.map((author) => {
-            return translator.translateContentField(author);
-        }).join(", ");
-        const formatedPublishers = oc(normalOrOpdsPublicationView).publishers([]).join(", ");
+        const authors = normalOrOpdsPublicationView.authors &&
+            normalOrOpdsPublicationView.authors.length ?
+            normalOrOpdsPublicationView.authors.map((author) => {
+                return translator.translateContentField(author);
+            }).join(", ") : "";
+
+        const formatedPublishers = normalOrOpdsPublicationView.publishers &&
+            normalOrOpdsPublicationView.publishers.length
+            ? normalOrOpdsPublicationView.publishers.join(", ") : undefined;
+
         const formatedPublishedDateComponent = (() => {
             if (normalOrOpdsPublicationView.publishedAt) {
                 const date = moment(normalOrOpdsPublicationView.publishedAt).format("L");

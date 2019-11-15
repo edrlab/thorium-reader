@@ -189,11 +189,11 @@ export class OpdsFeedViewConverter {
         }
         if (r2OpdsFeed.Links) {
             urls = {
-                search: await this.getSearchUrlFromOpds1Feed(r2OpdsFeed),
-                nextPage: this.getUrlFromFeed(r2OpdsFeed, "next"),
-                previousPage: this.getUrlFromFeed(r2OpdsFeed, "previous"),
-                firstPage: this.getUrlFromFeed(r2OpdsFeed, "first"),
-                lastPage: this.getUrlFromFeed(r2OpdsFeed, "last"),
+                search: urlPathResolve(baseUrl, await this.getSearchUrlFromOpds1Feed(r2OpdsFeed)),
+                nextPage: urlPathResolve(baseUrl, this.getUrlFromFeed(r2OpdsFeed, "next")),
+                previousPage: urlPathResolve(baseUrl, this.getUrlFromFeed(r2OpdsFeed, "previous")),
+                firstPage: urlPathResolve(baseUrl, this.getUrlFromFeed(r2OpdsFeed, "first")),
+                lastPage: urlPathResolve(baseUrl, this.getUrlFromFeed(r2OpdsFeed, "last")),
             };
         }
 
