@@ -21,13 +21,26 @@ export interface IBreadCrumbItem {
     path?: string;
 }
 
-interface IProps extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     breadcrumb: IBreadCrumbItem[];
     search: string;
     className?: string;
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
 
-class BreadCrumb extends React.Component<IProps> {
+class BreadCrumb extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { breadcrumb, __ } = this.props;
         const search = qs.parse(this.props.search);

@@ -6,10 +6,8 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 import Slider from "readium-desktop/renderer/components/utils/Slider";
 
@@ -18,12 +16,20 @@ import NoPublicationInfo from "./NoPublicationInfo";
 import SortMenu from "./SortMenu";
 import TagLayout from "./TagLayout";
 
-interface GridViewProps extends RouteComponentProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     catalogEntries: CatalogEntryView[];
     tags?: string[];
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
 
-interface GridViewState {
+interface IState {
     tabTags: string[];
     status: SortStatus;
 }
@@ -33,8 +39,9 @@ enum SortStatus {
     Alpha,
 }
 
-export default class GridView extends React.Component<GridViewProps, GridViewState> {
-    public constructor(props: any) {
+export class CatalogGridView extends React.Component<IProps, IState> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -45,7 +52,7 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
         this.sortbyCount = this.sortbyCount.bind(this);
     }
 
-    public componentDidUpdate(oldProps: GridViewProps) {
+    public componentDidUpdate(oldProps: IProps) {
         if (this.props.tags !== oldProps.tags) {
             const { status } = this.state;
             switch (status) {
@@ -60,11 +67,14 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
     }
 
     public render(): React.ReactElement<{}> {
-        const entriesEmpty = this.props.catalogEntries.filter((entry) => entry.publications.length > 0).length === 0;
+        const entriesEmpty = this.props.catalogEntries.filter((entry) => {
+            return entry.publicationViews.length > 0;
+        }).length === 0;
+
         return (
             <>
                 { this.props.catalogEntries.map((entry, EntryIndex: number) => {
-                    return entry.publications.length > 0 ? (
+                    return entry.publicationViews.length > 0 ? (
                         <section key={ EntryIndex }>
                         {
 
@@ -79,11 +89,10 @@ export default class GridView extends React.Component<GridViewProps, GridViewSta
                             EntryIndex <= 1 ? (
                                 <Slider
                                     className={ styles.slider }
-                                    content={ entry.publications.map((pub) =>
+                                    content={ entry.publicationViews.map((pub) =>
                                         <PublicationCard
                                             key={ pub.identifier }
-                                            publication={ pub }
-                                            MenuContent={ CatalogMenu }
+                                            publicationViewMaybeOpds={ pub }
                                         />,
                                     )}
                                 />

@@ -5,16 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
+
 export interface ImportState {
-    publication: ImportOpdsPublication;
-    downloadSample: boolean;
-}
-
-// FIXME : SHOULD BE linked with IOpdsPublicationView (undefined)
-
-export interface ImportOpdsPublication {
-    url: string;
-    base64OpdsPublication: string;
-    title: string;
-    tags: string[];
+    opdsPublicationView: IOpdsPublicationView;
 }

@@ -18,15 +18,22 @@ import {
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { IOpdsBrowse } from "readium-desktop/renderer/routing";
 
-interface Props extends TranslatorProps, RouteComponentProps<IOpdsBrowse> {
+interface IBaseProps extends TranslatorProps {
     pageLinks?: IOpdsResultView["links"];
     pageInfo?: IOpdsResultView["metadata"];
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse> {
 }
 
 // replace the last '/:url' with the new navigation url
 const newRouteUrl = (path: string, url: string) => path.replace(/^(.*?)[^\/]+$/, `\$1${url}`);
 
-class PageNavigation extends React.Component<Props> {
+class PageNavigation extends React.Component<IProps> {
 
     public componentDidMount() {
         document.addEventListener("keydown", this.handleKeyDown);
@@ -43,39 +50,39 @@ class PageNavigation extends React.Component<Props> {
         return (
             <div className={styles.opds_page_navigation}>
                 <span />
-                {first[0] && first[0].Href &&
-                    <Link to={newRouteUrl(this.props.location.pathname, first[0].Href)}>
+                {first[0] && first[0].url &&
+                    <Link to={newRouteUrl(this.props.location.pathname, first[0].url)}>
                         <button>
                             {__("opds.firstPage")}
                         </button>
                     </Link>
                 }
-                {previous[0] && previous[0].Href &&
-                    <Link to={newRouteUrl(this.props.location.pathname, previous[0].Href)}>
+                {previous[0] && previous[0].url &&
+                    <Link to={newRouteUrl(this.props.location.pathname, previous[0].url)}>
                         <button>
                             <SVG svg={ArrowLeftIcon} />
                             {__("opds.previous")}
                         </button>
                     </Link>
                 }
-                {next[0] && next[0].Href &&
-                    <Link to={newRouteUrl(this.props.location.pathname, next[0].Href)}>
+                {next[0] && next[0].url &&
+                    <Link to={newRouteUrl(this.props.location.pathname, next[0].url)}>
                         <button>
                             {__("opds.next")}
                             <SVG svg={ArrowRightIcon} />
                         </button>
                     </Link>
                 }
-                {last[0] && last[0].Href &&
-                    <Link to={newRouteUrl(this.props.location.pathname, last[0].Href)}>
+                {last[0] && last[0].url &&
+                    <Link to={newRouteUrl(this.props.location.pathname, last[0].url)}>
                         <button>
                             {__("opds.lastPage")}
                         </button>
                     </Link>
                 }
-                {pageInfo && pageInfo.CurrentPage && pageInfo.NumberOfItems && pageInfo.ItemsPerPage &&
+                {pageInfo?.currentPage && pageInfo.numberOfItems && pageInfo.itemsPerPage &&
                     <span className={styles.page_count}>
-                        {pageInfo.CurrentPage} / {Math.ceil(pageInfo.NumberOfItems / pageInfo.ItemsPerPage)}</span>
+                        {pageInfo.currentPage} / {Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}</span>
                 }
             </div>
         );
@@ -85,8 +92,8 @@ class PageNavigation extends React.Component<Props> {
         const { pageLinks, location } = this.props;
 
         if (e.shiftKey && e.ctrlKey) {
-            const next = pageLinks.next[0] && pageLinks.next[0].Href;
-            const previous = pageLinks.previous[0] && pageLinks.previous[0].Href;
+            const next = pageLinks.next[0] && pageLinks.next[0].url;
+            const previous = pageLinks.previous[0] && pageLinks.previous[0].url;
 
             if (previous && e.key === "ArrowLeft") {
                 this.props.history.push(newRouteUrl(location.pathname, next));

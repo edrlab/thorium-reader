@@ -12,16 +12,16 @@ import { inject, injectable } from "inversify";
 import * as path from "path";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
-import { Publication } from "readium-desktop/common/models/publication";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { closeReaderFromPublication } from "readium-desktop/common/redux/actions/reader";
-import { open } from "readium-desktop/common/redux/actions/toast";
+import {
+    downloadActions, readerActions, toastActions,
+} from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
-import { convertMultiLangStringToString, urlPathResolve } from "readium-desktop/common/utils";
+import { convertMultiLangStringToString } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
-    PublicationDocument, THttpGetPublicationDocument,
+    PublicationDocument, PublicationDocumentWithoutTimestampable, THttpGetPublicationDocument,
 } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
@@ -33,13 +33,14 @@ import { JSON as TAJSON } from "ta-json-x";
 import * as uuid from "uuid";
 import * as xmldom from "xmldom";
 
+import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { convertOpds1ToOpds2_EntryToPublication } from "@r2-opds-js/opds/converter";
 import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
-import { Publication as Epub } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
+import { OpdsFeedViewConverter } from "../converter/opds";
 import { extractCrc32OnZip } from "../crc";
 import { diMainGet } from "../di";
 import { Downloader } from "./downloader";
@@ -53,9 +54,6 @@ export class CatalogService {
     @inject(diSymbolTable.downloader)
     private readonly downloader!: Downloader;
 
-    @inject(diSymbolTable["lcp-manager"])
-    private readonly lcpManager!: LcpManager;
-
     @inject(diSymbolTable["publication-storage"])
     private readonly publicationStorage!: PublicationStorage;
 
@@ -68,151 +66,166 @@ export class CatalogService {
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
-    public async importFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
-        let publication: PublicationDocument | undefined;
+    @inject(diSymbolTable["lcp-manager"])
+    private readonly lcpManager!: LcpManager;
 
+    @inject(diSymbolTable["opds-feed-view-converter"])
+    private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
+
+    public async importEpubOrLcplFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
+        let publicationDocument: PublicationDocument | undefined;
+
+        const ext = path.extname(filePath);
+        const isLCPLicense = ext === ".lcpl" || (ext === ".part" && isLcpFile);
         try {
-            const hash = await extractCrc32OnZip(filePath);
-            const publicationArray = await this.publicationRepository.findByHashId(hash);
-            debug(publicationArray, hash);
+            const hash = isLCPLicense ? undefined : await extractCrc32OnZip(filePath);
+            const publicationArray = hash ? await this.publicationRepository.findByHashId(hash) : undefined;
             if (publicationArray && publicationArray.length) {
-                publication = publicationArray[0];
-                this.store.dispatch(open(ToastType.DownloadComplete,
-                    this.translator.translate("message.import.alreadyImport", { title: publication.title })));
+                debug(publicationArray, hash);
+                publicationDocument = publicationArray[0];
+                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+                    this.translator.translate("message.import.alreadyImport", { title: publicationDocument.title })));
             } else {
-                    const ext = path.extname(filePath);
-                    if (ext === ".lcpl" || (ext === ".part" && isLcpFile)) {
-                        publication = await this.importLcplFile(filePath);
-                    } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
-                        publication = await this.importEpubFile(filePath);
-                    }
-                    this.store.dispatch(open(ToastType.DownloadComplete,
-                        this.translator.translate("message.import.success", { title: publication.title })));
+                if (isLCPLicense) {
+                    publicationDocument = await this.importLcplFile(filePath);
+                } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
+                    publicationDocument = await this.importEpubFile(filePath, hash);
+                }
+                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+                    this.translator.translate("message.import.success", { title: publicationDocument.title })));
             }
         } catch (error) {
             debug("ImportFile (hash + import) fail with :" + filePath, error);
-            this.store.dispatch(open(ToastType.DownloadFailed,
-                this.translator.translate("message.import.fail", { filePath })));
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                this.translator.translate("message.import.fail", { path: filePath })));
         }
-        return publication;
+        return publicationDocument;
     }
 
-    public async importOpdsEntry(
-        url: string,
-        downloadSample: boolean,
-        tags?: string[],
+    public async importPublicationFromOpdsUrl(
+        entryUrl: string,
     ): Promise<THttpGetPublicationDocument> {
-        debug("Import OPDS publication", url);
-        return await httpGet(url, {}, async (opdsFeedData) => {
-            let opdsPublication: OPDSPublication = null;
+
+        debug("Import OPDS publication", entryUrl);
+
+        return await httpGet(entryUrl, {}, async (opdsFeedData) => {
+            let r2OpdsPublication: OPDSPublication = null;
 
             if (opdsFeedData.isFailure) {
                 return opdsFeedData;
             }
             if (opdsFeedData.body.startsWith("<?xml")) {
-                // This is an opds feed in version 1
-                // Convert to opds version 2
                 const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
 
                 if (!xmlDom || !xmlDom.documentElement) {
-                    throw new OpdsParsingError(`Unable to parse ${url}`);
+                    throw new OpdsParsingError(`Unable to parse ${entryUrl}`);
                 }
 
                 const isEntry = xmlDom.documentElement.localName === "entry";
 
                 if (!isEntry) {
-                    throw new OpdsParsingError(`This is not an OPDS entry ${url}`);
+                    throw new OpdsParsingError(`This is not an OPDS entry ${entryUrl}`);
                 }
                 const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
-                opdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
+                r2OpdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
 
             } else {
-                opdsPublication = TAJSON.deserialize<OPDSPublication>(
+                r2OpdsPublication = TAJSON.deserialize<OPDSPublication>(
                     JSON.parse(opdsFeedData.body),
                     OPDSPublication,
                 );
             }
 
-            if (opdsPublication == null) {
-                debug("Unable to retrieve opds publication", opdsPublication);
+            if (r2OpdsPublication == null) {
+                debug("Unable to retrieve opds publication", r2OpdsPublication);
                 throw new Error("Unable to retrieve opds publication");
             }
-            // resolve url in publication before extract them
-            if (opdsPublication.Links) {
-                opdsPublication.Links.forEach(
-                    (ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href)));
-            }
-            if (opdsPublication.Images) {
-                opdsPublication.Images.forEach(
-                    (ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href)));
-            }
+
             try {
-                opdsFeedData.data = await this.importOpdsPublication(opdsPublication, downloadSample, tags);
+                // tslint:disable-next-line: max-line-length
+                opdsFeedData.data = await this.importPublicationFromOpdsDoc(r2OpdsPublication, entryUrl);
             } catch (error) {
-                debug("Unable to retrieve opds publication", opdsPublication, error);
-                throw new Error("Unable to retrieve opds publication: " + error);
+                debug("Unable to retrieve opds publication", r2OpdsPublication, error);
+                throw new Error("Unable to retrieve opds pub: " + error);
             }
             return opdsFeedData;
         });
     }
 
-    public async importOpdsPublication(
-        opdsPublication: OPDSPublication,
-        downloadSample: boolean,
-        tags?: string[],
+    public async importPublicationFromOpdsDoc(
+        r2OpdsPublication: OPDSPublication,
+        baseUrl: string,
     ): Promise<PublicationDocument> {
-        // Retrieve the download (acquisition) url
-        let downloadUrl = null;
-        let isLcpFile = false;
 
-        for (const link of opdsPublication.Links) {
-            if (downloadSample && link.TypeLink === "application/epub+zip"
-                && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition/sample"
-            ) {
-                downloadUrl = link.Href;
-            } else if (
-                link.TypeLink === "application/epub+zip"
-                && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition"
-            ) {
-                downloadUrl = link.Href;
-                break;
-            } else if (
-                link.TypeLink === "application/vnd.readium.lcp.license-1.0+json"
-                && link.Rel && link.Rel[0] === "http://opds-spec.org/acquisition"
-            ) {
-                downloadUrl = link.Href;
-                isLcpFile = true;
-                break;
-            }
-        }
+        // warning: modifies r2OpdsPublication, makes relative URLs absolute with baseUrl(entryUrl)!
+        const opdsPublicationView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2OpdsPublication, baseUrl);
 
-        if (downloadUrl == null) {
-            debug("Unable to get an acquisition url from opds publication", opdsPublication.Links);
+        const downloadUrl = opdsPublicationView.openAccessUrl ?? opdsPublicationView.sampleOrPreviewUrl;
+        if (!downloadUrl) {
+            debug("Unable to get an acquisition url from opds publication", r2OpdsPublication.Links);
             throw new Error("Unable to get acquisition url from opds publication");
         }
 
-        // Download publication
+        const downloadLink = r2OpdsPublication.Links.find((l) => {
+            return l.Href === downloadUrl;
+        });
+        let isLcpFile = false;
+        let title = opdsPublicationView.title;
+        if (downloadLink) {
+            isLcpFile = downloadLink.TypeLink === "application/vnd.readium.lcp.license-1.0+json";
+            if (!isLcpFile && downloadLink.TypeLink !== "application/epub+zip") {
+                throw new Error(`OPDS download link is not EPUB! ${downloadUrl} ${downloadLink.TypeLink}`);
+            }
+            if (!title) {
+                title = downloadLink.Title;
+            }
+        }
+        if (!title) {
+            title = downloadUrl;
+        }
+
         const download: Download = this.downloader.addDownload(downloadUrl);
 
+        // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
+        //     this.translator.translate("message.download.start", { title })));
+
+        this.store.dispatch(downloadActions.request.build(download.srcUrl, title));
+
         debug("[START] Download publication", downloadUrl);
-        const newDownload = await this.downloader.processDownload(
-            download.identifier,
-            {
-                onProgress: (dl: Download) => {
-                    debug("[PROGRESS] Downloading publication", dl.progress);
+        let newDownload: Download;
+        try {
+            newDownload = await this.downloader.processDownload(
+                download.identifier,
+                {
+                    onProgress: (dl: Download) => {
+                        debug("[PROGRESS] Downloading publication", dl.progress);
+                        this.store.dispatch(downloadActions.progress.build(download.srcUrl, dl.progress));
+                    },
                 },
-            },
-        );
+            );
+        } catch (err) {
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                this.translator.translate("message.download.error", { title, err: `[${err}]` })));
+
+            this.store.dispatch(downloadActions.error.build(download.srcUrl));
+            throw err;
+        }
+
+        // this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+        //     this.translator.translate("message.download.success", { title })));
+
         debug("[END] Download publication", downloadUrl, newDownload);
+
+        this.store.dispatch(downloadActions.success.build(download.srcUrl));
+
         // Import downloaded publication in catalog
         // FIXME: can be undefined type
-        let publicationDocument = await this.importFile(download.dstPath, isLcpFile);
+        let publicationDocument = await this.importEpubOrLcplFile(download.dstPath, isLcpFile);
 
         // Add opds publication serialization to resources
-        const jsonOpdsPublication = TAJSON.serialize(opdsPublication);
-        const b64OpdsPublication = Buffer
-            .from(JSON.stringify(jsonOpdsPublication))
-            .toString("base64");
+        const r2OpdsPublicationJson = TAJSON.serialize(r2OpdsPublication);
+        const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
+        const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");
 
         // Merge with the original publication
         publicationDocument = Object.assign(
@@ -220,21 +233,20 @@ export class CatalogService {
             publicationDocument,
             {
                 resources: {
-                    filePublication: publicationDocument.resources.filePublication,
-                    opdsPublication: b64OpdsPublication,
+                    r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
+                    r2LCPBase64: publicationDocument.resources.r2LCPBase64,
+                    r2LSDBase64: publicationDocument.resources.r2LSDBase64,
+                    r2OpdsPublicationBase64,
                 },
-                tags,
+                tags: opdsPublicationView.tags,
             },
         );
         return this.publicationRepository.save(publicationDocument);
     }
 
     public async deletePublication(publicationIdentifier: string) {
-        const publicationApi = diMainGet("publication-api");
-        // FIXME: Call publication Api in service ??
-        const publication = await publicationApi.get(publicationIdentifier);
 
-        this.store.dispatch(closeReaderFromPublication(publication));
+        this.store.dispatch(readerActions.closeRequestFromPublication.build(publicationIdentifier));
 
         // Remove from database
         await this.publicationRepository.delete(publicationIdentifier);
@@ -243,43 +255,7 @@ export class CatalogService {
         this.publicationStorage.removePublication(publicationIdentifier);
     }
 
-    /**
-     * Refresh publication metadata
-     *
-     * @param publication Publication to refresh
-     * @return: Refreshed publication
-     */
-    public async refreshPublicationMetadata(publication: Publication) {
-        const pubPath = path.join(
-            this.publicationStorage.getRootPath(),
-            publication.files[0].url.substr(6),
-        );
-
-        const parsedPublication = await EpubParsePromise(pubPath);
-
-        // Searialized parsed epub
-        const jsonParsedPublication = TAJSON.serialize(parsedPublication);
-        const b64ParsedPublication = Buffer
-            .from(JSON.stringify(jsonParsedPublication))
-            .toString("base-64");
-
-        // Merge with the original publication
-        const origPub = await this.publicationRepository.get(publication.identifier);
-        const newPub = Object.assign(
-            {},
-            origPub,
-            {
-                resources: {
-                    filePublication: b64ParsedPublication,
-                },
-            },
-        );
-
-        // Store refreshed metadata in db
-        return await this.publicationRepository.save(newPub);
-    }
-
-    public async exportPublication(publication: PublicationView) {
+    public async exportPublication(publicationView: PublicationView) {
         // Get main window
         const winRegistry = diMainGet("win-registry");
         let mainWindow;
@@ -300,71 +276,104 @@ export class CatalogService {
                 if (fs.statSync(destinationPath).isFile()) {
                     destinationPath = path.dirname(destinationPath);
                 }
-                this.publicationStorage.copyPublicationToPath(publication, destinationPath);
+                this.publicationStorage.copyPublicationToPath(publicationView, destinationPath);
             }
         }
     }
 
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {
-        const buffer = fs.readFileSync(filePath);
-        const lcpl = JSON.parse(buffer.toString());
+        const jsonStr = fs.readFileSync(filePath, { encoding: "utf8" });
+        const lcpJson = JSON.parse(jsonStr);
+        const r2LCP = TAJSON.deserialize<LCP>(lcpJson, LCP);
+        r2LCP.JsonSource = jsonStr;
 
         // search the path of the epub file
-        let download: Download = null;
+        let download: Download | undefined;
 
-        if (lcpl.links) {
-            for (const link of lcpl.links) {
-                if (link.rel === "publication") {
-                    download = this.downloader.addDownload(link.href);
+        let title: string | undefined;
+        if (r2LCP.Links) {
+            for (const link of r2LCP.Links) {
+                if (link.Rel === "publication") {
+                    download = this.downloader.addDownload(link.Href);
+                    title = link.Title ?? download.srcUrl;
                 }
             }
         }
 
-        if (download == null) {
-            throw new Error("Unable to publication in lcpl file");
+        if (!download) {
+            throw new Error(`Unable to initiate download of LCP pub: ${filePath}`);
         }
 
+        // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
+        //     this.translator.translate("message.download.start", { title })));
+
+        this.store.dispatch(downloadActions.request.build(download.srcUrl, title));
+
         debug("[START] Download publication", filePath);
-        const newDownload = await this.downloader.processDownload(
-            download.identifier,
-            {
-                onProgress: (dl: Download) => {
-                    debug("[PROGRESS] Downloading publication", dl.progress);
+        let newDownload: Download;
+        try {
+            newDownload = await this.downloader.processDownload(
+                download.identifier,
+                {
+                    onProgress: (dl: Download) => {
+                        debug("[PROGRESS] Downloading publication", dl.progress);
+                        this.store.dispatch(downloadActions.progress.build(download.srcUrl, dl.progress));
+                    },
                 },
-            },
-        );
+            );
+        } catch (err) {
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                this.translator.translate("message.download.error", { title, err: `[${err}]` })));
+
+            this.store.dispatch(downloadActions.error.build(download.srcUrl));
+            throw err;
+        }
+
+        // this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+        //     this.translator.translate("message.download.success", { title })));
+
         debug("[END] Download publication", filePath, newDownload);
 
-        // Import downloaded publication
-        const publicationDocument = await this.importEpubFile(download.dstPath);
-        return this.lcpManager.injectLcpl(publicationDocument, lcpl);
+        this.store.dispatch(downloadActions.success.build(download.srcUrl));
+
+        // null so that extractCrc32OnZip() is not unnecessarily invoked
+        const publicationDocument = await this.importEpubFile(download.dstPath, null);
+
+        return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
     }
 
-    private async importEpubFile(filePath: string): Promise<PublicationDocument> {
-        debug("Parse publication - START", filePath);
-        const parsedPublication: Epub = await EpubParsePromise(filePath);
-        debug("Parse publication - END", filePath);
+    private async importEpubFile(filePath: string, hash?: string): Promise<PublicationDocument> {
 
-        // FIXME: Title could be an array instead of a simple string
-        // Store publication in db
-        const jsonParsedPublication = TAJSON.serialize(parsedPublication);
-        const b64ParsedPublication = Buffer
-            .from(JSON.stringify(jsonParsedPublication))
-            .toString("base64");
+        const r2Publication = await EpubParsePromise(filePath);
+        // after EpubParsePromise, cleanup zip handler
+        // (no need to fetch ZIP data beyond this point)
+        r2Publication.freeDestroy();
 
-        const pubDocument = {
+        const r2PublicationJson = TAJSON.serialize(r2Publication);
+        const r2PublicationStr = JSON.stringify(r2PublicationJson);
+        const r2PublicationBase64 = Buffer.from(r2PublicationStr).toString("base64");
+
+        const pubDocument: PublicationDocumentWithoutTimestampable = {
             identifier: uuid.v4(),
             resources: {
-                filePublication: b64ParsedPublication,
-                opdsPublication: null,
+                r2PublicationBase64,
+                r2LCPBase64: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
+                r2LSDBase64: null, // may be updated via lcpManager.processStatusDocument()
+                r2OpdsPublicationBase64: null, // remains null as publication not originate from OPDS
             },
-            title: convertMultiLangStringToString(parsedPublication.Metadata.Title),
+            title: convertMultiLangStringToString(r2Publication.Metadata.Title),
             tags: [],
             files: [],
             coverFile: null,
             customCover: null,
-            hash: await extractCrc32OnZip(filePath),
-        } as PublicationDocument;
+            hash: hash ? hash : (hash === null ? undefined : await extractCrc32OnZip(filePath)),
+            lcp: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
+
+            // OPDSPublication? seems unused!
+            // opdsPublication: undefined,
+        };
+        this.lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
+
         debug(pubDocument.hash);
 
         // Store publication on filesystem
@@ -391,6 +400,27 @@ export class CatalogService {
             pubDocument.customCover = RandomCustomCovers[
                 Math.floor(Math.random() * RandomCustomCovers.length)
             ];
+        }
+
+        if (r2Publication.LCP) {
+            try {
+                await this.lcpManager.processStatusDocument(
+                    pubDocument.identifier,
+                    r2Publication,
+                );
+
+                debug(r2Publication.LCP);
+                debug(r2Publication.LCP.LSD);
+
+                this.lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
+            } catch (err) {
+                debug(err);
+            }
+
+            if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+                debug("processStatusDocument LCP updated.");
+                pubDocument.hash = await extractCrc32OnZip(filePath);
+            }
         }
 
         debug("[START] Store publication in database", filePath);

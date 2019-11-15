@@ -30,10 +30,24 @@ export enum DisplayType {
     List = "list",
 }
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps>, RouteComponentProps<IOpdsBrowse> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+// tslint:disable-next-line: max-line-length
+interface IProps extends IBaseProps, TranslatorProps, ReturnType<typeof mapStateToProps>, RouteComponentProps<IOpdsBrowse> {
 }
 
-class Header extends React.Component<IProps> {
+class Header extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         const displayType = qs.parse(this.props.location.search).displayType || DisplayType.Grid;

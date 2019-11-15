@@ -20,11 +20,11 @@ export async function apiAction<T extends TApiMethodName>(apiPath: T, ...request
         const splitPath = apiPath.split("/");
         const moduleId = splitPath[0] as TModuleApi;
         const methodId = splitPath[1] as TMethodApi;
-        let storeUnsubscribe: Unsubscribe| undefined;
+        let storeUnsubscribe: Unsubscribe | undefined;
         let timeoutId: number | undefined;
 
         store.dispatch(
-            apiActions.buildRequestAction(
+            apiActions.request.build(
                 requestId,
                 moduleId,
                 methodId,
@@ -35,10 +35,11 @@ export async function apiAction<T extends TApiMethodName>(apiPath: T, ...request
         const promise = new Promise<ReturnPromiseType<TApiMethod[T]>>((resolveSubscribe, rejectSubscribe) => {
             storeUnsubscribe = store.subscribe(() => {
                 const state = store.getState();
-                const lastTime = (state.api[requestId] && state.api[requestId].lastTime) || 0;
+                const lastTime = (state.api[requestId]?.lastTime) || 0;
 
-                if (state.api[requestId] && state.api[requestId].data.time > lastTime) {
-                    const data = state.api[requestId].data;
+                if (state.api[requestId]?.data.time > lastTime) {
+                    const data = { ...state.api[requestId].data };
+                    store.dispatch(apiActions.clean.build(requestId));
                     if (data.error) {
                         rejectSubscribe(data.errorMessage);
                         return ;

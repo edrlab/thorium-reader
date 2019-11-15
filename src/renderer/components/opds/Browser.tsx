@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
@@ -19,13 +18,23 @@ import BreadCrumb from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
 import Header from "./Header";
 
-// Logger
-// const debug = debug_("readium-desktop:src/renderer/components/opds/browser");
-
-interface IProps extends TranslatorProps, ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class Browser extends React.Component<IProps> {
+class Browser extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<IProps>  {
         const secondaryHeader = <Header/>;
 

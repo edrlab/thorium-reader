@@ -6,10 +6,11 @@
 // ==LICENSE-END==
 
 import { ReaderMode } from "readium-desktop/common/models/reader";
-import { Action } from "readium-desktop/common/models/redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { ReaderState } from "readium-desktop/main/redux/states/reader";
 
+// TODO: centralize this code, currently duplicated
+// see src/renderer/redux/reducers/reader.ts
 const initialState: ReaderState = {
     readers: {},
     mode: ReaderMode.Attached,
@@ -25,27 +26,35 @@ const initialState: ReaderState = {
         paged: false,
         readiumcss: true,
         sepia: false,
+        enableMathJax: false,
     },
 };
 
 export function readerReducer(
     state: ReaderState = initialState,
-    action: Action,
+    action: readerActions.closeSuccess.TAction |
+        readerActions.openSuccess.TAction |
+        readerActions.detachModeSuccess.TAction |
+        readerActions.configSetSuccess.TAction,
 ): ReaderState {
     const newState = Object.assign({}, state);
 
     switch (action.type) {
-        case readerActions.ActionType.OpenSuccess:
-            newState.readers[action.payload.reader.identifier] = action.payload.reader;
+        case readerActions.openSuccess.ID:
+            const act1 = action as readerActions.openSuccess.TAction;
+            newState.readers[act1.payload.reader.identifier] = act1.payload.reader;
             return newState;
-        case readerActions.ActionType.CloseSuccess:
-            delete newState.readers[action.payload.reader.identifier];
+        case readerActions.closeSuccess.ID:
+            const act2 = action as readerActions.closeSuccess.TAction;
+            delete newState.readers[act2.payload.reader.identifier];
             return newState;
-        case readerActions.ActionType.ModeSetSuccess:
-            newState.mode = action.payload.mode;
+        case readerActions.detachModeSuccess.ID:
+            const act3 = action as readerActions.detachModeSuccess.TAction;
+            newState.mode = act3.payload.mode;
             return newState;
-        case readerActions.ActionType.ConfigSetSuccess:
-            newState.config = action.payload.config;
+        case readerActions.configSetSuccess.ID:
+            const act4 = action as readerActions.configSetSuccess.TAction;
+            newState.config = act4.payload.config;
             return newState;
         default:
             return state;

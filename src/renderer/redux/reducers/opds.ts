@@ -23,7 +23,7 @@ export function opdsBreadcrumbReducer(
     action: IActionBrowseRequest,
 ) {
     switch (action.type) {
-        case opdsActions.ActionType.BrowseRequest:
+        case opdsActions.browseRequest.ID:
             const { level, title, url, rootFeedIdentifier } = action.payload;
             const stateNew = state.slice(0, level - 1);
             if (stateNew.length === 0) {
@@ -55,7 +55,7 @@ export function opdsHeaderLinkReducer(
     action: IActionHeaderLinkUpdate,
 ) {
     switch (action.type) {
-        case opdsActions.ActionType.HeaderLinkUpdate:
+        case opdsActions:
             const stateNew = { ...state };
             for (const link of Object.entries(action.payload)) {
                 const key = link[0] as keyof IOpdsHeaderState;

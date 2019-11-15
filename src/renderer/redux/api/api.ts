@@ -22,7 +22,7 @@ export function apiDispatch(dispatch: Dispatch) {
             const methodId = splitPath[1] as TMethodApi;
 
             return (...requestData: Parameters<TApiMethod[T]>) =>
-                dispatch(apiActions.buildRequestAction(requestId, moduleId, methodId, requestData));
+                dispatch(apiActions.request.build(requestId, moduleId, methodId, requestData));
         };
 }
 
@@ -34,12 +34,12 @@ export function apiState(state: RootState) {
 
 export function apiRefreshToState(state: RootState) {
     return (apiPathArray: TApiMethodName[]): boolean =>
-        state.api[LAST_API_SUCCESS_ID] && state.api[LAST_API_SUCCESS_ID].data.moduleId &&
+        state.api[LAST_API_SUCCESS_ID]?.data.moduleId &&
         apiPathArray.includes(
             // tslint:disable-next-line: max-line-length
             `${state.api[LAST_API_SUCCESS_ID].data.moduleId}/${state.api[LAST_API_SUCCESS_ID].data.methodId}` as TApiMethodName);
 }
 
 export function apiClean(dispatch: Dispatch) {
-    return (requestId: string) => dispatch(apiActions.clean(requestId));
+    return (requestId: string) => dispatch(apiActions.clean.build(requestId));
 }

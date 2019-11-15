@@ -129,6 +129,12 @@ let config = Object.assign({}, {
         ]),
         new CopyWebpackPlugin([
             {
+                from: path.join(__dirname, "node_modules", "mathjax"),
+                to: "MathJax",
+            }
+        ]),
+        new CopyWebpackPlugin([
+            {
                 from: path.join(__dirname, "resources"),
                 to: "assets/icons",
             }

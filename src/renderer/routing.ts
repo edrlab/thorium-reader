@@ -5,16 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import LanguageSettings from "./components/settings/LanguageSettings";
-
 import Catalog from "./components/catalog/Catalog";
+import Browser from "./components/opds/Browser";
+import Opds from "./components/opds/Opds";
 import AllPublicationPage from "./components/searchResult/AllPublicationPage";
 import TagSearchResult from "./components/searchResult/TagSearchResult";
 import TextSearchResult from "./components/searchResult/TextSearchResult";
+import LanguageSettings from "./components/settings/LanguageSettings";
 
-import Opds from "./components/opds/Opds";
-
-import Browser from "./components/opds/Browser";
+// import DownloadsList from "./components/DownloadsList";
 
 interface Route {
     path: string;
@@ -57,6 +56,12 @@ export const routes: RouteList = {
         title: "Settings: Languages",
         component: LanguageSettings,
     },
+    // "/downloads": {
+    //     path: "/downloads",
+    //     exact: true,
+    //     title: "Downloads",
+    //     component: DownloadsList,
+    // },
     /*
     "/settings/information": {
         path: "/settings/information",

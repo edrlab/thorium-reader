@@ -28,7 +28,7 @@ interface DownloadRegistry {
 }
 
 export interface DownloadProgressListener {
-    onProgress: any;
+    onProgress: (dl: Download) => void;
 }
 
 @injectable()
@@ -104,7 +104,7 @@ export class Downloader {
             "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
         });
         const requestOptions: TRequestCoreOptionsRequiredUriUrl = Object.assign(
-            {timeout: 5000},
+            {timeout: 25000},
             options,
             {
                 url: download.srcUrl,
@@ -149,13 +149,9 @@ export class Downloader {
                     // Download progress
                     downloadedSize += chunk.length;
                     const currentTime = new Date();
-                    const elapsedSeconds = (
-                        currentTime.getTime() -
-                        progressLastTime.getTime()
-                    ) / 1000;
+                    const elapsedMilliSeconds = currentTime.getTime() - progressLastTime.getTime();
 
-                    if (elapsedSeconds > 1) {
-                        // Refresh progress at best every 1 seconds
+                    if (elapsedMilliSeconds > 500) {
                         progress = Math.round((downloadedSize / totalSize) * 100);
                         download.progress = progress;
                         download.downloadedSize = downloadedSize;

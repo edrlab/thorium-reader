@@ -15,9 +15,17 @@ import {
 import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-interface IProps extends TranslatorProps {
-        tags: string[];
-        content?: any;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    tags: string[];
+    content?: any;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
 interface IState {
@@ -25,8 +33,10 @@ interface IState {
 }
 
 class GridTagLayout extends React.Component<IProps, IState> {
-    constructor(props: any) {
+
+    constructor(props: IProps) {
         super(props);
+
         this.state = {
             showMenu: false,
         };

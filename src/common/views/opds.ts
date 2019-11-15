@@ -5,19 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { OPDSLink } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-link";
 import { OPDSMetadata } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-metadata";
 
+import { Identifiable } from "../models/identifiable";
 import { IHttpGetResult } from "../utils/http";
 import { CoverView } from "./publication";
 
-export interface IOpdsFeedView {
-    identifier: string;
+export interface IOpdsFeedView extends Identifiable {
     title: string;
     url: string;
 }
 
 export interface IOpdsPublicationView {
+    baseUrl: string;
+    r2OpdsPublicationBase64?: string;
     title: string;
     authors: string[];
     publishers?: string[];
@@ -26,13 +27,12 @@ export interface IOpdsPublicationView {
     tags?: string[];
     languages?: string[];
     publishedAt?: string; // ISO8601
-    url?: string;
+    entryUrl?: string;
     buyUrl?: string;
     borrowUrl?: string;
     subscribeUrl?: string;
-    hasSample?: boolean;
-    isFree?: boolean;
-    base64OpdsPublication?: string;
+    sampleOrPreviewUrl?: string;
+    openAccessUrl?: string;
     cover?: CoverView;
 }
 
@@ -43,10 +43,15 @@ export interface IOpdsNavigationLinkView {
     numberOfItems?: number;
 }
 
-export type TOpdsFeedMetadaView = Partial<Pick<OPDSMetadata, "NumberOfItems" | "ItemsPerPage" | "CurrentPage">>;
+export interface IOpdsFeedMetadataView {
+    numberOfItems?: number;
+    itemsPerPage?: number;
+    currentPage?: number;
+}
 
-export interface IOpdsResultView extends Pick<OPDSMetadata, "Title"> {
-    metadata?: TOpdsFeedMetadaView;
+export interface IOpdsResultView {
+    title: string;
+    metadata?: IOpdsFeedMetadataView;
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
     links?: IOpdsNavigationLink;

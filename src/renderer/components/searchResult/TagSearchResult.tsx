@@ -13,21 +13,29 @@ import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import GridView from "readium-desktop/renderer/components/utils/GridView";
+import { GridView } from "readium-desktop/renderer/components/utils/GridView";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
-import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { ListView } from "readium-desktop/renderer/components/utils/ListView";
 import { ILibrarySearchText } from "readium-desktop/renderer/routing";
 import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
 
-interface IProps extends TranslatorProps, RouteComponentProps<ILibrarySearchText> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps<ILibrarySearchText> {
 }
 
 interface IState {
-    publications: TPublicationApiFindByTag_result | undefined;
+    publicationViews: TPublicationApiFindByTag_result | undefined;
 }
 
 export class TagSearchResult extends React.Component<IProps, IState> {
@@ -36,7 +44,7 @@ export class TagSearchResult extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
-            publications: undefined,
+            publicationViews: undefined,
         };
     }
 
@@ -47,8 +55,8 @@ export class TagSearchResult extends React.Component<IProps, IState> {
             "publication/updateTags",
             "catalog/addEntry",
         ], () => {
-            apiAction("publication/findByTag", this.props.match.params.value)
-                .then((publications) => this.setState({publications}))
+            apiAction("publication/findByTag", (this.props.match.params.value))
+                .then((publicationViews) => this.setState({publicationViews}))
                 .catch((error) => console.error("Error to fetch api publication/findByTag", error));
         });
     }
@@ -60,7 +68,6 @@ export class TagSearchResult extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        let DisplayView: any = GridView;
         let displayType = DisplayType.Grid;
         const { __ } = this.props;
         const title = this.props.match.params.value;
@@ -69,7 +76,6 @@ export class TagSearchResult extends React.Component<IProps, IState> {
             const parsedResult = qs.parse(this.props.location.search);
 
             if (parsedResult.displayType === DisplayType.List) {
-                DisplayView = ListView;
                 displayType = DisplayType.List;
             }
         }
@@ -83,8 +89,10 @@ export class TagSearchResult extends React.Component<IProps, IState> {
                         search={this.props.location.search}
                         breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title as string}]}
                     />
-                    { this.state.publications ?
-                        <DisplayView publications={ this.state.publications } />
+                    { this.state.publicationViews ?
+                        (displayType === DisplayType.Grid ?
+                            <GridView normalOrOpdsPublicationViews={ this.state.publicationViews } /> :
+                            <ListView normalOrOpdsPublicationViews={ this.state.publicationViews } />)
                     : <></>}
                 </div>
             </LibraryLayout>

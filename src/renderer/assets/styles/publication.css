@@ -150,6 +150,10 @@
         }
     }
 
+    & button[disabled] {
+        cursor: not-allowed;
+    }
+
     & span {
         cursor: pointer;
         & input {

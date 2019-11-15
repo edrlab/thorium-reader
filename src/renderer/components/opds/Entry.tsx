@@ -14,12 +14,25 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { IOpdsBrowse } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
-interface EntryProps extends RouteComponentProps<IOpdsBrowse> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     level?: number;
     entry: IOpdsNavigationLinkView;
 }
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse> {
+}
 
-class Entry extends React.Component<EntryProps, undefined> {
+class Entry extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render(): React.ReactElement<{}>  {
         const { entry } = this.props;
 
@@ -63,7 +76,7 @@ class Entry extends React.Component<EntryProps, undefined> {
                 </div>
                 {/* <Slider
                     content={
-                        publications.map((pub) =>
+                        opdsPublicationViews.map((pub) =>
                             <PublicationCard
                                 key={pub.identifier}
                                 publication={pub}

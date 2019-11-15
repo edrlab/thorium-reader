@@ -5,20 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
-import { ToastType } from "readium-desktop/common/models/toast";
-import { downloadActions } from "readium-desktop/common/redux/actions";
-import { open } from "readium-desktop/common/redux/actions/toast";
-import { Translator } from "readium-desktop/common/services/translator";
-import { PromiseAllSettled } from "readium-desktop/common/utils/promise";
+import { PromiseAllSettled, PromiseFulfilled } from "readium-desktop/common/utils/promise";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
+import { JSON as TAJSON } from "ta-json-x";
 import { isArray } from "util";
+
+import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
+
+// import * as debug_ from "debug";
 
 export interface IPublicationApi {
     // in a future possible typing like this to have buildRequestData return type :
@@ -30,14 +30,13 @@ export interface IPublicationApi {
     updateTags: (identifier: string, tags: string[]) => Promise<PublicationView>;
     getAllTags: () => Promise<string[]>;
     importOpdsEntry: (
-        url: string,
-        base64OpdsPublication: string,
-        title: string,
-        tags: string[],
-        downloadSample?: boolean) => Promise<PublicationView>;
+        entryUrl: string,
+        r2OpdsPublicationBase64: string,
+        baseUrl: string,
+    ) => Promise<PublicationView>;
     import: (filePathArray: string | string[]) => Promise<PublicationView[]>;
     search: (title: string) => Promise<PublicationView[]>;
-    exportPublication: (publication: PublicationView) => Promise<void>;
+    exportPublication: (publicationView: PublicationView) => Promise<void>;
 }
 
 /**
@@ -79,7 +78,7 @@ export interface IPublicationModuleApi {
 }
 
 // Logger
-const debug = debug_("readium-desktop:main#services/catalog");
+// const debug = debug_("readium-desktop:main#services/catalog");
 
 @injectable()
 export class PublicationApi implements IPublicationApi {
@@ -91,9 +90,6 @@ export class PublicationApi implements IPublicationApi {
 
     @inject(diSymbolTable["catalog-service"])
     private readonly catalogService!: CatalogService;
-
-    @inject(diSymbolTable.translator)
-    private readonly translator!: Translator;
 
     public async get(identifier: string): Promise<PublicationView> {
         const doc = await this.publicationRepository.get(identifier);
@@ -131,56 +127,41 @@ export class PublicationApi implements IPublicationApi {
     }
 
     /**
-     * List all tags defined in all publications
+     * List all tags defined in all pubs
      *
      */
     public async getAllTags(): Promise<string[]> {
         return this.publicationRepository.getAllTags();
     }
 
-    // FIXME : call from this interface ImportOpdsPublication that is cast from IOpdsPublicationView.
-    // IOpdsPublicationView has many undefined that is not reported to this function call.
-    // Potential crash to fix
     public async importOpdsEntry(
-        url: string,
-        base64OpdsPublication: string,
-        title: string,
-        tags?: string[],
-        downloadSample = false): Promise<PublicationView> {
-
-        this.sendDownloadRequest(url);
-        // dispatch notification to user with redux
-        this.dispatchToastRequest(ToastType.DownloadStarted,
-            this.translator.translate("message.download.start", { title }));
+        entryUrl: string | undefined,
+        r2OpdsPublicationBase64: string,
+        baseUrl: string,
+    ): Promise<PublicationView> {
 
         let returnView: PublicationView;
-        // if url exist import new entry by download
-        if (url) {
-            const httpPub = await this.catalogService.importOpdsEntry(url, downloadSample, tags);
+        if (entryUrl) {
+            // tslint:disable-next-line: max-line-length
+            const httpPub = await this.catalogService.importPublicationFromOpdsUrl(entryUrl);
             if (httpPub.isSuccess) {
-                this.sendDownloadSuccess(url);
                 returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
             } else {
-                // FIXME : Why no dispatchToastRequest here ?
-                throw new Error(`Http importOpdsEntry error with code
-                    ${httpPub.statusCode} for ${httpPub.url}`);
+                throw new Error(`Http importPublicationFromOpdsUrl error with code ${httpPub.statusCode} for ${httpPub.url}`);
             }
         } else {
-            // FIXME : base64OpdsPublication can be undefined
-            const opdsPublication = // OPDSPublication
-                JSON.parse(Buffer.from(base64OpdsPublication, "base64").toString("utf-8"));
-            let publication;
+            const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
+            const r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
+            const r2OpdsPublication = TAJSON.deserialize<OPDSPublication>(r2OpdsPublicationJson, OPDSPublication);
+            let publicationDocument;
             try {
-                // FIXME : opdsPublication is any and
-                // importOpdsPublication first param type is OPDSPublication what is a CLASS ??
-                publication = await this.catalogService.importOpdsPublication(opdsPublication, downloadSample, tags);
+                // tslint:disable-next-line: max-line-length
+                publicationDocument = await this.catalogService.importPublicationFromOpdsDoc(r2OpdsPublication, baseUrl);
             } catch (error) {
-                debug(`importOpdsPublication - FAIL`, opdsPublication, error);
-                this.dispatchToastRequest(ToastType.DownloadFailed, `[${error}]`);
-                throw new Error(`importOpdsPublication ${error}`);
+                throw new Error(`importPublicationFromOpdsDoc error ${error}`);
             }
-            this.sendDownloadSuccess(url);
-            returnView = this.publicationViewConverter.convertDocumentToView(publication);
+
+            returnView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
         }
         return returnView;
     }
@@ -190,46 +171,31 @@ export class PublicationApi implements IPublicationApi {
         if (!isArray(filePathArray)) {
             filePathArray = [filePathArray];
         }
-        // returns all publications linked to this import
-        const pubsRawPromise = filePathArray.map((filePath) => this.catalogService.importFile(filePath));
-        const pubsRaw = await PromiseAllSettled(pubsRawPromise);
-        const pubs = pubsRaw.filter((pub) => pub.status === "fulfilled" && pub.value);
+
+        // tslint:disable-next-line: max-line-length
+        const publicationDocumentPromises = filePathArray.map((filePath) => this.catalogService.importEpubOrLcplFile(filePath));
+        const publicationDocumentPromisesAll = await PromiseAllSettled(publicationDocumentPromises);
+
         // https://github.com/microsoft/TypeScript/issues/16069 : no inference type on filter
-        const pubsView = pubs.map((pub) => this.publicationViewConverter.convertDocumentToView((pub as any).value));
-        return pubsView;
+        // tslint:disable-next-line: max-line-length
+        const publicationDocumentPromisesAllResolved = publicationDocumentPromisesAll.filter((publicationDocumentPromise) => {
+            return publicationDocumentPromise.status === "fulfilled" && publicationDocumentPromise.value;
+        }) as Array<PromiseFulfilled<PublicationDocument>>;
+        const publicationViews = publicationDocumentPromisesAllResolved.map((publicationDocumentWrapper) => {
+            return this.publicationViewConverter.convertDocumentToView(publicationDocumentWrapper.value);
+        });
+
+        return publicationViews;
     }
 
     public async search(title: string): Promise<PublicationView[]> {
-        const docs = await this.publicationRepository.searchByTitle(title);
-        return docs.map((doc) => {
-            return this.publicationViewConverter.convertDocumentToView(doc);
+        const publicationDocuments = await this.publicationRepository.searchByTitle(title);
+        return publicationDocuments.map((publicationDocument) => {
+            return this.publicationViewConverter.convertDocumentToView(publicationDocument);
         });
     }
 
-    public async exportPublication(publication: PublicationView): Promise<void> {
-        this.catalogService.exportPublication(publication);
-    }
-
-    private dispatchToastRequest(type: ToastType, message: string) {
-        const store = diMainGet("store");
-        store.dispatch(open(type, message));
-    }
-
-    private sendDownloadRequest(url: string) {
-        const store = diMainGet("store");
-        store.dispatch(downloadActions.addDownload(
-            {
-                url,
-            },
-        ));
-    }
-
-    private sendDownloadSuccess(url: string) {
-        const store = diMainGet("store");
-        store.dispatch(downloadActions.removeDownload(
-            {
-                url,
-            },
-        ));
+    public async exportPublication(publicationView: PublicationView): Promise<void> {
+        this.catalogService.exportPublication(publicationView);
     }
 }

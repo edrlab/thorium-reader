@@ -14,7 +14,7 @@ import {
 } from "readium-desktop/common/utils";
 import {
     IOpdsFeedView, IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView,
-    IOpdsPublicationView, IOpdsResultView, TOpdsFeedMetadaView,
+    IOpdsPublicationView, IOpdsResultView, TOpdsFeedMetadaView, IOpdsFeedMetadataView,
 } from "readium-desktop/common/views/opds";
 import { CoverView } from "readium-desktop/common/views/publication";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
@@ -80,13 +80,13 @@ const GetLinksView = <T extends Link>(baseUrl: string, links: T[], filter: IGetL
 export class OpdsFeedViewConverter {
     public convertDocumentToView(document: OpdsFeedDocument): IOpdsFeedView {
         return {
-            identifier: document.identifier,
+            identifier: document.identifier, // preserve Identifiable identifier
             title: document.title,
             url: document.url,
         };
     }
 
-    public convertOpdsLinkToView(link: OPDSLink, url: string): IOpdsNavigationLinkView {
+    public convertOpdsLinkToView(link: OPDSLink, baseUrl: string): IOpdsNavigationLinkView {
         // Title could be defined on multiple lines
         // Only keep the first one
         const titleParts = link.Title.split("\n").filter((text) => text);
@@ -96,13 +96,14 @@ export class OpdsFeedViewConverter {
         return {
             title,
             subtitle,
-            url: urlPathResolve(url, link.Href),
+            url: urlPathResolve(baseUrl, link.Href),
             numberOfItems: link.Properties && link.Properties.NumberOfItems,
         };
     }
 
-    public convertOpdsPublicationToView(publication: OPDSPublication, url: string): IOpdsPublicationView {
-        const metadata = publication.Metadata;
+    // warning: modifies r2OpdsPublication, makes relative URLs absolute with baseUrl!
+    public convertOpdsPublicationToView(r2OpdsPublication: OPDSPublication, baseUrl: string): IOpdsPublicationView {
+        const metadata = r2OpdsPublication.Metadata;
         const title = convertMultiLangStringToString(metadata.Title);
         const authors = convertContributorArrayToStringArray(metadata.Author);
         const publishers = convertContributorArrayToStringArray(metadata.Publisher);
@@ -113,18 +114,18 @@ export class OpdsFeedViewConverter {
 
         // resolve url in publication before extract them
         const ResolveUrlInPublication = <T extends Link>(lns: T[]): void =>
-            lns && lns.forEach((ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(url, ln.Href)));
-        ResolveUrlInPublication(publication.Links);
-        ResolveUrlInPublication(publication.Images);
+            lns && lns.forEach((ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(baseUrl, ln.Href)));
+        ResolveUrlInPublication(r2OpdsPublication.Links);
+        ResolveUrlInPublication(r2OpdsPublication.Images);
 
         // CoverView object
-        const thumbnailLinkView = GetLinksView(url, publication.Images, {
+        const thumbnailLinkView = GetLinksView(baseUrl, r2OpdsPublication.Images, {
             type: ["image/png", "image/jpeg"],
             rel: "http://opds-spec.org/image/thumbnail",
-        })[0] || GetLinksView(url, publication.Images, {
+        })[0] || GetLinksView(baseUrl, r2OpdsPublication.Images, {
             type: ["image/png", "image/jpeg"],
         })[0];
-        const coverLinkView = GetLinksView(url, publication.Images, {
+        const coverLinkView = GetLinksView(baseUrl, r2OpdsPublication.Images, {
             rel: "http://opds-spec.org/image",
         })[0];
 
@@ -137,36 +138,38 @@ export class OpdsFeedViewConverter {
         }
 
         // Get odps entry
-        const entrylinksViews = GetLinksView(url, publication.Links, {
+        const entrylinksViews = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: "application/atom+xml;type=entry;profile=opds-catalog",
         })[0];
-        const urlPublication = entrylinksViews && entrylinksViews.url;
-        const base64OpdsPublication = !entrylinksViews &&
-            Buffer.from(JSON.stringify(publication)).toString("base64");
-
-        const hasSample = GetLinksView(url, publication.Links, {
+        const sampleLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
                 type: [
                     "http://opds-spec.org/acquisition/sample",
                     "http://opds-spec.org/acquisition/preview",
                 ],
-        }).length > 0;
-        const isFree = GetLinksView(url, publication.Links, {
+        })[0];
+        const acquisitionLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
                 type: [
                     "http://opds-spec.org/acquisition",
                     "http://opds-spec.org/acquisition/open-access",
                 ],
-        }).length > 0;
-        const buyLinkView = GetLinksView(url, publication.Links, {
+        })[0];
+        const buyLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: "http://opds-spec.org/acquisition/buy",
         })[0];
-        const borrowLinkView = GetLinksView(url, publication.Links, {
+        const borrowLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: "http://opds-spec.org/acquisition/borrow",
         })[0];
-        const subscribeLinkView = GetLinksView(url, publication.Links, {
+        const subscribeLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: "http://opds-spec.org/acquisition/subscribe",
         })[0];
 
+        const r2OpdsPublicationJson = TAJSON.serialize(r2OpdsPublication);
+        const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
+        const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");
+
         return {
+            baseUrl,
+            r2OpdsPublicationBase64,
             title,
             authors,
             publishers,
@@ -176,52 +179,49 @@ export class OpdsFeedViewConverter {
             languages: metadata.Language,
             publishedAt,
             cover,
-            url: urlPublication,
-            buyUrl: buyLinkView && buyLinkView.url,
-            borrowUrl: borrowLinkView && borrowLinkView.url,
-            subscribeUrl: subscribeLinkView && subscribeLinkView.url,
-            hasSample,
-            base64OpdsPublication,
-            isFree,
+            entryUrl: entrylinksViews?.url,
+            buyUrl: buyLinkView?.url,
+            borrowUrl: borrowLinkView?.url,
+            subscribeUrl: subscribeLinkView?.url,
+            sampleOrPreviewUrl: sampleLinkView?.url,
+            openAccessUrl: acquisitionLinkView?.url,
         };
     }
 
-    public async convertOpdsFeedToView(feedSerialize: OPDSFeed, url: string): Promise<IOpdsResultView> {
-        const feed = TAJSON.deserialize<OPDSFeed>(feedSerialize);
-        const Title = convertMultiLangStringToString(feed.Metadata && feed.Metadata.Title);
-        const publications: IOpdsPublicationView[] | undefined = feed.Publications &&
-            feed.Publications.map((item) => {
-                return this.convertOpdsPublicationToView(item, url);
+    public async convertOpdsFeedToView(r2OpdsFeed: OPDSFeed, baseUrl: string): Promise<IOpdsResultView> {
+
+        const title = convertMultiLangStringToString(r2OpdsFeed.Metadata && r2OpdsFeed.Metadata.Title);
+        const publications = r2OpdsFeed.Publications?.map((item) => {
+                return this.convertOpdsPublicationToView(item, baseUrl);
             });
-        const navigation: IOpdsNavigationLinkView[] | undefined = feed.Navigation &&
-            feed.Navigation.map((item) => {
-                return this.convertOpdsLinkToView(item, url);
+        const navigation = r2OpdsFeed.Navigation?.map((item) => {
+                return this.convertOpdsLinkToView(item, baseUrl);
             });
-        const links: IOpdsNavigationLink | undefined = feed.Links &&
-            {
-                next: GetSimplifedLinkFromRel(url, feed.Links, "next"),
-                previous: GetSimplifedLinkFromRel(url, feed.Links, "previous"),
-                first: GetSimplifedLinkFromRel(url, feed.Links, "first"),
-                last: GetSimplifedLinkFromRel(url, feed.Links, "last"),
-                start: GetSimplifedLinkFromRel(url, feed.Links, "start"),
-                up: GetSimplifedLinkFromRel(url, feed.Links, "up"),
-                search: GetSimplifedLinkFromRel(url, feed.Links, "search"),
-                bookshelf: GetSimplifedLinkFromRel(url, feed.Links, "http://opds-spec.org/shelf"),
-                text: GetSimplifedLinkFromType(url, feed.Links, "text/html"),
-                self: GetSimplifedLinkFromRel(url, feed.Links, "self"),
-            };
-        const metadata: TOpdsFeedMetadaView | undefined = feed.Metadata &&
-            {
-                NumberOfItems: typeof feed.Metadata.NumberOfItems === "number" &&
-                    feed.Metadata.NumberOfItems,
-                ItemsPerPage: typeof feed.Metadata.ItemsPerPage === "number" &&
-                    feed.Metadata.ItemsPerPage,
-                CurrentPage: typeof feed.Metadata.CurrentPage === "number" &&
-                    feed.Metadata.CurrentPage,
-            };
+        const links: IOpdsNavigationLink = r2OpdsFeed.Links &&
+        {
+            next: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "next" }),
+            previous: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "previous" }),
+            first: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "first" }),
+            last: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "last" }),
+            start: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "start" }),
+            up: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
+            search: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
+            bookshelf: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/shelf" }),
+            text: GetLinksView(baseUrl, r2OpdsFeed.Links, { type: "text/html" }),
+            self: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
+        };
+        const metadata: IOpdsFeedMetadataView = r2OpdsFeed.Metadata &&
+        {
+            numberOfItems: typeof r2OpdsFeed.Metadata.NumberOfItems === "number" &&
+                r2OpdsFeed.Metadata.NumberOfItems,
+            itemsPerPage: typeof r2OpdsFeed.Metadata.ItemsPerPage === "number" &&
+                r2OpdsFeed.Metadata.ItemsPerPage,
+            currentPage: typeof r2OpdsFeed.Metadata.CurrentPage === "number" &&
+                r2OpdsFeed.Metadata.CurrentPage,
+        };
 
         return {
-            Title,
+            title,
             metadata,
             publications,
             navigation,

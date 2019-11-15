@@ -20,12 +20,20 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import Dialog from "./Dialog";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
 
-    public constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
 
         this.remove = this.remove.bind(this);
@@ -62,17 +70,17 @@ class DeleteOpdsFeedConfirm extends React.Component<IProps, undefined> {
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         closeDialog: () => {
             dispatch(
-                dialogActions.close(),
+                dialogActions.closeRequest.build(),
             );
         },
     };
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     open: state.dialog.type === "delete-opds-feed-confirm",
     feed: (state.dialog.data as DialogType["delete-opds-feed-confirm"]).feed,
 });

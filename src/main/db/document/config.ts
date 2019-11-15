@@ -8,13 +8,13 @@
 import { Identifiable } from "readium-desktop/common/models/identifiable";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 
-export interface ConfigDocument extends Identifiable, Timestampable {
-    value: any;
+export interface ConfigDocument<ValueType> extends Identifiable, Timestampable {
+    value: ValueType;
 }
 
-interface CatalogEntry {
+export interface CatalogEntry {
     title: string;
-    tag: any;
+    tag: string;
 }
 
 export interface CatalogConfig {

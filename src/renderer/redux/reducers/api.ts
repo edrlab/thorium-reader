@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as moment from "moment";
-import { ActionType, ApiAction } from "readium-desktop/common/redux/actions/api";
+import { apiActions } from "readium-desktop/common/redux/actions/";
 import {
     ApiDataResponse, ApiState, LAST_API_SUCCESS_ID,
 } from "readium-desktop/renderer/redux/states/api";
@@ -18,11 +18,12 @@ const initialState: ApiState<any> = {
 // The api reducer.
 export function apiReducer(
     state: ApiState<any> = initialState,
-    action: ApiAction,
+    action: apiActions.result.TAction |
+        apiActions.clean.TAction,
 ) {
 
     switch (action.type) {
-        case ActionType.Result:
+        case apiActions.result.ID:
             const now = moment.now();
             const requestId = action.meta.api.requestId;
             const data: ApiDataResponse<any> = action.error ?
@@ -69,7 +70,7 @@ export function apiReducer(
                 [LAST_API_SUCCESS_ID]: returnState[requestId],
             };
 
-        case ActionType.Clean:
+        case apiActions.clean.ID:
             const newState = { ...state };
             delete newState[action.payload.requestId];
             return newState;

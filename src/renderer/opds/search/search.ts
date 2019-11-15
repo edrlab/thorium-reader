@@ -5,15 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+/*
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import * as request from "request";
 
-const findLink = (ln: TOpdsLinkViewSimplified[], type: string) => ln && ln.find((link) =>
-    link.TypeLink.includes(type));
+// move to back
+const findLink = (ln: IOpdsLinkView[], type: string) => ln && ln.find((link) =>
+    link..includes(type));
 
 // tslint:disable-next-line: max-line-length
 // http://examples.net/opds/search/?q={searchTerms}&author={atom:author}&translator={atom:contributor}&title={atom:title}
-const getOpenSearchUrl = async (opensearchLink: TOpdsLinkViewSimplified) =>
+const getOpenSearchUrl = async (opensearchLink: IOpdsLinkView) =>
 new Promise<string | undefined>((resolve) => {
     // request from node on the browserWindows
     // xmlHttpRequest doesn't work because of CORS
@@ -85,3 +87,4 @@ export async function getSearchUrlFromOpdsLinks(
     }
     return (undefined);
 }
+*/

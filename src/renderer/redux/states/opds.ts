@@ -7,13 +7,7 @@
 
 import { IBreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
 
-export interface IOpdsHeaderState {
-    search?: string;
-    start?: string;
-    bookshelf?: string;
-    self?: string;
-    up?: string;
-}
+
 
 export interface IOpdsBrowserState {
     breadcrumb: IBreadCrumbItem[];

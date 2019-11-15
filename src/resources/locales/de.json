@@ -31,8 +31,8 @@
         "addTagsButton": "Hinzufügen",
         "allBooks": "Alle Bücher",
         "bookInfo": "Über dieses Buch",
-        "delete": "Dauerhaft löschen",
-        "deleteBook": "Aus der Bibliothek löschen",
+        "delete": "Löschen",
+        "deleteBook": "Löschen",
         "deleteTag": "Löschen des Tags",
         "description": "Beschreibung",
         "emptyTagList": "Es gibt keine Tags in Ihren Büchern.",
@@ -56,22 +56,21 @@
         "tags": "Meine Tags"
     },
     "dialog": {
-        "alreadyAdd": "Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
         "closeModalWindow": "Dieses Fenster schließen",
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-        "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung (.epub).",
+        "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung (.epub or .lcpl).",
         "no": "Nein",
         "renew": "",
         "return": "",
-        "sure": "Bist du sicher, dass du es wieder hinzufügen willst?",
         "yes": "Ja"
     },
     "header": {
         "allBooks": "Alle Bücher",
         "books": "Meine Bücher",
         "catalogs": "Kataloge",
+        "downloads": "Downloads",
         "gridTitle": "Bücher in einem Raster präsentieren",
         "home": "Hauptmenü",
         "importTitle": "ein Buch importieren",
@@ -93,10 +92,12 @@
     },
     "message": {
         "download": {
+            "error": "Der Download von {{- title}} ist fehlgeschlagen: [{{- err}}]",
             "start": "Der Download von {{- title}} hat begonnen",
             "success": "Der Download von {{- title}} wurde abgeschlossen"
         },
         "import": {
+            "alreadyImport": "Der Import von {{- title}} Es scheint, dass Sie diese Publikation bereits in Ihren Katalog aufgenommen haben.",
             "fail": "Der Import von {{- path}} ist fehlgeschlagen. Stellen Sie sicher, dass die Datei gültig ist.",
             "success": "Der Import von {{- title}} ist abgeschlossen."
         }
@@ -134,9 +135,7 @@
         "previous": "Bisherige"
     },
     "publication": {
-        "deleteButton": "Löschen",
         "expiredLcp": "",
-        "readButton": "Lesen",
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",
         "returnedLcp": "",
@@ -154,7 +153,6 @@
             "bookmarks": "Meine Lesezeichen",
             "delete": "Löschen",
             "edit": "Bearbeiten",
-            "illustrations": "Illustrationstabelle",
             "landmarks": "Navigationspunkte",
             "toc": "Inhaltsverzeichnis"
         },
@@ -190,7 +188,6 @@
             "fontSize": "Schriftgröße:",
             "justification": "Textausrichtung",
             "justify": "Blocksatz",
-            "left": "Linksbündig",
             "letterSpacing": "Buchstabenabstand",
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
@@ -214,10 +211,8 @@
         }
     },
     "settings": {
-        "information": "Informationen",
         "language": {
             "languageChoice": "Sprachauswahl"
-        },
-        "uiLanguage": "Sprache"
+        }
     }
 }

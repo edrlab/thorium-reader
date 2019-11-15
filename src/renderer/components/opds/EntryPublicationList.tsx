@@ -10,40 +10,58 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { IOpdsPublicationView, IOpdsResultView } from "readium-desktop/common/views/opds";
 import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
-import GridView from "readium-desktop/renderer/components/utils/GridView";
-import ListView from "readium-desktop/renderer/components/utils/ListView";
+import { GridView } from "readium-desktop/renderer/components/utils/GridView";
+import { ListView } from "readium-desktop/renderer/components/utils/ListView";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
 import PageNavigation from "./PageNavigation";
 
-interface IProps extends ReturnType<typeof mapStateToProps> {
-    publications: IOpdsPublicationView[] | undefined;
+interface IBaseProps {
+    opdsPublicationView: IOpdsPublicationView[] | undefined;
     links: IOpdsResultView["links"];
     pageInfo?: IOpdsResultView["metadata"];
 }
 
-class EntryPublicationList extends React.Component<IProps> {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+}
+
+class EntryPublicationList extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
+
     public render() {
-        // FIXME : try to remove this any
-        let DisplayView: React.ComponentClass<any> = GridView;
+        let displayType = DisplayType.Grid;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
 
             if (parsedResult.displayType === DisplayType.List) {
-                DisplayView = ListView;
+                displayType = DisplayType.List;
             }
         }
 
-        // force cast on PublicationView[]
-        // It's an hack from no typing to static typing
-        // FIXME in the future
         return (
             <>
-                {this.props.publications ?
+                {this.props.opdsPublicationView ?
                     <>
-                        <DisplayView publications={this.props.publications} isOpdsView={true} />
+                        {displayType === DisplayType.Grid ?
+                            <GridView
+                                normalOrOpdsPublicationViews={this.props.opdsPublicationView}
+                                isOpdsView={true}
+                            /> :
+                            <ListView
+                                normalOrOpdsPublicationViews={this.props.opdsPublicationView}
+                                isOpdsView={true}
+                            />
+                        }
                         <PageNavigation
                             pageLinks={this.props.links}
                             pageInfo={this.props.pageInfo}
@@ -55,7 +73,7 @@ class EntryPublicationList extends React.Component<IProps> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     location: state.router.location,
 });
 

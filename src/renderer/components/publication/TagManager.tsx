@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { TPublicationApiUpdateTags_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px-blue.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
@@ -16,26 +15,38 @@ import {
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TChangeEvent, TFormEvent } from "readium-desktop/typings/react";
 
-interface Props extends TranslatorProps {
-    publicationIdentifier: string;
+// import { TPublicationApiUpdateTags_result } from "readium-desktop/main/api/publication";
+
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    publicationIdentifier: string | undefined; // not defined for OpdsPublicationView
     tags: string[];
-    canModifyTag?: boolean;
+    canModifyTag?: boolean; // false for OpdsPublicationView
 }
 
-interface TagManagerState {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     tags: string[];
     nameNewTag: string;
-    updatedPublication: TPublicationApiUpdateTags_result | undefined;
+    // updatedPublication: TPublicationApiUpdateTags_result | undefined;
 }
 
-export class TagManager extends React.Component<Props, TagManagerState> {
-    public constructor(props: Props) {
+export class TagManager extends React.Component<IProps, IState> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
             tags: props.tags ? props.tags : [],
             nameNewTag: "",
-            updatedPublication: undefined,
+            // updatedPublication: undefined,
         };
 
         this.deleteTag = this.deleteTag.bind(this);
@@ -43,7 +54,7 @@ export class TagManager extends React.Component<Props, TagManagerState> {
         this.addTag = this.addTag.bind(this);
     }
 
-    public componentDidUpdate(oldProps: Props) {
+    public componentDidUpdate(oldProps: IProps) {
         if (this.props.tags !== oldProps.tags) {
             this.setState({tags: this.props.tags});
         }
@@ -111,7 +122,6 @@ export class TagManager extends React.Component<Props, TagManagerState> {
     }
 
     private sendTags(tags: string[]) {
-//        this.props.updateTags(this.props.publicationIdentifier, tags);
         apiAction("publication/updateTags", this.props.publicationIdentifier, tags)
             .catch((error) => console.error("Error to fetch api publication/updateTags", error));
     }

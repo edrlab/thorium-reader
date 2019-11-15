@@ -16,7 +16,8 @@ interface ContentStyle {
     [key: string]: any;
 }
 
-interface MenuProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps {
     button: any;
     content: any;
     open: boolean; // Is menu open
@@ -26,18 +27,27 @@ interface MenuProps {
     infoDialogIsOpen?: boolean;
 }
 
-interface MenuState {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     contentStyle: any;
 }
 
-export default class Menu extends React.Component<MenuProps, MenuState> {
+export default class Menu extends React.Component<IProps, IState> {
     private buttonRef: any;
     private menuButtonRef: React.RefObject<HTMLButtonElement>;
     private contentRef: any;
     private menuId: string;
 
-    public constructor(props: any) {
+    constructor(props: IProps) {
         super(props);
+
         this.state = {
             contentStyle: {},
         };
@@ -46,7 +56,7 @@ export default class Menu extends React.Component<MenuProps, MenuState> {
         this.getBackFocusMenuButton = this.getBackFocusMenuButton.bind(this);
     }
 
-    public componentDidUpdate(oldProps: MenuProps) {
+    public componentDidUpdate(oldProps: IProps) {
         if (this.props.open && !oldProps.open) {
             this.refreshStyle();
         }

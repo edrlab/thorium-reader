@@ -16,12 +16,20 @@ import { Dispatch } from "redux";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
-
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
 }
 
-export class PublicationAddButton extends React.Component<IProps> {
-    public constructor(props: IProps) {
+export class PublicationAddButton extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.importFile = this.importFile.bind(this);
@@ -37,7 +45,7 @@ export class PublicationAddButton extends React.Component<IProps> {
                     aria-label={__("accessibility.importFile")}
                     onChange={ this.importFile }
                     multiple
-                    accept=".epub, .epub3"
+                    accept=".lcpl, .epub, .epub3"
                 />
                 <label htmlFor="epubInput">
                     <SVG svg={ PlusIcon } title={__("header.importTitle")}/>

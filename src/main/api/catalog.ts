@@ -11,13 +11,21 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-import { CatalogConfig } from "readium-desktop/main/db/document/config";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import {
+    CatalogConfig, CatalogEntry, ConfigDocument,
+} from "readium-desktop/main/db/document/config";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 
+import { LocatorDocument } from "../db/document/locator";
+import { BaseRepository } from "../db/repository/base";
+
 export const CATALOG_CONFIG_ID = "catalog";
+type ConfigDocumentType = ConfigDocument<CatalogConfig>;
+type ConfigRepositoryType = BaseRepository<ConfigDocumentType>;
+// import { Timestampable } from "readium-desktop/common/models/timestampable";
+// type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Timestampable>;
 
 export interface ICatalogApi {
     get: () => Promise<CatalogView>;
@@ -49,7 +57,7 @@ export class CatalogApi implements ICatalogApi {
     private readonly publicationRepository!: PublicationRepository;
 
     @inject(diSymbolTable["config-repository"])
-    private readonly configRepository!: ConfigRepository;
+    private readonly configRepository!: ConfigRepositoryType;
 
     @inject(diSymbolTable["locator-repository"])
     private readonly locatorRepository!: LocatorRepository;
@@ -64,15 +72,15 @@ export class CatalogApi implements ICatalogApi {
         const __ = this.translator.translate.bind(this.translator);
 
         // Last read publicatons
-        const lastLocators = await this.locatorRepository.findBy(
-            { locatorType: LocatorType.LastReadingLocation },
+        const lastLocators = await this.locatorRepository.find(
             {
+                selector: { locatorType: LocatorType.LastReadingLocation },
                 limit: 10,
                 sort: [ { updatedAt: "desc" } ],
             },
         );
         const lastLocatorPublicationIdentifiers = lastLocators.map(
-            (locator: any) => locator.publicationIdentifier,
+            (locator: LocatorDocument) => locator.publicationIdentifier,
         );
         const lastReadPublicationViews = [];
 
@@ -91,10 +99,11 @@ export class CatalogApi implements ICatalogApi {
             );
         }
 
-        // Last added publications without publcation already on last read list
+        // Last added pubs not already on last read list
         const lastAddedPublications = await this.publicationRepository.find({
             limit: 10,
             sort: [ { createdAt: "desc" } ],
+            selector: {},
         });
         const lastAddedPublicationViews: PublicationView[] = [];
         for (const doc of lastAddedPublications) {
@@ -108,12 +117,12 @@ export class CatalogApi implements ICatalogApi {
             {
                 title: __("catalog.entry.continueReading"),
                 totalCount: lastReadPublicationViews.length,
-                publications: lastReadPublicationViews,
+                publicationViews: lastReadPublicationViews,
             },
             {
                 title: __("catalog.entry.lastAdditions"),
                 totalCount: lastAddedPublicationViews.length,
-                publications: lastAddedPublicationViews,
+                publicationViews: lastAddedPublicationViews,
             },
         ];
 
@@ -127,11 +136,11 @@ export class CatalogApi implements ICatalogApi {
     }
 
     public async addEntry(entryView: CatalogEntryView): Promise<CatalogEntryView[]> {
-        let entries: any = [];
+        let entries: CatalogEntry[] = [];
 
         try {
             const config = await this.configRepository.get(CATALOG_CONFIG_ID);
-            const catalog = config.value as CatalogConfig;
+            const catalog = config.value;
             entries = catalog.entries;
         } catch (error) {
             // New configuration
@@ -150,30 +159,29 @@ export class CatalogApi implements ICatalogApi {
     }
 
     /**
-     * Returns entries without publications
+     * Returns entries without pubs
      */
     public async getEntries(): Promise<CatalogEntryView[]> {
-        let config = null;
-
+        let config: ConfigDocumentType;
         try {
             config = await this.configRepository.get(CATALOG_CONFIG_ID);
         } catch (error) {
             return [];
         }
 
-        const catalog = config.value as CatalogConfig;
+        const catalog = config.value;
         const entryViews: CatalogEntryView[] = [];
 
         for (const entry of catalog.entries) {
-            const publications = await this.publicationRepository.findByTag(entry.tag);
-            const publicationViews = publications.map((doc) => {
+            const publicationDocuments = await this.publicationRepository.findByTag(entry.tag);
+            const publicationViews = publicationDocuments.map((doc) => {
                 return this.publicationViewConverter.convertDocumentToView(doc);
             });
             entryViews.push(
                 {
                     title: entry.title,
                     tag: entry.tag,
-                    publications: publicationViews,
+                    publicationViews,
                     totalCount: publicationViews.length,
                 },
             );

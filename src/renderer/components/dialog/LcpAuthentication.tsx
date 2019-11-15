@@ -20,7 +20,15 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import Dialog from "./Dialog";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -28,7 +36,8 @@ interface IState {
 }
 
 export class LCPAuthentication extends React.Component<IProps, IState> {
-    public constructor(props: IProps) {
+
+    constructor(props: IProps) {
         super(props);
 
         this.state = {
@@ -40,7 +49,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        if (!this.props.open || !this.props.publication) {
+        if (!this.props.open || !this.props.publicationView) {
             return <></>;
         }
 
@@ -48,6 +57,12 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         return (
             <Dialog open={true} close={closeDialog} id={styles.lcp_dialog}>
                 <div>
+                    {
+                        this.props.message &&
+                        <p>
+                            <span>{this.props.message}</span>
+                        </p>
+                    }
                     <p>
                         {__("library.lcp.sentence")}
                         <span>{__("library.lcp.hint", { hint: this.props.hint })}</span>
@@ -64,7 +79,9 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
                                 value={__("library.lcp.submit")}
                                 disabled={!this.state.password}
                             />
-                            <button onClick={closeDialog}>{__("library.lcp.cancel")}</button>
+                            <button
+                                onClick={(e) => { e.preventDefault(); closeDialog(); }}
+                            >{__("library.lcp.cancel")}</button>
                         </div>
                     </form>
                 </div>
@@ -79,34 +96,29 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
     private submit(e: TFormEvent) {
         e.preventDefault();
 
-        apiAction("lcp/unlockPublicationWithPassphrase", {
-            publication: this.props.publication,
-            passphrase: this.state.password,
-        }).catch((error) => {
-            console.error(`Error to fetch opds/deleteFeed`, error);
+        apiAction("lcp/unlockPublicationWithPassphrase",
+            this.state.password,
+            this.props.publicationView,
+        ).catch((error) => {
+            console.error(`Error lcp/unlockPublicationWithPassphrase`, error);
         });
+
         this.props.closeDialog();
     }
 
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         closeDialog: () => {
             dispatch(
-                dialogActions.close(),
+                dialogActions.closeRequest.build(),
             );
         },
-        // sendLCPError: () => {
-        //     dispatch({
-        //         type: ActionType.UserKeyCheckError,
-        //         error: true,
-        //     });
-        // },
     };
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     ...{
         open: state.dialog.type === "lcp-authentication",
     }, ...state.dialog.data as DialogType["lcp-authentication"],
