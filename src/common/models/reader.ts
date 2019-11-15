@@ -43,6 +43,7 @@ export interface ReaderConfig {
     paged: boolean;
     readiumcss: boolean;
     sepia: boolean;
+    enableMathJax: boolean;
 }
 
 export interface BookmarkCollection {

@@ -55,12 +55,7 @@ debug("readium css path:", rcssPath);
 function computeReadiumCssJsonMessage(_r2Publication: R2Publication, _link: Link | undefined):
     IEventPayload_R2_EVENT_READIUMCSS {
     const store = diMainGet("store");
-    let settings = store.getState().reader.config;
-    if (!settings.value) {
-        debug("!settings.value? (MAIN)");
-    } else {
-        settings = settings.value;
-    }
+    const settings = store.getState().reader.config;
     debug(settings);
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
@@ -114,6 +109,8 @@ function computeReadiumCssJsonMessage(_r2Publication: R2Publication, _link: Link
 
         wordSpacing: settings.wordSpacing,
 
+        mathJax: settings.enableMathJax,
+
         reduceMotion: readiumCSSDefaults.reduceMotion,
     };
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
@@ -151,16 +148,8 @@ streamer.expressUse("/" + MATHJAX_URL_PATH, express.static(mathJaxPath, staticOp
 const transformer = (_publication: R2Publication, _link: Link, str: string): string => {
 
     const store = diMainGet("store");
-    let settings = store.getState().reader.config;
-    if (!settings.value) {
-        debug("!settings.value? (MAIN)");
-    } else {
-        settings = settings.value;
-    }
+    const settings = store.getState().reader.config;
 
-    // TODO: blacklist document selector in r2-navigator-js:
-    // <mjx-container xmlns="http://www.w3.org/1999/xhtml"
-    // class = MathJax CtxtMenu_MenuFrame
     debug("########################");
     debug("########################");
     debug("########################");

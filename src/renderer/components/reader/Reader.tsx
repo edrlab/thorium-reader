@@ -47,6 +47,7 @@ import {
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssOnOff, setEpubReadingSystemInfo,
     setKeyDownEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
+import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
@@ -74,10 +75,7 @@ const queryParams = getURLQueryParams();
 // see src/main/streamer.js
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     const store = diRendererGet("store");
-    let settings = store.getState().reader.config;
-    if (settings.value) {
-        settings = settings.value;
-    }
+    const settings = store.getState().reader.config;
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {
@@ -129,6 +127,8 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
         typeScale: readiumCSSDefaults.typeScale,
 
         wordSpacing: settings.wordSpacing,
+
+        mathJax: settings.enableMathJax,
 
         reduceMotion: readiumCSSDefaults.reduceMotion,
     };
@@ -247,6 +247,7 @@ export class Reader extends React.Component<IProps, IState> {
                 paraSpacing: undefined,
                 letterSpacing: undefined,
                 pageMargins: undefined,
+                enableMathJax: false,
             },
             shortcutEnable: true,
             indexes: {
@@ -316,6 +317,14 @@ export class Reader extends React.Component<IProps, IState> {
                         }
                         i++;
                     }
+                }
+
+                if (settings.enableMathJax !== this.state.settingsValues.enableMathJax) {
+
+                    setTimeout(() => {
+                        // window.location.reload();
+                        reloadContent();
+                    }, 300);
                 }
 
                 this.setState({settingsValues: settings, indexes});
@@ -771,6 +780,15 @@ export class Reader extends React.Component<IProps, IState> {
         }
 
         settingsValues[name] =  value;
+
+        if (settingsValues.paged) {
+            settingsValues.enableMathJax = false;
+
+            setTimeout(() => {
+                // window.location.reload();
+                reloadContent();
+            }, 300);
+        }
 
         this.setState({settingsValues});
 
