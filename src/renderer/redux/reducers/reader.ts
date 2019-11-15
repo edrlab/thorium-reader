@@ -9,6 +9,8 @@ import { ReaderMode } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { ReaderState } from "readium-desktop/renderer/redux/states/reader";
 
+// TODO: centralize this code, currently duplicated
+// see src/main/redux/reducers/reader.ts
 const initialState: ReaderState = {
     reader: undefined,
     mode: ReaderMode.Attached,
@@ -24,6 +26,7 @@ const initialState: ReaderState = {
         paged: false,
         readiumcss: true,
         sepia: false,
+        enableMathJax: false,
     },
 };
 

@@ -6,36 +6,31 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
 import { Font } from "readium-desktop/common/models/font";
-import fontList from "readium-desktop/utils/fontList";
-
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 import * as AutoIcon from "readium-desktop/renderer/assets/icons/auto.svg";
 import * as ColumnIcon from "readium-desktop/renderer/assets/icons/colonne.svg";
 import * as Column2Icon from "readium-desktop/renderer/assets/icons/colonne2.svg";
 import * as DefileIcon from "readium-desktop/renderer/assets/icons/defile.svg";
+import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as LeftIcon from "readium-desktop/renderer/assets/icons/gauche.svg";
 import * as JustifyIcon from "readium-desktop/renderer/assets/icons/justifie.svg";
 import * as PagineIcon from "readium-desktop/renderer/assets/icons/pagine.svg";
-
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import fontList from "readium-desktop/utils/fontList";
 
 import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
+import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 
 import optionsValues from "./options-values";
-
-import classNames = require("classnames");
-
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
+import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
-import SideMenu from "./sideMenu/SideMenu";
-
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-
-import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
-
-import { ReaderConfig } from "readium-desktop/common/models/reader";
+import classNames = require("classnames");
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -44,8 +39,8 @@ interface IBaseProps extends TranslatorProps {
     indexes: {fontSize: number, pageMargins: number, wordSpacing: number, letterSpacing: number, lineHeight: number};
     handleSettingChange: (event: any, name: string, value?: any) => void;
     handleIndexChange: (event: any, name: string, value?: any) => void;
-    setSettings: (settings: any) => void;
-    toggleMenu: any;
+    setSettings: (settings: ReaderConfig) => void;
+    toggleMenu: () => void;
     focusSettingMenuButton: () => void;
 }
 
@@ -95,6 +90,10 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                 title: __("reader.settings.spacing"),
                 content: this.spacingContent(),
             },
+            {
+                title: "MathML",
+                content: this.mathJax(),
+            },
         ];
 
         return (
@@ -106,6 +105,22 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                 toggleMenu={toggleMenu}
                 focusMenuButton={this.props.focusSettingMenuButton}
             />
+        );
+    }
+
+    private mathJax() {
+
+        const {settings} = this.props;
+        return (
+            <div className={styles.mathml_section}>
+                <input
+                    id="mathJaxCheckBox"
+                    type="checkbox"
+                    checked={settings.enableMathJax}
+                    onChange={() => this.toggleMathJax()}
+                />
+                <label htmlFor={"mathJaxCheckBox-"}>MathJax</label>
+            </div>
         );
     }
 
@@ -432,6 +447,19 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                 </span>
             </div>
         </>;
+    }
+
+    private toggleMathJax() {
+        const values = this.props.settings;
+        values.enableMathJax = !values.enableMathJax;
+        if (values.enableMathJax) {
+            values.paged = false;
+        }
+        this.props.setSettings(values);
+        setTimeout(() => {
+            // window.location.reload();
+            reloadContent();
+        }, 300);
     }
 
     private handleChooseTheme(theme: themeType) {

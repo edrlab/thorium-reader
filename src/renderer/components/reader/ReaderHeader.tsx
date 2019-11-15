@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { ReaderMode } from "readium-desktop/common/models/reader";
+import { ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import * as BackIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_back-24px-grey.svg";
 import * as SettingsIcon from "readium-desktop/renderer/assets/icons/font-size.svg";
 import * as TOCIcon from "readium-desktop/renderer/assets/icons/open_book.svg";
@@ -48,16 +48,17 @@ interface IBaseProps extends TranslatorProps {
         r2Publication: R2Publication,
         handleLinkClick: (event: any, url: string) => void;
         handleBookmarkClick: (locator: any) => void;
-        toggleMenu: any;
+        toggleMenu: () => void;
     };
     readerOptionsProps: {
         open: boolean,
-        indexes: any,
-        settings: any,
-        handleSettingChange: any,
-        handleIndexChange: any,
-        setSettings: any,
-        toggleMenu: any,
+        // tslint:disable-next-line: max-line-length
+        indexes: {fontSize: number, pageMargins: number, wordSpacing: number, letterSpacing: number, lineHeight: number};
+        settings: ReaderConfig,
+        handleSettingChange: (event: any, name: string, value?: any) => void;
+        handleIndexChange: (event: any, name: string, value?: any) => void;
+        setSettings: (settings: ReaderConfig) => void;
+        toggleMenu: () => void;
     };
 }
 
