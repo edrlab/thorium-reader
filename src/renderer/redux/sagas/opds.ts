@@ -35,7 +35,11 @@ function* browseWatcher(): SagaIterator {
             const parsedResult = parseOpdsBrowserRoute(path);
             parsedResult.title = decodeURI(parsedResult.title);
             debug("request opds browse", parsedResult);
-            yield put(opdsActions.browseRequest.build(parsedResult.level, parsedResult.title, parsedResult.url));
+            yield put(opdsActions.browseRequest.build(
+                parsedResult.rootFeedIdentifier,
+                parsedResult.level,
+                parsedResult.title,
+                parsedResult.url));
             yield put(apiActions.clean.build(BROWSE_OPDS_API_REQUEST_ID));
         }
     }

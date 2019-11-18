@@ -62,7 +62,7 @@ export class BrowserResult extends React.Component<IProps> {
                 } else if (browserResult.data.publications) {
                     content = (
                             <EntryPublicationList
-                                publications={browserResult.data.publications}
+                                opdsPublicationView={browserResult.data.publications}
                                 links={browserResult.data.links}
                                 pageInfo={browserResult.data.metadata}
                             />

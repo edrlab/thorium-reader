@@ -5,8 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { OPDSMetadata } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-metadata";
-
 import { Identifiable } from "../models/identifiable";
 import { IHttpGetResult } from "../utils/http";
 import { CoverView } from "./publication";

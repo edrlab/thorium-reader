@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
@@ -27,7 +27,7 @@ import OpdsMenu from "./menu/OpdsMenu";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publicationViewMaybeOpds: PublicationView | OpdsPublicationView;
+    publicationViewMaybeOpds: PublicationView | IOpdsPublicationView;
     isOpds?: boolean;
 }
 // IProps may typically extend:
@@ -90,7 +90,7 @@ class PublicationCard extends React.Component<IProps, IState> {
                         content={(
                             <div className={styles.menu}>
                                 {isOpds ?
-                                <OpdsMenu opdsPublicationView={publicationViewMaybeOpds as OpdsPublicationView} /> :
+                                <OpdsMenu opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView} /> :
                                 <CatalogMenu publicationView={publicationViewMaybeOpds as PublicationView} />}
                             </div>
                         )}
@@ -113,7 +113,7 @@ class PublicationCard extends React.Component<IProps, IState> {
         const { publicationViewMaybeOpds } = this.props;
 
         if (this.props.isOpds) {
-            this.props.openInfosDialog(publicationViewMaybeOpds as OpdsPublicationView);
+            this.props.openInfosDialog(publicationViewMaybeOpds as IOpdsPublicationView);
         } else {
             this.props.openReader(publicationViewMaybeOpds as PublicationView);
         }
@@ -146,7 +146,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(readerActions.openRequest.build(publicationView.identifier));
         },
         // isOpds
-        openInfosDialog: (opdsPublicationView: OpdsPublicationView) => {
+        openInfosDialog: (opdsPublicationView: IOpdsPublicationView) => {
             dispatch(dialogActions.openRequest.build("publication-info",
                 {
                     opdsPublicationView,

@@ -9,7 +9,7 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
@@ -17,7 +17,7 @@ import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publicationViewMaybeOpds: PublicationView | OpdsPublicationView;
+    publicationViewMaybeOpds: PublicationView | IOpdsPublicationView;
     coverTypeUrl?: keyof CoverView | undefined;
     onClick?: () => void;
     onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;

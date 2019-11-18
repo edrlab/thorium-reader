@@ -10,7 +10,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
@@ -23,7 +23,7 @@ import AccessibleMenu from "../utils/menu/AccessibleMenu";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publicationViewMaybeOpds: PublicationView | OpdsPublicationView;
+    publicationViewMaybeOpds: PublicationView | IOpdsPublicationView;
     menuContent: JSX.Element;
     isOpds?: boolean;
 }
@@ -143,7 +143,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
         displayPublicationInfo: () => {
             dispatch(dialogActions.openRequest.build("publication-info",
                 {
-                    opdsPublicationView: props.publicationViewMaybeOpds as OpdsPublicationView,
+                    opdsPublicationView: props.publicationViewMaybeOpds as IOpdsPublicationView,
                     publicationIdentifier: undefined,
                 },
             ));
