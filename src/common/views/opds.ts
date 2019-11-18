@@ -60,6 +60,7 @@ export interface IOpdsResultView {
 export interface IOpdsLinkView {
     url: string;
     title?: string | undefined;
+    type?: string | undefined;
 }
 
 export interface IOpdsNavigationLink {
