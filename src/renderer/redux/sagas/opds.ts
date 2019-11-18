@@ -16,7 +16,6 @@ import { parseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { SagaIterator } from "redux-saga";
 import { all, call, fork, put, take } from "redux-saga/effects";
-import { IOpdsLinkView } from 'readium-desktop/common/views/opds';
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";

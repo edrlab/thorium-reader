@@ -42,7 +42,7 @@ import { Server } from "@r2-streamer-js/http/server";
 
 import { IReaderApi, ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
-import { OpdsService } from './services/opds';
+import { OpdsService } from "./services/opds";
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
