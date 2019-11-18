@@ -42,7 +42,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             return <></>;
         }
 
-        return opdsPublicationView.openAccessUrl || opdsPublicationView.sampleOrPreviewUrl ?
+        return <>
+            { opdsPublicationView.openAccessUrl || opdsPublicationView.sampleOrPreviewUrl ?
             <button
                 onClick={() => verifyImport(opdsPublicationView)}
                 className={styles.lire}
@@ -52,7 +53,38 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                     __("catalog.addBookToLib") :
                     __("opds.menu.addExtract")}
             </button>
-            : <></>;
+            : <></> }
+            { opdsPublicationView.buyUrl || opdsPublicationView.borrowUrl || opdsPublicationView.subscribeUrl ?
+            <ul className={styles.liens}>
+                { opdsPublicationView.buyUrl &&
+                    <li>
+                        <a role="menuitem"
+                            href={opdsPublicationView.buyUrl}
+                        >
+                            {__("opds.menu.goBuyBook")}
+                        </a>
+                    </li>
+                }
+                { opdsPublicationView.borrowUrl &&
+                    <li>
+                        <a role="menuitem"
+                            href={opdsPublicationView.borrowUrl}
+                        >
+                            {__("opds.menu.goLoanBook")}
+                        </a>
+                    </li>
+                }
+                { opdsPublicationView.subscribeUrl &&
+                    <li>
+                        <a role="menuitem"
+                            href={opdsPublicationView.subscribeUrl}
+                        >
+                            {__("opds.menu.goSubBook")}
+                        </a>
+                    </li>
+                }
+            </ul> : <></>}
+            </>;
     }
 }
 

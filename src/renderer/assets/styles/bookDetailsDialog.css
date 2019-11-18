@@ -74,8 +74,8 @@
         & li {
             font-size: 1.08rem;
             font-weight: 600;
-            margin-top: 3px;
-            margin-bottom: 3px;
+            margin-top: 1rem 0;
+            text-align: center;
 
             & svg {
                 display: inline-block;

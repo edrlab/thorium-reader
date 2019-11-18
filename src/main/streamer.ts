@@ -150,18 +150,6 @@ const transformer = (_publication: R2Publication, _link: Link, str: string): str
     const store = diMainGet("store");
     const settings = store.getState().reader.config;
 
-    debug("########################");
-    debug("########################");
-    debug("########################");
-    debug("########################");
-    debug("########################");
-    debug("########################");
-    debug("########################");
-    debug("########################");
-    debug("########################");
-    debug(settings);
-    debug(`MATHJAX ENABLE: ${settings.enableMathJax}`);
-
     if (settings.enableMathJax) {
         const url = `${streamer.serverUrl()}/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`;
         const script = `
