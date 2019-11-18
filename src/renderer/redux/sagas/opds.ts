@@ -15,9 +15,11 @@ import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { SagaIterator } from "redux-saga";
-import { all, call, put, take } from "redux-saga/effects";
+import { all, call, fork, put, take } from "redux-saga/effects";
+import { IOpdsLinkView } from 'readium-desktop/common/views/opds';
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
+export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:redux:saga:opds");
@@ -59,6 +61,7 @@ function* updateHeaderLinkWatcher(): SagaIterator {
 
         if (requestId === BROWSE_OPDS_API_REQUEST_ID) {
             debug("opds browse data received");
+
             const browserResult = action.payload as ReturnPromiseType<TApiMethod["opds/browse"]>;
 
             if (browserResult.isSuccess && browserResult.data && browserResult.data.links) {
@@ -71,25 +74,36 @@ function* updateHeaderLinkWatcher(): SagaIterator {
                     self: links.self[0]?.url,
                 };
                 debug("opds browse data received with feed links", putLinks);
-
                 yield put(opdsActions.headerLinksUpdate.build(putLinks));
 
-                // non-blocking searchUrl request
-                // yield fork(setSearchLinkInHeader, links.search);
+                if (links.search && links.search.length) {
+                    yield put(
+                        apiActions.request.build(
+                            SEARCH_OPDS_API_REQUEST_ID,
+                            "opds", "getUrlWithSearchLinks",
+                            [links.search]));
+                    // non-blocking getUrlWithSearchLinks search request
+                    yield fork(setSearchLinkInHeader);
+                }
             }
         }
     }
 }
 
-/*
-// move to back
-function* setSearchLinkInHeader(link: IOpdsLinkView[]): SagaIterator {
-    const linkUrl = yield* callTyped(getSearchUrlFromOpdsLinks, link);
-    yield put(opdsActions.headerLinksUpdate.build({
-        search: linkUrl,
-    }));
+function* setSearchLinkInHeader(): SagaIterator {
+
+    const action = yield* takeTyped(apiActions.result.build);
+    const { requestId } = action.meta.api;
+
+    if (requestId === SEARCH_OPDS_API_REQUEST_ID) {
+        debug("opds searchUrl data received");
+
+        const searchUrl = action.payload as ReturnPromiseType<TApiMethod["opds/getUrlWithSearchLinks"]>;
+        yield put(opdsActions.headerLinksUpdate.build({
+            search: searchUrl,
+        }));
+    }
 }
-*/
 
 export function* watchers() {
     yield all([
