@@ -6,15 +6,15 @@
 // ==LICENSE-END==
 
 import { Action } from "readium-desktop/common/models/redux";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 
 export const ID = "IMPORT_VERIFICATION_REQUEST";
 
 export interface Payload {
-    opdsPublicationView: OpdsPublicationView;
+    opdsPublicationView: IOpdsPublicationView;
 }
 
-export function build(opdsPublicationView: OpdsPublicationView):
+export function build(opdsPublicationView: IOpdsPublicationView):
     Action<typeof ID, Payload> {
 
     return {
