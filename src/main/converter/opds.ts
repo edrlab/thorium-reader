@@ -71,6 +71,7 @@ const GetLinksView = <T extends Link>(baseUrl: string, links: T[], filter: IGetL
     linksFiltered.forEach((ln) => formatedLinks.push({
         url: ln.Href,
         title: ln.Title,
+        type: ln.TypeLink,
     }));
 
     return formatedLinks;
@@ -188,7 +189,7 @@ export class OpdsFeedViewConverter {
         };
     }
 
-    public async convertOpdsFeedToView(r2OpdsFeed: OPDSFeed, baseUrl: string): Promise<IOpdsResultView> {
+    public convertOpdsFeedToView(r2OpdsFeed: OPDSFeed, baseUrl: string): IOpdsResultView {
 
         const title = convertMultiLangStringToString(r2OpdsFeed.Metadata && r2OpdsFeed.Metadata.Title);
         const publications = r2OpdsFeed.Publications?.map((item) => {

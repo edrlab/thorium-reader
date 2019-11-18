@@ -42,6 +42,7 @@ import { Server } from "@r2-streamer-js/http/server";
 
 import { IReaderApi, ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
+import { OpdsService } from './services/opds';
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
@@ -206,6 +207,7 @@ container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantVa
 // Create lcp manager
 container.bind<LcpManager>(diSymbolTable["lcp-manager"]).to(LcpManager).inSingletonScope();
 container.bind<CatalogService>(diSymbolTable["catalog-service"]).to(CatalogService).inSingletonScope();
+container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSingletonScope();
 
 // API
 container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingletonScope();
