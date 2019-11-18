@@ -15,6 +15,7 @@ import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsService } from "readium-desktop/main/services/opds";
+import { ReturnPromiseType } from "readium-desktop/typings/promise";
 
 // Logger
 // const debug = debug_("readium-desktop:src/main/api/opds");
@@ -26,7 +27,7 @@ export interface IOpdsApi {
     addFeed: (data: OpdsFeed) => Promise<IOpdsFeedView>;
     updateFeed: (data: OpdsFeed) => Promise<IOpdsFeedView>;
     browse: (url: string) => Promise<THttpGetOpdsResultView>;
-    getUrlwithSearchLink: (searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch) => Promise<string | undefined>;
+    getUrlWithSearchLinks: (searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch) => Promise<string | undefined>;
 }
 
 export type TOpdsApiGetFeed = IOpdsApi["getFeed"];
@@ -35,6 +36,7 @@ export type TOpdsApiFindAllFeed = IOpdsApi["findAllFeeds"];
 export type TOpdsApiAddFeed = IOpdsApi["addFeed"];
 export type TOpdsApiUpdateFeed = IOpdsApi["updateFeed"];
 export type TOpdsApiBrowse = IOpdsApi["browse"];
+export type TOpdsApiGetUrlWithSearchLinks = IOpdsApi["getUrlWithSearchLinks"];
 
 export type TOpdsApiGetFeed_result = IOpdsFeedView;
 export type TOpdsApiDeleteFeed_result = void;
@@ -42,6 +44,7 @@ export type TOpdsApiFindAllFeed_result = IOpdsFeedView[];
 export type TOpdsApiAddFeed_result = IOpdsFeedView;
 export type TOpdsApiUpdateFeed_result = IOpdsFeedView;
 export type TOpdsApiBrowse_result = THttpGetOpdsResultView;
+export type TOpdsApiGetUrlWithSearchLink_result = ReturnPromiseType<IOpdsApi["getUrlWithSearchLinks"]>;
 
 export interface IOpdsModuleApi {
     "opds/getFeed": TOpdsApiGetFeed;
@@ -50,6 +53,7 @@ export interface IOpdsModuleApi {
     "opds/addFeed": TOpdsApiAddFeed;
     "opds/updateFeed": TOpdsApiUpdateFeed;
     "opds/browse": TOpdsApiBrowse;
+    "opds/getUrlWithSearchLinks": TOpdsApiGetUrlWithSearchLinks;
 }
 
 type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url" | "type">>;
@@ -105,7 +109,7 @@ export class OpdsApi implements IOpdsApi {
             (r2OpdsFeed) => this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url));
     }
 
-    public async getUrlwithSearchLink(searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch)
+    public async getUrlWithSearchLinks(searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch)
     : Promise<string | undefined> {
         const link = Array.isArray(searchLink) ? searchLink : [searchLink];
         return this.opdsService.parseOpdsSearchUrl(link);
