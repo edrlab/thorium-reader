@@ -120,6 +120,7 @@ class Header extends React.Component<IProps, undefined> {
             return (
                 <Link
                     to={route}
+                    style={{ marginLeft: "16px" }}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
                 </Link>
@@ -146,6 +147,7 @@ class Header extends React.Component<IProps, undefined> {
             return (
                 <Link
                     to={route}
+                    style={{ marginLeft: "16px" }}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
                 </Link>

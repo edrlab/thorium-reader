@@ -48,31 +48,7 @@ export class OpdsService {
             if (searchData.isFailure) {
                 searchData.data = undefined;
             }
-            try {
-                const xmlDom = (new DOMParser()).parseFromString(searchData.body, "text/xml");
-                const urlsElem = xmlDom.documentElement.querySelectorAll("Url");
-
-                for (const urlElem of urlsElem.values()) {
-                    const type = urlElem.getAttribute("type");
-
-                    if (type && type.includes("application/atom+xml")) {
-                        const searchUrl = urlElem.getAttribute("template");
-                        const url = new URL(searchUrl);
-
-                        if (url.search.includes(SEARCH_TERM) || url.pathname.includes(SEARCH_TERM)) {
-
-                            // remove search filter not handle yet
-                            let searchLink = searchUrl.replace("{atom:author}", "");
-                            searchLink = searchLink.replace("{atom:contributor}", "");
-                            searchLink = searchLink.replace("{atom:title}", "");
-
-                            searchData.data = searchLink;
-                        }
-                    }
-                }
-            } catch (err) {
-                searchData.data = undefined;
-            }
+            searchData.data = searchData.body;
             return searchData;
         });
         return searchResult.data;
@@ -125,6 +101,8 @@ export class OpdsService {
     }
 
     public async parseOpdsSearchUrl(link: IOpdsLinkView[]): Promise<string | undefined> {
+
+        debug("opds search links receive", link);
 
         // find search type before parsing url
         const atomLink = findLink(link, "application/atom+xml");

@@ -19,6 +19,7 @@ import { all, call, fork, put, take } from "redux-saga/effects";
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
+export const SEARCH_TERM = "{searchTerms}";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:redux:saga:opds");
@@ -97,13 +98,49 @@ function* setSearchLinkInHeader(): SagaIterator {
 
     const action = yield* takeTyped(apiActions.result.build);
     const { requestId } = action.meta.api;
+    let returnUrl: string;
 
     if (requestId === SEARCH_OPDS_API_REQUEST_ID) {
-        debug("opds searchUrl data received");
 
-        const searchUrl = action.payload as ReturnPromiseType<TApiMethod["opds/getUrlWithSearchLinks"]>;
+        const searchRaw = action.payload as ReturnPromiseType<TApiMethod["opds/getUrlWithSearchLinks"]>;
+
+        try {
+            const xmlDom = (new DOMParser()).parseFromString(searchRaw, "text/xml");
+            const urlsElem = xmlDom.documentElement.querySelectorAll("Url");
+
+            for (const urlElem of urlsElem.values()) {
+                const type = urlElem.getAttribute("type");
+
+                if (type && type.includes("application/atom+xml")) {
+                    const searchUrl = urlElem.getAttribute("template");
+                    const url = new URL(searchUrl);
+
+                    if (url.search.includes(SEARCH_TERM) || url.pathname.includes(SEARCH_TERM)) {
+
+                        // remove search filter not handle yet
+                        let searchLink = searchUrl.replace("{atom:author}", "");
+                        searchLink = searchLink.replace("{atom:contributor}", "");
+                        searchLink = searchLink.replace("{atom:title}", "");
+
+                        returnUrl = searchLink;
+
+                    }
+                }
+            }
+        } catch (err) {
+            debug("xml parsing fail", err);
+            try {
+                if (new URL(searchRaw)) {
+                    returnUrl = searchRaw;
+                }
+            } catch (errUrl) {
+                debug("url parsing fail", errUrl);
+            }
+        }
+
+        debug("opds searchUrl data received", returnUrl);
         yield put(opdsActions.headerLinksUpdate.build({
-            search: searchUrl,
+            search: returnUrl,
         }));
     }
 }
