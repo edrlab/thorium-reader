@@ -164,7 +164,13 @@
     },
     "moduleNameMapper": {
       "^readium-desktop/(.*)$": "<rootDir>/src/$1",
-      "^test/(.*)$": "<rootDir>/test/$1"
+      "^test/(.*)$": "<rootDir>/test/$1",
+      "^@r2-shared-js/(.*)$": "<rootDir>/node_modules/r2-shared-js/dist/es6-es2015/src/$1",
+      "^@r2-utils-js/(.*)$": "<rootDir>/node_modules/r2-utils-js/dist/es6-es2015/src/$1",
+      "^@r2-lcp-js/(.*)$": "<rootDir>/node_modules/r2-lcp-js/dist/es6-es2015/src/$1",
+      "^@r2-navigator-js/(.*)$": "<rootDir>/node_modules/r2-navigator-js/dist/es6-es2015/src/$1",
+      "^@r2-streamer-js/(.*)$": "<rootDir>/node_modules/r2-streamer-js/dist/es6-es2015/src/$1",
+      "^@r2-opds-js/(.*)$": "<rootDir>/node_modules/r2-opds-js/dist/es6-es2015/src/$1"
     },
     "moduleFileExtensions": [
       "ts",
