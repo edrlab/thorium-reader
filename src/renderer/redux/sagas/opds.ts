@@ -8,7 +8,7 @@
 import { LOCATION_CHANGE, LocationChangeAction } from "connected-react-router";
 import * as debug_ from "debug";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { takeTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
 // import { getSearchUrlFromOpdsLinks } from "readium-desktop/renderer/opds/search/search";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
@@ -16,6 +16,7 @@ import { parseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { SagaIterator } from "redux-saga";
 import { all, call, fork, put, take } from "redux-saga/effects";
+import { RootState } from '../states';
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
@@ -104,43 +105,46 @@ function* setSearchLinkInHeader(): SagaIterator {
 
         const searchRaw = action.payload as ReturnPromiseType<TApiMethod["opds/getUrlWithSearchLinks"]>;
 
+        debug("opds search raw data received", searchRaw);
+
         try {
-            const xmlDom = (new DOMParser()).parseFromString(searchRaw, "text/xml");
-            const urlsElem = xmlDom.documentElement.querySelectorAll("Url");
-
-            for (const urlElem of urlsElem.values()) {
-                const type = urlElem.getAttribute("type");
-
-                if (type && type.includes("application/atom+xml")) {
-                    const searchUrl = urlElem.getAttribute("template");
-                    const url = new URL(searchUrl);
-
-                    if (url.search.includes(SEARCH_TERM) || url.pathname.includes(SEARCH_TERM)) {
-
-                        // remove search filter not handle yet
-                        let searchLink = searchUrl.replace("{atom:author}", "");
-                        searchLink = searchLink.replace("{atom:contributor}", "");
-                        searchLink = searchLink.replace("{atom:title}", "");
-
-                        returnUrl = searchLink;
-
-                    }
-                }
+            if (new URL(searchRaw)) {
+                returnUrl = searchRaw;
             }
         } catch (err) {
-            debug("xml parsing fail", err);
             try {
-                if (new URL(searchRaw)) {
-                    returnUrl = searchRaw;
+                const xmlDom = (new DOMParser()).parseFromString(searchRaw, "text/xml");
+                const urlsElem = xmlDom.documentElement.querySelectorAll("Url");
+
+                for (const urlElem of urlsElem.values()) {
+                    const type = urlElem.getAttribute("type");
+
+                    if (type && type.includes("application/atom+xml")) {
+                        const searchUrl = urlElem.getAttribute("template");
+                        const url = new URL(searchUrl);
+
+                        if (url.search.includes(SEARCH_TERM) || url.pathname.includes(SEARCH_TERM)) {
+
+                            // remove search filter not handle yet
+                            let searchLink = searchUrl.replace("{atom:author}", "");
+                            searchLink = searchLink.replace("{atom:contributor}", "");
+                            searchLink = searchLink.replace("{atom:title}", "");
+
+                            returnUrl = searchLink;
+
+                        }
+                    }
                 }
-            } catch (errUrl) {
-                debug("url parsing fail", errUrl);
+            } catch (errXml) {
+                debug("error to parse searchRaw (xml or url)");
             }
         }
 
         debug("opds searchUrl data received", returnUrl);
-        yield put(opdsActions.headerLinksUpdate.build({
-            search: returnUrl,
+        yield put(opdsActions.search.build({
+            url: returnUrl,
+            level: returnUrl ? yield* selectTyped(
+                (state: RootState) => state.opds.browser.breadcrumb.length) : undefined,
         }));
     }
 }

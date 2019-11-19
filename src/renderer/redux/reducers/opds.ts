@@ -10,9 +10,9 @@ import { IBreadCrumbItem } from "readium-desktop/renderer/components/layout/Brea
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import {
-    browseRequest, headerLinksUpdate,
+    browseRequest, headerLinksUpdate, search,
 } from "readium-desktop/renderer/redux/actions/opds";
-import { IOpdsHeaderState } from "readium-desktop/renderer/redux/states/opds";
+import { IOpdsHeaderState, IOpdsSearchState } from "readium-desktop/renderer/redux/states/opds";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 // Logger
@@ -59,16 +59,23 @@ export function opdsHeaderLinkReducer(
             const stateNew = { ...state };
             for (const link of Object.entries(action.payload)) {
                 const key = link[0] as keyof IOpdsHeaderState;
-                if (key === "search") {
-                    if (link[1]) {
-                        stateNew.search = link[1];
-                    }
-                } else {
-                    stateNew[key] = link[1];
-                }
+                stateNew[key] = link[1];
             }
 
             return stateNew;
+
+        default:
+            return state;
+    }
+}
+
+export function opdsSearchLinkReducer(
+    state: IOpdsSearchState = {},
+    action: search.TAction,
+) {
+    switch (action.type) {
+        case search.ID:
+            return { ...action.payload };
 
         default:
             return state;

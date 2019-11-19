@@ -32,11 +32,14 @@ interface IGetLinksViewFilter {
     type?: string | string[];
 }
 
-const GetLinksView = <T extends Link>(baseUrl: string, links: T[], filter: IGetLinksViewFilter)
+const GetLinksView = <T extends Link>(
+    baseUrl: string,
+    links: T[] | undefined,
+    filter: IGetLinksViewFilter)
     : IOpdsLinkView[] => {
     const formatedLinks: IOpdsLinkView[] = [];
 
-    const linksFiltered = links.filter((ln) => {
+    const linksFiltered = links?.filter((ln) => {
         let relFlag: boolean = false;
         let typeFlag: boolean = false;
         if (ln.Href) {
@@ -66,9 +69,9 @@ const GetLinksView = <T extends Link>(baseUrl: string, links: T[], filter: IGetL
         return relFlag || typeFlag;
     });
 
-    linksFiltered.forEach((ln) => ln.Href = urlPathResolve(baseUrl, ln.Href));
+    linksFiltered?.forEach((ln) => ln.Href = urlPathResolve(baseUrl, ln.Href));
     // safe copy on each filtered links
-    linksFiltered.forEach((ln) => formatedLinks.push({
+    linksFiltered?.forEach((ln) => formatedLinks.push({
         url: ln.Href,
         title: ln.Title,
         type: ln.TypeLink,
@@ -114,13 +117,19 @@ export class OpdsFeedViewConverter {
             moment(metadata.PublicationDate).toISOString();
 
         // resolve url in publication before extract them
+        /*
         const ResolveUrlInPublication = <T extends Link>(lns: T[]): void =>
             lns && lns.forEach((ln, id, ar) => ln && ln.Href && (ar[id].Href = urlPathResolve(baseUrl, ln.Href)));
         ResolveUrlInPublication(r2OpdsPublication.Links);
         ResolveUrlInPublication(r2OpdsPublication.Images);
+        */
 
         // CoverView object
+        // FIXME doing a fallback to links
+        // tslint:disable-next-line: max-line-length
+        // http://readium2.herokuapp.com/opds-v1-v2-convert/http%3A%2F%2Fsrv.manybooks.net%2Fopds%2Ftitle_detail.php%3Ftid%3Ddysone1690416904
         const thumbnailLinkView = GetLinksView(baseUrl, r2OpdsPublication.Images, {
+            // FIXME check "image/*"
             type: ["image/png", "image/jpeg"],
             rel: "http://opds-spec.org/image/thumbnail",
         })[0] || GetLinksView(baseUrl, r2OpdsPublication.Images, {
@@ -139,29 +148,31 @@ export class OpdsFeedViewConverter {
         }
 
         // Get odps entry
+        // FIXME handle only type=entry and not find all the string
         const entrylinksViews = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: "application/atom+xml;type=entry;profile=opds-catalog",
         })[0];
         const sampleLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
-                type: [
+                rel: [
                     "http://opds-spec.org/acquisition/sample",
                     "http://opds-spec.org/acquisition/preview",
                 ],
         })[0];
         const acquisitionLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
-                type: [
+                rel: [
                     "http://opds-spec.org/acquisition",
                     "http://opds-spec.org/acquisition/open-access",
                 ],
         })[0];
+        // FIXME send to front all buy with type
         const buyLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
-            type: "http://opds-spec.org/acquisition/buy",
+            rel: "http://opds-spec.org/acquisition/buy",
         })[0];
         const borrowLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
-            type: "http://opds-spec.org/acquisition/borrow",
+            rel: "http://opds-spec.org/acquisition/borrow",
         })[0];
         const subscribeLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
-            type: "http://opds-spec.org/acquisition/subscribe",
+            rel: "http://opds-spec.org/acquisition/subscribe",
         })[0];
 
         const r2OpdsPublicationJson = TAJSON.serialize(r2OpdsPublication);

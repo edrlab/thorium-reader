@@ -54,7 +54,7 @@ class SearchForm extends React.Component<IProps, undefined> {
                 role="search"
             >
                 <input
-                    disabled={!this.props.search}
+                    disabled={!this.props.search?.url}
                     ref={this.inputRef}
                     type="search"
                     id="menu_search"
@@ -63,7 +63,7 @@ class SearchForm extends React.Component<IProps, undefined> {
                 />
                 <button
                     id={styles.search_img}
-                    disabled={!this.props.search}
+                    disabled={!this.props.search?.url}
                 >
                     <SVG svg={SearchIcon} title={__("header.searchTitle")} />
                 </button>
@@ -74,21 +74,29 @@ class SearchForm extends React.Component<IProps, undefined> {
     private submitSearch = (e: TFormEvent) => {
         e.preventDefault();
         const searchWords = this.inputRef.current.value;
-        const url = this.props.search.replace(SEARCH_TERM, searchWords);
-        debug("search", searchWords, url);
-        this.props.history.push({pathname: this.route(searchWords, url), search: this.props.location.search});
+        const url = this.props.search?.url.replace(SEARCH_TERM, encodeURI(searchWords));
+        const level = this.props.search?.level || parseInt(this.props.match.params.level, 10);
+
+        if (searchWords && url) {
+            debug("SubmitSearch", searchWords, url);
+
+            this.props.history.push({
+                pathname: this.route(searchWords, url, level),
+                search: this.props.location.search,
+            });
+        }
     }
 
-    private route = (title: string, url: string) => buildOpdsBrowserRoute(
+    private route = (title: string, url: string, level: number) => buildOpdsBrowserRoute(
         this.props.match.params.opdsId,
         title,
         url,
-        parseInt(this.props.match.params.level, 10),
+        level,
     )
 }
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
-    search: state.opds.browser.header.search,
+    search: state.opds.browser.search,
 });
 
 export default connect(mapStateToProps)(withTranslator(withRouter(SearchForm)));

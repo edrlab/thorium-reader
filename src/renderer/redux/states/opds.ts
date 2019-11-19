@@ -7,8 +7,12 @@
 
 import { IBreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
 
+export interface IOpdsSearchState {
+    url?: string;
+    level?: number;
+}
+
 export interface IOpdsHeaderState {
-    search?: string;
     start?: string;
     bookshelf?: string;
     self?: string;

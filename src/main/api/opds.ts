@@ -108,9 +108,24 @@ export class OpdsApi implements IOpdsApi {
             // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
             (r2OpdsFeed) => this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url));
     }
+/*
+// FIXME : add new api method to browse and return opdsView only without affect opds navigateur in front-end
+    public async browse(url: string): Promise<THttpGetOpdsResultView> {
+        try {
+            if (new URL(url).protocol === "opds:") {
+                url = url.replace("opds://", "http://");
+            }
+        } catch (e) {
+            throw new Error(`api-opds-browse ${e.message}`);
+        }
+        return await this.opdsService.opdsRequest(url,
+            // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
+            (r2OpdsFeed) => this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url));
+    }
+    */
 
     public async getUrlWithSearchLinks(searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch)
-    : Promise<string | undefined> {
+        : Promise<string | undefined> {
         const link = Array.isArray(searchLink) ? searchLink : [searchLink];
         return this.opdsService.parseOpdsSearchUrl(link);
     }

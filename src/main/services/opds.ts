@@ -34,13 +34,20 @@ export class OpdsService {
      * @returns if content-Type is missing accept
      */
     private static contentTypeisAccepted(contentType?: string) {
-        const retBool = contentType &&
-            !contentType.startsWith("application/json") &&
-            !contentType.startsWith("application/opds+json") &&
-            !contentType.startsWith("application/atom+xml") &&
-            !contentType.startsWith("application/xml") &&
-            !contentType.startsWith("text/xml");
-        return !retBool;
+        return this.contentTypeisOpds(contentType) || this.contentTypeisXml(contentType);
+    }
+
+    private static contentTypeisXml(contentType?: string) {
+        return contentType
+            && (contentType.startsWith("application/atom+xml")
+            || contentType.startsWith("application/xml")
+            || contentType.startsWith("text/xml"));
+    }
+
+    private static contentTypeisOpds(contentType?: string) {
+        return contentType
+            && (contentType.startsWith("application/json")
+            || contentType.startsWith("application/opds+json"));
     }
 
     private static async getOpenSearchUrl(opensearchLink: IOpdsLinkView): Promise<string | undefined> {
@@ -74,7 +81,8 @@ export class OpdsService {
                 throw new Error(`Not a valid OPDS HTTP Content-Type for ${opdsFeedData.url} (${opdsFeedData.contentType})`);
             }
 
-            if (opdsFeedData.body.startsWith("<?xml")) {
+            const contentType = opdsFeedData.contentType;
+            if (OpdsService.contentTypeisXml(contentType)) {
                 const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
 
                 if (!xmlDom || !xmlDom.documentElement) {
