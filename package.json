@@ -13,7 +13,7 @@
   "main": "dist/main.js",
   "scripts": {
     "clean": "rimraf dist && rimraf release",
-    "test": "jest --verbose --runInBand",
+    "test": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache \"test\"",
     "__postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=7.1.1 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
     "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\" && rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\"",
@@ -153,32 +153,6 @@
       "displayName": "Thorium Reader",
       "publisher": "CN=C91F86A8-45E6-48E0-8015-8A5BF2B38BD4"
     }
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "globals": {
-      "ts-jest": {
-        "babelConfig": false,
-        "tsConfig": "<rootDir>/tsconfig.json"
-      }
-    },
-    "moduleNameMapper": {
-      "^readium-desktop/(.*)$": "<rootDir>/src/$1",
-      "^test/(.*)$": "<rootDir>/test/$1",
-      "^@r2-shared-js/(.*)$": "<rootDir>/node_modules/r2-shared-js/dist/es6-es2015/src/$1",
-      "^@r2-utils-js/(.*)$": "<rootDir>/node_modules/r2-utils-js/dist/es6-es2015/src/$1",
-      "^@r2-lcp-js/(.*)$": "<rootDir>/node_modules/r2-lcp-js/dist/es6-es2015/src/$1",
-      "^@r2-navigator-js/(.*)$": "<rootDir>/node_modules/r2-navigator-js/dist/es6-es2015/src/$1",
-      "^@r2-streamer-js/(.*)$": "<rootDir>/node_modules/r2-streamer-js/dist/es6-es2015/src/$1",
-      "^@r2-opds-js/(.*)$": "<rootDir>/node_modules/r2-opds-js/dist/es6-es2015/src/$1"
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ]
   },
   "dependencies": {
     "classnames": "^2.2.6",
