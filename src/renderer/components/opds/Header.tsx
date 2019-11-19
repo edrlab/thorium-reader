@@ -110,11 +110,12 @@ class Header extends React.Component<IProps, undefined> {
 
             const { __ } = this.props;
             const param = this.props.match.params;
+            const home = this.props.breadcrumb[1];
             const route = buildOpdsBrowserRoute(
                 param.opdsId,
-                __("header.listTitle"),
+                home.name || "",
                 start,
-                0,
+                1,
             );
 
             return (
