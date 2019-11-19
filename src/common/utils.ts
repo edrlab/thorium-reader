@@ -45,6 +45,7 @@ import { resolve } from "url";
 // https://github.com/readium/webpub-manifest/blob/ff5c1e9e76ccc184d4d670179cfb70ced691fcec/schema/metadata.schema.json#L15-L32
 export function convertMultiLangStringToString(items: string | IStringMap | undefined): string {
     if (typeof items === "object") {
+        // FIXME: main DI inside common utils!!
         const translator = diMainGet("translator");
         const langs = Object.keys(items);
         const lang = langs.filter((l) =>
