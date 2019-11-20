@@ -282,6 +282,12 @@ export class LcpManager {
 
         let redoHash = false;
         if (r2Publication.LCP && r2Publication.LCP.LSD) {
+            // const nowMs = new Date().getTime();
+            // const numberOfDays = 2;
+            // const laterMs = nowMs + (numberOfDays * 24 * 60 * 60 * 1000);
+            // const later = new Date(laterMs);
+            // const endDateStr = later.toISOString();
+            // debug(`======== RENEW DATE 1: ${endDateStr}`);
             const endDateStr: string | undefined = undefined; // TODO: user input?
             const endDate = endDateStr ? moment(endDateStr).toDate() : undefined;
             let renewResponseLsd: LSD;
