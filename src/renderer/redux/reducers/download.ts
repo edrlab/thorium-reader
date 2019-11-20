@@ -5,32 +5,47 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
-
 import { downloadActions } from "readium-desktop/common/redux/actions";
-import { DownloadPayload } from "readium-desktop/common/redux/actions/download";
 import { DownloadState } from "readium-desktop/renderer/redux/states/download";
 
-import { oc } from "ts-optchain";
-
+// TODO: this does not handle multiple same-URL downloads! (different progress?)
+// assumes URL download is unique
 const initialState: DownloadState = {
     downloads: [],
 };
 
 export function downloadReducer(
     state: DownloadState = initialState,
-    action: Action<DownloadPayload>,
+    action: downloadActions.request.TAction |
+        downloadActions.success.TAction |
+        downloadActions.error.TAction |
+        downloadActions.progress.TAction,
 ): DownloadState {
     const downloads = state.downloads;
-    const url = oc(action).payload.url(undefined);
     switch (action.type) {
-        case downloadActions.ActionType.DownloadRequest:
-            downloads.push({url});
+        case downloadActions.request.ID: {
+            const index1 = downloads.findIndex((dl) => dl.url === action.payload.url);
+            if (index1 >= 0) {
+                downloads.splice(index1, 1);
+            }
+            downloads.push({url: action.payload.url, title: action.payload.title, progress: 0});
             return Object.assign({}, state, { downloads });
-        case downloadActions.ActionType.DownloadSuccess:
-            const index = downloads.findIndex((value) => value.url === url);
-            downloads.splice(index, 1);
+        }
+        case downloadActions.progress.ID: {
+            const index2 = downloads.findIndex((dl) => dl.url === action.payload.url);
+            if (index2 >= 0) {
+                downloads[index2].progress = action.payload.progress;
+            }
             return Object.assign({}, state, { downloads });
+        }
+        case downloadActions.success.ID:
+        case downloadActions.error.ID: {
+            const index3 = downloads.findIndex((dl) => dl.url === action.payload.url);
+            if (index3 >= 0) {
+                downloads.splice(index3, 1);
+            }
+            return Object.assign({}, state, { downloads });
+        }
         default:
             return state;
     }

@@ -1,0 +1,28 @@
+{
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "typescript.tsserver.trace": "off",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/.vscode": false,
+    "**/.history": true,
+    "**/.github": true,
+    "**/.gitignore": true,
+    "**/.gitmodules": true,
+    "**/.idea": true,
+    "**/node_modules*": true,
+    "**/bower_components": true
+  },
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false,
+  "typescript.surveys.enabled": false,
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "tslint.jsEnable": false,
+  "typescript.extension.sortImports.quoteStyle": "double",
+  "importSorter.importStringConfiguration.quoteMark": "double",
+  "importSorter.importStringConfiguration.trailingComma": "multiLine",
+  "javascript.preferences.quoteStyle": "double",
+  "typescript.preferences.quoteStyle": "double",
+  "prettier.singleQuote": false,
+}

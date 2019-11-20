@@ -16,10 +16,22 @@ import {
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface Props extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-export class OpdsAddForm extends React.Component<Props> {
+export class OpdsAddForm extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
+        super(props);
+    }
 
     public render(): React.ReactElement<{}>  {
         const { __ } = this.props;
@@ -34,10 +46,10 @@ export class OpdsAddForm extends React.Component<Props> {
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         openOpdsFeedAddForm: () => {
-            dispatch(dialogActions.open("opds-feed-add-form", {}));
+            dispatch(dialogActions.openRequest.build("opds-feed-add-form", {}));
         },
     };
 };

@@ -28,7 +28,9 @@ export class LcpSecretRepository extends BaseRepository<LcpSecretDocument> {
     }
 
     public async findByPublicationIdentifier(publicationIdentifier: string): Promise<LcpSecretDocument[]> {
-        return this.findBy({ publicationIdentifier });
+        return this.find({
+            selector: { publicationIdentifier },
+        });
     }
 
     protected convertToDocument(dbDoc: any): LcpSecretDocument {

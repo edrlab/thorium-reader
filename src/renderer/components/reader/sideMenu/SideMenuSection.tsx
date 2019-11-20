@@ -13,7 +13,8 @@ import {
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-interface Props extends TranslatorProps {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
     open?: boolean;
     disabled?: boolean;
     content?: any;
@@ -22,14 +23,22 @@ interface Props extends TranslatorProps {
     id: number;
 }
 
-interface State {
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+interface IState {
     style: any;
 }
 
-export class SideMenuSection extends React.Component<Props, State> {
+export class SideMenuSection extends React.Component<IProps, IState> {
     private sectionRef: any = [];
 
-    public constructor(props: Props) {
+    constructor(props: IProps) {
         super(props);
         this.state = {
             style: undefined,

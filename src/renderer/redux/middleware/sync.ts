@@ -13,19 +13,18 @@ import { diRendererGet } from "readium-desktop/renderer/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 // Actions that can be synchronized
-const SYNCHRONIZABLE_ACTIONS: any = [
+const SYNCHRONIZABLE_ACTIONS: string[] = [
 
-    apiActions.ActionType.Request,
+    apiActions.request.ID,
 
-    readerActions.ActionType.OpenRequest,
-    readerActions.ActionType.CloseRequest,
-    readerActions.ActionType.ModeSetRequest,
-    readerActions.ActionType.ConfigSetRequest,
-    readerActions.ActionType.BookmarkSaveRequest,
-    readerActions.ActionType.FullscreenOffRequest,
-    readerActions.ActionType.FullscreenOnRequest,
+    readerActions.openRequest.ID,
+    readerActions.closeRequest.ID,
+    readerActions.detachModeRequest.ID,
+    readerActions.configSetRequest.ID,
+    readerActions.saveBookmarkRequest.ID,
+    readerActions.fullScreenRequest.ID,
 
-    i18nActions.ActionType.Set,
+    i18nActions.setLocale.ID,
 ];
 
 export const reduxSyncMiddleware: Middleware

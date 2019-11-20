@@ -1,0 +1,42 @@
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
+
+import * as closeError from "./closeError";
+import * as closeRequest from "./closeRequest";
+import * as closeRequestFromPublication from "./closeRequestFromPublication";
+import * as closeSuccess from "./closeSuccess";
+import * as configSetError from "./configSetError";
+import * as configSetRequest from "./configSetRequest";
+import * as configSetSuccess from "./configSetSuccess";
+import * as detachModeRequest from "./detachModeRequest";
+import * as detachModeSuccess from "./detachModeSuccess";
+import * as fullScreenRequest from "./fullScreenRequest";
+import * as openError from "./openError";
+import * as openRequest from "./openRequest";
+import * as openSuccess from "./openSuccess";
+import * as saveBookmarkError from "./saveBookmarkError";
+import * as saveBookmarkRequest from "./saveBookmarkRequest";
+import * as saveBookmarkSuccess from "./saveBookmarkSuccess";
+
+export {
+    openRequest,
+    openSuccess,
+    openError,
+    closeRequest,
+    closeSuccess,
+    closeError,
+    detachModeRequest,
+    detachModeSuccess,
+    configSetRequest,
+    configSetSuccess,
+    configSetError,
+    saveBookmarkRequest,
+    saveBookmarkSuccess,
+    saveBookmarkError,
+    closeRequestFromPublication,
+    fullScreenRequest,
+};

@@ -6,7 +6,6 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { Action } from "readium-desktop/common/models/redux";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import { OpdsNavigationLink, OpdsState } from "readium-desktop/renderer/redux/states/opds";
 
@@ -21,10 +20,10 @@ const initialState: OpdsState = {
 
 export function opdsReducer(
     state: OpdsState = initialState,
-    action: Action,
+    action: opdsActions.browseRequest.TAction,
 ) {
     switch (action.type) {
-        case opdsActions.ActionType.BrowseRequest:
+        case opdsActions.browseRequest.ID:
             const browser = {
                 navigation: [] as OpdsNavigationLink[],
             };

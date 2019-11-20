@@ -6,16 +6,30 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { apiAction } from "readium-desktop/renderer/apiAction";
+import { connect } from "react-redux";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { apiDispatch } from "readium-desktop/renderer/redux/api/api";
 import { TChangeEvent } from "readium-desktop/typings/react";
+import { Dispatch } from "redux";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
-export class PublicationAddButton extends React.Component<TranslatorProps> {
-    public constructor(props: TranslatorProps) {
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps {
+}
+
+export class PublicationAddButton extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.importFile = this.importFile.bind(this);
@@ -31,7 +45,7 @@ export class PublicationAddButton extends React.Component<TranslatorProps> {
                     aria-label={__("accessibility.importFile")}
                     onChange={ this.importFile }
                     multiple
-                    accept=".epub, .epub3"
+                    accept=".lcpl, .epub, .epub3"
                 />
                 <label htmlFor="epubInput">
                     <SVG svg={ PlusIcon } title={__("header.importTitle")}/>
@@ -51,10 +65,12 @@ export class PublicationAddButton extends React.Component<TranslatorProps> {
         event.target.value = "";
         event.target.files = null;
 
-        apiAction("publication/import", paths).catch((error) => {
-            console.error(`Error to fetch publication/import`, error);
-        });
+        this.props.import(paths);
     }
 }
 
-export default withTranslator(PublicationAddButton);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    import: apiDispatch(dispatch)()("publication/import"),
+});
+
+export default connect(undefined, mapDispatchToProps)(withTranslator(PublicationAddButton));

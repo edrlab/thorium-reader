@@ -20,11 +20,13 @@ import PageManager from "readium-desktop/renderer/components/PageManager";
 import { lazyInject } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
+
 import { diRendererSymbolTable } from "../diSymbolTable";
+import DownloadsPanel from "./DownloadsPanel";
 import ToastManager from "./toast/ToastManager";
 import SameFileImportManager from "./utils/SameFileImportManager";
 
-export default class App extends React.Component<any, undefined> {
+export default class App extends React.Component<{}, undefined> {
 
     @lazyInject(diRendererSymbolTable.store)
     private store: Store<RootState>;
@@ -32,7 +34,7 @@ export default class App extends React.Component<any, undefined> {
     @lazyInject(diRendererSymbolTable.history)
     private history: History;
 
-    constructor(props: any) {
+    constructor(props: {}) {
         super(props);
 
         this.onDrop = this.onDrop.bind(this);
@@ -41,12 +43,12 @@ export default class App extends React.Component<any, undefined> {
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
         this.store.dispatch(
-            dialogActions.open("file-import",
+            dialogActions.openRequest.build("file-import",
                 {
                     files: acceptedFiles.filter((file) => {
-                        const ext = path.extname(file.path);
-                        return (/\.epub[3]?$/.test(ext) /*||
-                            ext === ".lcpl"*/);
+                            const ext = path.extname(file.path);
+                            return (/\.epub[3]?$/.test(ext) ||
+                            ext === ".lcpl");
                     })
                         .map((file) => {
                             return {
@@ -90,11 +92,12 @@ export default class App extends React.Component<any, undefined> {
                                         right: 0,
                                     }}
                                 >
-                                    <input aria-hidden {...getInputProps({ onClick: (evt) => evt.preventDefault() })} />
-                                    <PageManager />
-                                    <DialogManager />
-                                    <SameFileImportManager />
-                                    <ToastManager />
+                                    <DownloadsPanel/>
+                                    <input aria-hidden {...getInputProps({onClick: (evt) => evt.preventDefault()})} />
+                                    <PageManager/>
+                                    <DialogManager/>
+                                    <SameFileImportManager/>
+                                    <ToastManager/>
                                 </div>;
                             }}
                         </Dropzone>

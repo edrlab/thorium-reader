@@ -15,10 +15,10 @@ const initialState: I18NState = {
 
 export function i18nReducer(
     state: I18NState = initialState,
-    action: i18nActions.ActionLocale,
+    action: i18nActions.setLocale.TAction,
     ): I18NState {
     switch (action.type) {
-        case i18nActions.ActionType.Set:
+        case i18nActions.setLocale.ID:
             return Object.assign({}, state, {
                 locale: action.payload.locale,
             } as I18NState);

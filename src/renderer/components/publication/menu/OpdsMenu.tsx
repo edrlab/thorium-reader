@@ -7,8 +7,8 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { importActions } from "readium-desktop/common/redux/actions/";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import * as importAction from "readium-desktop/common/redux/actions/import";
 import { OpdsPublicationView } from "readium-desktop/common/views/opds";
 import {
     TranslatorProps, withTranslator,
@@ -17,20 +17,28 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { TMouseEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-interface IProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
-    publication: OpdsPublicationView;
+// tslint:disable-next-line: no-empty-interface
+interface IBaseProps extends TranslatorProps {
+    opdsPublicationView: OpdsPublicationView;
+}
+// IProps may typically extend:
+// RouteComponentProps
+// ReturnType<typeof mapStateToProps>
+// ReturnType<typeof mapDispatchToProps>
+// tslint:disable-next-line: no-empty-interface
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-export class PublicationCard extends React.Component<IProps> {
-    public constructor(props: IProps) {
+export class OpdsMenu extends React.Component<IProps, undefined> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
     public render(): React.ReactElement<{}>  {
-        const { publication, __, buttonIsDisabled } = this.props;
-        console.log(buttonIsDisabled);
+        const { opdsPublicationView, __, buttonIsDisabled } = this.props;
         return (
             <>
                 <button role="menuitem"
@@ -38,83 +46,78 @@ export class PublicationCard extends React.Component<IProps> {
                 >
                     {__("opds.menu.aboutBook")}
                 </button>
-                { publication.isFree &&
+                { (opdsPublicationView.sampleOrPreviewUrl || opdsPublicationView.openAccessUrl) &&
                     <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e) }
-                        disabled={buttonIsDisabled}
+                        disabled={buttonIsDisabled()}
                     >
-                        {__("catalog.addBookToLib")}
+                        {opdsPublicationView.openAccessUrl ?
+                            __("catalog.addBookToLib") :
+                            __("opds.menu.addExtract")}
                     </button>
                 }
-                { publication.buyUrl &&
+                { opdsPublicationView.buyUrl &&
                     <a role="menuitem"
-                        href={publication.buyUrl}
+                        href={opdsPublicationView.buyUrl}
                     >
                         {__("opds.menu.goBuyBook")}
                     </a>
                 }
-                { publication.borrowUrl &&
+                { opdsPublicationView.borrowUrl &&
                     <a role="menuitem"
-                        href={publication.borrowUrl}
+                        href={opdsPublicationView.borrowUrl}
                     >
                         {__("opds.menu.goLoanBook")}
                     </a>
                 }
-                { publication.subscribeUrl &&
+                { opdsPublicationView.subscribeUrl &&
                     <a role="menuitem"
-                        href={publication.subscribeUrl}
+                        href={opdsPublicationView.subscribeUrl}
                     >
                         {__("opds.menu.goSubBook")}
                     </a>
-                }
-                { publication.hasSample &&
-                    <button role="menuitem"
-                        onClick={ (e) => this.onAddToCatalogClick(e, true) }
-                    >
-                        {__("opds.menu.addExtract")}
-                    </button>
                 }
             </>
         );
     }
 
-    private onAddToCatalogClick(e: TMouseEvent, downloadSample?: boolean) {
+    private onAddToCatalogClick(e: TMouseEvent) {
         e.preventDefault();
-        this.props.verifyImport(this.props.publication, downloadSample);
+        this.props.verifyImport();
     }
 
     private displayPublicationInfo(e: TMouseEvent) {
         e.preventDefault();
-        this.props.displayPublicationInfo(this.props.publication);
+        this.props.displayPublicationInfo();
     }
 }
 
-const mapDispatchToProps = (dispatch: TDispatch) => {
+const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
-        displayPublicationInfo: (publication: OpdsPublicationView) => {
-            dispatch(dialogActions.open("publication-info",
+        displayPublicationInfo: () => {
+            dispatch(dialogActions.openRequest.build("publication-info",
                 {
-                    opdsPublication: publication,
+                    opdsPublicationView: props.opdsPublicationView,
                     publicationIdentifier: undefined,
                 },
             ));
         },
-        verifyImport: (publication: OpdsPublicationView, downloadSample: boolean) => {
-            dispatch(importAction.verifyImport(
-                {
-                    publication,
-                    downloadSample,
-                },
-            ));
+        verifyImport: () => {
+            dispatch(importActions.verify.build(props.opdsPublicationView));
         },
     };
 };
 
-// any because recursive type doesn't works
-const mapStateToProps = (state: RootState, props: any) => {
+const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
-        buttonIsDisabled: state.download.downloads.findIndex((pub) => pub.url === props.publication.url) > -1,
+        buttonIsDisabled: () => {
+            const foundDownload = state.download.downloads.find((dl) => {
+                return dl.url === props.opdsPublicationView.openAccessUrl ||
+                    dl.url === props.opdsPublicationView.sampleOrPreviewUrl;
+            });
+            return foundDownload ? true : false;
+        },
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationCard));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OpdsMenu));

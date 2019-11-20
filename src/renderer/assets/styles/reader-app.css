@@ -1032,3 +1032,14 @@ input[type=radio] + label {
     }
   }
 }
+
+.mathml_section {
+  padding: 10px;
+  & input {
+    display: inline-block;
+    margin-right: 5px;
+  }
+  & label {
+    display: inline-block !important;
+  }
+}
