@@ -7,11 +7,15 @@
 
 import { Identifiable } from "../models/identifiable";
 import { IHttpGetResult } from "../utils/http";
-import { CoverView } from "./publication";
 
 export interface IOpdsFeedView extends Identifiable {
     title: string;
     url: string;
+}
+
+export interface IOpdsCoverView {
+    coverLinks: IOpdsLinkView[];
+    thumbnailLinks: IOpdsLinkView[];
 }
 
 export interface IOpdsPublicationView {
@@ -25,13 +29,13 @@ export interface IOpdsPublicationView {
     tags?: string[];
     languages?: string[];
     publishedAt?: string; // ISO8601
-    entryUrl?: string;
-    buyUrl?: string;
-    borrowUrl?: string;
-    subscribeUrl?: string;
-    sampleOrPreviewUrl?: string;
-    openAccessUrl?: string;
-    cover?: CoverView;
+    entryLinks?: IOpdsLinkView[];
+    buyLinks?: IOpdsLinkView[];
+    borrowLinks?: IOpdsLinkView[];
+    subscribeLinks?: IOpdsLinkView[];
+    sampleOrPreviewLinks?: IOpdsLinkView[];
+    openAccessLinks?: IOpdsLinkView[];
+    cover?: IOpdsCoverView;
 }
 
 export interface IOpdsNavigationLinkView {
