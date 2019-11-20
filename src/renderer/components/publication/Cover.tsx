@@ -9,8 +9,8 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
-import { IOpdsPublicationView, IOpdsCoverView } from "readium-desktop/common/views/opds";
-import { PublicationView, CoverView } from "readium-desktop/common/views/publication";
+import { IOpdsCoverView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
@@ -69,8 +69,8 @@ class Cover extends React.Component<IProps, undefined> {
             );
         } else {
             const { cover } = this.props.publicationViewMaybeOpds;
-            const coverUrl = (cover as IOpdsCoverView).coverLinks[0]?.url || (cover as CoverView).coverUrl;
-            const thumbnailUrl = (cover as IOpdsCoverView).coverLinks[0]?.url || (cover as CoverView).coverUrl;
+            const coverUrl = (cover as CoverView).coverUrl || (cover as IOpdsCoverView).coverLinks[0]?.url;
+            const thumbnailUrl = (cover as CoverView).coverUrl || (cover as IOpdsCoverView).coverLinks[0]?.url;
             let defaultUrl: string;
             if (this.props.coverType === "cover") {
                 defaultUrl = coverUrl || thumbnailUrl;
