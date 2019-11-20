@@ -9,8 +9,8 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
-import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
+import { IOpdsPublicationView, IOpdsCoverView } from "readium-desktop/common/views/opds";
+import { PublicationView, CoverView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
@@ -18,7 +18,7 @@ import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationViewMaybeOpds: PublicationView | IOpdsPublicationView;
-    coverTypeUrl?: keyof CoverView | undefined;
+    coverType?: "cover" | "thumbnail" | undefined;
     onClick?: () => void;
     onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
 }
@@ -68,6 +68,15 @@ class Cover extends React.Component<IProps, undefined> {
                 </div>
             );
         } else {
+            const { cover } = this.props.publicationViewMaybeOpds;
+            const coverUrl = (cover as IOpdsCoverView).coverLinks[0]?.url || (cover as CoverView).coverUrl;
+            const thumbnailUrl = (cover as IOpdsCoverView).coverLinks[0]?.url || (cover as CoverView).coverUrl;
+            let defaultUrl: string;
+            if (this.props.coverType === "cover") {
+                defaultUrl = coverUrl || thumbnailUrl;
+            } else {
+                defaultUrl = thumbnailUrl || coverUrl;
+            }
             return (
                 <img
                     tabIndex={0}
@@ -76,10 +85,7 @@ class Cover extends React.Component<IProps, undefined> {
                     onKeyPress={this.props.onKeyPress}
                     role="presentation"
                     alt="cover image"
-                    src={this.props.coverTypeUrl ?
-                        this.props.publicationViewMaybeOpds.cover[this.props.coverTypeUrl] :
-                        this.props.publicationViewMaybeOpds.cover.thumbnailUrl ||
-                        this.props.publicationViewMaybeOpds.cover.coverUrl}
+                    src={defaultUrl}
                 />
             );
         }

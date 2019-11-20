@@ -40,11 +40,12 @@ class SameFileImportManager extends React.Component<IProps, undefined> {
 
             if (downloadState &&
                 downloadState.downloads &&
-                // tslint:disable-next-line: max-line-length
-                !downloadState.downloads.find((dl) => dl.url === importState.opdsPublicationView.openAccessUrl || dl.url === importState.opdsPublicationView.sampleOrPreviewUrl)) {
+                !downloadState.downloads.find((dl) =>
+                    dl.url === importState.opdsPublicationView.openAccessLinks[0]?.url
+                    || dl.url === importState.opdsPublicationView.sampleOrPreviewLinks[0].url)) {
 
                 apiAction("publication/importOpdsEntry",
-                    importState.opdsPublicationView.entryUrl,
+                    importState.opdsPublicationView.entryLinks[0]?.url,
                     importState.opdsPublicationView.r2OpdsPublicationBase64,
                     importState.opdsPublicationView.baseUrl,
                 ).catch((error) => {

@@ -142,7 +142,6 @@ export class PublicationApi implements IPublicationApi {
 
         let returnView: PublicationView;
         if (entryUrl) {
-            // tslint:disable-next-line: max-line-length
             const httpPub = await this.catalogService.importPublicationFromOpdsUrl(entryUrl);
             if (httpPub.isSuccess) {
                 returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);

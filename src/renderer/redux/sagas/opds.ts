@@ -72,6 +72,8 @@ function* updateHeaderLinkWatcher(): SagaIterator {
             if (browserResult.isSuccess && browserResult.data && browserResult.data.links) {
                 const links = browserResult.data.links;
 
+                debug("opdsResult:", browserResult.data);
+
                 const putLinks = {
                     start: links.start[0]?.url,
                     up: links.up[0]?.url,

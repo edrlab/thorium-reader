@@ -160,38 +160,36 @@ export class CatalogService {
         // warning: modifies r2OpdsPublication, makes relative URLs absolute with baseUrl(entryUrl)!
         const opdsPublicationView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2OpdsPublication, baseUrl);
 
-        const downloadUrl = opdsPublicationView.openAccessUrl ?? opdsPublicationView.sampleOrPreviewUrl;
-        if (!downloadUrl) {
+        const downloadLinks = opdsPublicationView.openAccessLinks ?? opdsPublicationView.sampleOrPreviewLinks;
+        const downloadLink = downloadLinks[0];
+        if (!downloadLinks) {
             debug("Unable to get an acquisition url from opds publication", r2OpdsPublication.Links);
             throw new Error("Unable to get acquisition url from opds publication");
         }
 
-        const downloadLink = r2OpdsPublication.Links.find((l) => {
-            return l.Href === downloadUrl;
-        });
         let isLcpFile = false;
         let title = opdsPublicationView.title;
         if (downloadLink) {
-            isLcpFile = downloadLink.TypeLink === "application/vnd.readium.lcp.license-1.0+json";
-            if (!isLcpFile && downloadLink.TypeLink !== "application/epub+zip") {
-                throw new Error(`OPDS download link is not EPUB! ${downloadUrl} ${downloadLink.TypeLink}`);
+            isLcpFile = downloadLink.type === "application/vnd.readium.lcp.license-1.0+json";
+            if (!isLcpFile && downloadLink.type !== "application/epub+zip") {
+                throw new Error(`OPDS download link is not EPUB! ${downloadLink.url} ${downloadLink.type}`);
             }
             if (!title) {
-                title = downloadLink.Title;
+                title = downloadLink.title;
             }
         }
         if (!title) {
-            title = downloadUrl;
+            title = downloadLink.url;
         }
 
-        const download: Download = this.downloader.addDownload(downloadUrl);
+        const download: Download = this.downloader.addDownload(downloadLink.url);
 
         // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
         //     this.translator.translate("message.download.start", { title })));
 
         this.store.dispatch(downloadActions.request.build(download.srcUrl, title));
 
-        debug("[START] Download publication", downloadUrl);
+        debug("[START] Download publication", downloadLink.url);
         let newDownload: Download;
         try {
             newDownload = await this.downloader.processDownload(
@@ -214,7 +212,7 @@ export class CatalogService {
         // this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
         //     this.translator.translate("message.download.success", { title })));
 
-        debug("[END] Download publication", downloadUrl, newDownload);
+        debug("[END] Download publication", downloadLink.url, newDownload);
 
         this.store.dispatch(downloadActions.success.build(download.srcUrl));
 

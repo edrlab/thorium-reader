@@ -11,8 +11,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import { PublicationView } from "readium-desktop/common/views/publication";
+import { IOpdsPublicationView, IOpdsCoverView } from "readium-desktop/common/views/opds";
+import { PublicationView, CoverView } from "readium-desktop/common/views/publication";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
@@ -163,7 +163,10 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         <div>
                             <Cover
                                 publicationViewMaybeOpds={normalOrOpdsPublicationView}
-                                onClick={() => normalOrOpdsPublicationView.cover.coverUrl && this.coverOnClick()}
+                                onClick={() => (
+                                    (normalOrOpdsPublicationView.cover as IOpdsCoverView).coverLinks[0]?.url
+                                    || (normalOrOpdsPublicationView.cover as CoverView).coverUrl
+                                ) && this.coverOnClick()}
                                 onKeyPress={this.coverOnKeyPress}
                             />
                         </div>
@@ -232,7 +235,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                 {this.state.coverZoom ?
                     <Cover
                         publicationViewMaybeOpds={normalOrOpdsPublicationView}
-                        coverTypeUrl="coverUrl"
+                        coverType="cover"
                         onClick={this.coverOnClick}
                         onKeyPress={this.coverOnKeyPress}
                     /> :

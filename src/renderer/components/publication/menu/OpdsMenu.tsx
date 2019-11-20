@@ -46,33 +46,33 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
                 >
                     {__("opds.menu.aboutBook")}
                 </button>
-                { (opdsPublicationView.sampleOrPreviewUrl || opdsPublicationView.openAccessUrl) &&
+                { (opdsPublicationView.sampleOrPreviewLinks || opdsPublicationView.openAccessLinks) &&
                     <button role="menuitem"
                         onClick={ (e) => this.onAddToCatalogClick(e) }
                         disabled={buttonIsDisabled()}
                     >
-                        {opdsPublicationView.openAccessUrl ?
+                        {opdsPublicationView.openAccessLinks ?
                             __("catalog.addBookToLib") :
                             __("opds.menu.addExtract")}
                     </button>
                 }
-                { opdsPublicationView.buyUrl &&
+                { opdsPublicationView.buyLinks &&
                     <a role="menuitem"
-                        href={opdsPublicationView.buyUrl}
+                        href={opdsPublicationView.buyLinks[0].url}
                     >
                         {__("opds.menu.goBuyBook")}
                     </a>
                 }
-                { opdsPublicationView.borrowUrl &&
+                { opdsPublicationView.borrowLinks &&
                     <a role="menuitem"
-                        href={opdsPublicationView.borrowUrl}
+                        href={opdsPublicationView.borrowLinks[0].url}
                     >
                         {__("opds.menu.goLoanBook")}
                     </a>
                 }
-                { opdsPublicationView.subscribeUrl &&
+                { opdsPublicationView.subscribeLinks &&
                     <a role="menuitem"
-                        href={opdsPublicationView.subscribeUrl}
+                        href={opdsPublicationView.subscribeLinks[0].url}
                     >
                         {__("opds.menu.goSubBook")}
                     </a>
@@ -112,8 +112,8 @@ const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
         buttonIsDisabled: () => {
             const foundDownload = state.download.downloads.find((dl) => {
-                return dl.url === props.opdsPublicationView.openAccessUrl ||
-                    dl.url === props.opdsPublicationView.sampleOrPreviewUrl;
+                return dl.url === props.opdsPublicationView.openAccessLinks[0]?.url ||
+                    dl.url === props.opdsPublicationView.sampleOrPreviewLinks[0]?.url;
             });
             return foundDownload ? true : false;
         },

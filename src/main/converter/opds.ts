@@ -63,6 +63,8 @@ const GetLinksView = <T extends Link>(
                     } else if (filter.type instanceof RegExp && filter.type.test(ln.TypeLink)) {
                         typeFlag = true;
                     } else if (typeof filter.type === "string") {
+
+                        // compare typeSet and filterSet
                         const filterSet = new Set(filter.type.split(";"));
                         const typeSet = new Set(ln.TypeLink.replace( /\s/g, "").split(";"));
 
@@ -87,7 +89,9 @@ const GetLinksView = <T extends Link>(
         return relFlag || typeFlag;
     });
 
+    // transform to absolute url
     linksFiltered?.forEach((ln) => ln.Href = urlPathResolve(baseUrl, ln.Href));
+
     // safe copy on each filtered links
     linksFiltered?.forEach((ln) => formatedLinks.push({
         url: ln.Href,
@@ -139,7 +143,6 @@ export class OpdsFeedViewConverter {
             rel: "http://opds-spec.org/image",
         });
         const thumbnailLinkView = GetLinksView(baseUrl, r2OpdsPublication.Images, {
-            // FIXME check "image/*"
             type: ["image/png", "image/jpeg"],
             rel: "http://opds-spec.org/image/thumbnail",
         }) || GetLinksView(baseUrl, r2OpdsPublication.Links, {
@@ -157,7 +160,6 @@ export class OpdsFeedViewConverter {
         }
 
         // Get odps entry
-        // FIXME handle only type=entry and not find all the string
         const entrylinksViews = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: "type=entry;profile=opds-catalog",
         });

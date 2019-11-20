@@ -43,41 +43,41 @@ export class OpdsControls extends React.Component<IProps, undefined> {
         }
 
         return <>
-            { opdsPublicationView.openAccessUrl || opdsPublicationView.sampleOrPreviewUrl ?
+            { opdsPublicationView.openAccessLinks || opdsPublicationView.sampleOrPreviewLinks ?
             <button
                 onClick={() => verifyImport(opdsPublicationView)}
                 className={styles.lire}
                 disabled={buttonIsDisabled()}
             >
-                {opdsPublicationView.openAccessUrl ?
+                {opdsPublicationView.openAccessLinks ?
                     __("catalog.addBookToLib") :
                     __("opds.menu.addExtract")}
             </button>
             : <></> }
-            { opdsPublicationView.buyUrl || opdsPublicationView.borrowUrl || opdsPublicationView.subscribeUrl ?
+            { opdsPublicationView.buyLinks || opdsPublicationView.borrowLinks || opdsPublicationView.subscribeLinks ?
             <ul className={styles.liens}>
-                { opdsPublicationView.buyUrl &&
+                { opdsPublicationView.buyLinks &&
                     <li>
                         <a role="menuitem"
-                            href={opdsPublicationView.buyUrl}
+                            href={opdsPublicationView.buyLinks[0].url}
                         >
                             {__("opds.menu.goBuyBook")}
                         </a>
                     </li>
                 }
-                { opdsPublicationView.borrowUrl &&
+                { opdsPublicationView.borrowLinks &&
                     <li>
                         <a role="menuitem"
-                            href={opdsPublicationView.borrowUrl}
+                            href={opdsPublicationView.borrowLinks[0].url}
                         >
                             {__("opds.menu.goLoanBook")}
                         </a>
                     </li>
                 }
-                { opdsPublicationView.subscribeUrl &&
+                { opdsPublicationView.subscribeLinks &&
                     <li>
                         <a role="menuitem"
-                            href={opdsPublicationView.subscribeUrl}
+                            href={opdsPublicationView.subscribeLinks[0].url}
                         >
                             {__("opds.menu.goSubBook")}
                         </a>
@@ -101,8 +101,8 @@ const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
         buttonIsDisabled: () => {
             return !!state.download.downloads.find((dl) =>
-                dl.url === props.opdsPublicationView.openAccessUrl ||
-                dl.url === props.opdsPublicationView.sampleOrPreviewUrl);
+                dl.url === props.opdsPublicationView.openAccessLinks[0].url ||
+                dl.url === props.opdsPublicationView.sampleOrPreviewLinks[0].url);
         },
     };
 };
