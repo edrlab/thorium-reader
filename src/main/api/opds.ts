@@ -9,7 +9,7 @@
 import { inject, injectable } from "inversify";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import {
-    IOpdsFeedView, IOpdsLinkView, THttpGetOpdsResultView,
+    IOpdsFeedView, IOpdsLinkView, THttpGetOpdsPublicationView, THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
@@ -21,13 +21,29 @@ import { ReturnPromiseType } from "readium-desktop/typings/promise";
 // const debug = debug_("readium-desktop:src/main/api/opds");
 
 export interface IOpdsApi {
-    getFeed: (identifier: string) => Promise<IOpdsFeedView>;
-    deleteFeed: (identifier: string) => Promise<void>;
-    findAllFeeds: () => Promise<IOpdsFeedView[]>;
-    addFeed: (data: OpdsFeed) => Promise<IOpdsFeedView>;
-    updateFeed: (data: OpdsFeed) => Promise<IOpdsFeedView>;
-    browse: (url: string) => Promise<THttpGetOpdsResultView>;
-    getUrlWithSearchLinks: (searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch) => Promise<string | undefined>;
+    getFeed: (
+        identifier: string,
+    ) => Promise<IOpdsFeedView>;
+    deleteFeed: (
+        identifier: string,
+    ) => Promise<void>;
+    findAllFeeds: (
+    ) => Promise<IOpdsFeedView[]>;
+    addFeed: (
+        data: OpdsFeed,
+    ) => Promise<IOpdsFeedView>;
+    updateFeed: (
+        data: OpdsFeed,
+    ) => Promise<IOpdsFeedView>;
+    browse: (
+        url: string,
+    ) => Promise<THttpGetOpdsResultView>;
+    getPublicationFromEntry: (
+        url: string,
+    ) => Promise<THttpGetOpdsPublicationView>;
+    getUrlWithSearchLinks: (
+        searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch,
+    ) => Promise<string | undefined>;
 }
 
 export type TOpdsApiGetFeed = IOpdsApi["getFeed"];
@@ -36,6 +52,7 @@ export type TOpdsApiFindAllFeed = IOpdsApi["findAllFeeds"];
 export type TOpdsApiAddFeed = IOpdsApi["addFeed"];
 export type TOpdsApiUpdateFeed = IOpdsApi["updateFeed"];
 export type TOpdsApiBrowse = IOpdsApi["browse"];
+export type TOpdsApiGetPublicationFromEntry = IOpdsApi["getPublicationFromEntry"];
 export type TOpdsApiGetUrlWithSearchLinks = IOpdsApi["getUrlWithSearchLinks"];
 
 export type TOpdsApiGetFeed_result = IOpdsFeedView;
@@ -44,6 +61,7 @@ export type TOpdsApiFindAllFeed_result = IOpdsFeedView[];
 export type TOpdsApiAddFeed_result = IOpdsFeedView;
 export type TOpdsApiUpdateFeed_result = IOpdsFeedView;
 export type TOpdsApiBrowse_result = THttpGetOpdsResultView;
+export type TOpdsApiGetPublicationFromEntry_result = THttpGetOpdsPublicationView;
 export type TOpdsApiGetUrlWithSearchLink_result = ReturnPromiseType<IOpdsApi["getUrlWithSearchLinks"]>;
 
 export interface IOpdsModuleApi {
@@ -57,6 +75,17 @@ export interface IOpdsModuleApi {
 }
 
 type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url" | "type">>;
+
+const checkUrl = (url: string) => {
+    try {
+        if (new URL(url).protocol === "opds:") {
+            url = url.replace("opds://", "http://");
+        }
+    } catch (e) {
+        throw new Error(`opds-api-url-invalid ${e.message}`);
+    }
+    return url;
+};
 
 @injectable()
 export class OpdsApi implements IOpdsApi {
@@ -96,14 +125,17 @@ export class OpdsApi implements IOpdsApi {
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
+    public async getPublicationFromEntry(url: string): Promise<THttpGetOpdsPublicationView> {
+        url = checkUrl(url);
+
+        return await this.opdsService.opdsRequest(url,
+            // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
+            (r2OpdsFeed) => this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url)?.publications[0]);
+    }
+
     public async browse(url: string): Promise<THttpGetOpdsResultView> {
-        try {
-            if (new URL(url).protocol === "opds:") {
-                url = url.replace("opds://", "http://");
-            }
-        } catch (e) {
-            throw new Error(`api-opds-browse ${e.message}`);
-        }
+        url = checkUrl(url);
+
         return await this.opdsService.opdsRequest(url,
             // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
             (r2OpdsFeed) => this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url));

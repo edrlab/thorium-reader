@@ -79,3 +79,4 @@ export interface IOpdsNavigationLink {
 }
 
 export type THttpGetOpdsResultView = IHttpGetResult<string, IOpdsResultView>;
+export type THttpGetOpdsPublicationView = IHttpGetResult<string, IOpdsPublicationView | undefined>;
