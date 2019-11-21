@@ -171,9 +171,6 @@ export class OpdsFeedViewConverter {
         }
 
         // Get odps entry
-        const entrylinksViews = GetLinksView(baseUrl, r2OpdsPublication.Links, {
-            type: "type=entry;profile=opds-catalog",
-        });
         const sampleLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             rel: [
                 "http://opds-spec.org/acquisition/sample",
@@ -195,6 +192,14 @@ export class OpdsFeedViewConverter {
         const subscribeLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/subscribe",
         });
+        const entrylinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
+            type: "type=entry;profile=opds-catalog",
+        }) || GetLinksView(baseUrl, r2OpdsPublication.Links, {
+            type: [
+                "application/atom+xml",
+                "application/opds+json",
+            ],
+        });
 
         const r2OpdsPublicationJson = TAJSON.serialize(r2OpdsPublication);
         const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
@@ -212,7 +217,7 @@ export class OpdsFeedViewConverter {
             languages: metadata.Language,
             publishedAt,
             cover,
-            entryLinks: entrylinksViews,
+            entryLinks: entrylinkView,
             buyLinks: buyLinkView,
             borrowLinks: borrowLinkView,
             subscribeLinks: subscribeLinkView,
