@@ -29,11 +29,11 @@ import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
-import { JSON as TAJSON } from "ta-json-x";
 import * as uuid from "uuid";
 import * as xmldom from "xmldom";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
+import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { convertOpds1ToOpds2_EntryToPublication } from "@r2-opds-js/opds/converter";
 import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
@@ -130,7 +130,7 @@ export class CatalogService {
                 r2OpdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
 
             } else {
-                r2OpdsPublication = TAJSON.deserialize<OPDSPublication>(
+                r2OpdsPublication = TaJsonDeserialize<OPDSPublication>(
                     JSON.parse(opdsFeedData.body),
                     OPDSPublication,
                 );
@@ -223,7 +223,7 @@ export class CatalogService {
         let publicationDocument = await this.importEpubOrLcplFile(download.dstPath, isLcpFile);
 
         // Add opds publication serialization to resources
-        const r2OpdsPublicationJson = TAJSON.serialize(r2OpdsPublication);
+        const r2OpdsPublicationJson = TaJsonSerialize(r2OpdsPublication);
         const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
         const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");
 
@@ -284,7 +284,7 @@ export class CatalogService {
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {
         const jsonStr = fs.readFileSync(filePath, { encoding: "utf8" });
         const lcpJson = JSON.parse(jsonStr);
-        const r2LCP = TAJSON.deserialize<LCP>(lcpJson, LCP);
+        const r2LCP = TaJsonDeserialize<LCP>(lcpJson, LCP);
         r2LCP.JsonSource = jsonStr;
 
         // search the path of the epub file
@@ -349,7 +349,7 @@ export class CatalogService {
         // (no need to fetch ZIP data beyond this point)
         r2Publication.freeDestroy();
 
-        const r2PublicationJson = TAJSON.serialize(r2Publication);
+        const r2PublicationJson = TaJsonSerialize(r2Publication);
         const r2PublicationStr = JSON.stringify(r2PublicationJson);
         const r2PublicationBase64 = Buffer.from(r2PublicationStr).toString("base64");
 

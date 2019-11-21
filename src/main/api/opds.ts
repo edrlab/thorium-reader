@@ -14,9 +14,9 @@ import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
-import { JSON as TAJSON } from "ta-json-x";
 import * as xmldom from "xmldom";
 
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { convertOpds1ToOpds2 } from "@r2-opds-js/opds/converter";
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
@@ -142,7 +142,7 @@ export class OpdsApi implements IOpdsApi {
                 const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
                 r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
             } else {
-                r2OpdsFeed = TAJSON.deserialize<OPDSFeed>(
+                r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
                     JSON.parse(opdsFeedData.body),
                     OPDSFeed,
                 );

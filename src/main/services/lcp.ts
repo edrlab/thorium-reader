@@ -23,13 +23,13 @@ import { PublicationStorage } from "readium-desktop/main/storage/publication-sto
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
-import { JSON as TAJSON } from "ta-json-x";
 
 import { lsdRenew_ } from "@r2-lcp-js/lsd/renew";
 import { lsdReturn_ } from "@r2-lcp-js/lsd/return";
 import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-processing";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { LSD } from "@r2-lcp-js/parser/epub/lsd";
+import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
@@ -80,7 +80,7 @@ export class LcpManager {
             publicationDocument.identifier,
         );
 
-        const jsonSource = lcp.JsonSource ? lcp.JsonSource : JSON.stringify(TAJSON.serialize(lcp));
+        const jsonSource = lcp.JsonSource ? lcp.JsonSource : JSON.stringify(TaJsonSerialize(lcp));
 
         const epubPathTMP = epubPath + ".tmplcpl";
         await new Promise((resolve, reject) => {
@@ -155,10 +155,10 @@ export class LcpManager {
         if (r2Lcp) {
             publicationDocument.lcp = this.convertLcpLsdInfo(r2Lcp);
 
-            const r2LCPStr = r2Lcp.JsonSource ?? JSON.stringify(TAJSON.serialize(r2Lcp));
+            const r2LCPStr = r2Lcp.JsonSource ?? JSON.stringify(TaJsonSerialize(r2Lcp));
             publicationDocument.resources.r2LCPBase64 = Buffer.from(r2LCPStr).toString("base64");
             if (r2Lcp.LSD) {
-                const r2LSDJson = TAJSON.serialize(r2Lcp.LSD);
+                const r2LSDJson = TaJsonSerialize(r2Lcp.LSD);
                 const r2LSDStr = JSON.stringify(r2LSDJson);
                 publicationDocument.resources.r2LSDBase64 = Buffer.from(r2LSDStr).toString("base64");
             }
@@ -194,7 +194,7 @@ export class LcpManager {
             const r2PublicationBase64 = publicationDocument.resources.r2PublicationBase64;
             const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
             const r2PublicationJson = JSON.parse(r2PublicationStr);
-            r2Publication = TAJSON.deserialize<R2Publication>(r2PublicationJson, R2Publication);
+            r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
         }
         if (!r2Publication.LCP &&
             publicationDocument.resources && publicationDocument.resources.r2LCPBase64) {
@@ -202,7 +202,7 @@ export class LcpManager {
             const r2LCPBase64 = publicationDocument.resources.r2LCPBase64;
             const r2LCPStr = Buffer.from(r2LCPBase64, "base64").toString("utf-8");
             const r2LCPJson = JSON.parse(r2LCPStr);
-            const r2LCP = TAJSON.deserialize<LCP>(r2LCPJson, LCP);
+            const r2LCP = TaJsonDeserialize<LCP>(r2LCPJson, LCP);
             r2LCP.JsonSource = r2LCPStr;
 
             r2Publication.LCP = r2LCP;
@@ -213,7 +213,7 @@ export class LcpManager {
             const r2LSDBase64 = publicationDocument.resources.r2LSDBase64;
             const r2LSDStr = Buffer.from(r2LSDBase64, "base64").toString("utf-8");
             const r2LSDJson = JSON.parse(r2LSDStr);
-            const r2LSD = TAJSON.deserialize<LSD>(r2LSDJson, LSD);
+            const r2LSD = TaJsonDeserialize<LSD>(r2LSDJson, LSD);
 
             r2Publication.LCP.LSD = r2LSD;
         }
@@ -660,7 +660,7 @@ export class LcpManager {
 
                         let r2LCP: LCP;
                         try {
-                            r2LCP = TAJSON.deserialize<LCP>(lcplJson, LCP);
+                            r2LCP = TaJsonDeserialize<LCP>(lcplJson, LCP);
                         } catch (erorz) {
                             debug(erorz);
                             reject(erorz);
