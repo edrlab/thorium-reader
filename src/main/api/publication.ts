@@ -13,9 +13,9 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
-import { JSON as TAJSON } from "ta-json-x";
 import { isArray } from "util";
 
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
 // import * as debug_ from "debug";
@@ -152,7 +152,7 @@ export class PublicationApi implements IPublicationApi {
         } else {
             const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
             const r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
-            const r2OpdsPublication = TAJSON.deserialize<OPDSPublication>(r2OpdsPublicationJson, OPDSPublication);
+            const r2OpdsPublication = TaJsonDeserialize<OPDSPublication>(r2OpdsPublicationJson, OPDSPublication);
             let publicationDocument;
             try {
                 // tslint:disable-next-line: max-line-length

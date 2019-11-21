@@ -17,9 +17,9 @@ import {
 } from "readium-desktop/common/views/opds";
 import { CoverView } from "readium-desktop/common/views/publication";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
-import { JSON as TAJSON } from "ta-json-x";
 import * as convert from "xml-js";
 
+import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
@@ -133,7 +133,7 @@ export class OpdsFeedViewConverter {
             (link) => link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition/subscribe").length)[0];
 
-        const r2OpdsPublicationJson = TAJSON.serialize(r2OpdsPublication);
+        const r2OpdsPublicationJson = TaJsonSerialize(r2OpdsPublication);
         const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
         const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");
 

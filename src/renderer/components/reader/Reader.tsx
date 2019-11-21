@@ -30,8 +30,8 @@ import { diRendererSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Store, Unsubscribe } from "redux";
-import { JSON as TAJSON } from "ta-json-x";
 
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import {
     IEventPayload_R2_EVENT_READIUMCSS, IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
 } from "@r2-navigator-js/electron/common/events";
@@ -550,7 +550,7 @@ export class Reader extends React.Component<IProps, IState> {
         if (!r2PublicationJson) {
             return Promise.reject("!r2PublicationJson");
         }
-        const r2Publication = TAJSON.deserialize<R2Publication>(r2PublicationJson, R2Publication);
+        const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
 
         if (r2Publication.Metadata && r2Publication.Metadata.Title) {
             const title = this.props.translator.translateContentField(r2Publication.Metadata.Title);
