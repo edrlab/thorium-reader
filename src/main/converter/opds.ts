@@ -104,6 +104,18 @@ const GetLinksView = <T extends Link>(
 
 @injectable()
 export class OpdsFeedViewConverter {
+
+    public static getTagsFromOpdsPublication(r2OpdsPublication: OPDSPublication) {
+        let tags: string[];
+        if (r2OpdsPublication?.Metadata?.Subject) {
+            const metadata = r2OpdsPublication.Metadata;
+            tags = Array.isArray(metadata.Subject) &&
+                metadata.Subject.map((subject) => convertMultiLangStringToString(subject.Name));
+        }
+
+        return tags;
+    }
+
     public convertDocumentToView(document: OpdsFeedDocument): IOpdsFeedView {
         return {
             identifier: document.identifier, // preserve Identifiable identifier
@@ -133,8 +145,7 @@ export class OpdsFeedViewConverter {
         const title = convertMultiLangStringToString(metadata.Title);
         const authors = convertContributorArrayToStringArray(metadata.Author);
         const publishers = convertContributorArrayToStringArray(metadata.Publisher);
-        const tags = Array.isArray(metadata.Subject) &&
-            metadata.Subject.map((subject) => convertMultiLangStringToString(subject.Name));
+        const tags = OpdsFeedViewConverter.getTagsFromOpdsPublication(r2OpdsPublication);
         const publishedAt = metadata.PublicationDate &&
             moment(metadata.PublicationDate).toISOString();
 
@@ -164,16 +175,16 @@ export class OpdsFeedViewConverter {
             type: "type=entry;profile=opds-catalog",
         });
         const sampleLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
-                rel: [
-                    "http://opds-spec.org/acquisition/sample",
-                    "http://opds-spec.org/acquisition/preview",
-                ],
+            rel: [
+                "http://opds-spec.org/acquisition/sample",
+                "http://opds-spec.org/acquisition/preview",
+            ],
         });
         const acquisitionLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
-                rel: [
-                    "http://opds-spec.org/acquisition",
-                    "http://opds-spec.org/acquisition/open-access",
-                ],
+            rel: [
+                "http://opds-spec.org/acquisition",
+                "http://opds-spec.org/acquisition/open-access",
+            ],
         });
         const buyLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/buy",
@@ -214,7 +225,7 @@ export class OpdsFeedViewConverter {
 
         const title = convertMultiLangStringToString(r2OpdsFeed.Metadata && r2OpdsFeed.Metadata.Title);
         const publications = r2OpdsFeed.Publications?.map((item) => {
-                return this.convertOpdsPublicationToView(item, baseUrl);
+            return this.convertOpdsPublicationToView(item, baseUrl);
             });
         const navigation = r2OpdsFeed.Navigation?.map((item) => {
                 return this.convertOpdsLinkToView(item, baseUrl);

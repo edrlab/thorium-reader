@@ -18,27 +18,22 @@ import {
 } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString } from "readium-desktop/common/utils";
-import { httpGet } from "readium-desktop/common/utils/http";
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
-    PublicationDocument, PublicationDocumentWithoutTimestampable, THttpGetPublicationDocument,
+    PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
-import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import { JSON as TAJSON } from "ta-json-x";
 import * as uuid from "uuid";
-import * as xmldom from "xmldom";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
-import { convertOpds1ToOpds2_EntryToPublication } from "@r2-opds-js/opds/converter";
-import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
-import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { extractCrc32OnZip } from "../crc";
@@ -69,9 +64,6 @@ export class CatalogService {
     @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
 
-    @inject(diSymbolTable["opds-feed-view-converter"])
-    private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
-
     public async importEpubOrLcplFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
         let publicationDocument: PublicationDocument | undefined;
 
@@ -81,7 +73,7 @@ export class CatalogService {
             const hash = isLCPLicense ? undefined : await extractCrc32OnZip(filePath);
             const publicationArray = hash ? await this.publicationRepository.findByHashId(hash) : undefined;
             if (publicationArray && publicationArray.length) {
-                debug(publicationArray, hash);
+                debug("importEpubOrLcplFile", publicationArray, hash);
                 publicationDocument = publicationArray[0];
                 this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
                     this.translator.translate("message.import.alreadyImport", { title: publicationDocument.title })));
@@ -95,101 +87,42 @@ export class CatalogService {
                     this.translator.translate("message.import.success", { title: publicationDocument.title })));
             }
         } catch (error) {
-            debug("ImportFile (hash + import) fail with :" + filePath, error);
+            debug("importEpubOrLcplFile (hash + import) fail with :" + filePath, error);
             this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
                 this.translator.translate("message.import.fail", { path: filePath })));
         }
         return publicationDocument;
     }
 
-    public async importPublicationFromOpdsUrl(
-        entryUrl: string,
-    ): Promise<THttpGetPublicationDocument> {
+    public async importPublicationFromLink(
+        link: IOpdsLinkView,
+        r2OpdsPublicationBase64: string,
+    ): Promise<PublicationDocument | undefined> {
+        let returnPublicationDocument: PublicationDocument;
 
-        debug("Import OPDS publication", entryUrl);
-
-        return await httpGet(entryUrl, {}, async (opdsFeedData) => {
-            let r2OpdsPublication: OPDSPublication = null;
-
-            if (opdsFeedData.isFailure) {
-                return opdsFeedData;
-            }
-            if (opdsFeedData.body.startsWith("<?xml")) {
-                const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
-
-                if (!xmlDom || !xmlDom.documentElement) {
-                    throw new OpdsParsingError(`Unable to parse ${entryUrl}`);
-                }
-
-                const isEntry = xmlDom.documentElement.localName === "entry";
-
-                if (!isEntry) {
-                    throw new OpdsParsingError(`This is not an OPDS entry ${entryUrl}`);
-                }
-                const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
-                r2OpdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
-
-            } else {
-                r2OpdsPublication = TAJSON.deserialize<OPDSPublication>(
-                    JSON.parse(opdsFeedData.body),
-                    OPDSPublication,
-                );
-            }
-
-            if (r2OpdsPublication == null) {
-                debug("Unable to retrieve opds publication", r2OpdsPublication);
-                throw new Error("Unable to retrieve opds publication");
-            }
-
-            try {
-                // tslint:disable-next-line: max-line-length
-                opdsFeedData.data = await this.importPublicationFromOpdsDoc(r2OpdsPublication, entryUrl);
-            } catch (error) {
-                debug("Unable to retrieve opds publication", r2OpdsPublication, error);
-                throw new Error("Unable to retrieve opds pub: " + error);
-            }
-            return opdsFeedData;
-        });
-    }
-
-    public async importPublicationFromOpdsDoc(
-        r2OpdsPublication: OPDSPublication,
-        baseUrl: string,
-    ): Promise<PublicationDocument> {
-
-        // warning: modifies r2OpdsPublication, makes relative URLs absolute with baseUrl(entryUrl)!
-        const opdsPublicationView = this.opdsFeedViewConverter.convertOpdsPublicationToView(r2OpdsPublication, baseUrl);
-
-        const downloadLinks = opdsPublicationView.openAccessLinks ?? opdsPublicationView.sampleOrPreviewLinks;
-        const downloadLink = downloadLinks[0];
-        if (!downloadLinks) {
-            debug("Unable to get an acquisition url from opds publication", r2OpdsPublication.Links);
+        if (!(link?.url && r2OpdsPublicationBase64)) {
+            debug("Unable to get an acquisition url from opds publication", link);
             throw new Error("Unable to get acquisition url from opds publication");
         }
 
-        let isLcpFile = false;
-        let title = opdsPublicationView.title;
-        if (downloadLink) {
-            isLcpFile = downloadLink.type === "application/vnd.readium.lcp.license-1.0+json";
-            if (!isLcpFile && downloadLink.type !== "application/epub+zip") {
-                throw new Error(`OPDS download link is not EPUB! ${downloadLink.url} ${downloadLink.type}`);
-            }
-            if (!title) {
-                title = downloadLink.title;
-            }
-        }
-        if (!title) {
-            title = downloadLink.url;
+        const title = link.title || link.url;
+        const isLcpFile = link.type === "application/vnd.readium.lcp.license-1.0+json";
+        const isEpubFile = link.type === "application/epub+zip";
+        if (!isLcpFile && !isEpubFile) {
+            throw new Error(`OPDS download link is not EPUB! ${link.url} ${link.type}`);
         }
 
-        const download: Download = this.downloader.addDownload(downloadLink.url);
+        // start the download service
+        const download = this.downloader.addDownload(link.url);
 
         // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
         //     this.translator.translate("message.download.start", { title })));
 
+        // send to the front-end the signal of download
         this.store.dispatch(downloadActions.request.build(download.srcUrl, title));
 
-        debug("[START] Download publication", downloadLink.url);
+        // track download progress
+        debug("[START] Download publication", link.url);
         let newDownload: Download;
         try {
             newDownload = await this.downloader.processDownload(
@@ -212,34 +145,39 @@ export class CatalogService {
         // this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
         //     this.translator.translate("message.download.success", { title })));
 
-        debug("[END] Download publication", downloadLink.url, newDownload);
+        debug("[END] Download publication", link.url, newDownload);
 
         this.store.dispatch(downloadActions.success.build(download.srcUrl));
 
         // Import downloaded publication in catalog
-        // FIXME: can be undefined type
         let publicationDocument = await this.importEpubOrLcplFile(download.dstPath, isLcpFile);
 
-        // Add opds publication serialization to resources
-        const r2OpdsPublicationJson = TAJSON.serialize(r2OpdsPublication);
-        const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
-        const r2OpdsPublicationBase64 = Buffer.from(r2OpdsPublicationStr).toString("base64");
+        if (publicationDocument) {
 
-        // Merge with the original publication
-        publicationDocument = Object.assign(
-            {},
-            publicationDocument,
-            {
-                resources: {
-                    r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
-                    r2LCPBase64: publicationDocument.resources.r2LCPBase64,
-                    r2LSDBase64: publicationDocument.resources.r2LSDBase64,
-                    r2OpdsPublicationBase64,
+            const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
+            const r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
+            const r2OpdsPublication = TAJSON.deserialize<OPDSPublication>(r2OpdsPublicationJson, OPDSPublication);
+            const tags = OpdsFeedViewConverter.getTagsFromOpdsPublication(r2OpdsPublication);
+
+            // Merge with the original publication
+            publicationDocument = Object.assign(
+                {},
+                publicationDocument,
+                {
+                    resources: {
+                        r2PublicationBase64: publicationDocument.resources.r2PublicationBase64,
+                        r2LCPBase64: publicationDocument.resources.r2LCPBase64,
+                        r2LSDBase64: publicationDocument.resources.r2LSDBase64,
+                        r2OpdsPublicationBase64,
+                    },
+                    tags,
                 },
-                tags: opdsPublicationView.tags,
-            },
-        );
-        return this.publicationRepository.save(publicationDocument);
+            );
+
+            returnPublicationDocument = await this.publicationRepository.save(publicationDocument);
+        }
+
+        return returnPublicationDocument;
     }
 
     public async deletePublication(publicationIdentifier: string) {

@@ -17,26 +17,42 @@ import { JSON as TAJSON } from "ta-json-x";
 import { isArray } from "util";
 
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
+import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 
 // import * as debug_ from "debug";
 
 export interface IPublicationApi {
-    // in a future possible typing like this to have buildRequestData return type :
     // get: (...a: [string]) => Promise<PublicationView> | void;
-    get: (identifier: string) => Promise<PublicationView>;
-    delete: (identifier: string) => Promise<void>;
-    findAll: () => Promise<PublicationView[]>;
-    findByTag: (tag: string) => Promise<PublicationView[]>;
-    updateTags: (identifier: string, tags: string[]) => Promise<PublicationView>;
-    getAllTags: () => Promise<string[]>;
-    importOpdsEntry: (
-        entryUrl: string,
-        r2OpdsPublicationBase64: string,
-        baseUrl: string,
+    get: (
+        identifier: string,
     ) => Promise<PublicationView>;
-    import: (filePathArray: string | string[]) => Promise<PublicationView[]>;
-    search: (title: string) => Promise<PublicationView[]>;
-    exportPublication: (publicationView: PublicationView) => Promise<void>;
+    delete: (
+        identifier: string,
+    ) => Promise<void>;
+    findAll: (
+    ) => Promise<PublicationView[]>;
+    findByTag: (
+        tag: string,
+    ) => Promise<PublicationView[]>;
+    updateTags: (
+        identifier: string,
+        tags: string[],
+    ) => Promise<PublicationView>;
+    getAllTags: (
+    ) => Promise<string[]>;
+    importOpdsPublicationLink: (
+        link: IOpdsLinkView,
+        r2OpdsPublicationBase64: string,
+    ) => Promise<PublicationView>;
+    import: (
+        filePathArray: string | string[],
+    ) => Promise<PublicationView[]>;
+    search: (
+        title: string,
+    ) => Promise<PublicationView[]>;
+    exportPublication: (
+        publicationView: PublicationView,
+    ) => Promise<void>;
 }
 
 /**
@@ -48,7 +64,7 @@ export type TPublicationApiFindAll = IPublicationApi["findAll"];
 export type TPublicationApiFindByTag = IPublicationApi["findByTag"];
 export type TPublicationApiUpdateTags = IPublicationApi["updateTags"];
 export type TPublicationApiGetAllTags = IPublicationApi["getAllTags"];
-export type TPublicationApiImportOpdsEntry = IPublicationApi["importOpdsEntry"];
+export type TPublicationApiImportOpdsPublicationLink = IPublicationApi["importOpdsPublicationLink"];
 export type TPublicationApiImport = IPublicationApi["import"];
 export type TPublicationApiSearch = IPublicationApi["search"];
 export type TPublicationApiExportPublication = IPublicationApi["exportPublication"];
@@ -59,7 +75,7 @@ export type TPublicationApiFindAll_result = PublicationView[];
 export type TPublicationApiFindByTag_result = PublicationView[];
 export type TPublicationApiUpdateTags_result = PublicationView;
 export type TPublicationApiGetAllTags_result = string[];
-export type TPublicationApiImportOpdsEntry_result = PublicationView;
+export type TPublicationApiImportOpdsPublicationLink_result = PublicationView;
 export type TPublicationApiImport_result = PublicationView[];
 export type TPublicationApiSearch_result = PublicationView[];
 export type TPublicationApiExportPublication_result = void;
@@ -71,7 +87,7 @@ export interface IPublicationModuleApi {
     "publication/findByTag": TPublicationApiFindByTag;
     "publication/updateTags": TPublicationApiUpdateTags;
     "publication/getAllTags": TPublicationApiGetAllTags;
-    "publication/importOpdsEntry": TPublicationApiImportOpdsEntry;
+    "publication/importOpdsPublicationLink": TPublicationApiImportOpdsPublicationLink;
     "publication/import": TPublicationApiImport;
     "publication/search": TPublicationApiSearch;
     "publication/exportPublication": TPublicationApiExportPublication;
@@ -134,34 +150,33 @@ export class PublicationApi implements IPublicationApi {
         return this.publicationRepository.getAllTags();
     }
 
-    public async importOpdsEntry(
-        entryUrl: string | undefined,
+    public async importOpdsPublicationLink(
+        link: IOpdsLinkView,
         r2OpdsPublicationBase64: string,
-        baseUrl: string,
     ): Promise<PublicationView> {
-
         let returnView: PublicationView;
-        if (entryUrl) {
-            const httpPub = await this.catalogService.importPublicationFromOpdsUrl(entryUrl);
-            if (httpPub.isSuccess) {
-                returnView = this.publicationViewConverter.convertDocumentToView(httpPub.data);
-            } else {
-                throw new Error(`Http importPublicationFromOpdsUrl error with code ${httpPub.statusCode} for ${httpPub.url}`);
-            }
-        } else {
-            const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
-            const r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
-            const r2OpdsPublication = TAJSON.deserialize<OPDSPublication>(r2OpdsPublicationJson, OPDSPublication);
+
+        if (link && link.url && r2OpdsPublicationBase64) {
+
             let publicationDocument;
             try {
-                // tslint:disable-next-line: max-line-length
-                publicationDocument = await this.catalogService.importPublicationFromOpdsDoc(r2OpdsPublication, baseUrl);
+                publicationDocument = await this.catalogService.importPublicationFromLink(
+                    link,
+                    r2OpdsPublicationBase64,
+                );
+
+                if (!publicationDocument) {
+                    throw new Error("publicationDocument not imported on db");
+                }
+
+                returnView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
+
             } catch (error) {
                 throw new Error(`importPublicationFromOpdsDoc error ${error}`);
             }
 
-            returnView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
         }
+
         return returnView;
     }
 
@@ -171,30 +186,39 @@ export class PublicationApi implements IPublicationApi {
             filePathArray = [filePathArray];
         }
 
-        // tslint:disable-next-line: max-line-length
-        const publicationDocumentPromises = filePathArray.map((filePath) => this.catalogService.importEpubOrLcplFile(filePath));
+        const publicationDocumentPromises = filePathArray.map(
+            (filePath) => this.catalogService.importEpubOrLcplFile(filePath)
+        );
         const publicationDocumentPromisesAll = await PromiseAllSettled(publicationDocumentPromises);
 
         // https://github.com/microsoft/TypeScript/issues/16069 : no inference type on filter
-        // tslint:disable-next-line: max-line-length
-        const publicationDocumentPromisesAllResolved = publicationDocumentPromisesAll.filter((publicationDocumentPromise) => {
-            return publicationDocumentPromise.status === "fulfilled" && publicationDocumentPromise.value;
-        }) as Array<PromiseFulfilled<PublicationDocument>>;
-        const publicationViews = publicationDocumentPromisesAllResolved.map((publicationDocumentWrapper) => {
-            return this.publicationViewConverter.convertDocumentToView(publicationDocumentWrapper.value);
-        });
+        const publicationDocumentPromisesAllResolved = publicationDocumentPromisesAll.filter(
+            (publicationDocumentPromise) =>
+                publicationDocumentPromise.status === "fulfilled" && publicationDocumentPromise.value,
+        ) as Array<PromiseFulfilled<PublicationDocument>>;
+
+        const publicationViews = publicationDocumentPromisesAllResolved.map(
+            (publicationDocumentWrapper) =>
+                this.publicationViewConverter.convertDocumentToView(publicationDocumentWrapper.value,
+        ));
 
         return publicationViews;
     }
 
     public async search(title: string): Promise<PublicationView[]> {
-        const publicationDocuments = await this.publicationRepository.searchByTitle(title);
-        return publicationDocuments.map((publicationDocument) => {
-            return this.publicationViewConverter.convertDocumentToView(publicationDocument);
-        });
+        const titleFormated = title?.trim() || "";
+
+        const publicationDocuments = await this.publicationRepository.searchByTitle(titleFormated);
+
+        const publicationViews = publicationDocuments.map((publicationDocument) =>
+            this.publicationViewConverter.convertDocumentToView(publicationDocument));
+
+        return publicationViews;
     }
 
     public async exportPublication(publicationView: PublicationView): Promise<void> {
-        this.catalogService.exportPublication(publicationView);
+        if (publicationView) {
+            this.catalogService.exportPublication(publicationView);
+        }
     }
 }
