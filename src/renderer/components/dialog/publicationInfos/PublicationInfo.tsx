@@ -83,8 +83,9 @@ class PublicationInfo extends React.Component<IProps, IState> {
         }
     }
 
+    // FIXME :
     // if entryLinks is set -> send to api this link and waiting for the return of publicationView
-    // 
+    // while waiting show a loader spinner
 
     public render(): React.ReactElement<{}> {
 
