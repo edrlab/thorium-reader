@@ -56,7 +56,9 @@ class PublicationCard extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { __, publicationViewMaybeOpds, translator, isOpds } = this.props;
-        const authors = publicationViewMaybeOpds.authors.map((author) => translator.translateContentField(author)).join(", ");
+        const authors = publicationViewMaybeOpds.authors.map(
+            (author) => translator.translateContentField(author),
+        ).join(", ");
 
         return (
             <div className={styles.block_book}
@@ -90,8 +92,12 @@ class PublicationCard extends React.Component<IProps, IState> {
                         content={(
                             <div className={styles.menu}>
                                 {isOpds ?
-                                <OpdsMenu opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView} /> :
-                                <CatalogMenu publicationView={publicationViewMaybeOpds as PublicationView} />}
+                                    <OpdsMenu
+                                        opdsPublicationView={publicationViewMaybeOpds as IOpdsPublicationView}
+                                    /> :
+                                    <CatalogMenu
+                                        publicationView={publicationViewMaybeOpds as PublicationView}
+                                    />}
                             </div>
                         )}
                         open={this.state.menuOpen}

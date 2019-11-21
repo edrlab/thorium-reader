@@ -83,11 +83,13 @@ class PublicationInfo extends React.Component<IProps, IState> {
         }
     }
 
+    // if entryLinks is set -> send to api this link and waiting for the return of publicationView
+    // 
+
     public render(): React.ReactElement<{}> {
 
-        // tslint:disable-next-line: max-line-length
-        const opdsPublicationView: IOpdsPublicationView = this.props.opdsPublicationView;
-        const normalPublicationView: PublicationView = this.state.publicationView;
+        const opdsPublicationView = this.props.opdsPublicationView;
+        const normalPublicationView = this.state.publicationView;
         const normalOrOpdsPublicationView = opdsPublicationView || normalPublicationView;
 
         if (!this.props.open || (!normalPublicationView && !opdsPublicationView)) {
@@ -95,66 +97,64 @@ class PublicationInfo extends React.Component<IProps, IState> {
         }
 
         const { __, translator } = this.props;
-        const controlsComponent = (() => {
-            if (this.props.displayControls) {
-                if (opdsPublicationView) {
-                    return (<OpdsControls opdsPublicationView={opdsPublicationView} />);
-                }
-                if (normalPublicationView?.lcp) {
-                    return (<CatalogLcpControls publicationView={normalPublicationView} />);
-                }
-                return (<CatalogControls publicationView={normalPublicationView} />);
+
+        let controlsComponent = (<></>);
+        if (this.props.displayControls) {
+            if (opdsPublicationView) {
+                controlsComponent = (<OpdsControls opdsPublicationView={opdsPublicationView} />);
             }
-            return (<></>);
-        })();
+            if (normalPublicationView?.lcp) {
+                controlsComponent = (<CatalogLcpControls publicationView={normalPublicationView} />);
+            }
+            controlsComponent = (<CatalogControls publicationView={normalPublicationView} />);
+        }
 
         const authors = normalOrOpdsPublicationView.authors &&
-            normalOrOpdsPublicationView.authors.length ?
-            normalOrOpdsPublicationView.authors.map((author) => {
-                return translator.translateContentField(author);
-            }).join(", ") : "";
+            normalOrOpdsPublicationView.authors.length
+            ? normalOrOpdsPublicationView.authors.map(
+                (author) => translator.translateContentField(author),
+            ).join(", ")
+            : "";
 
         const formatedPublishers = normalOrOpdsPublicationView.publishers &&
             normalOrOpdsPublicationView.publishers.length
-            ? normalOrOpdsPublicationView.publishers.join(", ") : undefined;
+            ? normalOrOpdsPublicationView.publishers.join(", ")
+            : undefined;
 
-        const formatedPublishedDateComponent = (() => {
-            if (normalOrOpdsPublicationView.publishedAt) {
-                const date = moment(normalOrOpdsPublicationView.publishedAt).format("L");
-                if (date) {
-                    return (
-                        <p>
-                            <span>{__("catalog.released")}
-                            </span> <i className={styles.allowUserSelect}>{date}</i>
-                        </p>
-                    );
-                }
+        let formatedPublishedDateComponent = (<></>);
+        if (normalOrOpdsPublicationView.publishedAt) {
+            const date = moment(normalOrOpdsPublicationView.publishedAt).format("L");
+            if (date) {
+                formatedPublishedDateComponent = (
+                    <p>
+                        <span>{__("catalog.released")}
+                        </span> <i className={styles.allowUserSelect}>{date}</i>
+                    </p>
+                );
             }
-            return (<></>);
-        })();
-        const publicationLanguageComponent = (() => {
-            if (normalOrOpdsPublicationView.languages) {
-                return normalOrOpdsPublicationView.languages
-                    .map((lang: string, index: number) => {
-                        const l = lang.split("-")[0];
+        }
 
-                        // because dynamic label does not pass typed i18n compilation
-                        const translate = __ as (str: string) => string;
+        let publicationLanguageComponent: JSX.Element | JSX.Element[] = (<></>);
+        if (normalOrOpdsPublicationView.languages) {
+            publicationLanguageComponent = normalOrOpdsPublicationView.languages
+                .map((lang: string, index: number) => {
+                    const l = lang.split("-")[0];
 
-                        const ll = translate(`languages.${l}`).replace(`languages.${l}`, lang);
-                        const note = (lang !== ll) ? ` (${lang})` : "";
-                        const suffix = ((index < (normalOrOpdsPublicationView.languages.length - 1)) ? ", " : "");
-                        return <i
-                            key={"lang-" + index}
-                            title={lang}
-                            className={styles.allowUserSelect}
-                        >
-                            {ll + note + suffix}
-                        </i>;
-                    });
-            }
-            return (<></>);
-        })();
+                    // because dynamic label does not pass typed i18n compilation
+                    const translate = __ as (str: string) => string;
+
+                    const ll = translate(`languages.${l}`).replace(`languages.${l}`, lang);
+                    const note = (lang !== ll) ? ` (${lang})` : "";
+                    const suffix = ((index < (normalOrOpdsPublicationView.languages.length - 1)) ? ", " : "");
+                    return (<i
+                        key={"lang-" + index}
+                        title={lang}
+                        className={styles.allowUserSelect}
+                    >
+                        {ll + note + suffix}
+                    </i>);
+                });
+        }
 
         const renderInfo = () =>
             <>
