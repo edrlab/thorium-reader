@@ -37,7 +37,7 @@ class Cover extends React.Component<IProps, undefined> {
         super(props);
     }
 
-    public render(): React.ReactElement<{}>  {
+    public render()  {
 
         if (!this.props.publicationViewMaybeOpds.cover) {
             let authors = "";
@@ -84,7 +84,7 @@ class Cover extends React.Component<IProps, undefined> {
                     onClick={this.props.onClick}
                     onKeyPress={this.props.onKeyPress}
                     role="presentation"
-                    alt="cover image"
+                    alt={this.props.__("publication.cover.img")}
                     src={defaultUrl}
                 />
             );

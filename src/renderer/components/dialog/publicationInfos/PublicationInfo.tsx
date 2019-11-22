@@ -11,7 +11,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { IOpdsCoverView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsCoverView } from "readium-desktop/common/views/opds";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
@@ -68,6 +68,8 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
+
+        // only when publicationIdentifier exist in db not for opds
         if (this.props.publicationIdentifier) {
             this.unsubscribe = apiSubscribe([
                 "publication/updateTags",
@@ -78,6 +80,8 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount() {
+
+        // only when publicationIdentifier exist in db not for opds
         if (this.props.publicationIdentifier) {
             this.unsubscribe();
         }

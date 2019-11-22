@@ -73,10 +73,10 @@
         "downloads": "Downloads",
         "gridTitle": "Bücher in einem Raster präsentieren",
         "home": "Hauptmenü",
+        "homeTitle": "home",
         "importTitle": "ein Buch importieren",
         "listTitle": "Bücher in einer Liste präsentieren",
         "refreshTitle": "Feeds neu laden",
-        "homeTitle": "home",
         "searchPlaceholder": "Suche",
         "searchTitle": "Suche starten",
         "settings": "Einstellungen"
@@ -135,6 +135,9 @@
         "previous": "Bisherige"
     },
     "publication": {
+        "cover": {
+            "img": "Titelbild"
+        },
         "expiredLcp": "",
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",

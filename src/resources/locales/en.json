@@ -73,10 +73,10 @@
         "downloads": "Downloads",
         "gridTitle": "Grid view",
         "home": "Bookshelf menu",
+        "homeTitle": "home",
         "importTitle": "Import a publication",
         "listTitle": "List view",
         "refreshTitle": "reload",
-        "homeTitle": "home",
         "searchPlaceholder": "Search",
         "searchTitle": "Start a search",
         "settings": "Settings"
@@ -135,6 +135,9 @@
         "previous": "Previous"
     },
     "publication": {
+        "cover": {
+            "img": "cover image"
+        },
         "expiredLcp": "This book can't be read because the LCP license has expired.",
         "renewButton": "Renew",
         "returnButton": "Return",

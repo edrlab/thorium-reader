@@ -131,10 +131,10 @@ declare namespace typed_i18n {
   readonly "downloads": string,
   readonly "gridTitle": string,
   readonly "home": string,
+  readonly "homeTitle": string,
   readonly "importTitle": string,
   readonly "listTitle": string,
   readonly "refreshTitle": string,
-  readonly "homeTitle": string,
   readonly "searchPlaceholder": string,
   readonly "searchTitle": string,
   readonly "settings": string
@@ -145,10 +145,10 @@ declare namespace typed_i18n {
   (_: "header.downloads", __?: {}): string;
   (_: "header.gridTitle", __?: {}): string;
   (_: "header.home", __?: {}): string;
+  (_: "header.homeTitle", __?: {}): string;
   (_: "header.importTitle", __?: {}): string;
   (_: "header.listTitle", __?: {}): string;
   (_: "header.refreshTitle", __?: {}): string;
-  (_: "header.homeTitle", __?: {}): string;
   (_: "header.searchPlaceholder", __?: {}): string;
   (_: "header.searchTitle", __?: {}): string;
   (_: "header.settings", __?: {}): string;
@@ -277,6 +277,7 @@ declare namespace typed_i18n {
   (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "publication", __?: {}): {
+  readonly "cover": { readonly "img": string },
   readonly "expiredLcp": string,
   readonly "renewButton": string,
   readonly "returnButton": string,
@@ -285,6 +286,8 @@ declare namespace typed_i18n {
   readonly "seeLess": string,
   readonly "seeMore": string
 };
+  (_: "publication.cover", __?: {}): { readonly "img": string };
+  (_: "publication.cover.img", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.renewButton", __?: {}): string;
   (_: "publication.returnButton", __?: {}): string;
