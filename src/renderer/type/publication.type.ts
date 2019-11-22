@@ -7,6 +7,7 @@
 
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { TCover } from "./cover.type";
 
 type TPublicationViewOmit = Omit<PublicationView, keyof IOpdsPublicationView>;
 type TOpdsPublicationViewOmit = Omit<IOpdsPublicationView, keyof PublicationView>;
@@ -17,4 +18,4 @@ type TOpdsPublicationCommon = Pick<IOpdsPublicationView, TPublicationCommonKey>;
 type TPublicationMerge = TPublicationCommon | TOpdsPublicationCommon;
 
 // Tpublication = merge OPDS Publication View and Catalog Publication View
-export type TPublication = TPublicationMerge & TPartialPublication;
+export type TPublication = TPublicationMerge & TPartialPublication & { cover: TCover };
