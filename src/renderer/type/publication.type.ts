@@ -18,4 +18,4 @@ type TOpdsPublicationCommon = Pick<IOpdsPublicationView, TPublicationCommonKey>;
 type TPublicationMerge = TPublicationCommon | TOpdsPublicationCommon;
 
 // Tpublication = merge OPDS Publication View and Catalog Publication View
-export type TPublication = TPublicationMerge & TPartialPublication & { cover: TCover };
+export type TPublication = TPublicationMerge & TPartialPublication & { cover?: TCover };

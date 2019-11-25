@@ -10,6 +10,15 @@ import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { put } from "redux-saga/effects";
 
+/**
+ *
+ * api function to dispatch an api request in redux-saga.
+ * should be call with yield* to delegate to another generator
+ *
+ * @param apiPath name of the api
+ * @param requestId id string channel
+ * @param requestData typed api parameter
+ */
 export function* apiSaga<T extends TApiMethodName>(
     apiPath: T,
     requestId: string,
@@ -18,5 +27,5 @@ export function* apiSaga<T extends TApiMethodName>(
     const splitPath = apiPath.split("/");
     const moduleId = splitPath[0] as TModuleApi;
     const methodId = splitPath[1] as TMethodApi;
-    return yield put(apiActions.request.build(requestId, moduleId, methodId, requestData));
+    yield put(apiActions.request.build(requestId, moduleId, methodId, requestData));
 }
