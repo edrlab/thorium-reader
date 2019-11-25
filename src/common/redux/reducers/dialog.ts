@@ -18,25 +18,47 @@ const initialState: DialogState = {
 export function dialogReducer(
     state: DialogState = initialState,
     action: dialogActions.openRequest.TAction |
-        dialogActions.closeRequest.TAction,
+        dialogActions.closeRequest.TAction |
+        dialogActions.updateRequest.TAction,
 ) {
+    let data = {};
+
     switch (action.type) {
-        case dialogActions.openRequest.ID:
-            return Object.assign(
-                {},
-                state,
-                {
+        case dialogActions.openRequest.ID: {
+            switch (action.payload.type) {
+                // handle in redux-saga by subscriber
+                case "publication-info-opds":
+                case "publication-info-reader":
+                    break;
+                default:
+                    data = action.payload.data;
+            }
+            return {
+                ...state,
+                ...{
                     open: true,
                     type: action.payload.type,
+                    data,
+                },
+            };
+        }
+
+        case dialogActions.updateRequest.ID:
+            return {
+                ...state,
+                ...{
                     data: action.payload.data,
                 },
-            );
+            };
+
         case dialogActions.closeRequest.ID:
-            return Object.assign(
-                {},
-                initialState,
-            );
+            return {
+                ...initialState,
+            };
+
         default:
-            return state;
+            break;
     }
+
+    return state;
 }

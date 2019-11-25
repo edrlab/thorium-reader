@@ -9,8 +9,8 @@ import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublication } from "readium-desktop/renderer/type/publication.type";
 
-interface IPubInfo {
-    publication: TPublication;
+interface IPubInfoState {
+    publication?: TPublication;
     coverZoom?: boolean;
 }
 
@@ -23,9 +23,8 @@ export interface DialogType {
     "file-import": {
         files: IFileImport[];
     };
-    // "publication-info-opds"
-    "publication-info-opds": IPubInfo;
-    "publication-info-reader": IPubInfo;
+    "publication-info-opds": IPubInfoState;
+    "publication-info-reader": IPubInfoState;
     "opds-feed-add-form": {};
     "delete-publication-confirm": {
         publicationView: PublicationView;
