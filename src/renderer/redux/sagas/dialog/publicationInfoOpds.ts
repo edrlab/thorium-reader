@@ -5,7 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { all, call } from "redux-saga/effects";
+import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
+import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { TPublication } from "readium-desktop/renderer/type/publication.type";
+import { all, call, put } from "redux-saga/effects";
+
+import { apiSaga } from "../api";
+
+const REQUEST_ID = "PUBINFO_OPDS_REQUEST_ID";
 
 function* checkOpdsPublication() {
     // get the publication-info-opds action
@@ -15,6 +22,21 @@ function* checkOpdsPublication() {
     // si il y'en a une emettre un dispatch vers l'api browsePublication
     // et recuperer les donnée dans une autre fct watcher (cf opds)
     // sinon retourner l'effect mais les données seront inconsistante a l'affichage
+
+    while (1) {
+        const action = yield* takeTyped(dialogActions.openRequest.build);
+
+        if (action.payload?.type === "publication-info-opds") {
+
+            const publication = action.payload.data as TPublication;
+
+            // find the entry url even if all data is already load in publication
+            if (Array.isArray(publication.entryLinks) && publication.entryLinks[0]) {
+                const browseLink = publication.entryLinks[0].url;
+                yield* apiSaga("opds/getPublicationFromEntry", REQUEST_ID, browseLink);
+            }
+        }
+    }
 }
 
 export function* watchers() {

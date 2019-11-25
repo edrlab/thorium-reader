@@ -71,6 +71,7 @@ export interface IOpdsModuleApi {
     "opds/addFeed": TOpdsApiAddFeed;
     "opds/updateFeed": TOpdsApiUpdateFeed;
     "opds/browse": TOpdsApiBrowse;
+    "opds/getPublicationFromEntry": TOpdsApiGetPublicationFromEntry;
     "opds/getUrlWithSearchLinks": TOpdsApiGetUrlWithSearchLinks;
 }
 

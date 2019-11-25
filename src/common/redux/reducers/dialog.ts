@@ -26,7 +26,7 @@ export function dialogReducer(
     switch (action.type) {
         case dialogActions.openRequest.ID: {
             switch (action.payload.type) {
-                // handle in redux-saga by subscriber
+                // handle in redux-saga by subscribers
                 case "publication-info-opds":
                 case "publication-info-reader":
                     break;
