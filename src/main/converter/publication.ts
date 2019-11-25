@@ -10,8 +10,8 @@ import * as moment from "moment";
 import { convertContributorArrayToStringArray } from "readium-desktop/common/utils";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-import { JSON as TAJSON } from "ta-json-x";
 
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 @injectable()
@@ -22,7 +22,7 @@ export class PublicationViewConverter {
         const r2PublicationBase64 = document.resources.r2PublicationBase64;
         const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
         const r2PublicationJson = JSON.parse(r2PublicationStr);
-        const r2Publication = TAJSON.deserialize<R2Publication>(r2PublicationJson, R2Publication);
+        const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
         const publishers = convertContributorArrayToStringArray(
             r2Publication.Metadata.Publisher,
         );
