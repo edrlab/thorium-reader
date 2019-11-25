@@ -9,15 +9,14 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
-import { IOpdsCoverView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import { TPublication } from "readium-desktop/renderer/type/publication.type";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publicationViewMaybeOpds: PublicationView | IOpdsPublicationView;
+    publicationViewMaybeOpds: TPublication;
     coverType?: "cover" | "thumbnail" | undefined;
     onClick?: () => void;
     onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
@@ -49,7 +48,7 @@ class Cover extends React.Component<IProps, undefined> {
                 }
                 authors += this.props.translator.translateContentField(newAuthor);
             }
-            let colors = (this.props.publicationViewMaybeOpds as PublicationView).customCover;
+            let colors = this.props.publicationViewMaybeOpds.customCover;
             if (!colors) {
                 colors = RandomCustomCovers[0];
             }
@@ -69,8 +68,8 @@ class Cover extends React.Component<IProps, undefined> {
             );
         } else {
             const { cover } = this.props.publicationViewMaybeOpds;
-            const coverUrl = (cover as CoverView).coverUrl || (cover as IOpdsCoverView).coverLinks[0]?.url;
-            const thumbnailUrl = (cover as CoverView).coverUrl || (cover as IOpdsCoverView).coverLinks[0]?.url;
+            const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
+            const thumbnailUrl = cover.coverUrl || cover.coverLinks[0]?.url;
             let defaultUrl: string;
             if (this.props.coverType === "cover") {
                 defaultUrl = coverUrl || thumbnailUrl;

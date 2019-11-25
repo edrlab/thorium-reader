@@ -169,8 +169,8 @@ class PublicationInfo extends React.Component<IProps, IState> {
                             <Cover
                                 publicationViewMaybeOpds={normalOrOpdsPublicationView}
                                 onClick={() => (
-                                    (normalOrOpdsPublicationView.cover as IOpdsCoverView).coverLinks[0]?.url
-                                    || (normalOrOpdsPublicationView.cover as CoverView).coverUrl
+                                    (normalOrOpdsPublicationView.cover as CoverView).coverUrl
+                                    || (normalOrOpdsPublicationView.cover as IOpdsCoverView).coverLinks[0]?.url
                                 ) && this.coverOnClick()}
                                 onKeyPress={this.coverOnKeyPress}
                             />
@@ -303,3 +303,7 @@ const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationInfo));
+
+// move all logic operation in saga
+// create 2 files : reader et opds
+// let only view dialog data as TPublication in componnent

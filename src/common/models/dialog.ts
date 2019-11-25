@@ -5,12 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IOpdsFeedView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { TPublication } from "readium-desktop/renderer/type/publication.type";
 
 interface IPubInfo {
-    opdsPublicationView: IOpdsPublicationView | undefined;
-    publicationIdentifier: string | undefined;
+    publication: TPublication;
+    coverZoom?: boolean;
 }
 
 export interface IFileImport {
@@ -22,7 +23,8 @@ export interface DialogType {
     "file-import": {
         files: IFileImport[];
     };
-    "publication-info": IPubInfo;
+    // "publication-info-opds"
+    "publication-info-opds": IPubInfo;
     "publication-info-reader": IPubInfo;
     "opds-feed-add-form": {};
     "delete-publication-confirm": {
