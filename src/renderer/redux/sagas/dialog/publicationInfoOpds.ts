@@ -30,7 +30,7 @@ function* browsePublication() {
     // https://github.com/microsoft/TypeScript/issues/33353
     const link = linkIterator.value as IOpdsLinkView;
     if (link) {
-       yield* apiSaga("opds/getPublicationFromEntry", REQUEST_ID, link.url);
+        yield* apiSaga("opds/getPublicationFromEntry", REQUEST_ID, link.url);
     }
 }
 
