@@ -48,7 +48,8 @@ function* updateReaderPublicationWatcher() {
         if (requestId === REQUEST_ID) {
             debug("reader publication from publicationInfo received");
 
-            const publicationView = action.payload as ReturnPromiseType<TApiMethod["publication/get"]>;
+            const publicationView = action.payload as
+                ReturnPromiseType<TApiMethod["publication/get"]>;
 
             if (publicationView) {
                 debug("opdsPublicationResult:", publicationView);

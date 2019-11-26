@@ -24,6 +24,7 @@ export interface DialogType {
         files: IFileImport[];
     };
     "publication-info-opds": IPubInfoState;
+    "publication-info-lib": IPubInfoState;
     "publication-info-reader": IPubInfoState;
     "opds-feed-add-form": {};
     "delete-publication-confirm": {

@@ -47,7 +47,10 @@ export function dialogReducer(
             return {
                 ...state,
                 ...{
-                    data: action.payload.data,
+                    data: {
+                        ...state.data,
+                        ...action.payload.data,
+                    },
                 },
             };
 

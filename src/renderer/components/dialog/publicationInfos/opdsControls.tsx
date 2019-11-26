@@ -28,6 +28,8 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
+// FIXME : Let the user to choice the link in links array from opds converter
+
 export class OpdsControls extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
