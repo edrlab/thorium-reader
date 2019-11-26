@@ -29,6 +29,7 @@ export function dialogReducer(
                 // handle in redux-saga by subscribers
                 case "publication-info-opds":
                 case "publication-info-reader":
+                case "publication-info-lib":
                     break;
                 default:
                     data = action.payload.data;

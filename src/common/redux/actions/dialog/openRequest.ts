@@ -8,7 +8,6 @@
 import { DialogType } from "readium-desktop/common/models/dialog";
 import { Action } from "readium-desktop/common/models/redux";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import { PublicationView } from "readium-desktop/common/views/publication";
 
 export const ID = "DIALOG_OPEN_REQUEST";
 
@@ -17,10 +16,10 @@ interface IDataPayload {
         publication: IOpdsPublicationView;
     };
     "publication-info-lib": {
-        publication: PublicationView;
+        publicationIdentifier: string;
     };
     "publication-info-reader": {
-        publicationIndentifier: string;
+        publicationIdentifier: string;
     };
 }
 

@@ -273,9 +273,12 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
                 dialogActions.closeRequest.build(),
             );
         },
-        toggleCoverZoom: () => dispatch(dialogActions.updateRequest.build({
-            coverZoom: !(props as IProps).coverZoom,
-        })),
+        toggleCoverZoom: () =>
+            dispatch(dialogActions.updateRequest.build(
+                {
+                    coverZoom: !(props as IProps).coverZoom,
+                },
+            )),
     };
 };
 

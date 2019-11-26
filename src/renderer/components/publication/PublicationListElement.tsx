@@ -15,6 +15,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TPublication } from "readium-desktop/renderer/type/publication.type";
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as uuid from "uuid";
 
@@ -23,7 +24,7 @@ import AccessibleMenu from "../utils/menu/AccessibleMenu";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publicationViewMaybeOpds: PublicationView | IOpdsPublicationView;
+    publicationViewMaybeOpds: TPublication;
     menuContent: JSX.Element;
     isOpds?: boolean;
 }
@@ -141,16 +142,16 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         // isOpds
         displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build("publication-info",
+            dispatch(dialogActions.openRequest.build("publication-info-opds",
                 {
-                    opdsPublicationView: props.publicationViewMaybeOpds as IOpdsPublicationView,
-                    publicationIdentifier: undefined,
+                    publication: props.publicationViewMaybeOpds as IOpdsPublicationView,
                 },
             ));
         },
         // !isOpds
         openReader: () => {
-            dispatch(readerActions.openRequest.build((props.publicationViewMaybeOpds as PublicationView).identifier));
+            const publication = props.publicationViewMaybeOpds as PublicationView;
+            dispatch(readerActions.openRequest.build(publication.identifier));
         },
     };
 };

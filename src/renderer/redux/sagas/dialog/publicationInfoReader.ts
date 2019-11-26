@@ -24,11 +24,12 @@ function* checkReaderPublicationWatcher() {
     while (true) {
         const action = yield* takeTyped(dialogActions.openRequest.build);
 
-        if (action.payload?.type === "publication-info-reader") {
+        if (action.payload?.type === "publication-info-reader"
+            || action.payload?.type === "publication-info-lib") {
 
             const dataPayload = action.payload.data as
                 dialogActions.openRequest.Payload<"publication-info-reader">["data"];
-            const id = dataPayload?.publicationIndentifier;
+            const id = dataPayload?.publicationIdentifier;
 
             // dispatch to API a publication get request
             if (id) {

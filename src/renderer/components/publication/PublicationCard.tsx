@@ -140,8 +140,9 @@ class PublicationCard extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
-        InfoDialogIsOpen: state.dialog.open &&
-            state.dialog.type === "publication-info",
+        InfoDialogIsOpen: state.dialog.open
+            && (state.dialog.type === "publication-info-opds"
+                || state.dialog.type === "publication-info-lib"),
     };
 };
 
@@ -153,10 +154,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         // isOpds
         openInfosDialog: (opdsPublicationView: IOpdsPublicationView) => {
-            dispatch(dialogActions.openRequest.build("publication-info",
+            dispatch(dialogActions.openRequest.build("publication-info-opds",
                 {
-                    opdsPublicationView,
-                    publicationIdentifier: undefined,
+                    publication: opdsPublicationView,
                 },
             ));
         },
