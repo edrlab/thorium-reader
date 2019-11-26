@@ -185,7 +185,7 @@ export class PublicationApi implements IPublicationApi {
         }
 
         const publicationDocumentPromises = filePathArray.map(
-            (filePath) => this.catalogService.importEpubOrLcplFile(filePath)
+            (filePath) => this.catalogService.importEpubOrLcplFile(filePath),
         );
         const publicationDocumentPromisesAll = await PromiseAllSettled(publicationDocumentPromises);
 

@@ -10,6 +10,7 @@ import { dialog } from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
 import * as path from "path";
+import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -39,7 +40,6 @@ import { extractCrc32OnZip } from "../crc";
 import { diMainGet } from "../di";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
-import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");

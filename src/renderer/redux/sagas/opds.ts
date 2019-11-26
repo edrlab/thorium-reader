@@ -8,15 +8,14 @@
 import { LOCATION_CHANGE, LocationChangeAction } from "connected-react-router";
 import * as debug_ from "debug";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { takeTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
-// import { getSearchUrlFromOpdsLinks } from "readium-desktop/renderer/opds/search/search";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { SagaIterator } from "redux-saga";
 import { all, call, fork, put, take } from "redux-saga/effects";
-import { RootState } from '../states';
 
 export const BROWSE_OPDS_API_REQUEST_ID = "browseOpdsApiResult";
 export const SEARCH_OPDS_API_REQUEST_ID = "searchOpdsApiResult";
