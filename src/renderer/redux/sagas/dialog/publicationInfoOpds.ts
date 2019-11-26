@@ -10,7 +10,6 @@ import { apiActions, dialogActions } from "readium-desktop/common/redux/actions"
 import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
-import { TPublication } from "readium-desktop/renderer/type/publication.type";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { all, call, put } from "redux-saga/effects";
 
@@ -19,7 +18,7 @@ import { apiSaga } from "../api";
 const REQUEST_ID = "PUBINFO_OPDS_REQUEST_ID";
 
 // Logger
-const debug = debug_("readium-desktop:renderer:redux:saga:opds");
+const debug = debug_("readium-desktop:renderer:redux:saga:publication-info-opds");
 
 // global access to opdsLInksView in iterator
 let linksIterator: IterableIterator<IOpdsLinkView>;
@@ -42,10 +41,12 @@ function* checkOpdsPublicationWatcher() {
 
         if (action.payload?.type === "publication-info-opds") {
 
-            const publication = action.payload.data as TPublication;
+            const dataPayload = action.payload.data as
+                dialogActions.openRequest.Payload<"publication-info-opds">["data"];
+            const publication = dataPayload?.publication;
 
             // find the entry url even if all data is already load in publication
-            if (Array.isArray(publication.entryLinks) && publication.entryLinks[0]) {
+            if (publication && Array.isArray(publication.entryLinks) && publication.entryLinks[0]) {
                 linksIterator = publication.entryLinks.values();
             }
         }
@@ -61,7 +62,8 @@ function* updateOpdsPublicationWatcher() {
         if (requestId === REQUEST_ID) {
             debug("opds publication from publicationInfo received");
 
-            const publicationResult = action.payload as ReturnPromiseType<TApiMethod["opds/getPublicationFromEntry"]>;
+            const publicationResult = action.payload as
+                ReturnPromiseType<TApiMethod["opds/getPublicationFromEntry"]>;
 
             if (publicationResult.isSuccess && publicationResult.data) {
                 debug("opdsPublicationResult:", publicationResult.data);
