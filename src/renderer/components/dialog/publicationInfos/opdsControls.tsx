@@ -103,7 +103,9 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         verifyImport: (opdsPublicationView: IOpdsPublicationView) => {
             dispatch(dialogActions.closeRequest.build());
-            dispatch(importActions.verify.build(opdsPublicationView));
+            dispatch(importActions.verify.build(
+                // how select the right link
+            ));
         },
     };
 };

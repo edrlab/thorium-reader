@@ -18,37 +18,28 @@ import { apiSaga } from "./api";
 
 const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 
-// FIXME : FInd the entire opdsLink and not url
 // FIXME : a lot of Downoload interface (ex: state and model)
-const findDownload = (dls: Download[], links: IOpdsLinkView[]) =>
+const findDownload = (dls: Download[], link: IOpdsLinkView) =>
     dls.find(
-        (dl) => links.find(
-            (ln) => ln.url === dl.url,
-        ),
+        (dl) => dl.url === link.url,
     );
+
+// FIXME :
+// the import state is used only for this test
+// try to remove import reducer and state and just dispatch a custorm action catch by redux-saga
 
 function* sameFileImportWatcher() {
     while (true) {
         const action = yield* takeTyped(importActions.verify.build);
 
-        const publication = action.payload.opdsPublicationView;
+        const { link, title, r2OpdsPublicationBase64 } = action.payload;
 
         const downloads = yield* selectTyped(
             (state: RootState) => state.download?.downloads);
 
         if (Array.isArray(downloads)
-            && (findDownload(downloads, publication.openAccessLinks)
-                || findDownload(downloads, publication.sampleOrPreviewLinks))) {
+            && findDownload(downloads, link)) {
 
-            // FIXME: set verifyImport with only a IOpdsLinkView
-            // let the user the link of his choice
-            yield* apiSaga("publication/importOpdsPublicationLink",
-                REQUEST_ID,
-                publication.entryLinks[0],
-                publication.r2OpdsPublicationBase64,
-            );
-
-        } else {
             const translator = diRendererGet("translator");
 
             put(
@@ -56,10 +47,18 @@ function* sameFileImportWatcher() {
                     ToastType.Success,
                     translator.translate("message.import.alreadyImport",
                         {
-                            title: publication.title,
+                            title: title || "",
                         },
                     ),
                 ),
+            );
+
+        } else {
+
+            yield* apiSaga("publication/importOpdsPublicationLink",
+                REQUEST_ID,
+                link,
+                r2OpdsPublicationBase64,
             );
         }
     }

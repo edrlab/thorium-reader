@@ -10,21 +10,27 @@ import { importActions } from "readium-desktop/common/redux/actions/";
 import { ImportState } from "../states/import";
 
 const initialState: ImportState = {
-    opdsPublicationView: undefined,
+    link: undefined,
+    title: undefined,
+    r2OpdsPublicationBase64: undefined,
 };
 
 export function importReducer(
     state: ImportState = initialState,
     action: importActions.verify.TAction,
-) {
+): ImportState {
     switch (action.type) {
         case importActions.verify.ID:
-            return Object.assign(
-                {},
-                state,
+            const { link, r2OpdsPublicationBase64, title } = action.payload;
+            return (
                 {
-                    opdsPublicationView: action.payload.opdsPublicationView,
-                },
+                    ...state,
+                    ...{
+                        link,
+                        r2OpdsPublicationBase64,
+                        title,
+                    },
+                }
             );
         default:
             return state;
