@@ -8,6 +8,7 @@
 import { all, call } from "redux-saga/effects";
 
 import * as publicationInfoOpds from "./dialog/publicationInfoOpds";
+import * as publicationInfoReaderAndLib from "./dialog/publicationInfoReaderAndLib";
 import * as i18n from "./i18n";
 import * as lcp from "./lcp";
 import * as opds from "./opds";
@@ -20,5 +21,6 @@ export function* rootSaga() {
         call(opds.watchers),
         call(winInitWatcher),
         call(publicationInfoOpds.watchers),
+        call(publicationInfoReaderAndLib.watchers),
     ]);
 }

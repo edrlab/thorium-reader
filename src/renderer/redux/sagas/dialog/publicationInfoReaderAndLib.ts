@@ -14,13 +14,13 @@ import { all, call, put } from "redux-saga/effects";
 
 import { apiSaga } from "../api";
 
-const REQUEST_ID = "PUBINFO_READER_REQUEST_ID";
+const REQUEST_ID = "PUBINFO_READER_AND_LIB_REQUEST_ID";
 
 // Logger
-const debug = debug_("readium-desktop:renderer:redux:saga:publication-info-reader");
+const debug = debug_("readium-desktop:renderer:redux:saga:publication-info-readerAndLib");
 
 // Triggered when a publication-info-reader is asked
-function* checkReaderPublicationWatcher() {
+function* checkReaderAndLibPublicationWatcher() {
     while (true) {
         const action = yield* takeTyped(dialogActions.openRequest.build);
 
@@ -33,7 +33,6 @@ function* checkReaderPublicationWatcher() {
 
             // dispatch to API a publication get request
             if (id) {
-
                 yield* apiSaga("publication/get", REQUEST_ID, id);
             }
         }
@@ -41,7 +40,7 @@ function* checkReaderPublicationWatcher() {
 }
 
 // Triggered when the publication data are available from the API
-function* updateReaderPublicationWatcher() {
+function* updateReaderAndLibPublicationWatcher() {
     while (true) {
         const action = yield* takeTyped(apiActions.result.build);
         const { requestId } = action.meta.api;
@@ -67,7 +66,7 @@ function* updateReaderPublicationWatcher() {
 
 export function* watchers() {
     yield all([
-        call(checkReaderPublicationWatcher),
-        call(updateReaderPublicationWatcher),
+        call(checkReaderAndLibPublicationWatcher),
+        call(updateReaderAndLibPublicationWatcher),
     ]);
 }

@@ -41,9 +41,19 @@ function* checkOpdsPublicationWatcher() {
 
         if (action.payload?.type === "publication-info-opds") {
 
+            debug("Triggered publication-info-opds");
+
             const dataPayload = action.payload.data as
                 dialogActions.openRequest.Payload<"publication-info-opds">["data"];
             const publication = dataPayload?.publication;
+
+            debug("publication entryLinksArray", publication.entryLinks);
+
+            // dispatch the publication to publication-info even not complete
+            yield put(dialogActions.updateRequest.build<"publication-info-opds">({
+                publication,
+                coverZoom: false,
+            }));
 
             // find the entry url even if all data is already load in publication
             if (publication && Array.isArray(publication.entryLinks) && publication.entryLinks[0]) {

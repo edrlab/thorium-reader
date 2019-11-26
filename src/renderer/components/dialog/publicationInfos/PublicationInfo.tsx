@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import classNames from "classnames";
+import * as debug_ from "debug";
 import * as moment from "moment";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -44,6 +45,9 @@ interface IState {
     needSeeMore: boolean;
 }
 
+// Logger
+const debug = debug_("readium-desktop:renderer:publication-info");
+
 class PublicationInfo extends React.Component<IProps, IState> {
     private descriptionWrapperRef: any;
     private descriptionRef: any;
@@ -66,20 +70,20 @@ class PublicationInfo extends React.Component<IProps, IState> {
 
         if (!this.props.open) {
             return (<></>);
-        } else if (!this.props.publication && !this.props.publication.title) {
-            return (<Loader></Loader>);
         }
 
-        const { __, translator, publication } = this.props;
+        const { __, translator, publication, coverZoom } = this.props;
 
-        const authors = publication.authors &&
+        debug("coverZoom render", coverZoom);
+
+        const authors = () => publication.authors &&
             publication.authors.length
             ? publication.authors.map(
                 (author) => translator.translateContentField(author),
             ).join(", ")
             : "";
 
-        const formatedPublishers = publication.publishers &&
+        const formatedPublishers = () => publication.publishers &&
             publication.publishers.length
             ? publication.publishers.join(", ")
             : undefined;
@@ -94,7 +98,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                                 onClick={() => (
                                     (publication.cover as CoverView).coverUrl
                                     || (publication.cover as IOpdsCoverView).coverLinks[0]?.url
-                                ) && this.props.toggleCoverZoom()}
+                                ) && this.props.toggleCoverZoom(coverZoom)}
                                 onKeyPress={this.coverOnKeyPress}
                             />
                         </div>
@@ -104,7 +108,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                 <div className={styles.dialog_right}>
                     <h2 className={styles.allowUserSelect}>{publication.title}</h2>
                     <div>
-                        <p className={classNames(styles.allowUserSelect, styles.author)}>{authors}</p>
+                        <p className={classNames(styles.allowUserSelect, styles.author)}>{authors()}</p>
                         {this.formatedPublishedDateComponent()}
                         <div className={styles.tags}>
                             <div className={styles.tag_list}>
@@ -144,9 +148,9 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         <h3>{__("catalog.moreInfo")}</h3>
 
                         <p>
-                            {formatedPublishers &&
+                            {formatedPublishers() &&
                                 <><span>{__("catalog.publisher")}
-                                </span> <i className={styles.allowUserSelect}>{formatedPublishers}</i> <br /></>
+                                </span> <i className={styles.allowUserSelect}>{formatedPublishers()}</i> <br /></>
                             }
                             <span>{__("catalog.lang")}</span>{this.publicationLanguageComponent()}<br />
                             <span>{__("catalog.id")}
@@ -158,23 +162,33 @@ class PublicationInfo extends React.Component<IProps, IState> {
                 </div>
             </>;
 
+        const dialogContent = () => {
+            if (publication?.title) {
+                return (
+                    this.props.coverZoom
+                        ?
+                        <Cover
+                            publicationViewMaybeOpds={publication}
+                            coverType="cover"
+                            onClick={() => this.props.toggleCoverZoom(coverZoom)}
+                            onKeyPress={() => this.coverOnKeyPress}
+                        />
+                        :
+                        renderInfo()
+                );
+            }
+            return (<Loader></Loader>);
+        };
+
         return (
             <Dialog
                 open={true}
                 close={() =>
                     this.props.coverZoom ?
-                        this.props.toggleCoverZoom() :
+                        this.props.toggleCoverZoom(coverZoom) :
                         this.props.closeDialog()}
             >
-                {this.props.coverZoom ?
-                    <Cover
-                        publicationViewMaybeOpds={publication}
-                        coverType="cover"
-                        onClick={this.props.toggleCoverZoom}
-                        onKeyPress={this.coverOnKeyPress}
-                    /> :
-                    renderInfo()
-                }
+                {dialogContent()}
             </Dialog>
         );
     }
@@ -245,7 +259,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 
     private coverOnKeyPress = (e: React.KeyboardEvent<HTMLImageElement>) =>
-        e.key === "Enter" && this.props.toggleCoverZoom()
+        e.key === "Enter" && this.props.toggleCoverZoom(this.props.coverZoom)
 
     private toggleSeeMore = () =>
         this.setState({
@@ -261,6 +275,9 @@ class PublicationInfo extends React.Component<IProps, IState> {
 }
 
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
+    // Warning : mapDispatchToProps isn't rendered when the state is updateds
+    // but only when the component is mounted
+    debug("mapDispatchToProps rendered");
     return {
         closeDialog: () => {
             if ((props as IProps).publicationInfoReader) {
@@ -273,18 +290,21 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
                 dialogActions.closeRequest.build(),
             );
         },
-        toggleCoverZoom: () =>
+        toggleCoverZoom: (state: boolean) => {
             dispatch(dialogActions.updateRequest.build(
                 {
-                    coverZoom: !(props as IProps).coverZoom,
+                    coverZoom: !state,
                 },
-            )),
+            ));
+        },
     };
 };
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     ...{
-        open: state.dialog.type === "publication-info-opds" || state.dialog.type === "publication-info-reader",
+        open: state.dialog.type === "publication-info-opds"
+            || state.dialog.type === "publication-info-reader"
+            || state.dialog.type === "publication-info-lib",
         publicationInfoOpds: state.dialog.type === "publication-info-opds",
         publicationInfoReader: state.dialog.type === "publication-info-reader",
         publicationInfoLib: state.dialog.type === "publication-info-lib",

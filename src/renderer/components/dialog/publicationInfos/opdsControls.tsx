@@ -45,48 +45,57 @@ export class OpdsControls extends React.Component<IProps, undefined> {
         }
 
         return <>
-            { opdsPublicationView.openAccessLinks || opdsPublicationView.sampleOrPreviewLinks ?
-            <button
-                onClick={() => verifyImport(opdsPublicationView)}
-                className={styles.lire}
-                disabled={buttonIsDisabled()}
-            >
-                {opdsPublicationView.openAccessLinks ?
-                    __("catalog.addBookToLib") :
-                    __("opds.menu.addExtract")}
-            </button>
-            : <></> }
-            { opdsPublicationView.buyLinks || opdsPublicationView.borrowLinks || opdsPublicationView.subscribeLinks ?
-            <ul className={styles.liens}>
-                { opdsPublicationView.buyLinks &&
-                    <li>
-                        <a role="menuitem"
-                            href={opdsPublicationView.buyLinks[0].url}
-                        >
-                            {__("opds.menu.goBuyBook")}
-                        </a>
-                    </li>
-                }
-                { opdsPublicationView.borrowLinks &&
-                    <li>
-                        <a role="menuitem"
-                            href={opdsPublicationView.borrowLinks[0].url}
-                        >
-                            {__("opds.menu.goLoanBook")}
-                        </a>
-                    </li>
-                }
-                { opdsPublicationView.subscribeLinks &&
-                    <li>
-                        <a role="menuitem"
-                            href={opdsPublicationView.subscribeLinks[0].url}
-                        >
-                            {__("opds.menu.goSubBook")}
-                        </a>
-                    </li>
-                }
-            </ul> : <></>}
-            </>;
+            {opdsPublicationView.openAccessLinks || opdsPublicationView.sampleOrPreviewLinks ?
+                <button
+                    onClick={() => verifyImport(opdsPublicationView)}
+                    className={styles.lire}
+                    disabled={buttonIsDisabled()}
+                >
+                    {opdsPublicationView.openAccessLinks ?
+                        __("catalog.addBookToLib") :
+                        __("opds.menu.addExtract")}
+                </button>
+                : <></>}
+            {opdsPublicationView.buyLinks || opdsPublicationView.borrowLinks || opdsPublicationView.subscribeLinks ?
+                <ul className={styles.liens}>
+                    {
+                        Array.isArray(opdsPublicationView.buyLinks)
+                        && opdsPublicationView.buyLinks[0]
+                        &&
+                        <li>
+                            <a role="menuitem"
+                                href={opdsPublicationView.buyLinks[0].url}
+                            >
+                                {__("opds.menu.goBuyBook")}
+                            </a>
+                        </li>
+                    }
+                    {
+                        Array.isArray(opdsPublicationView.borrowLinks)
+                        && opdsPublicationView.borrowLinks[0]
+                        &&
+                        <li>
+                            <a role="menuitem"
+                                href={opdsPublicationView.borrowLinks[0].url}
+                            >
+                                {__("opds.menu.goLoanBook")}
+                            </a>
+                        </li>
+                    }
+                    {
+                        Array.isArray(opdsPublicationView.subscribeLinks)
+                        && opdsPublicationView.subscribeLinks[0]
+                        &&
+                        <li>
+                            <a role="menuitem"
+                                href={opdsPublicationView.subscribeLinks[0].url}
+                            >
+                                {__("opds.menu.goSubBook")}
+                            </a>
+                        </li>
+                    }
+                </ul> : <></>}
+        </>;
     }
 }
 

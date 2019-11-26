@@ -34,43 +34,56 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
     constructor(props: IProps) {
         super(props);
 
-        this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
     }
 
-    public render(): React.ReactElement<{}>  {
+    public render(): React.ReactElement<{}> {
         const { opdsPublicationView, __, buttonIsDisabled } = this.props;
         return (
             <>
                 <button role="menuitem"
-                    onClick={this.displayPublicationInfo }
+                    onClick={this.displayPublicationInfo}
                 >
                     {__("opds.menu.aboutBook")}
                 </button>
-                { (opdsPublicationView.sampleOrPreviewLinks || opdsPublicationView.openAccessLinks) &&
+                {
+                    (Array.isArray(opdsPublicationView.sampleOrPreviewLinks)
+                        || Array.isArray(opdsPublicationView.openAccessLinks))
+                    &&
                     <button role="menuitem"
-                        onClick={ (e) => this.onAddToCatalogClick(e) }
+                        onClick={(e) => this.onAddToCatalogClick(e)}
                         disabled={buttonIsDisabled()}
                     >
-                        {opdsPublicationView.openAccessLinks ?
-                            __("catalog.addBookToLib") :
-                            __("opds.menu.addExtract")}
+                        {
+                            Array.isArray(opdsPublicationView.openAccessLinks) ?
+                                __("catalog.addBookToLib") :
+                                __("opds.menu.addExtract")
+                        }
                     </button>
                 }
-                { opdsPublicationView.buyLinks &&
+                {
+                    Array.isArray(opdsPublicationView.buyLinks)
+                    && opdsPublicationView.buyLinks[0]
+                    &&
                     <a role="menuitem"
                         href={opdsPublicationView.buyLinks[0].url}
                     >
                         {__("opds.menu.goBuyBook")}
                     </a>
                 }
-                { opdsPublicationView.borrowLinks &&
+                {
+                    Array.isArray(opdsPublicationView.borrowLinks)
+                    && opdsPublicationView.borrowLinks[0]
+                    &&
                     <a role="menuitem"
                         href={opdsPublicationView.borrowLinks[0].url}
                     >
                         {__("opds.menu.goLoanBook")}
                     </a>
                 }
-                { opdsPublicationView.subscribeLinks &&
+                {
+                    Array.isArray(opdsPublicationView.subscribeLinks)
+                    && opdsPublicationView.subscribeLinks[0]
+                    &&
                     <a role="menuitem"
                         href={opdsPublicationView.subscribeLinks[0].url}
                     >
@@ -81,12 +94,12 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
         );
     }
 
-    private onAddToCatalogClick(e: TMouseEvent) {
+    private onAddToCatalogClick = (e: TMouseEvent) => {
         e.preventDefault();
         this.props.verifyImport();
     }
 
-    private displayPublicationInfo(e: TMouseEvent) {
+    private displayPublicationInfo = (e: TMouseEvent) => {
         e.preventDefault();
         this.props.displayPublicationInfo();
     }
