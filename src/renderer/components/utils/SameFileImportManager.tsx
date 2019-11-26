@@ -44,10 +44,9 @@ class SameFileImportManager extends React.Component<IProps, undefined> {
                     dl.url === importState.opdsPublicationView.openAccessLinks[0]?.url
                     || dl.url === importState.opdsPublicationView.sampleOrPreviewLinks[0].url)) {
 
-                apiAction("publication/importOpdsEntry",
-                    importState.opdsPublicationView.entryLinks[0]?.url,
+                apiAction("publication/importOpdsPublicationLink",
+                    importState.opdsPublicationView.entryLinks[0],
                     importState.opdsPublicationView.r2OpdsPublicationBase64,
-                    importState.opdsPublicationView.baseUrl,
                 ).catch((error) => {
                     console.error(`Error to fetch api publication/importOpdsEntry`, error);
                 });

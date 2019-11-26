@@ -32,9 +32,6 @@ import * as uuid from "uuid";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
-import { convertOpds1ToOpds2_EntryToPublication } from "@r2-opds-js/opds/converter";
-import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
-import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
 import { OpdsFeedViewConverter } from "../converter/opds";
@@ -42,6 +39,7 @@ import { extractCrc32OnZip } from "../crc";
 import { diMainGet } from "../di";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
+import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
