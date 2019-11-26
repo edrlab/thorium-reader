@@ -28,10 +28,12 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
-import { JSON as TAJSON } from "ta-json-x";
 import * as uuid from "uuid";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
+import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { convertOpds1ToOpds2_EntryToPublication } from "@r2-opds-js/opds/converter";
+import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
@@ -156,7 +158,7 @@ export class CatalogService {
 
             const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
             const r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
-            const r2OpdsPublication = TAJSON.deserialize<OPDSPublication>(r2OpdsPublicationJson, OPDSPublication);
+            const r2OpdsPublication = TaJsonDeserialize<OPDSPublication>(r2OpdsPublicationJson, OPDSPublication);
             const tags = OpdsFeedViewConverter.getTagsFromOpdsPublication(r2OpdsPublication);
 
             // Merge with the original publication
@@ -220,7 +222,7 @@ export class CatalogService {
     private async importLcplFile(filePath: string): Promise<PublicationDocument> {
         const jsonStr = fs.readFileSync(filePath, { encoding: "utf8" });
         const lcpJson = JSON.parse(jsonStr);
-        const r2LCP = TAJSON.deserialize<LCP>(lcpJson, LCP);
+        const r2LCP = TaJsonDeserialize<LCP>(lcpJson, LCP);
         r2LCP.JsonSource = jsonStr;
 
         // search the path of the epub file
@@ -285,7 +287,7 @@ export class CatalogService {
         // (no need to fetch ZIP data beyond this point)
         r2Publication.freeDestroy();
 
-        const r2PublicationJson = TAJSON.serialize(r2Publication);
+        const r2PublicationJson = TaJsonSerialize(r2Publication);
         const r2PublicationStr = JSON.stringify(r2PublicationJson);
         const r2PublicationBase64 = Buffer.from(r2PublicationStr).toString("base64");
 

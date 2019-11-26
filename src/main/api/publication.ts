@@ -13,11 +13,9 @@ import { PublicationDocument } from "readium-desktop/main/db/document/publicatio
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
-import { JSON as TAJSON } from "ta-json-x";
 import { isArray } from "util";
 
-import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
-import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 
 // import * as debug_ from "debug";
 

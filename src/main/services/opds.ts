@@ -10,9 +10,9 @@ import { injectable } from "inversify";
 import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
 import { IOpdsLinkView, IOpdsResultView } from "readium-desktop/common/views/opds";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
-import { JSON as TAJSON } from "ta-json-x";
 import * as xmldom from "xmldom";
 
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { convertOpds1ToOpds2 } from "@r2-opds-js/opds/converter";
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
@@ -97,7 +97,7 @@ export class OpdsService {
                 const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
                 r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
             } else {
-                r2OpdsFeed = TAJSON.deserialize<OPDSFeed>(
+                r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
                     JSON.parse(opdsFeedData.body),
                     OPDSFeed,
                 );
