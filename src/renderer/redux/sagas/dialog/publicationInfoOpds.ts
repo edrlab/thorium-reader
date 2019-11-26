@@ -8,21 +8,23 @@
 import * as debug_ from "debug";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { TApiMethod } from "readium-desktop/main/api/api.type";
 import { TPublication } from "readium-desktop/renderer/type/publication.type";
+import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { all, call, put } from "redux-saga/effects";
 
 import { apiSaga } from "../api";
-import { ReturnPromiseType } from "readium-desktop/typings/promise";
-import { TApiMethod } from "readium-desktop/main/api/api.type";
-import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 
 const REQUEST_ID = "PUBINFO_OPDS_REQUEST_ID";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:redux:saga:opds");
 
+// global access to opdsLInksView in iterator
 let linksIterator: IterableIterator<IOpdsLinkView>;
 
+// While a link is available dispatch API Redux
 function* browsePublication() {
     const linkIterator = linksIterator.next();
 
@@ -33,15 +35,8 @@ function* browsePublication() {
     }
 }
 
+// Triggered when a publication-info-opds is asked
 function* checkOpdsPublicationWatcher() {
-    // get the publication-info-opds action
-    // si tout les champs les plus important sont remplis ??
-    // retourner l'effect le redux reducers va chargé les données dans dialog.data
-    // sinon chercher une url publication entry
-    // si il y'en a une emettre un dispatch vers l'api browsePublication
-    // et recuperer les donnée dans une autre fct watcher (cf opds)
-    // sinon retourner l'effect mais les données seront inconsistante a l'affichage
-
     while (true) {
         const action = yield* takeTyped(dialogActions.openRequest.build);
 
@@ -57,6 +52,7 @@ function* checkOpdsPublicationWatcher() {
     }
 }
 
+// Triggered when the publication data are available from the API
 function* updateOpdsPublicationWatcher() {
     while (true) {
         const action = yield* takeTyped(apiActions.result.build);
