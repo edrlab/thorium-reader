@@ -18,6 +18,9 @@ import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
+// FIXME : How used URITemplate
+// import * as URITemplate from "urijs/src/URITemplate";
+
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
 
