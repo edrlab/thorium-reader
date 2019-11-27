@@ -55,7 +55,7 @@ const GetLinksView = <T extends Link>(
                             relFlag = true;
                         } else if (filter.rel instanceof RegExp && filter.rel.test(rel)) {
                             relFlag = true;
-                        } else if (rel.replace(/\s/g, "") === filter.rel) {
+                        } else if (rel?.replace(/\s/g, "") === filter.rel) {
                             relFlag = true;
                         }
                     });

@@ -58,6 +58,8 @@ function* checkOpdsPublicationWatcher() {
             // find the entry url even if all data is already load in publication
             if (publication && Array.isArray(publication.entryLinks) && publication.entryLinks[0]) {
                 linksIterator = publication.entryLinks.values();
+
+                yield* browsePublication();
             }
         }
     }

@@ -69,7 +69,8 @@ class Cover extends React.Component<IProps, undefined> {
         } else {
             const { cover } = this.props.publicationViewMaybeOpds;
             const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
-            const thumbnailUrl = cover.coverUrl || cover.coverLinks[0]?.url;
+            const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
+
             let defaultUrl: string;
             if (this.props.coverType === "cover") {
                 defaultUrl = coverUrl || thumbnailUrl;

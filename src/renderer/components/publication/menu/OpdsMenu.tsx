@@ -48,8 +48,9 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
 
         const openAccessLinksButton = () =>
             Array.isArray(opdsPublicationView.openAccessLinks)
-            && opdsPublicationView.openAccessLinks.map((ln) =>
+            && opdsPublicationView.openAccessLinks.map((ln, idx) =>
                 <button
+                    key={`openAccess-${idx}`}
                     onClick={() => verifyImport(
                         ln,
                         opdsPublicationView.r2OpdsPublicationBase64,
@@ -63,8 +64,9 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
 
         const sampleOrPreviewLinksButton = () =>
             Array.isArray(opdsPublicationView.sampleOrPreviewLinks)
-            && opdsPublicationView.sampleOrPreviewLinks.map((ln) =>
+            && opdsPublicationView.sampleOrPreviewLinks.map((ln, idx) =>
                 <button
+                    key={`sample-${idx}`}
                     onClick={() => verifyImport(
                         ln,
                         opdsPublicationView.r2OpdsPublicationBase64,
@@ -80,8 +82,10 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
 
             const buyList = () =>
                 Array.isArray(opdsPublicationView.buyLinks)
-                && opdsPublicationView.buyLinks.map((ln) =>
-                        <a role="menuitem"
+                && opdsPublicationView.buyLinks.map((ln, idx) =>
+                        <a
+                            key={`buy-${idx}`}
+                            role="menuitem"
                             href={ln.url}
                         >
                             {__("opds.menu.goBuyBook")}
@@ -90,8 +94,10 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
 
             const borrowList = () =>
                 Array.isArray(opdsPublicationView.borrowLinks)
-                && opdsPublicationView.borrowLinks.map((ln) =>
-                        <a role="menuitem"
+                && opdsPublicationView.borrowLinks.map((ln, idx) =>
+                        <a
+                            key={`borrow-${idx}`}
+                            role="menuitem"
                             href={ln.url}
                         >
                             {__("opds.menu.goLoanBook")}
@@ -100,8 +106,10 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
 
             const subscribeList = () =>
                 Array.isArray(opdsPublicationView.subscribeLinks)
-                && opdsPublicationView.subscribeLinks.map((ln) =>
-                        <a role="menuitem"
+                && opdsPublicationView.subscribeLinks.map((ln, idx) =>
+                        <a
+                            key={`subscribe-${idx}`}
+                            role="menuitem"
                             href={ln.url}
                         >
                             {__("opds.menu.goSubBook")}

@@ -24,10 +24,6 @@ const findDownload = (dls: Download[], link: IOpdsLinkView) =>
         (dl) => dl.url === link.url,
     );
 
-// FIXME :
-// the import state is used only for this test
-// try to remove import reducer and state and just dispatch a custorm action catch by redux-saga
-
 function* sameFileImportWatcher() {
     while (true) {
         const action = yield* takeTyped(importActions.verify.build);
