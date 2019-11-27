@@ -42,7 +42,7 @@ function* sameFileImportWatcher() {
 
             const translator = diRendererGet("translator");
 
-            put(
+            yield put(
                 toastActions.openRequest.build(
                     ToastType.Success,
                     translator.translate("message.import.alreadyImport",
