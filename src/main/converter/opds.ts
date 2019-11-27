@@ -31,6 +31,11 @@ interface IGetLinksViewFilter {
     type?: string | string[] | RegExp;
 }
 
+const supportedFileTypeLinkArray = [
+    "application/epub+zip",
+    "application/vnd.readium.lcp.license-1.0+json",
+];
+
 const GetLinksView = <T extends Link>(
     baseUrl: string,
     links: T[] | undefined,
@@ -176,12 +181,14 @@ export class OpdsFeedViewConverter {
                 "http://opds-spec.org/acquisition/sample",
                 "http://opds-spec.org/acquisition/preview",
             ],
+            type: supportedFileTypeLinkArray,
         });
         const acquisitionLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             rel: [
                 "http://opds-spec.org/acquisition",
                 "http://opds-spec.org/acquisition/open-access",
             ],
+            type: supportedFileTypeLinkArray,
         });
         const buyLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/buy",
