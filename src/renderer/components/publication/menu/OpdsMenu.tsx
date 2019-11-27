@@ -37,7 +37,101 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { opdsPublicationView, __, buttonIsDisabled } = this.props;
+
+        const {
+            opdsPublicationView,
+            verifyImport,
+            openAccessButtonIsDisabled,
+            sampleButtonIsDisabled,
+            __,
+        } = this.props;
+
+        const openAccessLinksButton = () =>
+            Array.isArray(opdsPublicationView.openAccessLinks)
+            && opdsPublicationView.openAccessLinks.map((ln) =>
+                <button
+                    onClick={() => verifyImport(
+                        ln,
+                        opdsPublicationView.r2OpdsPublicationBase64,
+                        opdsPublicationView.title,
+                    )}
+                    disabled={openAccessButtonIsDisabled()}
+                >
+                    {__("catalog.addBookToLib")}
+                </button>,
+            );
+
+        const sampleOrPreviewLinksButton = () =>
+            Array.isArray(opdsPublicationView.sampleOrPreviewLinks)
+            && opdsPublicationView.sampleOrPreviewLinks.map((ln) =>
+                <button
+                    onClick={() => verifyImport(
+                        ln,
+                        opdsPublicationView.r2OpdsPublicationBase64,
+                        opdsPublicationView.title,
+                    )}
+                    disabled={sampleButtonIsDisabled()}
+                >
+                    {__("opds.menu.addExtract")}
+                </button>,
+            );
+
+        const feedLinksList = () => {
+
+            const buyList = () =>
+                Array.isArray(opdsPublicationView.buyLinks)
+                && opdsPublicationView.buyLinks.map((ln) =>
+                        <a role="menuitem"
+                            href={ln.url}
+                        >
+                            {__("opds.menu.goBuyBook")}
+                        </a>,
+                );
+
+            const borrowList = () =>
+                Array.isArray(opdsPublicationView.borrowLinks)
+                && opdsPublicationView.borrowLinks.map((ln) =>
+                        <a role="menuitem"
+                            href={ln.url}
+                        >
+                            {__("opds.menu.goLoanBook")}
+                        </a>,
+                );
+
+            const subscribeList = () =>
+                Array.isArray(opdsPublicationView.subscribeLinks)
+                && opdsPublicationView.subscribeLinks.map((ln) =>
+                        <a role="menuitem"
+                            href={ln.url}
+                        >
+                            {__("opds.menu.goSubBook")}
+                        </a>,
+                );
+
+            if (
+                (Array.isArray(opdsPublicationView.buyLinks)
+                    && opdsPublicationView.buyLinks.length)
+                || (Array.isArray(opdsPublicationView.borrowLinks)
+                    && opdsPublicationView.borrowLinks.length)
+                || (Array.isArray(opdsPublicationView.subscribeLinks)
+                    && opdsPublicationView.subscribeLinks.length)
+            ) {
+                return (
+                    <>
+                        {
+                            buyList()
+                        }
+                        {
+                            borrowList()
+                        }
+                        {
+                            subscribeList()
+                        }
+                    </>
+                );
+            }
+            return (<></>);
+        };
         return (
             <>
                 <button role="menuitem"
@@ -46,57 +140,16 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
                     {__("opds.menu.aboutBook")}
                 </button>
                 {
-                    (Array.isArray(opdsPublicationView.sampleOrPreviewLinks)
-                        || Array.isArray(opdsPublicationView.openAccessLinks))
-                    &&
-                    <button role="menuitem"
-                        onClick={(e) => this.onAddToCatalogClick(e)}
-                        disabled={buttonIsDisabled()}
-                    >
-                        {
-                            Array.isArray(opdsPublicationView.openAccessLinks) ?
-                                __("catalog.addBookToLib") :
-                                __("opds.menu.addExtract")
-                        }
-                    </button>
+                    openAccessLinksButton()
                 }
                 {
-                    Array.isArray(opdsPublicationView.buyLinks)
-                    && opdsPublicationView.buyLinks[0]
-                    &&
-                    <a role="menuitem"
-                        href={opdsPublicationView.buyLinks[0].url}
-                    >
-                        {__("opds.menu.goBuyBook")}
-                    </a>
+                    sampleOrPreviewLinksButton()
                 }
                 {
-                    Array.isArray(opdsPublicationView.borrowLinks)
-                    && opdsPublicationView.borrowLinks[0]
-                    &&
-                    <a role="menuitem"
-                        href={opdsPublicationView.borrowLinks[0].url}
-                    >
-                        {__("opds.menu.goLoanBook")}
-                    </a>
-                }
-                {
-                    Array.isArray(opdsPublicationView.subscribeLinks)
-                    && opdsPublicationView.subscribeLinks[0]
-                    &&
-                    <a role="menuitem"
-                        href={opdsPublicationView.subscribeLinks[0].url}
-                    >
-                        {__("opds.menu.goSubBook")}
-                    </a>
+                    feedLinksList()
                 }
             </>
         );
-    }
-
-    private onAddToCatalogClick = (e: TMouseEvent) => {
-        e.preventDefault();
-        this.props.verifyImport();
     }
 
     private displayPublicationInfo = (e: TMouseEvent) => {
@@ -114,20 +167,28 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
                 },
             ));
         },
-        verifyImport: () => {
-            dispatch(importActions.verify.build(props.opdsPublicationView));
+        verifyImport: (...data: Parameters<typeof importActions.verify.build>) => {
+            dispatch(dialogActions.closeRequest.build());
+            dispatch(importActions.verify.build(...data));
         },
     };
 };
 
 const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
-        buttonIsDisabled: () => {
-            const foundDownload = state.download.downloads.find((dl) => {
-                return dl.url === props.opdsPublicationView.openAccessLinks[0]?.url ||
-                    dl.url === props.opdsPublicationView.sampleOrPreviewLinks[0]?.url;
-            });
-            return foundDownload ? true : false;
+        openAccessButtonIsDisabled: () => {
+            return !!state.download.downloads.find(
+                (dl) => props.opdsPublicationView.openAccessLinks.find(
+                    (ln) => ln.url === dl.url,
+                ),
+            );
+        },
+        sampleButtonIsDisabled: () => {
+            return !!state.download.downloads.find(
+                (dl) => props.opdsPublicationView.sampleOrPreviewLinks.find(
+                    (ln) => ln.url === dl.url,
+                ),
+            );
         },
     };
 };
