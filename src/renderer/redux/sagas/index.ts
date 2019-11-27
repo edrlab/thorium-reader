@@ -12,6 +12,7 @@ import * as publicationInfoReaderAndLib from "./dialog/publicationInfoReaderAndL
 import * as i18n from "./i18n";
 import * as lcp from "./lcp";
 import * as opds from "./opds";
+import * as sameFileImport from "./sameFileImport";
 import { winInitWatcher } from "./win";
 
 export function* rootSaga() {
@@ -22,5 +23,6 @@ export function* rootSaga() {
         call(winInitWatcher),
         call(publicationInfoOpds.watchers),
         call(publicationInfoReaderAndLib.watchers),
+        call(sameFileImport.watchers),
     ]);
 }
