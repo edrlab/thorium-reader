@@ -126,7 +126,10 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                 files: dbDoc.files,
                 coverFile: dbDoc.coverFile,
                 customCover: dbDoc.customCover,
+
                 lcp: dbDoc.lcp,
+                lcpRightsCopies: dbDoc.lcpRightsCopies,
+
                 hash: dbDoc.hash,
             },
         );

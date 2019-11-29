@@ -19,8 +19,8 @@ import {
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { RootState } from "readium-desktop/renderer/redux/states";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
 
@@ -153,15 +153,19 @@ export class LcpManager {
             publicationDocument.resources = {};
         }
         if (r2Lcp) {
-            publicationDocument.lcp = this.convertLcpLsdInfo(r2Lcp);
-
             const r2LCPStr = r2Lcp.JsonSource ?? JSON.stringify(TaJsonSerialize(r2Lcp));
             publicationDocument.resources.r2LCPBase64 = Buffer.from(r2LCPStr).toString("base64");
+
             if (r2Lcp.LSD) {
                 const r2LSDJson = TaJsonSerialize(r2Lcp.LSD);
                 const r2LSDStr = JSON.stringify(r2LSDJson);
                 publicationDocument.resources.r2LSDBase64 = Buffer.from(r2LSDStr).toString("base64");
             }
+
+            publicationDocument.lcp = this.convertLcpLsdInfo(
+                r2Lcp,
+                publicationDocument.resources.r2LCPBase64,
+                publicationDocument.resources.r2LSDBase64);
         }
     }
 
@@ -563,7 +567,7 @@ export class LcpManager {
         return undefined;
     }
 
-    public convertLcpLsdInfo(lcp: LCP): LcpInfo {
+    public convertLcpLsdInfo(lcp: LCP, r2LCPBase64: string, r2LSDBase64: string): LcpInfo {
 
         const lcpInfo: LcpInfo = {
             provider: lcp.Provider,
@@ -575,6 +579,7 @@ export class LcpManager {
                 start: lcp.Rights.Start,
                 end: lcp.Rights.End,
             } : undefined,
+            r2LCPBase64,
         };
 
         if (lcp.Links) {
@@ -584,6 +589,7 @@ export class LcpManager {
             if (statusLink) {
                 lcpInfo.lsd = {
                     statusUrl: statusLink.Href,
+                    r2LSDBase64,
                 };
             }
         }

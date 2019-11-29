@@ -367,7 +367,9 @@ export class CatalogService {
             coverFile: null,
             customCover: null,
             hash: hash ? hash : (hash === null ? undefined : await extractCrc32OnZip(filePath)),
+
             lcp: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
+            lcpRightsCopies: 0,
 
             // OPDSPublication? seems unused!
             // opdsPublication: undefined,

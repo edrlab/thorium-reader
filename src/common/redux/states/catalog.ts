@@ -5,10 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Publication } from "readium-desktop/common/models/publication";
 import { Tag } from "readium-desktop/common/models/tag";
 
+// import { Publication } from "readium-desktop/common/models/publication";
+
 export interface CatalogState {
-    publications: Publication[];
+
+    // TODO unused?
+    // publications: Publication[];
+
     tagList: Tag[];
 }

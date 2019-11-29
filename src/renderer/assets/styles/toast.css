@@ -43,6 +43,8 @@
         top: 0;
         height: 1.3rem;
         width: 1.3rem;
+        padding: 0;
+        margin: 3px;
 
         & svg {
             height: 100%;

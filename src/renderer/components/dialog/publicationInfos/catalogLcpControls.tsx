@@ -76,14 +76,16 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
                 {(!lsdStatus ||
                 (lsdStatus === StatusEnum.Active || lsdStatus === StatusEnum.Ready)) ?
                 <button  onClick={this.handleRead} className={styles.lire}>{__("catalog.readBook")}</button>
-                : (lsdStatus === StatusEnum.Expired ?
-                <p style={{color: "red"}}>{__("publication.expiredLcp")}</p>
-                : ((lsdStatus === StatusEnum.Revoked || lsdStatus === StatusEnum.Cancelled) ?
-                <p style={{color: "red"}}>{__("publication.revokedLcp")}</p>
-                : (lsdStatus === StatusEnum.Returned ?
-                <p style={{color: "red"}}>{__("publication.returnedLcp")}</p> :
-                <p style={{color: "red"}}>{`LCP LSD: ${lsdStatus}`}</p>
-                )))}
+                : <></>
+                // (lsdStatus === StatusEnum.Expired ?
+                // <p style={{color: "red"}}>{__("publication.expiredLcp")}</p>
+                // : ((lsdStatus === StatusEnum.Revoked || lsdStatus === StatusEnum.Cancelled) ?
+                // <p style={{color: "red"}}>{__("publication.revokedLcp")}</p>
+                // : (lsdStatus === StatusEnum.Returned ?
+                // <p style={{color: "red"}}>{__("publication.returnedLcp")}</p> :
+                // <p style={{color: "red"}}>{`LCP LSD: ${lsdStatus}`}</p>
+                // )))
+                }
                 <ul className={styles.liens}>
                     {
                         // lsdStatus === StatusEnum.Expired &&

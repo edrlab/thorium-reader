@@ -27,7 +27,10 @@ export interface PublicationDocument extends Identifiable, Timestampable {
     files?: File[];
     coverFile?: File;
     customCover?: CustomCover;
+
     lcp?: LcpInfo;
+    lcpRightsCopies?: number;
+
     hash: string;
 }
 export type PublicationDocumentWithoutTimestampable = Omit<PublicationDocument, keyof Timestampable>;
