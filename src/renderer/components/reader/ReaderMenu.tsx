@@ -313,6 +313,9 @@ export class ReaderMenu extends React.Component<IProps, IState> {
     }
 
     private buildGoToPageSection() {
+        if (!this.props.r2Publication) {
+            return <></>;
+        }
         const { __ } = this.props;
         const error = this.state.pageError;
         return <div className={styles.goToPage}>

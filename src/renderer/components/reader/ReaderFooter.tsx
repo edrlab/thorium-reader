@@ -21,7 +21,7 @@ interface IBaseProps extends TranslatorProps {
     navLeftOrRight: (left: boolean) => void;
     fullscreen: boolean;
     currentLocation: LocatorExtended;
-    r2Publication: R2Publication;
+    r2Publication: R2Publication | undefined;
     handleLinkClick: (event: any, url: string) => void;
 }
 
@@ -136,7 +136,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
     private getArrowBoxPosition() {
         const { currentLocation, r2Publication } = this.props;
-        if (!currentLocation) {
+        if (!r2Publication || !currentLocation) {
             return undefined;
         }
 

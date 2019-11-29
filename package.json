@@ -175,7 +175,7 @@
     "qs": "^6.9.1",
     "query-string": "^6.9.0",
     "r2-lcp-js": "^1.0.19",
-    "r2-navigator-js": "^1.1.40",
+    "r2-navigator-js": "^1.1.41",
     "r2-opds-js": "^1.0.21",
     "r2-shared-js": "^1.0.24",
     "r2-streamer-js": "^1.0.23",

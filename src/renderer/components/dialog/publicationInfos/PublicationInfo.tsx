@@ -26,6 +26,8 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
+import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
+
 import Dialog from "../Dialog";
 import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
@@ -156,6 +158,68 @@ class PublicationInfo extends React.Component<IProps, IState> {
             return (<></>);
         })();
 
+        const locale = this.props.translator.getLocale();
+
+        // https://momentjs.com/docs/#/displaying/
+        moment.locale(locale);
+
+        const lcp = (normalOrOpdsPublicationView as PublicationView).lcp;
+        const lcpRightsCopy = (lcp?.rights?.copy) ? lcp.rights.copy : 0;
+        const lcpRightsCopies = (normalOrOpdsPublicationView as PublicationView).lcpRightsCopies ?? 0;
+
+        // const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
+        // let lcpRightsStartDateStr: string | undefined;
+        // if (lcpRightsStartDate) {
+        //     try {
+        //         lcpRightsStartDateStr = moment(lcpRightsStartDate).format("LLL");
+        //     } catch (err) {
+        //         console.log(err);
+        //         try {
+        //             lcpRightsStartDateStr = lcpRightsStartDate.toLocaleString(locale);
+        //         } catch (err2) {
+        //             console.log(err2);
+        //             lcpRightsStartDateStr = lcpRightsStartDate.toLocaleString();
+        //         }
+        //     }
+        // }
+
+        const lcpRightsEndDate = (lcp?.rights?.end) ? lcp.rights.end : undefined;
+        let lcpRightsEndDateStr: string | undefined;
+        if (lcpRightsEndDate) {
+            try {
+                lcpRightsEndDateStr = moment(lcpRightsEndDate).format("LLL");
+            } catch (err) {
+                console.log(err);
+                try {
+                    lcpRightsEndDateStr = lcpRightsEndDate.toLocaleString(locale);
+                } catch (err2) {
+                    console.log(err2);
+                    lcpRightsEndDateStr = lcpRightsEndDate.toLocaleString();
+                }
+            }
+        }
+
+        // TODO: fix r2-lcp-js to handle encrypted fields
+        // (need lcp.node with userkey decrypt, not contentkey):
+        // if (lcp && lcp.r2LCPBase64) {
+        //     const r2LCPStr = Buffer.from(lcp.r2LCPBase64, "base64").toString("utf-8");
+        //     const r2LCPJson = JSON.parse(r2LCPStr);
+        //     const r2LCP = TaJsonDeserialize<LCP>(r2LCPJson, LCP);
+        //     r2LCP.JsonSource = r2LCPStr;
+
+        //     console.log(r2LCP.User.Name);
+        //     console.log(r2LCP.User.Email);
+        //     console.log(JSON.stringify(r2LCP.User.Encrypted, null, 4));
+        // }
+
+        const lsdOkay = lcp &&
+            lcp.lsd &&
+            lcp.lsd.lsdStatus;
+
+        const lsdStatus = lsdOkay &&
+            lcp.lsd.lsdStatus.status ?
+            lcp.lsd.lsdStatus.status : undefined;
+
         const renderInfo = () =>
             <>
                 <div className={styles.dialog_left}>
@@ -177,7 +241,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         {formatedPublishedDateComponent}
                         <div className={styles.tags}>
                             <div className={styles.tag_list}>
-                                <span>Tags</span>
+                                <span>{__("catalog.tags")}</span>
                                 <TagManager
                                     publicationIdentifier={(normalOrOpdsPublicationView as PublicationView).identifier}
                                     tags={normalOrOpdsPublicationView.tags}
@@ -217,12 +281,38 @@ class PublicationInfo extends React.Component<IProps, IState> {
                                 <><span>{__("catalog.publisher")}
                                 </span> <i className={styles.allowUserSelect}>{formatedPublishers}</i> <br /></>
                             }
-                            <span>{__("catalog.lang")}</span>{publicationLanguageComponent}<br />
-                            <span>{__("catalog.id")}
-                            </span>
+                            <span>{__("catalog.lang")}: </span>{publicationLanguageComponent}<br />
+                            <span>{__("catalog.id")}: </span>
                             <i className={styles.allowUserSelect}>{normalOrOpdsPublicationView.workIdentifier}</i>
                             <br />
                         </p>
+
+                        {lcp && <>
+                            <h3>LCP</h3>
+                            <p className={classNames(styles.allowUserSelect)}
+                            >
+                                {(lsdStatus &&
+                                    (lsdStatus !== StatusEnum.Active && lsdStatus !== StatusEnum.Ready)) && <>
+                                <span style={{color: "red"}}>{(lsdStatus === StatusEnum.Expired ?
+                                        __("publication.expiredLcp")
+                                        : ((lsdStatus === StatusEnum.Revoked || lsdStatus === StatusEnum.Cancelled) ?
+                                        __("publication.revokedLcp")
+                                        : (lsdStatus === StatusEnum.Returned ?
+                                        __("publication.returnedLcp") :
+                                        `LCP LSD: ${lsdStatus}`)))}</span>
+                                <br /><br />
+                                </>}
+
+                                {lcpRightsEndDateStr && <>
+                                <span>( </span><i>{lcpRightsEndDateStr}</i><span> )</span>
+                                <br /><br />
+                                </>}
+
+                                {lcpRightsCopy && <>
+                                <span>{__("app.edit.copy")}: </span> <i>{lcpRightsCopies} / {lcpRightsCopy}</i><br />
+                                </>}
+                            </p>
+                        </>}
                     </div>
                 </div>
             </>;

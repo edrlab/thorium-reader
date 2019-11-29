@@ -7,13 +7,13 @@
 
 import * as classNames from "classnames";
 import * as path from "path";
-import * as queryString from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
 import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { LocatorView } from "readium-desktop/common/views/locator";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
 import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
 import {
@@ -33,7 +33,8 @@ import { Store, Unsubscribe } from "redux";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import {
-    IEventPayload_R2_EVENT_READIUMCSS, IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
+    IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_READIUMCSS,
+    IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
 } from "@r2-navigator-js/electron/common/events";
 import {
     colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
@@ -185,8 +186,10 @@ interface IState {
     shortcutEnable: boolean;
     landmarksOpen: boolean;
     landmarkTabOpen: number;
+
+    publicationView: TPublicationApiGet_result | undefined; // PublicationView
     r2Publication: R2Publication | undefined;
-    publicationInfo: TPublicationApiGet_result | undefined;
+
     menuOpen: boolean;
     fullscreen: boolean;
     indexes: any; // TODO any?!
@@ -211,7 +214,6 @@ export class Reader extends React.Component<IProps, IState> {
     // @lazyInject(diRendererSymbolTable.translator)
     // private translator: Translator;
 
-    private pubId: string;
     private unsubscribe: Unsubscribe;
 
     constructor(props: IProps) {
@@ -255,16 +257,16 @@ export class Reader extends React.Component<IProps, IState> {
             },
             landmarksOpen: false,
             landmarkTabOpen: 0,
+
+            publicationView: undefined,
             r2Publication: undefined,
-            publicationInfo: undefined,
+
             menuOpen: false,
             fullscreen: false,
             visibleBookmarkList: [],
             currentLocation: undefined,
             bookmarks: undefined,
         };
-
-        this.pubId = queryString.parse(location.search).pubId as string;
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -281,11 +283,11 @@ export class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
-        // queryParams.focusInside
-        const focusInside = queryString.parse(location.search).focusInside === "true";
-        if (focusInside) {
-            this.fastLinkRef.focus();
-        }
+        // TODO: unused functionality?
+        // const focusInside = queryParams.focusInside === "true";
+        // if (focusInside) {
+        //     this.fastLinkRef.focus();
+        // }
 
         this.setState({
             publicationJsonUrl,
@@ -329,10 +331,8 @@ export class Reader extends React.Component<IProps, IState> {
 
                 this.setState({settingsValues: settings, indexes});
 
-                // this.state.r2Publication is initialized in loadPublicationIntoViewport(),
-                // which calls installNavigatorDOM() which in turn allows navigator API functions to be called safely
+                // readiumCssOnOff() API only once navigator ready
                 if (this.state.r2Publication) {
-                    // Push reader config to navigator
                     readiumCssOnOff();
                 }
             }
@@ -374,9 +374,6 @@ export class Reader extends React.Component<IProps, IState> {
                 progression: undefined,
             },
         };
-
-        const r2Publication = await this.loadPublicationIntoViewport(locator);
-        this.setState({r2Publication});
 
         const keyDownEventHandler = (ev: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => {
             // DEPRECATED
@@ -421,7 +418,10 @@ export class Reader extends React.Component<IProps, IState> {
         ], this.findBookmarks);
 
         apiAction("publication/get", queryParams.pubId)
-            .then((publicationInfo) => this.setState({publicationInfo}))
+            .then((publicationView) => { // TPublicationApiGet_result === PublicationView
+                this.setState({publicationView});
+                this.loadPublicationIntoViewport(publicationView, locator);
+            })
             .catch((error) => console.error("Error to fetch api publication/get", error));
     }
 
@@ -511,14 +511,14 @@ export class Reader extends React.Component<IProps, IState> {
     }
 
     private displayPublicationInfo() {
-        if (this.state.publicationInfo) {
+        if (this.state.publicationView) {
             // TODO: subscribe to Redux action type == CloseRequest
             // in order to reset shortcutEnable to true? Problem: must be specific to this reader window.
             // So instead we subscribe to DOM event "Thorium:DialogClose", but this is a short-term hack!
             this.setState({
                 shortcutEnable: false,
             });
-            this.props.displayPublicationInfo(this.state.publicationInfo.identifier);
+            this.props.displayPublicationInfo(this.state.publicationView.identifier);
         }
     }
 
@@ -526,31 +526,35 @@ export class Reader extends React.Component<IProps, IState> {
         handleLinkLocator(locator);
     }
 
-    private async loadPublicationIntoViewport(locator: Locator): Promise<R2Publication> {
-        let response: Response;
-        try {
-            // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webframe
-            // queryParams.pub is READIUM2_ELECTRON_HTTP_PROTOCOL (see convertCustomSchemeToHttpUrl)
-            // publicationJsonUrl is https://127.0.0.1:PORT
-            response = await fetch(publicationJsonUrl);
-        } catch (e) {
-            return Promise.reject(e);
-        }
-        if (!response.ok) {
-            console.log("BAD RESPONSE?!");
-        }
+    private async loadPublicationIntoViewport(
+        publicationView: PublicationView,
+        locator: Locator) {
 
-        let r2PublicationJson: any | undefined;
-        try {
-            r2PublicationJson = await response.json();
-        } catch (e) {
-            console.log(e);
-            return Promise.reject(e);
-        }
-        if (!r2PublicationJson) {
-            return Promise.reject("!r2PublicationJson");
-        }
+        // let response: Response;
+        // try {
+        //     // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webframe
+        //     // queryParams.pub is READIUM2_ELECTRON_HTTP_PROTOCOL (see convertCustomSchemeToHttpUrl)
+        //     // publicationJsonUrl is https://127.0.0.1:PORT
+        //     response = await fetch(publicationJsonUrl);
+        // } catch (e) {
+        //     console.log(e);
+        //     return;
+        // }
+        // if (!response.ok) {
+        //     console.log("BAD RESPONSE?!");
+        // }
+        // let r2PublicationJson: any;
+        // try {
+        //     r2PublicationJson = await response.json();
+        // } catch (e) {
+        //     console.log(e);
+        //     return;
+        // }
+        // const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+        const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
+        const r2PublicationJson = JSON.parse(r2PublicationStr);
         const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+        this.setState({r2Publication});
 
         if (r2Publication.Metadata && r2Publication.Metadata.Title) {
             const title = this.props.translator.translateContentField(r2Publication.Metadata.Title);
@@ -583,6 +587,12 @@ export class Reader extends React.Component<IProps, IState> {
 
         preloadPath = preloadPath.replace(/\\/g, "/");
 
+        const clipboardInterceptor = !publicationView.lcp ? undefined :
+            (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
+                apiAction("reader/clipboardCopy", queryParams.pubId, clipboardData)
+                    .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
+            };
+
         installNavigatorDOM(
             r2Publication,
             publicationJsonUrl,
@@ -590,9 +600,8 @@ export class Reader extends React.Component<IProps, IState> {
             preloadPath,
             locator,
             true,
+            clipboardInterceptor,
         );
-
-        return r2Publication;
     }
 
     private handleMenuButtonClick() {
@@ -625,12 +634,6 @@ export class Reader extends React.Component<IProps, IState> {
             return;
         }
 
-        // this.state.r2Publication is initialized in loadPublicationIntoViewport(),
-        // which calls installNavigatorDOM() which in turn allows navigator API functions to be called safely
-        if (!this.state.r2Publication) {
-            return;
-        }
-
         const locator = this.state.currentLocation ? this.state.currentLocation.locator : undefined;
 
         const visibleBookmarkList = [];
@@ -638,9 +641,11 @@ export class Reader extends React.Component<IProps, IState> {
             // calling into the webview via IPC is expensive,
             // let's filter out ahead of time based on document href
             if (!locator || locator.href === bookmark.locator.href) {
-                const isVisible = await isLocatorVisible(bookmark.locator);
-                if ( isVisible ) {
-                    visibleBookmarkList.push(bookmark);
+                if (this.state.r2Publication) { // isLocatorVisible() API only once navigator ready
+                    const isVisible = await isLocatorVisible(bookmark.locator);
+                    if ( isVisible ) {
+                        visibleBookmarkList.push(bookmark);
+                    }
                 }
             }
         }
@@ -722,9 +727,9 @@ export class Reader extends React.Component<IProps, IState> {
             }
         } else if (this.state.currentLocation) {
             const locator = this.state.currentLocation.locator;
-//            this.props.addBookmark(this.pubId, locator);
+//            this.props.addBookmark(queryParams.pubId, locator);
             try {
-                await apiAction("reader/addBookmark", this.pubId, locator);
+                await apiAction("reader/addBookmark", queryParams.pubId, locator);
             } catch (e) {
                 console.error("Error to fetch api reader/addBookmark", e);
             }
@@ -756,9 +761,6 @@ export class Reader extends React.Component<IProps, IState> {
         const values = this.state.settingsValues;
 
         this.store.dispatch(readerActions.configSetRequest.build(values));
-
-        // Push reader config to navigator
-        // readiumCssOnOff();
     }
 
     private handleSettingsValueChange(event: any, name: string, givenValue?: any) {
@@ -820,24 +822,18 @@ export class Reader extends React.Component<IProps, IState> {
     }
 
     private findBookmarks() {
-        apiAction("reader/findBookmarks", this.pubId)
+        apiAction("reader/findBookmarks", queryParams.pubId)
             .then((bookmarks) => this.setState({bookmarks}))
             .catch((error) => console.error("Error to fetch api reader/findBookmarks", error));
     }
 }
-
-/*
-const buildBookmarkRequestData = () => {
-    return [ queryString.parse(location.search).pubId as string ];
-};
-*/
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         reader: state.reader.reader,
         mode: state.reader.mode,
         infoOpen: state.dialog.open &&
-        state.dialog.type === "publication-info-reader",
+            state.dialog.type === "publication-info-reader",
     };
 };
 
@@ -866,11 +862,5 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
     };
 };
-
-/*
-const buildRequestData = (_props: ReaderProps) => {
-    return [ queryParams.pubId ];
-};
-*/
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(Reader));
