@@ -201,7 +201,7 @@ export class OpdsFeedViewConverter {
         const subscribeLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/subscribe",
         });
-        // FIXME : same above, made a unitary test for GetLinksView
+        // FIXME : same above and made a unitary test for GetLinksView -> no filter is apply
         const entrylinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: "type=entry;profile=opds-catalog",
         }) || GetLinksView(baseUrl, r2OpdsPublication.Links, {
