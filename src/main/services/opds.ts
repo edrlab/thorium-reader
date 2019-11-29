@@ -13,10 +13,11 @@ import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import * as xmldom from "xmldom";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
-import { convertOpds1ToOpds2 } from "@r2-opds-js/opds/converter";
+import { convertOpds1ToOpds2, convertOpds1ToOpds2_EntryToPublication } from "@r2-opds-js/opds/converter";
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
+import { Entry } from "r2-opds-js/dist/es6-es2015/src/opds/opds1/opds-entry";
 
 // FIXME : How used URITemplate
 // import * as URITemplate from "urijs/src/URITemplate";
@@ -71,17 +72,18 @@ export class OpdsService {
         return httpGet(url, {
             timeout: 10000,
         }, (opdsFeedData) => {
-            // let r2OpdsPublication: OPDSPublication = null;
-            let r2OpdsFeed: OPDSFeed = null;
+
+            let r2OpdsFeed: OPDSFeed;
 
             if (opdsFeedData.isFailure) {
                 return opdsFeedData;
             }
 
-            debug("opdsFeed content-type", opdsFeedData.contentType);
+            debug("OpdsRequest: opdsFeed content-type: ", opdsFeedData.contentType);
             if (!OpdsService.contentTypeisAccepted(opdsFeedData.contentType)) {
-                // tslint:disable-next-line: max-line-length
-                throw new Error(`Not a valid OPDS HTTP Content-Type for ${opdsFeedData.url} (${opdsFeedData.contentType})`);
+                throw new Error(
+                    `Not a valid OPDS HTTP Content-Type for ${opdsFeedData.url} (${opdsFeedData.contentType})`,
+                );
             }
 
             const contentType = opdsFeedData.contentType;
@@ -94,17 +96,35 @@ export class OpdsService {
 
                 const isEntry = xmlDom.documentElement.localName === "entry";
                 if (isEntry) {
-                    throw new OpdsParsingError(`This is an OPDS entry ${url}`);
+                    // It's a single publication entry and not an OpdsFeed
+
+                    const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
+                    const r2OpdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
+
+                    // create a simple OpdsFeed to pass to converter function
+                    r2OpdsFeed = {
+                        Metadata: {
+                            Title: r2OpdsPublication.Metadata.Title,
+                        },
+                        Publications: [r2OpdsPublication],
+                    } as OPDSFeed;
+
+                } else {
+
+                    const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
+                    r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
                 }
 
-                const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
-                r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
             } else {
+
+                // FIXME : Desarialize OPDSFeed Or OpdsPublication
                 r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
                     JSON.parse(opdsFeedData.body),
                     OPDSFeed,
                 );
             }
+
+            // apply to converter
             opdsFeedData.data = converter(r2OpdsFeed);
 
             return opdsFeedData;

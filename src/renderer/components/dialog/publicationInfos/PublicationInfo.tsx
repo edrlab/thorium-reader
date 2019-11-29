@@ -62,8 +62,14 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() {
-
         setTimeout(this.needSeeMoreButton, 500);
+    }
+
+    public componentDidUpdate(prevProps: IProps) {
+
+        if (this.props.publication !== prevProps.publication) {
+            setTimeout(this.needSeeMoreButton, 500);
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -73,8 +79,6 @@ class PublicationInfo extends React.Component<IProps, IState> {
         }
 
         const { __, translator, publication, coverZoom } = this.props;
-
-        debug("coverZoom render", coverZoom);
 
         const authors = () => publication.authors &&
             publication.authors.length

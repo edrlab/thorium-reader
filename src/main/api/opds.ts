@@ -5,11 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as debug_ from "debug";
+import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import {
-    IOpdsFeedView, IOpdsLinkView, THttpGetOpdsPublicationView, THttpGetOpdsResultView,
+    IOpdsFeedView, IOpdsLinkView, IOpdsPublicationView, THttpGetOpdsPublicationView,
+    THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
@@ -18,7 +19,7 @@ import { OpdsService } from "readium-desktop/main/services/opds";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 
 // Logger
-// const debug = debug_("readium-desktop:src/main/api/opds");
+const debug = debug_("readium-desktop:src/main/api/opds");
 
 export interface IOpdsApi {
     getFeed: (
@@ -131,7 +132,19 @@ export class OpdsApi implements IOpdsApi {
 
         return await this.opdsService.opdsRequest(url,
             // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
-            (r2OpdsFeed) => this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url)?.publications[0]);
+            (r2OpdsFeed) => {
+                const opdsFeed = this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url);
+
+                let publication: IOpdsPublicationView;
+                if (Array.isArray(opdsFeed.publications)) {
+                    publication = opdsFeed.publications[0];
+                } else {
+                    debug(`publication from ${url} not found`);
+                }
+
+                debug("GetPublicationFromEntry return publication =", publication);
+                return publication;
+            });
     }
 
     public async browse(url: string): Promise<THttpGetOpdsResultView> {

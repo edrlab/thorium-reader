@@ -96,7 +96,7 @@ const mapStateToProps = (state: RootState) => {
 
     const apiBrowseData = apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("opds/browse");
     return {
-        browserData: apiBrowseData && apiBrowseData.data,
+        browserData: apiBrowseData?.data,
     };
 };
 

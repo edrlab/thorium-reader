@@ -74,21 +74,36 @@ function* updateOpdsPublicationWatcher() {
         if (requestId === REQUEST_ID) {
             debug("opds publication from publicationInfo received");
 
+            const actionError = action.error;
+
             const publicationResult = action.payload as
                 ReturnPromiseType<TApiMethod["opds/getPublicationFromEntry"]>;
 
-            if (publicationResult.isSuccess && publicationResult.data) {
-                debug("opdsPublicationResult:", publicationResult.data);
+            const publication = publicationResult?.data;
+            debug("Payload: ", publication);
 
-                const publication = publicationResult.data;
+            if (
+                !actionError
+                && publicationResult.isSuccess
+                && publication?.title
+                && Array.isArray(publication.authors)
+            ) {
+                debug("opdsPublicationResult:", publication);
 
-                if (publication.title && Array.isArray(publication.authors)) {
-                    yield put(dialogActions.updateRequest.build<"publication-info-opds">({
-                        publication,
-                    }));
-                } else {
-                    yield* browsePublication();
+                yield put(
+                    dialogActions.updateRequest.build<"publication-info-opds">(
+                        {
+                            publication,
+                        },
+                    ),
+                );
+            } else {
+
+                if (actionError) {
+                    debug(publicationResult);
                 }
+
+                yield* browsePublication();
             }
         }
     }

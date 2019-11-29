@@ -115,7 +115,7 @@ export class OpdsFeedViewConverter {
         if (r2OpdsPublication?.Metadata?.Subject) {
             const metadata = r2OpdsPublication.Metadata;
             tags = Array.isArray(metadata.Subject) &&
-                metadata.Subject.map((subject) => convertMultiLangStringToString(subject.Name));
+                metadata.Subject.map((subject) => convertMultiLangStringToString(subject.Name || subject.Code));
         }
 
         return tags;
