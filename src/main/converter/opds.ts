@@ -158,6 +158,8 @@ export class OpdsFeedViewConverter {
         const coverLinkView = GetLinksView(baseUrl, r2OpdsPublication.Images, {
             rel: "http://opds-spec.org/image",
         });
+
+        // FIXME: || doens't work on array
         const thumbnailLinkView = GetLinksView(baseUrl, r2OpdsPublication.Images, {
             type: ["image/png", "image/jpeg"],
             rel: "http://opds-spec.org/image/thumbnail",
@@ -199,6 +201,7 @@ export class OpdsFeedViewConverter {
         const subscribeLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/subscribe",
         });
+        // FIXME : same above, made a unitary test for GetLinksView
         const entrylinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: "type=entry;profile=opds-catalog",
         }) || GetLinksView(baseUrl, r2OpdsPublication.Links, {
