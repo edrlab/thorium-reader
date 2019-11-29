@@ -28,9 +28,11 @@ function* browsePublication() {
     const linkIterator = linksIterator.next();
 
     // https://github.com/microsoft/TypeScript/issues/33353
-    const link = linkIterator.value as IOpdsLinkView;
-    if (link) {
-        yield* apiSaga("opds/getPublicationFromEntry", REQUEST_ID, link.url);
+    if (!linkIterator.done) {
+        const link = linkIterator.value as IOpdsLinkView;
+        if (link) {
+            yield* apiSaga("opds/getPublicationFromEntry", REQUEST_ID, link.url);
+        }
     }
 }
 
