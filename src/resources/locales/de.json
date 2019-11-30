@@ -133,13 +133,24 @@
         "previous": "Bisherige"
     },
     "publication": {
+        "cancelledLcp": "",
+        "certificateRevoked": "",
+        "certificateSignatureInvalid": "",
         "expiredLcp": "",
+        "lcpEnd": "",
+        "lcpRightsCopy": "",
+        "lcpRightsPrint": "",
+        "lcpStart": "",
+        "licenseOutOfDate": "",
+        "licenseSignatureDateInvalid": "",
+        "licenseSignatureInvalid": "",
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",
         "returnedLcp": "",
         "revokedLcp": "",
         "seeLess": "Weniger Infos",
-        "seeMore": "Mehr Infos"
+        "seeMore": "Mehr Infos",
+        "userKeyCheckInvalid": ""
     },
     "reader": {
         "footerInfo": {

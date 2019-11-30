@@ -113,10 +113,12 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                     translator.translate("publication.expiredLcp") : (
                     publicationDocument.lcp.lsd.lsdStatus.status === StatusEnum.Revoked ?
                     translator.translate("publication.revokedLcp") : (
+                    publicationDocument.lcp.lsd.lsdStatus.status === StatusEnum.Cancelled ?
+                    translator.translate("publication.cancelledLcp") : (
                     publicationDocument.lcp.lsd.lsdStatus.status === StatusEnum.Returned ?
                     translator.translate("publication.returnedLcp") :
-                    translator.translate("publication.expiredLcp") // StatusEnum.Cancelled
-                    ));
+                    translator.translate("publication.expiredLcp")
+                    )));
 
                 yield put(toastActions.openRequest.build(ToastType.Error, msg));
 

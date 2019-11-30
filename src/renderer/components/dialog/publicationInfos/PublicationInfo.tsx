@@ -164,24 +164,25 @@ class PublicationInfo extends React.Component<IProps, IState> {
         moment.locale(locale);
 
         const lcp = (normalOrOpdsPublicationView as PublicationView).lcp;
+        const lcpRightsPrint = (lcp?.rights?.print) ? lcp.rights.print : 0;
         const lcpRightsCopy = (lcp?.rights?.copy) ? lcp.rights.copy : 0;
         const lcpRightsCopies = (normalOrOpdsPublicationView as PublicationView).lcpRightsCopies ?? 0;
 
-        // const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
-        // let lcpRightsStartDateStr: string | undefined;
-        // if (lcpRightsStartDate) {
-        //     try {
-        //         lcpRightsStartDateStr = moment(lcpRightsStartDate).format("LLL");
-        //     } catch (err) {
-        //         console.log(err);
-        //         try {
-        //             lcpRightsStartDateStr = lcpRightsStartDate.toLocaleString(locale);
-        //         } catch (err2) {
-        //             console.log(err2);
-        //             lcpRightsStartDateStr = lcpRightsStartDate.toLocaleString();
-        //         }
-        //     }
-        // }
+        const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
+        let lcpRightsStartDateStr: string | undefined;
+        if (lcpRightsStartDate) {
+            try {
+                lcpRightsStartDateStr = moment(lcpRightsStartDate).format("LLL");
+            } catch (err) {
+                console.log(err);
+                try {
+                    lcpRightsStartDateStr = lcpRightsStartDate.toLocaleString(locale);
+                } catch (err2) {
+                    console.log(err2);
+                    lcpRightsStartDateStr = lcpRightsStartDate.toLocaleString();
+                }
+            }
+        }
 
         const lcpRightsEndDate = (lcp?.rights?.end) ? lcp.rights.end : undefined;
         let lcpRightsEndDateStr: string | undefined;
@@ -295,21 +296,35 @@ class PublicationInfo extends React.Component<IProps, IState> {
                                     (lsdStatus !== StatusEnum.Active && lsdStatus !== StatusEnum.Ready)) && <>
                                 <span style={{color: "red"}}>{(lsdStatus === StatusEnum.Expired ?
                                         __("publication.expiredLcp")
-                                        : ((lsdStatus === StatusEnum.Revoked || lsdStatus === StatusEnum.Cancelled) ?
+                                        : ((lsdStatus === StatusEnum.Cancelled) ?
+                                        __("publication.cancelledLcp")
+                                        : ((lsdStatus === StatusEnum.Revoked) ?
                                         __("publication.revokedLcp")
                                         : (lsdStatus === StatusEnum.Returned ?
                                         __("publication.returnedLcp") :
-                                        `LCP LSD: ${lsdStatus}`)))}</span>
+                                        `LCP LSD: ${lsdStatus}`))))}</span>
                                 <br /><br />
+                                </>}
+
+                                {lcpRightsStartDateStr && <>
+                                <span>{__("publication.lcpStart")}: </span><i>{lcpRightsStartDateStr}</i>
+                                <br />
                                 </>}
 
                                 {lcpRightsEndDateStr && <>
-                                <span>( </span><i>{lcpRightsEndDateStr}</i><span> )</span>
-                                <br /><br />
+                                <span>{__("publication.lcpEnd")}: </span><i>{lcpRightsEndDateStr}</i>
+                                <br />
+                                <br />
                                 </>}
 
                                 {lcpRightsCopy && <>
-                                <span>{__("app.edit.copy")}: </span> <i>{lcpRightsCopies} / {lcpRightsCopy}</i><br />
+                                <span>{__("publication.lcpRightsCopy")}: </span>
+                                <i>{lcpRightsCopies} / {lcpRightsCopy}</i><br />
+                                </>}
+
+                                {lcpRightsPrint && <>
+                                <span>{__("publication.lcpRightsPrint")}: </span>
+                                <i>0 / {lcpRightsCopy}</i><br />
                                 </>}
                             </p>
                         </>}
