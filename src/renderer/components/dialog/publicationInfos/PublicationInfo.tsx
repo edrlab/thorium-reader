@@ -324,7 +324,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
 
                                 {lcpRightsPrint && <>
                                 <span>{__("publication.lcpRightsPrint")}: </span>
-                                <i>0 / {lcpRightsCopy}</i><br />
+                                <i>0 / {lcpRightsPrint}</i><br />
                                 </>}
                             </p>
                         </>}
