@@ -280,6 +280,12 @@ export class LcpManager {
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
 
+        const locale = this.store.getState().i18n.locale;
+        const httpHeaders = {
+            "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
+            "User-Agent": "readium-desktop",
+        };
+
         const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
 
         let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
@@ -296,7 +302,7 @@ export class LcpManager {
             const endDate = endDateStr ? moment(endDateStr).toDate() : undefined;
             let renewResponseLsd: LSD;
             try {
-                renewResponseLsd = await lsdRenew_(endDate, r2Publication.LCP.LSD, this.deviceIdManager);
+                renewResponseLsd = await lsdRenew_(endDate, r2Publication.LCP.LSD, this.deviceIdManager, httpHeaders);
             } catch (err) {
                 debug(err);
                 const str = this.stringifyLsdError(err);
@@ -356,6 +362,12 @@ export class LcpManager {
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
 
+        const locale = this.store.getState().i18n.locale;
+        const httpHeaders = {
+            "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
+            "User-Agent": "readium-desktop",
+        };
+
         const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
 
         let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
@@ -364,7 +376,7 @@ export class LcpManager {
         if (r2Publication.LCP && r2Publication.LCP.LSD) {
             let returnResponseLsd: LSD;
             try {
-                returnResponseLsd = await lsdReturn_(r2Publication.LCP.LSD, this.deviceIdManager);
+                returnResponseLsd = await lsdReturn_(r2Publication.LCP.LSD, this.deviceIdManager, httpHeaders);
             } catch (err) {
                 debug(err);
                 const str = this.stringifyLsdError(err);
@@ -648,6 +660,12 @@ export class LcpManager {
             return Promise.reject("processStatusDocument NO LCP data!");
         }
 
+        const locale = this.store.getState().i18n.locale;
+        const httpHeaders = {
+            "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
+            "User-Agent": "readium-desktop",
+        };
+
         return new Promise(async (resolve, reject) => {
             const callback = async (licenseUpdateJson: string | undefined) => {
                 debug("launchStatusDocumentProcessing DONE.");
@@ -741,6 +759,7 @@ export class LcpManager {
                     r2Publication.LCP,
                     this.deviceIdManager,
                     callback,
+                    httpHeaders,
                 );
             } catch (err) {
                 debug(err);
