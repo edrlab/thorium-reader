@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import { dialog } from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
+import * as moment from "moment";
 import * as path from "path";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
@@ -286,6 +287,55 @@ export class CatalogService {
         const lcpJson = JSON.parse(jsonStr);
         const r2LCP = TaJsonDeserialize<LCP>(lcpJson, LCP);
         r2LCP.JsonSource = jsonStr;
+        r2LCP.init();
+
+        // LCP license checks to avoid unnecessary download:
+        // CERTIFICATE_SIGNATURE_INVALID = 102
+        // CERTIFICATE_REVOKED = 101
+        // LICENSE_SIGNATURE_DATE_INVALID = 111
+        // LICENSE_SIGNATURE_INVALID = 112
+        // (USER_KEY_CHECK_INVALID = 141) is guaranteed because of dummy passphrase
+        // (LICENSE_OUT_OF_DATE = 11) occurs afterwards, so will only be checked after passphrase try
+        if (r2LCP.isNativeNodePlugin()) {
+            if (r2LCP.Rights) {
+                const now = moment.now();
+                let res = 0;
+                try {
+                    if (r2LCP.Rights.Start) {
+                        if (moment(r2LCP.Rights.Start).isAfter(now)) {
+                            res = 11;
+                        }
+                    }
+                    if (r2LCP.Rights.End) {
+                        if (moment(r2LCP.Rights.End).isBefore(now)) {
+                            res = 11;
+                        }
+                    }
+                } catch (err) {
+                    debug(err);
+                }
+                if (res) {
+                    const msg = this.lcpManager.convertUnlockPublicationResultToString(res);
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error, msg));
+                    throw new Error(`[${msg}] (${filePath})`);
+                }
+            }
+
+            try {
+                // await r2LCP.tryUserKeys([toSha256Hex("READIUM2-DESKTOP-THORIUM-DUMMY-PASSPHRASE")]);
+                await r2LCP.dummyCreateContext();
+            } catch (err) {
+                if (err !== 141) { // USER_KEY_CHECK_INVALID
+                    // CERTIFICATE_SIGNATURE_INVALID = 102
+                    // CERTIFICATE_REVOKED = 101
+                    // LICENSE_SIGNATURE_DATE_INVALID = 111
+                    // LICENSE_SIGNATURE_INVALID = 112
+                    const msg = this.lcpManager.convertUnlockPublicationResultToString(err);
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error, msg));
+                    throw new Error(`[${msg}] (${filePath})`);
+                }
+            }
+        }
 
         // search the path of the epub file
         let download: Download | undefined;

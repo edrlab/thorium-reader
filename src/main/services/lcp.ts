@@ -443,27 +443,33 @@ export class LcpManager {
                     break;
                 }
                 case 1: {
-                    message = "INCORRECT PASSPHRASE: " + val;
+                    // message = "INCORRECT PASSPHRASE: " + val;
+                    message = this.translator.translate("publication.userKeyCheckInvalid");
                     break;
                 }
                 case 11: {
-                    message = "LICENSE_OUT_OF_DATE: " + val;
+                    // message = "LICENSE_OUT_OF_DATE: " + val;
+                    message = this.translator.translate("publication.licenseOutOfDate");
                     break;
                 }
                 case 101: {
-                    message = "CERTIFICATE_REVOKED: " + val;
+                    // message = "CERTIFICATE_REVOKED: " + val;
+                    message = this.translator.translate("publication.certificateRevoked");
                     break;
                 }
                 case 102: {
-                    message = "CERTIFICATE_SIGNATURE_INVALID: " + val;
+                    // message = "CERTIFICATE_SIGNATURE_INVALID: " + val;
+                    message = this.translator.translate("publication.certificateSignatureInvalid");
                     break;
                 }
                 case 111: {
-                    message = "LICENSE_SIGNATURE_DATE_INVALID: " + val;
+                    // message = "LICENSE_SIGNATURE_DATE_INVALID: " + val;
+                    message = this.translator.translate("publication.licenseSignatureDateInvalid");
                     break;
                 }
                 case 112: {
-                    message = "LICENSE_SIGNATURE_INVALID: " + val;
+                    // message = "LICENSE_SIGNATURE_INVALID: " + val;
+                    message = this.translator.translate("publication.licenseSignatureInvalid");
                     break;
                 }
                 case 121: {
@@ -475,7 +481,8 @@ export class LcpManager {
                     break;
                 }
                 case 141: {
-                    message = "USER_KEY_CHECK_INVALID: " + val;
+                    // message = "USER_KEY_CHECK_INVALID: " + val;
+                    message = this.translator.translate("publication.userKeyCheckInvalid");
                     break;
                 }
                 case 151: {
