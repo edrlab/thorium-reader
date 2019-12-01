@@ -430,9 +430,6 @@ export class CatalogService {
 
             lcp: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
             lcpRightsCopies: 0,
-
-            // OPDSPublication? seems unused!
-            // opdsPublication: undefined,
         };
         this.lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
 

@@ -1,23 +1,28 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
 import {
-    DatabaseContentTypePublication, PublicationRepository,
-} from "readium-desktop/main/db/repository/publication";
+    ExcludeTimestampableWithPartialIdentifiable,
+} from "readium-desktop/main/db/repository/base";
+import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
 let repository: PublicationRepository | null = null;
-let db: PouchDB.Database<DatabaseContentTypePublication> | null = null;
+let db: PouchDB.Database<PublicationDocument> | null = null;
 const now = moment.now();
 
 const dbDocIdentifier1 = "pub-1";
-const dbDoc1: DatabaseContentTypePublication & PouchDB.Core.IdMeta = {
+const dbDocIdentifier1Internal = `publication_${dbDocIdentifier1}`;
+const title1 = "Publication 1";
+const tag1 = "science";
+const tag2 = "computer";
+const dbDoc1: PouchDB.Core.PutDocument<PublicationDocument> = {
     identifier: dbDocIdentifier1,
-    _id: "publication_" + dbDocIdentifier1,
-    title: "Publication 1",
-    tags: ["science", "computer"],
+    _id: dbDocIdentifier1Internal,
+    title: title1,
+    tags: [tag1, tag2],
     files: [],
     coverFile: null,
     customCover: null,
@@ -33,11 +38,14 @@ const dbDoc1: DatabaseContentTypePublication & PouchDB.Core.IdMeta = {
 };
 
 const dbDocIdentifier2 = "pub-2";
-const dbDoc2: DatabaseContentTypePublication & PouchDB.Core.IdMeta = {
+const dbDocIdentifier2Internal = `publication_${dbDocIdentifier2}`;
+const title2 = "Publication 2";
+const tag3 = "node";
+const dbDoc2: PouchDB.Core.PutDocument<PublicationDocument> = {
     identifier: dbDocIdentifier2,
-    _id: "publication_" + dbDocIdentifier2,
-    title: "Publication 2",
-    tags: ["node", "computer"],
+    _id: dbDocIdentifier2Internal,
+    title: title2,
+    tags: [tag3, tag2],
     files: [],
     coverFile: null,
     customCover: null,
@@ -53,7 +61,7 @@ const dbDoc2: DatabaseContentTypePublication & PouchDB.Core.IdMeta = {
 };
 
 beforeEach(async () => {
-    db = createDatabase<DatabaseContentTypePublication>();
+    db = createDatabase<PublicationDocument>();
     repository = new PublicationRepository(db);
 
     // Create data
@@ -66,7 +74,7 @@ afterEach(async () => {
         return;
     }
     repository = null;
-    await clearDatabase<DatabaseContentTypePublication>(db);
+    await clearDatabase<PublicationDocument>(db);
 });
 
 test("repository.findAll", async () => {
@@ -97,29 +105,29 @@ test("repository.find sort by createdAt", async () => {
         selector: {},
     });
     expect(result.length).toBe(2);
-    expect(result[0].identifier).toBe("pub-2");
-    expect(result[1].identifier).toBe("pub-1");
+    expect(result[0].identifier).toBe(dbDocIdentifier2);
+    expect(result[1].identifier).toBe(dbDocIdentifier1);
 });
 
 test("repository.findByTag - found", async () => {
     if (!repository) {
         return;
     }
-    let result = await repository.findByTag("computer");
+    let result = await repository.findByTag(tag2);
     expect(result.length).toBe(2);
 
-    result = await repository.findByTag("node");
+    result = await repository.findByTag(tag3);
     expect(result.length).toBe(1);
 
     const pub = result[0];
-    expect(pub.identifier).toBe("pub-2");
-    expect(pub.title).toBe("Publication 2");
+    expect(pub.identifier).toBe(dbDocIdentifier2);
+    expect(pub.title).toBe(title2);
     expect(pub.tags).toBeDefined();
     if (pub.tags) {
         expect(pub.tags.length).toBe(2);
     }
-    expect(pub.tags).toContain("computer");
-    expect(pub.tags).toContain("node");
+    expect(pub.tags).toContain(tag2);
+    expect(pub.tags).toContain(tag3);
 });
 
 test("repository.findByTag - not found", async () => {
@@ -134,7 +142,7 @@ test("repository.findByTitle - found", async () => {
     if (!repository) {
         return;
     }
-    const result = await repository.findByTitle("Publication 1");
+    const result = await repository.findByTitle(title1);
     expect(result.length).toBe(1);
 });
 
@@ -153,7 +161,7 @@ test("repository.searchByTitle - found", async () => {
     let result = await repository.searchByTitle("publication");
     expect(result.length).toBe(2);
 
-    result = await repository.searchByTitle("publication 1");
+    result = await repository.searchByTitle(title1);
     expect(result.length).toBe(1);
 });
 
@@ -163,24 +171,24 @@ test("repository.getAllTags", async () => {
     }
     const tags = await repository.getAllTags();
     expect(tags.length).toBe(3);
-    expect(tags).toContain("computer");
-    expect(tags).toContain("node");
-    expect(tags).toContain("science");
+    expect(tags).toContain(tag2);
+    expect(tags).toContain(tag3);
+    expect(tags).toContain(tag1);
 });
 
 test("repository.get - found", async () => {
     if (!repository) {
         return;
     }
-    const result = await repository.get("pub-1");
-    expect(result.identifier).toBe("pub-1");
-    expect(result.title).toBe("Publication 1");
+    const result = await repository.get(dbDocIdentifier1);
+    expect(result.identifier).toBe(dbDocIdentifier1);
+    expect(result.title).toBe(title1);
     expect(result.tags).toBeDefined();
     if (result.tags) {
         expect(result.tags.length).toBe(2);
     }
-    expect(result.tags).toContain("computer");
-    expect(result.tags).toContain("science");
+    expect(result.tags).toContain(tag2);
+    expect(result.tags).toContain(tag1);
 });
 
 test("repository.get - not found", async () => {
@@ -200,7 +208,7 @@ test("repository.save create", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc: Omit<DatabaseContentTypePublication, keyof Timestampable> = {
+    const dbDoc: ExcludeTimestampableWithPartialIdentifiable<PublicationDocument> = {
         identifier: "new-publication",
         title: "New publication",
         tags: ["scifi"],
@@ -232,10 +240,10 @@ test("repository.save update", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc: Omit<DatabaseContentTypePublication, keyof Timestampable> = {
-        identifier: "pub-1",
-        title: "Publication 1",
-        tags: ["computer"],
+    const dbDoc: ExcludeTimestampableWithPartialIdentifiable<PublicationDocument> = {
+        identifier: dbDocIdentifier1,
+        title: title1,
+        tags: [tag2],
         files: [],
         coverFile: null,
         customCover: null,
@@ -248,13 +256,13 @@ test("repository.save update", async () => {
         hash: "",
     };
     const result = await repository.save(dbDoc);
-    expect(result.identifier).toBe("pub-1");
-    expect(result.title).toBe("Publication 1");
+    expect(result.identifier).toBe(dbDocIdentifier1);
+    expect(result.title).toBe(title1);
     expect(result.tags).toBeDefined();
     if (result.tags) {
         expect(result.tags.length).toBe(1);
     }
-    expect(result.tags).toContain("computer");
+    expect(result.tags).toContain(tag2);
     expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
     expect(result.createdAt < result.updatedAt).toBeTruthy();
@@ -264,13 +272,13 @@ test("repository.delete", async () => {
     if (!db || !repository) {
         return;
     }
-    const result = await db.get("publication_pub-1");
-    expect(result.identifier).toBe("pub-1");
+    const result = await db.get(dbDocIdentifier1Internal);
+    expect(result.identifier).toBe(dbDocIdentifier1);
 
     // Delete publication 1
-    await repository.delete("pub-1");
+    await repository.delete(dbDocIdentifier1);
     try {
-        await db.get("pub-1");
+        await db.get(dbDocIdentifier1);
     } catch (e) {
         expect(e.message).toBe("missing");
     }

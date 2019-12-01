@@ -7,25 +7,19 @@
 
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
-import { Identifiable } from "readium-desktop/common/models/identifiable";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { LocatorDocument } from "readium-desktop/main/db/document/locator";
 
-import { BaseRepository, DatabaseContentType } from "./base";
+import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
 const PUBLICATION_INDEX = "publication_index";
 const LOCATOR_TYPE_INDEX = "locator_type_index";
 const CREATED_AT_INDEX = "created_at_index";
 const UPDATED_AT_INDEX = "updatded_at_index";
 
-export interface DatabaseContentTypeLocator extends DatabaseContentType, LocatorDocument {
-}
-
 @injectable()
-export class LocatorRepository extends BaseRepository<LocatorDocument, DatabaseContentTypeLocator> {
-    public constructor(db: PouchDB.Database<DatabaseContentTypeLocator>) {
+export class LocatorRepository extends BaseRepository<LocatorDocument> {
+    public constructor(db: PouchDB.Database<LocatorDocument>) {
 
-        // See DatabaseContentTypeLocator
         const indexes = [
             {
                 fields: ["createdAt"], // Timestampable
@@ -73,7 +67,7 @@ export class LocatorRepository extends BaseRepository<LocatorDocument, DatabaseC
         });
     }
 
-    protected convertToDocument(dbDoc: PouchDB.Core.Document<DatabaseContentTypeLocator>): LocatorDocument {
+    protected convertToDocument(dbDoc: PouchDB.Core.Document<LocatorDocument>): LocatorDocument {
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
@@ -82,7 +76,7 @@ export class LocatorRepository extends BaseRepository<LocatorDocument, DatabaseC
                 locatorType: dbDoc.locatorType,
                 publicationIdentifier: dbDoc.publicationIdentifier,
                 name: dbDoc.name,
-            } as Omit<LocatorDocument, keyof Timestampable | keyof Identifiable>,
+            } as ExcludeTimestampableAndIdentifiable<LocatorDocument>,
         );
     }
 }
