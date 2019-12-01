@@ -81,7 +81,7 @@ class Header extends React.Component<IProps, undefined> {
                     to={{
                         pathname: "/library/search/all",
                         state: {
-                            displaytype: this.props.displayType as DisplayType,
+                            displaytype: this.props.displayType,
                         },
                     }}
                 >
