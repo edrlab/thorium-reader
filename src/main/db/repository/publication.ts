@@ -5,12 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
+import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
+import { Identifiable } from "readium-desktop/common/models/identifiable";
+import { Timestampable } from "readium-desktop/common/models/timestampable";
+import { convertMultiLangStringToString } from "readium-desktop/common/utils";
+import { PublicationDocument, Resources } from "readium-desktop/main/db/document/publication";
 
-import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-
-import { BaseRepository } from "./base";
+import { BaseRepository, DatabaseContentType } from "./base";
 
 const CREATED_AT_INDEX = "created_at_index";
 
@@ -20,28 +22,35 @@ const TITLE_INDEX = "title_index";
 
 const HASH_INDEX = "hash_index";
 
-import {
-    convertMultiLangStringToString,
-} from "readium-desktop/common/utils";
+interface ResourcesWithLegacyFields extends Resources {
+    filePublication?: string;
+    opdsPublication?: string;
+}
+
+export interface DatabaseContentTypePublication extends DatabaseContentType, Omit<PublicationDocument, "resources"> {
+    resources: ResourcesWithLegacyFields;
+}
 
 @injectable()
-export class PublicationRepository extends BaseRepository<PublicationDocument> {
-    public constructor(db: PouchDB.Database) {
+export class PublicationRepository extends BaseRepository<PublicationDocument, DatabaseContentTypePublication> {
+    public constructor(db: PouchDB.Database<DatabaseContentTypePublication>) {
+
+        // See DatabaseContentTypePublication
         const indexes = [
             {
-                fields: ["createdAt"],
+                fields: ["createdAt"], // Timestampable
                 name: CREATED_AT_INDEX,
             },
             {
-                fields: ["title"],
+                fields: ["title"], // PublicationDocument
                 name: TITLE_INDEX,
             },
             {
-                fields: ["tags"],
+                fields: ["tags"], // PublicationDocument
                 name: TAG_INDEX,
             },
             {
-                fields: ["hash"],
+                fields: ["hash"], // PublicationDocument
                 name: HASH_INDEX,
             },
         ];
@@ -74,7 +83,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
             highlighting: false,
         });
 
-        return dbDocs.rows.map((dbDoc: any) => {
+        return dbDocs.rows.map((dbDoc) => {
             return this.convertToDocument(dbDoc.doc);
         });
     }
@@ -93,7 +102,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
         const tags: string[] = [];
 
         for (const doc of dbResponse.docs) {
-            for (const tag of (doc as any).tags) {
+            for (const tag of doc.tags) {
                 if (tags.indexOf(tag) >= 0) {
                     continue;
                 }
@@ -107,7 +116,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
         return tags;
     }
 
-    protected convertToDocument(dbDoc: PouchDB.Core.Document<any>): PublicationDocument {
+    protected convertToDocument(dbDoc: PouchDB.Core.Document<DatabaseContentTypePublication>): PublicationDocument {
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
@@ -131,7 +140,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
                 lcpRightsCopies: dbDoc.lcpRightsCopies,
 
                 hash: dbDoc.hash,
-            },
+            } as Omit<PublicationDocument, keyof Timestampable | keyof Identifiable>,
         );
     }
 }

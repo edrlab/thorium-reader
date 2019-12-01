@@ -1,20 +1,20 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-
-import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
-
+import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
-
+import {
+    DatabaseContentTypeLcpSecret, LcpSecretRepository,
+} from "readium-desktop/main/db/repository/lcp-secret";
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
 let repository: LcpSecretRepository | null = null;
-let db: PouchDB.Database | null = null;
+let db: PouchDB.Database<DatabaseContentTypeLcpSecret> | null = null;
 const now = moment.now();
 
 const dbDocIdentifier1 = "lcp-secret-1";
 const dbPubIdentifier1 = "pub-1";
-const dbDoc1 = {
+const dbDoc1: DatabaseContentTypeLcpSecret & PouchDB.Core.IdMeta = {
     identifier: dbDocIdentifier1,
     _id: "lcp_secret_" + dbDocIdentifier1,
     publicationIdentifier: dbPubIdentifier1,
@@ -25,7 +25,7 @@ const dbDoc1 = {
 
 const dbDocIdentifier2 = "lcp-secret-2";
 const dbPubIdentifier2 = "pub-2";
-const dbDoc2 = {
+const dbDoc2: DatabaseContentTypeLcpSecret & PouchDB.Core.IdMeta = {
     identifier: dbDocIdentifier2,
     _id: "lcp_secret_" + dbDocIdentifier2,
     publicationIdentifier: dbPubIdentifier2,
@@ -35,7 +35,7 @@ const dbDoc2 = {
 };
 
 beforeEach(async () => {
-    db = createDatabase();
+    db = createDatabase<DatabaseContentTypeLcpSecret>();
     repository = new LcpSecretRepository(db);
 
     // Create data
@@ -48,7 +48,7 @@ afterEach(async () => {
         return;
     }
     repository = null;
-    await clearDatabase(db);
+    await clearDatabase<DatabaseContentTypeLcpSecret>(db);
 });
 
 test("repository.findAll", async () => {
@@ -106,7 +106,7 @@ test("repository.save create", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
+    const dbDoc: Omit<DatabaseContentTypeLcpSecret, keyof Timestampable> & PouchDB.Core.IdMeta = {
         identifier: "new-lcp-secret",
         _id: "lcp_secret_new-lcp-secret",
         publicationIdentifier: dbPubIdentifier2,
@@ -125,7 +125,7 @@ test("repository.save update", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
+    const dbDoc: Omit<DatabaseContentTypeLcpSecret, keyof Timestampable> = {
         identifier: "lcp-secret-1",
         publicationIdentifier: dbPubIdentifier1,
         secret: "updated-secret",

@@ -12,7 +12,7 @@ import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 
-interface Resources {
+export interface Resources {
     r2PublicationBase64?: string;
     r2LCPBase64?: string;
     r2LSDBase64?: string;

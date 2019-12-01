@@ -21,11 +21,21 @@ import { IPublicationApi, PublicationApi } from "readium-desktop/main/api/public
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
+import {
+    ConfigRepository, DatabaseContentTypeConfig,
+} from "readium-desktop/main/db/repository/config";
+import {
+    DatabaseContentTypeLcpSecret, LcpSecretRepository,
+} from "readium-desktop/main/db/repository/lcp-secret";
+import {
+    DatabaseContentTypeLocator, LocatorRepository,
+} from "readium-desktop/main/db/repository/locator";
+import {
+    DatabaseContentTypeOpds, OpdsFeedRepository,
+} from "readium-desktop/main/db/repository/opds";
+import {
+    DatabaseContentTypePublication, PublicationRepository,
+} from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { initStore } from "readium-desktop/main/redux/store/memory";
 import { CatalogService } from "readium-desktop/main/services/catalog";
@@ -97,35 +107,35 @@ const dbOpts = {
 };
 
 // Publication db
-const publicationDb = new PouchDB(
+const publicationDb = new PouchDB<DatabaseContentTypePublication>(
     path.join(rootDbPath, "publication"),
     dbOpts,
 );
 const publicationRepository = new PublicationRepository(publicationDb);
 
 // OPDS db
-const opdsDb = new PouchDB(
+const opdsDb = new PouchDB<DatabaseContentTypeOpds>(
     path.join(rootDbPath, "opds"),
     dbOpts,
 );
 const opdsFeedRepository = new OpdsFeedRepository(opdsDb);
 
 // Config db
-const configDb = new PouchDB(
+const configDb = new PouchDB<DatabaseContentTypeConfig<any>>(
     path.join(rootDbPath, "config"),
     dbOpts,
 );
 const configRepository = new ConfigRepository(configDb);
 
 // Locator db
-const locatorDb = new PouchDB(
+const locatorDb = new PouchDB<DatabaseContentTypeLocator>(
     path.join(rootDbPath, "locator"),
     dbOpts,
 );
 const locatorRepository = new LocatorRepository(locatorDb);
 
 // Lcp secret db
-const lcpSecretDb = new PouchDB(
+const lcpSecretDb = new PouchDB<DatabaseContentTypeLcpSecret>(
     path.join(rootDbPath, "lcp-secret"),
     dbOpts,
 );
@@ -174,7 +184,7 @@ container.bind<OpdsFeedRepository>(diSymbolTable["opds-feed-repository"]).toCons
 container.bind<LocatorRepository>(diSymbolTable["locator-repository"]).toConstantValue(
     locatorRepository,
 );
-container.bind<ConfigRepository>(diSymbolTable["config-repository"]).toConstantValue(
+container.bind<ConfigRepository<any>>(diSymbolTable["config-repository"]).toConstantValue(
     configRepository,
 );
 container.bind<LcpSecretRepository>(diSymbolTable["lcp-secret-repository"]).toConstantValue(
@@ -245,7 +255,7 @@ interface IGet {
     (s: "publication-repository"): PublicationRepository;
     (s: "opds-feed-repository"): OpdsFeedRepository;
     (s: "locator-repository"): LocatorRepository;
-    (s: "config-repository"): ConfigRepository;
+    (s: "config-repository"): ConfigRepository<any>;
     (s: "lcp-secret-repository"): LcpSecretRepository;
     (s: "publication-view-converter"): PublicationViewConverter;
     (s: "locator-view-converter"): LocatorViewConverter;

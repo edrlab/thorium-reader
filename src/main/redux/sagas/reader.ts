@@ -16,7 +16,7 @@ import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
-import { BaseRepository } from "readium-desktop/main/db/repository/base";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
@@ -275,9 +275,7 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
 }
 
 const READER_CONFIG_ID = "reader";
-type ConfigDocumentType = ConfigDocument<ReaderConfig>;
-type ConfigRepositoryType = BaseRepository<ConfigDocumentType>;
-type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Timestampable>;
+type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocument<ReaderConfig>, keyof Timestampable>;
 
 export function* readerConfigSetRequestWatcher(): SagaIterator {
     while (true) {
@@ -291,7 +289,7 @@ export function* readerConfigSetRequestWatcher(): SagaIterator {
         };
 
         // Get reader settings
-        const configRepository: ConfigRepositoryType = diMainGet("config-repository");
+        const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
 
         try {
             yield call(() => configRepository.save(config));
@@ -306,7 +304,7 @@ export function* readerConfigInitWatcher(): SagaIterator {
     // Wait for app initialization
     yield take(appActions.initSuccess.ID);
 
-    const configRepository: ConfigRepositoryType = diMainGet("config-repository");
+    const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
 
     try {
         const readerConfigDoc = yield* callTyped(() => configRepository.get(READER_CONFIG_ID));
