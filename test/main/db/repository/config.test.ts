@@ -1,19 +1,21 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-
+import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
-
+import {
+    ConfigRepository, DatabaseContentTypeConfig,
+} from "readium-desktop/main/db/repository/config";
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
-let repository: ConfigRepository | null = null;
-let db: PouchDB.Database | null = null;
+type ConfigType = string;
+
+let repository: ConfigRepository<ConfigType> | null = null;
+let db: PouchDB.Database<DatabaseContentTypeConfig<ConfigType>> | null = null;
 const now = moment.now();
 
 const dbDocIdentifier1 = "key-1";
-const dbDoc1 = {
+const dbDoc1: DatabaseContentTypeConfig<ConfigType> & PouchDB.Core.IdMeta = {
     identifier: dbDocIdentifier1,
     _id: "config_" + dbDocIdentifier1,
     value: "config-value-1",
@@ -22,7 +24,7 @@ const dbDoc1 = {
 };
 
 const dbDocIdentifier2 = "key-2";
-const dbDoc2 = {
+const dbDoc2: DatabaseContentTypeConfig<ConfigType> & PouchDB.Core.IdMeta = {
     identifier: dbDocIdentifier2,
     _id: "config_" + dbDocIdentifier2,
     value: "config-value-2",
@@ -31,8 +33,8 @@ const dbDoc2 = {
 };
 
 beforeEach(async () => {
-    db = createDatabase();
-    repository = new ConfigRepository(db);
+    db = createDatabase<DatabaseContentTypeConfig<ConfigType>>();
+    repository = new ConfigRepository<ConfigType>(db);
 
     // Create data
     await db.put(dbDoc1);
@@ -44,7 +46,7 @@ afterEach(async () => {
         return;
     }
     repository = null;
-    await clearDatabase(db);
+    await clearDatabase<DatabaseContentTypeConfig<ConfigType>>(db);
 });
 
 test("repository.findAll", async () => {
@@ -81,7 +83,7 @@ test("repository.save create", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
+    const dbDoc: Omit<DatabaseContentTypeConfig<ConfigType>, keyof Timestampable> = {
         identifier: "new-key",
         value: "new-value",
     };
@@ -97,7 +99,7 @@ test("repository.save update", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
+    const dbDoc: Omit<DatabaseContentTypeConfig<ConfigType>, keyof Timestampable> = {
         identifier: "key-1",
         value: "new-value",
     };

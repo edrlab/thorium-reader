@@ -7,7 +7,6 @@
 
 import * as debug_ from "debug";
 import { injectable } from "inversify";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import * as uuid from "uuid";
@@ -22,19 +21,17 @@ const debug = debug_("readium-desktop:main#services/device");
 interface StringMap {
     [key: string]: string;
 }
-type ConfigDocumentType = ConfigDocument<StringMap>;
-type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Timestampable>;
 
 @injectable()
 export class DeviceIdManager implements IDeviceIDManager {
     // Config repository
-    private readonly configRepository: ConfigRepository;
+    private readonly configRepository: ConfigRepository<StringMap>;
 
     private readonly deviceName: string;
 
     public constructor(
         deviceName: string,
-        configRepository: ConfigRepository,
+        configRepository: ConfigRepository<StringMap>,
     ) {
         this.deviceName = deviceName;
         this.configRepository = configRepository;
@@ -91,14 +88,14 @@ export class DeviceIdManager implements IDeviceIDManager {
         debug(config);
     }
 
-    private async getDeviceConfig(): Promise<ConfigDocumentTypeWithoutTimestampable> {
+    private async getDeviceConfig(): Promise<ConfigDocument<StringMap>> {
         try {
             return await this.configRepository.get("device");
         } catch (error) {
             return {
                 identifier: "device",
                 value: {},
-            };
+            } as ConfigDocument<StringMap>;
         }
     }
 

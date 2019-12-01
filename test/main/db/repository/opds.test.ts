@@ -1,19 +1,19 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-
+import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
-
-import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
-
+import {
+    DatabaseContentTypeOpds, OpdsFeedRepository,
+} from "readium-desktop/main/db/repository/opds";
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
 let repository: OpdsFeedRepository | null = null;
-let db: PouchDB.Database | null = null;
+let db: PouchDB.Database<DatabaseContentTypeOpds> | null = null;
 const now = moment.now();
 
 const dbDocIdentifier1 = "feed-1";
-const dbDoc1 = {
+const dbDoc1: DatabaseContentTypeOpds & PouchDB.Core.IdMeta = {
     identifier: dbDocIdentifier1,
     _id: "opds-feed_" + dbDocIdentifier1,
     title: "Feed 1",
@@ -23,7 +23,7 @@ const dbDoc1 = {
 };
 
 const dbDocIdentifier2 = "feed-2";
-const dbDoc2 = {
+const dbDoc2: DatabaseContentTypeOpds & PouchDB.Core.IdMeta = {
     identifier: dbDocIdentifier2,
     _id: "opds-feed_" + dbDocIdentifier2,
     title: "Feed 2",
@@ -33,7 +33,7 @@ const dbDoc2 = {
 };
 
 beforeEach(async () => {
-    db = createDatabase();
+    db = createDatabase<DatabaseContentTypeOpds>();
     repository = new OpdsFeedRepository(db);
 
     // Create data
@@ -46,7 +46,7 @@ afterEach(async () => {
         return;
     }
     repository = null;
-    await clearDatabase(db);
+    await clearDatabase<DatabaseContentTypeOpds>(db);
 });
 
 test("repository.findAll", async () => {
@@ -84,7 +84,7 @@ test("repository.save create", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
+    const dbDoc: Omit<DatabaseContentTypeOpds, keyof Timestampable> = {
         identifier: "new-feed",
         title: "New feed",
         url: "https://feed.org/new",
@@ -102,7 +102,7 @@ test("repository.save update", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
+    const dbDoc: Omit<DatabaseContentTypeOpds, keyof Timestampable> = {
         identifier: "feed-1",
         title: "New feed",
         url: "https://feed.org/new",

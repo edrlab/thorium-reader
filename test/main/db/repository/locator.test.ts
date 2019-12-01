@@ -1,21 +1,20 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-
 import { LocatorType } from "readium-desktop/common/models/locator";
-
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-
+import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
-
+import {
+    DatabaseContentTypeLocator, LocatorRepository,
+} from "readium-desktop/main/db/repository/locator";
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
 let repository: LocatorRepository | null = null;
-let db: PouchDB.Database | null = null;
+let db: PouchDB.Database<DatabaseContentTypeLocator> | null = null;
 const now = moment.now();
 
 const dbDocIdentifier1 = "bookmark-1";
-const dbDoc1 = {
+const dbDoc1: DatabaseContentTypeLocator & PouchDB.Core.IdMeta = {
     identifier: dbDocIdentifier1,
     _id: "locator_" + dbDocIdentifier1,
     locatorType: LocatorType.Bookmark,
@@ -32,7 +31,7 @@ const dbDoc1 = {
 };
 
 const dbDocIdentifier2 = "bookmark-2";
-const dbDoc2 = {
+const dbDoc2: DatabaseContentTypeLocator & PouchDB.Core.IdMeta = {
     identifier: dbDocIdentifier2,
     _id: "locator_" + dbDocIdentifier2,
     locatorType: LocatorType.Bookmark,
@@ -49,7 +48,7 @@ const dbDoc2 = {
 };
 
 beforeEach(async () => {
-    db = createDatabase();
+    db = createDatabase<DatabaseContentTypeLocator>();
     repository = new LocatorRepository(db);
 
     // Create data
@@ -62,7 +61,7 @@ afterEach(async () => {
         return;
     }
     repository = null;
-    await clearDatabase(db);
+    await clearDatabase<DatabaseContentTypeLocator>(db);
 });
 
 test("repository.findAll", async () => {
@@ -166,7 +165,7 @@ test("repository.save create", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
+    const dbDoc: Omit<DatabaseContentTypeLocator, keyof Timestampable> = {
         identifier: "new-bookmark",
         locatorType: LocatorType.LastReadingLocation,
         publicationIdentifier: "pub-1",
@@ -192,7 +191,7 @@ test("repository.save update", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
+    const dbDoc: Omit<DatabaseContentTypeLocator, keyof Timestampable> = {
         identifier: "bookmark-1",
         locatorType: LocatorType.Bookmark,
         publicationIdentifier: "pub-1",

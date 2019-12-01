@@ -1,51 +1,59 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-
-import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
-
+import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
-
+import {
+    DatabaseContentTypePublication, PublicationRepository,
+} from "readium-desktop/main/db/repository/publication";
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
 let repository: PublicationRepository | null = null;
-let db: PouchDB.Database | null = null;
+let db: PouchDB.Database<DatabaseContentTypePublication> | null = null;
 const now = moment.now();
 
 const dbDocIdentifier1 = "pub-1";
-const dbDoc1 = {
+const dbDoc1: DatabaseContentTypePublication & PouchDB.Core.IdMeta = {
     identifier: dbDocIdentifier1,
     _id: "publication_" + dbDocIdentifier1,
-    publication: null as any,
-    // OPDSPublication? seems unused!
-    // opdsPublication: null as any,
     title: "Publication 1",
     tags: ["science", "computer"],
-    files: [] as any,
-    coverFile: null as any,
-    customCover: null as any,
+    files: [],
+    coverFile: null,
+    customCover: null,
+    resources: {
+        r2PublicationBase64: "",
+        r2LCPBase64: "",
+        r2LSDBase64: "",
+        r2OpdsPublicationBase64: "",
+    },
+    hash: "",
     createdAt: now,
     updatedAt: now,
 };
 
 const dbDocIdentifier2 = "pub-2";
-const dbDoc2 = {
+const dbDoc2: DatabaseContentTypePublication & PouchDB.Core.IdMeta = {
     identifier: dbDocIdentifier2,
     _id: "publication_" + dbDocIdentifier2,
-    publication: null as any,
-    // OPDSPublication? seems unused!
-    // opdsPublication: null as any,
     title: "Publication 2",
     tags: ["node", "computer"],
-    files: [] as any,
-    coverFile: null as any,
-    customCover: null as any,
+    files: [],
+    coverFile: null,
+    customCover: null,
+    resources: {
+        r2PublicationBase64: "",
+        r2LCPBase64: "",
+        r2LSDBase64: "",
+        r2OpdsPublicationBase64: "",
+    },
+    hash: "",
     createdAt: now - 10,
     updatedAt: now - 10,
 };
 
 beforeEach(async () => {
-    db = createDatabase();
+    db = createDatabase<DatabaseContentTypePublication>();
     repository = new PublicationRepository(db);
 
     // Create data
@@ -58,7 +66,7 @@ afterEach(async () => {
         return;
     }
     repository = null;
-    await clearDatabase(db);
+    await clearDatabase<DatabaseContentTypePublication>(db);
 });
 
 test("repository.findAll", async () => {
@@ -192,16 +200,13 @@ test("repository.save create", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
+    const dbDoc: Omit<DatabaseContentTypePublication, keyof Timestampable> = {
         identifier: "new-publication",
-        publication: null as any,
-        // OPDSPublication? seems unused!
-        // opdsPublication: null as any,
         title: "New publication",
         tags: ["scifi"],
-        files: [] as any,
-        coverFile: null as any,
-        customCover: null as any,
+        files: [],
+        coverFile: null,
+        customCover: null,
         resources: {
             r2PublicationBase64: "",
             r2LCPBase64: "",
@@ -227,16 +232,13 @@ test("repository.save update", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
+    const dbDoc: Omit<DatabaseContentTypePublication, keyof Timestampable> = {
         identifier: "pub-1",
-        publication: null as any,
-        // OPDSPublication? seems unused!
-        // opdsPublication: null as any,
         title: "Publication 1",
         tags: ["computer"],
-        files: [] as any,
-        coverFile: null as any,
-        customCover: null as any,
+        files: [],
+        coverFile: null,
+        customCover: null,
         resources: {
             r2PublicationBase64: "",
             r2LCPBase64: "",
@@ -262,7 +264,7 @@ test("repository.delete", async () => {
     if (!db || !repository) {
         return;
     }
-    const result = await db.get("publication_pub-1") as any;
+    const result = await db.get("publication_pub-1");
     expect(result.identifier).toBe("pub-1");
 
     // Delete publication 1
