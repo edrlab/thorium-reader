@@ -90,13 +90,13 @@ export class OpdsFeedViewConverter {
                 (link) => link.TypeLink === "image/png" || link.TypeLink === "image/jpeg");
 
             const firstThumbnailLink = imagesLinks.filter(
-                (img) => img.Rel.filter(
+                (img) => img.Rel && img.Rel.filter(
                     (rel) => rel === "http://opds-spec.org/image/thumbnail").length)[0];
             const thumbnailUrl = firstThumbnailLink ? firstThumbnailLink.Href :
                 (imagesLinks[0] ? imagesLinks[0].Href : undefined);
 
             const firstCoverLink = imagesLinks.filter(
-                (img) => img.Rel.filter(
+                (img) => img.Rel && img.Rel.filter(
                     (rel) => rel === "http://opds-spec.org/image").length)[0];
             const coverUrl = firstCoverLink ? firstCoverLink.Href : undefined;
 
@@ -109,28 +109,28 @@ export class OpdsFeedViewConverter {
         }
 
         const firstEntryLink: OPDSLink | undefined = r2OpdsPublication.Links.filter(
-            (link) => link.TypeLink.indexOf(";type=entry;profile=opds-catalog") > 0)[0];
+            (link) => link.TypeLink && link.TypeLink.indexOf(";type=entry;profile=opds-catalog") > 0)[0];
 
         const firstSampleOrPreviewLink = r2OpdsPublication.Links.filter(
-            (link) => link.Rel.filter(
+            (link) => link.Rel && link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition/sample"
                     || relLink === "http://opds-spec.org/acquisition/preview").length)[0];
 
         const firstOpenAccessLink = r2OpdsPublication.Links.filter(
-            (link) => link.Rel.filter(
+            (link) => link.Rel && link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition"
                     || relLink === "http://opds-spec.org/acquisition/open-access").length)[0];
 
         const firstBuyLink: OPDSLink | undefined = r2OpdsPublication.Links.filter(
-            (link) => link.Rel.filter(
+            (link) => link.Rel && link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition/buy").length)[0];
 
         const firstBorrowLink: OPDSLink | undefined = r2OpdsPublication.Links.filter(
-            (link) => link.Rel.filter(
+            (link) => link.Rel && link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition/borrow").length)[0];
 
         const firstSubscribeLink: OPDSLink | undefined = r2OpdsPublication.Links.filter(
-            (link) => link.Rel.filter(
+            (link) => link.Rel && link.Rel.filter(
                 (relLink) => relLink === "http://opds-spec.org/acquisition/subscribe").length)[0];
 
         const r2OpdsPublicationJson = TaJsonSerialize(r2OpdsPublication);
@@ -225,7 +225,7 @@ export class OpdsFeedViewConverter {
         let searchUrl: string | undefined;
         try {
             if (r2OpdsFeed.Links) {
-                const searchLink = r2OpdsFeed.Links.find((value) => value.Rel[0] === "search");
+                const searchLink = r2OpdsFeed.Links.find((value) => value.Rel && value.Rel[0] === "search");
                 if (searchLink) {
                     if (searchLink.TypeLink === "application/opds+json") {
                         searchUrl = searchLink.Href;
