@@ -1,4 +1,5 @@
 // Tweaked from: https://github.com/pouchdb-community/pouchdb-quick-search/issues/88
+// tslint:disable: no-namespace
 declare namespace PouchDB {
     namespace Search {
         interface SearchQuery<Content> {
@@ -9,7 +10,7 @@ declare namespace PouchDB {
             build?: true;
 
             // Fields to search over
-            fields: ((keyof Content)[]) | ({ [field in keyof Content]: number });
+            fields: (Array<keyof Content>) | ({ [field in keyof Content]: number });
 
             limit?: number;
             skip?: number;
@@ -23,7 +24,7 @@ declare namespace PouchDB {
             highlighting_pre?: string;
             highlighting_post?: string;
 
-            stale?: 'update_after' | 'ok';
+            stale?: "update_after" | "ok";
 
             language?: string | string[];
 
@@ -47,7 +48,7 @@ declare namespace PouchDB {
     }
 }
 
-declare module 'pouchdb-quick-search' {
+declare module "pouchdb-quick-search" {
     const plugin: PouchDB.Plugin;
     export = plugin;
 }
