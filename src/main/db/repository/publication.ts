@@ -67,7 +67,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
     }
 
     public async searchByTitle(title: string): Promise<PublicationDocument[]> {
-        const dbDocs = await (this.db as any).search({
+        const dbDocs = await this.db.search({
             query: title,
             fields: ["title"],
             include_docs: true,

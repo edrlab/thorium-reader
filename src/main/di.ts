@@ -56,15 +56,15 @@ if (!fs.existsSync(userDataPath)) {
 //
 // Create databases
 //
-let PouchDB = (PouchDBCore as any);
+let PouchDB = PouchDBCore;
 // object ready to use (no "default" property) when:
 // module.exports = PouchDB$2
 // in the CommonJS require'd "pouchdb-core" package ("main" field in package.json)
 // otherwise ("default" property) then it means:
 // export default PouchDB$2
 // in the native ECMAScript module ("jsnext:main" or "module" field in package.json)
-if (PouchDB.default) {
-    PouchDB = PouchDB.default;
+if ((PouchDB  as any).default) {
+    PouchDB = (PouchDB  as any).default as PouchDB.Static;
 }
 // ==> this way, with process.env.NODE_ENV === DEV we can have "pouchdb-core" as an external,
 // otherwise it gets bundled and the code continues to work in production.
