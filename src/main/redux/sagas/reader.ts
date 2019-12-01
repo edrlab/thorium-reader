@@ -275,7 +275,6 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
 }
 
 const READER_CONFIG_ID = "reader";
-type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocument<ReaderConfig>, keyof Timestampable>;
 
 export function* readerConfigSetRequestWatcher(): SagaIterator {
     while (true) {
@@ -283,7 +282,7 @@ export function* readerConfigSetRequestWatcher(): SagaIterator {
         const action = yield* takeTyped(readerActions.configSetRequest.build);
 
         const configValue = action.payload.config;
-        const config: ConfigDocumentTypeWithoutTimestampable = {
+        const config: Omit<ConfigDocument<ReaderConfig>, keyof Timestampable> = {
             identifier: READER_CONFIG_ID,
             value: configValue,
         };

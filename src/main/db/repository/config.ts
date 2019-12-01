@@ -7,28 +7,23 @@
 
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
-import { Identifiable } from "readium-desktop/common/models/identifiable";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 
-import { BaseRepository, DatabaseContentType } from "./base";
-
-export interface DatabaseContentTypeConfig<T> extends DatabaseContentType, ConfigDocument<T> {
-}
+import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
 @injectable()
-export class ConfigRepository<T> extends BaseRepository<ConfigDocument<T>, DatabaseContentTypeConfig<T>> {
-    public constructor(db: PouchDB.Database<DatabaseContentTypeConfig<T>>) {
+export class ConfigRepository<T> extends BaseRepository<ConfigDocument<T>> {
+    public constructor(db: PouchDB.Database<ConfigDocument<T>>) {
         super(db, "config");
     }
 
-    protected convertToDocument(dbDoc: PouchDB.Core.Document<DatabaseContentTypeConfig<T>>): ConfigDocument<T> {
+    protected convertToDocument(dbDoc: PouchDB.Core.Document<ConfigDocument<T>>): ConfigDocument<T> {
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
             {
                 value: dbDoc.value,
-            } as Omit<ConfigDocument<T>, keyof Timestampable | keyof Identifiable>,
+            } as ExcludeTimestampableAndIdentifiable<ConfigDocument<T>>,
         );
     }
 }

@@ -18,18 +18,16 @@ interface Index  {
     fields: string[];
 }
 
-export interface DatabaseContentType extends Timestampable, Identifiable {
-}
-
+export type ExcludeTimestampableAndIdentifiable<D> = Omit<D, keyof Timestampable | keyof Identifiable>;
 // tslint:disable-next-line: max-line-length
-type ExcludeTimestampableWithPartialIdentifiable<D> = Omit<D, keyof Timestampable | keyof Identifiable> & Partial<Identifiable>;
+export type ExcludeTimestampableWithPartialIdentifiable<D> = ExcludeTimestampableAndIdentifiable<D> & Partial<Identifiable>;
 
-export abstract class BaseRepository<D extends Identifiable & Timestampable, DB extends DatabaseContentType> {
-    protected db: PouchDB.Database<DB>;
+export abstract class BaseRepository<D extends Identifiable & Timestampable> {
+    protected db: PouchDB.Database<D>;
     protected idPrefix: string;
     protected indexes: Index[];
 
-    public constructor(db: PouchDB.Database<DB>, idPrefix: string, indexes?: Index[]) {
+    public constructor(db: PouchDB.Database<D>, idPrefix: string, indexes?: Index[]) {
         this.db = db;
         this.idPrefix = idPrefix;
         this.indexes = (indexes == null) ? [] : indexes;
@@ -42,22 +40,11 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable, DB 
     public async save(document: ExcludeTimestampableWithPartialIdentifiable<D>):
         Promise<D> {
 
-        let dbDoc: ExcludeTimestampableWithPartialIdentifiable<D> &
-            DB &
-            Partial<PouchDB.Core.GetMeta> &
-            Partial<PouchDB.Core.IdMeta> =
-        Object.assign(
-            {} as DB, // necessary for TypeScript type inference of dbDoc
-            document,
-            {
-                // Note: document is not Timestampable, so this does not override updatedAt:string
-                updatedAt: moment.now(),
-            } as Timestampable,
-        );
-
         if (!document.identifier) {
             document.identifier = uuid.v4();
         }
+
+        let dbDoc: PouchDB.Core.PutDocument<D> = this.convertFromDocument(document);
 
         // Search if there is an existing document with the same identifier
         try {
@@ -123,9 +110,9 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable, DB 
         });
     }
 
-    public async find(query?: PouchDB.Find.FindRequest<DB>): Promise<D[]> {
+    public async find(query?: PouchDB.Find.FindRequest<D>): Promise<D[]> {
         await this.checkIndexes();
-        const newQuery: PouchDB.Find.FindRequest<DB> = Object.assign(
+        const newQuery: PouchDB.Find.FindRequest<D> = Object.assign(
             {},
         );
 
@@ -168,14 +155,6 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable, DB 
         } catch (error) {
             throw error;
         }
-    }
-
-    protected convertToMinimalDocument(dbDoc: PouchDB.Core.Document<DB>): Timestampable & Identifiable {
-        return {
-            identifier: dbDoc.identifier,
-            createdAt: dbDoc.createdAt,
-            updatedAt: dbDoc.updatedAt,
-        } as Timestampable & Identifiable;
     }
 
     protected async buildIndex(index: Index) {
@@ -229,5 +208,25 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable, DB 
         }
     }
 
-    protected abstract convertToDocument(dbDoc: PouchDB.Core.Document<DB>): D;
+    protected convertFromDocument(document: ExcludeTimestampableWithPartialIdentifiable<D>):
+        PouchDB.Core.PutDocument<D> {
+
+        return Object.assign(
+            {} as D,
+            document,
+            {
+                updatedAt: moment.now(),
+            } as Timestampable,
+        );
+    }
+
+    protected convertToMinimalDocument(dbDoc: PouchDB.Core.Document<D>): Timestampable & Identifiable {
+        return {
+            identifier: dbDoc.identifier,
+            createdAt: dbDoc.createdAt,
+            updatedAt: dbDoc.updatedAt,
+        } as Timestampable & Identifiable;
+    }
+
+    protected abstract convertToDocument(dbDoc: PouchDB.Core.Document<D>): D;
 }

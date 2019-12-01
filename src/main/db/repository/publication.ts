@@ -7,12 +7,10 @@
 
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
-import { Identifiable } from "readium-desktop/common/models/identifiable";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { convertMultiLangStringToString } from "readium-desktop/common/utils";
-import { PublicationDocument, Resources } from "readium-desktop/main/db/document/publication";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
-import { BaseRepository, DatabaseContentType } from "./base";
+import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
 const CREATED_AT_INDEX = "created_at_index";
 
@@ -22,20 +20,10 @@ const TITLE_INDEX = "title_index";
 
 const HASH_INDEX = "hash_index";
 
-interface ResourcesWithLegacyFields extends Resources {
-    filePublication?: string;
-    opdsPublication?: string;
-}
-
-export interface DatabaseContentTypePublication extends DatabaseContentType, Omit<PublicationDocument, "resources"> {
-    resources: ResourcesWithLegacyFields;
-}
-
 @injectable()
-export class PublicationRepository extends BaseRepository<PublicationDocument, DatabaseContentTypePublication> {
-    public constructor(db: PouchDB.Database<DatabaseContentTypePublication>) {
+export class PublicationRepository extends BaseRepository<PublicationDocument> {
+    public constructor(db: PouchDB.Database<PublicationDocument>) {
 
-        // See DatabaseContentTypePublication
         const indexes = [
             {
                 fields: ["createdAt"], // Timestampable
@@ -116,20 +104,20 @@ export class PublicationRepository extends BaseRepository<PublicationDocument, D
         return tags;
     }
 
-    protected convertToDocument(dbDoc: PouchDB.Core.Document<DatabaseContentTypePublication>): PublicationDocument {
+    protected convertToDocument(dbDoc: PouchDB.Core.Document<PublicationDocument>): PublicationDocument {
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
             {
                 resources: dbDoc.resources ? {
                     // legacy names fallback
-                    r2PublicationBase64: dbDoc.resources.r2PublicationBase64 || dbDoc.resources.filePublication,
-                    r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 || dbDoc.resources.opdsPublication,
+                    r2PublicationBase64: dbDoc.resources.r2PublicationBase64 ||
+                        (dbDoc.resources as any).filePublication, // legacy obsolete field
+                    r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 ||
+                        (dbDoc.resources as any).opdsPublication, // legacy obsolete field
                     r2LCPBase64: dbDoc.resources.r2LCPBase64,
                     r2LSDBase64: dbDoc.resources.r2LSDBase64,
                 } : undefined,
-                // OPDSPublication? seems unused!
-                // opdsPublication: dbDoc.opdsPublication,
                 title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
                 tags: dbDoc.tags,
                 files: dbDoc.files,
@@ -140,7 +128,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument, D
                 lcpRightsCopies: dbDoc.lcpRightsCopies,
 
                 hash: dbDoc.hash,
-            } as Omit<PublicationDocument, keyof Timestampable | keyof Identifiable>,
+            } as ExcludeTimestampableAndIdentifiable<PublicationDocument>,
         );
     }
 }

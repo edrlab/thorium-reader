@@ -7,22 +7,16 @@
 
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
-import { Identifiable } from "readium-desktop/common/models/identifiable";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { LcpSecretDocument } from "readium-desktop/main/db/document/lcp-secret";
 
-import { BaseRepository, DatabaseContentType } from "./base";
+import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
 const PUBLICATION_IDENTIFIER_INDEX = "publication_identifier";
 
-export interface DatabaseContentTypeLcpSecret extends DatabaseContentType, LcpSecretDocument {
-}
-
 @injectable()
-export class LcpSecretRepository extends BaseRepository<LcpSecretDocument, DatabaseContentTypeLcpSecret> {
-    public constructor(db: PouchDB.Database<DatabaseContentTypeLcpSecret>) {
+export class LcpSecretRepository extends BaseRepository<LcpSecretDocument> {
+    public constructor(db: PouchDB.Database<LcpSecretDocument>) {
 
-        // See DatabaseContentTypeLcpSecret
         const indexes = [
             {
                 fields: ["publicationIdentifier"], // LcpSecretDocument
@@ -38,14 +32,14 @@ export class LcpSecretRepository extends BaseRepository<LcpSecretDocument, Datab
         });
     }
 
-    protected convertToDocument(dbDoc: PouchDB.Core.Document<DatabaseContentTypeLcpSecret>): LcpSecretDocument {
+    protected convertToDocument(dbDoc: PouchDB.Core.Document<LcpSecretDocument>): LcpSecretDocument {
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
             {
                 publicationIdentifier: dbDoc.publicationIdentifier,
                 secret: dbDoc.secret,
-            } as Omit<LcpSecretDocument, keyof Timestampable | keyof Identifiable>,
+            } as ExcludeTimestampableAndIdentifiable<LcpSecretDocument>,
         );
     }
 }

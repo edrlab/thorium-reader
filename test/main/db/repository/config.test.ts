@@ -1,39 +1,44 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
+import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
 import {
-    ConfigRepository, DatabaseContentTypeConfig,
-} from "readium-desktop/main/db/repository/config";
+    ExcludeTimestampableWithPartialIdentifiable,
+} from "readium-desktop/main/db/repository/base";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
 type ConfigType = string;
 
 let repository: ConfigRepository<ConfigType> | null = null;
-let db: PouchDB.Database<DatabaseContentTypeConfig<ConfigType>> | null = null;
+let db: PouchDB.Database<ConfigDocument<ConfigType>> | null = null;
 const now = moment.now();
 
 const dbDocIdentifier1 = "key-1";
-const dbDoc1: DatabaseContentTypeConfig<ConfigType> & PouchDB.Core.IdMeta = {
+const dbDocIdentifier1Internal = `config_${dbDocIdentifier1}`;
+const configVal1 = "config-value-1";
+const dbDoc1: PouchDB.Core.PutDocument<ConfigDocument<ConfigType>> = {
     identifier: dbDocIdentifier1,
-    _id: "config_" + dbDocIdentifier1,
-    value: "config-value-1",
+    _id: dbDocIdentifier1Internal,
+    value: configVal1,
     createdAt: now,
     updatedAt: now,
 };
 
 const dbDocIdentifier2 = "key-2";
-const dbDoc2: DatabaseContentTypeConfig<ConfigType> & PouchDB.Core.IdMeta = {
+const dbDocIdentifier2Internal = `config_${dbDocIdentifier2}`;
+const configVal2 = "config-value-2";
+const dbDoc2: PouchDB.Core.PutDocument<ConfigDocument<ConfigType>> = {
     identifier: dbDocIdentifier2,
-    _id: "config_" + dbDocIdentifier2,
-    value: "config-value-2",
+    _id: dbDocIdentifier2Internal,
+    value: configVal2,
     createdAt: now,
     updatedAt: now,
 };
 
 beforeEach(async () => {
-    db = createDatabase<DatabaseContentTypeConfig<ConfigType>>();
+    db = createDatabase<ConfigDocument<ConfigType>>();
     repository = new ConfigRepository<ConfigType>(db);
 
     // Create data
@@ -46,7 +51,7 @@ afterEach(async () => {
         return;
     }
     repository = null;
-    await clearDatabase<DatabaseContentTypeConfig<ConfigType>>(db);
+    await clearDatabase<ConfigDocument<ConfigType>>(db);
 });
 
 test("repository.findAll", async () => {
@@ -61,9 +66,9 @@ test("repository.get - found", async () => {
     if (!repository) {
         return;
     }
-    const result = await repository.get("key-1");
-    expect(result.identifier).toBe("key-1");
-    expect(result.value).toBe("config-value-1");
+    const result = await repository.get(dbDocIdentifier1);
+    expect(result.identifier).toBe(dbDocIdentifier1);
+    expect(result.value).toBe(configVal1);
 });
 
 test("repository.get - not found", async () => {
@@ -83,7 +88,7 @@ test("repository.save create", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc: Omit<DatabaseContentTypeConfig<ConfigType>, keyof Timestampable> = {
+    const dbDoc: ExcludeTimestampableWithPartialIdentifiable<ConfigDocument<ConfigType>> = {
         identifier: "new-key",
         value: "new-value",
     };
@@ -99,12 +104,12 @@ test("repository.save update", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc: Omit<DatabaseContentTypeConfig<ConfigType>, keyof Timestampable> = {
-        identifier: "key-1",
+    const dbDoc: ExcludeTimestampableWithPartialIdentifiable<ConfigDocument<ConfigType>> = {
+        identifier: dbDocIdentifier1,
         value: "new-value",
     };
     const result = await repository.save(dbDoc);
-    expect(result.identifier).toBe("key-1");
+    expect(result.identifier).toBe(dbDocIdentifier1);
     expect(result.value).toBe("new-value");
     expect(result.createdAt).toBeDefined();
     expect(result.updatedAt).toBeDefined();
@@ -115,13 +120,13 @@ test("repository.delete", async () => {
     if (!db || !repository) {
         return;
     }
-    const result = await db.get("config_key-1") as any;
-    expect(result.identifier).toBe("key-1");
+    const result = await db.get(dbDocIdentifier1Internal) as any;
+    expect(result.identifier).toBe(dbDocIdentifier1);
 
     // Delete key 1
-    await repository.delete("key-1");
+    await repository.delete(dbDocIdentifier1);
     try {
-        await db.get("config_key-1");
+        await db.get(dbDocIdentifier1Internal);
     } catch (e) {
         expect(e.message).toBe("missing");
     }

@@ -133,7 +133,7 @@ export class LcpManager {
             debug("processStatusDocument LCP updated.");
         }
 
-        const newPublicationDocument: PublicationDocument = Object.assign(
+        const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
             {},
             publicationDocument,
             {
@@ -146,7 +146,7 @@ export class LcpManager {
     }
 
     public updateDocumentLcpLsdBase64Resources(
-        publicationDocument: PublicationDocument | PublicationDocumentWithoutTimestampable,
+        publicationDocument: PublicationDocumentWithoutTimestampable,
         r2Lcp: LCP,
     ) {
         if (!publicationDocument.resources) {
@@ -263,7 +263,7 @@ export class LcpManager {
             publicationDocument.identifier,
         );
 
-        const newPublicationDocument: PublicationDocument = Object.assign(
+        const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
             {},
             publicationDocument,
             {
@@ -342,7 +342,7 @@ export class LcpManager {
                 const epubPath = this.publicationStorage.getPublicationEpubPath(
                     publicationDocument.identifier,
                 );
-                const newPublicationDocument = Object.assign(
+                const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
                     {},
                     publicationDocument,
                     {
@@ -416,7 +416,7 @@ export class LcpManager {
                 const epubPath = this.publicationStorage.getPublicationEpubPath(
                     publicationDocument.identifier,
                 );
-                const newPublicationDocument = Object.assign(
+                const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
                     {},
                     publicationDocument,
                     {
