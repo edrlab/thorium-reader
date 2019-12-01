@@ -67,11 +67,18 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     }
 
     const winRegistry = diMainGet("win-registry");
-    const appWindows = winRegistry.getWindows();
+
+    // WinDictionary = BrowserWindows indexed by number
+    // (the number is Electron.BrowserWindow.id)
+    const windowsDict = winRegistry.getWindows();
+
+    // generic / template type does not work because dictionary not indexed by string, but by number
+    // const windows = Object.values<AppWindow>(windowsDict);
+    const windows = Object.values(windowsDict) as AppWindow[];
 
     // If this is the only window, hide library window by default
-    if (Object.keys(appWindows).length === 1) {
-        const appWindow = Object.values(appWindows)[0];
+    if (windows.length === 1) {
+        const appWindow = windows[0];
         appWindow.win.hide();
     }
 
@@ -82,7 +89,7 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
         );
 
     // If there are 2 win, record window position in the db
-    if (Object.keys(appWindows).length === 2) {
+    if (windows.length === 2) {
         readerAppWindow.onWindowMoveResize.attach();
     }
 
@@ -237,9 +244,16 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
 
     if (gotoLibrary) {
         // Show library window
-        const appWindows = winRegistry.getWindows();
 
-        for (const appWin of Object.values(appWindows) as AppWindow[]) {
+        // WinDictionary = BrowserWindows indexed by number
+        // (the number is Electron.BrowserWindow.id)
+        const windowsDict = winRegistry.getWindows();
+
+        // generic / template type does not work because dictionary not indexed by string, but by number
+        // const windows = Object.values<AppWindow>(windowsDict);
+        const windows = Object.values(windowsDict) as AppWindow[];
+
+        for (const appWin of windows) {
             if (appWin.type !== AppWindowType.Library) {
                 continue;
             }
@@ -361,9 +375,15 @@ export function* readerDetachRequestWatcher(): SagaIterator {
             const winRegistry = diMainGet("win-registry");
             const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
 
-            const appWindows = winRegistry.getWindows();
+            // WinDictionary = BrowserWindows indexed by number
+            // (the number is Electron.BrowserWindow.id)
+            const windowsDict = winRegistry.getWindows();
 
-            for (const appWin of Object.values(appWindows)) {
+            // generic / template type does not work because dictionary not indexed by string, but by number
+            // const windows = Object.values<AppWindow>(windowsDict);
+            const windows = Object.values(windowsDict) as AppWindow[];
+
+            for (const appWin of windows) {
                 if (appWin.type !== AppWindowType.Library) {
                     continue;
                 }

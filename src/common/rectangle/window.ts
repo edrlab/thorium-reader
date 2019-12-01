@@ -51,7 +51,15 @@ export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rect
 
     try {
         const winRegistry = diMainGet("win-registry");
-        const windows = Object.values(winRegistry.getWindows()) as AppWindow[];
+
+        // WinDictionary = BrowserWindows indexed by number
+        // (the number is Electron.BrowserWindow.id)
+        const windowsDict = winRegistry.getWindows();
+
+        // generic / template type does not work because dictionary not indexed by string, but by number
+        // const windows = Object.values<AppWindow>(windowsDict);
+        const windows = Object.values(windowsDict) as AppWindow[];
+
         const displayArea = screen.getPrimaryDisplay().workAreaSize;
         if (WinType !== AppWindowType.Library && windows.length > 1) {
             const rectangle = windows.pop().win.getBounds();

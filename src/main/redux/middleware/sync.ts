@@ -71,14 +71,19 @@ export const reduxSyncMiddleware: Middleware
 
     // Send this action to all the registered renderer processes
     const winRegistry = diMainGet("win-registry");
-    const windows = winRegistry.getWindows();
+
+    // WinDictionary = BrowserWindows indexed by number
+    // (the number is Electron.BrowserWindow.id)
+    const windowsDict = winRegistry.getWindows();
+
+    // generic / template type does not work because dictionary not indexed by string, but by number
+    // const windows = Object.values<AppWindow>(windowsDict);
+    const windows = Object.values(windowsDict) as AppWindow[];
 
     // Get action serializer
     const actionSerializer = diMainGet("action-serializer");
 
-    for (const appWin of Object.values(windows)) {
-        const appWindow = appWin as AppWindow;
-
+    for (const appWindow of windows) {
         // Notifies renderer process
         const win = appWindow.win;
         const winId = appWindow.identifier;

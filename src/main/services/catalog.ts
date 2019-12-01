@@ -14,6 +14,7 @@ import * as path from "path";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { ToastType } from "readium-desktop/common/models/toast";
+import { AppWindow } from "readium-desktop/common/models/win";
 import {
     downloadActions, readerActions, toastActions,
 } from "readium-desktop/common/redux/actions/";
@@ -259,10 +260,19 @@ export class CatalogService {
     public async exportPublication(publicationView: PublicationView) {
         // Get main window
         const winRegistry = diMainGet("win-registry");
-        let mainWindow;
-        for (const window of (Object.values(winRegistry.getWindows())) as any) {
+
+        // WinDictionary = BrowserWindows indexed by number
+        // (the number is Electron.BrowserWindow.id)
+        const windowsDict = winRegistry.getWindows();
+
+        // generic / template type does not work because dictionary not indexed by string, but by number
+        // const windows = Object.values<AppWindow>(windowsDict);
+        const windows = Object.values(windowsDict) as AppWindow[];
+
+        let mainWindow: Electron.BrowserWindow;
+        for (const window of windows) {
             if (window.type === "library") {
-                mainWindow = window;
+                mainWindow = window.win;
             }
         }
 

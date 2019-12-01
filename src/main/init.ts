@@ -110,23 +110,33 @@ const winOpenCallback = (appWindow: AppWindow) => {
 const winCloseCallback = (appWindow: AppWindow) => {
     const store = diMainGet("store");
     const winRegistry = diMainGet("win-registry");
-    const appWindows = winRegistry.getWindows();
+
+    // WinDictionary = BrowserWindows indexed by number
+    // (the number is Electron.BrowserWindow.id)
+    const windowsDict = winRegistry.getWindows();
+
+    // generic / template type does not work because dictionary not indexed by string, but by number
+    // const windows = Object.values<AppWindow>(windowsDict);
+    const windows = Object.values(windowsDict) as AppWindow[];
+
+    // dictionary not indexed by string, but by number!
+    // const browserWindowNumberIds = Object.keys(windowsDict) as unknown as number[];
 
     // if multiple windows are open & library are closed. all other windows are closed
-    if (Object.keys(appWindows).length >= 1 &&
+    if (windows.length >= 1 &&
         appWindow.type === AppWindowType.Library) {
-        for (let nbWindow = Object.keys(appWindows).length - 1;
-            nbWindow >= 0; nbWindow--) {
-            Object.values(appWindows)[nbWindow].win.close();
+        for (let i = windows.length - 1;
+            i >= 0; i--) {
+                windows[i].win.close();
         }
         return;
     }
 
-    if (Object.keys(appWindows).length !== 1) {
+    if (windows.length !== 1) {
         return;
     }
 
-    const appWin = Object.values(appWindows)[0];
+    const appWin = windows[0];
     if (appWin.type === AppWindowType.Library) {
         // Set reader to attached mode
         store.dispatch(readerActions.detachModeSuccess.build(ReaderMode.Attached));
