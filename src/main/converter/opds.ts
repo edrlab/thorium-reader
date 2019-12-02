@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import * as debug "debug";
+import * as debug_ from "debug";
 import { injectable } from "inversify";
 import * as moment from "moment";
 import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
@@ -24,7 +24,8 @@ import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
 // Logger
-// const debug = debug_("readium-desktop:main/converter/opds");
+const debug = debug_("readium-desktop:main/converter/opds");
+debug("opds-converter");
 
 interface IGetLinksViewFilter {
     rel?: string | string[] | RegExp;
@@ -35,6 +36,14 @@ const supportedFileTypeLinkArray = [
     "application/epub+zip",
     "application/vnd.readium.lcp.license-1.0+json",
 ];
+
+const fallback = <T>(...valueArray: T[][]) =>
+    valueArray.reduce(
+        (pv, cv) =>
+            (Array.isArray(cv) && cv.length)
+                ? cv
+                : pv
+        , []);
 
 const GetLinksView = <T extends Link>(
     baseUrl: string,
@@ -71,10 +80,10 @@ const GetLinksView = <T extends Link>(
 
                         // compare typeSet and filterSet
                         const filterSet = new Set(filter.type.split(";"));
-                        const typeSet = new Set(ln.TypeLink.replace( /\s/g, "").split(";"));
+                        const typeArray = new Set(ln.TypeLink.replace( /\s/g, "").split(";"));
 
                         typeFlag = true;
-                        for (const i in typeSet.keys) {
+                        for (const i of typeArray) {
                             if (!filterSet.has(i)) {
                                 typeFlag = false;
                                 break;
@@ -83,15 +92,13 @@ const GetLinksView = <T extends Link>(
                     }
                 }
             }
-            if (filter.type && filter.rel) {
-                if (relFlag && typeFlag) {
-                    return true;
-                }
-                return false;
-            }
         }
 
-        return relFlag || typeFlag;
+        return (
+            (filter.type && filter.rel)
+                ? (relFlag && typeFlag)
+                : (relFlag || typeFlag)
+        );
     });
 
     // transform to absolute url
@@ -160,14 +167,14 @@ export class OpdsFeedViewConverter {
         });
 
         // FIXME: || doens't work on array
-        const thumbnailLinkView = GetLinksView(baseUrl, r2OpdsPublication.Images, {
+        const thumbnailLinkView = fallback(GetLinksView(baseUrl, r2OpdsPublication.Images, {
             type: ["image/png", "image/jpeg"],
             rel: "http://opds-spec.org/image/thumbnail",
-        }) || GetLinksView(baseUrl, r2OpdsPublication.Links, {
+        }), GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: ["image/png", "image/jpeg"],
-        }) || GetLinksView(baseUrl, r2OpdsPublication.Links, {
+        }), GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: new RegExp("^image\/*"),
-        });
+        }));
 
         let cover: IOpdsCoverView | undefined;
         if (thumbnailLinkView) {
@@ -177,7 +184,7 @@ export class OpdsFeedViewConverter {
             };
         }
 
-        // Get odps entry
+        // Get opds entry
         const sampleLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             rel: [
                 "http://opds-spec.org/acquisition/sample",
@@ -201,15 +208,14 @@ export class OpdsFeedViewConverter {
         const subscribeLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/subscribe",
         });
-        // FIXME : same above and made a unitary test for GetLinksView -> no filter is apply
-        const entrylinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
+        const entrylinkView = fallback(GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: "type=entry;profile=opds-catalog",
-        }) || GetLinksView(baseUrl, r2OpdsPublication.Links, {
+        }), GetLinksView(baseUrl, r2OpdsPublication.Links, {
             type: [
                 "application/atom+xml",
                 "application/opds+json",
             ],
-        });
+        }));
 
         const r2OpdsPublicationJson = TaJsonSerialize(r2OpdsPublication);
         const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
@@ -255,7 +261,7 @@ export class OpdsFeedViewConverter {
             up: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
             search: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
             bookshelf: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/shelf" }),
-            text: GetLinksView(baseUrl, r2OpdsFeed.Links, { type: "text/html" }),
+            text: GetLinksView(baseUrl, r2OpdsFeed.Links, { type: [ "text/html" ] }),
             self: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
         };
         const metadata: IOpdsFeedMetadataView = r2OpdsFeed.Metadata &&
