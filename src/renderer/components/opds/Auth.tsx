@@ -157,7 +157,7 @@ class OPDSAuth extends React.Component<IProps, IState> {
                     OPDS_AUTH_ENCRYPTION_KEY_HEX,
                     OPDS_AUTH_ENCRYPTION_IV_HEX)
                 .then((okay) => {
-                    console.error("SUCCESS fetch api opds/oauth");
+                    console.log("SUCCESS fetch api opds/oauth");
                     if (okay) {
                         this.props.browseOpds(this.props.url);
                     }

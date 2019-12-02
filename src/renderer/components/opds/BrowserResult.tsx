@@ -60,6 +60,7 @@ export class BrowserResult extends React.Component<IProps, IState> {
         };
 
         this.goto = this.goto.bind(this);
+        this.browseOpds = this.browseOpds.bind(this);
     }
 
     public componentDidMount() {
