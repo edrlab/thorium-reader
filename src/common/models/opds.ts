@@ -5,6 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as crypto from "crypto";
+import * as uuid from "uuid";
+
+const salt = crypto.randomBytes(16).toString("hex");
+export const OPDS_AUTH_ENCRYPTION_KEY_BUFFER = crypto.pbkdf2Sync(uuid.v4(), salt, 1000, 32, "sha256");
+export const OPDS_AUTH_ENCRYPTION_KEY_HEX = OPDS_AUTH_ENCRYPTION_KEY_BUFFER.toString("hex");
+
+const AES_BLOCK_SIZE = 16;
+export const OPDS_AUTH_ENCRYPTION_IV_BUFFER = Buffer.from(uuid.v4()).slice(0, AES_BLOCK_SIZE);
+export const OPDS_AUTH_ENCRYPTION_IV_HEX = OPDS_AUTH_ENCRYPTION_IV_BUFFER.toString("hex");
+
 export interface OpdsFeed {
     identifier?: string;
     title: string;

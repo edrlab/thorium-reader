@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as crypto from "crypto";
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
@@ -14,6 +15,10 @@ import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
+import { opdsActions } from "readium-desktop/main/redux/actions";
+import { RootState } from "readium-desktop/main/redux/states";
+import { Store } from "redux";
+import * as request from "request";
 import * as xmldom from "xmldom";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
@@ -21,6 +26,7 @@ import { convertOpds1ToOpds2 } from "@r2-opds-js/opds/converter";
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
+import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
 // Logger
@@ -33,6 +39,8 @@ export interface IOpdsApi {
     addFeed: (data: OpdsFeed) => Promise<OpdsFeedView>;
     updateFeed: (data: OpdsFeed) => Promise<OpdsFeedView>;
     browse: (url: string) => Promise<THttpGetOpdsResultView>;
+    // tslint:disable-next-line: max-line-length
+    oauth: (opdsUrl: string, login: string, password: string, oAuthUrl: string, oAuthRefreshUrl: string, OPDS_AUTH_ENCRYPTION_KEY_HEX: string, OPDS_AUTH_ENCRYPTION_IV_HEX: string) => Promise<boolean>;
 }
 
 export type TOpdsApiGetFeed = IOpdsApi["getFeed"];
@@ -41,6 +49,7 @@ export type TOpdsApiFindAllFeed = IOpdsApi["findAllFeeds"];
 export type TOpdsApiAddFeed = IOpdsApi["addFeed"];
 export type TOpdsApiUpdateFeed = IOpdsApi["updateFeed"];
 export type TOpdsApiBrowse = IOpdsApi["browse"];
+export type TOpdsApiOAuth = IOpdsApi["oauth"];
 
 export type TOpdsApiGetFeed_result = OpdsFeedView;
 export type TOpdsApiDeleteFeed_result = void;
@@ -48,6 +57,7 @@ export type TOpdsApiFindAllFeed_result = OpdsFeedView[];
 export type TOpdsApiAddFeed_result = OpdsFeedView;
 export type TOpdsApiUpdateFeed_result = OpdsFeedView;
 export type TOpdsApiBrowse_result = THttpGetOpdsResultView;
+export type TOpdsApiOAuth_result = boolean;
 
 export interface IOpdsModuleApi {
     "opds/getFeed": TOpdsApiGetFeed;
@@ -56,6 +66,7 @@ export interface IOpdsModuleApi {
     "opds/addFeed": TOpdsApiAddFeed;
     "opds/updateFeed": TOpdsApiUpdateFeed;
     "opds/browse": TOpdsApiBrowse;
+    "opds/oauth": TOpdsApiOAuth;
 }
 
 @injectable()
@@ -81,6 +92,9 @@ export class OpdsApi implements IOpdsApi {
 
     @inject(diSymbolTable["opds-feed-view-converter"])
     private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
+
+    @inject(diSymbolTable.store)
+    private readonly store!: Store<RootState>;
 
     public async getFeed(identifier: string): Promise<OpdsFeedView> {
         const doc = await this.opdsFeedRepository.get(identifier);
@@ -112,8 +126,16 @@ export class OpdsApi implements IOpdsApi {
         if (new URL(url).protocol === "opds:") {
             url = url.replace("opds://", "http://");
         }
+
+        const accessTokens = this.store.getState().catalog?.accessTokens;
+        const domain = url.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
+        const accessToken = accessTokens ? accessTokens[domain] : undefined;
+
         return await httpGet(url, {
             timeout: 10000,
+            headers: {
+                Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+            },
         }, async (opdsFeedData) => {
             // let r2OpdsPublication: OPDSPublication = null;
             let r2OpdsFeed: OPDSFeed = null;
@@ -181,6 +203,102 @@ export class OpdsApi implements IOpdsApi {
             }
 
             return opdsFeedData;
+        });
+    }
+
+    // tslint:disable-next-line: max-line-length
+    public async oauth(
+        opdsUrl: string,
+        login: string,
+        passwordEncrypted: string,
+        oAuthUrl: string,
+        _oAuthRefreshUrl: string,
+        OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
+        OPDS_AUTH_ENCRYPTION_IV_HEX: string): Promise<boolean> {
+
+        const encrypted = Buffer.from(passwordEncrypted, "base64"); // .toString("utf8");
+        const decrypteds: Buffer[] = [];
+        const decryptStream = crypto.createDecipheriv("aes-256-cbc",
+            Buffer.from(OPDS_AUTH_ENCRYPTION_KEY_HEX, "hex"),
+            Buffer.from(OPDS_AUTH_ENCRYPTION_IV_HEX, "hex"));
+        decryptStream.setAutoPadding(false);
+        const buff1 = decryptStream.update(encrypted);
+        if (buff1) {
+            decrypteds.push(buff1);
+        }
+        const buff2 = decryptStream.final();
+        if (buff2) {
+            decrypteds.push(buff2);
+        }
+        const decrypted = Buffer.concat(decrypteds);
+        const nPaddingBytes = decrypted[decrypted.length - 1];
+        const size = encrypted.length - nPaddingBytes;
+        const password = decrypted.slice(0, size).toString("utf8");
+
+        return new Promise<boolean>((resolve, reject) => {
+
+            const failure = (err: any) => {
+                debug(err);
+                reject(err);
+            };
+
+            const success = async (response: request.RequestResponse) => {
+
+                if (response.statusCode && (response.statusCode < 200 || response.statusCode >= 300)) {
+                    failure("HTTP CODE " + response.statusCode);
+                    return;
+                }
+
+                let responseData: Buffer;
+                try {
+                    responseData = await streamToBufferPromise(response);
+                } catch (err) {
+                    failure(err);
+                    return;
+                }
+                try {
+                    const responseStr = responseData.toString("utf8");
+                    const responseJson = JSON.parse(responseStr);
+                    // {
+                    //     "access_token": "XXX",
+                    //     "token_type": "Bearer",
+                    //     "expires_in": 3600,
+                    //     "refresh_token": "YYYY",
+                    //     "created_at": 1574940691
+                    // }
+                    // httpHeaders.Authorization = `Bearer ${access_token}`;
+                    debug(responseJson);
+                    if (!responseJson.access_token) {
+                        failure(responseStr);
+                        return;
+                    }
+                    const domain = opdsUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
+                    this.store.dispatch(opdsActions.accessToken.build(domain, responseJson.access_token));
+                    resolve(true);
+                } catch (err) {
+                    failure(err);
+                }
+            };
+
+            const locale = this.store.getState().i18n.locale;
+            const headers = {
+                "user-agent": "readium-desktop",
+                "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
+                "Content-Type": "application/x-www-form-url-encoded",
+                "Accept": "application/json,application/xml",
+            };
+            request.post({
+                form: {
+                    grant_type: "password",
+                    username: login,
+                    password,
+                },
+                headers,
+                method: "POST",
+                uri: oAuthUrl,
+            })
+                .on("response", success)
+                .on("error", failure);
         });
     }
 }

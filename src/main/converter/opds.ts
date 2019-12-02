@@ -114,14 +114,18 @@ export class OpdsFeedViewConverter {
             (link) => link.TypeLink && link.TypeLink.indexOf(";type=entry;profile=opds-catalog") > 0)[0];
 
         const firstSampleOrPreviewLink = r2OpdsPublication.Links.filter(
-            (link) => link.Rel && link.Rel.filter(
-                (relLink) => relLink === "http://opds-spec.org/acquisition/sample"
-                    || relLink === "http://opds-spec.org/acquisition/preview").length)[0];
+            (link) => link.Rel &&
+                (link.Rel.includes("http://opds-spec.org/acquisition/sample") ||
+                link.Rel.includes("http://opds-spec.org/acquisition/preview")) &&
+                (link.TypeLink === "application/epub+zip" ||
+                link.TypeLink === "application/vnd.readium.lcp.license.v1.0+json"))[0];
 
         const firstOpenAccessLink = r2OpdsPublication.Links.filter(
-            (link) => link.Rel && link.Rel.filter(
-                (relLink) => relLink === "http://opds-spec.org/acquisition"
-                    || relLink === "http://opds-spec.org/acquisition/open-access").length)[0];
+            (link) => link.Rel &&
+                (link.Rel.includes("http://opds-spec.org/acquisition") ||
+                link.Rel.includes("http://opds-spec.org/acquisition/open-access")) &&
+                (link.TypeLink === "application/epub+zip" ||
+                link.TypeLink === "application/vnd.readium.lcp.license.v1.0+json"))[0];
 
         const firstBuyLink: OPDSLink | undefined = r2OpdsPublication.Links.filter(
             (link) => link.Rel && link.Rel.filter(

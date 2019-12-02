@@ -28,8 +28,8 @@ import {
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
+import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 import * as uuid from "uuid";
 import * as xmldom from "xmldom";
@@ -44,9 +44,9 @@ import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { extractCrc32OnZip } from "../crc";
-import { diMainGet } from "../di";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
+import { WinRegistry } from "./win-registry";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -73,6 +73,9 @@ export class CatalogService {
 
     @inject(diSymbolTable["opds-feed-view-converter"])
     private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
+
+    @inject(diSymbolTable["win-registry"])
+    private readonly winRegistry!: WinRegistry;
 
     public async importEpubOrLcplFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
         let publicationDocument: PublicationDocument | undefined;
@@ -110,7 +113,16 @@ export class CatalogService {
 
         debug("Import OPDS publication", entryUrl);
 
-        return await httpGet(entryUrl, {}, async (opdsFeedData) => {
+        const accessTokens = this.store.getState().catalog?.accessTokens;
+        const domain = entryUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
+        const accessToken = accessTokens ? accessTokens[domain] : undefined;
+
+        return await httpGet(entryUrl, {
+            timeout: 10000,
+            headers: {
+                Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+            },
+        }, async (opdsFeedData) => {
             let r2OpdsPublication: OPDSPublication = null;
 
             if (opdsFeedData.isFailure) {
@@ -174,7 +186,7 @@ export class CatalogService {
         let isLcpFile = false;
         let title = opdsPublicationView.title;
         if (downloadLink) {
-            isLcpFile = downloadLink.TypeLink === "application/vnd.readium.lcp.license-1.0+json";
+            isLcpFile = downloadLink.TypeLink === "application/vnd.readium.lcp.license.v1.0+json";
             if (!isLcpFile && downloadLink.TypeLink !== "application/epub+zip") {
                 throw new Error(`OPDS download link is not EPUB! ${downloadUrl} ${downloadLink.TypeLink}`);
             }
@@ -258,12 +270,10 @@ export class CatalogService {
     }
 
     public async exportPublication(publicationView: PublicationView) {
-        // Get main window
-        const winRegistry = diMainGet("win-registry");
 
         // WinDictionary = BrowserWindows indexed by number
         // (the number is Electron.BrowserWindow.id)
-        const windowsDict = winRegistry.getWindows();
+        const windowsDict = this.winRegistry.getWindows();
 
         // generic / template type does not work because dictionary not indexed by string, but by number
         // const windows = Object.values<AppWindow>(windowsDict);

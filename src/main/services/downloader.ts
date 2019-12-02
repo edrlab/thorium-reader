@@ -33,6 +33,10 @@ export interface DownloadProgressListener {
 
 @injectable()
 export class Downloader {
+    // must use diMainGet("store"), because undefined?!
+    // @inject(diSymbolTable.store)
+    // private readonly store!: Store<RootState>;
+
     // Path where files are downloaded
     private dstRepositoryPath: string;
 
@@ -87,6 +91,7 @@ export class Downloader {
         let progressLastTime = new Date();
 
         const store = diMainGet("store");
+
         const locale = store.getState().i18n.locale;
 
         options = options || {} as TRequestCoreOptionsOptionalUriUrl;
@@ -99,9 +104,14 @@ export class Downloader {
             });
         }
 
+        const accessTokens = store.getState().catalog?.accessTokens;
+        const domain = download.srcUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
+        const accessToken = accessTokens ? accessTokens[domain] : undefined;
+
         const headers = Object.assign(headerFromOptions, {
             "user-agent": "readium-desktop",
             "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
+            "Authorization": accessToken ? `Bearer ${accessToken}` : undefined,
         });
         const requestOptions: TRequestCoreOptionsRequiredUriUrl = Object.assign(
             {timeout: 25000},

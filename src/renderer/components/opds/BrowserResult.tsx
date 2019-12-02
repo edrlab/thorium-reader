@@ -128,7 +128,7 @@ export class BrowserResult extends React.Component<IProps, IState> {
                 switch (browserResult.data.type) {
                     case OpdsResultType.Auth:
                         content = (
-                            <OPDSAuth data={browserResult.data}/>
+                            <OPDSAuth browseOpds={this.browseOpds} url={this.props.url} data={browserResult.data}/>
                         );
                         break;
                     case OpdsResultType.NavigationFeed:
