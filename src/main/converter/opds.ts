@@ -83,8 +83,8 @@ const GetLinksView = <T extends Link>(
                         const typeArray = new Set(ln.TypeLink.replace( /\s/g, "").split(";"));
 
                         typeFlag = true;
-                        for (const i of typeArray) {
-                            if (!filterSet.has(i)) {
+                        for (const i of filterSet) {
+                            if (!typeArray.has(i)) {
                                 typeFlag = false;
                                 break;
                             }
