@@ -227,7 +227,8 @@ declare namespace typed_i18n {
     readonly "timeout": string
   },
   readonly "next": string,
-  readonly "previous": string
+  readonly "previous": string,
+  readonly "shelf": string
 };
   (_: "opds.addForm", __?: {}): {
   readonly "addButton": string,
@@ -272,6 +273,7 @@ declare namespace typed_i18n {
   (_: "opds.network.reject", __?: {}): string;
   (_: "opds.network.timeout", __?: {}): string;
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
+  (_: "opds.shelf", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,

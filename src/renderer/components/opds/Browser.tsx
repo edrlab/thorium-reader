@@ -14,9 +14,9 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { IOpdsBrowse } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { parseQueryString } from "readium-desktop/utils/url";
-import { IOpdsBrowse } from "src/renderer/routing";
 
 import BreadCrumb, { BreadCrumbItem } from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";

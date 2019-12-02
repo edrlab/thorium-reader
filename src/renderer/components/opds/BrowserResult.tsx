@@ -24,6 +24,7 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { parseQueryString } from "readium-desktop/utils/url";
 
+import OPDSAuth from "./Auth";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
@@ -108,7 +109,7 @@ export class BrowserResult extends React.Component<IProps, IState> {
                     const rootFeedIdentifier = match.params.opdsId;
                     const route = buildOpdsBrowserRoute(
                         rootFeedIdentifier,
-                        "Shelf", // TODO translate
+                        __("opds.shelf"),
                         browserResult.data.urls.shelf,
                         level,
                     );
@@ -119,7 +120,7 @@ export class BrowserResult extends React.Component<IProps, IState> {
                                 className={styles.flux_infos}
                                 to={route}
                             >
-                                <span className={styles.flux_title}>Shelf</span>
+                                <span className={styles.flux_title}>{__("opds.shelf")}</span>
                             </Link>
                             <br></br>
                         </h3>);
@@ -127,10 +128,7 @@ export class BrowserResult extends React.Component<IProps, IState> {
                 switch (browserResult.data.type) {
                     case OpdsResultType.Auth:
                         content = (
-                            <section>
-                                <h2>{browserResult.data.title}</h2>
-                                <pre>{JSON.stringify(browserResult.data.auth)}</pre>
-                            </section>
+                            <OPDSAuth data={browserResult.data}/>
                         );
                         break;
                     case OpdsResultType.NavigationFeed:
