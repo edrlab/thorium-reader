@@ -9,6 +9,7 @@ import * as crypto from "crypto";
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
+import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { httpGet } from "readium-desktop/common/utils/http";
 import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
@@ -28,6 +29,8 @@ import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
+
+import { ConfigRepository } from "../db/repository/config";
 
 // Logger
 const debug = debug_("readium-desktop:src/main/api/opds");
@@ -96,6 +99,9 @@ export class OpdsApi implements IOpdsApi {
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
 
+    @inject(diSymbolTable["config-repository"])
+    private readonly configRepository!: ConfigRepository<AccessTokenMap>;
+
     private _OPDS_AUTH_ENCRYPTION_KEY_HEX: string | undefined;
     private _OPDS_AUTH_ENCRYPTION_IV_HEX: string | undefined;
 
@@ -132,7 +138,26 @@ export class OpdsApi implements IOpdsApi {
 
         const accessTokens = this.store.getState().catalog?.accessTokens;
         const domain = url.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
-        const accessToken = accessTokens ? accessTokens[domain] : undefined;
+        let accessToken = accessTokens ? accessTokens[domain] : undefined;
+
+        // FIXME: dirty hack, should be Redux Saga effect!!
+        if (!accessToken) {
+            try {
+                const savedAccessTokens = await this.configRepository.get("oauth");
+                const test = savedAccessTokens.value[domain];
+                if (test) {
+                    accessToken = test;
+                    this.store.dispatch(opdsActions.accessToken.build(
+                        domain,
+                        test.authenticationToken,
+                        test.refreshToken,
+                        test.authenticationUrl,
+                        test.refreshUrl));
+                }
+            } catch (err) {
+                debug(err);
+            }
+        }
 
         return await httpGet(url, {
             timeout: 10000,
@@ -214,7 +239,7 @@ export class OpdsApi implements IOpdsApi {
                                 } catch (err) {
                                     reject(err);
                                 }
-                            }, 100); // dirty hack, should be Redux Saga effect!!
+                            }, 200); // FIXME: dirty hack, should be Redux Saga effect!!
                         });
                     } catch (err) {
                         debug(err);
@@ -330,6 +355,27 @@ export class OpdsApi implements IOpdsApi {
                         responseJson.refresh_token,
                         oAuthUrl,
                         oAuthRefreshUrl));
+
+                    // FIXME: dirty hack, should be Redux Saga effect!!
+                    await new Promise<void>((res, _rej) => {
+                        setTimeout(async () => {
+                            res();
+                        }, 100);
+                    });
+
+                    // FIXME: dirty hack, should be Redux Saga effect!!
+                    const accessTokens = this.store.getState().catalog?.accessTokens;
+                    if (accessTokens) {
+                        try {
+                            await this.configRepository.save({
+                                identifier: "oauth",
+                                value: accessTokens,
+                            });
+                        } catch (err) {
+                            debug(err);
+                        }
+                    }
+
                     resolve(true);
                 } catch (err) {
                     failure(err);
