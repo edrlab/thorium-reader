@@ -13,8 +13,8 @@ import {
 } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
 import {
-    OpdsFeedView, OpdsGroupView, OpdsLinkView, OpdsPublicationView, OpdsResultPageInfos,
-    OpdsResultType, OpdsResultUrls, OpdsResultView, OpdsAuthView,
+    OpdsAuthView, OpdsFeedView, OpdsGroupView, OpdsLinkView, OpdsPublicationView,
+    OpdsResultPageInfos, OpdsResultType, OpdsResultUrls, OpdsResultView,
 } from "readium-desktop/common/views/opds";
 import { CoverView } from "readium-desktop/common/views/publication";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";

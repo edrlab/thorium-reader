@@ -6,8 +6,11 @@
 // ==LICENSE-END==
 
 export interface AccessTokenValue {
+    authenticationUrl: string;
     authenticationToken: string;
-    refreshToken: string;
+
+    refreshUrl?: string;
+    refreshToken?: string;
 }
 
 export interface AccessTokenMap {

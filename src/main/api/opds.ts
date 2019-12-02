@@ -40,7 +40,7 @@ export interface IOpdsApi {
     updateFeed: (data: OpdsFeed) => Promise<OpdsFeedView>;
     browse: (url: string) => Promise<THttpGetOpdsResultView>;
     // tslint:disable-next-line: max-line-length
-    oauth: (opdsUrl: string, login: string, password: string, oAuthUrl: string, oAuthRefreshUrl: string, OPDS_AUTH_ENCRYPTION_KEY_HEX: string, OPDS_AUTH_ENCRYPTION_IV_HEX: string) => Promise<boolean>;
+    oauth: (opdsUrl: string, login: string, password: string, oAuthUrl: string, oAuthRefreshUrl: string | undefined, OPDS_AUTH_ENCRYPTION_KEY_HEX: string, OPDS_AUTH_ENCRYPTION_IV_HEX: string, refreshToken?: string) => Promise<boolean>;
 }
 
 export type TOpdsApiGetFeed = IOpdsApi["getFeed"];
@@ -96,6 +96,9 @@ export class OpdsApi implements IOpdsApi {
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
 
+    private _OPDS_AUTH_ENCRYPTION_KEY_HEX: string | undefined;
+    private _OPDS_AUTH_ENCRYPTION_IV_HEX: string | undefined;
+
     public async getFeed(identifier: string): Promise<OpdsFeedView> {
         const doc = await this.opdsFeedRepository.get(identifier);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
@@ -122,7 +125,7 @@ export class OpdsApi implements IOpdsApi {
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
-    public async browse(url: string): Promise<THttpGetOpdsResultView> {
+    public async browse(url: string, tryingAgain: boolean = false): Promise<THttpGetOpdsResultView> {
         if (new URL(url).protocol === "opds:") {
             url = url.replace("opds://", "http://");
         }
@@ -137,6 +140,7 @@ export class OpdsApi implements IOpdsApi {
                 Authorization: accessToken ? `Bearer ${accessToken.authenticationToken}` : undefined,
             },
         }, async (opdsFeedData) => {
+
             // let r2OpdsPublication: OPDSPublication = null;
             let r2OpdsFeed: OPDSFeed = null;
             let r2OpdsAuth: OPDSAuthenticationDoc = null;
@@ -179,6 +183,46 @@ export class OpdsApi implements IOpdsApi {
                 r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
             } else {
                 const jsonObj = JSON.parse(body);
+
+                const tryRefreshAccessToken =
+                    // to test / mock access token expiry, comment the next two lines:
+                    jsonObj.authentication &&
+                    opdsFeedData.isFailure && opdsFeedData.statusCode === 401 &&
+
+                    accessToken && accessToken.refreshToken &&
+                    !tryingAgain &&
+                    this._OPDS_AUTH_ENCRYPTION_KEY_HEX &&
+                    this._OPDS_AUTH_ENCRYPTION_KEY_HEX ? true : false;
+
+                if (tryRefreshAccessToken) {
+                    try {
+                        await this.oauth(
+                            url,
+                            undefined,
+                            undefined,
+                            accessToken.authenticationUrl,
+                            accessToken.refreshUrl,
+                            this._OPDS_AUTH_ENCRYPTION_KEY_HEX,
+                            this._OPDS_AUTH_ENCRYPTION_IV_HEX,
+                            accessToken.refreshToken);
+
+                        return new Promise<THttpGetOpdsResultView>((resolve, reject) => {
+                            setTimeout(async () => {
+                                try {
+                                    const res = await this.browse(url, true);
+                                    resolve(res);
+                                } catch (err) {
+                                    reject(err);
+                                }
+                            }, 100); // dirty hack, should be Redux Saga effect!!
+                        });
+                    } catch (err) {
+                        debug(err);
+                        // access token refresh failed
+                        // =>
+                        // continue with auth form
+                    }
+                }
                 if (jsonObj.authentication) { // usually with opdsFeedData.isFailure
                     r2OpdsAuth = TaJsonDeserialize<OPDSAuthenticationDoc>(
                         jsonObj,
@@ -209,31 +253,39 @@ export class OpdsApi implements IOpdsApi {
     // tslint:disable-next-line: max-line-length
     public async oauth(
         opdsUrl: string,
-        login: string,
-        passwordEncrypted: string,
+        login: string | undefined,
+        passwordEncrypted: string | undefined,
         oAuthUrl: string,
-        _oAuthRefreshUrl: string,
+        oAuthRefreshUrl: string | undefined,
         OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
-        OPDS_AUTH_ENCRYPTION_IV_HEX: string): Promise<boolean> {
+        OPDS_AUTH_ENCRYPTION_IV_HEX: string,
+        refreshToken?: string): Promise<boolean> {
 
-        const encrypted = Buffer.from(passwordEncrypted, "base64"); // .toString("utf8");
-        const decrypteds: Buffer[] = [];
-        const decryptStream = crypto.createDecipheriv("aes-256-cbc",
-            Buffer.from(OPDS_AUTH_ENCRYPTION_KEY_HEX, "hex"),
-            Buffer.from(OPDS_AUTH_ENCRYPTION_IV_HEX, "hex"));
-        decryptStream.setAutoPadding(false);
-        const buff1 = decryptStream.update(encrypted);
-        if (buff1) {
-            decrypteds.push(buff1);
+        this._OPDS_AUTH_ENCRYPTION_KEY_HEX = OPDS_AUTH_ENCRYPTION_KEY_HEX;
+        this._OPDS_AUTH_ENCRYPTION_IV_HEX = OPDS_AUTH_ENCRYPTION_IV_HEX;
+
+        let password: string | undefined;
+
+        if (passwordEncrypted) {
+            const encrypted = Buffer.from(passwordEncrypted, "base64");
+            const decrypteds: Buffer[] = [];
+            const decryptStream = crypto.createDecipheriv("aes-256-cbc",
+                Buffer.from(OPDS_AUTH_ENCRYPTION_KEY_HEX, "hex"),
+                Buffer.from(OPDS_AUTH_ENCRYPTION_IV_HEX, "hex"));
+            decryptStream.setAutoPadding(false);
+            const buff1 = decryptStream.update(encrypted);
+            if (buff1) {
+                decrypteds.push(buff1);
+            }
+            const buff2 = decryptStream.final();
+            if (buff2) {
+                decrypteds.push(buff2);
+            }
+            const decrypted = Buffer.concat(decrypteds);
+            const nPaddingBytes = decrypted[decrypted.length - 1];
+            const size = encrypted.length - nPaddingBytes;
+            password = decrypted.slice(0, size).toString("utf8");
         }
-        const buff2 = decryptStream.final();
-        if (buff2) {
-            decrypteds.push(buff2);
-        }
-        const decrypted = Buffer.concat(decrypteds);
-        const nPaddingBytes = decrypted[decrypted.length - 1];
-        const size = encrypted.length - nPaddingBytes;
-        const password = decrypted.slice(0, size).toString("utf8");
 
         return new Promise<boolean>((resolve, reject) => {
 
@@ -275,7 +327,9 @@ export class OpdsApi implements IOpdsApi {
                     this.store.dispatch(opdsActions.accessToken.build(
                         domain,
                         responseJson.access_token,
-                        responseJson.refresh_token));
+                        responseJson.refresh_token,
+                        oAuthUrl,
+                        oAuthRefreshUrl));
                     resolve(true);
                 } catch (err) {
                     failure(err);
@@ -290,10 +344,13 @@ export class OpdsApi implements IOpdsApi {
                 "Accept": "application/json,application/xml",
             };
             request.post({
-                form: {
+                form: login && password ? {
                     grant_type: "password",
                     username: login,
                     password,
+                } : {
+                    grant_type: "refresh_token",
+                    refresh_token: refreshToken,
                 },
                 headers,
                 method: "POST",

@@ -22,6 +22,8 @@ export function opdsReducer(
             obj[action.payload.domain] = {
                 authenticationToken: action.payload.authenticationToken,
                 refreshToken: action.payload.refreshToken,
+                authenticationUrl: action.payload.authenticationUrl,
+                refreshUrl: action.payload.refreshUrl,
             };
             return Object.assign({}, state,
                 {
