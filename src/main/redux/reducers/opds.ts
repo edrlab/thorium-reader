@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { CatalogState } from "readium-desktop/common/redux/states/catalog";
+import { AccessTokenMap, CatalogState } from "readium-desktop/common/redux/states/catalog";
 import { opdsActions } from "readium-desktop/main/redux/actions";
 
 const initialState: CatalogState = {
@@ -18,8 +18,11 @@ export function opdsReducer(
 ) {
     switch (action.type) {
         case opdsActions.accessToken.ID:
-            const obj: { [key: string]: string } = {};
-            obj[action.payload.domain] = action.payload.accessToken;
+            const obj: AccessTokenMap = {};
+            obj[action.payload.domain] = {
+                authenticationToken: action.payload.authenticationToken,
+                refreshToken: action.payload.refreshToken,
+            };
             return Object.assign({}, state,
                 {
                     accessTokens: Object.assign(

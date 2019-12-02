@@ -111,7 +111,7 @@ export class Downloader {
         const headers = Object.assign(headerFromOptions, {
             "user-agent": "readium-desktop",
             "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
-            "Authorization": accessToken ? `Bearer ${accessToken}` : undefined,
+            "Authorization": accessToken ? `Bearer ${accessToken.authenticationToken}` : undefined,
         });
         const requestOptions: TRequestCoreOptionsRequiredUriUrl = Object.assign(
             {timeout: 25000},

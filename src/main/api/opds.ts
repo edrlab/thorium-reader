@@ -134,7 +134,7 @@ export class OpdsApi implements IOpdsApi {
         return await httpGet(url, {
             timeout: 10000,
             headers: {
-                Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+                Authorization: accessToken ? `Bearer ${accessToken.authenticationToken}` : undefined,
             },
         }, async (opdsFeedData) => {
             // let r2OpdsPublication: OPDSPublication = null;
@@ -266,14 +266,16 @@ export class OpdsApi implements IOpdsApi {
                     //     "refresh_token": "YYYY",
                     //     "created_at": 1574940691
                     // }
-                    // httpHeaders.Authorization = `Bearer ${access_token}`;
-                    debug(responseJson);
+
                     if (!responseJson.access_token) {
                         failure(responseStr);
                         return;
                     }
                     const domain = opdsUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
-                    this.store.dispatch(opdsActions.accessToken.build(domain, responseJson.access_token));
+                    this.store.dispatch(opdsActions.accessToken.build(
+                        domain,
+                        responseJson.access_token,
+                        responseJson.refresh_token));
                     resolve(true);
                 } catch (err) {
                     failure(err);

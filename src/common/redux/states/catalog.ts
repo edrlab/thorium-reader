@@ -5,8 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+export interface AccessTokenValue {
+    authenticationToken: string;
+    refreshToken: string;
+}
+
+export interface AccessTokenMap {
+    [domain: string]: AccessTokenValue;
+}
+
 export interface CatalogState {
-    accessTokens?: {
-        [domain: string]: string,
-    };
+    accessTokens?: AccessTokenMap;
 }

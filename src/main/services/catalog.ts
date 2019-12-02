@@ -120,7 +120,7 @@ export class CatalogService {
         return await httpGet(entryUrl, {
             timeout: 10000,
             headers: {
-                Authorization: accessToken ? `Bearer ${accessToken}` : undefined,
+                Authorization: accessToken ? `Bearer ${accessToken.authenticationToken}` : undefined,
             },
         }, async (opdsFeedData) => {
             let r2OpdsPublication: OPDSPublication = null;

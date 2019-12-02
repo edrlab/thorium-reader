@@ -11,17 +11,19 @@ export const ID = "OPDS_ACCESS_TOKEN";
 
 export interface Payload {
     domain: string;
-    accessToken: string;
+    authenticationToken: string;
+    refreshToken: string;
 }
 
-export function build(domain: string, accessToken: string):
+export function build(domain: string, authenticationToken: string, refreshToken: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             domain,
-            accessToken,
+            authenticationToken,
+            refreshToken,
         },
     };
 }
