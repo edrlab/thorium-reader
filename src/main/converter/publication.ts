@@ -55,8 +55,13 @@ export class PublicationViewConverter {
             tags: document.tags,
             cover,
             customCover: document.customCover,
+
             lcp: document.lcp,
-            doc: r2Publication.Metadata,
+            lcpRightsCopies: document.lcpRightsCopies,
+
+            // doc: r2Publication.Metadata,
+
+            r2PublicationBase64,
         };
     }
 }

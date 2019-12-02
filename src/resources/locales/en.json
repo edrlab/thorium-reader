@@ -53,7 +53,7 @@
         "released": "Published on",
         "sort": "Sort by",
         "tagCount": "Tag count",
-        "tags": "My tags"
+        "tags": "Tags"
     },
     "dialog": {
         "closeModalWindow": "Close this modal window",
@@ -135,16 +135,27 @@
         "previous": "Previous"
     },
     "publication": {
+        "cancelledLcp": "This book can't be read because the LCP license has been cancelled.",
+        "certificateRevoked": "Certificate is revoked",
+        "certificateSignatureInvalid": "Certificate signature is invalid",
         "cover": {
             "img": "cover image"
         },
         "expiredLcp": "This book can't be read because the LCP license has expired.",
+        "lcpEnd": "End",
+        "lcpRightsCopy": "Character copy",
+        "lcpRightsPrint": "Printer copy",
+        "lcpStart": "Start",
+        "licenseOutOfDate": "License is out of date",
+        "licenseSignatureDateInvalid": "License signature date is invalid",
+        "licenseSignatureInvalid": "License signature is invalid",
         "renewButton": "Renew",
         "returnButton": "Return",
         "returnedLcp": "This book can't be read because the LCP license has been returned.",
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "See less",
-        "seeMore": "See more"
+        "seeMore": "See more",
+        "userKeyCheckInvalid": "Passphrase is incorrect"
     },
     "reader": {
         "footerInfo": {

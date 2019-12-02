@@ -27,7 +27,7 @@ export default class PageManager extends React.Component<{}, IState> {
         return (
             <Switch>
                 {Object.keys(routes).map((path: string) => {
-                    const route = (routes as any)[path];
+                    const route = routes[path];
                     return (
                         <Route
                             key={path}

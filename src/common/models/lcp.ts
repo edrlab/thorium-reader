@@ -10,6 +10,8 @@ import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 export interface LsdInfo {
     statusUrl: string;
     lsdStatus?: LsdStatus;
+
+    r2LSDBase64: string;
 }
 
 export interface LcpRights {
@@ -25,6 +27,8 @@ export interface LcpInfo {
     updated?: Date;
     lsd?: LsdInfo;
     rights: LcpRights;
+
+    r2LCPBase64: string;
 }
 
 export interface DeviceConfig {

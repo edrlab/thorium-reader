@@ -49,7 +49,7 @@ const GetLinksView = <T extends Link>(
 
         if (ln.Href) {
             if (filter.rel) {
-                if (ln.Rel.length) {
+                if (ln.Rel?.length) {
                     ln.Rel.forEach((rel) => {
                         if (Array.isArray(filter.rel) && filter.rel.includes(rel)) {
                             relFlag = true;

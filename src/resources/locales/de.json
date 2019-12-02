@@ -53,7 +53,7 @@
         "released": "Veröffentlicht am",
         "sort": "Sortieren nach",
         "tagCount": "Anzahl der Tags",
-        "tags": "Meine Tags"
+        "tags": "Tags"
     },
     "dialog": {
         "closeModalWindow": "Dieses Fenster schließen",
@@ -135,16 +135,27 @@
         "previous": "Bisherige"
     },
     "publication": {
+        "cancelledLcp": "",
+        "certificateRevoked": "",
+        "certificateSignatureInvalid": "",
         "cover": {
             "img": "Titelbild"
         },
         "expiredLcp": "",
+        "lcpEnd": "",
+        "lcpRightsCopy": "",
+        "lcpRightsPrint": "",
+        "lcpStart": "",
+        "licenseOutOfDate": "",
+        "licenseSignatureDateInvalid": "",
+        "licenseSignatureInvalid": "",
         "renewButton": "Verlängern",
         "returnButton": "Zurückgeben",
         "returnedLcp": "",
         "revokedLcp": "",
         "seeLess": "Weniger Infos",
-        "seeMore": "Mehr Infos"
+        "seeMore": "Mehr Infos",
+        "userKeyCheckInvalid": ""
     },
     "reader": {
         "footerInfo": {

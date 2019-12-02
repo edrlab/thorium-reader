@@ -1,28 +1,32 @@
 import "reflect-metadata";
 
 import * as moment from "moment";
-
 import { LocatorType } from "readium-desktop/common/models/locator";
-
-import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
-
+import { LocatorDocument } from "readium-desktop/main/db/document/locator";
 import { NotFoundError } from "readium-desktop/main/db/exceptions";
-
+import {
+    ExcludeTimestampableWithPartialIdentifiable,
+} from "readium-desktop/main/db/repository/base";
+import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { clearDatabase, createDatabase } from "test/main/db/utils";
 
 let repository: LocatorRepository | null = null;
-let db: PouchDB.Database | null = null;
+let db: PouchDB.Database<LocatorDocument> | null = null;
 const now = moment.now();
 
 const dbDocIdentifier1 = "bookmark-1";
-const dbDoc1 = {
+const dbDocIdentifier1Internal = `locator_${dbDocIdentifier1}`;
+const publicationIdentifier1 = "pub-1";
+const title1 = "Bookmark 1";
+const href1 = "/spines/spine-1";
+const dbDoc1: PouchDB.Core.PutDocument<LocatorDocument> = {
     identifier: dbDocIdentifier1,
-    _id: "locator_" + dbDocIdentifier1,
+    _id: dbDocIdentifier1Internal,
     locatorType: LocatorType.Bookmark,
-    publicationIdentifier: "pub-1",
+    publicationIdentifier: publicationIdentifier1,
     locator: {
-        href: "/spines/spine-1",
-        title: "Bookmark 1",
+        href: href1,
+        title: title1,
         locations: {
             position: 12,
         },
@@ -32,11 +36,13 @@ const dbDoc1 = {
 };
 
 const dbDocIdentifier2 = "bookmark-2";
-const dbDoc2 = {
+const dbDocIdentifier2Internal = `locator_${dbDocIdentifier2}`;
+const publicationIdentifier2 = "pub-2";
+const dbDoc2: PouchDB.Core.PutDocument<LocatorDocument> = {
     identifier: dbDocIdentifier2,
-    _id: "locator_" + dbDocIdentifier2,
+    _id: dbDocIdentifier2Internal,
     locatorType: LocatorType.Bookmark,
-    publicationIdentifier: "pub-2",
+    publicationIdentifier: publicationIdentifier2,
     locator: {
         href: "/spines/spine-2",
         title: "Bookmark 2",
@@ -49,7 +55,7 @@ const dbDoc2 = {
 };
 
 beforeEach(async () => {
-    db = createDatabase();
+    db = createDatabase<LocatorDocument>();
     repository = new LocatorRepository(db);
 
     // Create data
@@ -62,7 +68,7 @@ afterEach(async () => {
         return;
     }
     repository = null;
-    await clearDatabase(db);
+    await clearDatabase<LocatorDocument>(db);
 });
 
 test("repository.findAll", async () => {
@@ -77,14 +83,14 @@ test("repository.findByPublicationIdentifer - found", async () => {
     if (!repository) {
         return;
     }
-    const result = await repository.findByPublicationIdentifier("pub-1");
+    const result = await repository.findByPublicationIdentifier(publicationIdentifier1);
     expect(result.length).toBe(1);
     const locator = result[0];
-    expect(locator.identifier).toBe("bookmark-1");
+    expect(locator.identifier).toBe(dbDocIdentifier1);
     expect(locator.locatorType).toBe(LocatorType.Bookmark);
-    expect(locator.publicationIdentifier).toBe("pub-1");
-    expect(locator.locator.href).toBe("/spines/spine-1");
-    expect(locator.locator.title).toBe("Bookmark 1");
+    expect(locator.publicationIdentifier).toBe(publicationIdentifier1);
+    expect(locator.locator.href).toBe(href1);
+    expect(locator.locator.title).toBe(title1);
 });
 test("repository.findByPublicationIdentifer - not found", async () => {
     if (!repository) {
@@ -115,15 +121,15 @@ test("repository.findByPublicationIdentifer - found", async () => {
         return;
     }
     const result = await repository.findByPublicationIdentifierAndLocatorType(
-        "pub-1", LocatorType.Bookmark,
+        publicationIdentifier1, LocatorType.Bookmark,
     );
     expect(result.length).toBe(1);
     const locator = result[0];
-    expect(locator.identifier).toBe("bookmark-1");
+    expect(locator.identifier).toBe(dbDocIdentifier1);
     expect(locator.locatorType).toBe(LocatorType.Bookmark);
-    expect(locator.publicationIdentifier).toBe("pub-1");
-    expect(locator.locator.href).toBe("/spines/spine-1");
-    expect(locator.locator.title).toBe("Bookmark 1");
+    expect(locator.publicationIdentifier).toBe(publicationIdentifier1);
+    expect(locator.locator.href).toBe(href1);
+    expect(locator.locator.title).toBe(title1);
 });
 
 test("repository.findByPublicationIdentifer - not found", async () => {
@@ -131,7 +137,7 @@ test("repository.findByPublicationIdentifer - not found", async () => {
         return;
     }
     const result = await repository.findByPublicationIdentifierAndLocatorType(
-        "pub-1", LocatorType.LastReadingLocation,
+        publicationIdentifier1, LocatorType.LastReadingLocation,
     );
     expect(result.length).toBe(0);
 });
@@ -140,12 +146,12 @@ test("repository.get - found", async () => {
     if (!repository) {
         return;
     }
-    const result = await repository.get("bookmark-1");
-    expect(result.identifier).toBe("bookmark-1");
+    const result = await repository.get(dbDocIdentifier1);
+    expect(result.identifier).toBe(dbDocIdentifier1);
     expect(result.locatorType).toBe(LocatorType.Bookmark);
-    expect(result.publicationIdentifier).toBe("pub-1");
-    expect(result.locator.href).toBe("/spines/spine-1");
-    expect(result.locator.title).toBe("Bookmark 1");
+    expect(result.publicationIdentifier).toBe(publicationIdentifier1);
+    expect(result.locator.href).toBe(href1);
+    expect(result.locator.title).toBe(title1);
     expect(result.locator.locations.position).toBe(12);
 });
 
@@ -166,10 +172,10 @@ test("repository.save create", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
+    const dbDoc: ExcludeTimestampableWithPartialIdentifiable<LocatorDocument> = {
         identifier: "new-bookmark",
         locatorType: LocatorType.LastReadingLocation,
-        publicationIdentifier: "pub-1",
+        publicationIdentifier: publicationIdentifier1,
         locator: {
             href: "/spines/spine-3",
             locations: {
@@ -180,7 +186,7 @@ test("repository.save create", async () => {
     const result = await repository.save(dbDoc);
     expect(result.identifier).toBe("new-bookmark");
     expect(result.locatorType).toBe(LocatorType.LastReadingLocation);
-    expect(result.publicationIdentifier).toBe("pub-1");
+    expect(result.publicationIdentifier).toBe(publicationIdentifier1);
     expect(result.locator.href).toBe("/spines/spine-3");
     expect(result.locator.locations.position).toBe(138);
     expect(result.createdAt).toBeDefined();
@@ -192,12 +198,12 @@ test("repository.save update", async () => {
     if (!repository) {
         return;
     }
-    const dbDoc = {
-        identifier: "bookmark-1",
+    const dbDoc: ExcludeTimestampableWithPartialIdentifiable<LocatorDocument> = {
+        identifier: dbDocIdentifier1,
         locatorType: LocatorType.Bookmark,
-        publicationIdentifier: "pub-1",
+        publicationIdentifier: publicationIdentifier1,
         locator: {
-            href: "/spines/spine-1",
+            href: href1,
             title: "New bookmark",
             locations: {
                 position: 12,
@@ -205,10 +211,10 @@ test("repository.save update", async () => {
         },
     };
     const result = await repository.save(dbDoc);
-    expect(result.identifier).toBe("bookmark-1");
+    expect(result.identifier).toBe(dbDocIdentifier1);
     expect(result.locatorType).toBe(LocatorType.Bookmark);
-    expect(result.publicationIdentifier).toBe("pub-1");
-    expect(result.locator.href).toBe("/spines/spine-1");
+    expect(result.publicationIdentifier).toBe(publicationIdentifier1);
+    expect(result.locator.href).toBe(href1);
     expect(result.locator.title).toBe("New bookmark");
     expect(result.locator.locations.position).toBe(12);
     expect(result.createdAt).toBeDefined();
@@ -220,13 +226,13 @@ test("repository.delete", async () => {
     if (!db || !repository) {
         return;
     }
-    const result = await db.get("locator_bookmark-1") as any;
-    expect(result.identifier).toBe("bookmark-1");
+    const result = await db.get(dbDocIdentifier1Internal) as any;
+    expect(result.identifier).toBe(dbDocIdentifier1);
 
     // Delete locator 1
-    await repository.delete("bookmark-1");
+    await repository.delete(dbDocIdentifier1);
     try {
-        await db.get("bookmark-1");
+        await db.get(dbDocIdentifier1);
     } catch (e) {
         expect(e.message).toBe("missing");
     }

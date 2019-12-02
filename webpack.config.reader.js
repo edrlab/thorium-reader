@@ -99,6 +99,9 @@ let config = Object.assign({}, {
             },
             {
                 loader: "file-loader?name=assets/[name].[hash].[ext]",
+                options: {
+                    esModule: false,
+                },
                 test: /\.(png|jpe?g|gif|ico)$/,
             },
             {
@@ -109,6 +112,9 @@ let config = Object.assign({}, {
             {
                 exclude: /src/,
                 loader: "file-loader?name=assets/[name].[hash].[ext]",
+                options: {
+                    esModule: false,
+                },
                 test: /\.(woff|woff2|ttf|eot|svg)$/,
             },
         ],

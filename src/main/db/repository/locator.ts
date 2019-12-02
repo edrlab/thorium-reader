@@ -5,12 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
+import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
-
 import { LocatorDocument } from "readium-desktop/main/db/document/locator";
 
-import { BaseRepository } from "./base";
+import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
 const PUBLICATION_INDEX = "publication_index";
 const LOCATOR_TYPE_INDEX = "locator_type_index";
@@ -19,22 +18,23 @@ const UPDATED_AT_INDEX = "updatded_at_index";
 
 @injectable()
 export class LocatorRepository extends BaseRepository<LocatorDocument> {
-    public constructor(db: PouchDB.Database) {
+    public constructor(db: PouchDB.Database<LocatorDocument>) {
+
         const indexes = [
             {
-                fields: ["createdAt"],
+                fields: ["createdAt"], // Timestampable
                 name: CREATED_AT_INDEX,
             },
             {
-                fields: ["updatedAt"],
+                fields: ["updatedAt"], // Timestampable
                 name: UPDATED_AT_INDEX,
             },
             {
-                fields: ["publicationIdentifier"],
+                fields: ["publicationIdentifier"], // LocatorDocument
                 name: PUBLICATION_INDEX,
             },
             {
-                fields: ["locatorType"],
+                fields: ["locatorType"], // LocatorDocument
                 name: LOCATOR_TYPE_INDEX,
             },
         ];
@@ -67,7 +67,7 @@ export class LocatorRepository extends BaseRepository<LocatorDocument> {
         });
     }
 
-    protected convertToDocument(dbDoc: any): LocatorDocument {
+    protected convertToDocument(dbDoc: PouchDB.Core.Document<LocatorDocument>): LocatorDocument {
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
@@ -76,7 +76,7 @@ export class LocatorRepository extends BaseRepository<LocatorDocument> {
                 locatorType: dbDoc.locatorType,
                 publicationIdentifier: dbDoc.publicationIdentifier,
                 name: dbDoc.name,
-            },
+            } as ExcludeTimestampableAndIdentifiable<LocatorDocument>,
         );
     }
 }

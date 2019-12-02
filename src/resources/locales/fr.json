@@ -53,7 +53,7 @@
         "released": "Publié le",
         "sort": "trier par",
         "tagCount": "Nombre de tags",
-        "tags": "Mes tags"
+        "tags": "Tags"
     },
     "dialog": {
         "closeModalWindow": "Fermer cette fenêtre modale",
@@ -135,16 +135,27 @@
         "previous": "Précédent"
     },
     "publication": {
+        "cancelledLcp": "Ce livre ne peut être lu car la licence lcp a été annulée.",
+        "certificateRevoked": "Certificat révoqué",
+        "certificateSignatureInvalid": "Signature de certificat invalide",
         "cover": {
             "img": "image de couverture"
         },
         "expiredLcp": "Ce livre ne peut être lu car la licence lcp a expiré.",
+        "lcpEnd": "Fin",
+        "lcpRightsCopy": "Copie de caractères",
+        "lcpRightsPrint": "Copies d'imprimante",
+        "lcpStart": "Début",
+        "licenseOutOfDate": "License expirée",
+        "licenseSignatureDateInvalid": "Date de signature de license invalide",
+        "licenseSignatureInvalid": "Signature de license invalide",
         "renewButton": "Renouveler",
         "returnButton": "Retourner",
-        "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retourné.",
-        "revokedLcp": "Ce livre ne peut être lu car la licence lcp a été révoqué.",
+        "returnedLcp": "Ce livre ne peut être lu car la licence lcp a été retournée.",
+        "revokedLcp": "Ce livre ne peut être lu car la licence lcp a été révoquée.",
         "seeLess": "Voir moins",
-        "seeMore": "Voir plus"
+        "seeMore": "Voir plus",
+        "userKeyCheckInvalid": "Mot de passe incorrect"
     },
     "reader": {
         "footerInfo": {

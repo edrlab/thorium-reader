@@ -56,7 +56,7 @@ class LanguageSettings extends React.Component<IProps, undefined> {
                                     />
                                     <label htmlFor={"radio-" + lang}>
                                         { this.props.locale === lang && <SVG svg={DoneIcon} ariaHidden/>}
-                                        { (AvailableLanguages as any)[lang] }
+                                        { AvailableLanguages[lang] }
                                     </label>
                                 </div>,
                             )}

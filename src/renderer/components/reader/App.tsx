@@ -10,6 +10,7 @@ import "reflect-metadata";
 import * as React from "react";
 import { Provider } from "react-redux";
 import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
+import ToastManager from "readium-desktop/renderer/components/toast/ToastManager";
 import { lazyInject } from "readium-desktop/renderer/di";
 import { diRendererSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/redux/states";
@@ -32,6 +33,7 @@ export default class App extends React.Component<{}, undefined> {
                 <div>
                     <Reader/>
                     <DialogManager />
+                    <ToastManager />
                 </div>
             </Provider>
         );

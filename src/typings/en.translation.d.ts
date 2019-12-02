@@ -278,23 +278,45 @@ declare namespace typed_i18n {
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "publication", __?: {}): {
   readonly "cover": { readonly "img": string },
+  readonly "cancelledLcp": string,
+  readonly "certificateRevoked": string,
+  readonly "certificateSignatureInvalid": string,
   readonly "expiredLcp": string,
+  readonly "lcpEnd": string,
+  readonly "lcpRightsCopy": string,
+  readonly "lcpRightsPrint": string,
+  readonly "lcpStart": string,
+  readonly "licenseOutOfDate": string,
+  readonly "licenseSignatureDateInvalid": string,
+  readonly "licenseSignatureInvalid": string,
   readonly "renewButton": string,
   readonly "returnButton": string,
   readonly "returnedLcp": string,
   readonly "revokedLcp": string,
   readonly "seeLess": string,
-  readonly "seeMore": string
+  readonly "seeMore": string,
+  readonly "userKeyCheckInvalid": string
 };
   (_: "publication.cover", __?: {}): { readonly "img": string };
   (_: "publication.cover.img", __?: {}): string;
+  (_: "publication.cancelledLcp", __?: {}): string;
+  (_: "publication.certificateRevoked", __?: {}): string;
+  (_: "publication.certificateSignatureInvalid", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
+  (_: "publication.lcpEnd", __?: {}): string;
+  (_: "publication.lcpRightsCopy", __?: {}): string;
+  (_: "publication.lcpRightsPrint", __?: {}): string;
+  (_: "publication.lcpStart", __?: {}): string;
+  (_: "publication.licenseOutOfDate", __?: {}): string;
+  (_: "publication.licenseSignatureDateInvalid", __?: {}): string;
+  (_: "publication.licenseSignatureInvalid", __?: {}): string;
   (_: "publication.renewButton", __?: {}): string;
   (_: "publication.returnButton", __?: {}): string;
   (_: "publication.returnedLcp", __?: {}): string;
   (_: "publication.revokedLcp", __?: {}): string;
   (_: "publication.seeLess", __?: {}): string;
   (_: "publication.seeMore", __?: {}): string;
+  (_: "publication.userKeyCheckInvalid", __?: {}): string;
   (_: "reader", __?: {}): {
   readonly "footerInfo": {
     readonly "lessInfo": string,

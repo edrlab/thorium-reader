@@ -55,7 +55,7 @@ export class TagSearchResult extends React.Component<IProps, IState> {
             "publication/updateTags",
             "catalog/addEntry",
         ], () => {
-            apiAction("publication/findByTag", (this.props.match.params.value))
+            apiAction("publication/findByTag", this.props.match.params.value)
                 .then((publicationViews) => this.setState({publicationViews}))
                 .catch((error) => console.error("Error to fetch api publication/findByTag", error));
         });

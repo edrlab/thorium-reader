@@ -5,26 +5,33 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Contributor } from "./contributor";
-import { CustomCover } from "./custom-cover";
-import { File } from "./file";
-import { Identifiable } from "./identifiable";
-import { Language } from "./language";
-import { LcpInfo } from "./lcp";
-import { Tag } from "./tag";
+// TODO unused code??
 
-/**
- * A publication
- */
-export interface Publication extends Identifiable {
-    title: string; // note: can be multilingual object map (not just string)
-    description: string;
-    cover?: File;
-    customCover?: CustomCover;
-    physicalPageNb?: number;
-    languages?: Language[];
-    authors?: Contributor[];
-    files?: File[];
-    tags?: Tag[];
-    lcp?: LcpInfo;
-}
+// import { Contributor } from "./contributor";
+// import { CustomCover } from "./custom-cover";
+// import { File } from "./file";
+// import { Identifiable } from "./identifiable";
+// import { Language } from "./language";
+// import { LcpInfo } from "./lcp";
+// import { Tag } from "./tag";
+
+// /**
+//  * A publication
+//  */
+// export interface Publication extends Identifiable {
+//     title: string; // note: can be multilingual object map (not just string)
+//     description: string;
+//     cover?: File;
+//     customCover?: CustomCover;
+
+//     // TODO: unused?
+//     // physicalPageNb?: number;
+
+//     languages?: Language[];
+//     authors?: Contributor[];
+//     files?: File[];
+//     tags?: Tag[];
+
+//     lcp?: LcpInfo;
+//     lcpRightsCopies?: number;
+// }
