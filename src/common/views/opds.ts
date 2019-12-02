@@ -41,20 +41,45 @@ export interface OpdsLinkView {
     numberOfItems?: number;
 }
 
+export interface OpdsGroupView {
+    title: string;
+    navigation?: OpdsLinkView[];
+    opdsPublicationViews?: OpdsPublicationView[];
+}
+
 export enum OpdsResultType {
-    Entry = "entry",
+    // Entry = "entry",
     NavigationFeed = "navigation-feed",
     PublicationFeed = "publication-feed",
+    MixedFeed = "mixed-feed",
     Empty = "empty",
+
+    Auth = "auth",
+}
+
+export interface OpdsAuthView {
+    logoImageUrl: string;
+
+    labelLogin: string;
+    labelPassword: string;
+
+    oauthUrl: string;
+    oauthRefreshUrl: string;
 }
 
 export interface OpdsResultView {
-    title: string;
     type: OpdsResultType;
+
+    title: string;
+
     navigation?: OpdsLinkView[];
     opdsPublicationViews?: OpdsPublicationView[];
+    groups?: OpdsGroupView[];
+
     urls: OpdsResultUrls;
     page?: OpdsResultPageInfos;
+
+    auth?: OpdsAuthView;
 }
 
 export interface OpdsResultUrls {
@@ -63,6 +88,7 @@ export interface OpdsResultUrls {
     firstPage?: string;
     lastPage?: string;
     search?: string;
+    shelf?: string;
 }
 
 export interface OpdsResultPageInfos {

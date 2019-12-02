@@ -16,7 +16,6 @@ import Entry from "./Entry";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
-    level?: number;
     entries: OpdsLinkView[];
 }
 // IProps may typically extend:
@@ -24,7 +23,7 @@ interface IBaseProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps {
+interface IProps extends IBaseProps, RouteComponentProps, ReturnType<typeof mapStateToProps> {
 }
 
 class EntryList extends React.Component<IProps, undefined> {

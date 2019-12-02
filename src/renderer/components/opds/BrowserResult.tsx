@@ -7,17 +7,20 @@
 
 import * as qs from "qs";
 import * as React from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { OpdsResultType } from "readium-desktop/common/views/opds";
 import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import { BreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
 import {
-    TranslatorProps,
-    withTranslator,
+    TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { IOpdsBrowse } from "readium-desktop/renderer/routing";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { parseQueryString } from "readium-desktop/utils/url";
 
@@ -35,7 +38,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps {
+interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse>, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -78,6 +81,7 @@ export class BrowserResult extends React.Component<IProps, IState> {
         const { __ } = this.props;
         const { browserError, browserResult } = this.state;
         let content = (<Loader />);
+        let shelfContent: React.ReactElement<{}> | undefined;
 
         if (!navigator.onLine) {
             content = (
@@ -94,8 +98,41 @@ export class BrowserResult extends React.Component<IProps, IState> {
                 />
             );
         } else if (browserResult) {
-            if (browserResult.isSuccess) {
+            if (browserResult.isSuccess ||
+                (browserResult.isFailure && browserResult.statusCode === 401 && browserResult.data)) {
+
+                if (browserResult.data.urls.shelf) {
+
+                    // Build feedBreadcrumb
+                    const { level, match } = this.props;
+                    const rootFeedIdentifier = match.params.opdsId;
+                    const route = buildOpdsBrowserRoute(
+                        rootFeedIdentifier,
+                        "Shelf", // TODO translate
+                        browserResult.data.urls.shelf,
+                        level,
+                    );
+
+                    shelfContent = (
+                        <h3>
+                            <Link
+                                className={styles.flux_infos}
+                                to={route}
+                            >
+                                <span className={styles.flux_title}>Shelf</span>
+                            </Link>
+                            <br></br>
+                        </h3>);
+                }
                 switch (browserResult.data.type) {
+                    case OpdsResultType.Auth:
+                        content = (
+                            <section>
+                                <h2>{browserResult.data.title}</h2>
+                                <pre>{JSON.stringify(browserResult.data.auth)}</pre>
+                            </section>
+                        );
+                        break;
                     case OpdsResultType.NavigationFeed:
                         content = (
                             <EntryList entries={browserResult.data.navigation} />
@@ -111,6 +148,39 @@ export class BrowserResult extends React.Component<IProps, IState> {
                                 currentPage={this.state.currentResultPage}
                             />
                         );
+                        break;
+                    case OpdsResultType.MixedFeed:
+                        content = (<>
+                            {browserResult.data.navigation &&
+                            <EntryList entries={browserResult.data.navigation} />}
+
+                            {browserResult.data.opdsPublicationViews &&
+                            <EntryPublicationList
+                                opdsPublicationViews={browserResult.data.opdsPublicationViews}
+                                goto={this.goto}
+                                urls={browserResult.data.urls}
+                                page={browserResult.data.page}
+                                currentPage={this.state.currentResultPage}
+                            />}
+
+                            {browserResult.data.groups && browserResult.data.groups.map((group, i) => {
+                                return (<section key={i}>
+                                    <br></br>
+                                    <h3>{group.title}</h3>
+                                    {group.navigation &&
+                                    <EntryList entries={group.navigation} />}
+                                    <hr></hr>
+                                    {group.opdsPublicationViews &&
+                                    <EntryPublicationList
+                                        opdsPublicationViews={group.opdsPublicationViews}
+                                        goto={this.goto}
+                                        urls={{}}
+                                        page={undefined}
+                                        currentPage={-1}
+                                    />}
+                                </section>);
+                            })}
+                        </>);
                         break;
                     case OpdsResultType.Empty:
                         content = (
@@ -135,6 +205,7 @@ export class BrowserResult extends React.Component<IProps, IState> {
         }
 
         return <div className={styles.opdsBrowseContent}>
+            {shelfContent ? shelfContent : undefined}
             {content}
         </div>;
     }
@@ -198,4 +269,8 @@ export class BrowserResult extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(withRouter(BrowserResult));
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+    level: state.opds.browser.navigation.length + 1,
+});
+
+export default connect(mapStateToProps, undefined)(withTranslator(withRouter(BrowserResult)));

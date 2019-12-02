@@ -20,6 +20,7 @@ import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import { convertOpds1ToOpds2 } from "@r2-opds-js/opds/converter";
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
 // Logger
@@ -116,19 +117,32 @@ export class OpdsApi implements IOpdsApi {
         }, async (opdsFeedData) => {
             // let r2OpdsPublication: OPDSPublication = null;
             let r2OpdsFeed: OPDSFeed = null;
+            let r2OpdsAuth: OPDSAuthenticationDoc = null;
 
+            const body = opdsFeedData.body;
             if (opdsFeedData.isFailure) {
-                return opdsFeedData;
+                if (opdsFeedData.statusCode === 401 && body) {
+                    // try parse OPDSAuthenticationDoc
+                    // (see below)
+                } else {
+                    return opdsFeedData;
+                }
             }
 
             debug("opdsFeed content-type", opdsFeedData.contentType);
             if (!OpdsApi.contentTypeisAccepted(opdsFeedData.contentType)) {
+                if (opdsFeedData.isFailure) {
+                    return opdsFeedData;
+                }
                 // tslint:disable-next-line: max-line-length
                 throw new Error(`Not a valid OPDS HTTP Content-Type for ${opdsFeedData.url} (${opdsFeedData.contentType})`);
             }
 
-            if (opdsFeedData.body.startsWith("<?xml")) {
-                const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
+            if (body.startsWith("<?xml")) {
+                if (opdsFeedData.isFailure) {
+                    return opdsFeedData;
+                }
+                const xmlDom = new xmldom.DOMParser().parseFromString(body);
 
                 if (!xmlDom || !xmlDom.documentElement) {
                     throw new OpdsParsingError(`Unable to parse ${url}`);
@@ -142,14 +156,29 @@ export class OpdsApi implements IOpdsApi {
                 const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
                 r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
             } else {
-                r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
-                    JSON.parse(opdsFeedData.body),
-                    OPDSFeed,
-                );
+                const jsonObj = JSON.parse(body);
+                if (jsonObj.authentication) { // usually with opdsFeedData.isFailure
+                    r2OpdsAuth = TaJsonDeserialize<OPDSAuthenticationDoc>(
+                        jsonObj,
+                        OPDSAuthenticationDoc,
+                    );
+                } else {
+                    if (opdsFeedData.isFailure) {
+                        return opdsFeedData;
+                    }
+                    r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
+                        jsonObj,
+                        OPDSFeed,
+                    );
+                }
             }
 
-            // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
-            opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url);
+            if (r2OpdsFeed) {
+                // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
+                opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url);
+            } else {
+                opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, url);
+            }
 
             return opdsFeedData;
         });
