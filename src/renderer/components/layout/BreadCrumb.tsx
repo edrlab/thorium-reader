@@ -19,7 +19,7 @@ import { parseQueryString } from "readium-desktop/utils/url";
 export interface BreadCrumbItem {
     name: string;
     path?: string;
-    state?: any;
+    // state?: any; UNUSED?!
 }
 
 // tslint:disable-next-line: no-empty-interface
@@ -66,7 +66,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                             to={{
                                 pathname: item.path,
                                 search: `?displayType=${search.displayType}`,
-                                state: item.state,
+                                // state: item.state,
                             }}
                             title={name}
                         >
