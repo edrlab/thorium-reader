@@ -102,8 +102,8 @@ export class OpdsApi implements IOpdsApi {
     @inject(diSymbolTable["config-repository"])
     private readonly configRepository!: ConfigRepository<AccessTokenMap>;
 
-    private _OPDS_AUTH_ENCRYPTION_KEY_HEX: string | undefined;
-    private _OPDS_AUTH_ENCRYPTION_IV_HEX: string | undefined;
+    // private _OPDS_AUTH_ENCRYPTION_KEY_HEX: string | undefined;
+    // private _OPDS_AUTH_ENCRYPTION_IV_HEX: string | undefined;
 
     public async getFeed(identifier: string): Promise<OpdsFeedView> {
         const doc = await this.opdsFeedRepository.get(identifier);
@@ -215,9 +215,10 @@ export class OpdsApi implements IOpdsApi {
                     opdsFeedData.isFailure && opdsFeedData.statusCode === 401 &&
 
                     accessToken && accessToken.refreshToken &&
-                    !tryingAgain &&
-                    this._OPDS_AUTH_ENCRYPTION_KEY_HEX &&
-                    this._OPDS_AUTH_ENCRYPTION_KEY_HEX ? true : false;
+                    !tryingAgain;
+                    // no need to decrypt pass!
+                    // && this._OPDS_AUTH_ENCRYPTION_KEY_HEX &&
+                    // this._OPDS_AUTH_ENCRYPTION_KEY_HEX ? true : false;
 
                 if (tryRefreshAccessToken) {
                     try {
@@ -227,14 +228,14 @@ export class OpdsApi implements IOpdsApi {
                             undefined,
                             accessToken.authenticationUrl,
                             accessToken.refreshUrl,
-                            this._OPDS_AUTH_ENCRYPTION_KEY_HEX,
-                            this._OPDS_AUTH_ENCRYPTION_IV_HEX,
+                            undefined, // this._OPDS_AUTH_ENCRYPTION_KEY_HEX, // can be undefined first-time around
+                            undefined, // this._OPDS_AUTH_ENCRYPTION_IV_HEX, // can be undefined first-time around
                             accessToken.refreshToken);
 
                         return new Promise<THttpGetOpdsResultView>((resolve, reject) => {
                             setTimeout(async () => {
                                 try {
-                                    const res = await this.browse(url, true);
+                                    const res = await this.browse(url, true); // tryingAgain
                                     resolve(res);
                                 } catch (err) {
                                     reject(err);
@@ -286,8 +287,8 @@ export class OpdsApi implements IOpdsApi {
         OPDS_AUTH_ENCRYPTION_IV_HEX: string,
         refreshToken?: string): Promise<boolean> {
 
-        this._OPDS_AUTH_ENCRYPTION_KEY_HEX = OPDS_AUTH_ENCRYPTION_KEY_HEX;
-        this._OPDS_AUTH_ENCRYPTION_IV_HEX = OPDS_AUTH_ENCRYPTION_IV_HEX;
+        // this._OPDS_AUTH_ENCRYPTION_KEY_HEX = OPDS_AUTH_ENCRYPTION_KEY_HEX;
+        // this._OPDS_AUTH_ENCRYPTION_IV_HEX = OPDS_AUTH_ENCRYPTION_IV_HEX;
 
         let password: string | undefined;
 
