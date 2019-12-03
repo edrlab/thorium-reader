@@ -91,7 +91,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
                 <div>
                     <BreadCrumb
                         search={this.props.location.search}
-                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title as string }]}
+                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}
                     />
                     {this.state.publicationViews ?
                         (displayType === DisplayType.Grid ?
