@@ -115,8 +115,6 @@ class FeedList extends React.Component<IProps, IState> {
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        // feed was typed to string, it appears that the right type is IOpdsFeedView
-        // Redux state isn't typed
         openDeleteDialog: (feed: IOpdsFeedView) => {
             dispatch(dialogActions.openRequest.build("delete-opds-feed-confirm",
                 {

@@ -50,84 +50,94 @@ export class OpdsControls extends React.Component<IProps, undefined> {
 
         const openAccessLinksButton = () =>
             Array.isArray(opdsPublicationView.openAccessLinks)
-            && opdsPublicationView.openAccessLinks.map((ln, idx) =>
-                <button
-                    key={`openAccessControl-${idx}`}
-                    onClick={() => verifyImport(
-                        ln,
-                        opdsPublicationView.r2OpdsPublicationBase64,
-                        opdsPublicationView.title,
-                    )}
-                    className={styles.lire}
-                    disabled={openAccessButtonIsDisabled()}
-                >
-                    {__("catalog.addBookToLib")}
-                </button>,
-            );
+                ? opdsPublicationView.openAccessLinks.map(
+                    (ln, idx) =>
+                        <button
+                            key={`openAccessControl-${idx}`}
+                            onClick={() => verifyImport(
+                                ln,
+                                opdsPublicationView.r2OpdsPublicationBase64,
+                                opdsPublicationView.title,
+                            )}
+                            className={styles.lire}
+                            disabled={openAccessButtonIsDisabled()}
+                        >
+                            {__("catalog.addBookToLib")}
+                        </button>,
+                )
+                : <></>;
 
         const sampleOrPreviewLinksButton = () =>
             Array.isArray(opdsPublicationView.sampleOrPreviewLinks)
-            && opdsPublicationView.sampleOrPreviewLinks.map((ln, idx) =>
-                <button
-                    key={`sampleControl-${idx}`}
-                    onClick={() => verifyImport(
-                        ln,
-                        opdsPublicationView.r2OpdsPublicationBase64,
-                        opdsPublicationView.title,
-                    )}
-                    className={styles.lire}
-                    disabled={sampleButtonIsDisabled()}
-                >
-                    {__("opds.menu.addExtract")}
-                </button>,
-            );
+                ? opdsPublicationView.sampleOrPreviewLinks.map(
+                    (ln, idx) =>
+                        <button
+                            key={`sampleControl-${idx}`}
+                            onClick={() => verifyImport(
+                                ln,
+                                opdsPublicationView.r2OpdsPublicationBase64,
+                                opdsPublicationView.title,
+                            )}
+                            className={styles.lire}
+                            disabled={sampleButtonIsDisabled()}
+                        >
+                            {__("opds.menu.addExtract")}
+                        </button>,
+                )
+                : <></>;
 
         const feedLinksList = () => {
 
             const buyList = () =>
                 Array.isArray(opdsPublicationView.buyLinks)
-                && opdsPublicationView.buyLinks.map((ln, idx) =>
-                    <li
-                        key={`buyControl-${idx}`}
-                    >
-                        <a
-                            role="menuitem"
-                            href={ln.url}
-                        >
-                            {__("opds.menu.goBuyBook")}
-                        </a>
-                    </li>,
-                );
+                    ? opdsPublicationView.buyLinks.map(
+                        (ln, idx) =>
+                            <li
+                                key={`buyControl-${idx}`}
+                            >
+                                <a
+                                    role="menuitem"
+                                    href={ln.url}
+                                >
+                                    {__("opds.menu.goBuyBook")}
+                                </a>
+                            </li>,
+                    )
+                    : <></>;
 
             const borrowList = () =>
                 Array.isArray(opdsPublicationView.borrowLinks)
-                && opdsPublicationView.borrowLinks.map((ln, idx) =>
-                    <li
-                        key={`borrowControl-${idx}`}
-                    >
-                        <a
-                            role="menuitem"
-                            href={ln.url}
+                    ? opdsPublicationView.borrowLinks.map(
+                        (ln, idx) =>
+                        <li
+                            key={`borrowControl-${idx}`}
                         >
-                            {__("opds.menu.goLoanBook")}
-                        </a>
-                    </li>,
-                );
+                            <a
+                                role="menuitem"
+                                href={ln.url}
+                            >
+                                {__("opds.menu.goLoanBook")}
+                            </a>
+                        </li>,
+                    )
+                    : <></>;
 
             const subscribeList = () =>
                 Array.isArray(opdsPublicationView.subscribeLinks)
-                && opdsPublicationView.subscribeLinks.map((ln, idx) =>
-                    <li
-                        key={`subscribeControl-${idx}`}
-                    >
-                        <a
-                            role="menuitem"
-                            href={ln.url}
-                        >
-                            {__("opds.menu.goSubBook")}
-                        </a>
-                    </li>,
-                );
+                    ? opdsPublicationView.subscribeLinks.map(
+                        (ln, idx) =>
+                            <li
+                                key={`subscribeControl-${idx}`}
+                            >
+                                <a
+                                    role="menuitem"
+                                    href={ln.url}
+                                >
+                                    {__("opds.menu.goSubBook")}
+                                </a>
+                            </li>,
+                    )
+                    : <></>;
 
             if (
                 (Array.isArray(opdsPublicationView.buyLinks)

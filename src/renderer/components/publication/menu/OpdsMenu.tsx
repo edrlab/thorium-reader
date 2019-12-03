@@ -48,73 +48,83 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
 
         const openAccessLinksButton = () =>
             Array.isArray(opdsPublicationView.openAccessLinks)
-            && opdsPublicationView.openAccessLinks.map((ln, idx) =>
-                <button
-                    key={`openAccess-${idx}`}
-                    onClick={() => verifyImport(
-                        ln,
-                        opdsPublicationView.r2OpdsPublicationBase64,
-                        opdsPublicationView.title,
-                    )}
-                    disabled={openAccessButtonIsDisabled()}
-                >
-                    {__("catalog.addBookToLib")}
-                </button>,
-            );
+                ? opdsPublicationView.openAccessLinks.map(
+                    (ln, idx) =>
+                        <button
+                            key={`openAccess-${idx}`}
+                            onClick={() => verifyImport(
+                                ln,
+                                opdsPublicationView.r2OpdsPublicationBase64,
+                                opdsPublicationView.title,
+                            )}
+                            disabled={openAccessButtonIsDisabled()}
+                        >
+                            {__("catalog.addBookToLib")}
+                        </button>,
+                )
+                : <></>;
 
         const sampleOrPreviewLinksButton = () =>
             Array.isArray(opdsPublicationView.sampleOrPreviewLinks)
-            && opdsPublicationView.sampleOrPreviewLinks.map((ln, idx) =>
-                <button
-                    key={`sample-${idx}`}
-                    onClick={() => verifyImport(
-                        ln,
-                        opdsPublicationView.r2OpdsPublicationBase64,
-                        opdsPublicationView.title,
-                    )}
-                    disabled={sampleButtonIsDisabled()}
-                >
-                    {__("opds.menu.addExtract")}
-                </button>,
-            );
+                ? opdsPublicationView.sampleOrPreviewLinks.map(
+                    (ln, idx) =>
+                        <button
+                            key={`sample-${idx}`}
+                            onClick={() => verifyImport(
+                                ln,
+                                opdsPublicationView.r2OpdsPublicationBase64,
+                                opdsPublicationView.title,
+                            )}
+                            disabled={sampleButtonIsDisabled()}
+                        >
+                            {__("opds.menu.addExtract")}
+                        </button>,
+                )
+                : <></>;
 
         const feedLinksList = () => {
 
             const buyList = () =>
                 Array.isArray(opdsPublicationView.buyLinks)
-                && opdsPublicationView.buyLinks.map((ln, idx) =>
-                        <a
-                            key={`buy-${idx}`}
-                            role="menuitem"
-                            href={ln.url}
-                        >
-                            {__("opds.menu.goBuyBook")}
-                        </a>,
-                );
+                    ? opdsPublicationView.buyLinks.map(
+                        (ln, idx) =>
+                            <a
+                                key={`buy-${idx}`}
+                                role="menuitem"
+                                href={ln.url}
+                            >
+                                {__("opds.menu.goBuyBook")}
+                            </a>,
+                    )
+                    : <></>;
 
             const borrowList = () =>
                 Array.isArray(opdsPublicationView.borrowLinks)
-                && opdsPublicationView.borrowLinks.map((ln, idx) =>
-                        <a
-                            key={`borrow-${idx}`}
-                            role="menuitem"
-                            href={ln.url}
-                        >
-                            {__("opds.menu.goLoanBook")}
-                        </a>,
-                );
+                    ? opdsPublicationView.borrowLinks.map(
+                        (ln, idx) =>
+                            <a
+                                key={`borrow-${idx}`}
+                                role="menuitem"
+                                href={ln.url}
+                            >
+                                {__("opds.menu.goLoanBook")}
+                            </a>,
+                    )
+                    : <></>;
 
             const subscribeList = () =>
                 Array.isArray(opdsPublicationView.subscribeLinks)
-                && opdsPublicationView.subscribeLinks.map((ln, idx) =>
-                        <a
-                            key={`subscribe-${idx}`}
-                            role="menuitem"
-                            href={ln.url}
-                        >
-                            {__("opds.menu.goSubBook")}
-                        </a>,
-                );
+                    ? opdsPublicationView.subscribeLinks.map(
+                        (ln, idx) =>
+                            <a
+                                key={`subscribe-${idx}`}
+                                role="menuitem"
+                                href={ln.url}
+                            >
+                                {__("opds.menu.goSubBook")}
+                            </a>,
+                    )
+                    : <></>;
 
             if (
                 (Array.isArray(opdsPublicationView.buyLinks)

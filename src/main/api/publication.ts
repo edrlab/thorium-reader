@@ -149,12 +149,12 @@ export class PublicationApi implements IPublicationApi {
     }
 
     public async importOpdsPublicationLink(
-        link: IOpdsLinkView,
-        r2OpdsPublicationBase64: string,
+        link: IOpdsLinkView | undefined,
+        r2OpdsPublicationBase64: string | undefined,
     ): Promise<PublicationView> {
         let returnView: PublicationView;
 
-        if (link && link.url && r2OpdsPublicationBase64) {
+        if (link?.url && r2OpdsPublicationBase64) {
 
             let publicationDocument;
             try {

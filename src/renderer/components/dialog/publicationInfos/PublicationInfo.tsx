@@ -81,17 +81,18 @@ class PublicationInfo extends React.Component<IProps, IState> {
 
         const { __, translator, publication, coverZoom } = this.props;
 
-        const authors = () => publication.authors &&
-            publication.authors.length
-            ? publication.authors.map(
-                (author) => translator.translateContentField(author),
-            ).join(", ")
-            : "";
+        const authors = () =>
+            (publication.authors && publication.authors.length)
+                ? publication.authors.map(
+                    (author) => translator.translateContentField(author))
+                    .join(", ")
+                : "";
 
-        const formatedPublishers = () => publication.publishers &&
-            publication.publishers.length
-            ? publication.publishers.join(", ")
-            : undefined;
+        const formatedPublishers = () =>
+            publication.publishers
+                && publication.publishers.length
+                ? publication.publishers.join(", ")
+                : undefined;
 
         const renderInfo = () =>
             <>
@@ -100,10 +101,10 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         <div>
                             <Cover
                                 publicationViewMaybeOpds={publication}
-                                onClick={() => (
-                                    (publication.cover as CoverView).coverUrl
-                                    || (publication.cover as IOpdsCoverView).coverLinks[0]?.url
-                                ) && this.props.toggleCoverZoom(coverZoom)}
+                                onClick={
+                                    () => ((publication.cover as CoverView).coverUrl
+                                        || (publication.cover as IOpdsCoverView).coverLinks[0]?.url)
+                                        && this.props.toggleCoverZoom(coverZoom)}
                                 onKeyPress={this.coverOnKeyPress}
                             />
                         </div>
@@ -119,7 +120,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                             <div className={styles.tag_list}>
                                 <span>{__("catalog.tags")}</span>
                                 <TagManager
-                                    publicationIdentifier={(publication as PublicationView).identifier}
+                                    publicationIdentifier={publication.identifier}
                                     tags={publication.tags}
                                     canModifyTag={this.props.publicationInfoLib}
                                 />

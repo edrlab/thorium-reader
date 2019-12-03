@@ -31,14 +31,6 @@ const findLink = (ln: IOpdsLinkView[], type: string) => ln && ln.find((link) =>
 
 @injectable()
 export class OpdsService {
-    /**
-     * test all possible content-type for both xml and json
-     * @param contentType content-type headers
-     * @returns if content-Type is missing accept
-     */
-    private static contentTypeisAccepted(contentType?: string) {
-        return this.contentTypeisOpds(contentType) || this.contentTypeisXml(contentType);
-    }
 
     private static contentTypeisXml(contentType?: string) {
         return contentType
@@ -78,14 +70,8 @@ export class OpdsService {
                 return opdsFeedData;
             }
 
-            debug("OpdsRequest: opdsFeed content-type: ", opdsFeedData.contentType);
-            if (!OpdsService.contentTypeisAccepted(opdsFeedData.contentType)) {
-                throw new Error(
-                    `Not a valid OPDS HTTP Content-Type for ${opdsFeedData.url} (${opdsFeedData.contentType})`,
-                );
-            }
-
             const contentType = opdsFeedData.contentType;
+
             if (OpdsService.contentTypeisXml(contentType)) {
                 const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
 
@@ -114,12 +100,18 @@ export class OpdsService {
                     r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
                 }
 
-            } else {
+            } else if (OpdsService.contentTypeisOpds(contentType)) {
 
                 // FIXME : Desarialize OPDSFeed Or OpdsPublication
                 r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
                     JSON.parse(opdsFeedData.body),
                     OPDSFeed,
+                );
+            } else {
+
+                debug(`unknown url content-type : ${opdsFeedData.url} - ${contentType}`);
+                throw new Error(
+                    `Not a valid OPDS HTTP Content-Type for ${opdsFeedData.url} (${contentType})`,
                 );
             }
 
@@ -141,18 +133,18 @@ export class OpdsService {
 
         try {
             // http://examples.net/opds/search.php?q={searchTerms}
-            if (atomLink && atomLink.url) {
+            if (atomLink?.url) {
                 const url = new URL(atomLink.url);
                 if (url.search.includes(SEARCH_TERM) || url.pathname.includes(SEARCH_TERM)) {
                     return (atomLink.url);
                 }
 
                 // http://static.wolnelektury.pl/opensearch.xml
-            } else if (opensearchLink && opensearchLink.url) {
+            } else if (opensearchLink?.url) {
                 return (await OpdsService.getOpenSearchUrl(opensearchLink));
 
                 // https://catalog.feedbooks.com/search.json{?query}
-            } else if (opdsLink && opdsLink.url) {
+            } else if (opdsLink?.url) {
 
                 const uriTemplate = new URITemplate(opdsLink.url);
                 const uriExpanded = uriTemplate.expand({ query: "\{searchTerms\}" });

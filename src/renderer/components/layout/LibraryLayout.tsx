@@ -61,7 +61,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
     public render() {
         const { title } = this.props;
 
-        // FIXME takes the name 'Thorium' from a constant
+        // FIXME add thorium from a constant
         let helmetTitle = "Thorium";
         if (title) {
             helmetTitle += " - " + title;

@@ -117,7 +117,7 @@ const GetLinksView = <T extends Link>(
 @injectable()
 export class OpdsFeedViewConverter {
 
-    public static getTagsFromOpdsPublication(r2OpdsPublication: OPDSPublication) {
+    public static getTagsFromOpdsPublication(r2OpdsPublication: OPDSPublication | undefined) {
         let tags: string[];
         if (r2OpdsPublication?.Metadata?.Subject) {
             const metadata = r2OpdsPublication.Metadata;
@@ -166,15 +166,18 @@ export class OpdsFeedViewConverter {
             rel: "http://opds-spec.org/image",
         });
 
-        // FIXME: || doens't work on array
-        const thumbnailLinkView = fallback(GetLinksView(baseUrl, r2OpdsPublication.Images, {
-            type: ["image/png", "image/jpeg"],
-            rel: "http://opds-spec.org/image/thumbnail",
-        }), GetLinksView(baseUrl, r2OpdsPublication.Images, {
-            type: ["image/png", "image/jpeg"],
-        }), GetLinksView(baseUrl, r2OpdsPublication.Images, {
-            type: new RegExp("^image\/*"),
-        }));
+        const thumbnailLinkView = fallback(
+            GetLinksView(baseUrl, r2OpdsPublication.Images, {
+                type: ["image/png", "image/jpeg"],
+                rel: "http://opds-spec.org/image/thumbnail",
+            }),
+            GetLinksView(baseUrl, r2OpdsPublication.Images, {
+                type: ["image/png", "image/jpeg"],
+            }),
+            GetLinksView(baseUrl, r2OpdsPublication.Images, {
+                type: new RegExp("^image\/*"),
+            }),
+        );
 
         let cover: IOpdsCoverView | undefined;
         if (thumbnailLinkView) {
@@ -208,14 +211,17 @@ export class OpdsFeedViewConverter {
         const subscribeLinkView = GetLinksView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/subscribe",
         });
-        const entrylinkView = fallback(GetLinksView(baseUrl, r2OpdsPublication.Links, {
-            type: "type=entry;profile=opds-catalog",
-        }), GetLinksView(baseUrl, r2OpdsPublication.Links, {
-            type: [
-                "application/atom+xml",
-                "application/opds+json",
-            ],
-        }));
+        const entrylinkView = fallback(
+            GetLinksView(baseUrl, r2OpdsPublication.Links, {
+                type: "type=entry;profile=opds-catalog",
+            }),
+            GetLinksView(baseUrl, r2OpdsPublication.Links, {
+                type: [
+                    "application/atom+xml",
+                    "application/opds+json",
+                ],
+            }),
+        );
 
         const r2OpdsPublicationJson = TaJsonSerialize(r2OpdsPublication);
         const r2OpdsPublicationStr = JSON.stringify(r2OpdsPublicationJson);
@@ -244,14 +250,14 @@ export class OpdsFeedViewConverter {
 
     public convertOpdsFeedToView(r2OpdsFeed: OPDSFeed, baseUrl: string): IOpdsResultView {
 
-        const title = convertMultiLangStringToString(r2OpdsFeed.Metadata && r2OpdsFeed.Metadata.Title);
+        const title = convertMultiLangStringToString(r2OpdsFeed.Metadata?.Title);
         const publications = r2OpdsFeed.Publications?.map((item) => {
             return this.convertOpdsPublicationToView(item, baseUrl);
-            });
+        });
         const navigation = r2OpdsFeed.Navigation?.map((item) => {
-                return this.convertOpdsLinkToView(item, baseUrl);
-            });
-        const links: IOpdsNavigationLink = r2OpdsFeed.Links &&
+            return this.convertOpdsLinkToView(item, baseUrl);
+        });
+        const links: IOpdsNavigationLink | undefined = r2OpdsFeed.Links &&
         {
             next: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "next" }),
             previous: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "previous" }),
@@ -261,10 +267,10 @@ export class OpdsFeedViewConverter {
             up: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
             search: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
             bookshelf: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/shelf" }),
-            text: GetLinksView(baseUrl, r2OpdsFeed.Links, { type: [ "text/html" ] }),
+            text: GetLinksView(baseUrl, r2OpdsFeed.Links, { type: ["text/html"] }),
             self: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
         };
-        const metadata: IOpdsFeedMetadataView = r2OpdsFeed.Metadata &&
+        const metadata: IOpdsFeedMetadataView | undefined = r2OpdsFeed.Metadata &&
         {
             numberOfItems: typeof r2OpdsFeed.Metadata.NumberOfItems === "number" &&
                 r2OpdsFeed.Metadata.NumberOfItems,

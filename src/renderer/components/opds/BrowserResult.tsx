@@ -44,14 +44,14 @@ export class BrowserResult extends React.Component<IProps> {
                     message={__("opds.network.noInternetMessage")}
                 />
             );
-        } else if (browserData && browserData.error) {
+        } else if (browserData?.error) {
             content = (
                 <MessageOpdBrowserResult
                     title={__("opds.network.reject")}
                     message={browserData.errorMessage.message}
                 />
             );
-        } else if (browserData && browserData.result) {
+        } else if (browserData?.result) {
             const browserResult = browserData.result;
 
             if (browserResult.isSuccess) {
