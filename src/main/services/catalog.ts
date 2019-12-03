@@ -27,11 +27,13 @@ import {
     PublicationDocument, PublicationDocumentWithoutTimestampable, THttpGetPublicationDocument,
 } from "readium-desktop/main/db/document/publication";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
 import * as uuid from "uuid";
 import * as xmldom from "xmldom";
@@ -55,6 +57,9 @@ const debug = debug_("readium-desktop:main#services/catalog");
 
 @injectable()
 export class CatalogService {
+    @inject(diSymbolTable["lcp-secret-repository"])
+    private readonly lcpSecretRepository!: LcpSecretRepository;
+
     @inject(diSymbolTable["config-repository"])
     private readonly configRepository!: ConfigRepository<AccessTokenMap>;
 
@@ -82,7 +87,11 @@ export class CatalogService {
     @inject(diSymbolTable["win-registry"])
     private readonly winRegistry!: WinRegistry;
 
-    public async importEpubOrLcplFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
+    public async importEpubOrLcplFile(
+        filePath: string,
+        isLcpFile?: boolean,
+        lcpHashedPassphrase?: string): Promise<PublicationDocument | undefined> {
+
         let publicationDocument: PublicationDocument | undefined;
 
         const ext = path.extname(filePath);
@@ -97,9 +106,9 @@ export class CatalogService {
                     this.translator.translate("message.import.alreadyImport", { title: publicationDocument.title })));
             } else {
                 if (isLCPLicense) {
-                    publicationDocument = await this.importLcplFile(filePath);
+                    publicationDocument = await this.importLcplFile(filePath, lcpHashedPassphrase);
                 } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
-                    publicationDocument = await this.importEpubFile(filePath, hash);
+                    publicationDocument = await this.importEpubFile(filePath, hash, lcpHashedPassphrase);
                 }
                 this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
                     this.translator.translate("message.import.success", { title: publicationDocument.title })));
@@ -201,12 +210,34 @@ export class CatalogService {
             if (!isLcpFile && downloadLink.TypeLink !== "application/epub+zip") {
                 throw new Error(`OPDS download link is not EPUB! ${downloadUrl} ${downloadLink.TypeLink}`);
             }
-            if (!title) {
+            if (!title && downloadLink.Title) {
                 title = downloadLink.Title;
             }
         }
         if (!title) {
             title = downloadUrl;
+        }
+
+        let lcpHashedPassphrase: string | undefined;
+        if (downloadLink) {
+            const key = "lcp_hashed_passphrase";
+            if (downloadLink.Properties &&
+                downloadLink.Properties.AdditionalJSON &&
+                downloadLink.Properties.AdditionalJSON[key]) {
+                const lcpHashedPassphraseObj = downloadLink.Properties.AdditionalJSON[key];
+                if (typeof lcpHashedPassphraseObj === "string") {
+                    lcpHashedPassphrase = lcpHashedPassphraseObj as string;
+                    // const lcpHashedPassphraseBuff = Buffer.from(lcpHashedPassphrase, "hex");
+                }
+            }
+            // TODO: remove this in production!
+            if (IS_DEV &&
+                !lcpHashedPassphrase &&
+                downloadLink && downloadLink.Href.indexOf("cantookstation.com/") > 0) {
+
+                // mock for testing, as no server provides "lcp_hashed_passphrase" yet...
+                lcpHashedPassphrase = "d62414a0ede9e20898a1cb0e26dd05c57d7ef7a396d195fac9b43c1447bfd9ac";
+            }
         }
 
         const download: Download = this.downloader.addDownload(downloadUrl);
@@ -245,7 +276,7 @@ export class CatalogService {
 
         // Import downloaded publication in catalog
         // FIXME: can be undefined type
-        let publicationDocument = await this.importEpubOrLcplFile(download.dstPath, isLcpFile);
+        let publicationDocument = await this.importEpubOrLcplFile(download.dstPath, isLcpFile, lcpHashedPassphrase);
 
         // Add opds publication serialization to resources
         const r2OpdsPublicationJson = TaJsonSerialize(r2OpdsPublication);
@@ -313,7 +344,7 @@ export class CatalogService {
         }
     }
 
-    private async importLcplFile(filePath: string): Promise<PublicationDocument> {
+    private async importLcplFile(filePath: string, lcpHashedPassphrase?: string): Promise<PublicationDocument> {
         const jsonStr = fs.readFileSync(filePath, { encoding: "utf8" });
         const lcpJson = JSON.parse(jsonStr);
         const r2LCP = TaJsonDeserialize<LCP>(lcpJson, LCP);
@@ -418,12 +449,15 @@ export class CatalogService {
         this.store.dispatch(downloadActions.success.build(download.srcUrl));
 
         // null so that extractCrc32OnZip() is not unnecessarily invoked
-        const publicationDocument = await this.importEpubFile(download.dstPath, null);
+        const publicationDocument = await this.importEpubFile(download.dstPath, null, lcpHashedPassphrase);
 
         return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
     }
 
-    private async importEpubFile(filePath: string, hash?: string): Promise<PublicationDocument> {
+    private async importEpubFile(
+        filePath: string,
+        hash?: string,
+        lcpHashedPassphrase?: string): Promise<PublicationDocument> {
 
         const r2Publication = await EpubParsePromise(filePath);
         // after EpubParsePromise, cleanup zip handler
@@ -506,6 +540,20 @@ export class CatalogService {
         debug("[START] Store publication in database", filePath);
         const newPubDocument = await this.publicationRepository.save(pubDocument);
         debug("[END] Store publication in database", filePath);
+
+        if (lcpHashedPassphrase) {
+            const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
+                newPubDocument.identifier,
+            );
+            const secrets = lcpSecretDocs.map((doc) => doc.secret).filter((secret) => secret);
+
+            if (!secrets || !secrets.includes(lcpHashedPassphrase)) {
+                await this.lcpSecretRepository.save({
+                    publicationIdentifier: newPubDocument.identifier,
+                    secret: lcpHashedPassphrase,
+                });
+            }
+        }
 
         debug("Publication imported", filePath);
         return newPubDocument;
