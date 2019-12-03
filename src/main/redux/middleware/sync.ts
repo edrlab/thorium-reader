@@ -36,8 +36,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.configSetError.ID,
     readerActions.configSetSuccess.ID,
 
-    readerActions.saveBookmarkError.ID,
-    readerActions.saveBookmarkSuccess.ID,
+    // readerActions.saveBookmarkError.ID,
+    // readerActions.saveBookmarkSuccess.ID,
 
     readerActions.fullScreenRequest.ID,
 

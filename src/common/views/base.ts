@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Identifiable } from "../models/identifiable";
+// import { Identifiable } from "../models/identifiable";
 
-// tslint:disable-next-line: no-empty-interface
-export interface IdentifiableView extends Identifiable {
-}
+// // tslint:disable-next-line: no-empty-interface
+// export interface IdentifiableView extends Identifiable {
+// }

@@ -8,11 +8,10 @@
 import { Locator, LocatorType } from "readium-desktop/common/models/locator";
 
 import { Identifiable } from "../models/identifiable";
-import { IdentifiableView } from "./base";
 
 export interface LocatorView extends Identifiable {
     locator: Locator;
     locatorType: LocatorType;
-    identifiableView: IdentifiableView;
+    publicationIdentifier: string;
     name: string;
 }

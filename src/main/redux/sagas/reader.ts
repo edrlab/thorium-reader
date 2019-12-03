@@ -315,36 +315,36 @@ export function* readerConfigInitWatcher(): SagaIterator {
     }
 }
 
-export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
-    while (true) {
-        // Wait for app initialization
-        // tslint:disable-next-line: max-line-length
-        const action = yield* takeTyped(readerActions.saveBookmarkRequest.build);
+// export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
+//     while (true) {
+//         // Wait for app initialization
+//         // tslint:disable-next-line: max-line-length
+//         const action = yield* takeTyped(readerActions.saveBookmarkRequest.build);
 
-        const bookmark = action.payload.bookmark;
+//         const bookmark = action.payload.bookmark;
 
-        // Get bookmark manager
-        const locatorRepository = diMainGet("locator-repository");
+//         // Get bookmark manager
+//         const locatorRepository = diMainGet("locator-repository");
 
-        try {
-            const locator = {
-                // name: "",
-                locator: {
-                    href: bookmark.docHref,
-                    locations: {
-                        cssSelector: bookmark.docSelector,
-                    },
-                },
-                publicationIdentifier: bookmark.identifiable.identifier,
-                locatorType: LocatorType.LastReadingLocation,
-            };
-            yield call(() => locatorRepository.save(locator));
-            yield put(readerActions.saveBookmarkSuccess.build(bookmark));
-        } catch (error) {
-            yield put(readerActions.saveBookmarkError.build(error));
-        }
-    }
-}
+//         try {
+//             const locator: ExcludeTimestampableWithPartialIdentifiable<LocatorDocument> = {
+//                 // name: "",
+//                 locator: {
+//                     href: bookmark.docHref,
+//                     locations: {
+//                         cssSelector: bookmark.docSelector,
+//                     },
+//                 },
+//                 publicationIdentifier: bookmark.publicationIdentifier,
+//                 locatorType: LocatorType.LastReadingLocation,
+//             };
+//             yield call(() => locatorRepository.save(locator));
+//             yield put(readerActions.saveBookmarkSuccess.build(bookmark));
+//         } catch (error) {
+//             yield put(readerActions.saveBookmarkError.build(error));
+//         }
+//     }
+// }
 
 export function* readerFullscreenRequestWatcher(): SagaIterator {
     while (true) {
@@ -397,7 +397,7 @@ export function* readerDetachRequestWatcher(): SagaIterator {
 
 export function* watchers() {
     yield all([
-        call(readerBookmarkSaveRequestWatcher),
+        // call(readerBookmarkSaveRequestWatcher),
         call(readerCloseRequestWatcher),
         call(readerConfigInitWatcher),
         call(readerConfigSetRequestWatcher),
