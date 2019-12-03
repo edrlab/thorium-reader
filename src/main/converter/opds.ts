@@ -170,9 +170,9 @@ export class OpdsFeedViewConverter {
         const thumbnailLinkView = fallback(GetLinksView(baseUrl, r2OpdsPublication.Images, {
             type: ["image/png", "image/jpeg"],
             rel: "http://opds-spec.org/image/thumbnail",
-        }), GetLinksView(baseUrl, r2OpdsPublication.Links, {
+        }), GetLinksView(baseUrl, r2OpdsPublication.Images, {
             type: ["image/png", "image/jpeg"],
-        }), GetLinksView(baseUrl, r2OpdsPublication.Links, {
+        }), GetLinksView(baseUrl, r2OpdsPublication.Images, {
             type: new RegExp("^image\/*"),
         }));
 
