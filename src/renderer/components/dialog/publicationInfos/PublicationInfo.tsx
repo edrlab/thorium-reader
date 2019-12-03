@@ -52,12 +52,15 @@ interface IState {
 }
 
 class PublicationInfo extends React.Component<IProps, IState> {
-    private descriptionWrapperRef: any;
-    private descriptionRef: any;
+    private descriptionWrapperRef: React.RefObject<HTMLDivElement>;
+    private descriptionRef: React.RefObject<HTMLParagraphElement>;
     private unsubscribe: Unsubscribe;
 
     constructor(props: IProps) {
         super(props);
+
+        this.descriptionWrapperRef = React.createRef<HTMLDivElement>();
+        this.descriptionRef = React.createRef<HTMLParagraphElement>();
 
         this.state = {
             seeMore: false,
@@ -254,7 +257,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         {normalOrOpdsPublicationView.description && <>
                             <h3>{__("catalog.description")}</h3>
                             <div
-                                ref={(ref) => this.descriptionWrapperRef = ref}
+                                ref={this.descriptionWrapperRef}
                                 className={classNames(
                                     styles.descriptionWrapper,
                                     this.state.needSeeMore && styles.hideEnd,
@@ -262,7 +265,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                                 )}
                             >
                                 <p
-                                    ref={(ref) => this.descriptionRef = ref}
+                                    ref={this.descriptionRef}
                                     className={classNames(styles.allowUserSelect, styles.description)}
                                 >
                                     {normalOrOpdsPublicationView.description}
@@ -359,10 +362,10 @@ class PublicationInfo extends React.Component<IProps, IState> {
     }
 
     private needSeeMoreButton() {
-        if (!this.descriptionWrapperRef || !this.descriptionRef) {
+        if (!this.descriptionWrapperRef?.current || !this.descriptionRef?.current) {
             return;
         }
-        const need = this.descriptionWrapperRef.offsetHeight < this.descriptionRef.offsetHeight;
+        const need = this.descriptionWrapperRef.current.offsetHeight < this.descriptionRef.current.offsetHeight;
         this.setState({ needSeeMore: need });
     }
 

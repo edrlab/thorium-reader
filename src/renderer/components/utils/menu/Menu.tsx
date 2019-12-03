@@ -23,7 +23,7 @@ interface IBaseProps {
     open: boolean; // Is menu open
     dir: string; // Direction of menu: right or left
     toggle: () => void;
-    focusMenuButton?: (ref: React.RefObject<HTMLButtonElement>, currentMenuId: string) => void;
+    focusMenuButton?: (ref: React.RefObject<HTMLElement>, currentMenuId: string) => void;
     infoDialogIsOpen?: boolean;
 }
 
@@ -40,13 +40,16 @@ interface IState {
 }
 
 export default class Menu extends React.Component<IProps, IState> {
-    private buttonRef: any;
-    private menuButtonRef: React.RefObject<HTMLButtonElement>;
-    private contentRef: any;
+    private buttonRef: React.RefObject<MenuButton>;
+    private menuButtonRef: React.RefObject<HTMLElement>;
+    private contentRef: HTMLDivElement;
     private menuId: string;
 
     constructor(props: IProps) {
         super(props);
+
+        this.buttonRef = React.createRef<MenuButton>();
+        this.menuButtonRef = React.createRef<HTMLElement>();
 
         this.state = {
             contentStyle: {},
@@ -62,9 +65,10 @@ export default class Menu extends React.Component<IProps, IState> {
         }
         if (oldProps.infoDialogIsOpen === true &&
             oldProps.infoDialogIsOpen !== this.props.infoDialogIsOpen &&
-            this.menuButtonRef) {
-                this.menuButtonRef.current.focus();
-            }
+            this.menuButtonRef?.current) {
+
+            this.menuButtonRef.current.focus();
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -73,7 +77,7 @@ export default class Menu extends React.Component<IProps, IState> {
         return (
             <>
                 <MenuButton
-                    ref={(ref) => { this.buttonRef = ref; }}
+                    ref={this.buttonRef}
                     menuId={this.menuId}
                     open={open}
                     toggle={toggle}
@@ -113,12 +117,15 @@ export default class Menu extends React.Component<IProps, IState> {
     }
 
     private refreshStyle() {
+        if (!this.buttonRef?.current || !this.contentRef) {
+            return;
+        }
         const contentStyle: ContentStyle = {
             position: "absolute",
         };
 
         // calculate vertical position of the menu
-        const button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
+        const button = ReactDOM.findDOMNode(this.buttonRef.current) as HTMLElement;
         const buttonRect = button.getBoundingClientRect();
         const bottomPos = window.innerHeight - buttonRect.bottom;
         const contentElement = ReactDOM.findDOMNode(this.contentRef) as HTMLElement;
@@ -139,14 +146,17 @@ export default class Menu extends React.Component<IProps, IState> {
         this.setState({ contentStyle });
     }
 
-    private getBackFocusMenuButton(currentRef: React.RefObject<HTMLButtonElement>, currentMenuId: string) {
-        if (currentRef && this.menuId === currentMenuId) {
-                this.menuButtonRef = currentRef;
+    private getBackFocusMenuButton(currentRef: React.RefObject<HTMLElement>, currentMenuId: string) {
+        if (currentRef?.current && this.menuId === currentMenuId) {
+            this.menuButtonRef = currentRef;
         }
     }
 
     private focusMenuButton() {
-        const button = ReactDOM.findDOMNode(this.buttonRef) as HTMLElement;
+        if (!this.buttonRef?.current) {
+            return;
+        }
+        const button = ReactDOM.findDOMNode(this.buttonRef.current) as HTMLElement;
 
         button.focus();
     }

@@ -41,10 +41,12 @@ interface IState {
 
 export class PublicationListElement extends React.Component<IProps, IState> {
     private menuId: string;
-    private buttonRef: any;
+    private buttonRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
         super(props);
+
+        this.buttonRef = React.createRef<HTMLButtonElement>();
 
         this.state = {
             menuOpen: false,
@@ -76,7 +78,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                         aria-controls={this.menuId}
                         title={pub.title}
                         onClick={this.toggleMenu}
-                        ref={(ref) => this.buttonRef = ref}
+                        ref={this.buttonRef}
                     >
                         <SVG svg={MenuIcon}/>
                     </button>
@@ -123,7 +125,9 @@ export class PublicationListElement extends React.Component<IProps, IState> {
     }
 
     private focusButton() {
-        this.buttonRef.focus();
+        if (this.buttonRef?.current) {
+            this.buttonRef.current.focus();
+        }
     }
 
     private handleBookClick(e: React.SyntheticEvent) {

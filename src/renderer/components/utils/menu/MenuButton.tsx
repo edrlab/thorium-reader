@@ -24,10 +24,11 @@ interface IProps extends IBaseProps {
 }
 
 export default class MenuButton extends React.Component<IProps, undefined> {
-    private menuButton = React.createRef<HTMLButtonElement>();
+    private menuButtonRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
         super(props);
+        this.menuButtonRef = React.createRef<HTMLButtonElement>();
 
         this.getFocusBack = this.getFocusBack.bind(this);
     }
@@ -39,7 +40,7 @@ export default class MenuButton extends React.Component<IProps, undefined> {
                 aria-expanded={open}
                 aria-controls={menuId}
                 onClick={toggle}
-                ref={this.menuButton}
+                ref={this.menuButtonRef}
             >
                 {this.getFocusBack()}
                 {children}
@@ -48,8 +49,8 @@ export default class MenuButton extends React.Component<IProps, undefined> {
     }
 
     public getFocusBack() {
-        if (this.menuButton && this.props.open) {
-            this.props.focusMenuButton(this.menuButton, this.props.menuId);
+        if (this.menuButtonRef?.current && this.props.open) {
+            this.props.focusMenuButton(this.menuButtonRef, this.props.menuId);
         }
     }
 }

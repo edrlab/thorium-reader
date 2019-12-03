@@ -37,13 +37,13 @@ export default class AccessibleMenu extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+        this.containerRef = React.createRef<HTMLDivElement>();
 
         this.state = {
             inFocus: false,
             triggerElem: undefined,
         };
 
-        this.containerRef = React.createRef();
         this.handleFocus = this.handleFocus.bind(this);
         this.handleKey = this.handleKey.bind(this);
         this.onClickOutside = this.onClickOutside.bind(this);
@@ -161,9 +161,7 @@ export default class AccessibleMenu extends React.Component<IProps, IState> {
          */
         const focusedNode = event.target as HTMLElement;
 
-        if (this.containerRef
-            && this.containerRef.current
-            && this.containerRef.current.contains(focusedNode)
+        if (this.containerRef?.current?.contains(focusedNode)
         ) {
             if (this.ismounted) {
                 this.setState({

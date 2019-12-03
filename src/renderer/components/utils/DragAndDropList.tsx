@@ -6,8 +6,9 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import {
+    DragDropContext, Draggable, DraggableProvided, Droppable, DroppableProvided,
+} from "react-beautiful-dnd";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -45,14 +46,14 @@ export default class DragAndDropList extends React.Component<IProps, undefined> 
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
-                {(provided: any) => (
+                {(provided: DroppableProvided) => (
                     <ul
                         className={className ? className : ""}
                         id={id}
                         ref={provided.innerRef} >
                         {this.props.items && this.props.items.map((item, index) => (
                             <Draggable key={index} draggableId={index.toString()} index={index}>
-                                {(provided2: any) => {
+                                {(provided2: DraggableProvided) => {
                                     return (
                                     <li
                                         ref={provided2.innerRef}

@@ -71,14 +71,20 @@ interface IProps extends IBaseProps {
 }
 
 export class ReaderHeader extends React.Component<IProps, undefined> {
-    private enableFullscreenRef = React.createRef<HTMLButtonElement>();
-    private disableFullscreenRef = React.createRef<HTMLButtonElement>();
-    private settingsMenuButtonRef = React.createRef<HTMLButtonElement>();
-    private navigationMenuButtonRef = React.createRef<HTMLButtonElement>();
-    private infoMenuButtonRef = React.createRef<HTMLButtonElement>();
+
+    private enableFullscreenRef: React.RefObject<HTMLButtonElement>;
+    private disableFullscreenRef: React.RefObject<HTMLButtonElement>;
+    private settingsMenuButtonRef: React.RefObject<HTMLButtonElement>;
+    private navigationMenuButtonRef: React.RefObject<HTMLButtonElement>;
+    private infoMenuButtonRef: React.RefObject<HTMLButtonElement>;
 
     constructor(props: IProps) {
         super(props);
+        this.enableFullscreenRef = React.createRef<HTMLButtonElement>();
+        this.disableFullscreenRef = React.createRef<HTMLButtonElement>();
+        this.settingsMenuButtonRef = React.createRef<HTMLButtonElement>();
+        this.navigationMenuButtonRef = React.createRef<HTMLButtonElement>();
+        this.infoMenuButtonRef = React.createRef<HTMLButtonElement>();
 
         this.focusSettingMenuButton = this.focusSettingMenuButton.bind(this);
         this.focusNaviguationMenuButton = this.focusNaviguationMenuButton.bind(this);
@@ -86,15 +92,16 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
 
     public componentDidUpdate(oldProps: IProps) {
         if (this.props.fullscreen !== oldProps.fullscreen) {
-            if (this.props.fullscreen && this.disableFullscreenRef.current) {
+            if (this.props.fullscreen && this.disableFullscreenRef?.current) {
                 this.disableFullscreenRef.current.focus();
-            } else if (!this.props.fullscreen && this.enableFullscreenRef.current) {
+            } else if (!this.props.fullscreen && this.enableFullscreenRef?.current) {
                 this.enableFullscreenRef.current.focus();
             }
         }
 
         if (this.props.infoOpen !== oldProps.infoOpen &&
-            this.props.infoOpen === false) {
+            this.props.infoOpen === false &&
+            this.infoMenuButtonRef?.current) {
                 this.infoMenuButtonRef.current.focus();
             }
     }
@@ -224,12 +231,18 @@ export class ReaderHeader extends React.Component<IProps, undefined> {
     }
 
     private focusSettingMenuButton() {
+        if (!this.settingsMenuButtonRef?.current) {
+            return;
+        }
         const button = ReactDOM.findDOMNode(this.settingsMenuButtonRef.current) as HTMLButtonElement;
 
         button.focus();
     }
 
     private focusNaviguationMenuButton() {
+        if (!this.navigationMenuButtonRef?.current) {
+            return;
+        }
         const button = ReactDOM.findDOMNode(this.navigationMenuButtonRef.current) as HTMLButtonElement;
 
         button.focus();

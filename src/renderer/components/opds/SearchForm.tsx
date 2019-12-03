@@ -27,12 +27,12 @@ interface IProps extends IBaseProps, RouteComponentProps {
 }
 
 class SearchForm extends React.Component<IProps, undefined> {
-    private inputRef: React.RefObject<HTMLInputElement>;
+    private inputRef: React.RefObject<HTMLParagraphElement>;
 
     constructor(props: IProps) {
         super(props);
 
-        this.inputRef = React.createRef();
+        this.inputRef = React.createRef<HTMLParagraphElement>();
         this.search = this.search.bind(this);
     }
 
@@ -56,6 +56,9 @@ class SearchForm extends React.Component<IProps, undefined> {
 
     public search(e: TFormEvent) {
         e.preventDefault();
+        if (!this.inputRef?.current) {
+            return;
+        }
         const value = this.inputRef.current.value;
 
         this.props.history.push(`${this.props.location.pathname}?search=${value}`);
