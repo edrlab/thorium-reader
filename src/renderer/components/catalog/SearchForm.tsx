@@ -28,12 +28,12 @@ interface IProps extends IBaseProps, RouteComponentProps {
 
 class Search extends React.Component<IProps, undefined> {
 
-    private inputRef: React.RefObject<HTMLAnchorElement>;
+    private inputRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: IProps) {
         super(props);
 
-        this.inputRef = React.createRef<HTMLAnchorElement>();
+        this.inputRef = React.createRef<HTMLInputElement>();
         this.search = this.search.bind(this);
     }
     public render(): React.ReactElement<{}> {
