@@ -43,14 +43,14 @@ export class OpdsService {
     private static contentTypeisXml(contentType?: string) {
         return contentType
             && (contentType.startsWith("application/atom+xml")
-            || contentType.startsWith("application/xml")
-            || contentType.startsWith("text/xml"));
+                || contentType.startsWith("application/xml")
+                || contentType.startsWith("text/xml"));
     }
 
     private static contentTypeisOpds(contentType?: string) {
         return contentType
             && (contentType.startsWith("application/json")
-            || contentType.startsWith("application/opds+json"));
+                || contentType.startsWith("application/opds+json"));
     }
 
     private static async getOpenSearchUrl(opensearchLink: IOpdsLinkView): Promise<string | undefined> {
@@ -154,11 +154,11 @@ export class OpdsService {
                 // https://catalog.feedbooks.com/search.json{?query}
             } else if (opdsLink && opdsLink.url) {
 
-               const uriTemplate = new URITemplate(opdsLink.url);
-               const uriExpanded = uriTemplate.expand({ query: "\{searchTerms\}"});
-               const url = uriExpanded.toString().replace("%7B", "{").replace("%7D", "}");
+                const uriTemplate = new URITemplate(opdsLink.url);
+                const uriExpanded = uriTemplate.expand({ query: "\{searchTerms\}" });
+                const url = uriExpanded.toString().replace("%7B", "{").replace("%7D", "}");
 
-               return url;
+                return url;
             }
         } catch {
             // ignore
