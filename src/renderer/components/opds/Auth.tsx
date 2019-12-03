@@ -19,7 +19,7 @@ import {
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { IOpdsBrowse } from "readium-desktop/renderer/routing";
-import { TMouseEvent } from "readium-desktop/typings/react";
+import { TMouseEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 // tslint:disable-next-line: no-empty-interface
@@ -108,7 +108,7 @@ class OPDSAuth extends React.Component<IProps, IState> {
         );
     }
 
-    public submit(e: TMouseEvent) {
+    public submit(e: TMouseEventOnInput) {
         e.preventDefault();
 
         function hexStrToArrayBuffer(hexStr: string) {

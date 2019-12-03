@@ -10,6 +10,9 @@ import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import {
+    TKeyboardEventOnAnchor, TMouseEventOnAnchor, TMouseEventOnSpan,
+} from "readium-desktop/typings/react";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -22,7 +25,8 @@ interface IBaseProps extends TranslatorProps {
     fullscreen: boolean;
     currentLocation: LocatorExtended;
     r2Publication: R2Publication | undefined;
-    handleLinkClick: (event: any, url: string) => void;
+    // tslint:disable-next-line: max-line-length
+    handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
 }
 
 // IProps may typically extend:

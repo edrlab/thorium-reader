@@ -9,7 +9,10 @@ import * as classNames from "classnames";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
-import { ReaderConfig } from "readium-desktop/common/models/reader";
+import {
+    Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
+    ReaderConfigStringsAdjustables,
+} from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
 import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { LocatorView } from "readium-desktop/common/views/locator";
@@ -28,6 +31,10 @@ import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 import { diRendererGet, lazyInject } from "readium-desktop/renderer/di";
 import { diRendererSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import {
+    TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
+    TMouseEventOnSpan,
+} from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Store, Unsubscribe } from "redux";
 
@@ -49,11 +56,13 @@ import {
     setKeyDownEventHandler, setReadingLocationSaver, setReadiumCssJsonGetter,
 } from "@r2-navigator-js/electron/renderer/index";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
-import { Locator } from "@r2-shared-js/models/locator";
+import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
-import optionsValues from "./options-values";
+import optionsValues, {
+    AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
+} from "./options-values";
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
@@ -151,21 +160,6 @@ const lcpHint = queryParams.lcpHint;
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    /*
-    reader?: any;
-    mode?: any;
-    infoOpen?: boolean;
-    deleteBookmark?: TReaderApiDeleteBookmark;
-    addBookmark?: TReaderApiAddBookmark;
-    findBookmarks: TReaderApiFindBookmarks;
-    toggleFullscreen?: any;
-    closeReader?: any;
-    detachReader?: any;
-    setLastReadingLocation: TReaderApiSetLastReadingLocation;
-    bookmarks?: TReaderApiFindBookmarks_result;
-    displayPublicationInfo?: any;
-    publication?: TPublicationApiGet_result;
-    */
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -177,25 +171,27 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 interface IState {
     publicationJsonUrl?: string;
-    lcpHint?: string;
     title?: string;
-    lcpPass?: string;
-    contentTableOpen: boolean;
-    settingsOpen: boolean;
-    settingsValues: ReaderConfig;
-    shortcutEnable: boolean;
-    landmarksOpen: boolean;
-    landmarkTabOpen: number;
 
     publicationView: TPublicationApiGet_result | undefined; // PublicationView
     r2Publication: R2Publication | undefined;
 
+    lcpHint?: string;
+    lcpPass?: string;
+
+    contentTableOpen: boolean;
+    settingsOpen: boolean;
+    shortcutEnable: boolean;
+    landmarksOpen: boolean;
+    landmarkTabOpen: number;
     menuOpen: boolean;
     fullscreen: boolean;
-    indexes: any; // TODO any?!
     visibleBookmarkList: LocatorView[];
     currentLocation: LocatorExtended;
     bookmarks: TReaderApiFindBookmarks_result | undefined;
+
+    indexes: AdjustableSettingsNumber;
+    readerConfig: ReaderConfig;
 }
 
 // WHY ??
@@ -224,7 +220,7 @@ export class Reader extends React.Component<IProps, IState> {
         // WHY is it sync in init.ts, no ??
         const locale = this.store.getState().i18n.locale;
 
-        if (locale == null) {
+        if (!locale) {
             this.store.dispatch(i18nActions.setLocale.build(defaultLocale));
         }
 
@@ -235,7 +231,7 @@ export class Reader extends React.Component<IProps, IState> {
             lcpPass: "LCP pass",
             contentTableOpen: false,
             settingsOpen: false,
-            settingsValues: {
+            readerConfig: {
                 align: "auto",
                 colCount: "auto",
                 dark: false,
@@ -252,10 +248,17 @@ export class Reader extends React.Component<IProps, IState> {
                 letterSpacing: undefined,
                 pageMargins: undefined,
                 enableMathJax: false,
+                noFootnotes: false,
+                darken: false,
             },
             shortcutEnable: true,
             indexes: {
-                fontSize: 3, pageMargins: 0, wordSpacing: 0, letterSpacing: 0, paraSpacing: 0,
+                fontSize: 3,
+                pageMargins: 0,
+                wordSpacing: 0,
+                letterSpacing: 0,
+                paraSpacing: 0,
+                lineHeight: 0,
             },
             landmarksOpen: false,
             landmarkTabOpen: 0,
@@ -302,22 +305,24 @@ export class Reader extends React.Component<IProps, IState> {
         this.store.subscribe(() => {
             const storeState = this.store.getState();
             this.props.translator.setLocale(storeState.i18n.locale);
-            const settings = storeState.reader.config;
-            if (settings && settings !== this.state.settingsValues) {
+            const readerConfig = storeState.reader.config;
+            if (readerConfig && readerConfig !== this.state.readerConfig) {
                 this.props.translator.setLocale(this.store.getState().i18n.locale);
 
                 const indexes = this.state.indexes;
                 for (const name of Object.keys(this.state.indexes)) {
+                    const key = name as keyof ReaderConfigStringsAdjustables;
+
                     let i = 0;
-                    for (const value of optionsValues[name]) {
-                        if (settings[name] === value) {
-                            indexes[name] = i;
+                    for (const value of optionsValues[key]) {
+                        if (readerConfig[key] === value) {
+                            indexes[key] = i;
                         }
                         i++;
                     }
                 }
 
-                if (settings.enableMathJax !== this.state.settingsValues.enableMathJax) {
+                if (readerConfig.enableMathJax !== this.state.readerConfig.enableMathJax) {
 
                     setTimeout(() => {
                         // window.location.reload();
@@ -325,7 +330,7 @@ export class Reader extends React.Component<IProps, IState> {
                     }, 300);
                 }
 
-                this.setState({settingsValues: settings, indexes});
+                this.setState({readerConfig, indexes});
 
                 // readiumCssOnOff() API only once navigator ready
                 if (this.state.r2Publication) {
@@ -361,7 +366,7 @@ export class Reader extends React.Component<IProps, IState> {
 
         // Note that CFI, etc. can optionally be restored too,
         // but navigator currently uses cssSelector as the primary
-        const locator: Locator = {
+        const locator: R2Locator = {
             href: docHref,
             locations: {
                 cfi: undefined,
@@ -434,7 +439,8 @@ export class Reader extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const readerMenuProps = {
+
+        const readerMenuProps: IReaderMenuProps = {
             open: this.state.menuOpen,
             r2Publication: this.state.r2Publication,
             handleLinkClick: this.handleLinkClick,
@@ -442,12 +448,12 @@ export class Reader extends React.Component<IProps, IState> {
             toggleMenu: this.handleMenuButtonClick,
         };
 
-        const readerOptionsProps = {
+        const readerOptionsProps: IReaderOptionsProps = {
             open: this.state.settingsOpen,
             indexes: this.state.indexes,
-            settings: this.state.settingsValues,
-            handleSettingChange: this.handleSettingsValueChange.bind(this),
-            handleIndexChange: this.handleIndexValueChange.bind(this),
+            readerConfig: this.state.readerConfig,
+            handleSettingChange: this.handleSettingChange.bind(this),
+            handleIndexChange: this.handleIndexChange.bind(this),
             setSettings: this.setSettings,
             toggleMenu: this.handleSettingsClick,
         };
@@ -461,8 +467,8 @@ export class Reader extends React.Component<IProps, IState> {
                     />
                     <div className={classNames(
                         styles.root,
-                        this.state.settingsValues.night && styles.nightMode,
-                        this.state.settingsValues.sepia && styles.sepiaMode,
+                        this.state.readerConfig.night && styles.nightMode,
+                        this.state.readerConfig.sepia && styles.sepiaMode,
                     )}>
                         <ReaderHeader
                             infoOpen={this.props.infoOpen}
@@ -518,13 +524,13 @@ export class Reader extends React.Component<IProps, IState> {
         }
     }
 
-    private goToLocator(locator: Locator) {
+    private goToLocator(locator: R2Locator) {
         handleLinkLocator(locator);
     }
 
     private async loadPublicationIntoViewport(
         publicationView: PublicationView,
-        locator: Locator) {
+        locator: R2Locator) {
 
         // let response: Response;
         // try {
@@ -648,7 +654,8 @@ export class Reader extends React.Component<IProps, IState> {
         this.setState({visibleBookmarkList});
     }
 
-    private handleLinkClick(event: any, url: string) {
+    // tslint:disable-next-line: max-line-length
+    private handleLinkClick(event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) {
         if (event) {
             event.preventDefault();
         }
@@ -754,33 +761,42 @@ export class Reader extends React.Component<IProps, IState> {
     }
 
     private handleSettingsSave() {
-        const values = this.state.settingsValues;
-
-        this.store.dispatch(readerActions.configSetRequest.build(values));
+        this.store.dispatch(readerActions.configSetRequest.build(this.state.readerConfig));
     }
 
-    private handleSettingsValueChange(event: any, name: string, givenValue?: any) {
-        if ((givenValue === null || givenValue === undefined) && !event) {
-            return;
-        }
+    private handleSettingChange(
+        event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
+        name: keyof ReaderConfig,
+        givenValue?: string) {
 
-        const settingsValues = this.state.settingsValues;
         let value = givenValue;
-
-        if (givenValue === null || givenValue === undefined) {
-            value = event.target.value.toString();
+        if (value === null || value === undefined) {
+            if (event) {
+                value = event.target.value.toString();
+            } else {
+                return;
+            }
         }
 
+        const readerConfig = this.state.readerConfig;
+
+        // TypeScript typing problems
+        // -- does not work because of "never":
+        // readerConfig[name] = value;
+        // -- works but voids key typing:
+        // (readerConfig as unknown as { [key: string]: string | boolean })[name] = adjustedValue;
+        const nameForString = name as keyof ReaderConfigStrings;
+        const nameForBoolean = name as keyof ReaderConfigBooleans;
         if (value === "false") {
-            value = false;
+            readerConfig[nameForBoolean] = false;
         } else if (value === "true") {
-            value = true;
+            readerConfig[nameForBoolean] = true;
+        } else {
+            readerConfig[nameForString] = value;
         }
 
-        settingsValues[name] =  value;
-
-        if (settingsValues.paged) {
-            settingsValues.enableMathJax = false;
+        if (readerConfig.paged) {
+            readerConfig.enableMathJax = false;
 
             setTimeout(() => {
                 // window.location.reload();
@@ -788,32 +804,40 @@ export class Reader extends React.Component<IProps, IState> {
             }, 300);
         }
 
-        this.setState({settingsValues});
+        this.setState({readerConfig});
 
         this.handleSettingsSave();
     }
 
-    private handleIndexValueChange(event: any, name: string) {
+    private handleIndexChange(event: TChangeEventOnInput, name: keyof ReaderConfigStringsAdjustables) {
         const indexes = this.state.indexes;
-        const settingsValues = this.state.settingsValues;
+        const readerConfig = this.state.readerConfig;
 
-        const value = event.target.value.toString();
+        let valueNum = event.target.valueAsNumber;
+        if (typeof valueNum !== "number") {
+            const valueStr = event.target.value.toString();
+            valueNum = parseInt(valueStr, 10);
+            if (typeof valueNum !== "number") {
+                console.log(`valueNum?!! ${valueNum}`);
+                return;
+            }
+        }
 
-        indexes[name] =  value;
+        indexes[name] = valueNum;
         this.setState({ indexes });
 
-        settingsValues[name] = optionsValues[name][value];
-        this.setState({ settingsValues });
+        readerConfig[name] = optionsValues[name][valueNum];
+        this.setState({ readerConfig });
 
         this.handleSettingsSave();
     }
 
-    private setSettings(settingsValues: ReaderConfig) {
-        if (!settingsValues) {
+    private setSettings(readerConfig: ReaderConfig) {
+        if (!readerConfig) {
             return;
         }
 
-        this.setState({ settingsValues });
+        this.setState({ readerConfig });
         this.handleSettingsSave();
     }
 
@@ -842,10 +866,10 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 dispatch(readerActions.fullScreenRequest.build(false));
             }
         },
-        closeReader: (reader: any) => {
+        closeReader: (reader: ReaderModel) => {
             dispatch(readerActions.closeRequest.build(reader, true));
         },
-        detachReader: (reader: any) => {
+        detachReader: (reader: ReaderModel) => {
             dispatch(readerActions.detachModeRequest.build(reader));
         },
         displayPublicationInfo: (pubId: string) => {

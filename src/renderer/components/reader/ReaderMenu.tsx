@@ -19,23 +19,18 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TFormEvent } from "readium-desktop/typings/react";
+import { TFormEvent, TMouseEventOnButton } from "readium-desktop/typings/react";
 import { Unsubscribe } from "redux";
 
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
+import { IReaderMenuProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps extends TranslatorProps {
-    open: boolean;
-    r2Publication: R2Publication;
-    handleLinkClick: (event: any, url: string) => void;
-    handleBookmarkClick: (locator: any) => void;
-    toggleMenu: any;
+interface IBaseProps extends TranslatorProps, IReaderMenuProps {
     focusNaviguationMenu: () => void;
 }
 
@@ -371,7 +366,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
     }
 
-    private handleBookmarkClick(e: any, bookmark: LocatorView) {
+    private handleBookmarkClick(e: TMouseEventOnButton, bookmark: LocatorView) {
         e.preventDefault();
         this.props.handleBookmarkClick(bookmark.locator);
     }

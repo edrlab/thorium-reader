@@ -13,7 +13,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TChangeEvent, TFormEvent } from "readium-desktop/typings/react";
+import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 
 // import { TPublicationApiUpdateTags_result } from "readium-desktop/main/api/publication";
 
@@ -126,7 +126,7 @@ export class TagManager extends React.Component<IProps, IState> {
             .catch((error) => console.error("Error to fetch api publication/updateTags", error));
     }
 
-    private handleChangeName(e: TChangeEvent) {
+    private handleChangeName(e: TChangeEventOnInput) {
         this.setState({ nameNewTag: e.target.value });
     }
 }

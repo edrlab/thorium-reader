@@ -15,7 +15,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { TMouseEvent } from "readium-desktop/typings/react";
+import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import Dialog from "./Dialog";
@@ -61,7 +61,7 @@ class LsdReturnConfirm extends React.Component<IProps, undefined> {
         );
     }
 
-    public remove(e: TMouseEvent) {
+    public remove(e: TMouseEventOnButton) {
         e.preventDefault();
         apiAction("lcp/returnPublication", this.props.publicationView.identifier)
         .catch((error) => {

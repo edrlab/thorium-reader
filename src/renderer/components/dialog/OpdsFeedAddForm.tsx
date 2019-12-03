@@ -14,7 +14,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { TMouseEvent } from "readium-desktop/typings/react";
+import { TMouseEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import Dialog from "./Dialog";
@@ -99,7 +99,7 @@ class OpdsFeedAddForm extends React.Component<IProps, IState> {
         );
     }
 
-    public add(e: TMouseEvent) {
+    public add(e: TMouseEventOnInput) {
         e.preventDefault();
         const title = this.state.name;
         const url = this.state.url;
