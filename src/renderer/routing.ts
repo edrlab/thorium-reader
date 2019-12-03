@@ -33,6 +33,13 @@ export interface IOpdsBrowse {
     name: string;
 }
 
+export interface ILibrarySearchText {
+    value: string;
+}
+export interface ILibrarySearchTag {
+    value: string;
+}
+
 export const routes: RouteList = {
     "/opds": {
         path: "/opds",
@@ -41,6 +48,7 @@ export const routes: RouteList = {
         component: Opds,
     },
     "/opds/browse": {
+        // IOpdsBrowse
         path: "/opds/:opdsId/browse/:level/:name/:url",
         exact: true,
         title: "Catalogues",
@@ -72,12 +80,14 @@ export const routes: RouteList = {
         component: LanguageSettings,
     },
     "/library/search/text": {
+        // ILibrarySearchText
         path: "/library/search/text/:value",
         exact: true,
         title: "Library",
         component: TextSearchResult,
     },
     "/library/search/tag": {
+        // ILibrarySearchTag
         path: "/library/search/tag/:value",
         exact: true,
         title: "Library",

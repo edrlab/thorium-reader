@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import { BrowserWindow, Rectangle, screen } from "electron";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
-import { BaseRepository } from "readium-desktop/main/db/repository/base";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
 import { debounce } from "readium-desktop/utils/debounce";
 
@@ -18,10 +18,6 @@ import { AppWindow, AppWindowType } from "../models/win";
 const debug = debug_("readium-desktop:common:rectangle:window");
 
 const WINDOW_RECT_CONFIG_ID = "windowRectangle";
-type ConfigDocumentType = ConfigDocument<Rectangle>;
-type ConfigRepositoryType = BaseRepository<ConfigDocumentType>;
-// import { Timestampable } from "readium-desktop/common/models/timestampable";
-// type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Timestampable>;
 
 const defaultRectangle = (): Rectangle => (
     {
@@ -34,7 +30,7 @@ const defaultRectangle = (): Rectangle => (
 export type t_savedWindowsRectangle = typeof savedWindowsRectangle;
 export const savedWindowsRectangle = async (rectangle: Rectangle) => {
     try {
-        const configRepository: ConfigRepositoryType = diMainGet("config-repository");
+        const configRepository: ConfigRepository<Rectangle> = diMainGet("config-repository");
         await configRepository.save({
             identifier: WINDOW_RECT_CONFIG_ID,
             value: rectangle,
@@ -51,7 +47,15 @@ export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rect
 
     try {
         const winRegistry = diMainGet("win-registry");
-        const windows = Object.values(winRegistry.getWindows()) as AppWindow[];
+
+        // WinDictionary = BrowserWindows indexed by number
+        // (the number is Electron.BrowserWindow.id)
+        const windowsDict = winRegistry.getWindows();
+
+        // generic / template type does not work because dictionary not indexed by string, but by number
+        // const windows = Object.values<AppWindow>(windowsDict);
+        const windows = Object.values(windowsDict) as AppWindow[];
+
         const displayArea = screen.getPrimaryDisplay().workAreaSize;
         if (WinType !== AppWindowType.Library && windows.length > 1) {
             const rectangle = windows.pop().win.getBounds();
@@ -61,8 +65,8 @@ export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rect
             rectangle.y %= displayArea.height - rectangle.height;
             return rectangle;
         } else {
-            const configRepository: ConfigRepositoryType = diMainGet("config-repository");
-            let rectangle: ConfigDocumentType | undefined;
+            const configRepository: ConfigRepository<Rectangle> = diMainGet("config-repository");
+            let rectangle: ConfigDocument<Rectangle> | undefined;
             try {
                 rectangle = await configRepository.get(WINDOW_RECT_CONFIG_ID);
             } catch (err) {

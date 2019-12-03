@@ -14,18 +14,14 @@ import { PublicationViewConverter } from "readium-desktop/main/converter/publica
 import {
     CatalogConfig, CatalogEntry, ConfigDocument,
 } from "readium-desktop/main/db/document/config";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 
 import { LocatorDocument } from "../db/document/locator";
-import { BaseRepository } from "../db/repository/base";
 
 export const CATALOG_CONFIG_ID = "catalog";
-type ConfigDocumentType = ConfigDocument<CatalogConfig>;
-type ConfigRepositoryType = BaseRepository<ConfigDocumentType>;
-// import { Timestampable } from "readium-desktop/common/models/timestampable";
-// type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Timestampable>;
 
 export interface ICatalogApi {
     get: () => Promise<CatalogView>;
@@ -57,7 +53,7 @@ export class CatalogApi implements ICatalogApi {
     private readonly publicationRepository!: PublicationRepository;
 
     @inject(diSymbolTable["config-repository"])
-    private readonly configRepository!: ConfigRepositoryType;
+    private readonly configRepository!: ConfigRepository<CatalogConfig>;
 
     @inject(diSymbolTable["locator-repository"])
     private readonly locatorRepository!: LocatorRepository;
@@ -162,7 +158,7 @@ export class CatalogApi implements ICatalogApi {
      * Returns entries without pubs
      */
     public async getEntries(): Promise<CatalogEntryView[]> {
-        let config: ConfigDocumentType;
+        let config: ConfigDocument<CatalogConfig>;
         try {
             config = await this.configRepository.get(CATALOG_CONFIG_ID);
         } catch (error) {

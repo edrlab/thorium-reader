@@ -9,10 +9,12 @@ import * as debug_ from "debug";
 import { dialog } from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
+import * as moment from "moment";
 import * as path from "path";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { ToastType } from "readium-desktop/common/models/toast";
+import { AppWindow } from "readium-desktop/common/models/win";
 import {
     downloadActions, readerActions, toastActions,
 } from "readium-desktop/common/redux/actions/";
@@ -258,10 +260,19 @@ export class CatalogService {
     public async exportPublication(publicationView: PublicationView) {
         // Get main window
         const winRegistry = diMainGet("win-registry");
-        let mainWindow;
-        for (const window of (Object.values(winRegistry.getWindows())) as any) {
+
+        // WinDictionary = BrowserWindows indexed by number
+        // (the number is Electron.BrowserWindow.id)
+        const windowsDict = winRegistry.getWindows();
+
+        // generic / template type does not work because dictionary not indexed by string, but by number
+        // const windows = Object.values<AppWindow>(windowsDict);
+        const windows = Object.values(windowsDict) as AppWindow[];
+
+        let mainWindow: Electron.BrowserWindow;
+        for (const window of windows) {
             if (window.type === "library") {
-                mainWindow = window;
+                mainWindow = window.win;
             }
         }
 
@@ -286,6 +297,55 @@ export class CatalogService {
         const lcpJson = JSON.parse(jsonStr);
         const r2LCP = TaJsonDeserialize<LCP>(lcpJson, LCP);
         r2LCP.JsonSource = jsonStr;
+        r2LCP.init();
+
+        // LCP license checks to avoid unnecessary download:
+        // CERTIFICATE_SIGNATURE_INVALID = 102
+        // CERTIFICATE_REVOKED = 101
+        // LICENSE_SIGNATURE_DATE_INVALID = 111
+        // LICENSE_SIGNATURE_INVALID = 112
+        // (USER_KEY_CHECK_INVALID = 141) is guaranteed because of dummy passphrase
+        // (LICENSE_OUT_OF_DATE = 11) occurs afterwards, so will only be checked after passphrase try
+        if (r2LCP.isNativeNodePlugin()) {
+            if (r2LCP.Rights) {
+                const now = moment.now();
+                let res = 0;
+                try {
+                    if (r2LCP.Rights.Start) {
+                        if (moment(r2LCP.Rights.Start).isAfter(now)) {
+                            res = 11;
+                        }
+                    }
+                    if (r2LCP.Rights.End) {
+                        if (moment(r2LCP.Rights.End).isBefore(now)) {
+                            res = 11;
+                        }
+                    }
+                } catch (err) {
+                    debug(err);
+                }
+                if (res) {
+                    const msg = this.lcpManager.convertUnlockPublicationResultToString(res);
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error, msg));
+                    throw new Error(`[${msg}] (${filePath})`);
+                }
+            }
+
+            try {
+                // await r2LCP.tryUserKeys([toSha256Hex("READIUM2-DESKTOP-THORIUM-DUMMY-PASSPHRASE")]);
+                await r2LCP.dummyCreateContext();
+            } catch (err) {
+                if (err !== 141) { // USER_KEY_CHECK_INVALID
+                    // CERTIFICATE_SIGNATURE_INVALID = 102
+                    // CERTIFICATE_REVOKED = 101
+                    // LICENSE_SIGNATURE_DATE_INVALID = 111
+                    // LICENSE_SIGNATURE_INVALID = 112
+                    const msg = this.lcpManager.convertUnlockPublicationResultToString(err);
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error, msg));
+                    throw new Error(`[${msg}] (${filePath})`);
+                }
+            }
+        }
 
         // search the path of the epub file
         let download: Download | undefined;
@@ -367,10 +427,9 @@ export class CatalogService {
             coverFile: null,
             customCover: null,
             hash: hash ? hash : (hash === null ? undefined : await extractCrc32OnZip(filePath)),
-            lcp: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
 
-            // OPDSPublication? seems unused!
-            // opdsPublication: undefined,
+            lcp: null, // updated below via lcpManager.updateDocumentLcpLsdBase64Resources()
+            lcpRightsCopies: 0,
         };
         this.lcpManager.updateDocumentLcpLsdBase64Resources(pubDocument, r2Publication.LCP);
 

@@ -7,15 +7,17 @@
 
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions/";
+import { ToastState } from "readium-desktop/common/redux/states/toast";
 
-export interface ToastState extends toastActions.openRequest.Payload {
-    open: boolean;
-}
+// export interface ToastState extends toastActions.openRequest.Payload {
+//     open: boolean;
+// }
 
 const initialState: ToastState = {
     open: false,
     type: ToastType.Success,
     data: undefined,
+    publicationIdentifier: undefined,
 };
 
 export function toastReducer(
@@ -31,6 +33,7 @@ export function toastReducer(
                     open: true,
                     type: action.payload.type,
                     data: action.payload.data,
+                    publicationIdentifier: action.payload.publicationIdentifier,
                 },
             );
         case toastActions.closeRequest.ID:

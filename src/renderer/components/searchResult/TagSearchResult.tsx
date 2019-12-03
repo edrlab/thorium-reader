@@ -18,6 +18,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
+import { ILibrarySearchTag } from "readium-desktop/renderer/routing";
 import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
@@ -30,7 +31,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps {
+interface IProps extends IBaseProps, RouteComponentProps<ILibrarySearchTag> {
 }
 
 interface IState {
@@ -54,7 +55,7 @@ export class TagSearchResult extends React.Component<IProps, IState> {
             "publication/updateTags",
             "catalog/addEntry",
         ], () => {
-            apiAction("publication/findByTag", (this.props.match.params as any).value)
+            apiAction("publication/findByTag", this.props.match.params.value)
                 .then((publicationViews) => this.setState({publicationViews}))
                 .catch((error) => console.error("Error to fetch api publication/findByTag", error));
         });
@@ -69,7 +70,7 @@ export class TagSearchResult extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         let displayType = DisplayType.Grid;
         const { __ } = this.props;
-        const title = (this.props.match.params as any).value;
+        const title = this.props.match.params.value;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);

@@ -18,6 +18,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
+import { ILibrarySearchText } from "readium-desktop/renderer/routing";
 import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
@@ -30,7 +31,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps {
+interface IProps extends IBaseProps, RouteComponentProps<ILibrarySearchText> {
 }
 
 interface IState {
@@ -58,8 +59,8 @@ export class TextSearchResult extends React.Component<IProps, IState> {
     }
 
     public componentDidUpdate(prevProps: IProps) {
-        const text = (this.props.match.params as any).value;
-        const prevText = (prevProps.match.params as any).value;
+        const text = this.props.match.params.value;
+        const prevText = prevProps.match.params.value;
 
         if (text !== prevText) {
             // Refresh searched pubs
@@ -76,7 +77,7 @@ export class TextSearchResult extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         let displayType = DisplayType.Grid;
         const { __ } = this.props;
-        const title = (this.props.match.params as any).value;
+        const title = this.props.match.params.value;
 
         if (this.props.location) {
             const parsedResult = qs.parse(this.props.location.search);
@@ -105,7 +106,7 @@ export class TextSearchResult extends React.Component<IProps, IState> {
         );
     }
 
-    private searchPublications = (text: string = (this.props.match.params as any).value) => {
+    private searchPublications = (text: string = this.props.match.params.value) => {
         apiAction("publication/search", text)
             .then((publicationViews) => this.setState({publicationViews}))
             .catch((error) => console.error("Error to fetch api publication/search", error));
@@ -114,7 +115,7 @@ export class TextSearchResult extends React.Component<IProps, IState> {
 
 /*
 const buildSearchRequestData = (props: TextSearchResultProps): any => {
-    return [ (props.match.params as any).value ];
+    return [ props.match.params.value ];
 };
 */
 

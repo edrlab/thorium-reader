@@ -16,7 +16,7 @@ import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
-import { BaseRepository } from "readium-desktop/main/db/repository/base";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { appActions, streamerActions } from "readium-desktop/main/redux/actions";
@@ -67,11 +67,18 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     }
 
     const winRegistry = diMainGet("win-registry");
-    const appWindows = winRegistry.getWindows();
+
+    // WinDictionary = BrowserWindows indexed by number
+    // (the number is Electron.BrowserWindow.id)
+    const windowsDict = winRegistry.getWindows();
+
+    // generic / template type does not work because dictionary not indexed by string, but by number
+    // const windows = Object.values<AppWindow>(windowsDict);
+    const windows = Object.values(windowsDict) as AppWindow[];
 
     // If this is the only window, hide library window by default
-    if (Object.keys(appWindows).length === 1) {
-        const appWindow = Object.values(appWindows)[0];
+    if (windows.length === 1) {
+        const appWindow = windows[0];
         appWindow.win.hide();
     }
 
@@ -82,7 +89,7 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
         );
 
     // If there are 2 win, record window position in the db
-    if (Object.keys(appWindows).length === 2) {
+    if (windows.length === 2) {
         readerAppWindow.onWindowMoveResize.attach();
     }
 
@@ -237,9 +244,16 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
 
     if (gotoLibrary) {
         // Show library window
-        const appWindows = winRegistry.getWindows();
 
-        for (const appWin of Object.values(appWindows) as AppWindow[]) {
+        // WinDictionary = BrowserWindows indexed by number
+        // (the number is Electron.BrowserWindow.id)
+        const windowsDict = winRegistry.getWindows();
+
+        // generic / template type does not work because dictionary not indexed by string, but by number
+        // const windows = Object.values<AppWindow>(windowsDict);
+        const windows = Object.values(windowsDict) as AppWindow[];
+
+        for (const appWin of windows) {
             if (appWin.type !== AppWindowType.Library) {
                 continue;
             }
@@ -261,9 +275,6 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
 }
 
 const READER_CONFIG_ID = "reader";
-type ConfigDocumentType = ConfigDocument<ReaderConfig>;
-type ConfigRepositoryType = BaseRepository<ConfigDocumentType>;
-type ConfigDocumentTypeWithoutTimestampable = Omit<ConfigDocumentType, keyof Timestampable>;
 
 export function* readerConfigSetRequestWatcher(): SagaIterator {
     while (true) {
@@ -271,13 +282,13 @@ export function* readerConfigSetRequestWatcher(): SagaIterator {
         const action = yield* takeTyped(readerActions.configSetRequest.build);
 
         const configValue = action.payload.config;
-        const config: ConfigDocumentTypeWithoutTimestampable = {
+        const config: Omit<ConfigDocument<ReaderConfig>, keyof Timestampable> = {
             identifier: READER_CONFIG_ID,
             value: configValue,
         };
 
         // Get reader settings
-        const configRepository: ConfigRepositoryType = diMainGet("config-repository");
+        const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
 
         try {
             yield call(() => configRepository.save(config));
@@ -292,7 +303,7 @@ export function* readerConfigInitWatcher(): SagaIterator {
     // Wait for app initialization
     yield take(appActions.initSuccess.ID);
 
-    const configRepository: ConfigRepositoryType = diMainGet("config-repository");
+    const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
 
     try {
         const readerConfigDoc = yield* callTyped(() => configRepository.get(READER_CONFIG_ID));
@@ -361,9 +372,15 @@ export function* readerDetachRequestWatcher(): SagaIterator {
             const winRegistry = diMainGet("win-registry");
             const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
 
-            const appWindows = winRegistry.getWindows();
+            // WinDictionary = BrowserWindows indexed by number
+            // (the number is Electron.BrowserWindow.id)
+            const windowsDict = winRegistry.getWindows();
 
-            for (const appWin of Object.values(appWindows)) {
+            // generic / template type does not work because dictionary not indexed by string, but by number
+            // const windows = Object.values<AppWindow>(windowsDict);
+            const windows = Object.values(windowsDict) as AppWindow[];
+
+            for (const appWin of windows) {
                 if (appWin.type !== AppWindowType.Library) {
                     continue;
                 }

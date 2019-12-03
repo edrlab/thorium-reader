@@ -19,8 +19,8 @@ import {
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { RootState } from "readium-desktop/renderer/redux/states";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
 
@@ -133,7 +133,7 @@ export class LcpManager {
             debug("processStatusDocument LCP updated.");
         }
 
-        const newPublicationDocument: PublicationDocument = Object.assign(
+        const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
             {},
             publicationDocument,
             {
@@ -146,22 +146,26 @@ export class LcpManager {
     }
 
     public updateDocumentLcpLsdBase64Resources(
-        publicationDocument: PublicationDocument | PublicationDocumentWithoutTimestampable,
+        publicationDocument: PublicationDocumentWithoutTimestampable,
         r2Lcp: LCP,
     ) {
         if (!publicationDocument.resources) {
             publicationDocument.resources = {};
         }
         if (r2Lcp) {
-            publicationDocument.lcp = this.convertLcpLsdInfo(r2Lcp);
-
             const r2LCPStr = r2Lcp.JsonSource ?? JSON.stringify(TaJsonSerialize(r2Lcp));
             publicationDocument.resources.r2LCPBase64 = Buffer.from(r2LCPStr).toString("base64");
+
             if (r2Lcp.LSD) {
                 const r2LSDJson = TaJsonSerialize(r2Lcp.LSD);
                 const r2LSDStr = JSON.stringify(r2LSDJson);
                 publicationDocument.resources.r2LSDBase64 = Buffer.from(r2LSDStr).toString("base64");
             }
+
+            publicationDocument.lcp = this.convertLcpLsdInfo(
+                r2Lcp,
+                publicationDocument.resources.r2LCPBase64,
+                publicationDocument.resources.r2LSDBase64);
         }
     }
 
@@ -259,7 +263,7 @@ export class LcpManager {
             publicationDocument.identifier,
         );
 
-        const newPublicationDocument: PublicationDocument = Object.assign(
+        const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
             {},
             publicationDocument,
             {
@@ -275,6 +279,12 @@ export class LcpManager {
     public async renewPublicationLicense(
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
+
+        const locale = this.store.getState().i18n.locale;
+        const httpHeaders = {
+            "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
+            "User-Agent": "readium-desktop",
+        };
 
         const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
 
@@ -292,7 +302,7 @@ export class LcpManager {
             const endDate = endDateStr ? moment(endDateStr).toDate() : undefined;
             let renewResponseLsd: LSD;
             try {
-                renewResponseLsd = await lsdRenew_(endDate, r2Publication.LCP.LSD, this.deviceIdManager);
+                renewResponseLsd = await lsdRenew_(endDate, r2Publication.LCP.LSD, this.deviceIdManager, httpHeaders);
             } catch (err) {
                 debug(err);
                 const str = this.stringifyLsdError(err);
@@ -332,7 +342,7 @@ export class LcpManager {
                 const epubPath = this.publicationStorage.getPublicationEpubPath(
                     publicationDocument.identifier,
                 );
-                const newPublicationDocument = Object.assign(
+                const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
                     {},
                     publicationDocument,
                     {
@@ -352,6 +362,12 @@ export class LcpManager {
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
 
+        const locale = this.store.getState().i18n.locale;
+        const httpHeaders = {
+            "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
+            "User-Agent": "readium-desktop",
+        };
+
         const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
 
         let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
@@ -360,7 +376,7 @@ export class LcpManager {
         if (r2Publication.LCP && r2Publication.LCP.LSD) {
             let returnResponseLsd: LSD;
             try {
-                returnResponseLsd = await lsdReturn_(r2Publication.LCP.LSD, this.deviceIdManager);
+                returnResponseLsd = await lsdReturn_(r2Publication.LCP.LSD, this.deviceIdManager, httpHeaders);
             } catch (err) {
                 debug(err);
                 const str = this.stringifyLsdError(err);
@@ -400,7 +416,7 @@ export class LcpManager {
                 const epubPath = this.publicationStorage.getPublicationEpubPath(
                     publicationDocument.identifier,
                 );
-                const newPublicationDocument = Object.assign(
+                const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
                     {},
                     publicationDocument,
                     {
@@ -427,27 +443,33 @@ export class LcpManager {
                     break;
                 }
                 case 1: {
-                    message = "INCORRECT PASSPHRASE: " + val;
+                    // message = "INCORRECT PASSPHRASE: " + val;
+                    message = this.translator.translate("publication.userKeyCheckInvalid");
                     break;
                 }
                 case 11: {
-                    message = "LICENSE_OUT_OF_DATE: " + val;
+                    // message = "LICENSE_OUT_OF_DATE: " + val;
+                    message = this.translator.translate("publication.licenseOutOfDate");
                     break;
                 }
                 case 101: {
-                    message = "CERTIFICATE_REVOKED: " + val;
+                    // message = "CERTIFICATE_REVOKED: " + val;
+                    message = this.translator.translate("publication.certificateRevoked");
                     break;
                 }
                 case 102: {
-                    message = "CERTIFICATE_SIGNATURE_INVALID: " + val;
+                    // message = "CERTIFICATE_SIGNATURE_INVALID: " + val;
+                    message = this.translator.translate("publication.certificateSignatureInvalid");
                     break;
                 }
                 case 111: {
-                    message = "LICENSE_SIGNATURE_DATE_INVALID: " + val;
+                    // message = "LICENSE_SIGNATURE_DATE_INVALID: " + val;
+                    message = this.translator.translate("publication.licenseSignatureDateInvalid");
                     break;
                 }
                 case 112: {
-                    message = "LICENSE_SIGNATURE_INVALID: " + val;
+                    // message = "LICENSE_SIGNATURE_INVALID: " + val;
+                    message = this.translator.translate("publication.licenseSignatureInvalid");
                     break;
                 }
                 case 121: {
@@ -459,7 +481,8 @@ export class LcpManager {
                     break;
                 }
                 case 141: {
-                    message = "USER_KEY_CHECK_INVALID: " + val;
+                    // message = "USER_KEY_CHECK_INVALID: " + val;
+                    message = this.translator.translate("publication.userKeyCheckInvalid");
                     break;
                 }
                 case 151: {
@@ -563,7 +586,7 @@ export class LcpManager {
         return undefined;
     }
 
-    public convertLcpLsdInfo(lcp: LCP): LcpInfo {
+    public convertLcpLsdInfo(lcp: LCP, r2LCPBase64: string, r2LSDBase64: string): LcpInfo {
 
         const lcpInfo: LcpInfo = {
             provider: lcp.Provider,
@@ -575,6 +598,7 @@ export class LcpManager {
                 start: lcp.Rights.Start,
                 end: lcp.Rights.End,
             } : undefined,
+            r2LCPBase64,
         };
 
         if (lcp.Links) {
@@ -584,6 +608,7 @@ export class LcpManager {
             if (statusLink) {
                 lcpInfo.lsd = {
                     statusUrl: statusLink.Href,
+                    r2LSDBase64,
                 };
             }
         }
@@ -641,6 +666,12 @@ export class LcpManager {
         if (!r2Publication.LCP) {
             return Promise.reject("processStatusDocument NO LCP data!");
         }
+
+        const locale = this.store.getState().i18n.locale;
+        const httpHeaders = {
+            "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
+            "User-Agent": "readium-desktop",
+        };
 
         return new Promise(async (resolve, reject) => {
             const callback = async (licenseUpdateJson: string | undefined) => {
@@ -735,6 +766,7 @@ export class LcpManager {
                     r2Publication.LCP,
                     this.deviceIdManager,
                     callback,
+                    httpHeaders,
                 );
             } catch (err) {
                 debug(err);
