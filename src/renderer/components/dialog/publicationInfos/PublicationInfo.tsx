@@ -27,7 +27,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 import Dialog from "../Dialog";
 import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
-import LcpInfo from "./lcpInfo";
+import LcpInfo from "./LcpInfo";
 import OpdsControls from "./opdsControls";
 
 // tslint:disable-next-line: no-empty-interface
