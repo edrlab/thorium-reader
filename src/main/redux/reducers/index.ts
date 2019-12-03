@@ -8,7 +8,6 @@
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { updateReducer } from "readium-desktop/common/redux/reducers/update";
-import { opdsReducer } from "readium-desktop/main/redux/reducers/opds";
 import { readerReducer } from "readium-desktop/main/redux/reducers/reader";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -20,6 +19,5 @@ export const rootReducer = combineReducers<RootState>({
     reader: readerReducer,
     net: netReducer,
     update: updateReducer,
-    catalog: opdsReducer,
     app: undefined, // AppState
 });

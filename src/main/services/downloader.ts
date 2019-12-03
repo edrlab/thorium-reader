@@ -7,11 +7,14 @@
 
 import * as debug_ from "debug";
 import * as fs from "fs";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import * as path from "path";
 import { Download } from "readium-desktop/common/models/download";
 import { DownloadStatus } from "readium-desktop/common/models/downloadable";
+import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import * as request from "request";
 import { tmpNameSync } from "tmp";
 import { URL } from "url";
@@ -33,6 +36,9 @@ export interface DownloadProgressListener {
 
 @injectable()
 export class Downloader {
+    @inject(diSymbolTable["config-repository"])
+    private readonly configRepository!: ConfigRepository<AccessTokenMap>;
+
     // must use diMainGet("store"), because undefined?!
     // @inject(diSymbolTable.store)
     // private readonly store!: Store<RootState>;
@@ -90,6 +96,9 @@ export class Downloader {
         // Last time we poll the request progress
         let progressLastTime = new Date();
 
+        // Why is this undefined?? Injection async problem?
+        // @inject(diSymbolTable.store)
+        // private readonly store!: Store<RootState>;
         const store = diMainGet("store");
 
         const locale = store.getState().i18n.locale;
@@ -104,9 +113,15 @@ export class Downloader {
             });
         }
 
-        const accessTokens = store.getState().catalog?.accessTokens;
+        let savedAccessTokens: AccessTokenMap = {};
+        try {
+            const configDoc = await this.configRepository.get("oauth");
+            savedAccessTokens = configDoc.value;
+        } catch (err) {
+            debug(err);
+        }
         const domain = download.srcUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
-        const accessToken = accessTokens ? accessTokens[domain] : undefined;
+        const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
 
         const headers = Object.assign(headerFromOptions, {
             "user-agent": "readium-desktop",

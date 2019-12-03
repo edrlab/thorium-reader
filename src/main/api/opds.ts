@@ -13,10 +13,10 @@ import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { httpGet } from "readium-desktop/common/utils/http";
 import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
-import { opdsActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { Store } from "redux";
 import * as request from "request";
@@ -30,7 +30,7 @@ import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authenticati
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
-import { ConfigRepository } from "../db/repository/config";
+// import { opdsActions } from "readium-desktop/main/redux/actions";
 
 // Logger
 const debug = debug_("readium-desktop:src/main/api/opds");
@@ -136,28 +136,16 @@ export class OpdsApi implements IOpdsApi {
             url = url.replace("opds://", "http://");
         }
 
-        const accessTokens = this.store.getState().catalog?.accessTokens;
-        const domain = url.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
-        let accessToken = accessTokens ? accessTokens[domain] : undefined;
-
-        // FIXME: dirty hack, should be Redux Saga effect!!
-        if (!accessToken) {
-            try {
-                const savedAccessTokens = await this.configRepository.get("oauth");
-                const test = savedAccessTokens.value[domain];
-                if (test) {
-                    accessToken = test;
-                    this.store.dispatch(opdsActions.accessToken.build(
-                        domain,
-                        test.authenticationToken,
-                        test.refreshToken,
-                        test.authenticationUrl,
-                        test.refreshUrl));
-                }
-            } catch (err) {
-                debug(err);
-            }
+        let savedAccessTokens: AccessTokenMap = {};
+        try {
+            const configDoc = await this.configRepository.get("oauth");
+            savedAccessTokens = configDoc.value;
+        } catch (err) {
+            debug(err);
         }
+
+        const domain = url.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
+        const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
 
         return await httpGet(url, {
             timeout: 10000,
@@ -214,13 +202,14 @@ export class OpdsApi implements IOpdsApi {
                     jsonObj.authentication &&
                     opdsFeedData.isFailure && opdsFeedData.statusCode === 401 &&
 
-                    accessToken && accessToken.refreshToken &&
+                    accessToken && accessToken.refreshToken && accessToken.refreshUrl &&
                     !tryingAgain;
                     // no need to decrypt pass!
                     // && this._OPDS_AUTH_ENCRYPTION_KEY_HEX &&
                     // this._OPDS_AUTH_ENCRYPTION_KEY_HEX ? true : false;
 
                 if (tryRefreshAccessToken) {
+                    let doRetry = false;
                     try {
                         await this.oauth(
                             url,
@@ -232,21 +221,24 @@ export class OpdsApi implements IOpdsApi {
                             undefined, // this._OPDS_AUTH_ENCRYPTION_IV_HEX, // can be undefined first-time around
                             accessToken.refreshToken);
 
-                        return new Promise<THttpGetOpdsResultView>((resolve, reject) => {
-                            setTimeout(async () => {
-                                try {
-                                    const res = await this.browse(url, true); // tryingAgain
-                                    resolve(res);
-                                } catch (err) {
-                                    reject(err);
-                                }
-                            }, 200); // FIXME: dirty hack, should be Redux Saga effect!!
-                        });
+                        doRetry = true;
                     } catch (err) {
                         debug(err);
                         // access token refresh failed
                         // =>
                         // continue with auth form
+                    }
+
+                    if (doRetry) {
+                        return this.browse(url, true); // tryingAgain
+                        // uncomment the following to debug-breakpoint more specifically in the promise "cascade"
+                        // try {
+                        //     const res = await this.browse(url, true); // tryingAgain
+                        //     return res;
+                        // } catch (err) {
+                        //     debug(err);
+                        //     throw err; // reject
+                        // }
                     }
                 }
                 if (jsonObj.authentication) { // usually with opdsFeedData.isFailure
@@ -350,31 +342,33 @@ export class OpdsApi implements IOpdsApi {
                         return;
                     }
                     const domain = opdsUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
-                    this.store.dispatch(opdsActions.accessToken.build(
-                        domain,
-                        responseJson.access_token,
-                        responseJson.refresh_token,
-                        oAuthUrl,
-                        oAuthRefreshUrl));
+                    const domainAccessToken: AccessTokenMap = {};
+                    domainAccessToken[domain] = {
+                        authenticationUrl: oAuthUrl,
+                        authenticationToken: responseJson.access_token,
+                        refreshUrl: oAuthRefreshUrl,
+                        refreshToken: responseJson.refresh_token,
+                    }; // as AccessTokenValue;
 
-                    // FIXME: dirty hack, should be Redux Saga effect!!
-                    await new Promise<void>((res, _rej) => {
-                        setTimeout(async () => {
-                            res();
-                        }, 100);
-                    });
-
-                    // FIXME: dirty hack, should be Redux Saga effect!!
-                    const accessTokens = this.store.getState().catalog?.accessTokens;
-                    if (accessTokens) {
-                        try {
-                            await this.configRepository.save({
-                                identifier: "oauth",
-                                value: accessTokens,
-                            });
-                        } catch (err) {
-                            debug(err);
-                        }
+                    let savedAccessTokens: AccessTokenMap = {};
+                    try {
+                        const configDoc = await this.configRepository.get("oauth");
+                        savedAccessTokens = configDoc.value;
+                    } catch (err) {
+                        debug(err);
+                    }
+                    const accessTokens: AccessTokenMap = Object.assign(
+                        {},
+                        savedAccessTokens,
+                        domainAccessToken,
+                    );
+                    try {
+                        await this.configRepository.save({
+                            identifier: "oauth",
+                            value: accessTokens,
+                        });
+                    } catch (err) {
+                        debug(err);
                     }
 
                     resolve(true);

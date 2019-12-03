@@ -18,6 +18,7 @@ import { AppWindow } from "readium-desktop/common/models/win";
 import {
     downloadActions, readerActions, toastActions,
 } from "readium-desktop/common/redux/actions/";
+import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { Translator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString } from "readium-desktop/common/utils";
 import { httpGet } from "readium-desktop/common/utils/http";
@@ -25,6 +26,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable, THttpGetPublicationDocument,
 } from "readium-desktop/main/db/document/publication";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
@@ -53,6 +55,9 @@ const debug = debug_("readium-desktop:main#services/catalog");
 
 @injectable()
 export class CatalogService {
+    @inject(diSymbolTable["config-repository"])
+    private readonly configRepository!: ConfigRepository<AccessTokenMap>;
+
     @inject(diSymbolTable.downloader)
     private readonly downloader!: Downloader;
 
@@ -113,9 +118,15 @@ export class CatalogService {
 
         debug("Import OPDS publication", entryUrl);
 
-        const accessTokens = this.store.getState().catalog?.accessTokens;
+        let savedAccessTokens: AccessTokenMap = {};
+        try {
+            const configDoc = await this.configRepository.get("oauth");
+            savedAccessTokens = configDoc.value;
+        } catch (err) {
+            debug(err);
+        }
         const domain = entryUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
-        const accessToken = accessTokens ? accessTokens[domain] : undefined;
+        const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
 
         return await httpGet(entryUrl, {
             timeout: 10000,

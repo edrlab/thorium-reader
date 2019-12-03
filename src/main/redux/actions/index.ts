@@ -8,7 +8,6 @@
 import { lcpActions, netActions } from "readium-desktop/common/redux/actions";
 
 import * as appActions from "./app/";
-import * as opdsActions from "./opds/";
 import * as streamerActions from "./streamer/";
 
 export {
@@ -16,5 +15,4 @@ export {
     lcpActions,
     netActions,
     streamerActions,
-    opdsActions,
 };
