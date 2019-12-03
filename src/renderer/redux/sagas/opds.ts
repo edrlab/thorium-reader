@@ -49,7 +49,8 @@ function* browseWatcher(): SagaIterator {
 function* browseRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield* takeTyped(opdsActions.browseRequest.build);
-        debug("opds browse catched");
+
+        debug("opds browse catched, url requested :", action.payload.url);
         yield put(
             apiActions.request.build(
                 BROWSE_OPDS_API_REQUEST_ID,

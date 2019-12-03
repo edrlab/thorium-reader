@@ -19,8 +19,7 @@ import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 import { Entry } from "r2-opds-js/dist/es6-es2015/src/opds/opds1/opds-entry";
 
-// FIXME : How used URITemplate
-// import * as URITemplate from "urijs/src/URITemplate";
+import * as URITemplate from "urijs/src/URITemplate";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -154,10 +153,12 @@ export class OpdsService {
 
                 // https://catalog.feedbooks.com/search.json{?query}
             } else if (opdsLink && opdsLink.url) {
-                const url = new URL(opdsLink.url);
-                if (url.pathname.endsWith("%7B") && url.search.includes("query")) {
-                    return (opdsLink.url.split("{")[0].concat("?query={searchTerms}"));
-                }
+
+               const uriTemplate = new URITemplate(opdsLink.url);
+               const uriExpanded = uriTemplate.expand({ query: "\{searchTerms\}"});
+               const url = uriExpanded.toString().replace("%7B", "{").replace("%7D", "}");
+
+               return url;
             }
         } catch {
             // ignore
