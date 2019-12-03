@@ -30,8 +30,6 @@ import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authenticati
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
-// import { opdsActions } from "readium-desktop/main/redux/actions";
-
 // Logger
 const debug = debug_("readium-desktop:src/main/api/opds");
 
