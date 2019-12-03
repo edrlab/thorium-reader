@@ -7,14 +7,14 @@
 
 import * as debug_ from "debug";
 import * as fs from "fs";
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import * as path from "path";
 import { Download } from "readium-desktop/common/models/download";
 import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { diMainGet } from "readium-desktop/main/di";
-import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+import { RootState } from "readium-desktop/main/redux/states";
+import { Store } from "redux";
 import * as request from "request";
 import { tmpNameSync } from "tmp";
 import { URL } from "url";
@@ -36,12 +36,14 @@ export interface DownloadProgressListener {
 
 @injectable()
 export class Downloader {
-    @inject(diSymbolTable["config-repository"])
+
+    // CONSTRUCTOR INJECTION!
+    // inject(diSymbolTable["config-repository"])
     private readonly configRepository!: ConfigRepository<AccessTokenMap>;
 
-    // must use diMainGet("store"), because undefined?!
-    // @inject(diSymbolTable.store)
-    // private readonly store!: Store<RootState>;
+    // CONSTRUCTOR INJECTION!
+    // inject(diSymbolTable.store)
+    private readonly store!: Store<RootState>;
 
     // Path where files are downloaded
     private dstRepositoryPath: string;
@@ -49,8 +51,15 @@ export class Downloader {
     // List of downloads
     private downloads: DownloadRegistry;
 
-    public constructor(dstRepositoryPath: string) {
+    public constructor(
+        dstRepositoryPath: string,
+        configRepository: ConfigRepository<AccessTokenMap>, // INJECTED!
+        store: Store<RootState>, // INJECTED!
+        ) {
         this.dstRepositoryPath = dstRepositoryPath;
+        this.configRepository = configRepository;
+        this.store = store;
+
         this.downloads = {};
     }
 
@@ -96,12 +105,7 @@ export class Downloader {
         // Last time we poll the request progress
         let progressLastTime = new Date();
 
-        // Why is this undefined?? Injection async problem?
-        // @inject(diSymbolTable.store)
-        // private readonly store!: Store<RootState>;
-        const store = diMainGet("store");
-
-        const locale = store.getState().i18n.locale;
+        const locale = this.store.getState().i18n.locale;
 
         options = options || {} as TRequestCoreOptionsOptionalUriUrl;
         options.headers = options.headers || {};
@@ -115,6 +119,7 @@ export class Downloader {
 
         let savedAccessTokens: AccessTokenMap = {};
         try {
+            // Why is this undefined?? Injection async problem?
             const configDoc = await this.configRepository.get("oauth");
             savedAccessTokens = configDoc.value;
         } catch (err) {

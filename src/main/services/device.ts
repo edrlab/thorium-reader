@@ -24,14 +24,16 @@ interface StringMap {
 
 @injectable()
 export class DeviceIdManager implements IDeviceIDManager {
-    // Config repository
+
+    // CONSTRUCTOR INJECTION!
+    // inject(diSymbolTable["config-repository"])
     private readonly configRepository: ConfigRepository<StringMap>;
 
     private readonly deviceName: string;
 
     public constructor(
         deviceName: string,
-        configRepository: ConfigRepository<StringMap>,
+        configRepository: ConfigRepository<StringMap>, // INJECTED!
     ) {
         this.deviceName = deviceName;
         this.configRepository = configRepository;

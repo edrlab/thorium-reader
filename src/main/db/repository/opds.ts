@@ -13,7 +13,7 @@ import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
 @injectable()
 export class OpdsFeedRepository extends BaseRepository<OpdsFeedDocument> {
-    public constructor(db: PouchDB.Database<OpdsFeedDocument>) {
+    public constructor(db: PouchDB.Database<OpdsFeedDocument>) {// INJECTED!
         super(db, "opds-feed");
     }
 
