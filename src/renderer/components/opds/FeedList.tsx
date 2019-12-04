@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { OpdsFeedView } from "readium-desktop/common/views/opds";
 import { TOpdsApiFindAllFeed_result } from "readium-desktop/main/api/opds";
@@ -22,6 +22,8 @@ import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
+import { DisplayType, RouterLocationState } from "../utils/displayType";
+
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
@@ -30,7 +32,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends IBaseProps, RouteComponentProps, ReturnType<typeof mapDispatchToProps> {
 }
 
 interface IState {
@@ -65,6 +67,17 @@ class FeedList extends React.Component<IProps, IState> {
         if (!this.state.feedsResult) {
             return <></>;
         }
+
+        let displayType = DisplayType.Grid;
+        if (this.props.location?.state?.displayType) {
+            displayType = this.props.location.state.displayType as DisplayType;
+        //     console.log("this.props.location -- OPDS FeedList");
+        //     console.log(this.props.location);
+        //     console.log(this.props.location.state);
+        // } else {
+        //     console.log("XXX this.props.location -- OPDS FeedList");
+        }
+
         return (
             <section className={styles.opds_list}>
                 <ul>
@@ -78,6 +91,11 @@ class FeedList extends React.Component<IProps, IState> {
                                             item.title,
                                             item.url,
                                         ),
+                                        search: "",
+                                        hash: "",
+                                        state: {
+                                            displayType,
+                                        } as RouterLocationState,
                                     }}
                                 >
                                     <p>{item.title}</p>
@@ -127,4 +145,4 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(FeedList);
+export default connect(undefined, mapDispatchToProps)(withRouter(FeedList));

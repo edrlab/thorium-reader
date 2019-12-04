@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+
+import { DisplayType, RouterLocationState } from "../utils/displayType";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -17,7 +19,7 @@ interface IBaseProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, RouteComponentProps {
 }
 
 class GridTagButton extends React.Component<IProps, undefined> {
@@ -27,9 +29,27 @@ class GridTagButton extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
+
+        let displayType = DisplayType.Grid;
+        if (this.props.location?.state?.displayType) {
+            displayType = this.props.location.state.displayType as DisplayType;
+        //     console.log("this.props.location -- GridTagButton");
+        //     console.log(this.props.location);
+        //     console.log(this.props.location.state);
+        // } else {
+        //     console.log("XXX this.props.location -- GridTagButton");
+        }
+
         return (
             <Link
-            to={{pathname: `/library/search/tag/${this.props.name}`}}>
+            to={{
+                pathname: `/library/search/tag/${this.props.name}`,
+                search: "",
+                hash: "",
+                state: {
+                    displayType,
+                } as RouterLocationState,
+                }}>
                 {this.props.name}
                 {/*<div id={style.count}>
                     {this.props.tag.length}
@@ -39,4 +59,4 @@ class GridTagButton extends React.Component<IProps, undefined> {
     }
 }
 
-export default GridTagButton;
+export default withRouter(GridTagButton);

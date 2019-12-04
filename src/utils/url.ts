@@ -16,7 +16,7 @@ export function parseQueryString(queryString: string) {
     if (!queryString) {
         return {};
     }
-    const result: any = {};
+    const result: {[key: string]: string} = {};
     const cleanQueryString = queryString.replace("?", "");
     const splited = cleanQueryString.split("&");
 

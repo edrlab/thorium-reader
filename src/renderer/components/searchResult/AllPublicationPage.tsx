@@ -6,12 +6,13 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { TPublicationApiFindAll_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import { DisplayType } from "readium-desktop/renderer/components/utils/displayType";
 import { GridView } from "readium-desktop/renderer/components/utils/GridView";
 import {
     TranslatorProps, withTranslator,
@@ -19,7 +20,7 @@ import {
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
 import { Unsubscribe } from "redux";
 
-import Header, { DisplayType } from "../catalog/Header";
+import Header from "../catalog/Header";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -66,31 +67,26 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const displayType = this.props.location.state;
-        let type: any = "";
-        let typeview: DisplayType = DisplayType.Grid;
+
         const { __ } = this.props;
         const title = __("catalog.allBooks");
 
-        if (displayType) {
-            type = Object.values(displayType).pop();
+        let displayType = DisplayType.Grid;
+        if (this.props.location?.state?.displayType) {
+            displayType = this.props.location.state.displayType as DisplayType;
+        //     console.log("this.props.location -- Search AllPublicationPage");
+        //     console.log(this.props.location);
+        //     console.log(this.props.location.state);
+        // } else {
+        //     console.log("XXX this.props.location -- Search AllPublicationPage");
         }
 
-        // console.log(`type: ${type}`);
-        if (type === DisplayType.List ||
-            window.location.hash === "#/library/search/all?displayType=list") {
-            typeview = DisplayType.List;
-        } else {
-            typeview = DisplayType.Grid;
-        }
-
-        const secondaryHeader = <Header displayType={typeview} />;
+        const secondaryHeader = <Header/>;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <div>
                     <BreadCrumb
-                        search={this.props.location.search}
                         breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}
                     />
                     {this.state.publicationViews ?
@@ -104,4 +100,4 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(AllPublicationPage);
+export default withTranslator(withRouter(AllPublicationPage));

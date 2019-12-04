@@ -48,16 +48,13 @@ class Browser extends React.Component<IProps, undefined> {
             url = this.props.navigation[this.props.navigation.length - 1].url;
         }
 
-        const parsedResult = parseQueryString(this.props.location.search);
-
-        const secondaryHeader = <Header displayType={parsedResult.displayType}/>;
+        const secondaryHeader = <Header/>;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} mainClassName={styles.opdsBrowse}>
                 <BreadCrumb
                     className={styles.opdsBrowseBreadcrumb}
                     breadcrumb={breadcrumb}
-                    search={this.props.location.search}
                 />
                 {url &&
                     <BrowserResult url={url} breadcrumb={breadcrumb}/>

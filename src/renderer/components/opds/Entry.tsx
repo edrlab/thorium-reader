@@ -13,6 +13,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { IOpdsBrowse } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
+import { DisplayType, RouterLocationState } from '../utils/displayType';
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -46,12 +47,29 @@ class Entry extends React.Component<IProps, undefined> {
             level,
         );
 
+        let displayType = DisplayType.Grid;
+        if (this.props.location?.state?.displayType) {
+            displayType = this.props.location.state.displayType as DisplayType;
+        //     console.log("this.props.location -- OPDS Entry");
+        //     console.log(this.props.location);
+        //     console.log(this.props.location.state);
+        // } else {
+        //     console.log("XXX this.props.location -- OPDS Entry");
+        }
+
         return (
             <>
                 <div>
                     <Link
+                        to={{
+                            pathname: route,
+                            search: "",
+                            hash: "",
+                            state: {
+                                displayType,
+                            } as RouterLocationState,
+                        }}
                         className={styles.flux_infos}
-                        to={route}
                     >
                         <span className={styles.flux_title}>{entry.title}</span>
                         {

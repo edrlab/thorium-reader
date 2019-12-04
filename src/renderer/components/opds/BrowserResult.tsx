@@ -24,6 +24,7 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { parseQueryString } from "readium-desktop/utils/url";
 
+import { DisplayType, RouterLocationState } from "../utils/displayType";
 import OPDSAuth from "./Auth";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
@@ -85,6 +86,16 @@ export class BrowserResult extends React.Component<IProps, IState> {
         let content = (<Loader />);
         let shelfContent: React.ReactElement<{}> | undefined;
 
+        let displayType = DisplayType.Grid;
+        if (this.props.location?.state?.displayType) {
+            displayType = this.props.location.state.displayType as DisplayType;
+        //     console.log("this.props.location -- OPDS BrowserResult");
+        //     console.log(this.props.location);
+        //     console.log(this.props.location.state);
+        // } else {
+        //     console.log("XXX this.props.location -- OPDS BrowserResult");
+        }
+
         if (!navigator.onLine) {
             content = (
                 <MessageOpdBrowserResult
@@ -118,8 +129,15 @@ export class BrowserResult extends React.Component<IProps, IState> {
                     shelfContent = (
                         <h3>
                             <Link
+                                to={{
+                                    pathname: route,
+                                    search: "",
+                                    hash: "",
+                                    state: {
+                                        displayType,
+                                    } as RouterLocationState,
+                                }}
                                 className={styles.flux_infos}
-                                to={route}
                             >
                                 <span className={styles.flux_title}>{__("opds.shelf")}</span>
                             </Link>

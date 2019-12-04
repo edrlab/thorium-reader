@@ -15,8 +15,10 @@ import {
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TFormEvent } from "readium-desktop/typings/react";
 
+import { IRedirectProps, withRedirect } from "../utils/hoc/redirect";
+
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps extends TranslatorProps {
+interface IBaseProps extends TranslatorProps, IRedirectProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -36,6 +38,7 @@ class Search extends React.Component<IProps, undefined> {
         this.inputRef = React.createRef<HTMLInputElement>();
         this.search = this.search.bind(this);
     }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
@@ -56,13 +59,23 @@ class Search extends React.Component<IProps, undefined> {
 
     public search(e: TFormEvent) {
         e.preventDefault();
+
         const value = this.inputRef?.current?.value;
         if (!value) {
-            this.props.history.push("/library/search/all");
+            this.props.redirect({
+                pathname: "/library/search/all",
+                search: undefined,
+            });
+            // this.props.history.push("/library/search/all"); // does not forward state!
         } else {
-            this.props.history.push("/library/search/text/" + value + this.props.location.search);
+            const target = "/library/search/text/" + value; // + this.props.location.search;
+            this.props.redirect({
+                pathname: target,
+                search: undefined,
+            });
+            // this.props.history.push(target); // does not forward state!
         }
     }
 }
 
-export default withTranslator(withRouter(Search));
+export default withTranslator(withRedirect(withRouter(Search)));

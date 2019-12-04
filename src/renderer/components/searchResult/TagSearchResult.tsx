@@ -5,14 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as qs from "query-string";
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { TPublicationApiFindByTag_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import { DisplayType } from "readium-desktop/renderer/components/utils/displayType";
 import { GridView } from "readium-desktop/renderer/components/utils/GridView";
 import {
     TranslatorProps, withTranslator,
@@ -21,7 +21,7 @@ import { ListView } from "readium-desktop/renderer/components/utils/ListView";
 import { ILibrarySearchTag } from "readium-desktop/renderer/routing";
 import { Unsubscribe } from "redux";
 
-import Header, { DisplayType } from "../catalog/Header";
+import Header from "../catalog/Header";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -68,25 +68,26 @@ export class TagSearchResult extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        let displayType = DisplayType.Grid;
+
         const { __ } = this.props;
         const title = this.props.match.params.value;
 
-        if (this.props.location) {
-            const parsedResult = qs.parse(this.props.location.search);
-
-            if (parsedResult.displayType === DisplayType.List) {
-                displayType = DisplayType.List;
-            }
+        let displayType = DisplayType.Grid;
+        if (this.props.location?.state?.displayType) {
+            displayType = this.props.location.state.displayType as DisplayType;
+        //     console.log("this.props.location -- Search TagSearchResult");
+        //     console.log(this.props.location);
+        //     console.log(this.props.location.state);
+        // } else {
+        //     console.log("XXX this.props.location -- Search TagSearchResult");
         }
 
-        const secondaryHeader = <Header displayType={ displayType } />;
+        const secondaryHeader = <Header/>;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <div>
                     <BreadCrumb
-                        search={this.props.location.search}
                         breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title}]}
                     />
                     { this.state.publicationViews ?
@@ -100,4 +101,4 @@ export class TagSearchResult extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(TagSearchResult);
+export default withTranslator(withRouter(TagSearchResult));

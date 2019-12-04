@@ -7,14 +7,15 @@
 
 import * as classNames from "classnames";
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/breadcrumb.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { parseQueryString } from "readium-desktop/utils/url";
+
+import { DisplayType, RouterLocationState } from "../utils/displayType";
 
 export interface BreadCrumbItem {
     name: string;
@@ -25,7 +26,6 @@ export interface BreadCrumbItem {
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     breadcrumb: BreadCrumbItem[];
-    search: string;
     className?: string;
 }
 // IProps may typically extend:
@@ -33,7 +33,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, RouteComponentProps {
 }
 
 class BreadCrumb extends React.Component<IProps, undefined> {
@@ -44,14 +44,28 @@ class BreadCrumb extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { breadcrumb, __ } = this.props;
-        const search = parseQueryString(this.props.search);
+
+        let displayType = DisplayType.Grid;
+        if (this.props.location?.state?.displayType) {
+            displayType = this.props.location.state.displayType as DisplayType;
+        //     console.log("this.props.location -- Breadcrumb");
+        //     console.log(this.props.location);
+        //     console.log(this.props.location.state);
+        // } else {
+        //     console.log("XXX this.props.location -- Breadcrumb");
+        }
+
         return (
             <div className={classNames(styles.breadcrumb, this.props.className)}>
                 {breadcrumb.length >= 2 &&
                     <Link
                         to={{
                             pathname: breadcrumb[breadcrumb.length - 2].path,
-                            search: `?displayType=${search.displayType}`,
+                            search: "",
+                            hash: "",
+                            state: {
+                                displayType,
+                            } as RouterLocationState,
                         }}
                         title={__("opds.back")}
                     >
@@ -65,8 +79,11 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                             key={index}
                             to={{
                                 pathname: item.path,
-                                search: `?displayType=${search.displayType}`,
-                                // state: item.state,
+                                search: "",
+                                hash: "",
+                                state: {
+                                    displayType,
+                                } as RouterLocationState,
                             }}
                             title={name}
                         >
@@ -83,4 +100,4 @@ class BreadCrumb extends React.Component<IProps, undefined> {
     }
 }
 
-export default withTranslator(BreadCrumb);
+export default withTranslator(withRouter(BreadCrumb));

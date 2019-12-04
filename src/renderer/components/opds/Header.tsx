@@ -11,21 +11,17 @@ import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
 import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
 import {
+    DisplayType, RouterLocationState,
+} from "readium-desktop/renderer/components/utils/displayType";
+import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { parseQueryString } from "readium-desktop/utils/url";
 
 import SearchForm from "./SearchForm";
 
-export enum DisplayType {
-    Grid = "grid",
-    List = "list",
-}
-
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    displayType: DisplayType;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -43,9 +39,16 @@ class Header extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
-        const search = parseQueryString(this.props.location.search.replace("?", ""));
-        const displayType = search.displayType || DisplayType.Grid;
-        delete(search.displayType);
+
+        let displayType = DisplayType.Grid;
+        if (this.props.location?.state?.displayType) {
+            displayType = this.props.location.state.displayType as DisplayType;
+        //     console.log("this.props.location -- OPDS Header");
+        //     console.log(this.props.location);
+        //     console.log(this.props.location.state);
+        // } else {
+        //     console.log("XXX this.props.location -- OPDS Header");
+        }
 
         /**
          * Why css style is apply in code and not imported from css ressource ?
@@ -56,13 +59,29 @@ class Header extends React.Component<IProps, undefined> {
                 { displayType &&
                     <>
                         <Link
-                            to={{search: "displayType=grid"}}
+                            to={{
+                                pathname: this.props.location.pathname,
+                                search: this.props.location.search,
+                                hash: this.props.location.hash,
+                                state: {
+                                    displayType: DisplayType.Grid,
+                                } as RouterLocationState,
+                            }}
+                            replace={true}
                             style={(displayType !== DisplayType.Grid) ? {fill: "#767676"} : {}}
                         >
                             <SVG svg={GridIcon} title={__("header.gridTitle")}/>
                         </Link>
                         <Link
-                            to={{search: "displayType=list"}}
+                            to={{
+                                pathname: this.props.location.pathname,
+                                search: this.props.location.search,
+                                hash: this.props.location.hash,
+                                state: {
+                                    displayType: DisplayType.List,
+                                } as RouterLocationState,
+                            }}
+                            replace={true}
                             style={ displayType !== DisplayType.List ?
                                 {fill: "#757575", marginLeft: "16px"} : {marginLeft: "16px"}}
                         >

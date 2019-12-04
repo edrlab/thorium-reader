@@ -5,18 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as qs from "query-string";
 import * as React from "react";
-import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
     OpdsPublicationView, OpdsResultPageInfos, OpdsResultUrls,
 } from "readium-desktop/common/views/opds";
-import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
+import { DisplayType } from "readium-desktop/renderer/components/utils/displayType";
 import { GridView } from "readium-desktop/renderer/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
-import { RootState } from "readium-desktop/renderer/redux/states";
 
 import PageNavigation from "./PageNavigation";
 
@@ -46,13 +43,13 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
         const { urls, page } = this.props;
 
         let displayType = DisplayType.Grid;
-
-        if (this.props.location) {
-            const parsedResult = qs.parse(this.props.location.search);
-
-            if (parsedResult.displayType === DisplayType.List) {
-                displayType = DisplayType.List;
-            }
+        if (this.props.location?.state?.displayType) {
+            displayType = this.props.location.state.displayType as DisplayType;
+        //     console.log("this.props.location -- EntryPublicationList");
+        //     console.log(this.props.location);
+        //     console.log(this.props.location.state);
+        // } else {
+        //     console.log("XXX this.props.location -- EntryPublicationList");
         }
 
         // force cast on PublicationView[]
@@ -79,9 +76,4 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (_state: RootState, _props: IBaseProps) => ({
-    // this prop is already injected by RouteComponentProps
-    // location: state.router.location,
-});
-
-export default connect(mapStateToProps)(withRouter(EntryPublicationList));
+export default withRouter(EntryPublicationList);

@@ -15,8 +15,10 @@ import {
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { TFormEvent } from "readium-desktop/typings/react";
 
+import { IRedirectProps, withRedirect } from "../utils/hoc/redirect";
+
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps extends TranslatorProps {
+interface IBaseProps extends TranslatorProps, IRedirectProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -27,6 +29,7 @@ interface IProps extends IBaseProps, RouteComponentProps {
 }
 
 class SearchForm extends React.Component<IProps, undefined> {
+
     private inputRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: IProps) {
@@ -56,13 +59,20 @@ class SearchForm extends React.Component<IProps, undefined> {
 
     public search(e: TFormEvent) {
         e.preventDefault();
+
         if (!this.inputRef?.current) {
             return;
         }
         const value = this.inputRef.current.value;
 
-        this.props.history.push(`${this.props.location.pathname}?search=${value}`);
+        const query = `?search=${value}`;
+        this.props.redirect({
+            pathname: this.props.location.pathname,
+            search: query,
+        });
+        // const target = `${this.props.location.pathname}${query}`;
+        // this.props.history.push(target); // does not forward state!
     }
 }
 
-export default withTranslator(withRouter(SearchForm));
+export default withTranslator(withRedirect(withRouter(SearchForm)));
