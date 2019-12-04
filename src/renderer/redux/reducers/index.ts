@@ -15,16 +15,23 @@ import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 import { apiReducer } from "readium-desktop/renderer/redux/reducers/api";
 import { downloadReducer } from "readium-desktop/renderer/redux/reducers/download";
-import { opdsReducer } from "readium-desktop/renderer/redux/reducers/opds";
+import {
+    opdsBreadcrumbReducer, opdsHeaderLinkReducer, opdsSearchLinkReducer,
+} from "readium-desktop/renderer/redux/reducers/opds";
 import { readerReducer } from "readium-desktop/renderer/redux/reducers/reader";
 import { winReducer } from "readium-desktop/renderer/redux/reducers/win";
-import { RootState } from "readium-desktop/renderer/redux/states";
 import { combineReducers } from "redux";
 
-export const rootReducer = (history: History) => combineReducers<RootState>({
+export const rootReducer = (history: History) => combineReducers({
     i18n: i18nReducer,
     reader: readerReducer,
-    opds: opdsReducer,
+    opds: combineReducers({
+        browser: combineReducers({
+            breadcrumb: opdsBreadcrumbReducer,
+            header: opdsHeaderLinkReducer,
+            search: opdsSearchLinkReducer,
+        }),
+    }),
     win: winReducer,
     net: netReducer,
     update: updateReducer,
@@ -35,3 +42,5 @@ export const rootReducer = (history: History) => combineReducers<RootState>({
     toast: toastReducer,
     download: downloadReducer,
 });
+
+export type TRootState = ReturnType<ReturnType<typeof rootReducer>>;

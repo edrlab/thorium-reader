@@ -9,16 +9,15 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import { TPublication } from "readium-desktop/renderer/type/publication.type";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    publicationViewMaybeOpds: PublicationView | OpdsPublicationView;
-    coverTypeUrl?: keyof CoverView | undefined;
+    publicationViewMaybeOpds: TPublication;
+    coverType?: "cover" | "thumbnail" | undefined;
     onClick?: () => void;
     onKeyPress?: (e: React.KeyboardEvent<HTMLImageElement>) => void;
 }
@@ -37,7 +36,7 @@ class Cover extends React.Component<IProps, undefined> {
         super(props);
     }
 
-    public render(): React.ReactElement<{}>  {
+    public render()  {
 
         if (!this.props.publicationViewMaybeOpds.cover) {
             let authors = "";
@@ -49,7 +48,7 @@ class Cover extends React.Component<IProps, undefined> {
                 }
                 authors += this.props.translator.translateContentField(newAuthor);
             }
-            let colors = (this.props.publicationViewMaybeOpds as PublicationView).customCover;
+            let colors = this.props.publicationViewMaybeOpds.customCover;
             if (!colors) {
                 colors = RandomCustomCovers[0];
             }
@@ -68,6 +67,16 @@ class Cover extends React.Component<IProps, undefined> {
                 </div>
             );
         } else {
+            const { cover } = this.props.publicationViewMaybeOpds;
+            const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
+            const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
+
+            let defaultUrl: string;
+            if (this.props.coverType === "cover") {
+                defaultUrl = coverUrl || thumbnailUrl;
+            } else {
+                defaultUrl = thumbnailUrl || coverUrl;
+            }
             return (
                 <img
                     tabIndex={0}
@@ -75,11 +84,8 @@ class Cover extends React.Component<IProps, undefined> {
                     onClick={this.props.onClick}
                     onKeyPress={this.props.onKeyPress}
                     role="presentation"
-                    alt="cover image"
-                    src={this.props.coverTypeUrl ?
-                        this.props.publicationViewMaybeOpds.cover[this.props.coverTypeUrl] :
-                        this.props.publicationViewMaybeOpds.cover.thumbnailUrl ||
-                        this.props.publicationViewMaybeOpds.cover.coverUrl}
+                    alt={this.props.__("publication.cover.img")}
+                    src={defaultUrl}
                 />
             );
         }

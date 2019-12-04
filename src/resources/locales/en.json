@@ -73,8 +73,10 @@
         "downloads": "Downloads",
         "gridTitle": "Grid view",
         "home": "Bookshelf menu",
+        "homeTitle": "home",
         "importTitle": "Import a publication",
         "listTitle": "List view",
+        "refreshTitle": "reload",
         "searchPlaceholder": "Search",
         "searchTitle": "Start a search",
         "settings": "Settings"
@@ -137,6 +139,9 @@
         "cancelledLcp": "This book can't be read because the LCP license has been cancelled.",
         "certificateRevoked": "Certificate is revoked",
         "certificateSignatureInvalid": "Certificate signature is invalid",
+        "cover": {
+            "img": "cover image"
+        },
         "expiredLcp": "This book can't be read because the LCP license has expired.",
         "lcpEnd": "End",
         "lcpRightsCopy": "Character copy",

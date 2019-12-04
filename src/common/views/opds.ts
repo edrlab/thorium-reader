@@ -7,14 +7,18 @@
 
 import { Identifiable } from "../models/identifiable";
 import { IHttpGetResult } from "../utils/http";
-import { CoverView } from "./publication";
 
-export interface OpdsFeedView extends Identifiable {
+export interface IOpdsFeedView extends Identifiable {
     title: string;
     url: string;
 }
 
-export interface OpdsPublicationView {
+export interface IOpdsCoverView {
+    coverLinks: IOpdsLinkView[];
+    thumbnailLinks: IOpdsLinkView[];
+}
+
+export interface IOpdsPublicationView {
     baseUrl: string;
     r2OpdsPublicationBase64?: string;
     title: string;
@@ -25,36 +29,43 @@ export interface OpdsPublicationView {
     tags?: string[];
     languages?: string[];
     publishedAt?: string; // ISO8601
-    entryUrl?: string;
-    buyUrl?: string;
-    borrowUrl?: string;
-    subscribeUrl?: string;
-    sampleOrPreviewUrl?: string;
-    openAccessUrl?: string;
-    cover?: CoverView;
+    entryLinks?: IOpdsLinkView[];
+    buyLinks?: IOpdsLinkView[];
+    borrowLinks?: IOpdsLinkView[];
+    subscribeLinks?: IOpdsLinkView[];
+    sampleOrPreviewLinks?: IOpdsLinkView[];
+    openAccessLinks?: IOpdsLinkView[];
+    cover?: IOpdsCoverView;
 }
 
-export interface OpdsLinkView {
+export interface IOpdsNavigationLinkView {
     title: string;
     subtitle?: string;
     url: string;
     numberOfItems?: number;
 }
 
-export interface OpdsGroupView {
-    title: string;
-    navigation?: OpdsLinkView[];
-    opdsPublicationViews?: OpdsPublicationView[];
+export interface IOpdsFeedMetadataView {
+    numberOfItems?: number;
+    itemsPerPage?: number;
+    currentPage?: number;
 }
 
-export enum OpdsResultType {
-    // Entry = "entry",
-    NavigationFeed = "navigation-feed",
-    PublicationFeed = "publication-feed",
-    MixedFeed = "mixed-feed",
-    Empty = "empty",
+export interface IOpdsResultView {
+    title: string;
+    metadata?: IOpdsFeedMetadataView;
+    navigation?: IOpdsNavigationLinkView[];
+    publications?: IOpdsPublicationView[];
+    links?: IOpdsNavigationLink;
 
-    Auth = "auth",
+    groups?: OpdsGroupView[];
+    auth?: OpdsAuthView;
+}
+
+export interface OpdsGroupView {
+    title: string;
+    navigation?: IOpdsNavigationLinkView[];
+    publications?: IOpdsPublicationView[];
 }
 
 export interface OpdsAuthView {
@@ -67,33 +78,24 @@ export interface OpdsAuthView {
     oauthRefreshUrl: string;
 }
 
-export interface OpdsResultView {
-    type: OpdsResultType;
-
-    title: string;
-
-    navigation?: OpdsLinkView[];
-    opdsPublicationViews?: OpdsPublicationView[];
-    groups?: OpdsGroupView[];
-
-    urls: OpdsResultUrls;
-    page?: OpdsResultPageInfos;
-
-    auth?: OpdsAuthView;
+export interface IOpdsLinkView {
+    url: string;
+    title?: string | undefined;
+    type?: string | undefined;
 }
 
-export interface OpdsResultUrls {
-    nextPage?: string;
-    previousPage?: string;
-    firstPage?: string;
-    lastPage?: string;
-    search?: string;
-    shelf?: string;
+export interface IOpdsNavigationLink {
+    next: IOpdsLinkView[];
+    previous: IOpdsLinkView[];
+    first: IOpdsLinkView[];
+    last: IOpdsLinkView[];
+    start: IOpdsLinkView[];
+    up: IOpdsLinkView[];
+    search: IOpdsLinkView[];
+    bookshelf: IOpdsLinkView[];
+    text: IOpdsLinkView[];
+    self: IOpdsLinkView[];
 }
 
-export interface OpdsResultPageInfos {
-    numberOfItems: number;
-    itemsPerPage: number;
-}
-
-export type THttpGetOpdsResultView = IHttpGetResult<string, OpdsResultView>;
+export type THttpGetOpdsResultView = IHttpGetResult<string, IOpdsResultView>;
+export type THttpGetOpdsPublicationView = IHttpGetResult<string, IOpdsPublicationView | undefined>;

@@ -5,16 +5,25 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export interface OpdsNavigationLink {
-    level: number;
-    title: string;
-    url: string;
+import { IBreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
+
+export interface IOpdsSearchState {
+    url?: string;
+    level?: number;
 }
 
-export interface OpdsBrowserState {
-    navigation: OpdsNavigationLink[];
+export interface IOpdsHeaderState {
+    start?: string;
+    bookshelf?: string;
+    self?: string;
+    up?: string;
+}
+
+export interface IOpdsBrowserState {
+    breadcrumb: IBreadCrumbItem[];
+    headerUrl: IOpdsHeaderState;
 }
 
 export interface OpdsState {
-    browser: OpdsBrowserState;
+    browser: IOpdsBrowserState;
 }

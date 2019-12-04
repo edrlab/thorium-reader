@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsLinkView } from "readium-desktop/common/views/opds";
+import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
@@ -17,7 +17,7 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
     level?: number;
-    entry: OpdsLinkView;
+    entry: IOpdsNavigationLinkView;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -36,7 +36,6 @@ class Entry extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { entry } = this.props;
 
-        // Build feedBreadcrumb
         const { level, match } = this.props;
         const rootFeedIdentifier = match.params.opdsId;
         const route = buildOpdsBrowserRoute(
@@ -51,7 +50,7 @@ class Entry extends React.Component<IProps, undefined> {
                 <div>
                     <Link
                         className={styles.flux_infos}
-                        to={route}
+                        to={{pathname: route, search: this.props.location.search}}
                     >
                         <span className={styles.flux_title}>{entry.title}</span>
                         {

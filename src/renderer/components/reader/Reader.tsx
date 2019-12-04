@@ -876,7 +876,6 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(dialogActions.openRequest.build("publication-info-reader",
                 {
                     publicationIdentifier: pubId,
-                    opdsPublicationView: undefined,
                 },
             ));
         },

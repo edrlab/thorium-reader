@@ -11,7 +11,7 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
     OPDS_AUTH_ENCRYPTION_IV_HEX, OPDS_AUTH_ENCRYPTION_KEY_HEX,
 } from "readium-desktop/common/models/opds";
-import { OpdsResultView } from "readium-desktop/common/views/opds";
+import { THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
@@ -19,14 +19,13 @@ import {
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { IOpdsBrowse } from "readium-desktop/renderer/routing";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { TMouseEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    data: OpdsResultView;
-    url: string;
-    browseOpds: (url: string) => void;
+    browserResult: THttpGetOpdsResultView;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -60,37 +59,37 @@ class OPDSAuth extends React.Component<IProps, IState> {
         const { login, password } = this.state;
         return (
             <section>
-                <h2>{this.props.data.title}</h2>
-                {this.props.data.auth.logoImageUrl && <><hr></hr><img
-                    src={this.props.data.auth.logoImageUrl}
+                <h2>{this.props.browserResult.data.title}</h2>
+                {this.props.browserResult.data.auth.logoImageUrl && <><hr></hr><img
+                    src={this.props.browserResult.data.auth.logoImageUrl}
                     role="presentation"
                     alt=""
                 /><hr></hr></>}
                 <form>
                         <div className={styles.field}>
-                            <label>{this.props.data.auth.labelLogin}</label>
+                            <label>{this.props.browserResult.data.auth.labelLogin}</label>
                             <br></br>
                             <input
                                 onChange={(e) => this.setState({
                                     login: e.target.value,
                                 })}
                                 type="text"
-                                aria-label={this.props.data.auth.labelLogin}
-                                placeholder={this.props.data.auth.labelLogin}
+                                aria-label={this.props.browserResult.data.auth.labelLogin}
+                                placeholder={this.props.browserResult.data.auth.labelLogin}
                                 defaultValue={login}
                             />
                         </div>
                         <br></br>
                         <div className={styles.field}>
-                            <label>{this.props.data.auth.labelPassword}</label>
+                            <label>{this.props.browserResult.data.auth.labelPassword}</label>
                             <br></br>
                             <input
                                 onChange={(e) => this.setState({
                                     password: e.target.value,
                                 })}
                                 type="password"
-                                aria-label={this.props.data.auth.labelPassword}
-                                placeholder={this.props.data.auth.labelPassword}
+                                aria-label={this.props.browserResult.data.auth.labelPassword}
+                                placeholder={this.props.browserResult.data.auth.labelPassword}
                                 defaultValue={password}
                             />
                         </div>
@@ -148,18 +147,37 @@ class OPDSAuth extends React.Component<IProps, IState> {
                 }, "");
                 const encryptedPasswordB64 = window.btoa(arg);
 
+                const url = this.props.browserResult.url.toString();
                 apiAction("opds/oauth",
-                    this.props.url,
+                    url,
                     this.state.login,
                     encryptedPasswordB64,
-                    this.props.data.auth.oauthUrl,
-                    this.props.data.auth.oauthRefreshUrl,
+                    this.props.browserResult.data.auth.oauthUrl,
+                    this.props.browserResult.data.auth.oauthRefreshUrl,
                     OPDS_AUTH_ENCRYPTION_KEY_HEX,
                     OPDS_AUTH_ENCRYPTION_IV_HEX)
                 .then((okay) => {
-                    console.log("SUCCESS fetch api opds/oauth");
                     if (okay) {
-                        this.props.browseOpds(this.props.url);
+                        console.log("SUCCESS fetch api opds/oauth");
+
+                        const param = this.props.match.params;
+                        const lvl = parseInt(param.level, 10);
+                        const i = (lvl > 1) ? (lvl - 1) : lvl;
+                        const name = this.props.breadcrumb[i] && this.props.breadcrumb[i].name;
+                        const route = buildOpdsBrowserRoute(
+                            param.opdsId,
+                            name,
+                            url, // this.props.headerLinks?.self
+                            lvl,
+                        );
+
+                        this.props.history.push({
+                            ...this.props.location,
+                            pathname: route,
+                            search: "",
+                            hash: "",
+                            // state: {} // we preserve the existing route state
+                        });
                     }
                 })
                 .catch((err) => {
@@ -174,7 +192,10 @@ class OPDSAuth extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (_state: RootState, _props: IBaseProps) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+    level: state.opds.browser.breadcrumb.length + 1,
+    headerLinks: state.opds.browser.header,
+    breadcrumb: state.opds.browser.breadcrumb,
 });
 
 const mapDispatchToProps = (_dispatch: TDispatch, _props: IBaseProps) => {
