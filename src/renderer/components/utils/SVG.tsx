@@ -7,9 +7,13 @@
 
 import * as React from "react";
 
+export interface ISVGProps {
+    [propName: string]: any;
+}
+
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
-    svg: any;
+    svg: ISVGProps;
     title?: string;
     className?: string;
     ariaHidden?: boolean;

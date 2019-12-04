@@ -36,9 +36,9 @@ declare module "*.css" {
 }
 
 declare module "*.svg" {
-    interface IProps {
+    interface ISVGProps {
         [propName: string]: any
     }
-    const props: IProps;
+    const props: ISVGProps;
     export default props;
 }
