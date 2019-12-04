@@ -113,10 +113,4 @@ export class TextSearchResult extends React.Component<IProps, IState> {
     }
 }
 
-/*
-const buildSearchRequestData = (props: TextSearchResultProps): any => {
-    return [ props.match.params.value ];
-};
-*/
-
 export default withTranslator(TextSearchResult);

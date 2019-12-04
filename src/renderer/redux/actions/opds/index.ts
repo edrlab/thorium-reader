@@ -6,7 +6,11 @@
 // ==LICENSE-END==
 
 import * as browseRequest from "./browseRequest";
+import * as headerLinksUpdate from "./headerLinksUpdate";
+import * as search from "./search";
 
 export {
+    headerLinksUpdate,
     browseRequest,
+    search,
 };

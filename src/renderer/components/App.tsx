@@ -24,7 +24,6 @@ import { Store } from "redux";
 import { diRendererSymbolTable } from "../diSymbolTable";
 import DownloadsPanel from "./DownloadsPanel";
 import ToastManager from "./toast/ToastManager";
-import SameFileImportManager from "./utils/SameFileImportManager";
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -96,7 +95,6 @@ export default class App extends React.Component<{}, undefined> {
                                     <input aria-hidden {...getInputProps({onClick: (evt) => evt.preventDefault()})} />
                                     <PageManager/>
                                     <DialogManager/>
-                                    <SameFileImportManager/>
                                     <ToastManager/>
                                 </div>;
                             }}
