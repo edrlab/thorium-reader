@@ -13,7 +13,8 @@ import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { IOpdsBrowse } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
-import { DisplayType, RouterLocationState } from '../utils/displayType';
+
+import { DisplayType, RouterLocationState } from "../utils/displayType";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
