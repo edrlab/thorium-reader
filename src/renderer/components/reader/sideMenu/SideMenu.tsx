@@ -103,4 +103,4 @@ export class SideMenu extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(SideMenu) as any;
+export default withTranslator(SideMenu);
