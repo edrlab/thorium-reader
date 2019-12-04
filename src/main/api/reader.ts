@@ -21,21 +21,21 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { Store } from "redux";
 
 import { IEventPayload_R2_EVENT_CLIPBOARD_COPY } from "@r2-navigator-js/electron/common/events";
-import { Locator } from "@r2-shared-js/models/locator";
+import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 
 export interface IReaderApi {
-    setLastReadingLocation: (publicationIdentifier: string, locator: Locator) => Promise<LocatorView>;
+    setLastReadingLocation: (publicationIdentifier: string, locator: R2Locator) => Promise<LocatorView>;
     getLastReadingLocation: (publicationIdentifier: string) => Promise<LocatorView>;
     findBookmarks: (publicationIdentifier: string) => Promise<LocatorView[]>;
     updateBookmark: (
         identifier: string,
         publicationIdentifier: string,
-        locator: Locator,
+        locator: R2Locator,
         name?: string,
     ) => Promise<void>;
     addBookmark: (
         publicationIdentifier: string,
-        locator: Locator,
+        locator: R2Locator,
         name?: string,
     ) => Promise<void>;
     deleteBookmark: (identifier: string) => Promise<void>;
@@ -87,7 +87,7 @@ export class ReaderApi implements IReaderApi {
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
-    public async setLastReadingLocation(publicationIdentifier: string, locator: Locator): Promise<LocatorView> {
+    public async setLastReadingLocation(publicationIdentifier: string, locator: R2Locator): Promise<LocatorView> {
         const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
             publicationIdentifier,
             LocatorType.LastReadingLocation,
@@ -144,7 +144,7 @@ export class ReaderApi implements IReaderApi {
     public async updateBookmark(
         identifier: string,
         publicationIdentifier: string,
-        locator: Locator,
+        locator: R2Locator,
         name?: string,
     ): Promise<void> {
 
@@ -160,7 +160,7 @@ export class ReaderApi implements IReaderApi {
 
     public async addBookmark(
         publicationIdentifier: string,
-        locator: Locator,
+        locator: R2Locator,
         name?: string,
     ): Promise<void> {
 
