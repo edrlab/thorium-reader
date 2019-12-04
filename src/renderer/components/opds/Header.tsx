@@ -25,11 +25,6 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 import SearchForm from "./SearchForm";
 
-export enum DisplayType {
-    Grid = "grid",
-    List = "list",
-}
-
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
 }
