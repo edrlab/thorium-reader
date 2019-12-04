@@ -202,7 +202,7 @@ interface IState {
 const defaultLocale = "fr";
 
 export class Reader extends React.Component<IProps, IState> {
-    private fastLinkRef: any;
+    private fastLinkRef: React.RefObject<HTMLAnchorElement>;
 
     // can be get back with redux-connect props injection
     // to remove
@@ -218,6 +218,8 @@ export class Reader extends React.Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
+
+        this.fastLinkRef = React.createRef<HTMLAnchorElement>();
 
         // WHY is it sync in init.ts, no ??
         const locale = this.store.getState().i18n.locale;
@@ -283,12 +285,6 @@ export class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
-        // TODO: unused functionality?
-        // const focusInside = queryParams.focusInside === "true";
-        // if (focusInside) {
-        //     this.fastLinkRef.focus();
-        // }
-
         this.setState({
             publicationJsonUrl,
         });
@@ -390,10 +386,10 @@ export class Reader extends React.Component<IProps, IState> {
                 if (noModifierKeys || spineNavModifierKeys) {
                     navLeftOrRight(leftKey, spineNavModifierKeys);
                     if (spineNavModifierKeys) {
-                        if (this.fastLinkRef) {
+                        if (this.fastLinkRef?.current) {
                             setTimeout(() => {
-                                if (this.fastLinkRef) {
-                                    this.fastLinkRef.focus();
+                                if (this.fastLinkRef?.current) {
+                                    this.fastLinkRef.current.focus();
                                 }
                             }, 200);
                         }
@@ -491,7 +487,7 @@ export class Reader extends React.Component<IProps, IState> {
                                     id="main"
                                     role="main"
                                     className={styles.publication_viewport_container}>
-                                    <a ref={(ref) => this.fastLinkRef = ref}
+                                    <a ref={this.fastLinkRef}
                                         id="main-content"
                                         aria-hidden tabIndex={-1}></a>
                                     <div id="publication_viewport" className={styles.publication_viewport}> </div>
@@ -673,10 +669,10 @@ export class Reader extends React.Component<IProps, IState> {
         // Screen readers have their own shortcut to activate hyperlinks (e.g. VoiceOver CTRL+OPT+SPACE),
         // so we must not limit the focus behaviour to app-defined keyboard interaction (i.e. ENTER key)
         // (note that this means the focus is moved even when TOC items clicked with mouse, which is fine)
-        if (this.fastLinkRef) {
+        if (this.fastLinkRef?.current) {
             setTimeout(() => {
-                if (this.fastLinkRef) {
-                    this.fastLinkRef.focus();
+                if (this.fastLinkRef?.current) {
+                    this.fastLinkRef.current.focus();
                 }
             }, 200);
         }

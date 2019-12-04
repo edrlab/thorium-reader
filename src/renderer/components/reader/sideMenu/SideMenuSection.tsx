@@ -36,14 +36,16 @@ interface IState {
 }
 
 export class SideMenuSection extends React.Component<IProps, IState> {
-    private sectionRef: any = [];
+    private sectionRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: IProps) {
         super(props);
+
+        this.sectionRef = React.createRef<HTMLDivElement>();
+
         this.state = {
             style: undefined,
         };
-        this.sectionRef = React.createRef();
     }
 
     public componentDidUpdate() {
@@ -78,7 +80,10 @@ export class SideMenuSection extends React.Component<IProps, IState> {
         );
     }
 
-    private getSectionStyle(): any {
+    private getSectionStyle() {
+        if (!this.sectionRef?.current) {
+            return;
+        }
         const el = this.sectionRef.current;
         let height = 0;
         if (this.props.open && el) {
@@ -88,4 +93,4 @@ export class SideMenuSection extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(SideMenuSection) as any;
+export default withTranslator(SideMenuSection);

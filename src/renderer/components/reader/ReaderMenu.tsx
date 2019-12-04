@@ -56,11 +56,13 @@ interface IState {
 }
 
 export class ReaderMenu extends React.Component<IProps, IState> {
-    private goToRef: any;
+    private goToRef: React.RefObject<HTMLInputElement>;
     private unsubscribe: Unsubscribe;
 
     constructor(props: IProps) {
         super(props);
+
+        this.goToRef = React.createRef<HTMLInputElement>();
 
         this.state = {
             openedSection: undefined,
@@ -322,7 +324,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
             <form onSubmit={this.handleSubmitPage}>
                 <input
-                    ref={(ref) => this.goToRef = ref}
+                    ref={this.goToRef}
                     type="text"
                     aria-invalid={error}
                     onChange={() => this.setState({pageError: false})}
@@ -356,7 +358,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
     private handleSubmitPage(e: TFormEvent) {
         e.preventDefault();
-        const pageNbr = (this.goToRef.value as string).trim().replace(/\s\s+/g, " ");
+        if (!this.goToRef?.current?.value) {
+            return;
+        }
+        const pageNbr = (this.goToRef.current.value as string).trim().replace(/\s\s+/g, " ");
         const foundPage = this.props.r2Publication.PageList.find((page) => page.Title === pageNbr);
         if (foundPage) {
             this.setState({pageError: false});

@@ -18,7 +18,7 @@ interface IBaseProps {
     menuStyle: object;
     toggle: () => void;
     focusMenuButton?: () => void;
-    setContentRef?: (ref: any) => any;
+    setContentRef?: (ref: HTMLDivElement) => void;
 }
 
 // IProps may typically extend:

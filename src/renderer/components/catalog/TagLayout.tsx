@@ -18,7 +18,7 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     tags: string[];
-    content?: any;
+    content?: React.ReactElement<{}>;
 }
 // IProps may typically extend:
 // RouteComponentProps

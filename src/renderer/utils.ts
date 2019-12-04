@@ -30,7 +30,7 @@ export function buildOpdsBrowserRoute(
 
 // Encode without padding
 // And apply RFC 4648
-export function encodeB64(data: any) {
+export function encodeB64(data: string) {
     let encoded = btoa(unescape(encodeURIComponent(data)));
 
     // RFC 4648
@@ -43,7 +43,7 @@ export function encodeB64(data: any) {
     return encoded;
 }
 
-export function decodeB64(data: any) {
+export function decodeB64(data: string) {
     let decoded = data;
     decoded = decoded.replace(/_/g, "/");
     decoded = decoded.replace(/-/g, "+");
