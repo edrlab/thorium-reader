@@ -7,8 +7,6 @@
 
 import { BrowserWindow } from "electron";
 
-import { textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
-
 import { Identifiable } from "./identifiable";
 
 export enum ReaderMode {
@@ -29,29 +27,46 @@ export interface Reader extends Identifiable {
 /**
  * A reader configuration
  */
-export interface ReaderConfig {
-    [key: string]: any; // TODO any?!
-    identifier?: string;
-    align: textAlignEnum.justify | textAlignEnum.left | textAlignEnum.right | textAlignEnum.start | "auto";
-    colCount: string;
-    dark: false;
-    font: string;
+
+export interface ReaderConfigStringsAdjustables {
     fontSize: string;
-    invert: boolean;
+    pageMargins: string;
+    wordSpacing: string;
+    letterSpacing: string;
+    paraSpacing: string;
     lineHeight: string;
+}
+
+export interface ReaderConfigStrings extends ReaderConfigStringsAdjustables {
+    // using string instead of enum here, because values provided dynamically in code (mapped types)
+    // textAlignEnum.justify | textAlignEnum.left | textAlignEnum.right | textAlignEnum.start
+    align: string; // textAlignEnum | "auto";
+
+    colCount: string;
+    font: string;
+}
+
+export interface ReaderConfigBooleans {
+    dark: boolean;
+    invert: boolean;
     night: boolean;
     paged: boolean;
     readiumcss: boolean;
     sepia: boolean;
     enableMathJax: boolean;
+    noFootnotes: boolean;
+    darken: boolean;
 }
 
-export interface BookmarkCollection {
-    [key: string]: Bookmark;
+export interface ReaderConfig extends ReaderConfigStrings, ReaderConfigBooleans {
 }
 
-export interface Bookmark extends Identifiable {
-    identifiable: Identifiable;
-    docHref: string;
-    docSelector: string;
-}
+// export interface BookmarkCollection {
+//     [key: string]: Bookmark;
+// }
+
+// export interface Bookmark extends Identifiable {
+//     docHref: string;
+//     docSelector: string;
+//     publicationIdentifier: string;
+// }

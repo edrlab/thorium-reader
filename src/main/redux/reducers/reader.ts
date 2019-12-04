@@ -27,6 +27,12 @@ const initialState: ReaderState = {
         readiumcss: true,
         sepia: false,
         enableMathJax: false,
+        pageMargins: undefined,
+        wordSpacing: undefined,
+        letterSpacing: undefined,
+        paraSpacing: undefined,
+        noFootnotes: undefined,
+        darken: undefined,
     },
 };
 

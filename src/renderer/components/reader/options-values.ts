@@ -5,6 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ReaderConfig, ReaderConfigStringsAdjustables } from "readium-desktop/common/models/reader";
+import {
+    TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
+    TMouseEventOnSpan,
+} from "readium-desktop/typings/react";
+
+import { Locator as R2Locator } from "@r2-shared-js/models/locator";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+
 export const fontSize: string[] = [
     "75%",
     "87.5%",
@@ -83,6 +92,38 @@ const optionsValues = {
     letterSpacing,
     paraSpacing,
     lineHeight,
+} as AdjustableSettingsStrings;
+
+export type AdjustableSettingsStrings = {
+    [key in keyof ReaderConfigStringsAdjustables]: string[];
 };
 
-export default optionsValues as {[name: string]: string[]};
+export type AdjustableSettingsNumber = {
+    [key in keyof ReaderConfigStringsAdjustables]: number;
+};
+
+export default optionsValues;
+
+export interface IReaderMenuProps {
+    open: boolean;
+    r2Publication: R2Publication;
+    // tslint:disable-next-line: max-line-length
+    handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
+    handleBookmarkClick: (locator: R2Locator) => void;
+    toggleMenu: () => void;
+}
+
+export interface IReaderOptionsProps {
+    indexes: AdjustableSettingsNumber;
+    open: boolean;
+    readerConfig: ReaderConfig;
+    handleSettingChange: (
+        event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
+        name: keyof ReaderConfig,
+        value?: string) => void;
+    handleIndexChange: (
+        event: TChangeEventOnInput,
+        name: keyof ReaderConfigStringsAdjustables) => void;
+    setSettings: (settings: ReaderConfig) => void;
+    toggleMenu: () => void;
+}

@@ -18,7 +18,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TMouseEvent } from "readium-desktop/typings/react";
+import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
@@ -109,21 +109,21 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
         );
     }
 
-    private renewPublicationDialog(e: TMouseEvent) {
+    private renewPublicationDialog(e: TMouseEventOnButton) {
         e.preventDefault();
         this.props.openRenewDialog();
     }
-    private returnPublicationDialog(e: TMouseEvent) {
+    private returnPublicationDialog(e: TMouseEventOnButton) {
         e.preventDefault();
         this.props.openReturnDialog();
     }
 
-    private deletePublication(e: TMouseEvent) {
+    private deletePublication(e: TMouseEventOnButton) {
         e.preventDefault();
         this.props.openDeleteDialog();
     }
 
-    private handleRead(e: TMouseEvent) {
+    private handleRead(e: TMouseEventOnButton) {
         e.preventDefault();
 
         this.props.openReader();
