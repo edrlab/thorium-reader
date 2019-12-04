@@ -7,6 +7,9 @@
 
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
+import {
+    OPDSAuthenticationDoc,
+} from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-doc";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import {
     IOpdsFeedView, IOpdsLinkView, IOpdsPublicationView, THttpGetOpdsPublicationView,
@@ -45,6 +48,16 @@ export interface IOpdsApi {
     getUrlWithSearchLinks: (
         searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch,
     ) => Promise<string | undefined>;
+    // tslint:disable-next-line: max-line-length
+    oauth: (
+        opdsUrl: string,
+        login: string | undefined,
+        password: string | undefined,
+        oAuthUrl: string,
+        oAuthRefreshUrl: string | undefined,
+        OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
+        OPDS_AUTH_ENCRYPTION_IV_HEX: string,
+        refreshToken?: string) => Promise<boolean>;
 }
 
 export type TOpdsApiGetFeed = IOpdsApi["getFeed"];
@@ -55,6 +68,7 @@ export type TOpdsApiUpdateFeed = IOpdsApi["updateFeed"];
 export type TOpdsApiBrowse = IOpdsApi["browse"];
 export type TOpdsApiGetPublicationFromEntry = IOpdsApi["getPublicationFromEntry"];
 export type TOpdsApiGetUrlWithSearchLinks = IOpdsApi["getUrlWithSearchLinks"];
+export type TOpdsApiOAuth = IOpdsApi["oauth"];
 
 export type TOpdsApiGetFeed_result = IOpdsFeedView;
 export type TOpdsApiDeleteFeed_result = void;
@@ -64,6 +78,7 @@ export type TOpdsApiUpdateFeed_result = IOpdsFeedView;
 export type TOpdsApiBrowse_result = THttpGetOpdsResultView;
 export type TOpdsApiGetPublicationFromEntry_result = THttpGetOpdsPublicationView;
 export type TOpdsApiGetUrlWithSearchLink_result = ReturnPromiseType<IOpdsApi["getUrlWithSearchLinks"]>;
+export type TOpdsApiOAuth_result = boolean;
 
 export interface IOpdsModuleApi {
     "opds/getFeed": TOpdsApiGetFeed;
@@ -74,6 +89,7 @@ export interface IOpdsModuleApi {
     "opds/browse": TOpdsApiBrowse;
     "opds/getPublicationFromEntry": TOpdsApiGetPublicationFromEntry;
     "opds/getUrlWithSearchLinks": TOpdsApiGetUrlWithSearchLinks;
+    "opds/oauth": TOpdsApiOAuth;
 }
 
 type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url" | "type">>;
@@ -130,7 +146,7 @@ export class OpdsApi implements IOpdsApi {
     public async getPublicationFromEntry(url: string): Promise<THttpGetOpdsPublicationView> {
         url = checkUrl(url);
 
-        return await this.opdsService.opdsRequest(url,
+        return this.opdsService.opdsRequest(url,
             // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
             (r2OpdsFeed) => {
                 const opdsFeed = this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url);
@@ -144,20 +160,46 @@ export class OpdsApi implements IOpdsApi {
 
                 debug("GetPublicationFromEntry return publication =", publication);
                 return publication;
-            });
+            },
+            undefined,
+            );
     }
 
     public async browse(url: string): Promise<THttpGetOpdsResultView> {
         url = checkUrl(url);
 
-        return await this.opdsService.opdsRequest(url,
+        return this.opdsService.opdsRequest(url,
             // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
-            (r2OpdsFeed) => this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url));
+            (r2OpdsFeed) => this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url),
+            (r2OpdsAuth: OPDSAuthenticationDoc) => this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, url),
+            );
     }
 
     public async getUrlWithSearchLinks(searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch)
         : Promise<string | undefined> {
         const link = Array.isArray(searchLink) ? searchLink : [searchLink];
         return this.opdsService.parseOpdsSearchUrl(link);
+    }
+
+    // tslint:disable-next-line: max-line-length
+    public async oauth(
+        opdsUrl: string,
+        login: string | undefined,
+        passwordEncrypted: string | undefined,
+        oAuthUrl: string,
+        oAuthRefreshUrl: string | undefined,
+        OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
+        OPDS_AUTH_ENCRYPTION_IV_HEX: string,
+        refreshToken?: string): Promise<boolean> {
+
+        return this.opdsService.oauth(
+            opdsUrl,
+            login,
+            passwordEncrypted,
+            oAuthUrl,
+            oAuthRefreshUrl,
+            OPDS_AUTH_ENCRYPTION_KEY_HEX,
+            OPDS_AUTH_ENCRYPTION_IV_HEX,
+            refreshToken);
     }
 }

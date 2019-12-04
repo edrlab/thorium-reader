@@ -18,7 +18,7 @@ const UPDATED_AT_INDEX = "updatded_at_index";
 
 @injectable()
 export class LocatorRepository extends BaseRepository<LocatorDocument> {
-    public constructor(db: PouchDB.Database<LocatorDocument>) {
+    public constructor(db: PouchDB.Database<LocatorDocument>) {// INJECTED!
 
         const indexes = [
             {

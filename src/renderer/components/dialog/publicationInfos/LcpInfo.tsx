@@ -31,7 +31,7 @@ interface IProps extends IBaseProps {
 // Logger
 const debug = debug_("readium-desktop:renderer:publication-info:lcp-info");
 
-class LcpInfo extends React.Component<IProps> {
+class LcpInfo extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);
@@ -138,15 +138,15 @@ class LcpInfo extends React.Component<IProps> {
                         <br />
                     </>}
 
-                    {lcpRightsCopy && <>
+                    {lcpRightsCopy ? <>
                         <span>{__("publication.lcpRightsCopy")}: </span>
                         <i>{lcpRightsCopies} / {lcpRightsCopy}</i><br />
-                    </>}
+                    </> : undefined}
 
-                    {lcpRightsPrint && <>
+                    {lcpRightsPrint ? <>
                         <span>{__("publication.lcpRightsPrint")}: </span>
                         <i>0 / {lcpRightsPrint}</i><br />
-                    </>}
+                    </> : undefined}
                 </p>
             </>
         );

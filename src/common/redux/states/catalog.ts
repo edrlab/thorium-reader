@@ -5,14 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Tag } from "readium-desktop/common/models/tag";
+export interface AccessTokenValue {
+    authenticationUrl: string;
+    authenticationToken: string;
 
-// import { Publication } from "readium-desktop/common/models/publication";
+    refreshUrl?: string;
+    refreshToken?: string;
+}
+
+export interface AccessTokenMap {
+    [domain: string]: AccessTokenValue;
+}
 
 export interface CatalogState {
-
-    // TODO unused?
-    // publications: Publication[];
-
-    tagList: Tag[];
+    accessTokens?: AccessTokenMap;
 }

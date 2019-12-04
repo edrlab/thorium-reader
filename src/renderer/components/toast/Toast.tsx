@@ -58,6 +58,7 @@ export class Toast extends React.Component<IProps, IState> {
         setTimeout(this.handleClose, 5000);
         this.ref.addEventListener("transitionend", this.handleTransitionEnd, false);
         if (this.props.displaySystemNotification) {
+            // TODO: application name should not be hard-coded!
             // tslint:disable-next-line: no-unused-expression
             new Notification("Thorium Reader", {
                 body: this.props.message,

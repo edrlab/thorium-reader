@@ -15,7 +15,7 @@ const PUBLICATION_IDENTIFIER_INDEX = "publication_identifier";
 
 @injectable()
 export class LcpSecretRepository extends BaseRepository<LcpSecretDocument> {
-    public constructor(db: PouchDB.Database<LcpSecretDocument>) {
+    public constructor(db: PouchDB.Database<LcpSecretDocument>) {// INJECTED!
 
         const indexes = [
             {

@@ -14,12 +14,13 @@ import {
 } from "readium-desktop/common/utils";
 import {
     IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsLinkView, IOpdsNavigationLink,
-    IOpdsNavigationLinkView, IOpdsPublicationView, IOpdsResultView,
+    IOpdsNavigationLinkView, IOpdsPublicationView, IOpdsResultView, OpdsAuthView, OpdsGroupView,
 } from "readium-desktop/common/views/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 
 import { TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
@@ -34,7 +35,7 @@ interface IGetLinksViewFilter {
 
 const supportedFileTypeLinkArray = [
     "application/epub+zip",
-    "application/vnd.readium.lcp.license.1.0+json",
+    "application/vnd.readium.lcp.license.v1.0+json",
 ];
 
 const fallback = <T>(...valueArray: T[][]) =>
@@ -247,16 +248,96 @@ export class OpdsFeedViewConverter {
             openAccessLinks: acquisitionLinkView,
         };
     }
+    public convertOpdsAuthToView(r2OpdsAuth: OPDSAuthenticationDoc, baseUrl: string): IOpdsResultView {
+        const title = r2OpdsAuth.Title;
+        let logoImageUrl: string | undefined;
+        const logoLink = r2OpdsAuth.Links.find((l) => {
+            return l.Rel && l.Rel.includes("logo");
+        });
+        if (logoLink) {
+            logoImageUrl = urlPathResolve(baseUrl, logoLink.Href);
+        }
+        const oauth = r2OpdsAuth.Authentication.find((a) => {
+            return a.Type === "http://opds-spec.org/auth/oauth/password";
+        });
+        let labelLogin: string | undefined;
+        let labelPassword: string | undefined;
+        let oauthUrl: string | undefined;
+        let oauthRefreshUrl: string | undefined;
+        if (oauth) {
+            if (oauth.Labels) {
+                labelLogin = oauth.Labels.Login;
+                labelPassword = oauth.Labels.Password;
+            }
+            if (oauth.Links) {
+                const oauthLink = oauth.Links.find((l) => {
+                    return l.Rel && l.Rel.includes("authenticate");
+                });
+                if (oauthLink) {
+                    oauthUrl = urlPathResolve(baseUrl, oauthLink.Href);
+                }
+
+                const oauthRefreshLink = oauth.Links.find((l) => {
+                    return l.Rel && l.Rel.includes("refresh");
+                });
+                if (oauthRefreshLink) {
+                    oauthRefreshUrl = urlPathResolve(baseUrl, oauthRefreshLink.Href);
+                }
+            }
+        }
+        const auth: OpdsAuthView = {
+            logoImageUrl,
+
+            labelLogin,
+            labelPassword,
+
+            oauthUrl,
+            oauthRefreshUrl,
+        };
+        return {
+            title,
+            metadata: undefined,
+            publications: undefined,
+            navigation: undefined,
+            links: undefined,
+            groups: undefined,
+            auth,
+        };
+    }
 
     public convertOpdsFeedToView(r2OpdsFeed: OPDSFeed, baseUrl: string): IOpdsResultView {
 
         const title = convertMultiLangStringToString(r2OpdsFeed.Metadata?.Title);
         const publications = r2OpdsFeed.Publications?.map((item) => {
+            // warning: modifies item, makes relative URLs absolute with baseUrl!
             return this.convertOpdsPublicationToView(item, baseUrl);
         });
         const navigation = r2OpdsFeed.Navigation?.map((item) => {
             return this.convertOpdsLinkToView(item, baseUrl);
         });
+
+        const groups = r2OpdsFeed.Groups?.map((group) => {
+            const tit = group.Metadata?.Title ?
+                convertMultiLangStringToString(group.Metadata.Title) :
+                "";
+
+            const pubs = group.Publications?.map((item) => {
+                // warning: modifies item, makes relative URLs absolute with baseUrl!
+                return this.convertOpdsPublicationToView(item, baseUrl);
+            });
+
+            const nav = group.Navigation?.map((item) => {
+                return this.convertOpdsLinkToView(item, baseUrl);
+            });
+
+            const ret: OpdsGroupView = {
+                title: tit,
+                publications: pubs,
+                navigation: nav,
+            };
+            return ret;
+        });
+
         const links: IOpdsNavigationLink | undefined = r2OpdsFeed.Links &&
         {
             next: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "next" }),
@@ -286,6 +367,8 @@ export class OpdsFeedViewConverter {
             publications,
             navigation,
             links,
+            groups,
+            auth: undefined,
         };
     }
 }

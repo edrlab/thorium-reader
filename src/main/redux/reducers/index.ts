@@ -19,6 +19,5 @@ export const rootReducer = combineReducers<RootState>({
     reader: readerReducer,
     net: netReducer,
     update: updateReducer,
-    catalog: undefined, // CatalogState
     app: undefined, // AppState
 });

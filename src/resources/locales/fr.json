@@ -132,7 +132,8 @@
             "timeout": "Le flux OPDS met du temps à répondre, veuillez réessayer plus tard"
         },
         "next": "Suivant",
-        "previous": "Précédent"
+        "previous": "Précédent",
+        "shelf": "Étagère"
     },
     "publication": {
         "cancelledLcp": "Ce livre ne peut être lu car la licence lcp a été annulée.",

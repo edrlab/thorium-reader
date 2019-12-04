@@ -16,6 +16,7 @@ import { apiState } from "readium-desktop/renderer/redux/api/api";
 import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/redux/sagas/opds";
 import { RootState } from "readium-desktop/renderer/redux/states";
 
+import OPDSAuth from "./Auth";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
 import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
@@ -31,7 +32,7 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-export class BrowserResult extends React.Component<IProps> {
+export class BrowserResult extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __, browserData } = this.props;
@@ -54,12 +55,24 @@ export class BrowserResult extends React.Component<IProps> {
         } else if (browserData?.result) {
             const browserResult = browserData.result;
 
-            if (browserResult.isSuccess) {
-                if (browserResult.data.navigation) {
+            if (browserResult.isSuccess ||
+                (browserResult.isFailure && browserResult.statusCode === 401 && browserResult.data?.auth)) {
+
+                if (browserResult.data.auth) {
+                    content = (
+                        <OPDSAuth browserResult={browserResult}/>
+                    );
+                } else if (browserResult.data.navigation &&
+                    !browserResult.data.publications &&
+                    !browserResult.data.groups) {
+
                     content = (
                         <EntryList entries={browserResult.data.navigation} />
                     );
-                } else if (browserResult.data.publications) {
+                } else if (browserResult.data.publications &&
+                    !browserResult.data.navigation &&
+                    !browserResult.data.groups) {
+
                     content = (
                             <EntryPublicationList
                                 opdsPublicationView={browserResult.data.publications}
@@ -67,6 +80,37 @@ export class BrowserResult extends React.Component<IProps> {
                                 pageInfo={browserResult.data.metadata}
                             />
                         );
+                } else if (browserResult.data.groups ||
+                    browserResult.data.publications ||
+                    browserResult.data.navigation) {
+
+                    content = (<>
+                        {browserResult.data.navigation &&
+                        <EntryList entries={browserResult.data.navigation} />}
+
+                        {browserResult.data.publications &&
+                        <EntryPublicationList
+                            opdsPublicationView={browserResult.data.publications}
+                            links={browserResult.data.links}
+                            pageInfo={browserResult.data.metadata}
+                        />}
+
+                        {browserResult.data.groups && browserResult.data.groups.map((group, i) => {
+                            return (<section key={i}>
+                                <br></br>
+                                <h3>{group.title}</h3>
+                                {group.navigation &&
+                                <EntryList entries={group.navigation} />}
+                                <hr></hr>
+                                {group.publications &&
+                                <EntryPublicationList
+                                    opdsPublicationView={group.publications}
+                                    links={undefined}
+                                    pageInfo={undefined}
+                                />}
+                            </section>);
+                        })}
+                    </>);
                 } else {
                     content = (
                         <MessageOpdBrowserResult title={__("opds.empty")} />
@@ -92,7 +136,7 @@ export class BrowserResult extends React.Component<IProps> {
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
 
     const apiBrowseData = apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("opds/browse");
     return {
@@ -100,4 +144,4 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-export default connect(mapStateToProps)(withTranslator(BrowserResult));
+export default connect(mapStateToProps, undefined)(withTranslator(BrowserResult));

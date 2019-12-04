@@ -9,8 +9,6 @@ import { LcpInfo } from "readium-desktop/common/models/lcp";
 
 import { Identifiable } from "../models/identifiable";
 
-// import { Metadata } from "@r2-shared-js/models/metadata";
-
 export interface CoverView {
     coverUrl?: string;
     thumbnailUrl?: string;
@@ -32,8 +30,6 @@ export interface PublicationView extends Identifiable {
     publishedAt?: string; // ISO8601
     cover?: CoverView;
     customCover?: CustomCoverView;
-
-    // doc?: Metadata; // TODO why "doc"?? ... anyway, unused code!
 
     lcp?: LcpInfo;
     lcpRightsCopies?: number;

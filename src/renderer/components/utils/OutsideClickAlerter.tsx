@@ -21,7 +21,7 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class OutsideClickAlerter extends React.Component<IProps> {
+export default class OutsideClickAlerter extends React.Component<IProps, undefined> {
     private wrapperRef: any;
 
     constructor(props: IProps) {

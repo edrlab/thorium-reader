@@ -33,19 +33,11 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, ReturnType<typeof mapStateToProps> {
 }
 
-interface IState {
-    placeholder: any;
-}
-
-export class Information extends React.Component<IProps, IState> {
+export class Information extends React.Component<IProps, undefined> {
     private parsedMarkdown: string;
 
     constructor(props: IProps) {
         super(props);
-
-        this.state = {
-            placeholder: undefined,
-        };
     }
 
     public async componentDidMount() {

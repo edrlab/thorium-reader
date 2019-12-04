@@ -34,7 +34,7 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-class Catalog extends React.Component<IProps> {
+class Catalog extends React.Component<IProps, undefined> {
     private catalogGetId = uuid.v4();
     private publicationGetAllTagId = uuid.v4();
 
