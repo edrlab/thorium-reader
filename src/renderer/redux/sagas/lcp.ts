@@ -13,7 +13,7 @@ import { all, call, put } from "redux-saga/effects";
 
 import { RootState } from "../states";
 
-export function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
+function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
     while (true) {
         const action = yield* takeTyped(lcpActions.userKeyCheckRequest.build);
 

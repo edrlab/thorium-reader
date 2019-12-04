@@ -91,7 +91,7 @@ const mapStateToProps = (state: RootState) => ({
     apiData: apiState(state),
     refresh: apiRefreshToState(state)([
         "publication/import",
-        "publication/importOpdsEntry",
+        "publication/importOpdsPublicationLink",
         "publication/delete",
         "catalog/addEntry",
         "publication/updateTags",

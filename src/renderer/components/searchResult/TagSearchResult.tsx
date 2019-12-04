@@ -18,7 +18,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
-import { ILibrarySearchTag } from "readium-desktop/renderer/routing";
+import { ILibrarySearchText } from "readium-desktop/renderer/routing";
 import { Unsubscribe } from "redux";
 
 import Header, { DisplayType } from "../catalog/Header";
@@ -31,7 +31,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps<ILibrarySearchTag> {
+interface IProps extends IBaseProps, RouteComponentProps<ILibrarySearchText> {
 }
 
 interface IState {

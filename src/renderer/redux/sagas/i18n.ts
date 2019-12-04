@@ -10,7 +10,7 @@ import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { all, call } from "redux-saga/effects";
 
-export function* localeWatcher() {
+function* localeWatcher() {
     while (true) {
         const action = yield* takeTyped(i18nActions.setLocale.build);
         const translator = diRendererGet("translator");
