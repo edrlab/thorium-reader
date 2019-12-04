@@ -15,8 +15,8 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsCoverView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import TagManager from "readium-desktop/renderer/components/dialog/publicationInfos/TagManager";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
-import TagManager from "readium-desktop/renderer/components/publication/TagManager";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
@@ -119,11 +119,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         <div className={styles.tags}>
                             <div className={styles.tag_list}>
                                 <span>{__("catalog.tags")}</span>
-                                <TagManager
-                                    publicationIdentifier={publication.identifier}
-                                    tags={publication.tags}
-                                    canModifyTag={this.props.publicationInfoLib}
-                                />
+                                <TagManager/>
                             </div>
                         </div>
 

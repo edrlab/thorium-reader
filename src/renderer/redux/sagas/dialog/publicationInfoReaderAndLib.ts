@@ -22,7 +22,7 @@ const debug = debug_("readium-desktop:renderer:redux:saga:publication-info-reade
 // Triggered when a publication-info-reader is asked
 function* checkReaderAndLibPublicationWatcher() {
     while (true) {
-        const action = yield* takeTyped(dialogActions.openRequest.build);
+        const action  = yield* takeTyped(dialogActions.openRequest.build);
 
         if (action.payload?.type === "publication-info-reader"
             || action.payload?.type === "publication-info-lib") {

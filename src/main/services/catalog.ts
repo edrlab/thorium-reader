@@ -223,7 +223,7 @@ export class CatalogService {
         const download: Download = this.downloader.addDownload(downloadUrl);
 =======
         const title = link.title || link.url;
-        const isLcpFile = link.type === "application/vnd.readium.lcp.license-1.0+json";
+        const isLcpFile = link.type === "application/vnd.readium.lcp.license.1.0+json";
         const isEpubFile = link.type === "application/epub+zip";
         if (!isLcpFile && !isEpubFile) {
             throw new Error(`OPDS download link is not EPUB! ${link.url} ${link.type}`);

@@ -40,7 +40,7 @@ interface IGetLinksViewFilter {
 
 const supportedFileTypeLinkArray = [
     "application/epub+zip",
-    "application/vnd.readium.lcp.license-1.0+json",
+    "application/vnd.readium.lcp.license.1.0+json",
 ];
 
 const fallback = <T>(...valueArray: T[][]) =>
