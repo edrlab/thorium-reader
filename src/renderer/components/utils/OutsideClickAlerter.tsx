@@ -9,7 +9,7 @@ import * as React from "react";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
-    onClickOutside: any;
+    onClickOutside: () => void;
     disabled?: boolean;
 }
 
@@ -60,8 +60,8 @@ export default class OutsideClickAlerter extends React.Component<IProps, undefin
         );
     }
 
-    private handleClickOutside(event: any) {
-        if (this.wrapperRef?.current && !this.wrapperRef.current.contains(event.target)) {
+    private handleClickOutside(event: MouseEvent) {
+        if (this.wrapperRef?.current && !this.wrapperRef.current.contains(event.target as Element)) {
             this.props.onClickOutside();
         }
     }

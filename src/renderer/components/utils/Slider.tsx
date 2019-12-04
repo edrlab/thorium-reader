@@ -95,7 +95,7 @@ class Slider extends React.Component<IProps, IState> {
             max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
         }
 
-        const varStyle = {
+        const varStyle: React.CSSProperties = {
             left: this.state.position + "px",
             transition: "left 0.5s",
         };
@@ -170,7 +170,7 @@ class Slider extends React.Component<IProps, IState> {
         const visible = this.contentElVisible;
 
         return content.map((element, index) => {
-            const props: any = {};
+            const props: {[key: string]: string | number} = {};
             if (!visible[index]) {
                 props.tabIndex = -1;
             }

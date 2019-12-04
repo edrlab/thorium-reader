@@ -15,7 +15,7 @@ interface IBaseProps {
     id: string;
     open: boolean;
     dir: string;
-    menuStyle: object;
+    menuStyle: React.CSSProperties; // {[key: string]: string};
     toggle: () => void;
     focusMenuButton?: () => void;
     setContentRef?: (ref: HTMLDivElement) => void;

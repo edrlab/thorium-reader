@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { RouteComponentProps } from "react-router";
+
 import Catalog from "./components/catalog/Catalog";
 import Browser from "./components/opds/Browser";
 import Opds from "./components/opds/Opds";
@@ -18,9 +20,7 @@ import LanguageSettings from "./components/settings/LanguageSettings";
 interface Route {
     path: string;
     exact: boolean;
-    title: string;
-    component: any;
-    customParams?: any;
+    component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
 }
 
 interface RouteList {
@@ -41,71 +41,60 @@ export const routes: RouteList = {
     "/opds": {
         path: "/opds",
         exact: true,
-        title: "Catalogues",
         component: Opds,
     },
     "/opds/browse": {
         // IOpdsBrowse
         path: "/opds/:opdsId/browse/:level/:name/:url",
         exact: true,
-        title: "Catalogues",
         component: Browser,
     },
     "/settings/languages": {
         path: "/settings/languages",
         exact: false,
-        title: "Settings: Languages",
         component: LanguageSettings,
     },
     // "/downloads": {
     //     path: "/downloads",
     //     exact: true,
-    //     title: "Downloads",
     //     component: DownloadsList,
     // },
     /*
     "/settings/information": {
         path: "/settings/information",
         exact: false,
-        title: "Information",
         component: Information,
     },*/
     "/settings": {
         path: "/settings",
         exact: false,
-        title: "Settings: default page",
         component: LanguageSettings,
     },
     "/library/search/text": {
         // ILibrarySearchText
         path: "/library/search/text/:value",
         exact: true,
-        title: "Library",
         component: TextSearchResult,
     },
     "/library/search/tag": {
         // ILibrarySearchTag
         path: "/library/search/tag/:value",
         exact: true,
-        title: "Library",
         component: TagSearchResult,
     },
     "/library/search/all": {
         path: "/library/search/all",
         exact: true,
-        title: "Library",
         component: AllPublicationPage,
     },
     "/library": {
         path: "/library",
         exact: true,
-        title: "Library",
         component: Catalog,
     },
     "/": {
         path: "/",
         exact: false,
-        title: "Home",
         component: Catalog,
     },
 };

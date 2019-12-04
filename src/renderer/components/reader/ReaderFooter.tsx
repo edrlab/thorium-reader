@@ -127,7 +127,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         );
     }
 
-    private getProgressionStyle() {
+    private getProgressionStyle(): React.CSSProperties {
         const { currentLocation } = this.props;
         if (!currentLocation) {
             return {};
@@ -166,7 +166,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
     // Get the style of the differents element of the arrow box
     // Take a function returning the good left css property
-    private getStyle(func: any) {
+    private getStyle(
+        func: (arrowBoxPosition: number, multiplicator: number, rest: number) => string): React.CSSProperties {
+
         const arrowBoxPosition = this.getArrowBoxPosition();
         let multiplicator = 1;
         const rest = Math.abs(arrowBoxPosition - 50);

@@ -501,4 +501,4 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 }
 
-export default withTranslator(ReaderOptions) as any;
+export default withTranslator(ReaderOptions);
