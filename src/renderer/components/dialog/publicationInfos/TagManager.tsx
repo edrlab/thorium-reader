@@ -24,6 +24,7 @@ import { Dispatch } from "redux";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:dialog:pubInfo:tagManager");
+debug("tagManager");
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
