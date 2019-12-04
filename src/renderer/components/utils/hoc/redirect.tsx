@@ -55,7 +55,7 @@ export function withRedirect<Props>(WrappedComponent: TComponentConstructor<Prop
                 }, 100);
             }
 
-            const newProps: any = Object.assign(
+            const newProps: Props & IRedirectProps & RouteComponentProps = Object.assign(
                 {},
                 this.props,
                 {

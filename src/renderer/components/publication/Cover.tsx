@@ -53,7 +53,7 @@ class Cover extends React.Component<IProps, undefined> {
             if (!colors) {
                 colors = RandomCustomCovers[0];
             }
-            const backgroundStyle = {
+            const backgroundStyle: React.CSSProperties = {
                 backgroundImage: `linear-gradient(${colors.topColor}, ${colors.bottomColor})`,
             };
 

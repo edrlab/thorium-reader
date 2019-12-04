@@ -21,7 +21,7 @@ interface IBaseProps extends TranslatorProps {
     sections: SectionData[];
     className: string;
     listClassName: string;
-    toggleMenu: any;
+    toggleMenu: () => void;
     focusMenuButton: () => void;
 }
 

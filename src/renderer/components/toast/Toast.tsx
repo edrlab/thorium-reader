@@ -20,7 +20,7 @@ interface IBaseProps extends TranslatorProps {
     close: (id: string) => void;
     className?: string;
     id?: string;
-    icon?: any;
+    // icon?: ISVGProps;
     message?: string;
     displaySystemNotification?: boolean;
     type?: ToastType;
@@ -77,7 +77,7 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { icon, type } = this.props;
+        const { type } = this.props;
         const { willLeave, toRemove } = this.state;
 
         let typeClassName: string;
@@ -101,7 +101,9 @@ export class Toast extends React.Component<IProps, IState> {
                     typeClassName,
                 )}
             >
-                { icon && <SVG className={styles.icon} svg={icon} /> }
+                {
+                // this.props.icon && <SVG className={styles.icon} svg={this.props.icon} />
+                }
                 <p>{ this.props.message }</p>
                 <button
                     onClick={() => this.handleClose()}

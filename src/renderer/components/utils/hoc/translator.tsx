@@ -31,7 +31,7 @@ export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Pr
         }
 
         public render() {
-            const newProps: any = Object.assign(
+            const newProps: Props & TranslatorProps = Object.assign(
                 {},
                 this.props,
                 {

@@ -12,14 +12,10 @@ import * as uuid from "uuid";
 import MenuButton from "./MenuButton";
 import MenuContent from "./MenuContent";
 
-interface ContentStyle {
-    [key: string]: any;
-}
-
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
-    button: any;
-    content: any;
+    button: React.ReactElement;
+    content: React.ReactElement;
     open: boolean; // Is menu open
     dir: string; // Direction of menu: right or left
     toggle: () => void;
@@ -36,7 +32,7 @@ interface IProps extends IBaseProps {
 }
 
 interface IState {
-    contentStyle: any;
+    contentStyle: React.CSSProperties;
 }
 
 export default class Menu extends React.Component<IProps, IState> {
@@ -104,7 +100,7 @@ export default class Menu extends React.Component<IProps, IState> {
         );
     }
 
-    private offset(el: any) {
+    private offset(el: HTMLElement) {
         const rect = el.getBoundingClientRect();
         const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -120,7 +116,7 @@ export default class Menu extends React.Component<IProps, IState> {
         if (!this.buttonRef?.current || !this.contentRef) {
             return;
         }
-        const contentStyle: ContentStyle = {
+        const contentStyle: React.CSSProperties = {
             position: "absolute",
         };
 

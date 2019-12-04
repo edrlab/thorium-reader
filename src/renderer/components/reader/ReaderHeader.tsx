@@ -39,9 +39,9 @@ interface IBaseProps extends TranslatorProps {
     handleFullscreenClick: () => void;
     handleReaderClose: () => void;
     handleReaderDetach: () => void;
-    toggleBookmark: any;
+    toggleBookmark: () => void;
     isOnBookmark: boolean;
-    displayPublicationInfo: any;
+    displayPublicationInfo: () => void;
     readerMenuProps: IReaderMenuProps;
     readerOptionsProps: IReaderOptionsProps;
 }
