@@ -6,7 +6,8 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
@@ -18,6 +19,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 import PublicationAddButton from "./PublicationAddButton";
 import SearchForm from "./SearchForm";
@@ -30,7 +32,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class Header extends React.Component<IProps, undefined> {
@@ -44,7 +46,7 @@ class Header extends React.Component<IProps, undefined> {
 
         let displayType = DisplayType.Grid;
         if (this.props.location?.state?.displayType) {
-            displayType = this.props.location.state.displayType as DisplayType;
+            displayType = this.props.location.state.displayType;
         }
 
         return (
@@ -56,7 +58,7 @@ class Header extends React.Component<IProps, undefined> {
                         hash: this.props.location.hash,
                         state: {
                             displayType: DisplayType.Grid,
-                        } as IRouterLocationState,
+                        },
                     }}
                     replace={true}
                     style={(displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
@@ -71,7 +73,7 @@ class Header extends React.Component<IProps, undefined> {
                         hash: this.props.location.hash,
                         state: {
                             displayType: DisplayType.List,
-                        } as IRouterLocationState,
+                        },
                     }}
                     replace={true}
                     style={displayType !== DisplayType.List ? {fill: "grey"} : {}}
@@ -98,7 +100,7 @@ class Header extends React.Component<IProps, undefined> {
                         hash: undefined,
                         state: {
                             displayType,
-                        } as IRouterLocationState,
+                        },
                     }}
                 >
                     {this.props.__("header.allBooks")}
@@ -109,4 +111,8 @@ class Header extends React.Component<IProps, undefined> {
     }
 }
 
-export default withTranslator(withRouter(Header)) ;
+const mapStateToProps = (state: RootState) => ({
+    location: state.router.location,
+});
+
+export default connect(mapStateToProps)(withTranslator(Header));
