@@ -20,7 +20,6 @@ import { DisplayType, RouterLocationState } from "../utils/displayType";
 export interface BreadCrumbItem {
     name: string;
     path?: string;
-    // state?: any; UNUSED?!
 }
 
 // tslint:disable-next-line: no-empty-interface
