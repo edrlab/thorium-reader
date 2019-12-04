@@ -161,51 +161,8 @@ class PublicationInfo extends React.Component<IProps, IState> {
                             <br />
                         </p>
 
-<<<<<<< HEAD
-                        {lcp && <>
-                            <h3>LCP</h3>
-                            <p className={classNames(styles.allowUserSelect)}
-                            >
-                                {(lsdStatus &&
-                                    (lsdStatus !== StatusEnum.Active && lsdStatus !== StatusEnum.Ready)) && <>
-                                <span style={{color: "red"}}>{(lsdStatus === StatusEnum.Expired ?
-                                        __("publication.expiredLcp")
-                                        : ((lsdStatus === StatusEnum.Cancelled) ?
-                                        __("publication.cancelledLcp")
-                                        : ((lsdStatus === StatusEnum.Revoked) ?
-                                        __("publication.revokedLcp")
-                                        : (lsdStatus === StatusEnum.Returned ?
-                                        __("publication.returnedLcp") :
-                                        `LCP LSD: ${lsdStatus}`))))}</span>
-                                <br /><br />
-                                </>}
-
-                                {lcpRightsStartDateStr && <>
-                                <span>{__("publication.lcpStart")}: </span><i>{lcpRightsStartDateStr}</i>
-                                <br />
-                                </>}
-
-                                {lcpRightsEndDateStr && <>
-                                <span>{__("publication.lcpEnd")}: </span><i>{lcpRightsEndDateStr}</i>
-                                <br />
-                                <br />
-                                </>}
-
-                                {lcpRightsCopy ? <>
-                                <span>{__("publication.lcpRightsCopy")}: </span>
-                                <i>{lcpRightsCopies} / {lcpRightsCopy}</i><br />
-                                </> : undefined}
-
-                                {lcpRightsPrint ? <>
-                                <span>{__("publication.lcpRightsPrint")}: </span>
-                                <i>0 / {lcpRightsPrint}</i><br />
-                                </> : undefined}
-                            </p>
-                        </>}
-=======
                         <LcpInfo publicationLcp={publication}></LcpInfo>
 
->>>>>>> develop
                     </div>
                 </div>
             </>;

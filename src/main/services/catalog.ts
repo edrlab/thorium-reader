@@ -19,7 +19,6 @@ import { AppWindow } from "readium-desktop/common/models/win";
 import {
     downloadActions, readerActions, toastActions,
 } from "readium-desktop/common/redux/actions/";
-import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { Translator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString } from "readium-desktop/common/utils";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
@@ -27,15 +26,9 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
-<<<<<<< HEAD
-import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
-import { RootState } from "readium-desktop/main/redux/states";
-=======
->>>>>>> develop
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
@@ -47,6 +40,7 @@ import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
 import { OpdsFeedViewConverter } from "../converter/opds";
 import { extractCrc32OnZip } from "../crc";
+import { RootState } from "../redux/states";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
 import { WinRegistry } from "./win-registry";
@@ -58,9 +52,6 @@ const debug = debug_("readium-desktop:main#services/catalog");
 export class CatalogService {
     @inject(diSymbolTable["lcp-secret-repository"])
     private readonly lcpSecretRepository!: LcpSecretRepository;
-
-    @inject(diSymbolTable["config-repository"])
-    private readonly configRepository!: ConfigRepository<AccessTokenMap>;
 
     @inject(diSymbolTable.downloader)
     private readonly downloader!: Downloader;
@@ -80,10 +71,6 @@ export class CatalogService {
     @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
 
-<<<<<<< HEAD
-    @inject(diSymbolTable["opds-feed-view-converter"])
-    private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
-
     @inject(diSymbolTable["win-registry"])
     private readonly winRegistry!: WinRegistry;
 
@@ -92,9 +79,6 @@ export class CatalogService {
         isLcpFile?: boolean,
         lcpHashedPassphrase?: string): Promise<PublicationDocument | undefined> {
 
-=======
-    public async importEpubOrLcplFile(filePath: string, isLcpFile?: boolean): Promise<PublicationDocument | undefined> {
->>>>>>> develop
         let publicationDocument: PublicationDocument | undefined;
 
         const ext = path.extname(filePath);
@@ -124,81 +108,41 @@ export class CatalogService {
         return publicationDocument;
     }
 
-<<<<<<< HEAD
-    public async importPublicationFromOpdsUrl(
-        entryUrl: string,
-    ): Promise<THttpGetPublicationDocument> {
-
-        debug("Import OPDS publication", entryUrl);
-
-        let savedAccessTokens: AccessTokenMap = {};
-        try {
-            const configDoc = await this.configRepository.get("oauth");
-            savedAccessTokens = configDoc.value;
-        } catch (err) {
-            debug(err);
-        }
-        const domain = entryUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
-        const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
-
-        return await httpGet(entryUrl, {
-            timeout: 10000,
-            headers: {
-                Authorization: accessToken ? `Bearer ${accessToken.authenticationToken}` : undefined,
-            },
-        }, async (opdsFeedData) => {
-            let r2OpdsPublication: OPDSPublication = null;
-
-            if (opdsFeedData.isFailure) {
-                return opdsFeedData;
-            }
-            if (opdsFeedData.body.startsWith("<?xml")) {
-                const xmlDom = new xmldom.DOMParser().parseFromString(opdsFeedData.body);
-
-                if (!xmlDom || !xmlDom.documentElement) {
-                    throw new OpdsParsingError(`Unable to parse ${entryUrl}`);
-                }
-
-                const isEntry = xmlDom.documentElement.localName === "entry";
-
-                if (!isEntry) {
-                    throw new OpdsParsingError(`This is not an OPDS entry ${entryUrl}`);
-                }
-                const opds1Entry = XML.deserialize<Entry>(xmlDom, Entry);
-                r2OpdsPublication = convertOpds1ToOpds2_EntryToPublication(opds1Entry);
-=======
     public async importPublicationFromLink(
         link: IOpdsLinkView,
         r2OpdsPublicationBase64: string,
     ): Promise<PublicationDocument | undefined> {
         let returnPublicationDocument: PublicationDocument;
->>>>>>> develop
 
         if (!(link?.url && r2OpdsPublicationBase64)) {
             debug("Unable to get an acquisition url from opds publication", link);
             throw new Error("Unable to get acquisition url from opds publication");
         }
 
-<<<<<<< HEAD
-        const downloadLink = r2OpdsPublication.Links.find((l) => {
-            return l.Href === downloadUrl;
-        });
-        let isLcpFile = false;
-        let title = opdsPublicationView.title;
-        if (downloadLink) {
-            isLcpFile = downloadLink.TypeLink === "application/vnd.readium.lcp.license.v1.0+json";
-            if (!isLcpFile && downloadLink.TypeLink !== "application/epub+zip") {
-                throw new Error(`OPDS download link is not EPUB! ${downloadUrl} ${downloadLink.TypeLink}`);
-            }
-            if (!title && downloadLink.Title) {
-                title = downloadLink.Title;
-            }
-        }
-        if (!title) {
-            title = downloadUrl;
+        const title = link.title || link.url;
+        const isLcpFile = link.type === "application/vnd.readium.lcp.license.1.0+json";
+        const isEpubFile = link.type === "application/epub+zip";
+        if (!isLcpFile && !isEpubFile) {
+            throw new Error(`OPDS download link is not EPUB! ${link.url} ${link.type}`);
         }
 
+        // start the download service
+        const download = this.downloader.addDownload(link.url);
+
+        // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
+        //     this.translator.translate("message.download.start", { title })));
+
+        // send to the front-end the signal of download
+        this.store.dispatch(downloadActions.request.build(download.srcUrl, title));
+
+        const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
+        const r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
+        const r2OpdsPublication = TaJsonDeserialize<OPDSPublication>(r2OpdsPublicationJson, OPDSPublication);
+
         let lcpHashedPassphrase: string | undefined;
+        const downloadLink = r2OpdsPublication.Links.find((l) => {
+            return l.Href === link.url;
+        });
         if (downloadLink) {
             const key = "lcp_hashed_passphrase";
             if (downloadLink.Properties &&
@@ -219,25 +163,6 @@ export class CatalogService {
                 lcpHashedPassphrase = "d62414a0ede9e20898a1cb0e26dd05c57d7ef7a396d195fac9b43c1447bfd9ac";
             }
         }
-
-        const download: Download = this.downloader.addDownload(downloadUrl);
-=======
-        const title = link.title || link.url;
-        const isLcpFile = link.type === "application/vnd.readium.lcp.license.1.0+json";
-        const isEpubFile = link.type === "application/epub+zip";
-        if (!isLcpFile && !isEpubFile) {
-            throw new Error(`OPDS download link is not EPUB! ${link.url} ${link.type}`);
-        }
-
-        // start the download service
-        const download = this.downloader.addDownload(link.url);
->>>>>>> develop
-
-        // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
-        //     this.translator.translate("message.download.start", { title })));
-
-        // send to the front-end the signal of download
-        this.store.dispatch(downloadActions.request.build(download.srcUrl, title));
 
         // track download progress
         debug("[START] Download publication", link.url);
@@ -268,18 +193,9 @@ export class CatalogService {
         this.store.dispatch(downloadActions.success.build(download.srcUrl));
 
         // Import downloaded publication in catalog
-<<<<<<< HEAD
-        // FIXME: can be undefined type
         let publicationDocument = await this.importEpubOrLcplFile(download.dstPath, isLcpFile, lcpHashedPassphrase);
-=======
-        let publicationDocument = await this.importEpubOrLcplFile(download.dstPath, isLcpFile);
->>>>>>> develop
 
         if (publicationDocument) {
-
-            const r2OpdsPublicationStr = Buffer.from(r2OpdsPublicationBase64, "base64").toString("utf-8");
-            const r2OpdsPublicationJson = JSON.parse(r2OpdsPublicationStr);
-            const r2OpdsPublication = TaJsonDeserialize<OPDSPublication>(r2OpdsPublicationJson, OPDSPublication);
             const tags = OpdsFeedViewConverter.getTagsFromOpdsPublication(r2OpdsPublication);
 
             // Merge with the original publication

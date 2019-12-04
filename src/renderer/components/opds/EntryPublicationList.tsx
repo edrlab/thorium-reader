@@ -73,9 +73,8 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (_state: RootState, _props: IBaseProps) => ({
-    // this prop is already injected by RouteComponentProps
-    // location: state.router.location,
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+    location: state.router.location,
 });
 
 export default connect(mapStateToProps)(EntryPublicationList);

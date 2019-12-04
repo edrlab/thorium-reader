@@ -45,56 +45,6 @@ export interface IOpdsNavigationLinkView {
     numberOfItems?: number;
 }
 
-<<<<<<< HEAD
-export interface OpdsGroupView {
-    title: string;
-    navigation?: OpdsLinkView[];
-    opdsPublicationViews?: OpdsPublicationView[];
-}
-
-export enum OpdsResultType {
-    // Entry = "entry",
-    NavigationFeed = "navigation-feed",
-    PublicationFeed = "publication-feed",
-    MixedFeed = "mixed-feed",
-    Empty = "empty",
-
-    Auth = "auth",
-}
-
-export interface OpdsAuthView {
-    logoImageUrl: string;
-
-    labelLogin: string;
-    labelPassword: string;
-
-    oauthUrl: string;
-    oauthRefreshUrl: string;
-}
-
-export interface OpdsResultView {
-    type: OpdsResultType;
-
-    title: string;
-
-    navigation?: OpdsLinkView[];
-    opdsPublicationViews?: OpdsPublicationView[];
-    groups?: OpdsGroupView[];
-
-    urls: OpdsResultUrls;
-    page?: OpdsResultPageInfos;
-
-    auth?: OpdsAuthView;
-}
-
-export interface OpdsResultUrls {
-    nextPage?: string;
-    previousPage?: string;
-    firstPage?: string;
-    lastPage?: string;
-    search?: string;
-    shelf?: string;
-=======
 export interface IOpdsFeedMetadataView {
     numberOfItems?: number;
     itemsPerPage?: number;
@@ -107,13 +57,31 @@ export interface IOpdsResultView {
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
     links?: IOpdsNavigationLink;
+
+    groups?: OpdsGroupView[];
+    auth?: OpdsAuthView;
+}
+
+export interface OpdsGroupView {
+    title: string;
+    navigation?: IOpdsNavigationLinkView[];
+    publications?: IOpdsPublicationView[];
+}
+
+export interface OpdsAuthView {
+    logoImageUrl: string;
+
+    labelLogin: string;
+    labelPassword: string;
+
+    oauthUrl: string;
+    oauthRefreshUrl: string;
 }
 
 export interface IOpdsLinkView {
     url: string;
     title?: string | undefined;
     type?: string | undefined;
->>>>>>> develop
 }
 
 export interface IOpdsNavigationLink {

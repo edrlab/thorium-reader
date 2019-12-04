@@ -13,12 +13,6 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
-<<<<<<< HEAD
-import { IOpdsBrowse } from "readium-desktop/renderer/routing";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
-import { parseQueryString } from "readium-desktop/utils/url";
-=======
->>>>>>> develop
 
 import BreadCrumb from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";

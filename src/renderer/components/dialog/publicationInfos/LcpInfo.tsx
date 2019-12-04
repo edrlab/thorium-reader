@@ -138,15 +138,15 @@ class LcpInfo extends React.Component<IProps, undefined> {
                         <br />
                     </>}
 
-                    {lcpRightsCopy && <>
+                    {lcpRightsCopy ? <>
                         <span>{__("publication.lcpRightsCopy")}: </span>
                         <i>{lcpRightsCopies} / {lcpRightsCopy}</i><br />
-                    </>}
+                    </> : undefined}
 
-                    {lcpRightsPrint && <>
+                    {lcpRightsPrint ? <>
                         <span>{__("publication.lcpRightsPrint")}: </span>
                         <i>0 / {lcpRightsPrint}</i><br />
-                    </>}
+                    </> : undefined}
                 </p>
             </>
         );

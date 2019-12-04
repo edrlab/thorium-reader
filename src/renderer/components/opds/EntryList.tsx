@@ -14,22 +14,14 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import Entry from "./Entry";
 
 interface IBaseProps {
-<<<<<<< HEAD
-    entries: OpdsLinkView[];
-=======
     entries: IOpdsNavigationLinkView[];
->>>>>>> develop
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-<<<<<<< HEAD
-interface IProps extends IBaseProps, RouteComponentProps, ReturnType<typeof mapStateToProps> {
-=======
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
->>>>>>> develop
 }
 
 class EntryList extends React.Component<IProps, undefined> {

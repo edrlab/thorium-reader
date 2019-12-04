@@ -7,29 +7,14 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-<<<<<<< HEAD
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { OpdsResultType } from "readium-desktop/common/views/opds";
-import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
-import { apiAction } from "readium-desktop/renderer/apiAction";
-=======
->>>>>>> develop
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
-<<<<<<< HEAD
-import { RootState } from "readium-desktop/renderer/redux/states";
-import { IOpdsBrowse } from "readium-desktop/renderer/routing";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
-import { ReturnPromiseType } from "readium-desktop/typings/promise";
-import { parseQueryString } from "readium-desktop/utils/url";
-=======
 import { apiState } from "readium-desktop/renderer/redux/api/api";
 import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/redux/sagas/opds";
 import { RootState } from "readium-desktop/renderer/redux/states";
->>>>>>> develop
 
 import OPDSAuth from "./Auth";
 import EntryList from "./EntryList";
@@ -44,57 +29,14 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-<<<<<<< HEAD
-interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse>, ReturnType<typeof mapStateToProps> {
-}
-
-interface IState {
-    browserResult: ReturnPromiseType<TOpdsApiBrowse> | undefined;
-    browserError: string | undefined;
-    currentResultPage: number;
-}
-
-export class BrowserResult extends React.Component<IProps, IState> {
-    private currentUrl: string;
-
-    constructor(props: IProps) {
-        super(props);
-        this.state = {
-            browserError: undefined,
-            browserResult: undefined,
-            currentResultPage: 1,
-        };
-
-        this.goto = this.goto.bind(this);
-        this.browseOpds = this.browseOpds.bind(this);
-    }
-
-    public componentDidMount() {
-        this.browseOpds(this.props.url);
-    }
-
-    public componentDidUpdate(prevProps: IProps) {
-        if (prevProps.url !== this.props.url ||
-            prevProps.location.search !== this.props.location.search) {
-            // New url to browse
-            this.browseOpds(this.props.url);
-        }
-
-        if (this.props.breadcrumb !== prevProps.breadcrumb) {
-            this.setState({currentResultPage: 1});
-        }
-    }
-=======
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 export class BrowserResult extends React.Component<IProps, undefined> {
->>>>>>> develop
 
     public render(): React.ReactElement<{}> {
         const { __, browserData } = this.props;
         let content = (<Loader />);
-        let shelfContent: React.ReactElement<{}> | undefined;
 
         if (!navigator.onLine) {
             content = (
@@ -110,113 +52,69 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     message={browserData.errorMessage.message}
                 />
             );
-<<<<<<< HEAD
-        } else if (browserResult) {
-            if (browserResult.isSuccess ||
-                (browserResult.isFailure && browserResult.statusCode === 401 && browserResult.data)) {
-
-                if (browserResult.data.urls.shelf) {
-
-                    // Build feedBreadcrumb
-                    const { level, match } = this.props;
-                    const rootFeedIdentifier = match.params.opdsId;
-                    const route = buildOpdsBrowserRoute(
-                        rootFeedIdentifier,
-                        __("opds.shelf"),
-                        browserResult.data.urls.shelf,
-                        level,
-                    );
-
-                    shelfContent = (
-                        <h3>
-                            <Link
-                                className={styles.flux_infos}
-                                to={route}
-                            >
-                                <span className={styles.flux_title}>{__("opds.shelf")}</span>
-                            </Link>
-                            <br></br>
-                        </h3>);
-                }
-                switch (browserResult.data.type) {
-                    case OpdsResultType.Auth:
-                        content = (
-                            <OPDSAuth browseOpds={this.browseOpds} url={this.props.url} data={browserResult.data}/>
-                        );
-                        break;
-                    case OpdsResultType.NavigationFeed:
-                        content = (
-                            <EntryList entries={browserResult.data.navigation} />
-                        );
-                        break;
-                    case OpdsResultType.PublicationFeed:
-                        content = (
-=======
         } else if (browserData?.result) {
             const browserResult = browserData.result;
 
-            if (browserResult.isSuccess) {
-                if (browserResult.data.navigation) {
+            if (browserResult.isSuccess ||
+                (browserResult.isFailure && browserResult.statusCode === 401 && browserResult.data?.auth)) {
+
+                if (browserResult.data.auth) {
+                    content = (
+                        <OPDSAuth browserResult={browserResult}/>
+                    );
+                } else if (browserResult.data.navigation &&
+                    !browserResult.data.publications &&
+                    !browserResult.data.groups) {
+
                     content = (
                         <EntryList entries={browserResult.data.navigation} />
                     );
-                } else if (browserResult.data.publications) {
+                } else if (browserResult.data.publications &&
+                    !browserResult.data.navigation &&
+                    !browserResult.data.groups) {
+
                     content = (
->>>>>>> develop
                             <EntryPublicationList
                                 opdsPublicationView={browserResult.data.publications}
                                 links={browserResult.data.links}
                                 pageInfo={browserResult.data.metadata}
                             />
                         );
-<<<<<<< HEAD
-                        break;
-                    case OpdsResultType.MixedFeed:
-                        content = (<>
-                            {browserResult.data.navigation &&
-                            <EntryList entries={browserResult.data.navigation} />}
+                } else if (browserResult.data.groups ||
+                    browserResult.data.publications ||
+                    browserResult.data.navigation) {
 
-                            {browserResult.data.opdsPublicationViews &&
-                            <EntryPublicationList
-                                opdsPublicationViews={browserResult.data.opdsPublicationViews}
-                                goto={this.goto}
-                                urls={browserResult.data.urls}
-                                page={browserResult.data.page}
-                                currentPage={this.state.currentResultPage}
-                            />}
+                    content = (<>
+                        {browserResult.data.navigation &&
+                        <EntryList entries={browserResult.data.navigation} />}
 
-                            {browserResult.data.groups && browserResult.data.groups.map((group, i) => {
-                                return (<section key={i}>
-                                    <br></br>
-                                    <h3>{group.title}</h3>
-                                    {group.navigation &&
-                                    <EntryList entries={group.navigation} />}
-                                    <hr></hr>
-                                    {group.opdsPublicationViews &&
-                                    <EntryPublicationList
-                                        opdsPublicationViews={group.opdsPublicationViews}
-                                        goto={this.goto}
-                                        urls={{}}
-                                        page={undefined}
-                                        currentPage={-1}
-                                    />}
-                                </section>);
-                            })}
-                        </>);
-                        break;
-                    case OpdsResultType.Empty:
-                        content = (
-                            <MessageOpdBrowserResult title={__("opds.empty")} />
-                        );
-                        break;
-                    default:
-                        break;
-=======
+                        {browserResult.data.publications &&
+                        <EntryPublicationList
+                            opdsPublicationView={browserResult.data.publications}
+                            links={browserResult.data.links}
+                            pageInfo={browserResult.data.metadata}
+                        />}
+
+                        {browserResult.data.groups && browserResult.data.groups.map((group, i) => {
+                            return (<section key={i}>
+                                <br></br>
+                                <h3>{group.title}</h3>
+                                {group.navigation &&
+                                <EntryList entries={group.navigation} />}
+                                <hr></hr>
+                                {group.publications &&
+                                <EntryPublicationList
+                                    opdsPublicationView={group.publications}
+                                    links={undefined}
+                                    pageInfo={undefined}
+                                />}
+                            </section>);
+                        })}
+                    </>);
                 } else {
                     content = (
                         <MessageOpdBrowserResult title={__("opds.empty")} />
                     );
->>>>>>> develop
                 }
             } else if (browserResult.isTimeout) {
                 content = (
@@ -233,13 +131,12 @@ export class BrowserResult extends React.Component<IProps, undefined> {
         }
 
         return <div className={styles.opdsBrowseContent}>
-            {shelfContent ? shelfContent : undefined}
             {content}
         </div>;
     }
 }
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
 
     const apiBrowseData = apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("opds/browse");
     return {
@@ -247,12 +144,4 @@ const mapStateToProps = (state: RootState) => {
     };
 };
 
-<<<<<<< HEAD
-const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
-    level: state.opds.browser.navigation.length + 1,
-});
-
-export default connect(mapStateToProps, undefined)(withTranslator(withRouter(BrowserResult)));
-=======
-export default connect(mapStateToProps)(withTranslator(BrowserResult));
->>>>>>> develop
+export default connect(mapStateToProps, undefined)(withTranslator(BrowserResult));
