@@ -73,7 +73,7 @@ export function withRedirect<Props>(WrappedComponent: TComponentConstructor<Prop
                     push={true}
                     to={{
                         pathname: this.state.redirect.pathname,
-                        search: this.state.redirect.search,
+                        search: this.state.redirect.search ?? "",
                         hash: "",
                         state: {
                             displayType,
