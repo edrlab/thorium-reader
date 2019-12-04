@@ -160,17 +160,23 @@ class OPDSAuth extends React.Component<IProps, IState> {
                     if (okay) {
                         console.log("SUCCESS fetch api opds/oauth");
 
-                        const { level, match } = this.props;
-                        const pathname = buildOpdsBrowserRoute(
-                            match.params.opdsId,
-                            match.params.name,
-                            url,
-                            level,
+                        const param = this.props.match.params;
+                        const lvl = parseInt(param.level, 10);
+                        const i = (lvl > 1) ? (lvl - 1) : lvl;
+                        const name = this.props.breadcrumb[i] && this.props.breadcrumb[i].name;
+                        const route = buildOpdsBrowserRoute(
+                            param.opdsId,
+                            name,
+                            url, // this.props.headerLinks?.self
+                            lvl,
                         );
 
                         this.props.history.push({
                             ...this.props.location,
-                            pathname,
+                            pathname: route,
+                            search: "",
+                            hash: "",
+                            // state: {} // we preserve the existing route state
                         });
                     }
                 })
@@ -188,6 +194,8 @@ class OPDSAuth extends React.Component<IProps, IState> {
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     level: state.opds.browser.breadcrumb.length + 1,
+    headerLinks: state.opds.browser.header,
+    breadcrumb: state.opds.browser.breadcrumb,
 });
 
 const mapDispatchToProps = (_dispatch: TDispatch, _props: IBaseProps) => {
