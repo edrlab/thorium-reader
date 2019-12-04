@@ -76,3 +76,5 @@ export function parseOpdsBrowserRoute(route: string) {
         level,
     };
 }
+
+export type TParseOpdsBrowserRoute = ReturnType<typeof parseOpdsBrowserRoute>;

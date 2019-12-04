@@ -23,7 +23,7 @@ export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Pr
             const translator = diRendererGet("translator");
             const translate = translator.translate.bind(translator) as I18nTyped;
 
-            const newProps: any = Object.assign(
+            const newProps = Object.assign(
                 {},
                 this.props,
                 {

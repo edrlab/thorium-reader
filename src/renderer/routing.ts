@@ -36,9 +36,6 @@ export interface IOpdsBrowse {
 export interface ILibrarySearchText {
     value: string;
 }
-export interface ILibrarySearchTag {
-    value: string;
-}
 
 export const routes: RouteList = {
     "/opds": {

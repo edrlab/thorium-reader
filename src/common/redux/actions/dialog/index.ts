@@ -7,8 +7,10 @@
 
 import * as closeRequest from "./closeRequest";
 import * as openRequest from "./openRequest";
+import * as updateRequest from "./updateRequest";
 
 export {
     closeRequest,
     openRequest,
+    updateRequest,
 };

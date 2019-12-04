@@ -5,8 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 
 export interface ImportState {
-    opdsPublicationView: OpdsPublicationView;
+    link: IOpdsLinkView | undefined;
+    r2OpdsPublicationBase64: string | undefined;
+    title?: string | undefined;
 }

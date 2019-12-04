@@ -73,8 +73,10 @@
         "downloads": "Downloads",
         "gridTitle": "Bücher in einem Raster präsentieren",
         "home": "Hauptmenü",
+        "homeTitle": "home",
         "importTitle": "ein Buch importieren",
         "listTitle": "Bücher in einer Liste präsentieren",
+        "refreshTitle": "Feeds neu laden",
         "searchPlaceholder": "Suche",
         "searchTitle": "Suche starten",
         "settings": "Einstellungen"
@@ -136,6 +138,9 @@
         "cancelledLcp": "",
         "certificateRevoked": "",
         "certificateSignatureInvalid": "",
+        "cover": {
+            "img": "Titelbild"
+        },
         "expiredLcp": "",
         "lcpEnd": "",
         "lcpRightsCopy": "",

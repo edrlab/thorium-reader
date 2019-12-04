@@ -78,10 +78,9 @@ export class CatalogMenu extends React.Component<IProps, IState> {
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build("publication-info",
+            dispatch(dialogActions.openRequest.build("publication-info-lib",
                 {
-                    publicationIdentifier: (props.publicationView).identifier,
-                    opdsPublicationView: undefined,
+                    publicationIdentifier: props.publicationView.identifier,
                 },
             ));
         },
