@@ -20,7 +20,7 @@ import {
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { IOpdsBrowse } from "readium-desktop/renderer/routing";
+import { DisplayType, IOpdsBrowse } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 import SearchForm from "./SearchForm";

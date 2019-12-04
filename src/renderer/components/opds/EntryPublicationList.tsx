@@ -9,11 +9,11 @@ import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { IOpdsPublicationView, IOpdsResultView } from "readium-desktop/common/views/opds";
-import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 import { GridView } from "readium-desktop/renderer/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { DisplayType } from "readium-desktop/renderer/routing";
 
 import PageNavigation from "./PageNavigation";
 

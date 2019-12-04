@@ -19,7 +19,8 @@ import {
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
 import { Unsubscribe } from "redux";
 
-import Header, { DisplayType } from "../catalog/Header";
+import Header from "../catalog/Header";
+import { DisplayType } from "readium-desktop/renderer/routing";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

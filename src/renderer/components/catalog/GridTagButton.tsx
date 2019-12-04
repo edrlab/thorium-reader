@@ -9,8 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "readium-desktop/renderer/redux/states";
-
-import { DisplayType } from "../utils/displayType";
+import { DisplayType } from "readium-desktop/renderer/routing";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {

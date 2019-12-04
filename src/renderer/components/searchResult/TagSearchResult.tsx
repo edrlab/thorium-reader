@@ -18,10 +18,10 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
-import { ILibrarySearchText } from "readium-desktop/renderer/routing";
+import { DisplayType, ILibrarySearchText } from "readium-desktop/renderer/routing";
 import { Unsubscribe } from "redux";
 
-import Header, { DisplayType } from "../catalog/Header";
+import Header from "../catalog/Header";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

@@ -8,7 +8,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import { DisplayType } from "readium-desktop/renderer/components/utils/displayType";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
@@ -16,6 +15,7 @@ import {
     apiClean, apiDispatch, apiRefreshToState, apiState,
 } from "readium-desktop/renderer/redux/api/api";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { DisplayType } from "readium-desktop/renderer/routing";
 import { Dispatch } from "redux";
 import * as uuid from "uuid";
 
