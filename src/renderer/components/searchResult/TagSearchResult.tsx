@@ -80,13 +80,12 @@ export class TagSearchResult extends React.Component<IProps, IState> {
             }
         }
 
-        const secondaryHeader = <Header displayType={ displayType } />;
+        const secondaryHeader = <Header/>;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <div>
                     <BreadCrumb
-                        search={this.props.location.search}
                         breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title as string}]}
                     />
                     { this.state.publicationViews ?

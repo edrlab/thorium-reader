@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { connect } from "react-redux";
 import { TPublicationApiFindAll_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
@@ -17,10 +17,11 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { DisplayType } from "readium-desktop/renderer/routing";
 import { Unsubscribe } from "redux";
 
 import Header from "../catalog/Header";
-import { DisplayType } from "readium-desktop/renderer/routing";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -30,7 +31,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -67,31 +68,16 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const displayType = this.props.location.state;
-        let type: any = "";
-        let typeview: DisplayType = DisplayType.Grid;
+        const { displayType } = this.props.location?.state;
         const { __ } = this.props;
         const title = __("catalog.allBooks");
 
-        if (displayType) {
-            type = Object.values(displayType).pop();
-        }
-
-        // console.log(`type: ${type}`);
-        if (type === DisplayType.List ||
-            window.location.hash === "#/library/search/all?displayType=list") {
-            typeview = DisplayType.List;
-        } else {
-            typeview = DisplayType.Grid;
-        }
-
-        const secondaryHeader = <Header displayType={typeview} />;
+        const secondaryHeader = <Header/>;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <div>
                     <BreadCrumb
-                        search={this.props.location.search}
                         breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title as string }]}
                     />
                     {this.state.publicationViews ?
@@ -105,4 +91,8 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(AllPublicationPage);
+const mapStateToProps = (state: RootState) => ({
+    location: state.router.location,
+});
+
+export default connect(mapStateToProps)(withTranslator(AllPublicationPage));
