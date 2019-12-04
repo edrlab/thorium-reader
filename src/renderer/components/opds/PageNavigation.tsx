@@ -45,36 +45,35 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
     public render() {
         const { pageLinks, pageInfo, __ } = this.props;
-        const { next, previous, last, first } = pageLinks;
 
         return (
             <div className={styles.opds_page_navigation}>
                 <span />
-                {first[0] && first[0].url &&
-                    <Link to={newRouteUrl(this.props.location.pathname, first[0].url)}>
+                {pageLinks?.first && pageLinks.first[0] && pageLinks.first[0].url &&
+                    <Link to={newRouteUrl(this.props.location.pathname, pageLinks.first[0].url)}>
                         <button>
                             {__("opds.firstPage")}
                         </button>
                     </Link>
                 }
-                {previous[0] && previous[0].url &&
-                    <Link to={newRouteUrl(this.props.location.pathname, previous[0].url)}>
+                {pageLinks?.previous && pageLinks.previous[0] && pageLinks.previous[0].url &&
+                    <Link to={newRouteUrl(this.props.location.pathname, pageLinks.previous[0].url)}>
                         <button>
                             <SVG svg={ArrowLeftIcon} />
                             {__("opds.previous")}
                         </button>
                     </Link>
                 }
-                {next[0] && next[0].url &&
-                    <Link to={newRouteUrl(this.props.location.pathname, next[0].url)}>
+                {pageLinks?.next && pageLinks.next[0] && pageLinks.next[0].url &&
+                    <Link to={newRouteUrl(this.props.location.pathname, pageLinks.next[0].url)}>
                         <button>
                             {__("opds.next")}
                             <SVG svg={ArrowRightIcon} />
                         </button>
                     </Link>
                 }
-                {last[0] && last[0].url &&
-                    <Link to={newRouteUrl(this.props.location.pathname, last[0].url)}>
+                {pageLinks?.last && pageLinks.last[0] && pageLinks.last[0].url &&
+                    <Link to={newRouteUrl(this.props.location.pathname, pageLinks.last[0].url)}>
                         <button>
                             {__("opds.lastPage")}
                         </button>
@@ -92,8 +91,8 @@ class PageNavigation extends React.Component<IProps, undefined> {
         const { pageLinks, location } = this.props;
 
         if (e.shiftKey && e.ctrlKey) {
-            const next = pageLinks.next[0] && pageLinks.next[0].url;
-            const previous = pageLinks.previous[0] && pageLinks.previous[0].url;
+            const next = pageLinks && pageLinks.next[0] && pageLinks.next[0].url;
+            const previous = pageLinks && pageLinks.previous[0] && pageLinks.previous[0].url;
 
             if (previous && e.key === "ArrowLeft") {
                 this.props.history.push(newRouteUrl(location.pathname, next));
