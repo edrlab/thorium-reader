@@ -31,7 +31,7 @@ interface IProps extends IBaseProps {
 // Logger
 const debug = debug_("readium-desktop:renderer:publication-info:lcp-info");
 
-class LcpInfo extends React.Component<IProps> {
+class LcpInfo extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);

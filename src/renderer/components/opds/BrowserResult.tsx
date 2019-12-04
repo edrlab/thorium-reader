@@ -88,7 +88,7 @@ export class BrowserResult extends React.Component<IProps, IState> {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-export class BrowserResult extends React.Component<IProps> {
+export class BrowserResult extends React.Component<IProps, undefined> {
 >>>>>>> develop
 
     public render(): React.ReactElement<{}> {

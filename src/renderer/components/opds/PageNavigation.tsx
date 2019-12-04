@@ -33,7 +33,7 @@ interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse> {
 // replace the last '/:url' with the new navigation url
 const newRouteUrl = (path: string, url: string) => path.replace(/^(.*?)[^\/]+$/, `\$1${url}`);
 
-class PageNavigation extends React.Component<IProps> {
+class PageNavigation extends React.Component<IProps, undefined> {
 
     public componentDidMount() {
         document.addEventListener("keydown", this.handleKeyDown);
