@@ -45,11 +45,6 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
         let displayType = DisplayType.Grid;
         if (this.props.location?.state?.displayType) {
             displayType = this.props.location.state.displayType as DisplayType;
-        //     console.log("this.props.location -- EntryPublicationList");
-        //     console.log(this.props.location);
-        //     console.log(this.props.location.state);
-        // } else {
-        //     console.log("XXX this.props.location -- EntryPublicationList");
         }
 
         // force cast on PublicationView[]

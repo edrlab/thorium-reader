@@ -89,11 +89,6 @@ export class BrowserResult extends React.Component<IProps, IState> {
         let displayType = DisplayType.Grid;
         if (this.props.location?.state?.displayType) {
             displayType = this.props.location.state.displayType as DisplayType;
-        //     console.log("this.props.location -- OPDS BrowserResult");
-        //     console.log(this.props.location);
-        //     console.log(this.props.location.state);
-        // } else {
-        //     console.log("XXX this.props.location -- OPDS BrowserResult");
         }
 
         if (!navigator.onLine) {
