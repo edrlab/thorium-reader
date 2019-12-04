@@ -17,6 +17,8 @@ import {
 import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 
 import { DisplayType, IRouterLocationState } from "../utils/displayType";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { connect } from "react-redux";
 
 interface NavigationHeader {
     route: string;
@@ -24,6 +26,7 @@ interface NavigationHeader {
     matchRoutes: string[];
     styles: string[];
 }
+
 const headerNav: NavigationHeader[] = [
     {
         route: "/library",
@@ -37,13 +40,6 @@ const headerNav: NavigationHeader[] = [
         matchRoutes: ["/opds"],
         styles: [],
     },
-    // // DownloadsList
-    // {
-    //     route: "/downloads",
-    //     label: "downloads",
-    //     matchRoutes: ["/downloads"],
-    //     styles: [],
-    // },
     {
         route: "/settings",
         label: "settings",
@@ -60,7 +56,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class Header extends React.Component<IProps, undefined> {
@@ -78,11 +74,17 @@ class Header extends React.Component<IProps, undefined> {
                 anchorId="main-content"
                 label={__("accessibility.skipLink")}
             />
-            <nav className={styles.main_navigation} role="navigation" aria-label={ __("header.home")}>
+            <nav
+                className={styles.main_navigation}
+                role="navigation"
+                aria-label={__("header.home")}>
                 <ul>
-                    { headerNav.map((item, index: number) => {
-                        return this.buildNavItem(item, index, __);
-                    })}
+                    {
+                        headerNav.map(
+                            (item, index: number) =>
+                                this.buildNavItem(item, index, __),
+                        )
+                    }
                 </ul>
             </nav>
         </>);
@@ -97,11 +99,20 @@ class Header extends React.Component<IProps, undefined> {
         const translate = __ as (str: string) => string;
 
         let styleClasses = [];
-        const pathname = this.props.match.path;
+        const pathname = this.props.location.pathname;
 
         for (const matchRoute of item.matchRoutes) {
-            if (pathname.startsWith(matchRoute)
-            && ((pathname === "/" && matchRoute === pathname) || matchRoute !== "/")) {
+            if (
+                pathname.startsWith(matchRoute)
+                &&
+                (
+                    (
+                        pathname === "/"
+                        && matchRoute === pathname
+                    )
+                    || matchRoute !== "/"
+                )
+            ) {
                 styleClasses.push(styles.active);
                 break;
             }
@@ -111,11 +122,11 @@ class Header extends React.Component<IProps, undefined> {
 
         let displayType = DisplayType.Grid;
         if (this.props.location?.state?.displayType) {
-            displayType = this.props.location.state.displayType as DisplayType;
+            displayType = this.props.location.state.displayType;
         }
 
         return (
-            <li className={classNames(...styleClasses)} key={ index }>
+            <li className={classNames(...styleClasses)} key={index}>
                 <Link
                     to={{
                         pathname: item.route,
@@ -123,14 +134,21 @@ class Header extends React.Component<IProps, undefined> {
                         hash: "",
                         state: {
                             displayType,
-                        } as IRouterLocationState,
+                        },
                     }}
-                    replace={true}>
-                    { translate("header." + item.label) }
+                    replace={true}
+                >
+                    {
+                        translate("header." + item.label)
+                    }
                 </Link>
             </li>
         );
     }
 }
 
-export default withTranslator(withRouter(Header));
+const mapStateToProps = (state: RootState) => ({
+    location: state.router.location,
+});
+
+export default connect(mapStateToProps)(withTranslator(Header));

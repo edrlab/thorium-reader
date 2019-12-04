@@ -12,9 +12,7 @@ import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
-import {
-    DisplayType, IRouterLocationState,
-} from "readium-desktop/renderer/components/utils/displayType";
+import { DisplayType } from "readium-desktop/renderer/components/utils/displayType";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";

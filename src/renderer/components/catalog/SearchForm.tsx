@@ -62,18 +62,20 @@ class Search extends React.Component<IProps, undefined> {
 
         const value = this.inputRef?.current?.value;
         if (!value) {
-            this.props.redirect({
-                pathname: "/library/search/all",
-                search: undefined,
+            this.props.history.push({
+                ...this.props.location,
+                ...{
+                    pathname: "/library/search/all",
+                },
             });
-            // this.props.history.push("/library/search/all"); // does not forward state!
         } else {
             const target = "/library/search/text/" + value; // + this.props.location.search;
-            this.props.redirect({
-                pathname: target,
-                search: undefined,
+            this.props.history.push({
+                ...this.props.location,
+                ...{
+                    pathname: target,
+                },
             });
-            // this.props.history.push(target); // does not forward state!
         }
     }
 }
