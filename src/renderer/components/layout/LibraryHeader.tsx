@@ -112,7 +112,15 @@ class Header extends React.Component<IProps, undefined> {
 
         return (
             <li className={classNames(...styleClasses)} key={index}>
-                <Link to={item.route} replace={true}>
+                <Link
+                    to={{
+                        ...this.props.location,
+                        ...{
+                            pathname: item.route,
+                        },
+                    }}
+                    replace={true}
+                >
                     {translate("header." + item.label)}
                 </Link>
             </li>

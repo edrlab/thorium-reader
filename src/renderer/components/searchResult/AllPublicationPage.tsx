@@ -68,7 +68,7 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { displayType } = this.props.location?.state;
+        const displayType = this.props.location?.state?.displayType;
         const { __ } = this.props;
         const title = __("catalog.allBooks");
 
