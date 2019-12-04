@@ -9,7 +9,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { DisplayType } from "readium-desktop/renderer/routing";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -31,20 +30,11 @@ class GridTagButton extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
 
-        let displayType = DisplayType.Grid;
-        if (this.props.location?.state?.displayType) {
-            displayType = this.props.location.state.displayType;
-        }
-
         return (
             <Link
                 to={{
+                    ...this.props.location,
                     pathname: `/library/search/tag/${this.props.name}`,
-                    search: "",
-                    hash: "",
-                    state: {
-                        displayType,
-                    },
                 }}>
                 {this.props.name}
                 {/*<div id={style.count}>

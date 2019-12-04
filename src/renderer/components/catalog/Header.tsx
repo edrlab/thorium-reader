@@ -40,12 +40,8 @@ class Header extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
-
-        let displayType = DisplayType.Grid;
-        if (this.props.location?.state?.displayType) {
-            displayType = this.props.location.state.displayType;
-        }
+        const { __, location } = this.props;
+        const displayType = location?.state?.displayType || DisplayType.Grid;
 
         return (
             <SecondaryHeader id={styles.catalog_header}>
@@ -76,25 +72,21 @@ class Header extends React.Component<IProps, undefined> {
                     <SVG svg={ListIcon} ariaHidden/>
                 </Link>
                 <SearchForm />
-                {this.AllBooksButton(window.location.hash, displayType)}
+                {this.AllBooksButton(window.location.hash)}
                 <PublicationAddButton />
             </SecondaryHeader>
         );
     }
 
-    private AllBooksButton(hash: string, displayType: DisplayType) {
+    private AllBooksButton(hash: string) {
         const search = hash.indexOf("search");
         if (search === -1) {
             return (
                 <Link
                     id={styles.all_link_button}
                     to={{
+                        ...this.props.location,
                         pathname: "/library/search/all",
-                        search: undefined,
-                        hash: undefined,
-                        state: {
-                            displayType,
-                        },
                     }}
                 >
                     {this.props.__("header.allBooks")}

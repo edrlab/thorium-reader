@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
@@ -34,7 +33,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
 // tslint:disable-next-line: max-line-length
-interface IProps extends IBaseProps, TranslatorProps, ReturnType<typeof mapStateToProps>, RouteComponentProps<IOpdsBrowse> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, RouteComponentProps<IOpdsBrowse> {
 }
 
 class Header extends React.Component<IProps, undefined> {
@@ -44,8 +43,8 @@ class Header extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
-        const displayType = qs.parse(this.props.location.search).displayType || DisplayType.Grid;
+        const { __, location } = this.props;
+        const displayType = location?.state?.displayType || DisplayType.Grid;
 
         // FIXME : css in code
         return (
@@ -57,6 +56,7 @@ class Header extends React.Component<IProps, undefined> {
                             displayType: DisplayType.Grid,
                         },
                     }}
+                    replace={true}
                     style={(displayType !== DisplayType.Grid) ? { fill: "#767676" } : {}}
                 >
                     <SVG svg={GridIcon} title={__("header.gridTitle")} />
@@ -68,6 +68,7 @@ class Header extends React.Component<IProps, undefined> {
                             displayType: DisplayType.List,
                         },
                     }}
+                    replace={true}
                     style={displayType !== DisplayType.List ?
                         { fill: "#757575", marginLeft: "16px" } : { marginLeft: "16px" }}
                 >
@@ -177,7 +178,6 @@ class Header extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: RootState) => ({
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
-    location: state.router.location,
 });
 
 export default connect(mapStateToProps)(withTranslator(withRouter(Header)));
