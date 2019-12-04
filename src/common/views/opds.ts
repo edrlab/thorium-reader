@@ -7,14 +7,18 @@
 
 import { Identifiable } from "../models/identifiable";
 import { IHttpGetResult } from "../utils/http";
-import { CoverView } from "./publication";
 
-export interface OpdsFeedView extends Identifiable {
+export interface IOpdsFeedView extends Identifiable {
     title: string;
     url: string;
 }
 
-export interface OpdsPublicationView {
+export interface IOpdsCoverView {
+    coverLinks: IOpdsLinkView[];
+    thumbnailLinks: IOpdsLinkView[];
+}
+
+export interface IOpdsPublicationView {
     baseUrl: string;
     r2OpdsPublicationBase64?: string;
     title: string;
@@ -25,22 +29,23 @@ export interface OpdsPublicationView {
     tags?: string[];
     languages?: string[];
     publishedAt?: string; // ISO8601
-    entryUrl?: string;
-    buyUrl?: string;
-    borrowUrl?: string;
-    subscribeUrl?: string;
-    sampleOrPreviewUrl?: string;
-    openAccessUrl?: string;
-    cover?: CoverView;
+    entryLinks?: IOpdsLinkView[];
+    buyLinks?: IOpdsLinkView[];
+    borrowLinks?: IOpdsLinkView[];
+    subscribeLinks?: IOpdsLinkView[];
+    sampleOrPreviewLinks?: IOpdsLinkView[];
+    openAccessLinks?: IOpdsLinkView[];
+    cover?: IOpdsCoverView;
 }
 
-export interface OpdsLinkView {
+export interface IOpdsNavigationLinkView {
     title: string;
     subtitle?: string;
     url: string;
     numberOfItems?: number;
 }
 
+<<<<<<< HEAD
 export interface OpdsGroupView {
     title: string;
     navigation?: OpdsLinkView[];
@@ -89,11 +94,40 @@ export interface OpdsResultUrls {
     lastPage?: string;
     search?: string;
     shelf?: string;
+=======
+export interface IOpdsFeedMetadataView {
+    numberOfItems?: number;
+    itemsPerPage?: number;
+    currentPage?: number;
 }
 
-export interface OpdsResultPageInfos {
-    numberOfItems: number;
-    itemsPerPage: number;
+export interface IOpdsResultView {
+    title: string;
+    metadata?: IOpdsFeedMetadataView;
+    navigation?: IOpdsNavigationLinkView[];
+    publications?: IOpdsPublicationView[];
+    links?: IOpdsNavigationLink;
 }
 
-export type THttpGetOpdsResultView = IHttpGetResult<string, OpdsResultView>;
+export interface IOpdsLinkView {
+    url: string;
+    title?: string | undefined;
+    type?: string | undefined;
+>>>>>>> panac/fix/opds-to-view-from-main/convert-to-renderer
+}
+
+export interface IOpdsNavigationLink {
+    next: IOpdsLinkView[];
+    previous: IOpdsLinkView[];
+    first: IOpdsLinkView[];
+    last: IOpdsLinkView[];
+    start: IOpdsLinkView[];
+    up: IOpdsLinkView[];
+    search: IOpdsLinkView[];
+    bookshelf: IOpdsLinkView[];
+    text: IOpdsLinkView[];
+    self: IOpdsLinkView[];
+}
+
+export type THttpGetOpdsResultView = IHttpGetResult<string, IOpdsResultView>;
+export type THttpGetOpdsPublicationView = IHttpGetResult<string, IOpdsPublicationView | undefined>;

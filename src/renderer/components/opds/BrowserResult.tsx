@@ -5,24 +5,31 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as qs from "qs";
 import * as React from "react";
 import { connect } from "react-redux";
+<<<<<<< HEAD
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { OpdsResultType } from "readium-desktop/common/views/opds";
 import { TOpdsApiBrowse } from "readium-desktop/main/api/opds";
 import { apiAction } from "readium-desktop/renderer/apiAction";
+=======
+>>>>>>> panac/fix/opds-to-view-from-main/convert-to-renderer
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-import { BreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
+<<<<<<< HEAD
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { IOpdsBrowse } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { parseQueryString } from "readium-desktop/utils/url";
+=======
+import { apiState } from "readium-desktop/renderer/redux/api/api";
+import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/redux/sagas/opds";
+import { RootState } from "readium-desktop/renderer/redux/states";
+>>>>>>> panac/fix/opds-to-view-from-main/convert-to-renderer
 
 import OPDSAuth from "./Auth";
 import EntryList from "./EntryList";
@@ -31,14 +38,13 @@ import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    url: string;
-    breadcrumb: BreadCrumbItem[];
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
+<<<<<<< HEAD
 interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse>, ReturnType<typeof mapStateToProps> {
 }
 
@@ -78,10 +84,15 @@ export class BrowserResult extends React.Component<IProps, IState> {
             this.setState({currentResultPage: 1});
         }
     }
+=======
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+}
+
+export class BrowserResult extends React.Component<IProps> {
+>>>>>>> panac/fix/opds-to-view-from-main/convert-to-renderer
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
-        const { browserError, browserResult } = this.state;
+        const { __, browserData } = this.props;
         let content = (<Loader />);
         let shelfContent: React.ReactElement<{}> | undefined;
 
@@ -92,13 +103,14 @@ export class BrowserResult extends React.Component<IProps, IState> {
                     message={__("opds.network.noInternetMessage")}
                 />
             );
-        } else if (browserError) {
+        } else if (browserData?.error) {
             content = (
                 <MessageOpdBrowserResult
                     title={__("opds.network.reject")}
-                    message={browserError}
+                    message={browserData.errorMessage.message}
                 />
             );
+<<<<<<< HEAD
         } else if (browserResult) {
             if (browserResult.isSuccess ||
                 (browserResult.isFailure && browserResult.statusCode === 401 && browserResult.data)) {
@@ -139,14 +151,25 @@ export class BrowserResult extends React.Component<IProps, IState> {
                         break;
                     case OpdsResultType.PublicationFeed:
                         content = (
+=======
+        } else if (browserData?.result) {
+            const browserResult = browserData.result;
+
+            if (browserResult.isSuccess) {
+                if (browserResult.data.navigation) {
+                    content = (
+                        <EntryList entries={browserResult.data.navigation} />
+                    );
+                } else if (browserResult.data.publications) {
+                    content = (
+>>>>>>> panac/fix/opds-to-view-from-main/convert-to-renderer
                             <EntryPublicationList
-                                opdsPublicationViews={browserResult.data.opdsPublicationViews}
-                                goto={this.goto}
-                                urls={browserResult.data.urls}
-                                page={browserResult.data.page}
-                                currentPage={this.state.currentResultPage}
+                                opdsPublicationView={browserResult.data.publications}
+                                links={browserResult.data.links}
+                                pageInfo={browserResult.data.metadata}
                             />
                         );
+<<<<<<< HEAD
                         break;
                     case OpdsResultType.MixedFeed:
                         content = (<>
@@ -188,6 +211,12 @@ export class BrowserResult extends React.Component<IProps, IState> {
                         break;
                     default:
                         break;
+=======
+                } else {
+                    content = (
+                        <MessageOpdBrowserResult title={__("opds.empty")} />
+                    );
+>>>>>>> panac/fix/opds-to-view-from-main/convert-to-renderer
                 }
             } else if (browserResult.isTimeout) {
                 content = (
@@ -208,68 +237,22 @@ export class BrowserResult extends React.Component<IProps, IState> {
             {content}
         </div>;
     }
-
-    private browseOpds(url: string) {
-        const { location } = this.props;
-        const { browserResult } = this.state;
-        const oldQs = parseQueryString(url.split("?")[1]);
-        const search = qs.parse(location.search.replace("?", "")).search;
-        let newUrl = url;
-        if (search && browserResult && browserResult.isSuccess && browserResult.data.urls.search) {
-            newUrl = browserResult.data.urls.search;
-            newUrl = this.addSearchTerms(newUrl, search) +
-                Object.keys(oldQs).map((id) => `&${id}=${oldQs[id]}`).join("");
-        }
-
-        this.currentUrl = newUrl;
-
-        // reset browserResult to display loader spinner
-        this.setState({
-            browserResult: undefined,
-        });
-
-        // fetch newUrl
-        apiAction("opds/browse", newUrl).then((result) => this.setState({
-            browserResult: result,
-            browserError: undefined,
-        })).catch((error) => this.setState({
-            browserResult: undefined,
-            browserError: error,
-        }));
-    }
-
-    private addSearchTerms(url: string, search: string) {
-        const opds1: boolean = url.search("{searchTerms}") !== -1;
-        if (opds1) {
-            return url.replace("{searchTerms}", search);
-        } else {
-            const searchTemplate = url.match(/{\?(.*?)}/g);
-            let newUrl = url;
-            if (searchTemplate) {
-                const searchOptions = searchTemplate[0].replace("{?", "").replace("}", "").split(",");
-                newUrl = url.replace(/{\?(.*?)}/g, "?");
-                if (searchOptions.find((value) => value === "query")) {
-                    newUrl += `query=${search}`;
-                }
-            } else {
-                const splitedCurrentUrl = this.currentUrl.split("?");
-                const parsedQueryString = parseQueryString(splitedCurrentUrl[1]);
-                parsedQueryString.query = search;
-                const queryString = Object.keys(parsedQueryString).map((key) => `${key}=${search}`);
-                newUrl = splitedCurrentUrl[0] + "?" + queryString.join("&");
-            }
-            return newUrl;
-        }
-    }
-
-    private goto(url: string, page: number) {
-        this.browseOpds(url);
-        this.setState({currentResultPage: page});
-    }
 }
 
+const mapStateToProps = (state: RootState) => {
+
+    const apiBrowseData = apiState(state)(BROWSE_OPDS_API_REQUEST_ID)("opds/browse");
+    return {
+        browserData: apiBrowseData?.data,
+    };
+};
+
+<<<<<<< HEAD
 const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     level: state.opds.browser.navigation.length + 1,
 });
 
 export default connect(mapStateToProps, undefined)(withTranslator(withRouter(BrowserResult)));
+=======
+export default connect(mapStateToProps)(withTranslator(BrowserResult));
+>>>>>>> panac/fix/opds-to-view-from-main/convert-to-renderer

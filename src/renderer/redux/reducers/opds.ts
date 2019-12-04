@@ -5,38 +5,78 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as debug_ from "debug";
+// import * as debug_ from "debug";
+import { IBreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
+import { diRendererGet } from "readium-desktop/renderer/di";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
-import { OpdsNavigationLink, OpdsState } from "readium-desktop/renderer/redux/states/opds";
+import {
+    browseRequest, headerLinksUpdate, search,
+} from "readium-desktop/renderer/redux/actions/opds";
+import { IOpdsHeaderState, IOpdsSearchState } from "readium-desktop/renderer/redux/states/opds";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 // Logger
-const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
+// const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
 
-const initialState: OpdsState = {
-    browser: {
-        navigation: [],
-    },
-};
-
-export function opdsReducer(
-    state: OpdsState = initialState,
-    action: opdsActions.browseRequest.TAction,
+export function opdsBreadcrumbReducer(
+    state: IBreadCrumbItem[] = [],
+    action: browseRequest.TAction,
 ) {
     switch (action.type) {
         case opdsActions.browseRequest.ID:
-            const browser = {
-                navigation: [] as OpdsNavigationLink[],
-            };
+            const { level, title, url, rootFeedIdentifier } = action.payload;
+            const stateNew = state.slice(0, level - 1);
+            if (stateNew.length === 0) {
+                const translator = diRendererGet("translator");
+                stateNew.push({
+                    name: translator.translate("opds.breadcrumbRoot"),
+                    path: "/opds",
+                });
+            }
+            // the slice() operation clones the array and returns a reference to a new array.
+            stateNew.push({
+                name: title,
+                path: buildOpdsBrowserRoute(
+                    rootFeedIdentifier,
+                    title,
+                    url,
+                    level,
+                ),
+            });
+            return stateNew;
 
-            const { level, title, url } = action.payload;
-            debug("Level:", level);
-            debug("Navigation:", state.browser.navigation);
+        default:
+            return state;
+    }
+}
 
-            // what is the purpose of this line : level = state.browser.navigation.length + 1
-            browser.navigation = state.browser.navigation.slice(0, level - 1);
+export function opdsHeaderLinkReducer(
+    state: IOpdsHeaderState = {},
+    action: headerLinksUpdate.TAction,
+) {
+    switch (action.type) {
+        case headerLinksUpdate.ID:
+            const stateNew = { ...state };
+            for (const link of Object.entries(action.payload)) {
+                const key = link[0] as keyof IOpdsHeaderState;
+                stateNew[key] = link[1];
+            }
 
-            browser.navigation.push({ level, title, url });
-            return Object.assign({}, state, { browser });
+            return stateNew;
+
+        default:
+            return state;
+    }
+}
+
+export function opdsSearchLinkReducer(
+    state: IOpdsSearchState = {},
+    action: search.TAction,
+) {
+    switch (action.type) {
+        case search.ID:
+            return { ...action.payload };
+
         default:
             return state;
     }

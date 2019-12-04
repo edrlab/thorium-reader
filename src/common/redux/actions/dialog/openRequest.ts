@@ -7,15 +7,31 @@
 
 import { DialogType } from "readium-desktop/common/models/dialog";
 import { Action } from "readium-desktop/common/models/redux";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 
 export const ID = "DIALOG_OPEN_REQUEST";
 
-export interface Payload<T extends keyof DialogType> {
-    type: T;
-    data: DialogType[T];
+interface IDataPayload {
+    "publication-info-opds": {
+        publication: IOpdsPublicationView;
+    };
+    "publication-info-lib": {
+        publicationIdentifier: string;
+    };
+    "publication-info-reader": {
+        publicationIdentifier: string;
+    };
 }
 
-export function build<T extends keyof DialogType>(type: T, data: DialogType[T]):
+type TDialogType = Omit<DialogType, "publication-info-opds" | "publication-info-reader">;
+type TDialogTypeOpen = TDialogType & IDataPayload;
+
+export interface Payload<T extends keyof TDialogTypeOpen> {
+    type: T;
+    data: TDialogTypeOpen[T];
+}
+
+export function build<T extends keyof DialogType>(type: T, data: TDialogTypeOpen[T]):
     Action<typeof ID, Payload<T>> {
 
     return {

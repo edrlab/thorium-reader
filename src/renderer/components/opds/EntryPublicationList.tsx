@@ -8,10 +8,7 @@
 import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
-import {
-    OpdsPublicationView, OpdsResultPageInfos, OpdsResultUrls,
-} from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView, IOpdsResultView } from "readium-desktop/common/views/opds";
 import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 import { GridView } from "readium-desktop/renderer/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
@@ -20,20 +17,18 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 
 import PageNavigation from "./PageNavigation";
 
-// tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
-    opdsPublicationViews: OpdsPublicationView[] | undefined;
-    goto: (url: string, page: number) => void;
-    urls: OpdsResultUrls;
-    page?: OpdsResultPageInfos;
-    currentPage: number;
+    opdsPublicationView: IOpdsPublicationView[] | undefined;
+    links: IOpdsResultView["links"];
+    pageInfo?: IOpdsResultView["metadata"];
 }
+
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class EntryPublicationList extends React.Component<IProps, undefined> {
@@ -43,8 +38,6 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
     }
 
     public render() {
-        const { urls, page } = this.props;
-
         let displayType = DisplayType.Grid;
 
         if (this.props.location) {
@@ -55,22 +48,23 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
             }
         }
 
-        // force cast on PublicationView[]
-        // It's an hack from no typing to static typing
-        // FIX ME in the future
         return (
             <>
-                {this.props.opdsPublicationViews ?
+                {this.props.opdsPublicationView ?
                     <>
                         {displayType === DisplayType.Grid ?
-                        <GridView normalOrOpdsPublicationViews={this.props.opdsPublicationViews} isOpdsView={true} /> :
-                        <ListView normalOrOpdsPublicationViews={this.props.opdsPublicationViews} isOpdsView={true} />
+                            <GridView
+                                normalOrOpdsPublicationViews={this.props.opdsPublicationView}
+                                isOpdsView={true}
+                            /> :
+                            <ListView
+                                normalOrOpdsPublicationViews={this.props.opdsPublicationView}
+                                isOpdsView={true}
+                            />
                         }
                         <PageNavigation
-                            goto={this.props.goto}
-                            urls={urls}
-                            page={page}
-                            currentPage={this.props.currentPage}
+                            pageLinks={this.props.links}
+                            pageInfo={this.props.pageInfo}
                         />
                     </>
                     : <Loader />}
@@ -84,4 +78,4 @@ const mapStateToProps = (_state: RootState, _props: IBaseProps) => ({
     // location: state.router.location,
 });
 
-export default connect(mapStateToProps)(withRouter(EntryPublicationList));
+export default connect(mapStateToProps)(EntryPublicationList);

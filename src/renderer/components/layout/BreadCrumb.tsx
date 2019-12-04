@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as classNames from "classnames";
+import * as qs from "query-string";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
@@ -14,17 +15,15 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { parseQueryString } from "readium-desktop/utils/url";
 
-export interface BreadCrumbItem {
+export interface IBreadCrumbItem {
     name: string;
     path?: string;
-    state?: any;
 }
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    breadcrumb: BreadCrumbItem[];
+    breadcrumb: IBreadCrumbItem[];
     search: string;
     className?: string;
 }
@@ -44,14 +43,14 @@ class BreadCrumb extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { breadcrumb, __ } = this.props;
-        const search = parseQueryString(this.props.search);
+        const search = qs.parse(this.props.search);
         return (
             <div className={classNames(styles.breadcrumb, this.props.className)}>
                 {breadcrumb.length >= 2 &&
                     <Link
                         to={{
                             pathname: breadcrumb[breadcrumb.length - 2].path,
-                            search: `?displayType=${search.displayType}`,
+                            search: `displayType=${search.displayType}`,
                         }}
                         title={__("opds.back")}
                     >
@@ -65,8 +64,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                             key={index}
                             to={{
                                 pathname: item.path,
-                                search: `?displayType=${search.displayType}`,
-                                state: item.state,
+                                search: `displayType=${search.displayType}`,
                             }}
                             title={name}
                         >

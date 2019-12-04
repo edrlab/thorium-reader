@@ -10,17 +10,19 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "OPDS_BROWSE_REQUEST";
 
 export interface Payload {
+    rootFeedIdentifier: string;
     level: number;
     title: string;
     url: string;
 }
 
-export function build(level: number, title: string, url: string):
+export function build(rootFeedIdentifier: string, level: number, title: string, url: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
+            rootFeedIdentifier,
             level,
             title,
             url,

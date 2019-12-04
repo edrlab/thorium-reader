@@ -7,18 +7,20 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
+<<<<<<< HEAD
 import { IOpdsBrowse } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { parseQueryString } from "readium-desktop/utils/url";
+=======
+>>>>>>> panac/fix/opds-to-view-from-main/convert-to-renderer
 
-import BreadCrumb, { BreadCrumbItem } from "../layout/BreadCrumb";
+import BreadCrumb from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
 import Header from "./Header";
 
@@ -30,7 +32,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse>, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class Browser extends React.Component<IProps, undefined> {
@@ -40,82 +42,26 @@ class Browser extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<IProps>  {
-        const breadcrumb = this.buildBreadcrumb();
-        let url: string | undefined;
-
-        if (this.props.navigation.length > 0) {
-            // get the last link from navigation array print in breadcrumb
-            url = this.props.navigation[this.props.navigation.length - 1].url;
-        }
-
-        const parsedResult = parseQueryString(this.props.location.search);
-
-        const secondaryHeader = <Header displayType={parsedResult.displayType}/>;
+        const secondaryHeader = <Header/>;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} mainClassName={styles.opdsBrowse}>
                 <BreadCrumb
                     className={styles.opdsBrowseBreadcrumb}
-                    breadcrumb={breadcrumb}
+                    breadcrumb={this.props.breadrumb}
                     search={this.props.location.search}
                 />
-                {url &&
-                    <BrowserResult url={url} breadcrumb={breadcrumb}/>
+                {this.props.breadrumb.length &&
+                    <BrowserResult/>
                 }
             </LibraryLayout>
         );
     }
-
-    private buildBreadcrumb() {
-        const { match, navigation } = this.props;
-        const breadcrumb: BreadCrumbItem[] = [];
-        const parsedQuerryString = parseQueryString(this.props.location.search);
-        const search = parsedQuerryString.search;
-
-        // Add root page
-        breadcrumb.push({
-            name: this.props.__("opds.breadcrumbRoot"),
-            path: "/opds",
-        });
-        const rootFeedIdentifier = match.params.opdsId;
-
-        if (search) {
-            const link = navigation[0];
-            if (link) {
-                breadcrumb.push({
-                    name: decodeURI(link.title),
-                    path: buildOpdsBrowserRoute(
-                        rootFeedIdentifier,
-                        link.title,
-                        link.url,
-                        1,
-                    ),
-                });
-            }
-            breadcrumb.push({
-                name: decodeURI(search),
-            });
-            return breadcrumb;
-        }
-
-        navigation.forEach((link, index: number) => {
-            breadcrumb.push({
-                name: link.title,
-                path: buildOpdsBrowserRoute(
-                    rootFeedIdentifier,
-                    link.title,
-                    link.url,
-                    index + 1,
-                ),
-            });
-        });
-
-        return breadcrumb;
-    }
 }
 
-const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
-    navigation: state.opds.browser.navigation,
+const mapStateToProps = (state: RootState) => ({
+    breadrumb: state.opds.browser.breadcrumb,
+    location: state.router.location,
 });
 
-export default connect(mapStateToProps, undefined)(withRouter(withTranslator(Browser)));
+export default connect(mapStateToProps, undefined)(withTranslator(Browser));

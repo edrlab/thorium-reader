@@ -6,14 +6,14 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
 import OpdsMenu from "readium-desktop/renderer/components/publication/menu/OpdsMenu";
 import PublicationListElement from "readium-desktop/renderer/components/publication/PublicationListElement";
 
-type NormalOrOpdsPublicationView = PublicationView | OpdsPublicationView;
+type NormalOrOpdsPublicationView = PublicationView | IOpdsPublicationView;
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -48,7 +48,7 @@ export class ListView extends React.Component<IProps, undefined> {
                                     publicationViewMaybeOpds={pub}
                                     menuContent={
                                         this.props.isOpdsView ?
-                                        <OpdsMenu opdsPublicationView={pub as OpdsPublicationView}/> :
+                                        <OpdsMenu opdsPublicationView={pub as IOpdsPublicationView}/> :
                                         <CatalogMenu publicationView={pub as PublicationView}/>
                                     }
                                     isOpds={this.props.isOpdsView}
