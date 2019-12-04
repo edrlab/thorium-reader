@@ -146,7 +146,7 @@ export class OpdsApi implements IOpdsApi {
     public async getPublicationFromEntry(url: string): Promise<THttpGetOpdsPublicationView> {
         url = checkUrl(url);
 
-        return await this.opdsService.opdsRequest(url,
+        return this.opdsService.opdsRequest(url,
             // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
             (r2OpdsFeed) => {
                 const opdsFeed = this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url);
@@ -168,7 +168,7 @@ export class OpdsApi implements IOpdsApi {
     public async browse(url: string): Promise<THttpGetOpdsResultView> {
         url = checkUrl(url);
 
-        return await this.opdsService.opdsRequest(url,
+        return this.opdsService.opdsRequest(url,
             // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
             (r2OpdsFeed) => this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url),
             (r2OpdsAuth: OPDSAuthenticationDoc) => this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, url),
@@ -192,7 +192,7 @@ export class OpdsApi implements IOpdsApi {
         OPDS_AUTH_ENCRYPTION_IV_HEX: string,
         refreshToken?: string): Promise<boolean> {
 
-        return await this.opdsService.oauth(
+        return this.opdsService.oauth(
             opdsUrl,
             login,
             passwordEncrypted,
