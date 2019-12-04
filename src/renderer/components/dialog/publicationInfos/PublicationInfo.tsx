@@ -252,8 +252,9 @@ class PublicationInfo extends React.Component<IProps, IState> {
         if (publicationInfoLib) {
             if (publication?.lcp) {
                 controlsComponent = (<CatalogLcpControls publicationView={publication as PublicationView} />);
+            } else {
+                controlsComponent = (<CatalogControls publicationView={publication as PublicationView} />);
             }
-            controlsComponent = (<CatalogControls publicationView={publication as PublicationView} />);
         }
 
         return controlsComponent;
