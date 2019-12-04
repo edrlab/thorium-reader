@@ -19,7 +19,7 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { apiDispatch } from "readium-desktop/renderer/redux/api/api";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { TPublication } from "readium-desktop/renderer/type/publication.type";
-import { TChangeEvent, TFormEvent } from "readium-desktop/typings/react";
+import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import { Dispatch } from "redux";
 
 // Logger
@@ -138,7 +138,7 @@ export class TagManager extends React.Component<IProps, IState> {
         this.setState({ newTagName: "" });
     }
 
-    private handleChangeName = (e: TChangeEvent) => {
+    private handleChangeName = (e: TChangeEventOnInput) => {
         this.setState({ newTagName: e.target.value });
     }
 }
