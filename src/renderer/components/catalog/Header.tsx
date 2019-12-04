@@ -51,9 +51,7 @@ class Header extends React.Component<IProps, undefined> {
             <SecondaryHeader id={styles.catalog_header}>
                 <Link
                     to={{
-                        pathname: this.props.location.pathname,
-                        search: this.props.location.search,
-                        hash: this.props.location.hash,
+                        ...this.props.location,
                         state: {
                             displayType: DisplayType.Grid,
                         },
@@ -66,9 +64,7 @@ class Header extends React.Component<IProps, undefined> {
                 </Link>
                 <Link
                     to={{
-                        pathname: this.props.location.pathname,
-                        search: this.props.location.search,
-                        hash: this.props.location.hash,
+                        ...this.props.location,
                         state: {
                             displayType: DisplayType.List,
                         },

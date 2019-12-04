@@ -51,13 +51,23 @@ class Header extends React.Component<IProps, undefined> {
         return (
             <SecondaryHeader>
                 <Link
-                    to={{ search: "displayType=grid" }}
+                    to={{
+                        ...this.props.location,
+                        state: {
+                            displayType: DisplayType.Grid,
+                        },
+                    }}
                     style={(displayType !== DisplayType.Grid) ? { fill: "#767676" } : {}}
                 >
                     <SVG svg={GridIcon} title={__("header.gridTitle")} />
                 </Link>
                 <Link
-                    to={{ search: "displayType=list" }}
+                    to={{
+                        ...this.props.location,
+                        state: {
+                            displayType: DisplayType.List,
+                        },
+                    }}
                     style={displayType !== DisplayType.List ?
                         { fill: "#757575", marginLeft: "16px" } : { marginLeft: "16px" }}
                 >
@@ -66,7 +76,7 @@ class Header extends React.Component<IProps, undefined> {
                 {this.home()}
                 {this.refresh()}
                 <SearchForm />
-                { /*this.bookshelf()*/ }
+                { /*this.bookshelf()*/}
             </SecondaryHeader>
         );
     }
@@ -115,7 +125,12 @@ class Header extends React.Component<IProps, undefined> {
 
             return (
                 <Link
-                    to={route}
+                    to={{
+                        ...this.props.location,
+                        ...{
+                            pathname: route,
+                        },
+                    }}
                     style={{ marginLeft: "16px" }}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
@@ -142,7 +157,12 @@ class Header extends React.Component<IProps, undefined> {
 
             return (
                 <Link
-                    to={route}
+                    to={{
+                        ...this.props.location,
+                        ...{
+                            pathname: route,
+                        },
+                    }}
                     style={{ marginLeft: "16px" }}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
@@ -157,6 +177,7 @@ class Header extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: RootState) => ({
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
+    location: state.router.location,
 });
 
 export default connect(mapStateToProps)(withTranslator(withRouter(Header)));

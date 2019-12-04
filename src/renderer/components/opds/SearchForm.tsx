@@ -81,18 +81,19 @@ class SearchForm extends React.Component<IProps, undefined> {
             debug("SubmitSearch", searchWords, url);
 
             this.props.history.push({
+                ...this.props.location,
                 pathname: this.route(searchWords, url, level),
-                search: this.props.location.search,
             });
         }
     }
 
-    private route = (title: string, url: string, level: number) => buildOpdsBrowserRoute(
-        this.props.match.params.opdsId,
-        title,
-        url,
-        level,
-    )
+    private route = (title: string, url: string, level: number) =>
+        buildOpdsBrowserRoute(
+            this.props.match.params.opdsId,
+            title,
+            url,
+            level,
+        )
 }
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => ({

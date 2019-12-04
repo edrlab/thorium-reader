@@ -62,17 +62,13 @@ class Search extends React.Component<IProps, undefined> {
         if (!value) {
             this.props.history.push({
                 ...this.props.location,
-                ...{
-                    pathname: "/library/search/all",
-                },
+                pathname: "/library/search/all",
             });
         } else {
             const target = "/library/search/text/" + value; // + this.props.location.search;
             this.props.history.push({
                 ...this.props.location,
-                ...{
-                    pathname: target,
-                },
+                pathname: target,
             });
         }
     }

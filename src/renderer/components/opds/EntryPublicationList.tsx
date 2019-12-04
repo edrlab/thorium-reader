@@ -38,20 +38,12 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
     }
 
     public render() {
-        let displayType = DisplayType.Grid;
-
-        if (this.props.location) {
-            const parsedResult = qs.parse(this.props.location.search);
-
-            if (parsedResult.displayType === DisplayType.List) {
-                displayType = DisplayType.List;
-            }
-        }
+        const displayType = this.props.location?.state?.displayType;
 
         return (
             <>
-                {this.props.opdsPublicationView ?
-                    <>
+                {this.props.opdsPublicationView
+                    ? <>
                         {displayType === DisplayType.Grid ?
                             <GridView
                                 normalOrOpdsPublicationViews={this.props.opdsPublicationView}
