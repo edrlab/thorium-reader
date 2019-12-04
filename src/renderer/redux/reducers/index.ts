@@ -13,25 +13,28 @@ import { importReducer } from "readium-desktop/common/redux/reducers/import";
 import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 import { updateReducer } from "readium-desktop/common/redux/reducers/update";
+import { IRouterLocationState } from "readium-desktop/renderer/components/utils/displayType";
 import { apiReducer } from "readium-desktop/renderer/redux/reducers/api";
 import { downloadReducer } from "readium-desktop/renderer/redux/reducers/download";
 import { opdsReducer } from "readium-desktop/renderer/redux/reducers/opds";
 import { readerReducer } from "readium-desktop/renderer/redux/reducers/reader";
 import { winReducer } from "readium-desktop/renderer/redux/reducers/win";
-import { RootState } from "readium-desktop/renderer/redux/states";
 import { combineReducers } from "redux";
 
-export const rootReducer = (history: History) => combineReducers<RootState>({
-    i18n: i18nReducer,
-    reader: readerReducer,
-    opds: opdsReducer,
-    win: winReducer,
-    net: netReducer,
-    update: updateReducer,
-    api: apiReducer,
-    dialog: dialogReducer,
-    router: connectRouter(history),
-    import: importReducer,
-    toast: toastReducer,
-    download: downloadReducer,
-});
+export const rootReducer = (history: History) =>
+    combineReducers({
+        i18n: i18nReducer,
+        reader: readerReducer,
+        opds: opdsReducer,
+        win: winReducer,
+        net: netReducer,
+        update: updateReducer,
+        api: apiReducer,
+        dialog: dialogReducer,
+        router: connectRouter<IRouterLocationState>(history),
+        import: importReducer,
+        toast: toastReducer,
+        download: downloadReducer,
+    });
+
+export type TRootState = ReturnType<ReturnType<typeof rootReducer>>;

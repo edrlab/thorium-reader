@@ -12,7 +12,7 @@ import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
 import {
-    DisplayType, RouterLocationState,
+    DisplayType, IRouterLocationState,
 } from "readium-desktop/renderer/components/utils/displayType";
 import {
     TranslatorProps, withTranslator,
@@ -56,7 +56,7 @@ class Header extends React.Component<IProps, undefined> {
                         hash: this.props.location.hash,
                         state: {
                             displayType: DisplayType.Grid,
-                        } as RouterLocationState,
+                        } as IRouterLocationState,
                     }}
                     replace={true}
                     style={(displayType !== DisplayType.Grid) ? {fill: "grey"} : {}}
@@ -71,7 +71,7 @@ class Header extends React.Component<IProps, undefined> {
                         hash: this.props.location.hash,
                         state: {
                             displayType: DisplayType.List,
-                        } as RouterLocationState,
+                        } as IRouterLocationState,
                     }}
                     replace={true}
                     style={displayType !== DisplayType.List ? {fill: "grey"} : {}}
@@ -98,7 +98,7 @@ class Header extends React.Component<IProps, undefined> {
                         hash: undefined,
                         state: {
                             displayType,
-                        } as RouterLocationState,
+                        } as IRouterLocationState,
                     }}
                 >
                     {this.props.__("header.allBooks")}

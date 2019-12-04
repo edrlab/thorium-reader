@@ -14,7 +14,7 @@ import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { IOpdsBrowse } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
-import { DisplayType, RouterLocationState } from "../utils/displayType";
+import { DisplayType, IRouterLocationState } from "../utils/displayType";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -63,7 +63,7 @@ class Entry extends React.Component<IProps, undefined> {
                             hash: "",
                             state: {
                                 displayType,
-                            } as RouterLocationState,
+                            } as IRouterLocationState,
                         }}
                         className={styles.flux_infos}
                     >

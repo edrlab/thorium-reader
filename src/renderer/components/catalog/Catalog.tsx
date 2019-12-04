@@ -7,7 +7,6 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
 import { DisplayType } from "readium-desktop/renderer/components/utils/displayType";
 import {
@@ -32,7 +31,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps,
+interface IProps extends IBaseProps,
     ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
@@ -58,7 +57,7 @@ class Catalog extends React.Component<IProps> {
 
         let displayType = DisplayType.Grid;
         if (this.props.location?.state?.displayType) {
-            displayType = this.props.location.state.displayType as DisplayType;
+            displayType = this.props.location.state.displayType;
         }
 
         const secondaryHeader = <Header/>;
@@ -95,6 +94,7 @@ const mapStateToProps = (state: RootState) => ({
         "publication/updateTags",
         "reader/setLastReadingLocation",
     ]),
+    location: state.router.location,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -102,4 +102,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     apiClean: apiClean(dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(withRouter(Catalog)));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(Catalog));

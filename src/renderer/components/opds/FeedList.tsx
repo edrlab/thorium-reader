@@ -22,7 +22,7 @@ import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
-import { DisplayType, RouterLocationState } from "../utils/displayType";
+import { DisplayType, IRouterLocationState } from "../utils/displayType";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -90,7 +90,7 @@ class FeedList extends React.Component<IProps, IState> {
                                         hash: "",
                                         state: {
                                             displayType,
-                                        } as RouterLocationState,
+                                        } as IRouterLocationState,
                                     }}
                                 >
                                     <p>{item.title}</p>

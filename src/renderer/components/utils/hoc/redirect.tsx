@@ -8,7 +8,7 @@
 import * as React from "react";
 import { Redirect, RouteComponentProps, withRouter } from "react-router";
 
-import { DisplayType, RouterLocationState } from "../displayType";
+import { DisplayType, IRouterLocationState } from "../displayType";
 
 export interface IRedirectTarget {
     pathname: string;
@@ -77,7 +77,7 @@ export function withRedirect<Props>(WrappedComponent: TComponentConstructor<Prop
                         hash: "",
                         state: {
                             displayType,
-                        } as RouterLocationState,
+                        } as IRouterLocationState,
                 }}/>}
                 <WrappedComponent { ...newProps } />
             </>);

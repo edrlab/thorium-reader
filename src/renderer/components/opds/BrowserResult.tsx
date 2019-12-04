@@ -24,7 +24,7 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { parseQueryString } from "readium-desktop/utils/url";
 
-import { DisplayType, RouterLocationState } from "../utils/displayType";
+import { DisplayType, IRouterLocationState } from "../utils/displayType";
 import OPDSAuth from "./Auth";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
@@ -130,7 +130,7 @@ export class BrowserResult extends React.Component<IProps, IState> {
                                     hash: "",
                                     state: {
                                         displayType,
-                                    } as RouterLocationState,
+                                    } as IRouterLocationState,
                                 }}
                                 className={styles.flux_infos}
                             >

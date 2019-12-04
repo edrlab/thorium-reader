@@ -9,6 +9,7 @@ export enum DisplayType {
     Grid = "grid",
     List = "list",
 }
-export interface RouterLocationState {
+
+export interface IRouterLocationState {
     displayType: DisplayType;
 }

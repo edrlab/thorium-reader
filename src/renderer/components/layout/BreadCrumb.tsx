@@ -15,7 +15,7 @@ import {
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 
-import { DisplayType, RouterLocationState } from "../utils/displayType";
+import { DisplayType, IRouterLocationState } from "../utils/displayType";
 
 export interface BreadCrumbItem {
     name: string;
@@ -59,7 +59,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                             hash: "",
                             state: {
                                 displayType,
-                            } as RouterLocationState,
+                            } as IRouterLocationState,
                         }}
                         title={__("opds.back")}
                     >
@@ -77,7 +77,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                                 hash: "",
                                 state: {
                                     displayType,
-                                } as RouterLocationState,
+                                } as IRouterLocationState,
                             }}
                             title={name}
                         >

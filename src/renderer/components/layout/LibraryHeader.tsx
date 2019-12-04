@@ -16,7 +16,7 @@ import {
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 
-import { DisplayType, RouterLocationState } from "../utils/displayType";
+import { DisplayType, IRouterLocationState } from "../utils/displayType";
 
 interface NavigationHeader {
     route: string;
@@ -123,7 +123,7 @@ class Header extends React.Component<IProps, undefined> {
                         hash: "",
                         state: {
                             displayType,
-                        } as RouterLocationState,
+                        } as IRouterLocationState,
                     }}
                     replace={true}>
                     { translate("header." + item.label) }

@@ -11,7 +11,7 @@ import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
 import SecondaryHeader from "readium-desktop/renderer/components/SecondaryHeader";
 import {
-    DisplayType, RouterLocationState,
+    DisplayType, IRouterLocationState,
 } from "readium-desktop/renderer/components/utils/displayType";
 import {
     TranslatorProps, withTranslator,
@@ -60,7 +60,7 @@ class Header extends React.Component<IProps, undefined> {
                                 hash: this.props.location.hash,
                                 state: {
                                     displayType: DisplayType.Grid,
-                                } as RouterLocationState,
+                                } as IRouterLocationState,
                             }}
                             replace={true}
                             style={(displayType !== DisplayType.Grid) ? {fill: "#767676"} : {}}
@@ -74,7 +74,7 @@ class Header extends React.Component<IProps, undefined> {
                                 hash: this.props.location.hash,
                                 state: {
                                     displayType: DisplayType.List,
-                                } as RouterLocationState,
+                                } as IRouterLocationState,
                             }}
                             replace={true}
                             style={ displayType !== DisplayType.List ?
