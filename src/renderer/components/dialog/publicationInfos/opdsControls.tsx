@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { dialogActions, importActions } from "readium-desktop/common/redux/actions/";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
@@ -18,7 +18,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    opdsPublicationView: OpdsPublicationView;
+    opdsPublicationView: IOpdsPublicationView;
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -35,76 +35,175 @@ export class OpdsControls extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { opdsPublicationView, verifyImport, buttonIsDisabled } = this.props;
-        const { __ } = this.props;
 
-        if (!opdsPublicationView) {
+        if (!this.props.opdsPublicationView) {
             return <></>;
         }
 
-        return <>
-            { opdsPublicationView.openAccessUrl || opdsPublicationView.sampleOrPreviewUrl ?
-            <button
-                onClick={() => verifyImport(opdsPublicationView)}
-                className={styles.lire}
-                disabled={buttonIsDisabled()}
-            >
-                {opdsPublicationView.openAccessUrl ?
-                __("catalog.addBookToLib") :
-                __("opds.menu.addExtract")}
-            </button>
-            : <></> }
-            { opdsPublicationView.buyUrl || opdsPublicationView.borrowUrl || opdsPublicationView.subscribeUrl ?
-            <ul className={styles.liens}>
-                { opdsPublicationView.buyUrl &&
-                    <li>
-                        <a role="menuitem"
-                            href={opdsPublicationView.buyUrl}
+        const {
+            opdsPublicationView,
+            verifyImport,
+            openAccessButtonIsDisabled,
+            sampleButtonIsDisabled,
+            __,
+        } = this.props;
+
+        const openAccessLinksButton = () =>
+            Array.isArray(opdsPublicationView.openAccessLinks)
+                ? opdsPublicationView.openAccessLinks.map(
+                    (ln, idx) =>
+                        <button
+                            key={`openAccessControl-${idx}`}
+                            onClick={() => verifyImport(
+                                ln,
+                                opdsPublicationView.r2OpdsPublicationBase64,
+                                opdsPublicationView.title,
+                            )}
+                            className={styles.lire}
+                            disabled={openAccessButtonIsDisabled()}
                         >
-                            {__("opds.menu.goBuyBook")}
-                        </a>
-                    </li>
-                }
-                { opdsPublicationView.borrowUrl &&
-                    <li>
-                        <a role="menuitem"
-                            href={opdsPublicationView.borrowUrl}
+                            {__("catalog.addBookToLib")}
+                        </button>,
+                )
+                : <></>;
+
+        const sampleOrPreviewLinksButton = () =>
+            Array.isArray(opdsPublicationView.sampleOrPreviewLinks)
+                ? opdsPublicationView.sampleOrPreviewLinks.map(
+                    (ln, idx) =>
+                        <button
+                            key={`sampleControl-${idx}`}
+                            onClick={() => verifyImport(
+                                ln,
+                                opdsPublicationView.r2OpdsPublicationBase64,
+                                opdsPublicationView.title,
+                            )}
+                            className={styles.lire}
+                            disabled={sampleButtonIsDisabled()}
                         >
-                            {__("opds.menu.goLoanBook")}
-                        </a>
-                    </li>
-                }
-                { opdsPublicationView.subscribeUrl &&
-                    <li>
-                        <a role="menuitem"
-                            href={opdsPublicationView.subscribeUrl}
+                            {__("opds.menu.addExtract")}
+                        </button>,
+                )
+                : <></>;
+
+        const feedLinksList = () => {
+
+            const buyList = () =>
+                Array.isArray(opdsPublicationView.buyLinks)
+                    ? opdsPublicationView.buyLinks.map(
+                        (ln, idx) =>
+                            <li
+                                key={`buyControl-${idx}`}
+                            >
+                                <a
+                                    role="menuitem"
+                                    href={ln.url}
+                                >
+                                    {__("opds.menu.goBuyBook")}
+                                </a>
+                            </li>,
+                    )
+                    : <></>;
+
+            const borrowList = () =>
+                Array.isArray(opdsPublicationView.borrowLinks)
+                    ? opdsPublicationView.borrowLinks.map(
+                        (ln, idx) =>
+                        <li
+                            key={`borrowControl-${idx}`}
                         >
-                            {__("opds.menu.goSubBook")}
-                        </a>
-                    </li>
+                            <a
+                                role="menuitem"
+                                href={ln.url}
+                            >
+                                {__("opds.menu.goLoanBook")}
+                            </a>
+                        </li>,
+                    )
+                    : <></>;
+
+            const subscribeList = () =>
+                Array.isArray(opdsPublicationView.subscribeLinks)
+                    ? opdsPublicationView.subscribeLinks.map(
+                        (ln, idx) =>
+                            <li
+                                key={`subscribeControl-${idx}`}
+                            >
+                                <a
+                                    role="menuitem"
+                                    href={ln.url}
+                                >
+                                    {__("opds.menu.goSubBook")}
+                                </a>
+                            </li>,
+                    )
+                    : <></>;
+
+            if (
+                (Array.isArray(opdsPublicationView.buyLinks)
+                    && opdsPublicationView.buyLinks.length)
+                || (Array.isArray(opdsPublicationView.borrowLinks)
+                    && opdsPublicationView.borrowLinks.length)
+                || (Array.isArray(opdsPublicationView.subscribeLinks)
+                    && opdsPublicationView.subscribeLinks.length)
+            ) {
+                return (
+                    <ul className={styles.liens}>
+                        {
+                            buyList()
+                        }
+                        {
+                            borrowList()
+                        }
+                        {
+                            subscribeList()
+                        }
+                    </ul>
+                );
+            }
+            return (<></>);
+        };
+
+        return (
+            <>
+                {
+                    openAccessLinksButton()
                 }
-            </ul> : <></>}
-            </>;
+                {
+                    sampleOrPreviewLinksButton()
+                }
+                {
+                    feedLinksList()
+                }
+            </>
+        );
     }
 }
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
-        verifyImport: (opdsPublicationView: OpdsPublicationView) => {
+        verifyImport: (...data: Parameters<typeof importActions.verify.build>) => {
             dispatch(dialogActions.closeRequest.build());
-            dispatch(importActions.verify.build(opdsPublicationView));
+            dispatch(importActions.verify.build(...data));
         },
     };
 };
 
 const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
-        buttonIsDisabled: () => {
-            const foundDownload = state.download.downloads.find((dl) => {
-                return dl.url === props.opdsPublicationView.openAccessUrl ||
-                    dl.url === props.opdsPublicationView.sampleOrPreviewUrl;
-            });
-            return foundDownload ? true : false;
+        openAccessButtonIsDisabled: () => {
+            return !!state.download.downloads.find(
+                (dl) => props.opdsPublicationView.openAccessLinks.find(
+                    (ln) => ln.url === dl.url,
+                ),
+            );
+        },
+        sampleButtonIsDisabled: () => {
+            return !!state.download.downloads.find(
+                (dl) => props.opdsPublicationView.sampleOrPreviewLinks.find(
+                    (ln) => ln.url === dl.url,
+                ),
+            );
         },
     };
 };

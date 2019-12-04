@@ -9,13 +9,21 @@ import * as crypto from "crypto";
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
+<<<<<<< HEAD
 import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { httpGet } from "readium-desktop/common/utils/http";
 import { OpdsFeedView, THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
+=======
+import {
+    IOpdsFeedView, IOpdsLinkView, IOpdsPublicationView, THttpGetOpdsPublicationView,
+    THttpGetOpdsResultView,
+} from "readium-desktop/common/views/opds";
+>>>>>>> develop
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+<<<<<<< HEAD
 import { OpdsParsingError } from "readium-desktop/main/exceptions/opds";
 import { RootState } from "readium-desktop/main/redux/states";
 import { Store } from "redux";
@@ -29,11 +37,16 @@ import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
+=======
+import { OpdsService } from "readium-desktop/main/services/opds";
+import { ReturnPromiseType } from "readium-desktop/typings/promise";
+>>>>>>> develop
 
 // Logger
 const debug = debug_("readium-desktop:src/main/api/opds");
 
 export interface IOpdsApi {
+<<<<<<< HEAD
     getFeed: (identifier: string) => Promise<OpdsFeedView>;
     deleteFeed: (identifier: string) => Promise<void>;
     findAllFeeds: () => Promise<OpdsFeedView[]>;
@@ -42,6 +55,31 @@ export interface IOpdsApi {
     browse: (url: string) => Promise<THttpGetOpdsResultView>;
     // tslint:disable-next-line: max-line-length
     oauth: (opdsUrl: string, login: string, password: string, oAuthUrl: string, oAuthRefreshUrl: string | undefined, OPDS_AUTH_ENCRYPTION_KEY_HEX: string, OPDS_AUTH_ENCRYPTION_IV_HEX: string, refreshToken?: string) => Promise<boolean>;
+=======
+    getFeed: (
+        identifier: string,
+    ) => Promise<IOpdsFeedView>;
+    deleteFeed: (
+        identifier: string,
+    ) => Promise<void>;
+    findAllFeeds: (
+    ) => Promise<IOpdsFeedView[]>;
+    addFeed: (
+        data: OpdsFeed,
+    ) => Promise<IOpdsFeedView>;
+    updateFeed: (
+        data: OpdsFeed,
+    ) => Promise<IOpdsFeedView>;
+    browse: (
+        url: string,
+    ) => Promise<THttpGetOpdsResultView>;
+    getPublicationFromEntry: (
+        url: string,
+    ) => Promise<THttpGetOpdsPublicationView>;
+    getUrlWithSearchLinks: (
+        searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch,
+    ) => Promise<string | undefined>;
+>>>>>>> develop
 }
 
 export type TOpdsApiGetFeed = IOpdsApi["getFeed"];
@@ -50,15 +88,25 @@ export type TOpdsApiFindAllFeed = IOpdsApi["findAllFeeds"];
 export type TOpdsApiAddFeed = IOpdsApi["addFeed"];
 export type TOpdsApiUpdateFeed = IOpdsApi["updateFeed"];
 export type TOpdsApiBrowse = IOpdsApi["browse"];
+<<<<<<< HEAD
 export type TOpdsApiOAuth = IOpdsApi["oauth"];
+=======
+export type TOpdsApiGetPublicationFromEntry = IOpdsApi["getPublicationFromEntry"];
+export type TOpdsApiGetUrlWithSearchLinks = IOpdsApi["getUrlWithSearchLinks"];
+>>>>>>> develop
 
-export type TOpdsApiGetFeed_result = OpdsFeedView;
+export type TOpdsApiGetFeed_result = IOpdsFeedView;
 export type TOpdsApiDeleteFeed_result = void;
-export type TOpdsApiFindAllFeed_result = OpdsFeedView[];
-export type TOpdsApiAddFeed_result = OpdsFeedView;
-export type TOpdsApiUpdateFeed_result = OpdsFeedView;
+export type TOpdsApiFindAllFeed_result = IOpdsFeedView[];
+export type TOpdsApiAddFeed_result = IOpdsFeedView;
+export type TOpdsApiUpdateFeed_result = IOpdsFeedView;
 export type TOpdsApiBrowse_result = THttpGetOpdsResultView;
+<<<<<<< HEAD
 export type TOpdsApiOAuth_result = boolean;
+=======
+export type TOpdsApiGetPublicationFromEntry_result = THttpGetOpdsPublicationView;
+export type TOpdsApiGetUrlWithSearchLink_result = ReturnPromiseType<IOpdsApi["getUrlWithSearchLinks"]>;
+>>>>>>> develop
 
 export interface IOpdsModuleApi {
     "opds/getFeed": TOpdsApiGetFeed;
@@ -67,26 +115,29 @@ export interface IOpdsModuleApi {
     "opds/addFeed": TOpdsApiAddFeed;
     "opds/updateFeed": TOpdsApiUpdateFeed;
     "opds/browse": TOpdsApiBrowse;
+<<<<<<< HEAD
     "opds/oauth": TOpdsApiOAuth;
+=======
+    "opds/getPublicationFromEntry": TOpdsApiGetPublicationFromEntry;
+    "opds/getUrlWithSearchLinks": TOpdsApiGetUrlWithSearchLinks;
+>>>>>>> develop
 }
+
+type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url" | "type">>;
+
+const checkUrl = (url: string) => {
+    try {
+        if (new URL(url).protocol === "opds:") {
+            url = url.replace("opds://", "http://");
+        }
+    } catch (e) {
+        throw new Error(`opds-api-url-invalid ${e.message}`);
+    }
+    return url;
+};
 
 @injectable()
 export class OpdsApi implements IOpdsApi {
-
-    /**
-     * test all possible content-type for both xml and json
-     * @param contentType content-type headers
-     * @returns if content-Type is missing accept
-     */
-    public static contentTypeisAccepted(contentType?: string) {
-        const retBool = contentType &&
-            !contentType.startsWith("application/json") &&
-            !contentType.startsWith("application/opds+json") &&
-            !contentType.startsWith("application/atom+xml") &&
-            !contentType.startsWith("application/xml") &&
-            !contentType.startsWith("text/xml");
-        return !retBool;
-    }
 
     @inject(diSymbolTable["opds-feed-repository"])
     private readonly opdsFeedRepository!: OpdsFeedRepository;
@@ -94,6 +145,7 @@ export class OpdsApi implements IOpdsApi {
     @inject(diSymbolTable["opds-feed-view-converter"])
     private readonly opdsFeedViewConverter!: OpdsFeedViewConverter;
 
+<<<<<<< HEAD
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
 
@@ -104,6 +156,12 @@ export class OpdsApi implements IOpdsApi {
     // private _OPDS_AUTH_ENCRYPTION_IV_HEX: string | undefined;
 
     public async getFeed(identifier: string): Promise<OpdsFeedView> {
+=======
+    @inject(diSymbolTable["opds-service"])
+    private readonly opdsService!: OpdsService;
+
+    public async getFeed(identifier: string): Promise<IOpdsFeedView> {
+>>>>>>> develop
         const doc = await this.opdsFeedRepository.get(identifier);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
@@ -112,23 +170,24 @@ export class OpdsApi implements IOpdsApi {
         await this.opdsFeedRepository.delete(identifier);
     }
 
-    public async findAllFeeds(): Promise<OpdsFeedView[]> {
+    public async findAllFeeds(): Promise<IOpdsFeedView[]> {
         const docs = await this.opdsFeedRepository.findAll();
         return docs.map((doc) => {
             return this.opdsFeedViewConverter.convertDocumentToView(doc);
         });
     }
 
-    public async addFeed(data: OpdsFeed): Promise<OpdsFeedView> {
+    public async addFeed(data: OpdsFeed): Promise<IOpdsFeedView> {
         const doc = await this.opdsFeedRepository.save(data);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
-    public async updateFeed(data: OpdsFeed): Promise<OpdsFeedView> {
+    public async updateFeed(data: OpdsFeed): Promise<IOpdsFeedView> {
         const doc = await this.opdsFeedRepository.save(data);
         return this.opdsFeedViewConverter.convertDocumentToView(doc);
     }
 
+<<<<<<< HEAD
     public async browse(url: string, tryingAgain: boolean = false): Promise<THttpGetOpdsResultView> {
         if (new URL(url).protocol === "opds:") {
             url = url.replace("opds://", "http://");
@@ -184,12 +243,24 @@ export class OpdsApi implements IOpdsApi {
                 if (!xmlDom || !xmlDom.documentElement) {
                     throw new OpdsParsingError(`Unable to parse ${url}`);
                 }
+=======
+    public async getPublicationFromEntry(url: string): Promise<THttpGetOpdsPublicationView> {
+        url = checkUrl(url);
+>>>>>>> develop
 
-                const isEntry = xmlDom.documentElement.localName === "entry";
-                if (isEntry) {
-                    throw new OpdsParsingError(`This is an OPDS entry ${url}`);
+        return await this.opdsService.opdsRequest(url,
+            // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
+            (r2OpdsFeed) => {
+                const opdsFeed = this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url);
+
+                let publication: IOpdsPublicationView;
+                if (Array.isArray(opdsFeed.publications)) {
+                    publication = opdsFeed.publications[0];
+                } else {
+                    debug(`publication from ${url} not found`);
                 }
 
+<<<<<<< HEAD
                 const opds1Feed = XML.deserialize<OPDS>(xmlDom, OPDS);
                 r2OpdsFeed = convertOpds1ToOpds2(opds1Feed);
             } else {
@@ -261,9 +332,25 @@ export class OpdsApi implements IOpdsApi {
             } else {
                 opdsFeedData.data = await this.opdsFeedViewConverter.convertOpdsAuthToView(r2OpdsAuth, url);
             }
+=======
+                debug("GetPublicationFromEntry return publication =", publication);
+                return publication;
+            });
+    }
 
-            return opdsFeedData;
-        });
+    public async browse(url: string): Promise<THttpGetOpdsResultView> {
+        url = checkUrl(url);
+
+        return await this.opdsService.opdsRequest(url,
+            // warning: modifies each r2OpdsFeed.publications, makes relative URLs absolute with baseUrl(url)!
+            (r2OpdsFeed) => this.opdsFeedViewConverter.convertOpdsFeedToView(r2OpdsFeed, url));
+    }
+>>>>>>> develop
+
+    public async getUrlWithSearchLinks(searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch)
+        : Promise<string | undefined> {
+        const link = Array.isArray(searchLink) ? searchLink : [searchLink];
+        return this.opdsService.parseOpdsSearchUrl(link);
     }
 
     // tslint:disable-next-line: max-line-length

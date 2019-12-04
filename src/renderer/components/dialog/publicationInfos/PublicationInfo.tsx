@@ -6,31 +6,28 @@
 // ==LICENSE-END==
 
 import classNames from "classnames";
+import * as debug_ from "debug";
 import * as moment from "moment";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
-import { PublicationView } from "readium-desktop/common/views/publication";
-import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
-import { apiAction } from "readium-desktop/renderer/apiAction";
-import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
+import { IOpdsCoverView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import TagManager from "readium-desktop/renderer/components/dialog/publicationInfos/TagManager";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
-import TagManager from "readium-desktop/renderer/components/publication/TagManager";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
-import { Unsubscribe } from "redux";
-
-import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 
 import Dialog from "../Dialog";
 import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
+import LcpInfo from "./LcpInfo";
 import OpdsControls from "./opdsControls";
 
 // tslint:disable-next-line: no-empty-interface
@@ -47,14 +44,14 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 interface IState {
     seeMore: boolean;
     needSeeMore: boolean;
-    publicationView: TPublicationApiGet_result | undefined;
-    coverZoom: boolean;
 }
+
+// Logger
+const debug = debug_("readium-desktop:renderer:publication-info");
 
 class PublicationInfo extends React.Component<IProps, IState> {
     private descriptionWrapperRef: any;
     private descriptionRef: any;
-    private unsubscribe: Unsubscribe;
 
     constructor(props: IProps) {
         super(props);
@@ -62,164 +59,40 @@ class PublicationInfo extends React.Component<IProps, IState> {
         this.state = {
             seeMore: false,
             needSeeMore: false,
-            publicationView: undefined,
-            coverZoom: false,
         };
-        this.toggleSeeMore = this.toggleSeeMore.bind(this);
-        this.getPublicationFromId = this.getPublicationFromId.bind(this);
     }
 
     public componentDidMount() {
-        if (this.props.publicationIdentifier) {
-            this.unsubscribe = apiSubscribe([
-                "publication/updateTags",
-            ], this.getPublicationFromId);
-        }
-
-        setTimeout(this.needSeeMoreButton.bind(this), 500);
+        setTimeout(this.needSeeMoreButton, 500);
     }
 
-    public componentWillUnmount() {
-        if (this.props.publicationIdentifier) {
-            this.unsubscribe();
+    public componentDidUpdate(prevProps: IProps) {
+
+        if (this.props.publication !== prevProps.publication) {
+            setTimeout(this.needSeeMoreButton, 500);
         }
     }
 
     public render(): React.ReactElement<{}> {
 
-        // tslint:disable-next-line: max-line-length
-        const opdsPublicationView: OpdsPublicationView = this.props.opdsPublicationView ? this.props.opdsPublicationView : undefined;
-        const normalPublicationView: PublicationView = opdsPublicationView ? undefined : this.state.publicationView;
-        const normalOrOpdsPublicationView = opdsPublicationView ? opdsPublicationView : normalPublicationView;
-
-        if (!this.props.open || (!normalPublicationView && !opdsPublicationView)) {
+        if (!this.props.open) {
             return (<></>);
         }
 
-        const { __, translator } = this.props;
-        const controlsComponent = (() => {
-            if (this.props.displayControls) {
-                if (opdsPublicationView) {
-                    return (<OpdsControls opdsPublicationView={opdsPublicationView} />);
-                }
-                if (normalPublicationView.lcp) {
-                    return (<CatalogLcpControls publicationView={normalPublicationView} />);
-                }
-                return (<CatalogControls publicationView={normalPublicationView} />);
-            }
-            return (<></>);
-        })();
+        const { __, translator, publication, coverZoom } = this.props;
 
-        const authors = normalOrOpdsPublicationView.authors &&
-            normalOrOpdsPublicationView.authors.length ?
-            normalOrOpdsPublicationView.authors.map((author) => {
-                return translator.translateContentField(author);
-            }).join(", ") : "";
+        const authors = () =>
+            (publication.authors && publication.authors.length)
+                ? publication.authors.map(
+                    (author) => translator.translateContentField(author))
+                    .join(", ")
+                : "";
 
-        const formatedPublishers = normalOrOpdsPublicationView.publishers &&
-            normalOrOpdsPublicationView.publishers.length
-            ? normalOrOpdsPublicationView.publishers.join(", ") : undefined;
-
-        const formatedPublishedDateComponent = (() => {
-            if (normalOrOpdsPublicationView.publishedAt) {
-                const date = moment(normalOrOpdsPublicationView.publishedAt).format("L");
-                if (date) {
-                    return (
-                        <p>
-                            <span>{__("catalog.released")}
-                            </span> <i className={styles.allowUserSelect}>{date}</i>
-                        </p>
-                    );
-                }
-            }
-            return (<></>);
-        })();
-        const publicationLanguageComponent = (() => {
-            if (normalOrOpdsPublicationView.languages) {
-                return normalOrOpdsPublicationView.languages
-                    .map((lang: string, index: number) => {
-                        const l = lang.split("-")[0];
-
-                        // because dynamic label does not pass typed i18n compilation
-                        const translate = __ as (str: string) => string;
-
-                        const ll = translate(`languages.${l}`).replace(`languages.${l}`, lang);
-                        const note = (lang !== ll) ? ` (${lang})` : "";
-                        const suffix = ((index < (normalOrOpdsPublicationView.languages.length - 1)) ? ", " : "");
-                        return <i
-                            key={"lang-" + index}
-                            title={lang}
-                            className={styles.allowUserSelect}
-                        >
-                            {ll + note + suffix}
-                        </i>;
-                    });
-            }
-            return (<></>);
-        })();
-
-        const locale = this.props.translator.getLocale();
-
-        // https://momentjs.com/docs/#/displaying/
-        moment.locale(locale);
-
-        const lcp = (normalOrOpdsPublicationView as PublicationView).lcp;
-        const lcpRightsPrint = (lcp?.rights?.print) ? lcp.rights.print : 0;
-        const lcpRightsCopy = (lcp?.rights?.copy) ? lcp.rights.copy : 0;
-        const lcpRightsCopies = (normalOrOpdsPublicationView as PublicationView).lcpRightsCopies ?? 0;
-
-        const lcpRightsStartDate = (lcp?.rights?.start) ? lcp.rights.start : undefined;
-        let lcpRightsStartDateStr: string | undefined;
-        if (lcpRightsStartDate) {
-            try {
-                lcpRightsStartDateStr = moment(lcpRightsStartDate).format("LLL");
-            } catch (err) {
-                console.log(err);
-                try {
-                    lcpRightsStartDateStr = lcpRightsStartDate.toLocaleString(locale);
-                } catch (err2) {
-                    console.log(err2);
-                    lcpRightsStartDateStr = lcpRightsStartDate.toLocaleString();
-                }
-            }
-        }
-
-        const lcpRightsEndDate = (lcp?.rights?.end) ? lcp.rights.end : undefined;
-        let lcpRightsEndDateStr: string | undefined;
-        if (lcpRightsEndDate) {
-            try {
-                lcpRightsEndDateStr = moment(lcpRightsEndDate).format("LLL");
-            } catch (err) {
-                console.log(err);
-                try {
-                    lcpRightsEndDateStr = lcpRightsEndDate.toLocaleString(locale);
-                } catch (err2) {
-                    console.log(err2);
-                    lcpRightsEndDateStr = lcpRightsEndDate.toLocaleString();
-                }
-            }
-        }
-
-        // TODO: fix r2-lcp-js to handle encrypted fields
-        // (need lcp.node with userkey decrypt, not contentkey):
-        // if (lcp && lcp.r2LCPBase64) {
-        //     const r2LCPStr = Buffer.from(lcp.r2LCPBase64, "base64").toString("utf-8");
-        //     const r2LCPJson = JSON.parse(r2LCPStr);
-        //     const r2LCP = TaJsonDeserialize<LCP>(r2LCPJson, LCP);
-        //     r2LCP.JsonSource = r2LCPStr;
-
-        //     console.log(r2LCP.User.Name);
-        //     console.log(r2LCP.User.Email);
-        //     console.log(JSON.stringify(r2LCP.User.Encrypted, null, 4));
-        // }
-
-        const lsdOkay = lcp &&
-            lcp.lsd &&
-            lcp.lsd.lsdStatus;
-
-        const lsdStatus = lsdOkay &&
-            lcp.lsd.lsdStatus.status ?
-            lcp.lsd.lsdStatus.status : undefined;
+        const formatedPublishers = () =>
+            publication.publishers
+                && publication.publishers.length
+                ? publication.publishers.join(", ")
+                : undefined;
 
         const renderInfo = () =>
             <>
@@ -227,31 +100,30 @@ class PublicationInfo extends React.Component<IProps, IState> {
                     <div className={styles.image_wrapper}>
                         <div>
                             <Cover
-                                publicationViewMaybeOpds={normalOrOpdsPublicationView}
-                                onClick={() => normalOrOpdsPublicationView.cover.coverUrl && this.coverOnClick()}
+                                publicationViewMaybeOpds={publication}
+                                onClick={
+                                    () => ((publication.cover as CoverView).coverUrl
+                                        || (publication.cover as IOpdsCoverView).coverLinks[0]?.url)
+                                        && this.props.toggleCoverZoom(coverZoom)}
                                 onKeyPress={this.coverOnKeyPress}
                             />
                         </div>
                     </div>
-                    {controlsComponent}
+                    {this.controlsComponent()}
                 </div>
                 <div className={styles.dialog_right}>
-                    <h2 className={styles.allowUserSelect}>{normalOrOpdsPublicationView.title}</h2>
+                    <h2 className={styles.allowUserSelect}>{publication.title}</h2>
                     <div>
-                        <p className={classNames(styles.allowUserSelect, styles.author)}>{authors}</p>
-                        {formatedPublishedDateComponent}
+                        <p className={classNames(styles.allowUserSelect, styles.author)}>{authors()}</p>
+                        {this.formatedPublishedDateComponent()}
                         <div className={styles.tags}>
                             <div className={styles.tag_list}>
                                 <span>{__("catalog.tags")}</span>
-                                <TagManager
-                                    publicationIdentifier={(normalOrOpdsPublicationView as PublicationView).identifier}
-                                    tags={normalOrOpdsPublicationView.tags}
-                                    canModifyTag={opdsPublicationView ? false : true}
-                                />
+                                <TagManager/>
                             </div>
                         </div>
 
-                        {normalOrOpdsPublicationView.description && <>
+                        {publication.description && <>
                             <h3>{__("catalog.description")}</h3>
                             <div
                                 ref={(ref) => this.descriptionWrapperRef = ref}
@@ -265,7 +137,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                                     ref={(ref) => this.descriptionRef = ref}
                                     className={classNames(styles.allowUserSelect, styles.description)}
                                 >
-                                    {normalOrOpdsPublicationView.description}
+                                    {publication.description}
                                 </p>
                             </div>
                             {this.state.needSeeMore &&
@@ -278,16 +150,18 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         <h3>{__("catalog.moreInfo")}</h3>
 
                         <p>
-                            {formatedPublishers &&
+                            {formatedPublishers() &&
                                 <><span>{__("catalog.publisher")}
-                                </span> <i className={styles.allowUserSelect}>{formatedPublishers}</i> <br /></>
+                                </span> <i className={styles.allowUserSelect}>{formatedPublishers()}</i> <br /></>
                             }
-                            <span>{__("catalog.lang")}: </span>{publicationLanguageComponent}<br />
-                            <span>{__("catalog.id")}: </span>
-                            <i className={styles.allowUserSelect}>{normalOrOpdsPublicationView.workIdentifier}</i>
+                            <span>{__("catalog.lang")}</span>{this.publicationLanguageComponent()}<br />
+                            <span>{__("catalog.id")}
+                            </span>
+                            <i className={styles.allowUserSelect}>{publication.workIdentifier}</i>
                             <br />
                         </p>
 
+<<<<<<< HEAD
                         {lcp && <>
                             <h3>LCP</h3>
                             <p className={classNames(styles.allowUserSelect)}
@@ -328,52 +202,130 @@ class PublicationInfo extends React.Component<IProps, IState> {
                                 </> : undefined}
                             </p>
                         </>}
+=======
+                        <LcpInfo publicationLcp={publication}></LcpInfo>
+
+>>>>>>> develop
                     </div>
                 </div>
             </>;
 
+        const dialogContent = () => {
+            if (publication?.title) {
+                return (
+                    this.props.coverZoom
+                        ?
+                        <Cover
+                            publicationViewMaybeOpds={publication}
+                            coverType="cover"
+                            onClick={() => this.props.toggleCoverZoom(coverZoom)}
+                            onKeyPress={() => this.coverOnKeyPress}
+                        />
+                        :
+                        renderInfo()
+                );
+            }
+            return (<Loader></Loader>);
+        };
+
         return (
-            <Dialog open={true} close={() => this.state.coverZoom ? this.coverOnClick() : this.props.closeDialog()}>
-                {this.state.coverZoom ?
-                    <Cover
-                        publicationViewMaybeOpds={normalOrOpdsPublicationView}
-                        coverTypeUrl="coverUrl"
-                        onClick={this.coverOnClick}
-                        onKeyPress={this.coverOnKeyPress}
-                    /> :
-                    renderInfo()
-                }
+            <Dialog
+                open={true}
+                close={() =>
+                    this.props.coverZoom ?
+                        this.props.toggleCoverZoom(coverZoom) :
+                        this.props.closeDialog()}
+            >
+                {dialogContent()}
             </Dialog>
         );
     }
 
-    private coverOnKeyPress = (e: React.KeyboardEvent<HTMLImageElement>) =>
-        e.key === "Enter" && this.coverOnClick()
+    private controlsComponent = () => {
+        const { publicationInfoLib, publicationInfoOpds, publication } = this.props;
 
-    private coverOnClick = () => this.setState({
-        coverZoom: !this.state.coverZoom,
-    })
+        let controlsComponent = (<></>);
 
-    private toggleSeeMore() {
-        this.setState({ seeMore: !this.state.seeMore });
-    }
-
-    private needSeeMoreButton() {
-        if (!this.descriptionWrapperRef || !this.descriptionRef) {
-            return;
+        if (publicationInfoOpds) {
+            controlsComponent = (<OpdsControls opdsPublicationView={publication as IOpdsPublicationView} />);
         }
-        const need = this.descriptionWrapperRef.offsetHeight < this.descriptionRef.offsetHeight;
-        this.setState({ needSeeMore: need });
+        if (publicationInfoLib) {
+            if (publication?.lcp) {
+                controlsComponent = (<CatalogLcpControls publicationView={publication as PublicationView} />);
+            }
+            controlsComponent = (<CatalogControls publicationView={publication as PublicationView} />);
+        }
+
+        return controlsComponent;
     }
 
-    private getPublicationFromId() {
-        apiAction("publication/get", this.props.publicationIdentifier)
-            .then((publicationView) => this.setState({ publicationView }))
-            .catch((error) => console.error(`Error to fetch publication/get`, error));
+    private formatedPublishedDateComponent = () => {
+        const { publication, __ } = this.props;
+
+        let formatedPublishedDateComponent = (<></>);
+        if (publication.publishedAt) {
+            const date = moment(publication.publishedAt).format("L");
+            if (date) {
+                formatedPublishedDateComponent = (
+                    <p>
+                        <span>{__("catalog.released")}
+                        </span> <i className={styles.allowUserSelect}>{date}</i>
+                    </p>
+                );
+            }
+        }
+
+        return formatedPublishedDateComponent;
+    }
+
+    private publicationLanguageComponent = () => {
+        const { publication, __ } = this.props;
+
+        let publicationLanguageComponent: JSX.Element | JSX.Element[] = (<></>);
+        if (publication.languages) {
+            publicationLanguageComponent = publication.languages
+                .map((lang: string, index: number) => {
+                    const l = lang.split("-")[0];
+
+                    // because dynamic label does not pass typed i18n compilation
+                    const translate = __ as (str: string) => string;
+
+                    const ll = translate(`languages.${l}`).replace(`languages.${l}`, lang);
+                    const note = (lang !== ll) ? ` (${lang})` : "";
+                    const suffix = ((index < (publication.languages.length - 1)) ? ", " : "");
+                    return (<i
+                        key={"lang-" + index}
+                        title={lang}
+                        className={styles.allowUserSelect}
+                    >
+                        {ll + note + suffix}
+                    </i>);
+                });
+        }
+
+        return publicationLanguageComponent;
+    }
+
+    private coverOnKeyPress = (e: React.KeyboardEvent<HTMLImageElement>) =>
+        e.key === "Enter" && this.props.toggleCoverZoom(this.props.coverZoom)
+
+    private toggleSeeMore = () =>
+        this.setState({
+            seeMore: !this.state.seeMore,
+        })
+
+    private needSeeMoreButton = () => {
+        if (this.descriptionWrapperRef && this.descriptionRef) {
+            const need = this.descriptionWrapperRef.offsetHeight < this.descriptionRef.offsetHeight;
+            this.setState({ needSeeMore: need });
+        }
     }
 }
 
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
+    // Warning : mapDispatchToProps isn't rendered when the state is updateds
+    // but only when the component is mounted
+    debug("mapDispatchToProps rendered");
     return {
         closeDialog: () => {
             if ((props as IProps).publicationInfoReader) {
@@ -386,16 +338,26 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
                 dialogActions.closeRequest.build(),
             );
         },
+        toggleCoverZoom: (state: boolean) => {
+            dispatch(dialogActions.updateRequest.build(
+                {
+                    coverZoom: !state,
+                },
+            ));
+        },
     };
 };
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     ...{
-        open: state.dialog.type === "publication-info" || state.dialog.type === "publication-info-reader",
-        displayControls: state.dialog.type === "publication-info",
+        open: state.dialog.type === "publication-info-opds"
+            || state.dialog.type === "publication-info-reader"
+            || state.dialog.type === "publication-info-lib",
+        publicationInfoOpds: state.dialog.type === "publication-info-opds",
         publicationInfoReader: state.dialog.type === "publication-info-reader",
+        publicationInfoLib: state.dialog.type === "publication-info-lib",
     },
-    ...(state.dialog.data as DialogType["publication-info"]),
+    ...(state.dialog.data as DialogType["publication-info-opds"]),
     ...(state.dialog.data as DialogType["publication-info-reader"]),
 });
 

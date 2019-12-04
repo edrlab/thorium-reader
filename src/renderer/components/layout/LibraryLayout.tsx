@@ -61,6 +61,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
     public render() {
         const { title } = this.props;
 
+        // FIXME add thorium from a constant
         let helmetTitle = "Thorium";
         if (title) {
             helmetTitle += " - " + title;
@@ -69,6 +70,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
         return (
             <HelmetProvider>
                 <div
+                    // FIXME css in the code
                     style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} }
                 >
                     <Helmet>

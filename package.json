@@ -226,6 +226,7 @@
     "@types/redux": "^3.6.31",
     "@types/request": "^2.48.3",
     "@types/tmp": "^0.1.0",
+    "@types/urijs": "^1.19.4",
     "@types/uuid": "^3.4.6",
     "@types/xmldom": "^0.1.29",
     "@types/yargs": "^13.0.3",

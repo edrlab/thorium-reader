@@ -7,20 +7,22 @@
 
 import { all, call } from "redux-saga/effects";
 
-import { winInitWatcher } from "./win";
-
+import * as publicationInfoOpds from "./dialog/publicationInfoOpds";
+import * as publicationInfoReaderAndLib from "./dialog/publicationInfoReaderAndLib";
 import * as i18n from "./i18n";
-
 import * as lcp from "./lcp";
 import * as opds from "./opds";
+import * as sameFileImport from "./sameFileImport";
+import { winInitWatcher } from "./win";
 
 export function* rootSaga() {
     yield all([
         call(i18n.watchers),
-
         call(lcp.watchers),
         call(opds.watchers),
-
         call(winInitWatcher),
+        call(publicationInfoOpds.watchers),
+        call(publicationInfoReaderAndLib.watchers),
+        call(sameFileImport.watchers),
     ]);
 }
