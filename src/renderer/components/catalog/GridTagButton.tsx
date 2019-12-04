@@ -24,7 +24,7 @@ interface IBaseProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class GridTagButton extends React.Component<IProps> {
+class GridTagButton extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);
