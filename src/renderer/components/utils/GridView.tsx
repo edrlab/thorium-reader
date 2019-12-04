@@ -6,12 +6,12 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/publicationView.css";
 import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
 
-type NormalOrOpdsPublicationView = PublicationView | OpdsPublicationView;
+type NormalOrOpdsPublicationView = PublicationView | IOpdsPublicationView;
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
