@@ -80,7 +80,7 @@ export class TextSearchResult extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        const displayType = this.props.location?.state?.displayType;
+        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
         const { __ } = this.props;
         const title = matchPath<ILibrarySearchText>(
             this.props.location.pathname, routes["/library/search/text"],
