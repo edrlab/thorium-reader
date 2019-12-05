@@ -111,7 +111,10 @@ class Header extends React.Component<IProps, undefined> {
 
             bookshelfComponent = (
                 <Link
-                    to={route}
+                    to={{
+                        ...this.props.location,
+                        pathname: route,
+                    }}
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
                 </Link>
