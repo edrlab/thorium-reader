@@ -222,6 +222,11 @@ export class CatalogService {
     public async deletePublication(publicationIdentifier: string) {
 
         this.store.dispatch(readerActions.closeRequestFromPublication.build(publicationIdentifier));
+        await new Promise((res, _rej) => {
+            setTimeout(() => {
+                res();
+            }, 300); // allow extra completion time to ensure the filesystem ZIP streams are closed
+        });
 
         // Remove from database
         await this.publicationRepository.delete(publicationIdentifier);
