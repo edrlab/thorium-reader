@@ -115,9 +115,7 @@ class Header extends React.Component<IProps, undefined> {
                 <Link
                     to={{
                         ...this.props.location,
-                        ...{
-                            pathname: item.route,
-                        },
+                        pathname: item.route,
                     }}
                     replace={true}
                 >

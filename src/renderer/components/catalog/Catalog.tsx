@@ -55,10 +55,7 @@ class Catalog extends React.Component<IProps> {
             this.getFromApi();
         }
 
-        let displayType = DisplayType.Grid;
-        if (this.props.location?.state?.displayType) {
-            displayType = this.props.location.state.displayType;
-        }
+        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
 
         const secondaryHeader = <Header/>;
 
@@ -67,12 +64,19 @@ class Catalog extends React.Component<IProps> {
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
-                {catalog?.data.result &&
-                (displayType === DisplayType.Grid ?
-                    <CatalogGridView catalogEntries={catalog.data.result.entries}
-                        tags={(tags?.data.result) || []} /> :
-                    <CatalogListView catalogEntries={catalog.data.result.entries}
-                        tags={(tags?.data.result) || []} />)
+                {
+                    catalog?.data.result
+                    && (
+                        displayType === DisplayType.Grid
+                            ? <CatalogGridView
+                                catalogEntries={catalog.data.result.entries}
+                                tags={(tags?.data.result) || []}
+                            />
+                            : <CatalogListView
+                                catalogEntries={catalog.data.result.entries}
+                                tags={(tags?.data.result) || []}
+                            />
+                    )
                 }
             </LibraryLayout>
         );

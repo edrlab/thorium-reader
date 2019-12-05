@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+import { Link, matchPath } from "react-router-dom";
 // import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar.svg";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home.svg";
@@ -19,7 +19,7 @@ import {
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { DisplayType, IOpdsBrowse } from "readium-desktop/renderer/routing";
+import { DisplayType, IOpdsBrowse, routes } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 import SearchForm from "./SearchForm";
@@ -33,7 +33,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
 // tslint:disable-next-line: max-line-length
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, RouteComponentProps<IOpdsBrowse> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class Header extends React.Component<IProps, undefined> {
@@ -74,10 +74,16 @@ class Header extends React.Component<IProps, undefined> {
                 >
                     <SVG svg={ListIcon} title={__("header.listTitle")} />
                 </Link>
-                {this.home()}
-                {this.refresh()}
+                {
+                    this.home()
+                }
+                {
+                    this.refresh()
+                }
                 <SearchForm />
-                { /*this.bookshelf()*/}
+                {
+                    /*this.bookshelf()*/
+                }
             </SecondaryHeader>
         );
     }
@@ -86,6 +92,8 @@ class Header extends React.Component<IProps, undefined> {
     /*
     private bookshelf = () => {
         const { bookshelf } = this.props.headerLinks;
+
+        let bookshelfComponent = <></>;
         if (bookshelf) {
 
             const { __ } = this.props;
@@ -97,7 +105,7 @@ class Header extends React.Component<IProps, undefined> {
                 parseInt(param.level, 10),
             );
 
-            return (
+            booksehlfComponent = (
                 <Link
                     to={route}
                 >
@@ -106,16 +114,20 @@ class Header extends React.Component<IProps, undefined> {
             );
         }
 
-        return undefined;
+        return bookshelfComponent;
     }
     */
 
     private home = () => {
         const { start } = this.props.headerLinks;
+
+        let homeComponent = <></>;
         if (start) {
 
             const { __ } = this.props;
-            const param = this.props.match.params;
+            const param = matchPath<IOpdsBrowse>(
+                this.props.location.pathname, routes["/opds/browse"],
+            ).params;
             const home = this.props.breadcrumb[1];
             const route = buildOpdsBrowserRoute(
                 param.opdsId,
@@ -124,13 +136,11 @@ class Header extends React.Component<IProps, undefined> {
                 1,
             );
 
-            return (
+            homeComponent = (
                 <Link
                     to={{
                         ...this.props.location,
-                        ...{
-                            pathname: route,
-                        },
+                        pathname: route,
                     }}
                     style={{ marginLeft: "16px" }}
                 >
@@ -139,15 +149,19 @@ class Header extends React.Component<IProps, undefined> {
             );
         }
 
-        return undefined;
+        return homeComponent;
     }
 
     private refresh = () => {
         const { self } = this.props.headerLinks;
+
+        let refreshComponet = <></>;
         if (self) {
 
             const { __ } = this.props;
-            const param = this.props.match.params;
+            const param = matchPath<IOpdsBrowse>(
+                this.props.location.pathname, routes["/opds/browse"],
+            ).params;
             const name = this.props.breadcrumb[1] && this.props.breadcrumb[1].name;
             const route = buildOpdsBrowserRoute(
                 param.opdsId,
@@ -156,13 +170,11 @@ class Header extends React.Component<IProps, undefined> {
                 parseInt(param.level, 10),
             );
 
-            return (
+            refreshComponet = (
                 <Link
                     to={{
                         ...this.props.location,
-                        ...{
-                            pathname: route,
-                        },
+                        pathname: route,
                     }}
                     style={{ marginLeft: "16px" }}
                 >
@@ -171,13 +183,14 @@ class Header extends React.Component<IProps, undefined> {
             );
         }
 
-        return undefined;
+        return refreshComponet;
     }
 }
 
 const mapStateToProps = (state: RootState) => ({
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
+    location: state.router.location,
 });
 
-export default connect(mapStateToProps)(withTranslator(withRouter(Header)));
+export default connect(mapStateToProps)(withTranslator(Header));

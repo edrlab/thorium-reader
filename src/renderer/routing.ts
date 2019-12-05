@@ -23,10 +23,6 @@ interface Route {
     component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
 }
 
-interface RouteList {
-    [path: string]: Route;
-}
-
 export interface IOpdsBrowse {
     opdsId: string;
     level: string;
@@ -45,7 +41,11 @@ export interface IRouterLocationState {
     displayType: DisplayType;
 }
 
-export const routes: RouteList = {
+interface IRouteList {
+    [key: string]: Route;
+}
+
+const _routes: IRouteList = {
     "/opds": {
         path: "/opds",
         exact: true,
@@ -95,3 +95,10 @@ export const routes: RouteList = {
         component: Catalog,
     },
 };
+
+type TRoutesKey = keyof typeof _routes;
+export type TRouteList = {
+    [key in TRoutesKey]: Route;
+};
+
+export const routes: TRouteList = _routes;

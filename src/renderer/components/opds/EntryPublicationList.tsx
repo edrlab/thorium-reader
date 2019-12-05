@@ -37,7 +37,7 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
     }
 
     public render() {
-        const displayType = this.props.location?.state?.displayType;
+        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
 
         return (
             <>
