@@ -53,7 +53,10 @@ export class OpdsService {
     private static contentTypeisOpds(contentType?: string) {
         return contentType
             && (contentType.startsWith("application/json")
-                || contentType.startsWith("application/opds+json"));
+                || contentType.startsWith("application/opds+json")
+                || contentType.startsWith("application/opds-authentication+json")
+            )
+        ;
     }
 
     private static async getOpenSearchUrl(opensearchLink: IOpdsLinkView): Promise<string | undefined> {
