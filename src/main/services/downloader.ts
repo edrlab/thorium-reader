@@ -20,6 +20,8 @@ import { tmpNameSync } from "tmp";
 import { URL } from "url";
 import * as uuid from "uuid";
 
+import { _NODE_ENV } from "readium-desktop/preprocessor-directives";
+
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
 
@@ -141,6 +143,7 @@ export class Downloader {
                 method: "GET",
                 encoding: undefined,
                 headers,
+                rejectUnauthorized: (_NODE_ENV === "development") ? false : true,
             },
         );
 

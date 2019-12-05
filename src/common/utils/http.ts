@@ -10,6 +10,8 @@ import { JsonMap } from "readium-desktop/typings/json";
 import * as request from "request";
 import { Url } from "url";
 
+import { _NODE_ENV } from "readium-desktop/preprocessor-directives";
+
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
 
@@ -66,6 +68,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
             method: "GET",
             encoding: undefined,
             headers,
+            rejectUnauthorized: (_NODE_ENV === "development") ? false : true,
         },
     );
 
