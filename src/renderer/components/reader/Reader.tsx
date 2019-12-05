@@ -418,7 +418,7 @@ export class Reader extends React.Component<IProps, IState> {
             "reader/addBookmark",
         ], this.findBookmarks);
 
-        apiAction("publication/get", queryParams.pubId)
+        apiAction("publication/get", queryParams.pubId, false)
             .then((publicationView) => { // TPublicationApiGet_result === PublicationView
                 this.setState({publicationView});
                 this.loadPublicationIntoViewport(publicationView, locator);

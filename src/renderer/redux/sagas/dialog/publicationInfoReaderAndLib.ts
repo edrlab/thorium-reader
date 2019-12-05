@@ -33,7 +33,7 @@ function* checkReaderAndLibPublicationWatcher() {
 
             // dispatch to API a publication get request
             if (id) {
-                yield* apiSaga("publication/get", REQUEST_ID, id);
+                yield* apiSaga("publication/get", REQUEST_ID, id, true);
             }
         }
     }
