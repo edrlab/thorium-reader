@@ -683,12 +683,27 @@ export class LcpManager {
                 debug(licenseUpdateJson);
 
                 if (licenseUpdateJson) {
-                    this.store.dispatch(readerActions.closeRequestFromPublication.build(publicationDocumentIdentifier));
-                    await new Promise((res, _rej) => {
-                        setTimeout(() => {
-                            res();
-                        }, 500); // allow extra completion time to ensure the filesystem ZIP streams are closed
-                    });
+
+                    let atLeastOneReaderIsOpen = false;
+                    const readers = this.store.getState().reader?.readers;
+                    if (readers) {
+                        for (const reader of Object.values(readers)) {
+                            if (reader.publicationIdentifier === publicationDocumentIdentifier) {
+                                atLeastOneReaderIsOpen = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (atLeastOneReaderIsOpen) {
+                        this.store.dispatch(readerActions.closeRequestFromPublication.build(
+                            publicationDocumentIdentifier));
+
+                        await new Promise((res, _rej) => {
+                            setTimeout(() => {
+                                res();
+                            }, 500); // allow extra completion time to ensure the filesystem ZIP streams are closed
+                        });
+                    }
 
                     try {
                         const prevLSD = r2Publication.LCP.LSD;
@@ -732,6 +747,10 @@ export class LcpManager {
                                     epubPath,
                                     publicationDocumentIdentifier,
                                     r2Publication);
+
+                                if (atLeastOneReaderIsOpen) {
+                                    this.store.dispatch(readerActions.openRequest.build(publicationDocumentIdentifier));
+                                }
                                 resolve();
                             } catch (err) {
                                 debug(err);
