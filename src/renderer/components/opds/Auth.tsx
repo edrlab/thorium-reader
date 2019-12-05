@@ -5,9 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { push } from "connected-react-router";
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { matchPath } from "react-router";
 import {
     OPDS_AUTH_ENCRYPTION_IV_HEX, OPDS_AUTH_ENCRYPTION_KEY_HEX,
 } from "readium-desktop/common/models/opds";
@@ -18,7 +19,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { IOpdsBrowse } from "readium-desktop/renderer/routing";
+import { IOpdsBrowse, routes } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { TMouseEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
@@ -33,7 +34,6 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
 interface IProps extends IBaseProps,
-    RouteComponentProps<IOpdsBrowse>,
     ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
@@ -55,7 +55,7 @@ class OPDSAuth extends React.Component<IProps, IState> {
         this.submit = this.submit.bind(this);
     }
 
-    public render(): React.ReactElement<IProps>  {
+    public render(): React.ReactElement<IProps> {
         const { login, password } = this.state;
         return (
             <section>
@@ -66,37 +66,37 @@ class OPDSAuth extends React.Component<IProps, IState> {
                     alt=""
                 /><hr></hr></>}
                 <form>
-                        <div className={styles.field}>
-                            <label>{this.props.browserResult.data.auth.labelLogin}</label>
-                            <br></br>
-                            <input
-                                onChange={(e) => this.setState({
-                                    login: e.target.value,
-                                })}
-                                type="text"
-                                aria-label={this.props.browserResult.data.auth.labelLogin}
-                                placeholder={this.props.browserResult.data.auth.labelLogin}
-                                defaultValue={login}
-                            />
-                        </div>
+                    <div className={styles.field}>
+                        <label>{this.props.browserResult.data.auth.labelLogin}</label>
                         <br></br>
-                        <div className={styles.field}>
-                            <label>{this.props.browserResult.data.auth.labelPassword}</label>
-                            <br></br>
-                            <input
-                                onChange={(e) => this.setState({
-                                    password: e.target.value,
-                                })}
-                                type="password"
-                                aria-label={this.props.browserResult.data.auth.labelPassword}
-                                placeholder={this.props.browserResult.data.auth.labelPassword}
-                                defaultValue={password}
-                            />
-                        </div>
+                        <input
+                            onChange={(e) => this.setState({
+                                login: e.target.value,
+                            })}
+                            type="text"
+                            aria-label={this.props.browserResult.data.auth.labelLogin}
+                            placeholder={this.props.browserResult.data.auth.labelLogin}
+                            defaultValue={login}
+                        />
+                    </div>
+                    <br></br>
+                    <div className={styles.field}>
+                        <label>{this.props.browserResult.data.auth.labelPassword}</label>
                         <br></br>
-                        <div>
-                            <input
-                                disabled={!login || !password}
+                        <input
+                            onChange={(e) => this.setState({
+                                password: e.target.value,
+                            })}
+                            type="password"
+                            aria-label={this.props.browserResult.data.auth.labelPassword}
+                            placeholder={this.props.browserResult.data.auth.labelPassword}
+                            defaultValue={password}
+                        />
+                    </div>
+                    <br></br>
+                    <div>
+                        <input
+                            disabled={!login || !password}
                                 type="submit"
                                 value={this.props.__("library.lcp.submit")}
                                 onClick={this.submit}
@@ -160,7 +160,9 @@ class OPDSAuth extends React.Component<IProps, IState> {
                     if (okay) {
                         console.log("SUCCESS fetch api opds/oauth");
 
-                        const param = this.props.match.params;
+                        const param = matchPath<IOpdsBrowse>(
+                            this.props.location.pathname, routes["/opds/browse"],
+                        ).params;
                         const lvl = parseInt(param.level, 10);
                         const i = (lvl > 1) ? (lvl - 1) : lvl;
                         const name = this.props.breadcrumb[i] && this.props.breadcrumb[i].name;
@@ -171,18 +173,16 @@ class OPDSAuth extends React.Component<IProps, IState> {
                             lvl,
                         );
 
-                        this.props.history.push({
+                        this.props.historyPush({
                             ...this.props.location,
                             pathname: route,
-                            search: "",
-                            hash: "",
                             // state: {} // we preserve the existing route state
                         });
                     }
                 })
-                .catch((err) => {
-                    console.error("Error to fetch api opds/oauth", err);
-                });
+                    .catch((err) => {
+                        console.error("Error to fetch api opds/oauth", err);
+                    });
             }, (err) => {
                 console.log(err);
             });
@@ -196,10 +196,11 @@ const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     level: state.opds.browser.breadcrumb.length + 1,
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
+    location: state.router.location,
 });
 
-const mapDispatchToProps = (_dispatch: TDispatch, _props: IBaseProps) => {
-    return {
-    };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withTranslator(OPDSAuth)));
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => ({
+    historyPush: (...data: Parameters<typeof push>) =>
+        dispatch(push(...data)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OPDSAuth));

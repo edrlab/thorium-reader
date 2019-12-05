@@ -51,9 +51,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                     && <Link
                         to={{
                             ...this.props.location,
-                            ...{
-                                pathname: breadcrumb[breadcrumb.length - 2].path,
-                            },
+                            pathname: breadcrumb[breadcrumb.length - 2].path,
                         }}
                         title={__("opds.back")}
                     >
@@ -69,9 +67,7 @@ class BreadCrumb extends React.Component<IProps, undefined> {
                                     key={index}
                                     to={{
                                         ...this.props.location,
-                                        ...{
-                                            pathname: item.path,
-                                        },
+                                        pathname: item.path,
                                     }}
                                     title={item.name}
                                 >
