@@ -65,19 +65,17 @@ export class LcpManager {
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
-    public async injectLcplIntoZip(epubPath: string, lcp: LCP) {
-
-        const jsonSource = lcp.JsonSource ? lcp.JsonSource : JSON.stringify(TaJsonSerialize(lcp));
+    public async injectLcplIntoZip_(epubPath: string, lcpStr: string) {
 
         const epubPathTMP = epubPath + ".tmplcpl";
         await new Promise((resolve, reject) => {
             injectBufferInZip(
                 epubPath,
                 epubPathTMP,
-                Buffer.from(jsonSource, "utf8"),
+                Buffer.from(lcpStr, "utf8"),
                 "META-INF/license.lcpl",
                 (e: any) => {
-                    debug("injectLcpl - injectBufferInZip ERROR!");
+                    debug("injectLcplIntoZip_ - injectBufferInZip ERROR!");
                     debug(e);
                     reject(e);
                 },
@@ -99,6 +97,12 @@ export class LcpManager {
                 resolve();
             }, 200); // to avoid issues with some filesystems (allow extra completion time)
         });
+    }
+
+    public async injectLcplIntoZip(epubPath: string, lcp: LCP) {
+
+        const jsonSource = lcp.JsonSource ? lcp.JsonSource : JSON.stringify(TaJsonSerialize(lcp));
+        await this.injectLcplIntoZip_(epubPath, jsonSource);
     }
 
     // public async injectLcpl(
@@ -238,7 +242,6 @@ export class LcpManager {
 
         let redoHash = false;
         if (r2Publication.LCP) {
-            this.store.dispatch(readerActions.closeRequestFromPublication.build(publicationDocument.identifier));
             try {
                 await this.processStatusDocument(
                     publicationDocument.identifier,
@@ -656,11 +659,12 @@ export class LcpManager {
             publicationDocumentIdentifier,
         );
         (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 0;
-        return this.processStatusDocument_(epubPath, r2Publication);
+        return this.processStatusDocument_(epubPath, publicationDocumentIdentifier, r2Publication);
     }
 
     private async processStatusDocument_(
         epubPath: string,
+        publicationDocumentIdentifier: string,
         r2Publication: R2Publication): Promise<void> {
 
         if (!r2Publication.LCP) {
@@ -679,6 +683,13 @@ export class LcpManager {
                 debug(licenseUpdateJson);
 
                 if (licenseUpdateJson) {
+                    this.store.dispatch(readerActions.closeRequestFromPublication.build(publicationDocumentIdentifier));
+                    await new Promise((res, _rej) => {
+                        setTimeout(() => {
+                            res();
+                        }, 500); // allow extra completion time to ensure the filesystem ZIP streams are closed
+                    });
+
                     try {
                         const prevLSD = r2Publication.LCP.LSD;
                         // const epubPath_ = await lsdLcpUpdateInject(
@@ -703,36 +714,7 @@ export class LcpManager {
                         // will be updated below via another round of processStatusDocument_()
                         r2Publication.LCP.LSD = prevLSD;
 
-                        const epubPathTMP = epubPath + ".tmplsd";
-                        await new Promise((res, rej) => {
-                            injectBufferInZip(
-                                epubPath,
-                                epubPathTMP,
-                                Buffer.from(licenseUpdateJson, "utf8"),
-                                "META-INF/license.lcpl",
-                                (e: any) => {
-                                    debug("processStatusDocument - injectBufferInZip ERROR!");
-                                    debug(e);
-                                    rej(e);
-                                },
-                                () => {
-                                    res();
-                                });
-                        });
-
-                        // Replace epub without LCP with a new one containing LCPL
-                        fs.unlinkSync(epubPath);
-                        await new Promise((res, _rej) => {
-                            setTimeout(() => {
-                                res();
-                            }, 200); // to avoid issues with some filesystems (allow extra completion time)
-                        });
-                        fs.renameSync(epubPathTMP, epubPath);
-                        await new Promise((res, _rej) => {
-                            setTimeout(() => {
-                                res();
-                            }, 200); // to avoid issues with some filesystems (allow extra completion time)
-                        });
+                        await this.injectLcplIntoZip_(epubPath, licenseUpdateJson);
 
                         // Protect against infinite loop due to incorrect LCP / LSD server dates
                         if (!(r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
@@ -746,7 +728,10 @@ export class LcpManager {
                         } else {
                             try {
                                 // loop to re-init LSD in updated LCP
-                                await this.processStatusDocument_(epubPath, r2Publication);
+                                await this.processStatusDocument_(
+                                    epubPath,
+                                    publicationDocumentIdentifier,
+                                    r2Publication);
                                 resolve();
                             } catch (err) {
                                 debug(err);
