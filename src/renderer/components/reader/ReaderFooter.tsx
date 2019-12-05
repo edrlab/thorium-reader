@@ -10,6 +10,9 @@ import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import {
+    TKeyboardEventOnAnchor, TMouseEventOnAnchor, TMouseEventOnSpan,
+} from "readium-desktop/typings/react";
 
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
@@ -22,7 +25,8 @@ interface IBaseProps extends TranslatorProps {
     fullscreen: boolean;
     currentLocation: LocatorExtended;
     r2Publication: R2Publication | undefined;
-    handleLinkClick: (event: any, url: string) => void;
+    // tslint:disable-next-line: max-line-length
+    handleLinkClick: (event: TMouseEventOnSpan | TMouseEventOnAnchor | TKeyboardEventOnAnchor | undefined, url: string) => void;
 }
 
 // IProps may typically extend:
@@ -123,7 +127,7 @@ export class ReaderFooter extends React.Component<IProps, IState> {
         );
     }
 
-    private getProgressionStyle() {
+    private getProgressionStyle(): React.CSSProperties {
         const { currentLocation } = this.props;
         if (!currentLocation) {
             return {};
@@ -162,7 +166,9 @@ export class ReaderFooter extends React.Component<IProps, IState> {
 
     // Get the style of the differents element of the arrow box
     // Take a function returning the good left css property
-    private getStyle(func: any) {
+    private getStyle(
+        func: (arrowBoxPosition: number, multiplicator: number, rest: number) => string): React.CSSProperties {
+
         const arrowBoxPosition = this.getArrowBoxPosition();
         let multiplicator = 1;
         const rest = Math.abs(arrowBoxPosition - 50);

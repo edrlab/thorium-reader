@@ -28,10 +28,12 @@ interface IProps extends IBaseProps {
 }
 
 export class GridView extends React.Component<IProps, undefined> {
-    private ref: HTMLDivElement;
+    private ref: React.RefObject<HTMLDivElement>;
 
     constructor(props: IProps) {
         super(props);
+
+        this.ref = React.createRef<HTMLDivElement>();
     }
 
     public componentDidUpdate(oldProps: IProps) {
@@ -44,7 +46,7 @@ export class GridView extends React.Component<IProps, undefined> {
         const { isOpdsView } = this.props;
 
         return (
-            <div ref={(ref) => this.ref = ref} className={styles.card_wrapper}>
+            <div ref={this.ref} className={styles.card_wrapper}>
                 {this.props.normalOrOpdsPublicationViews.map((pub, index) =>
                     <PublicationCard
                         key={-index}
@@ -60,6 +62,8 @@ export class GridView extends React.Component<IProps, undefined> {
     }
 
     private scrollToTop() {
-        this.ref.scrollIntoView();
+        if (this.ref?.current) {
+            this.ref.current.scrollIntoView();
+        }
     }
 }

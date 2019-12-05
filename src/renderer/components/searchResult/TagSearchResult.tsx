@@ -79,19 +79,19 @@ export class TagSearchResult extends React.Component<IProps, IState> {
             this.props.location.pathname, routes["/library/search/tag"],
         ).params.value;
 
-        const secondaryHeader = <Header/>;
+        const secondaryHeader = <Header />;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <div>
                     <BreadCrumb
-                        breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title}]}
+                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}
                     />
-                    { this.state.publicationViews ?
+                    {this.state.publicationViews ?
                         (displayType === DisplayType.Grid ?
-                            <GridView normalOrOpdsPublicationViews={ this.state.publicationViews } /> :
-                            <ListView normalOrOpdsPublicationViews={ this.state.publicationViews } />)
-                    : <></>}
+                            <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
+                            <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
+                        : <></>}
                 </div>
             </LibraryLayout>
         );

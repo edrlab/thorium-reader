@@ -29,24 +29,24 @@ interface IState {
 }
 
 export class UpdateBookmarkForm extends React.Component<IProps, IState> {
-    private inputRef: any;
-    private formRef: any;
+    private inputRef: React.RefObject<HTMLInputElement>;
 
     constructor(props: IProps) {
         super(props);
+
+        this.inputRef = React.createRef<HTMLInputElement>();
 
         this.state = {
             bookmarkToUpdate: undefined,
         };
 
-        this.inputRef = React.createRef();
-        this.formRef = React.createRef();
-
         this.submiteBookmark = this.submiteBookmark.bind(this);
     }
 
     public componentDidMount() {
-        this.inputRef.current.focus();
+        if (this.inputRef?.current) {
+            this.inputRef.current.focus();
+        }
     }
 
     public render(): React.ReactElement<{}> {
@@ -54,7 +54,7 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
         const defaultName = bookmark.name ? bookmark.name : "";
 
         return (
-            <form ref={this.formRef} onSubmit={this.submiteBookmark}>
+            <form onSubmit={this.submiteBookmark}>
                 <input
                     onBlur={this.props.close}
                     ref={this.inputRef}
@@ -67,6 +67,9 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
 
     private submiteBookmark(e: TFormEvent) {
         e.preventDefault();
+        if (!this.inputRef?.current) {
+            return;
+        }
         const { bookmark } = this.props;
         const value: string = this.inputRef.current.value;
         const normalizedValue = value.trim().replace(/\s\s+/g, " ");
@@ -74,7 +77,7 @@ export class UpdateBookmarkForm extends React.Component<IProps, IState> {
             bookmark.name = normalizedValue;
             apiAction("reader/updateBookmark",
                 bookmark.identifier,
-                bookmark.identifiableView.identifier,
+                bookmark.publicationIdentifier,
                 bookmark.locator,
                 bookmark.name,
             ).catch((error) => console.error("Error to fetch api reader/updateBookmark", error));

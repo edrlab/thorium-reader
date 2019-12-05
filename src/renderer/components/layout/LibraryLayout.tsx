@@ -41,21 +41,8 @@ interface IProps extends IBaseProps, RouteComponentProps, ReturnType<typeof mapS
 
 class LibraryLayout extends React.Component<IProps, undefined> {
 
-    // TODO: unused functionality?
-    // private fastLinkRef: any;
-    // ref={(ref) => this.fastLinkRef = ref}
-
     constructor(props: IProps) {
         super(props);
-    }
-
-    public componentDidMount() {
-        // TODO: unused functionality?
-        // const { location } = this.props;
-        // const focusInside = qs.parse(location.search).focusInside === "true";
-        // if (focusInside) {
-        //     this.fastLinkRef.focus();
-        // }
     }
 
     public render() {

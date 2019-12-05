@@ -12,7 +12,7 @@ import { TranslatorProps, withTranslator } from "./utils/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
-    style?: {};
+    style?: React.CSSProperties;
     id?: string;
 }
 

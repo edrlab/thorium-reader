@@ -21,7 +21,7 @@ interface IBaseProps extends TranslatorProps {
     sections: SectionData[];
     className: string;
     listClassName: string;
-    toggleMenu: any;
+    toggleMenu: () => void;
     focusMenuButton: () => void;
 }
 
@@ -103,4 +103,4 @@ export class SideMenu extends React.Component<IProps, IState> {
     }
 }
 
-export default withTranslator(SideMenu) as any;
+export default withTranslator(SideMenu);

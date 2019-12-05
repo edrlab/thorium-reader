@@ -31,10 +31,6 @@ export interface LcpInfo {
     r2LCPBase64: string;
 }
 
-export interface DeviceConfig {
-    [key: string]: any; // TODO any?!
-}
-
 export interface LsdStatus {
     events: any[]; // TODO any?!
     id: string;

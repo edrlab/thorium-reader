@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link, matchPath } from "react-router-dom";
-// import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar.svg";
+import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar.svg";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
@@ -82,14 +82,12 @@ class Header extends React.Component<IProps, undefined> {
                 }
                 <SearchForm />
                 {
-                    /*this.bookshelf()*/
+                    this.bookshelf()
                 }
             </SecondaryHeader>
         );
     }
 
-    // TODO : implement opds feed authentification in thorium
-    /*
     private bookshelf = () => {
         const { bookshelf } = this.props.headerLinks;
 
@@ -97,26 +95,31 @@ class Header extends React.Component<IProps, undefined> {
         if (bookshelf) {
 
             const { __ } = this.props;
-            const param = this.props.match.params;
+
+            const param = matchPath<IOpdsBrowse>(
+                this.props.location.pathname, routes["/opds/browse"],
+            ).params;
+
+            const lvl = parseInt(param.level, 10);
+
             const route = buildOpdsBrowserRoute(
                 param.opdsId,
-                __("header.listTitle"),
+                __("opds.shelf"),
                 bookshelf,
-                parseInt(param.level, 10),
+                lvl === 1 ? 3 : (lvl + 1),
             );
 
-            booksehlfComponent = (
+            bookshelfComponent = (
                 <Link
                     to={route}
                 >
-                    <SVG svg={AvatarIcon} title={__("header.listTitle")} />
+                    <SVG svg={AvatarIcon} title={__("opds.shelf")} />
                 </Link>
             );
         }
 
         return bookshelfComponent;
     }
-    */
 
     private home = () => {
         const { start } = this.props.headerLinks;
@@ -125,10 +128,13 @@ class Header extends React.Component<IProps, undefined> {
         if (start) {
 
             const { __ } = this.props;
+
             const param = matchPath<IOpdsBrowse>(
                 this.props.location.pathname, routes["/opds/browse"],
             ).params;
+
             const home = this.props.breadcrumb[1];
+
             const route = buildOpdsBrowserRoute(
                 param.opdsId,
                 home.name || "",
@@ -159,15 +165,21 @@ class Header extends React.Component<IProps, undefined> {
         if (self) {
 
             const { __ } = this.props;
+
             const param = matchPath<IOpdsBrowse>(
                 this.props.location.pathname, routes["/opds/browse"],
             ).params;
-            const name = this.props.breadcrumb[1] && this.props.breadcrumb[1].name;
+
+            const lvl = parseInt(param.level, 10);
+
+            const i = (lvl > 1) ? (lvl - 1) : lvl;
+            const name = this.props.breadcrumb[i]?.name;
+
             const route = buildOpdsBrowserRoute(
                 param.opdsId,
                 name,
                 self,
-                parseInt(param.level, 10),
+                lvl,
             );
 
             refreshComponet = (

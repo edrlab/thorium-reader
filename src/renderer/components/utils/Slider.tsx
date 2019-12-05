@@ -32,13 +32,16 @@ interface IState {
 }
 
 class Slider extends React.Component<IProps, IState> {
-    private contentRef: any;
-    private contentElRefs: any[] = [];
-    private wrapperRef: any;
+    private contentRef: React.RefObject<HTMLDivElement>;
+    private contentElRefs: HTMLDivElement[] = [];
+    private wrapperRef: React.RefObject<HTMLDivElement>;
     private contentElVisible: boolean[] = [];
 
     constructor(props: IProps) {
         super(props);
+
+        this.contentRef = React.createRef<HTMLDivElement>();
+        this.wrapperRef = React.createRef<HTMLDivElement>();
 
         this.state = {
             position: 0,
@@ -46,9 +49,6 @@ class Slider extends React.Component<IProps, IState> {
         };
 
         this.update = this.update.bind(this);
-
-        this.contentRef = React.createRef();
-        this.wrapperRef = React.createRef();
     }
 
     public componentDidMount() {
@@ -75,9 +75,9 @@ class Slider extends React.Component<IProps, IState> {
                     const buttonList = element.getElementsByTagName("button");
                     for (const button of buttonList) {
                         if (!this.isElementVisible(index)) {
-                            button.tabIndex = "-1";
+                            button.tabIndex = -1;
                         } else {
-                            button.tabIndex = "0";
+                            button.tabIndex = 0;
                         }
                     }
                 }
@@ -91,11 +91,11 @@ class Slider extends React.Component<IProps, IState> {
 
         const list = this.createContent();
         let max = 0;
-        if (this.contentRef.current && this.wrapperRef.current) {
+        if (this.contentRef?.current && this.wrapperRef?.current) {
             max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
         }
 
-        const varStyle = {
+        const varStyle: React.CSSProperties = {
             left: this.state.position + "px",
             transition: "left 0.5s",
         };
@@ -131,6 +131,9 @@ class Slider extends React.Component<IProps, IState> {
     }
 
     private handleMove(moveRight: number) {
+        if (!this.wrapperRef?.current || !this.contentRef?.current) {
+            return;
+        }
         let  step = this.wrapperRef.current.offsetWidth / 2;
         if (moveRight) {
             step = -step;
@@ -146,12 +149,15 @@ class Slider extends React.Component<IProps, IState> {
         this.setState({position, refreshVisible: true});
     }
 
-    private moveInView(elementId: number) {
+    private moveInView(elementIndex: number) {
+        if (!this.wrapperRef?.current || !this.contentRef?.current) {
+            return;
+        }
         const max = -this.contentRef.current.offsetWidth + this.wrapperRef.current.offsetWidth;
-        const element = this.contentElRefs[elementId];
+        const element = this.contentElRefs[elementIndex];
 
         let elementPosition = -element.offsetLeft;
-        const isVisible = this.isElementVisible(elementId);
+        const isVisible = this.isElementVisible(elementIndex);
         if (!isVisible) {
             elementPosition = elementPosition > 0 ? 0 : elementPosition < max ? max : elementPosition;
             this.setState({position: elementPosition, refreshVisible: true});
@@ -164,7 +170,7 @@ class Slider extends React.Component<IProps, IState> {
         const visible = this.contentElVisible;
 
         return content.map((element, index) => {
-            const props: any = {};
+            const props: {[key: string]: string | number} = {};
             if (!visible[index]) {
                 props.tabIndex = -1;
             }
@@ -181,8 +187,11 @@ class Slider extends React.Component<IProps, IState> {
         });
     }
 
-    private isElementVisible(elementId: number) {
-        const element = this.contentElRefs[elementId];
+    private isElementVisible(elementIndex: number) {
+        if (!this.wrapperRef?.current) {
+            return false;
+        }
+        const element = this.contentElRefs[elementIndex];
         const wrapperWidth = this.wrapperRef.current.offsetWidth;
         const position = this.state.position;
         const elementPosition = -element.offsetLeft;

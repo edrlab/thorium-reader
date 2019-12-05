@@ -15,7 +15,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { TChangeEvent, TFormEvent } from "readium-desktop/typings/react";
+import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import Dialog from "./Dialog";
@@ -89,7 +89,7 @@ export class LCPAuthentication extends React.Component<IProps, IState> {
         );
     }
 
-    private onPasswordChange(e: TChangeEvent) {
+    private onPasswordChange(e: TChangeEventOnInput) {
         this.setState({ password: e.target.value });
     }
 

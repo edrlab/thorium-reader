@@ -132,7 +132,8 @@
             "timeout": "There was a network timeout, please try again later"
         },
         "next": "Next",
-        "previous": "Previous"
+        "previous": "Previous",
+        "shelf": "Shelf"
     },
     "publication": {
         "cancelledLcp": "This book can't be read because the LCP license has been cancelled.",

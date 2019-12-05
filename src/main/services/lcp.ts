@@ -503,13 +503,14 @@ export class LcpManager {
         return message;
     }
 
+    // TODO: improve this horrible returned union type!
     public async unlockPublication(publicationIdentifier: string, passphrase: string | undefined):
         Promise<string | number | null | undefined> {
 
         const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
             publicationIdentifier,
         );
-        const secrets = lcpSecretDocs.map((doc: any) => doc.secret).filter((secret) => secret);
+        const secrets = lcpSecretDocs.map((doc) => doc.secret).filter((secret) => secret);
 
         let lcpPasses: string[] | undefined;
         let passphraseHash: string | undefined;

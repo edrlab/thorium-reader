@@ -9,7 +9,7 @@ import * as React from "react";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
-    onClickOutside: any;
+    onClickOutside: () => void;
     disabled?: boolean;
 }
 
@@ -21,13 +21,14 @@ interface IBaseProps {
 interface IProps extends IBaseProps {
 }
 
-export default class OutsideClickAlerter extends React.Component<IProps> {
-    private wrapperRef: any;
+export default class OutsideClickAlerter extends React.Component<IProps, undefined> {
+    private wrapperRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: IProps) {
         super(props);
 
-        this.setWrapperRef = this.setWrapperRef.bind(this);
+        this.wrapperRef = React.createRef<HTMLDivElement>();
+
         this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
@@ -53,18 +54,14 @@ export default class OutsideClickAlerter extends React.Component<IProps> {
 
     public render(): React.ReactElement<{}> {
         return (
-            <div ref={this.setWrapperRef}>
+            <div ref={this.wrapperRef}>
                 { this.props.children }
             </div>
         );
     }
 
-    private setWrapperRef(node: any) {
-        this.wrapperRef = node;
-    }
-
-    private handleClickOutside(event: any) {
-        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+    private handleClickOutside(event: MouseEvent) {
+        if (this.wrapperRef?.current && !this.wrapperRef.current.contains(event.target as Element)) {
             this.props.onClickOutside();
         }
     }

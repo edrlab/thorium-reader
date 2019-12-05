@@ -22,7 +22,7 @@ const HASH_INDEX = "hash_index";
 
 @injectable()
 export class PublicationRepository extends BaseRepository<PublicationDocument> {
-    public constructor(db: PouchDB.Database<PublicationDocument>) {
+    public constructor(db: PouchDB.Database<PublicationDocument>) {// INJECTED!
 
         const indexes = [
             {

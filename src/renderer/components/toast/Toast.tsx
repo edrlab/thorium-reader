@@ -20,7 +20,7 @@ interface IBaseProps extends TranslatorProps {
     close: (id: string) => void;
     className?: string;
     id?: string;
-    icon?: any;
+    // icon?: ISVGProps;
     message?: string;
     displaySystemNotification?: boolean;
     type?: ToastType;
@@ -40,10 +40,12 @@ interface IState {
 }
 
 export class Toast extends React.Component<IProps, IState> {
-    private ref: any;
+    private ref: React.RefObject<HTMLDivElement>;
 
     constructor(props: IProps) {
         super(props);
+
+        this.ref = React.createRef<HTMLDivElement>();
 
         this.state = {
             willLeave: false,
@@ -56,8 +58,11 @@ export class Toast extends React.Component<IProps, IState> {
 
     public componentDidMount() {
         setTimeout(this.handleClose, 5000);
-        this.ref.addEventListener("transitionend", this.handleTransitionEnd, false);
+        if (this.ref?.current) {
+            this.ref?.current.addEventListener("transitionend", this.handleTransitionEnd, false);
+        }
         if (this.props.displaySystemNotification) {
+            // TODO: application name should not be hard-coded!
             // tslint:disable-next-line: no-unused-expression
             new Notification("Thorium Reader", {
                 body: this.props.message,
@@ -66,11 +71,13 @@ export class Toast extends React.Component<IProps, IState> {
     }
 
     public componentWillRemove() {
-        this.ref.removeEventListener("transitionend", this.handleTransitionEnd, false);
+        if (this.ref?.current) {
+            this.ref?.current.removeEventListener("transitionend", this.handleTransitionEnd, false);
+        }
     }
 
     public render(): React.ReactElement<{}> {
-        const { icon, type } = this.props;
+        const { type } = this.props;
         const { willLeave, toRemove } = this.state;
 
         let typeClassName: string;
@@ -86,7 +93,7 @@ export class Toast extends React.Component<IProps, IState> {
         }
         return (
             <div
-                ref={(ref) => this.ref = ref}
+                ref={this.ref}
                 className={classNames(
                     styles.toast,
                     willLeave && styles.leave,
@@ -94,7 +101,9 @@ export class Toast extends React.Component<IProps, IState> {
                     typeClassName,
                 )}
             >
-                { icon && <SVG className={styles.icon} svg={icon} /> }
+                {
+                // icon && <SVG className={styles.icon} svg={icon} />
+                }
                 <p>{ this.props.message }</p>
                 <button
                     onClick={() => this.handleClose()}

@@ -19,23 +19,18 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { TFormEvent } from "readium-desktop/typings/react";
+import { TFormEvent, TMouseEventOnButton } from "readium-desktop/typings/react";
 import { Unsubscribe } from "redux";
 
-import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Link } from "@r2-shared-js/models/publication-link";
 
+import { IReaderMenuProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 import UpdateBookmarkForm from "./UpdateBookmarkForm";
 
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps extends TranslatorProps {
-    open: boolean;
-    r2Publication: R2Publication;
-    handleLinkClick: (event: any, url: string) => void;
-    handleBookmarkClick: (locator: any) => void;
-    toggleMenu: any;
+interface IBaseProps extends TranslatorProps, IReaderMenuProps {
     focusNaviguationMenu: () => void;
 }
 
@@ -56,11 +51,13 @@ interface IState {
 }
 
 export class ReaderMenu extends React.Component<IProps, IState> {
-    private goToRef: any;
+    private goToRef: React.RefObject<HTMLInputElement>;
     private unsubscribe: Unsubscribe;
 
     constructor(props: IProps) {
         super(props);
+
+        this.goToRef = React.createRef<HTMLInputElement>();
 
         this.state = {
             openedSection: undefined,
@@ -322,7 +319,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
             <p className={styles.title}>{__("reader.navigation.goToTitle")}</p>
             <form onSubmit={this.handleSubmitPage}>
                 <input
-                    ref={(ref) => this.goToRef = ref}
+                    ref={this.goToRef}
                     type="text"
                     aria-invalid={error}
                     onChange={() => this.setState({pageError: false})}
@@ -356,7 +353,10 @@ export class ReaderMenu extends React.Component<IProps, IState> {
 
     private handleSubmitPage(e: TFormEvent) {
         e.preventDefault();
-        const pageNbr = (this.goToRef.value as string).trim().replace(/\s\s+/g, " ");
+        if (!this.goToRef?.current?.value) {
+            return;
+        }
+        const pageNbr = (this.goToRef.current.value as string).trim().replace(/\s\s+/g, " ");
         const foundPage = this.props.r2Publication.PageList.find((page) => page.Title === pageNbr);
         if (foundPage) {
             this.setState({pageError: false});
@@ -366,7 +366,7 @@ export class ReaderMenu extends React.Component<IProps, IState> {
         }
     }
 
-    private handleBookmarkClick(e: any, bookmark: LocatorView) {
+    private handleBookmarkClick(e: TMouseEventOnButton, bookmark: LocatorView) {
         e.preventDefault();
         this.props.handleBookmarkClick(bookmark.locator);
     }

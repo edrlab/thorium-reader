@@ -14,7 +14,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { TMouseEvent } from "readium-desktop/typings/react";
+import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 // tslint:disable-next-line: no-empty-interface
@@ -170,7 +170,7 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
         );
     }
 
-    private displayPublicationInfo = (e: TMouseEvent) => {
+    private displayPublicationInfo = (e: TMouseEventOnButton) => {
         e.preventDefault();
         this.props.displayPublicationInfo();
     }

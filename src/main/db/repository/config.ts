@@ -13,7 +13,7 @@ import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
 @injectable()
 export class ConfigRepository<T> extends BaseRepository<ConfigDocument<T>> {
-    public constructor(db: PouchDB.Database<ConfigDocument<T>>) {
+    public constructor(db: PouchDB.Database<ConfigDocument<T>>) {// INJECTED!
         super(db, "config");
     }
 

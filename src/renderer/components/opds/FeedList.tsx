@@ -19,7 +19,7 @@ import { TranslatorProps } from "readium-desktop/renderer/components/utils/hoc/t
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
-import { TMouseEvent } from "readium-desktop/typings/react";
+import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { Unsubscribe } from "redux";
 
@@ -100,7 +100,7 @@ class FeedList extends React.Component<IProps, IState> {
         );
     }
 
-    private deleteFeed(event: TMouseEvent, feed: IOpdsFeedView) {
+    private deleteFeed(event: TMouseEventOnButton, feed: IOpdsFeedView) {
         event.preventDefault();
         this.props.openDeleteDialog(feed);
     }

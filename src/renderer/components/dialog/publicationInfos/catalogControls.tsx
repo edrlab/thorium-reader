@@ -16,6 +16,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 // tslint:disable-next-line: no-empty-interface
@@ -61,12 +62,12 @@ export class CatalogControls extends React.Component<IProps, undefined> {
         );
     }
 
-    private deletePublication(e: any) {
+    private deletePublication(e: TMouseEventOnButton) {
         e.preventDefault();
         this.props.openDeleteDialog();
     }
 
-    private handleRead(e: any) {
+    private handleRead(e: TMouseEventOnButton) {
         e.preventDefault();
 
         this.props.openReader();

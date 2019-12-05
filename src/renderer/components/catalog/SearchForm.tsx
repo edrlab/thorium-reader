@@ -59,6 +59,7 @@ class Search extends React.Component<IProps, undefined> {
         e.preventDefault();
 
         const value = this.inputRef?.current?.value;
+
         if (!value) {
             this.props.history.push({
                 ...this.props.location,

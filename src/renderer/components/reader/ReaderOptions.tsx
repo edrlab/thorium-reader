@@ -26,21 +26,14 @@ import fontList from "readium-desktop/utils/fontList";
 import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 
-import optionsValues from "./options-values";
+import optionsValues, { IReaderOptionsProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
 import classNames = require("classnames");
 
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps extends TranslatorProps {
-    open: boolean;
-    settings: ReaderConfig;
-    indexes: {fontSize: number, pageMargins: number, wordSpacing: number, letterSpacing: number, lineHeight: number};
-    handleSettingChange: (event: any, name: string, value?: any) => void;
-    handleIndexChange: (event: any, name: string, value?: any) => void;
-    setSettings: (settings: ReaderConfig) => void;
-    toggleMenu: () => void;
+interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
 }
 
@@ -67,9 +60,9 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __, settings, toggleMenu } = this.props;
+        const { __, readerConfig, toggleMenu } = this.props;
 
-        if (!settings) {
+        if (!readerConfig) {
             return <></>;
         }
 
@@ -110,13 +103,13 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
 
     private mathJax() {
 
-        const {settings} = this.props;
+        const {readerConfig} = this.props;
         return (
             <div className={styles.mathml_section}>
                 <input
                     id="mathJaxCheckBox"
                     type="checkbox"
-                    checked={settings.enableMathJax}
+                    checked={readerConfig.enableMathJax}
                     onChange={() => this.toggleMathJax()}
                 />
                 <label htmlFor={"mathJaxCheckBox-"}>MathJax</label>
@@ -125,8 +118,8 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     private themeContent() {
-        const {__, settings} = this.props;
-        const withoutTheme = !settings.sepia && !settings.night;
+        const {__, readerConfig} = this.props;
+        const withoutTheme = !readerConfig.sepia && !readerConfig.night;
         return (
             <div id={styles.themes_list}>
                 <div>
@@ -148,10 +141,10 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                         type="radio"
                         name="theme"
                         onChange={() => this.handleChooseTheme(themeType.Sepia)}
-                        {...(settings.sepia && {checked: true})}
+                        {...(readerConfig.sepia && {checked: true})}
                     />
                     <label htmlFor={"radio-" + themeType.Sepia}>
-                        {settings.sepia && <SVG svg={DoneIcon} ariaHidden/>}
+                        {readerConfig.sepia && <SVG svg={DoneIcon} ariaHidden/>}
                         { __("reader.settings.theme.name.Sepia")}
                     </label>
                 </div>
@@ -161,10 +154,10 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                         type="radio"
                         name="theme"
                         onChange={() => this.handleChooseTheme(themeType.Night)}
-                        {...(settings.night && {checked: true})}
+                        {...(readerConfig.night && {checked: true})}
                     />
                     <label htmlFor={"radio-" + themeType.Night}>
-                        {settings.night && <SVG svg={DoneIcon} ariaHidden/>}
+                        {readerConfig.night && <SVG svg={DoneIcon} ariaHidden/>}
                         { __("reader.settings.theme.name.Night")}
                     </label>
                 </div>
@@ -173,7 +166,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     private textContent() {
-        const {__, settings} = this.props;
+        const {__, readerConfig} = this.props;
 
         return <>
             <div className={styles.line_tab_content}>
@@ -201,7 +194,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                     <select
                         id={styles.police_texte}
                         onChange={(e) => this.props.handleSettingChange(e, "font")}
-                        value={settings.font}
+                        value={readerConfig.font}
                     >
                         {fontList.map((font: Font, id: number) => {
                             return (
@@ -220,7 +213,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     private displayContent() {
-        const {__, settings} = this.props;
+        const {__, readerConfig} = this.props;
         return <>
             <section className={styles.line_tab_content}>
             <div className={styles.subheading}>{__("reader.settings.disposition.title")}</div>
@@ -231,7 +224,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                             type="radio"
                             name="disposition"
                             onChange={(e) => this.props.handleSettingChange(e, "paged", "false")}
-                            checked={!settings.paged}
+                            checked={!readerConfig.paged}
                         />
                         <label
                             htmlFor={styles.scroll_option}
@@ -247,7 +240,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                             type="radio"
                             name="disposition"
                             onChange={(e) => this.props.handleSettingChange(e, "paged", "true")}
-                            checked={settings.paged}
+                            checked={readerConfig.paged}
                         />
                         <label
                             htmlFor={styles.page_option}
@@ -268,7 +261,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                             name="alignment"
                             type="radio"
                             onChange={(e) => this.props.handleSettingChange(e, "align", "auto")}
-                            checked={settings.align === "auto"}
+                            checked={readerConfig.align === "auto"}
                         />
                         <label
                             htmlFor={"radio-" + styles.option_auto}
@@ -284,7 +277,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                             name="alignment"
                             type="radio"
                             onChange={(e) => this.props.handleSettingChange(e, "align", textAlignEnum.justify)}
-                            checked={settings.align === textAlignEnum.justify}
+                            checked={readerConfig.align === textAlignEnum.justify}
                         />
                         <label
                             htmlFor={"radio-" + styles.option_justif}
@@ -304,16 +297,16 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                             id={"radio-" + styles.option_colonne}
                             type="radio"
                             name="column"
-                            {...(!settings.paged && {disabled: true})}
+                            {...(!readerConfig.paged && {disabled: true})}
                             onChange={(e) =>
                             this.props.handleSettingChange(e, "colCount", colCountEnum.auto)}
-                            checked={settings.colCount === colCountEnum.auto}
+                            checked={readerConfig.colCount === colCountEnum.auto}
                         />
                         <label
                             htmlFor={"radio-" + styles.option_colonne}
                             className={this.getButtonClassName("colCount",
-                            !settings.paged ? null : colCountEnum.auto,
-                            !settings.paged && styles.disable)}
+                            !readerConfig.paged ? null : colCountEnum.auto,
+                            !readerConfig.paged && styles.disable)}
                         >
                             <SVG svg={AutoIcon}/>
                             {__("reader.settings.column.auto")}
@@ -321,18 +314,18 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                     </div>
                     <div className={styles.focus_element}>
                         <input
-                            {...(!settings.paged && { disabled: true })}
+                            {...(!readerConfig.paged && { disabled: true })}
                             id={"radio-" + styles.option_colonne1}
                             type="radio"
                             name="column"
                             onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.one)}
-                            checked={settings.colCount === colCountEnum.one}
+                            checked={readerConfig.colCount === colCountEnum.one}
                         />
                         <label
                             htmlFor={"radio-" + styles.option_colonne1}
                             className={this.getButtonClassName("colCount",
-                            !settings.paged ? null : colCountEnum.one,
-                            !settings.paged && styles.disable)}
+                            !readerConfig.paged ? null : colCountEnum.one,
+                            !readerConfig.paged && styles.disable)}
                         >
                             <SVG svg={ColumnIcon} title={__("reader.settings.column.oneTitle")}/>
                             {__("reader.settings.column.one")}
@@ -343,15 +336,15 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                             id={"radio-" + styles.option_colonne2}
                             type="radio"
                             name="column"
-                            {...(!settings.paged && { disabled: true })}
+                            {...(!readerConfig.paged && { disabled: true })}
                             onChange={(e) => this.props.handleSettingChange(e, "colCount", colCountEnum.two)}
-                            checked={settings.colCount === colCountEnum.two}
+                            checked={readerConfig.colCount === colCountEnum.two}
                         />
                         <label
                             htmlFor={"radio-" + styles.option_colonne2}
                             className={this.getButtonClassName("colCount",
-                                !settings.paged ? null : colCountEnum.two,
-                                !settings.paged && styles.disable)
+                                !readerConfig.paged ? null : colCountEnum.two,
+                                !readerConfig.paged && styles.disable)
                             }
                         >
                             <SVG svg={Column2Icon} title={__("reader.settings.column.twoTitle")}/>
@@ -364,7 +357,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     private spacingContent() {
-        const {__, settings} = this.props;
+        const {__, readerConfig} = this.props;
         return <>
             <div className={styles.line_tab_content}>
                 <div className={styles.subheading}>
@@ -383,7 +376,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                     aria-valuenow={this.props.indexes.pageMargins}
                 />
                 <span className={styles.reader_settings_value}>
-                    {this.roundRemValue(settings.pageMargins)}
+                    {this.roundRemValue(readerConfig.pageMargins)}
                 </span>
             </div>
             <div className={styles.line_tab_content}>
@@ -403,7 +396,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                     aria-valuenow={this.props.indexes.wordSpacing}
                 />
                 <span className={styles.reader_settings_value}>
-                    {this.roundRemValue(settings.wordSpacing)}
+                    {this.roundRemValue(readerConfig.wordSpacing)}
                 </span>
             </div>
             <div className={styles.line_tab_content}>
@@ -423,7 +416,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                     aria-valuenow={this.props.indexes.letterSpacing}
                 />
                 <span className={styles.reader_settings_value}>
-                    {this.roundRemValue(settings.letterSpacing)}
+                    {this.roundRemValue(readerConfig.letterSpacing)}
                 </span>
             </div>
             <div className={styles.line_tab_content}>
@@ -443,19 +436,19 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                     aria-valuenow={this.props.indexes.lineHeight}
                 />
                 <span className={styles.reader_settings_value}>
-                    {this.roundRemValue(settings.lineHeight)}
+                    {this.roundRemValue(readerConfig.lineHeight)}
                 </span>
             </div>
         </>;
     }
 
     private toggleMathJax() {
-        const values = this.props.settings;
-        values.enableMathJax = !values.enableMathJax;
-        if (values.enableMathJax) {
-            values.paged = false;
+        const readerConfig = this.props.readerConfig;
+        readerConfig.enableMathJax = !readerConfig.enableMathJax;
+        if (readerConfig.enableMathJax) {
+            readerConfig.paged = false;
         }
-        this.props.setSettings(values);
+        this.props.setSettings(readerConfig);
         setTimeout(() => {
             // window.location.reload();
             reloadContent();
@@ -463,7 +456,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     private handleChooseTheme(theme: themeType) {
-        const values = this.props.settings;
+        const readerConfig = this.props.readerConfig;
         let sepia = false;
         let night = false;
 
@@ -475,10 +468,10 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                 sepia = true;
                 break;
         }
-        values.sepia = sepia;
-        values.night = night;
+        readerConfig.sepia = sepia;
+        readerConfig.night = night;
 
-        this.props.setSettings(values);
+        this.props.setSettings(readerConfig);
     }
 
     // round the value to the hundredth
@@ -492,8 +485,12 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
         return roundNumber + " rem";
     }
 
-    private getButtonClassName(propertyName: string, value: any, additionalClassName?: string): string {
-        const property = this.props.settings[propertyName];
+    private getButtonClassName(
+        propertyName: keyof ReaderConfig,
+        value: string | boolean,
+        additionalClassName?: string): string {
+
+        const property = this.props.readerConfig[propertyName];
         let classname = "";
         if (property === value) {
             classname = styles.active;
@@ -504,4 +501,4 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 }
 
-export default withTranslator(ReaderOptions) as any;
+export default withTranslator(ReaderOptions);

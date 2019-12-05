@@ -42,7 +42,7 @@ class SearchForm extends React.Component<IProps, undefined> {
     constructor(props: IProps) {
         super(props);
 
-        this.inputRef = React.createRef();
+        this.inputRef = React.createRef<HTMLInputElement>();
     }
 
     public render(): React.ReactElement<{}> {
@@ -73,6 +73,9 @@ class SearchForm extends React.Component<IProps, undefined> {
 
     private submitSearch = (e: TFormEvent) => {
         e.preventDefault();
+        if (!this.inputRef?.current) {
+            return;
+        }
         const searchWords = this.inputRef.current.value;
         const url = this.props.search?.url.replace(SEARCH_TERM, encodeURI(searchWords));
         const level = this.props.search?.level || parseInt(this.props.match.params.level, 10);

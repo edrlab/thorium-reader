@@ -72,18 +72,18 @@ export class AllPublicationPage extends React.Component<IProps, IState> {
         const { __ } = this.props;
         const title = __("catalog.allBooks");
 
-        const secondaryHeader = <Header/>;
+        const secondaryHeader = <Header />;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <div>
                     <BreadCrumb
-                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title as string }]}
+                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}
                     />
                     {this.state.publicationViews ?
                         (displayType === DisplayType.Grid ?
-                            <GridView normalOrOpdsPublicationViews={ this.state.publicationViews } /> :
-                            <ListView normalOrOpdsPublicationViews={ this.state.publicationViews } />)
+                            <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
+                            <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
                         : <></>}
                 </div>
             </LibraryLayout>

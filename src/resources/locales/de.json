@@ -132,7 +132,8 @@
             "timeout": "Es ist eine Netzwerk-Zeitüberschreitung aufgetreten. Bitte versuchen Sie es später erneut"
         },
         "next": "Nächster",
-        "previous": "Bisherige"
+        "previous": "Bisherige",
+        "shelf": ""
     },
     "publication": {
         "cancelledLcp": "",
