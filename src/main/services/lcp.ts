@@ -65,20 +65,7 @@ export class LcpManager {
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
-    /**
-     * Inject lcpl document in publication
-     *
-     * @param PublicationDocument Publication document on which we inject the lcpl
-     * @param lcpl: Lcpl object
-     */
-    public async injectLcpl(
-        publicationDocument: PublicationDocument,
-        lcp: LCP,
-    ): Promise<PublicationDocument> {
-        // Get epub file path
-        const epubPath = this.publicationStorage.getPublicationEpubPath(
-            publicationDocument.identifier,
-        );
+    public async injectLcplIntoZip(epubPath: string, lcp: LCP) {
 
         const jsonSource = lcp.JsonSource ? lcp.JsonSource : JSON.stringify(TaJsonSerialize(lcp));
 
@@ -112,38 +99,50 @@ export class LcpManager {
                 resolve();
             }, 200); // to avoid issues with some filesystems (allow extra completion time)
         });
-
-        const r2Publication = await this.unmarshallR2Publication(publicationDocument, false);
-        r2Publication.LCP = lcp;
-
-        try {
-            await this.processStatusDocument(
-                publicationDocument.identifier,
-                r2Publication,
-            );
-
-            debug(r2Publication.LCP);
-            debug(r2Publication.LCP.LSD);
-
-        } catch (err) {
-            debug(err);
-        }
-
-        if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
-            debug("processStatusDocument LCP updated.");
-        }
-
-        const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
-            {},
-            publicationDocument,
-            {
-                hash: await extractCrc32OnZip(epubPath),
-            },
-        );
-        this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
-
-        return this.publicationRepository.save(newPublicationDocument);
     }
+
+    // public async injectLcpl(
+    //     publicationDocument: PublicationDocument,
+    //     lcp: LCP,
+    // ): Promise<PublicationDocument> {
+    //     // Get epub file path
+    //     const epubPath = this.publicationStorage.getPublicationEpubPath(
+    //         publicationDocument.identifier,
+    //     );
+
+    //     await this.injectLcplIntoZip(epubPath, lcp);
+
+    //     const r2Publication = await this.unmarshallR2Publication(publicationDocument, false);
+    //     r2Publication.LCP = lcp;
+
+    //     try {
+    //         await this.processStatusDocument(
+    //             publicationDocument.identifier,
+    //             r2Publication,
+    //         );
+
+    //         debug(r2Publication.LCP);
+    //         debug(r2Publication.LCP.LSD);
+
+    //     } catch (err) {
+    //         debug(err);
+    //     }
+
+    //     if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+    //         debug("processStatusDocument LCP updated.");
+    //     }
+
+    //     const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
+    //         {},
+    //         publicationDocument,
+    //         {
+    //             hash: await extractCrc32OnZip(epubPath),
+    //         },
+    //     );
+    //     this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
+
+    //     return this.publicationRepository.save(newPublicationDocument);
+    // }
 
     public updateDocumentLcpLsdBase64Resources(
         publicationDocument: PublicationDocumentWithoutTimestampable,

@@ -367,12 +367,31 @@ export class CatalogService {
 
         this.store.dispatch(downloadActions.success.build(download.srcUrl));
 
-        // null so that extractCrc32OnZip() is not unnecessarily invoked
-        const publicationDocument = await this.importEpubFile(download.dstPath, null, lcpHashedPassphrase);
+        // inject LCP license into temporary downloaded file, so that we can check CRC
+        // caveat: processStatusDocument() which is invoked later
+        // can potentially update LCP license with latest from server,
+        // so not a complete guarantee of match with an already-imported LCP EPUB.
+        // Plus, such already-existing EPUB in the local bookshelf may or may not
+        // include the latest injected LCP license! (as it only gets updated during user interaction
+        // such as when opening the publication information dialog, and of course when reading the EPUB)
+        await this.lcpManager.injectLcplIntoZip(download.dstPath, r2LCP);
+        const hash = await extractCrc32OnZip(download.dstPath);
+        const publicationArray = await this.publicationRepository.findByHashId(hash);
+        if (publicationArray && publicationArray.length) {
+            debug("importLcplFile", publicationArray, hash);
+            const pubDocument = publicationArray[0];
+            this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+                this.translator.translate("message.import.alreadyImport", { title: pubDocument.title })));
+            return pubDocument;
+        }
 
-        return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
+        const publicationDocument = await this.importEpubFile(download.dstPath, undefined, lcpHashedPassphrase);
+        return publicationDocument;
+        // return this.lcpManager.injectLcpl(publicationDocument, r2LCP);
     }
 
+    // hash = null so that extractCrc32OnZip() is not unnecessarily invoked
+    // hash = undefined so invoke extractCrc32OnZip()
     private async importEpubFile(
         filePath: string,
         hash?: string,
