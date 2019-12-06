@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
@@ -16,11 +15,12 @@ import {
     apiClean, apiDispatch, apiRefreshToState, apiState,
 } from "readium-desktop/renderer/redux/api/api";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { DisplayType } from "readium-desktop/renderer/routing";
 import { Dispatch } from "redux";
 import * as uuid from "uuid";
 
 import { CatalogGridView } from "./GridView";
-import Header, { DisplayType } from "./Header";
+import Header from "./Header";
 import { CatalogListView } from "./ListView";
 
 // tslint:disable-next-line: no-empty-interface
@@ -31,7 +31,8 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends IBaseProps,
+    ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 class Catalog extends React.Component<IProps, undefined> {
@@ -49,33 +50,33 @@ class Catalog extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
-        let displayType = DisplayType.Grid;
 
         if (this.props.refresh) {
             this.getFromApi();
         }
 
-        if (this.props.location) {
-            const parsedResult = qs.parse(this.props.location.search);
+        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
 
-            if (parsedResult.displayType === DisplayType.List) {
-                displayType = DisplayType.List;
-            }
-        }
-
-        const secondaryHeader = <Header displayType={displayType} />;
+        const secondaryHeader = <Header/>;
 
         const catalog = this.props.apiData(this.catalogGetId)("catalog/get");
         const tags = this.props.apiData(this.publicationGetAllTagId)("publication/getAllTags");
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
-                {catalog?.data.result &&
-                (displayType === DisplayType.Grid ?
-                    <CatalogGridView catalogEntries={catalog.data.result.entries}
-                        tags={(tags?.data.result) || []} /> :
-                    <CatalogListView catalogEntries={catalog.data.result.entries}
-                        tags={(tags?.data.result) || []} />)
+                {
+                    catalog?.data.result
+                    && (
+                        displayType === DisplayType.Grid
+                            ? <CatalogGridView
+                                catalogEntries={catalog.data.result.entries}
+                                tags={(tags?.data.result) || []}
+                            />
+                            : <CatalogListView
+                                catalogEntries={catalog.data.result.entries}
+                                tags={(tags?.data.result) || []}
+                            />
+                    )
                 }
             </LibraryLayout>
         );

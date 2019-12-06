@@ -20,27 +20,29 @@ import {
 } from "readium-desktop/renderer/redux/reducers/opds";
 import { readerReducer } from "readium-desktop/renderer/redux/reducers/reader";
 import { winReducer } from "readium-desktop/renderer/redux/reducers/win";
+import { IRouterLocationState } from "readium-desktop/renderer/routing";
 import { combineReducers } from "redux";
 
-export const rootReducer = (history: History) => combineReducers({
-    i18n: i18nReducer,
-    reader: readerReducer,
-    opds: combineReducers({
-        browser: combineReducers({
-            breadcrumb: opdsBreadcrumbReducer,
-            header: opdsHeaderLinkReducer,
-            search: opdsSearchLinkReducer,
+export const rootReducer = (history: History) =>
+    combineReducers({
+        i18n: i18nReducer,
+        reader: readerReducer,
+        opds: combineReducers({
+            browser: combineReducers({
+                breadcrumb: opdsBreadcrumbReducer,
+                header: opdsHeaderLinkReducer,
+                search: opdsSearchLinkReducer,
+            }),
         }),
-    }),
-    win: winReducer,
-    net: netReducer,
-    update: updateReducer,
-    api: apiReducer,
-    dialog: dialogReducer,
-    router: connectRouter(history),
-    import: importReducer,
-    toast: toastReducer,
-    download: downloadReducer,
-});
+        win: winReducer,
+        net: netReducer,
+        update: updateReducer,
+        api: apiReducer,
+        dialog: dialogReducer,
+        router: connectRouter<IRouterLocationState>(history),
+        import: importReducer,
+        toast: toastReducer,
+        download: downloadReducer,
+    });
 
 export type TRootState = ReturnType<ReturnType<typeof rootReducer>>;

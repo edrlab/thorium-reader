@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import * as classNames from "classnames";
-import * as qs from "query-string";
 import * as React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/breadcrumb.css";
@@ -15,6 +15,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { RootState } from "readium-desktop/renderer/redux/states";
 
 export interface IBreadCrumbItem {
     name: string;
@@ -24,7 +25,6 @@ export interface IBreadCrumbItem {
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     breadcrumb: IBreadCrumbItem[];
-    search: string;
     className?: string;
 }
 // IProps may typically extend:
@@ -32,7 +32,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class BreadCrumb extends React.Component<IProps, undefined> {
@@ -43,42 +43,48 @@ class BreadCrumb extends React.Component<IProps, undefined> {
 
     public render(): React.ReactElement<{}> {
         const { breadcrumb, __ } = this.props;
-        const search = qs.parse(this.props.search);
+
         return (
             <div className={classNames(styles.breadcrumb, this.props.className)}>
-                {breadcrumb.length >= 2 &&
-                    <Link
+                {
+                    breadcrumb.length >= 2
+                    && <Link
                         to={{
+                            ...this.props.location,
                             pathname: breadcrumb[breadcrumb.length - 2].path,
-                            search: `displayType=${search.displayType}`,
                         }}
                         title={__("opds.back")}
                     >
                         <SVG svg={ArrowIcon} />
                     </Link>
                 }
-                {breadcrumb && breadcrumb.map((item, index) => {
-                    const name = item.name;
-                    return (item.path && index !== breadcrumb.length - 1 ?
-                        <Link
-                            key={index}
-                            to={{
-                                pathname: item.path,
-                                search: `displayType=${search.displayType}`,
-                            }}
-                            title={name}
-                        >
-                            {`${name} /`}
-                        </Link>
-                        :
-                        <span key={index}>
-                            {name}
-                        </span>
-                    );
-                })}
+                {
+                    breadcrumb
+                    && breadcrumb.map(
+                        (item, index) =>
+                            item.path && index !== breadcrumb.length - 1
+                                ? <Link
+                                    key={index}
+                                    to={{
+                                        ...this.props.location,
+                                        pathname: item.path,
+                                    }}
+                                    title={item.name}
+                                >
+                                    {`${item.name} /`}
+                                </Link>
+                                : <span key={index}>
+                                    {item.name}
+                                </span>,
+                    )
+                }
             </div>
         );
     }
 }
 
-export default withTranslator(BreadCrumb);
+const mapStateToProps = (state: RootState) => ({
+    location: state.router.location,
+});
+
+export default connect(mapStateToProps)(withTranslator(BreadCrumb));

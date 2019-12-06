@@ -8,21 +8,22 @@
 import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { matchPath } from "react-router-dom";
 import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-search-24px-grey.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/opds/route";
 import { SEARCH_TERM } from "readium-desktop/renderer/redux/sagas/opds";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { IOpdsBrowse } from "readium-desktop/renderer/routing";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
+import { dispatchHistoryPush, IOpdsBrowse, routes } from "readium-desktop/renderer/routing";
 import { TFormEvent } from "readium-desktop/typings/react";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps {
+interface IBaseProps extends TranslatorProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -30,7 +31,9 @@ interface IBaseProps {
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
 // tslint:disable-next-line: max-line-length
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, RouteComponentProps<IOpdsBrowse>, TranslatorProps {
+interface IProps extends IBaseProps,
+    ReturnType<typeof mapStateToProps>,
+    ReturnType<typeof mapDispatchToProps> {
 }
 
 // Logger
@@ -78,28 +81,41 @@ class SearchForm extends React.Component<IProps, undefined> {
         }
         const searchWords = this.inputRef.current.value;
         const url = this.props.search?.url.replace(SEARCH_TERM, encodeURI(searchWords));
-        const level = this.props.search?.level || parseInt(this.props.match.params.level, 10);
+        const level = this.props.search?.level
+            || parseInt(
+                matchPath<IOpdsBrowse>(
+                    this.props.location.pathname, routes["/opds/browse"],
+                ).params.level,
+                10);
 
         if (searchWords && url) {
             debug("SubmitSearch", searchWords, url);
 
-            this.props.history.push({
+            this.props.historyPush({
+                ...this.props.location,
                 pathname: this.route(searchWords, url, level),
-                search: this.props.location.search,
             });
         }
     }
 
-    private route = (title: string, url: string, level: number) => buildOpdsBrowserRoute(
-        this.props.match.params.opdsId,
-        title,
-        url,
-        level,
-    )
+    private route = (title: string, url: string, level: number) =>
+        buildOpdsBrowserRoute(
+            matchPath<IOpdsBrowse>(
+                this.props.location.pathname, routes["/opds/browse"],
+            ).params.opdsId,
+            title,
+            url,
+            level,
+        )
 }
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     search: state.opds.browser.search,
+    location: state.router.location,
 });
 
-export default connect(mapStateToProps)(withTranslator(withRouter(SearchForm)));
+const mapDispatchToProps = (dispatch: TDispatch) => ({
+    historyPush: dispatchHistoryPush(dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(SearchForm));

@@ -16,12 +16,13 @@ import { diRendererSymbolTable as diSymbolTable } from "readium-desktop/renderer
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { initStore } from "readium-desktop/renderer/redux/store/memory";
 import { Store } from "redux";
+import { IRouterLocationState } from "./routing";
 
 // Create container used for dependency injection
 const container = new Container();
 
 // Create store
-const history: History = createHashHistory();
+const history: History<IRouterLocationState> = createHashHistory();
 container.bind<History>(diSymbolTable.history).toConstantValue(history);
 
 const store = initStore(history);

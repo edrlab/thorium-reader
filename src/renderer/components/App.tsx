@@ -22,6 +22,7 @@ import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 
 import { diRendererSymbolTable } from "../diSymbolTable";
+import { IRouterLocationState } from "../routing";
 import DownloadsPanel from "./DownloadsPanel";
 import ToastManager from "./toast/ToastManager";
 
@@ -31,7 +32,7 @@ export default class App extends React.Component<{}, undefined> {
     private store: Store<RootState>;
 
     @lazyInject(diRendererSymbolTable.history)
-    private history: History;
+    private history: History<IRouterLocationState>;
 
     constructor(props: {}) {
         super(props);
