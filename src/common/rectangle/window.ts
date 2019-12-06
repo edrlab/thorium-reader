@@ -43,25 +43,27 @@ export const savedWindowsRectangle = async (rectangle: Rectangle) => {
 };
 const debounceSavedWindowsRectangle = debounce<t_savedWindowsRectangle>(savedWindowsRectangle, 500);
 
-export const getWindowPositionRectangle = async (winType?: AppWindowType): Promise<Rectangle> => {
+export const getWindowBounds = async (winType?: AppWindowType): Promise<Rectangle> => {
 
     try {
         const winRegistry = diMainGet("win-registry");
-        const appWindows = winRegistry.getAllWindows();
+        const readerWindows = winRegistry.getReaderWindows();
 
         const displayArea = screen.getPrimaryDisplay().workAreaSize;
 
         if (winType !== AppWindowType.Library && // is reader window
-            appWindows.length > 1) { // there are already reader windows
+            readerWindows.length > 0) { // there are already reader windows
 
-            const rectangle = appWindows[appWindows.length - 1].win.getBounds();
+            // readerWindows is ordered by creation/registration time
+            // so we take the latest reader window and offset the new one
+            const rectangle = readerWindows[readerWindows.length - 1].win.getBounds();
             rectangle.x += 100;
             rectangle.x %= displayArea.width - rectangle.width;
             rectangle.y += 100;
             rectangle.y %= displayArea.height - rectangle.height;
             return rectangle;
 
-        } else { // winType === AppWindowType.Library || appWindows.length == 1
+        } else { // winType === AppWindowType.Library || readerWindows.length == 0
 
             const configRepository: ConfigRepository<Rectangle> = diMainGet("config-repository");
             let rectangle: ConfigDocument<Rectangle> | undefined;

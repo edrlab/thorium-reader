@@ -12,7 +12,7 @@ import { LocatorType } from "readium-desktop/common/models/locator";
 import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowPositionRectangle } from "readium-desktop/common/rectangle/window";
+import { getWindowBounds } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
@@ -38,7 +38,7 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     debug("create readerWindow");
     // Create reader window
     const readerWindow = new BrowserWindow({
-        ...(await getWindowPositionRectangle()),
+        ...(await getWindowBounds()),
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
@@ -245,7 +245,7 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
         const libraryAppWindow = winRegistry.getLibraryWindow();
         if (libraryAppWindow) {
             yield call(async () => {
-                libraryAppWindow.win.setBounds(await getWindowPositionRectangle(AppWindowType.Library));
+                libraryAppWindow.win.setBounds(await getWindowBounds(AppWindowType.Library));
             });
             libraryAppWindow.win.show();
         }
