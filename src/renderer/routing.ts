@@ -44,60 +44,56 @@ export interface IRouterLocationState {
     displayType: DisplayType;
 }
 
-interface IRouteList {
-    [key: string]: Route;
-}
-
-const _routes: IRouteList = {
-    "/opds": {
+const _routes = Object.freeze({
+    "/opds": Object.freeze<Route>({
         path: "/opds",
         exact: true,
         component: Opds,
-    },
-    "/opds/browse": {
+    }),
+    "/opds/browse": Object.freeze<Route>({
         // IOpdsBrowse
         path: "/opds/:opdsId/browse/:level/:name/:url",
         exact: true,
         component: Browser,
-    },
-    "/settings/languages": {
+    }),
+    "/settings/languages": Object.freeze<Route>({
         path: "/settings/languages",
         exact: false,
         component: LanguageSettings,
-    },
-    "/settings": {
+    }),
+    "/settings": Object.freeze<Route>({
         path: "/settings",
         exact: false,
         component: LanguageSettings,
-    },
-    "/library/search/text": {
+    }),
+    "/library/search/text": Object.freeze<Route>({
         // ILibrarySearchText
         path: "/library/search/text/:value",
         exact: true,
         component: TextSearchResult,
-    },
-    "/library/search/tag": {
+    }),
+    "/library/search/tag": Object.freeze<Route>({
         // ILibrarySearchTag
         path: "/library/search/tag/:value",
         exact: true,
         component: TagSearchResult,
-    },
-    "/library/search/all": {
+    }),
+    "/library/search/all": Object.freeze<Route>({
         path: "/library/search/all",
         exact: true,
         component: AllPublicationPage,
-    },
-    "/library": {
+    }),
+    "/library": Object.freeze<Route>({
         path: "/library",
         exact: true,
         component: Catalog,
-    },
-    "/": {
+    }),
+    "/": Object.freeze<Route>({
         path: "/",
         exact: false,
         component: Catalog,
-    },
-};
+    }),
+});
 
 type TRoutesKey = keyof typeof _routes;
 export type TRouteList = {
