@@ -12,9 +12,9 @@ import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/opds/route";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { IOpdsBrowse, routes } from "readium-desktop/renderer/routing";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {

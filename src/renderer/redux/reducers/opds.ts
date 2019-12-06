@@ -8,12 +8,12 @@
 // import * as debug_ from "debug";
 import { IBreadCrumbItem } from "readium-desktop/renderer/components/layout/BreadCrumb";
 import { diRendererGet } from "readium-desktop/renderer/di";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/opds/route";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import {
     browseRequest, headerLinksUpdate, search,
 } from "readium-desktop/renderer/redux/actions/opds";
 import { IOpdsHeaderState, IOpdsSearchState } from "readium-desktop/renderer/redux/states/opds";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 
 // Logger
 // const debug = debug_("readium-desktop:renderer:redux:reducer:opds");

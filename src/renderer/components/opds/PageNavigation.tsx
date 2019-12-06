@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { RouteComponentProps, withRouter } from "react-router";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { IOpdsResultView } from "readium-desktop/common/views/opds";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
@@ -16,7 +16,10 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { IOpdsBrowse } from "readium-desktop/renderer/routing";
+import { buildOpdsBrowserRouteWithLink } from "readium-desktop/renderer/opds/route";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { dispatchHistoryPush } from "readium-desktop/renderer/routing";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 interface IBaseProps extends TranslatorProps {
     pageLinks?: IOpdsResultView["links"];
@@ -27,11 +30,8 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
-
-// replace the last '/:url' with the new navigation url
-const newRouteUrl = (path: string, url: string) => path.replace(/^(.*?)[^\/]+$/, `\$1${url}`);
 
 class PageNavigation extends React.Component<IProps, undefined> {
 
@@ -46,61 +46,103 @@ class PageNavigation extends React.Component<IProps, undefined> {
     public render() {
         const { pageLinks, pageInfo, __ } = this.props;
 
+        const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
+
         return (
             <div className={styles.opds_page_navigation}>
                 <span />
-                {pageLinks?.first && pageLinks.first[0] && pageLinks.first[0].url &&
-                    <Link to={newRouteUrl(this.props.location.pathname, pageLinks.first[0].url)}>
+                {
+                    pageLinks?.first[0]?.url
+                    && <Link to={{
+                        ...this.props.location,
+                        pathname: buildRoute(pageLinks.first[0]),
+                    }}>
                         <button>
                             {__("opds.firstPage")}
                         </button>
                     </Link>
                 }
-                {pageLinks?.previous && pageLinks.previous[0] && pageLinks.previous[0].url &&
-                    <Link to={newRouteUrl(this.props.location.pathname, pageLinks.previous[0].url)}>
+                {
+                    pageLinks?.previous[0]?.url
+                    && <Link to={{
+                        ...this.props.location,
+                        pathname: buildRoute(pageLinks.previous[0]),
+                    }}>
                         <button>
                             <SVG svg={ArrowLeftIcon} />
                             {__("opds.previous")}
                         </button>
                     </Link>
                 }
-                {pageLinks?.next && pageLinks.next[0] && pageLinks.next[0].url &&
-                    <Link to={newRouteUrl(this.props.location.pathname, pageLinks.next[0].url)}>
+                {
+                    pageLinks?.next[0]?.url
+                    && <Link to={{
+                        ...this.props.location,
+                        pathname: buildRoute(pageLinks.next[0]),
+                    }}>
                         <button>
                             {__("opds.next")}
                             <SVG svg={ArrowRightIcon} />
                         </button>
                     </Link>
                 }
-                {pageLinks?.last && pageLinks.last[0] && pageLinks.last[0].url &&
-                    <Link to={newRouteUrl(this.props.location.pathname, pageLinks.last[0].url)}>
+                {
+                    pageLinks?.last[0]?.url
+                    && <Link to={{
+                        ...this.props.location,
+                        pathname: buildRoute(pageLinks.last[0]),
+                    }}>
                         <button>
                             {__("opds.lastPage")}
                         </button>
                     </Link>
                 }
-                {pageInfo?.currentPage && pageInfo.numberOfItems && pageInfo.itemsPerPage &&
-                    <span className={styles.page_count}>
-                        {pageInfo.currentPage} / {Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)}</span>
+                {
+                    pageInfo?.currentPage
+                    && pageInfo.numberOfItems
+                    && pageInfo.itemsPerPage
+                    && <span className={styles.page_count}>
+                        {
+                            pageInfo.currentPage
+                        } / {
+                            Math.ceil(pageInfo.numberOfItems / pageInfo.itemsPerPage)
+                        }
+                    </span>
                 }
             </div>
         );
     }
 
     private handleKeyDown = (e: KeyboardEvent) => {
-        const { pageLinks, location } = this.props;
+        const { pageLinks } = this.props;
 
         if (e.shiftKey && e.ctrlKey) {
-            const next = pageLinks && pageLinks.next[0] && pageLinks.next[0].url;
-            const previous = pageLinks && pageLinks.previous[0] && pageLinks.previous[0].url;
+            const next = pageLinks?.next[0];
+            const previous = pageLinks?.previous[0];
+            const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
 
+            // FIXME : Why e.key isn't typed ?
             if (previous && e.key === "ArrowLeft") {
-                this.props.history.push(newRouteUrl(location.pathname, next));
+                this.props.historyPush({
+                    ...this.props.location,
+                    pathname: buildRoute(next),
+                });
             } else if (next && e.key === "ArrowRight") {
-                this.props.history.push(newRouteUrl(location.pathname, previous));
+                this.props.historyPush({
+                    ...this.props.location,
+                    pathname: buildRoute(previous),
+                });
             }
         }
     }
 }
 
-export default withTranslator(withRouter(PageNavigation));
+const mapStateToProps = (state: RootState) => ({
+    location: state.router.location,
+});
+
+const mapDispatchToProps = (dispatch: TDispatch) => ({
+    historyPush: dispatchHistoryPush(dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PageNavigation));

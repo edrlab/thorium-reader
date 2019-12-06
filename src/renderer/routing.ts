@@ -44,7 +44,7 @@ export interface IRouterLocationState {
     displayType: DisplayType;
 }
 
-const _routes = Object.freeze({
+const _routes = {
     "/opds": {
         path: "/opds",
         exact: true,
@@ -56,11 +56,11 @@ const _routes = Object.freeze({
         exact: true,
         component: Browser,
     } as Route,
-    "/settings/languages": Object.freeze<Route>({
+    "/settings/languages": {
         path: "/settings/languages",
         exact: false,
         component: LanguageSettings,
-    }),
+    } as Route,
     "/settings": {
         path: "/settings",
         exact: false,
@@ -93,7 +93,7 @@ const _routes = Object.freeze({
         exact: false,
         component: Catalog,
     } as Route,
-});
+};
 
 type TRoutesKey = keyof typeof _routes;
 export type TRouteList = {

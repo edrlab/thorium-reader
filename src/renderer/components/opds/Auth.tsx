@@ -17,9 +17,9 @@ import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/opds/route";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { dispatchHistoryPush, IOpdsBrowse, routes } from "readium-desktop/renderer/routing";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { TMouseEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
