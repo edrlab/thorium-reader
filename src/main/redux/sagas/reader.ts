@@ -247,7 +247,10 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
             yield call(async () => {
                 libraryAppWindow.win.setBounds(await getWindowBounds(AppWindowType.Library));
             });
-            libraryAppWindow.win.show();
+            if (libraryAppWindow.win.isMinimized()) {
+                libraryAppWindow.win.restore();
+            }
+            libraryAppWindow.win.show(); // focuses as well
         }
     }
 
@@ -360,13 +363,22 @@ export function* readerDetachRequestWatcher(): SagaIterator {
 
             const libraryAppWindow = winRegistry.getLibraryWindow();
             if (libraryAppWindow) {
-                libraryAppWindow.win.show();
+                // this should never occur, but let's do it for certainty
+                if (libraryAppWindow.win.isMinimized()) {
+                    libraryAppWindow.win.restore();
+                }
+                libraryAppWindow.win.show(); // focuses as well
             }
 
             const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
             if (readerWindow) {
                 readerWindow.onWindowMoveResize.detach();
-                readerWindow.win.focus();
+
+                // this should never occur, but let's do it for certainty
+                if (readerWindow.win.isMinimized()) {
+                    readerWindow.win.restore();
+                }
+                readerWindow.win.show(); // focuses as well
             }
         }
 

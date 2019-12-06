@@ -46,7 +46,7 @@ export function lockInstance() {
                 if (libraryAppWindow.win.isMinimized()) {
                     libraryAppWindow.win.restore();
                 }
-                libraryAppWindow.win.focus();
+                libraryAppWindow.win.show(); // focuses as well
             }
 
             // execute command line from second instance

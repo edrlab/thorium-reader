@@ -145,7 +145,7 @@ const winCloseCallback = (appWindow: AppWindow) => {
             libraryWindow.win.close();
             return;
         }
-        libraryWindow.win.focus();
+        libraryWindow.win.show(); // focuses as well
     }
 };
 
