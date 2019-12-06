@@ -5,7 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { push } from "connected-react-router";
+import { LocationDescriptorObject } from "history";
 import { RouteComponentProps } from "react-router";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 import Catalog from "./components/catalog/Catalog";
 import Browser from "./components/opds/Browser";
@@ -102,3 +105,7 @@ export type TRouteList = {
 };
 
 export const routes: TRouteList = _routes;
+
+export const dispatchHistoryPush = (dispatch: TDispatch) =>
+    (location: LocationDescriptorObject<IRouterLocationState>) =>
+        dispatch(push(location));

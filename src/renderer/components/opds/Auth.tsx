@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { push } from "connected-react-router";
 import * as React from "react";
 import { connect } from "react-redux";
 import { matchPath } from "react-router";
@@ -19,7 +18,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { IOpdsBrowse, routes } from "readium-desktop/renderer/routing";
+import { dispatchHistoryPush, IOpdsBrowse, routes } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { TMouseEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
@@ -200,7 +199,6 @@ const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => ({
-    historyPush: (...data: Parameters<typeof push>) =>
-        dispatch(push(...data)),
+    historyPush: dispatchHistoryPush(dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OPDSAuth));

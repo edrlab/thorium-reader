@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { push } from "connected-react-router";
 import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
@@ -18,7 +17,7 @@ import {
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { SEARCH_TERM } from "readium-desktop/renderer/redux/sagas/opds";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { IOpdsBrowse, routes } from "readium-desktop/renderer/routing";
+import { dispatchHistoryPush, IOpdsBrowse, routes } from "readium-desktop/renderer/routing";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
 import { TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
@@ -116,8 +115,7 @@ const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
 });
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
-    historyPush: (...data: Parameters<typeof push>) =>
-        dispatch(push(...data)),
+    historyPush: dispatchHistoryPush(dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(SearchForm));
