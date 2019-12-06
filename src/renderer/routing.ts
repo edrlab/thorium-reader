@@ -45,54 +45,54 @@ export interface IRouterLocationState {
 }
 
 const _routes = Object.freeze({
-    "/opds": Object.freeze<Route>({
+    "/opds": {
         path: "/opds",
         exact: true,
         component: Opds,
-    }),
-    "/opds/browse": Object.freeze<Route>({
+    } as Route,
+    "/opds/browse": {
         // IOpdsBrowse
         path: "/opds/:opdsId/browse/:level/:name/:url",
         exact: true,
         component: Browser,
-    }),
+    } as Route,
     "/settings/languages": Object.freeze<Route>({
         path: "/settings/languages",
         exact: false,
         component: LanguageSettings,
     }),
-    "/settings": Object.freeze<Route>({
+    "/settings": {
         path: "/settings",
         exact: false,
         component: LanguageSettings,
-    }),
-    "/library/search/text": Object.freeze<Route>({
+    } as Route,
+    "/library/search/text": {
         // ILibrarySearchText
         path: "/library/search/text/:value",
         exact: true,
         component: TextSearchResult,
-    }),
-    "/library/search/tag": Object.freeze<Route>({
+    } as Route,
+    "/library/search/tag": {
         // ILibrarySearchTag
         path: "/library/search/tag/:value",
         exact: true,
         component: TagSearchResult,
-    }),
-    "/library/search/all": Object.freeze<Route>({
+    } as Route,
+    "/library/search/all": {
         path: "/library/search/all",
         exact: true,
         component: AllPublicationPage,
-    }),
-    "/library": Object.freeze<Route>({
+    } as Route,
+    "/library": {
         path: "/library",
         exact: true,
         component: Catalog,
-    }),
-    "/": Object.freeze<Route>({
+    } as Route,
+    "/": {
         path: "/",
         exact: false,
         component: Catalog,
-    }),
+    } as Route,
 });
 
 type TRoutesKey = keyof typeof _routes;
@@ -100,7 +100,7 @@ export type TRouteList = {
     [key in TRoutesKey]: Route;
 };
 
-export const routes: TRouteList = _routes;
+export const routes: Readonly<TRouteList> = _routes;
 
 export const dispatchHistoryPush = (dispatch: TDispatch) =>
     (location: LocationDescriptorObject<IRouterLocationState>) =>
