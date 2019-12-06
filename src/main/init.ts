@@ -115,7 +115,7 @@ const winCloseCallback = (appWindow: AppWindow) => {
     const winRegistry = diMainGet("win-registry");
     const readerWindows = winRegistry.getReaderWindows();
 
-    // library window was close and unregistered
+    // library window was closed and unregistered
     // => all reader windows must now be closed too (effectively exiting the app)
     if (appWindow.type === AppWindowType.Library) {
         readerWindows.forEach((w) => w.win.close());
