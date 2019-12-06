@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { shell } from "electron";
 import * as fs from "fs";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
@@ -293,7 +294,23 @@ export class LcpManager {
         let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
 
         let redoHash = false;
-        if (r2Publication.LCP && r2Publication.LCP.LSD) {
+        if (r2Publication.LCP?.LSD?.Links) {
+            const renewLink = r2Publication.LCP.LSD.Links.find((l) => {
+                return l.HasRel("renew");
+            });
+            if (!renewLink) {
+                debug("!renewLink");
+                return newPubDocument;
+            }
+            if (renewLink.Type !== "application/vnd.readium.license.status.v1.0+json") {
+                if (renewLink.Type === "text/html") {
+                    shell.openExternal(renewLink.Href);
+                    return newPubDocument;
+                }
+                debug(`renewLink.Type: ${renewLink.Type}`);
+                return newPubDocument;
+            }
+
             // const nowMs = new Date().getTime();
             // const numberOfDays = 2;
             // const laterMs = nowMs + (numberOfDays * 24 * 60 * 60 * 1000);
@@ -375,7 +392,23 @@ export class LcpManager {
         let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
 
         let redoHash = false;
-        if (r2Publication.LCP && r2Publication.LCP.LSD) {
+        if (r2Publication.LCP?.LSD?.Links) {
+            const returnLink = r2Publication.LCP.LSD.Links.find((l) => {
+                return l.HasRel("renew");
+            });
+            if (!returnLink) {
+                debug("!returnLink");
+                return newPubDocument;
+            }
+            if (returnLink.Type !== "application/vnd.readium.license.status.v1.0+json") {
+                if (returnLink.Type === "text/html" || returnLink.Type === "application/xml+xhtml") {
+                    shell.openExternal(returnLink.Href);
+                    return newPubDocument;
+                }
+                debug(`returnLink.Type: ${returnLink.Type}`);
+                return newPubDocument;
+            }
+
             let returnResponseLsd: LSD;
             try {
                 returnResponseLsd = await lsdReturn_(r2Publication.LCP.LSD, this.deviceIdManager, httpHeaders);
