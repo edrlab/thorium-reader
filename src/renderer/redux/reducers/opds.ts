@@ -14,6 +14,7 @@ import {
     browseRequest, headerLinksUpdate, search,
 } from "readium-desktop/renderer/redux/actions/opds";
 import { IOpdsHeaderState, IOpdsSearchState } from "readium-desktop/renderer/redux/states/opds";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 // Logger
 // const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
@@ -57,9 +58,8 @@ export function opdsHeaderLinkReducer(
     switch (action.type) {
         case headerLinksUpdate.ID:
             const stateNew = { ...state };
-            for (const link of Object.entries(action.payload)) {
-                const key = link[0] as keyof IOpdsHeaderState;
-                stateNew[key] = link[1];
+            for (const key of ObjectKeys(action.payload)) {
+                stateNew[key] = action.payload[key];
             }
 
             return stateNew;

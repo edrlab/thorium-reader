@@ -17,6 +17,7 @@ import {
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 import SVG from "../utils/SVG";
 
@@ -44,7 +45,7 @@ class LanguageSettings extends React.Component<IProps, undefined> {
                 <LibraryLayout title={__("header.settings")}>
                     <div className={styles.section_title}>{ __("settings.language.languageChoice")}</div>
                     <form className={styles.languages_list}>
-                            { Object.keys(AvailableLanguages).map((lang: string, i: number) =>
+                            { ObjectKeys(AvailableLanguages).map((lang, i) =>
                                 <div key={i}>
                                     <input
                                         id={"radio-" + lang}
