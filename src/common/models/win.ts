@@ -19,4 +19,5 @@ export interface AppWindow extends Identifiable {
     type: AppWindowType;
     win: BrowserWindow;
     onWindowMoveResize: IOnWindowMoveResize;
+    registerIndex: number;
 }

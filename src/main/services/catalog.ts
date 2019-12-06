@@ -15,7 +15,6 @@ import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { AppWindow } from "readium-desktop/common/models/win";
 import {
     downloadActions, readerActions, toastActions,
 } from "readium-desktop/common/redux/actions/";
@@ -237,25 +236,14 @@ export class CatalogService {
 
     public async exportPublication(publicationView: PublicationView) {
 
-        // WinDictionary = BrowserWindows indexed by number
-        // (the number is Electron.BrowserWindow.id)
-        const windowsDict = this.winRegistry.getWindows();
-
-        // generic / template type does not work because dictionary not indexed by string, but by number
-        // const windows = Object.values<AppWindow>(windowsDict);
-        const windows = Object.values(windowsDict) as AppWindow[];
-
-        let mainWindow: Electron.BrowserWindow;
-        for (const window of windows) {
-            if (window.type === "library") {
-                mainWindow = window.win;
-            }
-        }
+        const libraryAppWindow = this.winRegistry.getLibraryWindow();
 
         // Open a dialog to select a folder then copy the publication in it
-        const res = await dialog.showOpenDialog(mainWindow, {
-            properties: ["openDirectory"],
-        });
+        const res = await dialog.showOpenDialog(
+            libraryAppWindow ? libraryAppWindow.win : undefined,
+            {
+                properties: ["openDirectory"],
+            });
         if (!res.canceled) {
             if (res.filePaths && res.filePaths.length > 0) {
                 let destinationPath = res.filePaths[0];

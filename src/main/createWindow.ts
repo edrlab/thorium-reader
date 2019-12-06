@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { app, BrowserWindow, Event, Menu, shell } from "electron";
 import * as path from "path";
 import { AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
+import { getWindowPositionRectangle } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
 import {
     _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
@@ -27,7 +27,7 @@ let mainWindow: BrowserWindow = null;
 // Opens the main window, with a native menu bar.
 export async function createWindow() {
     mainWindow = new BrowserWindow({
-        ...(await getWindowsRectangle()),
+        ...(await getWindowPositionRectangle()),
         minWidth: 800,
         minHeight: 600,
         webPreferences: {

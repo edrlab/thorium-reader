@@ -11,8 +11,8 @@ import * as path from "path";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
-import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
+import { AppWindowType } from "readium-desktop/common/models/win";
+import { getWindowPositionRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
@@ -38,7 +38,7 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     debug("create readerWindow");
     // Create reader window
     const readerWindow = new BrowserWindow({
-        ...(await getWindowsRectangle()),
+        ...(await getWindowPositionRectangle()),
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
@@ -67,29 +67,29 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     }
 
     const winRegistry = diMainGet("win-registry");
+    const appWindows = winRegistry.getAllWindows();
 
-    // WinDictionary = BrowserWindows indexed by number
-    // (the number is Electron.BrowserWindow.id)
-    const windowsDict = winRegistry.getWindows();
+    const thereIsOnlyTheLibraryWindow = appWindows.length === 1;
 
-    // generic / template type does not work because dictionary not indexed by string, but by number
-    // const windows = Object.values<AppWindow>(windowsDict);
-    const windows = Object.values(windowsDict) as AppWindow[];
-
-    // If this is the only window, hide library window by default
-    if (windows.length === 1) {
-        const appWindow = windows[0];
-        appWindow.win.hide();
+    // Hide the only window (the library),
+    // as the new reader window will now take over
+    // (in other words: "detach" mode is disabled by default for new reader windows)
+    if (thereIsOnlyTheLibraryWindow) {
+        // Same as: appWindows[0]
+        const libraryAppWindow = winRegistry.getLibraryWindow();
+        if (libraryAppWindow) {
+            libraryAppWindow.win.hide();
+        }
     }
 
-    // Register reader window
     const readerAppWindow = winRegistry.registerWindow(
         readerWindow,
         AppWindowType.Reader,
         );
 
-    // If there are 2 win, record window position in the db
-    if (windows.length === 2) {
+    if (thereIsOnlyTheLibraryWindow) {
+        // onWindowMoveResize.detach() is called for reader windows that become ReaderMode.Detached
+        // (in which case the library window is shown again, and then its position takes precedence)
         readerAppWindow.onWindowMoveResize.attach();
     }
 
@@ -240,34 +240,19 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
     }
 
     const winRegistry = diMainGet("win-registry");
-    const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
 
     if (gotoLibrary) {
-        // Show library window
-
-        // WinDictionary = BrowserWindows indexed by number
-        // (the number is Electron.BrowserWindow.id)
-        const windowsDict = winRegistry.getWindows();
-
-        // generic / template type does not work because dictionary not indexed by string, but by number
-        // const windows = Object.values<AppWindow>(windowsDict);
-        const windows = Object.values(windowsDict) as AppWindow[];
-
-        for (const appWin of windows) {
-            if (appWin.type !== AppWindowType.Library) {
-                continue;
-            }
-            // update window rectangle position
+        const libraryAppWindow = winRegistry.getLibraryWindow();
+        if (libraryAppWindow) {
             yield call(async () => {
-                appWin.win.setBounds(await getWindowsRectangle(AppWindowType.Library));
+                libraryAppWindow.win.setBounds(await getWindowPositionRectangle(AppWindowType.Library));
             });
-
-            appWin.win.show();
+            libraryAppWindow.win.show();
         }
     }
 
-    // Close directly reader window
-    if (readerWindow && readerWindow.win) {
+    const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
+    if (readerWindow) {
         readerWindow.win.close();
     }
 
@@ -353,10 +338,12 @@ export function* readerFullscreenRequestWatcher(): SagaIterator {
 
         // Get browser window
         const sender = action.sender;
+
         const winRegistry = diMainGet("win-registry");
         const appWindow = winRegistry.getWindowByIdentifier(sender.winId);
-        const browerWindow = appWindow.win as BrowserWindow;
-        browerWindow.setFullScreen(action.payload.full);
+        if (appWindow) {
+            appWindow.win.setFullScreen(action.payload.full);
+        }
     }
 }
 
@@ -370,25 +357,17 @@ export function* readerDetachRequestWatcher(): SagaIterator {
 
         if (readerMode === ReaderMode.Detached) {
             const winRegistry = diMainGet("win-registry");
-            const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
 
-            // WinDictionary = BrowserWindows indexed by number
-            // (the number is Electron.BrowserWindow.id)
-            const windowsDict = winRegistry.getWindows();
-
-            // generic / template type does not work because dictionary not indexed by string, but by number
-            // const windows = Object.values<AppWindow>(windowsDict);
-            const windows = Object.values(windowsDict) as AppWindow[];
-
-            for (const appWin of windows) {
-                if (appWin.type !== AppWindowType.Library) {
-                    continue;
-                }
-
-                appWin.win.show();
+            const libraryAppWindow = winRegistry.getLibraryWindow();
+            if (libraryAppWindow) {
+                libraryAppWindow.win.show();
             }
-            readerWindow.onWindowMoveResize.detach();
-            readerWindow.win.focus();
+
+            const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
+            if (readerWindow) {
+                readerWindow.onWindowMoveResize.detach();
+                readerWindow.win.focus();
+            }
         }
 
         yield put(readerActions.detachModeSuccess.build(readerMode));
