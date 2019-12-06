@@ -97,7 +97,7 @@ const _routes = Object.freeze({
 
 type TRoutesKey = keyof typeof _routes;
 export type TRouteList = {
-    [key in TRoutesKey]: Route;
+    [key in TRoutesKey]: Readonly<Route>;
 };
 
 export const routes: Readonly<TRouteList> = _routes;
