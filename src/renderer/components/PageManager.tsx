@@ -26,16 +26,17 @@ export default class PageManager extends React.Component<{}, IState> {
     public render(): React.ReactElement<{}> {
         return (
             <Switch>
-                {Object.keys(routes).map((path: string) => {
-                    const route = routes[path];
-                    return (
-                        <Route
-                            key={path}
-                            exact={route.exact}
-                            path={route.path}
-                            component={route.component} />
-                    );
-                })}
+                {
+                    Object.keys(routes).map(
+                        (path) =>
+                            <Route
+                                key={path}
+                                exact={routes[path as keyof typeof routes].exact}
+                                path={routes[path as keyof typeof routes].path}
+                                component={routes[path as keyof typeof routes].component}
+                            />,
+                    )
+                }
             </Switch>
         );
     }
