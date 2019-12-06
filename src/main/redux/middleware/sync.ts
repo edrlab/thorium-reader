@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
-import { AppWindow } from "readium-desktop/common/models/win";
 import {
     apiActions, dialogActions, downloadActions, i18nActions, lcpActions, netActions, readerActions,
     toastActions, updateActions,
@@ -71,21 +70,13 @@ export const reduxSyncMiddleware: Middleware
 
     // Send this action to all the registered renderer processes
     const winRegistry = diMainGet("win-registry");
-
-    // WinDictionary = BrowserWindows indexed by number
-    // (the number is Electron.BrowserWindow.id)
-    const windowsDict = winRegistry.getWindows();
-
-    // generic / template type does not work because dictionary not indexed by string, but by number
-    // const windows = Object.values<AppWindow>(windowsDict);
-    const windows = Object.values(windowsDict) as AppWindow[];
+    const appWindows = winRegistry.getAllWindows();
 
     // Get action serializer
     const actionSerializer = diMainGet("action-serializer");
 
-    for (const appWindow of windows) {
+    for (const appWindow of appWindows) {
         // Notifies renderer process
-        const win = appWindow.win;
         const winId = appWindow.identifier;
 
         if (action.sender &&
@@ -97,7 +88,7 @@ export const reduxSyncMiddleware: Middleware
         }
 
         try {
-            win.webContents.send(syncIpc.CHANNEL, {
+            appWindow.win.webContents.send(syncIpc.CHANNEL, {
                 type: syncIpc.EventType.MainAction,
                 payload: {
                     action: actionSerializer.serialize(action),

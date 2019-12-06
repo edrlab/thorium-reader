@@ -41,12 +41,12 @@ export function lockInstance() {
             debug("comandLine", argv, _workingDir);
 
             const winRegistry = diMainGet("win-registry");
-            const win = winRegistry.getWindow(1);
-            if (win && win.win) {
-                if (win.win.isMinimized()) {
-                    win.win.restore();
+            const libraryAppWindow = winRegistry.getLibraryWindow();
+            if (libraryAppWindow) {
+                if (libraryAppWindow.win.isMinimized()) {
+                    libraryAppWindow.win.restore();
                 }
-                win.win.focus();
+                libraryAppWindow.win.show(); // focuses as well
             }
 
             // execute command line from second instance

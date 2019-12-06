@@ -9,8 +9,11 @@ import { BrowserWindow } from "electron";
 import { injectable } from "inversify";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import { onWindowMoveResize } from "readium-desktop/common/rectangle/window";
+import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import * as uuid from "uuid";
 
+// Warning: not an array with ordered indexes!
+// (cannot reliably iterate from 0 to N)
 export interface WinDictionary {
     [winId: number]: AppWindow;
 }
@@ -20,14 +23,20 @@ type CloseCallbackFunc = (appWindow: AppWindow) => void;
 
 @injectable()
 export class WinRegistry {
-    // BrowserWindow.id => AppWindow
+    // object map: Electron.BrowserWindow.id (number key) => AppWindow
+    // https://electronjs.org/docs/api/browser-window#winid-readonly
+    // Instead, we rely on AppWindow.registerIndex (incrementing number)
+    // to have a record of creation/registration stacking order
     private windows: WinDictionary;
+    // getAllWindows() and getReaderWindows() use AppWindow.registerIndex for ordering
+    private _lastRegisterIndex = -1;
+
     private openCallbacks: OpenCallbackFunc[];
     private closeCallbacks: CloseCallbackFunc[];
 
     constructor() {
-        // No windows are registered
         this.windows = {};
+
         this.unregisterWindow = this.unregisterWindow.bind(this);
         this.openCallbacks = [];
         this.closeCallbacks = [];
@@ -54,6 +63,9 @@ export class WinRegistry {
             type,
             win,
             onWindowMoveResize: onWindowMoveResize(win),
+
+            // ordered registration / creation stack
+            registerIndex: ++this._lastRegisterIndex,
         };
         this.windows[winId] = appWindow;
 
@@ -92,26 +104,54 @@ export class WinRegistry {
         }
     }
 
-    public getWindow(winId: number): AppWindow {
-        if (!(winId in this.windows)) {
-            // Window not found
-            return undefined;
-        }
-
-        return this.windows[winId];
+    public getWindowByIdentifier(identifier: string): AppWindow | undefined {
+        return ObjectValues(this.windows).find((w) => w.identifier === identifier);
     }
 
-    public getWindowByIdentifier(identifier: string): AppWindow {
-        for (const appWindow of Object.values(this.windows)) {
-            if (appWindow.identifier === identifier) {
-                return appWindow;
-            }
-        }
-        return null;
+    // can return undefined when library window has been closed and unregistered
+    public getLibraryWindow(): AppWindow | undefined {
+        return ObjectValues(this.windows).find((w) => w.type === AppWindowType.Library);
     }
 
-    /** Returns all registered windows */
-    public getWindows() {
-        return this.windows;
+    // can return empty array, but not undefined/null
+    public getReaderWindows() {
+        return ObjectValues(this.windows).
+            filter((w) => w.type === AppWindowType.Reader).
+
+            // ordered registration / creation stack
+            sort((w1, w2) => w1.registerIndex - w2.registerIndex);
     }
+
+    // can return empty array, but not undefined/null
+    public getAllWindows() {
+        // Array<AppWindow>
+        return ObjectValues(this.windows).
+
+        // ordered registration / creation stack
+        sort((w1, w2) => w1.registerIndex - w2.registerIndex);
+
+        // generic / template type does not work because dictionary not indexed by string, but by number:
+        // const windows = Object.values<AppWindow>(windowsDict);
+
+        // another style of type cohersion:
+        // const windows = Object.values(windowsDict) as AppWindow[];
+
+        // keys can be typed too:
+        // const keys = ObjectKeys(windowsDict); // Array<never>
+        // const keys = ObjectKeysAll(windowsDict); // Array<number>
+    }
+
+    // Let's not expose internals (breaks encapsulation, also confusion with array[0...n])
+    // this.windows === WinDictionary: object map of Electron.BrowserWindow.id (number key) => AppWindow
+    // public getWindowsDictionary() {
+    //     return this.windows;
+    // }
+    // public getWindow(winId: number): AppWindow {
+    //     if (!(winId in this.windows)) {
+    //         // Window not found
+    //         return undefined;
+    //     }
+
+    //     return this.windows[winId];
+    // }
 }
