@@ -27,6 +27,7 @@ import { OPDS } from "@r2-opds-js/opds/opds1/opds";
 import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
+import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
@@ -55,6 +56,7 @@ export class OpdsService {
             && (contentType.startsWith("application/json")
                 || contentType.startsWith("application/opds+json")
                 || contentType.startsWith("application/opds-authentication+json")
+                || contentType.startsWith("application/opds-publication+json")
             )
         ;
     }
@@ -210,11 +212,31 @@ export class OpdsService {
                     if (opdsFeedData.isFailure) {
                         return opdsFeedData;
                     }
-                    // FIXME : Desarialize OPDSFeed Or OpdsPublication
-                    r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
-                        jsonObj,
-                        OPDSFeed,
-                    );
+
+                    // FIXME: test for content type (HTTP request, or preferably response),
+                    // do not sniff content!
+                    if (!jsonObj.publications &&
+                        !jsonObj.navigation &&
+                        !jsonObj.groups &&
+                        !jsonObj.catalogs) {
+
+                        const r2OpdsPublication = TaJsonDeserialize<OPDSPublication>(
+                            jsonObj,
+                            OPDSPublication,
+                        );
+                        // create a simple OpdsFeed to pass to converter function
+                        r2OpdsFeed = {
+                            Metadata: {
+                                Title: r2OpdsPublication.Metadata.Title,
+                            },
+                            Publications: [r2OpdsPublication],
+                        } as OPDSFeed;
+                    } else {
+                        r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
+                            jsonObj,
+                            OPDSFeed,
+                        );
+                    }
                 }
             } else {
                 if (opdsFeedData.isFailure) {
