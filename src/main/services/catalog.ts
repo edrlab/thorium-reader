@@ -11,7 +11,6 @@ import * as fs from "fs";
 import { inject, injectable } from "inversify";
 import * as moment from "moment";
 import * as path from "path";
-import { OPDSPublication } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-publication";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import { Download } from "readium-desktop/common/models/download";
 import { ToastType } from "readium-desktop/common/models/toast";
@@ -35,6 +34,7 @@ import * as uuid from "uuid";
 
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
 import { OpdsFeedViewConverter } from "../converter/opds";

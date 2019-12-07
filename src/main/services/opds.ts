@@ -8,7 +8,6 @@
 import * as crypto from "crypto";
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
-import { Entry } from "r2-opds-js/dist/es6-es2015/src/opds/opds1/opds-entry";
 import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
 import { IOpdsLinkView, IOpdsResultView } from "readium-desktop/common/views/opds";
@@ -25,6 +24,7 @@ import {
     convertOpds1ToOpds2, convertOpds1ToOpds2_EntryToPublication,
 } from "@r2-opds-js/opds/converter";
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
+import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";

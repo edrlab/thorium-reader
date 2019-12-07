@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import { injectable } from "inversify";
 import * as moment from "moment";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 import {
     convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
 } from "readium-desktop/common/utils";
@@ -23,6 +22,7 @@ import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
+import { Link } from "@r2-shared-js/models/publication-link";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
