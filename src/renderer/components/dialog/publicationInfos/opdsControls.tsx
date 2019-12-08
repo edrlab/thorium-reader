@@ -26,8 +26,6 @@ import { ContentType } from "readium-desktop/utils/content-type";
 
 import { IBreadCrumbItem } from "../../layout/BreadCrumb";
 
-import typed_i18n = require('readium-desktop/typings/en.translation');
-
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     opdsPublicationView: IOpdsPublicationView;
@@ -114,7 +112,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                             ln,
                                             this.props.location,
                                             this.props.breadcrumb,
-                                            __)}
+                                            __("opds.menu.goBuyBook"))}
                                 >
                                     {__("opds.menu.goBuyBook")}
                                 </button>
@@ -135,7 +133,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                         ln,
                                         this.props.location,
                                         this.props.breadcrumb,
-                                        __)}
+                                        __("opds.menu.goLoanBook"))}
                             >
                                 {__("opds.menu.goLoanBook")}
                             </button>
@@ -156,7 +154,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                             ln,
                                             this.props.location,
                                             this.props.breadcrumb,
-                                            __)}
+                                            __("opds.menu.goSubBook"))}
                                 >
                                     {__("opds.menu.goSubBook")}
                                 </button>
@@ -216,7 +214,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             ln: IOpdsLinkView,
             location: Location<IRouterLocationState>,
             _breadcrumb: IBreadCrumbItem[],
-            __: typed_i18n.TFunction) => {
+            linkLabel: string) => {
 
             dispatch(dialogActions.closeRequest.build());
 
@@ -234,7 +232,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 // const i = (lvl > 1) ? (lvl - 1) : lvl;
                 // const name = breadcrumb[i] && breadcrumb[i].name;
                 const newLvl = lvl === 1 ? 3 : (lvl + 1);
-                const label = `${__("opds.menu.goLoanBook")} (${opdsPublicationView.title})`;
+                const label = `${linkLabel} (${opdsPublicationView.title})`;
 
                 const route = buildOpdsBrowserRoute(
                     param.opdsId,
