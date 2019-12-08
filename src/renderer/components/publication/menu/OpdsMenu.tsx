@@ -99,7 +99,7 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
                 Array.isArray(opdsPublicationView.buyLinks)
                     ? opdsPublicationView.buyLinks.map(
                         (ln, idx) =>
-                            <a
+                            <button
                                 key={`buy-${idx}`}
                                 onClick={() => handleOpdsLink(
                                         opdsPublicationView,
@@ -109,7 +109,7 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
                                         __("opds.menu.goBuyBook"))}
                             >
                                 {__("opds.menu.goBuyBook")}
-                            </a>,
+                            </button>,
                     )
                     : <></>;
 
@@ -117,7 +117,7 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
                 Array.isArray(opdsPublicationView.borrowLinks)
                     ? opdsPublicationView.borrowLinks.map(
                         (ln, idx) =>
-                            <a
+                            <button
                                 key={`borrow-${idx}`}
                                 onClick={() => handleOpdsLink(
                                         opdsPublicationView,
@@ -127,7 +127,7 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
                                         __("opds.menu.goLoanBook"))}
                             >
                                 {__("opds.menu.goLoanBook")}
-                            </a>,
+                            </button>,
                     )
                     : <></>;
 
@@ -135,7 +135,7 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
                 Array.isArray(opdsPublicationView.subscribeLinks)
                     ? opdsPublicationView.subscribeLinks.map(
                         (ln, idx) =>
-                            <a
+                            <button
                                 key={`subscribe-${idx}`}
                                 onClick={() => handleOpdsLink(
                                         opdsPublicationView,
@@ -145,7 +145,7 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
                                         __("opds.menu.goSubBook"))}
                             >
                                 {__("opds.menu.goSubBook")}
-                            </a>,
+                            </button>,
                     )
                     : <></>;
 
