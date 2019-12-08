@@ -54,42 +54,17 @@ export interface IPublicationApi {
     ) => Promise<void>;
 }
 
-/**
- * public async get(identifier: string): Promise<PublicationView> {
- */
-export type TPublicationApiGet = IPublicationApi["get"];
-export type TPublicationApiDelete = IPublicationApi["delete"];
-export type TPublicationApiFindAll = IPublicationApi["findAll"];
-export type TPublicationApiFindByTag = IPublicationApi["findByTag"];
-export type TPublicationApiUpdateTags = IPublicationApi["updateTags"];
-export type TPublicationApiGetAllTags = IPublicationApi["getAllTags"];
-export type TPublicationApiImportOpdsPublicationLink = IPublicationApi["importOpdsPublicationLink"];
-export type TPublicationApiImport = IPublicationApi["import"];
-export type TPublicationApiSearch = IPublicationApi["search"];
-export type TPublicationApiExportPublication = IPublicationApi["exportPublication"];
-
-export type TPublicationApiGet_result = PublicationView;
-export type TPublicationApiDelete_result = void;
-export type TPublicationApiFindAll_result = PublicationView[];
-export type TPublicationApiFindByTag_result = PublicationView[];
-export type TPublicationApiUpdateTags_result = PublicationView;
-export type TPublicationApiGetAllTags_result = string[];
-export type TPublicationApiImportOpdsPublicationLink_result = PublicationView;
-export type TPublicationApiImport_result = PublicationView[];
-export type TPublicationApiSearch_result = PublicationView[];
-export type TPublicationApiExportPublication_result = void;
-
 export interface IPublicationModuleApi {
-    "publication/get": TPublicationApiGet;
-    "publication/delete": TPublicationApiDelete;
-    "publication/findAll": TPublicationApiFindAll;
-    "publication/findByTag": TPublicationApiFindByTag;
-    "publication/updateTags": TPublicationApiUpdateTags;
-    "publication/getAllTags": TPublicationApiGetAllTags;
-    "publication/importOpdsPublicationLink": TPublicationApiImportOpdsPublicationLink;
-    "publication/import": TPublicationApiImport;
-    "publication/search": TPublicationApiSearch;
-    "publication/exportPublication": TPublicationApiExportPublication;
+    "publication/get": IPublicationApi["get"];
+    "publication/delete": IPublicationApi["delete"];
+    "publication/findAll": IPublicationApi["findAll"];
+    "publication/findByTag": IPublicationApi["findByTag"];
+    "publication/updateTags": IPublicationApi["updateTags"];
+    "publication/getAllTags": IPublicationApi["getAllTags"];
+    "publication/importOpdsPublicationLink": IPublicationApi["importOpdsPublicationLink"];
+    "publication/import": IPublicationApi["import"];
+    "publication/search": IPublicationApi["search"];
+    "publication/exportPublication": IPublicationApi["exportPublication"];
 }
 
 // Logger

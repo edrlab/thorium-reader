@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { matchPath } from "react-router-dom";
-import { TPublicationApiFindByTag_result } from "readium-desktop/main/api/publication";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
@@ -36,7 +36,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
-    publicationViews: TPublicationApiFindByTag_result | undefined;
+    publicationViews: PublicationView[] | undefined;
 }
 
 export class TagSearchResult extends React.Component<IProps, IState> {

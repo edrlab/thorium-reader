@@ -14,6 +14,7 @@ import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
+import { ContentType } from "readium-desktop/common/utils/http";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
@@ -302,8 +303,8 @@ export class LcpManager {
                 debug("!renewLink");
                 return newPubDocument;
             }
-            if (renewLink.Type !== "application/vnd.readium.license.status.v1.0+json") {
-                if (renewLink.Type === "text/html") {
+            if (renewLink.Type !== ContentType.Lsd) {
+                if (renewLink.Type === ContentType.Html) {
                     shell.openExternal(renewLink.Href);
                     return newPubDocument;
                 }
@@ -400,8 +401,8 @@ export class LcpManager {
                 debug("!returnLink");
                 return newPubDocument;
             }
-            if (returnLink.Type !== "application/vnd.readium.license.status.v1.0+json") {
-                if (returnLink.Type === "text/html" || returnLink.Type === "application/xml+xhtml") {
+            if (returnLink.Type !== ContentType.Lsd) {
+                if (returnLink.Type === ContentType.Html || returnLink.Type === ContentType.Xhtml) {
                     shell.openExternal(returnLink.Href);
                     return newPubDocument;
                 }

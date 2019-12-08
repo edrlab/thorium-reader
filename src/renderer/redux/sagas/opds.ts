@@ -9,6 +9,7 @@ import { LOCATION_CHANGE, LocationChangeAction } from "connected-react-router";
 import * as debug_ from "debug";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { ContentType } from "readium-desktop/common/utils/http";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/opds/route";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
@@ -67,30 +68,32 @@ function* updateHeaderLinkWatcher(): SagaIterator {
         if (requestId === BROWSE_OPDS_API_REQUEST_ID) {
             debug("opds browse data received");
 
-            const browserResult = action.payload as ReturnPromiseType<TApiMethod["opds/browse"]>;
+            const httpRes = action.payload as ReturnPromiseType<TApiMethod["opds/browse"]>;
+            const opdsResultView = httpRes.data;
+            debug("opdsResult:", opdsResultView);
 
-            if (browserResult.isSuccess && browserResult.data && browserResult.data.links) {
-                const links = browserResult.data.links;
+            if (httpRes.isSuccess && opdsResultView) {
 
-                debug("opdsResult:", browserResult.data);
+                const links = opdsResultView.links;
+                if (links) {
+                    const putLinks = {
+                        start: links.start[0]?.url,
+                        up: links.up[0]?.url,
+                        bookshelf: links.bookshelf[0]?.url,
+                        self: links.self[0]?.url,
+                    };
+                    debug("opds browse data received with feed links", putLinks);
+                    yield put(opdsActions.headerLinksUpdate.build(putLinks));
 
-                const putLinks = {
-                    start: links.start[0]?.url,
-                    up: links.up[0]?.url,
-                    bookshelf: links.bookshelf[0]?.url,
-                    self: links.self[0]?.url,
-                };
-                debug("opds browse data received with feed links", putLinks);
-                yield put(opdsActions.headerLinksUpdate.build(putLinks));
-
-                if (links.search && links.search.length) {
-                    yield put(
-                        apiActions.request.build(
-                            SEARCH_OPDS_API_REQUEST_ID,
-                            "opds", "getUrlWithSearchLinks",
-                            [links.search]));
-                    // non-blocking getUrlWithSearchLinks search request
-                    yield fork(setSearchLinkInHeader);
+                    if (links.search && links.search.length) {
+                        yield put(
+                            apiActions.request.build(
+                                SEARCH_OPDS_API_REQUEST_ID,
+                                "opds", "getUrlWithSearchLinks",
+                                [links.search]));
+                        // non-blocking getUrlWithSearchLinks search request
+                        yield fork(setSearchLinkInHeader);
+                    }
                 }
             }
         }
@@ -115,13 +118,13 @@ function* setSearchLinkInHeader(): SagaIterator {
             }
         } catch (err) {
             try {
-                const xmlDom = (new DOMParser()).parseFromString(searchRaw, "text/xml");
+                const xmlDom = (new DOMParser()).parseFromString(searchRaw, ContentType.TextXml);
                 const urlsElem = xmlDom.documentElement.querySelectorAll("Url");
 
                 for (const urlElem of urlsElem.values()) {
                     const type = urlElem.getAttribute("type");
 
-                    if (type && type.includes("application/atom+xml")) {
+                    if (type && type.includes(ContentType.AtomXml)) {
                         const searchUrl = urlElem.getAttribute("template");
                         const url = new URL(searchUrl);
 

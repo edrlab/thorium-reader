@@ -11,6 +11,7 @@ import * as moment from "moment";
 import {
     convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
 } from "readium-desktop/common/utils";
+import { ContentType } from "readium-desktop/common/utils/http";
 import {
     IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsLinkView, IOpdsNavigationLink,
     IOpdsNavigationLinkView, IOpdsPublicationView, IOpdsResultView, OpdsAuthView, OpdsGroupView,
@@ -34,8 +35,8 @@ interface IGetLinksViewFilter {
 }
 
 const supportedFileTypeLinkArray = [
-    "application/epub+zip",
-    "application/vnd.readium.lcp.license.v1.0+json",
+    ContentType.Epub,
+    ContentType.Lcp,
 ];
 
 const fallback = <T>(...valueArray: T[][]) =>
@@ -227,13 +228,13 @@ export class OpdsFeedViewConverter {
                 type: "type=entry;profile=opds-catalog",
             }),
             GetLinksView(baseUrl, r2OpdsPublication.Links, {
-                type: "application/opds-publication+json",
+                type: ContentType.Opds2Pub,
                 rel: "self",
             }),
             GetLinksView(baseUrl, r2OpdsPublication.Links, {
                 type: [
-                    "application/atom+xml",
-                    "application/opds+json",
+                    ContentType.AtomXml,
+                    ContentType.Opds2,
                 ],
             }),
         );
@@ -362,7 +363,7 @@ export class OpdsFeedViewConverter {
             up: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
             search: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
             bookshelf: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/shelf" }),
-            text: GetLinksView(baseUrl, r2OpdsFeed.Links, { type: ["text/html"] }),
+            text: GetLinksView(baseUrl, r2OpdsFeed.Links, { type: [ContentType.Html] }),
             self: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
         };
         const metadata: IOpdsFeedMetadataView | undefined = r2OpdsFeed.Metadata &&

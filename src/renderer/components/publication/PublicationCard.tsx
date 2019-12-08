@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
@@ -141,8 +142,8 @@ class PublicationCard extends React.Component<IProps, IState> {
 const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         InfoDialogIsOpen: state.dialog.open
-            && (state.dialog.type === "publication-info-opds"
-                || state.dialog.type === "publication-info-lib"),
+            && (state.dialog.type === DialogTypeName.PublicationInfoOpds
+                || state.dialog.type === DialogTypeName.PublicationInfoLib),
     };
 };
 
@@ -154,7 +155,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
         },
         // isOpds
         openInfosDialog: (opdsPublicationView: IOpdsPublicationView) => {
-            dispatch(dialogActions.openRequest.build("publication-info-opds",
+            dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoOpds,
                 {
                     publication: opdsPublicationView,
                 },

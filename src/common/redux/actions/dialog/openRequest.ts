@@ -5,25 +5,25 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { DialogType } from "readium-desktop/common/models/dialog";
+import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { Action } from "readium-desktop/common/models/redux";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 
 export const ID = "DIALOG_OPEN_REQUEST";
 
 interface IDataPayload {
-    "publication-info-opds": {
+    [DialogTypeName.PublicationInfoOpds]: {
         publication: IOpdsPublicationView;
     };
-    "publication-info-lib": {
+    [DialogTypeName.PublicationInfoLib]: {
         publicationIdentifier: string;
     };
-    "publication-info-reader": {
+    [DialogTypeName.PublicationInfoReader]: {
         publicationIdentifier: string;
     };
 }
 
-type TDialogType = Omit<DialogType, "publication-info-opds" | "publication-info-reader">;
+type TDialogType = Omit<DialogType, DialogTypeName.PublicationInfoOpds | DialogTypeName.PublicationInfoReader>;
 type TDialogTypeOpen = TDialogType & IDataPayload;
 
 export interface Payload<T extends keyof TDialogTypeOpen> {

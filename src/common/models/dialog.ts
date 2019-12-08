@@ -19,30 +19,44 @@ export interface IFileImport {
     path: string;
 }
 
+export enum DialogTypeName {
+    FileImport = "file-import",
+    PublicationInfoOpds = "publication-info-opds",
+    PublicationInfoLib = "publication-info-lib",
+    PublicationInfoReader = "publication-info-reader",
+    OpdsFeedAddForm = "opds-feed-add-form",
+    DeletePublicationConfirm = "delete-publication-confirm",
+    DeleteOpdsFeedConfirm = "delete-opds-feed-confirm",
+    LcpAuthentication = "lcp-authentication",
+    LsdReturnConfirm = "lsd-return-confirm",
+    LsdRenewConfirm = "lsd-renew-confirm",
+    AboutThorium = "about-thorium",
+}
+
 export interface DialogType {
-    "file-import": {
+    [DialogTypeName.FileImport]: {
         files: IFileImport[];
     };
-    "publication-info-opds": IPubInfoState;
-    "publication-info-lib": IPubInfoState;
-    "publication-info-reader": IPubInfoState;
-    "opds-feed-add-form": {};
-    "delete-publication-confirm": {
+    [DialogTypeName.PublicationInfoOpds]: IPubInfoState;
+    [DialogTypeName.PublicationInfoLib]: IPubInfoState;
+    [DialogTypeName.PublicationInfoReader]: IPubInfoState;
+    [DialogTypeName.OpdsFeedAddForm]: {};
+    [DialogTypeName.DeletePublicationConfirm]: {
         publicationView: PublicationView;
     };
-    "delete-opds-feed-confirm": {
+    [DialogTypeName.DeleteOpdsFeedConfirm]: {
         feed: IOpdsFeedView;
     };
-    "lcp-authentication": {
+    [DialogTypeName.LcpAuthentication]: {
         publicationView: PublicationView;
         hint: string;
         message: string | undefined;
     };
-    "lsd-return-confirm": {
+    [DialogTypeName.LsdReturnConfirm]: {
         publicationView: PublicationView;
     };
-    "lsd-renew-confirm": {
+    [DialogTypeName.LsdRenewConfirm]: {
         publicationView: PublicationView;
     };
-    "about-thorium": {};
+    [DialogTypeName.AboutThorium]: {};
 }

@@ -19,6 +19,7 @@ import {
 } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString } from "readium-desktop/common/utils";
+import { ContentType } from "readium-desktop/common/utils/http";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -119,8 +120,8 @@ export class CatalogService {
         }
 
         const title = link.title || link.url;
-        const isLcpFile = link.type === "application/vnd.readium.lcp.license.v1.0+json";
-        const isEpubFile = link.type === "application/epub+zip";
+        const isLcpFile = link.type === ContentType.Lcp;
+        const isEpubFile = link.type === ContentType.Epub;
         if (!isLcpFile && !isEpubFile) {
             throw new Error(`OPDS download link is not EPUB! ${link.url} ${link.type}`);
         }

@@ -8,6 +8,7 @@
 import * as moment from "moment";
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
@@ -146,7 +147,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         // isOpds
         displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build("publication-info-opds",
+            dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoOpds,
                 {
                     publication: props.publicationViewMaybeOpds as IOpdsPublicationView,
                 },

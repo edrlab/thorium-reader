@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
@@ -31,7 +32,7 @@ function* browsePublication() {
     if (!linkIterator.done) {
         const link = linkIterator.value as IOpdsLinkView;
         if (link) {
-            yield* apiSaga("opds/getPublicationFromEntry", REQUEST_ID, link.url);
+            yield* apiSaga("opds/browse", REQUEST_ID, link.url);
         }
     }
 }
@@ -41,18 +42,18 @@ function* checkOpdsPublicationWatcher() {
     while (true) {
         const action = yield* takeTyped(dialogActions.openRequest.build);
 
-        if (action.payload?.type === "publication-info-opds") {
+        if (action.payload?.type === DialogTypeName.PublicationInfoOpds) {
 
             debug("Triggered publication-info-opds");
 
-            const dataPayload = action.payload.data as
-                dialogActions.openRequest.Payload<"publication-info-opds">["data"];
+            const dataPayload = (action.payload as
+                dialogActions.openRequest.Payload<DialogTypeName.PublicationInfoOpds>).data;
             const publication = dataPayload?.publication;
 
             debug("publication entryLinksArray", publication.entryLinks);
 
             // dispatch the publication to publication-info even not complete
-            yield put(dialogActions.updateRequest.build<"publication-info-opds">({
+            yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoOpds>({
                 publication,
                 coverZoom: false,
             }));
@@ -78,31 +79,33 @@ function* updateOpdsPublicationWatcher() {
 
             const actionError = action.error;
 
-            const publicationResult = action.payload as
-                ReturnPromiseType<TApiMethod["opds/getPublicationFromEntry"]>;
+            const httpRes = action.payload as
+                ReturnPromiseType<TApiMethod["opds/browse"]>;
 
-            const publication = publicationResult?.data;
-            debug("Payload: ", publication);
+            const opdsResultView = httpRes?.data;
+            debug("Payload: ", opdsResultView);
 
-            if (
-                !actionError
-                && publicationResult.isSuccess
-                && publication?.title
+            const publication = opdsResultView.publications ? opdsResultView.publications[0] : undefined;
+
+            if (!actionError
+                && httpRes.isSuccess
+                && publication && publication?.title
                 && Array.isArray(publication.authors)
             ) {
-                debug("opdsPublicationResult:", publication);
-
                 yield put(
-                    dialogActions.updateRequest.build<"publication-info-opds">(
+                    dialogActions.updateRequest.build<DialogTypeName.PublicationInfoOpds>(
                         {
                             publication,
                         },
                     ),
                 );
+
+            // could be 401 OPDS Authentication document,
+            // which we ignore in this case because should not occur with "entry" URLs (unlike "borrow", for example)
             } else {
 
                 if (actionError) {
-                    debug(publicationResult);
+                    debug(httpRes);
                 }
 
                 yield* browsePublication();

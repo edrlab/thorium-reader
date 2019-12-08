@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { DialogType } from "readium-desktop/common/models/dialog";
+import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
@@ -83,8 +83,8 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     ...{
-        open: state.dialog.type === "lsd-return-confirm",
-    }, ...state.dialog.data as DialogType["lsd-return-confirm"],
+        open: state.dialog.type === DialogTypeName.LsdReturnConfirm,
+    }, ...state.dialog.data as DialogType[DialogTypeName.LsdReturnConfirm],
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(LsdReturnConfirm));

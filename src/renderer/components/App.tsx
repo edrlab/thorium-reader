@@ -13,6 +13,7 @@ import * as path from "path";
 import * as React from "react";
 import Dropzone from "react-dropzone";
 import { Provider } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
@@ -43,7 +44,7 @@ export default class App extends React.Component<{}, undefined> {
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
         this.store.dispatch(
-            dialogActions.openRequest.build("file-import",
+            dialogActions.openRequest.build(DialogTypeName.FileImport,
                 {
                     files: acceptedFiles.filter((file) => {
                             const ext = path.extname(file.path);

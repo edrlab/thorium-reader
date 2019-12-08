@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { importActions } from "readium-desktop/common/redux/actions/";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
@@ -179,7 +180,7 @@ export class OpdsMenu extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build("publication-info-opds",
+            dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoOpds,
                 {
                     publication: props.opdsPublicationView,
                 },

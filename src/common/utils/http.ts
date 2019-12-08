@@ -10,6 +10,23 @@ import { JsonMap } from "readium-desktop/typings/json";
 import * as request from "request";
 import { Url } from "url";
 
+export enum ContentType {
+    AtomXml = "application/atom+xml",
+    Xml = "application/xml",
+    TextXml = "text/xml",
+    Json = "application/json",
+    Opds2 = "application/opds+json",
+    Opds2Auth = "application/opds-authentication+json",
+    Opds2Pub = "application/opds-publication+json",
+    OpenSearch = "application/opensearchdescription+xml",
+    FormUrlEncoded = "application/x-www-form-url-encoded",
+    Xhtml = "application/xml+xhtml",
+    Html = "text/html",
+    Epub = "application/epub+zip",
+    Lcp = "application/vnd.readium.lcp.license.v1.0+json",
+    Lsd = "application/vnd.readium.license.status.v1.0+json",
+}
+
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
 

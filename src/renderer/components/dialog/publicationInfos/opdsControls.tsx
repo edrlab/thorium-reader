@@ -5,16 +5,26 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { shell } from "electron";
+import { Location } from "history";
 import * as React from "react";
 import { connect } from "react-redux";
+import { matchPath } from "react-router";
 import { dialogActions, importActions } from "readium-desktop/common/redux/actions/";
-import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { ContentType } from "readium-desktop/common/utils/http";
+import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/opds/route";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import {
+    dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes,
+} from "readium-desktop/renderer/routing";
 import { TDispatch } from "readium-desktop/typings/redux";
+
+import { IBreadCrumbItem } from "../../layout/BreadCrumb";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -95,12 +105,14 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             <li
                                 key={`buyControl-${idx}`}
                             >
-                                <a
-                                    role="menuitem"
-                                    href={ln.url}
+                                <button
+                                    onClick={() => this.props.handleOpdsLink(
+                                            ln,
+                                            this.props.location,
+                                            this.props.breadcrumb)}
                                 >
                                     {__("opds.menu.goBuyBook")}
-                                </a>
+                                </button>
                             </li>,
                     )
                     : <></>;
@@ -112,12 +124,14 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                         <li
                             key={`borrowControl-${idx}`}
                         >
-                            <a
-                                role="menuitem"
-                                href={ln.url}
+                            <button
+                                onClick={() => this.props.handleOpdsLink(
+                                        ln,
+                                        this.props.location,
+                                        this.props.breadcrumb)}
                             >
                                 {__("opds.menu.goLoanBook")}
-                            </a>
+                            </button>
                         </li>,
                     )
                     : <></>;
@@ -129,12 +143,14 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             <li
                                 key={`subscribeControl-${idx}`}
                             >
-                                <a
-                                    role="menuitem"
-                                    href={ln.url}
+                                <button
+                                    onClick={() => this.props.handleOpdsLink(
+                                            ln,
+                                            this.props.location,
+                                            this.props.breadcrumb)}
                                 >
                                     {__("opds.menu.goSubBook")}
-                                </a>
+                                </button>
                             </li>,
                     )
                     : <></>;
@@ -186,11 +202,49 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(dialogActions.closeRequest.build());
             dispatch(importActions.verify.build(...data));
         },
+        handleOpdsLink: (
+            ln: IOpdsLinkView,
+            location: Location<IRouterLocationState>,
+            breadcrumb: IBreadCrumbItem[]) => {
+
+            dispatch(dialogActions.closeRequest.build());
+
+            if (ln.type === ContentType.Html || ln.type === ContentType.Xhtml) {
+                shell.openExternal(ln.url);
+            } else if (ln.type === ContentType.Opds2 ||
+                ln.type === ContentType.Opds2Auth ||
+                ln.type === ContentType.Opds2Pub ||
+                ln.type === ContentType.AtomXml) {
+
+                const param = matchPath<IOpdsBrowse>(
+                    location.pathname, routes["/opds/browse"],
+                ).params;
+                const lvl = parseInt(param.level, 10);
+                const i = (lvl > 1) ? (lvl - 1) : lvl;
+                const name = breadcrumb[i] && breadcrumb[i].name;
+                const route = buildOpdsBrowserRoute(
+                    param.opdsId,
+                    name,
+                    ln.url, // this.props.headerLinks?.self
+                    lvl,
+                );
+
+                dispatchHistoryPush(dispatch)({
+                    ...location,
+                    pathname: route,
+                    // state: {} // we preserve the existing route state
+                });
+            } else {
+                shell.openExternal(ln.url);
+            }
+        },
     };
 };
 
 const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
+        breadcrumb: state.opds.browser.breadcrumb,
+        location: state.router.location,
         openAccessButtonIsDisabled: () => {
             return !!state.download.downloads.find(
                 (dl) => props.opdsPublicationView.openAccessLinks.find(

@@ -10,6 +10,7 @@ import * as fs from "fs";
 import { injectable } from "inversify";
 import * as path from "path";
 import { File } from "readium-desktop/common/models/file";
+import { ContentType } from "readium-desktop/common/utils/http";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
 import slugify from "slugify";
@@ -114,7 +115,7 @@ export class PublicationStorage {
                 resolve({
                     url: `store://${identifier}/${filename}`,
                     ext: "epub",
-                    contentType: "application/epub+zip",
+                    contentType: ContentType.Epub,
                     size: getFileSize(dstPath),
                 });
             };

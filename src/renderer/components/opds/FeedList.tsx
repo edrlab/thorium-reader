@@ -8,9 +8,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
-import { TOpdsApiFindAllFeed_result } from "readium-desktop/main/api/opds";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
@@ -35,7 +35,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps>, Retu
 }
 
 interface IState {
-    feedsResult: TOpdsApiFindAllFeed_result | undefined;
+    feedsResult: IOpdsFeedView[] | undefined;
 }
 
 class FeedList extends React.Component<IProps, IState> {
@@ -118,7 +118,7 @@ class FeedList extends React.Component<IProps, IState> {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         openDeleteDialog: (feed: IOpdsFeedView) => {
-            dispatch(dialogActions.openRequest.build("delete-opds-feed-confirm",
+            dispatch(dialogActions.openRequest.build(DialogTypeName.DeleteOpdsFeedConfirm,
                 {
                     feed,
                 },
