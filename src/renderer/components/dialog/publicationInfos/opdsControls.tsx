@@ -26,6 +26,8 @@ import { ContentType } from "readium-desktop/utils/content-type";
 
 import { IBreadCrumbItem } from "../../layout/BreadCrumb";
 
+import typed_i18n = require('readium-desktop/typings/en.translation');
+
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     opdsPublicationView: IOpdsPublicationView;
@@ -56,6 +58,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             openAccessButtonIsDisabled,
             sampleButtonIsDisabled,
             __,
+            handleOpdsLink,
         } = this.props;
 
         const openAccessLinksButton = () =>
@@ -106,10 +109,12 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 key={`buyControl-${idx}`}
                             >
                                 <button
-                                    onClick={() => this.props.handleOpdsLink(
+                                    onClick={() => handleOpdsLink(
+                                            opdsPublicationView,
                                             ln,
                                             this.props.location,
-                                            this.props.breadcrumb)}
+                                            this.props.breadcrumb,
+                                            __)}
                                 >
                                     {__("opds.menu.goBuyBook")}
                                 </button>
@@ -125,10 +130,12 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             key={`borrowControl-${idx}`}
                         >
                             <button
-                                onClick={() => this.props.handleOpdsLink(
+                                onClick={() => handleOpdsLink(
+                                        opdsPublicationView,
                                         ln,
                                         this.props.location,
-                                        this.props.breadcrumb)}
+                                        this.props.breadcrumb,
+                                        __)}
                             >
                                 {__("opds.menu.goLoanBook")}
                             </button>
@@ -144,10 +151,12 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 key={`subscribeControl-${idx}`}
                             >
                                 <button
-                                    onClick={() => this.props.handleOpdsLink(
+                                    onClick={() => handleOpdsLink(
+                                            opdsPublicationView,
                                             ln,
                                             this.props.location,
-                                            this.props.breadcrumb)}
+                                            this.props.breadcrumb,
+                                            __)}
                                 >
                                     {__("opds.menu.goSubBook")}
                                 </button>
@@ -203,9 +212,11 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(importActions.verify.build(...data));
         },
         handleOpdsLink: (
+            opdsPublicationView: IOpdsPublicationView,
             ln: IOpdsLinkView,
             location: Location<IRouterLocationState>,
-            breadcrumb: IBreadCrumbItem[]) => {
+            _breadcrumb: IBreadCrumbItem[],
+            __: typed_i18n.TFunction) => {
 
             dispatch(dialogActions.closeRequest.build());
 
@@ -220,13 +231,16 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                     location.pathname, routes["/opds/browse"],
                 ).params;
                 const lvl = parseInt(param.level, 10);
-                const i = (lvl > 1) ? (lvl - 1) : lvl;
-                const name = breadcrumb[i] && breadcrumb[i].name;
+                // const i = (lvl > 1) ? (lvl - 1) : lvl;
+                // const name = breadcrumb[i] && breadcrumb[i].name;
+                const newLvl = lvl === 1 ? 3 : (lvl + 1);
+                const label = `${__("opds.menu.goLoanBook")} (${opdsPublicationView.title})`;
+
                 const route = buildOpdsBrowserRoute(
                     param.opdsId,
-                    name,
+                    label,
                     ln.url, // this.props.headerLinks?.self
-                    lvl,
+                    newLvl,
                 );
 
                 dispatchHistoryPush(dispatch)({
