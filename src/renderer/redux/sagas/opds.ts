@@ -9,12 +9,12 @@ import { LOCATION_CHANGE, LocationChangeAction } from "connected-react-router";
 import * as debug_ from "debug";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
-import { ContentType } from "readium-desktop/common/utils/http";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/opds/route";
 import { opdsActions } from "readium-desktop/renderer/redux/actions";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
+import { ContentType } from "readium-desktop/utils/content-type";
 import { SagaIterator } from "redux-saga";
 import { all, call, fork, put, take } from "redux-saga/effects";
 

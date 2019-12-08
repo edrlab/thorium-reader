@@ -14,7 +14,6 @@ import { LcpInfo, LsdStatus } from "readium-desktop/common/models/lcp";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { readerActions, toastActions } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
-import { ContentType } from "readium-desktop/common/utils/http";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
@@ -23,6 +22,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { ContentType } from "readium-desktop/utils/content-type";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
 

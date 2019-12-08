@@ -11,12 +11,12 @@ import * as moment from "moment";
 import {
     convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
 } from "readium-desktop/common/utils";
-import { ContentType } from "readium-desktop/common/utils/http";
 import {
     IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsLinkView, IOpdsNavigationLink,
     IOpdsNavigationLinkView, IOpdsPublicationView, IOpdsResultView, OpdsAuthView, OpdsGroupView,
 } from "readium-desktop/common/views/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
+import { ContentType } from "readium-desktop/utils/content-type";
 
 import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";

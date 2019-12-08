@@ -19,7 +19,6 @@ import {
 } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
 import { convertMultiLangStringToString } from "readium-desktop/common/utils";
-import { ContentType } from "readium-desktop/common/utils/http";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -30,6 +29,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { ContentType } from "readium-desktop/utils/content-type";
 import { Store } from "redux";
 import * as uuid from "uuid";
 

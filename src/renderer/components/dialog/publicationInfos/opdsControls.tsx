@@ -11,7 +11,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { matchPath } from "react-router";
 import { dialogActions, importActions } from "readium-desktop/common/redux/actions/";
-import { ContentType } from "readium-desktop/common/utils/http";
 import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
@@ -23,6 +22,7 @@ import {
     dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes,
 } from "readium-desktop/renderer/routing";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { ContentType } from "readium-desktop/utils/content-type";
 
 import { IBreadCrumbItem } from "../../layout/BreadCrumb";
 

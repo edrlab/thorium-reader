@@ -10,8 +10,8 @@ import * as fs from "fs";
 import { injectable } from "inversify";
 import * as path from "path";
 import { File } from "readium-desktop/common/models/file";
-import { ContentType } from "readium-desktop/common/utils/http";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { ContentType } from "readium-desktop/utils/content-type";
 import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
 import slugify from "slugify";
 
