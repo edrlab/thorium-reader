@@ -102,6 +102,8 @@ export type TRouteList = {
 
 export const routes: Readonly<TRouteList> = _routes;
 
+export type TLocationRouter = LocationDescriptorObject<IRouterLocationState>;
+
 export const dispatchHistoryPush = (dispatch: TDispatch) =>
-    (location: LocationDescriptorObject<IRouterLocationState>) =>
+    (location: TLocationRouter) =>
         dispatch(push(location));
