@@ -64,7 +64,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
 
                 if (browserResult.data.auth) {
                     content = (
-                        <OPDSAuth browserResult={browserResult}/>
+                        <OPDSAuth browserResult={browserResult} />
                     );
                 } else if (browserResult.data.navigation &&
                     !browserResult.data.publications &&
@@ -78,62 +78,80 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                     !browserResult.data.groups) {
 
                     content = (
+                        <>
+                            {
+                                browserResult.data.facets?.map((facet, facetId) =>
+                                    <section key={`facet-${facetId}`}>
+                                        <br></br>
+                                        <h3>{facet.title}</h3>
+                                        <EntryList entries={facet.links}></EntryList>
+                                    </section>,
+                                )
+                            }
                             <EntryPublicationList
                                 opdsPublicationView={browserResult.data.publications}
                                 links={browserResult.data.links}
                                 pageInfo={browserResult.data.metadata}
                             />
-                        );
+                        </>
+                    );
                 } else if (browserResult.data.groups ||
                     browserResult.data.publications ||
                     browserResult.data.navigation) {
 
-                    content = (<>
-                        {browserResult.data.navigation &&
-                        <EntryList entries={browserResult.data.navigation} />}
+                    content = (
+                        <>
+                            {
+                                browserResult.data.navigation &&
+                                <EntryList entries={browserResult.data.navigation} />
+                            }
 
-                        {browserResult.data.publications &&
-                        <EntryPublicationList
-                            opdsPublicationView={browserResult.data.publications}
-                            links={browserResult.data.links}
-                            pageInfo={browserResult.data.metadata}
-                        />}
+                            {
+                                browserResult.data.publications &&
+                                <EntryPublicationList
+                                    opdsPublicationView={browserResult.data.publications}
+                                    links={browserResult.data.links}
+                                    pageInfo={browserResult.data.metadata}
+                                />
+                            }
 
-                        {browserResult.data.groups && browserResult.data.groups.map((group, i) => {
-                            return (
-                                <section key={i}>
-                                    <br></br>
-                                    <h3>{group.title}</h3>
-                                    {
-                                        group.navigation &&
-                                        <EntryList entries={group.navigation} />
-                                    }
-                                    <hr></hr>
-                                    {
-                                        group.publications &&
-                                            (
-                                                this.props.location?.state?.displayType
-                                                || DisplayType.Grid
-                                            ) === DisplayType.Grid ?
-                                            <Slider
-                                                className={styles.slider}
-                                                content={group.publications.map((pub, pubId) =>
-                                                    <PublicationCard
-                                                        key={`opds-group-${i}-${pubId}`}
-                                                        publicationViewMaybeOpds={pub}
-                                                        isOpds={true}
-                                                    />,
-                                                )}
-                                            /> :
-                                            <ListView
-                                                normalOrOpdsPublicationViews={group.publications}
-                                                isOpdsView={true}
-                                            />
-                                    }
-                                </section>
-                            );
-                        })}
-                    </>);
+                            {
+                                browserResult.data.groups?.map((group, i) =>
+                                    <section key={i}>
+                                        <br></br>
+                                        <h3>{group.title}</h3>
+                                        {
+                                            group.navigation &&
+                                            <EntryList entries={group.navigation} />
+                                        }
+                                        <hr></hr>
+                                        {
+                                            group.publications &&
+                                                (
+                                                    this.props.location?.state?.displayType
+                                                    || DisplayType.Grid
+                                                ) === DisplayType.Grid ?
+                                                <Slider
+                                                    className={styles.slider}
+                                                    content={group.publications.map((pub, pubId) =>
+                                                        <PublicationCard
+                                                            key={`opds-group-${i}-${pubId}`}
+                                                            publicationViewMaybeOpds={pub}
+                                                            isOpds={true}
+                                                        />,
+                                                    )}
+                                                /> :
+                                                <ListView
+                                                    normalOrOpdsPublicationViews={group.publications}
+                                                    isOpdsView={true}
+                                                />
+                                        }
+                                    </section>,
+                                )
+                            })
+                        }
+                        </>
+                    );
                 } else {
                     content = (
                         <MessageOpdBrowserResult title={__("opds.empty")} />

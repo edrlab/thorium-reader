@@ -4,16 +4,18 @@
 // Use of this source code is governed by a BSD-style license
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
-
 import * as debug_ from "debug";
 import { injectable } from "inversify";
 import * as moment from "moment";
+import { OPDSFacet } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-facet";
+import { OPDSGroup } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-group";
 import {
     convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
 } from "readium-desktop/common/utils";
 import {
-    IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsLinkView, IOpdsNavigationLink,
-    IOpdsNavigationLinkView, IOpdsPublicationView, IOpdsResultView, OpdsAuthView, OpdsGroupView,
+    IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
+    IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOpdsPublicationView,
+    IOpdsResultView,
 } from "readium-desktop/common/views/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ContentType } from "readium-desktop/utils/content-type";
@@ -24,6 +26,8 @@ import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authenticati
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { Link } from "@r2-shared-js/models/publication-link";
+
+import { IOpdsFacetView } from "../../common/views/opds";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -300,7 +304,7 @@ export class OpdsFeedViewConverter {
                 }
             }
         }
-        const auth: OpdsAuthView = {
+        const auth: IOpdsAuthView = {
             logoImageUrl,
 
             labelLogin,
@@ -320,38 +324,55 @@ export class OpdsFeedViewConverter {
         };
     }
 
+    public convertOpdsGroupToView(r2OpdsGroup: OPDSGroup, baseUrl: string): IOpdsGroupView {
+        const title = r2OpdsGroup.Metadata?.Title
+            ? convertMultiLangStringToString(r2OpdsGroup.Metadata.Title)
+            : "";
+
+        const publications = r2OpdsGroup.Publications?.map((item) =>
+            // warning: modifies item, makes relative URLs absolute with baseUrl!
+            this.convertOpdsPublicationToView(item, baseUrl));
+
+        const navigation = r2OpdsGroup.Navigation?.map((item) =>
+            this.convertOpdsLinkToView(item, baseUrl));
+
+        const ret: IOpdsGroupView = {
+            title,
+            publications,
+            navigation,
+        };
+        return ret;
+    }
+
+    public convertOpdsFacetsToView(r2OpdsFacet: OPDSFacet, baseUrl: string): IOpdsFacetView {
+        const title = r2OpdsFacet.Metadata?.Title
+            ? convertMultiLangStringToString(r2OpdsFacet.Metadata.Title)
+            : "";
+
+        const links = r2OpdsFacet.Links?.map((item) =>
+            this.convertOpdsLinkToView(item, baseUrl));
+
+        const ret: IOpdsFacetView = {
+            title,
+            links,
+        };
+        return ret;
+    }
+
     public convertOpdsFeedToView(r2OpdsFeed: OPDSFeed, baseUrl: string): IOpdsResultView {
 
         const title = convertMultiLangStringToString(r2OpdsFeed.Metadata?.Title);
-        const publications = r2OpdsFeed.Publications?.map((item) => {
+        const publications = r2OpdsFeed.Publications?.map((item) =>
             // warning: modifies item, makes relative URLs absolute with baseUrl!
-            return this.convertOpdsPublicationToView(item, baseUrl);
-        });
-        const navigation = r2OpdsFeed.Navigation?.map((item) => {
-            return this.convertOpdsLinkToView(item, baseUrl);
-        });
+            this.convertOpdsPublicationToView(item, baseUrl));
+        const navigation = r2OpdsFeed.Navigation?.map((item) =>
+            this.convertOpdsLinkToView(item, baseUrl));
 
-        const groups = r2OpdsFeed.Groups?.map((group) => {
-            const tit = group.Metadata?.Title ?
-                convertMultiLangStringToString(group.Metadata.Title) :
-                "";
+        const groups = r2OpdsFeed.Groups?.map((item) =>
+            this.convertOpdsGroupToView(item, baseUrl));
 
-            const pubs = group.Publications?.map((item) => {
-                // warning: modifies item, makes relative URLs absolute with baseUrl!
-                return this.convertOpdsPublicationToView(item, baseUrl);
-            });
-
-            const nav = group.Navigation?.map((item) => {
-                return this.convertOpdsLinkToView(item, baseUrl);
-            });
-
-            const ret: OpdsGroupView = {
-                title: tit,
-                publications: pubs,
-                navigation: nav,
-            };
-            return ret;
-        });
+        const facets = r2OpdsFeed.Facets?.map((item) =>
+            this.convertOpdsFacetsToView(item, baseUrl));
 
         const links: IOpdsNavigationLink | undefined = r2OpdsFeed.Links &&
         {
@@ -383,6 +404,7 @@ export class OpdsFeedViewConverter {
             navigation,
             links,
             groups,
+            facets,
             auth: undefined,
         };
     }

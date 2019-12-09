@@ -57,18 +57,23 @@ export interface IOpdsResultView {
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
     links?: IOpdsNavigationLink;
-
-    groups?: OpdsGroupView[];
-    auth?: OpdsAuthView;
+    facets?: IOpdsFacetView[];
+    groups?: IOpdsGroupView[];
+    auth?: IOpdsAuthView;
 }
 
-export interface OpdsGroupView {
+export interface IOpdsGroupView {
     title: string;
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
 }
 
-export interface OpdsAuthView {
+export interface IOpdsFacetView {
+    title: string;
+    links: IOpdsNavigationLinkView[];
+}
+
+export interface IOpdsAuthView {
     logoImageUrl: string;
 
     labelLogin: string;
