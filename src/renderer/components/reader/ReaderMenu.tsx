@@ -9,7 +9,6 @@ import classnames from "classnames";
 import * as queryString from "query-string";
 import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
-import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
@@ -47,7 +46,7 @@ interface IState {
     bookmarkToUpdate: number;
     pageError: boolean;
     refreshError: boolean;
-    bookmarks: TReaderApiFindBookmarks_result | undefined;
+    bookmarks: LocatorView[] | undefined;
 }
 
 export class ReaderMenu extends React.Component<IProps, IState> {

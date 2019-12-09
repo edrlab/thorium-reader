@@ -22,6 +22,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { RootState } from "readium-desktop/main/redux/states";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+import { ContentType } from "readium-desktop/utils/content-type";
 import { toSha256Hex } from "readium-desktop/utils/lcp";
 import { Store } from "redux";
 
@@ -302,8 +303,8 @@ export class LcpManager {
                 debug("!renewLink");
                 return newPubDocument;
             }
-            if (renewLink.Type !== "application/vnd.readium.license.status.v1.0+json") {
-                if (renewLink.Type === "text/html") {
+            if (renewLink.Type !== ContentType.Lsd) {
+                if (renewLink.Type === ContentType.Html) {
                     shell.openExternal(renewLink.Href);
                     return newPubDocument;
                 }
@@ -400,8 +401,8 @@ export class LcpManager {
                 debug("!returnLink");
                 return newPubDocument;
             }
-            if (returnLink.Type !== "application/vnd.readium.license.status.v1.0+json") {
-                if (returnLink.Type === "text/html" || returnLink.Type === "application/xml+xhtml") {
+            if (returnLink.Type !== ContentType.Lsd) {
+                if (returnLink.Type === ContentType.Html || returnLink.Type === ContentType.Xhtml) {
                     shell.openExternal(returnLink.Href);
                     return newPubDocument;
                 }

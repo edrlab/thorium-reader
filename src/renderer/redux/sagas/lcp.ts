@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import { dialogActions } from "readium-desktop/common/redux/actions/";
 import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
@@ -29,7 +30,7 @@ function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
             continue;
         }
 
-        yield put(dialogActions.openRequest.build("lcp-authentication",
+        yield put(dialogActions.openRequest.build(DialogTypeName.LcpAuthentication,
             {
                 publicationView,
                 hint,

@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
     ReaderConfigStringsAdjustables,
@@ -17,8 +18,6 @@ import { dialogActions, readerActions } from "readium-desktop/common/redux/actio
 import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { TPublicationApiGet_result } from "readium-desktop/main/api/publication";
-import { TReaderApiFindBookmarks_result } from "readium-desktop/main/api/reader";
 import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
@@ -174,7 +173,7 @@ interface IState {
     publicationJsonUrl?: string;
     title?: string;
 
-    publicationView: TPublicationApiGet_result | undefined; // PublicationView
+    publicationView: PublicationView | undefined;
     r2Publication: R2Publication | undefined;
 
     lcpHint?: string;
@@ -189,7 +188,7 @@ interface IState {
     fullscreen: boolean;
     visibleBookmarkList: LocatorView[];
     currentLocation: LocatorExtended;
-    bookmarks: TReaderApiFindBookmarks_result | undefined;
+    bookmarks: LocatorView[] | undefined;
 
     indexes: AdjustableSettingsNumber;
     readerConfig: ReaderConfig;
@@ -418,7 +417,7 @@ export class Reader extends React.Component<IProps, IState> {
         ], this.findBookmarks);
 
         apiAction("publication/get", queryParams.pubId, false)
-            .then((publicationView) => { // TPublicationApiGet_result === PublicationView
+            .then((publicationView) => {
                 this.setState({publicationView});
                 this.loadPublicationIntoViewport(publicationView, locator);
             })
@@ -841,7 +840,7 @@ const mapStateToProps = (state: RootState, _props: IBaseProps) => {
         reader: state.reader.reader,
         mode: state.reader.mode,
         infoOpen: state.dialog.open &&
-            state.dialog.type === "publication-info-reader",
+            state.dialog.type === DialogTypeName.PublicationInfoReader,
     };
 };
 
@@ -861,7 +860,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(readerActions.detachModeRequest.build(reader));
         },
         displayPublicationInfo: (pubId: string) => {
-            dispatch(dialogActions.openRequest.build("publication-info-reader",
+            dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
                 {
                     publicationIdentifier: pubId,
                 },

@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -78,14 +79,14 @@ export class CatalogMenu extends React.Component<IProps, IState> {
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build("publication-info-lib",
+            dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoLib,
                 {
                     publicationIdentifier: props.publicationView.identifier,
                 },
             ));
         },
         openDeleteDialog: () => {
-            dispatch(dialogActions.openRequest.build("delete-publication-confirm",
+            dispatch(dialogActions.openRequest.build(DialogTypeName.DeletePublicationConfirm,
                 {
                     publicationView: props.publicationView,
                 },

@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions/";
 import { DialogState } from "readium-desktop/common/redux/states/dialog";
 
@@ -27,9 +28,9 @@ export function dialogReducer(
         case dialogActions.openRequest.ID: {
             switch (action.payload.type) {
                 // handle in redux-saga by subscribers
-                case "publication-info-opds":
-                case "publication-info-reader":
-                case "publication-info-lib":
+                case DialogTypeName.PublicationInfoOpds:
+                case DialogTypeName.PublicationInfoReader:
+                case DialogTypeName.PublicationInfoLib:
                     break;
                 default:
                     data = action.payload.data;

@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { TPublicationApiFindAll_result } from "readium-desktop/main/api/publication";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
@@ -35,7 +35,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
-    publicationViews: TPublicationApiFindAll_result | undefined;
+    publicationViews: PublicationView[] | undefined;
 }
 
 export class AllPublicationPage extends React.Component<IProps, IState> {

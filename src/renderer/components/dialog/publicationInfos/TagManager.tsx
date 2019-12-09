@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
-import { DialogType } from "readium-desktop/common/models/dialog";
+import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px-blue.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
@@ -147,7 +147,7 @@ const mapDispatchToProps = (dispatch: Dispatch, _props: IBaseProps) => ({
     setTags: (pubId: string, publication: TPublication, tags: string[]) => {
         apiDispatch(dispatch)()("publication/updateTags")(pubId, tags);
         dispatch(
-            dialogActions.updateRequest.build<"publication-info-lib">(
+            dialogActions.updateRequest.build<DialogTypeName.PublicationInfoLib>(
                 {
                     publication: {
                         ...publication,
@@ -162,9 +162,9 @@ const mapDispatchToProps = (dispatch: Dispatch, _props: IBaseProps) => ({
 });
 
 const mapStateToProps = (state: RootState) => ({
-    tagArray: (state.dialog.data as DialogType["publication-info-lib"])?.publication?.tags,
-    pubId: (state.dialog.data as DialogType["publication-info-lib"])?.publication?.identifier,
-    publication: (state.dialog.data as DialogType["publication-info-lib"])?.publication,
+    tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.tags,
+    pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.identifier,
+    publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(TagManager));

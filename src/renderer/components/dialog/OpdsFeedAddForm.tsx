@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
@@ -122,7 +123,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
 };
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
-    open: state.dialog.type === "opds-feed-add-form",
+    open: state.dialog.type === DialogTypeName.OpdsFeedAddForm,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(OpdsFeedAddForm));

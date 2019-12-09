@@ -30,21 +30,11 @@ export interface ICatalogApi {
     updateEntries: (entryView: CatalogEntryView[]) => Promise<CatalogEntryView[]>;
 }
 
-export type TCatalogApiGet = ICatalogApi["get"];
-export type TCatalogApiAddEntry = ICatalogApi["addEntry"];
-export type TCatalogGetEntries = ICatalogApi["getEntries"];
-export type TCatalogUpdateEntries = ICatalogApi["updateEntries"];
-
-export type TCatalogApiGet_result = CatalogView;
-export type TCatalogApiAddEntry_result = CatalogEntryView[];
-export type TCatalogGetEntries_result = CatalogEntryView[];
-export type TCatalogUpdateEntries_result = CatalogEntryView[];
-
 export interface ICatalogModuleApi {
-    "catalog/get": TCatalogApiGet;
-    "catalog/addEntry": TCatalogApiAddEntry;
-    "catalog/getEntries": TCatalogGetEntries;
-    "catalog/updateEntries": TCatalogUpdateEntries;
+    "catalog/get": ICatalogApi["get"];
+    "catalog/addEntry": ICatalogApi["addEntry"];
+    "catalog/getEntries": ICatalogApi["getEntries"];
+    "catalog/updateEntries": ICatalogApi["updateEntries"];
 }
 
 @injectable()

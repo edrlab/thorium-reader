@@ -16,6 +16,7 @@ import {
     IOpdsNavigationLinkView, IOpdsPublicationView, IOpdsResultView, OpdsAuthView, OpdsGroupView,
 } from "readium-desktop/common/views/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
+import { ContentType } from "readium-desktop/utils/content-type";
 
 import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
@@ -34,8 +35,8 @@ interface IGetLinksViewFilter {
 }
 
 const supportedFileTypeLinkArray = [
-    "application/epub+zip",
-    "application/vnd.readium.lcp.license.v1.0+json",
+    ContentType.Epub,
+    ContentType.Lcp,
 ];
 
 const fallback = <T>(...valueArray: T[][]) =>
@@ -227,13 +228,13 @@ export class OpdsFeedViewConverter {
                 type: "type=entry;profile=opds-catalog",
             }),
             GetLinksView(baseUrl, r2OpdsPublication.Links, {
-                type: "application/opds-publication+json",
+                type: ContentType.Opds2Pub,
                 rel: "self",
             }),
             GetLinksView(baseUrl, r2OpdsPublication.Links, {
                 type: [
-                    "application/atom+xml",
-                    "application/opds+json",
+                    ContentType.AtomXml,
+                    ContentType.Opds2,
                 ],
             }),
         );
@@ -362,7 +363,7 @@ export class OpdsFeedViewConverter {
             up: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
             search: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
             bookshelf: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/shelf" }),
-            text: GetLinksView(baseUrl, r2OpdsFeed.Links, { type: ["text/html"] }),
+            text: GetLinksView(baseUrl, r2OpdsFeed.Links, { type: [ContentType.Html] }),
             self: GetLinksView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
         };
         const metadata: IOpdsFeedMetadataView | undefined = r2OpdsFeed.Metadata &&

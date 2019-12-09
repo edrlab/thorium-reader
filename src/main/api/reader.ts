@@ -44,30 +44,14 @@ export interface IReaderApi {
         clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => Promise<boolean>;
 }
 
-export type TReaderApiSetLastReadingLocation = IReaderApi["setLastReadingLocation"];
-export type TReaderApiGetLastReadingLocation = IReaderApi["getLastReadingLocation"];
-export type TReaderApiFindBookmarks = IReaderApi["findBookmarks"];
-export type TReaderApiUpdateBookmark = IReaderApi["updateBookmark"];
-export type TReaderApiAddBookmark = IReaderApi["addBookmark"];
-export type TReaderApiDeleteBookmark = IReaderApi["deleteBookmark"];
-export type TReaderApiClipboardCopy = IReaderApi["clipboardCopy"];
-
-export type TReaderApiSetLastReadingLocation_result = LocatorView;
-export type TReaderApiGetLastReadingLocation_result = LocatorView;
-export type TReaderApiFindBookmarks_result = LocatorView[];
-export type TReaderApiUpdateBookmark_result = void;
-export type TReaderApiAddBookmark_result = void;
-export type TReaderApiDeleteBookmark_result = void;
-export type TReaderApiClipboardCopy_result = void;
-
 export interface IReaderModuleApi {
-    "reader/setLastReadingLocation": TReaderApiSetLastReadingLocation;
-    "reader/getLastReadingLocation": TReaderApiGetLastReadingLocation;
-    "reader/findBookmarks": TReaderApiFindBookmarks;
-    "reader/updateBookmark": TReaderApiUpdateBookmark;
-    "reader/addBookmark": TReaderApiAddBookmark;
-    "reader/deleteBookmark": TReaderApiDeleteBookmark;
-    "reader/clipboardCopy": TReaderApiClipboardCopy;
+    "reader/setLastReadingLocation": IReaderApi["setLastReadingLocation"];
+    "reader/getLastReadingLocation": IReaderApi["getLastReadingLocation"];
+    "reader/findBookmarks": IReaderApi["findBookmarks"];
+    "reader/updateBookmark": IReaderApi["updateBookmark"];
+    "reader/addBookmark": IReaderApi["addBookmark"];
+    "reader/deleteBookmark": IReaderApi["deleteBookmark"];
+    "reader/clipboardCopy": IReaderApi["clipboardCopy"];
 }
 
 @injectable()
