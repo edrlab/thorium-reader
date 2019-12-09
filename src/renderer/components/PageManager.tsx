@@ -8,6 +8,7 @@
 import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 import { routes } from "readium-desktop/renderer/routing";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 interface IState {
     activePage: number;
@@ -26,16 +27,17 @@ export default class PageManager extends React.Component<{}, IState> {
     public render(): React.ReactElement<{}> {
         return (
             <Switch>
-                {Object.keys(routes).map((path: string) => {
-                    const route = routes[path];
-                    return (
-                        <Route
-                            key={path}
-                            exact={route.exact}
-                            path={route.path}
-                            component={route.component} />
-                    );
-                })}
+                {
+                    ObjectKeys(routes).map(
+                        (path) =>
+                            <Route
+                                key={path}
+                                exact={routes[path].exact}
+                                path={routes[path].path}
+                                component={routes[path].component}
+                            />,
+                    )
+                }
             </Switch>
         );
     }

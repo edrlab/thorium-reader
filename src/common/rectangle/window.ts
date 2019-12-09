@@ -12,7 +12,7 @@ import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
 import { debounce } from "readium-desktop/utils/debounce";
 
-import { AppWindow, AppWindowType } from "../models/win";
+import { AppWindowType } from "../models/win";
 
 // Logger
 const debug = debug_("readium-desktop:common:rectangle:window");
@@ -43,28 +43,28 @@ export const savedWindowsRectangle = async (rectangle: Rectangle) => {
 };
 const debounceSavedWindowsRectangle = debounce<t_savedWindowsRectangle>(savedWindowsRectangle, 500);
 
-export const getWindowsRectangle = async (WinType?: AppWindowType): Promise<Rectangle> => {
+export const getWindowBounds = async (winType?: AppWindowType): Promise<Rectangle> => {
 
     try {
         const winRegistry = diMainGet("win-registry");
-
-        // WinDictionary = BrowserWindows indexed by number
-        // (the number is Electron.BrowserWindow.id)
-        const windowsDict = winRegistry.getWindows();
-
-        // generic / template type does not work because dictionary not indexed by string, but by number
-        // const windows = Object.values<AppWindow>(windowsDict);
-        const windows = Object.values(windowsDict) as AppWindow[];
+        const readerWindows = winRegistry.getReaderWindows();
 
         const displayArea = screen.getPrimaryDisplay().workAreaSize;
-        if (WinType !== AppWindowType.Library && windows.length > 1) {
-            const rectangle = windows.pop().win.getBounds();
+
+        if (winType !== AppWindowType.Library && // is reader window
+            readerWindows.length > 0) { // there are already reader windows
+
+            // readerWindows is ordered by creation/registration time
+            // so we take the latest reader window and offset the new one
+            const rectangle = readerWindows[readerWindows.length - 1].win.getBounds();
             rectangle.x += 100;
             rectangle.x %= displayArea.width - rectangle.width;
             rectangle.y += 100;
             rectangle.y %= displayArea.height - rectangle.height;
             return rectangle;
-        } else {
+
+        } else { // winType === AppWindowType.Library || readerWindows.length == 0
+
             const configRepository: ConfigRepository<Rectangle> = diMainGet("config-repository");
             let rectangle: ConfigDocument<Rectangle> | undefined;
             try {

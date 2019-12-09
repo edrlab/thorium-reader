@@ -8,9 +8,7 @@
 import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
-import {
-    LocaleConfigIdentifier, LocaleConfigValueType,
-} from "readium-desktop/common/config";
+import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
@@ -22,6 +20,7 @@ import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
 import { appActions } from "readium-desktop/main/redux/actions/";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 // Logger
 const debug = debug_("readium-desktop:main");
@@ -112,47 +111,41 @@ const winOpenCallback = (appWindow: AppWindow) => {
 // Callback called when a window is closed
 const winCloseCallback = (appWindow: AppWindow) => {
     const store = diMainGet("store");
+
     const winRegistry = diMainGet("win-registry");
+    const readerWindows = winRegistry.getReaderWindows();
 
-    // WinDictionary = BrowserWindows indexed by number
-    // (the number is Electron.BrowserWindow.id)
-    const windowsDict = winRegistry.getWindows();
+    // library window was closed and unregistered
+    // => all reader windows must now be closed too (effectively exiting the app)
+    if (appWindow.type === AppWindowType.Library) {
+        readerWindows.forEach((w) => w.win.close());
+        return;
+    }
 
-    // generic / template type does not work because dictionary not indexed by string, but by number
-    // const windows = Object.values<AppWindow>(windowsDict);
-    const windows = Object.values(windowsDict) as AppWindow[];
+    // else: appWindow.type === AppWindowType.Reader
 
-    // dictionary not indexed by string, but by number!
-    // const browserWindowNumberIds = Object.keys(windowsDict) as unknown as number[];
+    // if there is at least one remaining reader, then leave it/them alone
+    // (it is / they are in detached mode, the library view is visible)
+    if (readerWindows.length > 0) {
+        return;
+    }
 
-    // if multiple windows are open & library are closed. all other windows are closed
-    if (windows.length >= 1 &&
-        appWindow.type === AppWindowType.Library) {
-        for (let i = windows.length - 1;
-            i >= 0; i--) {
-                windows[i].win.close();
+    // else, there is one window left, it is the library
+    // we ensure return to "attached" mode
+    store.dispatch(readerActions.detachModeSuccess.build(ReaderMode.Attached));
+
+    // if the library is in fact no visible
+    // (i.e. the sole closed reader was in attached mode)
+    // then we close the app
+    const libraryWindow = winRegistry.getLibraryWindow();
+    if (libraryWindow) {
+        if (libraryWindow.win.isMinimized()) {
+            libraryWindow.win.restore();
+        } else if (!libraryWindow.win.isVisible()) {
+            libraryWindow.win.close();
+            return;
         }
-        return;
-    }
-
-    if (windows.length !== 1) {
-        return;
-    }
-
-    const appWin = windows[0];
-    if (appWin.type === AppWindowType.Library) {
-        // Set reader to attached mode
-        store.dispatch(readerActions.detachModeSuccess.build(ReaderMode.Attached));
-    }
-
-    if (
-        appWin.type === AppWindowType.Library &&
-        !appWin.win.isVisible()
-    ) {
-        // Library window is hidden
-        // There is no more opened window
-        // Consider that we close application
-        appWin.win.close();
+        libraryWindow.win.show(); // focuses as well
     }
 };
 
@@ -172,7 +165,8 @@ export function initApp() {
         }
     }).catch(async () => {
         const loc = app.getLocale().split("-")[0];
-        const lang = Object.keys(AvailableLanguages).find((l) => l === loc) || "en";
+        const langCodes = ObjectKeys(AvailableLanguages);
+        const lang = langCodes.find((l) => l === loc) || "en";
         store.dispatch(i18nActions.setLocale.build(lang));
         debug(`create i18n key in configRepository with ${lang} locale`);
     });

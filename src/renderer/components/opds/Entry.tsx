@@ -6,13 +6,15 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { Link, matchPath } from "react-router-dom";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
-import { IOpdsBrowse } from "readium-desktop/renderer/routing";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/opds/route";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { IOpdsBrowse, routes } from "readium-desktop/renderer/routing";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -24,7 +26,7 @@ interface IBaseProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps<IOpdsBrowse> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class Entry extends React.Component<IProps, undefined> {
@@ -36,8 +38,10 @@ class Entry extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}>  {
         const { entry } = this.props;
 
-        const { level, match } = this.props;
-        const rootFeedIdentifier = match.params.opdsId;
+        const { level } = this.props;
+        const rootFeedIdentifier = matchPath<IOpdsBrowse>(
+            this.props.location.pathname, routes["/opds/browse"],
+        ).params.opdsId;
         const route = buildOpdsBrowserRoute(
             rootFeedIdentifier,
             entry.title,
@@ -50,7 +54,10 @@ class Entry extends React.Component<IProps, undefined> {
                 <div>
                     <Link
                         className={styles.flux_infos}
-                        to={{pathname: route, search: this.props.location.search}}
+                        to={{
+                            ...this.props.location,
+                            pathname: route,
+                        }}
                     >
                         <span className={styles.flux_title}>{entry.title}</span>
                         {
@@ -90,4 +97,8 @@ class Entry extends React.Component<IProps, undefined> {
     }
 }
 
-export default withRouter(Entry);
+const mapStateToProps = (state: RootState) => ({
+    location: state.router.location,
+});
+
+export default connect(mapStateToProps)(Entry);

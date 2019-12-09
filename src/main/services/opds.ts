@@ -8,7 +8,6 @@
 import * as crypto from "crypto";
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
-import { Entry } from "r2-opds-js/dist/es6-es2015/src/opds/opds1/opds-entry";
 import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
 import { httpGet, IHttpGetResult } from "readium-desktop/common/utils/http";
 import { IOpdsLinkView, IOpdsResultView } from "readium-desktop/common/views/opds";
@@ -25,8 +24,10 @@ import {
     convertOpds1ToOpds2, convertOpds1ToOpds2_EntryToPublication,
 } from "@r2-opds-js/opds/converter";
 import { OPDS } from "@r2-opds-js/opds/opds1/opds";
+import { Entry } from "@r2-opds-js/opds/opds1/opds-entry";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
+import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { XML } from "@r2-utils-js/_utils/xml-js-mapper";
 
@@ -53,7 +54,11 @@ export class OpdsService {
     private static contentTypeisOpds(contentType?: string) {
         return contentType
             && (contentType.startsWith("application/json")
-                || contentType.startsWith("application/opds+json"));
+                || contentType.startsWith("application/opds+json")
+                || contentType.startsWith("application/opds-authentication+json")
+                || contentType.startsWith("application/opds-publication+json")
+            )
+        ;
     }
 
     private static async getOpenSearchUrl(opensearchLink: IOpdsLinkView): Promise<string | undefined> {
@@ -207,11 +212,31 @@ export class OpdsService {
                     if (opdsFeedData.isFailure) {
                         return opdsFeedData;
                     }
-                    // FIXME : Desarialize OPDSFeed Or OpdsPublication
-                    r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
-                        jsonObj,
-                        OPDSFeed,
-                    );
+
+                    // FIXME: test for content type (HTTP request, or preferably response),
+                    // do not sniff content!
+                    if (!jsonObj.publications &&
+                        !jsonObj.navigation &&
+                        !jsonObj.groups &&
+                        !jsonObj.catalogs) {
+
+                        const r2OpdsPublication = TaJsonDeserialize<OPDSPublication>(
+                            jsonObj,
+                            OPDSPublication,
+                        );
+                        // create a simple OpdsFeed to pass to converter function
+                        r2OpdsFeed = {
+                            Metadata: {
+                                Title: r2OpdsPublication.Metadata.Title,
+                            },
+                            Publications: [r2OpdsPublication],
+                        } as OPDSFeed;
+                    } else {
+                        r2OpdsFeed = TaJsonDeserialize<OPDSFeed>(
+                            jsonObj,
+                            OPDSFeed,
+                        );
+                    }
                 }
             } else {
                 if (opdsFeedData.isFailure) {

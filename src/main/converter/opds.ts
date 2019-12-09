@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import { injectable } from "inversify";
 import * as moment from "moment";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 import {
     convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
 } from "readium-desktop/common/utils";
@@ -18,11 +17,12 @@ import {
 } from "readium-desktop/common/views/opds";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 
-import { TaJsonSerialize } from "@r2-lcp-js/serializable";
+import { IWithAdditionalJSON, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
+import { Link } from "@r2-shared-js/models/publication-link";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -56,6 +56,15 @@ const GetLinksView = <T extends Link>(
     const linksFiltered = links?.filter((ln) => {
         let relFlag: boolean = false;
         let typeFlag: boolean = false;
+
+        if (!ln.Href &&
+            (ln as unknown as IWithAdditionalJSON).AdditionalJSON?.link &&
+            typeof ((ln as unknown as IWithAdditionalJSON).AdditionalJSON?.link) === "string") {
+
+            // yep, error in OPDS feed, "link" instead of "href"
+            ln.Href = (ln as unknown as IWithAdditionalJSON).AdditionalJSON.link as string;
+            debug(`OPDS LINK MONKEY PATCH: ${ln.Href}`);
+        }
 
         if (ln.Href) {
             if (filter.rel) {
@@ -154,6 +163,7 @@ export class OpdsFeedViewConverter {
 
     // warning: modifies r2OpdsPublication, makes relative URLs absolute with baseUrl!
     public convertOpdsPublicationToView(r2OpdsPublication: OPDSPublication, baseUrl: string): IOpdsPublicationView {
+
         const metadata = r2OpdsPublication.Metadata;
         const title = convertMultiLangStringToString(metadata.Title);
         const authors = convertContributorArrayToStringArray(metadata.Author);
@@ -215,6 +225,10 @@ export class OpdsFeedViewConverter {
         const entrylinkView = fallback(
             GetLinksView(baseUrl, r2OpdsPublication.Links, {
                 type: "type=entry;profile=opds-catalog",
+            }),
+            GetLinksView(baseUrl, r2OpdsPublication.Links, {
+                type: "application/opds-publication+json",
+                rel: "self",
             }),
             GetLinksView(baseUrl, r2OpdsPublication.Links, {
                 type: [

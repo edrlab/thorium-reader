@@ -7,9 +7,6 @@
 
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
-import {
-    OPDSAuthenticationDoc,
-} from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-authentication-doc";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import {
     IOpdsFeedView, IOpdsLinkView, IOpdsPublicationView, THttpGetOpdsPublicationView,
@@ -20,6 +17,8 @@ import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { OpdsService } from "readium-desktop/main/services/opds";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
+
+import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 
 // Logger
 const debug = debug_("readium-desktop:src/main/api/opds");

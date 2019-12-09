@@ -110,7 +110,7 @@ export class Downloader {
         options = options || {} as TRequestCoreOptionsOptionalUriUrl;
         options.headers = options.headers || {};
 
-        const headerFromOptions = {};
+        const headerFromOptions: request.Headers = {};
         for (const [key, value] of Object.entries(options.headers)) {
             Object.assign(headerFromOptions, {
                 [key.toLowerCase()]: value,
@@ -128,7 +128,7 @@ export class Downloader {
         const domain = download.srcUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
         const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
 
-        const headers = Object.assign(headerFromOptions, {
+        const headers: request.Headers = Object.assign(headerFromOptions, {
             "user-agent": "readium-desktop",
             "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
             "Authorization": accessToken ? `Bearer ${accessToken.authenticationToken}` : undefined,

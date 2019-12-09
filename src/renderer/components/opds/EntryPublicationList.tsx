@@ -5,15 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
 import { IOpdsPublicationView, IOpdsResultView } from "readium-desktop/common/views/opds";
-import { DisplayType } from "readium-desktop/renderer/components/opds/Header";
 import { GridView } from "readium-desktop/renderer/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
 import Loader from "readium-desktop/renderer/components/utils/Loader";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { DisplayType } from "readium-desktop/renderer/routing";
 
 import PageNavigation from "./PageNavigation";
 
@@ -38,20 +37,12 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
     }
 
     public render() {
-        let displayType = DisplayType.Grid;
-
-        if (this.props.location) {
-            const parsedResult = qs.parse(this.props.location.search);
-
-            if (parsedResult.displayType === DisplayType.List) {
-                displayType = DisplayType.List;
-            }
-        }
+        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
 
         return (
             <>
-                {this.props.opdsPublicationView ?
-                    <>
+                {this.props.opdsPublicationView
+                    ? <>
                         {displayType === DisplayType.Grid ?
                             <GridView
                                 normalOrOpdsPublicationViews={this.props.opdsPublicationView}

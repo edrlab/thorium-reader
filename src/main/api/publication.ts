@@ -7,15 +7,15 @@
 
 import { inject, injectable } from "inversify";
 import { PromiseAllSettled, PromiseFulfilled } from "readium-desktop/common/utils/promise";
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
+import { LcpManager } from "readium-desktop/main/services/lcp";
 import { isArray } from "util";
-
-import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 
 // import * as debug_ from "debug";
 
@@ -23,6 +23,7 @@ export interface IPublicationApi {
     // get: (...a: [string]) => Promise<PublicationView> | void;
     get: (
         identifier: string,
+        checkLcpLsd: boolean,
     ) => Promise<PublicationView>;
     delete: (
         identifier: string,
@@ -105,8 +106,14 @@ export class PublicationApi implements IPublicationApi {
     @inject(diSymbolTable["catalog-service"])
     private readonly catalogService!: CatalogService;
 
-    public async get(identifier: string): Promise<PublicationView> {
-        const doc = await this.publicationRepository.get(identifier);
+    @inject(diSymbolTable["lcp-manager"])
+    private readonly lcpManager!: LcpManager;
+
+    public async get(identifier: string, checkLcpLsd: boolean): Promise<PublicationView> {
+        let doc = await this.publicationRepository.get(identifier);
+        if (checkLcpLsd && doc.lcp) {
+            doc = await this.lcpManager.checkPublicationLicenseUpdate(doc);
+        }
         return this.publicationViewConverter.convertDocumentToView(doc);
     }
 
@@ -137,7 +144,7 @@ export class PublicationApi implements IPublicationApi {
         );
 
         await this.publicationRepository.save(newDoc);
-        return this.get(identifier);
+        return this.get(identifier, false);
     }
 
     /**

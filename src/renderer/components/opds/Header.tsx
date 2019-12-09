@@ -5,10 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as qs from "query-string";
 import * as React from "react";
 import { connect } from "react-redux";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+import { Link, matchPath } from "react-router-dom";
 import * as AvatarIcon from "readium-desktop/renderer/assets/icons/avatar.svg";
 import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home.svg";
@@ -19,16 +18,11 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/opds/route";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { IOpdsBrowse } from "readium-desktop/renderer/routing";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/utils";
+import { DisplayType, IOpdsBrowse, routes } from "readium-desktop/renderer/routing";
 
 import SearchForm from "./SearchForm";
-
-export enum DisplayType {
-    Grid = "grid",
-    List = "list",
-}
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -39,7 +33,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
 // tslint:disable-next-line: max-line-length
-interface IProps extends IBaseProps, TranslatorProps, ReturnType<typeof mapStateToProps>, RouteComponentProps<IOpdsBrowse> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 class Header extends React.Component<IProps, undefined> {
@@ -49,40 +43,65 @@ class Header extends React.Component<IProps, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
-        const displayType = qs.parse(this.props.location.search).displayType || DisplayType.Grid;
+        const { __, location } = this.props;
+        const displayType = location?.state?.displayType || DisplayType.Grid;
 
         // FIXME : css in code
         return (
             <SecondaryHeader>
                 <Link
-                    to={{ search: "displayType=grid" }}
+                    to={{
+                        ...this.props.location,
+                        state: {
+                            displayType: DisplayType.Grid,
+                        },
+                    }}
+                    replace={true}
                     style={(displayType !== DisplayType.Grid) ? { fill: "#767676" } : {}}
                 >
                     <SVG svg={GridIcon} title={__("header.gridTitle")} />
                 </Link>
                 <Link
-                    to={{ search: "displayType=list" }}
+                    to={{
+                        ...this.props.location,
+                        state: {
+                            displayType: DisplayType.List,
+                        },
+                    }}
+                    replace={true}
                     style={displayType !== DisplayType.List ?
                         { fill: "#757575", marginLeft: "16px" } : { marginLeft: "16px" }}
                 >
                     <SVG svg={ListIcon} title={__("header.listTitle")} />
                 </Link>
-                {this.home()}
-                {this.refresh()}
-                {this.bookshelf()}
+                {
+                    this.home()
+                }
+                {
+                    this.refresh()
+                }
                 <SearchForm />
+                {
+                    this.bookshelf()
+                }
             </SecondaryHeader>
         );
     }
 
     private bookshelf = () => {
         const { bookshelf } = this.props.headerLinks;
+
+        let bookshelfComponent = <></>;
         if (bookshelf) {
 
             const { __ } = this.props;
-            const param = this.props.match.params;
+
+            const param = matchPath<IOpdsBrowse>(
+                this.props.location.pathname, routes["/opds/browse"],
+            ).params;
+
             const lvl = parseInt(param.level, 10);
+
             const route = buildOpdsBrowserRoute(
                 param.opdsId,
                 __("opds.shelf"),
@@ -90,25 +109,35 @@ class Header extends React.Component<IProps, undefined> {
                 lvl === 1 ? 3 : (lvl + 1),
             );
 
-            return (
+            bookshelfComponent = (
                 <Link
-                    to={route}
+                    to={{
+                        ...this.props.location,
+                        pathname: route,
+                    }}
                 >
                     <SVG svg={AvatarIcon} title={__("opds.shelf")} />
                 </Link>
             );
         }
 
-        return undefined;
+        return bookshelfComponent;
     }
 
     private home = () => {
         const { start } = this.props.headerLinks;
+
+        let homeComponent = <></>;
         if (start) {
 
             const { __ } = this.props;
-            const param = this.props.match.params;
+
+            const param = matchPath<IOpdsBrowse>(
+                this.props.location.pathname, routes["/opds/browse"],
+            ).params;
+
             const home = this.props.breadcrumb[1];
+
             const route = buildOpdsBrowserRoute(
                 param.opdsId,
                 home.name || "",
@@ -116,9 +145,12 @@ class Header extends React.Component<IProps, undefined> {
                 1,
             );
 
-            return (
+            homeComponent = (
                 <Link
-                    to={route}
+                    to={{
+                        ...this.props.location,
+                        pathname: route,
+                    }}
                     style={{ marginLeft: "16px" }}
                 >
                     <SVG svg={HomeIcon} title={__("header.homeTitle")} />
@@ -126,18 +158,26 @@ class Header extends React.Component<IProps, undefined> {
             );
         }
 
-        return undefined;
+        return homeComponent;
     }
 
     private refresh = () => {
         const { self } = this.props.headerLinks;
+
+        let refreshComponet = <></>;
         if (self) {
 
             const { __ } = this.props;
-            const param = this.props.match.params;
+
+            const param = matchPath<IOpdsBrowse>(
+                this.props.location.pathname, routes["/opds/browse"],
+            ).params;
+
             const lvl = parseInt(param.level, 10);
+
             const i = (lvl > 1) ? (lvl - 1) : lvl;
-            const name = this.props.breadcrumb[i] && this.props.breadcrumb[i].name;
+            const name = this.props.breadcrumb[i]?.name;
+
             const route = buildOpdsBrowserRoute(
                 param.opdsId,
                 name,
@@ -145,9 +185,12 @@ class Header extends React.Component<IProps, undefined> {
                 lvl,
             );
 
-            return (
+            refreshComponet = (
                 <Link
-                    to={route}
+                    to={{
+                        ...this.props.location,
+                        pathname: route,
+                    }}
                     style={{ marginLeft: "16px" }}
                 >
                     <SVG svg={RefreshIcon} title={__("header.refreshTitle")} />
@@ -155,13 +198,14 @@ class Header extends React.Component<IProps, undefined> {
             );
         }
 
-        return undefined;
+        return refreshComponet;
     }
 }
 
 const mapStateToProps = (state: RootState) => ({
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
+    location: state.router.location,
 });
 
-export default connect(mapStateToProps)(withTranslator(withRouter(Header)));
+export default connect(mapStateToProps)(withTranslator(Header));

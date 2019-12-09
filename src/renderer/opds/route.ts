@@ -5,6 +5,31 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { matchPath } from "react-router";
+import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+
+import { decodeB64, encodeB64 } from "../base64";
+import { IOpdsBrowse, routes } from "../routing";
+
+export const buildOpdsBrowserRouteWithLink = (pathname: string) =>
+    (link: IOpdsLinkView) => {
+
+        const param = matchPath<IOpdsBrowse>(
+            pathname, routes["/opds/browse"],
+        ).params;
+
+        const lvl = parseInt(param.level, 10);
+
+        const route = buildOpdsBrowserRoute(
+            param.opdsId,
+            decodeB64(param.name),
+            link.url,
+            lvl,
+        );
+
+        return route;
+    };
+
 /**
  * formating opds browser route to react-router route
  * @param rootFeedIdentifier identifier from opdsId IOpdsBrowse react-router
@@ -28,36 +53,10 @@ export function buildOpdsBrowserRoute(
     return route;
 }
 
-// Encode without padding
-// And apply RFC 4648
-export function encodeB64(data: string) {
-    let encoded = btoa(unescape(encodeURIComponent(data)));
-
-    // RFC 4648
-    encoded = encoded.replace(/\//g, "_");
-    encoded = encoded.replace(/\+/g, "-");
-
-    // Remove padding
-    encoded = encoded.replace(/=/g, "");
-
-    return encoded;
-}
-
-export function decodeB64(data: string) {
-    let decoded = data;
-    decoded = decoded.replace(/_/g, "/");
-    decoded = decoded.replace(/-/g, "+");
-
-    // const paddingLength = (3 - (decoded.length % 3)) % 3;
-
-    decoded = decodeURIComponent(escape(atob(decoded)));
-    return decoded;
-}
-
 export function parseOpdsBrowserRoute(route: string) {
     // Parse route with regexp
     // tslint:disable-next-line:max-line-length
-    const regexp =  /\/opds\/([a-zA-Z0-9-=]+)\/browse\/([0-9]+)\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)/g;
+    const regexp = /\/opds\/([a-zA-Z0-9-=]+)\/browse\/([0-9]+)\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)/g;
     const match = regexp.exec(route);
 
     if (match == null) {

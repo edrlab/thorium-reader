@@ -43,7 +43,6 @@ class Browser extends React.Component<IProps, undefined> {
                 <BreadCrumb
                     className={styles.opdsBrowseBreadcrumb}
                     breadcrumb={this.props.breadrumb}
-                    search={this.props.location.search}
                 />
                 {this.props.breadrumb.length &&
                     <BrowserResult/>

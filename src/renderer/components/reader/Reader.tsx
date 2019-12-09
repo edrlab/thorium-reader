@@ -36,6 +36,7 @@ import {
     TMouseEventOnSpan,
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { Store, Unsubscribe } from "redux";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
@@ -310,9 +311,7 @@ export class Reader extends React.Component<IProps, IState> {
                 this.props.translator.setLocale(this.store.getState().i18n.locale);
 
                 const indexes = this.state.indexes;
-                for (const name of Object.keys(this.state.indexes)) {
-                    const key = name as keyof ReaderConfigStringsAdjustables;
-
+                for (const key of ObjectKeys(this.state.indexes)) {
                     let i = 0;
                     for (const value of optionsValues[key]) {
                         if (readerConfig[key] === value) {
@@ -418,7 +417,7 @@ export class Reader extends React.Component<IProps, IState> {
             "reader/addBookmark",
         ], this.findBookmarks);
 
-        apiAction("publication/get", queryParams.pubId)
+        apiAction("publication/get", queryParams.pubId, false)
             .then((publicationView) => { // TPublicationApiGet_result === PublicationView
                 this.setState({publicationView});
                 this.loadPublicationIntoViewport(publicationView, locator);
@@ -780,20 +779,9 @@ export class Reader extends React.Component<IProps, IState> {
 
         const readerConfig = this.state.readerConfig;
 
-        // TypeScript typing problems
-        // -- does not work because of "never":
-        // readerConfig[name] = value;
-        // -- works but voids key typing:
-        // (readerConfig as unknown as { [key: string]: string | boolean })[name] = adjustedValue;
-        const nameForString = name as keyof ReaderConfigStrings;
-        const nameForBoolean = name as keyof ReaderConfigBooleans;
-        if (value === "false") {
-            readerConfig[nameForBoolean] = false;
-        } else if (value === "true") {
-            readerConfig[nameForBoolean] = true;
-        } else {
-            readerConfig[nameForString] = value;
-        }
+        const typedName =
+            name as (typeof value extends string ? keyof ReaderConfigStrings : keyof ReaderConfigBooleans);
+        readerConfig[typedName] = value;
 
         if (readerConfig.paged) {
             readerConfig.enableMathJax = false;

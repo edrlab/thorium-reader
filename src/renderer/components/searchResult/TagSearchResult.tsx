@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as qs from "query-string";
 import * as React from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { connect } from "react-redux";
+import { matchPath } from "react-router-dom";
 import { TPublicationApiFindByTag_result } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
@@ -18,10 +18,11 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import { ListView } from "readium-desktop/renderer/components/utils/ListView";
-import { ILibrarySearchText } from "readium-desktop/renderer/routing";
+import { RootState } from "readium-desktop/renderer/redux/states";
+import { DisplayType, ILibrarySearchText, routes } from "readium-desktop/renderer/routing";
 import { Unsubscribe } from "redux";
 
-import Header, { DisplayType } from "../catalog/Header";
+import Header from "../catalog/Header";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -31,7 +32,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, RouteComponentProps<ILibrarySearchText> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
 interface IState {
@@ -55,8 +56,12 @@ export class TagSearchResult extends React.Component<IProps, IState> {
             "publication/updateTags",
             "catalog/addEntry",
         ], () => {
-            apiAction("publication/findByTag", this.props.match.params.value)
-                .then((publicationViews) => this.setState({publicationViews}))
+            const value = matchPath<ILibrarySearchText>(
+                this.props.location.pathname, routes["/library/search/tag"],
+            ).params.value;
+
+            apiAction("publication/findByTag", value)
+                .then((publicationViews) => this.setState({ publicationViews }))
                 .catch((error) => console.error("Error to fetch api publication/findByTag", error));
         });
     }
@@ -68,36 +73,33 @@ export class TagSearchResult extends React.Component<IProps, IState> {
     }
 
     public render(): React.ReactElement<{}> {
-        let displayType = DisplayType.Grid;
+        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
         const { __ } = this.props;
-        const title = this.props.match.params.value;
+        const title = matchPath<ILibrarySearchText>(
+            this.props.location.pathname, routes["/library/search/tag"],
+        ).params.value;
 
-        if (this.props.location) {
-            const parsedResult = qs.parse(this.props.location.search);
-
-            if (parsedResult.displayType === DisplayType.List) {
-                displayType = DisplayType.List;
-            }
-        }
-
-        const secondaryHeader = <Header displayType={ displayType } />;
+        const secondaryHeader = <Header />;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader}>
                 <div>
                     <BreadCrumb
-                        search={this.props.location.search}
-                        breadcrumb={[{name: __("catalog.myBooks"), path: "/library"}, {name: title}]}
+                        breadcrumb={[{ name: __("catalog.myBooks"), path: "/library" }, { name: title }]}
                     />
-                    { this.state.publicationViews ?
+                    {this.state.publicationViews ?
                         (displayType === DisplayType.Grid ?
-                            <GridView normalOrOpdsPublicationViews={ this.state.publicationViews } /> :
-                            <ListView normalOrOpdsPublicationViews={ this.state.publicationViews } />)
-                    : <></>}
+                            <GridView normalOrOpdsPublicationViews={this.state.publicationViews} /> :
+                            <ListView normalOrOpdsPublicationViews={this.state.publicationViews} />)
+                        : <></>}
                 </div>
             </LibraryLayout>
         );
     }
 }
 
-export default withTranslator(TagSearchResult);
+const mapStateToProps = (state: RootState) => ({
+    location: state.router.location,
+});
+
+export default connect(mapStateToProps)(withTranslator(TagSearchResult));
