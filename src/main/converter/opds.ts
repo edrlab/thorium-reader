@@ -9,7 +9,6 @@ import { injectable } from "inversify";
 import * as moment from "moment";
 import { OPDSFacet } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-facet";
 import { OPDSGroup } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-group";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
 import {
     IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
     IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOpdsPublicationView,
@@ -29,20 +28,14 @@ import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 
 import { IOpdsFacetView } from "../../common/views/opds";
 import { fallback } from "./tools/fallback";
+import { filterRelLink, filterTypeLink } from "./tools/filterLink";
 import { getTagsFromOpdsPublication } from "./tools/getTags";
+import { TLinkMayBeOpds } from "./type/link.type";
+import { ILinkFilter } from "./type/linkFilter.interface";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
 debug("opds-converter");
-
-interface IGetLinksViewFilter {
-    rel?: string | string[] | RegExp;
-    type?: string | string[] | RegExp;
-}
-
-type TProperties = Partial<Pick<OPDSLink, "Properties">> | Partial<Pick<Link, "Properties">>;
-type TLink = Omit<OPDSLink, "Properties">;
-type TLinkMayBeOpds = TProperties & TLink;
 
 const supportedFileTypeLinkArray = [
     ContentType.Epub,
@@ -78,13 +71,11 @@ export class OpdsFeedViewConverter {
     public convertLinkToView(
         baseUrl: string,
         links: TLinkMayBeOpds[] | undefined,
-        filter: IGetLinksViewFilter,
+        filter: ILinkFilter,
     ): IOpdsLinkView[] {
 
         const linksFiltered = links?.filter(
             (ln) => {
-                let relFlag: boolean = false;
-                let typeFlag: boolean = false;
 
                 if (!ln.Href &&
                     (ln as unknown as IWithAdditionalJSON).AdditionalJSON?.link &&
@@ -95,42 +86,12 @@ export class OpdsFeedViewConverter {
                     debug(`OPDS LINK MONKEY PATCH: ${ln.Href}`);
                 }
 
+                let relFlag = false;
+                let typeFlag = false;
+
                 if (ln.Href) {
-                    if (filter.rel) {
-                        if (ln.Rel?.length) {
-                            ln.Rel.forEach((rel) => {
-                                if (Array.isArray(filter.rel) && filter.rel.includes(rel)) {
-                                    relFlag = true;
-                                } else if (filter.rel instanceof RegExp && filter.rel.test(rel)) {
-                                    relFlag = true;
-                                } else if (rel?.replace(/\s/g, "") === filter.rel) {
-                                    relFlag = true;
-                                }
-                            });
-                        }
-                    }
-                    if (filter.type) {
-                        if (ln.TypeLink) {
-                            if (Array.isArray(filter.type) && filter.type.includes(ln.TypeLink)) {
-                                typeFlag = true;
-                            } else if (filter.type instanceof RegExp && filter.type.test(ln.TypeLink)) {
-                                typeFlag = true;
-                            } else if (typeof filter.type === "string") {
-
-                                // compare typeSet and filterSet
-                                const filterSet = new Set(filter.type.split(";"));
-                                const typeArray = new Set(ln.TypeLink.replace(/\s/g, "").split(";"));
-
-                                typeFlag = true;
-                                for (const i of filterSet) {
-                                    if (!typeArray.has(i)) {
-                                        typeFlag = false;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    relFlag = filterRelLink(ln, filter);
+                    typeFlag = filterTypeLink(ln, filter);
                 }
 
                 return (
