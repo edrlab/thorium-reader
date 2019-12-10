@@ -1,3 +1,5 @@
+import { IOpdsContributorView } from './../../common/views/opds';
+import { Contributor } from '@r2-shared-js/models/metadata-contributor';
 // ==LICENSE-BEGIN==
 // Copyright 2017 European Digital Reading Lab. All rights reserved.
 // Licensed to the Readium Foundation under one or more contributor license agreements.
@@ -101,6 +103,21 @@ export class OpdsFeedViewConverter {
         };
     }
 
+    public convertOpdsContributorToView(contributor: Contributor, baseUrl: string): IOpdsContributorView {
+
+        return (contributor.Name) && {
+            name: typeof contributor.Name === "object"
+                ? convertMultiLangStringToString(contributor.Name)
+                : contributor.Name,
+            link: this.convertFilterLinkToView(baseUrl, contributor.Links || [], {
+                type: [
+                    ContentType.AtomXml,
+                    ContentType.Opds2,
+                ],
+            }),
+        };
+    }
+
     public convertLinkToView(
         links: TLinkMayBeOpds[] | undefined,
         baseUrl: string,
@@ -173,10 +190,16 @@ export class OpdsFeedViewConverter {
         const description = metadata.Description;
         const languages = metadata.Language;
         const title = convertMultiLangStringToString(metadata.Title);
-        const authors = convertContributorArrayToStringArray(metadata.Author);
-        const publishers = convertContributorArrayToStringArray(metadata.Publisher);
         const publishedAt = metadata.PublicationDate &&
             moment(metadata.PublicationDate).toISOString();
+
+        const authors = metadata.Author?.map(
+            (author) =>
+                this.convertOpdsContributorToView(author, baseUrl));
+
+        const publishers = metadata.Publisher?.map(
+            (publisher) =>
+                this.convertOpdsContributorToView(publisher, baseUrl));
 
         const tags = metadata.Subject?.map(
             (subject) =>

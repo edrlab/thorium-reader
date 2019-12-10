@@ -105,6 +105,11 @@ export interface IOpdsTagView {
     link: IOpdsLinkView[];
 }
 
+export interface IOpdsContributorView {
+    name: string;
+    link: IOpdsLinkView[];
+}
+
 export interface IOpdsLinkView {
     url: string;
     title?: string | undefined;
