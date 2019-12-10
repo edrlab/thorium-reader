@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { OPDSAvailabilityEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-availability";
 import { OPDSCurrencyEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-price";
 
 import { Identifiable } from "../models/identifiable";
@@ -94,7 +95,7 @@ export interface IOPDSPropertiesView {
     holdPosition?: number | undefined;
     copyTotal?: number | undefined;
     copyAvailable?: number | undefined;
-    availabilityState?: string | undefined;
+    availabilityState?: OPDSAvailabilityEnum | undefined;
     availabilitySince?: string | undefined;
     availabilityUntil?: string | undefined;
 }

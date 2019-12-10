@@ -7,9 +7,11 @@
 import * as debug_ from "debug";
 import { injectable } from "inversify";
 import * as moment from "moment";
+import { OPDSAvailabilityEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-availability";
 import { OPDSFacet } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-facet";
 import { OPDSGroup } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-group";
 import { OPDSCurrencyEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-price";
+import { Subject } from "r2-shared-js/dist/es6-es2015/src/models/metadata-subject";
 import {
     IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
     IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOPDSPropertiesView,
@@ -30,10 +32,8 @@ import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { IOpdsFacetView } from "../../common/views/opds";
 import { fallback } from "./tools/fallback";
 import { filterRelLink, filterTypeLink } from "./tools/filterLink";
-import { getTagsFromOpdsPublication } from "./tools/getTags";
 import { TLinkMayBeOpds, TProperties } from "./type/link.type";
 import { ILinkFilter } from "./type/linkFilter.interface";
-import { Subject } from "r2-shared-js/dist/es6-es2015/src/models/metadata-subject";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -80,7 +80,7 @@ export class OpdsFeedViewConverter {
             holdPosition: properties.Holds?.Position || undefined,
             copyTotal: properties.Copies?.Total || undefined,
             copyAvailable: properties.Copies?.Available || undefined,
-            availabilityState: properties.Availability?.State || undefined,
+            availabilityState: properties.Availability?.State as OPDSAvailabilityEnum || undefined,
             availabilitySince: properties.Availability?.Since
                 && moment(properties.Availability.Since).toISOString() || undefined,
             availabilityUntil: properties.Availability?.Until
