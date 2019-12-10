@@ -5,15 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { LOCATION_CHANGE, LocationChangeAction } from "connected-react-router";
-import { winActions } from "readium-desktop/renderer/redux/actions/";
-import { TLocationRouter } from "readium-desktop/renderer/routing";
-import { all, call, put, take } from "redux-saga/effects";
+import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { routerActions, winActions } from "readium-desktop/renderer/redux/actions/";
+import { all, call, put } from "redux-saga/effects";
 
 function* historyWatcher() {
     while (true) {
-        const result: LocationChangeAction = yield take(LOCATION_CHANGE);
-        yield put(winActions.history.build(result.payload.location as TLocationRouter));
+        const action = yield* takeTyped(routerActions.locationChanged.build);
+        yield put(winActions.history.build(action.payload.location));
     }
 }
 
