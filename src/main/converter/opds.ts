@@ -80,8 +80,10 @@ export class OpdsFeedViewConverter {
             copyTotal: properties.Copies?.Total || undefined,
             copyAvailable: properties.Copies?.Available || undefined,
             availabilityState: properties.Availability?.State || undefined,
-            availabilitySince: properties.Availability?.Since || undefined,
-            availabilityUntil: properties.Availability?.Until || undefined,
+            availabilitySince: properties.Availability?.Since
+                && moment(properties.Availability.Since).toISOString() || undefined,
+            availabilityUntil: properties.Availability?.Until
+                && moment(properties.Availability.Until).toISOString() || undefined,
         };
     }
 
@@ -151,6 +153,11 @@ export class OpdsFeedViewConverter {
     public convertOpdsPublicationToView(r2OpdsPublication: OPDSPublication, baseUrl: string): IOpdsPublicationView {
 
         const metadata = r2OpdsPublication.Metadata;
+
+        const numberOfPages = metadata.NumberOfPages;
+        const workIdentifier = metadata.Identifier;
+        const description = metadata.Description;
+        const languages = metadata.Language;
         const title = convertMultiLangStringToString(metadata.Title);
         const authors = convertContributorArrayToStringArray(metadata.Author);
         const publishers = convertContributorArrayToStringArray(metadata.Publisher);
@@ -234,10 +241,11 @@ export class OpdsFeedViewConverter {
             title,
             authors,
             publishers,
-            workIdentifier: metadata.Identifier,
-            description: metadata.Description,
+            workIdentifier,
+            numberOfPages,
+            description,
             tags,
-            languages: metadata.Language,
+            languages,
             publishedAt,
             cover,
             entryLinks: entrylinkView,

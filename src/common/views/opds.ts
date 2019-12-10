@@ -28,6 +28,7 @@ export interface IOpdsPublicationView {
     publishers?: string[];
     workIdentifier?: string;
     description?: string;
+    numberOfPages: number;
     tags?: string[];
     languages?: string[];
     publishedAt?: string; // ISO8601
@@ -94,8 +95,8 @@ export interface IOPDSPropertiesView {
     copyTotal?: number | undefined;
     copyAvailable?: number | undefined;
     availabilityState?: string | undefined;
-    availabilitySince?: Date | undefined;
-    availabilityUntil?: Date | undefined;
+    availabilitySince?: string | undefined;
+    availabilityUntil?: string | undefined;
 }
 
 export interface IOpdsLinkView {
