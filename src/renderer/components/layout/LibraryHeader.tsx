@@ -112,7 +112,10 @@ class Header extends React.Component<IProps, undefined> {
         const nextLocation = this.props.history.reduce(
             (pv, cv) =>
                 cv?.pathname?.startsWith(item.route)
-                    ? cv
+                    ? {
+                        ...this.props.location,
+                        pathname: cv.pathname,
+                    }
                     : pv,
             {
                 ...this.props.location,
