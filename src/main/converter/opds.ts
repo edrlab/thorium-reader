@@ -13,7 +13,7 @@ import { OPDSCurrencyEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds
 import {
     IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
     IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOPDSPropertiesView,
-    IOpdsPublicationView, IOpdsResultView,
+    IOpdsPublicationView, IOpdsResultView, IOpdsTagView,
 } from "readium-desktop/common/views/opds";
 import {
     convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
@@ -33,6 +33,7 @@ import { filterRelLink, filterTypeLink } from "./tools/filterLink";
 import { getTagsFromOpdsPublication } from "./tools/getTags";
 import { TLinkMayBeOpds, TProperties } from "./type/link.type";
 import { ILinkFilter } from "./type/linkFilter.interface";
+import { Subject } from "r2-shared-js/dist/es6-es2015/src/models/metadata-subject";
 
 // Logger
 const debug = debug_("readium-desktop:main/converter/opds");
@@ -87,9 +88,22 @@ export class OpdsFeedViewConverter {
         };
     }
 
+    public convertOpdsTagToView(subject: Subject, baseUrl: string): IOpdsTagView {
+
+        return (subject.Name || subject.Code) && {
+            name: convertMultiLangStringToString(subject.Name || subject.Code),
+            link: this.convertFilterLinkToView(baseUrl, subject.Links || [], {
+                type: [
+                    ContentType.AtomXml,
+                    ContentType.Opds2,
+                ],
+            }),
+        };
+    }
+
     public convertLinkToView(
-        baseUrl: string,
         links: TLinkMayBeOpds[] | undefined,
+        baseUrl: string,
     ): IOpdsLinkView[] {
 
         // transform to absolute url
@@ -146,7 +160,7 @@ export class OpdsFeedViewConverter {
             },
         );
 
-        return this.convertLinkToView(baseUrl, linksFiltered);
+        return this.convertLinkToView(linksFiltered, baseUrl);
     }
 
     // warning: modifies r2OpdsPublication, makes relative URLs absolute with baseUrl!
@@ -161,9 +175,12 @@ export class OpdsFeedViewConverter {
         const title = convertMultiLangStringToString(metadata.Title);
         const authors = convertContributorArrayToStringArray(metadata.Author);
         const publishers = convertContributorArrayToStringArray(metadata.Publisher);
-        const tags = getTagsFromOpdsPublication(r2OpdsPublication);
         const publishedAt = metadata.PublicationDate &&
             moment(metadata.PublicationDate).toISOString();
+
+        const tags = metadata.Subject?.map(
+            (subject) =>
+                this.convertOpdsTagToView(subject, baseUrl));
 
         // CoverView object
         const coverLinkView = this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Images, {

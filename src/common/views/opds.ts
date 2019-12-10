@@ -29,7 +29,7 @@ export interface IOpdsPublicationView {
     workIdentifier?: string;
     description?: string;
     numberOfPages: number;
-    tags?: string[];
+    tags?: IOpdsTagView[];
     languages?: string[];
     publishedAt?: string; // ISO8601
     entryLinks?: IOpdsLinkView[];
@@ -97,6 +97,11 @@ export interface IOPDSPropertiesView {
     availabilityState?: string | undefined;
     availabilitySince?: string | undefined;
     availabilityUntil?: string | undefined;
+}
+
+export interface IOpdsTagView {
+    name: string;
+    link: IOpdsLinkView[];
 }
 
 export interface IOpdsLinkView {
