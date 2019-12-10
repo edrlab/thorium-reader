@@ -6,8 +6,10 @@
 // ==LICENSE-END==
 
 import { OPDSLink } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-link";
-import { Link } from "r2-shared-js/dist/es6-es2015/src/models/publication-link";
+import { OPDSProperties } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-properties";
 
-type TProperties = Partial<Pick<OPDSLink, "Properties">> | Partial<Pick<Link, "Properties">>;
+export type TProperties = Partial<OPDSProperties>;
 type TLink = Omit<OPDSLink, "Properties">;
-export type TLinkMayBeOpds = TProperties & TLink;
+export type TLinkMayBeOpds = TLink & {
+    Properties: TProperties,
+};

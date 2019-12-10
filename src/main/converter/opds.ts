@@ -9,10 +9,11 @@ import { injectable } from "inversify";
 import * as moment from "moment";
 import { OPDSFacet } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-facet";
 import { OPDSGroup } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-group";
+import { OPDSCurrencyEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-price";
 import {
     IOpdsAuthView, IOpdsCoverView, IOpdsFeedMetadataView, IOpdsFeedView, IOpdsGroupView,
-    IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOpdsPublicationView,
-    IOpdsResultView,
+    IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOPDSPropertiesView,
+    IOpdsPublicationView, IOpdsResultView,
 } from "readium-desktop/common/views/opds";
 import {
     convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
@@ -30,7 +31,7 @@ import { IOpdsFacetView } from "../../common/views/opds";
 import { fallback } from "./tools/fallback";
 import { filterRelLink, filterTypeLink } from "./tools/filterLink";
 import { getTagsFromOpdsPublication } from "./tools/getTags";
-import { TLinkMayBeOpds } from "./type/link.type";
+import { TLinkMayBeOpds, TProperties } from "./type/link.type";
 import { ILinkFilter } from "./type/linkFilter.interface";
 
 // Logger
@@ -68,7 +69,48 @@ export class OpdsFeedViewConverter {
         };
     }
 
+    public convertOpdsPropertiesToView(properties: TProperties | undefined): IOPDSPropertiesView {
+
+        return properties && {
+            numberOfItems: properties.NumberOfItems || undefined,
+            priceValue: properties.Price?.Value || undefined,
+            priceCurrency: properties.Price?.Currency as OPDSCurrencyEnum || undefined,
+            holdTotal: properties.Holds?.Total || undefined,
+            holdPosition: properties.Holds?.Position || undefined,
+            copyTotal: properties.Copies?.Total || undefined,
+            copyAvailable: properties.Copies?.Available || undefined,
+            availabilityState: properties.Availability?.State || undefined,
+            availabilitySince: properties.Availability?.Since || undefined,
+            availabilityUntil: properties.Availability?.Until || undefined,
+        };
+    }
+
     public convertLinkToView(
+        baseUrl: string,
+        links: TLinkMayBeOpds[] | undefined,
+    ): IOpdsLinkView[] {
+
+        // transform to absolute url
+        links?.forEach(
+            (ln) =>
+                ln.Href = urlPathResolve(baseUrl, ln.Href));
+
+        // safe copy on each filtered links
+        const formatedLinks: IOpdsLinkView[] = [];
+        links?.forEach(
+            (ln) =>
+                formatedLinks.push({
+                    url: ln.Href,
+                    title: ln.Title,
+                    type: ln.TypeLink,
+                    properties: this.convertOpdsPropertiesToView(ln.Properties),
+                }),
+        );
+
+        return formatedLinks;
+    }
+
+    public convertFilterLinkToView(
         baseUrl: string,
         links: TLinkMayBeOpds[] | undefined,
         filter: ILinkFilter,
@@ -99,25 +141,10 @@ export class OpdsFeedViewConverter {
                         ? (relFlag && typeFlag)
                         : (relFlag || typeFlag)
                 );
-            });
-
-        // transform to absolute url
-        linksFiltered?.forEach(
-            (ln) =>
-                ln.Href = urlPathResolve(baseUrl, ln.Href));
-
-        // safe copy on each filtered links
-        const formatedLinks: IOpdsLinkView[] = [];
-        linksFiltered?.forEach(
-            (ln) =>
-                formatedLinks.push({
-                    url: ln.Href,
-                    title: ln.Title,
-                    type: ln.TypeLink,
-                }),
+            },
         );
 
-        return formatedLinks;
+        return this.convertLinkToView(baseUrl, linksFiltered);
     }
 
     // warning: modifies r2OpdsPublication, makes relative URLs absolute with baseUrl!
@@ -132,19 +159,19 @@ export class OpdsFeedViewConverter {
             moment(metadata.PublicationDate).toISOString();
 
         // CoverView object
-        const coverLinkView = this.convertLinkToView(baseUrl, r2OpdsPublication.Images, {
+        const coverLinkView = this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Images, {
             rel: "http://opds-spec.org/image",
         });
 
         const thumbnailLinkView = fallback(
-            this.convertLinkToView(baseUrl, r2OpdsPublication.Images, {
+            this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Images, {
                 type: ["image/png", "image/jpeg"],
                 rel: "http://opds-spec.org/image/thumbnail",
             }),
-            this.convertLinkToView(baseUrl, r2OpdsPublication.Images, {
+            this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Images, {
                 type: ["image/png", "image/jpeg"],
             }),
-            this.convertLinkToView(baseUrl, r2OpdsPublication.Images, {
+            this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Images, {
                 type: new RegExp("^image\/*"),
             }),
         );
@@ -158,38 +185,38 @@ export class OpdsFeedViewConverter {
         }
 
         // Get opds entry
-        const sampleLinkView = this.convertLinkToView(baseUrl, r2OpdsPublication.Links, {
+        const sampleLinkView = this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
             rel: [
                 "http://opds-spec.org/acquisition/sample",
                 "http://opds-spec.org/acquisition/preview",
             ],
             type: supportedFileTypeLinkArray,
         });
-        const acquisitionLinkView = this.convertLinkToView(baseUrl, r2OpdsPublication.Links, {
+        const acquisitionLinkView = this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
             rel: [
                 "http://opds-spec.org/acquisition",
                 "http://opds-spec.org/acquisition/open-access",
             ],
             type: supportedFileTypeLinkArray,
         });
-        const buyLinkView = this.convertLinkToView(baseUrl, r2OpdsPublication.Links, {
+        const buyLinkView = this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/buy",
         });
-        const borrowLinkView = this.convertLinkToView(baseUrl, r2OpdsPublication.Links, {
+        const borrowLinkView = this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/borrow",
         });
-        const subscribeLinkView = this.convertLinkToView(baseUrl, r2OpdsPublication.Links, {
+        const subscribeLinkView = this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
             rel: "http://opds-spec.org/acquisition/subscribe",
         });
         const entrylinkView = fallback(
-            this.convertLinkToView(baseUrl, r2OpdsPublication.Links, {
+            this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
                 type: "type=entry;profile=opds-catalog",
             }),
-            this.convertLinkToView(baseUrl, r2OpdsPublication.Links, {
+            this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
                 type: ContentType.Opds2Pub,
                 rel: "self",
             }),
-            this.convertLinkToView(baseUrl, r2OpdsPublication.Links, {
+            this.convertFilterLinkToView(baseUrl, r2OpdsPublication.Links, {
                 type: [
                     ContentType.AtomXml,
                     ContentType.Opds2,
@@ -341,16 +368,16 @@ export class OpdsFeedViewConverter {
 
         const links: IOpdsNavigationLink | undefined = r2OpdsFeed.Links &&
         {
-            next: this.convertLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "next" }),
-            previous: this.convertLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "previous" }),
-            first: this.convertLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "first" }),
-            last: this.convertLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "last" }),
-            start: this.convertLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "start" }),
-            up: this.convertLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
-            search: this.convertLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
-            bookshelf: this.convertLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/shelf" }),
-            text: this.convertLinkToView(baseUrl, r2OpdsFeed.Links, { type: [ContentType.Html] }),
-            self: this.convertLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
+            next: this.convertFilterLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "next" }),
+            previous: this.convertFilterLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "previous" }),
+            first: this.convertFilterLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "first" }),
+            last: this.convertFilterLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "last" }),
+            start: this.convertFilterLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "start" }),
+            up: this.convertFilterLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "up" }),
+            search: this.convertFilterLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "search" }),
+            bookshelf: this.convertFilterLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "http://opds-spec.org/shelf" }),
+            text: this.convertFilterLinkToView(baseUrl, r2OpdsFeed.Links, { type: [ContentType.Html] }),
+            self: this.convertFilterLinkToView(baseUrl, r2OpdsFeed.Links, { rel: "self" }),
         };
         const metadata: IOpdsFeedMetadataView | undefined = r2OpdsFeed.Metadata &&
         {
