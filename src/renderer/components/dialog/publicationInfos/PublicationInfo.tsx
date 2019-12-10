@@ -10,7 +10,7 @@ import * as debug_ from "debug";
 import * as moment from "moment";
 import * as React from "react";
 import { connect } from "react-redux";
-import { DialogType } from "readium-desktop/common/models/dialog";
+import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { IOpdsCoverView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
@@ -312,15 +312,15 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     ...{
-        open: state.dialog.type === "publication-info-opds"
-            || state.dialog.type === "publication-info-reader"
-            || state.dialog.type === "publication-info-lib",
-        publicationInfoOpds: state.dialog.type === "publication-info-opds",
-        publicationInfoReader: state.dialog.type === "publication-info-reader",
-        publicationInfoLib: state.dialog.type === "publication-info-lib",
+        open: state.dialog.type === DialogTypeName.PublicationInfoOpds
+            || state.dialog.type === DialogTypeName.PublicationInfoReader
+            || state.dialog.type === DialogTypeName.PublicationInfoLib,
+        publicationInfoOpds: state.dialog.type === DialogTypeName.PublicationInfoOpds,
+        publicationInfoReader: state.dialog.type === DialogTypeName.PublicationInfoReader,
+        publicationInfoLib: state.dialog.type === DialogTypeName.PublicationInfoLib,
     },
-    ...(state.dialog.data as DialogType["publication-info-opds"]),
-    ...(state.dialog.data as DialogType["publication-info-reader"]),
+    ...(state.dialog.data as DialogType[DialogTypeName.PublicationInfoOpds]),
+    ...(state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader]),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationInfo));

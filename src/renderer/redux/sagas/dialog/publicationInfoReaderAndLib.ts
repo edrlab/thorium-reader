@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
@@ -24,11 +25,11 @@ function* checkReaderAndLibPublicationWatcher() {
     while (true) {
         const action  = yield* takeTyped(dialogActions.openRequest.build);
 
-        if (action.payload?.type === "publication-info-reader"
-            || action.payload?.type === "publication-info-lib") {
+        if (action.payload?.type === DialogTypeName.PublicationInfoReader
+            || action.payload?.type === DialogTypeName.PublicationInfoLib) {
 
-            const dataPayload = action.payload.data as
-                dialogActions.openRequest.Payload<"publication-info-reader">["data"];
+            const dataPayload = (action.payload as
+                dialogActions.openRequest.Payload<DialogTypeName.PublicationInfoReader>).data;
             const id = dataPayload?.publicationIdentifier;
 
             // dispatch to API a publication get request
@@ -56,7 +57,7 @@ function* updateReaderAndLibPublicationWatcher() {
 
                 const publication = publicationView;
 
-                yield put(dialogActions.updateRequest.build<"publication-info-reader">({
+                yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoReader>({
                     publication,
                 }));
             }

@@ -10,6 +10,7 @@ import { readFile } from "fs";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { _PACKAGING } from "readium-desktop/preprocessor-directives";
@@ -74,7 +75,7 @@ export class Information extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         locale: state.i18n.locale,
-        open: state.dialog.type === "about-thorium",
+        open: state.dialog.type === DialogTypeName.AboutThorium,
     };
 };
 

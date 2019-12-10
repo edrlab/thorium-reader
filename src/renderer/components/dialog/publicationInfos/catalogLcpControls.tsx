@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -136,21 +137,21 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
             dispatch(readerActions.openRequest.build(props.publicationView.identifier));
         },
         openDeleteDialog: () => {
-            dispatch(dialogActions.openRequest.build("delete-publication-confirm",
+            dispatch(dialogActions.openRequest.build(DialogTypeName.DeletePublicationConfirm,
                 {
                     publicationView: props.publicationView,
                 },
             ));
         },
         openRenewDialog: () => {
-            dispatch(dialogActions.openRequest.build("lsd-renew-confirm",
+            dispatch(dialogActions.openRequest.build(DialogTypeName.LsdRenewConfirm,
                 {
                     publicationView: props.publicationView,
                 },
             ));
         },
         openReturnDialog: () => {
-            dispatch(dialogActions.openRequest.build("lsd-return-confirm",
+            dispatch(dialogActions.openRequest.build(DialogTypeName.LsdReturnConfirm,
                 {
                     publicationView: props.publicationView,
                 },

@@ -7,14 +7,14 @@
 
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { TPublicationApiExportPublication } from "readium-desktop/main/api/publication";
 import { apiAction } from "readium-desktop/renderer/apiAction";
-import { TranslatorProps, withTranslator } from "readium-desktop/renderer/components/utils/hoc/translator";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/components/utils/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
     publicationView: PublicationView;
-    exportPublication?: TPublicationApiExportPublication;
 }
 
 // IProps may typically extend:

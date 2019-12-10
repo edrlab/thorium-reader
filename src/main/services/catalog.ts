@@ -29,6 +29,7 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { ContentType } from "readium-desktop/utils/content-type";
 import { Store } from "redux";
 import * as uuid from "uuid";
 
@@ -119,8 +120,8 @@ export class CatalogService {
         }
 
         const title = link.title || link.url;
-        const isLcpFile = link.type === "application/vnd.readium.lcp.license.v1.0+json";
-        const isEpubFile = link.type === "application/epub+zip";
+        const isLcpFile = link.type === ContentType.Lcp;
+        const isEpubFile = link.type === ContentType.Epub;
         if (!isLcpFile && !isEpubFile) {
             throw new Error(`OPDS download link is not EPUB! ${link.url} ${link.type}`);
         }

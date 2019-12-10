@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
@@ -49,7 +50,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build("about-thorium",
+            dispatch(dialogActions.openRequest.build(DialogTypeName.AboutThorium,
                 {},
             ));
         },

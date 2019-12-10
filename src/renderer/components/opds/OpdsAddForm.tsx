@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
@@ -49,7 +50,7 @@ export class OpdsAddForm extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         openOpdsFeedAddForm: () => {
-            dispatch(dialogActions.openRequest.build("opds-feed-add-form", {}));
+            dispatch(dialogActions.openRequest.build(DialogTypeName.OpdsFeedAddForm, {}));
         },
     };
 };

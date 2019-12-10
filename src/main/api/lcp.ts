@@ -28,18 +28,14 @@ export interface ILcpApi {
     unlockPublicationWithPassphrase: (passphrase: string, publicationView: PublicationView) => Promise<void>;
 }
 
-export type TLcpApiRenewPublicationLicense = ILcpApi["renewPublicationLicense"];
-export type TLcpApiReturnPublication = ILcpApi["returnPublication"];
-export type TLcpApiUnlockPublicationWithPassphrase = ILcpApi["unlockPublicationWithPassphrase"];
-
 export interface ILcpModuleApi {
-    "lcp/renewPublicationLicense": TLcpApiRenewPublicationLicense;
-    "lcp/returnPublication": TLcpApiReturnPublication;
-    "lcp/unlockPublicationWithPassphrase": TLcpApiUnlockPublicationWithPassphrase;
+    "lcp/renewPublicationLicense": ILcpApi["renewPublicationLicense"];
+    "lcp/returnPublication": ILcpApi["returnPublication"];
+    "lcp/unlockPublicationWithPassphrase": ILcpApi["unlockPublicationWithPassphrase"];
 }
 
 @injectable()
-export class LcpApi {
+export class LcpApi implements ILcpApi {
     @inject(diSymbolTable.store)
     private readonly store!: Store<RootState>;
 
