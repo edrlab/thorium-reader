@@ -102,8 +102,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                             ln,
                                             this.props.location,
                                             `${__("opds.menu.goBuyBook")} (${opdsPublicationView.title}))`,
-                                            )
-                                        }
+                                        )
+                                    }
 
                                 >
                                     {__("opds.menu.goBuyBook")}
@@ -116,18 +116,18 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                 Array.isArray(opdsPublicationView.borrowLinks)
                     ? opdsPublicationView.borrowLinks.map(
                         (ln, idx) =>
-                        <li
-                            key={`borrowControl-${idx}`}
-                        >
-                            <button
-                                onClick={() => this.props.link(
+                            <li
+                                key={`borrowControl-${idx}`}
+                            >
+                                <button
+                                    onClick={() => this.props.link(
                                         ln,
                                         this.props.location,
                                         `${__("opds.menu.goLoanBook")} (${opdsPublicationView.title})`)}
-                            >
-                                {__("opds.menu.goLoanBook")}
-                            </button>
-                        </li>,
+                                >
+                                    {__("opds.menu.goLoanBook")}
+                                </button>
+                            </li>,
                     )
                     : <></>;
 
@@ -140,9 +140,9 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             >
                                 <button
                                     onClick={() => this.props.link(
-                                            ln,
-                                            this.props.location,
-                                            `${__("opds.menu.goSubBook")} (${opdsPublicationView.title})`)}
+                                        ln,
+                                        this.props.location,
+                                        `${__("opds.menu.goSubBook")} (${opdsPublicationView.title})`)}
                                 >
                                     {__("opds.menu.goSubBook")}
                                 </button>
@@ -197,7 +197,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
             dispatch(dialogActions.closeRequest.build());
             dispatch(importActions.verify.build(...data));
         },
-       link: (...data: Parameters<ReturnType<typeof dispatchOpdsLink>>) =>
+        link: (...data: Parameters<ReturnType<typeof dispatchOpdsLink>>) =>
             dispatchOpdsLink(dispatch)(...data),
     };
 };
