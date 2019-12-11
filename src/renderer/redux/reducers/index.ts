@@ -15,6 +15,7 @@ import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 import { apiReducer } from "readium-desktop/renderer/redux/reducers/api";
 import { downloadReducer } from "readium-desktop/renderer/redux/reducers/download";
+import { historyReducer } from "readium-desktop/renderer/redux/reducers/history";
 import {
     opdsBreadcrumbReducer, opdsHeaderLinkReducer, opdsSearchLinkReducer,
 } from "readium-desktop/renderer/redux/reducers/opds";
@@ -43,6 +44,7 @@ export const rootReducer = (history: History) =>
         import: importReducer,
         toast: toastReducer,
         download: downloadReducer,
+        history: historyReducer,
     });
 
 export type TRootState = ReturnType<ReturnType<typeof rootReducer>>;

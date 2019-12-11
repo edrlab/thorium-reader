@@ -9,7 +9,6 @@ import * as classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { I18nTyped } from "readium-desktop/common/services/translator";
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import {
     TranslatorProps, withTranslator,
@@ -75,8 +74,8 @@ class Header extends React.Component<IProps, undefined> {
                 <ul>
                     {
                         headerNav.map(
-                            (item, index: number) =>
-                                this.buildNavItem(item, index, __),
+                            (item, index) =>
+                                this.buildNavItem(item, index),
                         )
                     }
                 </ul>
@@ -84,13 +83,14 @@ class Header extends React.Component<IProps, undefined> {
         </>);
     }
 
-    private buildNavItem(item: NavigationHeader, index: number, __: I18nTyped) {
+    private buildNavItem(item: NavigationHeader, index: number) {
+
         if (!this.props.location) {
             return (<></>);
         }
 
         // because dynamic label does not pass typed i18n compilation
-        const translate = __ as (str: string) => string;
+        const translate = this.props.__ as (str: string) => string;
 
         let styleClasses = [];
         const pathname = this.props.location.pathname;
@@ -107,16 +107,26 @@ class Header extends React.Component<IProps, undefined> {
                 break;
             }
         }
-
         styleClasses = styleClasses.concat(item.styles);
+
+        const nextLocation = this.props.history.reduce(
+            (pv, cv) =>
+                cv?.pathname?.startsWith(item.route)
+                    ? {
+                        ...this.props.location,
+                        pathname: cv.pathname,
+                    }
+                    : pv,
+            {
+                ...this.props.location,
+                pathname: item.route,
+            },
+        );
 
         return (
             <li className={classNames(...styleClasses)} key={index}>
                 <Link
-                    to={{
-                        ...this.props.location,
-                        pathname: item.route,
-                    }}
+                    to={nextLocation}
                     replace={true}
                 >
                     {translate("header." + item.label)}
@@ -128,6 +138,7 @@ class Header extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: RootState) => ({
     location: state.router.location,
+    history: state.history,
 });
 
 export default connect(mapStateToProps)(withTranslator(Header));
