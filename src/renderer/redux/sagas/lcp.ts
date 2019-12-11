@@ -30,6 +30,7 @@ function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
             continue;
         }
 
+        // will call API.unlockPublicationWithPassphrase()
         yield put(dialogActions.openRequest.build(DialogTypeName.LcpAuthentication,
             {
                 publicationView,

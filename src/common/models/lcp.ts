@@ -27,6 +27,7 @@ export interface LcpInfo {
     updated?: Date;
     lsd?: LsdInfo;
     rights: LcpRights;
+    textHint: string;
 
     r2LCPBase64: string;
 }

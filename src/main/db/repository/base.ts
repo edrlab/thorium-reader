@@ -80,6 +80,9 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
             );
         }
 
+        console.log(`###################### DB SAVE: ${this.idPrefix}`);
+        console.log(JSON.stringify(dbDoc, null, 4));
+
         await this.db.put(dbDoc);
 
         return this.get(document.identifier);

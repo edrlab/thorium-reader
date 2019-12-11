@@ -94,6 +94,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
 
         const translator = diMainGet("translator");
         const lcpManager = diMainGet("lcp-manager");
+        const publicationViewConverter = diMainGet("publication-view-converter");
 
         if (publicationDocument.lcp) {
             try {
@@ -125,9 +126,47 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                 yield put(streamerActions.publicationOpenError.build(msg, publicationDocument));
                 continue;
             }
+
+            // we first unlockPublication() for the transient in-memory R2Publication,
+            // then we have to unlockPublication() again for the streamer-hosted pub instance (see below)
+            try {
+                // TODO: improve this horrible returned union type!
+                const unlockPublicationRes: string | number | null | undefined =
+                    yield* callTyped(() => lcpManager.unlockPublication(publicationDocument, undefined));
+
+                if (typeof unlockPublicationRes !== "undefined") {
+                    const message = unlockPublicationRes === 11 ?
+                        translator.translate("publication.expiredLcp") :
+                        lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
+                    debug(message);
+
+                    try {
+                        const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+
+                        // will call API.unlockPublicationWithPassphrase()
+                        yield put(lcpActions.userKeyCheckRequest.build(
+                            publicationView,
+                            publicationView.lcp.textHint,
+                            message,
+                        ));
+
+                        yield put(streamerActions.publicationOpenError.build(message, publicationDocument));
+                        continue;
+                    } catch (error) {
+                        debug(error);
+
+                        yield put(streamerActions.publicationOpenError.build(error, publicationDocument));
+                        continue;
+                    }
+                }
+            } catch (error) {
+                debug(error);
+
+                yield put(streamerActions.publicationOpenError.build(error, publicationDocument));
+                continue;
+            }
         }
 
-        // Get epub file from publication
         const pubStorage = diMainGet("publication-storage");
         const epubPath = pubStorage.getPublicationEpubPath(publicationDocument.identifier);
         // const epubPath = path.join(
@@ -160,7 +199,6 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
             }
         }
 
-        // Load epub in streamer
         const manifestPaths = streamer.addPublications([epubPath]);
 
         let r2Publication: R2Publication;
@@ -173,15 +211,14 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
             continue;
         }
 
+        // we unlockPublication() again because previously only done on transient in-memory R2Publication,
+        // (see above), has not been done yet on streamer-hosted publication instance.
+        // Consequently, unlockPublicationRes should always be undefined (valid passphrase already obtained)
         if (r2Publication.LCP) {
-            debug("### LCP publication");
-
-            const publicationViewConverter = diMainGet("publication-view-converter");
-            const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
-
             try {
+                // TODO: improve this horrible returned union type!
                 const unlockPublicationRes: string | number | null | undefined =
-                    yield* callTyped(() => lcpManager.unlockPublication(publicationDocument.identifier, undefined));
+                    yield* callTyped(() => lcpManager.unlockPublication(publicationDocument, undefined));
 
                 if (typeof unlockPublicationRes !== "undefined") {
                     const message = unlockPublicationRes === 11 ?
@@ -190,6 +227,9 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
                     debug(message);
 
                     try {
+                        const publicationView = publicationViewConverter.convertDocumentToView(publicationDocument);
+
+                        // will call API.unlockPublicationWithPassphrase()
                         yield put(lcpActions.userKeyCheckRequest.build(
                             publicationView,
                             r2Publication.LCP.Encryption.UserKey.TextHint,

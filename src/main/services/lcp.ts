@@ -32,7 +32,6 @@ import { launchStatusDocumentProcessing } from "@r2-lcp-js/lsd/status-document-p
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { LSD } from "@r2-lcp-js/parser/epub/lsd";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
-import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { Server } from "@r2-streamer-js/http/server";
@@ -539,9 +538,14 @@ export class LcpManager {
         return message;
     }
 
+    // if the publication is not yet loaded in the streamer (streamer.cachedPublication())
+    // then we just unlock a transient in-memory R2Publication, so must make sure to subsequently unlock
+    // the "proper" streamer-hosted publication in order to decrypt resources!
     // TODO: improve this horrible returned union type!
-    public async unlockPublication(publicationIdentifier: string, passphrase: string | undefined):
+    public async unlockPublication(publicationDocument: PublicationDocument, passphrase: string | undefined):
         Promise<string | number | null | undefined> {
+
+        const publicationIdentifier = publicationDocument.identifier;
 
         const lcpSecretDocs = await this.lcpSecretRepository.findByPublicationIdentifier(
             publicationIdentifier,
@@ -560,9 +564,19 @@ export class LcpManager {
             lcpPasses = secrets;
         }
 
-        // Get epub file from publication
         const epubPath = this.publicationStorage.getPublicationEpubPath(publicationIdentifier);
-        const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
+        // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
+        let r2Publication = this.streamer.cachedPublication(epubPath);
+        if (!r2Publication) {
+            r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
+            if (r2Publication.LCP) {
+                r2Publication.LCP.init();
+            }
+        } else {
+            // The streamer at this point should not host an instance of this R2Publication,
+            // because we normally ensure readers are closed before performing LCP/LSD
+            debug(`>>>>>>> streamer.cachedPublication() ?! ${publicationIdentifier} ${epubPath}`);
+        }
         if (!r2Publication) {
             debug("unlockPublication !r2Publication ?");
             return null;
@@ -571,13 +585,9 @@ export class LcpManager {
             debug("unlockPublication !r2Publication.LCP ?");
             return null;
         }
+
         try {
-            await doTryLcpPass(
-                this.streamer,
-                epubPath,
-                lcpPasses,
-                true, // isSha256Hex
-            );
+            await r2Publication.LCP.tryUserKeys(lcpPasses);
             debug("LCP pass okay");
             if (passphraseHash) {
                 if (!secrets.includes(passphraseHash)) {
@@ -588,6 +598,8 @@ export class LcpManager {
                 }
             }
         } catch (err) {
+            debug("FAIL publication.LCP.tryUserKeys()", err);
+            return err;
             // DRMErrorCode (from r2-lcp-client)
             // 1 === NO CORRECT PASSPHRASE / UERKEY IN GIVEN ARRAY
             //     // No error
@@ -616,9 +628,28 @@ export class LcpManager {
             //     USER_KEY_CHECK_INVALID = 141,
             //     // Unable to decrypt encrypted content from content key
             //     CONTENT_DECRYPT_ERROR = 151
-
-            return err;
         }
+
+        // import { doTryLcpPass } from "@r2-navigator-js/electron/main/lcp";
+        // try {
+        //     await doTryLcpPass(
+        //         this.streamer,
+        //         epubPath,
+        //         lcpPasses,
+        //         true, // isSha256Hex
+        //     );
+        //     debug("LCP pass okay");
+        //     if (passphraseHash) {
+        //         if (!secrets.includes(passphraseHash)) {
+        //             await this.lcpSecretRepository.save({
+        //                 publicationIdentifier,
+        //                 secret: passphraseHash,
+        //             });
+        //         }
+        //     }
+        // } catch (err) {
+        //     return err;
+        // }
 
         return undefined;
     }
@@ -636,6 +667,7 @@ export class LcpManager {
                 end: lcp.Rights.End,
             } : undefined,
             r2LCPBase64,
+            textHint: lcp.Encryption.UserKey.TextHint ? lcp.Encryption.UserKey.TextHint : "",
         };
 
         if (lcp.Links) {
