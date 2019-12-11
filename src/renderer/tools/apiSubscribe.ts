@@ -9,7 +9,7 @@ import { TApiMethodName } from "readium-desktop/main/api/api.type";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { Unsubscribe } from "redux";
 
-import { LAST_API_SUCCESS_ID } from "./redux/states/api";
+import { LAST_API_SUCCESS_ID } from "../redux/states/api";
 
 /**
  * subscribe to redux to automaticaly execute callback when any path in parameter is called on IPC

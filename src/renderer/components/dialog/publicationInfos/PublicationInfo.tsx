@@ -29,6 +29,7 @@ import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import LcpInfo from "./LcpInfo";
 import OpdsControls from "./opdsControls";
+import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -84,17 +85,11 @@ class PublicationInfo extends React.Component<IProps, IState> {
 
         const { __, translator, publication, coverZoom } = this.props;
 
-        const authors = () =>
-            (publication.authors && publication.authors.length)
-                ? publication.authors.map(
-                    (author) => translator.translateContentField(author))
-                    .join(", ")
-                : "";
+        const authors = formatContributorToString(publication?.authors, translator);
 
         const formatedPublishers = () =>
-            publication.publishers
-                && publication.publishers.length
-                ? publication.publishers.join(", ")
+            publication.publishers?.length
+                ? formatContributorToString(publication.publishers, translator)
                 : undefined;
 
         const renderInfo = () =>
@@ -117,7 +112,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                 <div className={styles.dialog_right}>
                     <h2 className={styles.allowUserSelect}>{publication.title}</h2>
                     <div>
-                        <p className={classNames(styles.allowUserSelect, styles.author)}>{authors()}</p>
+                        <p className={classNames(styles.allowUserSelect, styles.author)}>{authors}</p>
                         {this.formatedPublishedDateComponent()}
                         <div className={styles.tags}>
                             <div className={styles.tag_list}>

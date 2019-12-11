@@ -1,11 +1,10 @@
-import { IOpdsContributorView } from './../../common/views/opds';
-import { Contributor } from '@r2-shared-js/models/metadata-contributor';
 // ==LICENSE-BEGIN==
 // Copyright 2017 European Digital Reading Lab. All rights reserved.
 // Licensed to the Readium Foundation under one or more contributor license agreements.
 // Use of this source code is governed by a BSD-style license
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
+
 import * as debug_ from "debug";
 import { injectable } from "inversify";
 import * as moment from "moment";
@@ -19,9 +18,7 @@ import {
     IOpdsLinkView, IOpdsNavigationLink, IOpdsNavigationLinkView, IOPDSPropertiesView,
     IOpdsPublicationView, IOpdsResultView, IOpdsTagView,
 } from "readium-desktop/common/views/opds";
-import {
-    convertContributorArrayToStringArray, convertMultiLangStringToString, urlPathResolve,
-} from "readium-desktop/main/converter/tools/localisation";
+import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { ContentType } from "readium-desktop/utils/content-type";
 
@@ -30,10 +27,12 @@ import { OPDSFeed } from "@r2-opds-js/opds/opds2/opds2";
 import { OPDSAuthenticationDoc } from "@r2-opds-js/opds/opds2/opds2-authentication-doc";
 import { OPDSLink } from "@r2-opds-js/opds/opds2/opds2-link";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
+import { Contributor } from "@r2-shared-js/models/metadata-contributor";
 
-import { IOpdsFacetView } from "../../common/views/opds";
+import { IOpdsContributorView, IOpdsFacetView } from "../../common/views/opds";
 import { fallback } from "./tools/fallback";
 import { filterRelLink, filterTypeLink } from "./tools/filterLink";
+import { urlPathResolve } from "./tools/resolveUrl";
 import { TLinkMayBeOpds, TProperties } from "./type/link.type";
 import { ILinkFilter } from "./type/linkFilter.interface";
 

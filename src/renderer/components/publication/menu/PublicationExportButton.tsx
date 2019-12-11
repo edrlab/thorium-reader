@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { apiAction } from "readium-desktop/renderer/apiAction";
+import { apiAction } from "readium-desktop/renderer/tools/apiAction";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";

@@ -10,17 +10,19 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
+import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px-blue.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { dispatchOpdsLink } from "readium-desktop/renderer/opds/handleLink";
 import { apiDispatch } from "readium-desktop/renderer/redux/api/api";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { TPublication } from "readium-desktop/renderer/type/publication.type";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
-import { Dispatch } from "redux";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:dialog:pubInfo:tagManager");
@@ -55,25 +57,83 @@ export class TagManager extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        const tagComponent = () =>
+        const tagButtonComponent = (tag: string | IOpdsTagView, index: number) => {
+            let button = <></>;
+
+            let tagString = "";
+            if (typeof tag === "string") {
+                tagString = tag;
+            } else {
+                tagString = tag.name;
+            }
+
+            if (this.props.pubId) {
+                button = (
+                    <>
+                        {
+                            tagString
+                        }
+                        <button
+                            onClick={
+                                () => this.deleteTag(index)
+                            }
+                        >
+                            <SVG svg={CrossIcon} title={__("catalog.deleteTag")} />
+                        </button>
+                    </>
+                );
+            } else if (typeof tag === "object" && tag?.link?.length) {
+                button = (
+                    <>
+                        <a
+                            onClick={
+                                () => this.props.link(tag.link[0], this.props.location, tag.name)
+                            }
+                        >
+                            {
+                                tagString
+                            }
+                        </a>
+                        <button>
+                        </button>
+                    </>
+                );
+            } else {
+                button = (
+                    <>
+                        {
+                            tagString
+                        }
+                    </>
+                );
+            }
+
+            return button;
+        };
+
+        const tagComponent = () => {
+
+            const tags: JSX.Element[] = [];
+            for (const [index, tag] of this.props.tagArray.entries()) {
+
+                tags.push(
+                    <li key={`tag-${index}`}>
+                        {
+                            tagButtonComponent(tag, index)
+                        }
+                    </li>,
+                );
+            }
+
+            return tags;
+        };
+
+        const tagListComponent = () =>
             this.props.tagArray?.length
                 ? <ul>
-                    {this.props.tagArray.map(
-                        (tag, idx) =>
-                            <li key={idx}>
-                                {tag}
-                                {
-                                    this.props.pubId &&
-                                    <button
-                                        onClick={
-                                            () => this.deleteTag(idx)
-                                        }
-                                    >
-                                        <SVG svg={CrossIcon} title={__("catalog.deleteTag")} />
-                                    </button>
-                                }
-                            </li>,
-                    )}
+                    {
+                        tagComponent()
+                    }
                 </ul>
                 : <></>;
 
@@ -103,7 +163,7 @@ export class TagManager extends React.Component<IProps, IState> {
         return (
             <div>
                 {
-                    tagComponent()
+                    tagListComponent()
                 }
                 {
                     addTagComponent()
@@ -115,10 +175,20 @@ export class TagManager extends React.Component<IProps, IState> {
     private deleteTag = (index: number) => {
         const { tagArray } = this.props;
 
-        const tags = tagArray.slice();
+        const tags = Array.isArray(tagArray) ? tagArray.slice() : [];
 
         tags.splice(index, 1);
-        this.props.setTags(this.props.pubId, this.props.publication, tags);
+
+        const tagsName: string[] = [];
+        for (const tag of tags) {
+            if (typeof tag === "string") {
+                tagsName.push(tag);
+            } else {
+                tagsName.push(tag.name);
+            }
+        }
+
+        this.props.setTags(this.props.pubId, this.props.publication, tagsName, tags);
     }
 
     private addTag = (e: TFormEvent) => {
@@ -128,14 +198,28 @@ export class TagManager extends React.Component<IProps, IState> {
         const tags = Array.isArray(tagArray) ? tagArray.slice() : [];
         const tagName = this.state.newTagName.trim().replace(/\s\s+/g, " ");
 
-        if (tagName !== ""
-            && tags.indexOf(tagName) < 0) {
+        this.setState({ newTagName: "" });
 
-            tags.push(tagName);
-            this.props.setTags(this.props.pubId, this.props.publication, tags);
+        const tagsName: string[] = [];
+        for (const tag of tags) {
+            if (typeof tag === "string") {
+                if (tag === tagName) {
+                    return;
+                } else {
+                    tagsName.push(tag);
+                }
+            } else {
+                if (tag.name === tagName) {
+                    return;
+                } else {
+                    tagsName.push(tag.name);
+                }
+            }
         }
 
-        this.setState({ newTagName: "" });
+        tagsName.push(tagName);
+        this.props.setTags(this.props.pubId, this.props.publication, tagsName, tags);
+
     }
 
     private handleChangeName = (e: TChangeEventOnInput) => {
@@ -143,28 +227,30 @@ export class TagManager extends React.Component<IProps, IState> {
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch, _props: IBaseProps) => ({
-    setTags: (pubId: string, publication: TPublication, tags: string[]) => {
-        apiDispatch(dispatch)()("publication/updateTags")(pubId, tags);
+const mapStateToProps = (state: RootState) => ({
+    tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.tags,
+    pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.identifier,
+    publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication,
+    location: state.router.location,
+});
+
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => ({
+    setTags: (pubId: string, publication: TPublication, tagsName: string[], tagsOpds: string[] | IOpdsTagView[]) => {
+        apiDispatch(dispatch)()("publication/updateTags")(pubId, tagsName);
         dispatch(
             dialogActions.updateRequest.build<DialogTypeName.PublicationInfoLib>(
                 {
                     publication: {
                         ...publication,
                         ...{
-                            tags,
+                            tagsOpds,
                         },
                     },
                 },
             ),
         );
     },
+    link: (...data: Parameters<ReturnType<typeof dispatchOpdsLink>>) =>
+        dispatchOpdsLink(dispatch)(...data),
 });
-
-const mapStateToProps = (state: RootState) => ({
-    tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.tags,
-    pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.identifier,
-    publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication,
-});
-
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(TagManager));

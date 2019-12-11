@@ -25,8 +25,8 @@ export interface IOpdsPublicationView {
     baseUrl: string;
     r2OpdsPublicationBase64?: string;
     title: string;
-    authors: string[];
-    publishers?: string[];
+    authors: IOpdsContributorView[];
+    publishers?: IOpdsContributorView[];
     workIdentifier?: string;
     description?: string;
     numberOfPages: number;

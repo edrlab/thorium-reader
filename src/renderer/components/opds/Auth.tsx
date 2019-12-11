@@ -12,7 +12,7 @@ import {
     OPDS_AUTH_ENCRYPTION_IV_HEX, OPDS_AUTH_ENCRYPTION_KEY_HEX,
 } from "readium-desktop/common/models/opds";
 import { THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
-import { apiAction } from "readium-desktop/renderer/apiAction";
+import { apiAction } from "readium-desktop/renderer/tools/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
 import {
     TranslatorProps, withTranslator,
