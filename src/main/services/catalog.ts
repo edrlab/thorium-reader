@@ -28,7 +28,6 @@ import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secr
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { ContentType } from "readium-desktop/utils/content-type";
 import { Store } from "redux";
 import * as uuid from "uuid";
@@ -44,6 +43,8 @@ import { RootState } from "../redux/states";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
 import { WinRegistry } from "./win-registry";
+
+// import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
 // Logger
 const debug = debug_("readium-desktop:main#services/catalog");
@@ -150,18 +151,53 @@ export class CatalogService {
                 downloadLink.Properties.AdditionalJSON[key]) {
                 const lcpHashedPassphraseObj = downloadLink.Properties.AdditionalJSON[key];
                 if (typeof lcpHashedPassphraseObj === "string") {
-                    lcpHashedPassphrase = lcpHashedPassphraseObj as string;
-                    // const lcpHashedPassphraseBuff = Buffer.from(lcpHashedPassphrase, "hex");
+                    const lcpHashedPassphraseHexOrB64 = lcpHashedPassphraseObj as string;
+                    let isHex = false;
+                    try {
+                        const low1 = lcpHashedPassphraseHexOrB64.toLowerCase();
+                        const buff = Buffer.from(low1, "hex");
+                        const str = buff.toString("hex");
+                        const low2 = str.toLowerCase();
+                        isHex = low1 === low2;
+                        if (!isHex) {
+                            debug(`OPDS lcp_hashed_passphrase should be HEX! (${lcpHashedPassphraseHexOrB64}) ${low1} !== ${low2}`);
+                        } else {
+                            debug(`OPDS lcp_hashed_passphrase is HEX: ${lcpHashedPassphraseHexOrB64}`);
+                        }
+                    } catch (err) {
+                        debug(err); // ignore
+                    }
+                    if (isHex) {
+                        lcpHashedPassphrase = lcpHashedPassphraseHexOrB64;
+                    } else {
+                        let isBase64 = false;
+                        try {
+                            const buff = Buffer.from(lcpHashedPassphraseHexOrB64, "base64");
+                            const str = buff.toString("hex");
+                            const b64 = Buffer.from(str, "hex").toString("base64");
+                            isBase64 = lcpHashedPassphraseHexOrB64 === b64;
+                            if (!isBase64) {
+                                debug(`OPDS lcp_hashed_passphrase is not BASE64?! (${lcpHashedPassphraseHexOrB64}) ${lcpHashedPassphraseHexOrB64} !== ${b64}`);
+                            } else {
+                                debug(`OPDS lcp_hashed_passphrase is BASE64! (${lcpHashedPassphraseHexOrB64})`);
+                            }
+                        } catch (err) {
+                            debug(err); // ignore
+                        }
+                        if (isBase64) {
+                            lcpHashedPassphrase = Buffer.from(lcpHashedPassphraseHexOrB64, "base64").toString("hex");
+                        }
+                    }
                 }
             }
-            // TODO: remove this in production!
-            if (IS_DEV &&
-                !lcpHashedPassphrase &&
-                downloadLink && downloadLink.Href.indexOf("cantookstation.com/") > 0) {
+            // NOTE: remove this in production!
+            // if (// IS_DEV &&
+            //     !lcpHashedPassphrase &&
+            //     downloadLink && downloadLink.Href.indexOf("cantookstation.com/") > 0) {
 
-                // mock for testing, as no server provides "lcp_hashed_passphrase" yet...
-                lcpHashedPassphrase = "d62414a0ede9e20898a1cb0e26dd05c57d7ef7a396d195fac9b43c1447bfd9ac";
-            }
+            //     // mock for testing, as OPDS server does not provide "lcp_hashed_passphrase" yet...
+            //     lcpHashedPassphrase = "d62414a0ede9e20898a1cb0e26dd05c57d7ef7a396d195fac9b43c1447bfd9ac";
+            // }
         }
 
         // track download progress
