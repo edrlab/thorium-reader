@@ -17,6 +17,7 @@ import { CoverView, PublicationView } from "readium-desktop/common/views/publica
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import TagManager from "readium-desktop/renderer/components/dialog/publicationInfos/TagManager";
 import Cover from "readium-desktop/renderer/components/publication/Cover";
+import FormatContributorWithLink from "readium-desktop/renderer/components/utils/FormatContributor";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
@@ -29,7 +30,6 @@ import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import LcpInfo from "./LcpInfo";
 import OpdsControls from "./opdsControls";
-import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -83,13 +83,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
             return (<></>);
         }
 
-        const { __, translator, publication, coverZoom } = this.props;
-
-        const authors = formatContributorToString(publication?.authors, translator);
-
-        const formatedPublishers = publication.publishers?.length
-                ? formatContributorToString(publication.publishers, translator)
-                : undefined;
+        const { __, publication, coverZoom } = this.props;
 
         const renderInfo = () =>
             <>
@@ -111,12 +105,14 @@ class PublicationInfo extends React.Component<IProps, IState> {
                 <div className={styles.dialog_right}>
                     <h2 className={styles.allowUserSelect}>{publication.title}</h2>
                     <div>
-                        <p className={classNames(styles.allowUserSelect, styles.author)}>{authors}</p>
+                        <p className={classNames(styles.allowUserSelect, styles.author)}>
+                            <FormatContributorWithLink contributors={publication.authors} />
+                        </p>
                         {this.formatedPublishedDateComponent()}
                         <div className={styles.tags}>
                             <div className={styles.tag_list}>
                                 <span>{__("catalog.tags")}</span>
-                                <TagManager/>
+                                <TagManager />
                             </div>
                         </div>
 
@@ -148,7 +144,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
 
                         <p>
                             {
-                                formatedPublishers &&
+                                publication.publishers?.length &&
                                 <>
                                     <span>
                                         {
@@ -156,9 +152,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
                                         }
                                     </span>
                                     <i className={styles.allowUserSelect}>
-                                        {
-                                            formatedPublishers
-                                        }
+                                        <FormatContributorWithLink contributors={publication.publishers} />
                                     </i>
                                     <br />
                                 </>

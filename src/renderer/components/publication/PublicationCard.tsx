@@ -21,7 +21,7 @@ import {
 import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/redux/states";
-import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor";
+import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor.ts";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import CatalogMenu from "./menu/CatalogMenu";

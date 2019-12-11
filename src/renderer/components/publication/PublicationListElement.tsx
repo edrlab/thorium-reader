@@ -16,13 +16,13 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor";
 import { TPublication } from "readium-desktop/renderer/type/publication.type";
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as uuid from "uuid";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 import AccessibleMenu from "../utils/menu/AccessibleMenu";
-import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

@@ -10,10 +10,10 @@ import "reflect-metadata";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor";
 import { TPublication } from "readium-desktop/renderer/type/publication.type";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
-import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

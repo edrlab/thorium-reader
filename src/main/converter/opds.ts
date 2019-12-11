@@ -59,9 +59,9 @@ export class OpdsFeedViewConverter {
     public convertOpdsNavigationLinkToView(link: OPDSLink, baseUrl: string): IOpdsNavigationLinkView {
         // Title could be defined on multiple lines
         // Only keep the first one
-        const titleParts = link.Title.split("\n").filter((text) => text);
-        const title = titleParts[0].trim();
-        const subtitle = titleParts[1] && titleParts[1].trim();
+        const titleParts = link.Title?.split("\n").filter((text) => text);
+        const title = titleParts[0]?.trim();
+        const subtitle = titleParts[1]?.trim();
 
         return {
             title,
