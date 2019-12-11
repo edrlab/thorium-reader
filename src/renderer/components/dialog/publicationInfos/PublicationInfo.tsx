@@ -87,8 +87,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
 
         const authors = formatContributorToString(publication?.authors, translator);
 
-        const formatedPublishers = () =>
-            publication.publishers?.length
+        const formatedPublishers = publication.publishers?.length
                 ? formatContributorToString(publication.publishers, translator)
                 : undefined;
 
@@ -148,9 +147,21 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         <h3>{__("catalog.moreInfo")}</h3>
 
                         <p>
-                            {formatedPublishers() &&
-                                <><span>{__("catalog.publisher")}
-                                </span> <i className={styles.allowUserSelect}>{formatedPublishers()}</i> <br /></>
+                            {
+                                formatedPublishers &&
+                                <>
+                                    <span>
+                                        {
+                                            __("catalog.publisher")
+                                        }
+                                    </span>
+                                    <i className={styles.allowUserSelect}>
+                                        {
+                                            formatedPublishers
+                                        }
+                                    </i>
+                                    <br />
+                                </>
                             }
                             <span>{__("catalog.lang")}</span>{this.publicationLanguageComponent()}<br />
                             <span>{__("catalog.id")}
