@@ -49,6 +49,26 @@
         "noPublicationHelpL2": "or use the \"+\" button above.",
         "noPublicationHelpL3": "LCP protected files are supported.",
         "numberOfPages": "Number of pages",
+        "opds": {
+            "info": {
+                "availableSince": "Available since",
+                "availableState": {
+                    "available": "Available",
+                    "ready": "Ready",
+                    "reserved": "Reserved",
+                    "unavailable": "Unavailable",
+                    "unknown": "Unknown"
+                },
+                "availableUntil": "Available until",
+                "copyAvalaible": "Number of availables",
+                "copyTotal": "Number of copies",
+                "holdPosition": "Your hold position",
+                "holdTotal": "Holded",
+                "numberOfItems": "Number of items",
+                "priveValue": "Price",
+                "state": "State"
+            }
+        },
         "publisher": "Publisher",
         "readBook": "Read",
         "released": "Published on",

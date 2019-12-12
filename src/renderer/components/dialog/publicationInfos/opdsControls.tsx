@@ -16,6 +16,7 @@ import {
 import { dispatchOpdsLink } from "readium-desktop/renderer/opds/handleLink";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
+import OpdsLinkProperties from "./OpdsLinkProperties";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -53,18 +54,21 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             Array.isArray(opdsPublicationView.openAccessLinks)
                 ? opdsPublicationView.openAccessLinks.map(
                     (ln, idx) =>
-                        <button
-                            key={`openAccessControl-${idx}`}
-                            onClick={() => verifyImport(
-                                ln,
-                                opdsPublicationView.r2OpdsPublicationBase64,
-                                opdsPublicationView.title,
-                            )}
-                            className={styles.lire}
-                            disabled={openAccessButtonIsDisabled()}
-                        >
-                            {__("catalog.addBookToLib")}
-                        </button>,
+                        <>
+                            <button
+                                key={`openAccessControl-${idx}`}
+                                onClick={() => verifyImport(
+                                    ln,
+                                    opdsPublicationView.r2OpdsPublicationBase64,
+                                    opdsPublicationView.title,
+                                )}
+                                className={styles.lire}
+                                disabled={openAccessButtonIsDisabled()}
+                            >
+                                {__("catalog.addBookToLib")}
+                            </button>
+                            <OpdsLinkProperties properties={ln.properties} />
+                        </>,
                 )
                 : <></>;
 
@@ -72,18 +76,21 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             Array.isArray(opdsPublicationView.sampleOrPreviewLinks)
                 ? opdsPublicationView.sampleOrPreviewLinks.map(
                     (ln, idx) =>
-                        <button
-                            key={`sampleControl-${idx}`}
-                            onClick={() => verifyImport(
-                                ln,
-                                opdsPublicationView.r2OpdsPublicationBase64,
-                                opdsPublicationView.title,
-                            )}
-                            className={styles.lire}
-                            disabled={sampleButtonIsDisabled()}
-                        >
-                            {__("opds.menu.addExtract")}
-                        </button>,
+                        <>
+                            <button
+                                key={`sampleControl-${idx}`}
+                                onClick={() => verifyImport(
+                                    ln,
+                                    opdsPublicationView.r2OpdsPublicationBase64,
+                                    opdsPublicationView.title,
+                                )}
+                                className={styles.lire}
+                                disabled={sampleButtonIsDisabled()}
+                            >
+                                {__("opds.menu.addExtract")}
+                            </button>
+                            <OpdsLinkProperties properties={ln.properties} />
+                        </>,
                 )
                 : <></>;
 
@@ -108,6 +115,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 >
                                     {__("opds.menu.goBuyBook")}
                                 </button>
+                                <OpdsLinkProperties properties={ln.properties} />
                             </li>,
                     )
                     : <></>;
@@ -127,6 +135,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 >
                                     {__("opds.menu.goLoanBook")}
                                 </button>
+                                <OpdsLinkProperties properties={ln.properties} />
                             </li>,
                     )
                     : <></>;
@@ -146,6 +155,7 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                                 >
                                     {__("opds.menu.goSubBook")}
                                 </button>
+                                <OpdsLinkProperties properties={ln.properties} />
                             </li>,
                     )
                     : <></>;
