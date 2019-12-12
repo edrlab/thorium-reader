@@ -765,7 +765,7 @@ export class Reader extends React.Component<IProps, IState> {
     private handleSettingChange(
         event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
         name: keyof ReaderConfig,
-        givenValue?: string) {
+        givenValue?: string | boolean) {
 
         let value = givenValue;
         if (value === null || value === undefined) {
@@ -780,7 +780,9 @@ export class Reader extends React.Component<IProps, IState> {
 
         const typedName =
             name as (typeof value extends string ? keyof ReaderConfigStrings : keyof ReaderConfigBooleans);
-        readerConfig[typedName] = value;
+        const typedValue =
+                value as (typeof value extends string ? string : boolean);
+        readerConfig[typedName] = typedValue;
 
         if (readerConfig.paged) {
             readerConfig.enableMathJax = false;

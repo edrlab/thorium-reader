@@ -120,7 +120,7 @@ export interface IReaderOptionsProps {
     handleSettingChange: (
         event: TChangeEventOnInput | TChangeEventOnSelect | undefined,
         name: keyof ReaderConfig,
-        value?: string) => void;
+        value?: string | boolean) => void;
     handleIndexChange: (
         event: TChangeEventOnInput,
         name: keyof ReaderConfigStringsAdjustables) => void;
