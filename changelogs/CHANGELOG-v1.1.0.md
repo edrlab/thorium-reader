@@ -7,7 +7,19 @@ Version `1.1.0` was released on **13 December 2019**.
 This release includes the following (notable) new features, improvements and bug fixes:
 
 * LCP 1.0 compliance, including library lending interactions (return/renew)
-* OPDS improvements, support for hybrid OPDS2 navigation/publications views, as well as OAuth Authentication for OPDS (with seamless LCP acquisition)
+* OPDS improvements: support for hybrid OPDS2 navigation/publications views, OAuth Authentication for OPDS (with seamless LCP acquisition via "borrow"), fixed search/previous/next-pagination links, metadata parser corrections, navigation links with "number of items"
+* User Interface fix: publications shown twice in local bookshelf (recently added vs. reading list)
+* Publication "info" modal dialog box: now with support for small/large cover image toggle
+* Download progress indicator for LCP and OPDS acquisitions
+* Publications now have checksum (CRC) calculations to prevent duplicate imports
+* Navigation between main window sections (local bookshelf, OPDS catalogs) preserves grid vs. list display setting, and preserves context (was total reset before)
+* Eliminated duplicate binaries / libraries from the built application package (LevelDown database)
+* AppX Windows Store file extensions associations now fixed in the Electron builder toolchain
+* Prototype integration of MathJax (to render MathML)
+* Upgrade to Electron 7 (Chromium 78, NodeJS 12)
+* Automated continuous integration builds via Travis and Appveyor, now with inspector/debugging tools enabled in EPUB webview
+* Unsupported JSON Schema properties for ReadiumWebPublicationManifest and OPDS2 are now preserved (custom data)
+* Developer experience improvements: significant TypeScript robustification / type safety (removal of "any" data structures, including in Redux Saga, actions, reducers, etc.), upgrade to TypeScript 3.7 (new syntactical constructs for more concise programming practices)
 
 (previous [v1.0.5 changelog](./CHANGELOG-v1.0.5.md))
 
