@@ -16,7 +16,7 @@ export function netReducer(
     state: NetState = initialState,
     action: netActions.offline.TAction |
         netActions.online.TAction,
-) {
+): NetState {
     switch (action.type) {
         case netActions.offline.ID:
             return Object.assign({}, state, {

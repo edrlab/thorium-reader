@@ -7,8 +7,10 @@
 
 import * as initRequest from "./initRequest";
 import * as initSuccess from "./initSuccess";
+import * as publicationFileLock from "./publicationFileLock";
 
 export {
     initRequest,
     initSuccess,
+    publicationFileLock,
 };

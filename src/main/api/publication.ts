@@ -84,6 +84,7 @@ export class PublicationApi implements IPublicationApi {
     @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
 
+    // called for publication info dialog modal box
     public async get(identifier: string, checkLcpLsd: boolean): Promise<PublicationView> {
         let doc = await this.publicationRepository.get(identifier);
         if (checkLcpLsd && doc.lcp) {

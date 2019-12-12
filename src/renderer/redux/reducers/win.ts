@@ -18,7 +18,7 @@ export function winReducer(
     action: winActions.initRequest.TAction |
         winActions.initSuccess.TAction |
         winActions.initError.TAction,
-) {
+): WinState {
     switch (action.type) {
         case winActions.initRequest.ID:
             return Object.assign({}, state, {

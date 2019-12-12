@@ -21,7 +21,7 @@ export function dialogReducer(
     action: dialogActions.openRequest.TAction |
         dialogActions.closeRequest.TAction |
         dialogActions.updateRequest.TAction,
-) {
+): DialogState {
     let data = {};
 
     switch (action.type) {

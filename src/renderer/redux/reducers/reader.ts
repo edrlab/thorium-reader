@@ -47,19 +47,16 @@ export function readerReducer(
 
     switch (action.type) {
         case readerActions.openSuccess.ID:
-            const act1 = action as readerActions.openSuccess.TAction;
-            newState.reader = act1.payload.reader;
+            newState.reader = action.payload.reader;
             return newState;
         case readerActions.closeSuccess.ID:
             delete newState.reader;
             return newState;
         case readerActions.detachModeSuccess.ID:
-            const act3 = action as readerActions.detachModeSuccess.TAction;
-            newState.mode = act3.payload.mode;
+            newState.mode = action.payload.mode;
             return newState;
         case readerActions.configSetSuccess.ID:
-            const act4 = action as readerActions.configSetSuccess.TAction;
-            newState.config = act4.payload.config;
+            newState.config = action.payload.config;
             return newState;
         default:
             return state;

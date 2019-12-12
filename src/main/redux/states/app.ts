@@ -13,4 +13,6 @@ export enum AppStatus {
 
 export interface AppState {
     status: AppStatus;
+
+    publicationFileLocks: { [identifier: string]: boolean };
 }

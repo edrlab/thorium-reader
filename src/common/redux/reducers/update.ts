@@ -17,7 +17,7 @@ const initialState: UpdateState = {
 export function updateReducer(
     state: UpdateState = initialState,
     action: updateActions.latestVersion.TAction,
-) {
+): UpdateState {
     switch (action.type) {
         case updateActions.latestVersion.ID:
             return Object.assign({}, state, {

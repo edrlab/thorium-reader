@@ -134,6 +134,7 @@ class CatalogLcpControls extends React.Component<IProps, undefined> {
 const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     return {
         openReader: () => {
+            dispatch(dialogActions.closeRequest.build());
             dispatch(readerActions.openRequest.build(props.publicationView.identifier));
         },
         openDeleteDialog: () => {
