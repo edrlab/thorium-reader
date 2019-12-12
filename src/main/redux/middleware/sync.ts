@@ -88,7 +88,7 @@ export const reduxSyncMiddleware: Middleware
         }
 
         try {
-            appWindow.win.webContents.send(syncIpc.CHANNEL, {
+            appWindow.browserWindow.webContents.send(syncIpc.CHANNEL, {
                 type: syncIpc.EventType.MainAction,
                 payload: {
                     action: actionSerializer.serialize(action),

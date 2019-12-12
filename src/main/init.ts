@@ -19,7 +19,7 @@ import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
-import { appActions } from "readium-desktop/main/redux/actions/";
+import { appActions, streamerActions } from "readium-desktop/main/redux/actions/";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 // Logger
@@ -29,7 +29,7 @@ const debug = debug_("readium-desktop:main");
 const winOpenCallback = (appWindow: AppWindow) => {
     // Send information to the new window
     const store = diMainGet("store");
-    const webContents = appWindow.win.webContents;
+    const webContents = appWindow.browserWindow.webContents;
 
     // Send the id to the new window
     webContents.send(winIpc.CHANNEL, {
@@ -118,11 +118,21 @@ const winCloseCallback = (appWindow: AppWindow) => {
     // library window was closed and unregistered
     // => all reader windows must now be closed too (effectively exiting the app)
     if (appWindow.type === AppWindowType.Library) {
-        readerWindows.forEach((w) => w.win.close());
+        readerWindows.forEach((w) => w.browserWindow.close());
         return;
     }
 
     // else: appWindow.type === AppWindowType.Reader
+    const state = store.getState();
+    if (state.reader?.readers) {
+        const readers = Object.values(state.reader.readers);
+        const reader = readers.find((r) => {
+            return r.browserWindowID === appWindow.browserWindowID;
+        });
+        if (reader) {
+            store.dispatch(streamerActions.publicationCloseRequest.build(reader.publicationIdentifier));
+        }
+    }
 
     // if there is at least one remaining reader, then leave it/them alone
     // (it is / they are in detached mode, the library view is visible)
@@ -139,13 +149,13 @@ const winCloseCallback = (appWindow: AppWindow) => {
     // then we close the app
     const libraryWindow = winRegistry.getLibraryWindow();
     if (libraryWindow) {
-        if (libraryWindow.win.isMinimized()) {
-            libraryWindow.win.restore();
-        } else if (!libraryWindow.win.isVisible()) {
-            libraryWindow.win.close();
+        if (libraryWindow.browserWindow.isMinimized()) {
+            libraryWindow.browserWindow.restore();
+        } else if (!libraryWindow.browserWindow.isVisible()) {
+            libraryWindow.browserWindow.close();
             return;
         }
-        libraryWindow.win.show(); // focuses as well
+        libraryWindow.browserWindow.show(); // focuses as well
     }
 };
 

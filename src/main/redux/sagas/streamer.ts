@@ -281,9 +281,7 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
 
         const publicationRepository = diMainGet("publication-repository");
 
-        // Get publication
         let publicationDocument: PublicationDocument = null;
-
         try {
             publicationDocument =
                 yield* callTyped(() => publicationRepository.get(action.payload.publicationIdentifier));
@@ -291,11 +289,15 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
             continue;
         }
 
+        // will decrement on streamerActions.publicationCloseSuccess.build (see below)
         const counter =  yield* selectTyped((s: RootState) => s.streamer.openPublicationCounter);
         const streamer = diMainGet("streamer");
         const pubStorage = diMainGet("publication-storage");
 
-        if (!counter.hasOwnProperty(publicationDocument.identifier)) {
+        let wasKilled = false;
+        if (!counter.hasOwnProperty(publicationDocument.identifier) || counter[publicationDocument.identifier] <= 1) {
+            wasKilled = true;
+
             // Remove publication from streamer because there is no more readers
             // open for this publication
             // Get epub file from publication
@@ -304,13 +306,21 @@ export function* publicationCloseRequestWatcher(): SagaIterator {
             //     pubStorage.getRootPath(),
             //     publicationDocument.files[0].url.substr(6),
             // );
+            debug(`EPUB ZIP CLEANUP: ${epubPath}`);
             streamer.removePublications([epubPath]);
         }
 
-        if (Object.keys(counter).length === 0) {
+        const pubIds = Object.keys(counter);
+        let l = pubIds.length;
+        if (wasKilled && pubIds.includes(publicationDocument.identifier)) {
+            l--;
+        }
+        if (l <= 0) {
+            debug("STREAMER SHUTDOWN");
             yield put(streamerActions.stopRequest.build());
         }
 
+        // will decrement state.streamer.openPublicationCounter
         yield put(streamerActions.publicationCloseSuccess.build(publicationDocument));
     }
 }

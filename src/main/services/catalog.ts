@@ -277,7 +277,7 @@ export class CatalogService {
 
         // Open a dialog to select a folder then copy the publication in it
         const res = await dialog.showOpenDialog(
-            libraryAppWindow ? libraryAppWindow.win : undefined,
+            libraryAppWindow ? libraryAppWindow.browserWindow : undefined,
             {
                 properties: ["openDirectory"],
             });

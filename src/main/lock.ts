@@ -43,10 +43,10 @@ export function lockInstance() {
             const winRegistry = diMainGet("win-registry");
             const libraryAppWindow = winRegistry.getLibraryWindow();
             if (libraryAppWindow) {
-                if (libraryAppWindow.win.isMinimized()) {
-                    libraryAppWindow.win.restore();
+                if (libraryAppWindow.browserWindow.isMinimized()) {
+                    libraryAppWindow.browserWindow.restore();
                 }
-                libraryAppWindow.win.show(); // focuses as well
+                libraryAppWindow.browserWindow.show(); // focuses as well
             }
 
             // execute command line from second instance
