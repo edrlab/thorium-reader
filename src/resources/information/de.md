@@ -19,7 +19,6 @@ Lizenziert an die Readium Foundation im Rahmen eines oder mehrerer Beitragszahle
 
 Diese Anwendung ist Open-Source, freigegeben unter einer BSD 3 Lizenz. Es basiert auf dem Open-Source-Toolkit Readium Desktop.
 
-Dies ist derzeit eine Beta-Version, wir wissen, dass es noch einige Fehler gibt und arbeiten hart daran, sie zu beheben.
 Das Projekt befindet sich in ständiger Weiterentwicklung, Korrekturen und neue Funktionen werden monatlich erscheinen.
 
 Ohne die finanzielle Unterstützung der folgenden Organisationen wäre dieses Projekt nicht zustande gekommen:

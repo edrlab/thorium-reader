@@ -19,8 +19,7 @@ Licensed to the Readium Foundation under one or more contributor license agreeme
 
 This application is open-source, released under a BSD 3 license. It is based on the open-source Readium Desktop toolkit.
 
-This is currently a beta version, we know there are still some glitches and are working hard on resolving them.
-The project is in constant evolution, corrections and new features will appear monthly.
+The project is in constant evolution, corrections and new features will appear at regular intervals.
 
 This project would have not seen the light without the financial help of the following organizations:
 - CNL (Centre National du livre), France
