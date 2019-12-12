@@ -56,10 +56,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
 
         return (
             <HelmetProvider>
-                <div
-                    // FIXME css in the code
-                    style={ this.props.dialogOpen ? {filter: "blur(1px)"} : {} }
-                >
+                <div>
                     <Helmet>
                         <title>{ helmetTitle }</title>
                     </Helmet>
