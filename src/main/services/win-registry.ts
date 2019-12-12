@@ -56,20 +56,21 @@ export class WinRegistry {
      * @param win Electron BrowserWindows
      * @return Id of registered window
      */
-    public registerWindow(win: BrowserWindow, type: AppWindowType): AppWindow {
-        const winId = win.id;
+    public registerWindow(browserWindow: BrowserWindow, type: AppWindowType): AppWindow {
+        const winId = browserWindow.id;
         const appWindow: AppWindow = {
             identifier: uuid.v4(),
             type,
-            win,
-            onWindowMoveResize: onWindowMoveResize(win),
+            browserWindow,
+            browserWindowID: winId,
+            onWindowMoveResize: onWindowMoveResize(browserWindow),
 
             // ordered registration / creation stack
             registerIndex: ++this._lastRegisterIndex,
         };
         this.windows[winId] = appWindow;
 
-        win.webContents.on("did-finish-load", () => {
+        browserWindow.webContents.on("did-finish-load", () => {
             // Call callbacks
             for (const callback of this.openCallbacks) {
                 callback(appWindow);
@@ -77,7 +78,7 @@ export class WinRegistry {
         });
 
         // Unregister automatically
-        win.on("closed", () => {
+        browserWindow.on("closed", () => {
             this.unregisterWindow(winId);
         });
 

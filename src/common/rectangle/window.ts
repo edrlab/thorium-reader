@@ -56,7 +56,7 @@ export const getWindowBounds = async (winType?: AppWindowType): Promise<Rectangl
 
             // readerWindows is ordered by creation/registration time
             // so we take the latest reader window and offset the new one
-            const rectangle = readerWindows[readerWindows.length - 1].win.getBounds();
+            const rectangle = readerWindows[readerWindows.length - 1].browserWindow.getBounds();
             rectangle.x += 100;
             rectangle.x %= displayArea.width - rectangle.width;
             rectangle.y += 100;

@@ -21,7 +21,8 @@ export interface Reader extends Identifiable {
     filesystemPath: string;
     manifestUrl: string;
     publicationIdentifier: string;
-    window: BrowserWindow;
+    browserWindow: BrowserWindow;
+    browserWindowID: number;
 }
 
 /**

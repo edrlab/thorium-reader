@@ -78,7 +78,7 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
         // Same as: appWindows[0]
         const libraryAppWindow = winRegistry.getLibraryWindow();
         if (libraryAppWindow) {
-            libraryAppWindow.win.hide();
+            libraryAppWindow.browserWindow.hide();
         }
     }
 
@@ -105,7 +105,8 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
         publicationIdentifier,
         manifestUrl,
         filesystemPath: pathDecoded,
-        window: readerWindow,
+        browserWindow: readerWindow,
+        browserWindowID: readerWindow.id,
     };
 
     // This triggers the origin-sandbox for localStorage, etc.
@@ -245,18 +246,18 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
         const libraryAppWindow = winRegistry.getLibraryWindow();
         if (libraryAppWindow) {
             yield call(async () => {
-                libraryAppWindow.win.setBounds(await getWindowBounds(AppWindowType.Library));
+                libraryAppWindow.browserWindow.setBounds(await getWindowBounds(AppWindowType.Library));
             });
-            if (libraryAppWindow.win.isMinimized()) {
-                libraryAppWindow.win.restore();
+            if (libraryAppWindow.browserWindow.isMinimized()) {
+                libraryAppWindow.browserWindow.restore();
             }
-            libraryAppWindow.win.show(); // focuses as well
+            libraryAppWindow.browserWindow.show(); // focuses as well
         }
     }
 
     const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
     if (readerWindow) {
-        readerWindow.win.close();
+        readerWindow.browserWindow.close();
     }
 
     yield put(readerActions.closeSuccess.build(reader));
@@ -345,7 +346,7 @@ export function* readerFullscreenRequestWatcher(): SagaIterator {
         const winRegistry = diMainGet("win-registry");
         const appWindow = winRegistry.getWindowByIdentifier(sender.winId);
         if (appWindow) {
-            appWindow.win.setFullScreen(action.payload.full);
+            appWindow.browserWindow.setFullScreen(action.payload.full);
         }
     }
 }
@@ -364,10 +365,10 @@ export function* readerDetachRequestWatcher(): SagaIterator {
             const libraryAppWindow = winRegistry.getLibraryWindow();
             if (libraryAppWindow) {
                 // this should never occur, but let's do it for certainty
-                if (libraryAppWindow.win.isMinimized()) {
-                    libraryAppWindow.win.restore();
+                if (libraryAppWindow.browserWindow.isMinimized()) {
+                    libraryAppWindow.browserWindow.restore();
                 }
-                libraryAppWindow.win.show(); // focuses as well
+                libraryAppWindow.browserWindow.show(); // focuses as well
             }
 
             const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
@@ -375,10 +376,10 @@ export function* readerDetachRequestWatcher(): SagaIterator {
                 readerWindow.onWindowMoveResize.detach();
 
                 // this should never occur, but let's do it for certainty
-                if (readerWindow.win.isMinimized()) {
-                    readerWindow.win.restore();
+                if (readerWindow.browserWindow.isMinimized()) {
+                    readerWindow.browserWindow.restore();
                 }
-                readerWindow.win.show(); // focuses as well
+                readerWindow.browserWindow.show(); // focuses as well
             }
         }
 

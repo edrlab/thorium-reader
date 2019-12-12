@@ -61,7 +61,7 @@ export function streamerReducer(
             pubId = action.payload.publicationDocument.identifier;
             newState.openPublicationCounter[pubId] = newState.openPublicationCounter[pubId] - 1;
 
-            if (newState.openPublicationCounter[pubId] === 0) {
+            if (newState.openPublicationCounter[pubId] <= 0) {
                 delete newState.openPublicationCounter[pubId];
                 delete newState.publicationManifestUrl[pubId];
             }
