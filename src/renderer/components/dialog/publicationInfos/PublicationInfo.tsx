@@ -141,27 +141,40 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         </>}
 
                         <h3>{__("catalog.moreInfo")}</h3>
-
                         <p>
                             {
                                 publication.publishers?.length &&
                                 <>
-                                    <span>
-                                        {
-                                            __("catalog.publisher")
-                                        }
-                                    </span>
+                                    <span>{`${__("catalog.publisher")} : `}</span>
                                     <i className={styles.allowUserSelect}>
                                         <FormatContributorWithLink contributors={publication.publishers} />
                                     </i>
                                     <br />
                                 </>
                             }
-                            <span>{__("catalog.lang")}</span>{this.publicationLanguageComponent()}<br />
-                            <span>{__("catalog.id")}
-                            </span>
-                            <i className={styles.allowUserSelect}>{publication.workIdentifier}</i>
-                            <br />
+                            {
+                                publication.languages?.length &&
+                                <>
+                                    <span>{`${__("catalog.lang")} : `}</span>
+                                    {
+                                        this.publicationLanguageComponent()
+                                    }
+                                    <br />
+                                </>
+                            }
+                            {
+                                publication.numberOfPages &&
+                                <>
+                                    <span>{`${__("catalog.numberOfPages")} : `}</span>
+                                    <i className={styles.allowUserSelect}>
+                                        {
+                                            publication.numberOfPages
+                                        }
+                                    </i>
+                                    <br />
+
+                                </>
+                            }
                         </p>
 
                         <LcpInfo publicationLcp={publication}></LcpInfo>
