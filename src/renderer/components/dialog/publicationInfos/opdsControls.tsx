@@ -54,9 +54,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             Array.isArray(opdsPublicationView.openAccessLinks)
                 ? opdsPublicationView.openAccessLinks.map(
                     (ln, idx) =>
-                        <>
+                        <div key={`openAccessControl-${idx}`}>
                             <button
-                                key={`openAccessControl-${idx}`}
                                 onClick={() => verifyImport(
                                     ln,
                                     opdsPublicationView.r2OpdsPublicationBase64,
@@ -67,8 +66,10 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             >
                                 {__("catalog.addBookToLib")}
                             </button>
-                            <OpdsLinkProperties properties={ln.properties} />
-                        </>,
+                            <OpdsLinkProperties
+                                properties={ln.properties}
+                            />
+                        </div>,
                 )
                 : <></>;
 
@@ -76,9 +77,8 @@ export class OpdsControls extends React.Component<IProps, undefined> {
             Array.isArray(opdsPublicationView.sampleOrPreviewLinks)
                 ? opdsPublicationView.sampleOrPreviewLinks.map(
                     (ln, idx) =>
-                        <>
+                        <div key={`sampleControl-${idx}`}>
                             <button
-                                key={`sampleControl-${idx}`}
                                 onClick={() => verifyImport(
                                     ln,
                                     opdsPublicationView.r2OpdsPublicationBase64,
@@ -89,8 +89,10 @@ export class OpdsControls extends React.Component<IProps, undefined> {
                             >
                                 {__("opds.menu.addExtract")}
                             </button>
-                            <OpdsLinkProperties properties={ln.properties} />
-                        </>,
+                            <OpdsLinkProperties
+                                properties={ln.properties}
+                            />
+                        </div>,
                 )
                 : <></>;
 

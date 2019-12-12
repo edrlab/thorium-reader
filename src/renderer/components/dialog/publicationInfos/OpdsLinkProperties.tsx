@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as moment from "moment";
 import { OPDSAvailabilityEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-availability";
 import * as React from "react";
 import { IOPDSPropertiesView } from "readium-desktop/common/views/opds";
@@ -57,6 +58,7 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
                     metadataLineComponent(__("catalog.opds.info.numberOfItems"), properties.numberOfItems)
                 }
                 {
+                    properties.priceValue && properties.priceCurrency &&
                     metadataLineComponent(
                         __("catalog.opds.info.priveValue"),
                         `${properties.priceValue} ${properties.priceCurrency}`)
@@ -96,10 +98,16 @@ class OpdsLinkProperties extends React.Component<IProps, undefined> {
                     )())
                 }
                 {
-                    metadataLineComponent(__("catalog.opds.info.availableSince"), properties.availabilitySince)
+                    properties.availabilitySince &&
+                        metadataLineComponent(
+                            __("catalog.opds.info.availableSince"),
+                            moment(properties.availabilitySince).format("LLL"))
                 }
                 {
-                    metadataLineComponent(__("catalog.opds.info.availableUntil"), properties.availabilityUntil)
+                    properties.availabilityUntil &&
+                        metadataLineComponent(
+                            __("catalog.opds.info.availableUntil"),
+                            moment(properties.availabilityUntil).format("LLL"))
                 }
             </>
         );
