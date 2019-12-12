@@ -51,7 +51,7 @@
         "numberOfPages": "Number of pages",
         "opds": {
             "info": {
-                "availableSince": "Available since",
+                "availableSince": "Since",
                 "availableState": {
                     "available": "Available",
                     "ready": "Ready",
@@ -59,7 +59,7 @@
                     "unavailable": "Unavailable",
                     "unknown": "Unknown"
                 },
-                "availableUntil": "Available until",
+                "availableUntil": "Until",
                 "copyAvalaible": "Number of availables",
                 "copyTotal": "Number of copies",
                 "holdPosition": "Your hold position",
