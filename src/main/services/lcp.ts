@@ -422,7 +422,7 @@ export class LcpManager {
             let redoHash = false;
             if (r2Publication.LCP?.LSD?.Links) {
                 const returnLink = r2Publication.LCP.LSD.Links.find((l) => {
-                    return l.HasRel("renew");
+                    return l.HasRel("return");
                 });
                 if (!returnLink) {
                     debug("!returnLink");
@@ -844,6 +844,7 @@ export class LcpManager {
                                     publicationDocumentIdentifier,
                                     r2Publication);
 
+                                // TODO: publicationFileLock by checkPublicationLicenseUpdate(), so does not work
                                 if (atLeastOneReaderIsOpen) {
                                     this.store.dispatch(readerActions.openRequest.build(publicationDocumentIdentifier));
                                 }
