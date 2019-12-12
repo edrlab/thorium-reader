@@ -35,9 +35,8 @@ export function streamerReducer(
 
     switch (action.type) {
         case streamerActions.startSuccess.ID:
-            const act1 = action as streamerActions.startSuccess.TAction;
             newState.status = StreamerStatus.Running;
-            newState.baseUrl = act1.payload.streamerUrl;
+            newState.baseUrl = action.payload.streamerUrl;
             newState.openPublicationCounter = {};
             newState.publicationManifestUrl = {};
             return newState;
@@ -48,20 +47,18 @@ export function streamerReducer(
             newState.publicationManifestUrl = {};
             return newState;
         case streamerActions.publicationOpenSuccess.ID:
-            const act2 = action as streamerActions.publicationOpenSuccess.TAction;
-            pubId = act2.payload.publicationDocument.identifier;
+            pubId = action.payload.publicationDocument.identifier;
 
             if (!newState.openPublicationCounter.hasOwnProperty(pubId)) {
                 newState.openPublicationCounter[pubId] = 1;
-                newState.publicationManifestUrl[pubId] = act2.payload.manifestUrl;
+                newState.publicationManifestUrl[pubId] = action.payload.manifestUrl;
             } else {
                 // Increment the number of pubs opened with the streamer
                 newState.openPublicationCounter[pubId] = state.openPublicationCounter[pubId] + 1;
             }
             return newState;
         case streamerActions.publicationCloseSuccess.ID:
-            const act3 = action as streamerActions.publicationCloseSuccess.TAction;
-            pubId = act3.payload.publicationDocument.identifier;
+            pubId = action.payload.publicationDocument.identifier;
             newState.openPublicationCounter[pubId] = newState.openPublicationCounter[pubId] - 1;
 
             if (newState.openPublicationCounter[pubId] === 0) {

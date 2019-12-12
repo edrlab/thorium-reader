@@ -14,7 +14,7 @@ const initialState: THistoryState = [];
 export function historyReducer(
     state: THistoryState = initialState,
     action: winActions.history.TAction,
-) {
+): THistoryState {
     switch (action.type) {
         case winActions.history.ID:
             const history = state.slice();

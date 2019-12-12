@@ -22,7 +22,7 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 export function opdsBreadcrumbReducer(
     state: IBreadCrumbItem[] = [],
     action: browseRequest.TAction,
-) {
+): IBreadCrumbItem[] {
     switch (action.type) {
         case opdsActions.browseRequest.ID:
             const { level, title, url, rootFeedIdentifier } = action.payload;
@@ -54,7 +54,7 @@ export function opdsBreadcrumbReducer(
 export function opdsHeaderLinkReducer(
     state: IOpdsHeaderState = {},
     action: headerLinksUpdate.TAction,
-) {
+): IOpdsHeaderState {
     switch (action.type) {
         case headerLinksUpdate.ID:
             const stateNew = { ...state };
@@ -72,7 +72,7 @@ export function opdsHeaderLinkReducer(
 export function opdsSearchLinkReducer(
     state: IOpdsSearchState = {},
     action: search.TAction,
-) {
+): IOpdsSearchState {
     switch (action.type) {
         case search.ID:
             return { ...action.payload };

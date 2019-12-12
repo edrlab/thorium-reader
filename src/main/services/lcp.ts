@@ -38,6 +38,7 @@ import { Server } from "@r2-streamer-js/http/server";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 import { extractCrc32OnZip } from "../crc";
+import { appActions } from "../redux/actions";
 import { DeviceIdManager } from "./device";
 
 // Logger
@@ -232,8 +233,19 @@ export class LcpManager {
     public async checkPublicationLicenseUpdate(
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
-        const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
-        return await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
+        const rootState = this.store.getState();
+        if (rootState.app.publicationFileLocks[publicationDocument.identifier]) {
+            // skip LSD processStatusDocument()
+            return Promise.resolve(publicationDocument);
+            // return Promise.reject(`Publication file lock busy ${publicationDocument.identifier}`);
+        }
+        this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
+        try {
+            const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
+            return await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
+        } finally {
+            this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
+        }
     }
 
     public async checkPublicationLicenseUpdate_(
@@ -283,188 +295,208 @@ export class LcpManager {
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
 
-        const locale = this.store.getState().i18n.locale;
-        const httpHeaders = {
-            "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
-            "User-Agent": "readium-desktop",
-        };
+        const rootState = this.store.getState();
+        if (rootState.app.publicationFileLocks[publicationDocument.identifier]) {
+            return Promise.reject(`Publication file lock busy ${publicationDocument.identifier}`);
+        }
+        this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
+        try {
+            const locale = rootState.i18n.locale;
+            const httpHeaders = {
+                "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
+                "User-Agent": "readium-desktop",
+            };
 
-        const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
+            const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
 
-        let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
+            let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
 
-        let redoHash = false;
-        if (r2Publication.LCP?.LSD?.Links) {
-            const renewLink = r2Publication.LCP.LSD.Links.find((l) => {
-                return l.HasRel("renew");
-            });
-            if (!renewLink) {
-                debug("!renewLink");
-                return newPubDocument;
-            }
-            if (renewLink.Type !== ContentType.Lsd) {
-                if (renewLink.Type === ContentType.Html) {
-                    shell.openExternal(renewLink.Href);
+            let redoHash = false;
+            if (r2Publication.LCP?.LSD?.Links) {
+                const renewLink = r2Publication.LCP.LSD.Links.find((l) => {
+                    return l.HasRel("renew");
+                });
+                if (!renewLink) {
+                    debug("!renewLink");
                     return newPubDocument;
                 }
-                debug(`renewLink.Type: ${renewLink.Type}`);
-                return newPubDocument;
-            }
+                if (renewLink.Type !== ContentType.Lsd) {
+                    if (renewLink.Type === ContentType.Html) {
+                        shell.openExternal(renewLink.Href);
+                        return newPubDocument;
+                    }
+                    debug(`renewLink.Type: ${renewLink.Type}`);
+                    return newPubDocument;
+                }
 
-            // const nowMs = new Date().getTime();
-            // const numberOfDays = 2;
-            // const laterMs = nowMs + (numberOfDays * 24 * 60 * 60 * 1000);
-            // const later = new Date(laterMs);
-            // const endDateStr = later.toISOString();
-            // debug(`======== RENEW DATE 1: ${endDateStr}`);
-            const endDateStr: string | undefined = undefined; // TODO: user input?
-            const endDate = endDateStr ? moment(endDateStr).toDate() : undefined;
-            let renewResponseLsd: LSD;
-            try {
-                renewResponseLsd = await lsdRenew_(endDate, r2Publication.LCP.LSD, this.deviceIdManager, httpHeaders);
-            } catch (err) {
-                debug(err);
-                const str = this.stringifyLsdError(err);
-                this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                    `LCP [${this.translator.translate("publication.renewButton")}]: ${str}`,
-                    ));
-            }
-            if (renewResponseLsd) {
-                debug(renewResponseLsd);
-                r2Publication.LCP.LSD = renewResponseLsd;
-
-                redoHash = false;
+                // const nowMs = new Date().getTime();
+                // const numberOfDays = 2;
+                // const laterMs = nowMs + (numberOfDays * 24 * 60 * 60 * 1000);
+                // const later = new Date(laterMs);
+                // const endDateStr = later.toISOString();
+                // debug(`======== RENEW DATE 1: ${endDateStr}`);
+                const endDateStr: string | undefined = undefined; // TODO: user input?
+                const endDate = endDateStr ? moment(endDateStr).toDate() : undefined;
+                let renewResponseLsd: LSD;
                 try {
-                    await this.processStatusDocument(
-                        publicationDocument.identifier,
-                        r2Publication,
-                    );
-
-                    debug(r2Publication.LCP);
-                    debug(r2Publication.LCP.LSD);
-
+                    renewResponseLsd =
+                        await lsdRenew_(endDate, r2Publication.LCP.LSD, this.deviceIdManager, httpHeaders);
                 } catch (err) {
                     debug(err);
+                    const str = this.stringifyLsdError(err);
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.renewButton")}]: ${str}`,
+                        ));
                 }
+                if (renewResponseLsd) {
+                    debug(renewResponseLsd);
+                    r2Publication.LCP.LSD = renewResponseLsd;
 
-                if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
-                    debug("processStatusDocument LCP updated.");
-                    redoHash = true;
+                    redoHash = false;
+                    try {
+                        await this.processStatusDocument(
+                            publicationDocument.identifier,
+                            r2Publication,
+                        );
+
+                        debug(r2Publication.LCP);
+                        debug(r2Publication.LCP.LSD);
+
+                    } catch (err) {
+                        debug(err);
+                    }
+
+                    if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+                        debug("processStatusDocument LCP updated.");
+                        redoHash = true;
+                    }
+
+                    const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
+                        r2Publication.LCP.Rights.End.toISOString() : "";
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+                        `LCP [${this.translator.translate("publication.renewButton")}] ${newEndDate}`,
+                        ));
+
+                    const epubPath = this.publicationStorage.getPublicationEpubPath(
+                        publicationDocument.identifier,
+                    );
+                    const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
+                        {},
+                        publicationDocument,
+                        {
+                            hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
+                        },
+                    );
+                    this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
+
+                    newPubDocument = await this.publicationRepository.save(newPublicationDocument);
                 }
-
-                const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
-                    r2Publication.LCP.Rights.End.toISOString() : "";
-                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                    `LCP [${this.translator.translate("publication.renewButton")}] ${newEndDate}`,
-                    ));
-
-                const epubPath = this.publicationStorage.getPublicationEpubPath(
-                    publicationDocument.identifier,
-                );
-                const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
-                    {},
-                    publicationDocument,
-                    {
-                        hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
-                    },
-                );
-                this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
-
-                newPubDocument = await this.publicationRepository.save(newPublicationDocument);
             }
-        }
 
-        return Promise.resolve(newPubDocument);
+            return Promise.resolve(newPubDocument);
+        } finally {
+            this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
+        }
     }
 
     public async returnPublication(
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
 
-        const locale = this.store.getState().i18n.locale;
-        const httpHeaders = {
-            "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
-            "User-Agent": "readium-desktop",
-        };
+        const rootState = this.store.getState();
+        if (rootState.app.publicationFileLocks[publicationDocument.identifier]) {
+            return Promise.reject(`Publication file lock busy ${publicationDocument.identifier}`);
+        }
+        this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
+        try {
+            const locale = rootState.i18n.locale;
+            const httpHeaders = {
+                "Accept-Language": `${locale},en-US;q=0.7,en;q=0.5`,
+                "User-Agent": "readium-desktop",
+            };
 
-        const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
+            const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
 
-        let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
+            let newPubDocument = await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
 
-        let redoHash = false;
-        if (r2Publication.LCP?.LSD?.Links) {
-            const returnLink = r2Publication.LCP.LSD.Links.find((l) => {
-                return l.HasRel("renew");
-            });
-            if (!returnLink) {
-                debug("!returnLink");
-                return newPubDocument;
-            }
-            if (returnLink.Type !== ContentType.Lsd) {
-                if (returnLink.Type === ContentType.Html || returnLink.Type === ContentType.Xhtml) {
-                    shell.openExternal(returnLink.Href);
+            let redoHash = false;
+            if (r2Publication.LCP?.LSD?.Links) {
+                const returnLink = r2Publication.LCP.LSD.Links.find((l) => {
+                    return l.HasRel("renew");
+                });
+                if (!returnLink) {
+                    debug("!returnLink");
                     return newPubDocument;
                 }
-                debug(`returnLink.Type: ${returnLink.Type}`);
-                return newPubDocument;
-            }
+                if (returnLink.Type !== ContentType.Lsd) {
+                    if (returnLink.Type === ContentType.Html || returnLink.Type === ContentType.Xhtml) {
+                        shell.openExternal(returnLink.Href);
+                        return newPubDocument;
+                    }
+                    debug(`returnLink.Type: ${returnLink.Type}`);
+                    return newPubDocument;
+                }
 
-            let returnResponseLsd: LSD;
-            try {
-                returnResponseLsd = await lsdReturn_(r2Publication.LCP.LSD, this.deviceIdManager, httpHeaders);
-            } catch (err) {
-                debug(err);
-                const str = this.stringifyLsdError(err);
-                this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
-                    `LCP [${this.translator.translate("publication.returnButton")}]: ${str}`,
-                    ));
-            }
-            if (returnResponseLsd) {
-                debug(returnResponseLsd);
-                r2Publication.LCP.LSD = returnResponseLsd;
-
-                redoHash = false;
+                let returnResponseLsd: LSD;
                 try {
-                    await this.processStatusDocument(
-                        publicationDocument.identifier,
-                        r2Publication,
-                    );
-
-                    debug(r2Publication.LCP);
-                    debug(r2Publication.LCP.LSD);
-
+                    returnResponseLsd =
+                        await lsdReturn_(r2Publication.LCP.LSD, this.deviceIdManager, httpHeaders);
                 } catch (err) {
                     debug(err);
+                    const str = this.stringifyLsdError(err);
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Error,
+                        `LCP [${this.translator.translate("publication.returnButton")}]: ${str}`,
+                        ));
                 }
+                if (returnResponseLsd) {
+                    debug(returnResponseLsd);
+                    r2Publication.LCP.LSD = returnResponseLsd;
 
-                if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
-                    debug("processStatusDocument LCP updated.");
-                    redoHash = true;
+                    redoHash = false;
+                    try {
+                        await this.processStatusDocument(
+                            publicationDocument.identifier,
+                            r2Publication,
+                        );
+
+                        debug(r2Publication.LCP);
+                        debug(r2Publication.LCP.LSD);
+
+                    } catch (err) {
+                        debug(err);
+                    }
+
+                    if ((r2Publication as any).__LCP_LSD_UPDATE_COUNT) {
+                        debug("processStatusDocument LCP updated.");
+                        redoHash = true;
+                    }
+
+                    const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
+                        r2Publication.LCP.Rights.End.toISOString() : "";
+                    this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
+                        `LCP [${this.translator.translate("publication.returnButton")}] ${newEndDate}`,
+                        ));
+
+                    const epubPath = this.publicationStorage.getPublicationEpubPath(
+                        publicationDocument.identifier,
+                    );
+                    const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
+                        {},
+                        publicationDocument,
+                        {
+                            hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
+                        },
+                    );
+                    this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
+
+                    newPubDocument = await this.publicationRepository.save(newPublicationDocument);
                 }
-
-                const newEndDate = r2Publication.LCP && r2Publication.LCP.Rights && r2Publication.LCP.Rights.End ?
-                    r2Publication.LCP.Rights.End.toISOString() : "";
-                this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
-                    `LCP [${this.translator.translate("publication.returnButton")}] ${newEndDate}`,
-                    ));
-
-                const epubPath = this.publicationStorage.getPublicationEpubPath(
-                    publicationDocument.identifier,
-                );
-                const newPublicationDocument: PublicationDocumentWithoutTimestampable = Object.assign(
-                    {},
-                    publicationDocument,
-                    {
-                        hash: redoHash ? await extractCrc32OnZip(epubPath) : publicationDocument.hash,
-                    },
-                );
-                this.updateDocumentLcpLsdBase64Resources(newPublicationDocument, r2Publication.LCP);
-
-                newPubDocument = await this.publicationRepository.save(newPublicationDocument);
             }
-        }
 
-        return Promise.resolve(newPubDocument);
+            return Promise.resolve(newPubDocument);
+        } finally {
+            this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
+        }
     }
 
     public convertUnlockPublicationResultToString(val: any): string | undefined {
@@ -721,15 +753,11 @@ export class LcpManager {
         publicationDocumentIdentifier: string,
         r2Publication: R2Publication): Promise<void> {
 
-        const epubPath = this.publicationStorage.getPublicationEpubPath(
-            publicationDocumentIdentifier,
-        );
         (r2Publication as any).__LCP_LSD_UPDATE_COUNT = 0;
-        return this.processStatusDocument_(epubPath, publicationDocumentIdentifier, r2Publication);
+        return this.processStatusDocument_(publicationDocumentIdentifier, r2Publication);
     }
 
     private async processStatusDocument_(
-        epubPath: string,
         publicationDocumentIdentifier: string,
         r2Publication: R2Publication): Promise<void> {
 
@@ -795,6 +823,9 @@ export class LcpManager {
                         // will be updated below via another round of processStatusDocument_()
                         r2Publication.LCP.LSD = prevLSD;
 
+                        const epubPath = this.publicationStorage.getPublicationEpubPath(
+                            publicationDocumentIdentifier,
+                        );
                         await this.injectLcplIntoZip_(epubPath, licenseUpdateJson);
 
                         // Protect against infinite loop due to incorrect LCP / LSD server dates
@@ -810,7 +841,6 @@ export class LcpManager {
                             try {
                                 // loop to re-init LSD in updated LCP
                                 await this.processStatusDocument_(
-                                    epubPath,
                                     publicationDocumentIdentifier,
                                     r2Publication);
 

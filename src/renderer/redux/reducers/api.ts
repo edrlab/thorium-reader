@@ -20,7 +20,7 @@ export function apiReducer(
     state: ApiState<any> = initialState,
     action: apiActions.result.TAction |
         apiActions.clean.TAction,
-) {
+): ApiState<any> {
 
     switch (action.type) {
         case apiActions.result.ID:

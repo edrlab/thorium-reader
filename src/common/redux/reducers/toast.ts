@@ -23,7 +23,7 @@ const initialState: ToastState = {
 export function toastReducer(
     state: ToastState = initialState,
     action: toastActions.openRequest.TAction | toastActions.closeRequest.TAction,
-) {
+): ToastState {
     switch (action.type) {
         case toastActions.openRequest.ID:
             return Object.assign(

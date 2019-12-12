@@ -92,6 +92,21 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
             continue;
         }
 
+        const publicationFileLocks = yield* selectTyped((s: RootState) => s.app.publicationFileLocks);
+
+        if (publicationFileLocks[action.payload.publicationIdentifier]) {
+            yield put(streamerActions.publicationOpenError.build(new Error(""), publicationDocument));
+            continue;
+        }
+        // no need to lock here, because once the streamer server accesses the ZIP file and streams resources,
+        // it's like a giant no-go to inject LCP license (which is why readers are closed before LSD updates)
+        // also, checkPublicationLicenseUpdate() places a lock or simply skips LSD checks (see below)
+        // yield put(appActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
+        // try {
+        // } finally {
+        //     yield put(appActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
+        // }
+
         const translator = diMainGet("translator");
         const lcpManager = diMainGet("lcp-manager");
         const publicationViewConverter = diMainGet("publication-view-converter");
