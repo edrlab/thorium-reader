@@ -10,8 +10,10 @@ import * as React from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import * as styles2 from "readium-desktop/renderer/assets/styles/myBooks.css";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
 import { RootState } from "readium-desktop/renderer/redux/states";
+
 import LibraryHeader from "./LibraryHeader";
 
 // tslint:disable-next-line: no-empty-interface
@@ -64,7 +66,7 @@ class LibraryLayout extends React.Component<IProps, undefined> {
                     { this.props.secondaryHeader }
                     <main
                         id="main"
-                        className={classNames(styles.main, this.props.mainClassName)}
+                        className={classNames(styles.main, styles2.main, this.props.mainClassName)}
                         role="main"
                     >
                         <a id="main-content" aria-hidden tabIndex={-1}></a>

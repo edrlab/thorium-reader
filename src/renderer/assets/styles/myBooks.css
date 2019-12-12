@@ -1,6 +1,6 @@
 @import "./focus-mixin.css";
 
-main {
+.main {
     height: calc(100vh - 7.75rem);
     width: calc(100% - 120px);
     padding-left: 60px;

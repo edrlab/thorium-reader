@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
-import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
@@ -36,7 +36,7 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <section id={style.aboutThoriumButton}>
+            <section id={styles.aboutThoriumButton}>
                 <h2>{__("catalog.about.title")}</h2>
                 <p>{`v${_APP_VERSION}`}</p>
                 <button onClick={this.props.displayPublicationInfo}>

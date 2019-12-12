@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
-import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import GridTagButton from "readium-desktop/renderer/components/catalog/GridTagButton";
 import {
     TranslatorProps, withTranslator,
@@ -45,13 +45,13 @@ class GridTagLayout extends React.Component<IProps, IState> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <section id={style.myTags}>
+            <section id={styles.myTags}>
                 <h1> {__("catalog.tags")} </h1>
                 {this.props.tags.length === 0 ?
                     <> {__("catalog.emptyTagList")} </>
                     :
                     <>
-                        <div id={style.sortMenu}>
+                        <div id={styles.sortMenu}>
                             <Menu
                                 button={
                                     <div>
@@ -69,7 +69,7 @@ class GridTagLayout extends React.Component<IProps, IState> {
                                 toggle={this.togglemenu}
                             />
                         </div>
-                        <section id={style.content}>
+                        <section id={styles.content}>
                             {this.props.tags.map((tag, i: number) => {
                                 return (
                                     <GridTagButton

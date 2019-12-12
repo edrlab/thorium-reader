@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import * as style from "readium-desktop/renderer/assets/styles/myBooks.css";
+import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
 
@@ -32,7 +32,7 @@ class SortMenu extends React.Component<IProps, undefined> {
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
-            <div id={style.sortType}>
+            <div id={styles.sortType}>
                 <button role="menuitem"
                     onClick={this.props.onClickAlphaSort}> A-Z </button>
                 <button role="menuitem"
