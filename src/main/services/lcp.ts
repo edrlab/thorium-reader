@@ -688,15 +688,39 @@ export class LcpManager {
 
     public convertLcpLsdInfo(lcp: LCP, r2LCPBase64: string, r2LSDBase64: string): LcpInfo {
 
+        let dateStr1 = "";
+        try {
+            dateStr1 = lcp.Issued?.toISOString();
+        } catch (err) {
+            debug(err);
+        }
+        let dateStr2 = "";
+        try {
+            dateStr2 = lcp.Updated?.toISOString();
+        } catch (err) {
+            debug(err);
+        }
+        let dateStr3 = "";
+        try {
+            dateStr3 = lcp.Rights?.Start?.toISOString();
+        } catch (err) {
+            debug(err);
+        }
+        let dateStr4 = "";
+        try {
+            dateStr4 = lcp.Rights?.End?.toISOString();
+        } catch (err) {
+            debug(err);
+        }
         const lcpInfo: LcpInfo = {
             provider: lcp.Provider,
-            issued: lcp.Issued,
-            updated: lcp.Updated,
+            issued: dateStr1,
+            updated: dateStr2,
             rights: lcp.Rights ? {
                 copy: lcp.Rights.Copy,
                 print: lcp.Rights.Print,
-                start: lcp.Rights.Start,
-                end: lcp.Rights.End,
+                start: dateStr3,
+                end: dateStr4,
             } : undefined,
             r2LCPBase64,
             textHint: lcp.Encryption.UserKey.TextHint ? lcp.Encryption.UserKey.TextHint : "",
@@ -715,19 +739,37 @@ export class LcpManager {
         }
 
         if (lcp.LSD && lcpInfo.lsd) {
+            let dateStr5 = "";
+            try {
+                dateStr5 = lcp.LSD.Updated?.License?.toISOString();
+            } catch (err) {
+                debug(err);
+            }
+            let dateStr6 = "";
+            try {
+                dateStr6 = lcp.LSD.Updated?.Status?.toISOString();
+            } catch (err) {
+                debug(err);
+            }
             lcpInfo.lsd.lsdStatus = {
                 id: lcp.LSD.ID,
                 status: lcp.LSD.Status,
                 message: lcp.LSD.Message,
                 updated: {
-                    license: lcp.LSD.Updated.License.toISOString(),
-                    status: lcp.LSD.Updated.Status.toISOString(),
+                    license: dateStr5,
+                    status: dateStr6,
                 },
                 events: lcp.LSD.Events ? lcp.LSD.Events.map((ev) => {
+                    let dateStr7 = "";
+                    try {
+                        dateStr7 = ev.TimeStamp?.toISOString();
+                    } catch (err) {
+                        debug(err);
+                    }
                     return {
                         id: ev.ID,
                         name: ev.Name,
-                        timeStamp: ev.TimeStamp.toISOString(),
+                        timeStamp: dateStr7,
                         type: ev.Type, // r2-lcp-js TypeEnum
                     };
                 }) : undefined,

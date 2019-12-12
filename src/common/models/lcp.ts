@@ -17,14 +17,14 @@ export interface LsdInfo {
 export interface LcpRights {
     print?: number;
     copy?: number;
-    start?: Date;
-    end?: Date;
+    start?: string; // Date.toISOString()
+    end?: string; // Date.toISOString()
 }
 
 export interface LcpInfo {
     provider: string;
-    issued: Date;
-    updated?: Date;
+    issued: string; // Date.toISOString()
+    updated?: string; // Date.toISOString()
     lsd?: LsdInfo;
     rights: LcpRights;
     textHint: string;
@@ -32,14 +32,32 @@ export interface LcpInfo {
     r2LCPBase64: string;
 }
 
-export interface LsdStatus {
-    events: any[]; // TODO any?!
+export interface LsdEvent {
+    type: string;
+    name: string;
     id: string;
-    links: any[]; // TODO any?!
+    timeStamp: string; // Date.toISOString()
+}
+
+export interface LsdLink {
+    type: string;
+    rel: string;
+    href: string;
+    length?: number;
+    title?: string;
+    templated?: boolean;
+    profile?: string;
+    hash?: string;
+}
+
+export interface LsdStatus {
+    events?: LsdEvent[];
+    id: string;
+    links: LsdLink[];
     message: string;
     status: StatusEnum;
     updated: {
-        license: string;
-        status: string;
+        license: string; // Date.toISOString()
+        status: string; // Date.toISOString()
     };
 }

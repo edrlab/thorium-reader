@@ -62,12 +62,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
                 lcpRightsStartDateStr = moment(lcpRightsStartDate).format("LLL");
             } catch (err) {
                 debug(err);
-                try {
-                    lcpRightsStartDateStr = lcpRightsStartDate.toLocaleString(locale);
-                } catch (err2) {
-                    debug(err2);
-                    lcpRightsStartDateStr = lcpRightsStartDate.toLocaleString();
-                }
+                lcpRightsStartDateStr = lcpRightsStartDate;
             }
         }
 
@@ -78,12 +73,7 @@ class LcpInfo extends React.Component<IProps, undefined> {
                 lcpRightsEndDateStr = moment(lcpRightsEndDate).format("LLL");
             } catch (err) {
                 debug(err);
-                try {
-                    lcpRightsEndDateStr = lcpRightsEndDate.toLocaleString(locale);
-                } catch (err2) {
-                    debug(err2);
-                    lcpRightsEndDateStr = lcpRightsEndDate.toLocaleString();
-                }
+                lcpRightsEndDateStr = lcpRightsEndDate;
             }
         }
 
