@@ -9,7 +9,7 @@ This release includes the following (notable) new features, improvements and bug
 * LCP 1.0 compliance, including library lending interactions (return/renew)
 * OPDS improvements: support for hybrid OPDS2 navigation/publications views, OAuth Authentication for OPDS (with seamless LCP acquisition via "borrow"), fixed search/previous/next-pagination links, metadata parser corrections, navigation links with "number of items"
 * User Interface fix: publications shown twice in local bookshelf (recently added vs. reading list)
-* Publication "info" modal dialog box: now with support for small/large cover image toggle
+* Publication "info" modal dialog box: now with support for small/large cover image toggle, and eliminated the top-offset bug (blur effect was causing margin)
 * Download progress indicator for LCP and OPDS acquisitions
 * Publications now have checksum (CRC) calculations to prevent duplicate imports
 * Navigation between main window sections (local bookshelf, OPDS catalogs) preserves grid vs. list display setting, and preserves context (was total reset before)
@@ -28,10 +28,15 @@ This release includes the following (notable) new features, improvements and bug
 Git commit diff since `v1.0.5`:
 https://github.com/readium/readium-desktop/compare/v1.0.5...v1.1.0
 
-=> **146** GitHub Pull Requests or high-level Git commits.
+=> **151** GitHub Pull Requests or high-level Git commits.
 
 Here is the complete list of commits, ordered by descending date:
 
+* [(_)](https://github.com/readium/readium-desktop/commit/5c54bfa6156775727691829418fbe2bff36a684e) __fix(UI):__ reader window had top-offset content due to CSS mismatch [skip ci] Fixes [#880](https://github.com/readium/readium-desktop/issues/880)
+* [(_)](https://github.com/readium/readium-desktop/commit/58e50aca856a6630b75f097f6f4435f37e8baff5) __fix(UI):__ removed blur CSS filter effect which was somehow causing a top offset of the underlying content when modal dialog box is displayed [skip ci]
+* [(_)](https://github.com/readium/readium-desktop/commit/3899e6dd420316845e47190ec6cf597e1d88294a) __chore(release):__ version bump 1.1.0 [skip ci]
+* [(_)](https://github.com/readium/readium-desktop/commit/530c36e8aa31117878abd1b1f94f613ebb4ed0c1) __chore(release):__ changelog 1.1.0 [skip ci]
+* [(_)](https://github.com/readium/readium-desktop/commit/713aaa4836361179fe20f35072e29047fc0ed1f7) __chore(release):__ changelog 1.1.0 [skip ci]
 * [(_)](https://github.com/readium/readium-desktop/commit/bb418cb93837e649a4b55f209676a1dbb0576606) __chore(NPM):__ package update, minor semver increment
 * [(_)](https://github.com/readium/readium-desktop/commit/604a02133ca3c4ad8ddb6da4e3737ac508350abb) __chore(build):__ clean before package, and updated Electron rebuild version
 * [(_)](https://github.com/readium/readium-desktop/commit/6c7d7c3cbc7be7f27bc47dffc9d88b85c0f67645) __chore(NPM):__ minor semantic version increments on package dependencies
