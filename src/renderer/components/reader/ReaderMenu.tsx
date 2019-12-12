@@ -9,8 +9,6 @@ import classnames from "classnames";
 import * as queryString from "query-string";
 import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
-import { apiAction } from "readium-desktop/renderer/tools/apiAction";
-import { apiSubscribe } from "readium-desktop/renderer/tools/apiSubscribe";
 import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as EditIcon from "readium-desktop/renderer/assets/icons/baseline-edit-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
@@ -18,6 +16,8 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/components/utils/hoc/translator";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { apiAction } from "readium-desktop/renderer/tools/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/tools/apiSubscribe";
 import { TFormEvent, TMouseEventOnButton } from "readium-desktop/typings/react";
 import { Unsubscribe } from "redux";
 

@@ -12,8 +12,8 @@ import { buildOpdsBrowserRoute } from "readium-desktop/renderer/opds/route";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ContentType } from "readium-desktop/utils/content-type";
 
-import { decodeB64 } from "../tools/base64";
 import { dispatchHistoryPush, TLocation } from "../routing";
+import { decodeB64 } from "../tools/base64";
 import { extractParamFromOpdsRoutePathname } from "./route";
 
 export const dispatchOpdsLink =

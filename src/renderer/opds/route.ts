@@ -8,8 +8,8 @@
 import { matchPath } from "react-router";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 
-import { decodeB64, encodeB64 } from "../tools/base64";
 import { IOpdsBrowse, routes } from "../routing";
+import { decodeB64, encodeB64 } from "../tools/base64";
 
 export const extractParamFromOpdsRoutePathname =
     (pathname: string) =>
