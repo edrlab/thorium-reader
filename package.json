@@ -14,7 +14,7 @@
   "scripts": {
     "clean": "rimraf dist && rimraf release",
     "test": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache \"test\"",
-    "__postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=7.1.1 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
+    "__postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=7.1.4 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
     "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\" && rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\"",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
@@ -34,6 +34,7 @@
     "vscode:launch:attach:electron": "electron --enable-logging --remote-debugging-port=9223 --inspect=25575 --nolazy .",
     "vscode:launch:attach": "cross-env DEBUG=r2:*,readium-desktop:* NODE_ENV=development VSCODE_LAUNCH=true npm run build:dev:main && concurrently --kill-others \"npm run start:dev:renderer\" \"npm run start:dev:reader\" \"npm run vscode:launch:attach:electron\"",
     "vscode:launch:hot": "cross-env DEBUG=r2:*,readium-desktop:* NODE_ENV=development VSCODE_LAUNCH=true npm run build:dev:main",
+    "prepackage:build": "npm run clean",
     "package:build": "cross-env PACKAGING=1 npm run build:prod",
     "package:pack-only": "npm run package:build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --dir --publish never",
     "package": "npm run package:build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --publish never",
