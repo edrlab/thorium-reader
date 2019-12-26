@@ -132,6 +132,10 @@ export class Translator {
     public translate: I18nTyped = this._translate;
     private locale: string = "en";
 
+    constructor(defaultLocale = "en") {
+        this.locale = defaultLocale;
+    }
+
     public getLocale(): string {
         return this.locale;
     }
