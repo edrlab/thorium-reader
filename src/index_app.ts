@@ -16,7 +16,6 @@ import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import App from "readium-desktop/renderer/components/App";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { winActions } from "readium-desktop/renderer/redux/actions/";
-import { WinStatus } from "readium-desktop/renderer/redux/states/win";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
@@ -58,32 +57,19 @@ if (IS_DEV) {
     }, 5000);
 }
 
-// Render app
-let hasBeenRenderered = false;
-
 // Render React App component
-function render() {
+export function renderMainApp() {
     ReactDOM.render(
         React.createElement(App, {}, null),
         document.getElementById("app"),
     );
 }
-// Init redux store
-const store = diRendererGet("store");
-
-store.subscribe(() => {
-    const state = store.getState();
-
-    if (!hasBeenRenderered && state.win.status === WinStatus.Initialized) {
-        render();
-        hasBeenRenderered = true;
-    }
-});
 
 ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
+            const store = diRendererGet("store");
             store.dispatch(winActions.initRequest.build(data.payload.winId));
             break;
     }
@@ -96,6 +82,7 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
     switch (data.type) {
         case syncIpc.EventType.MainAction:
             // Dispatch main action to renderer reducers
+            const store = diRendererGet("store");
             store.dispatch(Object.assign(
                 {},
                 actionSerializer.deserialize(data.payload.action),

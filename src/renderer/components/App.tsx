@@ -8,7 +8,6 @@
 import "reflect-metadata";
 
 import { ConnectedRouter } from "connected-react-router";
-import { History } from "history";
 import * as path from "path";
 import * as React from "react";
 import Dropzone from "react-dropzone";
@@ -18,22 +17,12 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
 import PageManager from "readium-desktop/renderer/components/PageManager";
-import { lazyInject } from "readium-desktop/renderer/di";
-import { RootState } from "readium-desktop/renderer/redux/states";
-import { Store } from "redux";
+import { diRendererGet } from "readium-desktop/renderer/di";
 
-import { diRendererSymbolTable } from "../diSymbolTable";
-import { IRouterLocationState } from "../routing";
 import DownloadsPanel from "./DownloadsPanel";
 import ToastManager from "./toast/ToastManager";
 
 export default class App extends React.Component<{}, undefined> {
-
-    @lazyInject(diRendererSymbolTable.store)
-    private store: Store<RootState>;
-
-    @lazyInject(diRendererSymbolTable.history)
-    private history: History<IRouterLocationState>;
 
     constructor(props: {}) {
         super(props);
@@ -43,7 +32,8 @@ export default class App extends React.Component<{}, undefined> {
 
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
-        this.store.dispatch(
+        const store = diRendererGet("store");
+        store.dispatch(
             dialogActions.openRequest.build(DialogTypeName.FileImport,
                 {
                     files: acceptedFiles.filter((file) => {
@@ -71,9 +61,12 @@ export default class App extends React.Component<{}, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
+        const store = diRendererGet("store");
+        const history = diRendererGet("history");
+
         return (
-            <Provider store={this.store} >
-                <ConnectedRouter history={this.history}>
+            <Provider store={store} >
+                <ConnectedRouter history={history}>
                     <div className={styles.root}>
                         <Dropzone
                             onDrop={this.onDrop}

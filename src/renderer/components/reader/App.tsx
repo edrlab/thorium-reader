@@ -11,25 +11,20 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
 import ToastManager from "readium-desktop/renderer/components/toast/ToastManager";
-import { lazyInject } from "readium-desktop/renderer/di";
-import { diRendererSymbolTable } from "readium-desktop/renderer/diSymbolTable";
-import { RootState } from "readium-desktop/renderer/redux/states";
-import { Store } from "redux";
+import { diRendererGet } from "readium-desktop/renderer/di";
 
 import Reader from "./Reader";
 
 export default class App extends React.Component<{}, undefined> {
-
-    @lazyInject(diRendererSymbolTable.store)
-    private store: Store<RootState>;
 
     constructor(props: {}) {
         super(props);
     }
 
     public render(): React.ReactElement<{}> {
+        const store = diRendererGet("store");
         return (
-            <Provider store={ this.store }>
+            <Provider store={ store }>
                 <div>
                     <Reader/>
                     <DialogManager />
