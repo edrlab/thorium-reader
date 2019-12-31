@@ -15,39 +15,27 @@ import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
 function* winInitWatcher(): SagaIterator {
-    while (true) {
+    yield all({
+        win: take(winActions.initRequest.ID),
+        i18n: take(i18nActions.setLocale.ID),
+    });
 
-        yield all({
-            win: take(winActions.initRequest.ID),
-            i18n: take(i18nActions.setLocale.ID),
-        });
-
-        yield put(winActions.initSuccess.build());
-    }
+    yield put(winActions.initSuccess.build());
 }
-
-let notRendered = true;
 
 function* winStartWatcher(): SagaIterator {
 
-    while (true) {
+    yield take(winActions.initSuccess.ID);
 
-        yield take(winActions.initSuccess.ID);
+    const isReader = yield* selectTyped(
+        (state: RootState) =>
+            typeof state.reader.reader !== "undefined",
+    );
 
-        if (notRendered) {
-
-            const isReader = yield* selectTyped(
-                (state: RootState) =>
-                    typeof state.reader.reader !== "undefined",
-            );
-
-            if (isReader) {
-                renderReaderApp();
-            } else {
-                renderMainApp();
-            }
-            notRendered = false;
-        }
+    if (isReader) {
+        renderReaderApp();
+    } else {
+        renderMainApp();
     }
 }
 
