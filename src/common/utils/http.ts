@@ -79,13 +79,6 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
         await new Promise((resolve, reject) => {
             request(requestOptions, (err, response) => {
 
-                debug("HTTP RESPONSE:");
-                debug(err);
-                debug(response.statusCode);
-                debug(response.statusMessage);
-                debug(response.url);
-                debug(response.body?.substr ? response.body.substr(0, 800) : response.body);
-
                 if (err) {
                     if (err.code === "ETIMEDOUT") {
                         resolve({
@@ -99,6 +92,14 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
                     reject(err);
                     return ;
                 }
+
+                debug("HTTP RESPONSE:");
+                debug(err);
+                debug(response.statusCode);
+                debug(response.statusMessage);
+                debug(response.url);
+                debug(response.body?.substr ? response.body.substr(0, 800) : response.body);
+
                 resolve({
                     isTimeout: false,
                     isFailure: response.statusCode < 200 || response.statusCode >= 300,
