@@ -304,10 +304,8 @@ export class Reader extends React.Component<IProps, IState> {
         // Why an adaptation from redux settings to local state ?
         this.store.subscribe(() => {
             const storeState = this.store.getState();
-            this.props.translator.setLocale(storeState.i18n.locale);
             const readerConfig = storeState.reader.config;
             if (readerConfig && readerConfig !== this.state.readerConfig) {
-                this.props.translator.setLocale(this.store.getState().i18n.locale);
 
                 const indexes = this.state.indexes;
                 for (const key of ObjectKeys(this.state.indexes)) {
