@@ -31,7 +31,7 @@ function* setLocale(action: i18nActions.setLocale.TAction) {
     ]);
 }
 
-export function* localeWatcher() {
+function* localeWatcher() {
     yield takeEvery(i18nActions.setLocale.build, setLocale);
 }
 
