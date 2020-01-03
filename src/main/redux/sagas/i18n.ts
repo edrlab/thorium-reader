@@ -7,23 +7,32 @@
 
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { i18nActions } from "readium-desktop/common/redux/actions";
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
-import { all, call } from "redux-saga/effects";
+import { all, call, takeEvery } from "redux-saga/effects";
 
-export function* localeWatcher() {
-    while (true) {
-        const action = yield* takeTyped(i18nActions.setLocale.build);
-        const translator = diMainGet("translator");
+function* setLocale(action: i18nActions.setLocale.TAction) {
+    const translator = diMainGet("translator");
+    const configRepository: ConfigRepository<LocaleConfigValueType> = diMainGet("config-repository");
+
+    const configRepositorySave = () =>
+        configRepository.save({
+            identifier: LocaleConfigIdentifier,
+            value: {
+                locale: action.payload.locale,
+            },
+        });
+    const translatorSetLocale = () =>
         translator.setLocale(action.payload.locale);
 
-        const configRepository: ConfigRepository<LocaleConfigValueType> = diMainGet("config-repository");
-        yield call(() => configRepository.save({
-            identifier: LocaleConfigIdentifier,
-            value: { locale: action.payload.locale },
-        }));
-    }
+    yield all([
+        call(configRepositorySave),
+        call(translatorSetLocale),
+    ]);
+}
+
+export function* localeWatcher() {
+    yield takeEvery(i18nActions.setLocale.build, setLocale);
 }
 
 export function* watchers() {
