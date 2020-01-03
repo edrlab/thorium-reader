@@ -74,8 +74,6 @@ import optionsValues, {
 //     supportFetchAPI: true,
 // });
 
-const queryParams = getURLQueryParams();
-
 // TODO: centralize this code, currently duplicated
 // see src/main/streamer.js
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
@@ -140,18 +138,21 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
     return jsonMsg;
 };
-setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
 
-const publicationJsonUrl = queryParams.pub.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
-    convertCustomSchemeToHttpUrl(queryParams.pub) : queryParams.pub;
+const queryParams = getURLQueryParams();
+const lcpHint = queryParams.lcpHint;
+// pub is undefined when loaded in dependency injection by library webview.
+// Dependency injection is shared between all the renderer view
+const publicationJsonUrl = queryParams.pub?.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
+    ? convertCustomSchemeToHttpUrl(queryParams.pub)
+    : queryParams.pub;
+
 // const pathBase64Raw = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
 // const pathBase64 = decodeURIComponent(pathBase64Raw);
 // const pathDecoded = window.atob(pathBase64);
 // const pathFileName = pathDecoded.substr(
 //     pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
 //     pathDecoded.length - 1);
-
-const lcpHint = queryParams.lcpHint;
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -265,6 +266,8 @@ export class Reader extends React.Component<IProps, IState> {
         this.handleLinkClick = this.handleLinkClick.bind(this);
         this.findBookmarks = this.findBookmarks.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
+
+        setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
     }
 
     public async componentDidMount() {

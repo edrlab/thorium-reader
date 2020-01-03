@@ -13,7 +13,6 @@ import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import App from "readium-desktop/renderer/components/App";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { winActions } from "readium-desktop/renderer/redux/actions/";
 
@@ -55,14 +54,6 @@ if (IS_DEV) {
     setTimeout(() => {
         devTron.install();
     }, 5000);
-}
-
-// Render React App component
-export function renderMainApp() {
-    ReactDOM.render(
-        React.createElement(App, {}, null),
-        document.getElementById("app"),
-    );
 }
 
 ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {

@@ -16,6 +16,9 @@ import { diRendererSymbolTable as diSymbolTable } from "readium-desktop/renderer
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { initStore } from "readium-desktop/renderer/redux/store/memory";
 import { Store } from "redux";
+
+import * as mainApp from "./components/App";
+import * as readerApp from "./components/reader/App";
 import { IRouterLocationState } from "./routing";
 
 // Create container used for dependency injection
@@ -36,12 +39,17 @@ container.bind<Translator>(diSymbolTable.translator).toConstantValue(translator)
 const actionSerializer = new ActionSerializer();
 container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).toConstantValue(actionSerializer);
 
+container.bind<typeof readerApp.default>(diSymbolTable["react-reader-app"]).toConstantValue(readerApp.default);
+container.bind<typeof mainApp.default>(diSymbolTable["react-main-app"]).toConstantValue(mainApp.default);
+
 // local interface to force type return
 interface IGet {
     (s: "history"): History;
     (s: "store"): Store<RootState>;
     (s: "translator"): Translator;
     (s: "action-serializer"): ActionSerializer;
+    (s: "react-reader-app"): typeof readerApp.default;
+    (s: "react-main-app"): typeof mainApp.default;
 }
 
 // export function to get back depedency from container

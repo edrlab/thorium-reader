@@ -9,12 +9,9 @@ import "font-awesome/css/font-awesome.css";
 import "react-dropdown/style.css";
 
 import { ipcRenderer } from "electron";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import App from "readium-desktop/renderer/components/reader/App";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { winActions } from "readium-desktop/renderer/redux/actions/";
 
@@ -24,6 +21,9 @@ import {
 } from "@r2-shared-js/init-globals";
 
 import { EventPayload } from "./common/ipc/sync";
+
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
@@ -50,14 +50,6 @@ if (IS_DEV) {
     setTimeout(() => {
         devTron.install();
     }, 5000);
-}
-
-// Render React App component
-export function renderReaderApp() {
-    ReactDOM.render(
-        React.createElement(App, {}, null),
-        document.getElementById("app"),
-    );
 }
 
 ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
