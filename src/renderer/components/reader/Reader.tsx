@@ -74,7 +74,7 @@ import optionsValues, {
 //     supportFetchAPI: true,
 // });
 
-const queryParams = () => getURLQueryParams();
+const queryParams = getURLQueryParams();
 
 // TODO: centralize this code, currently duplicated
 // see src/main/streamer.js
@@ -140,19 +140,18 @@ const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
     return jsonMsg;
 };
+setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
 
-const publicationJsonUrl = () =>
-    queryParams().pub.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
-    ? convertCustomSchemeToHttpUrl(queryParams().pub)
-    : queryParams().pub;
-// const pathBase64Raw = publicationJsonUrl().replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+const publicationJsonUrl = queryParams.pub.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
+    convertCustomSchemeToHttpUrl(queryParams.pub) : queryParams.pub;
+// const pathBase64Raw = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
 // const pathBase64 = decodeURIComponent(pathBase64Raw);
 // const pathDecoded = window.atob(pathBase64);
 // const pathFileName = pathDecoded.substr(
 //     pathDecoded.replace(/\\/g, "/").lastIndexOf("/") + 1,
 //     pathDecoded.length - 1);
 
-const lcpHint = () => queryParams().lcpHint;
+const lcpHint = queryParams.lcpHint;
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -192,9 +191,6 @@ interface IState {
 
 export class Reader extends React.Component<IProps, IState> {
     private fastLinkRef: React.RefObject<HTMLAnchorElement>;
-
-    // can be get back with redux-connect props injection
-    // to remove
 
     // can be get back with withTranslator HOC
     // to remove
@@ -269,19 +265,17 @@ export class Reader extends React.Component<IProps, IState> {
         this.handleLinkClick = this.handleLinkClick.bind(this);
         this.findBookmarks = this.findBookmarks.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
-
-        setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
     }
 
     public async componentDidMount() {
         this.setState({
-            publicationJsonUrl: publicationJsonUrl(),
+            publicationJsonUrl,
         });
 
-        if (lcpHint()) {
+        if (lcpHint) {
             this.setState({
-                lcpHint: lcpHint(),
-                lcpPass: this.state.lcpPass + " [" + lcpHint() + "]",
+                lcpHint,
+                lcpPass: this.state.lcpPass + " [" + lcpHint + "]",
             });
         }
 
@@ -340,8 +334,8 @@ export class Reader extends React.Component<IProps, IState> {
             });
         });
 
-        let docHref: string = queryParams().docHref;
-        let docSelector: string = queryParams().docSelector;
+        let docHref: string = queryParams.docHref;
+        let docSelector: string = queryParams.docSelector;
 
         if (docHref && docSelector) {
             // Decode base64
@@ -403,7 +397,7 @@ export class Reader extends React.Component<IProps, IState> {
             "reader/addBookmark",
         ], this.findBookmarks);
 
-        apiAction("publication/get", queryParams().pubId, false)
+        apiAction("publication/get", queryParams.pubId, false)
             .then((publicationView) => {
                 this.setState({publicationView});
                 this.loadPublicationIntoViewport(publicationView, locator);
@@ -520,9 +514,9 @@ export class Reader extends React.Component<IProps, IState> {
         // let response: Response;
         // try {
         //     // https://github.com/electron/electron/blob/v3.0.0/docs/api/breaking-changes.md#webframe
-        //     // queryParams().pub is READIUM2_ELECTRON_HTTP_PROTOCOL (see convertCustomSchemeToHttpUrl)
-        //     // publicationJsonUrl() is https://127.0.0.1:PORT
-        //     response = await fetch(publicationJsonUrl());
+        //     // queryParams.pub is READIUM2_ELECTRON_HTTP_PROTOCOL (see convertCustomSchemeToHttpUrl)
+        //     // publicationJsonUrl is https://127.0.0.1:PORT
+        //     response = await fetch(publicationJsonUrl);
         // } catch (e) {
         //     console.log(e);
         //     return;
@@ -576,13 +570,13 @@ export class Reader extends React.Component<IProps, IState> {
 
         const clipboardInterceptor = !publicationView.lcp ? undefined :
             (clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => {
-                apiAction("reader/clipboardCopy", queryParams().pubId, clipboardData)
+                apiAction("reader/clipboardCopy", queryParams.pubId, clipboardData)
                     .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
             };
 
         installNavigatorDOM(
             r2Publication,
-            publicationJsonUrl(),
+            publicationJsonUrl,
             "publication_viewport",
             preloadPath,
             locator,
@@ -600,8 +594,8 @@ export class Reader extends React.Component<IProps, IState> {
     }
 
     private saveReadingLocation(loc: LocatorExtended) {
-//        this.props.setLastReadingLocation(queryParams().pubId, loc.locator);
-        apiAction("reader/setLastReadingLocation", queryParams().pubId, loc.locator)
+//        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
+        apiAction("reader/setLastReadingLocation", queryParams.pubId, loc.locator)
             .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
 
     }
@@ -675,7 +669,7 @@ export class Reader extends React.Component<IProps, IState> {
             }, 100);
         }
 
-        const newUrl = publicationJsonUrl() + "/../" + url;
+        const newUrl = publicationJsonUrl + "/../" + url;
         handleLinkUrl(newUrl);
 
         // Example to pass a specific cssSelector:
@@ -715,9 +709,9 @@ export class Reader extends React.Component<IProps, IState> {
             }
         } else if (this.state.currentLocation) {
             const locator = this.state.currentLocation.locator;
-//            this.props.addBookmark(queryParams().pubId, locator);
+//            this.props.addBookmark(queryParams.pubId, locator);
             try {
-                await apiAction("reader/addBookmark", queryParams().pubId, locator);
+                await apiAction("reader/addBookmark", queryParams.pubId, locator);
             } catch (e) {
                 console.error("Error to fetch api reader/addBookmark", e);
             }
@@ -819,7 +813,7 @@ export class Reader extends React.Component<IProps, IState> {
     }
 
     private findBookmarks() {
-        apiAction("reader/findBookmarks", queryParams().pubId)
+        apiAction("reader/findBookmarks", queryParams.pubId)
             .then((bookmarks) => this.setState({bookmarks}))
             .catch((error) => console.error("Error to fetch api reader/findBookmarks", error));
     }
