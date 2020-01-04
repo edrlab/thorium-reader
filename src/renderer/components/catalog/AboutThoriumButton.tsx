@@ -13,8 +13,6 @@ import { I18nTyped } from "readium-desktop/common/services/translator";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import { TDispatch } from "readium-desktop/typings/redux";
-
-// import { connectDecorator } from "../utils/decorator/connect.decorator";
 import { translatorDecorator } from "../utils/decorator/translator.decorator";
 
 // tslint:disable-next-line: no-empty-interface
@@ -28,17 +26,6 @@ interface IBaseProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
-const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
-    return {
-        displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.AboutThorium,
-                {},
-            ));
-        },
-    };
-};
-
-// @connectDecorator(undefined, mapDispatchToProps)
 @translatorDecorator
 class AboutThoriumButton extends React.Component<IProps, undefined> {
 
@@ -64,5 +51,15 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
         );
     }
 }
+
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+        displayPublicationInfo: () => {
+            dispatch(dialogActions.openRequest.build(DialogTypeName.AboutThorium,
+                {},
+            ));
+        },
+    };
+};
 
 export default connect(undefined, mapDispatchToProps)(AboutThoriumButton);

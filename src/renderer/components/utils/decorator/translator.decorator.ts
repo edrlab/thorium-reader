@@ -9,7 +9,8 @@ import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
 import { diRendererGet } from "readium-desktop/renderer/di";
 
-export function translatorDecorator<Props>(component: React.ComponentClass<Props>): any {
+// tslint:disable-next-line:callable-types
+export function translatorDecorator<T extends { new(...args: any[]): React.Component }>(component: T) {
     return class extends component {
         public __: I18nTyped;
         public componentWillMount() {
