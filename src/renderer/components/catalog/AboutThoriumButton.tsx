@@ -9,15 +9,16 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
+import { I18nTyped } from "readium-desktop/common/services/translator";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
 import { TDispatch } from "readium-desktop/typings/redux";
 
+// import { connectDecorator } from "../utils/decorator/connect.decorator";
+import { translatorDecorator } from "../utils/decorator/translator.decorator";
+
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps extends TranslatorProps {
+interface IBaseProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
@@ -25,26 +26,6 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
 interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
-}
-
-class AboutThoriumButton extends React.Component<IProps, undefined> {
-
-    constructor(props: IProps) {
-        super(props);
-    }
-
-    public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
-        return (
-            <section id={styles.aboutThoriumButton}>
-                <h2>{__("catalog.about.title")}</h2>
-                <p>{`v${_APP_VERSION}`}</p>
-                <button onClick={this.props.displayPublicationInfo}>
-                    {__("catalog.about.button")}
-                </button>
-            </section>
-        );
-    }
 }
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
@@ -57,4 +38,31 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-export default connect(undefined, mapDispatchToProps)(withTranslator(AboutThoriumButton));
+// @connectDecorator(undefined, mapDispatchToProps)
+@translatorDecorator
+class AboutThoriumButton extends React.Component<IProps, undefined> {
+
+    public __: I18nTyped;
+    constructor(props: IProps) {
+        super(props);
+    }
+
+    public componentWillMount() {
+        console.log("mounting");
+    }
+
+    public render() {
+        const { __ } = this;
+        return (
+            <section id={styles.aboutThoriumButton}>
+                <h2>{__("catalog.about.title")}</h2>
+                <p>{`v${_APP_VERSION}`}</p>
+                <button onClick={this.props.displayPublicationInfo}>
+                    {__("catalog.about.button")}
+                </button>
+            </section>
+        );
+    }
+}
+
+export default connect(undefined, mapDispatchToProps)(AboutThoriumButton);
