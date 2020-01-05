@@ -13,13 +13,11 @@ import { diRendererGet } from "readium-desktop/renderer/di";
 export function translatorDecorator<T extends { new(...args: any[]): React.Component }>(component: T) {
     return class extends component {
         public __: I18nTyped;
-        public componentWillMount() {
+        constructor(...args: any[]) {
+            super(...args);
             const translatorFromDi = diRendererGet("translator");
             const translateBind = translatorFromDi.translate.bind(translatorFromDi) as I18nTyped;
             this.__ = translateBind;
-            if (super.componentWillMount) {
-                super.componentWillMount();
-            }
         }
     };
 }
