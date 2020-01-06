@@ -13,8 +13,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-import { reduxDispatchDecorator } from "../utils/decorator/reduxDispatch.decorator";
-import { reduxStateDecorator } from "../utils/decorator/reduxState.decorator";
+import { reduxConnectDecorator } from "../utils/decorator/reduxConnect.decorator";
 import { translatorDecorator } from "../utils/decorator/translator.decorator";
 import { ReactComponent } from "../utils/reactComponent";
 
@@ -43,8 +42,7 @@ const mapReduxDispatch = (dispatch: TDispatch, _props: IBaseProps) => ({
 });
 
 @translatorDecorator
-@reduxStateDecorator(mapReduxState)
-@reduxDispatchDecorator(mapReduxDispatch)
+@reduxConnectDecorator(mapReduxState, mapReduxDispatch)
 export default class AboutThoriumButton extends ReactComponent<
     IProps,
     undefined,

@@ -11,6 +11,6 @@ import { I18nTyped } from "readium-desktop/common/services/translator";
 export class ReactComponent<P = {}, S = {}, ReduxState = {}, ReduxDispatch = {}> extends React.Component<P, S> {
 
     public __: I18nTyped;
-    public reduxState: ReduxState;
-    public reduxDispatch: ReduxDispatch;
+    public reduxState: Readonly<ReduxState>;
+    public reduxDispatch: Readonly<ReduxDispatch>;
 }
