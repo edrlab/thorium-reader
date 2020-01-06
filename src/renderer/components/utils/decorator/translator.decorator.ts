@@ -17,7 +17,6 @@ export function translatorDecorator<T extends { new(...args: any[]): ReactCompon
             super(...args);
 
             const translatorFromDi = diRendererGet("translator");
-//           const translateBind = translatorFromDi.translate.bind(translatorFromDi) as I18nTyped;
 
             this.__ = translatorFromDi.translate;
         }
