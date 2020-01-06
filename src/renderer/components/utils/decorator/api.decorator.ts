@@ -25,6 +25,18 @@ export type TApiDecorator<T extends TApiMethodName> = {
     };
 };
 
+interface IApiDataInternal<
+    TPath extends TApiMethodName
+    > {
+    moduleId: TModuleApi;
+    methodId: TMethodApi;
+    requestId: string;
+    apiPath: TPath;
+    refresh: TApiMethodName[];
+    requestDataFct: (reduxState?: TRootState, props?: any, state?: any) =>
+                Parameters<TApiMethod[TPath]>;
+}
+
 export function apiDecorator<
     TPath extends TApiMethodName
     >(
@@ -47,52 +59,57 @@ export function apiDecorator<
 
             // should be private, but it is currently not possible in TS
             // https://github.com/Microsoft/TypeScript/issues/30355
-            public storeUnsubscribe: Unsubscribe | undefined;
+            public storeUnsubscribeApi: Unsubscribe | undefined;
 
-            public moduleId: TModuleApi;
-            public methodId: TMethodApi;
-            public requestId: string;
-            public apiPath: TPath;
-            public refresh: TApiMethodName[];
-            public requestDataFct: (reduxState?: TRootState, props?: any, state?: any) =>
-                Parameters<TApiMethod[TPath]>;
+            public apiArray: Array<IApiDataInternal<TPath>>;
+
+            public didMount: boolean;
+            public willUnmount: boolean;
 
             constructor(...args: any[]) {
                 super(...args);
 
-                this.storeUnsubscribe = undefined;
+                this.didMount = false;
+                this.willUnmount = false;
 
-                const store = diRendererGet("store");
+                if (!Array.isArray(this.apiArray)) {
 
-                this.requestId = requestId;
-                this.apiPath = apiPath;
-                this.refresh = refresh;
-                this.requestDataFct = requestDataFct;
+                    this.storeUnsubscribeApi = undefined;
 
-                const splitPath = this.apiPath.split("/");
-                this.moduleId = splitPath[0] as TModuleApi;
-                this.methodId = splitPath[1] as TMethodApi;
+                    this.api = [] as unknown as TApiDecorator<TPath>;
 
-                const state = store.getState();
-
-                if (!Array.isArray(this.api)) {
-                    this.api = new Array() as unknown as TApiDecorator<TPath>;
+                    this.apiArray = [];
                 }
 
-                this.api[this.apiPath] = {
+                const splitPath = apiPath.split("/");
+                const moduleId = splitPath[0] as TModuleApi;
+                const methodId = splitPath[1] as TMethodApi;
+
+                this.apiArray.push({
+                    moduleId,
+                    methodId,
+                    requestId,
+                    apiPath,
+                    refresh,
+                    requestDataFct,
+                });
+
+                const store = diRendererGet("store");
+                const state = store.getState();
+
+                this.api[apiPath] = {
                     request: (...requestData: Parameters<TApiMethod[TPath]>) =>
                         store.dispatch(
-                            apiActions.request.build(this.requestId, this.moduleId, this.methodId, requestData)),
+                            apiActions.request.build(requestId, moduleId, methodId, requestData)),
                     result: state.api[requestId],
                     needRefresh: false,
                 };
 
-                if (this.requestDataFct) {
+                if (requestDataFct) {
 
                     const data = requestDataFct(state, this.props, this.state);
-                    store.dispatch(apiActions.request.build(this.requestId, this.moduleId, this.methodId, data));
+                    store.dispatch(apiActions.request.build(requestId, moduleId, methodId, data));
                 }
-
             }
 
             public componentDidMount() {
@@ -100,44 +117,60 @@ export function apiDecorator<
                     super.componentDidMount();
                 }
 
-                const store = diRendererGet("store");
+                if (!this.didMount) {
 
-                this.storeUnsubscribe = store.subscribe(() => {
-                    const state = store.getState();
-                    const newApiResult = state.api[this.requestId];
+                    const store = diRendererGet("store");
 
-                    if (!shallowEqual(newApiResult, this.api[apiPath].result)) {
-                        this.api[apiPath].result = newApiResult;
+                    this.storeUnsubscribeApi = store.subscribe(() => {
+                        const state = store.getState();
 
-                        if (this.api[apiPath].needRefresh) {
-                            this.api[apiPath].needRefresh = false;
-                        }
+                        this.apiArray.forEach((apiData) => {
 
-                        this.forceUpdate();
-                    }
+                            const newApiResult = state.api[apiData.requestId];
 
-                    const moduleId = state.api[LAST_API_SUCCESS_ID].data.moduleId;
-                    const methodId = state.api[LAST_API_SUCCESS_ID].data.methodId;
+                            if (!shallowEqual(newApiResult, this.api[apiData.apiPath].result)) {
+                                this.api[apiData.apiPath].result = newApiResult;
 
-                    if (
-                        Array.isArray(this.refresh)
-                        && state.api[LAST_API_SUCCESS_ID]?.data.moduleId
-                        && refresh.includes(`${moduleId}/${methodId}` as TApiMethodName)
-                    ) {
+                                if (this.api[apiData.apiPath].needRefresh) {
+                                    this.api[apiData.apiPath].needRefresh = false;
+                                }
 
-                        if (this.requestDataFct) {
+                                this.forceUpdate();
+                            }
 
-                            const data = requestDataFct(state, this.props, this.state);
-                            store.dispatch(
-                                apiActions.request.build(this.requestId, this.moduleId, this.methodId, data));
+                            const moduleId = state.api[LAST_API_SUCCESS_ID].data.moduleId;
+                            const methodId = state.api[LAST_API_SUCCESS_ID].data.methodId;
 
-                        } else if (!this.api[apiPath].needRefresh) {
+                            if (
+                                Array.isArray(apiData.refresh)
+                                && state.api[LAST_API_SUCCESS_ID]?.data.moduleId
+                                && refresh.includes(`${moduleId}/${methodId}` as TApiMethodName)
+                            ) {
 
-                            this.api[apiPath].needRefresh = true;
-                            this.forceUpdate();
-                        }
-                    }
-                });
+                                if (apiData.requestDataFct) {
+
+                                    const data = requestDataFct(state, this.props, this.state);
+                                    store.dispatch(
+                                        apiActions.request.build(
+                                            apiData.requestId
+                                            , apiData.moduleId
+                                            , apiData.methodId
+                                            , data
+                                        ,
+                                        ));
+
+                                } else if (!this.api[apiPath].needRefresh) {
+
+                                    this.api[apiPath].needRefresh = true;
+
+                                    this.forceUpdate();
+                                }
+                            }
+                        });
+                    });
+
+                    this.didMount = true;
+                }
             }
 
             public componentWillUnmount() {
@@ -145,12 +178,20 @@ export function apiDecorator<
                     super.componentWillUnmount();
                 }
 
-                if (this.storeUnsubscribe) {
-                    this.storeUnsubscribe();
+                if (this.storeUnsubscribeApi) {
+                    this.storeUnsubscribeApi();
                 }
 
-                const store = diRendererGet("store");
-                store.dispatch(apiActions.clean.build(this.requestId));
+                if (!this.willUnmount) {
+
+                    const store = diRendererGet("store");
+
+                    this.apiArray.forEach(
+                        (apiData) =>
+                            store.dispatch(apiActions.clean.build(apiData.requestId)));
+
+                    this.willUnmount = true;
+                }
             }
         };
 }

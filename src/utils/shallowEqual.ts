@@ -14,13 +14,13 @@ interface IObj {
 
 export function shallowEqual<ObjA extends IObj, ObjB extends IObj>(objA: ObjA, objB: ObjB) {
 
-    if (!objA || !objB) {
-        return false;
-    }
-
     // @ts-ignore
     if (objA === objB) {
         return true;
+    }
+
+    if (!objA || !objB) {
+        return false;
     }
 
     const aKeys = Object.keys(objA);

@@ -17,6 +17,7 @@ import { apiDecorator, TApiDecorator } from "../utils/decorator/api.decorator";
 import { reduxConnectDecorator } from "../utils/decorator/reduxConnect.decorator";
 import { translatorDecorator } from "../utils/decorator/translator.decorator";
 import { ReactComponent } from "../utils/reactComponent";
+// import { shallowEqual } from "readium-desktop/utils/shallowEqual";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -75,4 +76,13 @@ export default class AboutThoriumButton extends ReactComponent<
             </section>
         );
     }
+/*
+    public shouldComponentUpdate(props: IBaseProps) {
+        console.log("should update", props);
+        if (shallowEqual({}, props)) {
+            return false;
+        }
+        return true;
+    }
+    */
 }

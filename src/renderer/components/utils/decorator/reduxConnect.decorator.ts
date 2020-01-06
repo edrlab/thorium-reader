@@ -62,6 +62,7 @@ export function reduxConnectDecorator<
 
                         if (!shallowEqual(newReduxState, this.reduxState)) {
                             this.reduxState = newReduxState;
+
                             this.forceUpdate();
                         }
                     });

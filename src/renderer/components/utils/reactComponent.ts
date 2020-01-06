@@ -8,13 +8,16 @@
 import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
 
+// PureComponnent implement a shallow comparaison on props and state before the rendering decision
+// I saw an excess of rendering on each component without extended PureComponent class
+
 export class ReactComponent<
     P = {},
     S = {},
     ReduxState = {},
     ReduxDispatch = {},
     Api = {},
-    > extends React.Component<P, S> {
+    > extends React.PureComponent<P, S> {
 
     public __: I18nTyped;
     public reduxState: Readonly<ReduxState>;
