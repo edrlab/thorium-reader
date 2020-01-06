@@ -6,14 +6,17 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import { I18nTyped } from "readium-desktop/common/services/translator";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import { RootState } from "readium-desktop/renderer/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
+
+import { reduxDispatchDecorator } from "../utils/decorator/reduxDispatch.decorator";
+import { reduxStateDecorator } from "../utils/decorator/reduxState.decorator";
 import { translatorDecorator } from "../utils/decorator/translator.decorator";
+import { ReactComponent } from "../utils/reactComponent";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -23,13 +26,32 @@ interface IBaseProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends IBaseProps  {
 }
 
-@translatorDecorator
-class AboutThoriumButton extends React.Component<IProps, undefined> {
+const mapReduxState = (state: RootState) => ({
+    test: state.i18n.locale,
+    dialog: state.dialog,
+});
 
-    public __: I18nTyped;
+const mapReduxDispatch = (dispatch: TDispatch, _props: IBaseProps) => ({
+    displayPublicationInfo: () => {
+        dispatch(dialogActions.openRequest.build(DialogTypeName.AboutThorium,
+            {},
+        ));
+    },
+});
+
+@translatorDecorator
+@reduxStateDecorator(mapReduxState)
+@reduxDispatchDecorator(mapReduxDispatch)
+export default class AboutThoriumButton extends ReactComponent<
+    IProps,
+    undefined,
+    ReturnType<typeof mapReduxState>,
+    ReturnType<typeof mapReduxDispatch>
+    > {
+
     constructor(props: IProps) {
         super(props);
     }
@@ -39,27 +61,18 @@ class AboutThoriumButton extends React.Component<IProps, undefined> {
     }
 
     public render() {
+        console.log("locale", this.reduxState.test);
+        console.log("dialog", this.reduxState.dialog);
+
         const { __ } = this;
         return (
             <section id={styles.aboutThoriumButton}>
                 <h2>{__("catalog.about.title")}</h2>
                 <p>{`v${_APP_VERSION}`}</p>
-                <button onClick={this.props.displayPublicationInfo}>
+                <button onClick={this.reduxDispatch.displayPublicationInfo}>
                     {__("catalog.about.button")}
                 </button>
             </section>
         );
     }
 }
-
-const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
-    return {
-        displayPublicationInfo: () => {
-            dispatch(dialogActions.openRequest.build(DialogTypeName.AboutThorium,
-                {},
-            ));
-        },
-    };
-};
-
-export default connect(undefined, mapDispatchToProps)(AboutThoriumButton);
