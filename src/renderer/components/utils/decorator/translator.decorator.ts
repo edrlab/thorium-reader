@@ -9,8 +9,14 @@
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { ReactComponent } from "../reactComponent";
 
-// tslint:disable-next-line:callable-types
-export function translatorDecorator<T extends { new(...args: any[]): ReactComponent }>(component: T) {
+export function translatorDecorator<
+    // tslint:disable-next-line:callable-types
+    T extends { new(...args: any[]): ReactComponent<P, S, ReduxState, ReduxDispatch> },
+    P = {},
+    S = {},
+    ReduxState = {},
+    ReduxDispatch = {},
+    >(component: T) {
     return class extends component {
 
         constructor(...args: any[]) {

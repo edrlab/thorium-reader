@@ -7,7 +7,7 @@
 
 import { ReactComponent } from "readium-desktop/renderer/components/utils/reactComponent";
 import { diRendererGet } from "readium-desktop/renderer/di";
-import { RootState } from "readium-desktop/renderer/redux/states";
+import { TRootState } from "readium-desktop/renderer/redux/reducers";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { shallowEqual } from "readium-desktop/utils/shallowEqual";
 import { Unsubscribe } from "redux";
@@ -16,7 +16,7 @@ export function reduxConnectDecorator<
     MapState extends { [key: string]: any } = {},
     MapDispatch extends { [key: string]: () => void } = {}
 >(
-    mapStateFct?: (state: RootState, props?: any) => MapState,
+    mapStateFct?: (state: TRootState, props?: any) => MapState,
     mapDispatchFct?: (dispatch: TDispatch, props?: any) => MapDispatch,
 ) {
     return <
@@ -48,8 +48,8 @@ export function reduxConnectDecorator<
             }
 
             public componentDidMount() {
-                if (super.componentWillMount) {
-                    super.componentWillMount();
+                if (super.componentDidMount) {
+                    super.componentDidMount();
                 }
 
                 if (mapStateFct) {
