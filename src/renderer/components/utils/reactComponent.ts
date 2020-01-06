@@ -8,8 +8,9 @@
 import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
 
-// PureComponnent implement a shallow comparaison on props and state before the rendering decision
-// I saw an excess of rendering on each component without extended PureComponent class
+// PureComponnent implement a shallow comparison on props and state before the rendering decision
+// I saw an excess of rendering on each component if not extended with PureComponent class
+// may be fixed with shouldComponentUpdate otherwise
 
 export class ReactComponent<
     P = {},
