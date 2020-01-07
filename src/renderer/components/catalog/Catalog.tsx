@@ -6,61 +6,61 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { connect } from "react-redux";
+import { TApiMethodName } from "readium-desktop/main/api/api.type";
 import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import {
-    TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
-import {
-    apiClean, apiDispatch, apiRefreshToState, apiState,
-} from "readium-desktop/renderer/redux/api/api";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import { DisplayType } from "readium-desktop/renderer/routing";
-import { Dispatch } from "redux";
-import * as uuid from "uuid";
 
+import { apiDecorator, TApiDecorator } from "../utils/decorator/api.decorator";
+import { reduxConnectDecorator } from "../utils/decorator/reduxConnect.decorator";
+import { translatorDecorator } from "../utils/decorator/translator.decorator";
+import { ReactComponent } from "../utils/reactComponent";
 import { CatalogGridView } from "./GridView";
 import Header from "./Header";
 import { CatalogListView } from "./ListView";
 
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps extends TranslatorProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps,
-    ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps {
 }
 
-class Catalog extends React.Component<IProps, undefined> {
-    private catalogGetId = uuid.v4();
-    private publicationGetAllTagId = uuid.v4();
+const mapState = (state: RootState) => ({
+    location: state.router.location,
+});
 
-    public componentDidMount() {
-        this.getFromApi();
-    }
+const refreshTriggerArray: TApiMethodName[] = [
+        "publication/import",
+        "publication/importOpdsPublicationLink",
+        "publication/delete",
+        "catalog/addEntry",
+        "publication/updateTags",
+        "reader/setLastReadingLocation",
+    ];
 
-    public componentWillUnmount() {
-        this.props.apiClean(this.catalogGetId);
-        this.props.apiClean(this.publicationGetAllTagId);
+@translatorDecorator
+@reduxConnectDecorator(mapState)
+@apiDecorator("catalog/get", refreshTriggerArray, () => [])
+@apiDecorator("publication/getAllTags", refreshTriggerArray, () => [])
+export default class Catalog extends ReactComponent<
+    IProps
+    , undefined
+    , ReturnType<typeof mapState>
+    , undefined
+    , TApiDecorator<"catalog/get"> & TApiDecorator<"publication/getAllTags">
+    > {
+
+    constructor(props: IProps) {
+        super(props);
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
+        const { __ } = this;
 
-        if (this.props.refresh) {
-            this.getFromApi();
-        }
-
-        const displayType = this.props.location?.state?.displayType || DisplayType.Grid;
+        const displayType = this.reduxState.location?.state?.displayType || DisplayType.Grid;
 
         const secondaryHeader = <Header/>;
 
-        const catalog = this.props.apiData(this.catalogGetId)("catalog/get");
-        const tags = this.props.apiData(this.publicationGetAllTagId)("publication/getAllTags");
+        const catalog = this.api["catalog/get"]?.result;
+        const tags = this.api["publication/getAllTags"]?.result;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
@@ -81,29 +81,4 @@ class Catalog extends React.Component<IProps, undefined> {
             </LibraryLayout>
         );
     }
-
-    private getFromApi = () => {
-        this.props.api(this.catalogGetId)("catalog/get")();
-        this.props.api(this.publicationGetAllTagId)("publication/getAllTags")();
-    }
 }
-
-const mapStateToProps = (state: RootState) => ({
-    apiData: apiState(state),
-    refresh: apiRefreshToState(state)([
-        "publication/import",
-        "publication/importOpdsPublicationLink",
-        "publication/delete",
-        "catalog/addEntry",
-        "publication/updateTags",
-        "reader/setLastReadingLocation",
-    ]),
-    location: state.router.location,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    api: apiDispatch(dispatch),
-    apiClean: apiClean(dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(Catalog));

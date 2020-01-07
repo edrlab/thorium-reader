@@ -10,32 +10,17 @@ import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import { TRootState } from "readium-desktop/renderer/redux/reducers";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-import { apiDecorator, TApiDecorator } from "../utils/decorator/api.decorator";
 import { reduxConnectDecorator } from "../utils/decorator/reduxConnect.decorator";
 import { translatorDecorator } from "../utils/decorator/translator.decorator";
 import { ReactComponent } from "../utils/reactComponent";
-// import { shallowEqual } from "readium-desktop/utils/shallowEqual";
 
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps {
-}
-// IProps may typically extend:
-// RouteComponentProps
-// ReturnType<typeof mapStateToProps>
-// ReturnType<typeof mapDispatchToProps>
-// tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps  {
+interface IProps {
 }
 
-const mapReduxState = (state: TRootState) => ({
-    test: state.i18n.locale,
-    dialog: state.dialog,
-});
-
-const mapReduxDispatch = (dispatch: TDispatch, _props: IBaseProps) => ({
+const mapReduxDispatch = (dispatch: TDispatch, _props: IProps) => ({
     displayPublicationInfo: () => {
         dispatch(dialogActions.openRequest.build(DialogTypeName.AboutThorium,
             {},
@@ -44,15 +29,12 @@ const mapReduxDispatch = (dispatch: TDispatch, _props: IBaseProps) => ({
 });
 
 @translatorDecorator
-@reduxConnectDecorator(mapReduxState, mapReduxDispatch)
-@apiDecorator("catalog/get", undefined, () => [])
-@apiDecorator("publication/getAllTags", undefined, () => [])
+@reduxConnectDecorator(undefined, mapReduxDispatch)
 export default class AboutThoriumButton extends ReactComponent<
     IProps,
     undefined,
-    ReturnType<typeof mapReduxState>,
-    ReturnType<typeof mapReduxDispatch>,
-    TApiDecorator<"catalog/get"> & TApiDecorator<"publication/getAllTags">
+    undefined,
+    ReturnType<typeof mapReduxDispatch>
     > {
 
     constructor(props: IProps) {
@@ -60,11 +42,6 @@ export default class AboutThoriumButton extends ReactComponent<
     }
 
     public render() {
-        console.log("locale", this.reduxState.test);
-        console.log("dialog", this.reduxState.dialog);
-        console.log("catalog", this.api["catalog/get"]);
-        console.log("tags", this.api["publication/getAllTags"]);
-
         const { __ } = this;
         return (
             <section id={styles.aboutThoriumButton}>
@@ -76,13 +53,4 @@ export default class AboutThoriumButton extends ReactComponent<
             </section>
         );
     }
-/*
-    public shouldComponentUpdate(props: IBaseProps) {
-        console.log("should update", props);
-        if (shallowEqual({}, props)) {
-            return false;
-        }
-        return true;
-    }
-    */
 }
