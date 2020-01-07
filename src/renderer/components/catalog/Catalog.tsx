@@ -59,8 +59,8 @@ export default class Catalog extends ReactComponent<
 
         const secondaryHeader = <Header/>;
 
-        const catalog = this.api["catalog/get"]?.result;
-        const tags = this.api["publication/getAllTags"]?.result;
+        const catalog = this.api["catalog/get"].result;
+        const tags = this.api["publication/getAllTags"].result;
 
         return (
             <LibraryLayout secondaryHeader={secondaryHeader} title={__("header.books")}>
