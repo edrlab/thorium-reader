@@ -23,5 +23,5 @@ export class ReactComponent<
     public __: I18nTyped;
     public reduxState: Readonly<ReduxState>;
     public reduxDispatch: Readonly<ReduxDispatch>;
-    public api: Api;
+    public api?: Api | undefined;
 }
