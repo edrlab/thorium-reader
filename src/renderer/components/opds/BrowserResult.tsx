@@ -23,7 +23,7 @@ interface IProps {
 }
 
 @translatorDecorator
-@apiDecorator("opds/browse", undefined, undefined, BROWSE_OPDS_API_REQUEST_ID)
+@apiDecorator("opds/browse", undefined, undefined, BROWSE_OPDS_API_REQUEST_ID, false)
 export default class BrowserResult extends ReactComponent<
 IProps
 , undefined

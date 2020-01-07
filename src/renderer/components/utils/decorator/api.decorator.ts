@@ -36,11 +36,20 @@ interface IApiDataInternal<
     refresh: TApiMethodName[];
     requestDataFct: (reduxState?: TRootState, props?: any, state?: any) =>
                 Parameters<TApiMethod[TPath]>;
+    clearAtTheEnd: boolean;
 }
 
 // Logger
 const debug = debug_("readium-desktop:api-decorator");
 
+/**
+ *
+ * @param apiPath api pathname
+ * @param refresh api pathname array
+ * @param requestDataFct function that return request param
+ * @param requestId request ID or Channel
+ * @param clearAtTheEnd Boolean to clear data result in a destructor
+ */
 export function apiDecorator<
     TPath extends TApiMethodName
     >(
@@ -49,6 +58,7 @@ export function apiDecorator<
     requestDataFct?: (reduxState?: TRootState, props?: any, state?: any) =>
         Parameters<TApiMethod[TPath]>,
     requestId: string = uuid.v4(),
+    clearAtTheEnd: boolean = true,
 ) {
     return <
         // tslint:disable-next-line:callable-types
@@ -98,6 +108,7 @@ export function apiDecorator<
                     apiPath,
                     refresh,
                     requestDataFct,
+                    clearAtTheEnd,
                 });
 
                 const store = diRendererGet("store");
@@ -192,9 +203,13 @@ export function apiDecorator<
 
                     const store = diRendererGet("store");
 
-                    this.apiArray.forEach(
+                    this.apiArray.filter(
                         (apiData) =>
-                            store.dispatch(apiActions.clean.build(apiData.requestId)));
+                            apiData.clearAtTheEnd,
+                    ).forEach(
+                        (apiData) =>
+                            store.dispatch(apiActions.clean.build(apiData.requestId)),
+                    );
 
                     this.willUnmount = true;
                 }
