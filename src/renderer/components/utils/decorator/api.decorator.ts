@@ -21,7 +21,7 @@ import * as uuid from "uuid";
 export type TApiDecorator<T extends TApiMethodName> = {
     [key in T]: {
         request: (...requestData: Parameters<TApiMethod[T]>) => void;
-        result: Readonly<ApiResponse<ReturnPromiseType<TApiMethod[T]>>>;
+        result?: Readonly<ApiResponse<ReturnPromiseType<TApiMethod[T]>>> | undefined;
         needRefresh: boolean
     };
 };
