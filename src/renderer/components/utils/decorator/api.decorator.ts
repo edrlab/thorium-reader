@@ -73,36 +73,38 @@ export function apiDecorator<
 
             // should be private, but it is currently not possible in TS
             // https://github.com/Microsoft/TypeScript/issues/30355
-            public storeUnsubscribeApi: Unsubscribe | undefined;
+            // BUT check the release of this : https://github.com/microsoft/TypeScript/pull/30829
+            // FIXME: when available replace _ by # and all inheriting class will not be abble to access this field
+            public _storeUnsubscribeApi: Unsubscribe | undefined;
 
-            public apiArray: Array<IApiDataInternal<TPath>>;
+            public _apiArray: Array<IApiDataInternal<TPath>>;
 
-            public didMount: boolean;
-            public willUnmount: boolean;
+            public _didMount: boolean;
+            public _willUnmount: boolean;
 
             constructor(...args: any[]) {
                 super(...args);
 
                 debug("apiPath", apiPath);
 
-                this.didMount = false;
-                this.willUnmount = false;
+                this._didMount = false;
+                this._willUnmount = false;
 
-                if (!Array.isArray(this.apiArray)) {
+                if (!Array.isArray(this._apiArray)) {
 
-                    this.storeUnsubscribeApi = undefined;
+                    this._storeUnsubscribeApi = undefined;
 
                     // @ts-ignore
                     this.api = [];
 
-                    this.apiArray = [];
+                    this._apiArray = [];
                 }
 
                 const splitPath = apiPath.split("/");
                 const moduleId = splitPath[0] as TModuleApi;
                 const methodId = splitPath[1] as TMethodApi;
 
-                this.apiArray.push({
+                this._apiArray.push({
                     moduleId,
                     methodId,
                     requestId,
@@ -135,14 +137,14 @@ export function apiDecorator<
                     super.componentDidMount();
                 }
 
-                if (!this.didMount) {
+                if (!this._didMount) {
 
                     const store = diRendererGet("store");
 
-                    this.storeUnsubscribeApi = store.subscribe(() => {
+                    this._storeUnsubscribeApi = store.subscribe(() => {
                         const state = store.getState();
 
-                        this.apiArray.forEach((apiData) => {
+                        this._apiArray.forEach((apiData) => {
 
                             const newApiResult = state.api[apiData.requestId];
 
@@ -187,7 +189,7 @@ export function apiDecorator<
                         });
                     });
 
-                    this.didMount = true;
+                    this._didMount = true;
                 }
             }
 
@@ -196,15 +198,15 @@ export function apiDecorator<
                     super.componentWillUnmount();
                 }
 
-                if (this.storeUnsubscribeApi) {
-                    this.storeUnsubscribeApi();
+                if (this._storeUnsubscribeApi) {
+                    this._storeUnsubscribeApi();
                 }
 
-                if (!this.willUnmount) {
+                if (!this._willUnmount) {
 
                     const store = diRendererGet("store");
 
-                    this.apiArray.filter(
+                    this._apiArray.filter(
                         (apiData) =>
                             apiData.clearAtTheEnd,
                     ).forEach(
@@ -212,7 +214,7 @@ export function apiDecorator<
                             store.dispatch(apiActions.clean.build(apiData.requestId)),
                     );
 
-                    this.willUnmount = true;
+                    this._willUnmount = true;
                 }
             }
         };

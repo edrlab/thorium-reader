@@ -29,12 +29,12 @@ export function reduxConnectDecorator<
 
             // should be private, but it is currently not possible in TS
             // https://github.com/Microsoft/TypeScript/issues/30355
-            public storeUnsubscribe: Unsubscribe | undefined;
+            public _storeUnsubscribe: Unsubscribe | undefined;
 
             constructor(...args: any[]) {
                 super(...args);
 
-                this.storeUnsubscribe = undefined;
+                this._storeUnsubscribe = undefined;
 
                 const store = diRendererGet("store");
 
@@ -56,7 +56,7 @@ export function reduxConnectDecorator<
 
                     const store = diRendererGet("store");
 
-                    this.storeUnsubscribe = store.subscribe(() => {
+                    this._storeUnsubscribe = store.subscribe(() => {
                         const state = store.getState();
                         const newReduxState = mapStateFct(state, this.props);
 
@@ -74,8 +74,8 @@ export function reduxConnectDecorator<
                     super.componentWillUnmount();
                 }
 
-                if (this.storeUnsubscribe) {
-                    this.storeUnsubscribe();
+                if (this._storeUnsubscribe) {
+                    this._storeUnsubscribe();
                 }
             }
         };
