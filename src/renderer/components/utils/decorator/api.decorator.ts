@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
@@ -37,6 +38,9 @@ interface IApiDataInternal<
                 Parameters<TApiMethod[TPath]>;
 }
 
+// Logger
+const debug = debug_("readium-desktop:api-decorator");
+
 export function apiDecorator<
     TPath extends TApiMethodName
     >(
@@ -68,6 +72,8 @@ export function apiDecorator<
 
             constructor(...args: any[]) {
                 super(...args);
+
+                debug("apiPath", apiPath);
 
                 this.didMount = false;
                 this.willUnmount = false;
@@ -138,32 +144,32 @@ export function apiDecorator<
                                 this.forceUpdate();
                             }
 
-                            const moduleId = state.api[LAST_API_SUCCESS_ID].data.moduleId;
-                            const methodId = state.api[LAST_API_SUCCESS_ID].data.methodId;
+                            if (Array.isArray(apiData.refresh)
+                                && state.api[LAST_API_SUCCESS_ID]?.data.moduleId) {
 
-                            if (
-                                Array.isArray(apiData.refresh)
-                                && state.api[LAST_API_SUCCESS_ID]?.data.moduleId
-                                && refresh.includes(`${moduleId}/${methodId}` as TApiMethodName)
-                            ) {
+                                const moduleId = state.api[LAST_API_SUCCESS_ID].data.moduleId;
+                                const methodId = state.api[LAST_API_SUCCESS_ID].data.methodId;
 
-                                if (apiData.requestDataFct) {
+                                if (refresh.includes(`${moduleId}/${methodId}` as TApiMethodName)
+                                    && !this.api[apiData.apiPath].needRefresh) {
 
-                                    const data = requestDataFct(state, this.props, this.state);
-                                    store.dispatch(
-                                        apiActions.request.build(
-                                            apiData.requestId
-                                            , apiData.moduleId
-                                            , apiData.methodId
-                                            , data
-                                        ,
-                                        ));
+                                    this.api[apiData.apiPath].needRefresh = true;
 
-                                } else if (!this.api[apiPath].needRefresh) {
+                                    if (apiData.requestDataFct) {
 
-                                    this.api[apiPath].needRefresh = true;
+                                        const data = requestDataFct(state, this.props, this.state);
+                                        store.dispatch(
+                                            apiActions.request.build(
+                                                apiData.requestId
+                                                , apiData.moduleId
+                                                , apiData.methodId
+                                                , data
+                                                    ,
+                                            ));
+                                    } else {
 
-                                    this.forceUpdate();
+                                        this.forceUpdate();
+                                    }
                                 }
                             }
                         });
