@@ -92,7 +92,8 @@ export function apiDecorator<
 
                     this.storeUnsubscribeApi = undefined;
 
-                    this.api = [] as unknown as TApiDecorator<TPath>;
+                    // @ts-ignore
+                    this.api = [];
 
                     this.apiArray = [];
                 }
