@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
+import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
@@ -27,7 +28,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
 import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
-import { diRendererGet, lazyInject } from "readium-desktop/renderer/di";
+import { lazyInject } from "readium-desktop/renderer/di";
 import { diRendererSymbolTable } from "readium-desktop/renderer/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/redux/states";
 import {
@@ -40,12 +41,9 @@ import { Store, Unsubscribe } from "redux";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import {
-    IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_READIUMCSS,
+    IEventPayload_R2_EVENT_CLIPBOARD_COPY,
     IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
 } from "@r2-navigator-js/electron/common/events";
-import {
-    colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
-} from "@r2-navigator-js/electron/common/readium-css-settings";
 import {
     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
@@ -81,71 +79,6 @@ import optionsValues, {
  */
 const queryParams = getURLQueryParams();
 
-// TODO: centralize this code, currently duplicated
-// see src/main/streamer.js
-const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
-    const store = diRendererGet("store");
-    const settings = store.getState().reader.config;
-
-    // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
-    const cssJson: IReadiumCSS = {
-
-        a11yNormalize: readiumCSSDefaults.a11yNormalize,
-
-        backgroundColor: readiumCSSDefaults.backgroundColor,
-
-        bodyHyphens: readiumCSSDefaults.bodyHyphens,
-
-        colCount: settings.colCount === "1" ? colCountEnum.one :
-            (settings.colCount === "2" ? colCountEnum.two : colCountEnum.auto),
-
-        darken: settings.darken,
-
-        font: settings.font,
-
-        fontSize: settings.fontSize,
-
-        invert: settings.invert,
-
-        letterSpacing: settings.letterSpacing,
-
-        ligatures: readiumCSSDefaults.ligatures,
-
-        lineHeight: settings.lineHeight,
-
-        night: settings.night,
-
-        pageMargins: settings.pageMargins,
-
-        paged: settings.paged,
-
-        paraIndent: readiumCSSDefaults.paraIndent,
-
-        paraSpacing: settings.paraSpacing,
-
-        sepia: settings.sepia,
-
-        noFootnotes: settings.noFootnotes,
-
-        textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
-            (settings.align === textAlignEnum.right ? textAlignEnum.right :
-            (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
-            (settings.align === textAlignEnum.start ? textAlignEnum.start : undefined))),
-
-        textColor: readiumCSSDefaults.textColor,
-
-        typeScale: readiumCSSDefaults.typeScale,
-
-        wordSpacing: settings.wordSpacing,
-
-        mathJax: settings.enableMathJax,
-
-        reduceMotion: readiumCSSDefaults.reduceMotion,
-    };
-    const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
-    return jsonMsg;
-};
-setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
 
 const publicationJsonUrl = queryParams.pub.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
     convertCustomSchemeToHttpUrl(queryParams.pub) : queryParams.pub;
@@ -285,6 +218,9 @@ export class Reader extends React.Component<IProps, IState> {
         this.handleLinkClick = this.handleLinkClick.bind(this);
         this.findBookmarks = this.findBookmarks.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
+
+        const setting = this.store.getState().reader.config;
+        setReadiumCssJsonGetter(computeReadiumCssJsonMessage(setting));
     }
 
     public async componentDidMount() {
