@@ -79,7 +79,6 @@ import optionsValues, {
  */
 const queryParams = getURLQueryParams();
 
-
 const publicationJsonUrl = queryParams.pub.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL) ?
     convertCustomSchemeToHttpUrl(queryParams.pub) : queryParams.pub;
 // const pathBase64Raw = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
