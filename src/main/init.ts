@@ -63,8 +63,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     // } as syncIpc.EventPayload);
 
     // Send reader information
-
-    console.log("READER INFO SENDED", state.reader.readers[appWindow.identifier]);
+    // even for library view , just it's undefined
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
