@@ -9,8 +9,8 @@ import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
-    apiActions, dialogActions, downloadActions, i18nActions, lcpActions, netActions, readerActions,
-    toastActions, updateActions,
+    apiActions, dialogActions, downloadActions, i18nActions, lcpActions, /*netActions,*/ readerActions,
+    toastActions, /*updateActions*/
 } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
@@ -21,8 +21,8 @@ const debug = debug_("readium-desktop:sync");
 const SYNCHRONIZABLE_ACTIONS: string[] = [
     apiActions.result.ID,
 
-    netActions.offline.ID,
-    netActions.online.ID,
+    // netActions.offline.ID,
+    // netActions.online.ID,
 
     dialogActions.openRequest.ID,
 
@@ -44,7 +44,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     i18nActions.setLocale.ID,
 
-    updateActions.latestVersion.ID,
+    // updateActions.latestVersion.ID,
 
     toastActions.openRequest.ID,
     toastActions.closeRequest.ID,
@@ -103,4 +103,4 @@ export const reduxSyncMiddleware: Middleware
     }
 
     return next(action);
-}) as Dispatch<ActionWithSender>;
+});

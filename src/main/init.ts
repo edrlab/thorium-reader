@@ -13,9 +13,9 @@ import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
-    i18nActions, netActions, readerActions, updateActions,
+    i18nActions, /*netActions,*/ readerActions, /*updateActions,*/
 } from "readium-desktop/common/redux/actions";
-import { NetStatus } from "readium-desktop/common/redux/states/net";
+// import { NetStatus } from "readium-desktop/common/redux/states/net";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
@@ -28,7 +28,9 @@ const debug = debug_("readium-desktop:main");
 // Callback called when a window is opened
 const winOpenCallback = (appWindow: AppWindow) => {
     // Send information to the new window
+
     const store = diMainGet("store");
+    const state = store.getState();
     const webContents = appWindow.browserWindow.webContents;
 
     // Send the id to the new window
@@ -39,29 +41,30 @@ const winOpenCallback = (appWindow: AppWindow) => {
         },
     } as winIpc.EventPayload);
 
-    // Init network on window
-    const state = store.getState();
-    let actionNet = null;
+    // // Init network on window
+    // let actionNet = null;
 
-    switch (state.net.status) {
-        case NetStatus.Online:
-            actionNet = netActions.online.build();
-            break;
-        case NetStatus.Offline:
-        default:
-            actionNet = netActions.offline.build();
-            break;
-    }
+    // switch (state.net.status) {
+    //     case NetStatus.Online:
+    //         actionNet = netActions.online.build();
+    //         break;
+    //     case NetStatus.Offline:
+    //     default:
+    //         actionNet = netActions.offline.build();
+    //         break;
+    // }
 
-    // Send network status
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: actionNet,
-        },
-    } as syncIpc.EventPayload);
+    // // Send network status
+    // webContents.send(syncIpc.CHANNEL, {
+    //     type: syncIpc.EventType.MainAction,
+    //     payload: {
+    //         action: actionNet,
+    //     },
+    // } as syncIpc.EventPayload);
 
     // Send reader information
+
+    console.log("READER INFO SENDED", state.reader.readers[appWindow.identifier]);
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
@@ -93,19 +96,19 @@ const winOpenCallback = (appWindow: AppWindow) => {
         },
     } as syncIpc.EventPayload);
 
-    // Send locale
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: {
-                type: updateActions.latestVersion.ID,
-                payload: updateActions.latestVersion.build(
-                    state.update.status,
-                    state.update.latestVersion,
-                    state.update.latestVersionUrl),
-            },
-        },
-    } as syncIpc.EventPayload);
+    // // Send update info
+    // webContents.send(syncIpc.CHANNEL, {
+    //     type: syncIpc.EventType.MainAction,
+    //     payload: {
+    //         action: {
+    //             type: updateActions.latestVersion.ID,
+    //             payload: updateActions.latestVersion.build(
+    //                 state.update.status,
+    //                 state.update.latestVersion,
+    //                 state.update.latestVersionUrl),
+    //         },
+    //     },
+    // } as syncIpc.EventPayload);
 };
 
 // Callback called when a window is closed
