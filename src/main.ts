@@ -11,7 +11,7 @@ import * as path from "path";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { cli } from "readium-desktop/main/cli/process";
-import { createWindowLibrary } from "readium-desktop/main/createWindowLibrary";
+import { createWindow } from "readium-desktop/main/createWindow";
 import { diMainGet } from "readium-desktop/main/di";
 import { initApp, registerProtocol } from "readium-desktop/main/init";
 import {
@@ -73,13 +73,13 @@ function main() {
         app.quit();
     });
 
-    // Call 'createWindowLibrary()' on startup.
+    // Call 'createWindow()' on startup.
     app.on("ready", async () => {
         debug("ready");
         initApp();
 
         // launch library window
-        await createWindowLibrary();
+        await createWindow();
         registerProtocol();
     });
 

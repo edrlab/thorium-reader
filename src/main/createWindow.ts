@@ -18,14 +18,14 @@ import {
 import { setMenu } from "./menu";
 
 // Logger
-const debug = debug_("readium-desktop:createWindowLibrary");
+const debug = debug_("readium-desktop:createWindow");
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
 let mainWindow: BrowserWindow = null;
 
 // Opens the main window, with a native menu bar.
-export async function createWindowLibrary() {
+export async function createWindow() {
     mainWindow = new BrowserWindow({
         ...(await getWindowBounds()),
         minWidth: 800,
@@ -119,6 +119,6 @@ export async function createWindowLibrary() {
 // windows open.
 app.on("activate", async () => {
     if (mainWindow === null) {
-        await createWindowLibrary();
+        await createWindow();
     }
 });
