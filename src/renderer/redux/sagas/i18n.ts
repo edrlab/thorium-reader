@@ -13,8 +13,11 @@ import { all, call } from "redux-saga/effects";
 function* localeWatcher() {
     while (true) {
         const action = yield* takeTyped(i18nActions.setLocale.build);
+
         const translator = diRendererGet("translator");
         translator.setLocale(action.payload.locale);
+
+        document.documentElement.setAttribute("lang", action.payload.locale);
     }
 }
 

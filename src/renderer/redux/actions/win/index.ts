@@ -6,13 +6,11 @@
 // ==LICENSE-END==
 
 import * as history from "./history";
-import * as initError from "./initError";
 import * as initRequest from "./initRequest";
 import * as initSuccess from "./initSuccess";
 
 export {
     initRequest,
     initSuccess,
-    initError,
     history,
 };
