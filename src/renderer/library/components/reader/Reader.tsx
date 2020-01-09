@@ -9,7 +9,6 @@ import * as classNames from "classnames";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
-import { computeReadiumCssJsonMessage } from "readium-desktop/common/computeReadiumCssJsonMessage";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
@@ -39,8 +38,12 @@ import { Unsubscribe } from "redux";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import {
-    IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
+    IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_READIUMCSS,
+    IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
 } from "@r2-navigator-js/electron/common/events";
+import {
+    colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
+} from "@r2-navigator-js/electron/common/readium-css-settings";
 import {
     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
 } from "@r2-navigator-js/electron/common/sessions";
@@ -70,6 +73,71 @@ import optionsValues, {
 //     secure: true,
 //     supportFetchAPI: true,
 // });
+
+// TODO: centralize this code, currently duplicated
+// see src/main/streamer.js
+const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
+    const store = diRendererGet("store");
+    const settings = store.getState().reader.config;
+
+    // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
+    const cssJson: IReadiumCSS = {
+
+        a11yNormalize: readiumCSSDefaults.a11yNormalize,
+
+        backgroundColor: readiumCSSDefaults.backgroundColor,
+
+        bodyHyphens: readiumCSSDefaults.bodyHyphens,
+
+        colCount: settings.colCount === "1" ? colCountEnum.one :
+            (settings.colCount === "2" ? colCountEnum.two : colCountEnum.auto),
+
+        darken: settings.darken,
+
+        font: settings.font,
+
+        fontSize: settings.fontSize,
+
+        invert: settings.invert,
+
+        letterSpacing: settings.letterSpacing,
+
+        ligatures: readiumCSSDefaults.ligatures,
+
+        lineHeight: settings.lineHeight,
+
+        night: settings.night,
+
+        pageMargins: settings.pageMargins,
+
+        paged: settings.paged,
+
+        paraIndent: readiumCSSDefaults.paraIndent,
+
+        paraSpacing: settings.paraSpacing,
+
+        sepia: settings.sepia,
+
+        noFootnotes: settings.noFootnotes,
+
+        textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
+            (settings.align === textAlignEnum.right ? textAlignEnum.right :
+            (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
+            (settings.align === textAlignEnum.start ? textAlignEnum.start : undefined))),
+
+        textColor: readiumCSSDefaults.textColor,
+
+        typeScale: readiumCSSDefaults.typeScale,
+
+        wordSpacing: settings.wordSpacing,
+
+        mathJax: settings.enableMathJax,
+
+        reduceMotion: readiumCSSDefaults.reduceMotion,
+    };
+    const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
+    return jsonMsg;
+};
 
 const queryParams = getURLQueryParams();
 const lcpHint = queryParams.lcpHint;
@@ -199,9 +267,7 @@ export class Reader extends React.Component<IProps, IState> {
         this.findBookmarks = this.findBookmarks.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
 
-        const store = diRendererGet("store");
-        const setting = store.getState().reader.config;
-        setReadiumCssJsonGetter(computeReadiumCssJsonMessage(setting));
+        setReadiumCssJsonGetter(computeReadiumCssJsonMessage);
     }
 
     public async componentDidMount() {

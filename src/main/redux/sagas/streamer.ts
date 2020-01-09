@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import * as portfinder from "portfinder";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { toastActions } from "readium-desktop/common/redux/actions/";
@@ -19,17 +20,38 @@ import { all, call, put, take } from "redux-saga/effects";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import * as streamerServer from "readium-desktop/main/streamer";
+import { Server } from "@r2-streamer-js/http/server";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
 
+async function startStreamer(streamer: Server): Promise<string> {
+    // Find a free port on your local machine
+    return portfinder.getPortPromise()
+        .then(async (port) => {
+            // HTTPS, see secureSessions()
+            await streamer.start(port, true);
+
+            const streamerUrl = streamer.serverUrl();
+            debug("Streamer started on %s", streamerUrl);
+
+            return streamerUrl;
+        });
+}
+
+function stopStreamer(streamer: Server) {
+    // Stop server
+    debug("Stop streamer");
+    streamer.stop();
+}
+
 export function* startRequestWatcher(): SagaIterator {
     while (true) {
         yield take(streamerActions.startRequest.ID);
+        const streamer = diMainGet("streamer");
 
         try {
-            const streamerUrl = yield* callTyped(() => streamerServer.start());
+            const streamerUrl = yield* callTyped(() => startStreamer(streamer));
             yield put(streamerActions.startSuccess.build(streamerUrl));
         } catch (error) {
             debug("Unable to start streamer");
@@ -41,13 +63,13 @@ export function* startRequestWatcher(): SagaIterator {
 export function* stopRequestWatcher(): SagaIterator {
     while (true) {
         yield take(streamerActions.stopRequest.ID);
+        const streamer = diMainGet("streamer");
 
         try {
-            yield call(() => streamerServer.stop());
+            yield call(() => stopStreamer(streamer));
             yield put(streamerActions.stopSuccess.build());
         } catch (error) {
             debug("Unable to stop streamer");
-            // FIXME: linked to nothing
             yield put(streamerActions.stopError.build(error));
         }
     }

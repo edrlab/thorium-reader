@@ -236,7 +236,6 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
 
     if (typedAction.error) {
         // Failed to close publication
-        // FIXME : this action is linked to nothing
         yield put(readerActions.closeError.build(reader));
         return;
     }

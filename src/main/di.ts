@@ -39,7 +39,7 @@ import { Downloader } from "readium-desktop/main/services/downloader";
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
-import { streamerServer } from "readium-desktop/main/streamer";
+import { streamer } from "readium-desktop/main/streamer";
 import { _NODE_ENV, _POUCHDB_ADAPTER_NAME } from "readium-desktop/preprocessor-directives";
 import { Store } from "redux";
 
@@ -202,7 +202,7 @@ container.bind<PublicationStorage>(diSymbolTable["publication-storage"]).toConst
 );
 
 // Bind services
-container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamerServer);
+container.bind<Server>(diSymbolTable.streamer).toConstantValue(streamer);
 
 const deviceIdManager = new DeviceIdManager("Thorium", configRepository);
 container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantValue(
