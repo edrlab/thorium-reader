@@ -71,7 +71,7 @@ console.log(JSON.stringify(externals, null, "  "));
 
 
 let config = Object.assign({}, {
-    entry: "./src/index_reader.ts",
+    entry: "./src/renderer/reader/index_reader.ts",
     name: "renderer index reader",
     output: {
         filename: "index_reader.js",
@@ -130,7 +130,7 @@ let config = Object.assign({}, {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./src/index_reader.ejs",
+            template: "./src/renderer/reader/index_reader.ejs",
             filename: "index_reader.html",
         }),
         new MiniCssExtractPlugin({

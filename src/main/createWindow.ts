@@ -79,10 +79,10 @@ export async function createWindow() {
 
     if (rendererBaseUrl === "file://") {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += path.normalize(path.join(__dirname, "index_app.html"));
+        rendererBaseUrl += path.normalize(path.join(__dirname, "index_library.html"));
     } else {
         // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += "index_app.html";
+        rendererBaseUrl += "index_library.html";
     }
 
     rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");

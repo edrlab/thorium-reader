@@ -20,7 +20,7 @@ import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 
-import { EventPayload } from "./common/ipc/sync";
+import { EventPayload } from "../../common/ipc/sync";
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
