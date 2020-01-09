@@ -19,7 +19,6 @@ import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { initStore } from "readium-desktop/renderer/library/redux/store/memory";
 import { Store } from "redux";
 
-import ReaderApp from "../reader/components/App";
 import MainApp from "./components/App";
 import { IRouterLocationState } from "./routing";
 
@@ -41,7 +40,6 @@ container.bind<Translator>(diSymbolTable.translator).toConstantValue(translator)
 const actionSerializer = new ActionSerializer();
 container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).toConstantValue(actionSerializer);
 
-container.bind<typeof ReaderApp>(diSymbolTable["react-reader-app"]).toConstantValue(ReaderApp);
 container.bind<typeof MainApp>(diSymbolTable["react-main-app"]).toConstantValue(MainApp);
 
 // local interface to force type return
@@ -50,7 +48,6 @@ interface IGet {
     (s: "store"): Store<RootState>;
     (s: "translator"): Translator;
     (s: "action-serializer"): ActionSerializer;
-    (s: "react-reader-app"): typeof ReaderApp;
     (s: "react-main-app"): typeof MainApp;
 }
 

@@ -11,5 +11,4 @@ export const diRendererSymbolTable = {
     "translator": Symbol("translator"),
     "action-serializer": Symbol("action-serializer"),
     "react-main-app": Symbol("react-main-app"),
-    "react-reader-app": Symbol("react-reader-app"),
 };
