@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { LocatorView } from "readium-desktop/common/views/locator";
-import { apiAction } from "readium-desktop/renderer/common/apiAction";
+import { apiAction } from "readium-desktop/renderer/reader/apiAction";
 import { TFormEvent } from "readium-desktop/typings/react";
 
 // tslint:disable-next-line: no-empty-interface

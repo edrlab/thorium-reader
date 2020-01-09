@@ -11,7 +11,7 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
 import ToastManager from "readium-desktop/renderer/library/components/toast/ToastManager";
-import { diRendererGet } from "readium-desktop/renderer/library/di";
+import { diReaderGet } from "readium-desktop/renderer/reader/di";
 
 import Reader from "./Reader";
 
@@ -22,7 +22,7 @@ export default class App extends React.Component<{}, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const store = diRendererGet("store");
+        const store = diReaderGet("store");
         return (
             <Provider store={ store }>
                 <div>

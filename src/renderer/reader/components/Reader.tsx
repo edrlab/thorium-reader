@@ -21,13 +21,13 @@ import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-import { apiAction } from "readium-desktop/renderer/common/apiAction";
-import { apiSubscribe } from "readium-desktop/renderer/common/apiSubscribe";
 import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
-import { diRendererGet } from "readium-desktop/renderer/library/di";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { apiAction } from "readium-desktop/renderer/reader/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
+import { diReaderGet } from "readium-desktop/renderer/reader/di";
 import {
     TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
@@ -77,7 +77,7 @@ import optionsValues, {
 // TODO: centralize this code, currently duplicated
 // see src/main/streamer.js
 const computeReadiumCssJsonMessage = (): IEventPayload_R2_EVENT_READIUMCSS => {
-    const store = diRendererGet("store");
+    const store = diReaderGet("store");
     const settings = store.getState().reader.config;
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
@@ -285,7 +285,7 @@ export class Reader extends React.Component<IProps, IState> {
         // What is the point of this redux store subscribe ?
         // the locale is already set
         // Why an adaptation from redux settings to local state ?
-        const store = diRendererGet("store");
+        const store = diReaderGet("store");
         store.subscribe(() => {
             const storeState = store.getState();
             this.props.translator.setLocale(storeState.i18n.locale);
@@ -743,7 +743,7 @@ export class Reader extends React.Component<IProps, IState> {
     }
 
     private handleSettingsSave() {
-        const store = diRendererGet("store");
+        const store = diReaderGet("store");
         store.dispatch(readerActions.configSetRequest.build(this.state.readerConfig));
     }
 

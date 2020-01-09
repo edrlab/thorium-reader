@@ -6,8 +6,7 @@
 // ==LICENSE-END==
 
 import { TApiMethodName } from "readium-desktop/main/api/api.type";
-import { diRendererGet } from "readium-desktop/renderer/library/di";
-import { Unsubscribe } from "redux";
+import { Store, Unsubscribe } from "redux";
 
 import { LAST_API_SUCCESS_ID } from "../library/redux/states/api";
 
@@ -16,26 +15,29 @@ import { LAST_API_SUCCESS_ID } from "../library/redux/states/api";
  *
  * don't forget to unsubscribe with the return value of function
  */
-export function apiSubscribe(pathArrayToRefresh: TApiMethodName[], cb: () => void | Promise<void>): Unsubscribe {
-    const store = diRendererGet("store");
-    const lastApiSuccess = store.getState().api[LAST_API_SUCCESS_ID];
-    let lastSuccessTime = lastApiSuccess?.lastTime || 0;
+export function apiSubscribeFactory(storeCb: () => Store<any>) {
 
-    cb();
+    return (pathArrayToRefresh: TApiMethodName[], cb: () => void | Promise<void>): Unsubscribe => {
+        const store = storeCb();
+        const lastApiSuccess = store.getState().api[LAST_API_SUCCESS_ID];
+        let lastSuccessTime = lastApiSuccess?.lastTime || 0;
 
-    return store.subscribe(() => {
-        const state = store.getState();
-        const lastApiSuccessInSubscribe = state.api[LAST_API_SUCCESS_ID];
+        cb();
 
-        if (lastApiSuccessInSubscribe?.lastTime > lastSuccessTime) {
-            lastSuccessTime = lastApiSuccessInSubscribe.lastTime;
-            const data = state.api[LAST_API_SUCCESS_ID].data;
-            if (!data.error) {
-                const path = `${data.moduleId}/${data.methodId}` as TApiMethodName;
-                if (pathArrayToRefresh.includes(path)) {
-                    cb();
+        return store.subscribe(() => {
+            const state = store.getState();
+            const lastApiSuccessInSubscribe = state.api[LAST_API_SUCCESS_ID];
+
+            if (lastApiSuccessInSubscribe?.lastTime > lastSuccessTime) {
+                lastSuccessTime = lastApiSuccessInSubscribe.lastTime;
+                const data = state.api[LAST_API_SUCCESS_ID].data;
+                if (!data.error) {
+                    const path = `${data.moduleId}/${data.methodId}` as TApiMethodName;
+                    if (pathArrayToRefresh.includes(path)) {
+                        cb();
+                    }
                 }
             }
-        }
-    });
+        });
+    };
 }

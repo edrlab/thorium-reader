@@ -8,63 +8,64 @@
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
-import { diRendererGet } from "readium-desktop/renderer/library/di";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
-import { Unsubscribe } from "redux";
+import { Store, Unsubscribe } from "redux";
 import * as uuid from "uuid";
 
-export async function apiAction<T extends TApiMethodName>(apiPath: T, ...requestData: Parameters<TApiMethod[T]>) {
-    return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
-        const store = diRendererGet("store");
-        const requestId = uuid.v4();
-        const splitPath = apiPath.split("/");
-        const moduleId = splitPath[0] as TModuleApi;
-        const methodId = splitPath[1] as TMethodApi;
-        let storeUnsubscribe: Unsubscribe | undefined;
-        let timeoutId: number | undefined;
+export function apiActionFactory(storeCb: () => Store<any>) {
+    return async <T extends TApiMethodName>(apiPath: T, ...requestData: Parameters<TApiMethod[T]>) => {
+        return new Promise<ReturnPromiseType<TApiMethod[T]>>((resolve, reject) => {
+            const store = storeCb();
+            const requestId = uuid.v4();
+            const splitPath = apiPath.split("/");
+            const moduleId = splitPath[0] as TModuleApi;
+            const methodId = splitPath[1] as TMethodApi;
+            let storeUnsubscribe: Unsubscribe | undefined;
+            let timeoutId: number | undefined;
 
-        store.dispatch(
-            apiActions.request.build(
-                requestId,
-                moduleId,
-                methodId,
-                requestData,
-            ),
-        );
+            store.dispatch(
+                apiActions.request.build(
+                    requestId,
+                    moduleId,
+                    methodId,
+                    requestData,
+                ),
+            );
 
-        const promise = new Promise<ReturnPromiseType<TApiMethod[T]>>((resolveSubscribe, rejectSubscribe) => {
-            storeUnsubscribe = store.subscribe(() => {
-                const state = store.getState();
-                const lastTime = (state.api[requestId]?.lastTime) || 0;
+            const promise = new Promise<ReturnPromiseType<TApiMethod[T]>>((resolveSubscribe, rejectSubscribe) => {
+                storeUnsubscribe = store.subscribe(() => {
+                    const state = store.getState();
+                    const lastTime = (state.api[requestId]?.lastTime) || 0;
 
-                if (state.api[requestId]?.data.time > lastTime) {
-                    const data = { ...state.api[requestId].data };
-                    store.dispatch(apiActions.clean.build(requestId));
-                    if (data.error) {
-                        rejectSubscribe(data.errorMessage);
-                        return ;
+                    if (state.api[requestId]?.data.time > lastTime) {
+                        const data = { ...state.api[requestId].data };
+                        store.dispatch(apiActions.clean.build(requestId));
+                        if (data.error) {
+                            rejectSubscribe(data.errorMessage);
+                            return;
+                        }
+                        resolveSubscribe(data.result);
                     }
-                    resolveSubscribe(data.result);
+                    // handle promise<void>
+                    timeoutId = window.setTimeout(() => {
+                        timeoutId = undefined;
+                        rejectSubscribe("API Timeout");
+                    }, 5000);
+                });
+            });
+
+            promise.then((result) => {
+                resolve(result);
+            }).catch((error) => {
+                reject(error);
+            }).finally(() => {
+                if (storeUnsubscribe) {
+                    storeUnsubscribe();
                 }
-                // handle promise<void>
-                timeoutId = window.setTimeout(() => {
-                    timeoutId = undefined;
-                    rejectSubscribe("API Timeout");
-                }, 5000);
+                if (timeoutId) {
+                    clearTimeout(timeoutId);
+                }
             });
         });
-
-        promise.then((result) => {
-            resolve(result);
-        }).catch((error) => {
-            reject(error);
-        }).finally(() => {
-            if (storeUnsubscribe) {
-                storeUnsubscribe();
-            }
-            if (timeoutId) {
-                clearTimeout(timeoutId);
-            }
-        });
-    });
+    };
 }

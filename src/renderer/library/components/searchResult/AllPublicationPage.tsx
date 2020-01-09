@@ -8,8 +8,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { apiAction } from "readium-desktop/renderer/common/apiAction";
-import { apiSubscribe } from "readium-desktop/renderer/common/apiSubscribe";
+import { apiAction } from "readium-desktop/renderer/library/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/library/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
