@@ -8,10 +8,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { i18nActions } from "readium-desktop/common/redux/actions/";
-import { selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { diRendererGet } from "readium-desktop/renderer/library/di";
 import { winActions } from "readium-desktop/renderer/library/redux/actions";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
@@ -28,18 +26,10 @@ function* winStartWatcher(): SagaIterator {
 
     yield take(winActions.initSuccess.ID);
 
-    const isReader = yield* selectTyped(
-        (state: RootState) =>
-            typeof state.reader.reader !== "undefined",
-    );
-
     // starting point to mounting React to the DOM
     ReactDOM.render(
         React.createElement(
-            isReader
-            ? diRendererGet("react-reader-app")
-            : diRendererGet("react-main-app"),
-            {},
+            diRendererGet("react-main-app"),
             null),
         document.getElementById("app"),
     );
