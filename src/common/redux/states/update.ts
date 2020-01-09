@@ -5,15 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export enum UpdateStatus {
-    Unknown = "unknown",
-    NoUpdate = "no-update",
-    Update = "update",
-    SecurityUpdate = "security-update",
-}
+// export enum UpdateStatus {
+//     Unknown = "unknown",
+//     NoUpdate = "no-update",
+//     Update = "update",
+//     SecurityUpdate = "security-update",
+// }
 
-export interface UpdateState {
-    status: UpdateStatus;
-    latestVersion: string;
-    latestVersionUrl: string;
-}
+// export interface UpdateState {
+//     status: UpdateStatus;
+//     latestVersion: string;
+//     latestVersionUrl: string;
+// }
