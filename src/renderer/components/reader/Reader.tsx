@@ -288,10 +288,8 @@ export class Reader extends React.Component<IProps, IState> {
         const store = diRendererGet("store");
         store.subscribe(() => {
             const storeState = store.getState();
-            this.props.translator.setLocale(storeState.i18n.locale);
             const readerConfig = storeState.reader.config;
             if (readerConfig && readerConfig !== this.state.readerConfig) {
-                this.props.translator.setLocale(store.getState().i18n.locale);
 
                 const indexes = this.state.indexes;
                 for (const key of ObjectKeys(this.state.indexes)) {
