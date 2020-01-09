@@ -15,15 +15,15 @@ function* setLocale(action: i18nActions.setLocale.TAction) {
     const translator = diMainGet("translator");
     const configRepository: ConfigRepository<LocaleConfigValueType> = diMainGet("config-repository");
 
-    const configRepositorySave = () =>
-        configRepository.save({
+    const configRepositorySave = async () =>
+        await configRepository.save({
             identifier: LocaleConfigIdentifier,
             value: {
                 locale: action.payload.locale,
             },
         });
-    const translatorSetLocale = () =>
-        translator.setLocale(action.payload.locale);
+    const translatorSetLocale = async () =>
+        await translator.setLocale(action.payload.locale);
 
     yield all([
         call(configRepositorySave),

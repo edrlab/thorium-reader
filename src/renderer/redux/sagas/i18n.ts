@@ -12,8 +12,8 @@ import { all, call, takeEvery } from "redux-saga/effects";
 function* setLocale(action: i18nActions.setLocale.TAction) {
     const translator = diRendererGet("translator");
 
-    const translatorSetLocale = () =>
-        translator.setLocale(action.payload.locale);
+    const translatorSetLocale = async () =>
+        await translator.setLocale(action.payload.locale);
 
     yield call(translatorSetLocale);
 }
