@@ -80,13 +80,8 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
             request(requestOptions, (err, response) => {
 
                 debug("HTTP RESPONSE:");
-                debug(err);
-                debug(response.statusCode);
-                debug(response.statusMessage);
-                debug(response.url);
-                debug(response.body?.substr ? response.body.substr(0, 800) : response.body);
-
                 if (err) {
+                    debug(err);
                     if (err.code === "ETIMEDOUT") {
                         resolve({
                             isTimeout: true,
@@ -98,6 +93,12 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
                     }
                     reject(err);
                     return ;
+                }
+                if (response) {
+                    debug(response.statusCode);
+                    debug(response.statusMessage);
+                    debug(response.url);
+                    debug(response.body?.substr ? response.body.substr(0, 800) : response.body);
                 }
                 resolve({
                     isTimeout: false,

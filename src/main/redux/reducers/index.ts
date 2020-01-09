@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
-import { netReducer } from "readium-desktop/common/redux/reducers/net";
-import { updateReducer } from "readium-desktop/common/redux/reducers/update";
+// import { netReducer } from "readium-desktop/common/redux/reducers/net";
+// import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 import { appReducer } from "readium-desktop/main/redux/reducers/app";
 import { readerReducer } from "readium-desktop/main/redux/reducers/reader";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
@@ -18,7 +18,7 @@ export const rootReducer = combineReducers<RootState>({
     streamer: streamerReducer,
     i18n: i18nReducer,
     reader: readerReducer,
-    net: netReducer,
-    update: updateReducer,
+    // net: netReducer,
+    // update: updateReducer,
     app: appReducer,
 });

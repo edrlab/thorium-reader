@@ -5,12 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export enum NetStatus {
-    Unknown = "unknown",
-    Online = "online",
-    Offline = "offline",
-}
+// export enum NetStatus {
+//     Unknown = "unknown",
+//     Online = "online",
+//     Offline = "offline",
+// }
 
-export interface NetState {
-    status: NetStatus;
-}
+// export interface NetState {
+//     status: NetStatus;
+// }

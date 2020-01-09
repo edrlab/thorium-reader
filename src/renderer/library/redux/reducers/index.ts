@@ -10,9 +10,9 @@ import { History } from "history";
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { importReducer } from "readium-desktop/common/redux/reducers/import";
-import { netReducer } from "readium-desktop/common/redux/reducers/net";
+// import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
-import { updateReducer } from "readium-desktop/common/redux/reducers/update";
+// import { updateReducer } from "readium-desktop/common/redux/reducers/update";
 import { apiReducer } from "readium-desktop/renderer/library/redux/reducers/api";
 import { downloadReducer } from "readium-desktop/renderer/library/redux/reducers/download";
 import { historyReducer } from "readium-desktop/renderer/library/redux/reducers/history";
@@ -36,8 +36,8 @@ export const rootReducer = (history: History) =>
             }),
         }),
         win: winReducer,
-        net: netReducer,
-        update: updateReducer,
+        // net: netReducer,
+        // update: updateReducer,
         api: apiReducer,
         dialog: dialogReducer,
         router: connectRouter<IRouterLocationState>(history),
