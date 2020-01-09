@@ -13,8 +13,8 @@ import * as AddIcon from "readium-desktop/renderer/assets/icons/add-alone.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 // tslint:disable-next-line: no-empty-interface

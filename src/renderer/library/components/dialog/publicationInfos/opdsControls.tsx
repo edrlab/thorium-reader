@@ -15,7 +15,7 @@ import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/view
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import {

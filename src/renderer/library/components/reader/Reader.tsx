@@ -21,12 +21,12 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
+import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import { apiAction } from "readium-desktop/renderer/common/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/common/apiSubscribe";
-import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
-import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
-import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
+import ReaderFooter from "readium-desktop/renderer/library/components/reader/ReaderFooter";
+import ReaderHeader from "readium-desktop/renderer/library/components/reader/ReaderHeader";
+import SkipLink from "readium-desktop/renderer/library/components/utils/SkipLink";
 import { diRendererGet } from "readium-desktop/renderer/library/di";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import {
@@ -39,8 +39,7 @@ import { Unsubscribe } from "redux";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
 import {
-    IEventPayload_R2_EVENT_CLIPBOARD_COPY,
-    IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
+    IEventPayload_R2_EVENT_CLIPBOARD_COPY, IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN,
 } from "@r2-navigator-js/electron/common/events";
 import {
     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,

@@ -7,10 +7,10 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 

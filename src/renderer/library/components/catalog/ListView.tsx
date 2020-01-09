@@ -8,8 +8,8 @@
 import * as React from "react";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import CatalogMenu from "readium-desktop/renderer/components/publication/menu/CatalogMenu";
-import PublicationListElement from "readium-desktop/renderer/components/publication/PublicationListElement";
+import CatalogMenu from "readium-desktop/renderer/library/components/publication/menu/CatalogMenu";
+import PublicationListElement from "readium-desktop/renderer/library/components/publication/PublicationListElement";
 
 import NoPublicationInfo from "./NoPublicationInfo";
 

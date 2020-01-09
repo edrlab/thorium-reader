@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import * as PlusIcon from "readium-desktop/renderer/assets/icons/baseline-add-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
+import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { apiDispatch } from "readium-desktop/renderer/library/redux/api/api";
 import { TChangeEventOnInput } from "readium-desktop/typings/react";
 import { Dispatch } from "redux";

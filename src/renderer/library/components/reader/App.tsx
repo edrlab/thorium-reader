@@ -9,8 +9,8 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { Provider } from "react-redux";
-import DialogManager from "readium-desktop/renderer/components/dialog/DialogManager";
-import ToastManager from "readium-desktop/renderer/components/toast/ToastManager";
+import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
+import ToastManager from "readium-desktop/renderer/library/components/toast/ToastManager";
 import { diRendererGet } from "readium-desktop/renderer/library/di";
 
 import Reader from "./Reader";

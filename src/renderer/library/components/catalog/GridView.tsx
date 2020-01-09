@@ -8,8 +8,8 @@
 import * as React from "react";
 import { CatalogEntryView } from "readium-desktop/common/views/catalog";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import PublicationCard from "readium-desktop/renderer/components/publication/PublicationCard";
-import Slider from "readium-desktop/renderer/components/utils/Slider";
+import PublicationCard from "readium-desktop/renderer/library/components/publication/PublicationCard";
+import Slider from "readium-desktop/renderer/library/components/utils/Slider";
 
 import AboutThoriumButton from "./AboutThoriumButton";
 import NoPublicationInfo from "./NoPublicationInfo";

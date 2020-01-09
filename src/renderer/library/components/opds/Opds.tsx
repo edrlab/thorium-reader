@@ -6,10 +6,10 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
+import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
 
 import FeedList from "./FeedList";
 import OpdsAddForm from "./OpdsAddForm";

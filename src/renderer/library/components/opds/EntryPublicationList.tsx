@@ -8,9 +8,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IOpdsPublicationView, IOpdsResultView } from "readium-desktop/common/views/opds";
-import { GridView } from "readium-desktop/renderer/components/utils/GridView";
-import { ListView } from "readium-desktop/renderer/components/utils/ListView";
-import Loader from "readium-desktop/renderer/components/utils/Loader";
+import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
+import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
+import Loader from "readium-desktop/renderer/library/components/utils/Loader";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { DisplayType } from "readium-desktop/renderer/library/routing";
 

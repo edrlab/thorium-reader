@@ -12,8 +12,8 @@ import { Link } from "react-router-dom";
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
-import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+import SkipLink from "readium-desktop/renderer/library/components/utils/SkipLink";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 
 interface NavigationHeader {

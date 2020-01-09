@@ -19,8 +19,8 @@ import * as PagineIcon from "readium-desktop/renderer/assets/icons/pagine.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import fontList from "readium-desktop/utils/fontList";
 
 import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";

@@ -9,7 +9,7 @@ import * as React from "react";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
+import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import {
     TKeyboardEventOnAnchor, TMouseEventOnAnchor, TMouseEventOnSpan,
 } from "readium-desktop/typings/react";

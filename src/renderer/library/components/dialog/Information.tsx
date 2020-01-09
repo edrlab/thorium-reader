@@ -16,7 +16,7 @@ import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { _PACKAGING } from "readium-desktop/preprocessor-directives";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { promisify } from "util";

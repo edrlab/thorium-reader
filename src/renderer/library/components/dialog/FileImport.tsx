@@ -9,11 +9,11 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { apiAction } from "readium-desktop/renderer/common/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import { apiAction } from "readium-desktop/renderer/common/apiAction";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 

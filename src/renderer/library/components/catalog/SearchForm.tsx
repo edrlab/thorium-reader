@@ -11,8 +11,8 @@ import * as SearchIcon from "readium-desktop/renderer/assets/icons/baseline-sear
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { dispatchHistoryPush } from "readium-desktop/renderer/library/routing";
 import { TFormEvent } from "readium-desktop/typings/react";

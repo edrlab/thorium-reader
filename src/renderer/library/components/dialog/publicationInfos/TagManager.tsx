@@ -14,8 +14,8 @@ import * as CrossIcon from "readium-desktop/renderer/assets/icons/baseline-close
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { apiDispatch } from "readium-desktop/renderer/library/redux/api/api";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TPublication } from "readium-desktop/renderer/library/type/publication.type";

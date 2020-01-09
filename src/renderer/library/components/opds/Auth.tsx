@@ -12,11 +12,11 @@ import {
     OPDS_AUTH_ENCRYPTION_IV_HEX, OPDS_AUTH_ENCRYPTION_KEY_HEX,
 } from "readium-desktop/common/models/opds";
 import { THttpGetOpdsResultView } from "readium-desktop/common/views/opds";
-import { apiAction } from "readium-desktop/renderer/common/apiAction";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import { apiAction } from "readium-desktop/renderer/common/apiAction";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { dispatchHistoryPush, IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";

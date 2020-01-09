@@ -17,8 +17,8 @@ import * as LoopIcon from "readium-desktop/renderer/assets/icons/loop.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
-import SVG from "readium-desktop/renderer/components/utils/SVG";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 

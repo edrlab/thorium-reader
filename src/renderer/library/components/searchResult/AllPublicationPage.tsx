@@ -10,13 +10,13 @@ import { connect } from "react-redux";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiAction } from "readium-desktop/renderer/common/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/common/apiSubscribe";
-import BreadCrumb from "readium-desktop/renderer/components/layout/BreadCrumb";
-import LibraryLayout from "readium-desktop/renderer/components/layout/LibraryLayout";
-import { GridView } from "readium-desktop/renderer/components/utils/GridView";
+import BreadCrumb from "readium-desktop/renderer/library/components/layout/BreadCrumb";
+import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
+import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
-import { ListView } from "readium-desktop/renderer/components/utils/ListView";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { DisplayType } from "readium-desktop/renderer/library/routing";
 import { Unsubscribe } from "redux";

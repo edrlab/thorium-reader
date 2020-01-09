@@ -10,7 +10,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import { apiAction } from "readium-desktop/renderer/common/apiAction";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
+} from "readium-desktop/renderer/library/components/utils/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
