@@ -14,14 +14,14 @@ import * as i18n from "./i18n";
 import * as lcp from "./lcp";
 import * as opds from "./opds";
 import * as sameFileImport from "./sameFileImport";
-import { winInitWatcher } from "./win";
+import * as winInit from "./win";
 
 export function* rootSaga() {
     yield all([
         call(i18n.watchers),
         call(lcp.watchers),
         call(opds.watchers),
-        call(winInitWatcher),
+        call(winInit.watchers),
         call(publicationInfoOpds.watchers),
         call(publicationInfoReaderAndLib.watchers),
         call(sameFileImport.watchers),

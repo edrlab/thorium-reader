@@ -129,7 +129,9 @@ class Header extends React.Component<IProps, undefined> {
                     to={nextLocation}
                     replace={true}
                 >
-                    {translate("header." + item.label)}
+                    {
+                        translate("header." + item.label)
+                    }
                 </Link>
             </li>
         );
@@ -139,6 +141,7 @@ class Header extends React.Component<IProps, undefined> {
 const mapStateToProps = (state: RootState) => ({
     location: state.router.location,
     history: state.history,
+    locale: state.i18n.locale, // used for automatic refresh to force the rendering of header
 });
 
 export default connect(mapStateToProps)(withTranslator(Header));
