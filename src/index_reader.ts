@@ -9,15 +9,11 @@ import "font-awesome/css/font-awesome.css";
 import "react-dropdown/style.css";
 
 import { ipcRenderer } from "electron";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import App from "readium-desktop/renderer/components/reader/App";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { winActions } from "readium-desktop/renderer/redux/actions/";
-import { WinStatus } from "readium-desktop/renderer/redux/states/win";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
@@ -25,6 +21,9 @@ import {
 } from "@r2-shared-js/init-globals";
 
 import { EventPayload } from "./common/ipc/sync";
+
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
@@ -53,36 +52,11 @@ if (IS_DEV) {
     }, 5000);
 }
 
-// Render app
-let hasBeenRenderered = false;
-
-// Init redux store
-const store = diRendererGet("store");
-
-// Render React App component
-function render() {
-    ReactDOM.render(
-        React.createElement(App, {}, null),
-        document.getElementById("app"),
-    );
-}
-
-store.subscribe(() => {
-    const state = store.getState();
-    if (state.i18n && state.i18n.locale) {
-        document.documentElement.setAttribute("lang", state.i18n.locale);
-    }
-
-    if (!hasBeenRenderered && state.win.status === WinStatus.Initialized) {
-        render();
-        hasBeenRenderered = true;
-    }
-});
-
 ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
+            const store = diRendererGet("store");
             store.dispatch(winActions.initRequest.build(data.payload.winId));
             break;
     }
@@ -95,6 +69,7 @@ ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: EventPayload) => {
     switch (data.type) {
         case syncIpc.EventType.MainAction:
             // Dispatch main action to renderer reducers
+            const store = diRendererGet("store");
             store.dispatch(Object.assign(
                 {},
                 actionSerializer.deserialize(data.payload.action),
