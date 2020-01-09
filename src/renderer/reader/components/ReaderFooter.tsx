@@ -17,7 +17,7 @@ import {
 import { LocatorExtended } from "@r2-navigator-js/electron/renderer/index";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+import { TranslatorProps, withTranslator } from "../../library/components/utils/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

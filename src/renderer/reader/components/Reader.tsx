@@ -23,11 +23,11 @@ import {
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import { apiAction } from "readium-desktop/renderer/common/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/common/apiSubscribe";
-import ReaderFooter from "readium-desktop/renderer/library/components/reader/ReaderFooter";
-import ReaderHeader from "readium-desktop/renderer/library/components/reader/ReaderHeader";
-import SkipLink from "readium-desktop/renderer/library/components/utils/SkipLink";
+import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { diRendererGet } from "readium-desktop/renderer/library/di";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
+import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
+import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import {
     TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
@@ -57,7 +57,7 @@ import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+import { TranslatorProps, withTranslator } from "../../library/components/utils/hoc/translator";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
 } from "./options-values";

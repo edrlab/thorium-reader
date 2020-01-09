@@ -12,13 +12,15 @@ import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
-import { diRendererSymbolTable as diSymbolTable } from "readium-desktop/renderer/library/diSymbolTable";
+import {
+    diRendererSymbolTable as diSymbolTable,
+} from "readium-desktop/renderer/library/diSymbolTable";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { initStore } from "readium-desktop/renderer/library/redux/store/memory";
 import { Store } from "redux";
 
+import ReaderApp from "../reader/components/App";
 import MainApp from "./components/App";
-import ReaderApp from "./components/reader/App";
 import { IRouterLocationState } from "./routing";
 
 // Create container used for dependency injection
