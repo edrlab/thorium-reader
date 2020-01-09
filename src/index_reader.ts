@@ -12,8 +12,8 @@ import { ipcRenderer } from "electron";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { diRendererGet } from "readium-desktop/renderer/di";
-import { winActions } from "readium-desktop/renderer/redux/actions/";
+import { diRendererGet } from "readium-desktop/renderer/library/di";
+import { winActions } from "readium-desktop/renderer/library/redux/actions";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {

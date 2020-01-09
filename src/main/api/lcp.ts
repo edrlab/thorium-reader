@@ -13,7 +13,7 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { LcpManager } from "readium-desktop/main/services/lcp";
-import { RootState } from "readium-desktop/renderer/redux/states";
+import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { Store } from "redux";
 
 import { PublicationViewConverter } from "../converter/publication";

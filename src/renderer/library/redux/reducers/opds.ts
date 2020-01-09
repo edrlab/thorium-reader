@@ -6,15 +6,15 @@
 // ==LICENSE-END==
 
 // import * as debug_ from "debug";
-import { IBreadCrumbItem } from "./node_modules/readium-desktop/renderer/library/components/layout/BreadCrumb";
-import { diRendererGet } from "./node_modules/readium-desktop/renderer/di";
-import { buildOpdsBrowserRoute } from "./node_modules/readium-desktop/renderer/library/opds/route";
-import { opdsActions } from "./node_modules/readium-desktop/renderer/redux/actions";
+import { IBreadCrumbItem } from "readium-desktop/renderer/library/components/layout/BreadCrumb";
+import { diRendererGet } from "readium-desktop/renderer/library/di";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import {
     browseRequest, headerLinksUpdate, search,
-} from "./node_modules/readium-desktop/renderer/redux/actions/opds";
-import { IOpdsHeaderState, IOpdsSearchState } from "./node_modules/readium-desktop/renderer/redux/states/opds";
-import { ObjectKeys } from "./node_modules/readium-desktop/utils/object-keys-values";
+} from "readium-desktop/renderer/library/redux/actions/opds";
+import { IOpdsHeaderState, IOpdsSearchState } from "readium-desktop/renderer/library/redux/states/opds";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 // Logger
 // const debug = debug_("readium-desktop:renderer:redux:reducer:opds");
