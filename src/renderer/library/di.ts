@@ -10,7 +10,6 @@ import "reflect-metadata";
 import { createHashHistory, History } from "history";
 import { Container } from "inversify";
 import getDecorators from "inversify-inject-decorators";
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
 import {
     diRendererSymbolTable as diSymbolTable,
@@ -36,10 +35,6 @@ container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
 const translator = new Translator();
 container.bind<Translator>(diSymbolTable.translator).toConstantValue(translator);
 
-// Create action serializer
-const actionSerializer = new ActionSerializer();
-container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).toConstantValue(actionSerializer);
-
 container.bind<typeof MainApp>(diSymbolTable["react-main-app"]).toConstantValue(MainApp);
 
 // local interface to force type return
@@ -47,7 +42,6 @@ interface IGet {
     (s: "history"): History;
     (s: "store"): Store<RootState>;
     (s: "translator"): Translator;
-    (s: "action-serializer"): ActionSerializer;
     (s: "react-main-app"): typeof MainApp;
 }
 

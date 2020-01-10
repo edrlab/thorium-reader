@@ -8,8 +8,9 @@
 import { ipcRenderer } from "electron";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
-import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
+
+import { actionSerializer } from "../../actionSerializer";
 
 export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
 
@@ -27,9 +28,6 @@ export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
                         // Do not send in loop an action already sent by main process
                         return next(action);
                     }
-
-                    // Get action serializer
-                    const actionSerializer = diLibraryGet("action-serializer");
 
                     // Send this action to the main process
                     ipcRenderer.send(syncIpc.CHANNEL, {

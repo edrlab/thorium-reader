@@ -21,6 +21,8 @@ import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 
+import { actionSerializer } from "../common/actionSerializer";
+
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
 // import { consoleRedirect } from "@r2-navigator-js/electron/renderer/common/console-redirect";
@@ -68,7 +70,6 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
 
 // Request main process for a new id
 ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
-    const actionSerializer = diLibraryGet("action-serializer");
 
     switch (data.type) {
         case syncIpc.EventType.MainAction:

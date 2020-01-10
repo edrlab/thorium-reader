@@ -23,6 +23,7 @@ import {
 } from "@r2-shared-js/init-globals";
 
 import { EventPayload } from "../../common/ipc/sync";
+import { actionSerializer } from "../common/actionSerializer";
 
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 
@@ -63,8 +64,6 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
 
 // Request main process for a new id
 ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: EventPayload) => {
-    const actionSerializer = diReaderGet("action-serializer");
-
     switch (data.type) {
         case syncIpc.EventType.MainAction:
             // Dispatch main action to renderer reducers
