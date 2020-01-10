@@ -12,7 +12,7 @@ import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
 import { TPublication } from "readium-desktop/renderer/library/type/publication.type";
 
-import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

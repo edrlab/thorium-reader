@@ -8,11 +8,11 @@
 import * as React from "react";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import GridTagButton from "readium-desktop/renderer/library/components/catalog/GridTagButton";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
-import Menu from "readium-desktop/renderer/library/components/utils/menu/Menu";
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import Menu from "readium-desktop/renderer/common/components/menu/Menu";
+import GridTagButton from "readium-desktop/renderer/library/components/catalog/GridTagButton";
 import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 
 // tslint:disable-next-line: no-empty-interface

@@ -15,6 +15,7 @@ import { Provider } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
+import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
 import PageManager from "readium-desktop/renderer/library/components/PageManager";
 import { diRendererGet } from "readium-desktop/renderer/library/di";
@@ -63,39 +64,45 @@ export default class App extends React.Component<{}, undefined> {
     public render(): React.ReactElement<{}> {
         const store = diRendererGet("store");
         const history = diRendererGet("history");
+        const translator = diRendererGet("translator");
 
         return (
             <Provider store={store} >
-                <ConnectedRouter history={history}>
-                    <div className={styles.root}>
-                        <Dropzone
-                            onDrop={this.onDrop}
-                        >
-                            {({ getRootProps, getInputProps }) => {
-                                const rootProps = getRootProps({ onClick: (e) => e.stopPropagation() });
-                                rootProps.tabIndex = -1;
-                                // FIXME : css in code
-                                return <div
-                                    {...rootProps}
-                                    style={{
-                                        position: "absolute",
-                                        overflow: "hidden",
-                                        top: 0,
-                                        bottom: 0,
-                                        left: 0,
-                                        right: 0,
-                                    }}
-                                >
-                                    <DownloadsPanel/>
-                                    <input aria-hidden {...getInputProps({onClick: (evt) => evt.preventDefault()})} />
-                                    <PageManager/>
-                                    <DialogManager/>
-                                    <ToastManager/>
-                                </div>;
-                            }}
-                        </Dropzone>
-                    </div>
-                </ConnectedRouter>
+                <TranslatorContext.Provider value={translator}>
+                    <ConnectedRouter history={history}>
+                        <div className={styles.root}>
+                            <Dropzone
+                                onDrop={this.onDrop}
+                            >
+                                {({ getRootProps, getInputProps }) => {
+                                    const rootProps = getRootProps({ onClick: (e) => e.stopPropagation() });
+                                    rootProps.tabIndex = -1;
+                                    // FIXME : css in code
+                                    return <div
+                                        {...rootProps}
+                                        style={{
+                                            position: "absolute",
+                                            overflow: "hidden",
+                                            top: 0,
+                                            bottom: 0,
+                                            left: 0,
+                                            right: 0,
+                                        }}
+                                    >
+                                        <DownloadsPanel />
+                                        <input aria-hidden {
+                                            ...getInputProps({ onClick: (evt) => evt.preventDefault() })
+                                        }
+                                        />
+                                        <PageManager />
+                                        <DialogManager />
+                                        <ToastManager />
+                                    </div>;
+                                }}
+                            </Dropzone>
+                        </div>
+                    </ConnectedRouter>
+                </TranslatorContext.Provider>
             </Provider>
         );
     }

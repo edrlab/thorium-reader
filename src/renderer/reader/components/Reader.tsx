@@ -57,7 +57,7 @@ import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import { TranslatorProps, withTranslator } from "../../library/components/utils/hoc/translator";
+import { TranslatorProps, withTranslator } from "../../common/components/hoc/translator";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
 } from "./options-values";
@@ -190,7 +190,7 @@ interface IState {
     readerConfig: ReaderConfig;
 }
 
-export class Reader extends React.Component<IProps, IState> {
+class Reader extends React.Component<IProps, IState> {
     private fastLinkRef: React.RefObject<HTMLAnchorElement>;
 
     // can be get back with withTranslator HOC
@@ -271,6 +271,9 @@ export class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
+
+        console.log("context", this.context);
+
         this.setState({
             publicationJsonUrl,
         });

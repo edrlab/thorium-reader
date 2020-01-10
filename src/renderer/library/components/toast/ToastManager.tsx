@@ -13,7 +13,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import * as uuid from "uuid";
 
-import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 import Toast from "./Toast";
 
 // tslint:disable-next-line: no-empty-interface

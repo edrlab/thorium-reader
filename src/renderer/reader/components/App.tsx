@@ -9,11 +9,15 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { Provider } from "react-redux";
-import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
-import ToastManager from "readium-desktop/renderer/library/components/toast/ToastManager";
+import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
+import DialogManager from "readium-desktop/renderer/reader/components/dialog/DialogManager";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
+import { TRootState } from "readium-desktop/renderer/reader/redux/reducers";
+import { Store } from "redux";
 
 import Reader from "./Reader";
+
+export const StoreContext = React.createContext<Store<TRootState>>(null);
 
 export default class App extends React.Component<{}, undefined> {
 
@@ -23,14 +27,26 @@ export default class App extends React.Component<{}, undefined> {
 
     public render(): React.ReactElement<{}> {
         const store = diReaderGet("store");
+        const translator = diReaderGet("translator");
         return (
-            <Provider store={ store }>
-                <div>
-                    <Reader/>
-                    <DialogManager />
-                    <ToastManager />
-                </div>
-            </Provider>
+            <StoreContext.Provider value={store}>
+                <TranslatorContext.Provider value={translator}>
+                    <Provider store={store}>
+                        <div>
+                            <StoreContext.Consumer>
+                                {
+                                    (value) => {
+                                        console.log(value);
+                                        return <></>;
+                                    }
+                                }
+                            </StoreContext.Consumer>
+                            <Reader />
+                            <DialogManager />
+                        </div>
+                    </Provider>
+                </TranslatorContext.Provider>
+            </StoreContext.Provider>
         );
     }
 }

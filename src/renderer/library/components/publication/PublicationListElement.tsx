@@ -20,8 +20,8 @@ import { TPublication } from "readium-desktop/renderer/library/type/publication.
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as uuid from "uuid";
 
-import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
-import AccessibleMenu from "../utils/menu/AccessibleMenu";
+import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
+import AccessibleMenu from "../../../common/components/menu/AccessibleMenu";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

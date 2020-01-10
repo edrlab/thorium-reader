@@ -12,7 +12,7 @@ import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+} from "readium-desktop/renderer/common/components/hoc/translator";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import PublicationExportButton from "./PublicationExportButton";

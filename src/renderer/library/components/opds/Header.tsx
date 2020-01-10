@@ -13,10 +13,10 @@ import * as GridIcon from "readium-desktop/renderer/assets/icons/grid.svg";
 import * as HomeIcon from "readium-desktop/renderer/assets/icons/home.svg";
 import * as ListIcon from "readium-desktop/renderer/assets/icons/list.svg";
 import * as RefreshIcon from "readium-desktop/renderer/assets/icons/refresh.svg";
-import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
 import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { RootState } from "readium-desktop/renderer/library/redux/states";

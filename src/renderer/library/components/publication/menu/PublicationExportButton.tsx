@@ -7,10 +7,10 @@
 
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import { apiAction } from "readium-desktop/renderer/library/apiAction";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

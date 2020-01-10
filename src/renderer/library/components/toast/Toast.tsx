@@ -11,7 +11,7 @@ import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
 import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 
-import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 
 import classNames = require("classnames");
 

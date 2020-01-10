@@ -12,10 +12,10 @@ import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import * as CrossIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px-blue.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TPublication } from "readium-desktop/renderer/library/type/publication.type";

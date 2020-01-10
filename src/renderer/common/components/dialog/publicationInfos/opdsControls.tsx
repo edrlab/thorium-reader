@@ -15,7 +15,7 @@ import { IOpdsLinkView, IOpdsPublicationView } from "readium-desktop/common/view
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+} from "readium-desktop/renderer/common/components/hoc/translator";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import {
@@ -24,7 +24,7 @@ import {
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ContentType } from "readium-desktop/utils/content-type";
 
-import { IBreadCrumbItem } from "../../layout/BreadCrumb";
+import { IBreadCrumbItem } from "../../../../library/components/layout/BreadCrumb";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

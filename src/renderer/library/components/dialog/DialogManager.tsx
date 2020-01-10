@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
+import PublicationInfo from "readium-desktop/renderer/common/components/dialog/publicationInfos/PublicationInfo";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
@@ -15,7 +16,6 @@ import FileImport from "./FileImport";
 import Information from "./Information";
 import LcpAuthentication from "./LcpAuthentication";
 import OpdsFeedAddForm from "./OpdsFeedAddForm";
-import PublicationInfo from "./publicationInfos/PublicationInfo";
 import RenewLsdConfirm from "./RenewLsdConfirm";
 import ReturnLsdConfirm from "./ReturnLsdConfirm";
 

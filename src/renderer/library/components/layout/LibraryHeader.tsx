@@ -10,10 +10,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import * as styles from "readium-desktop/renderer/assets/styles/header.css";
-import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import SkipLink from "readium-desktop/renderer/common/components/SkipLink";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 
 interface NavigationHeader {

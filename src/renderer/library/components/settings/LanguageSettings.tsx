@@ -11,10 +11,10 @@ import { i18nActions } from "readium-desktop/common/redux/actions/";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
-import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";

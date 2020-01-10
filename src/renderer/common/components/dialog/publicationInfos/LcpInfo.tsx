@@ -14,7 +14,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialo
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 
-import { TranslatorProps, withTranslator } from "../../utils/hoc/translator";
+import { TranslatorProps, withTranslator } from "../../hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

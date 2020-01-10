@@ -6,39 +6,48 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import { connect } from "react-redux";
+import { RootState } from "readium-desktop/renderer/library/redux/states";
 
-import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
+import PublicationInfo from "readium-desktop/renderer/common/components/dialog/publicationInfos/PublicationInfo";
 
 // tslint:disable-next-line: no-empty-interface
-interface IBaseProps extends TranslatorProps {
+interface IBaseProps {
 }
 // IProps may typically extend:
 // RouteComponentProps
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
 }
 
-class NoPublicationInfo extends React.Component<IProps, undefined> {
+class DialogManager extends React.Component<IProps, undefined> {
 
     constructor(props: IProps) {
         super(props);
     }
 
     public render(): React.ReactElement<{}> {
-        const { __ } = this.props;
+        const dialog = this.props.dialog;
+
+        if (!dialog || !dialog.open) {
+            return (<></>);
+        }
+
         return (
             <>
-                <div className={styles.noPublicationHelp}>
-                    <p>{__("catalog.noPublicationHelpL1")}</p>
-                    <p>{__("catalog.noPublicationHelpL2")}</p>
-                    <p>{__("catalog.noPublicationHelpL3")}</p>
-                </div>
+                <PublicationInfo></PublicationInfo>
             </>
         );
+
     }
 }
 
-export default withTranslator(NoPublicationInfo);
+const mapStateToProps = (state: RootState, _props: IBaseProps) => {
+    return {
+        dialog: state.dialog,
+    };
+};
+
+export default connect(mapStateToProps)(DialogManager);

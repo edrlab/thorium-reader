@@ -10,10 +10,10 @@ import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
-import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TMouseEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";

@@ -14,7 +14,7 @@ import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { TChangeEventOnInput } from "readium-desktop/typings/react";
 import { Dispatch } from "redux";
 
-import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
+import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, ReturnType<typeof mapDispatchToProps> {

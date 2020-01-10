@@ -14,11 +14,11 @@ import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
-import Cover from "readium-desktop/renderer/library/components/publication/Cover";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
-import Menu from "readium-desktop/renderer/library/components/utils/menu/Menu";
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import Menu from "readium-desktop/renderer/common/components/menu/Menu";
+import Cover from "readium-desktop/renderer/library/components/publication/Cover";
 import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";

@@ -12,7 +12,7 @@ import { dialogActions } from "readium-desktop/common/redux/actions/";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+} from "readium-desktop/renderer/common/components/hoc/translator";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";

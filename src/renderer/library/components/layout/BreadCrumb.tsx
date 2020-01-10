@@ -13,7 +13,7 @@ import * as ArrowIcon from "readium-desktop/renderer/assets/icons/arrow-left.svg
 import * as styles from "readium-desktop/renderer/assets/styles/breadcrumb.css";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/library/components/utils/hoc/translator";
+} from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 

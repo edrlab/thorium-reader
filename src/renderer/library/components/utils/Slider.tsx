@@ -10,7 +10,7 @@ import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-
 import * as styles from "readium-desktop/renderer/assets/styles/slider.css";
 import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 
-import { TranslatorProps, withTranslator } from "./hoc/translator";
+import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
