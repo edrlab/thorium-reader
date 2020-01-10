@@ -274,8 +274,6 @@ class Reader extends React.Component<IProps, IState> {
 
     public async componentDidMount() {
 
-        console.log("context", this.context);
-
         this.setState({
             publicationJsonUrl,
         });
