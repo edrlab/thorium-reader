@@ -20,16 +20,6 @@ function* lcpUserKeyCheckRequestWatcher(): SagaIterator {
 
         const { hint, publicationView, message } = action.payload;
 
-        const isReader = yield* selectTyped((state: RootState) => {
-            return typeof state.reader.reader !== "undefined";
-        });
-        if (isReader) {
-            // passphrase dialog only in library/bookshelf view
-            // already-opened reader BrowserWindows (distinct renderer processes)
-            // must not display the popup dialog!
-            continue;
-        }
-
         // will call API.unlockPublicationWithPassphrase()
         yield put(dialogActions.openRequest.build(DialogTypeName.LcpAuthentication,
             {

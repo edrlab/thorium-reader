@@ -19,7 +19,6 @@ import { historyReducer } from "readium-desktop/renderer/library/redux/reducers/
 import {
     opdsBreadcrumbReducer, opdsHeaderLinkReducer, opdsSearchLinkReducer,
 } from "readium-desktop/renderer/library/redux/reducers/opds";
-import { readerReducer } from "readium-desktop/renderer/library/redux/reducers/reader";
 import { winReducer } from "readium-desktop/renderer/library/redux/reducers/win";
 import { IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { combineReducers } from "redux";
@@ -27,7 +26,6 @@ import { combineReducers } from "redux";
 export const rootReducer = (history: History) =>
     combineReducers({
         i18n: i18nReducer,
-        reader: readerReducer,
         opds: combineReducers({
             browser: combineReducers({
                 breadcrumb: opdsBreadcrumbReducer,

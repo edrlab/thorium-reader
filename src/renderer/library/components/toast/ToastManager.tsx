@@ -61,12 +61,6 @@ export class ToastManager extends React.Component<IProps, IState> {
             { Object.keys(toastList).map((id: string) => {
                 const toast = toastList[id];
                 if (toast) {
-                    if (toast.publicationIdentifier) {
-                        if (!this.props.publicationIdentifier || // library bookshelf view
-                            this.props.publicationIdentifier !== toast.publicationIdentifier) {
-                            return undefined;
-                        }
-                    }
                     switch (toast.type) {
                         case ToastType.Success:
                             return <Toast
@@ -111,8 +105,6 @@ export class ToastManager extends React.Component<IProps, IState> {
 const mapStateToProps = (state: RootState, _props: IBaseProps) => {
     return {
         toast: state.toast,
-        publicationIdentifier: state.reader && state.reader.reader ?
-            state.reader.reader.publicationIdentifier : undefined,
     };
 };
 
