@@ -1,4 +1,4 @@
 import { apiActionFactory } from "../common/apiAction";
-import { diRendererGet } from "./di";
+import { diLibraryGet } from "./di";
 
-export const apiAction = apiActionFactory(() => diRendererGet("store"));
+export const apiAction = apiActionFactory(() => diLibraryGet("store"));

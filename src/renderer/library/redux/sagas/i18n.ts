@@ -6,11 +6,11 @@
 // ==LICENSE-END==
 
 import { i18nActions } from "readium-desktop/common/redux/actions";
-import { diRendererGet } from "readium-desktop/renderer/library/di";
+import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { all, call, takeEvery } from "redux-saga/effects";
 
 function* setLocale(action: i18nActions.setLocale.TAction) {
-    const translator = diRendererGet("translator");
+    const translator = diLibraryGet("translator");
 
     const translatorSetLocale = async () =>
         await translator.setLocale(action.payload.locale);

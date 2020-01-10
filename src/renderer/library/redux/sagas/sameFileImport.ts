@@ -9,7 +9,7 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { importActions, toastActions } from "readium-desktop/common/redux/actions";
 import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
-import { diRendererGet } from "readium-desktop/renderer/library/di";
+import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { all, call, put } from "redux-saga/effects";
 
@@ -36,7 +36,7 @@ function* sameFileImportWatcher() {
         if (Array.isArray(downloads)
             && findDownload(downloads, link)) {
 
-            const translator = diRendererGet("translator");
+            const translator = diLibraryGet("translator");
 
             yield put(
                 toastActions.openRequest.build(

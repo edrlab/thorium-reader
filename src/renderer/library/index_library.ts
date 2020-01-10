@@ -13,7 +13,7 @@ import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { diRendererGet } from "readium-desktop/renderer/library/di";
+import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { winActions } from "readium-desktop/renderer/library/redux/actions";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
@@ -60,7 +60,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
     switch (data.type) {
         case winIpc.EventType.IdResponse:
             // Initialize window
-            const store = diRendererGet("store");
+            const store = diLibraryGet("store");
             store.dispatch(winActions.initRequest.build(data.payload.winId));
             break;
     }
@@ -68,12 +68,12 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
 
 // Request main process for a new id
 ipcRenderer.on(syncIpc.CHANNEL, (_0: any, data: syncIpc.EventPayload) => {
-    const actionSerializer = diRendererGet("action-serializer");
+    const actionSerializer = diLibraryGet("action-serializer");
 
     switch (data.type) {
         case syncIpc.EventType.MainAction:
             // Dispatch main action to renderer reducers
-            const store = diRendererGet("store");
+            const store = diLibraryGet("store");
             store.dispatch(Object.assign(
                 {},
                 actionSerializer.deserialize(data.payload.action),

@@ -7,7 +7,7 @@
 
 // import * as debug_ from "debug";
 import { IBreadCrumbItem } from "readium-desktop/renderer/library/components/layout/BreadCrumb";
-import { diRendererGet } from "readium-desktop/renderer/library/di";
+import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import {
@@ -28,7 +28,7 @@ export function opdsBreadcrumbReducer(
             const { level, title, url, rootFeedIdentifier } = action.payload;
             const stateNew = state.slice(0, level - 1);
             if (stateNew.length === 0) {
-                const translator = diRendererGet("translator");
+                const translator = diLibraryGet("translator");
                 stateNew.push({
                     name: translator.translate("opds.breadcrumbRoot"),
                     path: "/opds",

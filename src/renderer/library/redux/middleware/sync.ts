@@ -9,7 +9,7 @@ import { ipcRenderer } from "electron";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import { apiActions, i18nActions, readerActions } from "readium-desktop/common/redux/actions";
-import { diRendererGet } from "readium-desktop/renderer/library/di";
+import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 // Actions that can be synchronized
@@ -44,7 +44,7 @@ export const reduxSyncMiddleware: Middleware
     }
 
     // Get action serializer
-    const actionSerializer = diRendererGet("action-serializer");
+    const actionSerializer = diLibraryGet("action-serializer");
 
     // Send this action to the main process
     ipcRenderer.send(syncIpc.CHANNEL, {

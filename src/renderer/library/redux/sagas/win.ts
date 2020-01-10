@@ -8,7 +8,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { i18nActions } from "readium-desktop/common/redux/actions/";
-import { diRendererGet } from "readium-desktop/renderer/library/di";
+import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { winActions } from "readium-desktop/renderer/library/redux/actions";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
@@ -29,7 +29,7 @@ function* winStartWatcher(): SagaIterator {
     // starting point to mounting React to the DOM
     ReactDOM.render(
         React.createElement(
-            diRendererGet("react-main-app"),
+            diLibraryGet("react-main-app"),
             null),
         document.getElementById("app"),
     );

@@ -63,7 +63,7 @@ const {
 } = getDecorators(container);
 
 export {
-    diGet as diRendererGet,
+    diGet as diLibraryGet,
     lazyInject,
     lazyInjectNamed,
     lazyInjectTagged,

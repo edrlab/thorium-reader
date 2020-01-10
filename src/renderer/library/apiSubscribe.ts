@@ -1,4 +1,4 @@
 import { apiSubscribeFactory } from "../common/apiSubscribe";
-import { diRendererGet } from "./di";
+import { diLibraryGet } from "./di";
 
-export const apiSubscribe = apiSubscribeFactory(() => diRendererGet("store"));
+export const apiSubscribe = apiSubscribeFactory(() => diLibraryGet("store"));

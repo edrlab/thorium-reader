@@ -18,7 +18,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/app.css";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import DialogManager from "readium-desktop/renderer/library/components/dialog/DialogManager";
 import PageManager from "readium-desktop/renderer/library/components/PageManager";
-import { diRendererGet } from "readium-desktop/renderer/library/di";
+import { diLibraryGet } from "readium-desktop/renderer/library/di";
 
 import DownloadsPanel from "./DownloadsPanel";
 import ToastManager from "./toast/ToastManager";
@@ -33,7 +33,7 @@ export default class App extends React.Component<{}, undefined> {
 
     // Called when files are droped on the dropzone
     public onDrop(acceptedFiles: File[]) {
-        const store = diRendererGet("store");
+        const store = diLibraryGet("store");
         store.dispatch(
             dialogActions.openRequest.build(DialogTypeName.FileImport,
                 {
@@ -62,9 +62,9 @@ export default class App extends React.Component<{}, undefined> {
     }
 
     public render(): React.ReactElement<{}> {
-        const store = diRendererGet("store");
-        const history = diRendererGet("history");
-        const translator = diRendererGet("translator");
+        const store = diLibraryGet("store");
+        const history = diLibraryGet("history");
+        const translator = diLibraryGet("translator");
 
         return (
             <Provider store={store} >
