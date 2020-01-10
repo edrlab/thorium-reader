@@ -17,8 +17,6 @@ import { Store } from "redux";
 
 import Reader from "./Reader";
 
-export const StoreContext = React.createContext<Store<TRootState>>(null);
-
 export default class App extends React.Component<{}, undefined> {
 
     constructor(props: {}) {
@@ -33,14 +31,6 @@ export default class App extends React.Component<{}, undefined> {
                 <TranslatorContext.Provider value={translator}>
                     <Provider store={store}>
                         <div>
-                            <StoreContext.Consumer>
-                                {
-                                    (value) => {
-                                        console.log(value);
-                                        return <></>;
-                                    }
-                                }
-                            </StoreContext.Consumer>
                             <Reader />
                             <DialogManager />
                         </div>
