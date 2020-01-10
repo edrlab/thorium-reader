@@ -12,8 +12,6 @@ import { Provider } from "react-redux";
 import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
 import DialogManager from "readium-desktop/renderer/reader/components/dialog/DialogManager";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
-import { TRootState } from "readium-desktop/renderer/reader/redux/reducers";
-import { Store } from "redux";
 
 import Reader from "./Reader";
 
@@ -27,16 +25,14 @@ export default class App extends React.Component<{}, undefined> {
         const store = diReaderGet("store");
         const translator = diReaderGet("translator");
         return (
-            <StoreContext.Provider value={store}>
-                <TranslatorContext.Provider value={translator}>
-                    <Provider store={store}>
-                        <div>
-                            <Reader />
-                            <DialogManager />
-                        </div>
-                    </Provider>
-                </TranslatorContext.Provider>
-            </StoreContext.Provider>
+            <TranslatorContext.Provider value={translator}>
+                <Provider store={store}>
+                    <div>
+                        <Reader />
+                        <DialogManager />
+                    </div>
+                </Provider>
+            </TranslatorContext.Provider>
         );
     }
 }
