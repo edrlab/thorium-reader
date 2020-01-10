@@ -11,7 +11,7 @@ import { Link, matchPath } from "react-router-dom";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
 import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-import SVG from "readium-desktop/renderer/library/components/utils/SVG";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";

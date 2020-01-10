@@ -12,8 +12,8 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import GridTagButton from "readium-desktop/renderer/library/components/catalog/GridTagButton";
-import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

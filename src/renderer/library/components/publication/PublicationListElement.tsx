@@ -15,7 +15,7 @@ import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
-import SVG from "readium-desktop/renderer/library/components/utils/SVG";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { TPublication } from "readium-desktop/renderer/library/type/publication.type";
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as uuid from "uuid";

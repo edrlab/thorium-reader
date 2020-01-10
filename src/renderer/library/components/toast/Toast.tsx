@@ -9,7 +9,7 @@ import * as React from "react";
 import { ToastType } from "readium-desktop/common/models/toast";
 import * as QuitIcon from "readium-desktop/renderer/assets/icons/baseline-close-24px.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/toast.css";
-import SVG from "readium-desktop/renderer/library/components/utils/SVG";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 
 import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
 

@@ -14,8 +14,8 @@ import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
-import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { DisplayType } from "readium-desktop/renderer/library/routing";
 

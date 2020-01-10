@@ -15,8 +15,8 @@ import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialo
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
-import SVG from "readium-desktop/renderer/library/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TPublication } from "readium-desktop/renderer/library/type/publication.type";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
