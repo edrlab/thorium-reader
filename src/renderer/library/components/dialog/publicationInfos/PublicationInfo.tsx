@@ -16,16 +16,15 @@ import { IOpdsCoverView, IOpdsPublicationView } from "readium-desktop/common/vie
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import Cover from "readium-desktop/renderer/common/components/Cover";
-import TagManager from "readium-desktop/renderer/common/components/dialog/publicationInfos/TagManager";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import Loader from "readium-desktop/renderer/common/components/Loader";
-// import { RootState as LibraryState } from "readium-desktop/renderer/library/redux/states";
-// import { RootState as ReaderState } from "readium-desktop/renderer/reader/redux/states";
+import TagManager from "readium-desktop/renderer/library/components/dialog/publicationInfos/TagManager";
+import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-import Dialog from "../Dialog";
+import Dialog from "../../../../common/components/dialog/Dialog";
 import CatalogControls from "./catalogControls";
 import CatalogLcpControls from "./catalogLcpControls";
 import LcpInfo from "./LcpInfo";
@@ -311,7 +310,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (state: any, _props: IBaseProps) => ({
+const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     ...{
         open: state.dialog.type === DialogTypeName.PublicationInfoOpds
             || state.dialog.type === DialogTypeName.PublicationInfoReader

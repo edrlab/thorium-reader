@@ -12,8 +12,10 @@ import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
+import { EventPayload } from "readium-desktop/common/ipc/sync";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
+import { actionSerializer } from "readium-desktop/renderer/common/actionSerializer";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
 
@@ -21,9 +23,6 @@ import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
-
-import { EventPayload } from "../../common/ipc/sync";
-import { actionSerializer } from "../common/actionSerializer";
 
 // import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
 

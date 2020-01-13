@@ -14,7 +14,6 @@ import { readerReducer } from "readium-desktop/renderer/reader/redux/reducers/re
 import { combineReducers } from "redux";
 
 export const rootReducer = () => {
-    console.log("Et la ?");
     return combineReducers({
         api: apiReducer,
         i18n: i18nReducer,

@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
-import { parseOpdsBrowserRoute } from "readium-desktop/renderer/common/opds/route";
+import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";

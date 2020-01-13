@@ -19,8 +19,8 @@ import {
 import {
     IBreadCrumbItem,
 } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/common/opds/route";
-// import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
+import { RootState } from "readium-desktop/renderer/library/redux/states";
 import {
     dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes,
 } from "readium-desktop/renderer/library/routing";
@@ -254,7 +254,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (state: any, props: IBaseProps) => {
+const mapStateToProps = (state: RootState, props: IBaseProps) => {
     return {
         breadcrumb: state.opds.browser.breadcrumb,
         location: state.router.location,

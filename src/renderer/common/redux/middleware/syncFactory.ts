@@ -8,9 +8,8 @@
 import { ipcRenderer } from "electron";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
+import { actionSerializer } from "readium-desktop/renderer/common/actionSerializer";
 import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
-
-import { actionSerializer } from "../../actionSerializer";
 
 export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
 

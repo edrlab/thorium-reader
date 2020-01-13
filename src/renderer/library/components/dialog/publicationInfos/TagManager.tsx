@@ -18,7 +18,7 @@ import {
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
-// import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import { Dispatch } from "redux";
 
@@ -161,7 +161,7 @@ const mapDispatchToProps = (dispatch: Dispatch, _props: IBaseProps) => ({
     },
 });
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: RootState) => ({
     tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.tags,
     pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.identifier,
     publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication,

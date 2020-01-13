@@ -6,11 +6,9 @@
 // ==LICENSE-END==
 
 // import * as debug_ from "debug";
-import {
-    IBreadCrumbItem,
-} from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/common/opds/route";
+import { IBreadCrumbItem } from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import {
     browseRequest, headerLinksUpdate, search,
