@@ -13,18 +13,19 @@ import { importReducer } from "readium-desktop/common/redux/reducers/import";
 // import { netReducer } from "readium-desktop/common/redux/reducers/net";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 // import { updateReducer } from "readium-desktop/common/redux/reducers/update";
-import { apiReducer } from "readium-desktop/renderer/library/redux/reducers/api";
+import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
+import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { downloadReducer } from "readium-desktop/renderer/library/redux/reducers/download";
 import { historyReducer } from "readium-desktop/renderer/library/redux/reducers/history";
 import {
     opdsBreadcrumbReducer, opdsHeaderLinkReducer, opdsSearchLinkReducer,
 } from "readium-desktop/renderer/library/redux/reducers/opds";
-import { winReducer } from "readium-desktop/renderer/library/redux/reducers/win";
 import { IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { combineReducers } from "redux";
 
-export const rootReducer = (history: History) =>
-    combineReducers({
+export const rootReducer = (history: History) => {
+    console.log("redux root reducer library");
+    return combineReducers({
         i18n: i18nReducer,
         opds: combineReducers({
             browser: combineReducers({
@@ -43,6 +44,7 @@ export const rootReducer = (history: History) =>
         toast: toastReducer,
         download: downloadReducer,
         history: historyReducer,
-    });
+});
+};
 
 export type TRootState = ReturnType<ReturnType<typeof rootReducer>>;

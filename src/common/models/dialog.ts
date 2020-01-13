@@ -7,7 +7,7 @@
 
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { TPublication } from "readium-desktop/renderer/library/type/publication.type";
+import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
 
 interface IPubInfoState {
     publication?: TPublication;

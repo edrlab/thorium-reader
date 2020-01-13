@@ -9,12 +9,12 @@ import { ToastType } from "readium-desktop/common/models/toast";
 import { importActions, toastActions } from "readium-desktop/common/redux/actions";
 import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
+import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { all, call, put } from "redux-saga/effects";
 
 import { Download } from "../states/download";
-import { apiSaga } from "./api";
 
 const REQUEST_ID = "SAME_FILE_IMPORT_REQUEST";
 

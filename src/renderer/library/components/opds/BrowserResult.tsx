@@ -11,8 +11,8 @@ import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import Loader from "readium-desktop/renderer/common/components/Loader";
 import { apiState } from "readium-desktop/renderer/common/redux/api/api";
-import Loader from "readium-desktop/renderer/library/components/utils/Loader";
 import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/library/redux/sagas/opds";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 

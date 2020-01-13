@@ -8,8 +8,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { i18nActions } from "readium-desktop/common/redux/actions/";
+import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
-import { winActions } from "readium-desktop/renderer/library/redux/actions";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 

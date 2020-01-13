@@ -8,8 +8,8 @@
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
+import { ApiResponse, LAST_API_SUCCESS_ID } from "readium-desktop/renderer/common/redux/states/api";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
-import { ApiResponse, LAST_API_SUCCESS_ID } from "readium-desktop/renderer/library/redux/states/api";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { Dispatch } from "redux";
 import * as uuid from "uuid";

@@ -16,7 +16,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { buildOpdsBrowserRouteWithLink } from "readium-desktop/renderer/library/opds/route";
+import { buildOpdsBrowserRouteWithLink } from "readium-desktop/renderer/common/opds/route";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { dispatchHistoryPush } from "readium-desktop/renderer/library/routing";
 import { TDispatch } from "readium-desktop/typings/redux";

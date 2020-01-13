@@ -24,6 +24,8 @@ import { IRouterLocationState } from "./routing";
 // Create container used for dependency injection
 const container = new Container();
 
+console.log("di lib");
+
 // Create store
 const history: History<IRouterLocationState> = createHashHistory();
 container.bind<History>(diSymbolTable.history).toConstantValue(history);

@@ -21,7 +21,7 @@ import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { promisify } from "util";
 
-import Dialog from "../dialog/Dialog";
+import Dialog from "../../../common/components/dialog/Dialog";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

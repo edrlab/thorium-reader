@@ -8,13 +8,14 @@
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
-import { apiReducer } from "readium-desktop/renderer/library/redux/reducers/api";
-import { winReducer } from "readium-desktop/renderer/library/redux/reducers/win";
+import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
+import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { readerReducer } from "readium-desktop/renderer/reader/redux/reducers/reader";
 import { combineReducers } from "redux";
 
-export const rootReducer = () =>
-    combineReducers({
+export const rootReducer = () => {
+    console.log("Et la ?");
+    return combineReducers({
         api: apiReducer,
         i18n: i18nReducer,
         reader: readerReducer,
@@ -22,5 +23,6 @@ export const rootReducer = () =>
         dialog: dialogReducer,
         toast: toastReducer,
     });
+};
 
 export type TRootState = ReturnType<ReturnType<typeof rootReducer>>;

@@ -18,6 +18,8 @@ import { rootSaga } from "readium-desktop/renderer/library/redux/sagas";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 
 export function initStore(history: History): Store<RootState> {
+
+    console.log("Init store lib");
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(
         rootReducer(history),

@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import FocusLock from "react-focus-lock";
-import OutsideClickAlerter from "readium-desktop/renderer/library/components/utils/OutsideClickAlerter";
+import OutsideClickAlerter from "readium-desktop/renderer/common/components/OutsideClickAlerter";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {

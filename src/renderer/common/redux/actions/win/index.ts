@@ -5,8 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as history from "./history";
+import * as initRequest from "./initRequest";
+import * as initSuccess from "./initSuccess";
 
 export {
-    history,
+    initRequest,
+    initSuccess,
 };

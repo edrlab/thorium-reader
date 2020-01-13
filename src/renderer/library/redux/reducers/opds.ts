@@ -6,14 +6,18 @@
 // ==LICENSE-END==
 
 // import * as debug_ from "debug";
-import { IBreadCrumbItem } from "readium-desktop/renderer/library/components/layout/BreadCrumb";
+import {
+    IBreadCrumbItem,
+} from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/common/opds/route";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions } from "readium-desktop/renderer/library/redux/actions";
 import {
     browseRequest, headerLinksUpdate, search,
 } from "readium-desktop/renderer/library/redux/actions/opds";
-import { IOpdsHeaderState, IOpdsSearchState } from "readium-desktop/renderer/library/redux/states/opds";
+import {
+    IOpdsHeaderState, IOpdsSearchState,
+} from "readium-desktop/renderer/library/redux/states/opds";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 // Logger

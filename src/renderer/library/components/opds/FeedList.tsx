@@ -15,9 +15,9 @@ import * as DeleteIcon from "readium-desktop/renderer/assets/icons/baseline-clos
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import { TranslatorProps } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/common/opds/route";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";

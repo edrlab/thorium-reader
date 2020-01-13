@@ -7,8 +7,8 @@
 
 import { all, call } from "redux-saga/effects";
 
-import * as publicationInfoOpds from "./dialog/publicationInfoOpds";
-import * as publicationInfoReaderAndLib from "./dialog/publicationInfoReaderAndLib";
+import * as publicationInfoOpds from "../../../common/redux/sagas/dialog/publicationInfoOpds";
+import * as publicationInfoReaderAndLib from "../../../common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import * as history from "./history";
 import * as i18n from "./i18n";
 import * as lcp from "./lcp";

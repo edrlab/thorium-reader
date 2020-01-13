@@ -14,7 +14,7 @@ import * as ReactDOM from "react-dom";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { winActions } from "readium-desktop/renderer/library/redux/actions";
+import { winActions } from "readium-desktop/renderer/common/redux/actions";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";

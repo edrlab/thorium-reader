@@ -7,9 +7,8 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
-
 import PublicationInfo from "readium-desktop/renderer/common/components/dialog/publicationInfos/PublicationInfo";
+import { RootState } from "readium-desktop/renderer/reader/redux/states";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {

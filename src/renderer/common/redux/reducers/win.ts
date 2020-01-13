@@ -5,8 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { winActions } from "readium-desktop/renderer/library/redux/actions";
-import { WinState } from "readium-desktop/renderer/library/redux/states/win";
+import { winActions } from "readium-desktop/renderer/common/redux/actions";
+import { WinState } from "readium-desktop/renderer/common/redux/states/win";
 
 const initialState: WinState = {
     winId: undefined,

@@ -16,15 +16,16 @@ import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialo
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import {
+    IBreadCrumbItem,
+} from "readium-desktop/renderer/common/models/breadcrumbItem.interface";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/common/opds/route";
+// import { RootState } from "readium-desktop/renderer/library/redux/states";
 import {
     dispatchHistoryPush, IOpdsBrowse, IRouterLocationState, routes,
 } from "readium-desktop/renderer/library/routing";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ContentType } from "readium-desktop/utils/content-type";
-
-import { IBreadCrumbItem } from "../../../../library/components/layout/BreadCrumb";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
@@ -253,20 +254,20 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (state: RootState, props: IBaseProps) => {
+const mapStateToProps = (state: any, props: IBaseProps) => {
     return {
         breadcrumb: state.opds.browser.breadcrumb,
         location: state.router.location,
         openAccessButtonIsDisabled: () => {
             return !!state.download.downloads.find(
-                (dl) => props.opdsPublicationView.openAccessLinks.find(
+                (dl: { url: string; }) => props.opdsPublicationView.openAccessLinks.find(
                     (ln) => ln.url === dl.url,
                 ),
             );
         },
         sampleButtonIsDisabled: () => {
             return !!state.download.downloads.find(
-                (dl) => props.opdsPublicationView.sampleOrPreviewLinks.find(
+                (dl: { url: string; }) => props.opdsPublicationView.sampleOrPreviewLinks.find(
                     (ln) => ln.url === dl.url,
                 ),
             );

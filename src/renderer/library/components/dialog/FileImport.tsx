@@ -17,7 +17,7 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-import Dialog from "./Dialog";
+import Dialog from "../../../common/components/dialog/Dialog";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
