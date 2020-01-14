@@ -6,16 +6,20 @@
 // ==LICENSE-END==
 
 import { i18nActions } from "readium-desktop/common/redux/actions";
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { diRendererGet } from "readium-desktop/renderer/di";
-import { all, call } from "redux-saga/effects";
+import { all, call, takeEvery } from "redux-saga/effects";
+
+function* setLocale(action: i18nActions.setLocale.TAction) {
+    const translator = diRendererGet("translator");
+
+    const translatorSetLocale = async () =>
+        await translator.setLocale(action.payload.locale);
+
+    yield call(translatorSetLocale);
+}
 
 function* localeWatcher() {
-    while (true) {
-        const action = yield* takeTyped(i18nActions.setLocale.build);
-        const translator = diRendererGet("translator");
-        translator.setLocale(action.payload.locale);
-    }
+    yield takeEvery(i18nActions.setLocale.build, setLocale);
 }
 
 export function* watchers() {

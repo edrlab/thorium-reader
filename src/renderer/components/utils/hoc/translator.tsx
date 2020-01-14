@@ -19,6 +19,7 @@ type TComponentConstructor<P> = React.ComponentClass<P> | React.StatelessCompone
 export function withTranslator<Props>(WrappedComponent: TComponentConstructor<Props & TranslatorProps>) {
     const WrapperComponent = class extends React.Component<Props & TranslatorProps, undefined> {
         public static displayName: string;
+
         public render() {
             const translator = diRendererGet("translator");
             const translate = translator.translate.bind(translator) as I18nTyped;
