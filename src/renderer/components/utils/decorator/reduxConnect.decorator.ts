@@ -5,12 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ReactComponent } from "readium-desktop/renderer/components/utils/reactComponent";
-import { diRendererGet } from "readium-desktop/renderer/di";
+import * as React from "React";
+import { ReactBaseComponent } from "readium-desktop/renderer/components/utils/ReactBaseComponent";
 import { TRootState } from "readium-desktop/renderer/redux/reducers";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { shallowEqual } from "readium-desktop/utils/shallowEqual";
-import { Unsubscribe } from "redux";
+import { Store, Unsubscribe } from "redux";
+
+import { StoreContext } from "../../App";
 
 export function reduxConnectDecorator<
     MapState extends { [key: string]: any } = {},
@@ -21,11 +23,11 @@ export function reduxConnectDecorator<
 ) {
     return <
         // tslint:disable-next-line:callable-types
-        T extends { new(...args: any[]): ReactComponent<Props, State, MapState, MapDispatch> }
+        T extends { new(...args: any[]): ReactBaseComponent<Props, State, MapState, MapDispatch> }
         , Props = {}
         , State = {}
     >(component: T) =>
-        class extends component {
+        class ReduxConnectDecorator extends component {
 
             // should be private, but it is currently not possible in TS
             // https://github.com/Microsoft/TypeScript/issues/30355
@@ -35,16 +37,6 @@ export function reduxConnectDecorator<
                 super(...args);
 
                 this._storeUnsubscribe = undefined;
-
-                const store = diRendererGet("store");
-
-                if (mapStateFct) {
-                    this.reduxState = mapStateFct(store.getState(), this.props);
-                }
-
-                if (mapDispatchFct) {
-                    this.reduxDispatch = mapDispatchFct(store.dispatch, this.props);
-                }
             }
 
             public componentDidMount() {
@@ -54,10 +46,8 @@ export function reduxConnectDecorator<
 
                 if (mapStateFct) {
 
-                    const store = diRendererGet("store");
-
-                    this._storeUnsubscribe = store.subscribe(() => {
-                        const state = store.getState();
+                    this._storeUnsubscribe = this.store.subscribe(() => {
+                        const state = this.store.getState();
                         const newReduxState = mapStateFct(state, this.props);
 
                         if (!shallowEqual(newReduxState, this.reduxState)) {
@@ -67,6 +57,37 @@ export function reduxConnectDecorator<
                         }
                     });
                 }
+            }
+
+            public render() {
+
+                const reduxInit = (store: Store<any>) => {
+
+                    if (mapStateFct) {
+                        this.reduxState = mapStateFct(store.getState(), this.props);
+                    }
+
+                    if (mapDispatchFct) {
+                        this.reduxDispatch = mapDispatchFct(store.dispatch, this.props);
+                    }
+                };
+
+                if (!this.store) {
+                    return React.createElement(
+                        StoreContext.Consumer,
+                        null,
+                        (store: Store<any>) => {
+
+                            this.store = store;
+
+                            reduxInit(store);
+                            return super.render();
+                        },
+                    );
+                }
+
+                reduxInit(this.store);
+                return super.render();
             }
 
             public componentWillUnmount() {

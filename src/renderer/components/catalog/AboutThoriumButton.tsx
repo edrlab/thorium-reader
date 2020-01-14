@@ -14,7 +14,7 @@ import { TDispatch } from "readium-desktop/typings/redux";
 
 import { reduxConnectDecorator } from "../utils/decorator/reduxConnect.decorator";
 import { translatorDecorator } from "../utils/decorator/translator.decorator";
-import { ReactComponent } from "../utils/reactComponent";
+import { ReactBaseComponent } from "../utils/ReactBaseComponent";
 
 // tslint:disable-next-line: no-empty-interface
 interface IProps {
@@ -30,7 +30,7 @@ const mapReduxDispatch = (dispatch: TDispatch, _props: IProps) => ({
 
 @translatorDecorator
 @reduxConnectDecorator(undefined, mapReduxDispatch)
-export default class AboutThoriumButton extends ReactComponent<
+export default class AboutThoriumButton extends ReactBaseComponent<
     IProps,
     undefined,
     undefined,

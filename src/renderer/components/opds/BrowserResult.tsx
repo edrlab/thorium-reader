@@ -12,7 +12,7 @@ import { BROWSE_OPDS_API_REQUEST_ID } from "readium-desktop/renderer/redux/sagas
 
 import { apiDecorator, TApiDecorator } from "../utils/decorator/api.decorator";
 import { translatorDecorator } from "../utils/decorator/translator.decorator";
-import { ReactComponent } from "../utils/reactComponent";
+import { ReactBaseComponent } from "../utils/ReactBaseComponent";
 import OPDSAuth from "./Auth";
 import EntryList from "./EntryList";
 import EntryPublicationList from "./EntryPublicationList";
@@ -24,7 +24,7 @@ interface IProps {
 
 @translatorDecorator
 @apiDecorator("opds/browse", undefined, undefined, BROWSE_OPDS_API_REQUEST_ID, false)
-export default class BrowserResult extends ReactComponent<
+export default class BrowserResult extends ReactBaseComponent<
 IProps
 , undefined
 , undefined

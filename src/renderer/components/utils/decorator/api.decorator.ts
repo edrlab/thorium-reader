@@ -6,17 +6,19 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import * as React from "React";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
-import { ReactComponent } from "readium-desktop/renderer/components/utils/reactComponent";
-import { diRendererGet } from "readium-desktop/renderer/di";
+import { ReactBaseComponent } from "readium-desktop/renderer/components/utils/ReactBaseComponent";
 import { TRootState } from "readium-desktop/renderer/redux/reducers";
 import { ApiResponse, LAST_API_SUCCESS_ID } from "readium-desktop/renderer/redux/states/api";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { shallowEqual } from "readium-desktop/utils/shallowEqual";
-import { Unsubscribe } from "redux";
+import { Store, Unsubscribe } from "redux";
 import * as uuid from "uuid";
+
+import { StoreContext } from "../../App";
 
 export type TApiDecorator<T extends TApiMethodName> = {
     [key in T]: {
@@ -62,14 +64,14 @@ export function apiDecorator<
 ) {
     return <
         // tslint:disable-next-line:callable-types
-        T extends { new(...args: any[]): ReactComponent<Props, State, MapState, MapDispatch, TApiDecorator<TPath>> }
+        T extends { new(...args: any[]): ReactBaseComponent<Props, State, MapState, MapDispatch, TApiDecorator<TPath>> }
         , Props = {}
         , State = {}
         , MapState = {}
         , MapDispatch = {}
         ,
     >(component: T) =>
-        class extends component {
+        class ApiDecorator extends component {
 
             // should be private, but it is currently not possible in TS
             // https://github.com/Microsoft/TypeScript/issues/30355
@@ -81,6 +83,7 @@ export function apiDecorator<
 
             public _didMount: boolean;
             public _willUnmount: boolean;
+            public _render: boolean;
 
             constructor(...args: any[]) {
                 super(...args);
@@ -89,6 +92,7 @@ export function apiDecorator<
 
                 this._didMount = false;
                 this._willUnmount = false;
+                this._render = false;
 
                 if (!Array.isArray(this._apiArray)) {
 
@@ -114,22 +118,6 @@ export function apiDecorator<
                     clearAtTheEnd,
                 });
 
-                const store = diRendererGet("store");
-                const state = store.getState();
-
-                this.api[apiPath] = {
-                    request: (...requestData: Parameters<TApiMethod[TPath]>) =>
-                        store.dispatch(
-                            apiActions.request.build(requestId, moduleId, methodId, requestData)),
-                    result: state.api[requestId],
-                    needRefresh: false,
-                };
-
-                if (requestDataFct) {
-
-                    const data = requestDataFct(state, this.props, this.state);
-                    store.dispatch(apiActions.request.build(requestId, moduleId, methodId, data));
-                }
             }
 
             public componentDidMount() {
@@ -139,10 +127,8 @@ export function apiDecorator<
 
                 if (!this._didMount) {
 
-                    const store = diRendererGet("store");
-
-                    this._storeUnsubscribeApi = store.subscribe(() => {
-                        const state = store.getState();
+                    this._storeUnsubscribeApi = this.store.subscribe(() => {
+                        const state = this.store.getState();
 
                         this._apiArray.forEach((apiData) => {
 
@@ -172,7 +158,7 @@ export function apiDecorator<
                                     if (apiData.requestDataFct) {
 
                                         const data = requestDataFct(state, this.props, this.state);
-                                        store.dispatch(
+                                        this.store.dispatch(
                                             apiActions.request.build(
                                                 apiData.requestId
                                                 , apiData.moduleId
@@ -193,6 +179,64 @@ export function apiDecorator<
                 }
             }
 
+            public render() {
+
+                const apiInit = (store: Store<any>) => {
+                    const state = store.getState();
+
+                    this._apiArray.forEach((apiData) => {
+
+                        this.api[apiData.apiPath] = {
+                            request: (...requestData: Parameters<TApiMethod[TPath]>) =>
+                                store.dispatch(
+                                    apiActions.request.build(
+                                        apiData.requestId,
+                                        apiData.moduleId,
+                                        apiData.methodId,
+                                        requestData,
+                                    ),
+                                ),
+                            result: state.api[requestId],
+                            needRefresh: false,
+                        };
+
+                        if (requestDataFct) {
+
+                            const data = requestDataFct(state, this.props, this.state);
+                            store.dispatch(
+                                apiActions.request.build(
+                                    apiData.requestId,
+                                    apiData.moduleId,
+                                    apiData.methodId,
+                                    data,
+                                ),
+                            );
+                        }
+                    });
+                };
+
+                if (!this._render) {
+                    this._render = true;
+                    if (!this.store) {
+
+                        return React.createElement(
+                            StoreContext.Provider,
+                            null,
+                            (store: Store<any>) => {
+
+                                this.store = store;
+
+                                apiInit(store);
+                                return super.render();
+                            });
+                    }
+                    apiInit(this.store);
+                }
+                // already initialized, return render in parent
+                return super.render();
+
+            }
+
             public componentWillUnmount() {
                 if (super.componentWillUnmount) {
                     super.componentWillUnmount();
@@ -204,14 +248,12 @@ export function apiDecorator<
 
                 if (!this._willUnmount) {
 
-                    const store = diRendererGet("store");
-
                     this._apiArray.filter(
                         (apiData) =>
                             apiData.clearAtTheEnd,
                     ).forEach(
                         (apiData) =>
-                            store.dispatch(apiActions.clean.build(apiData.requestId)),
+                            this.store.dispatch(apiActions.clean.build(apiData.requestId)),
                     );
 
                     this._willUnmount = true;

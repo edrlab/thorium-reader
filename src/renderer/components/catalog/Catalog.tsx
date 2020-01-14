@@ -14,7 +14,7 @@ import { DisplayType } from "readium-desktop/renderer/routing";
 import { apiDecorator, TApiDecorator } from "../utils/decorator/api.decorator";
 import { reduxConnectDecorator } from "../utils/decorator/reduxConnect.decorator";
 import { translatorDecorator } from "../utils/decorator/translator.decorator";
-import { ReactComponent } from "../utils/reactComponent";
+import { ReactBaseComponent } from "../utils/ReactBaseComponent";
 import { CatalogGridView } from "./GridView";
 import Header from "./Header";
 import { CatalogListView } from "./ListView";
@@ -40,7 +40,7 @@ const refreshTriggerArray: TApiMethodName[] = [
 @reduxConnectDecorator(mapState)
 @apiDecorator("catalog/get", refreshTriggerArray, () => [])
 @apiDecorator("publication/getAllTags", refreshTriggerArray, () => [])
-export default class Catalog extends ReactComponent<
+export default class Catalog extends ReactBaseComponent<
     IProps
     , undefined
     , ReturnType<typeof mapState>

@@ -5,26 +5,32 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-// import { I18nTyped } from "readium-desktop/common/services/translator";
-import { diRendererGet } from "readium-desktop/renderer/di";
-import { ReactComponent } from "../reactComponent";
+import * as React from "React";
+import { Translator } from "readium-desktop/common/services/translator";
+import { TranslatorContext } from "readium-desktop/renderer/components/App";
+
+import { ReactBaseComponent } from "../ReactBaseComponent";
 
 export function translatorDecorator<
     // tslint:disable-next-line:callable-types
-    T extends { new(...args: any[]): ReactComponent<P, S, ReduxState, ReduxDispatch> },
+    T extends { new(...args: any[]): ReactBaseComponent<P, S, ReduxState, ReduxDispatch> },
     P = {},
     S = {},
     ReduxState = {},
     ReduxDispatch = {},
     >(component: T) {
-    return class extends component {
+    return class TranslatorDecorator extends component {
 
-        constructor(...args: any[]) {
-            super(...args);
+        public render() {
 
-            const translatorFromDi = diRendererGet("translator");
-
-            this.__ = translatorFromDi.translate;
+            return React.createElement(
+                TranslatorContext.Consumer,
+                null,
+                (translator: Translator) => {
+                    this.__ = translator.translate;
+                    return super.render();
+                },
+            );
         }
     };
 }

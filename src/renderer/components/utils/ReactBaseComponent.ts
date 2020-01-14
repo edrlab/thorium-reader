@@ -7,12 +7,13 @@
 
 import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
+import { Store } from "redux";
 
 // PureComponnent implement a shallow comparison on props and state before the rendering decision
 // I saw an excess of rendering on each component if not extended with PureComponent class
 // may be fixed with shouldComponentUpdate otherwise
 
-export class ReactComponent<
+export class ReactBaseComponent<
     P = {},
     S = {},
     ReduxState = {},
@@ -20,8 +21,9 @@ export class ReactComponent<
     Api = {},
     > extends React.PureComponent<P, S> {
 
-    public __: I18nTyped;
-    public reduxState: Readonly<ReduxState>;
-    public reduxDispatch: Readonly<ReduxDispatch>;
+    public __?: I18nTyped;
+    public reduxState?: Readonly<ReduxState>;
+    public reduxDispatch?: Readonly<ReduxDispatch>;
     public api?: Api | undefined;
+    public store?: Store<any>;
 }
