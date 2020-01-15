@@ -15,14 +15,15 @@ import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
+import AccessibleMenu from "readium-desktop/renderer/common/components/menu/AccessibleMenu";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { formatContributorToString } from "readium-desktop/renderer/common/formatContributor";
 import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
-import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor";
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as uuid from "uuid";
-
-import { TranslatorProps, withTranslator } from "../../../common/components/hoc/translator";
-import AccessibleMenu from "../../../common/components/menu/AccessibleMenu";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

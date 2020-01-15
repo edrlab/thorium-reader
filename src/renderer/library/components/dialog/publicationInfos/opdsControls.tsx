@@ -13,7 +13,7 @@ import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialo
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { dispatchOpdsLink } from "readium-desktop/renderer/library/components/opds/handleLink";
+import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import OpdsLinkProperties from "./OpdsLinkProperties";

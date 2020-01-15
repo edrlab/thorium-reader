@@ -23,7 +23,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import TagManager from "readium-desktop/renderer/library/components/dialog/publicationInfos/TagManager";
-import FormatContributorWithLink from "readium-desktop/renderer/library/components/utils/FormatContributor";
+import FormatContributorWithLink from "readium-desktop/renderer/library/components/FormatContributorWithLink";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 

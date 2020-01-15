@@ -19,8 +19,8 @@ import {
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
+import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
-import { dispatchOpdsLink } from "readium-desktop/renderer/opds/handleLink";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 

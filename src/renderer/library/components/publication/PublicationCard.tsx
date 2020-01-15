@@ -20,8 +20,8 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { formatContributorToString } from "readium-desktop/renderer/common/formatContributor";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
-import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor.ts";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import CatalogMenu from "./menu/CatalogMenu";

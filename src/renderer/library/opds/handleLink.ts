@@ -8,12 +8,12 @@
 import { shell } from "electron";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
-import { buildOpdsBrowserRoute } from "readium-desktop/renderer/opds/route";
+import { decodeB64 } from "readium-desktop/renderer/common/base64";
+import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ContentType } from "readium-desktop/utils/content-type";
 
 import { dispatchHistoryPush, TLocation } from "../routing";
-import { decodeB64 } from "../tools/base64";
 import { extractParamFromOpdsRoutePathname } from "./route";
 
 export const dispatchOpdsLink =

@@ -8,11 +8,11 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { IOpdsContributorView } from "readium-desktop/common/views/opds";
-import { dispatchOpdsLink } from "readium-desktop/renderer/opds/handleLink";
-import { RootState } from "readium-desktop/renderer/redux/states";
+import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
+import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-import { TranslatorProps, withTranslator } from "./hoc/translator";
+import { TranslatorProps, withTranslator } from "../../common/components/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

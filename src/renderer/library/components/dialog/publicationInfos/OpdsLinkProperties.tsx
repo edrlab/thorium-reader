@@ -12,7 +12,7 @@ import { IOPDSPropertiesView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TranslatorProps, withTranslator,
-} from "readium-desktop/renderer/components/utils/hoc/translator";
+} from "readium-desktop/renderer/common/components/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
