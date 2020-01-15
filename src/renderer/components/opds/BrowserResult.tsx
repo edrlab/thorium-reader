@@ -148,8 +148,7 @@ export class BrowserResult extends React.Component<IProps, undefined> {
                                         }
                                     </section>,
                                 )
-                            })
-                        }
+                            }
                         </>
                     );
                 } else {
