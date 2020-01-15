@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import * as React from "React";
+import * as React from "react";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
 import { TMethodApi, TModuleApi } from "readium-desktop/main/di";

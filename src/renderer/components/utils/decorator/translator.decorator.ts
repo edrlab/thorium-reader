@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as React from "React";
+import * as React from "react";
 import { Translator } from "readium-desktop/common/services/translator";
 import { TranslatorContext } from "readium-desktop/renderer/components/App";
 
