@@ -19,7 +19,11 @@ export function translatorDecorator<
     ReduxState = {},
     ReduxDispatch = {},
     >(component: T) {
-    return class TranslatorDecorator extends component {
+    const ret = class extends component {
+
+        constructor(...args: any[]) {
+            super(...args);
+        }
 
         public render() {
 
@@ -33,4 +37,14 @@ export function translatorDecorator<
             );
         }
     };
+
+    Object.defineProperty(ret.prototype, "name", {
+        value: component.name,
+    });
+
+    Object.defineProperty(ret, "name", {
+        value: component.name,
+    });
+
+    return ret;
 }

@@ -37,7 +37,7 @@ interface IApiDataInternal<
     apiPath: TPath;
     refresh: TApiMethodName[];
     requestDataFct: (reduxState?: TRootState, props?: any, state?: any) =>
-                Parameters<TApiMethod[TPath]>;
+        Parameters<TApiMethod[TPath]>;
     clearAtTheEnd: boolean;
 }
 
@@ -54,7 +54,7 @@ const debug = debug_("readium-desktop:api-decorator");
  */
 export function apiDecorator<
     TPath extends TApiMethodName
-    >(
+>(
     apiPath: TPath,
     refresh?: TApiMethodName[],
     requestDataFct?: (reduxState?: TRootState, props?: any, state?: any) =>
@@ -70,194 +70,205 @@ export function apiDecorator<
         , MapState = {}
         , MapDispatch = {}
         ,
-    >(component: T) =>
-        class ApiDecorator extends component {
+        >(component: T) => {
+        const ret = class extends component {
 
-            // should be private, but it is currently not possible in TS
-            // https://github.com/Microsoft/TypeScript/issues/30355
-            // BUT check the release of this : https://github.com/microsoft/TypeScript/pull/30829
-            // FIXME: when available replace _ by # and all inheriting class will not be abble to access this field
-            public _storeUnsubscribeApi: Unsubscribe | undefined;
+        // should be private, but it is currently not possible in TS
+        // https://github.com/Microsoft/TypeScript/issues/30355
+        // BUT check the release of this : https://github.com/microsoft/TypeScript/pull/30829
+        // FIXME: when available replace _ by # and all inheriting class will not be abble to access this field
+        public _storeUnsubscribeApi: Unsubscribe | undefined;
 
-            public _apiArray: Array<IApiDataInternal<TPath>>;
+        public _apiArray: Array<IApiDataInternal<TPath>>;
 
-            public _didMount: boolean;
-            public _willUnmount: boolean;
-            public _render: boolean;
+        public _didMount: boolean;
+        public _willUnmount: boolean;
+        public _render: boolean;
 
-            constructor(...args: any[]) {
-                super(...args);
+        constructor(...args: any[]) {
+            super(...args);
 
-                debug("apiPath", apiPath);
+            debug("apiPath", apiPath);
 
-                this._didMount = false;
-                this._willUnmount = false;
-                this._render = false;
+            this._didMount = false;
+            this._willUnmount = false;
+            this._render = false;
 
-                if (!Array.isArray(this._apiArray)) {
+            if (!Array.isArray(this._apiArray)) {
 
-                    this._storeUnsubscribeApi = undefined;
+                this._storeUnsubscribeApi = undefined;
 
-                    // @ts-ignore
-                    this.api = [];
+                // @ts-ignore
+                this.api = [];
 
-                    this._apiArray = [];
-                }
-
-                const splitPath = apiPath.split("/");
-                const moduleId = splitPath[0] as TModuleApi;
-                const methodId = splitPath[1] as TMethodApi;
-
-                this._apiArray.push({
-                    moduleId,
-                    methodId,
-                    requestId,
-                    apiPath,
-                    refresh,
-                    requestDataFct,
-                    clearAtTheEnd,
-                });
-
+                this._apiArray = [];
             }
 
-            public componentDidMount() {
-                if (super.componentDidMount) {
-                    super.componentDidMount();
-                }
+            const splitPath = apiPath.split("/");
+            const moduleId = splitPath[0] as TModuleApi;
+            const methodId = splitPath[1] as TMethodApi;
 
-                if (!this._didMount) {
+            this._apiArray.push({
+                moduleId,
+                methodId,
+                requestId,
+                apiPath,
+                refresh,
+                requestDataFct,
+                clearAtTheEnd,
+            });
 
-                    this._storeUnsubscribeApi = this.store.subscribe(() => {
-                        const state = this.store.getState();
+        }
 
-                        this._apiArray.forEach((apiData) => {
-
-                            const newApiResult = state.api[apiData.requestId];
-
-                            if (!shallowEqual(newApiResult, this.api[apiData.apiPath].result)) {
-                                this.api[apiData.apiPath].result = newApiResult;
-
-                                if (this.api[apiData.apiPath].needRefresh) {
-                                    this.api[apiData.apiPath].needRefresh = false;
-                                }
-
-                                this.forceUpdate();
-                            }
-
-                            if (Array.isArray(apiData.refresh)
-                                && state.api[LAST_API_SUCCESS_ID]?.data.moduleId) {
-
-                                const moduleId = state.api[LAST_API_SUCCESS_ID].data.moduleId;
-                                const methodId = state.api[LAST_API_SUCCESS_ID].data.methodId;
-
-                                if (refresh.includes(`${moduleId}/${methodId}` as TApiMethodName)
-                                    && !this.api[apiData.apiPath].needRefresh) {
-
-                                    this.api[apiData.apiPath].needRefresh = true;
-
-                                    if (apiData.requestDataFct) {
-
-                                        const data = requestDataFct(state, this.props, this.state);
-                                        this.store.dispatch(
-                                            apiActions.request.build(
-                                                apiData.requestId
-                                                , apiData.moduleId
-                                                , apiData.methodId
-                                                , data
-                                                    ,
-                                            ));
-                                    } else {
-
-                                        this.forceUpdate();
-                                    }
-                                }
-                            }
-                        });
-                    });
-
-                    this._didMount = true;
-                }
+        public componentDidMount() {
+            if (super.componentDidMount) {
+                super.componentDidMount();
             }
 
-            public render() {
+            if (!this._didMount) {
 
-                const apiInit = (store: Store<any>) => {
-                    const state = store.getState();
+                this._storeUnsubscribeApi = this.store.subscribe(() => {
+                    const state = this.store.getState();
 
                     this._apiArray.forEach((apiData) => {
 
-                        this.api[apiData.apiPath] = {
-                            request: (...requestData: Parameters<TApiMethod[TPath]>) =>
-                                store.dispatch(
-                                    apiActions.request.build(
-                                        apiData.requestId,
-                                        apiData.moduleId,
-                                        apiData.methodId,
-                                        requestData,
-                                    ),
-                                ),
-                            result: state.api[requestId],
-                            needRefresh: false,
-                        };
+                        const newApiResult = state.api[apiData.requestId];
 
-                        if (requestDataFct) {
+                        if (!shallowEqual(newApiResult, this.api[apiData.apiPath].result)) {
+                            this.api[apiData.apiPath].result = newApiResult;
 
-                            const data = requestDataFct(state, this.props, this.state);
+                            if (this.api[apiData.apiPath].needRefresh) {
+                                this.api[apiData.apiPath].needRefresh = false;
+                            }
+
+                            this.forceUpdate();
+                        }
+
+                        if (Array.isArray(apiData.refresh)
+                            && state.api[LAST_API_SUCCESS_ID]?.data.moduleId) {
+
+                            const moduleId = state.api[LAST_API_SUCCESS_ID].data.moduleId;
+                            const methodId = state.api[LAST_API_SUCCESS_ID].data.methodId;
+
+                            if (refresh.includes(`${moduleId}/${methodId}` as TApiMethodName)
+                                && !this.api[apiData.apiPath].needRefresh) {
+
+                                this.api[apiData.apiPath].needRefresh = true;
+
+                                if (apiData.requestDataFct) {
+
+                                    const data = requestDataFct(state, this.props, this.state);
+                                    this.store.dispatch(
+                                        apiActions.request.build(
+                                            apiData.requestId
+                                            , apiData.moduleId
+                                            , apiData.methodId
+                                            , data
+                                                    ,
+                                        ));
+                                } else {
+
+                                    this.forceUpdate();
+                                }
+                            }
+                        }
+                    });
+                });
+
+                this._didMount = true;
+            }
+        }
+
+        public render() {
+
+            const apiInit = (store: Store<any>) => {
+                const state = store.getState();
+
+                this._apiArray.forEach((apiData) => {
+
+                    this.api[apiData.apiPath] = {
+                        request: (...requestData: Parameters<TApiMethod[TPath]>) =>
                             store.dispatch(
                                 apiActions.request.build(
                                     apiData.requestId,
                                     apiData.moduleId,
                                     apiData.methodId,
-                                    data,
+                                    requestData,
                                 ),
-                            );
-                        }
-                    });
-                };
+                            ),
+                        result: state.api[requestId],
+                        needRefresh: false,
+                    };
 
-                if (!this._render) {
-                    this._render = true;
-                    if (!this.store) {
+                    if (requestDataFct) {
 
-                        return React.createElement(
-                            StoreContext.Provider,
-                            null,
-                            (store: Store<any>) => {
-
-                                this.store = store;
-
-                                apiInit(store);
-                                return super.render();
-                            });
+                        const data = requestDataFct(state, this.props, this.state);
+                        store.dispatch(
+                            apiActions.request.build(
+                                apiData.requestId,
+                                apiData.moduleId,
+                                apiData.methodId,
+                                data,
+                            ),
+                        );
                     }
-                    apiInit(this.store);
-                }
-                // already initialized, return render in parent
-                return super.render();
+                });
+            };
 
+            if (!this._render) {
+                this._render = true;
+                if (!this.store) {
+
+                    return React.createElement(
+                        StoreContext.Provider,
+                        null,
+                        (store: Store<any>) => {
+
+                            this.store = store;
+
+                            apiInit(store);
+                            return super.render();
+                        });
+                }
+                apiInit(this.store);
+            }
+            // already initialized, return render in parent
+            return super.render();
+
+        }
+
+        public componentWillUnmount() {
+            if (super.componentWillUnmount) {
+                super.componentWillUnmount();
             }
 
-            public componentWillUnmount() {
-                if (super.componentWillUnmount) {
-                    super.componentWillUnmount();
-                }
-
-                if (this._storeUnsubscribeApi) {
-                    this._storeUnsubscribeApi();
-                }
-
-                if (!this._willUnmount) {
-
-                    this._apiArray.filter(
-                        (apiData) =>
-                            apiData.clearAtTheEnd,
-                    ).forEach(
-                        (apiData) =>
-                            this.store.dispatch(apiActions.clean.build(apiData.requestId)),
-                    );
-
-                    this._willUnmount = true;
-                }
+            if (this._storeUnsubscribeApi) {
+                this._storeUnsubscribeApi();
             }
-        };
+
+            if (!this._willUnmount) {
+
+                this._apiArray.filter(
+                    (apiData) =>
+                        apiData.clearAtTheEnd,
+                ).forEach(
+                    (apiData) =>
+                        this.store.dispatch(apiActions.clean.build(apiData.requestId)),
+                );
+
+                this._willUnmount = true;
+            }
+        }
+    };
+
+        Object.defineProperty(ret.prototype, "name", {
+            value: component.name,
+        });
+
+        Object.defineProperty(ret, "name", {
+            value: component.name,
+        });
+
+        return ret;
+    };
 }

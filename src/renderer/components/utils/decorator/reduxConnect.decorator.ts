@@ -26,8 +26,8 @@ export function reduxConnectDecorator<
         T extends { new(...args: any[]): ReactBaseComponent<Props, State, MapState, MapDispatch> }
         , Props = {}
         , State = {}
-    >(component: T) =>
-        class ReduxConnectDecorator extends component {
+    >(component: T) => {
+        const ret = class extends component {
 
             // should be private, but it is currently not possible in TS
             // https://github.com/Microsoft/TypeScript/issues/30355
@@ -73,6 +73,7 @@ export function reduxConnectDecorator<
                 };
 
                 if (!this.store) {
+
                     return React.createElement(
                         StoreContext.Consumer,
                         null,
@@ -100,4 +101,15 @@ export function reduxConnectDecorator<
                 }
             }
         };
+
+        Object.defineProperty(ret.prototype, "name", {
+            value: component.name,
+        });
+
+        Object.defineProperty(ret, "name", {
+            value: component.name,
+        });
+
+        return ret;
+    };
 }
