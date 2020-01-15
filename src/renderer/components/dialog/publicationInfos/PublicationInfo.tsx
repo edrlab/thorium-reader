@@ -93,9 +93,16 @@ class PublicationInfo extends React.Component<IProps, IState> {
                             <Cover
                                 publicationViewMaybeOpds={publication}
                                 onClick={
-                                    () => ((publication.cover as CoverView).coverUrl
-                                        || (publication.cover as IOpdsCoverView).coverLinks[0]?.url)
-                                        && this.props.toggleCoverZoom(coverZoom)}
+                                    () =>
+                                        /*
+                                        (
+                                            (publication.cover as CoverView).coverUrl
+                                            || (publication.cover as IOpdsCoverView).coverLinks[0]?.url
+                                        )
+                                        &&
+                                        */
+                                        this.props.toggleCoverZoom(coverZoom)
+                                }
                                 onKeyPress={this.coverOnKeyPress}
                             />
                         </div>
