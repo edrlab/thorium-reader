@@ -19,7 +19,7 @@ export class ReactBaseComponent<
     ReduxState = {},
     ReduxDispatch = {},
     Api = {},
-    ReduxStoreState = {}
+    ReduxStoreState = any
     > extends React.PureComponent<ReactProps, ReactState> {
 
     public __: I18nTyped;
