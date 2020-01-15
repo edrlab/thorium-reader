@@ -48,6 +48,27 @@
         "noPublicationHelpL1": "Drop EPUB files in this window",
         "noPublicationHelpL2": "or use the \"+\" button above.",
         "noPublicationHelpL3": "LCP protected files are supported.",
+        "numberOfPages": "Number of pages",
+        "opds": {
+            "info": {
+                "availableSince": "Since",
+                "availableState": {
+                    "available": "Available",
+                    "ready": "Ready",
+                    "reserved": "Reserved",
+                    "unavailable": "Unavailable",
+                    "unknown": "Unknown"
+                },
+                "availableUntil": "Until",
+                "copyAvalaible": "Number of availables",
+                "copyTotal": "Number of copies",
+                "holdPosition": "Your hold position",
+                "holdTotal": "Holded",
+                "numberOfItems": "Number of items",
+                "priveValue": "Price",
+                "state": "State"
+            }
+        },
         "publisher": "Publisher",
         "readBook": "Read",
         "released": "Published on",

@@ -10,6 +10,7 @@ import "reflect-metadata";
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
+import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor";
 import { TPublication } from "readium-desktop/renderer/type/publication.type";
 
 import { TranslatorProps, withTranslator } from "../utils/hoc/translator";
@@ -37,18 +38,14 @@ class Cover extends React.Component<IProps, undefined> {
     }
 
     public render()  {
+        const { publicationViewMaybeOpds, translator } = this.props;
+        const { cover } = publicationViewMaybeOpds;
 
-        if (!this.props.publicationViewMaybeOpds.cover) {
-            let authors = "";
+        if (!cover) {
 
-            for (const author of this.props.publicationViewMaybeOpds.authors) {
-                const newAuthor = author;
-                if (authors !== "") {
-                    authors += ", ";
-                }
-                authors += this.props.translator.translateContentField(newAuthor);
-            }
-            let colors = this.props.publicationViewMaybeOpds.customCover;
+            const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
+
+            let colors = publicationViewMaybeOpds.customCover;
             if (!colors) {
                 colors = RandomCustomCovers[0];
             }
@@ -60,14 +57,13 @@ class Cover extends React.Component<IProps, undefined> {
                 <div style={backgroundStyle} className={styles.cover}>
                     <div className={styles.box}>
                         <p aria-hidden className={styles.title}>
-                            {this.props.translator.translateContentField(this.props.publicationViewMaybeOpds.title)}
+                            {this.props.translator.translateContentField(publicationViewMaybeOpds.title)}
                         </p>
                         <p aria-hidden className={styles.author}>{authors}</p>
                     </div>
                 </div>
             );
         } else {
-            const { cover } = this.props.publicationViewMaybeOpds;
             const coverUrl = cover.coverUrl || cover.coverLinks[0]?.url;
             const thumbnailUrl = cover.coverUrl || cover.thumbnailLinks[0]?.url;
 

@@ -7,8 +7,10 @@
 
 import { injectable } from "inversify";
 import * as moment from "moment";
-import { convertContributorArrayToStringArray } from "readium-desktop/common/utils";
 import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
+import {
+    convertContributorArrayToStringArray,
+} from "readium-desktop/main/converter/tools/localisation";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";

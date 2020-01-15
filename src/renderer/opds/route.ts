@@ -8,27 +8,32 @@
 import { matchPath } from "react-router";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 
-import { decodeB64, encodeB64 } from "../base64";
 import { IOpdsBrowse, routes } from "../routing";
+import { decodeB64, encodeB64 } from "../tools/base64";
 
-export const buildOpdsBrowserRouteWithLink = (pathname: string) =>
-    (link: IOpdsLinkView) => {
-
-        const param = matchPath<IOpdsBrowse>(
+export const extractParamFromOpdsRoutePathname =
+    (pathname: string) =>
+        matchPath<IOpdsBrowse>(
             pathname, routes["/opds/browse"],
         ).params;
 
-        const lvl = parseInt(param.level, 10);
+export const buildOpdsBrowserRouteWithLink =
+    (pathname: string) =>
+        (link: IOpdsLinkView) => {
 
-        const route = buildOpdsBrowserRoute(
-            param.opdsId,
-            decodeB64(param.name),
-            link.url,
-            lvl,
-        );
+            const param = extractParamFromOpdsRoutePathname(pathname);
 
-        return route;
-    };
+            const lvl = parseInt(param.level, 10);
+
+            const route = buildOpdsBrowserRoute(
+                param.opdsId,
+                decodeB64(param.name),
+                link.url,
+                lvl,
+            );
+
+            return route;
+        };
 
 /**
  * formating opds browser route to react-router route

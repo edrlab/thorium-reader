@@ -20,14 +20,14 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     _APP_NAME, _APP_VERSION, _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL,
 } from "readium-desktop/preprocessor-directives";
-import { apiAction } from "readium-desktop/renderer/apiAction";
-import { apiSubscribe } from "readium-desktop/renderer/apiSubscribe";
 import * as styles from "readium-desktop/renderer/assets/styles/reader-app.css";
 import ReaderFooter from "readium-desktop/renderer/components/reader/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/components/reader/ReaderHeader";
 import SkipLink from "readium-desktop/renderer/components/utils/SkipLink";
 import { diRendererGet } from "readium-desktop/renderer/di";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { apiAction } from "readium-desktop/renderer/tools/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/tools/apiSubscribe";
 import {
     TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,

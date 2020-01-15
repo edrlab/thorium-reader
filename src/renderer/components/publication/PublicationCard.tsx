@@ -21,6 +21,7 @@ import {
 import Menu from "readium-desktop/renderer/components/utils/menu/Menu";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
 import { RootState } from "readium-desktop/renderer/redux/states";
+import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor.ts";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import CatalogMenu from "./menu/CatalogMenu";
@@ -57,9 +58,8 @@ class PublicationCard extends React.Component<IProps, IState> {
 
     public render(): React.ReactElement<{}> {
         const { __, publicationViewMaybeOpds, translator, isOpds } = this.props;
-        const authors = publicationViewMaybeOpds.authors.map(
-            (author) => translator.translateContentField(author),
-        ).join(", ");
+
+        const authors = formatContributorToString(publicationViewMaybeOpds.authors, translator);
 
         return (
             <div className={styles.block_book}
@@ -70,9 +70,9 @@ class PublicationCard extends React.Component<IProps, IState> {
                     <a
                         tabIndex={0}
                         onClick={(e) => this.handleBookClick(e)}
-                        onKeyPress={(e) => {
-                            if (e.key === "Enter") { this.handleBookClick(e); }
-                        }
+                        onKeyPress={
+                            (e) =>
+                                (e.key === "Enter") && this.handleBookClick(e)
                         }
                         title={`${publicationViewMaybeOpds.title} - ${authors}`}
                     >
@@ -82,7 +82,9 @@ class PublicationCard extends React.Component<IProps, IState> {
                 <div className={styles.legend}>
                     <a aria-hidden onClick={(e) => this.handleBookClick(e)}>
                         <p aria-hidden className={styles.book_title}>
-                            {this.truncateTitle(publicationViewMaybeOpds.title)}
+                            {
+                                this.truncateTitle(publicationViewMaybeOpds.title)
+                            }
                         </p>
                         <p aria-hidden className={styles.book_author}>
                             {authors}

@@ -73,7 +73,6 @@
 
         & li {
             font-size: 1.08rem;
-            font-weight: 600;
             margin-top: 1rem 0;
             text-align: center;
 
@@ -83,6 +82,10 @@
                 width:20px;
                 height:20px;
                 margin-right:3px;
+            }
+
+            & button {
+              font-weight: 600;
             }
         }
     }

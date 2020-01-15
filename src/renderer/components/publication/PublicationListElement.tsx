@@ -16,6 +16,7 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import SVG from "readium-desktop/renderer/components/utils/SVG";
+import { formatContributorToString } from "readium-desktop/renderer/tools/formatContributor";
 import { TPublication } from "readium-desktop/renderer/type/publication.type";
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as uuid from "uuid";
@@ -82,29 +83,38 @@ export class PublicationListElement extends React.Component<IProps, IState> {
                         onClick={this.toggleMenu}
                         ref={this.buttonRef}
                     >
-                        <SVG svg={MenuIcon}/>
+                        <SVG svg={MenuIcon} />
                     </button>
                     <a
                         className={styles.publicationLineLink}
                         tabIndex={0}
                         onClick={(e) => this.handleBookClick(e)}
-                        onKeyPress={(e) => {
-                            if (e.key === "Enter") { this.handleBookClick(e); }}
+                        onKeyPress={
+                            (e) =>
+                                e.key === "Enter" && this.handleBookClick(e)
                         }
                     >
                         <div className={styles.list_book_title}>
-                            <p className={styles.book_title}>{ pub.title }</p>
+                            <p className={styles.book_title}>{pub.title}</p>
                             <p className={`${styles.book_author} ${styles.lightgrey}`}>
-                                {pub.authors.map((author) => translator.translateContentField(author)).join(", ")}
+                                {
+                                    formatContributorToString(pub.authors, translator)
+                                }
                             </p>
                         </div>
                         <p className={styles.infos_sup}>
-                        { formatedPublishedYear}</p>
+                            {
+                                formatedPublishedYear
+                            }
+                        </p>
                         <p className={styles.infos_sup}>
-                        { formatedPublishers }</p>
+                            {
+                                formatedPublishers
+                            }
+                        </p>
                     </a>
                 </div>
-                { this.state.menuOpen &&
+                {this.state.menuOpen &&
                     <AccessibleMenu
                         toggleMenu={this.toggleMenu}
                         focusMenuButton={this.focusButton}
@@ -123,7 +133,7 @@ export class PublicationListElement extends React.Component<IProps, IState> {
     }
 
     private toggleMenu() {
-        this.setState({menuOpen: !this.state.menuOpen});
+        this.setState({ menuOpen: !this.state.menuOpen });
     }
 
     private focusButton() {
