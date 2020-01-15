@@ -220,7 +220,7 @@ export function apiDecorator<
                 if (!this.store) {
 
                     return React.createElement(
-                        StoreContext.Provider,
+                        StoreContext.Consumer,
                         null,
                         (store: Store<any>) => {
 
