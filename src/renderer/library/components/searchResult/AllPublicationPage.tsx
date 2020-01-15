@@ -11,14 +11,14 @@ import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { apiAction } from "readium-desktop/renderer/library/apiAction";
-import { apiSubscribe } from "readium-desktop/renderer/library/apiSubscribe";
 import BreadCrumb from "readium-desktop/renderer/library/components/layout/BreadCrumb";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { DisplayType } from "readium-desktop/renderer/library/routing";
+import { apiAction } from "readium-desktop/renderer/tools/apiAction";
+import { apiSubscribe } from "readium-desktop/renderer/tools/apiSubscribe";
 import { Unsubscribe } from "redux";
 
 import Header from "../catalog/Header";

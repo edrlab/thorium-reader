@@ -12,8 +12,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { IOpdsCoverView, IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
+import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
+import { PublicationView } from "readium-desktop/common/views/publication";
+// import { IOpdsCoverView } from "readium-desktop/common/views/opds";
+// import { CoverView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import Cover from "readium-desktop/renderer/common/components/Cover";
 import {
@@ -21,6 +23,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import TagManager from "readium-desktop/renderer/library/components/dialog/publicationInfos/TagManager";
+import FormatContributorWithLink from "readium-desktop/renderer/library/components/utils/FormatContributor";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
@@ -82,20 +85,7 @@ class PublicationInfo extends React.Component<IProps, IState> {
             return (<></>);
         }
 
-        const { __, translator, publication, coverZoom } = this.props;
-
-        const authors = () =>
-            (publication.authors && publication.authors.length)
-                ? publication.authors.map(
-                    (author) => translator.translateContentField(author))
-                    .join(", ")
-                : "";
-
-        const formatedPublishers = () =>
-            publication.publishers
-                && publication.publishers.length
-                ? publication.publishers.join(", ")
-                : undefined;
+        const { __, publication, coverZoom } = this.props;
 
         const renderInfo = () =>
             <>
@@ -105,9 +95,16 @@ class PublicationInfo extends React.Component<IProps, IState> {
                             <Cover
                                 publicationViewMaybeOpds={publication}
                                 onClick={
-                                    () => ((publication.cover as CoverView).coverUrl
-                                        || (publication.cover as IOpdsCoverView).coverLinks[0]?.url)
-                                        && this.props.toggleCoverZoom(coverZoom)}
+                                    () =>
+                                        /*
+                                        (
+                                            (publication.cover as CoverView).coverUrl
+                                            || (publication.cover as IOpdsCoverView).coverLinks[0]?.url
+                                        )
+                                        &&
+                                        */
+                                        this.props.toggleCoverZoom(coverZoom)
+                                }
                                 onKeyPress={this.coverOnKeyPress}
                             />
                         </div>
@@ -117,12 +114,14 @@ class PublicationInfo extends React.Component<IProps, IState> {
                 <div className={styles.dialog_right}>
                     <h2 className={styles.allowUserSelect}>{publication.title}</h2>
                     <div>
-                        <p className={classNames(styles.allowUserSelect, styles.author)}>{authors()}</p>
+                        <p className={classNames(styles.allowUserSelect, styles.author)}>
+                            <FormatContributorWithLink contributors={publication.authors} />
+                        </p>
                         {this.formatedPublishedDateComponent()}
                         <div className={styles.tags}>
                             <div className={styles.tag_list}>
                                 <span>{__("catalog.tags")}</span>
-                                <TagManager/>
+                                <TagManager />
                             </div>
                         </div>
 
@@ -151,17 +150,40 @@ class PublicationInfo extends React.Component<IProps, IState> {
                         </>}
 
                         <h3>{__("catalog.moreInfo")}</h3>
-
                         <p>
-                            {formatedPublishers() &&
-                                <><span>{__("catalog.publisher")}
-                                </span> <i className={styles.allowUserSelect}>{formatedPublishers()}</i> <br /></>
+                            {
+                                publication.publishers?.length &&
+                                <>
+                                    <span>{`${__("catalog.publisher")} : `}</span>
+                                    <i className={styles.allowUserSelect}>
+                                        <FormatContributorWithLink contributors={publication.publishers} />
+                                    </i>
+                                    <br />
+                                </>
                             }
-                            <span>{__("catalog.lang")}</span>{this.publicationLanguageComponent()}<br />
-                            <span>{__("catalog.id")}
-                            </span>
-                            <i className={styles.allowUserSelect}>{publication.workIdentifier}</i>
-                            <br />
+                            {
+                                publication.languages?.length &&
+                                <>
+                                    <span>{`${__("catalog.lang")} : `}</span>
+                                    {
+                                        this.publicationLanguageComponent()
+                                    }
+                                    <br />
+                                </>
+                            }
+                            {
+                                publication.numberOfPages &&
+                                <>
+                                    <span>{`${__("catalog.numberOfPages")} : `}</span>
+                                    <i className={styles.allowUserSelect}>
+                                        {
+                                            publication.numberOfPages
+                                        }
+                                    </i>
+                                    <br />
+
+                                </>
+                            }
                         </p>
 
                         <LcpInfo publicationLcp={publication}></LcpInfo>

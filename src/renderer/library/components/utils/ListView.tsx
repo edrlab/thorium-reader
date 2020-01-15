@@ -17,7 +17,7 @@ type NormalOrOpdsPublicationView = PublicationView | IOpdsPublicationView;
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
-    normalOrOpdsPublicationViews: NormalOrOpdsPublicationView[];
+    normalOrOpdsPublicationViews: NormalOrOpdsPublicationView[] | undefined;
     isOpdsView?: boolean;
 }
 
@@ -41,7 +41,7 @@ export class ListView extends React.Component<IProps, undefined> {
             <>
             {
                 <ul>
-                    { this.props.normalOrOpdsPublicationViews.map((pub, i: number) => {
+                    { this.props.normalOrOpdsPublicationViews?.map((pub, i: number) => {
                         return (
                             <li className={styles.block_book_list} key={ i }>
                                 <PublicationListElement

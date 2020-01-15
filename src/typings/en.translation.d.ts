@@ -70,6 +70,27 @@ declare namespace typed_i18n {
   readonly "noPublicationHelpL1": string,
   readonly "noPublicationHelpL2": string,
   readonly "noPublicationHelpL3": string,
+  readonly "numberOfPages": string,
+  readonly "opds": {
+    readonly "info": {
+      readonly "availableSince": string,
+      readonly "availableUntil": string,
+      readonly "availableState": {
+        readonly "available": string,
+        readonly "ready": string,
+        readonly "reserved": string,
+        readonly "unavailable": string,
+        readonly "unknown": string
+      },
+      readonly "copyAvalaible": string,
+      readonly "copyTotal": string,
+      readonly "holdPosition": string,
+      readonly "holdTotal": string,
+      readonly "numberOfItems": string,
+      readonly "priveValue": string,
+      readonly "state": string
+    }
+  },
   readonly "publisher": string,
   readonly "readBook": string,
   readonly "released": string,
@@ -100,6 +121,66 @@ declare namespace typed_i18n {
   (_: "catalog.noPublicationHelpL1", __?: {}): string;
   (_: "catalog.noPublicationHelpL2", __?: {}): string;
   (_: "catalog.noPublicationHelpL3", __?: {}): string;
+  (_: "catalog.numberOfPages", __?: {}): string;
+  (_: "catalog.opds", __?: {}): {
+  readonly "info": {
+    readonly "availableSince": string,
+    readonly "availableUntil": string,
+    readonly "availableState": {
+      readonly "available": string,
+      readonly "ready": string,
+      readonly "reserved": string,
+      readonly "unavailable": string,
+      readonly "unknown": string
+    },
+    readonly "copyAvalaible": string,
+    readonly "copyTotal": string,
+    readonly "holdPosition": string,
+    readonly "holdTotal": string,
+    readonly "numberOfItems": string,
+    readonly "priveValue": string,
+    readonly "state": string
+  }
+};
+  (_: "catalog.opds.info", __?: {}): {
+  readonly "availableSince": string,
+  readonly "availableUntil": string,
+  readonly "availableState": {
+    readonly "available": string,
+    readonly "ready": string,
+    readonly "reserved": string,
+    readonly "unavailable": string,
+    readonly "unknown": string
+  },
+  readonly "copyAvalaible": string,
+  readonly "copyTotal": string,
+  readonly "holdPosition": string,
+  readonly "holdTotal": string,
+  readonly "numberOfItems": string,
+  readonly "priveValue": string,
+  readonly "state": string
+};
+  (_: "catalog.opds.info.availableSince", __?: {}): string;
+  (_: "catalog.opds.info.availableUntil", __?: {}): string;
+  (_: "catalog.opds.info.availableState", __?: {}): {
+  readonly "available": string,
+  readonly "ready": string,
+  readonly "reserved": string,
+  readonly "unavailable": string,
+  readonly "unknown": string
+};
+  (_: "catalog.opds.info.availableState.available", __?: {}): string;
+  (_: "catalog.opds.info.availableState.ready", __?: {}): string;
+  (_: "catalog.opds.info.availableState.reserved", __?: {}): string;
+  (_: "catalog.opds.info.availableState.unavailable", __?: {}): string;
+  (_: "catalog.opds.info.availableState.unknown", __?: {}): string;
+  (_: "catalog.opds.info.copyAvalaible", __?: {}): string;
+  (_: "catalog.opds.info.copyTotal", __?: {}): string;
+  (_: "catalog.opds.info.holdPosition", __?: {}): string;
+  (_: "catalog.opds.info.holdTotal", __?: {}): string;
+  (_: "catalog.opds.info.numberOfItems", __?: {}): string;
+  (_: "catalog.opds.info.priveValue", __?: {}): string;
+  (_: "catalog.opds.info.state", __?: {}): string;
   (_: "catalog.publisher", __?: {}): string;
   (_: "catalog.readBook", __?: {}): string;
   (_: "catalog.released", __?: {}): string;
@@ -279,10 +360,10 @@ declare namespace typed_i18n {
   (_: "opds.next", __?: {}): string; (_: "opds.previous", __?: {}): string;
   (_: "opds.shelf", __?: {}): string;
   (_: "publication", __?: {}): {
-  readonly "cover": { readonly "img": string },
   readonly "cancelledLcp": string,
   readonly "certificateRevoked": string,
   readonly "certificateSignatureInvalid": string,
+  readonly "cover": { readonly "img": string },
   readonly "expiredLcp": string,
   readonly "lcpEnd": string,
   readonly "lcpRightsCopy": string,
@@ -299,11 +380,11 @@ declare namespace typed_i18n {
   readonly "seeMore": string,
   readonly "userKeyCheckInvalid": string
 };
-  (_: "publication.cover", __?: {}): { readonly "img": string };
-  (_: "publication.cover.img", __?: {}): string;
   (_: "publication.cancelledLcp", __?: {}): string;
   (_: "publication.certificateRevoked", __?: {}): string;
   (_: "publication.certificateSignatureInvalid", __?: {}): string;
+  (_: "publication.cover", __?: {}): { readonly "img": string };
+  (_: "publication.cover.img", __?: {}): string;
   (_: "publication.expiredLcp", __?: {}): string;
   (_: "publication.lcpEnd", __?: {}): string;
   (_: "publication.lcpRightsCopy", __?: {}): string;

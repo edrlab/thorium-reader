@@ -5,6 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { OPDSAvailabilityEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-availability";
+import { OPDSCurrencyEnum } from "r2-opds-js/dist/es6-es2015/src/opds/opds2/opds2-price";
+
 import { Identifiable } from "../models/identifiable";
 import { IHttpGetResult } from "../utils/http";
 
@@ -22,11 +25,12 @@ export interface IOpdsPublicationView {
     baseUrl: string;
     r2OpdsPublicationBase64?: string;
     title: string;
-    authors: string[];
-    publishers?: string[];
+    authors: IOpdsContributorView[];
+    publishers?: IOpdsContributorView[];
     workIdentifier?: string;
     description?: string;
-    tags?: string[];
+    numberOfPages: number;
+    tags?: IOpdsTagView[];
     languages?: string[];
     publishedAt?: string; // ISO8601
     entryLinks?: IOpdsLinkView[];
@@ -57,18 +61,23 @@ export interface IOpdsResultView {
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
     links?: IOpdsNavigationLink;
-
-    groups?: OpdsGroupView[];
-    auth?: OpdsAuthView;
+    facets?: IOpdsFacetView[];
+    groups?: IOpdsGroupView[];
+    auth?: IOpdsAuthView;
 }
 
-export interface OpdsGroupView {
+export interface IOpdsGroupView {
     title: string;
     navigation?: IOpdsNavigationLinkView[];
     publications?: IOpdsPublicationView[];
 }
 
-export interface OpdsAuthView {
+export interface IOpdsFacetView {
+    title: string;
+    links: IOpdsNavigationLinkView[];
+}
+
+export interface IOpdsAuthView {
     logoImageUrl: string;
 
     labelLogin: string;
@@ -78,10 +87,34 @@ export interface OpdsAuthView {
     oauthRefreshUrl: string;
 }
 
+export interface IOPDSPropertiesView {
+    numberOfItems?: number | undefined;
+    priceValue?: number | undefined;
+    priceCurrency?: OPDSCurrencyEnum | undefined;
+    holdTotal?: number | undefined;
+    holdPosition?: number | undefined;
+    copyTotal?: number | undefined;
+    copyAvailable?: number | undefined;
+    availabilityState?: OPDSAvailabilityEnum | undefined;
+    availabilitySince?: string | undefined;
+    availabilityUntil?: string | undefined;
+}
+
+export interface IOpdsTagView {
+    name: string;
+    link: IOpdsLinkView[];
+}
+
+export interface IOpdsContributorView {
+    name: string;
+    link: IOpdsLinkView[];
+}
+
 export interface IOpdsLinkView {
     url: string;
     title?: string | undefined;
     type?: string | undefined;
+    properties?: IOPDSPropertiesView;
 }
 
 export interface IOpdsNavigationLink {

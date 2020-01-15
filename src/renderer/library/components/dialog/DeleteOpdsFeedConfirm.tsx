@@ -9,7 +9,10 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+// FIXME : Error :
+// translator_1.withTranslator is not a function when ordered
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
@@ -17,8 +20,6 @@ import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-
-import Dialog from "../../../common/components/dialog/Dialog";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

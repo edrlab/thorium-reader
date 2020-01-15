@@ -49,7 +49,7 @@ export class GridView extends React.Component<IProps, undefined> {
             <div ref={this.ref} className={styles.card_wrapper}>
                 {this.props.normalOrOpdsPublicationViews.map((pub, index) =>
                     <PublicationCard
-                        key={-index}
+                        key={`gridview-${index}`}
                         publicationViewMaybeOpds={pub}
                         isOpds={isOpdsView}
                     />,

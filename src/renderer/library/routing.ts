@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import { push } from "connected-react-router";
-import { LocationDescriptorObject } from "history";
+import { Location, LocationDescriptorObject } from "history";
 import { RouteComponentProps } from "react-router";
 import { TDispatch } from "readium-desktop/typings/redux";
 
@@ -17,8 +17,6 @@ import AllPublicationPage from "./components/searchResult/AllPublicationPage";
 import TagSearchResult from "./components/searchResult/TagSearchResult";
 import TextSearchResult from "./components/searchResult/TextSearchResult";
 import LanguageSettings from "./components/settings/LanguageSettings";
-
-// import DownloadsList from "./components/DownloadsList";
 
 interface Route {
     path: string;
@@ -103,6 +101,8 @@ export type TRouteList = {
 export const routes: Readonly<TRouteList> = _routes;
 
 export type TLocationRouter = LocationDescriptorObject<IRouterLocationState>;
+
+export type TLocation = Location<IRouterLocationState>;
 
 export const dispatchHistoryPush = (dispatch: TDispatch) =>
     (location: TLocationRouter) =>

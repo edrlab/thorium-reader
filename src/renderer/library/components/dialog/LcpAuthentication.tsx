@@ -10,15 +10,14 @@ import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
 import * as styles from "readium-desktop/renderer/assets/styles/dialog.css";
+import Dialog from "readium-desktop/renderer/common/components/dialog/Dialog";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { apiAction } from "readium-desktop/renderer/tools/apiAction";
 import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
-
-import Dialog from "../../../common/components/dialog/Dialog";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {
