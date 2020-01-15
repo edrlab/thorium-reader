@@ -14,16 +14,27 @@ import { Store } from "redux";
 // may be fixed with shouldComponentUpdate otherwise
 
 export class ReactBaseComponent<
-    P = {},
-    S = {},
+    ReactProps = {},
+    ReactState = {},
     ReduxState = {},
     ReduxDispatch = {},
     Api = {},
-    > extends React.PureComponent<P, S> {
+    ReduxStoreState = {}
+    > extends React.PureComponent<ReactProps, ReactState> {
 
-    public __?: I18nTyped;
-    public reduxState?: Readonly<ReduxState>;
-    public reduxDispatch?: Readonly<ReduxDispatch>;
-    public api?: Api | undefined;
-    public store?: Store<any>;
+    public __: I18nTyped;
+    public reduxState: Readonly<ReduxState>;
+    public reduxDispatch: Readonly<ReduxDispatch>;
+    public api: Api | undefined;
+    public store: Store<ReduxStoreState>;
+
+    constructor(props: ReactProps, ...args: any[]) {
+        super(props, ...args);
+
+        this.__ = undefined;
+        this.reduxState = undefined;
+        this.reduxDispatch = undefined;
+        this.api = undefined;
+        this.store = undefined
+    }
 }

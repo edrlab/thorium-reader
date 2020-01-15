@@ -117,7 +117,6 @@ export function apiDecorator<
                 requestDataFct,
                 clearAtTheEnd,
             });
-
         }
 
         public componentDidMount() {
