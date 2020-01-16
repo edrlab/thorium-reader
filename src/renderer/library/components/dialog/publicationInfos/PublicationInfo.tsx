@@ -49,8 +49,6 @@ class PublicationInfo extends React.Component<IProps> {
     public render() {
         const { publication, toggleCoverZoom, closeDialog, coverZoom } = this.props;
 
-        const ControlComponent = () => this.controlsComponent();
-
         return (
             <PublicationInfoManager
                 publication={publication}
@@ -61,8 +59,12 @@ class PublicationInfo extends React.Component<IProps> {
                 <PublicationInfoContent
                     publication={publication}
                     toggleCoverZoomCb={toggleCoverZoom}
-                    ControlComponent={ControlComponent}
-                    TagManagerComponent={TagManager}
+                    ControlComponent={
+                        () => this.controlsComponent()
+                    }
+                    TagManagerComponent={
+                        () => <TagManager/>
+                    }
                     coverZoom={coverZoom}
                     translator={this.props.translator}
                     onClikLinkCb={
