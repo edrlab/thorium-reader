@@ -10,7 +10,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import { IOpdsTagView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
 import {
     TagButton,
@@ -128,7 +127,7 @@ class TagManager extends React.Component<IProps, IState> {
             }
         }
 
-        this.props.setTags(this.props.pubId, this.props.publication, tagsName, tags);
+        this.props.setTags(this.props.pubId, this.props.publication, tagsName);
     }
 
     private addTag = (e: TFormEvent) => {
