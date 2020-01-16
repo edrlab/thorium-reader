@@ -10,8 +10,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
-import { PublicationView } from "readium-desktop/common/views/publication";
 import {
     PublicationInfoContent,
 } from "readium-desktop/renderer/common/components/dialog/publicationInfos/publicationInfoContent";
@@ -21,13 +19,9 @@ import {
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { RootState } from "readium-desktop/renderer/reader/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
-import CatalogControls from "./catalogControls";
-import CatalogLcpControls from "./catalogLcpControls";
-import OpdsControls from "./opdsControls/OpdsControls";
 import TagManager from "./TagManager";
 
 // tslint:disable-next-line: no-empty-interface
@@ -42,7 +36,8 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 // Logger
-const debug = debug_("readium-desktop:renderer:library:publication-info");
+const debug = debug_("readium-desktop:renderer:reader:publication-info");
+debug("_");
 
 class PublicationInfo extends React.Component<IProps> {
 
@@ -58,48 +53,24 @@ class PublicationInfo extends React.Component<IProps> {
                 <PublicationInfoContent
                     publication={publication}
                     toggleCoverZoomCb={toggleCoverZoom}
-                    ControlComponent={() => this.controlsComponent()}
                     TagManagerComponent={() => <TagManager />}
                     coverZoom={coverZoom}
                     translator={this.props.translator}
-                    onClikLinkCb={
-                        (_link) => () => this.props.link(
-                            _link.link[0], this.props.location, _link.name)
-                    }
                 >
 
                 </PublicationInfoContent>
             </PublicationInfoManager>
         );
     }
-
-    private controlsComponent = () => {
-        const { publicationInfoLib, publicationInfoOpds, publication } = this.props;
-
-        let controlsComponent = (<></>);
-
-        if (publicationInfoOpds) {
-            controlsComponent = (<OpdsControls opdsPublicationView={publication as IOpdsPublicationView} />);
-        }
-        if (publicationInfoLib) {
-            if (publication?.lcp) {
-                controlsComponent = (<CatalogLcpControls publicationView={publication as PublicationView} />);
-            } else {
-                controlsComponent = (<CatalogControls publicationView={publication as PublicationView} />);
-            }
-        }
-
-        return controlsComponent;
-    }
-
 }
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
-    // Warning : mapDispatchToProps isn't rendered when the state is updateds
-    // but only when the component is mounted
-    debug("mapDispatchToProps rendered");
     return {
         closeDialog: () => {
+            // TODO: this is a short-term hack.
+            // Can we instead subscribe to Redux action CloseRequest,
+            // but narrow it down specically to the window instance (not application-wide)
+            window.document.dispatchEvent(new Event("Thorium:DialogClose"));
             dispatch(
                 dialogActions.closeRequest.build(),
             );
@@ -111,20 +82,15 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 },
             ));
         },
-        link: (...data: Parameters<ReturnType<typeof dispatchOpdsLink>>) =>
-            dispatchOpdsLink(dispatch)(...data),
     };
 };
 
 const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
     ...{
-        open: state.dialog.type === DialogTypeName.PublicationInfoOpds
-            || state.dialog.type === DialogTypeName.PublicationInfoLib,
-        publicationInfoOpds: state.dialog.type === DialogTypeName.PublicationInfoOpds,
-        publicationInfoLib: state.dialog.type === DialogTypeName.PublicationInfoLib,
+        open: state.dialog.type === DialogTypeName.PublicationInfoReader,
+        publicationInfoReader: state.dialog.type === DialogTypeName.PublicationInfoReader,
     },
-    ...(state.dialog.data as DialogType[DialogTypeName.PublicationInfoOpds]),
-    location: state.router.location,
+    ...(state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader]),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(PublicationInfo));

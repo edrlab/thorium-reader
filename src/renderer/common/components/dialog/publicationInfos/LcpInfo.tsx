@@ -11,10 +11,11 @@ import * as moment from "moment";
 import * as React from "react";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import {
+    TranslatorProps, withTranslator,
+} from "readium-desktop/renderer/common/components/hoc/translator";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
-
-import { TranslatorProps, withTranslator } from "../../../../common/components/hoc/translator";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps {

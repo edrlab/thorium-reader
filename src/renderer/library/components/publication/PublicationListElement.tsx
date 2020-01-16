@@ -20,7 +20,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import AccessibleMenu from "readium-desktop/renderer/common/components/menu/AccessibleMenu";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { formatContributorToString } from "readium-desktop/renderer/common/formatContributor";
+import { formatContributorToString } from "readium-desktop/renderer/common/logics/formatContributor";
 import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as uuid from "uuid";

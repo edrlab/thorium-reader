@@ -8,7 +8,7 @@
 import { shell } from "electron";
 import { dialogActions } from "readium-desktop/common/redux/actions";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
-import { decodeB64 } from "readium-desktop/renderer/common/base64";
+import { decodeB64 } from "readium-desktop/renderer/common/logics/base64";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ContentType } from "readium-desktop/utils/content-type";
