@@ -179,13 +179,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => ({
         dispatch(
             dialogActions.updateRequest.build<DialogTypeName.PublicationInfoLib>(
                 {
-                    // @ts-ignore
-                    publication: {
-                        ...publication,
-                        ...{
-                            tags: tagsName,
-                        },
-                    },
+                    publication: Object.assign({}, publication, { tags: tagsName }),
                 },
             ),
         );
