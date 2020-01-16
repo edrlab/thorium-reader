@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
 import { all, call } from "redux-saga/effects";
 
 import * as winInit from "./win";
@@ -12,5 +13,6 @@ import * as winInit from "./win";
 export function* rootSaga() {
     yield all([
         call(winInit.watchers),
+        call(publicationInfoReaderAndLib.watchers),
     ]);
 }

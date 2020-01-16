@@ -56,7 +56,7 @@ export const TagButton: React.FC<IProps> = (props) => {
                 <a
                     onClick={
                         // () => this.props.link(tag.link[0], this.props.location, tag.name)
-                        onClickLinkCb
+                        onClickLinkCb(tag)
                     }
                 >
                     {

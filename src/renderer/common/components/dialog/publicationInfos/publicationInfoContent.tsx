@@ -23,7 +23,7 @@ export interface IProps {
     publication: TPublication;
     toggleCoverZoomCb: (coverZoom: boolean) => void;
     ControlComponent?: React.ComponentType;
-    TagManagerComponent: React.ComponentType;
+    TagManagerComponent: any;
     coverZoom: boolean;
     translator: Translator;
     onClikLinkCb?: (tag: IOpdsBaseLinkView) => () => void | undefined;
@@ -47,17 +47,15 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             }
                             onKeyPress={
                                 (e: React.KeyboardEvent<HTMLImageElement>) =>
-                                    e.key === "Enter" && toggleCoverZoomCb(coverZoom)
+                                        e.key === "Enter" && toggleCoverZoomCb(coverZoom)
                             }
                         >
                         </Cover>
                     </div>
                 </div>
-
                 {
                     ControlComponent && <ControlComponent />
                 }
-
             </div>
 
             <div className={styles.dialog_right}>

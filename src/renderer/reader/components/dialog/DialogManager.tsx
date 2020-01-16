@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-// import PublicationInfo from "readium-desktop/renderer/library/components/dialog/publicationInfos/PublicationInfo";
+import PublicationInfo from "readium-desktop/renderer/reader/components/dialog/publicationInfos/PublicationInfo";
 import { RootState } from "readium-desktop/renderer/reader/redux/states";
 
 // tslint:disable-next-line: no-empty-interface
@@ -33,15 +33,12 @@ class DialogManager extends React.Component<IProps, undefined> {
         if (!dialog || !dialog.open) {
             return (<></>);
         }
-        return <></>;
-        /*
 
         return (
             <>
                 <PublicationInfo></PublicationInfo>
             </>
         );
-        */
 
     }
 }

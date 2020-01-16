@@ -158,7 +158,7 @@ class TagManager extends React.Component<IProps, IState> {
         }
 
         tagsName.push(tagName);
-        this.props.setTags(this.props.pubId, this.props.publication, tagsName, tags);
+        this.props.setTags(this.props.pubId, this.props.publication, tagsName);
 
     }
 
@@ -175,15 +175,16 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => ({
-    setTags: (pubId: string, publication: TPublication, tagsName: string[], tagsOpds: string[] | IOpdsTagView[]) => {
+    setTags: (pubId: string, publication: TPublication, tagsName: string[]) => {
         apiDispatch(dispatch)()("publication/updateTags")(pubId, tagsName);
         dispatch(
             dialogActions.updateRequest.build<DialogTypeName.PublicationInfoLib>(
                 {
+                    // @ts-ignore
                     publication: {
                         ...publication,
                         ...{
-                            tagsOpds,
+                            tags: tagsName,
                         },
                     },
                 },
