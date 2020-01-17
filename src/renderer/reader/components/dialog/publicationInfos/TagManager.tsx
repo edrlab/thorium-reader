@@ -10,7 +10,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import { TPublication } from "readium-desktop/common/type/publication.type";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import AddTag from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/AddTag";
 import {
     TagButton,
@@ -59,7 +59,7 @@ export class TagManager extends React.Component<IProps> {
             (tagsArray: string[]) =>
                 this.props.setTags(
                     this.props.pubId,
-                    this.props.publication,
+                    this.props.publication as PublicationView,
                     tagsArray,
                 );
 
@@ -100,12 +100,17 @@ const mapStateToProps = (state: IReaderRootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
-    setTags: (pubId: string, publication: TPublication, tagsName: string[]) => {
+    setTags: (pubId: string, publication: PublicationView, tagsName: string[]) => {
         apiDispatch(dispatch)()("publication/updateTags")(pubId, tagsName);
         dispatch(
             dialogActions.updateRequest.build<DialogTypeName.PublicationInfoLib>(
                 {
-                    publication: Object.assign({}, publication, { tags: tagsName }),
+                    publication: {
+                        ...publication,
+                        ...{
+                            tags: tagsName,
+                        },
+                    },
                 },
             ),
         );

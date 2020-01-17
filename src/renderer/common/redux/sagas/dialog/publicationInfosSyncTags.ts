@@ -8,10 +8,12 @@
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { stringArrayEqual } from "readium-desktop/utils/stringArrayEqual";
 import { all, call, put, takeEvery } from "redux-saga/effects";
+
 import { ICommonRootState } from "../../states";
 
 function* apiResult(action: apiActions.result.TAction) {
@@ -21,13 +23,19 @@ function* apiResult(action: apiActions.result.TAction) {
         if (action.meta.api.methodId === "updateTags") {
             const publicationView = action.payload as ReturnPromiseType<TApiMethod["publication/updateTags"]>;
             const tagsArray = publicationView.tags;
-            const publicationFromDialog = yield* selectTyped((state: ICommonRootState) =>
-                (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication);
+            const publicationFromDialog = (yield* selectTyped((state: ICommonRootState) =>
+                // tslint:disable-next-line: max-line-length
+                (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication)) as PublicationView;
 
-            if (!stringArrayEqual(tagsArray, publicationFromDialog.tags as string[])) {
+            if (!stringArrayEqual(tagsArray, publicationFromDialog.tags)) {
                 yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoLib>(
                     {
-                        publication: Object.assign({}, publicationFromDialog, { tags: tagsArray }),
+                        publication: {
+                        ...publicationFromDialog,
+                        ...{
+                            tags: tagsArray,
+                        },
+                    },
                     },
                 ));
             }
@@ -39,12 +47,12 @@ function* dialogOpened(_action: dialogActions.openRequest.TAction) {
     yield takeEvery(apiActions.result.build, apiResult);
 }
 
-function* localeWatcher() {
+function* dialogOpenWatcher() {
     yield takeEvery(dialogActions.openRequest.build, dialogOpened);
 }
 
 export function* watchers() {
     yield all([
-        call(localeWatcher),
+        call(dialogOpenWatcher),
     ]);
 }
