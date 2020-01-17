@@ -177,7 +177,7 @@ if (nodeEnv !== "production") {
 
     config.output.pathinfo = true;
 
-    config.output.publicPath = preprocessorDirectives.rendererAppBaseUrl;
+    config.output.publicPath = preprocessorDirectives.rendererLibraryBaseUrl;
     config.plugins.push(new webpack.HotModuleReplacementPlugin());
     config.module.rules.push({
         test: /\.css$/,

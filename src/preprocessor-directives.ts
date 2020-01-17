@@ -8,8 +8,8 @@
 // build-time preprocessor directives
 // (must be set by bundlers like WebPack / Browserify etc.)
 
-declare const __RENDERER_APP_BASE_URL__: string;
-export const _RENDERER_APP_BASE_URL = __RENDERER_APP_BASE_URL__;
+declare const __RENDERER_LIBRARY_BASE_URL__: string;
+export const _RENDERER_LIBRARY_BASE_URL = __RENDERER_LIBRARY_BASE_URL__;
 
 declare const __RENDERER_READER_BASE_URL__: string;
 export const _RENDERER_READER_BASE_URL = __RENDERER_READER_BASE_URL__;
