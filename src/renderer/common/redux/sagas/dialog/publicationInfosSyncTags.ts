@@ -27,15 +27,18 @@ function* apiResult(action: apiActions.result.TAction) {
                 // tslint:disable-next-line: max-line-length
                 (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication)) as PublicationView;
 
-            if (!stringArrayEqual(tagsArray, publicationFromDialog.tags)) {
+            if (
+                publicationFromDialog.identifier === publicationView.identifier
+                && !stringArrayEqual(tagsArray, publicationFromDialog.tags)
+            ) {
                 yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoLib>(
                     {
                         publication: {
-                        ...publicationFromDialog,
-                        ...{
-                            tags: tagsArray,
+                            ...publicationFromDialog,
+                            ...{
+                                tags: tagsArray,
+                            },
                         },
-                    },
                     },
                 ));
             }
