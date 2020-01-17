@@ -11,7 +11,7 @@ import { apiActions, dialogActions } from "readium-desktop/common/redux/actions"
 import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
-import { all, call, put, take } from "redux-saga/effects";
+import { all, call, put } from "redux-saga/effects";
 
 import { apiSaga } from "../api";
 
