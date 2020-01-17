@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { CodeError } from "readium-desktop/common/errors";
+import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 
 // FIXME what is the purpose of this interface ?
 // interface PageState<T> {
@@ -20,8 +21,8 @@ export interface ApiDataResponse<T> {
     time: number;
     error: boolean;
     errorMessage?: CodeError;
-    methodId?: string;
-    moduleId?: string;
+    methodId?: TMethodApi;
+    moduleId?: TModuleApi;
     result?: T;
 }
 

@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as publicationInfoSyncTags from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 import { all, call } from "redux-saga/effects";
 
 import * as publicationInfoOpds from "../../../common/redux/sagas/dialog/publicationInfoOpds";
@@ -26,5 +27,6 @@ export function* rootSaga() {
         call(publicationInfoReaderAndLib.watchers),
         call(sameFileImport.watchers),
         call(history.watchers),
+        call(publicationInfoSyncTags.watchers),
     ]);
 }

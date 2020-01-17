@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfoReaderAndLib";
+import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 import { all, call } from "redux-saga/effects";
 
 import * as winInit from "./win";
@@ -14,5 +15,6 @@ export function* rootSaga() {
     yield all([
         call(winInit.watchers),
         call(publicationInfoReaderAndLib.watchers),
+        call(publicationInfoSyncTag.watchers),
     ]);
 }
