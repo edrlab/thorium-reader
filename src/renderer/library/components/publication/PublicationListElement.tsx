@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
+import { TPublication } from "readium-desktop/common/type/publication.type";
 import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import * as MenuIcon from "readium-desktop/renderer/assets/icons/menu.svg";
@@ -20,8 +21,9 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import AccessibleMenu from "readium-desktop/renderer/common/components/menu/AccessibleMenu";
 import SVG from "readium-desktop/renderer/common/components/SVG";
-import { formatContributorToString } from "readium-desktop/renderer/common/logics/formatContributor";
-import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
+import {
+    formatContributorToString,
+} from "readium-desktop/renderer/common/logics/formatContributor";
 import { TDispatch } from "readium-desktop/typings/redux";
 import * as uuid from "uuid";
 

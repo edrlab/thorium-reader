@@ -8,9 +8,9 @@
 import classNames from "classnames";
 import * as React from "react";
 import { Translator } from "readium-desktop/common/services/translator";
+import { TPublication } from "readium-desktop/common/type/publication.type";
 import { IOpdsBaseLinkView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
-import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
 
 import Cover from "../../Cover";
 import { FormatContributorWithLink } from "./FormatContributorWithLink";

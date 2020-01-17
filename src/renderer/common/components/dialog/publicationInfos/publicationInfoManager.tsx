@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as React from "react";
-import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
+import { TPublication } from "readium-desktop/common/type/publication.type";
 
 import Cover from "../../Cover";
 import Loader from "../../Loader";

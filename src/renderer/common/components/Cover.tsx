@@ -9,9 +9,11 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { RandomCustomCovers } from "readium-desktop/common/models/custom-cover";
+import { TPublication } from "readium-desktop/common/type/publication.type";
 import * as styles from "readium-desktop/renderer/assets/styles/publication.css";
-import { formatContributorToString } from "readium-desktop/renderer/common/logics/formatContributor";
-import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
+import {
+    formatContributorToString,
+} from "readium-desktop/renderer/common/logics/formatContributor";
 
 import { TranslatorProps, withTranslator } from "./hoc/translator";
 
