@@ -100,14 +100,17 @@ export interface IOPDSPropertiesView {
     availabilityUntil?: string | undefined;
 }
 
-export interface IOpdsTagView {
+export interface IOpdsBaseLinkView {
     name: string;
     link: IOpdsLinkView[];
 }
 
-export interface IOpdsContributorView {
-    name: string;
-    link: IOpdsLinkView[];
+// tslint:disable-next-line: no-empty-interface
+export interface IOpdsTagView extends IOpdsBaseLinkView {
+}
+
+// tslint:disable-next-line: no-empty-interface
+export interface IOpdsContributorView extends IOpdsBaseLinkView {
 }
 
 export interface IOpdsLinkView {

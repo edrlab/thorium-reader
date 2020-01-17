@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { TPublication } from "readium-desktop/common/type/publication.type";
 import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { TPublication } from "readium-desktop/renderer/type/publication.type";
 
 interface IPubInfoState {
     publication?: TPublication;
