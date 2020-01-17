@@ -22,8 +22,8 @@ import PublicationInfoDescription from "./PublicationInfoDescription";
 export interface IProps {
     publication: TPublication;
     toggleCoverZoomCb: (coverZoom: boolean) => void;
-    ControlComponent?: React.FC;
-    TagManagerComponent: React.FC;
+    ControlComponent?: React.ComponentType<any>;
+    TagManagerComponent: React.ComponentType<any>;
     coverZoom: boolean;
     translator: Translator;
     onClikLinkCb?: (tag: IOpdsBaseLinkView) => () => void | undefined;
