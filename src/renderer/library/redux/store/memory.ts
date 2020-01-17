@@ -19,7 +19,6 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 
 export function initStore(history: History): Store<ILibraryRootState> {
 
-    console.log("Init store lib");
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(
         rootReducer(history),

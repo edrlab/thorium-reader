@@ -33,8 +33,6 @@ if (IS_DEV) {
     cr.consoleRedirect("readium-desktop:renderer:bookshelf", process.stdout, process.stderr, true);
 }
 
-console.log("index_lib");
-
 let devTron: any;
 let axe: any;
 if (IS_DEV) {

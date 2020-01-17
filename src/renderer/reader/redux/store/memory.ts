@@ -10,10 +10,11 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
 
 import { reduxSyncMiddleware } from "readium-desktop/renderer/reader/redux/middleware/sync";
-import { rootReducer, TIReaderRootState } from "readium-desktop/renderer/reader/redux/reducers";
+import { rootReducer } from "readium-desktop/renderer/reader/redux/reducers";
 import { rootSaga } from "readium-desktop/renderer/reader/redux/sagas";
+import { IReaderRootState } from "../states";
 
-export function initStore(): Store<TIReaderRootState> {
+export function initStore(): Store<IReaderRootState> {
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(
         rootReducer(),

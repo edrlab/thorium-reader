@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
 import { matchPath } from "react-router";
@@ -40,6 +41,9 @@ interface IState {
     login: string | undefined;
     password: string | undefined;
 }
+
+// Logger
+const debug = debug_("readium-desktop:renderer:library:Auth.tsx");
 
 class OPDSAuth extends React.Component<IProps, IState> {
 
@@ -157,7 +161,7 @@ class OPDSAuth extends React.Component<IProps, IState> {
                     OPDS_AUTH_ENCRYPTION_IV_HEX)
                 .then((okay) => {
                     if (okay) {
-                        console.log("SUCCESS fetch api opds/oauth");
+                        debug("SUCCESS fetch api opds/oauth");
 
                         const param = matchPath<IOpdsBrowse>(
                             this.props.location.pathname, routes["/opds/browse"],
@@ -183,10 +187,10 @@ class OPDSAuth extends React.Component<IProps, IState> {
                         console.error("Error to fetch api opds/oauth", err);
                     });
             }, (err) => {
-                console.log(err);
+                debug(err);
             });
         }, (err) => {
-            console.log(err);
+            debug(err);
         });
     }
 }

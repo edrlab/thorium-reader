@@ -15,13 +15,13 @@ import { Store } from "redux";
 
 import App from "./components/App";
 import { diReaderSymbolTable as diSymbolTable } from "./diSymbolTable";
-import { TIReaderRootState } from "./redux/reducers";
+import { IReaderRootState } from "./redux/states";
 
 // Create container used for dependency injection
 const container = new Container();
 
 const store = initStore();
-container.bind<Store<TIReaderRootState>>(diSymbolTable.store).toConstantValue(store);
+container.bind<Store<IReaderRootState>>(diSymbolTable.store).toConstantValue(store);
 
 // Create translator
 const translator = new Translator();
@@ -31,7 +31,7 @@ container.bind<typeof App>(diSymbolTable["react-app"]).toConstantValue(App);
 
 // local interface to force type return
 interface IGet {
-    (s: "store"): Store<TIReaderRootState>;
+    (s: "store"): Store<IReaderRootState>;
     (s: "translator"): Translator;
     (s: "react-app"): typeof App;
 }
