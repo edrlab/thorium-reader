@@ -19,7 +19,7 @@ import {
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { RootState } from "readium-desktop/renderer/reader/redux/states";
+import { IReaderRootState } from "readium-desktop/renderer/reader/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import TagManager from "./TagManager";
@@ -85,7 +85,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => ({
     ...{
         open: state.dialog.type === DialogTypeName.PublicationInfoReader,
         publicationInfoReader: state.dialog.type === DialogTypeName.PublicationInfoReader,

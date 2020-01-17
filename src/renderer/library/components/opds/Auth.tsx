@@ -18,7 +18,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { apiAction } from "readium-desktop/renderer/library/apiAction";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { dispatchHistoryPush, IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
 import { TMouseEventOnInput } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
@@ -191,7 +191,7 @@ class OPDSAuth extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     level: state.opds.browser.breadcrumb.length + 1,
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,

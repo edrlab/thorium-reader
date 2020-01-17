@@ -18,7 +18,7 @@ import BreadCrumb from "readium-desktop/renderer/library/components/layout/Bread
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
 import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { DisplayType, ILibrarySearchText, routes } from "readium-desktop/renderer/library/routing";
 import { Unsubscribe } from "redux";
 
@@ -116,7 +116,7 @@ export class TextSearchResult extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
 });
 

@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -45,7 +45,7 @@ class GridTagButton extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
 });
 

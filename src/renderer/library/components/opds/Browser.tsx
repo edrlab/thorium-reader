@@ -12,7 +12,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 import BreadCrumb from "../layout/BreadCrumb";
 import BrowserResult from "./BrowserResult";
@@ -52,7 +52,7 @@ class Browser extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: ILibraryRootState) => ({
     breadrumb: state.opds.browser.breadcrumb,
     location: state.router.location,
 });

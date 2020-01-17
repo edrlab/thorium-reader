@@ -11,7 +11,7 @@ import { IOpdsPublicationView, IOpdsResultView } from "readium-desktop/common/vi
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import { GridView } from "readium-desktop/renderer/library/components/utils/GridView";
 import { ListView } from "readium-desktop/renderer/library/components/utils/ListView";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { DisplayType } from "readium-desktop/renderer/library/routing";
 
 import PageNavigation from "./PageNavigation";
@@ -64,7 +64,7 @@ class EntryPublicationList extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     location: state.router.location,
 });
 

@@ -17,7 +17,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { buildOpdsBrowserRouteWithLink } from "readium-desktop/renderer/library/opds/route";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { dispatchHistoryPush } from "readium-desktop/renderer/library/routing";
 import { TDispatch } from "readium-desktop/typings/redux";
 
@@ -137,7 +137,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
 });
 

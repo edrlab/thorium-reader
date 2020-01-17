@@ -21,7 +21,7 @@ import {
 import Menu from "readium-desktop/renderer/common/components/menu/Menu";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { formatContributorToString } from "readium-desktop/renderer/common/logics/formatContributor";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import CatalogMenu from "./menu/CatalogMenu";
@@ -141,7 +141,7 @@ class PublicationCard extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: RootState, _props: IBaseProps) => {
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         InfoDialogIsOpen: state.dialog.open
             && (state.dialog.type === DialogTypeName.PublicationInfoOpds

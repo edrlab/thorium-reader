@@ -15,9 +15,9 @@ import { History } from "history";
 import { reduxSyncMiddleware } from "readium-desktop/renderer/library/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/renderer/library/redux/reducers";
 import { rootSaga } from "readium-desktop/renderer/library/redux/sagas";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
-export function initStore(history: History): Store<RootState> {
+export function initStore(history: History): Store<ILibraryRootState> {
 
     console.log("Init store lib");
     const sagaMiddleware = createSagaMiddleware();
@@ -32,5 +32,5 @@ export function initStore(history: History): Store<RootState> {
         ),
     );
     sagaMiddleware.run(rootSaga);
-    return store as Store<RootState>;
+    return store as Store<ILibraryRootState>;
 }

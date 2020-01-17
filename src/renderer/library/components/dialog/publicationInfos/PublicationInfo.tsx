@@ -22,7 +22,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import CatalogControls from "./catalogControls";
@@ -118,7 +118,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     ...{
         open: state.dialog.type === DialogTypeName.PublicationInfoOpds
             || state.dialog.type === DialogTypeName.PublicationInfoLib,

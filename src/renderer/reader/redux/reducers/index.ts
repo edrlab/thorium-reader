@@ -24,5 +24,3 @@ export const rootReducer = () => {
         toast: toastReducer,
     });
 };
-
-export type TRootState = IReaderRootState;

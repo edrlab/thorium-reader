@@ -19,7 +19,7 @@ import {
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import SecondaryHeader from "readium-desktop/renderer/library/components/SecondaryHeader";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { DisplayType, IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
 
 import SearchForm from "./SearchForm";
@@ -202,7 +202,7 @@ class Header extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: ILibraryRootState) => ({
     headerLinks: state.opds.browser.header,
     breadcrumb: state.opds.browser.breadcrumb,
     location: state.router.location,

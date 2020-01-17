@@ -13,7 +13,7 @@ import * as ArrowIcon from "readium-desktop/renderer/assets/icons/baseline-arrow
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import SVG from "readium-desktop/renderer/common/components/SVG";
 import { buildOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { IOpdsBrowse, routes } from "readium-desktop/renderer/library/routing";
 
 // tslint:disable-next-line: no-empty-interface
@@ -97,7 +97,7 @@ class Entry extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
 });
 

@@ -17,7 +17,7 @@ import { _PACKAGING } from "readium-desktop/preprocessor-directives";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { promisify } from "util";
 
@@ -72,7 +72,7 @@ export class Information extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState, _props: IBaseProps) => {
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         locale: state.i18n.locale,
         open: state.dialog.type === DialogTypeName.AboutThorium,

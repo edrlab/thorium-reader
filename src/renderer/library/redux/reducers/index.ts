@@ -22,6 +22,7 @@ import {
 } from "readium-desktop/renderer/library/redux/reducers/opds";
 import { IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { combineReducers } from "redux";
+
 import { ILibraryRootState } from "../states";
 
 export const rootReducer = (history: History) => {
@@ -47,5 +48,3 @@ export const rootReducer = (history: History) => {
         history: historyReducer,
 });
 };
-
-export type TRootState = ILibraryRootState;

@@ -13,7 +13,7 @@ import { IOpdsPublicationView } from "readium-desktop/common/views/opds";
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TMouseEventOnButton } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
@@ -71,7 +71,7 @@ const mapDispatchToProps = (dispatch: TDispatch, props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (_state: RootState, _props: IBaseProps) => {
+const mapStateToProps = (_state: ILibraryRootState, _props: IBaseProps) => {
     return {
     };
 };

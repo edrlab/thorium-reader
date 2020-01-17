@@ -11,7 +11,7 @@ import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga"
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { apiSaga } from "readium-desktop/renderer/common/redux/sagas/api";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { all, call, put } from "redux-saga/effects";
 
 import { Download } from "../states/download";
@@ -31,7 +31,7 @@ function* sameFileImportWatcher() {
         const { link, title, r2OpdsPublicationBase64 } = action.payload;
 
         const downloads = yield* selectTyped(
-            (state: RootState) => state.download?.downloads);
+            (state: ILibraryRootState) => state.download?.downloads);
 
         if (Array.isArray(downloads)
             && findDownload(downloads, link)) {

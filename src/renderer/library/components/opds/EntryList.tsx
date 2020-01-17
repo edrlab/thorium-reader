@@ -9,7 +9,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { IOpdsNavigationLinkView } from "readium-desktop/common/views/opds";
 import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 import Entry from "./Entry";
 
@@ -45,7 +45,7 @@ class EntryList extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState, _props: IBaseProps) => ({
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => ({
     level: state.opds.browser.breadcrumb.length + 1,
 });
 

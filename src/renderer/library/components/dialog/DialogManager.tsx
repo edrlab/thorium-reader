@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import PublicationInfo from "readium-desktop/renderer/library/components/dialog/publicationInfos/PublicationInfo";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 
 import DeleteOpdsFeedConfirm from "./DeleteOpdsFeedConfirm";
 import DeletePublicationConfirm from "./DeletePublicationConfirm";
@@ -60,7 +60,7 @@ class DialogManager extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState, _props: IBaseProps) => {
+const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
     return {
         dialog: state.dialog,
     };

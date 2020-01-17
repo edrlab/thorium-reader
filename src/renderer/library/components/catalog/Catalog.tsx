@@ -14,7 +14,7 @@ import {
     apiClean, apiDispatch, apiRefreshToState, apiState,
 } from "readium-desktop/renderer/common/redux/api/api";
 import LibraryLayout from "readium-desktop/renderer/library/components/layout/LibraryLayout";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { DisplayType } from "readium-desktop/renderer/library/routing";
 import { Dispatch } from "redux";
 import * as uuid from "uuid";
@@ -88,7 +88,7 @@ class Catalog extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: ILibraryRootState) => ({
     apiData: apiState(state),
     refresh: apiRefreshToState(state)([
         "publication/import",

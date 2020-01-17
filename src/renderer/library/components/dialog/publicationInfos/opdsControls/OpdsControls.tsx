@@ -14,7 +14,7 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import OpdsLinkProperties from "./OpdsLinkProperties";
 
@@ -214,7 +214,7 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     };
 };
 
-const mapStateToProps = (state: RootState, props: IBaseProps) => {
+const mapStateToProps = (state: ILibraryRootState, props: IBaseProps) => {
     return {
         breadcrumb: state.opds.browser.breadcrumb,
         location: state.router.location,

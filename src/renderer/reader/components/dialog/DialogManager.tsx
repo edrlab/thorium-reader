@@ -8,7 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import PublicationInfo from "readium-desktop/renderer/reader/components/dialog/publicationInfos/PublicationInfo";
-import { RootState } from "readium-desktop/renderer/reader/redux/states";
+import { IReaderRootState } from "readium-desktop/renderer/reader/redux/states";
 
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps {
@@ -43,7 +43,7 @@ class DialogManager extends React.Component<IProps, undefined> {
     }
 }
 
-const mapStateToProps = (state: RootState, _props: IBaseProps) => {
+const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         dialog: state.dialog,
     };

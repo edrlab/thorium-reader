@@ -30,7 +30,7 @@ import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
-import { RootState } from "readium-desktop/renderer/reader/redux/states";
+import { IReaderRootState } from "readium-desktop/renderer/reader/redux/states";
 import {
     TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
@@ -823,7 +823,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 }
 
-const mapStateToProps = (state: RootState, _props: IBaseProps) => {
+const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         reader: state.reader.reader,
         mode: state.reader.mode,

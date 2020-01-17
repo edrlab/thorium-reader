@@ -24,7 +24,7 @@ import { deleteTag } from "readium-desktop/renderer/common/logics/publicationInf
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 // Logger
@@ -95,7 +95,7 @@ class TagManager extends React.Component<IProps> {
     }
 }
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: ILibraryRootState) => ({
     tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.tags,
     pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication?.identifier,
     publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoLib])?.publication,

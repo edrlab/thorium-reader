@@ -11,7 +11,7 @@ import { selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga"
 import { TApiMethod } from "readium-desktop/main/api/api.type";
 import { parseOpdsBrowserRoute } from "readium-desktop/renderer/library/opds/route";
 import { opdsActions, routerActions } from "readium-desktop/renderer/library/redux/actions";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { ContentType } from "readium-desktop/utils/content-type";
 import { SagaIterator } from "redux-saga";
@@ -148,7 +148,7 @@ function* setSearchLinkInHeader(): SagaIterator {
         yield put(opdsActions.search.build({
             url: returnUrl,
             level: returnUrl ? yield* selectTyped(
-                (state: RootState) => state.opds.browser.breadcrumb.length) : undefined,
+                (state: ILibraryRootState) => state.opds.browser.breadcrumb.length) : undefined,
         }));
     }
 }

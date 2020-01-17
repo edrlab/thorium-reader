@@ -14,7 +14,7 @@ import { Translator } from "readium-desktop/common/services/translator";
 import {
     diRendererSymbolTable as diSymbolTable,
 } from "readium-desktop/renderer/library/diSymbolTable";
-import { RootState } from "readium-desktop/renderer/library/redux/states";
+import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
 import { initStore } from "readium-desktop/renderer/library/redux/store/memory";
 import { Store } from "redux";
 
@@ -31,7 +31,7 @@ const history: History<IRouterLocationState> = createHashHistory();
 container.bind<History>(diSymbolTable.history).toConstantValue(history);
 
 const store = initStore(history);
-container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
+container.bind<Store<ILibraryRootState>>(diSymbolTable.store).toConstantValue(store);
 
 // Create translator
 const translator = new Translator();
@@ -42,7 +42,7 @@ container.bind<typeof MainApp>(diSymbolTable["react-main-app"]).toConstantValue(
 // local interface to force type return
 interface IGet {
     (s: "history"): History;
-    (s: "store"): Store<RootState>;
+    (s: "store"): Store<ILibraryRootState>;
     (s: "translator"): Translator;
     (s: "react-main-app"): typeof MainApp;
 }
