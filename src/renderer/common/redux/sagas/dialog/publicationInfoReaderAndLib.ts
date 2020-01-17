@@ -39,7 +39,6 @@ function* checkReaderAndLibPublicationWatcher() {
         }
 
         yield call(updateReaderAndLibPublicationWatcher);
-        yield take(dialogActions.closeRequest.build);
     }
 }
 
