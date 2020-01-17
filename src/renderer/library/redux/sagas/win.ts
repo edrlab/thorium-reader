@@ -29,7 +29,7 @@ function* winStartWatcher(): SagaIterator {
     // starting point to mounting React to the DOM
     ReactDOM.render(
         React.createElement(
-            diLibraryGet("react-main-app"),
+            diLibraryGet("react-library-app"),
             null),
         document.getElementById("app"),
     );

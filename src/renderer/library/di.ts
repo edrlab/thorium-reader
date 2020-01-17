@@ -18,7 +18,7 @@ import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states
 import { initStore } from "readium-desktop/renderer/library/redux/store/memory";
 import { Store } from "redux";
 
-import MainApp from "./components/App";
+import App from "./components/App";
 import { IRouterLocationState } from "./routing";
 
 // Create container used for dependency injection
@@ -35,14 +35,14 @@ container.bind<Store<ILibraryRootState>>(diSymbolTable.store).toConstantValue(st
 const translator = new Translator();
 container.bind<Translator>(diSymbolTable.translator).toConstantValue(translator);
 
-container.bind<typeof MainApp>(diSymbolTable["react-main-app"]).toConstantValue(MainApp);
+container.bind<typeof App>(diSymbolTable["react-library-app"]).toConstantValue(App);
 
 // local interface to force type return
 interface IGet {
     (s: "history"): History;
     (s: "store"): Store<ILibraryRootState>;
     (s: "translator"): Translator;
-    (s: "react-main-app"): typeof MainApp;
+    (s: "react-library-app"): typeof App;
 }
 
 // export function to get back depedency from container

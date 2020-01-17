@@ -27,13 +27,13 @@ container.bind<Store<IReaderRootState>>(diSymbolTable.store).toConstantValue(sto
 const translator = new Translator();
 container.bind<Translator>(diSymbolTable.translator).toConstantValue(translator);
 
-container.bind<typeof App>(diSymbolTable["react-app"]).toConstantValue(App);
+container.bind<typeof App>(diSymbolTable["react-reader-app"]).toConstantValue(App);
 
 // local interface to force type return
 interface IGet {
     (s: "store"): Store<IReaderRootState>;
     (s: "translator"): Translator;
-    (s: "react-app"): typeof App;
+    (s: "react-reader-app"): typeof App;
 }
 
 // export function to get back depedency from container

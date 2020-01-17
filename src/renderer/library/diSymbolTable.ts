@@ -9,5 +9,5 @@ export const diRendererSymbolTable = {
     "history": Symbol("history"),
     "store": Symbol("store"),
     "translator": Symbol("translator"),
-    "react-main-app": Symbol("react-main-app"),
+    "react-library-app": Symbol("react-library-app"),
 };

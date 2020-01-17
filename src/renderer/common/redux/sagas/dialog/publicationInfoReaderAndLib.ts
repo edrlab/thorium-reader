@@ -11,7 +11,7 @@ import { apiActions, dialogActions } from "readium-desktop/common/redux/actions"
 import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { TApiMethod } from "readium-desktop/main/api/api.type";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
-import { all, call, put } from "redux-saga/effects";
+import { all, call, put, take } from "redux-saga/effects";
 
 import { apiSaga } from "../api";
 
@@ -37,30 +37,31 @@ function* checkReaderAndLibPublicationWatcher() {
                 yield* apiSaga("publication/get", REQUEST_ID, id, true);
             }
         }
+
+        yield call(updateReaderAndLibPublicationWatcher);
+        yield take(dialogActions.closeRequest.build);
     }
 }
 
 // Triggered when the publication data are available from the API
 function* updateReaderAndLibPublicationWatcher() {
-    while (true) {
-        const action = yield* takeTyped(apiActions.result.build);
-        const { requestId } = action.meta.api;
+    const action = yield* takeTyped(apiActions.result.build);
+    const { requestId } = action.meta.api;
 
-        if (requestId === REQUEST_ID) {
-            debug("reader publication from publicationInfo received");
+    if (requestId === REQUEST_ID) {
+        debug("reader publication from publicationInfo received");
 
-            const publicationView = action.payload as
-                ReturnPromiseType<TApiMethod["publication/get"]>;
+        const publicationView = action.payload as
+            ReturnPromiseType<TApiMethod["publication/get"]>;
 
-            if (publicationView) {
-                debug("opdsPublicationResult:", publicationView);
+        if (publicationView) {
+            debug("opdsPublicationResult:", publicationView);
 
-                const publication = publicationView;
+            const publication = publicationView;
 
-                yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoReader>({
-                    publication,
-                }));
-            }
+            yield put(dialogActions.updateRequest.build<DialogTypeName.PublicationInfoReader>({
+                publication,
+            }));
         }
     }
 }
@@ -68,6 +69,5 @@ function* updateReaderAndLibPublicationWatcher() {
 export function* watchers() {
     yield all([
         call(checkReaderAndLibPublicationWatcher),
-        call(updateReaderAndLibPublicationWatcher),
     ]);
 }
