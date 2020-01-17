@@ -12,6 +12,7 @@ import { TApiMethod } from "readium-desktop/main/api/api.type";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { stringArrayEqual } from "readium-desktop/utils/stringArrayEqual";
 import { all, call, put, takeEvery } from "redux-saga/effects";
+import { ICommonRootState } from "../../states";
 
 function* apiResult(action: apiActions.result.TAction) {
 
@@ -20,7 +21,7 @@ function* apiResult(action: apiActions.result.TAction) {
         if (action.meta.api.methodId === "updateTags") {
             const publicationView = action.payload as ReturnPromiseType<TApiMethod["publication/updateTags"]>;
             const tagsArray = publicationView.tags;
-            const publicationFromDialog = yield* selectTyped((state: any) =>
+            const publicationFromDialog = yield* selectTyped((state: ICommonRootState) =>
                 (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication);
 
             if (!stringArrayEqual(tagsArray, publicationFromDialog.tags as string[])) {

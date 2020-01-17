@@ -22,10 +22,11 @@ import {
 } from "readium-desktop/renderer/library/redux/reducers/opds";
 import { IRouterLocationState } from "readium-desktop/renderer/library/routing";
 import { combineReducers } from "redux";
+import { ILibraryRootState } from "../states";
 
 export const rootReducer = (history: History) => {
     console.log("redux root reducer library");
-    return combineReducers({
+    return combineReducers<ILibraryRootState>({
         i18n: i18nReducer,
         opds: combineReducers({
             browser: combineReducers({
@@ -47,4 +48,4 @@ export const rootReducer = (history: History) => {
 });
 };
 
-export type TRootState = ReturnType<ReturnType<typeof rootReducer>>;
+export type TRootState = ILibraryRootState;

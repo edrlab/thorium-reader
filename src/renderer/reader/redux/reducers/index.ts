@@ -12,9 +12,10 @@ import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { readerReducer } from "readium-desktop/renderer/reader/redux/reducers/reader";
 import { combineReducers } from "redux";
+import { IReaderRootState } from "../states";
 
 export const rootReducer = () => {
-    return combineReducers({
+    return combineReducers<IReaderRootState>({
         api: apiReducer,
         i18n: i18nReducer,
         reader: readerReducer,
@@ -24,4 +25,4 @@ export const rootReducer = () => {
     });
 };
 
-export type TRootState = ReturnType<ReturnType<typeof rootReducer>>;
+export type TRootState = IReaderRootState;
