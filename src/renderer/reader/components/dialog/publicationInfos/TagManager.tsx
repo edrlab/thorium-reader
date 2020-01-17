@@ -9,16 +9,20 @@ import * as debug_ from "debug";
 import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
+import { dialogActions } from "readium-desktop/common/redux/actions";
+import AddTag from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/AddTag";
 import {
     TagButton,
 } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagButton";
 import {
     TagList,
 } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagList";
-import {
-    TranslatorProps,
-} from "readium-desktop/renderer/common/components/hoc/translator";
+import { TranslatorProps, withTranslator } from "readium-desktop/renderer/common/components/hoc/translator";
+import { deleteTag } from "readium-desktop/renderer/common/logics/publicationInfos/tags/deleteTag";
+import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
+import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
 import { RootState } from "readium-desktop/renderer/reader/redux/states";
+import { TDispatch } from "readium-desktop/typings/redux";
 
 // Logger
 const debug = debug_("readium-desktop:renderer:reader:components:dialog:publicationInfos:TagManager");
@@ -33,7 +37,7 @@ interface IBaseProps extends TranslatorProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps> {
+interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
 export class TagManager extends React.Component<IProps> {
@@ -47,6 +51,21 @@ export class TagManager extends React.Component<IProps> {
     }
 
     public render(): React.ReactElement<{}> {
+        const { __ } = this.props;
+
+        const setTagsCb =
+            (tagsArray: string[]) =>
+                this.props.setTags(
+                    this.props.pubId,
+                    this.props.publication,
+                    tagsArray,
+                );
+
+        const updateTagsCb =
+            (index: number) =>
+                () =>
+                    deleteTag(this.props.tagArray, setTagsCb)(index);
+
         return (
             <div>
                 <TagList tagArray={this.props.tagArray}>
@@ -54,10 +73,19 @@ export class TagManager extends React.Component<IProps> {
                         (tag) =>
                             <TagButton
                                 tag={tag}
+                                __={__}
+                                pubId={this.props.pubId}
+                                onClickDeleteCb={updateTagsCb}
                             >
                             </TagButton>
                     }
                 </TagList>
+                <AddTag
+                    pubId={this.props.pubId}
+                    tagArray={this.props.tagArray}
+                    __={__}
+                    setTags={setTagsCb}
+                />
             </div>
         );
     }
@@ -65,6 +93,21 @@ export class TagManager extends React.Component<IProps> {
 
 const mapStateToProps = (state: RootState) => ({
     tagArray: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication?.tags,
+    pubId: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication?.identifier,
+    publication: (state.dialog.data as DialogType[DialogTypeName.PublicationInfoReader])?.publication,
 });
 
-export default connect(mapStateToProps)(TagManager);
+const mapDispatchToProps = (dispatch: TDispatch) => ({
+    setTags: (pubId: string, publication: TPublication, tagsName: string[]) => {
+        apiDispatch(dispatch)()("publication/updateTags")(pubId, tagsName);
+        dispatch(
+            dialogActions.updateRequest.build<DialogTypeName.PublicationInfoLib>(
+                {
+                    publication: Object.assign({}, publication, { tags: tagsName }),
+                },
+            ),
+        );
+    },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslator(TagManager));

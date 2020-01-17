@@ -10,7 +10,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { dialogActions } from "readium-desktop/common/redux/actions";
-import * as styles from "readium-desktop/renderer/assets/styles/bookDetailsDialog.css";
+import AddTag from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/AddTag";
 import {
     TagButton,
 } from "readium-desktop/renderer/common/components/dialog/publicationInfos/tag/tagButton";
@@ -20,11 +20,11 @@ import {
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
+import { deleteTag } from "readium-desktop/renderer/common/logics/publicationInfos/tags/deleteTag";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
 import { TPublication } from "readium-desktop/renderer/common/type/publication.type";
 import { dispatchOpdsLink } from "readium-desktop/renderer/library/opds/handleLink";
 import { RootState } from "readium-desktop/renderer/library/redux/states";
-import { TChangeEventOnInput, TFormEvent } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 // Logger
@@ -43,45 +43,27 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
-interface IState {
-    newTagName: string;
-}
-
-class TagManager extends React.Component<IProps, IState> {
+class TagManager extends React.Component<IProps> {
 
     constructor(props: IProps) {
         super(props);
-
-        this.state = {
-            newTagName: "",
-        };
     }
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
-        const addTagComponent = () =>
-            this.props.pubId
-                ? <form
-                    onSubmit={this.addTag}
-                    id={styles.flux_search}
-                >
-                    <input
-                        type="text"
-                        className={styles.tag_inputs}
-                        title={__("catalog.addTags")}
-                        placeholder={__("catalog.addTags")}
-                        onChange={this.handleChangeName}
-                        value={this.state.newTagName}
-                    />
-                    <button
-                        type="submit"
-                        className={styles.addTagButton}
-                    >
-                        {__("catalog.addTagsButton")}
-                    </button>
-                </form>
-                : <></>;
+        const setTagsCb =
+            (tagsArray: string[]) =>
+                this.props.setTags(
+                    this.props.pubId,
+                    this.props.publication,
+                    tagsArray,
+                );
+
+        const updateTagsCb =
+            (index: number) =>
+                () =>
+                    deleteTag(this.props.tagArray, setTagsCb)(index);
 
         return (
             <div>
@@ -93,9 +75,7 @@ class TagManager extends React.Component<IProps, IState> {
                                 index={index}
                                 __={__}
                                 pubId={this.props.pubId}
-                                onClickDeleteCb={
-                                    (_index) => () => this.deleteTag(_index)
-                                }
+                                onClickDeleteCb={updateTagsCb}
                                 onClickLinkCb={
                                     (_tag) => () => this.props.link(
                                         _tag.link[0], this.props.location, _tag.name)
@@ -104,65 +84,14 @@ class TagManager extends React.Component<IProps, IState> {
                             </TagButton>
                     }
                 </TagList>
-                {
-                    addTagComponent()
-                }
+                <AddTag
+                    pubId={this.props.pubId}
+                    tagArray={this.props.tagArray}
+                    __={__}
+                    setTags={setTagsCb}
+                />
             </div>
         );
-    }
-
-    private deleteTag = (index: number) => {
-        const { tagArray } = this.props;
-
-        const tags = Array.isArray(tagArray) ? tagArray.slice() : [];
-
-        tags.splice(index, 1);
-
-        const tagsName: string[] = [];
-        for (const tag of tags) {
-            if (typeof tag === "string") {
-                tagsName.push(tag);
-            } else {
-                tagsName.push(tag.name);
-            }
-        }
-
-        this.props.setTags(this.props.pubId, this.props.publication, tagsName);
-    }
-
-    private addTag = (e: TFormEvent) => {
-        e.preventDefault();
-        const { tagArray } = this.props;
-
-        const tags = Array.isArray(tagArray) ? tagArray.slice() : [];
-        const tagName = this.state.newTagName.trim().replace(/\s\s+/g, " ");
-
-        this.setState({ newTagName: "" });
-
-        const tagsName: string[] = [];
-        for (const tag of tags) {
-            if (typeof tag === "string") {
-                if (tag === tagName) {
-                    return;
-                } else {
-                    tagsName.push(tag);
-                }
-            } else {
-                if (tag.name === tagName) {
-                    return;
-                } else {
-                    tagsName.push(tag.name);
-                }
-            }
-        }
-
-        tagsName.push(tagName);
-        this.props.setTags(this.props.pubId, this.props.publication, tagsName);
-
-    }
-
-    private handleChangeName = (e: TChangeEventOnInput) => {
-        this.setState({ newTagName: e.target.value });
     }
 }
 
