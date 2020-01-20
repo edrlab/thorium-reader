@@ -43,21 +43,44 @@ export function readerReducer(
         readerActions.detachModeSuccess.TAction |
         readerActions.configSetSuccess.TAction,
 ): ReaderState {
-    const newState = Object.assign({}, state);
 
     switch (action.type) {
         case readerActions.openSuccess.ID:
-            newState.readers[action.payload.reader.identifier] = action.payload.reader;
-            return newState;
+            return {
+                ...state,
+                ...{
+                    readers: {
+                        [action.payload.reader.identifier]: action.payload.reader,
+                    },
+                },
+            };
+
         case readerActions.closeSuccess.ID:
-            delete newState.readers[action.payload.reader.identifier];
-            return newState;
+            return {
+                ...state,
+                ...{
+                    readers: {
+                        [action.payload.reader.identifier]: undefined,
+                    },
+                },
+            };
+
         case readerActions.detachModeSuccess.ID:
-            newState.mode = action.payload.mode;
-            return newState;
+            return {
+                ...state,
+                ...{
+                    mode: action.payload.mode,
+                },
+            };
+
         case readerActions.configSetSuccess.ID:
-            newState.config = action.payload.config;
-            return newState;
+            return {
+                ...state,
+                ...{
+                    config: action.payload.config,
+                },
+            };
+
         default:
             return state;
     }
