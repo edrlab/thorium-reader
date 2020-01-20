@@ -202,7 +202,7 @@ class Reader extends React.Component<IProps, IState> {
         this.findBookmarks = this.findBookmarks.bind(this);
         this.displayPublicationInfo = this.displayPublicationInfo.bind(this);
 
-        const store = diRendererGet("store");
+        const store = diReaderGet("store");
         const setting = store.getState().reader.config;
         setReadiumCssJsonGetter(computeReadiumCssJsonMessage(setting));
     }
