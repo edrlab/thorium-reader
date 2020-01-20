@@ -5,13 +5,15 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+import { TApiMethod, TApiMethodName } from "readium-desktop/common/api/api.type";
+import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
+import { TModuleApi } from "readium-desktop/common/api/moduleApi.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { TApiMethod, TApiMethodName } from "readium-desktop/main/api/api.type";
-import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
 import { ApiResponse, LAST_API_SUCCESS_ID } from "readium-desktop/renderer/common/redux/states/api";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { Dispatch } from "redux";
 import * as uuid from "uuid";
+
 import { ICommonRootState } from "../states";
 
 export function apiDispatch(dispatch: Dispatch) {
