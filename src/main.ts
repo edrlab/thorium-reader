@@ -15,7 +15,7 @@ import { createWindowLibrary } from "readium-desktop/main/createWindowLibrary";
 import { diMainGet } from "readium-desktop/main/di";
 import { initApp, registerProtocol } from "readium-desktop/main/init";
 import {
-    _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH,
+    _PACKAGING, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";

@@ -12,7 +12,7 @@ import { AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowBounds } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
 import {
-    _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
+    _PACKAGING, _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 
 import { setMenu } from "./menu";
@@ -75,14 +75,14 @@ export async function createWindowLibrary() {
     // watch to record window rectangle position in the db
     appWindow.onWindowMoveResize.attach();
 
-    let rendererBaseUrl = _RENDERER_APP_BASE_URL;
+    let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
 
     if (rendererBaseUrl === "file://") {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += path.normalize(path.join(__dirname, "index_app.html"));
+        rendererBaseUrl += path.normalize(path.join(__dirname, "index_library.html"));
     } else {
         // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += "index_app.html";
+        rendererBaseUrl += "index_library.html";
     }
 
     rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
