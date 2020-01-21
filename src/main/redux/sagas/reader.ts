@@ -85,7 +85,7 @@ async function openReader(publicationIdentifier: string, manifestUrl: string) {
     const readerAppWindow = winRegistry.registerWindow(
         readerWindow,
         AppWindowType.Reader,
-        );
+    );
 
     if (thereIsOnlyTheLibraryWindow) {
         // onWindowMoveResize.detach() is called for reader windows that become ReaderMode.Detached

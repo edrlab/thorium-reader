@@ -21,7 +21,11 @@ export interface Reader extends Identifiable {
     filesystemPath: string;
     manifestUrl: string;
     publicationIdentifier: string;
+
+    // should be removed, not used and useless
     browserWindow: BrowserWindow;
+
+    // should be removed, set in win root state
     browserWindowID: number;
 }
 

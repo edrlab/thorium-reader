@@ -605,7 +605,11 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
+
+        // Why findBookmark here ? can be removed
         this.findBookmarks();
+
+        // every 250ms on user scrolling. This will be saved on db through redux
         this.saveReadingLocation(loc);
         this.setState({currentLocation: getCurrentReadingLocation()});
         // No need to explicitly refresh the bookmarks status here,
