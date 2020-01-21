@@ -21,6 +21,9 @@ export interface WinDictionary {
 type OpenCallbackFunc = (appWindow: AppWindow) => void;
 type CloseCallbackFunc = (appWindow: AppWindow) => void;
 
+// move WinRegistry state and logic in redux-saga
+// state centralisation allow to handle
+
 @injectable()
 export class WinRegistry {
     // object map: Electron.BrowserWindow.id (number key) => AppWindow
