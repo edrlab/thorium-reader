@@ -21,4 +21,11 @@ export const rootReducer = combineReducers<RootState>({
     // net: netReducer,
     // update: updateReducer,
     app: appReducer,
+    win: combineReducers({
+        library: undefined,
+        reader: combineReducers({
+            browserWindow: undefined,
+            reduxStore: undefined,
+        })
+    })
 });
