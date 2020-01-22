@@ -8,11 +8,12 @@
 import { all, call } from "redux-saga/effects";
 
 import * as api from "./api";
-import { appInitWatcher } from "./app";
+import * as app from "./app";
 import * as i18n from "./i18n";
 // import { netStatusWatcher } from "./net";
 import * as reader from "./reader";
 import * as streamer from "./streamer";
+
 // import { updateStatusWatcher } from "./update";
 
 export function* rootSaga() {
@@ -23,7 +24,7 @@ export function* rootSaga() {
         call(i18n.watchers),
 
         // App
-        call(appInitWatcher),
+        call(app.watchers),
 
         // Net
         // call(netStatusWatcher),
