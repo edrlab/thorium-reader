@@ -104,7 +104,6 @@ function* mainApp() {
         },
     );
 
-    yield call(() => createWindow());
 }
 
 function* appInitWatcher() {
@@ -113,6 +112,8 @@ function* appInitWatcher() {
     yield call(() => mainApp());
 
     yield put(appActions.initSuccess.build());
+
+    yield call(() => createWindow());
 }
 
 export function* watchers() {
