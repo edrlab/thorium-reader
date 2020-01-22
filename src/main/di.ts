@@ -7,7 +7,7 @@
 
 import "reflect-metadata";
 
-import { app } from "electron";
+import { app, BrowserWindow } from "electron";
 import * as fs from "fs";
 import { Container } from "inversify";
 import * as path from "path";
@@ -235,13 +235,25 @@ type TMethodApi = keyof ICatalogApi | keyof IPublicationApi | keyof IOpdsApi | k
 // Create action serializer
 container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();
 
-//
-// end of create Depedency Injection Container
-//
+const savedLibraryWindowInDi =
+    (libWin: BrowserWindow) =>
+        container.bind<BrowserWindow>("WIN_REGISTRY_LIBRARY").toConstantValue(libWin);
 
-//
-// Overload container.get with our own type return
-//
+const getLibraryWindowFromDi =
+    () =>
+        container.get<BrowserWindow>("WIN_REGISTRY_LIBRARY");
+
+const savedReaderWindowInDi =
+    (readerWin: BrowserWindow, id: string) =>
+        container.bind<BrowserWindow>("WIN_REGISTRY_READER").toConstantValue(readerWin).whenTargetNamed(id);
+
+const getReaderWindowFromDi =
+    (id: string) =>
+        container.getNamed<BrowserWindow>("WIN_REGISTRY_READER", id);
+
+const getAllReaderWindowFromDi =
+    () =>
+        container.getAll<BrowserWindow>("WIN_REGISTRY_READER");
 
 // local interface to force type return
 interface IGet {
@@ -280,4 +292,9 @@ export {
     diGet as diMainGet,
     TModuleApi,
     TMethodApi,
+    getLibraryWindowFromDi,
+    getReaderWindowFromDi,
+    savedLibraryWindowInDi,
+    savedReaderWindowInDi,
+    getAllReaderWindowFromDi,
 };

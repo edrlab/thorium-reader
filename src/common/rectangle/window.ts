@@ -19,7 +19,7 @@ const debug = debug_("readium-desktop:common:rectangle:window");
 
 const WINDOW_RECT_CONFIG_ID = "windowRectangle";
 
-const defaultRectangle = (): Rectangle => (
+export const defaultRectangle = (): Rectangle => (
     {
         height: 600,
         width: 800,

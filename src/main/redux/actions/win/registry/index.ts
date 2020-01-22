@@ -5,16 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { lcpActions, netActions } from "readium-desktop/common/redux/actions";
-
-import * as appActions from "./app/";
-import * as streamerActions from "./streamer/";
-import * as winActions from "./win";
+import * as registerLibrary from "./registerLibrary";
+import * as registerReader from "./registerReader";
+import * as setBound from "./setBound";
+import * as unregisterLibrary from "./unregisterLibrary";
+import * as unregisterReader from "./unregisterReader";
 
 export {
-    appActions,
-    lcpActions,
-    netActions,
-    streamerActions,
-    winActions,
+    registerLibrary,
+    registerReader,
+    unregisterReader,
+    unregisterLibrary,
+    setBound,
 };

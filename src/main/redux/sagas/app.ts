@@ -15,14 +15,14 @@ import { i18nActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/typed-saga";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { diMainGet } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { winCloseCallback, winOpenCallback } from "readium-desktop/main/init";
 import { appActions } from "readium-desktop/main/redux/actions";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, take } from "redux-saga/effects";
 
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
-import { createWindow } from "readium-desktop/main/createWindow";
+import { createLibraryWindow } from "readium-desktop/main/redux/sagas/browserWindow/createLibraryWindow";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:app");
@@ -113,11 +113,29 @@ function* appInitWatcher() {
 
     yield put(appActions.initSuccess.build());
 
-    yield call(() => createWindow());
+    yield call(() => createLibraryWindow());
+}
+
+// On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
+// windows open.
+function* appActivateWatcher() {
+    while (42) {
+        yield call(
+            async () =>
+                new Promise((resolve) =>
+                    app.on("activate",
+                        () =>
+                            !diMainGet("store").getState().win.registry.library.browserWindowId
+                            && resolve(),
+                    )));
+
+        yield call(() => createLibraryWindow());
+    }
 }
 
 export function* watchers() {
     yield all([
         call(appInitWatcher),
+        call(appActivateWatcher),
     ]);
 }

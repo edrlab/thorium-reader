@@ -13,6 +13,8 @@ import { readerReducer } from "readium-desktop/main/redux/reducers/reader";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
 import { RootState } from "readium-desktop/main/redux/states";
 import { combineReducers } from "redux";
+import { winRegistryLibraryReducer } from "./win/registry/library";
+import { winRegistryReaderReducer } from "./win/registry/reader";
 
 export const rootReducer = combineReducers<RootState>({
     streamer: streamerReducer,
@@ -21,4 +23,10 @@ export const rootReducer = combineReducers<RootState>({
     // net: netReducer,
     // update: updateReducer,
     app: appReducer,
+    win: combineReducers({
+        registry: combineReducers({
+            library: winRegistryLibraryReducer,
+            reader: winRegistryReaderReducer,
+        }),
+    }),
 });

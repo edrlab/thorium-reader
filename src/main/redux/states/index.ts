@@ -11,6 +11,8 @@ import { I18NState } from "readium-desktop/common/redux/states/i18n";
 import { AppState } from "./app";
 import { ReaderState } from "./reader";
 import { StreamerState } from "./streamer";
+import { IWinRegistryLibraryState } from "./win/registry/library";
+import { IArrayWinRegistryReaderState } from "./win/registry/reader";
 
 export interface RootState {
     app: AppState;
@@ -19,4 +21,10 @@ export interface RootState {
     streamer: StreamerState;
     reader: ReaderState;
     // update: UpdateState;
+    win: {
+        registry: {
+            library: IWinRegistryLibraryState,
+            reader: IArrayWinRegistryReaderState,
+        },
+    };
 }

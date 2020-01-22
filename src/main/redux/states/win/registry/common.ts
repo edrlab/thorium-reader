@@ -3,18 +3,12 @@
 // Licensed to the Readium Foundation under one or more contributor license agreements.
 // Use of this source code is governed by a BSD-style license
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
-// ==LICENSE-END==
+// ==LICENSE-END=
 
-import { lcpActions, netActions } from "readium-desktop/common/redux/actions";
+import { Rectangle } from "electron";
+import { Identifiable } from "readium-desktop/common/models/identifiable";
 
-import * as appActions from "./app/";
-import * as streamerActions from "./streamer/";
-import * as winActions from "./win";
-
-export {
-    appActions,
-    lcpActions,
-    netActions,
-    streamerActions,
-    winActions,
-};
+export interface IBrowserWindowState extends Identifiable {
+    browserWindowId: number;
+    windowBound: Rectangle;
+}

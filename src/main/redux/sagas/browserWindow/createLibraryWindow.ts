@@ -6,28 +6,34 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { app, BrowserWindow, Event, Menu, shell } from "electron";
+import { BrowserWindow, Event, Menu, shell } from "electron";
 import * as path from "path";
-import { AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowBounds } from "readium-desktop/common/rectangle/window";
+import { selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { diMainGet } from "readium-desktop/main/di";
 import {
     _PACKAGING, _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
+// import { put } from "typed-redux-saga";
 
-import { setMenu } from "./menu";
+import { setMenu } from "../../../menu";
+import { winActions } from "../../actions";
+import { RootState } from "../../states";
 
 // Logger
-const debug = debug_("readium-desktop:createWindow");
+const debug = debug_("readium-desktop:createLibraryWindow");
 
 // Global reference to the main window,
 // so the garbage collector doesn't close it.
-let mainWindow: BrowserWindow = null;
+let libWindow: BrowserWindow = null;
 
 // Opens the main window, with a native menu bar.
-export async function createWindow() {
-    mainWindow = new BrowserWindow({
-        ...(await getWindowBounds()),
+export function* createLibraryWindow() {
+
+    const windowBound = yield* selectTyped(
+        (state: RootState) => state.win.registry.library.windowBound);
+
+    libWindow = new BrowserWindow({
+        ...windowBound,
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
@@ -40,17 +46,17 @@ export async function createWindow() {
     });
 
     if (IS_DEV) {
-        mainWindow.webContents.on("context-menu", (_ev, params) => {
+        libWindow.webContents.on("context-menu", (_ev, params) => {
             const { x, y } = params;
             Menu.buildFromTemplate([{
                 label: "Inspect element",
                 click: () => {
-                    mainWindow.webContents.inspectElement(x, y);
+                    libWindow.webContents.inspectElement(x, y);
                 },
-            }]).popup({window: mainWindow});
+            }]).popup({window: libWindow});
         });
 
-        mainWindow.webContents.on("did-finish-load", () => {
+        libWindow.webContents.on("did-finish-load", () => {
             const {
                 default: installExtension,
                 REACT_DEVELOPER_TOOLS,
@@ -65,18 +71,21 @@ export async function createWindow() {
         });
 
         if (_VSCODE_LAUNCH !== "true") {
-            mainWindow.webContents.openDevTools({ mode: "detach" });
+            libWindow.webContents.openDevTools({ mode: "detach" });
         }
     }
 
-    const winRegistry = diMainGet("win-registry");
-    const appWindow = winRegistry.registerWindow(mainWindow, AppWindowType.Library);
+    libWindow.webContents.on("did-finish-load",
+        () =>
+            diMainGet("store").dispatch(winActions.registry.registerLibrary.build(libWindow)),
+    );
 
-    // watch to record window rectangle position in the db
-    appWindow.onWindowMoveResize.attach();
+    libWindow.on("closed",
+        () =>
+            diMainGet("store").dispatch(winActions.registry.unregisterLibrary.build()),
+    );
 
     let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
-
     if (rendererBaseUrl === "file://") {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
         rendererBaseUrl += path.normalize(path.join(__dirname, "index_library.html"));
@@ -84,16 +93,15 @@ export async function createWindow() {
         // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
         rendererBaseUrl += "index_library.html";
     }
-
     rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
 
-    mainWindow.loadURL(rendererBaseUrl);
+    libWindow.loadURL(rendererBaseUrl);
 
-    setMenu(mainWindow, false);
+    setMenu(libWindow, false);
 
     // Redirect link to an external browser
     const handleRedirect = (event: Event, url: string) => {
-        if (url === mainWindow.webContents.getURL()) {
+        if (url === libWindow.webContents.getURL()) {
             return;
         }
 
@@ -101,24 +109,11 @@ export async function createWindow() {
         shell.openExternal(url);
     };
 
-    mainWindow.webContents.on("will-navigate", handleRedirect);
-    mainWindow.webContents.on("new-window", handleRedirect);
+    libWindow.webContents.on("will-navigate", handleRedirect);
+    libWindow.webContents.on("new-window", handleRedirect);
 
     // Clear all cache to prevent weird behaviours
     // Fully handled in r2-navigator-js initSessions();
     // (including exit cleanup)
-    // mainWindow.webContents.session.clearStorageData();
-
-    mainWindow.on("closed", () => {
-        // note that winRegistry still contains a reference to mainWindow, so won't necessarily be garbage-collected
-        mainWindow = null;
-    });
+    // libWindow.webContents.session.clearStorageData();
 }
-
-// On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
-// windows open.
-app.on("activate", async () => {
-    if (mainWindow === null) {
-        await createWindow();
-    }
-});
