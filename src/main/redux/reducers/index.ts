@@ -13,6 +13,7 @@ import { readerReducer } from "readium-desktop/main/redux/reducers/reader";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
 import { RootState } from "readium-desktop/main/redux/states";
 import { combineReducers } from "redux";
+import { lcpReducer } from "./lcp";
 
 export const rootReducer = combineReducers<RootState>({
     streamer: streamerReducer,
@@ -21,4 +22,5 @@ export const rootReducer = combineReducers<RootState>({
     // net: netReducer,
     // update: updateReducer,
     app: appReducer,
+    lcp: lcpReducer,
 });

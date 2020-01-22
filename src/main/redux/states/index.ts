@@ -6,9 +6,11 @@
 // ==LICENSE-END==
 
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
+
 // import { NetState } from "readium-desktop/common/redux/states/net";
 // import { UpdateState } from "readium-desktop/common/redux/states/update";
 import { AppState } from "./app";
+import { ILcpState } from "./lcp";
 import { ReaderState } from "./reader";
 import { StreamerState } from "./streamer";
 
@@ -19,4 +21,5 @@ export interface RootState {
     streamer: StreamerState;
     reader: ReaderState;
     // update: UpdateState;
+    lcp: ILcpState;
 }
