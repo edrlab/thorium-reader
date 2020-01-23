@@ -18,9 +18,9 @@ import {
 
 import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
-import { RootState } from "../../states";
+import { RootState } from "../../../states";
 import { defaultRectangle } from "readium-desktop/common/rectangle/window";
-import { winActions } from "../../actions";
+import { winActions } from "../../../actions";
 import { readerActions } from "readium-desktop/common/redux/actions";
 
 // ==LICENSE-BEGIN==

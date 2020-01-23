@@ -13,11 +13,12 @@ import { diMainGet } from "readium-desktop/main/di";
 import {
     _PACKAGING, _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
-// import { put } from "typed-redux-saga";
+import { put } from "redux-saga/effects";
 
-import { setMenu } from "../../../menu";
-import { winActions } from "../../actions";
-import { RootState } from "../../states";
+// import { put } from "typed-redux-saga";
+import { setMenu } from "../../../../menu";
+import { winActions } from "../../../actions";
+import { RootState } from "../../../states";
 
 // Logger
 const debug = debug_("readium-desktop:createLibraryWindow");
@@ -30,7 +31,7 @@ let libWindow: BrowserWindow = null;
 export function* createLibraryWindow() {
 
     const windowBound = yield* selectTyped(
-        (state: RootState) => state.win.registry.library.windowBound);
+        (state: RootState) => state.win.session.library.windowBound);
 
     libWindow = new BrowserWindow({
         ...windowBound,
@@ -75,14 +76,16 @@ export function* createLibraryWindow() {
         }
     }
 
+    yield put(winActions.session.registerLibrary.build(libWindow));
+
     libWindow.webContents.on("did-finish-load",
         () =>
-            diMainGet("store").dispatch(winActions.registry.registerLibrary.build(libWindow)),
+            diMainGet("store").dispatch(winActions.library.openSucess.build()),
     );
 
     libWindow.on("closed",
         () =>
-            diMainGet("store").dispatch(winActions.registry.unregisterLibrary.build()),
+            diMainGet("store").dispatch(winActions.library.closed.build()),
     );
 
     let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;

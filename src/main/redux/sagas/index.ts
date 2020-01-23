@@ -10,9 +10,9 @@ import { all, call } from "redux-saga/effects";
 import * as api from "./api";
 import * as app from "./app";
 import * as i18n from "./i18n";
-// import { netStatusWatcher } from "./net";
-import * as reader from "./reader";
 import * as streamer from "./streamer";
+import * as win from "./win";
+// import { netStatusWatcher } from "./net";
 
 // import { updateStatusWatcher } from "./update";
 
@@ -29,13 +29,15 @@ export function* rootSaga() {
         // Net
         // call(netStatusWatcher),
 
-        // Reader
-        call(reader.watchers),
-
         // Streamer
         call(streamer.watchers),
 
         // Update checker
         // call(updateStatusWatcher),
+
+        // Reader
+        call(win.reader.watchers),
+
+        call(win.library.watchers),
     ]);
 }

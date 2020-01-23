@@ -5,24 +5,20 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 
-export const ID = "WIN_REGISTRY_SET_BOUND";
+export const ID = "LIBRARY_OPEN_REQUEST";
 
+// tslint:disable-next-line: no-empty-interface
 export interface Payload {
-    identifier: string;
-    bound: Rectangle;
 }
 
-export function build(id: string, bound: Rectangle):
+export function build():
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            identifier: id,
-            bound,
         },
     };
 }

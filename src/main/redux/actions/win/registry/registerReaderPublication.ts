@@ -8,21 +8,23 @@
 import { Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 
-export const ID = "WIN_REGISTRY_SET_BOUND";
+export const ID = "WIN_REGISTRY_REGISTER_READER_PUBLICATION";
 
 export interface Payload {
-    identifier: string;
+    publicationIdentifier: string;
     bound: Rectangle;
+    reduxState: any;
 }
 
-export function build(id: string, bound: Rectangle):
+export function build(publicationIdentifier: string, bound: Rectangle, reduxState: any):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            identifier: id,
             bound,
+            publicationIdentifier,
+            reduxState,
         },
     };
 }

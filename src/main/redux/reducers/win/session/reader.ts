@@ -12,7 +12,7 @@ import {
 
 const initialState: IDictWinSessionReaderState = {};
 
-export function winRegistryReaderReducer(
+export function winSessionReaderReducer(
     state: IDictWinSessionReaderState = initialState,
     action: winActions.session.registerReader.TAction |
     winActions.session.unregisterReader.TAction |

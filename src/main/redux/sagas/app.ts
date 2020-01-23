@@ -6,7 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, ipcMain, protocol } from "electron";
+import { app, ipcMain, protocol, App } from "electron";
 import * as path from "path";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { syncIpc } from "readium-desktop/common/ipc";
@@ -15,14 +15,13 @@ import { i18nActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/typed-saga";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
-import { winCloseCallback, winOpenCallback } from "readium-desktop/main/init";
-import { appActions } from "readium-desktop/main/redux/actions";
+import { diMainGet } from "readium-desktop/main/di";
+import { appActions, winActions } from "readium-desktop/main/redux/actions";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, take } from "redux-saga/effects";
 
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
-import { createLibraryWindow } from "readium-desktop/main/redux/sagas/browserWindow/createLibraryWindow";
+import { eventChannel, Subscribe, END } from "redux-saga";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:app");
@@ -88,10 +87,6 @@ function* mainApp() {
         put(i18nActions.setLocale.build(defaultLocale()));
     }
 
-    const winRegistry = diMainGet("win-registry");
-    winRegistry.registerOpenCallback(winOpenCallback);
-    winRegistry.registerCloseCallback(winCloseCallback);
-
     // register file protocol to link locale file to renderer
     protocol.registerFileProtocol("store",
         (request, callback) => {
@@ -109,33 +104,36 @@ function* mainApp() {
 function* appInitWatcher() {
     yield take(appActions.initRequest.ID);
 
-    yield call(() => mainApp());
+    yield call(mainApp);
 
     yield put(appActions.initSuccess.build());
 
-    yield call(() => createLibraryWindow());
+    yield put(winActions.library.openRequest.build());
 }
 
 // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other
 // windows open.
-function* appActivateWatcher() {
-    while (42) {
-        yield call(
-            async () =>
-                new Promise((resolve) =>
-                    app.on("activate",
-                        () =>
-                            !diMainGet("store").getState().win.registry.library.browserWindowId
-                            && resolve(),
-                    )));
+export function* appActivate() {
 
-        yield call(() => createLibraryWindow());
-    }
+    const appActivateChannel = eventChannel(
+        (emit) => {
+
+            const handler = () => emit(END);
+            app.on("activate", handler);
+
+            return () => {
+                app.removeListener("activate", handler);
+            };
+        },
+    );
+
+    yield take(appActivateChannel);
+
+    yield put(winActions.library.openRequest.build());
 }
 
 export function* watchers() {
     yield all([
         call(appInitWatcher),
-        call(appActivateWatcher),
     ]);
 }

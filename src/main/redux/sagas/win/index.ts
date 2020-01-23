@@ -6,11 +6,9 @@
 // ==LICENSE-END==
 
 import * as library from "./library";
-import * as registry from "./registry";
-import * as session from "./session";
+import * as reader from "./reader";
 
 export {
-    session,
     library,
-    registry,
+    reader,
 };

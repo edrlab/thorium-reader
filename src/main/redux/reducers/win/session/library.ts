@@ -15,7 +15,7 @@ const initialState: IWinSessionLibraryState = {
     identifier: undefined,
 };
 
-export function winRegistryLibraryReducer(
+export function winSessionLibraryReducer(
     state: IWinSessionLibraryState = initialState,
     action: winActions.session.registerLibrary.TAction |
         winActions.session.unregisterLibrary.TAction |
