@@ -22,11 +22,11 @@
     animation-duration: 0.5s;
 
     &.error {
-        background: rgba(255, 0, 0, 0.1);
+        background: #fedbd8;
     }
 
     &.success {
-        background: rgba(0, 255, 0, 0.1);
+        background: #f0fed8;
     }
 
     & p {
@@ -43,6 +43,8 @@
         top: 0;
         height: 1.3rem;
         width: 1.3rem;
+        padding: 0;
+        margin: 3px;
 
         & svg {
             height: 100%;

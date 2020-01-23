@@ -5,8 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export type TMouseEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
+export type TMouseEventOnButton = React.MouseEvent<HTMLButtonElement, MouseEvent>;
+
+export type TMouseEventOnInput = React.MouseEvent<HTMLInputElement, MouseEvent>;
+
+export type TMouseEventOnSpan = React.MouseEvent<HTMLSpanElement, MouseEvent>;
+
+export type TMouseEventOnAnchor = React.MouseEvent<HTMLAnchorElement, MouseEvent>;
+
+export type TKeyboardEventOnAnchor = React.KeyboardEvent<HTMLAnchorElement>;
 
 export type TFormEvent = React.FormEvent<HTMLFormElement>;
 
-export type TChangeEvent = React.ChangeEvent<HTMLInputElement>;
+export type TChangeEventOnInput = React.ChangeEvent<HTMLInputElement>;
+
+export type TChangeEventOnSelect = React.ChangeEvent<HTMLSelectElement>;

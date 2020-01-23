@@ -21,6 +21,11 @@ import { IPublicationApi, PublicationApi } from "readium-desktop/main/api/public
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
+import { ConfigDocument } from "readium-desktop/main/db/document/config";
+import { LcpSecretDocument } from "readium-desktop/main/db/document/lcp-secret";
+import { LocatorDocument } from "readium-desktop/main/db/document/locator";
+import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
+import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
@@ -42,6 +47,7 @@ import { Server } from "@r2-streamer-js/http/server";
 
 import { IReaderApi, ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
+import { OpdsService } from "./services/opds";
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
@@ -56,15 +62,15 @@ if (!fs.existsSync(userDataPath)) {
 //
 // Create databases
 //
-let PouchDB = (PouchDBCore as any);
+let PouchDB = PouchDBCore;
 // object ready to use (no "default" property) when:
 // module.exports = PouchDB$2
 // in the CommonJS require'd "pouchdb-core" package ("main" field in package.json)
 // otherwise ("default" property) then it means:
 // export default PouchDB$2
 // in the native ECMAScript module ("jsnext:main" or "module" field in package.json)
-if (PouchDB.default) {
-    PouchDB = PouchDB.default;
+if ((PouchDB  as any).default) {
+    PouchDB = (PouchDB  as any).default as PouchDB.Static;
 }
 // ==> this way, with process.env.NODE_ENV === DEV we can have "pouchdb-core" as an external,
 // otherwise it gets bundled and the code continues to work in production.
@@ -97,35 +103,35 @@ const dbOpts = {
 };
 
 // Publication db
-const publicationDb = new PouchDB(
+const publicationDb = new PouchDB<PublicationDocument>(
     path.join(rootDbPath, "publication"),
     dbOpts,
 );
 const publicationRepository = new PublicationRepository(publicationDb);
 
 // OPDS db
-const opdsDb = new PouchDB(
+const opdsDb = new PouchDB<OpdsFeedDocument>(
     path.join(rootDbPath, "opds"),
     dbOpts,
 );
 const opdsFeedRepository = new OpdsFeedRepository(opdsDb);
 
 // Config db
-const configDb = new PouchDB(
+const configDb = new PouchDB<ConfigDocument<any>>(
     path.join(rootDbPath, "config"),
     dbOpts,
 );
 const configRepository = new ConfigRepository(configDb);
 
 // Locator db
-const locatorDb = new PouchDB(
+const locatorDb = new PouchDB<LocatorDocument>(
     path.join(rootDbPath, "locator"),
     dbOpts,
 );
 const locatorRepository = new LocatorRepository(locatorDb);
 
 // Lcp secret db
-const lcpSecretDb = new PouchDB(
+const lcpSecretDb = new PouchDB<LcpSecretDocument>(
     path.join(rootDbPath, "lcp-secret"),
     dbOpts,
 );
@@ -161,7 +167,7 @@ container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSin
 container.bind<Translator>(diSymbolTable.translator).to(Translator).inSingletonScope();
 
 // Create downloader
-const downloader = new Downloader(app.getPath("temp"));
+const downloader = new Downloader(app.getPath("temp"), configRepository, store);
 container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
 
 // Create repositories
@@ -174,7 +180,7 @@ container.bind<OpdsFeedRepository>(diSymbolTable["opds-feed-repository"]).toCons
 container.bind<LocatorRepository>(diSymbolTable["locator-repository"]).toConstantValue(
     locatorRepository,
 );
-container.bind<ConfigRepository>(diSymbolTable["config-repository"]).toConstantValue(
+container.bind<ConfigRepository<any>>(diSymbolTable["config-repository"]).toConstantValue(
     configRepository,
 );
 container.bind<LcpSecretRepository>(diSymbolTable["lcp-secret-repository"]).toConstantValue(
@@ -206,6 +212,7 @@ container.bind<DeviceIdManager>(diSymbolTable["device-id-manager"]).toConstantVa
 // Create lcp manager
 container.bind<LcpManager>(diSymbolTable["lcp-manager"]).to(LcpManager).inSingletonScope();
 container.bind<CatalogService>(diSymbolTable["catalog-service"]).to(CatalogService).inSingletonScope();
+container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSingletonScope();
 
 // API
 container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingletonScope();
@@ -245,7 +252,7 @@ interface IGet {
     (s: "publication-repository"): PublicationRepository;
     (s: "opds-feed-repository"): OpdsFeedRepository;
     (s: "locator-repository"): LocatorRepository;
-    (s: "config-repository"): ConfigRepository;
+    (s: "config-repository"): ConfigRepository<any>;
     (s: "lcp-secret-repository"): LcpSecretRepository;
     (s: "publication-view-converter"): PublicationViewConverter;
     (s: "locator-view-converter"): LocatorViewConverter;

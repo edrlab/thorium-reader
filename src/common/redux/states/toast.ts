@@ -11,4 +11,5 @@ export interface ToastState {
     open: boolean;
     type: ToastType;
     data: string;
+    publicationIdentifier: string | undefined;
 }

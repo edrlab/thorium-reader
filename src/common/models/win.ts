@@ -17,6 +17,8 @@ export enum AppWindowType {
 
 export interface AppWindow extends Identifiable {
     type: AppWindowType;
-    win: BrowserWindow;
+    browserWindow: BrowserWindow;
+    browserWindowID: number;
     onWindowMoveResize: IOnWindowMoveResize;
+    registerIndex: number;
 }

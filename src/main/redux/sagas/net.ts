@@ -5,62 +5,63 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as ping from "ping";
-import { SagaIterator } from "redux-saga";
-import { call, delay, put, select, take } from "redux-saga/effects";
+// import * as ping from "ping";
+// import { NetStatus } from "readium-desktop/common/redux/states/net";
+// import { selectTyped } from "readium-desktop/common/redux/typed-saga";
+// import { appActions, netActions } from "readium-desktop/main/redux/actions";
+// import { RootState } from "readium-desktop/main/redux/states";
+// import { SagaIterator } from "redux-saga";
+// import { call, delay, put, take } from "redux-saga/effects";
 
-import { NetStatus } from "readium-desktop/common/redux/states/net";
-import { appActions, netActions } from "readium-desktop/main/redux/actions";
+// const PING_CONFIG = {
+//     timeout: 5,
+// };
 
-const PING_CONFIG = {
-    timeout: 5,
-};
+// const PINGABLE_HOST = "8.8.8.8";
 
-const PINGABLE_HOST = "8.8.8.8";
+// function pingHost() {
+//     return ping.promise.probe(PINGABLE_HOST, PING_CONFIG);
+// }
 
-function pingHost() {
-    return ping.promise.probe(PINGABLE_HOST, PING_CONFIG);
-}
+// function getNetStatus(state: RootState): NetStatus {
+//     return state.net.status;
+// }
 
-function getNetStatus(state: any): NetStatus {
-    return state.net.status;
-}
+// export function* netStatusWatcher(): SagaIterator {
+//     // Wait for win init success
+//     yield take(appActions.initSuccess.ID);
 
-export function* netStatusWatcher(): SagaIterator {
-    // Wait for win init success
-    yield take(appActions.ActionType.InitSuccess);
+//     while (true) {
+//         // Ping every 5 seconds
+//         let actionNet = null;
 
-    while (true) {
-        // Ping every 5 seconds
-        let actionType = null;
+//         try {
+//             const result: any = yield call(pingHost); // TODO any?!
+//             const online = result.alive;
+//             actionNet = online ?
+//                 netActions.online.build() :
+//                 netActions.offline.build();
+//         } catch (error) {
+//             actionNet = netActions.offline.build();
+//         }
 
-        try {
-            const result: any = yield call(pingHost);
-            const online = result.alive;
-            actionType = online ?
-                netActions.ActionType.Online :
-                netActions.ActionType.Offline;
-        } catch (error) {
-            actionType = netActions.ActionType.Offline;
-        }
+//         const netStatus = yield* selectTyped(getNetStatus);
 
-        const netStatus = yield select(getNetStatus);
+//         if (
+//             netStatus === NetStatus.Unknown ||
+//             (
+//                 actionNet === netActions.offline.build() &&
+//                 netStatus === NetStatus.Online
+//             ) ||
+//             (
+//                 actionNet === netActions.online.build() &&
+//                 netStatus === NetStatus.Offline
+//             )
+//         ) {
+//             // Only update status if status change
+//             yield put(actionNet);
+//         }
 
-        if (
-            netStatus === NetStatus.Unknown ||
-            (
-                actionType === netActions.ActionType.Offline &&
-                netStatus === NetStatus.Online
-            ) ||
-            (
-                actionType === netActions.ActionType.Online &&
-                netStatus === NetStatus.Offline
-            )
-        ) {
-            // Only update status if status change
-            yield put({ type: actionType });
-        }
-
-        yield delay(5000);
-    }
-}
+//         yield delay(5000);
+//     }
+// }

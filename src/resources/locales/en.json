@@ -32,7 +32,7 @@
         "allBooks": "All books",
         "bookInfo": "About this book",
         "delete": "Delete",
-        "deleteBook": "Delete from the bookshelf",
+        "deleteBook": "Delete",
         "deleteTag": "Delete the tag",
         "description": "Description",
         "emptyTagList": "You have no tagged ebook.",
@@ -48,34 +48,56 @@
         "noPublicationHelpL1": "Drop EPUB files in this window",
         "noPublicationHelpL2": "or use the \"+\" button above.",
         "noPublicationHelpL3": "LCP protected files are supported.",
+        "numberOfPages": "Number of pages",
+        "opds": {
+            "info": {
+                "availableSince": "Since",
+                "availableState": {
+                    "available": "Available",
+                    "ready": "Ready",
+                    "reserved": "Reserved",
+                    "unavailable": "Unavailable",
+                    "unknown": "Unknown"
+                },
+                "availableUntil": "Until",
+                "copyAvalaible": "Number of availables",
+                "copyTotal": "Number of copies",
+                "holdPosition": "Your hold position",
+                "holdTotal": "Holded",
+                "numberOfItems": "Number of items",
+                "priveValue": "Price",
+                "state": "State"
+            }
+        },
         "publisher": "Publisher",
         "readBook": "Read",
         "released": "Published on",
         "sort": "Sort by",
         "tagCount": "Tag count",
-        "tags": "My tags"
+        "tags": "Tags"
     },
     "dialog": {
-        "alreadyAdd": "It seems that you have already added this publication to your bookshelf.",
         "closeModalWindow": "Close this modal window",
         "deleteFeed": "Do you really want to delete this catalog ?",
         "deletePublication": "Do you really want to delete this publication ?",
         "import": "Do you really want to import those files :",
-        "importError": "an error occured, verify your file extension (.epub)",
+        "importError": "an error occured, verify your file extension (.epub or .lcpl)",
         "no": "No",
         "renew": "Do you really want to renew the licence for this publication?",
         "return": "Do you really want to return the licence for this publication?",
-        "sure": "Are you sure you want to add it again ?",
         "yes": "Yes"
     },
     "header": {
         "allBooks": "All books",
         "books": "My Books",
         "catalogs": "Catalogs",
+        "downloads": "Downloads",
         "gridTitle": "Grid view",
         "home": "Bookshelf menu",
+        "homeTitle": "home",
         "importTitle": "Import a publication",
         "listTitle": "List view",
+        "refreshTitle": "reload",
         "searchPlaceholder": "Search",
         "searchTitle": "Start a search",
         "settings": "Settings"
@@ -91,10 +113,12 @@
     },
     "message": {
         "download": {
+            "error": "The download of {{- title}} has failed: [{{- err}}]",
             "start": "The download of {{- title}} has begun.",
             "success": "The download of {{- title}} is finished."
         },
         "import": {
+            "alreadyImport": "{{- title}} was already imported",
             "fail": "The import of {{- path}} failed. Verify that the file is valid",
             "success": "The import of {{- title}} is finished."
         }
@@ -129,18 +153,31 @@
             "timeout": "There was a network timeout, please try again later"
         },
         "next": "Next",
-        "previous": "Previous"
+        "previous": "Previous",
+        "shelf": "Shelf"
     },
     "publication": {
-        "deleteButton": "Delete from the bookshelf",
+        "cancelledLcp": "This book can't be read because the LCP license has been cancelled.",
+        "certificateRevoked": "Certificate is revoked",
+        "certificateSignatureInvalid": "Certificate signature is invalid",
+        "cover": {
+            "img": "cover image"
+        },
         "expiredLcp": "This book can't be read because the LCP license has expired.",
-        "readButton": "Read",
+        "lcpEnd": "End",
+        "lcpRightsCopy": "Character copy",
+        "lcpRightsPrint": "Printer copy",
+        "lcpStart": "Start",
+        "licenseOutOfDate": "License is out of date",
+        "licenseSignatureDateInvalid": "License signature date is invalid",
+        "licenseSignatureInvalid": "License signature is invalid",
         "renewButton": "Renew",
         "returnButton": "Return",
         "returnedLcp": "This book can't be read because the LCP license has been returned.",
         "revokedLcp": "This book can't be read because the LCP license has been revoked.",
         "seeLess": "See less",
-        "seeMore": "See more"
+        "seeMore": "See more",
+        "userKeyCheckInvalid": "Passphrase is incorrect"
     },
     "reader": {
         "footerInfo": {
@@ -150,7 +187,8 @@
         "marks": {
             "annotations": "Annotations",
             "bookmarks": "Bookmarks",
-            "illustrations": "Table of illustrations",
+            "delete": "Delete",
+            "edit": "Edit",
             "landmarks": "Landmarks",
             "toc": "Table of Contents"
         },
@@ -180,13 +218,12 @@
             },
             "display": "Display",
             "disposition": {
-                "title": "Disposition"
+                "title": "Layout"
             },
             "font": "Font",
             "fontSize": "Font size",
-            "justification": "Alignement",
+            "justification": "Alignment",
             "justify": "Justify",
-            "left": "Left",
             "letterSpacing": "Letter spacing",
             "lineSpacing": "Line spacing",
             "margin": "Margin",
@@ -210,10 +247,8 @@
         }
     },
     "settings": {
-        "information": "Information",
         "language": {
             "languageChoice": "Language choice"
-        },
-        "uiLanguage": "Language of the user interface"
+        }
     }
 }

@@ -7,56 +7,63 @@
 
 import { injectable } from "inversify";
 import * as moment from "moment";
-import { convertContributorArrayToStringArray } from "readium-desktop/common/utils";
-import { PublicationView } from "readium-desktop/common/views/publication";
+import { CoverView, PublicationView } from "readium-desktop/common/views/publication";
+import {
+    convertContributorArrayToStringArray,
+} from "readium-desktop/main/converter/tools/localisation";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
-import { JSON as TAJSON } from "ta-json-x";
 
-import { Publication as Epub } from "@r2-shared-js/models/publication";
+import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
 @injectable()
 export class PublicationViewConverter {
+
+    // Note: PublicationDocument and PublicationView are both Identifiable, with identical `identifier`
     public convertDocumentToView(document: PublicationDocument): PublicationView {
-        const b64ParsedPublication = document.resources.filePublication;
-        const jsonParsedPublication = Buffer
-            .from(b64ParsedPublication, "base64")
-            .toString("utf-8");
-        const parsedPublication = JSON.parse(jsonParsedPublication);
-        const epub = TAJSON.deserialize(parsedPublication, Epub) as Epub;
+        const r2PublicationBase64 = document.resources.r2PublicationBase64;
+        const r2PublicationStr = Buffer.from(r2PublicationBase64, "base64").toString("utf-8");
+        const r2PublicationJson = JSON.parse(r2PublicationStr);
+        const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
         const publishers = convertContributorArrayToStringArray(
-            epub.Metadata.Publisher,
+            r2Publication.Metadata.Publisher,
         );
         const authors = convertContributorArrayToStringArray(
-            epub.Metadata.Author,
+            r2Publication.Metadata.Author,
         );
-        let publishedAt = null;
 
-        if (epub.Metadata.PublicationDate) {
-            publishedAt = moment(epub.Metadata.PublicationDate).toISOString();
+        let publishedAt: string | undefined;
+        if (r2Publication.Metadata.PublicationDate) {
+            publishedAt = moment(r2Publication.Metadata.PublicationDate).toISOString();
         }
 
-        let cover = null;
-
+        let cover: CoverView | undefined;
         if (document.coverFile) {
             cover = {
-                url : document.coverFile.url,
+                thumbnailUrl : document.coverFile.url,
+                coverUrl: document.coverFile.url,
             };
         }
 
         return {
-            identifier: document.identifier,
+            identifier: document.identifier, // preserve Identifiable identifier
             title: document.title,
             authors,
-            description: epub.Metadata.Description,
-            languages: epub.Metadata.Language,
+            description: r2Publication.Metadata.Description,
+            languages: r2Publication.Metadata.Language,
             publishers,
-            workIdentifier: epub.Metadata.Identifier,
+            workIdentifier: r2Publication.Metadata.Identifier,
             publishedAt,
             tags: document.tags,
             cover,
             customCover: document.customCover,
+
             lcp: document.lcp,
-            doc: epub.Metadata,
+            lcpRightsCopies: document.lcpRightsCopies,
+
+            // doc: r2Publication.Metadata,
+
+            r2PublicationBase64,
         };
     }
 }

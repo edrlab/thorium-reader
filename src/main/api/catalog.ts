@@ -9,12 +9,17 @@ import { inject, injectable } from "inversify";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
+import { PublicationView } from "readium-desktop/common/views/publication";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
-import { CatalogConfig } from "readium-desktop/main/db/document/config";
+import {
+    CatalogConfig, CatalogEntry, ConfigDocument,
+} from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
+
+import { LocatorDocument } from "../db/document/locator";
 
 export const CATALOG_CONFIG_ID = "catalog";
 
@@ -25,21 +30,11 @@ export interface ICatalogApi {
     updateEntries: (entryView: CatalogEntryView[]) => Promise<CatalogEntryView[]>;
 }
 
-export type TCatalogApiGet = ICatalogApi["get"];
-export type TCatalogApiAddEntry = ICatalogApi["addEntry"];
-export type TCatalogGetEntries = ICatalogApi["getEntries"];
-export type TCatalogUpdateEntries = ICatalogApi["updateEntries"];
-
-export type TCatalogApiGet_result = CatalogView;
-export type TCatalogApiAddEntry_result = CatalogEntryView[];
-export type TCatalogGetEntries_result = CatalogEntryView[];
-export type TCatalogUpdateEntries_result = CatalogEntryView[];
-
 export interface ICatalogModuleApi {
-    "catalog/get": TCatalogApiGet;
-    "catalog/addEntry": TCatalogApiAddEntry;
-    "catalog/getEntries": TCatalogGetEntries;
-    "catalog/updateEntries": TCatalogUpdateEntries;
+    "catalog/get": ICatalogApi["get"];
+    "catalog/addEntry": ICatalogApi["addEntry"];
+    "catalog/getEntries": ICatalogApi["getEntries"];
+    "catalog/updateEntries": ICatalogApi["updateEntries"];
 }
 
 @injectable()
@@ -48,7 +43,7 @@ export class CatalogApi implements ICatalogApi {
     private readonly publicationRepository!: PublicationRepository;
 
     @inject(diSymbolTable["config-repository"])
-    private readonly configRepository!: ConfigRepository;
+    private readonly configRepository!: ConfigRepository<CatalogConfig>;
 
     @inject(diSymbolTable["locator-repository"])
     private readonly locatorRepository!: LocatorRepository;
@@ -62,25 +57,16 @@ export class CatalogApi implements ICatalogApi {
     public async get(): Promise<CatalogView> {
         const __ = this.translator.translate.bind(this.translator);
 
-        // Last added publications
-        const lastAddedPublications = await this.publicationRepository.find({
-            limit: 10,
-            sort: [ { createdAt: "desc" } ],
-        });
-        const lastAddedPublicationViews = lastAddedPublications.map((doc) => {
-            return this.publicationViewConverter.convertDocumentToView(doc);
-        });
-
         // Last read publicatons
-        const lastLocators = await this.locatorRepository.findBy(
-            { locatorType: LocatorType.LastReadingLocation },
+        const lastLocators = await this.locatorRepository.find(
             {
+                selector: { locatorType: LocatorType.LastReadingLocation },
                 limit: 10,
                 sort: [ { updatedAt: "desc" } ],
             },
         );
         const lastLocatorPublicationIdentifiers = lastLocators.map(
-            (locator: any) => locator.publicationIdentifier,
+            (locator: LocatorDocument) => locator.publicationIdentifier,
         );
         const lastReadPublicationViews = [];
 
@@ -99,17 +85,30 @@ export class CatalogApi implements ICatalogApi {
             );
         }
 
+        // Last added pubs not already on last read list
+        const lastAddedPublications = await this.publicationRepository.find({
+            limit: 10,
+            sort: [ { createdAt: "desc" } ],
+            selector: {},
+        });
+        const lastAddedPublicationViews: PublicationView[] = [];
+        for (const doc of lastAddedPublications) {
+            if (!lastReadPublicationViews.find((lastDoc) => lastDoc.identifier === doc.identifier)) {
+                lastAddedPublicationViews.push(this.publicationViewConverter.convertDocumentToView(doc));
+            }
+        }
+
         // Dynamic entries
         let entries: CatalogEntryView[] = [
             {
                 title: __("catalog.entry.continueReading"),
                 totalCount: lastReadPublicationViews.length,
-                publications: lastReadPublicationViews,
+                publicationViews: lastReadPublicationViews,
             },
             {
                 title: __("catalog.entry.lastAdditions"),
                 totalCount: lastAddedPublicationViews.length,
-                publications: lastAddedPublicationViews,
+                publicationViews: lastAddedPublicationViews,
             },
         ];
 
@@ -123,11 +122,11 @@ export class CatalogApi implements ICatalogApi {
     }
 
     public async addEntry(entryView: CatalogEntryView): Promise<CatalogEntryView[]> {
-        let entries: any = [];
+        let entries: CatalogEntry[] = [];
 
         try {
             const config = await this.configRepository.get(CATALOG_CONFIG_ID);
-            const catalog = config.value as CatalogConfig;
+            const catalog = config.value;
             entries = catalog.entries;
         } catch (error) {
             // New configuration
@@ -146,30 +145,29 @@ export class CatalogApi implements ICatalogApi {
     }
 
     /**
-     * Returns entries without publications
+     * Returns entries without pubs
      */
     public async getEntries(): Promise<CatalogEntryView[]> {
-        let config = null;
-
+        let config: ConfigDocument<CatalogConfig>;
         try {
             config = await this.configRepository.get(CATALOG_CONFIG_ID);
         } catch (error) {
             return [];
         }
 
-        const catalog = config.value as CatalogConfig;
+        const catalog = config.value;
         const entryViews: CatalogEntryView[] = [];
 
         for (const entry of catalog.entries) {
-            const publications = await this.publicationRepository.findByTag(entry.tag);
-            const publicationViews = publications.map((doc) => {
+            const publicationDocuments = await this.publicationRepository.findByTag(entry.tag);
+            const publicationViews = publicationDocuments.map((doc) => {
                 return this.publicationViewConverter.convertDocumentToView(doc);
             });
             entryViews.push(
                 {
                     title: entry.title,
                     tag: entry.tag,
-                    publications: publicationViews,
+                    publicationViews,
                     totalCount: publicationViews.length,
                 },
             );

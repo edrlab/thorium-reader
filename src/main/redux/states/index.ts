@@ -5,24 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { CatalogState } from "readium-desktop/common/redux/states/catalog";
-
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
-
-import { NetState } from "readium-desktop/common/redux/states/net";
-
-import { UpdateState } from "readium-desktop/common/redux/states/update";
-
+// import { NetState } from "readium-desktop/common/redux/states/net";
+// import { UpdateState } from "readium-desktop/common/redux/states/update";
 import { AppState } from "./app";
 import { ReaderState } from "./reader";
 import { StreamerState } from "./streamer";
 
 export interface RootState {
     app: AppState;
-    net: NetState;
+    // net: NetState;
     i18n: I18NState;
     streamer: StreamerState;
-    catalog: CatalogState;
     reader: ReaderState;
-    update: UpdateState;
+    // update: UpdateState;
 }

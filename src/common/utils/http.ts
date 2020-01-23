@@ -5,10 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { diMainGet } from "readium-desktop/main/di";
 import { JsonMap } from "readium-desktop/typings/json";
 import * as request from "request";
 import { Url } from "url";
+
+const debug = debug_("readium-desktop:common:utils:http");
 
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
 type TRequestCoreOptionsOptionalUriUrl = request.CoreOptions & request.OptionalUriUrl;
@@ -45,7 +48,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
     options = options || {} as TRequestCoreOptionsOptionalUriUrl;
     options.headers = options.headers || {};
 
-    const headerFromOptions = {};
+    const headerFromOptions: request.Headers = {};
     for (const [key, value] of Object.entries(options.headers)) {
         Object.assign(headerFromOptions, {
             [key.toLowerCase()]: value,
@@ -54,7 +57,7 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
 
     const store = diMainGet("store");
     const locale = store.getState().i18n.locale;
-    const headers = Object.assign(headerFromOptions, {
+    const headers: request.Headers = Object.assign(headerFromOptions, {
                 "user-agent": "readium-desktop",
                 "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
             });
@@ -69,10 +72,16 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
         },
     );
 
+    debug("HTTP REQUEST:");
+    debug(requestOptions);
+
     const result: IHttpGetResult<TBody, TData> =
         await new Promise((resolve, reject) => {
             request(requestOptions, (err, response) => {
+
+                debug("HTTP RESPONSE:");
                 if (err) {
+                    debug(err);
                     if (err.code === "ETIMEDOUT") {
                         resolve({
                             isTimeout: true,
@@ -84,6 +93,12 @@ export async function httpGet<TBody extends JsonMap | string = string , TData = 
                     }
                     reject(err);
                     return ;
+                }
+                if (response) {
+                    debug(response.statusCode);
+                    debug(response.statusMessage);
+                    debug(response.url);
+                    debug(response.body?.substr ? response.body.substr(0, 800) : response.body);
                 }
                 resolve({
                     isTimeout: false,

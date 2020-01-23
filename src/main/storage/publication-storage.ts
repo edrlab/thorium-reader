@@ -5,25 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { dialog } from "electron";
 import * as fs from "fs";
+import { injectable } from "inversify";
 import * as path from "path";
-
-import { injectable} from "inversify";
+import { File } from "readium-desktop/common/models/file";
+import { PublicationView } from "readium-desktop/common/views/publication";
+import { ContentType } from "readium-desktop/utils/content-type";
+import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
+import slugify from "slugify";
 
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
 
-import { File } from "readium-desktop/common/models/file";
-import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
-
-import { PublicationView } from "readium-desktop/common/views/publication";
-
-import slugify from "slugify";
-
-import { dialog } from "electron";
-
-// Store publications in a repository on filesystem
+// Store pubs in a repository on filesystem
 // Each file of publication is stored in a directory whose name is the
 // publication uuid
 // repository
@@ -84,9 +80,9 @@ export class PublicationStorage {
         );
     }
 
-    public copyPublicationToPath(publication: PublicationView, destinationPath: string) {
-        const publicationPath = `${this.buildPublicationPath(publication.identifier)}/book.epub`;
-        const newFilePath = `${destinationPath}/${slugify(publication.title)}.epub`;
+    public copyPublicationToPath(publicationView: PublicationView, destinationPath: string) {
+        const publicationPath = `${this.buildPublicationPath(publicationView.identifier)}/book.epub`;
+        const newFilePath = `${destinationPath}/${slugify(publicationView.title)}.epub`;
         fs.copyFile(publicationPath, newFilePath, (err) => {
             if (err) {
                 dialog.showMessageBox({
@@ -119,7 +115,7 @@ export class PublicationStorage {
                 resolve({
                     url: `store://${identifier}/${filename}`,
                     ext: "epub",
-                    contentType: "application/epub+zip",
+                    contentType: ContentType.Epub,
                     size: getFileSize(dstPath),
                 });
             };
@@ -134,24 +130,31 @@ export class PublicationStorage {
         identifier: string,
         srcPath: string,
     ): Promise<File> {
-        // Extract cover information from srcPath
-        const pub: any = await EpubParsePromise(srcPath);
-        const zipInternal = pub.Internal.find((i: any) => {
+
+        const r2Publication = await EpubParsePromise(srcPath);
+
+        // private Internal is very hacky! :(
+        const zipInternal = (r2Publication as any).Internal.find((i: any) => {
             if (i.Name === "zip") {
                 return true;
             }
             return false;
         });
         const zip = zipInternal.Value as IZip;
-        const coverLink = pub.GetCover();
 
+        const coverLink = r2Publication.GetCover();
         if (!coverLink) {
+            // after EpubParsePromise, cleanup zip handler
+            r2Publication.freeDestroy();
             return null;
         }
 
         const coverType: string = coverLink.TypeLink;
         const zipStream = await zip.entryStreamPromise(coverLink.Href);
         const zipBuffer = await streamToBufferPromise(zipStream.stream);
+
+        // after EpubParsePromise, cleanup zip handler
+        r2Publication.freeDestroy();
 
         // Remove start dot in extensoion
         const coverExt = path.extname(coverLink.Href).slice(1);

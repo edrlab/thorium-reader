@@ -12,13 +12,17 @@ const isDev = nodeEnv === "development";
 
 const isVisualStudioCodeLaunch = process.env.VSCODE_LAUNCH || "false";
 
-const pouchDbAdapterName = isDev ?
+const isContinuousIntegrationDeploy = process.env.TRAVIS_OS_NAME_ ? true : false;
+
+const skipLevelDown = isDev || isContinuousIntegrationDeploy;
+
+const pouchDbAdapterName = skipLevelDown ?
     "jsondown" : "leveldb";
 
-const pouchDbAdapterPackage = isDev ?
+const pouchDbAdapterPackage = skipLevelDown ?
     "readium-desktop/pouchdb/jsondown-adapter" : "pouchdb-adapter-leveldb";
 
-const rendererAppBaseUrl = isDev ?
+const rendererLibraryBaseUrl = isDev ?
     ("http://localhost:"+portApp+"/") : "file://";
 
 const rendererReaderBaseUrl = isDev ?
@@ -41,8 +45,9 @@ const data = {
     __PACKAGING__: JSON.stringify(isPackaging),
     __POUCHDB_ADAPTER_NAME__: JSON.stringify(pouchDbAdapterName),
     __POUCHDB_ADAPTER_PACKAGE__: JSON.stringify(pouchDbAdapterPackage),
-    __RENDERER_APP_BASE_URL__: JSON.stringify(rendererAppBaseUrl),
+    __RENDERER_LIBRARY_BASE_URL__: JSON.stringify(rendererLibraryBaseUrl),
     __RENDERER_READER_BASE_URL__: JSON.stringify(rendererReaderBaseUrl),
+    __CONTINUOUS_INTEGRATION_DEPLOY__: JSON.stringify(isContinuousIntegrationDeploy),
 };
 
 // we do not replace "process.env.NODE_ENV" at build-time,
@@ -57,6 +62,6 @@ module.exports = {
     definePlugin,
     portApp,
     portReader,
-    rendererAppBaseUrl,
+    rendererLibraryBaseUrl,
     rendererReaderBaseUrl,
 };

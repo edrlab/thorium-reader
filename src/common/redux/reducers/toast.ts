@@ -5,22 +5,27 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { toastActions } from "readium-desktop/common/redux/actions/";
+import { ToastState } from "readium-desktop/common/redux/states/toast";
 
-import { ActionType } from "readium-desktop/common/redux/actions/toast";
+// export interface ToastState extends toastActions.openRequest.Payload {
+//     open: boolean;
+// }
 
-const initialState: any = {
+const initialState: ToastState = {
     open: false,
-    type: null,
-    data: null,
+    type: ToastType.Success,
+    data: undefined,
+    publicationIdentifier: undefined,
 };
 
 export function toastReducer(
-    state: any = initialState,
-    action: Action,
-) {
+    state: ToastState = initialState,
+    action: toastActions.openRequest.TAction | toastActions.closeRequest.TAction,
+): ToastState {
     switch (action.type) {
-        case ActionType.OpenRequest:
+        case toastActions.openRequest.ID:
             return Object.assign(
                 {},
                 state,
@@ -28,9 +33,10 @@ export function toastReducer(
                     open: true,
                     type: action.payload.type,
                     data: action.payload.data,
+                    publicationIdentifier: action.payload.publicationIdentifier,
                 },
             );
-        case ActionType.CloseRequest:
+        case toastActions.closeRequest.ID:
             return Object.assign(
                 {},
                 initialState,

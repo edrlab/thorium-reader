@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { app } from "electron";
 import { diMainGet } from "readium-desktop/main/di";
 
-import { cli_ } from "./cli/commandLine";
+import { openFileFromCli } from "./cli/commandLine";
 import { cli } from "./cli/process";
 
 // Logger
@@ -29,7 +29,7 @@ export function lockInstance() {
             app.on("open-file", async (event, filePath) => {
                 event.preventDefault();
 
-                if (!await cli_(filePath)) {
+                if (!await openFileFromCli(filePath)) {
                     debug(`the open-file event with ${filePath} return an error`);
                 }
             });
@@ -41,12 +41,12 @@ export function lockInstance() {
             debug("comandLine", argv, _workingDir);
 
             const winRegistry = diMainGet("win-registry");
-            const win = winRegistry.getWindow(1);
-            if (win && win.win) {
-                if (win.win.isMinimized()) {
-                    win.win.restore();
+            const libraryAppWindow = winRegistry.getLibraryWindow();
+            if (libraryAppWindow) {
+                if (libraryAppWindow.browserWindow.isMinimized()) {
+                    libraryAppWindow.browserWindow.restore();
                 }
-                win.win.focus();
+                libraryAppWindow.browserWindow.show(); // focuses as well
             }
 
             // execute command line from second instance

@@ -5,27 +5,25 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import * as apiActions from "./api";
-import * as dialogActions from "./dialog";
-import * as downloadActions from "./download";
-import * as i18nActions from "./i18n";
-import * as importActions from "./import";
-import * as lcpActions from "./lcp";
-import * as loggerActions from "./logger";
-import * as netActions from "./net";
-import * as readerActions from "./reader";
-import * as toastActions from "./toast";
-import * as updateActions from "./update";
+import * as apiActions from "./api/";
+import * as dialogActions from "./dialog/";
+import * as downloadActions from "./download/";
+import * as i18nActions from "./i18n/";
+import * as importActions from "./import/";
+import * as lcpActions from "./lcp/";
+import * as netActions from "./net/";
+import * as readerActions from "./reader/";
+import * as toastActions from "./toast/";
+// import * as updateActions from "./update/";
 
 export {
     apiActions,
     dialogActions,
     i18nActions,
-    loggerActions,
     netActions,
     readerActions,
     lcpActions,
-    updateActions,
+    // updateActions,
     importActions,
     toastActions,
     downloadActions,

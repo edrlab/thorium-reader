@@ -816,7 +816,7 @@ p.chapters_description {
   width: 63px;
 }
 
-#option_gauche, #option_justif,
+#option_auto, #option_justif,
 #scroll_option, #page_option {
   display: inline-block;
   text-align: center;
@@ -1050,5 +1050,20 @@ input[type=radio] + label {
     & input {
       margin: 0;
     }
+
+    & *:disabled {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.mathml_section {
+  padding: 10px;
+  & input {
+    display: inline-block;
+    margin-right: 5px;
+  }
+  & label {
+    display: inline-block !important;
   }
 }

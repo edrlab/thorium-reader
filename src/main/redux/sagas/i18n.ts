@@ -5,24 +5,34 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { i18nActions } from "readium-desktop/common/redux/actions";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
-import { all, call, take } from "redux-saga/effects";
+import { all, call, takeEvery } from "redux-saga/effects";
 
-import { I18NState } from "readium-desktop/common/redux/states/i18n";
+function* setLocale(action: i18nActions.setLocale.TAction) {
+    const translator = diMainGet("translator");
+    const configRepository: ConfigRepository<LocaleConfigValueType> = diMainGet("config-repository");
 
-export function* localeWatcher() {
-    while (true) {
-        const action: i18nActions.ActionLocale = yield take(i18nActions.ActionType.Set);
-        const translator = diMainGet("translator");
-        translator.setLocale(action.payload.locale);
+    const configRepositorySave = async () =>
+        await configRepository.save({
+            identifier: LocaleConfigIdentifier,
+            value: {
+                locale: action.payload.locale,
+            },
+        });
+    const translatorSetLocale = async () =>
+        await translator.setLocale(action.payload.locale);
 
-        const configRepository = diMainGet("config-repository");
-        yield call(() => configRepository.save({
-            identifier: "i18n",
-            value: { locale: action.payload.locale } as I18NState,
-        }));
-    }
+    yield all([
+        call(configRepositorySave),
+        call(translatorSetLocale),
+    ]);
+}
+
+function* localeWatcher() {
+    yield takeEvery(i18nActions.setLocale.build, setLocale);
 }
 
 export function* watchers() {

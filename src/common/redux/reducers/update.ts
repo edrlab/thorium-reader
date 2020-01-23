@@ -5,29 +5,27 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
+// import { updateActions } from "readium-desktop/common/redux/actions";
+// import { UpdateState, UpdateStatus } from "readium-desktop/common/redux/states/update";
 
-import { updateActions } from "readium-desktop/common/redux/actions";
-import { UpdateState, UpdateStatus } from "readium-desktop/common/redux/states/update";
+// const initialState: UpdateState = {
+//     status: UpdateStatus.Unknown,
+//     latestVersion: null,
+//     latestVersionUrl: null,
+// };
 
-const initialState: UpdateState = {
-    status: UpdateStatus.Unknown,
-    latestVersion: null,
-    latestVersionUrl: null,
-};
-
-export function updateReducer(
-    state: UpdateState = initialState,
-    action: Action,
-) {
-    switch (action.type) {
-        case updateActions.ActionType.LatestVersionSet:
-            return Object.assign({}, state, {
-                status: action.payload.status,
-                latestVersion: action.payload.latestVersion,
-                latestVersionUrl: action.payload.latestVersionUrl,
-            });
-        default:
-            return state;
-    }
-}
+// export function updateReducer(
+//     state: UpdateState = initialState,
+//     action: updateActions.latestVersion.TAction,
+// ): UpdateState {
+//     switch (action.type) {
+//         case updateActions.latestVersion.ID:
+//             return Object.assign({}, state, {
+//                 status: action.payload.status,
+//                 latestVersion: action.payload.latestVersion,
+//                 latestVersionUrl: action.payload.latestVersionUrl,
+//             });
+//         default:
+//             return state;
+//     }
+// }

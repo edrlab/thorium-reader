@@ -5,31 +5,32 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
-
-import { ActionType } from "readium-desktop/common/redux/actions/import";
+import { importActions } from "readium-desktop/common/redux/actions/";
 
 import { ImportState } from "../states/import";
 
 const initialState: ImportState = {
-    publication: undefined,
-    downloadSample: false,
+    link: undefined,
+    title: undefined,
+    r2OpdsPublicationBase64: undefined,
 };
 
-// The dialog reducer.
 export function importReducer(
     state: ImportState = initialState,
-    action: Action,
-) {
+    action: importActions.verify.TAction,
+): ImportState {
     switch (action.type) {
-        case ActionType.ImportVerificationRequest:
-            return Object.assign(
-                {},
-                state,
+        case importActions.verify.ID:
+            const { link, r2OpdsPublicationBase64, title } = action.payload;
+            return (
                 {
-                    publication: action.payload.data.publication,
-                    downloadSample: action.payload.data.downloadSample,
-                },
+                    ...state,
+                    ...{
+                        link,
+                        r2OpdsPublicationBase64,
+                        title,
+                    },
+                }
             );
         default:
             return state;

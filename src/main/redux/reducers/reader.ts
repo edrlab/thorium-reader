@@ -5,18 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
-
+import { ReaderMode } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { ReaderState } from "readium-desktop/main/redux/states/reader";
 
-import { ReaderMode } from "readium-desktop/common/models/reader";
-
+// TODO: centralize this code, currently duplicated
+// see src/renderer/redux/reducers/reader.ts
 const initialState: ReaderState = {
     readers: {},
     mode: ReaderMode.Attached,
     config: {
-        align: "left",
+        align: "auto",
         colCount: "auto",
         dark: false,
         font: "DEFAULT",
@@ -27,26 +26,36 @@ const initialState: ReaderState = {
         paged: false,
         readiumcss: true,
         sepia: false,
+        enableMathJax: false,
+        pageMargins: undefined,
+        wordSpacing: undefined,
+        letterSpacing: undefined,
+        paraSpacing: undefined,
+        noFootnotes: undefined,
+        darken: undefined,
     },
 };
 
 export function readerReducer(
     state: ReaderState = initialState,
-    action: Action,
+    action: readerActions.closeSuccess.TAction |
+        readerActions.openSuccess.TAction |
+        readerActions.detachModeSuccess.TAction |
+        readerActions.configSetSuccess.TAction,
 ): ReaderState {
     const newState = Object.assign({}, state);
 
     switch (action.type) {
-        case readerActions.ActionType.OpenSuccess:
+        case readerActions.openSuccess.ID:
             newState.readers[action.payload.reader.identifier] = action.payload.reader;
             return newState;
-        case readerActions.ActionType.CloseSuccess:
+        case readerActions.closeSuccess.ID:
             delete newState.readers[action.payload.reader.identifier];
             return newState;
-        case readerActions.ActionType.ModeSetSuccess:
+        case readerActions.detachModeSuccess.ID:
             newState.mode = action.payload.mode;
             return newState;
-        case readerActions.ActionType.ConfigSetSuccess:
+        case readerActions.configSetSuccess.ID:
             newState.config = action.payload.config;
             return newState;
         default:
