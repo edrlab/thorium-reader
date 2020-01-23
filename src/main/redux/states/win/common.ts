@@ -3,10 +3,14 @@
 // Licensed to the Readium Foundation under one or more contributor license agreements.
 // Use of this source code is governed by a BSD-style license
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
-// ==LICENSE-END==
+// ==LICENSE-END=
 
-import { IBrowserWindowState } from "./common";
+import { Rectangle } from "electron";
 
-// tslint:disable-next-line: no-empty-interface
-export interface IWinRegistryLibraryState extends IBrowserWindowState {
+export interface IWinWindowBoundState {
+    windowBound: Rectangle;
+}
+
+export interface IWinReaderReduxState {
+    reduxState: any;
 }

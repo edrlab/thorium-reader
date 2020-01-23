@@ -8,6 +8,7 @@
 import * as registerLibrary from "./registerLibrary";
 import * as registerReader from "./registerReader";
 import * as setBound from "./setBound";
+import * as setReduxState from "./setReduxState";
 import * as unregisterLibrary from "./unregisterLibrary";
 import * as unregisterReader from "./unregisterReader";
 
@@ -17,4 +18,5 @@ export {
     unregisterReader,
     unregisterLibrary,
     setBound,
+    setReduxState,
 };

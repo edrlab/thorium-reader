@@ -7,23 +7,23 @@
 
 import { defaultRectangle } from "readium-desktop/common/rectangle/window";
 import { winActions } from "readium-desktop/main/redux/actions";
-import { IWinRegistryLibraryState } from "readium-desktop/main/redux/states/win/registry/library";
+import { IWinSessionLibraryState } from "readium-desktop/main/redux/states/win/session/library";
 
-const initialState: IWinRegistryLibraryState = {
+const initialState: IWinSessionLibraryState = {
     browserWindowId: undefined,
     windowBound: defaultRectangle(),
     identifier: undefined,
 };
 
 export function winRegistryLibraryReducer(
-    state: IWinRegistryLibraryState = initialState,
-    action: winActions.registry.registerLibrary.TAction |
-        winActions.registry.unregisterLibrary.TAction |
-        winActions.registry.setBound.TAction,
-): IWinRegistryLibraryState {
+    state: IWinSessionLibraryState = initialState,
+    action: winActions.session.registerLibrary.TAction |
+        winActions.session.unregisterLibrary.TAction |
+        winActions.session.setBound.TAction,
+): IWinSessionLibraryState {
     switch (action.type) {
 
-        case winActions.registry.registerLibrary.ID:
+        case winActions.session.registerLibrary.ID:
             return {
                 ...state,
                 ...{
@@ -32,7 +32,7 @@ export function winRegistryLibraryReducer(
                 },
             };
 
-        case winActions.registry.unregisterLibrary.ID:
+        case winActions.session.unregisterLibrary.ID:
             return {
                 ...state,
                 ...{
@@ -42,7 +42,7 @@ export function winRegistryLibraryReducer(
                 },
             };
 
-        case winActions.registry.setBound.ID:
+        case winActions.session.setBound.ID:
             return {
                 ...state,
                 ...{

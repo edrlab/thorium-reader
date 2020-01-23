@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { BrowserWindow } from "electron";
+import { BrowserWindow, Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
-
+import { defaultRectangle } from "readium-desktop/common/rectangle/window";
 import * as uuid from "uuid";
 
 export const ID = "WIN_REGISTRY_REGISTER_READER";
@@ -16,9 +16,18 @@ export interface Payload {
     win: BrowserWindow;
     publicationIdentifier: string;
     identifier: string;
+    winBound: Rectangle;
+    fileSystemPath: string;
+    manifestUrl: string;
 }
 
-export function build(win: BrowserWindow, publicationIdentifier: string):
+export function build(
+    win: BrowserWindow,
+    publicationIdentifier: string,
+    manifestUrl: string,
+    fileSystemPath: string,
+    winBound: Rectangle = defaultRectangle(),
+    identifier: string = uuid.v4()):
     Action<typeof ID, Payload> {
 
     return {
@@ -26,7 +35,10 @@ export function build(win: BrowserWindow, publicationIdentifier: string):
         payload: {
             win,
             publicationIdentifier,
-            identifier: uuid.v4(),
+            manifestUrl,
+            fileSystemPath,
+            winBound,
+            identifier,
         },
     };
 }

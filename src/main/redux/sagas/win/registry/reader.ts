@@ -17,8 +17,6 @@ import { put } from "typed-redux-saga";
 
 function* winOpen(action: winActions.registry.registerReader.TAction) {
 
-    // WARN should be called after "did-finish-load" event
-
     const libWindow = action.payload.win;
     const webContents = libWindow.webContents;
     const state = yield* selectTyped((_state: RootState) => _state);
@@ -66,8 +64,6 @@ function* winOpen(action: winActions.registry.registerReader.TAction) {
 }
 
 function* winClose(action: winActions.registry.unregisterReader.TAction) {
-
-    // WARN should be called after "closed" event
 
     const readers = yield* selectTyped((state: RootState) => state.win.registry.reader);
 

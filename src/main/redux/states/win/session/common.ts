@@ -5,10 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import { Rectangle } from "electron";
 import { Identifiable } from "readium-desktop/common/models/identifiable";
+import { IWinWindowBoundState } from "../common";
 
-export interface IBrowserWindowState extends Identifiable {
+export interface IBrowserWindowState extends Identifiable, IWinWindowBoundState {
     browserWindowId: number;
-    windowBound: Rectangle;
 }

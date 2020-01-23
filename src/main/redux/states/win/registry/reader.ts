@@ -5,10 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { IBrowserWindowState } from "./common";
+import { IWinReaderReduxState, IWinWindowBoundState } from "../common";
 
-export interface IWinRegistryReaderState extends IBrowserWindowState {
-    publicationIdentifier: string;
+export interface IWinRegistryReaderState extends IWinWindowBoundState, IWinReaderReduxState {
 }
 
-export type IArrayWinRegistryReaderState = IWinRegistryReaderState[];
+export interface IDictWinRegistryReaderState {
+    [publicationIdentifier: string]: IWinRegistryReaderState;
+}

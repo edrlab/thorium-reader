@@ -10,16 +10,16 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "WIN_REGISTRY_UNREGISTER_READER";
 
 export interface Payload {
-    identifier: string;
+    publicationIdentifier: string;
 }
 
-export function build(id: string):
+export function build(publicationIdentifier: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            identifier: id,
+            publicationIdentifier,
         },
     };
 }
