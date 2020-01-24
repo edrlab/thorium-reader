@@ -6,11 +6,11 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
-import { TApiMethod } from "readium-desktop/main/api/api.type";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { all, call, put } from "redux-saga/effects";
 

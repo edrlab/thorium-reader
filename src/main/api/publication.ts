@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { inject, injectable } from "inversify";
+import { IPublicationApi } from "readium-desktop/common/api/interface/publicationApi.interface";
 import { PromiseAllSettled, PromiseFulfilled } from "readium-desktop/common/utils/promise";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
@@ -18,55 +19,6 @@ import { LcpManager } from "readium-desktop/main/services/lcp";
 import { isArray } from "util";
 
 // import * as debug_ from "debug";
-
-export interface IPublicationApi {
-    // get: (...a: [string]) => Promise<PublicationView> | void;
-    get: (
-        identifier: string,
-        checkLcpLsd: boolean,
-    ) => Promise<PublicationView>;
-    delete: (
-        identifier: string,
-    ) => Promise<void>;
-    findAll: (
-    ) => Promise<PublicationView[]>;
-    findByTag: (
-        tag: string,
-    ) => Promise<PublicationView[]>;
-    updateTags: (
-        identifier: string,
-        tags: string[],
-    ) => Promise<PublicationView>;
-    getAllTags: (
-    ) => Promise<string[]>;
-    importOpdsPublicationLink: (
-        link: IOpdsLinkView,
-        r2OpdsPublicationBase64: string,
-    ) => Promise<PublicationView>;
-    import: (
-        filePathArray: string | string[],
-    ) => Promise<PublicationView[]>;
-    search: (
-        title: string,
-    ) => Promise<PublicationView[]>;
-    exportPublication: (
-        publicationView: PublicationView,
-    ) => Promise<void>;
-}
-
-export interface IPublicationModuleApi {
-    "publication/get": IPublicationApi["get"];
-    "publication/delete": IPublicationApi["delete"];
-    "publication/findAll": IPublicationApi["findAll"];
-    "publication/findByTag": IPublicationApi["findByTag"];
-    "publication/updateTags": IPublicationApi["updateTags"];
-    "publication/getAllTags": IPublicationApi["getAllTags"];
-    "publication/importOpdsPublicationLink": IPublicationApi["importOpdsPublicationLink"];
-    "publication/import": IPublicationApi["import"];
-    "publication/search": IPublicationApi["search"];
-    "publication/exportPublication": IPublicationApi["exportPublication"];
-}
-
 // Logger
 // const debug = debug_("readium-desktop:main#services/catalog");
 
