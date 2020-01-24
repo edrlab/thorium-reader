@@ -29,6 +29,7 @@ let libWindow: BrowserWindow = null;
 // Opens the main window, with a native menu bar.
 export function* createLibraryWindow() {
 
+    // initial state apply in reducers
     const windowBound = yield* selectTyped(
         (state: RootState) => state.win.session.library.windowBound);
 

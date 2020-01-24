@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { BrowserWindow, Menu, Rectangle } from "electron";
+import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import {
     convertHttpUrlToCustomScheme,
@@ -22,15 +22,12 @@ import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
 import { winActions } from "../../../actions";
 
-export function* createReaderWindow(
-    publicationIdentifier: string,
-    manifestUrl: string,
-    bound: Rectangle,
-    identifier?: string,
-) {
+export function* createReaderWindow(action: winActions.reader.openRequest.TAction) {
+
+    const { winBound, publicationIdentifier, manifestUrl, identifier } = action.payload;
 
     const readerWindow = new BrowserWindow({
-        ...bound,
+        ...winBound,
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
@@ -66,7 +63,7 @@ export function* createReaderWindow(
         publicationIdentifier,
         manifestUrl,
         pathDecoded,
-        bound,
+        winBound,
         identifier,
     ));
 
@@ -100,11 +97,13 @@ export function* createReaderWindow(
     // remove query url -> sync by redux saga initialisation
     //
 
+    // FIXME : It's always required to convert the manifestUrl ?
+    // otherwise should be disabled in Reader.tsx
     // This triggers the origin-sandbox for localStorage, etc.
-    manifestUrl = convertHttpUrlToCustomScheme(manifestUrl);
+    // manifestUrl = convertHttpUrlToCustomScheme(manifestUrl);
 
     // Load publication in reader window
-    const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
+    // const encodedManifestUrl = encodeURIComponent_RFC3986(manifestUrl);
 
     let readerUrl = _RENDERER_READER_BASE_URL;
 
@@ -118,9 +117,10 @@ export function* createReaderWindow(
         readerUrl += htmlPath;
     }
 
+    /*
     readerUrl = readerUrl.replace(/\\/g, "/");
     readerUrl += `?pub=${encodedManifestUrl}&pubId=${publicationIdentifier}`;
-
+    */
     /*
         should be removed replaced with redux preloaded state
         no query url  be needed only redux state

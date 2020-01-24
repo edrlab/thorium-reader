@@ -27,13 +27,14 @@ function* readerDidFinishLoad(action: winActions.session.registerReader.TAction)
     );
 
     yield take(channel);
-    yield put(readerActions.openSuccess.build());
+    yield put(winActions.reader.openSucess.build(readerWindow, identifier));
 }
 
 function* readerClosed(action: winActions.session.registerReader.TAction) {
 
     const readerWindow = action.payload.win;
     const publicationIdentifier = action.payload.publicationIdentifier;
+    const identifier = action.payload.identifier;
     const channel = eventChannel<void>(
         (emit) => {
 
@@ -47,7 +48,7 @@ function* readerClosed(action: winActions.session.registerReader.TAction) {
     );
 
     yield take(channel);
-    yield put(readerActions.closeSuccess.build());
+    yield put(winActions.reader.closed.build(identifier));
     yield put(winActions.session.unregisterReader.build(publicationIdentifier));
 }
 
