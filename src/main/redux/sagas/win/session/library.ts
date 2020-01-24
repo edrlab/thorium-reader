@@ -5,21 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-import { i18nActions } from "readium-desktop/common/redux/actions";
-import { selectTyped } from "readium-desktop/common/redux/typed-saga";
-import { savedLibraryWindowInDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
-import { RootState } from "readium-desktop/main/redux/states";
-import { all, call, takeEvery } from "redux-saga/effects";
+import { eventChannel } from "redux-saga";
+import { all, put, take, takeLeading } from "redux-saga/effects";
 
-function* libraryDidFinishLoad() {
+function* libraryDidFinishLoad(action: winActions.session.registerLibrary.TAction) {
 
-    const library = getLibraryWindowFromDi();
-    const channel = eventChannel(
+    const library = action.payload.win;
+    const identifier = action.payload.identifier;
+    const channel = eventChannel<void>(
         (emit) => {
 
-            const handler = () => emit(END);
+            const handler = () => emit();
             library.webContents.on("did-finish-load", handler);
 
             return () => {
@@ -29,16 +26,16 @@ function* libraryDidFinishLoad() {
     );
 
     yield take(channel);
-    yield put(winActions.library.openSucess.build());
+    yield put(winActions.library.openSucess.build(library, identifier));
 }
 
-function* libraryClosed() {
+function* libraryClosed(action: winActions.session.registerLibrary.TAction) {
 
-    const library = getLibraryWindowFromDi();
-    const channel = eventChannel(
+    const library = action.payload.win;
+    const channel = eventChannel<void>(
         (emit) => {
 
-            const handler = () => emit(END);
+            const handler = () => emit();
             library.on("closed", handler);
 
             return () => {
@@ -52,7 +49,7 @@ function* libraryClosed() {
     yield put(winActions.session.unregisterLibrary.build());
 }
 
-function* channelWatcher() {
+export function* watchers() {
     yield all([
         takeLeading(winActions.session.registerLibrary.ID, libraryDidFinishLoad),
         takeLeading(winActions.session.registerLibrary.ID, libraryClosed),

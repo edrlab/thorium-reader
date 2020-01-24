@@ -5,20 +5,16 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { all, call, takeLeading } from "redux-saga/effects";
-
-import { winActions } from "../../actions";
-import { appActivate } from "../app";
-import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
-
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { selectTyped } from "readium-desktop/common/redux/typed-saga";
-import { savedLibraryWindowInDi, getReaderWindowFromDi, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { getReaderWindowFromDi, savedLibraryWindowInDi } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import { all, call, takeEvery } from "redux-saga/effects";
-import { eventChannel, END } from "redux-saga";
+import { all, call, takeLeading } from "redux-saga/effects";
+
+import { appActivate } from "../app";
+import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
 
 function* winOpen(action: winActions.library.openSucess.TAction) {
 
@@ -78,22 +74,24 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
     //     },
     // } as syncIpc.EventPayload);
 
-    savedLibraryWindowInDi(libWindow);
+    yield call(() => savedLibraryWindowInDi(libWindow));
 }
 
 function* winClose(_action: winActions.library.closed.TAction) {
 
-    const readers = yield* selectTyped((state: RootState) => state.win.registry.reader);
+    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
 
-    readers.forEach(
-        (reader) =>
-            getReaderWindowFromDi(reader.identifier).close());
+    for (const key in readers) {
+        if (readers[key]) {
+            yield call(() => getReaderWindowFromDi(readers[key].identifier).close());
+        }
+    }
 }
 
 function* openLibraryWatcher() {
     yield all([
         takeLeading(winActions.library.openRequest.ID, createLibraryWindow),
-        takeLeading(winActions.library.openRequest.ID, winOpen),
+        takeLeading(winActions.library.openSucess.ID, winOpen),
     ]);
 }
 

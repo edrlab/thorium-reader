@@ -6,11 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { app, ipcMain, protocol, App } from "electron";
+import { app, protocol } from "electron";
 import * as path from "path";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
-import { syncIpc } from "readium-desktop/common/ipc";
-import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/typed-saga";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
@@ -18,10 +16,10 @@ import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
 import { appActions, winActions } from "readium-desktop/main/redux/actions";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { eventChannel } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
 import { initSessions } from "@r2-navigator-js/electron/main/sessions";
-import { eventChannel, Subscribe, END } from "redux-saga";
 
 // Logger
 const debug = debug_("readium-desktop:main:saga:app");
@@ -52,22 +50,6 @@ function* mainApp() {
     app.on("accessibility-support-changed", (_ev, accessibilitySupportEnabled) => {
         debug(`accessibilitySupportEnabled: ${accessibilitySupportEnabled}`);
     });
-
-    ipcMain.on(syncIpc.CHANNEL,
-        (_0: any, data: syncIpc.EventPayload) => {
-            const actionSerializer = diMainGet("action-serializer");
-
-            switch (data.type) {
-                case syncIpc.EventType.RendererAction:
-                    // Dispatch renderer action to main reducers
-                    diMainGet("store").dispatch({
-                        ...actionSerializer.deserialize(data.payload.action),
-                        ...{
-                            sender: data.sender,
-                        } as ActionWithSender,
-                    });
-            }
-        });
 
     yield call(() => app.whenReady());
 
@@ -115,10 +97,10 @@ function* appInitWatcher() {
 // windows open.
 export function* appActivate() {
 
-    const appActivateChannel = eventChannel(
+    const appActivateChannel = eventChannel<void>(
         (emit) => {
 
-            const handler = () => emit(END);
+            const handler = () => emit();
             app.on("activate", handler);
 
             return () => {

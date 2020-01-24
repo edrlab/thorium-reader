@@ -9,7 +9,6 @@ import * as debug_ from "debug";
 import { BrowserWindow, Event, Menu, shell } from "electron";
 import * as path from "path";
 import { selectTyped } from "readium-desktop/common/redux/typed-saga";
-import { diMainGet } from "readium-desktop/main/di";
 import {
     _PACKAGING, _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
@@ -77,16 +76,6 @@ export function* createLibraryWindow() {
     }
 
     yield put(winActions.session.registerLibrary.build(libWindow));
-
-    libWindow.webContents.on("did-finish-load",
-        () =>
-            diMainGet("store").dispatch(winActions.library.openSucess.build()),
-    );
-
-    libWindow.on("closed",
-        () =>
-            diMainGet("store").dispatch(winActions.library.closed.build()),
-    );
 
     let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
     if (rendererBaseUrl === "file://") {

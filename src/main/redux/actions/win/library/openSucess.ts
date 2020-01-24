@@ -12,14 +12,18 @@ export const ID = "LIBRARY_OPEN_SUCCESS";
 
 // tslint:disable-next-line: no-empty-interface
 export interface Payload {
+    win: Electron.BrowserWindow;
+    identifier: string;
 }
 
-export function build():
+export function build(win: Electron.BrowserWindow, identifier: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
+            win,
+            identifier,
         },
     };
 }
