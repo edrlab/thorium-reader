@@ -19,6 +19,7 @@ export interface Payload {
     winBound: Rectangle;
     fileSystemPath: string;
     manifestUrl: string;
+    reduxState: any;
 }
 
 export function build(
@@ -27,6 +28,7 @@ export function build(
     manifestUrl: string,
     fileSystemPath: string,
     winBound: Rectangle = defaultRectangle(),
+    reduxState: any = {},
     identifier: string = uuid.v4()):
     Action<typeof ID, Payload> {
 
@@ -39,6 +41,7 @@ export function build(
             fileSystemPath,
             winBound,
             identifier,
+            reduxState,
         },
     };
 }

@@ -24,7 +24,7 @@ import { winActions } from "../../../actions";
 
 export function* createReaderWindow(action: winActions.reader.openRequest.TAction) {
 
-    const { winBound, publicationIdentifier, manifestUrl, identifier } = action.payload;
+    const { winBound, publicationIdentifier, manifestUrl, identifier, reduxState } = action.payload;
 
     const readerWindow = new BrowserWindow({
         ...winBound,
@@ -65,6 +65,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         pathDecoded,
         winBound,
         identifier,
+        reduxState,
     ));
 
     /*

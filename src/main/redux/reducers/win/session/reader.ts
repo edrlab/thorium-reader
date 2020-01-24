@@ -28,6 +28,7 @@ export function winSessionReaderReducer(
                     [action.payload.identifier]: {
                         ...{
                             windowBound: action.payload.winBound,
+                            reduxState: action.payload.reduxState,
                         },
                         ...state[action.payload.identifier],
                         ...{

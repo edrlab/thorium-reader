@@ -30,111 +30,12 @@ import { all, call, put, take, takeEvery } from "redux-saga/effects";
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
 
-export function* readerOpenRequestWatcher(): SagaIterator {
-    while (true) {
-        const action = yield* takeTyped(readerActions.openRequest.build);
-        const publicationIdentifier = action.payload.publicationIdentifier;
 
-        // Notify the streamer to create a manifest for this publication
-        yield put(streamerActions.publicationOpenRequest.build(publicationIdentifier));
 
-        // Wait for the publication to be opened
-        const streamerAction = yield take([
-            streamerActions.publicationOpenSuccess.ID,
-            streamerActions.publicationOpenError.ID,
-        ]);
-        const typedAction = streamerAction.error ?
-            streamerAction as streamerActions.publicationOpenError.TAction :
-            streamerAction as streamerActions.publicationOpenSuccess.TAction;
 
-        if (typedAction.error) {
-            // Failed to open publication
-            // FIXME: Put publication in meta to be FSA compliant
-            yield put(readerActions.openError.build(publicationIdentifier));
-            continue;
-        }
 
-        const manifestUrl = typedAction.payload.manifestUrl;
-        const reader = yield* callTyped(
-            () => openReader(publicationIdentifier, manifestUrl),
-        );
 
-        // Publication is opened in a new reader
-        yield put(readerActions.openSuccess.build(reader));
-    }
-}
 
-export function* readerCloseRequestWatcher(): SagaIterator {
-    while (true) {
-        const action = yield* takeTyped(readerActions.closeRequest.build);
-
-        const reader = action.payload.reader;
-        const gotoLibrary = action.payload.gotoLibrary;
-
-        yield call(() => closeReader(reader, gotoLibrary));
-    }
-}
-
-export function* closeReaderFromPublicationWatcher(): SagaIterator {
-    while (true) {
-        // tslint:disable-next-line: max-line-length
-        const action = yield* takeTyped(readerActions.closeRequestFromPublication.build);
-
-        const publicationIdentifier = action.payload.publicationIdentifier;
-
-        const readers = yield* selectTyped((s: RootState) => s.reader.readers);
-
-        for (const reader of Object.values(readers)) {
-            if (reader.publicationIdentifier === publicationIdentifier) {
-                yield call(() => closeReader(reader, false));
-            }
-        }
-    }
-}
-
-function* closeReader(reader: Reader, gotoLibrary: boolean) {
-    const publicationIdentifier = reader.publicationIdentifier;
-
-    // Notify the streamer that a publication has been closed
-    yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
-
-    // Wait for the publication to be closed
-    const streamerAction = yield take([
-        streamerActions.publicationCloseSuccess.ID,
-        streamerActions.publicationCloseError.ID,
-    ]);
-    const typedAction = streamerAction.error ?
-        streamerAction as streamerActions.publicationCloseError.TAction :
-        streamerAction as streamerActions.publicationCloseSuccess.TAction;
-
-    if (typedAction.error) {
-        // Failed to close publication
-        yield put(readerActions.closeError.build(reader));
-        return;
-    }
-
-    const winRegistry = diMainGet("win-registry");
-
-    if (gotoLibrary) {
-        const libraryAppWindow = winRegistry.getLibraryWindow();
-        if (libraryAppWindow) {
-            yield call(async () => {
-                libraryAppWindow.browserWindow.setBounds(await getWindowBounds(AppWindowType.Library));
-            });
-            if (libraryAppWindow.browserWindow.isMinimized()) {
-                libraryAppWindow.browserWindow.restore();
-            }
-            libraryAppWindow.browserWindow.show(); // focuses as well
-        }
-    }
-
-    const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
-    if (readerWindow) {
-        readerWindow.browserWindow.close();
-    }
-
-    yield put(readerActions.closeSuccess.build(reader));
-}
 
 const READER_CONFIG_ID = "reader";
 
@@ -258,4 +159,127 @@ export function* readerDetachRequestWatcher(): SagaIterator {
 
         yield put(readerActions.detachModeSuccess.build(readerMode));
     }
+}
+
+function* readerOpenRequest(action: readerActions.openRequest.TAction) {
+
+    const publicationIdentifier = action.payload.publicationIdentifier;
+
+    // Notify the streamer to create a manifest for this publication
+    yield put(streamerActions.publicationOpenRequest.build(publicationIdentifier));
+
+    // Wait for the publication to be opened
+    const streamerAction = yield take([
+        streamerActions.publicationOpenSuccess.ID,
+        streamerActions.publicationOpenError.ID,
+    ]);
+    const typedAction = streamerAction.error ?
+        streamerAction as streamerActions.publicationOpenError.TAction :
+        streamerAction as streamerActions.publicationOpenSuccess.TAction;
+
+    if (typedAction.error) {
+        // Failed to open publication
+        // FIXME: Put publication in meta to be FSA compliant
+        yield put(readerActions.openError.build(publicationIdentifier));
+        return;
+    }
+
+    const { manifestUrl } = typedAction.payload as streamerActions.publicationOpenSuccess.Payload;
+    const winBound = yield* selectTyped(
+        (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
+    );
+    const reduxState = yield* selectTyped(
+        (state: RootState) => state.win.registry.reader[publicationIdentifier]?.reduxState,
+    );
+
+    yield put(winActions.reader.openRequest.build(
+        publicationIdentifier,
+        manifestUrl,
+        winBound,
+        reduxState,
+    ));
+}
+
+function* readerOpenRequestWatcher() {
+    yield takeEvery(readerActions.openRequest.ID, readerOpenRequest);
+}
+
+function* readerCloseRequest(action: readerActions.closeRequestFromPublication.TAction |
+    readerActions.closeRequest.TAction) {
+
+    let identifier;
+    if (action.payload.identifier) {
+        identifier = action.payload.identifier;
+    }
+
+    // Notify the streamer that a publication has been closed
+    yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
+
+    // Wait for the publication to be closed
+    const streamerAction = yield take([
+        streamerActions.publicationCloseSuccess.ID,
+        streamerActions.publicationCloseError.ID,
+    ]);
+    const typedAction = streamerAction.error ?
+        streamerAction as streamerActions.publicationCloseError.TAction :
+        streamerAction as streamerActions.publicationCloseSuccess.TAction;
+
+    if (typedAction.error) {
+        // Failed to close publication
+        yield put(readerActions.closeError.build(publicationIdentifier));
+        return;
+    }
+
+    const winRegistry = diMainGet("win-registry");
+
+    if (identifier) {
+        const libraryAppWindow = winRegistry.getLibraryWindow();
+        if (libraryAppWindow) {
+            yield call(async () => {
+                libraryAppWindow.browserWindow.setBounds(await getWindowBounds(AppWindowType.Library));
+            });
+            if (libraryAppWindow.browserWindow.isMinimized()) {
+                libraryAppWindow.browserWindow.restore();
+            }
+            libraryAppWindow.browserWindow.show(); // focuses as well
+        }
+    }
+
+    const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
+    if (readerWindow) {
+        readerWindow.browserWindow.close();
+    }
+
+    yield put(readerActions.closeSuccess.build(reader));
+}
+
+/*
+export function* closeReaderFromPublicationWatcher(): SagaIterator {
+    while (true) {
+        // tslint:disable-next-line: max-line-length
+        const action = yield* takeTyped(readerActions.closeRequestFromPublication.build);
+
+        const publicationIdentifier = action.payload.publicationIdentifier;
+
+        const readers = yield* selectTyped((s: RootState) => s.reader.readers);
+
+        for (const reader of Object.values(readers)) {
+            if (reader.publicationIdentifier === publicationIdentifier) {
+                yield call(() => closeReader(reader, false));
+            }
+        }
+    }
+}
+*/
+
+function* readerCloseRequestWatcher() {
+    yield takeEvery(readerActions.closeRequestFromPublication.ID, readerCloseRequest);
+    yield takeEvery(readerActions.closeRequest.ID, readerCloseRequest);
+}
+
+export function* watcher() {
+    yield all([
+        call(readerOpenRequestWatcher),
+        call(readerCloseRequestWatcher),
+    ]);
 }

@@ -16,12 +16,14 @@ export interface Payload {
     identifier?: string;
     winBound: Rectangle;
     manifestUrl: string;
+    reduxState: any;
 }
 
 export function build(
     publicationIdentifier: string,
     manifestUrl: string,
-    winBound: Rectangle,
+    winBound: Rectangle | undefined,
+    reduxState: any | undefined,
     identifier?: string,
 ):
     Action<typeof ID, Payload> {
@@ -33,6 +35,7 @@ export function build(
             winBound,
             manifestUrl,
             identifier,
+            reduxState,
         },
     };
 }
