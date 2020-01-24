@@ -15,6 +15,7 @@ import { all, call, takeLeading } from "redux-saga/effects";
 
 import { appActivate } from "../app";
 import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
+import { checkReaderWindowInSession } from "./session/checkReaderWindowInSession";
 
 function* winOpen(action: winActions.library.openSucess.TAction) {
 
@@ -91,6 +92,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
 function* openLibraryWatcher() {
     yield all([
         takeLeading(winActions.library.openRequest.ID, createLibraryWindow),
+        takeLeading(winActions.library.openRequest.ID, checkReaderWindowInSession),
         takeLeading(winActions.library.openSucess.ID, winOpen),
     ]);
 }
