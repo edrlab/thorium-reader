@@ -1,28 +1,3 @@
-import { BrowserWindow, Menu } from "electron";
-import * as path from "path";
-import {
-    convertHttpUrlToCustomScheme,
-} from "r2-navigator-js/dist/es6-es2015/src/electron/common/sessions";
-import {
-    trackBrowserWindow,
-} from "r2-navigator-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
-import { LocatorType } from "readium-desktop/common/models/locator";
-import { Reader } from "readium-desktop/common/models/reader";
-import { AppWindowType } from "readium-desktop/common/models/win";
-import { selectTyped } from "readium-desktop/common/redux/typed-saga";
-import { diMainGet } from "readium-desktop/main/di";
-import { setMenu } from "readium-desktop/main/menu";
-import {
-    _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
-} from "readium-desktop/preprocessor-directives";
-
-import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
-
-import { RootState } from "../../../states";
-import { defaultRectangle } from "readium-desktop/common/rectangle/window";
-import { winActions } from "../../../actions";
-import { readerActions } from "readium-desktop/common/redux/actions";
-
 // ==LICENSE-BEGIN==
 // Copyright 2017 European Digital Reading Lab. All rights reserved.
 // Licensed to the Readium Foundation under one or more contributor license agreements.
@@ -30,27 +5,32 @@ import { readerActions } from "readium-desktop/common/redux/actions";
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-function* createReaderWindow(publicationIdentifier: string, manifestUrl: string) {
+import { BrowserWindow, Menu, Rectangle } from "electron";
+import * as path from "path";
+import {
+    convertHttpUrlToCustomScheme,
+} from "r2-navigator-js/dist/es6-es2015/src/electron/common/sessions";
+import {
+    trackBrowserWindow,
+} from "r2-navigator-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
+import { setMenu } from "readium-desktop/main/menu";
+import {
+    _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
+} from "readium-desktop/preprocessor-directives";
 
-    const readers = yield* selectTyped(
-        (state: RootState) => state.win.registry.reader,
-    );
+import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 
-    const library = yield* selectTyped(
-        (state: RootState) => state.win.registry.library,
-    );
+import { winActions } from "../../../actions";
 
-    const reader = readers.find((_reader) => _reader.publicationIdentifier === publicationIdentifier);
-
-    let windowBound;
-    if (reader) {
-        windowBound = reader.windowBound;
-    } else {
-        windowBound = library.windowBound;
-    }
+export function* createReaderWindow(
+    publicationIdentifier: string,
+    manifestUrl: string,
+    bound: Rectangle,
+    identifier?: string,
+) {
 
     const readerWindow = new BrowserWindow({
-        ...windowBound,
+        ...bound,
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
@@ -74,20 +54,24 @@ function* createReaderWindow(publicationIdentifier: string, manifestUrl: string)
                 click: () => {
                     readerWindow.webContents.inspectElement(x, y);
                 },
-            }]).popup({window: readerWindow});
+            }]).popup({ window: readerWindow });
         });
     }
 
-    readerWindow.webContents.on("did-finish-load",
-        () =>
-            diMainGet("store").dispatch(winActions.registry.registerReader.build(readerWindow, publicationIdentifier)),
-    );
+    const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
+    const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
 
-    readerWindow.on("closed",
-        () =>
-            diMainGet("store").dispatch(winActions.registry.unregisterReader.build()),
-    );
+    yield put(winActions.session.registerReader.build(
+        readerWindow,
+        publicationIdentifier,
+        manifestUrl,
+        pathDecoded,
+        bound,
+        identifier,
+    ));
 
+    /*
+    // should be handle in library saga
     const thereIsOnlyTheLibraryWindow = appWindows.length === 1;
 
     // Hide the only window (the library),
@@ -106,22 +90,15 @@ function* createReaderWindow(publicationIdentifier: string, manifestUrl: string)
         // (in which case the library window is shown again, and then its position takes precedence)
         readerAppWindow.onWindowMoveResize.attach();
     }
+    */
 
     // Track it
     trackBrowserWindow(readerWindow);
 
-    const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
-    const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
-
-    // Create reader object
-    const reader: Reader = {
-        identifier: readerAppWindow.identifier,
-        publicationIdentifier,
-        manifestUrl,
-        filesystemPath: pathDecoded,
-        browserWindow: readerWindow,
-        browserWindowID: readerWindow.id,
-    };
+    //
+    // TODO:
+    // remove query url -> sync by redux saga initialisation
+    //
 
     // This triggers the origin-sandbox for localStorage, etc.
     manifestUrl = convertHttpUrlToCustomScheme(manifestUrl);
@@ -144,26 +121,26 @@ function* createReaderWindow(publicationIdentifier: string, manifestUrl: string)
     readerUrl = readerUrl.replace(/\\/g, "/");
     readerUrl += `?pub=${encodedManifestUrl}&pubId=${publicationIdentifier}`;
 
-/*
-    should be removed replaced with redux preloaded state
-    no query url  be needed only redux state
+    /*
+        should be removed replaced with redux preloaded state
+        no query url  be needed only redux state
 
-    // Get publication last reading location
-    const locatorRepository = diMainGet("locator-repository");
-    const locators = await locatorRepository
-        .findByPublicationIdentifierAndLocatorType(
-            publicationIdentifier,
-            LocatorType.LastReadingLocation,
-        );
+        // Get publication last reading location
+        const locatorRepository = diMainGet("locator-repository");
+        const locators = await locatorRepository
+            .findByPublicationIdentifierAndLocatorType(
+                publicationIdentifier,
+                LocatorType.LastReadingLocation,
+            );
 
-    if (locators.length > 0) {
-        const locator = locators[0];
-        const docHref = encodeURIComponent_RFC3986(Buffer.from(locator.locator.href).toString("base64"));
-        const docSelector =
-            encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.cssSelector).toString("base64"));
-        readerUrl += `&docHref=${docHref}&docSelector=${docSelector}`;
-    }
-*/
+        if (locators.length > 0) {
+            const locator = locators[0];
+            const docHref = encodeURIComponent_RFC3986(Buffer.from(locator.locator.href).toString("base64"));
+            const docSelector =
+                encodeURIComponent_RFC3986(Buffer.from(locator.locator.locations.cssSelector).toString("base64"));
+            readerUrl += `&docHref=${docHref}&docSelector=${docSelector}`;
+        }
+    */
 
     readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" });
 
@@ -173,8 +150,4 @@ function* createReaderWindow(publicationIdentifier: string, manifestUrl: string)
 
     setMenu(readerWindow, true);
 
-    // TODO should be updated:
-
-    // Publication is opened in a new reader
-    yield put(readerActions.openSuccess.build(readerWindow));
 }
