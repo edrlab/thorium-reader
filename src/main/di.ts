@@ -14,10 +14,10 @@ import * as path from "path";
 import * as PouchDBCore from "pouchdb-core";
 import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { Translator } from "readium-desktop/common/services/translator";
-import { CatalogApi, ICatalogApi } from "readium-desktop/main/api/catalog";
-import { ILcpApi, LcpApi } from "readium-desktop/main/api/lcp";
-import { IOpdsApi, OpdsApi } from "readium-desktop/main/api/opds";
-import { IPublicationApi, PublicationApi } from "readium-desktop/main/api/publication";
+import { CatalogApi } from "readium-desktop/main/api/catalog";
+import { LcpApi } from "readium-desktop/main/api/lcp";
+import { OpdsApi } from "readium-desktop/main/api/opds";
+import { PublicationApi } from "readium-desktop/main/api/publication";
 import { LocatorViewConverter } from "readium-desktop/main/converter/locator";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { PublicationViewConverter } from "readium-desktop/main/converter/publication";
@@ -45,7 +45,7 @@ import { Store } from "redux";
 
 import { Server } from "@r2-streamer-js/http/server";
 
-import { IReaderApi, ReaderApi } from "./api/reader";
+import { ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 
@@ -221,17 +221,6 @@ container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope(
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
 
-// module typing
-type TCatalogApi = "catalog";
-type TPublicationApi = "publication";
-type TOpdsApi = "opds";
-type TLcpApi = "lcp";
-type TReaderApi = "reader";
-type TModuleApi = TCatalogApi | TPublicationApi | TOpdsApi | TLcpApi | TReaderApi;
-
-// typing all api method
-type TMethodApi = keyof ICatalogApi | keyof IPublicationApi | keyof IOpdsApi | keyof ILcpApi | keyof IReaderApi;
-
 // Create action serializer
 container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();
 
@@ -290,8 +279,6 @@ const diGet: IGet = (symbol: keyof typeof diSymbolTable) => container.get<any>(d
 
 export {
     diGet as diMainGet,
-    TModuleApi,
-    TMethodApi,
     getLibraryWindowFromDi,
     getReaderWindowFromDi,
     saveLibraryWindowInDi,

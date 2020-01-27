@@ -8,9 +8,10 @@
 // import * as debug_ from "debug";
 
 import { inject, injectable } from "inversify";
+import { IOpdsApi, TOpdsLinkSearch } from "readium-desktop/common/api/interface/opdsApi.interface";
 import { OpdsFeed } from "readium-desktop/common/models/opds";
 import {
-    IOpdsFeedView, IOpdsLinkView, THttpGetOpdsResultView,
+    IOpdsFeedView, THttpGetOpdsResultView,
 } from "readium-desktop/common/views/opds";
 import { OpdsFeedViewConverter } from "readium-desktop/main/converter/opds";
 import { OpdsFeedRepository } from "readium-desktop/main/db/repository/opds";
@@ -19,51 +20,6 @@ import { OpdsService } from "readium-desktop/main/services/opds";
 
 // Logger
 // const debug = debug_("readium-desktop:src/main/api/opds");
-
-export interface IOpdsApi {
-    getFeed: (
-        identifier: string,
-    ) => Promise<IOpdsFeedView>;
-    deleteFeed: (
-        identifier: string,
-    ) => Promise<void>;
-    findAllFeeds: (
-    ) => Promise<IOpdsFeedView[]>;
-    addFeed: (
-        data: OpdsFeed,
-    ) => Promise<IOpdsFeedView>;
-    updateFeed: (
-        data: OpdsFeed,
-    ) => Promise<IOpdsFeedView>;
-    browse: (
-        url: string,
-    ) => Promise<THttpGetOpdsResultView>;
-    getUrlWithSearchLinks: (
-        searchLink: TOpdsLinkSearch[] | TOpdsLinkSearch,
-    ) => Promise<string | undefined>;
-    oauth: (
-        opdsUrl: string,
-        login: string | undefined,
-        password: string | undefined,
-        oAuthUrl: string,
-        oAuthRefreshUrl: string | undefined,
-        OPDS_AUTH_ENCRYPTION_KEY_HEX: string,
-        OPDS_AUTH_ENCRYPTION_IV_HEX: string,
-        refreshToken?: string) => Promise<boolean>;
-}
-
-export interface IOpdsModuleApi {
-    "opds/getFeed": IOpdsApi["getFeed"];
-    "opds/deleteFeed": IOpdsApi["deleteFeed"];
-    "opds/findAllFeeds": IOpdsApi["findAllFeeds"];
-    "opds/addFeed": IOpdsApi["addFeed"];
-    "opds/updateFeed": IOpdsApi["updateFeed"];
-    "opds/browse": IOpdsApi["browse"];
-    "opds/getUrlWithSearchLinks": IOpdsApi["getUrlWithSearchLinks"];
-    "opds/oauth": IOpdsApi["oauth"];
-}
-
-type TOpdsLinkSearch = Required<Pick<IOpdsLinkView, "url" | "type">>;
 
 const checkUrl = (url: string) => {
     try {
