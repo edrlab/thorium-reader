@@ -6,77 +6,61 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { BrowserWindow, Menu } from "electron";
-import * as path from "path";
-import { LocatorType } from "readium-desktop/common/models/locator";
-import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
-import { AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowBounds } from "readium-desktop/common/rectangle/window";
-import { readerActions, i18nActions } from "readium-desktop/common/redux/actions";
-import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
-import { ConfigDocument } from "readium-desktop/main/db/document/config";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
-import { setMenu } from "readium-desktop/main/menu";
-import { appActions, streamerActions, winActions } from "readium-desktop/main/redux/actions";
+import { SenderType } from "readium-desktop/common/models/sync";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
-import { SagaIterator } from "redux-saga";
-import { all, call, put, take, takeEvery } from "redux-saga/effects";
+import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
+debug("_");
 
+// const READER_CONFIG_ID = "reader";
 
+// export function* readerConfigSetRequestWatcher(): SagaIterator {
+//     while (true) {
+//         // Wait for save request
+//         const action = yield* takeTyped(readerActions.configSetRequest.build);
 
+//         const configValue = action.payload.config;
+//         const config: Omit<ConfigDocument<ReaderConfig>, keyof Timestampable> = {
+//             identifier: READER_CONFIG_ID,
+//             value: configValue,
+//         };
 
+//         // Get reader settings
+//         const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
 
+//         try {
+//             yield call(() => configRepository.save(config));
+//             yield put(readerActions.configSetSuccess.build(configValue));
+//         } catch (error) {
+//             yield put(readerActions.configSetError.build(error));
+//         }
+//     }
+// }
 
+// export function* readerConfigInitWatcher(): SagaIterator {
+//     // Wait for app initialization
+//     yield take(appActions.initSuccess.ID);
 
+//     const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
 
-const READER_CONFIG_ID = "reader";
+//     try {
+//         const readerConfigDoc = yield* callTyped(() => configRepository.get(READER_CONFIG_ID));
 
-export function* readerConfigSetRequestWatcher(): SagaIterator {
-    while (true) {
-        // Wait for save request
-        const action = yield* takeTyped(readerActions.configSetRequest.build);
-
-        const configValue = action.payload.config;
-        const config: Omit<ConfigDocument<ReaderConfig>, keyof Timestampable> = {
-            identifier: READER_CONFIG_ID,
-            value: configValue,
-        };
-
-        // Get reader settings
-        const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
-
-        try {
-            yield call(() => configRepository.save(config));
-            yield put(readerActions.configSetSuccess.build(configValue));
-        } catch (error) {
-            yield put(readerActions.configSetError.build(error));
-        }
-    }
-}
-
-export function* readerConfigInitWatcher(): SagaIterator {
-    // Wait for app initialization
-    yield take(appActions.initSuccess.ID);
-
-    const configRepository: ConfigRepository<ReaderConfig> = diMainGet("config-repository");
-
-    try {
-        const readerConfigDoc = yield* callTyped(() => configRepository.get(READER_CONFIG_ID));
-
-        // Returns the first reader configuration available in database
-        yield put(readerActions.configSetSuccess.build(readerConfigDoc.value));
-    } catch (error) {
-        yield put(readerActions.configSetError.build(error));
-    }
-}
+//         // Returns the first reader configuration available in database
+//         yield put(readerActions.configSetSuccess.build(readerConfigDoc.value));
+//     } catch (error) {
+//         yield put(readerActions.configSetError.build(error));
+//     }
+// }
 
 // export function* readerBookmarkSaveRequestWatcher(): SagaIterator {
 //     while (true) {
@@ -109,56 +93,44 @@ export function* readerConfigInitWatcher(): SagaIterator {
 //     }
 // }
 
-export function* readerFullscreenRequestWatcher(): SagaIterator {
-    while (true) {
-        // Wait for app initialization
-        const action = yield* takeTyped(readerActions.fullScreenRequest.build);
+function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TAction) {
 
-        // Get browser window
-        const sender = action.sender;
+    const sender = action.sender;
 
-        const winRegistry = diMainGet("win-registry");
-        const appWindow = winRegistry.getWindowByIdentifier(sender.winId);
-        if (appWindow) {
-            appWindow.browserWindow.setFullScreen(action.payload.full);
+    if (sender.identifier && sender.type === SenderType.Renderer) {
+
+        const readerWin = yield* callTyped(() => getReaderWindowFromDi(sender.identifier));
+        if (readerWin) {
+            readerWin.setFullScreen(action.payload.full);
         }
     }
 }
 
-export function* readerDetachRequestWatcher(): SagaIterator {
-    while (true) {
-        // Wait for a change mode request
-        const action = yield* takeTyped(readerActions.detachModeRequest.build);
+function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 
-        const readerMode = action.payload.mode;
-        const reader = action.payload.reader;
+    const identifier = action.payload.identifier;
+    const readerWin = yield* callTyped(() => getReaderWindowFromDi(identifier));
+    const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
-        if (readerMode === ReaderMode.Detached) {
-            const winRegistry = diMainGet("win-registry");
+    if (libWin) {
 
-            const libraryAppWindow = winRegistry.getLibraryWindow();
-            if (libraryAppWindow) {
-                // this should never occur, but let's do it for certainty
-                if (libraryAppWindow.browserWindow.isMinimized()) {
-                    libraryAppWindow.browserWindow.restore();
-                }
-                libraryAppWindow.browserWindow.show(); // focuses as well
-            }
-
-            const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
-            if (readerWindow) {
-                readerWindow.onWindowMoveResize.detach();
-
-                // this should never occur, but let's do it for certainty
-                if (readerWindow.browserWindow.isMinimized()) {
-                    readerWindow.browserWindow.restore();
-                }
-                readerWindow.browserWindow.show(); // focuses as well
-            }
+        // this should never occur, but let's do it for certainty
+        if (libWin.isMinimized()) {
+            libWin.restore();
         }
-
-        yield put(readerActions.detachModeSuccess.build(readerMode));
+        libWin.show(); // focuses as well
     }
+
+    if (readerWin) {
+
+        // this should never occur, but let's do it for certainty
+        if (readerWin.isMinimized()) {
+            readerWin.restore();
+        }
+        readerWin.show(); // focuses as well
+    }
+
+    yield put(readerActions.detachModeSuccess.build());
 }
 
 function* readerOpenRequest(action: readerActions.openRequest.TAction) {
@@ -200,22 +172,45 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
     ));
 }
 
-function* readerOpenRequestWatcher() {
-    yield takeEvery(readerActions.openRequest.ID, readerOpenRequest);
+function* readerCloseRequestFromPublication(action: readerActions.closeRequestFromPublication.TAction) {
+
+    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+
+    for (const key in readers) {
+        if (readers[key] && readers[key].publicationIdentifier === action.payload.publicationIdentifier) {
+            yield call(readerCloseRequest, readers[key].identifier);
+        }
+    }
 }
 
-function* readerCloseRequest(action: readerActions.closeRequestFromPublication.TAction |
-    readerActions.closeRequest.TAction) {
+function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TAction) {
+    yield call(readerCloseRequest, action.payload.identifier);
 
-    let identifier;
-    if (action.payload.identifier) {
-        identifier = action.payload.identifier;
+    const libWin: Electron.BrowserWindow = yield callTyped(() => getLibraryWindowFromDi());
+    if (libWin) {
+
+        const winBound = yield* selectTyped((state: RootState) => state.win.session.library.windowBound);
+        libWin.setBounds(winBound);
+
+        if (libWin.isMinimized()) {
+            libWin.restore();
+        }
+
+        libWin.show(); // focuses as well
+    }
+}
+
+function* readerCloseRequest(identifier?: string) {
+
+    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+
+    for (const key in readers) {
+        if (readers[key] && readers[key].identifier === identifier) {
+            // Notify the streamer that a publication has been closed
+            yield put(streamerActions.publicationCloseRequest.build(readers[key].publicationIdentifier));
+        }
     }
 
-    // Notify the streamer that a publication has been closed
-    yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
-
-    // Wait for the publication to be closed
     const streamerAction = yield take([
         streamerActions.publicationCloseSuccess.ID,
         streamerActions.publicationCloseError.ID,
@@ -226,60 +221,40 @@ function* readerCloseRequest(action: readerActions.closeRequestFromPublication.T
 
     if (typedAction.error) {
         // Failed to close publication
-        yield put(readerActions.closeError.build(publicationIdentifier));
+        yield put(readerActions.closeError.build(identifier));
         return;
     }
 
-    const winRegistry = diMainGet("win-registry");
-
-    if (identifier) {
-        const libraryAppWindow = winRegistry.getLibraryWindow();
-        if (libraryAppWindow) {
-            yield call(async () => {
-                libraryAppWindow.browserWindow.setBounds(await getWindowBounds(AppWindowType.Library));
-            });
-            if (libraryAppWindow.browserWindow.isMinimized()) {
-                libraryAppWindow.browserWindow.restore();
-            }
-            libraryAppWindow.browserWindow.show(); // focuses as well
-        }
-    }
-
-    const readerWindow = winRegistry.getWindowByIdentifier(reader.identifier);
+    const readerWindow = getReaderWindowFromDi(identifier);
     if (readerWindow) {
-        readerWindow.browserWindow.close();
+        readerWindow.close();
     }
 
-    yield put(readerActions.closeSuccess.build(reader));
+    yield put(readerActions.closeSuccess.build(identifier));
 }
-
-/*
-export function* closeReaderFromPublicationWatcher(): SagaIterator {
-    while (true) {
-        // tslint:disable-next-line: max-line-length
-        const action = yield* takeTyped(readerActions.closeRequestFromPublication.build);
-
-        const publicationIdentifier = action.payload.publicationIdentifier;
-
-        const readers = yield* selectTyped((s: RootState) => s.reader.readers);
-
-        for (const reader of Object.values(readers)) {
-            if (reader.publicationIdentifier === publicationIdentifier) {
-                yield call(() => closeReader(reader, false));
-            }
-        }
-    }
-}
-*/
 
 function* readerCloseRequestWatcher() {
-    yield takeEvery(readerActions.closeRequestFromPublication.ID, readerCloseRequest);
-    yield takeEvery(readerActions.closeRequest.ID, readerCloseRequest);
+    yield takeEvery(readerActions.closeRequestFromPublication.ID, readerCloseRequestFromPublication);
+    yield takeEvery(readerActions.closeRequest.ID, readerCLoseRequestFromIdentifier);
+}
+
+function* readerOpenRequestWatcher() {
+    yield takeEvery(readerActions.openRequest.ID, readerOpenRequest);
+}
+
+function* readerDetachRequestWatcher() {
+    yield takeLeading(readerActions.detachModeRequest.ID, readerDetachRequest);
+}
+
+function* readerFullscreenRequestWatcher() {
+    yield takeLeading(readerActions.fullScreenRequest.ID, readerFullscreenRequest);
 }
 
 export function* watcher() {
     yield all([
         call(readerOpenRequestWatcher),
         call(readerCloseRequestWatcher),
+        call(readerDetachRequestWatcher),
+        call(readerFullscreenRequestWatcher),
     ]);
 }

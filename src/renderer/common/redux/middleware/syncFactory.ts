@@ -13,7 +13,7 @@ import { AnyAction, Dispatch, MiddlewareAPI } from "redux";
 
 export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
 
-    return (store: MiddlewareAPI<Dispatch<AnyAction>>) =>
+    return (_store: MiddlewareAPI<Dispatch<AnyAction>>) =>
             (next: Dispatch<ActionWithSender>) =>
                 ((action: ActionWithSender) => {
 
@@ -36,7 +36,8 @@ export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
                         },
                         sender: {
                             type: SenderType.Renderer,
-                            winId: store.getState().win.winId,
+                            // FIXME
+                            identifier: "get id from redux state",
                         },
                     } as syncIpc.EventPayload);
 

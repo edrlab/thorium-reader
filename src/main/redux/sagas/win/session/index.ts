@@ -5,8 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
+import { checkReaderWindowInSession } from "./checkReaderWindowInSession";
 import * as library from "./library";
+import * as reader from "./reader";
 
 export {
     library,
+    reader,
+    checkReaderWindowInSession,
 };

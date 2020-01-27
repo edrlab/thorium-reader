@@ -5,7 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { readerActions } from "readium-desktop/common/redux/actions";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel } from "redux-saga";
 import { all, put, take, takeEvery } from "redux-saga/effects";

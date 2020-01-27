@@ -17,7 +17,7 @@ import { readerActions, i18nActions } from "readium-desktop/common/redux/actions
 import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigDocument } from "readium-desktop/main/db/document/config";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { diMainGet, getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { appActions, streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -38,23 +38,23 @@ const debug = debug_("readium-desktop:main:redux:sagas:reader");
 
 function* winOpen(action: winActions.reader.openSucess.TAction) {
 
-    const libWindow = action.payload.win;
-    const webContents = libWindow.webContents;
+    const readerWin = action.payload.win;
+    const webContents = readerWin.webContents;
     const state = yield* selectTyped((_state: RootState) => _state);
-    const appId = action.payload.identifier;
+    const winId = action.payload.identifier;
 
     // Send the id to the new window
     webContents.send(winIpc.CHANNEL, {
         type: winIpc.EventType.IdResponse,
         payload: {
-            winId: appId,
+            winId,
         },
     } as winIpc.EventPayload);
 
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: readerActions.openSuccess.build(state.reader.readers[appId]),
+            action: readerActions.openSuccess.build(state.reader.readers[winId]),
         },
     } as syncIpc.EventPayload);
 
@@ -82,7 +82,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
         },
     } as syncIpc.EventPayload);
 
-    yield put(readerActions.openSuccess.build());
+    yield call(() => saveReaderWindowInDi(readerWin, winId));
 }
 
 function* winClose(action: winActions.reader.closed.TAction) {
@@ -115,8 +115,6 @@ function* winClose(action: winActions.reader.closed.TAction) {
         }
         libraryWindow.show(); // focuses as well
     }
-
-    yield put(readerActions.closeSuccess.build());
 }
 
 function* openReaderWatcher() {

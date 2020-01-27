@@ -14,7 +14,7 @@ export enum SenderType {
 
 export interface WindowSender {
     type: SenderType;
-    winId: string;
+    identifier: string;
 }
 
 export interface WithSender {

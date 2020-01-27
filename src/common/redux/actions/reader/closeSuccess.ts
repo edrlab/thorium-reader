@@ -11,16 +11,16 @@ import { Action } from "readium-desktop/common/models/redux";
 export const ID = "READER_CLOSE_SUCCESS";
 
 export interface Payload {
-    reader: Reader;
+    identifier: string;
 }
 
-export function build(reader: Reader):
+export function build(identifier: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            reader,
+            identifier,
         },
     };
 }

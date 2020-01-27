@@ -235,7 +235,7 @@ type TMethodApi = keyof ICatalogApi | keyof IPublicationApi | keyof IOpdsApi | k
 // Create action serializer
 container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();
 
-const savedLibraryWindowInDi =
+const saveLibraryWindowInDi =
     (libWin: BrowserWindow) =>
         container.bind<BrowserWindow>("WIN_REGISTRY_LIBRARY").toConstantValue(libWin);
 
@@ -243,7 +243,7 @@ const getLibraryWindowFromDi =
     () =>
         container.get<BrowserWindow>("WIN_REGISTRY_LIBRARY");
 
-const savedReaderWindowInDi =
+const saveReaderWindowInDi =
     (readerWin: BrowserWindow, id: string) =>
         container.bind<BrowserWindow>("WIN_REGISTRY_READER").toConstantValue(readerWin).whenTargetNamed(id);
 
@@ -294,7 +294,7 @@ export {
     TMethodApi,
     getLibraryWindowFromDi,
     getReaderWindowFromDi,
-    savedLibraryWindowInDi,
-    savedReaderWindowInDi,
+    saveLibraryWindowInDi,
+    saveReaderWindowInDi,
     getAllReaderWindowFromDi,
 };

@@ -5,24 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Reader, ReaderMode } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "READER_MODE_SET_REQUEST";
 
 export interface Payload {
-    reader: Reader;
-    mode: ReaderMode;
+    identifier: string;
 }
 
-export function build(reader: Reader):
+export function build(identifier: string):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            reader,
-            mode: ReaderMode.Detached,
+            identifier,
         },
     };
 }

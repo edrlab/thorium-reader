@@ -8,17 +8,13 @@
 import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import {
-    convertHttpUrlToCustomScheme,
-} from "r2-navigator-js/dist/es6-es2015/src/electron/common/sessions";
-import {
     trackBrowserWindow,
 } from "r2-navigator-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
 import { setMenu } from "readium-desktop/main/menu";
 import {
     _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
-
-import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
+import { put } from "redux-saga/effects";
 
 import { winActions } from "../../../actions";
 
