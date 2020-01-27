@@ -8,8 +8,8 @@
 // build-time preprocessor directives
 // (must be set by bundlers like WebPack / Browserify etc.)
 
-declare const __RENDERER_APP_BASE_URL__: string;
-export const _RENDERER_APP_BASE_URL = __RENDERER_APP_BASE_URL__;
+declare const __RENDERER_LIBRARY_BASE_URL__: string;
+export const _RENDERER_LIBRARY_BASE_URL = __RENDERER_LIBRARY_BASE_URL__;
 
 declare const __RENDERER_READER_BASE_URL__: string;
 export const _RENDERER_READER_BASE_URL = __RENDERER_READER_BASE_URL__;
@@ -56,3 +56,6 @@ export const IS_DEV =
     // ... or when not packaging, check runtime process.env:
     __PACKAGING__ === "0" &&
     (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev");
+
+declare const __CONTINUOUS_INTEGRATION_DEPLOY__: boolean;
+export const _CONTINUOUS_INTEGRATION_DEPLOY = __CONTINUOUS_INTEGRATION_DEPLOY__;

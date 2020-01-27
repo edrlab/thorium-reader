@@ -129,6 +129,12 @@ let config = Object.assign({}, {
         ]),
         new CopyWebpackPlugin([
             {
+                from: path.join(__dirname, "node_modules", "mathjax"),
+                to: "MathJax",
+            }
+        ]),
+        new CopyWebpackPlugin([
+            {
                 from: path.join(__dirname, "resources"),
                 to: "assets/icons",
             }
@@ -142,6 +148,8 @@ let config = Object.assign({}, {
         preprocessorDirectives.definePlugin
     ],
 });
+
+config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^.\/runtime-fs$/ })); // jsondown (runtimejs, fatfs)
 
 if (nodeEnv !== "production") {
     // Bundle absolute resource paths in the source-map,

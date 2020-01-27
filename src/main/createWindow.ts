@@ -6,13 +6,13 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
-import { app, BrowserWindow, Menu, shell } from "electron";
+import { app, BrowserWindow, Event, Menu, shell } from "electron";
 import * as path from "path";
 import { AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowsRectangle } from "readium-desktop/common/rectangle/window";
+import { getWindowBounds } from "readium-desktop/common/rectangle/window";
 import { diMainGet } from "readium-desktop/main/di";
 import {
-    _PACKAGING, _RENDERER_APP_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
+    _PACKAGING, _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 
 import { setMenu } from "./menu";
@@ -27,7 +27,7 @@ let mainWindow: BrowserWindow = null;
 // Opens the main window, with a native menu bar.
 export async function createWindow() {
     mainWindow = new BrowserWindow({
-        ...(await getWindowsRectangle()),
+        ...(await getWindowBounds()),
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
@@ -60,7 +60,7 @@ export async function createWindow() {
             [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach((extension) => {
                 installExtension(extension)
                     .then((name: string) => debug("Added Extension: ", name))
-                    .catch((err: any) => debug("An error occurred: ", err));
+                    .catch((err: Error) => debug("An error occurred: ", err));
             });
         });
 
@@ -75,24 +75,24 @@ export async function createWindow() {
     // watch to record window rectangle position in the db
     appWindow.onWindowMoveResize.attach();
 
-    let rendererBaseUrl = _RENDERER_APP_BASE_URL;
+    let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
 
     if (rendererBaseUrl === "file://") {
         // dist/prod mode (without WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += path.normalize(path.join(__dirname, "index_app.html"));
+        rendererBaseUrl += path.normalize(path.join(__dirname, "index_library.html"));
     } else {
         // dev/debug mode (with WebPack HMR Hot Module Reload HTTP server)
-        rendererBaseUrl += "index_app.html";
+        rendererBaseUrl += "index_library.html";
     }
 
     rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
 
     mainWindow.loadURL(rendererBaseUrl);
 
-    setMenu(mainWindow);
+    setMenu(mainWindow, false);
 
     // Redirect link to an external browser
-    const handleRedirect = (event: any, url: any) => {
+    const handleRedirect = (event: Event, url: string) => {
         if (url === mainWindow.webContents.getURL()) {
             return;
         }

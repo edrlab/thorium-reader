@@ -5,10 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
-
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
-
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { StreamerState } from "readium-desktop/main/redux/states/streamer";
 
@@ -28,40 +25,43 @@ const initialState: StreamerState = {
 
 export function streamerReducer(
     state: StreamerState = initialState,
-    action: Action,
+    action: streamerActions.startSuccess.TAction |
+        streamerActions.publicationOpenSuccess.TAction |
+        streamerActions.publicationCloseSuccess.TAction |
+        streamerActions.stopSuccess.TAction,
 ): StreamerState {
     let pubId = null;
     const newState = Object.assign({}, state);
 
     switch (action.type) {
-        case streamerActions.ActionType.StartSuccess:
+        case streamerActions.startSuccess.ID:
             newState.status = StreamerStatus.Running;
             newState.baseUrl = action.payload.streamerUrl;
             newState.openPublicationCounter = {};
             newState.publicationManifestUrl = {};
             return newState;
-        case streamerActions.ActionType.StopSuccess:
+        case streamerActions.stopSuccess.ID:
             newState.baseUrl = null;
             newState.status = StreamerStatus.Stopped;
             newState.openPublicationCounter = {};
             newState.publicationManifestUrl = {};
             return newState;
-        case streamerActions.ActionType.PublicationOpenSuccess:
-            pubId = action.payload.publication.identifier;
+        case streamerActions.publicationOpenSuccess.ID:
+            pubId = action.payload.publicationDocument.identifier;
 
             if (!newState.openPublicationCounter.hasOwnProperty(pubId)) {
                 newState.openPublicationCounter[pubId] = 1;
                 newState.publicationManifestUrl[pubId] = action.payload.manifestUrl;
             } else {
-                // Increment the number of publications opened with the streamer
+                // Increment the number of pubs opened with the streamer
                 newState.openPublicationCounter[pubId] = state.openPublicationCounter[pubId] + 1;
             }
             return newState;
-        case streamerActions.ActionType.PublicationCloseSuccess:
-            pubId = action.payload.publication.identifier;
+        case streamerActions.publicationCloseSuccess.ID:
+            pubId = action.payload.publicationDocument.identifier;
             newState.openPublicationCounter[pubId] = newState.openPublicationCounter[pubId] - 1;
 
-            if (newState.openPublicationCounter[pubId] === 0) {
+            if (newState.openPublicationCounter[pubId] <= 0) {
                 delete newState.openPublicationCounter[pubId];
                 delete newState.publicationManifestUrl[pubId];
             }

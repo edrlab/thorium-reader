@@ -9,7 +9,6 @@
         "disableNoUnusedVariableRule": false
       }
     ],
-
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,
@@ -41,6 +40,7 @@
     "charset": "utf8",
     "downlevelIteration": false,
     "emitBOM": false,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": false,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
@@ -54,7 +54,12 @@
     "removeComments": true,
     "skipLibCheck": false,
     "module": "commonjs",
-    "lib": ["es2017", "es6", "dom", "dom.iterable"],
+    "lib": [
+      "es2017",
+      "es6",
+      "dom",
+      "dom.iterable"
+    ],
     "target": "es6",
     "jsx": "react",
     "experimentalDecorators": true,
@@ -64,8 +69,12 @@
       "file-selector": [
         "src/typings/noop.d.ts"
       ],
-      "readium-desktop/*": ["./src/*"],
-      "test/*": ["./test/*"],
+      "readium-desktop/*": [
+        "./src/*"
+      ],
+      "test/*": [
+        "./test/*"
+      ],
       "@r2-utils-js/*": [
         "node_modules/r2-utils-js/dist/es6-es2015/src/*"
       ],
@@ -88,7 +97,7 @@
   },
   "include": [
     "./src/**/*",
-    "./test/**/*",
+    "./test/**/*"
   ],
   "exclude": [
     "node_modules"

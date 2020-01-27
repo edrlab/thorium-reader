@@ -5,27 +5,26 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
+import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
-
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 
-import { BaseRepository } from "./base";
+import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
 @injectable()
 export class OpdsFeedRepository extends BaseRepository<OpdsFeedDocument> {
-    public constructor(db: PouchDB.Database) {
+    public constructor(db: PouchDB.Database<OpdsFeedDocument>) {// INJECTED!
         super(db, "opds-feed");
     }
 
-    protected convertToDocument(dbDoc: PouchDB.Core.Document<any>): OpdsFeedDocument {
+    protected convertToDocument(dbDoc: PouchDB.Core.Document<OpdsFeedDocument>): OpdsFeedDocument {
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
             {
                 title: dbDoc.title,
                 url: dbDoc.url,
-            },
+            } as ExcludeTimestampableAndIdentifiable<OpdsFeedDocument>,
         );
     }
 }

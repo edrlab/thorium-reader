@@ -1,6 +1,7 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "quotemark": [true, "double"],
     "no-string-literal": true,
     "no-reference": false,
     "no-floating-promises": false,

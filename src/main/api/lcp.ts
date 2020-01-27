@@ -5,83 +5,129 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
-import * as readerActions from "readium-desktop/common/redux/actions/reader";
-import { IHttpGetResult } from "readium-desktop/common/utils/http";
+import { lcpActions } from "readium-desktop/common/redux/actions";
+import { readerActions } from "readium-desktop/common/redux/actions/";
+import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { LcpManager } from "readium-desktop/main/services/lcp";
 import { Store } from "redux";
 
+import { PublicationViewConverter } from "../converter/publication";
+import { RootState } from "../redux/states";
+
+const debug = debug_("readium-desktop:main:redux:sagas:streamer");
+
 export interface ILcpApi {
-    renewPublicationLicense: (data: any) => Promise<void>;
-    registerPublicationLicense: (data: any) => Promise<void>;
-    returnPublication: (data: any) => Promise<void>;
-    unlockPublicationWithPassphrase: (data: any) => Promise<void>;
-    getLsdStatus: (data: any) => Promise<IHttpGetResult<string, any>>;
+    renewPublicationLicense: (publicationIdentifier: string) => Promise<void>;
+    returnPublication: (publicationIdentifier: string) => Promise<void>;
+    unlockPublicationWithPassphrase: (passphrase: string, publicationViewIdentifer: string) => Promise<void>;
 }
 
-export type TLcpApiRenewPublicationLicense = ILcpApi["renewPublicationLicense"];
-export type TLcpApiRegisterPublicationLicense = ILcpApi["registerPublicationLicense"];
-export type TLcpApiReturnPublication = ILcpApi["returnPublication"];
-export type TLcpApiUnlockPublicationWithPassphrase = ILcpApi["unlockPublicationWithPassphrase"];
-export type TLcpApiGgetLsdStatus = ILcpApi["getLsdStatus"];
-
 export interface ILcpModuleApi {
-    "lcp/renewPublicationLicense": TLcpApiRenewPublicationLicense;
-    "lcp/registerPublicationLicense": TLcpApiRegisterPublicationLicense;
-    "lcp/returnPublication": TLcpApiReturnPublication;
-    "lcp/unlockPublicationWithPassphrase": TLcpApiUnlockPublicationWithPassphrase;
-    "lcp/getLsdStatus": TLcpApiGgetLsdStatus;
+    "lcp/renewPublicationLicense": ILcpApi["renewPublicationLicense"];
+    "lcp/returnPublication": ILcpApi["returnPublication"];
+    "lcp/unlockPublicationWithPassphrase": ILcpApi["unlockPublicationWithPassphrase"];
 }
 
 @injectable()
-export class LcpApi {
+export class LcpApi implements ILcpApi {
     @inject(diSymbolTable.store)
-    private readonly store!: Store<any>;
-
-    @inject(diSymbolTable["publication-repository"])
-    private readonly publicationRepository!: PublicationRepository;
+    private readonly store!: Store<RootState>;
 
     @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
 
-    public async renewPublicationLicense(data: any): Promise<void> {
-        const { publication } = data;
+    @inject(diSymbolTable["publication-repository"])
+    private readonly publicationRepository!: PublicationRepository;
+
+    @inject(diSymbolTable.translator)
+    private readonly translator!: Translator;
+
+    @inject(diSymbolTable["publication-view-converter"])
+    private readonly publicationViewConverter!: PublicationViewConverter;
+
+    // import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
+    // @inject(diSymbolTable["publication-storage"])
+    // private readonly publicationStorage!: PublicationStorage;
+
+    // import { Server } from "@r2-streamer-js/http/server";
+    // @inject(diSymbolTable.streamer)
+    // private readonly streamer!: Server;
+
+    public async renewPublicationLicense(publicationIdentifier: string): Promise<void> {
         const publicationDocument = await this.publicationRepository.get(
-            publication.identifier,
+            publicationIdentifier,
         );
         await this.lcpManager.renewPublicationLicense(publicationDocument);
     }
 
-    public async registerPublicationLicense(data: any): Promise<void> {
-        const { publication } = data;
+    public async returnPublication(publicationIdentifier: string): Promise<void> {
         const publicationDocument = await this.publicationRepository.get(
-            publication.identifier,
+            publicationIdentifier,
         );
-        await this.lcpManager.registerPublicationLicense(publicationDocument);
+        await this.lcpManager.returnPublication(publicationDocument);
     }
 
-    public async returnPublication(data: any): Promise<void> {
-        const { publication } = data;
-        const publicationDocument = await this.publicationRepository.get(
-            publication.identifier,
-        );
-        await this.lcpManager.returnPublicationLicense(publicationDocument);
-    }
+    public async unlockPublicationWithPassphrase(passphrase: string, publicationViewIdentifer: string): Promise<void> {
 
-    public async unlockPublicationWithPassphrase(data: any) {
-        const { publication, passphrase } = data;
+        const publicationDocument = await this.publicationRepository.get(
+            publicationViewIdentifer,
+        );
         try {
-            await this.lcpManager.unlockPublicationWithPassphrase(publication, passphrase);
-        } catch {
+            // TODO: improve this horrible returned union type!
+            const unlockPublicationRes: string | number | null | undefined =
+                await this.lcpManager.unlockPublication(publicationDocument, passphrase);
+
+            if (typeof unlockPublicationRes !== "undefined") {
+                const message = unlockPublicationRes === 11 ?
+                    this.translator.translate("publication.expiredLcp") :
+                    this.lcpManager.convertUnlockPublicationResultToString(unlockPublicationRes);
+                debug(message);
+
+                // import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
+                // import { Publication as R2Publication } from "@r2-shared-js/models/publication";
+                // tslint:disable-next-line: max-line-length
+                // const r2PublicationStr = Buffer.from(publicationView.r2PublicationBase64, "base64").toString("utf-8");
+                // const r2PublicationJson = JSON.parse(r2PublicationStr);
+                // const r2Publication = TaJsonDeserialize<R2Publication>(r2PublicationJson, R2Publication);
+
+                // const epubPath = this.publicationStorage.getPublicationEpubPath(publicationView.identifier);
+                // const r2Publication = await this.streamer.loadOrGetCachedPublication(epubPath);
+
+                const publicationView = this.publicationViewConverter.convertDocumentToView(publicationDocument);
+                if (!publicationView.lcp) {
+                    debug("LCP !!?");
+                    return;
+                }
+
+                // !r2Publication?.LCP?.Encryption?.UserKey?.TextHint
+                if (!publicationView.lcp.textHint) {
+                    debug("LCP TextHint !!?");
+                    publicationView.lcp.textHint = "";
+                }
+
+                try {
+                    // will call API.unlockPublicationWithPassphrase() again
+                    const action = lcpActions.userKeyCheckRequest.build(
+                        publicationView,
+                        publicationView.lcp.textHint, // r2Publication.LCP.Encryption.UserKey.TextHint,
+                        message,
+                    );
+                    this.store.dispatch(action);
+                    return;
+                } catch (error) {
+                    debug(error);
+                    return;
+                }
+            }
+        } catch (err) {
+            debug(err);
             return;
         }
-        this.store.dispatch(readerActions.open(publication));
-    }
 
-    public async getLsdStatus(data: any) {
-        const { publication } = data;
-        return await this.lcpManager.getLsdStatus(publication);
+        this.store.dispatch(readerActions.openRequest.build(publicationViewIdentifer));
     }
 }

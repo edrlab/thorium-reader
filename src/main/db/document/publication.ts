@@ -12,20 +12,26 @@ import { LcpInfo } from "readium-desktop/common/models/lcp";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { IHttpGetResult } from "readium-desktop/common/utils/http";
 
-interface Resources {
-    filePublication: string;
-    opdsPublication: string;
+export interface Resources {
+    r2PublicationBase64?: string;
+    r2LCPBase64?: string;
+    r2LSDBase64?: string;
+    r2OpdsPublicationBase64?: string;
 }
 
 export interface PublicationDocument extends Identifiable, Timestampable {
     resources: Resources;
-    opdsPublication: any;
     title: string;
     tags?: string[];
     files?: File[];
     coverFile?: File;
     customCover?: CustomCover;
+
     lcp?: LcpInfo;
+    lcpRightsCopies?: number;
+
+    hash: string;
 }
+export type PublicationDocumentWithoutTimestampable = Omit<PublicationDocument, keyof Timestampable>;
 
 export type THttpGetPublicationDocument = IHttpGetResult<string, PublicationDocument>;

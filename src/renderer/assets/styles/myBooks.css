@@ -1,6 +1,6 @@
 @import "./focus-mixin.css";
 
-main {
+.main {
     height: calc(100vh - 7.75rem);
     width: calc(100% - 120px);
     padding-left: 60px;
@@ -159,6 +159,7 @@ main {
 .block_book_list .book_title {
 	display: inline-block;
 	font-weight: 600;
+	max-width: 75%;
 }
 
 .block_book_list .book_author {
@@ -245,12 +246,17 @@ main {
 .publicationLine {
 	display: flex;
 	align-items: center;
+	position: relative;
+
 	& > .publicationLineLink {
 		flex: 1;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
 		padding-left: 0.3125rem;
+		position: absolute;
+		left: 3.125rem;
+    	right: 0;
 	}
 	& p {
 		white-space: nowrap;

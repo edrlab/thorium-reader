@@ -5,46 +5,58 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ImportOpdsPublication } from "readium-desktop/common/redux/states/import";
-import { OpdsFeedView, OpdsPublicationView } from "readium-desktop/common/views/opds";
+import { TPublication } from "readium-desktop/common/type/publication.type";
+import { IOpdsFeedView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
 
-interface IPubInfo {
-    opdsPublication: OpdsPublicationView | undefined;
-    publicationIdentifier: string | undefined;
+interface IPubInfoState {
+    publication?: TPublication;
+    coverZoom?: boolean;
 }
 
-interface IFileImport {
+export interface IFileImport {
     name: string;
     path: string;
 }
 
+export enum DialogTypeName {
+    FileImport = "file-import",
+    PublicationInfoOpds = "publication-info-opds",
+    PublicationInfoLib = "publication-info-lib",
+    PublicationInfoReader = "publication-info-reader",
+    OpdsFeedAddForm = "opds-feed-add-form",
+    DeletePublicationConfirm = "delete-publication-confirm",
+    DeleteOpdsFeedConfirm = "delete-opds-feed-confirm",
+    LcpAuthentication = "lcp-authentication",
+    LsdReturnConfirm = "lsd-return-confirm",
+    LsdRenewConfirm = "lsd-renew-confirm",
+    AboutThorium = "about-thorium",
+}
+
 export interface DialogType {
-    "file-import": {
+    [DialogTypeName.FileImport]: {
         files: IFileImport[];
     };
-    "publication-info": IPubInfo;
-    "publication-info-reader": IPubInfo;
-    "opds-feed-add-form": {};
-    "delete-publication-confirm": {
-        publication: PublicationView;
+    [DialogTypeName.PublicationInfoOpds]: IPubInfoState;
+    [DialogTypeName.PublicationInfoLib]: IPubInfoState;
+    [DialogTypeName.PublicationInfoReader]: IPubInfoState;
+    [DialogTypeName.OpdsFeedAddForm]: {};
+    [DialogTypeName.DeletePublicationConfirm]: {
+        publicationView: PublicationView;
     };
-    "delete-opds-feed-confirm": {
-        feed: OpdsFeedView;
+    [DialogTypeName.DeleteOpdsFeedConfirm]: {
+        feed: IOpdsFeedView;
     };
-    "lcp-authentication": {
-        publication: PublicationView;
+    [DialogTypeName.LcpAuthentication]: {
+        publicationView: PublicationView;
         hint: string;
+        message: string | undefined;
     };
-    "lsd-return-confirm": {
-        publication: PublicationView;
+    [DialogTypeName.LsdReturnConfirm]: {
+        publicationView: PublicationView;
     };
-    "lsd-renew-confirm": {
-        publication: PublicationView;
+    [DialogTypeName.LsdRenewConfirm]: {
+        publicationView: PublicationView;
     };
-    "same-file-import-confirm": {
-        publication: ImportOpdsPublication;
-        downloadSample: boolean;
-    };
-    "about-thorium": {};
+    [DialogTypeName.AboutThorium]: {};
 }

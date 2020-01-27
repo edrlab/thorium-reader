@@ -5,10 +5,13 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Metadata } from "@r2-shared-js/models/metadata";
+import { LcpInfo } from "readium-desktop/common/models/lcp";
+
+import { Identifiable } from "../models/identifiable";
 
 export interface CoverView {
-    url: string;
+    coverUrl?: string;
+    thumbnailUrl?: string;
 }
 
 export interface CustomCoverView {
@@ -16,8 +19,7 @@ export interface CustomCoverView {
     bottomColor: string;
 }
 
-export interface PublicationView {
-    identifier: string;
+export interface PublicationView extends Identifiable {
     title: string;
     authors: string[];
     publishers?: string[];
@@ -28,6 +30,9 @@ export interface PublicationView {
     publishedAt?: string; // ISO8601
     cover?: CoverView;
     customCover?: CustomCoverView;
-    lcp: any;
-    doc?: Metadata;
+
+    lcp?: LcpInfo;
+    lcpRightsCopies?: number;
+
+    r2PublicationBase64: string;
 }

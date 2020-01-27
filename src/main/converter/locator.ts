@@ -16,11 +16,9 @@ export class LocatorViewConverter {
     public convertDocumentToView(doc: LocatorDocument): LocatorView {
         return {
             identifier: doc.identifier,
+            publicationIdentifier: doc.publicationIdentifier,
             locator: Object.assign({}, doc.locator),
             locatorType: doc.locatorType,
-            publication: {
-                identifier: doc.publicationIdentifier,
-            },
             name: doc.name,
         };
     }

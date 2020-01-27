@@ -5,50 +5,59 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-export enum UserKeyCheckStatus {
-    Pending,
-    Error,
-    Success,
-}
+import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 
 export interface LsdInfo {
     statusUrl: string;
+    lsdStatus?: LsdStatus;
+
+    r2LSDBase64: string;
 }
 
 export interface LcpRights {
     print?: number;
     copy?: number;
-    start?: Date;
-    end?: Date;
+    start?: string; // Date.toISOString()
+    end?: string; // Date.toISOString()
 }
 
 export interface LcpInfo {
     provider: string;
-    issued: Date;
-    updated?: Date;
+    issued: string; // Date.toISOString()
+    updated?: string; // Date.toISOString()
     lsd?: LsdInfo;
     rights: LcpRights;
+    textHint: string;
+
+    r2LCPBase64: string;
 }
 
-export interface DeviceConfig {
-    [key: string]: any;
+export interface LsdEvent {
+    type: string;
+    name: string;
+    id: string;
+    timeStamp: string; // Date.toISOString()
 }
 
-export enum LsdStatusType {
-    Active = "active",
-    Expired = "expired",
-    Ready = "ready",
-    Revoked = "revoked",
+export interface LsdLink {
+    type: string;
+    rel: string;
+    href: string;
+    length?: number;
+    title?: string;
+    templated?: boolean;
+    profile?: string;
+    hash?: string;
 }
 
 export interface LsdStatus {
-    events: any[];
+    events?: LsdEvent[];
     id: string;
-    links: any[];
+    links: LsdLink[];
     message: string;
-    status: LsdStatusType;
+    status: StatusEnum;
     updated: {
-        license: string;
-        status: string;
+        license: string; // Date.toISOString()
+        status: string; // Date.toISOString()
     };
 }

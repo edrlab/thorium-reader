@@ -5,9 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
-import { ActionType } from "readium-desktop/common/redux/actions/dialog";
-import { DialogState, IDialogStateData } from "readium-desktop/common/redux/states/dialog";
+import { DialogTypeName } from "readium-desktop/common/models/dialog";
+import { dialogActions } from "readium-desktop/common/redux/actions/";
+import { DialogState } from "readium-desktop/common/redux/states/dialog";
 
 const initialState: DialogState = {
     open: false,
@@ -18,25 +18,52 @@ const initialState: DialogState = {
 // The dialog reducer.
 export function dialogReducer(
     state: DialogState = initialState,
-    action: Action<IDialogStateData>,
-) {
+    action: dialogActions.openRequest.TAction |
+        dialogActions.closeRequest.TAction |
+        dialogActions.updateRequest.TAction,
+): DialogState {
+    let data = {};
+
     switch (action.type) {
-        case ActionType.OpenRequest:
-            return Object.assign(
-                {},
-                state,
-                {
+        case dialogActions.openRequest.ID: {
+            switch (action.payload.type) {
+                // handle in redux-saga by subscribers
+                case DialogTypeName.PublicationInfoOpds:
+                case DialogTypeName.PublicationInfoReader:
+                case DialogTypeName.PublicationInfoLib:
+                    break;
+                default:
+                    data = action.payload.data;
+            }
+            return {
+                ...state,
+                ...{
                     open: true,
                     type: action.payload.type,
-                    data: action.payload.data,
+                    data,
                 },
-            );
-        case ActionType.CloseRequest:
-            return Object.assign(
-                {},
-                initialState,
-            );
+            };
+        }
+
+        case dialogActions.updateRequest.ID:
+            return {
+                ...state,
+                ...{
+                    data: {
+                        ...state.data,
+                        ...action.payload.data,
+                    },
+                },
+            };
+
+        case dialogActions.closeRequest.ID:
+            return {
+                ...initialState,
+            };
+
         default:
-            return state;
+            break;
     }
+
+    return state;
 }

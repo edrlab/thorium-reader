@@ -19,8 +19,7 @@ Licence d'utilisation accordée  à la fondation Readium Foundation.
 
 Le code source de cette application est soumis à une licence de tpye BSD 3. L'application est basée sur la boîte à outils open-source Readium Desktop.
 
-Il s'agit actuellement d'une version bêta, nous savons qu'il y a encore des problèmes et nous travaillons à les résoudre.
-Le projet est en constante évolution, des corrections et de nouvelles fonctionnalités seront ajoutées chaque mois.
+Le projet est en constante évolution, des corrections et de nouvelles fonctionnalités seront ajoutées régulièrement.
 
 Ce projet n'aurait pas vu le jour sans l'aide financière des organisations suivantes :
 - CNL (Centre National du livre), France

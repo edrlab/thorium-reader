@@ -18,27 +18,16 @@ interface Index  {
     fields: string[];
 }
 
-interface SortOption {
-    [key: string]: string;
-}
-
-interface Query {
-    selector?: string;
-    sort?: SortOption[];
-    limit?: number;
-}
-
-interface FindByOptions {
-    sort?: SortOption[];
-    limit?: number;
-}
+export type ExcludeTimestampableAndIdentifiable<D> = Omit<D, keyof Timestampable | keyof Identifiable>;
+// tslint:disable-next-line: max-line-length
+export type ExcludeTimestampableWithPartialIdentifiable<D> = ExcludeTimestampableAndIdentifiable<D> & Partial<Identifiable>;
 
 export abstract class BaseRepository<D extends Identifiable & Timestampable> {
-    protected db: PouchDB.Database;
+    protected db: PouchDB.Database<D>;
     protected idPrefix: string;
     protected indexes: Index[];
 
-    public constructor(db: PouchDB.Database, idPrefix: string, indexes?: Index[]) {
+    public constructor(db: PouchDB.Database<D>, idPrefix: string, indexes?: Index[]) {
         this.db = db;
         this.idPrefix = idPrefix;
         this.indexes = (indexes == null) ? [] : indexes;
@@ -48,46 +37,51 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         return this.idPrefix + "_" + documentIdentifier;
     }
 
-    public async save(document: any): Promise<D> {
-        let dbDoc = Object.assign(
-            {},
-            document,
-            {
-                updatedAt: moment.now(),
-            },
-        );
+    public async save(document: ExcludeTimestampableWithPartialIdentifiable<D>):
+        Promise<D> {
 
-        if (document.identifier == null) {
+        if (!document.identifier) {
             document.identifier = uuid.v4();
         }
+
+        let dbDoc: PouchDB.Core.PutDocument<D> = this.convertFromDocument(document);
 
         // Search if there is an existing document with the same identifier
         try {
             const origDbDoc = await this.db.get(
                 this.buildId(document.identifier),
-            ) as any;
+            );
 
             dbDoc = Object.assign(
                 dbDoc,
                 {
-                    _id: origDbDoc._id,
-                    _rev: origDbDoc._rev,
                     createdAt: origDbDoc.createdAt,
-                },
+                } as Timestampable,
+                {
+                    _id: origDbDoc._id,
+                } as PouchDB.Core.IdMeta,
+                {
+                    _rev: origDbDoc._rev,
+                } as PouchDB.Core.GetMeta,
             );
         } catch (error) {
             // Not found, so this is a new one
             dbDoc = Object.assign(
                 dbDoc,
                 {
-                    identifier: document.identifier,
                     _id: this.buildId(document.identifier),
+                } as PouchDB.Core.IdMeta,
+                {
                     createdAt: dbDoc.updatedAt,
-                },
+                } as Timestampable,
+                {
+                    identifier: document.identifier,
+                } as Identifiable,
             );
         }
 
         await this.db.put(dbDoc);
+
         return this.get(document.identifier);
     }
 
@@ -116,9 +110,9 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         });
     }
 
-    public async find(query?: Query): Promise<D[]> {
+    public async find(query?: PouchDB.Find.FindRequest<D>): Promise<D[]> {
         await this.checkIndexes();
-        const newQuery: any = Object.assign(
+        const newQuery: PouchDB.Find.FindRequest<D> = Object.assign(
             {},
         );
 
@@ -144,7 +138,7 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
                 }
 
                 // Add sort field to selector
-                (newQuery.selector as any)[sortField] = { $gt: null };
+                newQuery.selector[sortField] = { $gt: null };
             }
         }
 
@@ -155,33 +149,12 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
 
         try {
             const result = await this.db.find(newQuery);
-            return result.docs.map((doc: any) => {
+            return result.docs.map((doc) => {
                 return this.convertToDocument(doc);
             });
         } catch (error) {
             throw error;
         }
-    }
-
-    public async findBy(
-        selector: any,
-        options?: FindByOptions,
-    ): Promise<D[]> {
-        return this.find(
-            Object.assign(
-                {},
-                { selector },
-                options,
-            ),
-        );
-    }
-
-    protected convertToMinimalDocument(dbDoc: PouchDB.Core.Document<any>): D {
-        return {
-            identifier: dbDoc.identifier as string,
-            createdAt: dbDoc.createdAt,
-            updatedAt: dbDoc.updatedAt,
-        } as any;
     }
 
     protected async buildIndex(index: Index) {
@@ -235,5 +208,25 @@ export abstract class BaseRepository<D extends Identifiable & Timestampable> {
         }
     }
 
-    protected abstract convertToDocument(dbDoc: PouchDB.Core.Document<any>): D;
+    protected convertFromDocument(document: ExcludeTimestampableWithPartialIdentifiable<D>):
+        PouchDB.Core.PutDocument<D> {
+
+        return Object.assign(
+            {} as D,
+            document,
+            {
+                updatedAt: moment.now(),
+            } as Timestampable,
+        );
+    }
+
+    protected convertToMinimalDocument(dbDoc: PouchDB.Core.Document<D>): Timestampable & Identifiable {
+        return {
+            identifier: dbDoc.identifier,
+            createdAt: dbDoc.createdAt,
+            updatedAt: dbDoc.updatedAt,
+        } as Timestampable & Identifiable;
+    }
+
+    protected abstract convertToDocument(dbDoc: PouchDB.Core.Document<D>): D;
 }

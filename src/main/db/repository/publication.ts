@@ -5,12 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { injectable} from "inversify";
+import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
-
+import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
-import { BaseRepository } from "./base";
+import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";
 
 const CREATED_AT_INDEX = "created_at_index";
 
@@ -18,47 +18,60 @@ const TAG_INDEX = "tag_index";
 
 const TITLE_INDEX = "title_index";
 
-import {
-    convertMultiLangStringToString,
-} from "readium-desktop/common/utils";
+const HASH_INDEX = "hash_index";
 
 @injectable()
 export class PublicationRepository extends BaseRepository<PublicationDocument> {
-    public constructor(db: PouchDB.Database) {
+    public constructor(db: PouchDB.Database<PublicationDocument>) {// INJECTED!
+
         const indexes = [
             {
-                fields: ["createdAt"],
+                fields: ["createdAt"], // Timestampable
                 name: CREATED_AT_INDEX,
             },
             {
-                fields: ["title"],
+                fields: ["title"], // PublicationDocument
                 name: TITLE_INDEX,
             },
             {
-                fields: ["tags"],
+                fields: ["tags"], // PublicationDocument
                 name: TAG_INDEX,
+            },
+            {
+                fields: ["hash"], // PublicationDocument
+                name: HASH_INDEX,
             },
         ];
         super(db, "publication", indexes);
     }
 
+    public async findByHashId(hash: string): Promise<PublicationDocument[]> {
+        return this.find({
+            selector: { hash: { $eq: hash }},
+        });
+    }
+
     public async findByTag(tag: string): Promise<PublicationDocument[]> {
-        return this.findBy({ tags: { $elemMatch: { $eq: tag }}});
+        return this.find({
+            selector: { tags: { $elemMatch: { $eq: tag }}},
+        });
     }
 
     public async findByTitle(title: string): Promise<PublicationDocument[]> {
-        return this.findBy({ title: { $eq: title }});
+        return this.find({
+            selector: { title: { $eq: title }},
+        });
     }
 
     public async searchByTitle(title: string): Promise<PublicationDocument[]> {
-        const dbDocs = await (this.db as any).search({
+        const dbDocs = await this.db.search({
             query: title,
             fields: ["title"],
             include_docs: true,
             highlighting: false,
         });
 
-        return dbDocs.rows.map((dbDoc: any) => {
+        return dbDocs.rows.map((dbDoc) => {
             return this.convertToDocument(dbDoc.doc);
         });
     }
@@ -77,7 +90,7 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
         const tags: string[] = [];
 
         for (const doc of dbResponse.docs) {
-            for (const tag of (doc as any).tags) {
+            for (const tag of doc.tags) {
                 if (tags.indexOf(tag) >= 0) {
                     continue;
                 }
@@ -91,20 +104,31 @@ export class PublicationRepository extends BaseRepository<PublicationDocument> {
         return tags;
     }
 
-    protected convertToDocument(dbDoc: PouchDB.Core.Document<any>): PublicationDocument {
+    protected convertToDocument(dbDoc: PouchDB.Core.Document<PublicationDocument>): PublicationDocument {
         return Object.assign(
             {},
             super.convertToMinimalDocument(dbDoc),
             {
-                resources: dbDoc.resources,
-                opdsPublication: dbDoc.opdsPublication,
+                resources: dbDoc.resources ? {
+                    // legacy names fallback
+                    r2PublicationBase64: dbDoc.resources.r2PublicationBase64 ||
+                        (dbDoc.resources as any).filePublication, // legacy obsolete field
+                    r2OpdsPublicationBase64: dbDoc.resources.r2OpdsPublicationBase64 ||
+                        (dbDoc.resources as any).opdsPublication, // legacy obsolete field
+                    r2LCPBase64: dbDoc.resources.r2LCPBase64,
+                    r2LSDBase64: dbDoc.resources.r2LSDBase64,
+                } : undefined,
                 title: ((typeof dbDoc.title !== "string") ? convertMultiLangStringToString(dbDoc.title) : dbDoc.title),
                 tags: dbDoc.tags,
                 files: dbDoc.files,
                 coverFile: dbDoc.coverFile,
                 customCover: dbDoc.customCover,
+
                 lcp: dbDoc.lcp,
-            },
+                lcpRightsCopies: dbDoc.lcpRightsCopies,
+
+                hash: dbDoc.hash,
+            } as ExcludeTimestampableAndIdentifiable<PublicationDocument>,
         );
     }
 }

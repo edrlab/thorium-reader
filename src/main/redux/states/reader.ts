@@ -18,12 +18,9 @@ export interface ReaderStateMode {
 }
 
 export interface ReaderStateConfig {
-
-    // Config for all readers
     config: ReaderConfig;
 }
 
 export interface ReaderState extends ReaderStateMode, ReaderStateConfig {
-    // Base url of started server
     readers: { [identifier: string]: Reader };
 }

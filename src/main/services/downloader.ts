@@ -11,7 +11,10 @@ import { injectable } from "inversify";
 import * as path from "path";
 import { Download } from "readium-desktop/common/models/download";
 import { DownloadStatus } from "readium-desktop/common/models/downloadable";
-import { diMainGet } from "readium-desktop/main/di";
+import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { RootState } from "readium-desktop/main/redux/states";
+import { Store } from "redux";
 import * as request from "request";
 import { tmpNameSync } from "tmp";
 import { URL } from "url";
@@ -28,19 +31,35 @@ interface DownloadRegistry {
 }
 
 export interface DownloadProgressListener {
-    onProgress: any;
+    onProgress: (dl: Download) => void;
 }
 
 @injectable()
 export class Downloader {
+
+    // CONSTRUCTOR INJECTION!
+    // inject(diSymbolTable["config-repository"])
+    private readonly configRepository!: ConfigRepository<AccessTokenMap>;
+
+    // CONSTRUCTOR INJECTION!
+    // inject(diSymbolTable.store)
+    private readonly store!: Store<RootState>;
+
     // Path where files are downloaded
     private dstRepositoryPath: string;
 
     // List of downloads
     private downloads: DownloadRegistry;
 
-    public constructor(dstRepositoryPath: string) {
+    public constructor(
+        dstRepositoryPath: string,
+        configRepository: ConfigRepository<AccessTokenMap>, // INJECTED!
+        store: Store<RootState>, // INJECTED!
+        ) {
         this.dstRepositoryPath = dstRepositoryPath;
+        this.configRepository = configRepository;
+        this.store = store;
+
         this.downloads = {};
     }
 
@@ -86,25 +105,36 @@ export class Downloader {
         // Last time we poll the request progress
         let progressLastTime = new Date();
 
-        const store = diMainGet("store");
-        const locale = store.getState().i18n.locale;
+        const locale = this.store.getState().i18n.locale;
 
         options = options || {} as TRequestCoreOptionsOptionalUriUrl;
         options.headers = options.headers || {};
 
-        const headerFromOptions = {};
+        const headerFromOptions: request.Headers = {};
         for (const [key, value] of Object.entries(options.headers)) {
             Object.assign(headerFromOptions, {
                 [key.toLowerCase()]: value,
             });
         }
 
-        const headers = Object.assign(headerFromOptions, {
+        let savedAccessTokens: AccessTokenMap = {};
+        try {
+            // Why is this undefined?? Injection async problem?
+            const configDoc = await this.configRepository.get("oauth");
+            savedAccessTokens = configDoc.value;
+        } catch (err) {
+            debug(err);
+        }
+        const domain = download.srcUrl.replace(/^https?:\/\/([^\/]+)\/?.*$/, "$1");
+        const accessToken = savedAccessTokens ? savedAccessTokens[domain] : undefined;
+
+        const headers: request.Headers = Object.assign(headerFromOptions, {
             "user-agent": "readium-desktop",
             "accept-language": `${locale},en-US;q=0.7,en;q=0.5`,
+            "Authorization": accessToken ? `Bearer ${accessToken.authenticationToken}` : undefined,
         });
         const requestOptions: TRequestCoreOptionsRequiredUriUrl = Object.assign(
-            {timeout: 5000},
+            {timeout: 25000},
             options,
             {
                 url: download.srcUrl,
@@ -149,13 +179,9 @@ export class Downloader {
                     // Download progress
                     downloadedSize += chunk.length;
                     const currentTime = new Date();
-                    const elapsedSeconds = (
-                        currentTime.getTime() -
-                        progressLastTime.getTime()
-                    ) / 1000;
+                    const elapsedMilliSeconds = currentTime.getTime() - progressLastTime.getTime();
 
-                    if (elapsedSeconds > 1) {
-                        // Refresh progress at best every 1 seconds
+                    if (elapsedMilliSeconds > 500) {
                         progress = Math.round((downloadedSize / totalSize) * 100);
                         download.progress = progress;
                         download.downloadedSize = downloadedSize;
