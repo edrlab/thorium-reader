@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
-import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { getLibraryWindowFromDi, getReaderWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
@@ -106,10 +106,9 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
     }
 }
 
-function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
+function* readerDetachRequest(_action: readerActions.detachModeRequest.TAction) {
 
-    const identifier = action.payload.identifier;
-    const readerWin = yield* callTyped(() => getReaderWindowFromDi(identifier));
+    const readerWin = yield* callTyped(() => getAllReaderWindowFromDi()[0]);
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
     if (libWin) {

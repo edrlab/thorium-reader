@@ -214,4 +214,5 @@ export class ReaderApi implements IReaderApi {
 
         return true;
     }
+
 }

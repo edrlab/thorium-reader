@@ -34,7 +34,7 @@ export function syncFactory(SYNCHRONIZABLE_ACTIONS: string[]) {
                         payload: {
                             action: actionSerializer.serialize(action),
                         },
-                        sender: {
+                    sender: {
                             type: SenderType.Renderer,
                             // FIXME
                             identifier: "get id from redux state",

@@ -73,6 +73,8 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     //         action: readerActions.detachModeSuccess.build(state.reader.mode),
     //     },
     // } as syncIpc.EventPayload);
+    // send with an API Request now
+    // should be removed
 
     // Send locale
     webContents.send(syncIpc.CHANNEL, {
@@ -95,8 +97,7 @@ function* winClose(action: winActions.reader.closed.TAction) {
     }
 
     if (Object.keys(readers).length < 1) {
-        // yield put(readerActions.detachModeSuccess.build(ReaderMode.Attached));
-        // handle this global readerMode Attached or detached
+        yield put(readerActions.attachModeRequest.build());
     }
 
     const libraryWindow = yield* callTyped(() => getLibraryWindowFromDi());

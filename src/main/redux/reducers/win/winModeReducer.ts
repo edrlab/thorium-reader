@@ -12,12 +12,16 @@ const initialState: ReaderMode = ReaderMode.Attached;
 
 export function winModeReducer(
     state: ReaderMode = initialState,
-    action: readerActions.detachModeRequest.TAction,
+    action: readerActions.detachModeRequest.TAction |
+        readerActions.attachModeRequest.TAction,
 ): ReaderMode {
     switch (action.type) {
 
         case readerActions.detachModeRequest.ID:
             return ReaderMode.Detached;
+
+        case readerActions.attachModeRequest.ID:
+            return ReaderMode.Attached;
 
         default:
             return state;
