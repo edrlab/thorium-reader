@@ -6,35 +6,22 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { BrowserWindow, Menu } from "electron";
-import * as path from "path";
-import { LocatorType } from "readium-desktop/common/models/locator";
-import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
-import { Timestampable } from "readium-desktop/common/models/timestampable";
-import { AppWindowType } from "readium-desktop/common/models/win";
-import { getWindowBounds } from "readium-desktop/common/rectangle/window";
-import { readerActions, i18nActions } from "readium-desktop/common/redux/actions";
-import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
-import { ConfigDocument } from "readium-desktop/main/db/document/config";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { diMainGet, getLibraryWindowFromDi, saveReaderWindowInDi } from "readium-desktop/main/di";
-import { setMenu } from "readium-desktop/main/menu";
-import { appActions, streamerActions, winActions } from "readium-desktop/main/redux/actions";
+import { syncIpc, winIpc } from "readium-desktop/common/ipc";
+import { i18nActions, readerActions } from "readium-desktop/common/redux/actions";
+import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { getLibraryWindowFromDi, saveReaderWindowInDi } from "readium-desktop/main/di";
+import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
-    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
+    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
-import { SagaIterator } from "redux-saga";
-import { all, call, put, take, takeEvery } from "redux-saga/effects";
+import { all, call, put, takeEvery } from "redux-saga/effects";
 
-import { convertHttpUrlToCustomScheme } from "@r2-navigator-js/electron/common/sessions";
-import { trackBrowserWindow } from "@r2-navigator-js/electron/main/browser-window-tracker";
-import { encodeURIComponent_RFC3986 } from "@r2-utils-js/_utils/http/UrlUtils";
 import { createReaderWindow } from "./browserWindow/createReaderWindow";
-import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
+debug("_");
 
 function* winOpen(action: winActions.reader.openSucess.TAction) {
 
