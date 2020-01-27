@@ -17,6 +17,7 @@ import { combineReducers } from "redux";
 import { winRegistryReaderReducer } from "./win/registry/reader";
 import { winSessionLibraryReducer } from "./win/session/library";
 import { winSessionReaderReducer } from "./win/session/reader";
+import { winModeReducer } from "./win/winModeReducer";
 
 export const rootReducer = combineReducers<RootState>({
     streamer: streamerReducer,
@@ -33,5 +34,6 @@ export const rootReducer = combineReducers<RootState>({
         registry: combineReducers({
             reader: winRegistryReaderReducer,
         }),
+        mode: winModeReducer,
     }),
 });

@@ -9,17 +9,16 @@ import { Action } from "readium-desktop/common/models/redux";
 
 export const ID = "READER_MODE_SET_REQUEST";
 
+// tslint:disable-next-line: no-empty-interface
 export interface Payload {
-    identifier: string;
 }
 
-export function build(identifier: string):
+export function build():
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
-            identifier,
         },
     };
 }

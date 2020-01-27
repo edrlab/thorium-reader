@@ -5,7 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ReaderMode } from "readium-desktop/common/models/reader";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
+
 // import { NetState } from "readium-desktop/common/redux/states/net";
 // import { UpdateState } from "readium-desktop/common/redux/states/update";
 import { AppState } from "./app";
@@ -30,5 +32,6 @@ export interface RootState {
         registry: {
             reader: IDictWinRegistryReaderState,
         },
+        mode: ReaderMode,
     };
 }

@@ -67,12 +67,12 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     } as syncIpc.EventPayload);
 
     // Send reader mode
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: readerActions.detachModeSuccess.build(state.reader.mode),
-        },
-    } as syncIpc.EventPayload);
+    // webContents.send(syncIpc.CHANNEL, {
+    //     type: syncIpc.EventType.MainAction,
+    //     payload: {
+    //         action: readerActions.detachModeSuccess.build(state.reader.mode),
+    //     },
+    // } as syncIpc.EventPayload);
 
     // Send locale
     webContents.send(syncIpc.CHANNEL, {
@@ -87,25 +87,19 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
 
 function* winClose(action: winActions.reader.closed.TAction) {
 
-    const reader = yield* selectTyped(
-        (state: RootState) =>
-            state.win.session.reader[action.payload.identifier],
-    );
+    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+    const reader = readers[action.payload.identifier];
 
     if (reader) {
         yield put(streamerActions.publicationCloseRequest.build(reader.publicationIdentifier));
     }
 
-    const readers = yield* selectTyped(
-        (state: RootState) =>
-            state.win.session.reader,
-    );
-    if (!Object.keys(readers).length) {
-        yield put(readerActions.detachModeSuccess.build(ReaderMode.Attached));
+    if (Object.keys(readers).length < 1) {
+        // yield put(readerActions.detachModeSuccess.build(ReaderMode.Attached));
+        // handle this global readerMode Attached or detached
     }
 
-    const libraryWindow: Electron.BrowserWindow = yield callTyped(() => getLibraryWindowFromDi());
-
+    const libraryWindow = yield* callTyped(() => getLibraryWindowFromDi());
     if (libraryWindow) {
         if (libraryWindow.isMinimized()) {
             libraryWindow.restore();
