@@ -9,7 +9,6 @@ import { ipcMain } from "electron";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { callTyped } from "readium-desktop/common/redux/typed-saga";
-import { ActionSerializer } from "readium-desktop/common/services/serializer";
 import { diMainGet } from "readium-desktop/main/di";
 import { eventChannel } from "redux-saga";
 import { all, call, put, take, takeLeading } from "redux-saga/effects";
@@ -40,8 +39,7 @@ function* ipcSyncChannel() {
 
         const ipcData: syncIpc.EventPayload = yield take(channel);
 
-        // FIXME: Why callTyped doesn't pass through the type
-        const actionSerializer: ActionSerializer = yield callTyped(() => diMainGet("action-serializer"));
+        const actionSerializer = yield* callTyped(() => diMainGet("action-serializer"));
 
         yield put({
             ...actionSerializer.deserialize(ipcData.payload.action),

@@ -8,12 +8,10 @@
 import * as debug_ from "debug";
 import { CodeError } from "readium-desktop/common/errors";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
-import { SagaIterator } from "redux-saga";
-import { all, call, fork, put } from "redux-saga/effects";
+import { all, call, put, takeEvery } from "redux-saga/effects";
 
 // Logger
 const debug = debug_("readium-desktop:main#redux/sagas/api");
@@ -27,7 +25,7 @@ const getSymbolName = (apiName: string) => {
     throw new Error("Wrong API name called " + apiName);
 };
 
-export function* processRequest(requestAction: apiActions.request.TAction): SagaIterator {
+function* processRequest(requestAction: apiActions.request.TAction) {
     const { api } = requestAction.meta;
 
     try {
@@ -48,11 +46,8 @@ export function* processRequest(requestAction: apiActions.request.TAction): Saga
     }
 }
 
-export function* requestWatcher() {
-    while (true) {
-        const action = yield* takeTyped(apiActions.request.build);
-        yield fork(processRequest, action);
-    }
+function* requestWatcher() {
+    yield takeEvery(apiActions.request.ID, processRequest);
 }
 
 export function* watchers() {

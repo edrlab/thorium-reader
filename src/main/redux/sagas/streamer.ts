@@ -45,7 +45,7 @@ function stopStreamer(streamer: Server) {
     streamer.stop();
 }
 
-export function* startRequestWatcher(): SagaIterator {
+function* startRequestWatcher(): SagaIterator {
     while (true) {
         yield take(streamerActions.startRequest.ID);
         const streamer = diMainGet("streamer");
@@ -60,7 +60,7 @@ export function* startRequestWatcher(): SagaIterator {
     }
 }
 
-export function* stopRequestWatcher(): SagaIterator {
+function* stopRequestWatcher(): SagaIterator {
     while (true) {
         yield take(streamerActions.stopRequest.ID);
         const streamer = diMainGet("streamer");
@@ -75,7 +75,7 @@ export function* stopRequestWatcher(): SagaIterator {
     }
 }
 
-export function* publicationOpenRequestWatcher(): SagaIterator {
+function* publicationOpenRequestWatcher(): SagaIterator {
     while (true) {
         // tslint:disable-next-line: max-line-length
         const action = yield* takeTyped(streamerActions.publicationOpenRequest.build);
@@ -274,7 +274,7 @@ export function* publicationOpenRequestWatcher(): SagaIterator {
     }
 }
 
-export function* publicationCloseRequestWatcher(): SagaIterator {
+function* publicationCloseRequestWatcher(): SagaIterator {
     while (true) {
         // tslint:disable-next-line: max-line-length
         const action = yield* takeTyped(streamerActions.publicationCloseRequest.build);

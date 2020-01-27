@@ -7,13 +7,14 @@
 
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { i18nActions } from "readium-desktop/common/redux/actions";
+import { callTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
 import { all, call, takeEvery } from "redux-saga/effects";
 
 function* setLocale(action: i18nActions.setLocale.TAction) {
-    const translator = diMainGet("translator");
-    const configRepository: ConfigRepository<LocaleConfigValueType> = diMainGet("config-repository");
+    const translator = yield* callTyped(() => diMainGet("translator"));
+    const configRepository: ConfigRepository<LocaleConfigValueType> = yield* callTyped(() => diMainGet("config-repository"));
 
     const configRepositorySave = async () =>
         await configRepository.save({

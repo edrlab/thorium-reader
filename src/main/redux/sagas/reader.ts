@@ -9,11 +9,13 @@ import * as debug_ from "debug";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
-import { getLibraryWindowFromDi, getReaderWindowFromDi, getAllReaderWindowFromDi } from "readium-desktop/main/di";
+import {
+    getAllReaderWindowFromDi, getLibraryWindowFromDi, getReaderWindowFromDi,
+} from "readium-desktop/main/di";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
-    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
+    _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
 import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects";
 
