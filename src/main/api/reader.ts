@@ -185,4 +185,7 @@ export class ReaderApi implements IReaderApi {
         return true;
     }
 
+    public async getMode() {
+        return this.store.getState().win.mode;
+    }
 }

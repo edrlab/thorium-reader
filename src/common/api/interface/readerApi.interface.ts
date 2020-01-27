@@ -11,6 +11,7 @@ import {
 import { LocatorView } from "readium-desktop/common/views/locator";
 
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
+import { ReaderMode } from "readium-desktop/common/models/reader";
 
 export interface IReaderApi {
     setLastReadingLocation: (publicationIdentifier: string, locator: R2Locator) => Promise<LocatorView>;
@@ -31,6 +32,7 @@ export interface IReaderApi {
     clipboardCopy: (
         publicationIdentifier: string,
         clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY) => Promise<boolean>;
+    getMode: () => Promise<ReaderMode>;
 }
 
 export interface IReaderModuleApi {
@@ -41,4 +43,5 @@ export interface IReaderModuleApi {
     "reader/addBookmark": IReaderApi["addBookmark"];
     "reader/deleteBookmark": IReaderApi["deleteBookmark"];
     "reader/clipboardCopy": IReaderApi["clipboardCopy"];
+    "reader/getMode": IReaderApi["getMode"];
 }
