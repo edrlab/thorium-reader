@@ -30,28 +30,30 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     const state = yield* selectTyped((_state: RootState) => _state);
     const winId = action.payload.identifier;
 
-    // Send the id to the new window
-    webContents.send(winIpc.CHANNEL, {
-        type: winIpc.EventType.IdResponse,
-        payload: {
-            winId,
-        },
-    } as winIpc.EventPayload);
+    // TODO: send all readerState in reader renderer
 
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: readerActions.openSuccess.build(state.reader.readers[winId]),
-        },
-    } as syncIpc.EventPayload);
+    // // Send the id to the new window
+    // webContents.send(winIpc.CHANNEL, {
+    //     type: winIpc.EventType.IdResponse,
+    //     payload: {
+    //         winId,
+    //     },
+    // } as winIpc.EventPayload);
 
-    // Send reader config
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: readerActions.configSetSuccess.build(state.reader.config),
-        },
-    } as syncIpc.EventPayload);
+    // webContents.send(syncIpc.CHANNEL, {
+    //     type: syncIpc.EventType.MainAction,
+    //     payload: {
+    //         action: readerActions.openSuccess.build(state.reader.readers[winId]),
+    //     },
+    // } as syncIpc.EventPayload);
+
+    // // Send reader config
+    // webContents.send(syncIpc.CHANNEL, {
+    //     type: syncIpc.EventType.MainAction,
+    //     payload: {
+    //         action: readerActions.configSetSuccess.build(state.reader.config),
+    //     },
+    // } as syncIpc.EventPayload);
 
     // Send reader mode
     // webContents.send(syncIpc.CHANNEL, {
@@ -63,13 +65,13 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     // send with an API Request now
     // should be removed
 
-    // Send locale
-    webContents.send(syncIpc.CHANNEL, {
-        type: syncIpc.EventType.MainAction,
-        payload: {
-            action: i18nActions.setLocale.build(state.i18n.locale),
-        },
-    } as syncIpc.EventPayload);
+    // // Send locale
+    // webContents.send(syncIpc.CHANNEL, {
+    //     type: syncIpc.EventType.MainAction,
+    //     payload: {
+    //         action: i18nActions.setLocale.build(state.i18n.locale),
+    //     },
+    // } as syncIpc.EventPayload);
 
     yield call(() => saveReaderWindowInDi(readerWin, winId));
 }

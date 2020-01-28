@@ -60,8 +60,8 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         manifestUrl,
         pathDecoded,
         winBound,
-        identifier,
         reduxState,
+        identifier,
     ));
 
     /*

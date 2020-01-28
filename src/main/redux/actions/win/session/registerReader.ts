@@ -8,6 +8,7 @@
 import { BrowserWindow, Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 import { defaultRectangle } from "readium-desktop/common/rectangle/window";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import {
     IReaderStateReader,
 } from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
@@ -20,7 +21,7 @@ export interface Payload {
     publicationIdentifier: string;
     identifier: string;
     winBound: Rectangle;
-    fileSystemPath: string;
+    filesystemPath: string;
     manifestUrl: string;
     reduxStateReader: IReaderStateReader;
 }
@@ -29,11 +30,33 @@ export function build(
     win: BrowserWindow,
     publicationIdentifier: string,
     manifestUrl: string,
-    fileSystemPath: string,
+    filesystemPath: string,
     winBound: Rectangle = defaultRectangle(),
-    reduxStateReader: IReaderStateReader = {},
+    reduxStateReader?: IReaderStateReader,
     identifier: string = uuid.v4()):
     Action<typeof ID, Payload> {
+
+    if (!reduxStateReader) {
+        reduxStateReader = {
+            config: readerConfigInitialState,
+            info: {
+                filesystemPath,
+                manifestUrl,
+                publicationIdentifier,
+            },
+        };
+    } else {
+        reduxStateReader = {
+            ...reduxStateReader,
+            ...{
+                info: {
+                    filesystemPath,
+                    manifestUrl,
+                    publicationIdentifier,
+                },
+            },
+        };
+    }
 
     return {
         type: ID,
@@ -41,7 +64,7 @@ export function build(
             win,
             publicationIdentifier,
             manifestUrl,
-            fileSystemPath,
+            filesystemPath,
             winBound,
             identifier,
             reduxStateReader,

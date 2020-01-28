@@ -239,6 +239,7 @@ function* readerCloseRequestWatcher() {
     yield takeEvery(readerActions.closeRequest.ID, readerCLoseRequestFromIdentifier);
 }
 
+// OPEN READER ENTRY POINT
 function* readerOpenRequestWatcher() {
     yield takeEvery(readerActions.openRequest.ID, readerOpenRequest);
 }
