@@ -5,9 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ICommonRootState } from "readium-desktop/renderer/common/redux/states";
-import { ReaderState } from "readium-desktop/renderer/reader/redux/states/reader";
+import { ReaderConfig, ReaderInfo } from "readium-desktop/common/models/reader";
+import { ICommonRootState } from "readium-desktop/renderer/common/redux/states/renderer/commonRootState";
 
 export interface IReaderRootState extends ICommonRootState {
-    reader: ReaderState;
+    reader: IReaderStateReader;
+}
+
+export interface IReaderStateReader {
+    config: ReaderConfig;
+    info: ReaderInfo;
 }

@@ -23,7 +23,7 @@ import {
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import { deleteTag } from "readium-desktop/renderer/common/logics/publicationInfos/tags/deleteTag";
 import { apiDispatch } from "readium-desktop/renderer/common/redux/api/api";
-import { IReaderRootState } from "readium-desktop/renderer/reader/redux/states";
+import { IReaderRootState } from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 // Logger

@@ -6,11 +6,12 @@
 // ==LICENSE-END=
 
 import { Rectangle } from "electron";
+import { IReaderRootState } from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
 
 export interface IWinWindowBoundState {
     windowBound: Rectangle;
 }
 
 export interface IWinReaderReduxState {
-    reduxState: any;
+    reduxState: IReaderRootState;
 }

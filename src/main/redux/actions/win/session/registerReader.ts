@@ -8,6 +8,9 @@
 import { BrowserWindow, Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 import { defaultRectangle } from "readium-desktop/common/rectangle/window";
+import {
+    IReaderStateReader,
+} from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
 import * as uuid from "uuid";
 
 export const ID = "WIN_REGISTRY_REGISTER_READER";
@@ -19,7 +22,7 @@ export interface Payload {
     winBound: Rectangle;
     fileSystemPath: string;
     manifestUrl: string;
-    reduxState: any;
+    reduxStateReader: IReaderStateReader;
 }
 
 export function build(
@@ -28,7 +31,7 @@ export function build(
     manifestUrl: string,
     fileSystemPath: string,
     winBound: Rectangle = defaultRectangle(),
-    reduxState: any = {},
+    reduxStateReader: IReaderStateReader = {},
     identifier: string = uuid.v4()):
     Action<typeof ID, Payload> {
 
@@ -41,7 +44,7 @@ export function build(
             fileSystemPath,
             winBound,
             identifier,
-            reduxState,
+            reduxStateReader,
         },
     };
 }

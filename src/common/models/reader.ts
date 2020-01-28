@@ -5,10 +5,6 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { BrowserWindow } from "electron";
-
-import { Identifiable } from "./identifiable";
-
 export enum ReaderMode {
     Attached = "attached",
     Detached = "detached",
@@ -17,12 +13,10 @@ export enum ReaderMode {
 /**
  *  A reader
  */
-export interface Reader extends Identifiable {
+export interface ReaderInfo {
     filesystemPath: string;
     manifestUrl: string;
     publicationIdentifier: string;
-    browserWindow: BrowserWindow;
-    browserWindowID: number;
 }
 
 /**

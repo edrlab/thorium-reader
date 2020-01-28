@@ -15,7 +15,7 @@ import { Store } from "redux";
 
 import App from "./components/App";
 import { diReaderSymbolTable as diSymbolTable } from "./diSymbolTable";
-import { IReaderRootState } from "./redux/states";
+import { IReaderRootState } from "../common/redux/states/renderer/readerRootState";
 
 // Create container used for dependency injection
 const container = new Container();

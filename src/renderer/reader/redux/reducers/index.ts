@@ -10,15 +10,19 @@ import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
 import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
-import { readerReducer } from "readium-desktop/renderer/reader/redux/reducers/reader";
+import {
+    IReaderRootState, IReaderStateReader,
+} from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
 import { combineReducers } from "redux";
-import { IReaderRootState } from "../states";
 
 export const rootReducer = () => {
     return combineReducers<IReaderRootState>({
         api: apiReducer,
         i18n: i18nReducer,
-        reader: readerReducer,
+        reader: combineReducers<IReaderStateReader>({
+            config: readerConfigReducer,
+            info: readerInfoReducer,
+        }),
         win: winReducer,
         dialog: dialogReducer,
         toast: toastReducer,

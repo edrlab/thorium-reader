@@ -14,7 +14,7 @@ import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { stringArrayEqual } from "readium-desktop/utils/stringArrayEqual";
 import { all, call, put, takeEvery } from "redux-saga/effects";
 
-import { ICommonRootState } from "../../states";
+import { ICommonRootState } from "../../states/renderer/commonRootState";
 
 function* apiResult(action: apiActions.result.TAction) {
 

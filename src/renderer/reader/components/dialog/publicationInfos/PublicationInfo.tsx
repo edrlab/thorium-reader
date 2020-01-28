@@ -19,7 +19,7 @@ import {
 import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
-import { IReaderRootState } from "readium-desktop/renderer/reader/redux/states";
+import { IReaderRootState } from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
 import { TDispatch } from "readium-desktop/typings/redux";
 
 import TagManager from "./TagManager";
