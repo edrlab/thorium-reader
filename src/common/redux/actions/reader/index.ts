@@ -10,9 +10,7 @@ import * as closeError from "./closeError";
 import * as closeRequest from "./closeRequest";
 import * as closeRequestFromPublication from "./closeRequestFromPublication";
 import * as closeSuccess from "./closeSuccess";
-import * as configSetError from "./configSetError";
-import * as configSetRequest from "./configSetRequest";
-import * as configSetSuccess from "./configSetSuccess";
+import * as configSetDefault from "./configSetDefault";
 import * as detachModeRequest from "./detachModeRequest";
 import * as detachModeSuccess from "./detachModeSuccess";
 import * as fullScreenRequest from "./fullScreenRequest";
@@ -34,9 +32,7 @@ export {
     attachModeRequest,
     detachModeRequest,
     detachModeSuccess,
-    configSetRequest,
-    configSetSuccess,
-    configSetError,
+    configSetDefault,
     // saveBookmarkRequest,
     // saveBookmarkSuccess,
     // saveBookmarkError,

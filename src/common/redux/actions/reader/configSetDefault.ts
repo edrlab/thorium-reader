@@ -5,17 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
 
-export const ID = "READER_CONFIG_SET_ERROR";
+export const ID = "READER_DEFAULT_CONFIG_SET_REQUEST";
 
-export function build(error: any):
-    Action<typeof ID, any> {
+export interface Payload {
+    config: ReaderConfig;
+}
+
+export function build(config: ReaderConfig):
+    Action<typeof ID, Payload> {
 
     return {
         type: ID,
-        payload: error,
-        error: true,
+        payload: {
+            config,
+        },
     };
 }
 build.toString = () => ID; // Redux StringableActionCreator

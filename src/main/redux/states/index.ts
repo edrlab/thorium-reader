@@ -5,13 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ReaderMode } from "readium-desktop/common/models/reader";
+import { ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
 
 // import { NetState } from "readium-desktop/common/redux/states/net";
 // import { UpdateState } from "readium-desktop/common/redux/states/update";
 import { AppState } from "./app";
-import { ReaderState } from "./reader";
 import { StreamerState } from "./streamer";
 import { IDictWinRegistryReaderState } from "./win/registry/reader";
 import { IWinSessionLibraryState } from "./win/session/library";
@@ -22,7 +21,9 @@ export interface RootState {
     // net: NetState;
     i18n: I18NState;
     streamer: StreamerState;
-    reader: ReaderState;
+    reader: {
+        defaultConfig: ReaderConfig,
+    };
     // update: UpdateState;
     win: {
         session: {
