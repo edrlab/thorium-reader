@@ -5,8 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { all, call } from "redux-saga/effects";
+import { all, call, take } from "redux-saga/effects";
 
+import { appActions } from "../actions";
 import * as api from "./api";
 import * as app from "./app";
 import * as i18n from "./i18n";
@@ -18,15 +19,15 @@ import * as win from "./win";
 
 // import { updateStatusWatcher } from "./update";
 
-export function* rootSaga() {
+function* appInitSuccessWatcher() {
+
+    yield take(appActions.initRequest.ID);
+
     yield all([
         call(api.watchers),
 
         // I18N
         call(i18n.watchers),
-
-        // App
-        call(app.watchers),
 
         // Net
         // call(netStatusWatcher),
@@ -41,8 +42,19 @@ export function* rootSaga() {
         call(win.reader.watchers),
 
         call(win.library.watchers),
+
         call(win.session.library.watchers),
 
         call(ipc.watchers),
+    ]);
+}
+
+export function* rootSaga() {
+    yield all([
+
+        // App
+        call(app.watchers),
+
+        call(appInitSuccessWatcher),
     ]);
 }
