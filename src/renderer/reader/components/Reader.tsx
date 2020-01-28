@@ -421,12 +421,12 @@ class Reader extends React.Component<IProps, IState> {
             .then((publicationView) => {
                 this.setState({publicationView});
                 this.loadPublicationIntoViewport(publicationView, locator);
+                console.error("fetch api publication/get", null)
             })
             .catch((error) => console.error("Error to fetch api publication/get", error));
     }
 
     public setTTSState(newTtsState: TTSStateEnum) {
-        console.log("set tts state was called");
         this.setState({ttsState : newTtsState});
     }
 
@@ -788,6 +788,8 @@ class Reader extends React.Component<IProps, IState> {
     }
     private handleSkipPreviousClick() {
         ttsPrevious();
+    }
+
     private handleSettingsSave() {
         const store = diReaderGet("store");
         store.dispatch(readerActions.configSetRequest.build(this.state.readerConfig));
