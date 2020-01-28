@@ -17,6 +17,11 @@ function openReader(publicationView: PublicationView | PublicationView[]) {
     }
     if (publicationView) {
         const store = diMainGet("store");
+        // TODO
+        // FIXME
+        // Can't call readerActions.openRequest before appInit
+        // check the flow to throw appInit and openReader consecutively
+        // and need to exec main here before to call openReader
         store.dispatch(readerActions.openRequest.build(publicationView.identifier));
         return true;
     }

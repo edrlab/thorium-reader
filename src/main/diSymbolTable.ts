@@ -2,7 +2,7 @@
 // create Dependency Injection Symbol Table
 export const diSymbolTable = {
     "store": Symbol("store"),
-    "win-registry": Symbol("win-registry"),
+    // "win-registry": Symbol("win-registry"),
     "translator": Symbol("translator"),
     "downloader": Symbol("downloader"),
     "publication-repository": Symbol("publication-repository"),

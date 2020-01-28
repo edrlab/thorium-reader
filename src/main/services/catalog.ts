@@ -39,10 +39,12 @@ import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
 import { getTagsFromOpdsPublication } from "../converter/tools/getTags";
 import { extractCrc32OnZip } from "../crc";
+import { getLibraryWindowFromDi } from "../di";
 import { RootState } from "../redux/states";
 import { Downloader } from "./downloader";
 import { LcpManager } from "./lcp";
-import { WinRegistry } from "./win-registry";
+
+// import { WinRegistry } from "./win-registry";
 
 // import { IS_DEV } from "readium-desktop/preprocessor-directives";
 
@@ -72,8 +74,8 @@ export class CatalogService {
     @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
 
-    @inject(diSymbolTable["win-registry"])
-    private readonly winRegistry!: WinRegistry;
+    // @inject(diSymbolTable["win-registry"])
+    // private readonly winRegistry!: WinRegistry;
 
     public async importEpubOrLcplFile(
         filePath: string,
@@ -273,14 +275,15 @@ export class CatalogService {
 
     public async exportPublication(publicationView: PublicationView) {
 
-        const libraryAppWindow = this.winRegistry.getLibraryWindow();
+        const libraryAppWindow = getLibraryWindowFromDi();
 
         // Open a dialog to select a folder then copy the publication in it
         const res = await dialog.showOpenDialog(
-            libraryAppWindow ? libraryAppWindow.browserWindow : undefined,
+            libraryAppWindow ? libraryAppWindow : undefined,
             {
                 properties: ["openDirectory"],
             });
+
         if (!res.canceled) {
             if (res.filePaths && res.filePaths.length > 0) {
                 let destinationPath = res.filePaths[0];

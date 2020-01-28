@@ -12,8 +12,9 @@ import {
     apiActions, dialogActions, downloadActions, i18nActions, lcpActions, /*netActions,*/ readerActions,
     toastActions, /*updateActions*/
 } from "readium-desktop/common/redux/actions";
-import { diMainGet } from "readium-desktop/main/di";
+import { diMainGet, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
+import { RootState } from "../states";
 
 const debug = debug_("readium-desktop:sync");
 
@@ -32,8 +33,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     readerActions.detachModeSuccess.ID,
 
-    readerActions.configSetError.ID,
-    readerActions.configSetSuccess.ID,
+    readerActions.configSetDefault.ID,
+    readerActions.configSetResetDefault.ID,
 
     // readerActions.saveBookmarkError.ID,
     // readerActions.saveBookmarkSuccess.ID,
@@ -56,51 +57,84 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 ];
 
 export const reduxSyncMiddleware: Middleware
-    = (_store: MiddlewareAPI<Dispatch<AnyAction>>) =>
-    (next: Dispatch<ActionWithSender>) =>
-    ((action: ActionWithSender) => {
+    = (store: MiddlewareAPI<Dispatch<AnyAction>, RootState>) =>
+        (next: Dispatch<ActionWithSender>) =>
+            ((action: ActionWithSender) => {
 
-    debug("### action type", action.type);
+                debug("### action type", action.type);
 
-    // Test if the action must be sent to the rendeder processes
-    if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
-        // Do not send
-        return next(action);
-    }
+                // Test if the action must be sent to the rendeder processes
+                if (SYNCHRONIZABLE_ACTIONS.indexOf(action.type) === -1) {
+                    // Do not send
+                    return next(action);
+                }
 
-    // Send this action to all the registered renderer processes
-    const winRegistry = diMainGet("win-registry");
-    const appWindows = winRegistry.getAllWindows();
+                // Send this action to all the registered renderer processes
 
-    // Get action serializer
-    const actionSerializer = diMainGet("action-serializer");
+                // Get action serializer
+                const actionSerializer = diMainGet("action-serializer");
 
-    for (const appWindow of appWindows) {
-        // Notifies renderer process
-        const winId = appWindow.identifier;
+                const readers = store.getState().win.session.reader;
 
-        if (action.sender &&
-            action.sender.type === SenderType.Renderer &&
-            action.sender.winId === winId
-        ) {
-            // Do not send in loop an action already sent by this renderer process
-            continue;
-        }
+                // actually when a renderer process send an api action this middleware broadcast to all renderer
+                // It should rather keep the action and don't broadcast an api request between front and back
+                // this bug become a feature with a hack in publicationInfo in reader
+                // thanks to this broadcast we can listen on publication tag and make a live refresh
 
-        try {
-            appWindow.browserWindow.webContents.send(syncIpc.CHANNEL, {
-                type: syncIpc.EventType.MainAction,
-                payload: {
-                    action: actionSerializer.serialize(action),
-                },
-                sender: {
-                    type: SenderType.Main,
-                },
-            } as syncIpc.EventPayload);
-        } catch (error) {
-            console.error("Windows does not exist", winId);
-        }
-    }
+                for (const key in readers) {
+                    if (readers[key]) {
+                        if (
+                            !(
+                                action.sender?.type === SenderType.Renderer
+                                && action.sender?.identifier === readers[key].identifier
+                            )
+                        ) {
 
-    return next(action);
-});
+                            const readerWin = getReaderWindowFromDi(readers[key].identifier);
+
+                            try {
+                                readerWin.webContents.send(syncIpc.CHANNEL, {
+                                    type: syncIpc.EventType.MainAction,
+                                    payload: {
+                                        action: actionSerializer.serialize(action),
+                                    },
+                                    sender: {
+                                        type: SenderType.Main,
+                                    },
+                                } as syncIpc.EventPayload);
+                            } catch (error) {
+                                debug("ERROR in SYNC ACTION", error);
+                            }
+                        }
+                    }
+                }
+
+                // for (const readerWindow of readerWindows) {
+                //     // Notifies renderer process
+                //     const winId = readerWindow.id;
+
+                //     if (action.sender &&
+                //         action.sender.type === SenderType.Renderer &&
+                //         action.sender.identifier === identifier
+                //     ) {
+                //         // Do not send in loop an action already sent by this renderer process
+                //         continue;
+                //     }
+
+                //     try {
+                //         appWindow.browserWindow.webContents.send(syncIpc.CHANNEL, {
+                //             type: syncIpc.EventType.MainAction,
+                //             payload: {
+                //                 action: actionSerializer.serialize(action),
+                //             },
+                //             sender: {
+                //                 type: SenderType.Main,
+                //             },
+                //         } as syncIpc.EventPayload);
+                //     } catch (error) {
+                //         console.error("Windows does not exist", winId);
+                //     }
+                // }
+
+                return next(action);
+            });

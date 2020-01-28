@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import * as path from "path";
 import { cli } from "readium-desktop/main/cli/process";
-import { diMainGet } from "readium-desktop/main/di";
+import { createStoreFromDi, diMainGet } from "readium-desktop/main/di";
 import { _PACKAGING, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directives";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
@@ -47,7 +47,14 @@ initGlobalConverters_GENERIC();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
-const main = () => diMainGet("store").dispatch(appActions.initRequest.build());
+const main = () =>
+    createStoreFromDi()
+        .then(
+            (store) => store.dispatch(appActions.initRequest.build()),
+        )
+        .catch(
+            (err) => process.stderr.write(`REDUX STATE MANAGER CAN'T BE INITIALIZED, ERROR: ${err}`),
+        );
 
 if (_VSCODE_LAUNCH === "true") {
     main();

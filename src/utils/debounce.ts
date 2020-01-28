@@ -21,11 +21,11 @@ export function debounce<F extends (...args: any[]) => Promise<any> | any>(
     options: Options = {
         isImmediate: false,
     },
-): (...args: any[]) => void {
+): (...args: Parameters<F>) => void {
 
     let timeoutId: NodeJS.Timer | undefined;
 
-    return async function fct(this: any, ...args: any[]) {
+    return async function fct(this: any, ...args: Parameters<F>) {
         const that = this;
 
         const doLater = async () => {

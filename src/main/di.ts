@@ -37,7 +37,7 @@ import { CatalogService } from "readium-desktop/main/services/catalog";
 import { DeviceIdManager } from "readium-desktop/main/services/device";
 import { Downloader } from "readium-desktop/main/services/downloader";
 import { LcpManager } from "readium-desktop/main/services/lcp";
-import { WinRegistry } from "readium-desktop/main/services/win-registry";
+// import { WinRegistry } from "readium-desktop/main/services/win-registry";
 import { PublicationStorage } from "readium-desktop/main/storage/publication-storage";
 import { streamer } from "readium-desktop/main/streamer";
 import { _NODE_ENV, _POUCHDB_ADAPTER_NAME } from "readium-desktop/preprocessor-directives";
@@ -48,6 +48,8 @@ import { Server } from "@r2-streamer-js/http/server";
 import { ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
+
+export const CONFIGREPOSITORY_REDUX_WIN_PERSISTENCE = "CONFIGREPOSITORY_REDUX_WIN_PERSISTENCE";
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 
@@ -156,19 +158,23 @@ if (!fs.existsSync(publicationRepositoryPath)) {
 // Create container used for dependency injection
 const container = new Container();
 
-// Create store
-const store = initStore();
-container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
+const createStoreFromDi = async () => {
+    const store = await initStore(configRepository);
+
+    container.bind<Store<RootState>>(diSymbolTable.store).toConstantValue(store);
+
+    // Create downloader
+    const downloader = new Downloader(app.getPath("temp"), configRepository, store);
+    container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
+
+    return store;
+};
 
 // Create window registry
-container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSingletonScope();
+// container.bind<WinRegistry>(diSymbolTable["win-registry"]).to(WinRegistry).inSingletonScope();
 
 // Create translator
 container.bind<Translator>(diSymbolTable.translator).to(Translator).inSingletonScope();
-
-// Create downloader
-const downloader = new Downloader(app.getPath("temp"), configRepository, store);
-container.bind<Downloader>(diSymbolTable.downloader).toConstantValue(downloader);
 
 // Create repositories
 container.bind<PublicationRepository>(diSymbolTable["publication-repository"]).toConstantValue(
@@ -247,7 +253,7 @@ const getAllReaderWindowFromDi =
 // local interface to force type return
 interface IGet {
     (s: "store"): Store<RootState>;
-    (s: "win-registry"): WinRegistry;
+    // (s: "win-registry"): WinRegistry;
     (s: "translator"): Translator;
     (s: "downloader"): Downloader;
     (s: "publication-repository"): PublicationRepository;
@@ -284,4 +290,5 @@ export {
     saveLibraryWindowInDi,
     saveReaderWindowInDi,
     getAllReaderWindowFromDi,
+    createStoreFromDi,
 };

@@ -15,12 +15,26 @@ import { RootState } from "readium-desktop/main/redux/states";
 
 import { rootSaga } from "readium-desktop/main/redux/sagas";
 
-export function initStore(): Store<RootState> {
+import { ConfigRepository } from "readium-desktop/main/db/repository/config";
+import { CONFIGREPOSITORY_REDUX_WIN_PERSISTENCE } from "readium-desktop/main/di";
+import { reduxPersistMiddleware } from "../middleware/persistence";
+
+export async function initStore(configRepository: ConfigRepository<Partial<RootState>>): Promise<Store<RootState>> {
+
+    const preloadedStateRepository = await configRepository.get(CONFIGREPOSITORY_REDUX_WIN_PERSISTENCE);
+    const preloadedState = preloadedStateRepository.value?.win
+        ? preloadedStateRepository.value
+        : undefined;
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(
         rootReducer,
+        preloadedState,
         composeWithDevTools(
-            applyMiddleware(reduxSyncMiddleware, sagaMiddleware),
+            applyMiddleware(
+                reduxSyncMiddleware,
+                sagaMiddleware,
+                reduxPersistMiddleware,
+            ),
         ),
     );
     sagaMiddleware.run(rootSaga);
