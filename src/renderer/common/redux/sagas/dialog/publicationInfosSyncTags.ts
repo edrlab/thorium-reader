@@ -5,11 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { TApiMethod } from "readium-desktop/common/api/api.type";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { PublicationView } from "readium-desktop/common/views/publication";
-import { TApiMethod } from "readium-desktop/main/api/api.type";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { stringArrayEqual } from "readium-desktop/utils/stringArrayEqual";
 import { all, call, put, takeEvery } from "redux-saga/effects";

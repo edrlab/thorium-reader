@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import { inject, injectable } from "inversify";
+import { ICatalogApi } from "readium-desktop/common/api/interface/catalog.interface";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Translator } from "readium-desktop/common/services/translator";
 import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
@@ -22,20 +23,6 @@ import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { LocatorDocument } from "../db/document/locator";
 
 export const CATALOG_CONFIG_ID = "catalog";
-
-export interface ICatalogApi {
-    get: () => Promise<CatalogView>;
-    addEntry: (entryView: CatalogEntryView) => Promise<CatalogEntryView[]>;
-    getEntries: () => Promise<CatalogEntryView[]>;
-    updateEntries: (entryView: CatalogEntryView[]) => Promise<CatalogEntryView[]>;
-}
-
-export interface ICatalogModuleApi {
-    "catalog/get": ICatalogApi["get"];
-    "catalog/addEntry": ICatalogApi["addEntry"];
-    "catalog/getEntries": ICatalogApi["getEntries"];
-    "catalog/updateEntries": ICatalogApi["updateEntries"];
-}
 
 @injectable()
 export class CatalogApi implements ICatalogApi {

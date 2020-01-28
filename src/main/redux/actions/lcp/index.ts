@@ -3,17 +3,10 @@
 // Licensed to the Readium Foundation under one or more contributor license agreements.
 // Use of this source code is governed by a BSD-style license
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
-// ==LICENSE-END==
+// ==LICENSE-END=
 
-import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
-import { TModuleApi } from "readium-desktop/common/api/moduleApi.type";
+import * as publicationFileLock from "../lcp/publicationFileLock";
 
-export interface MetaApi {
-    requestId: string;
-    moduleId: TModuleApi;
-    methodId: TMethodApi;
-}
-
-export interface Meta {
-    api: MetaApi;
-}
+export {
+    publicationFileLock,
+};

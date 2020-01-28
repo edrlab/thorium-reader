@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { TApiMethodName } from "readium-desktop/main/api/api.type";
+import { TApiMethodName } from "readium-desktop/common/api/api.type";
 import { Store, Unsubscribe } from "redux";
 
 import { LAST_API_SUCCESS_ID } from "./redux/states/api";
