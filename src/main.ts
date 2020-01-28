@@ -47,14 +47,17 @@ initGlobalConverters_GENERIC();
 const lcpNativePluginPath = path.normalize(path.join(__dirname, "external-assets", "lcp.node"));
 setLcpNativePluginPath(lcpNativePluginPath);
 
-const main = () =>
-    createStoreFromDi()
-        .then(
-            (store) => store.dispatch(appActions.initRequest.build()),
-        )
-        .catch(
-            (err) => process.stderr.write(`REDUX STATE MANAGER CAN'T BE INITIALIZED, ERROR: ${err}`),
-        );
+const main = async () => {
+
+    try {
+        const store = await createStoreFromDi();
+
+        store.dispatch(appActions.initRequest.build());
+
+    } catch (err) {
+        process.stderr.write(`REDUX STATE MANAGER CAN'T BE INITIALIZED, ERROR: ${err}`)
+    }
+};
 
 if (_VSCODE_LAUNCH === "true") {
     main();
