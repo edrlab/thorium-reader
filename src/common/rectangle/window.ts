@@ -1,12 +1,12 @@
-// // ==LICENSE-BEGIN==
-// // Copyright 2017 European Digital Reading Lab. All rights reserved.
-// // Licensed to the Readium Foundation under one or more contributor license agreements.
-// // Use of this source code is governed by a BSD-style license
-// // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
-// // ==LICENSE-END==
+// ==LICENSE-BEGIN==
+// Copyright 2017 European Digital Reading Lab. All rights reserved.
+// Licensed to the Readium Foundation under one or more contributor license agreements.
+// Use of this source code is governed by a BSD-style license
+// that can be found in the LICENSE file exposed on Github (readium) in the project repository.
+// ==LICENSE-END==
 
 // import * as debug_ from "debug";
-// import { BrowserWindow, Rectangle, screen } from "electron";
+import { /*BrowserWindow,*/ Rectangle, screen } from "electron";
 // import { ConfigDocument } from "readium-desktop/main/db/document/config";
 // import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 // import { diMainGet } from "readium-desktop/main/di";
@@ -19,13 +19,13 @@
 
 // const WINDOW_RECT_CONFIG_ID = "windowRectangle";
 
-// export const defaultRectangle = (): Rectangle => (
-//     {
-//         height: 600,
-//         width: 800,
-//         x: Math.round(screen.getPrimaryDisplay().workAreaSize.width / 3),
-//         y: Math.round(screen.getPrimaryDisplay().workAreaSize.height / 3),
-//     });
+export const defaultRectangle = (): Rectangle => (
+    {
+        height: 600,
+        width: 800,
+        x: Math.round(screen.getPrimaryDisplay().workAreaSize.width / 3),
+        y: Math.round(screen.getPrimaryDisplay().workAreaSize.height / 3),
+    });
 
 // export type t_savedWindowsRectangle = typeof savedWindowsRectangle;
 // export const savedWindowsRectangle = async (rectangle: Rectangle) => {

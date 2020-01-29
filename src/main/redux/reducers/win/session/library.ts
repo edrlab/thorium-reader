@@ -29,6 +29,7 @@ export function winSessionLibraryReducer(
                 ...{
                     browserWindowId: action.payload.win.id,
                     identifier: action.payload.identifier,
+                    windowBound: action.payload.winBound,
                 },
             };
 
@@ -37,7 +38,6 @@ export function winSessionLibraryReducer(
                 ...state,
                 ...{
                     browserWindowId: undefined,
-                    windowBound: defaultRectangle(),
                     identifier: undefined,
                 },
             };

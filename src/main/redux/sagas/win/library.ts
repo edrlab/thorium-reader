@@ -32,6 +32,10 @@ function* winOpen(action: winActions.library.openSucess.TAction) {
         },
     } as winIpc.EventPayload);
 
+    // send on redux library
+    // TODO
+    // will be replaced with preloaded state injection in Redux createStore.
+
     // Send locale
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,

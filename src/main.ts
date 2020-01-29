@@ -8,7 +8,7 @@
 import * as debug_ from "debug";
 import * as path from "path";
 import { cli } from "readium-desktop/main/cli/process";
-import { createStoreFromDi, diMainGet } from "readium-desktop/main/di";
+import { createStoreFromDi } from "readium-desktop/main/di";
 import { _PACKAGING, _VSCODE_LAUNCH } from "readium-desktop/preprocessor-directives";
 
 import { setLcpNativePluginPath } from "@r2-lcp-js/parser/epub/lcp";
@@ -55,7 +55,7 @@ const main = async () => {
         store.dispatch(appActions.initRequest.build());
 
     } catch (err) {
-        process.stderr.write(`REDUX STATE MANAGER CAN'T BE INITIALIZED, ERROR: ${err}`)
+        process.stderr.write(`REDUX STATE MANAGER CAN'T BE INITIALIZED, ERROR: ${err}`);
     }
 };
 

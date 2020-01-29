@@ -7,7 +7,6 @@
 
 import { BrowserWindow, Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
-import { defaultRectangle } from "readium-desktop/common/rectangle/window";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import {
     IReaderStateReader,
@@ -31,7 +30,7 @@ export function build(
     publicationIdentifier: string,
     manifestUrl: string,
     filesystemPath: string,
-    winBound: Rectangle = defaultRectangle(),
+    winBound: Rectangle,
     reduxStateReader?: IReaderStateReader,
     identifier: string = uuid.v4()):
     Action<typeof ID, Payload> {

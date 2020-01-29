@@ -8,16 +8,15 @@
 import * as debug_ from "debug";
 import { BrowserWindow, Event, Menu, shell } from "electron";
 import * as path from "path";
+import { defaultRectangle } from "readium-desktop/common/rectangle/window";
 import { selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { setMenu } from "readium-desktop/main/menu";
+import { winActions } from "readium-desktop/main/redux/actions";
+import { RootState } from "readium-desktop/main/redux/states";
 import {
     _PACKAGING, _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
 import { put } from "redux-saga/effects";
-
-// import { put } from "typed-redux-saga";
-import { setMenu } from "../../../../menu";
-import { winActions } from "../../../actions";
-import { RootState } from "../../../states";
 
 // Logger
 const debug = debug_("readium-desktop:createLibraryWindow");
@@ -27,11 +26,14 @@ const debug = debug_("readium-desktop:createLibraryWindow");
 let libWindow: BrowserWindow = null;
 
 // Opens the main window, with a native menu bar.
-export function* createLibraryWindow() {
+export function* createLibraryWindow(_action: winActions.library.openRequest.TAction) {
 
     // initial state apply in reducers
-    const windowBound = yield* selectTyped(
+    let windowBound = yield* selectTyped(
         (state: RootState) => state.win.session.library.windowBound);
+    if (!windowBound) {
+        windowBound = defaultRectangle();
+    }
 
     libWindow = new BrowserWindow({
         ...windowBound,
@@ -76,7 +78,7 @@ export function* createLibraryWindow() {
         }
     }
 
-    yield put(winActions.session.registerLibrary.build(libWindow));
+    yield put(winActions.session.registerLibrary.build(libWindow, windowBound));
 
     let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
     if (rendererBaseUrl === "file://") {

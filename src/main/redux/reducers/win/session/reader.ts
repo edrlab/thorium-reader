@@ -28,14 +28,14 @@ export function winSessionReaderReducer(
                     [action.payload.identifier]: {
                         ...{
                             windowBound: action.payload.winBound,
-                            reduxState: action.payload.reduxState,
+                            reduxState: action.payload.reduxStateReader,
                         },
                         ...state[action.payload.identifier],
                         ...{
                             browserWindowId: action.payload.win.id,
                             publicationIdentifier: action.payload.publicationIdentifier,
                             manifestUrl: action.payload.manifestUrl,
-                            fileSystemPath: action.payload.fileSystemPath,
+                            fileSystemPath: action.payload.filesystemPath,
                             identifier: action.payload.identifier,
                         },
                     },

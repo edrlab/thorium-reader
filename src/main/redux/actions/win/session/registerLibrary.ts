@@ -16,15 +16,17 @@ export const ID = "WIN_REGISTRY_REGISTER_LIBRARY";
 export interface Payload {
     win: BrowserWindow;
     identifier: string;
+    winBound: Electron.Rectangle;
 }
 
-export function build(win: BrowserWindow):
+export function build(win: BrowserWindow, winBound: Electron.Rectangle):
     Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             win,
+            winBound,
             identifier: uuid.v4(),
         },
     };

@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { SenderType } from "readium-desktop/common/models/sync";
+import { defaultRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import {
@@ -18,6 +19,9 @@ import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
 import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { screen } from "electron";
+import * as ramda from "ramda";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -158,9 +162,39 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
     }
 
     const { manifestUrl } = typedAction.payload as streamerActions.publicationOpenSuccess.Payload;
-    const winBound = yield* selectTyped(
+
+    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+    const library = yield* selectTyped((state: RootState) => state.win.session.library);
+
+    let winBound = yield* selectTyped(
         (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
     );
+    if (!winBound) {
+        const winBoundArray = [];
+
+        if (ObjectKeys(readers).length) {
+
+            const displayArea = yield* callTyped(() => screen.getPrimaryDisplay().workAreaSize);
+
+            for (const key in readers) {
+                if (readers[key]) {
+                    const rectangle = readers[key].windowBound;
+
+                    rectangle.x += 100;
+                    rectangle.x %= displayArea.width - rectangle.width;
+                    rectangle.y += 100;
+                    rectangle.y %= displayArea.height - rectangle.height;
+
+                    winBoundArray.push(rectangle);
+                }
+            }
+            winBound = ramda.uniq(winBoundArray)[0];
+
+        } else {
+            winBound = library.windowBound;
+        }
+    }
+
     const reduxState = yield* selectTyped(
         (state: RootState) => state.win.registry.reader[publicationIdentifier]?.reduxState,
     );

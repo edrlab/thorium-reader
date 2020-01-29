@@ -21,6 +21,10 @@ export function* checkReaderWindowInSession(_action: winActions.library.openRequ
         (state: RootState) => state.win.session.reader,
     );
 
+    // should be readers identifier from session and not open a new reader with this publicationIdentifier
+    // ex: if 2 readers with the same pubId was previously opened,
+    // at the next starting they need to deshydrate data from session and not from pubId registry
+
     for (const key in readers) {
         if (readers[key]) {
             yield put(readerActions.openRequest.build(readers[key].publicationIdentifier));
