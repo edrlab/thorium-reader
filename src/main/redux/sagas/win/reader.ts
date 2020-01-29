@@ -6,8 +6,8 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { syncIpc, winIpc } from "readium-desktop/common/ipc";
-import { i18nActions, readerActions } from "readium-desktop/common/redux/actions";
+import { readerIpc } from "readium-desktop/common/ipc";
+import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { getLibraryWindowFromDi, saveReaderWindowInDi } from "readium-desktop/main/di";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
@@ -26,19 +26,23 @@ debug("_");
 function* winOpen(action: winActions.reader.openSucess.TAction) {
 
     const readerWin = action.payload.win;
+    const identifier = action.payload.identifier;
     const webContents = readerWin.webContents;
-    const state = yield* selectTyped((_state: RootState) => _state);
-    const winId = action.payload.identifier;
+    const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
+    const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
 
-    // TODO: send all readerState in reader renderer
-
-    // // Send the id to the new window
-    // webContents.send(winIpc.CHANNEL, {
-    //     type: winIpc.EventType.IdResponse,
-    //     payload: {
-    //         winId,
-    //     },
-    // } as winIpc.EventPayload);
+    webContents.send(readerIpc.CHANNEL, {
+        type: readerIpc.EventType.request,
+        payload: {
+            i18n: {
+                locale,
+            },
+            win: {
+                identifier,
+            },
+            reader: reader.reduxState,
+        },
+    } as readerIpc.EventPayload);
 
     // webContents.send(syncIpc.CHANNEL, {
     //     type: syncIpc.EventType.MainAction,
@@ -65,7 +69,6 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     // send with an API Request now
     // should be removed
 
-    // // Send locale
     // webContents.send(syncIpc.CHANNEL, {
     //     type: syncIpc.EventType.MainAction,
     //     payload: {
@@ -73,7 +76,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     //     },
     // } as syncIpc.EventPayload);
 
-    yield call(() => saveReaderWindowInDi(readerWin, winId));
+    yield call(() => saveReaderWindowInDi(readerWin, identifier));
 }
 
 function* winClose(action: winActions.reader.closed.TAction) {
