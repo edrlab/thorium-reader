@@ -11,12 +11,10 @@ import "react-dropdown/style.css";
 import { ipcRenderer } from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { readerIpc, syncIpc } from "readium-desktop/common/ipc";
-import { ActionWithSender } from "readium-desktop/common/models/sync";
+import { readerIpc } from "readium-desktop/common/ipc";
 import { IS_DEV } from "readium-desktop/preprocessor-directives";
-import { actionSerializer } from "readium-desktop/renderer/common/actionSerializer";
 import { winActions } from "readium-desktop/renderer/common/redux/actions";
-import { createStoreFromDi, diReaderGet } from "readium-desktop/renderer/reader/di";
+import { createStoreFromDi } from "readium-desktop/renderer/reader/di";
 
 import { initGlobalConverters_OPDS } from "@r2-opds-js/opds/init-globals";
 import {

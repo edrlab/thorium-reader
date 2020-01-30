@@ -8,12 +8,14 @@
 import { dialogReducer } from "readium-desktop/common/redux/reducers/dialog";
 import { i18nReducer } from "readium-desktop/common/redux/reducers/i18n";
 import { toastReducer } from "readium-desktop/common/redux/reducers/toast";
-import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
-import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import {
     IReaderRootState, IReaderStateReader,
 } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
+import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { combineReducers } from "redux";
+
+import { readerConfigReducer } from "./readerConfig";
 
 export const rootReducer = () => {
     return combineReducers<IReaderRootState>({
@@ -21,7 +23,7 @@ export const rootReducer = () => {
         i18n: i18nReducer,
         reader: combineReducers<IReaderStateReader>({
             config: readerConfigReducer,
-            info: readerInfoReducer,
+            info: undefined, // injected with preloaded state
         }),
         win: winReducer,
         dialog: dialogReducer,
