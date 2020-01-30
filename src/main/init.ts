@@ -11,6 +11,7 @@ import * as path from "path";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
+import { AnalyticsType } from "readium-desktop/common/models/analytics";
 import { AppWindow, AppWindowType } from "readium-desktop/common/models/win";
 import {
     i18nActions, /*netActions,*/ readerActions, /*updateActions,*/
@@ -182,6 +183,16 @@ export function initApp() {
         store.dispatch(i18nActions.setLocale.build(lang));
         debug(`create i18n key in configRepository with ${lang} locale`);
     });
+
+    //for some reason the "yield" call is the only way this gets saved, but also stops the book from closing
+    const analyticsRepository = diMainGet("analytics-repository");
+    const doc = {
+        analyticsType: AnalyticsType.OpenApp,
+        publicationIdentifier : ""
+    }
+    console.log(doc)
+    console.log(analyticsRepository)
+    analyticsRepository.save(doc);
 
     const winRegistry = diMainGet("win-registry");
     winRegistry.registerOpenCallback(winOpenCallback);

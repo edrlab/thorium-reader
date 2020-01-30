@@ -10,6 +10,7 @@ import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import { LocatorType } from "readium-desktop/common/models/locator";
 import { Reader, ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
+import { AnalyticsType } from "readium-desktop/common/models/analytics";
 import { Timestampable } from "readium-desktop/common/models/timestampable";
 import { AppWindowType } from "readium-desktop/common/models/win";
 import { getWindowBounds } from "readium-desktop/common/rectangle/window";
@@ -224,6 +225,16 @@ function* closeReader(reader: Reader, gotoLibrary: boolean) {
 
     // Notify the streamer that a publication has been closed
     yield put(streamerActions.publicationCloseRequest.build(publicationIdentifier));
+
+    //for some reason the "yield" call is the only way this gets saved, but also stops the book from closing
+    const analyticsRepository = diMainGet("analytics-repository");
+    const doc = {
+        publicationIdentifier,
+        analyticsType: AnalyticsType.CloseBook
+    }
+    console.log(doc)
+    console.log(analyticsRepository)
+    analyticsRepository.save(doc);
 
     // Wait for the publication to be closed
     const streamerAction = yield take([

@@ -10,4 +10,6 @@ export enum AnalyticsType {
     OpenBook = "openBook",
     CloseBook = "closeBook",
     PlayTts = "playTts",
+    OpenApp = "openApp",
+    CloseApp = "closeApp",
 }
