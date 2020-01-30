@@ -50,24 +50,22 @@ if (IS_DEV) {
     }, 5000);
 }
 
-// TODO
-// It may be moved into redux saga logic with eventChannel instead of listen to this event here
-const ipcSyncHandler =
-    (_0: any, data: syncIpc.EventPayload) => {
-        switch (data.type) {
-            case syncIpc.EventType.MainAction:
-                // Dispatch main action to renderer reducers
-                const store = diReaderGet("store");
-                store.dispatch(Object.assign(
-                    {},
-                    actionSerializer.deserialize(data.payload.action),
-                    {
-                        sender: data.sender,
-                    },
-                ) as ActionWithSender);
-                break;
-        }
-    };
+// const ipcSyncHandler =
+//     (_0: any, data: syncIpc.EventPayload) => {
+//         switch (data.type) {
+//             case syncIpc.EventType.MainAction:
+//                 // Dispatch main action to renderer reducers
+//                 const store = diReaderGet("store");
+//                 store.dispatch(Object.assign(
+//                     {},
+//                     actionSerializer.deserialize(data.payload.action),
+//                     {
+//                         sender: data.sender,
+//                     },
+//                 ) as ActionWithSender);
+//                 break;
+//         }
+//     };
 
 ipcRenderer.on(readerIpc.CHANNEL,
     (_0: any, data: readerIpc.EventPayload) => {
@@ -79,8 +77,8 @@ ipcRenderer.on(readerIpc.CHANNEL,
 
                 store.dispatch(winActions.initRequest.build(data.payload.win.identifier));
 
-                // starting the ipc sync with redux
-                ipcRenderer.on(syncIpc.CHANNEL, ipcSyncHandler);
+                // // starting the ipc sync with redux
+                // ipcRenderer.on(syncIpc.CHANNEL, ipcSyncHandler);
                 break;
         }
     });

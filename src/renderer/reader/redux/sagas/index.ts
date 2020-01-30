@@ -9,6 +9,7 @@ import * as publicationInfoReaderAndLib from "readium-desktop/renderer/common/re
 import * as publicationInfoSyncTag from "readium-desktop/renderer/common/redux/sagas/dialog/publicationInfosSyncTags";
 import { all, call } from "redux-saga/effects";
 
+import * as ipc from "./ipc";
 import * as winInit from "./win";
 
 export function* rootSaga() {
@@ -16,5 +17,6 @@ export function* rootSaga() {
         call(winInit.watchers),
         call(publicationInfoReaderAndLib.watchers),
         call(publicationInfoSyncTag.watchers),
+        call(ipc.watchers),
     ]);
 }
