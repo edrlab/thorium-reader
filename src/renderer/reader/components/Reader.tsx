@@ -424,6 +424,8 @@ class Reader extends React.Component<IProps, IState> {
                 console.error("fetch api publication/get", null)
             })
             .catch((error) => console.error("Error to fetch api publication/get", error));
+
+        apiAction("analytics/openBook", queryParams.pubId);
     }
 
     public setTTSState(newTtsState: TTSStateEnum) {
@@ -772,6 +774,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleAudioClick() {
+        apiAction("analytics/playTts", queryParams.pubId);
         ttsPlay();
     }
     private handlePauseClick() {

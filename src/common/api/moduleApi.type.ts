@@ -11,4 +11,5 @@ type TPublicationApi = "publication";
 type TOpdsApi = "opds";
 type TLcpApi = "lcp";
 type TReaderApi = "reader";
-export type TModuleApi = TCatalogApi | TPublicationApi | TOpdsApi | TLcpApi | TReaderApi;
+type TAnalyticsApi = "analytics";
+export type TModuleApi = TCatalogApi | TPublicationApi | TOpdsApi | TLcpApi | TReaderApi | TAnalyticsApi;

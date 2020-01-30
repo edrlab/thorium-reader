@@ -10,8 +10,10 @@ import { ILcpModuleApi } from "./interface/lcpApi.interface";
 import { IOpdsModuleApi } from "./interface/opdsApi.interface";
 import { IPublicationModuleApi } from "./interface/publicationApi.interface";
 import { IReaderModuleApi } from "./interface/readerApi.interface";
+import { IAnalyticsModuleApi } from "./interface/analyticsApi.interface";
 
 export type TApiMethod =
+    IAnalyticsModuleApi &
     ICatalogModuleApi &
     ILcpModuleApi &
     IOpdsModuleApi &

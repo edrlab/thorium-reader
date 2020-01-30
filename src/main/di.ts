@@ -45,6 +45,7 @@ import { Store } from "redux";
 
 import { Server } from "@r2-streamer-js/http/server";
 
+import { AnalyticsApi } from "./api/analytics";
 import { ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
@@ -220,6 +221,7 @@ container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationA
 container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
+container.bind<AnalyticsApi>(diSymbolTable["analytics-api"]).to(AnalyticsApi).inSingletonScope();
 
 // Create action serializer
 container.bind<ActionSerializer>(diSymbolTable["action-serializer"]).to(ActionSerializer).inSingletonScope();

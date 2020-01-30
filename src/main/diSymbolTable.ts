@@ -24,5 +24,6 @@ export const diSymbolTable = {
     "opds-api": Symbol("opds-api"),
     "lcp-api": Symbol("lcp-api"),
     "reader-api": Symbol("reader-api"),
+    "analytics-api": Symbol("analytics-api"),
     "action-serializer": Symbol("action-serializer"),
 };

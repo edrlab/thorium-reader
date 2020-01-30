@@ -5,10 +5,11 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { IAnalyticsApi } from "./interface/analyticsApi.interface";
 import { ICatalogApi } from "./interface/catalog.interface";
 import { ILcpApi } from "./interface/lcpApi.interface";
 import { IOpdsApi } from "./interface/opdsApi.interface";
 import { IPublicationApi } from "./interface/publicationApi.interface";
 import { IReaderApi } from "./interface/readerApi.interface";
 
-export type TMethodApi = keyof ICatalogApi | keyof IPublicationApi | keyof IOpdsApi | keyof ILcpApi | keyof IReaderApi;
+export type TMethodApi = keyof ICatalogApi | keyof IPublicationApi | keyof IOpdsApi | keyof ILcpApi | keyof IReaderApi | keyof IAnalyticsApi;
