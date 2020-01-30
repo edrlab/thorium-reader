@@ -6,6 +6,7 @@ export const diSymbolTable = {
     "translator": Symbol("translator"),
     "downloader": Symbol("downloader"),
     "publication-repository": Symbol("publication-repository"),
+    "analytics-repository": Symbol("analytics-repository"),
     "opds-feed-repository": Symbol("opds-feed-repository"),
     "locator-repository": Symbol("locator-repository"),
     "config-repository": Symbol("config-repository"),

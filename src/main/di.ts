@@ -26,6 +26,8 @@ import { LcpSecretDocument } from "readium-desktop/main/db/document/lcp-secret";
 import { LocatorDocument } from "readium-desktop/main/db/document/locator";
 import { OpdsFeedDocument } from "readium-desktop/main/db/document/opds";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
+import { AnalyticsDocument } from "readium-desktop/main/db/document/analytics";
+import { AnalyticsRepository } from "readium-desktop/main/db/repository/analytics";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { LcpSecretRepository } from "readium-desktop/main/db/repository/lcp-secret";
 import { LocatorRepository } from "readium-desktop/main/db/repository/locator";
@@ -129,7 +131,16 @@ const locatorDb = new PouchDB<LocatorDocument>(
     path.join(rootDbPath, "locator"),
     dbOpts,
 );
+
 const locatorRepository = new LocatorRepository(locatorDb);
+
+// Analytics db
+const analyticsDb = new PouchDB<AnalyticsDocument>(
+    path.join(rootDbPath, "analytics"),
+    dbOpts,
+);
+
+const analyticsRepository = new AnalyticsRepository(analyticsDb);
 
 // Lcp secret db
 const lcpSecretDb = new PouchDB<LcpSecretDocument>(
@@ -187,6 +198,9 @@ container.bind<ConfigRepository<any>>(diSymbolTable["config-repository"]).toCons
 container.bind<LcpSecretRepository>(diSymbolTable["lcp-secret-repository"]).toConstantValue(
     lcpSecretRepository,
 );
+container.bind<AnalyticsRepository>(diSymbolTable["analytics-repository"]).toConstantValue(
+    analyticsRepository,
+);
 
 // Create converters
 container.bind<PublicationViewConverter>(diSymbolTable["publication-view-converter"])
@@ -240,6 +254,7 @@ interface IGet {
     (s: "win-registry"): WinRegistry;
     (s: "translator"): Translator;
     (s: "downloader"): Downloader;
+    (s: "analytics-repository"): AnalyticsRepository;
     (s: "publication-repository"): PublicationRepository;
     (s: "opds-feed-repository"): OpdsFeedRepository;
     (s: "locator-repository"): LocatorRepository;

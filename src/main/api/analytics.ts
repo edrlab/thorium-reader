@@ -6,16 +6,31 @@
 // ==LICENSE-END==
 
 import { IAnalyticsApi } from "readium-desktop/common/api/interface/analyticsApi.interface";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
+import { AnalyticsType } from "readium-desktop/common/models/analytics";
+import { AnalyticsRepository } from "readium-desktop/main/db/repository/analytics";
+import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 
 @injectable()
 export class AnalyticsApi implements IAnalyticsApi {
 
+    @inject(diSymbolTable["analytics-repository"])
+
+    private readonly analyticsRepository!: AnalyticsRepository;
+
     public async openBook(
         publicationIdentifier: string,
     ): Promise<void> {
-        console.log("in open book function");
-        console.log(publicationIdentifier);
+        const analyticsType = AnalyticsType.OpenBook
+        this.saveToDb(analyticsType,publicationIdentifier)
+    }
+
+    public async saveToDb(analyticsType: AnalyticsType, publicationIdentifier: string) {
+        const doc = {
+            publicationIdentifier,
+            analyticsType: analyticsType
+        }
+        await this.analyticsRepository.save(doc);
     }
 
     public async closeBook(
@@ -23,6 +38,8 @@ export class AnalyticsApi implements IAnalyticsApi {
     ): Promise<void> {
         console.log("in close book function");
         console.log(publicationIdentifier);
+        const analyticsType = AnalyticsType.CloseBook
+        this.saveToDb(analyticsType,publicationIdentifier)
     }
 
     public async turnPage(
@@ -35,7 +52,7 @@ export class AnalyticsApi implements IAnalyticsApi {
     public async playTts(
         publicationIdentifier: string,
     ): Promise<void> {
-        console.log("in play TTS function");
-        console.log(publicationIdentifier);
+        const analyticsType = AnalyticsType.PlayTts
+        this.saveToDb(analyticsType,publicationIdentifier)
     }
 }
