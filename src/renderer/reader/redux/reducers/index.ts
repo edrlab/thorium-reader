@@ -12,7 +12,7 @@ import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import {
     IReaderRootState, IReaderStateReader,
-} from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
+} from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { combineReducers } from "redux";
 
 export const rootReducer = () => {

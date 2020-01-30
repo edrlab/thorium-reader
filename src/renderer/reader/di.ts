@@ -13,7 +13,7 @@ import { Translator } from "readium-desktop/common/services/translator";
 import { initStore } from "readium-desktop/renderer/reader/redux/store/memory";
 import { Store } from "redux";
 
-import { IReaderRootState } from "../common/redux/states/renderer/readerRootState";
+import { IReaderRootState } from "../../common/redux/states/renderer/readerRootState";
 import App from "./components/App";
 import { diReaderSymbolTable as diSymbolTable } from "./diSymbolTable";
 

@@ -8,7 +8,7 @@
 import { Rectangle } from "electron";
 import {
     IReaderStateReader,
-} from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
+} from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 export interface IWinWindowBoundState {
     windowBound: Rectangle;

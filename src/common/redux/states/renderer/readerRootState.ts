@@ -5,18 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import {
-    IReaderRootState,
-} from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { ReaderConfig, ReaderInfo } from "readium-desktop/common/models/reader";
+import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
 
-export enum EventType {
-    request = "REQUEST",
-    response = "RESPONSE",
+export interface IReaderRootState extends ICommonRootState {
+    reader: IReaderStateReader;
 }
 
-export const CHANNEL = "READER_INIT";
-
-export interface EventPayload {
-    type: EventType;
-    payload: Partial<IReaderRootState>;
+export interface IReaderStateReader {
+    config: ReaderConfig;
+    info: ReaderInfo;
 }

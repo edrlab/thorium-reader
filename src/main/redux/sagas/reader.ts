@@ -268,6 +268,12 @@ function* readerCloseRequest(identifier?: string) {
     yield put(readerActions.closeSuccess.build(identifier));
 }
 
+function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
+
+    const { identifier, reduxState } = action.payload;
+    yield put(winActions.session.setReduxState.build(identifier, reduxState));
+}
+
 function* readerCloseRequestWatcher() {
     yield takeEvery(readerActions.closeRequestFromPublication.ID, readerCloseRequestFromPublication);
     yield takeEvery(readerActions.closeRequest.ID, readerCLoseRequestFromIdentifier);
@@ -286,11 +292,16 @@ function* readerFullscreenRequestWatcher() {
     yield takeLeading(readerActions.fullScreenRequest.ID, readerFullscreenRequest);
 }
 
+function* readerSetReduxStateWatcher() {
+    yield takeEvery(readerActions.setReduxState.ID, readerSetReduxState);
+}
+
 export function* watcher() {
     yield all([
         call(readerOpenRequestWatcher),
         call(readerCloseRequestWatcher),
         call(readerDetachRequestWatcher),
         call(readerFullscreenRequestWatcher),
+        call(readerSetReduxStateWatcher),
     ]);
 }

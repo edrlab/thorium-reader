@@ -30,7 +30,7 @@ import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
-import { IReaderRootState } from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import {
     TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,

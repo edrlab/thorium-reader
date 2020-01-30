@@ -18,6 +18,7 @@ import * as fullScreenRequest from "./fullScreenRequest";
 import * as openError from "./openError";
 import * as openRequest from "./openRequest";
 import * as openSuccess from "./openSuccess";
+import * as setReduxState from "./setReduxState";
 
 // import * as saveBookmarkError from "./saveBookmarkError";
 // import * as saveBookmarkRequest from "./saveBookmarkRequest";
@@ -35,6 +36,7 @@ export {
     detachModeSuccess,
     configSetDefault,
     configSetResetDefault,
+    setReduxState,
     // saveBookmarkRequest,
     // saveBookmarkSuccess,
     // saveBookmarkError,

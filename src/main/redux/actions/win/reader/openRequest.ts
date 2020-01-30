@@ -7,7 +7,7 @@
 
 import { Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
-import { IReaderStateReader } from "readium-desktop/renderer/common/redux/states/renderer/readerRootState";
+import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
 export const ID = "READER_OPEN_REQUEST";
 
