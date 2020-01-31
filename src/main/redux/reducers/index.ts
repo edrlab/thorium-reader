@@ -12,6 +12,7 @@ import { appReducer } from "readium-desktop/main/redux/reducers/app";
 import { streamerReducer } from "readium-desktop/main/redux/reducers/streamer";
 import { RootState } from "readium-desktop/main/redux/states";
 import { combineReducers } from "redux";
+import { lcpReducer } from "./lcp";
 
 import { readerDefaultConfigReducer } from "./reader/defaultConfig";
 import { winRegistryReaderReducer } from "./win/registry/reader";
@@ -38,4 +39,5 @@ export const rootReducer = combineReducers<RootState>({
         }),
         mode: winModeReducer,
     }),
+    lcp: lcpReducer,
 });

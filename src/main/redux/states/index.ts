@@ -11,6 +11,7 @@ import { I18NState } from "readium-desktop/common/redux/states/i18n";
 // import { NetState } from "readium-desktop/common/redux/states/net";
 // import { UpdateState } from "readium-desktop/common/redux/states/update";
 import { AppState } from "./app";
+import { ILcpState } from "./lcp";
 import { StreamerState } from "./streamer";
 import { IDictWinRegistryReaderState } from "./win/registry/reader";
 import { IWinSessionLibraryState } from "./win/session/library";
@@ -35,4 +36,5 @@ export interface RootState {
         },
         mode: ReaderMode,
     };
+    lcp: ILcpState;
 }

@@ -9,11 +9,11 @@ import * as debug_ from "debug";
 import * as portfinder from "portfinder";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { ToastType } from "readium-desktop/common/models/toast";
-import { toastActions } from "readium-desktop/common/redux/actions/";
+import { lcpActions, toastActions } from "readium-desktop/common/redux/actions/";
 import { callTyped, selectTyped, takeTyped } from "readium-desktop/common/redux/typed-saga";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 import { diMainGet } from "readium-desktop/main/di";
-import { lcpActions, streamerActions } from "readium-desktop/main/redux/actions";
+import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { SagaIterator } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
@@ -92,7 +92,7 @@ function* publicationOpenRequestWatcher(): SagaIterator {
             continue;
         }
 
-        const publicationFileLocks = yield* selectTyped((s: RootState) => s.app.publicationFileLocks);
+        const publicationFileLocks = yield* selectTyped((s: RootState) => s.lcp.publicationFileLocks);
 
         if (publicationFileLocks[action.payload.publicationIdentifier]) {
             yield put(streamerActions.publicationOpenError.build(new Error(""), publicationDocument));

@@ -5,9 +5,10 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { lcpActions, netActions } from "readium-desktop/common/redux/actions";
+import { netActions } from "readium-desktop/common/redux/actions";
 
 import * as appActions from "./app/";
+import * as lcpActions from "./lcp";
 import * as streamerActions from "./streamer/";
 import * as winActions from "./win";
 

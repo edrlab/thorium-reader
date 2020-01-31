@@ -5,23 +5,23 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { appActions } from "readium-desktop/main/redux/actions";
-import { AppState, AppStatus } from "readium-desktop/main/redux/states/app";
+import { lcpActions } from "../actions";
+import { ILcpState } from "../states/lcp";
 
-const initialState: AppState = {
-    status: AppStatus.Unknown,
+const initialState: ILcpState = {
+    publicationFileLocks: {},
 };
 
-export function appReducer(
-    state: AppState = initialState,
-    action: appActions.initSuccess.TAction,
-): AppState {
+export function lcpReducer(
+    state: ILcpState = initialState,
+    action: lcpActions.publicationFileLock.TAction,
+): ILcpState {
     switch (action.type) {
-        case appActions.initSuccess.ID:
+        case lcpActions.publicationFileLock.ID:
             return {
-                ...state,
-                ...{
-                    status: AppStatus.Initialized,
+                publicationFileLocks: {
+                    ...state.publicationFileLocks,
+                    ...action.payload.publicationFileLocks,
                 },
             };
         default:
