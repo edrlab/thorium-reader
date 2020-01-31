@@ -55,8 +55,10 @@ debug("readium css path:", rcssPath);
 function computeReadiumCssJsonMessage(_r2Publication: R2Publication, _link: Link | undefined):
     IEventPayload_R2_EVENT_READIUMCSS {
     const store = diMainGet("store");
-    // FIXME : Why setting apply here if each publication has its own setting ??
-    const settings = store.getState().reader.?;
+    // TODO : What setting apply here if each publication has its own setting ??
+    // @danielWeck ?
+    // I think this is the default config at the beginning of streamer execution
+    const settings = store.getState().reader.defaultConfig;
     debug(settings);
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
