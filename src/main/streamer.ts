@@ -54,10 +54,16 @@ debug("readium css path:", rcssPath);
 // see src/renderer/components/reader/ReaderApp.jsx
 function computeReadiumCssJsonMessage(_r2Publication: R2Publication, _link: Link | undefined):
     IEventPayload_R2_EVENT_READIUMCSS {
-    const store = diMainGet("store");
-    // TODO : What setting apply here if each publication has its own setting ??
+
+    // WARNING, the store isn't available at the beggining of app execution but once it load the state from FS.
+    // What is the runtime call process of this function ?
     // @danielWeck ?
-    // I think this is the default config at the beginning of streamer execution
+    // In fact this function is call in each publication opening, refreshing ??
+    // 2 points :
+    //  - at this moment the store is loaded
+    //  - but we will criterized with the reader window id that display this publication and not only with the pubId.
+    //  - It's a big deal, how to that ?
+    const store = diMainGet("store");
     const settings = store.getState().reader.defaultConfig;
     debug(settings);
 
@@ -151,7 +157,9 @@ streamer.expressUse("/" + MATHJAX_URL_PATH, express.static(mathJaxPath, staticOp
 const transformer = (_publication: R2Publication, _link: Link, str: string): string => {
 
     const store = diMainGet("store");
-    const settings = store.getState().reader.config;
+    // TODO
+    // Same comment that above
+    const settings = store.getState().reader.defaultConfig;
 
     if (settings.enableMathJax) {
         const url = `${streamer.serverUrl()}/${MATHJAX_URL_PATH}/es5/tex-mml-chtml.js`;
