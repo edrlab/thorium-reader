@@ -17,7 +17,7 @@ import * as detachModeSuccess from "./detachModeSuccess";
 import * as fullScreenRequest from "./fullScreenRequest";
 import * as openError from "./openError";
 import * as openRequest from "./openRequest";
-import * as openSuccess from "./openSuccess";
+// import * as openSuccess from "./openSuccess";
 import * as setReduxState from "./setReduxState";
 
 // import * as saveBookmarkError from "./saveBookmarkError";
@@ -26,7 +26,7 @@ import * as setReduxState from "./setReduxState";
 
 export {
     openRequest,
-    openSuccess,
+    // openSuccess,
     openError,
     closeRequest,
     closeSuccess,
