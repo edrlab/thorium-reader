@@ -6,8 +6,9 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { screen } from "electron";
+import * as ramda from "ramda";
 import { SenderType } from "readium-desktop/common/models/sync";
-import { defaultRectangle } from "readium-desktop/common/rectangle/window";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import {
@@ -18,10 +19,8 @@ import { RootState } from "readium-desktop/main/redux/states";
 import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
-import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
-import { screen } from "electron";
-import * as ramda from "ramda";
+import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -219,7 +218,7 @@ function* readerCloseRequestFromPublication(action: readerActions.closeRequestFr
 }
 
 function* readerCLoseRequestFromIdentifier(action: readerActions.closeRequest.TAction) {
-    yield call(readerCloseRequest, action.payload.identifier);
+    yield call(readerCloseRequest, action.sender.identifier);
 
     const libWin: Electron.BrowserWindow = yield callTyped(() => getLibraryWindowFromDi());
     if (libWin) {

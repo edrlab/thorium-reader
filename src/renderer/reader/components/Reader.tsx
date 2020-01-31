@@ -11,10 +11,11 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
-    Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
-    ReaderConfigStringsAdjustables,
+    ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings, ReaderConfigStringsAdjustables,
+    ReaderMode,
 } from "readium-desktop/common/models/reader";
 import { dialogActions, readerActions } from "readium-desktop/common/redux/actions";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { LocatorView } from "readium-desktop/common/views/locator";
 import { PublicationView } from "readium-desktop/common/views/publication";
 import {
@@ -30,7 +31,6 @@ import { apiSubscribe } from "readium-desktop/renderer/reader/apiSubscribe";
 import ReaderFooter from "readium-desktop/renderer/reader/components/ReaderFooter";
 import ReaderHeader from "readium-desktop/renderer/reader/components/ReaderHeader";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
-import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import {
     TChangeEventOnInput, TChangeEventOnSelect, TKeyboardEventOnAnchor, TMouseEventOnAnchor,
     TMouseEventOnSpan,
@@ -60,6 +60,7 @@ import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
+import { readerLocalActionSetConfig } from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
 } from "./options-values";
@@ -190,6 +191,7 @@ interface IState {
 
     indexes: AdjustableSettingsNumber;
     readerConfig: ReaderConfig;
+    readerMode: ReaderMode;
 }
 
 class Reader extends React.Component<IProps, IState> {
@@ -254,6 +256,8 @@ class Reader extends React.Component<IProps, IState> {
             visibleBookmarkList: [],
             currentLocation: undefined,
             bookmarks: undefined,
+
+            readerMode: ReaderMode.Attached,
         };
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
@@ -407,6 +411,8 @@ class Reader extends React.Component<IProps, IState> {
                 this.loadPublicationIntoViewport(publicationView, locator);
             })
             .catch((error) => console.error("Error to fetch api publication/get", error));
+
+        this.getReaderMode();
     }
 
     public async componentDidUpdate(_oldProps: IProps, oldState: IState) {
@@ -460,7 +466,7 @@ class Reader extends React.Component<IProps, IState> {
                             handleMenuClick={this.handleMenuButtonClick}
                             handleSettingsClick={this.handleSettingsClick}
                             fullscreen={this.state.fullscreen}
-                            mode={this.props.mode}
+                            mode={this.state.readerMode}
                             handleFullscreenClick={this.handleFullscreenClick}
                             handleReaderDetach={this.handleReaderDetach}
                             handleReaderClose={this.handleReaderClose}
@@ -723,11 +729,12 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     private handleReaderClose() {
-        this.props.closeReader(this.props.reader);
+        this.props.closeReader();
     }
 
     private handleReaderDetach() {
-        this.props.detachReader(this.props.reader);
+        this.props.detachReader();
+        this.setState({readerMode: ReaderMode.Detached});
     }
 
     private handleFullscreenClick() {
@@ -745,7 +752,7 @@ class Reader extends React.Component<IProps, IState> {
 
     private handleSettingsSave() {
         const store = diReaderGet("store");
-        store.dispatch(readerActions.configSetRequest.build(this.state.readerConfig));
+        store.dispatch(readerLocalActionSetConfig.build(this.state.readerConfig));
     }
 
     private handleSettingChange(
@@ -821,12 +828,17 @@ class Reader extends React.Component<IProps, IState> {
             .then((bookmarks) => this.setState({bookmarks}))
             .catch((error) => console.error("Error to fetch api reader/findBookmarks", error));
     }
+
+    private getReaderMode = () => {
+        apiAction("reader/getMode")
+            .then((mode) => this.setState({readerMode: mode}))
+            .catch((error) => console.error("Error to fetch api reader/getMode", error));
+    }
 }
 
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
-        reader: state.reader.reader,
-        mode: state.reader.mode,
+        readerInfo: state.reader.info,
         infoOpen: state.dialog.open &&
             state.dialog.type === DialogTypeName.PublicationInfoReader,
     };
@@ -841,11 +853,11 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                 dispatch(readerActions.fullScreenRequest.build(false));
             }
         },
-        closeReader: (reader: ReaderModel) => {
-            dispatch(readerActions.closeRequest.build(reader, true));
+        closeReader: () => {
+            dispatch(readerActions.closeRequest.build());
         },
-        detachReader: (reader: ReaderModel) => {
-            dispatch(readerActions.detachModeRequest.build(reader));
+        detachReader: () => {
+            dispatch(readerActions.detachModeRequest.build());
         },
         displayPublicationInfo: (pubId: string) => {
             dispatch(dialogActions.openRequest.build(DialogTypeName.PublicationInfoReader,
