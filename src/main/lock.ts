@@ -53,7 +53,8 @@ export function lockInstance() {
             // when the command has needed to open win electron: execute with below cli function
             // the mainFct is disallow to avoid to generate new mainWindow
             // remove --version and --help because isn't handle in ready state app
-            cli(() => ({}), argv.filter((arg) => !arg.startsWith("--")));
+            // tslint:disable-next-line: no-empty
+            cli(() => {}, argv.filter((arg) => !arg.startsWith("--")));
         });
     }
     return gotTheLock;

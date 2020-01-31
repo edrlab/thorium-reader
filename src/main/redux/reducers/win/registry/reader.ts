@@ -24,7 +24,7 @@ export function winRegistryReaderReducer(
                         ...state[action.payload.publicationIdentifier],
                         ...{
                             windowBound: action.payload.bound,
-                            reduxState: action.payload.reduxState,
+                            reduxState: action.payload.reduxStateReader,
                         },
                     },
                 },
