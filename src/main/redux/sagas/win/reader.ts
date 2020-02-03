@@ -25,8 +25,10 @@ debug("_");
 
 function* winOpen(action: winActions.reader.openSucess.TAction) {
 
-    const readerWin = action.payload.win;
     const identifier = action.payload.identifier;
+    debug(`reader ${identifier} -> winOpen`);
+
+    const readerWin = action.payload.win;
     const webContents = readerWin.webContents;
     const locale = yield* selectTyped((_state: RootState) => _state.i18n.locale);
     const reader = yield* selectTyped((_state: RootState) => _state.win.session.reader[identifier]);
@@ -81,8 +83,11 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
 
 function* winClose(action: winActions.reader.closed.TAction) {
 
+    const identifier = action.payload.identifier;
+    debug(`reader ${identifier} -> winClose`);
+
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-    const reader = readers[action.payload.identifier];
+    const reader = readers[identifier];
 
     if (reader) {
         yield put(streamerActions.publicationCloseRequest.build(reader.publicationIdentifier));

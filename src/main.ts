@@ -17,6 +17,8 @@ import {
     initGlobalConverters_GENERIC, initGlobalConverters_SHARED,
 } from "@r2-shared-js/init-globals";
 
+import { initSessions } from "@r2-navigator-js/electron/main/sessions";
+
 import { appActions } from "./main/redux/actions";
 
 if (_PACKAGING !== "0") {
@@ -49,13 +51,17 @@ setLcpNativePluginPath(lcpNativePluginPath);
 
 const main = async () => {
 
+    // protocol.registerSchemesAsPrivileged should be called before app is ready at initSessions
+    initSessions();
+
     try {
         const store = await createStoreFromDi();
 
         store.dispatch(appActions.initRequest.build());
+        debug("STORE MOUNTED -> MOUNTING THE APP NOW");
 
     } catch (err) {
-        process.stderr.write(`REDUX STATE MANAGER CAN'T BE INITIALIZED, ERROR: ${err}`);
+        process.stderr.write(`REDUX STATE MANAGER CAN'T BE INITIALIZED, ERROR: ${JSON.stringify(err)}`);
     }
 };
 

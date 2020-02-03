@@ -19,8 +19,6 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { eventChannel } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
-import { initSessions } from "@r2-navigator-js/electron/main/sessions";
-
 // Logger
 const debug = debug_("readium-desktop:main:saga:app");
 
@@ -33,8 +31,6 @@ const defaultLocale = () => {
 };
 
 function* mainApp() {
-
-    initSessions();
 
     app.setAppUserModelId("io.github.edrlab.thorium");
 

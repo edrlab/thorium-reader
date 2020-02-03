@@ -5,49 +5,37 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { debounce } from "readium-desktop/utils/debounce";
 import { eventChannel } from "redux-saga";
 import { all, put, take, takeLeading } from "redux-saga/effects";
 
-function* libraryDidFinishLoad(action: winActions.session.registerLibrary.TAction) {
-
-    const library = action.payload.win;
-    const identifier = action.payload.identifier;
-    const channel = eventChannel<void>(
-        (emit) => {
-
-            const handler = () => emit();
-            library.webContents.on("did-finish-load", handler);
-
-            return () => {
-                library.webContents.removeListener("did-finish-load", handler);
-            };
-        },
-    );
-
-    yield take(channel);
-    yield put(winActions.library.openSucess.build(library, identifier));
-}
+// Logger
+const debug = debug_("readium-desktop:main:redux:sagas:library");
+debug("_");
 
 function* libraryClosed(action: winActions.session.registerLibrary.TAction) {
 
     const library = action.payload.win;
-    const channel = eventChannel<void>(
+    const channel = eventChannel<boolean>(
         (emit) => {
 
-            const handler = () => emit();
-            library.on("closed", handler);
+            const handler = (event: Electron.Event) => {
+                event.preventDefault();
+                emit(true);
+            };
+            library.on("close", handler);
 
             return () => {
-                library.removeListener("closed", handler);
+                library.removeListener("close", handler);
             };
         },
     );
 
     yield take(channel);
-    yield put(winActions.library.closed.build());
     yield put(winActions.session.unregisterLibrary.build());
+    yield put(winActions.library.closed.build());
 }
 
 function* libraryMovedOrResized(action: winActions.session.registerLibrary.TAction) {
@@ -55,10 +43,10 @@ function* libraryMovedOrResized(action: winActions.session.registerLibrary.TActi
     const library = action.payload.win;
     const id = action.payload.identifier;
 
-    const channel = eventChannel<void>(
+    const channel = eventChannel<boolean>(
         (emit) => {
 
-            const handler = () => emit();
+            const handler = () => emit(true);
 
             const DEBOUNCE_TIME = 500;
 
@@ -84,7 +72,6 @@ function* libraryMovedOrResized(action: winActions.session.registerLibrary.TActi
 
 export function* watchers() {
     yield all([
-        takeLeading(winActions.session.registerLibrary.ID, libraryDidFinishLoad),
         takeLeading(winActions.session.registerLibrary.ID, libraryClosed),
         takeLeading(winActions.session.registerLibrary.ID, libraryMovedOrResized),
     ]);

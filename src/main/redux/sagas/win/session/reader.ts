@@ -15,35 +15,15 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { eventChannel } from "redux-saga";
 import { all, put, take, takeEvery } from "redux-saga/effects";
 
-function* readerDidFinishLoad(action: winActions.session.registerReader.TAction) {
-
-    const readerWindow = action.payload.win;
-    const identifier = action.payload.identifier;
-    const channel = eventChannel<void>(
-        (emit) => {
-
-            const handler = () => emit();
-            readerWindow.webContents.on("did-finish-load", handler);
-
-            return () => {
-                readerWindow.webContents.removeListener("did-finish-load", handler);
-            };
-        },
-    );
-
-    yield take(channel);
-    yield put(winActions.reader.openSucess.build(readerWindow, identifier));
-}
-
 function* readerClosed(action: winActions.session.registerReader.TAction) {
 
     const readerWindow = action.payload.win;
     const publicationIdentifier = action.payload.publicationIdentifier;
     const identifier = action.payload.identifier;
-    const channel = eventChannel<void>(
+    const channel = eventChannel<boolean>(
         (emit) => {
 
-            const handler = () => emit();
+            const handler = () => emit(true);
             readerWindow.on("closed", handler);
 
             return () => {
@@ -62,10 +42,10 @@ function* readerMovedOrResized(action: winActions.session.registerReader.TAction
     const reader = action.payload.win;
     const id = action.payload.identifier;
 
-    const channel = eventChannel<void>(
+    const channel = eventChannel<boolean>(
         (emit) => {
 
-            const handler = () => emit();
+            const handler = () => emit(true);
 
             const DEBOUNCE_TIME = 500;
 
@@ -117,7 +97,6 @@ function* readerMovedOrResized(action: winActions.session.registerReader.TAction
 export function* watchers() {
     // need to fork on each registerReader action
     yield all([
-        takeEvery(winActions.session.registerReader.ID, readerDidFinishLoad),
         takeEvery(winActions.session.registerReader.ID, readerClosed),
         takeEvery(winActions.session.registerReader.ID, readerMovedOrResized),
     ]);

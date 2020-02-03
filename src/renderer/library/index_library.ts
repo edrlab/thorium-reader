@@ -63,7 +63,7 @@ ipcRenderer.on(winIpc.CHANNEL, (_0: any, data: winIpc.EventPayload) => {
         case winIpc.EventType.IdResponse:
             // Initialize window
             const store = diLibraryGet("store");
-            store.dispatch(winActions.initRequest.build(data.payload.winId));
+            store.dispatch(winActions.initRequest.build(data.payload.identifier));
             break;
     }
 });

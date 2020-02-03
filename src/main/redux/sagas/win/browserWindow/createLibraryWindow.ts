@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { BrowserWindow, Event, Menu, shell } from "electron";
 import * as path from "path";
 import { defaultRectangle } from "readium-desktop/common/rectangle/window";
-import { selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -90,7 +90,12 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     }
     rendererBaseUrl = rendererBaseUrl.replace(/\\/g, "/");
 
-    libWindow.loadURL(rendererBaseUrl);
+    yield* callTyped(() => libWindow.loadURL(rendererBaseUrl));
+    // the promise will resolve when the page has finished loading (see did-finish-load)
+    // and rejects if the page fails to load (see did-fail-load).
+
+    const identifier = yield* selectTyped((state: RootState) => state.win.session.library.identifier);
+    yield put(winActions.library.openSucess.build(libWindow, identifier));
 
     setMenu(libWindow, false);
 
