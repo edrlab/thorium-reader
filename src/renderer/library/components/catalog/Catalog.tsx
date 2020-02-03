@@ -96,7 +96,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
         "publication/delete",
         "catalog/addEntry",
         "publication/updateTags",
-        "reader/setLastReadingLocation",
+        /*"reader/setLastReadingLocation"*/,
     ]),
     location: state.router.location,
 });

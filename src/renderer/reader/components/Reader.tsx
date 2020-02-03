@@ -49,7 +49,7 @@ import {
     colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
 } from "@r2-navigator-js/electron/common/readium-css-settings";
 import {
-    convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme,/* READIUM2_ELECTRON_HTTP_PROTOCOL,*/
+    convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, /* READIUM2_ELECTRON_HTTP_PROTOCOL,*/
 } from "@r2-navigator-js/electron/common/sessions";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
