@@ -5,13 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { defaultRectangle } from "readium-desktop/common/rectangle/window";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { IWinSessionLibraryState } from "readium-desktop/main/redux/states/win/session/library";
 
 const initialState: IWinSessionLibraryState = {
     browserWindowId: undefined,
-    windowBound: defaultRectangle(),
+    windowBound: undefined,
     identifier: undefined,
 };
 
