@@ -60,7 +60,7 @@ import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 
-import { readerLocalActionSetConfig } from "../redux/actions";
+import { readerLocalActionSetConfig, readerLocalActionSetLocator } from "../redux/actions";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
 } from "./options-values";
@@ -615,9 +615,9 @@ class Reader extends React.Component<IProps, IState> {
 
     private saveReadingLocation(loc: LocatorExtended) {
         //        this.props.setLastReadingLocation(queryParams.pubId, loc.locator);
-        apiAction("reader/setLastReadingLocation", this.props.pubId, loc.locator)
-            .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
-
+        // apiAction("reader/setLastReadingLocation", this.props.pubId, loc.locator)
+        //     .catch((error) => console.error("Error to fetch api reader/setLastReadingLocation", error));
+        this.props.setLocator(loc.locator);
     }
 
     private async handleReadingLocationChange(loc: LocatorExtended) {
@@ -796,9 +796,7 @@ class Reader extends React.Component<IProps, IState> {
             }, 300);
         }
 
-        this.setState({ readerConfig });
-
-        this.handleSettingsSave();
+        this.setSettings(readerConfig);
     }
 
     private handleIndexChange(event: TChangeEventOnInput, name: keyof ReaderConfigStringsAdjustables) {
@@ -819,9 +817,8 @@ class Reader extends React.Component<IProps, IState> {
         this.setState({ indexes });
 
         readerConfig[name] = optionsValues[name][valueNum];
-        this.setState({ readerConfig });
 
-        this.handleSettingsSave();
+        this.setSettings(readerConfig);
     }
 
     private setSettings(readerConfig: ReaderConfig) {
@@ -830,6 +827,7 @@ class Reader extends React.Component<IProps, IState> {
         }
 
         this.setState({ readerConfig });
+        this.props.setConfig(readerConfig);
         this.handleSettingsSave();
     }
 
@@ -839,6 +837,8 @@ class Reader extends React.Component<IProps, IState> {
             .catch((error) => console.error("Error to fetch api reader/findBookmarks", error));
     }
 
+    // TODO
+    // replaced getMode API with an action broadcasted to every reader and catch by reducers
     private getReaderMode = () => {
         apiAction("reader/getMode")
             .then((mode) => this.setState({ readerMode: mode }))
@@ -877,6 +877,12 @@ const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
                     publicationIdentifier: pubId,
                 },
             ));
+        },
+        setLocator: (locator: R2Locator) => {
+            dispatch(readerLocalActionSetLocator.build(locator));
+        },
+        setConfig: (config: ReaderConfig) => {
+            dispatch(readerLocalActionSetConfig.build(config));
         },
     };
 };

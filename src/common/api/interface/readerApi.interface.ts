@@ -14,8 +14,8 @@ import { Locator as R2Locator } from "@r2-shared-js/models/locator";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 
 export interface IReaderApi {
-    setLastReadingLocation: (publicationIdentifier: string, locator: R2Locator) => Promise<LocatorView>;
-    getLastReadingLocation: (publicationIdentifier: string) => Promise<LocatorView>;
+    // setLastReadingLocation: (publicationIdentifier: string, locator: R2Locator) => Promise<LocatorView>;
+    // getLastReadingLocation: (publicationIdentifier: string) => Promise<LocatorView>;
     findBookmarks: (publicationIdentifier: string) => Promise<LocatorView[]>;
     updateBookmark: (
         identifier: string,
@@ -36,8 +36,8 @@ export interface IReaderApi {
 }
 
 export interface IReaderModuleApi {
-    "reader/setLastReadingLocation": IReaderApi["setLastReadingLocation"];
-    "reader/getLastReadingLocation": IReaderApi["getLastReadingLocation"];
+    // "reader/setLastReadingLocation": IReaderApi["setLastReadingLocation"];
+    // "reader/getLastReadingLocation": IReaderApi["getLastReadingLocation"];
     "reader/findBookmarks": IReaderApi["findBookmarks"];
     "reader/updateBookmark": IReaderApi["updateBookmark"];
     "reader/addBookmark": IReaderApi["addBookmark"];

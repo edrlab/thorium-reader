@@ -41,48 +41,48 @@ export class ReaderApi implements IReaderApi {
     @inject(diSymbolTable.translator)
     private readonly translator!: Translator;
 
-    public async setLastReadingLocation(publicationIdentifier: string, locator: R2Locator): Promise<LocatorView> {
-        const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-            publicationIdentifier,
-            LocatorType.LastReadingLocation,
-        );
+    // public async setLastReadingLocation(publicationIdentifier: string, locator: R2Locator): Promise<LocatorView> {
+    //     const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
+    //         publicationIdentifier,
+    //         LocatorType.LastReadingLocation,
+    //     );
 
-        let newDoc = null;
+    //     let newDoc = null;
 
-        if (docs.length === 0) {
-            // Create new locator
-            newDoc = {
-                publicationIdentifier,
-                locatorType: LocatorType.LastReadingLocation,
-                locator: Object.assign({}, locator),
-            };
-        } else {
-            // Update locator
-            newDoc = Object.assign(
-                {},
-                docs[0],
-                {
-                    locator: Object.assign({}, locator),
-                },
-            );
-        }
+    //     if (docs.length === 0) {
+    //         // Create new locator
+    //         newDoc = {
+    //             publicationIdentifier,
+    //             locatorType: LocatorType.LastReadingLocation,
+    //             locator: Object.assign({}, locator),
+    //         };
+    //     } else {
+    //         // Update locator
+    //         newDoc = Object.assign(
+    //             {},
+    //             docs[0],
+    //             {
+    //                 locator: Object.assign({}, locator),
+    //             },
+    //         );
+    //     }
 
-        const savedDoc = await this.locatorRepository.save(newDoc);
-        return this.locatorViewConverter.convertDocumentToView(savedDoc);
-    }
+    //     const savedDoc = await this.locatorRepository.save(newDoc);
+    //     return this.locatorViewConverter.convertDocumentToView(savedDoc);
+    // }
 
-    public async getLastReadingLocation(publicationIdentifier: string): Promise<LocatorView> {
-        const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
-            publicationIdentifier,
-            LocatorType.LastReadingLocation,
-        );
+    // public async getLastReadingLocation(publicationIdentifier: string): Promise<LocatorView> {
+    //     const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
+    //         publicationIdentifier,
+    //         LocatorType.LastReadingLocation,
+    //     );
 
-        if (docs.length === 0) {
-            return null;
-        }
+    //     if (docs.length === 0) {
+    //         return null;
+    //     }
 
-        return this.locatorViewConverter.convertDocumentToView(docs[0]);
-    }
+    //     return this.locatorViewConverter.convertDocumentToView(docs[0]);
+    // }
 
     public async findBookmarks(publicationIdentifier: string): Promise<LocatorView[]> {
         const docs = await this.locatorRepository.findByPublicationIdentifierAndLocatorType(
@@ -131,6 +131,8 @@ export class ReaderApi implements IReaderApi {
         await this.locatorRepository.delete(identifier);
     }
 
+    // TODO
+    // clipboard can be an action catched in saga, nothing to return
     public async clipboardCopy(
         publicationIdentifier: string,
         clipboardData: IEventPayload_R2_EVENT_CLIPBOARD_COPY): Promise<boolean> {
@@ -185,6 +187,8 @@ export class ReaderApi implements IReaderApi {
         return true;
     }
 
+    // TODO
+    // may be removed and replaced with a action dispatched to every reader
     public async getMode() {
         return this.store.getState().win.mode;
     }
