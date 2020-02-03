@@ -16,14 +16,16 @@ import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { combineReducers } from "redux";
 
 import { readerConfigReducer } from "./readerConfig";
+import { readerLocatorReducer } from "./readerLocator";
 
 export const rootReducer = () => {
     return combineReducers<IReaderRootState>({
         api: apiReducer,
         i18n: i18nReducer,
-        reader: combineReducers<IReaderStateReader>({
+        reader: combineReducers<IReaderStateReader>({ // dehydrated from main process registry (preloaded state)
             config: readerConfigReducer,
-            info: undefined, // injected with preloaded state
+            info: undefined, // no reducer needed, provided by main process before start-up
+            locator: readerLocatorReducer,
         }),
         win: winReducer,
         dialog: dialogReducer,

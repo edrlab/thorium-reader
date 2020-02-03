@@ -43,6 +43,15 @@ export function build(
                 manifestUrl,
                 publicationIdentifier,
             },
+            locator: {
+                href: undefined,
+                locations: {
+                    cfi: undefined,
+                    cssSelector: undefined,
+                    position: undefined,
+                    progression: undefined,
+                },
+            },
         };
     } else {
         reduxStateReader = {

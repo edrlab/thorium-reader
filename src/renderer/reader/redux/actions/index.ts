@@ -6,7 +6,9 @@
 // ==LICENSE-END==
 
 import * as readerLocalActionSetConfig from "./setConfig";
+import * as readerLocalActionSetLocator from "./setLocator";
 
 export {
     readerLocalActionSetConfig,
+    readerLocalActionSetLocator,
 };

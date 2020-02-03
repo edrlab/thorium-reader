@@ -5,17 +5,21 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { ReaderConfig, ReaderInfo } from "readium-desktop/common/models/reader";
-import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
-
 import { Locator } from "@r2-shared-js/models/locator";
+import { readerLocalActionSetLocator } from "../actions";
 
-export interface IReaderRootState extends ICommonRootState {
-    reader: IReaderStateReader;
-}
+export function readerLocatorReducer(
+    state: Locator,
+    action: readerLocalActionSetLocator.TAction,
+): Locator {
 
-export interface IReaderStateReader {
-    config: ReaderConfig;
-    info: ReaderInfo;
-    locator: Locator;
+    switch (action.type) {
+        case readerLocalActionSetLocator.ID:
+
+            return {
+                ...action.payload,
+            };
+        default:
+            return state;
+    }
 }
