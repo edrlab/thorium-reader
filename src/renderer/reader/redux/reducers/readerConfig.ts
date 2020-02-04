@@ -6,10 +6,12 @@
 // ==LICENSE-END==
 
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+
 import * as setConfig from "../actions/setConfig";
 
 export function readerConfigReducer(
-    state: ReaderConfig,
+    state: ReaderConfig = readerConfigInitialState,
     action: setConfig.TAction,
 ): ReaderConfig {
 

@@ -12,6 +12,7 @@ import {
     IReaderStateReader,
 } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import * as uuid from "uuid";
+import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
 
 export const ID = "WIN_REGISTRY_REGISTER_READER";
 
@@ -43,15 +44,7 @@ export function build(
                 manifestUrl,
                 publicationIdentifier,
             },
-            locator: {
-                href: undefined,
-                locations: {
-                    cfi: undefined,
-                    cssSelector: undefined,
-                    position: undefined,
-                    progression: undefined,
-                },
-            },
+            locator: locatorInitialState,
         };
     } else {
         reduxStateReader = {

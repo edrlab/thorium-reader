@@ -89,8 +89,12 @@ export const reduxSyncMiddleware: Middleware
                 const readers = store.getState().win.session.reader;
                 for (const key in readers) {
                     if (readers[key]) {
-                        const readerWin = getReaderWindowFromDi(readers[key].identifier);
-                        browserWin.set(readers[key].identifier, readerWin);
+                        try {
+                            const readerWin = getReaderWindowFromDi(readers[key].identifier);
+                            browserWin.set(readers[key].identifier, readerWin);
+                        } catch (_err) {
+                            // ignore
+                        }
                     }
                 }
 

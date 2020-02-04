@@ -12,6 +12,7 @@ import * as api from "./api";
 import * as app from "./app";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
+import * as reader from "./reader";
 import * as streamer from "./streamer";
 import * as win from "./win";
 
@@ -46,6 +47,8 @@ function* appInitSuccessWatcher() {
         call(win.session.library.watchers),
 
         call(ipc.watchers),
+
+        call(reader.watcher),
     ]);
 }
 

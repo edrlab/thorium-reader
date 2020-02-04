@@ -9,7 +9,7 @@ import { Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
-export const ID = "READER_OPEN_REQUEST";
+export const ID = "MAIN_WIN_READER_OPEN_REQUEST";
 
 // tslint:disable-next-line: no-empty-interface
 export interface Payload {

@@ -42,7 +42,7 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
             win: {
                 identifier,
             },
-            reader: reader.reduxState,
+            reader: reader?.reduxState,
         },
     } as readerIpc.EventPayload);
 

@@ -27,6 +27,7 @@ export function* checkReaderWindowInSession(_action: winActions.library.openRequ
 
     for (const key in readers) {
         if (readers[key]) {
+            // FAKE -> doesn't open a new fresh reader but exact the same with only a new browserWin
             yield put(readerActions.openRequest.build(readers[key].publicationIdentifier));
         }
     }

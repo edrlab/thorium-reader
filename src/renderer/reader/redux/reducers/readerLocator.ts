@@ -5,11 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
+
 import { Locator } from "@r2-shared-js/models/locator";
+
 import { readerLocalActionSetLocator } from "../actions";
 
 export function readerLocatorReducer(
-    state: Locator,
+    state: Locator = locatorInitialState,
     action: readerLocalActionSetLocator.TAction,
 ): Locator {
 

@@ -139,6 +139,8 @@ function* readerDetachRequest(_action: readerActions.detachModeRequest.TAction) 
 
 function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
+    debug("readerOpenRequest fct");
+
     const publicationIdentifier = action.payload.publicationIdentifier;
 
     // Notify the streamer to create a manifest for this publication
@@ -161,6 +163,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
     }
 
     const { manifestUrl } = typedAction.payload as streamerActions.publicationOpenSuccess.Payload;
+    debug("manifestUrl: ", manifestUrl);
 
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
     const library = yield* selectTyped((state: RootState) => state.win.session.library);

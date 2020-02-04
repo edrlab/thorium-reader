@@ -10,7 +10,7 @@ import * as path from "path";
 import {
     trackBrowserWindow,
 } from "r2-navigator-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
-import { callTyped } from "readium-desktop/common/redux/typed-saga";
+import { callTyped, putTyped } from "readium-desktop/common/redux/typed-saga";
 import { setMenu } from "readium-desktop/main/menu";
 import {
     _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
@@ -55,7 +55,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
     const pathBase64 = manifestUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
     const pathDecoded = Buffer.from(decodeURIComponent(pathBase64), "base64").toString("utf8");
 
-    yield put(winActions.session.registerReader.build(
+    const registerReaderAction = yield* putTyped(winActions.session.registerReader.build(
         readerWindow,
         publicationIdentifier,
         manifestUrl,
@@ -141,7 +141,8 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
     */
 
     yield* callTyped(() => readerWindow.webContents.loadURL(readerUrl, { extraHeaders: "pragma: no-cache\n" }));
-    yield put(winActions.reader.openSucess.build(readerWindow, identifier));
+
+    yield put(winActions.reader.openSucess.build(readerWindow, registerReaderAction.payload.identifier));
 
     if (IS_DEV && _VSCODE_LAUNCH !== "true") {
         readerWindow.webContents.openDevTools({ mode: "detach" });

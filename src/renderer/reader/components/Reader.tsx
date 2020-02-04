@@ -37,7 +37,7 @@ import {
 } from "readium-desktop/typings/react";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
-import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
+// import { encodeURIComponent_RFC3986 } from "readium-desktop/utils/url";
 import { Unsubscribe } from "redux";
 
 import { TaJsonDeserialize } from "@r2-lcp-js/serializable";
@@ -48,9 +48,9 @@ import {
 import {
     colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
 } from "@r2-navigator-js/electron/common/readium-css-settings";
-import {
-    convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, /* READIUM2_ELECTRON_HTTP_PROTOCOL,*/
-} from "@r2-navigator-js/electron/common/sessions";
+// import {
+//     convertCustomSchemeToHttpUrl, convertHttpUrlToCustomScheme, /* READIUM2_ELECTRON_HTTP_PROTOCOL,*/
+// } from "@r2-navigator-js/electron/common/sessions";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
     isLocatorVisible, LocatorExtended, navLeftOrRight, readiumCssOnOff, setEpubReadingSystemInfo,
@@ -283,11 +283,12 @@ class Reader extends React.Component<IProps, IState> {
         const pubId = store.getState().reader.info.publicationIdentifier;
         const locator = store.getState().reader.locator;
         const manifestUrl = store.getState().reader.info.manifestUrl;
-        const publicationJsonUrl = convertCustomSchemeToHttpUrl(
-            encodeURIComponent_RFC3986(
-                convertHttpUrlToCustomScheme(manifestUrl),
-            ),
-        );
+        // const publicationJsonUrl = convertCustomSchemeToHttpUrl(
+        //     encodeURIComponent_RFC3986(
+        //         convertHttpUrlToCustomScheme(manifestUrl),
+        //     ),
+        // );
+        const publicationJsonUrl = manifestUrl;
 
         this.setState({
             publicationJsonUrl,

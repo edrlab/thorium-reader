@@ -15,6 +15,7 @@ import { apiReducer } from "readium-desktop/renderer/common/redux/reducers/api";
 import { winReducer } from "readium-desktop/renderer/common/redux/reducers/win";
 import { combineReducers } from "redux";
 
+import { readerInfoReducer } from "./info";
 import { readerConfigReducer } from "./readerConfig";
 import { readerLocatorReducer } from "./readerLocator";
 
@@ -24,7 +25,7 @@ export const rootReducer = () => {
         i18n: i18nReducer,
         reader: combineReducers<IReaderStateReader>({ // dehydrated from main process registry (preloaded state)
             config: readerConfigReducer,
-            info: undefined, // no reducer needed, provided by main process before start-up
+            info: readerInfoReducer,
             locator: readerLocatorReducer,
         }),
         win: winReducer,
