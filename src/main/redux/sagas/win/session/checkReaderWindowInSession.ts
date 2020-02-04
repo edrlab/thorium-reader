@@ -5,30 +5,69 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END=
 
-import { readerActions } from "readium-desktop/common/redux/actions";
-import { selectTyped } from "readium-desktop/common/redux/typed-saga";
+import * as debug_ from "debug";
+import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import { IDictWinSessionReaderState } from "readium-desktop/main/redux/states/win/session/reader";
-import { put } from "redux-saga/effects";
+import {
+    IDictWinSessionReaderState, IWinSessionReaderState,
+} from "readium-desktop/main/redux/states/win/session/reader";
+import { ObjectValues } from "readium-desktop/utils/object-keys-values";
+import { fork, put } from "redux-saga/effects";
+
+import { streamerOpenPublicationAndReturnManifestUrl } from "../../streamer";
+
+// Logger
+const debug = debug_("readium-desktop:main:saga:checkReaderWindowSession");
+
+function* openReaderFromPreviousSession(reader: IWinSessionReaderState) {
+
+    const publicationIdentifier = reader.publicationIdentifier;
+    const manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
+
+    if (manifestUrl) {
+
+        yield put(winActions.reader.openRequest.build(
+            publicationIdentifier,
+            manifestUrl,
+            reader.windowBound,
+            reader.reduxState,
+        ));
+    }
+}
 
 /**
  * On library open request action, dispatch the opening of all readers in session
  */
 export function* checkReaderWindowInSession(_action: winActions.library.openRequest.TAction) {
 
-    const readers: IDictWinSessionReaderState = yield selectTyped(
-        (state: RootState) => state.win.session.reader,
-    );
-
     // should be readers identifier from session and not open a new reader with this publicationIdentifier
     // ex: if 2 readers with the same pubId was previously opened,
     // at the next starting they need to deshydrate data from session and not from pubId registry
 
-    for (const key in readers) {
-        if (readers[key]) {
-            // FAKE -> doesn't open a new fresh reader but exact the same with only a new browserWin
-            yield put(readerActions.openRequest.build(readers[key].publicationIdentifier));
+    const readers: IDictWinSessionReaderState = yield selectTyped(
+        (state: RootState) => state.win.session.reader,
+    );
+    const readersArray = ObjectValues(readers);
+
+    debug("checkReaderWindowInSession:", "nb of readers in session:", readersArray.length);
+
+    if (readersArray.length > 10) {
+        for (const reader of readersArray) {
+            yield put(winActions.session.unregisterReader.build(reader.identifier));
+            yield put(winActions.registry.registerReaderPublication.build(
+                reader.publicationIdentifier,
+                reader.windowBound,
+                reader.reduxState),
+            );
+        }
+    } else {
+        for (const reader of readersArray) {
+            yield fork(openReaderFromPreviousSession, reader);
         }
     }
+
+    // TODO
+    // Display an infoBox too many reader opened previously
+
 }

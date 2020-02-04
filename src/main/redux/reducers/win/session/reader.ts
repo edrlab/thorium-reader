@@ -15,45 +15,47 @@ const initialState: IDictWinSessionReaderState = {};
 export function winSessionReaderReducer(
     state: IDictWinSessionReaderState = initialState,
     action: winActions.session.registerReader.TAction |
-    winActions.session.unregisterReader.TAction |
-    winActions.session.setBound.TAction |
-    winActions.session.setReduxState.TAction,
+        winActions.session.unregisterReader.TAction |
+        winActions.session.setBound.TAction |
+        winActions.session.setReduxState.TAction,
 ): IDictWinSessionReaderState {
     switch (action.type) {
 
-        case winActions.session.registerReader.ID:
+        case winActions.session.registerReader.ID: {
+            const id = action.payload.identifier;
             return {
                 ...state,
                 ...{
-                    [action.payload.identifier]: {
+                    [id]: {
                         ...{
                             windowBound: action.payload.winBound,
                             reduxState: action.payload.reduxStateReader,
                         },
-                        ...state[action.payload.identifier],
+                        ...state[id],
                         ...{
                             browserWindowId: action.payload.win.id,
                             publicationIdentifier: action.payload.publicationIdentifier,
                             manifestUrl: action.payload.manifestUrl,
                             fileSystemPath: action.payload.filesystemPath,
-                            identifier: action.payload.identifier,
+                            identifier: id,
                         },
                     },
                 },
             };
+        }
 
-        case winActions.session.unregisterReader.ID:
+        case winActions.session.unregisterReader.ID: {
 
-            let id;
-            for (const key in state) {
-                if (state[key]) {
-                    if (state[key].publicationIdentifier === action.payload.publicationIdentifier) {
-                        id = key;
-                    }
-                }
-            }
+            // let id;
+            // for (const key in state) {
+            //     if (state[key]?.publicationIdentifier === action.payload.publicationIdentifier) {
+            //         id = key;
+            //     }
+            // }
 
-            if (id) {
+            const id = action.payload.identifier;
+
+            if (state[id]) {
                 return {
                     ...state,
                     ...{
@@ -62,15 +64,18 @@ export function winSessionReaderReducer(
                 };
             }
             break;
+        }
 
-        case winActions.session.setBound.ID:
+        case winActions.session.setBound.ID: {
 
-            if (state[action.payload.identifier]) {
+            const id = action.payload.identifier;
+
+            if (state[id]) {
                 return {
                     ...state,
                     ...{
-                        [action.payload.identifier]: {
-                            ...state[action.payload.identifier],
+                        [id]: {
+                            ...state[id],
                             ...{
                                 windowBound: action.payload.bound,
                             },
@@ -79,15 +84,18 @@ export function winSessionReaderReducer(
                 };
             }
             break;
+        }
 
-        case winActions.session.setReduxState.ID:
+        case winActions.session.setReduxState.ID: {
 
-            if (state[action.payload.identifier]) {
+            const id = action.payload.identifier;
+
+            if (state[id]) {
                 return {
                     ...state,
                     ...{
-                        [action.payload.identifier]: {
-                            ...state[action.payload.identifier],
+                        [id]: {
+                            ...state[id],
                             ...{
                                 reduxState: action.payload.reduxState,
                             },
@@ -95,6 +103,7 @@ export function winSessionReaderReducer(
                     },
                 };
             }
+        }
     }
 
     return state;

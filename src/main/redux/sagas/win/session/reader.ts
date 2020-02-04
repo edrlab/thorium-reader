@@ -18,23 +18,22 @@ import { all, put, take, takeEvery } from "redux-saga/effects";
 function* readerClosed(action: winActions.session.registerReader.TAction) {
 
     const readerWindow = action.payload.win;
-    const publicationIdentifier = action.payload.publicationIdentifier;
     const identifier = action.payload.identifier;
     const channel = eventChannel<boolean>(
         (emit) => {
 
             const handler = () => emit(true);
-            readerWindow.on("closed", handler);
+            readerWindow.on("close", handler);
 
             return () => {
-                readerWindow.removeListener("closed", handler);
+                readerWindow.removeListener("close", handler);
             };
         },
     );
 
     yield take(channel);
     yield put(winActions.reader.closed.build(identifier));
-    yield put(winActions.session.unregisterReader.build(publicationIdentifier));
+    yield put(winActions.session.unregisterReader.build(identifier));
 }
 
 function* readerMovedOrResized(action: winActions.session.registerReader.TAction) {

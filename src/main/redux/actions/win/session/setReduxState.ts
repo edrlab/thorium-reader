@@ -9,7 +9,7 @@
 import { Action } from "readium-desktop/common/models/redux";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
 
-export const ID = "WIN_REGISTRY_SET_REDUXSTATE";
+export const ID = "WIN_SESSION_SET_REDUXSTATE";
 
 export interface Payload {
     reduxState: IReaderStateReader;

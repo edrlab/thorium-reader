@@ -8,7 +8,7 @@
 import { Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 
-export const ID = "WIN_REGISTRY_SET_BOUND";
+export const ID = "WIN_SESSION_SET_BOUND";
 
 export interface Payload {
     identifier: string;

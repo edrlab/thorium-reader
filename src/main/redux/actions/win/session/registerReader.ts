@@ -7,14 +7,12 @@
 
 import { BrowserWindow, Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
-import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
-import {
-    IReaderStateReader,
-} from "readium-desktop/common/redux/states/renderer/readerRootState";
-import * as uuid from "uuid";
 import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
+import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import * as uuid from "uuid";
 
-export const ID = "WIN_REGISTRY_REGISTER_READER";
+export const ID = "WIN_SESSION_REGISTER_READER";
 
 export interface Payload {
     win: BrowserWindow;

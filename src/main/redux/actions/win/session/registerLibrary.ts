@@ -11,7 +11,7 @@ import { Action } from "readium-desktop/common/models/redux";
 
 import * as uuid from "uuid";
 
-export const ID = "WIN_REGISTRY_REGISTER_LIBRARY";
+export const ID = "WIN_SESSION_REGISTER_LIBRARY";
 
 export interface Payload {
     win: BrowserWindow;

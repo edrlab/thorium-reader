@@ -333,3 +333,32 @@ export function* watchers() {
         call(publicationCloseRequestWatcher),
     ]);
 }
+
+export function* streamerOpenPublicationAndReturnManifestUrl(publicationIdentifier: string) {
+    // Notify the streamer to create a manifest for this publication
+    yield put(streamerActions.publicationOpenRequest.build(publicationIdentifier));
+
+    // Wait for the publication to be opened
+    const streamerAction = yield take([
+        streamerActions.publicationOpenSuccess.ID,
+        streamerActions.publicationOpenError.ID,
+    ]);
+    const typedAction = streamerAction.error ?
+        streamerAction as streamerActions.publicationOpenError.TAction :
+        streamerAction as streamerActions.publicationOpenSuccess.TAction;
+
+    if (typedAction.error) {
+        // Failed to open publication
+
+        // FIXME: Put publication in meta to be FSA compliant
+
+        // TODO
+        // dispatch an reader open error at the end of openRequest not in streamer open action
+        // yield put(readerActions.openError.build(publicationIdentifier));
+        throw new Error("Failed to open publication");
+    }
+
+    const { manifestUrl } = typedAction.payload as streamerActions.publicationOpenSuccess.Payload;
+
+    return manifestUrl;
+}

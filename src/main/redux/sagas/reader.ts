@@ -21,6 +21,7 @@ import {
 } from "readium-desktop/preprocessor-directives";
 import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects";
+import { streamerOpenPublicationAndReturnManifestUrl } from "./streamer";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:reader");
@@ -137,33 +138,7 @@ function* readerDetachRequest(_action: readerActions.detachModeRequest.TAction) 
     yield put(readerActions.detachModeSuccess.build());
 }
 
-function* readerOpenRequest(action: readerActions.openRequest.TAction) {
-
-    debug("readerOpenRequest fct");
-
-    const publicationIdentifier = action.payload.publicationIdentifier;
-
-    // Notify the streamer to create a manifest for this publication
-    yield put(streamerActions.publicationOpenRequest.build(publicationIdentifier));
-
-    // Wait for the publication to be opened
-    const streamerAction = yield take([
-        streamerActions.publicationOpenSuccess.ID,
-        streamerActions.publicationOpenError.ID,
-    ]);
-    const typedAction = streamerAction.error ?
-        streamerAction as streamerActions.publicationOpenError.TAction :
-        streamerAction as streamerActions.publicationOpenSuccess.TAction;
-
-    if (typedAction.error) {
-        // Failed to open publication
-        // FIXME: Put publication in meta to be FSA compliant
-        yield put(readerActions.openError.build(publicationIdentifier));
-        return;
-    }
-
-    const { manifestUrl } = typedAction.payload as streamerActions.publicationOpenSuccess.Payload;
-    debug("manifestUrl: ", manifestUrl);
+function* getWinBound(publicationIdentifier: string) {
 
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
     const library = yield* selectTyped((state: RootState) => state.win.session.library);
@@ -171,6 +146,7 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
     let winBound = yield* selectTyped(
         (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
     );
+
     if (!winBound) {
         const winBoundArray = [];
 
@@ -197,16 +173,32 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
         }
     }
 
-    const reduxState = yield* selectTyped(
-        (state: RootState) => state.win.registry.reader[publicationIdentifier]?.reduxState,
-    );
+    return winBound;
+}
 
-    yield put(winActions.reader.openRequest.build(
-        publicationIdentifier,
-        manifestUrl,
-        winBound,
-        reduxState,
-    ));
+function* readerOpenRequest(action: readerActions.openRequest.TAction) {
+
+    debug(`readerOpenRequest:action:${JSON.stringify(action)}`);
+
+    const publicationIdentifier = action.payload.publicationIdentifier;
+    const manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
+
+    if (manifestUrl) {
+
+        const reduxState = yield* selectTyped(
+            (state: RootState) => state.win.registry.reader[publicationIdentifier]?.reduxState,
+        );
+
+        const winBound = yield* callTyped(getWinBound, publicationIdentifier);
+
+        yield put(winActions.reader.openRequest.build(
+            publicationIdentifier,
+            manifestUrl,
+            winBound,
+            reduxState,
+        ));
+
+    }
 }
 
 function* readerCloseRequestFromPublication(action: readerActions.closeRequestFromPublication.TAction) {
@@ -242,7 +234,7 @@ function* readerCloseRequest(identifier?: string) {
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
 
     for (const key in readers) {
-        if (readers[key] && readers[key].identifier === identifier) {
+        if (identifier && readers[key]?.identifier === identifier) {
             // Notify the streamer that a publication has been closed
             yield put(streamerActions.publicationCloseRequest.build(readers[key].publicationIdentifier));
         }

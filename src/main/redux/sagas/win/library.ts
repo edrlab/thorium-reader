@@ -99,7 +99,13 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
     for (const key in readers) {
         if (readers[key]) {
-            yield call(() => getReaderWindowFromDi(readers[key].identifier).close());
+            try {
+                // force quit the reader windows to keep session in next startup
+                yield call(() => getReaderWindowFromDi(readers[key].identifier).destroy());
+
+            } catch (_err) {
+                // ignore
+            }
         }
     }
 

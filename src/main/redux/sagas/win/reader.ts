@@ -91,6 +91,12 @@ function* winClose(action: winActions.reader.closed.TAction) {
 
     if (reader) {
         yield put(streamerActions.publicationCloseRequest.build(reader.publicationIdentifier));
+
+        yield put(winActions.registry.registerReaderPublication.build(
+            reader.publicationIdentifier,
+            reader.windowBound,
+            reader.reduxState),
+        );
     }
 
     if (Object.keys(readers).length < 1) {
