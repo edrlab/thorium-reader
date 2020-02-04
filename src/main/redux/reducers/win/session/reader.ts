@@ -22,6 +22,7 @@ export function winSessionReaderReducer(
     switch (action.type) {
 
         case winActions.session.registerReader.ID: {
+
             const id = action.payload.identifier;
             return {
                 ...state,
@@ -45,13 +46,6 @@ export function winSessionReaderReducer(
         }
 
         case winActions.session.unregisterReader.ID: {
-
-            // let id;
-            // for (const key in state) {
-            //     if (state[key]?.publicationIdentifier === action.payload.publicationIdentifier) {
-            //         id = key;
-            //     }
-            // }
 
             const id = action.payload.identifier;
 
