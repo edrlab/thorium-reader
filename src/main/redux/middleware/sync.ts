@@ -9,11 +9,12 @@ import * as debug_ from "debug";
 import { syncIpc } from "readium-desktop/common/ipc";
 import { ActionWithSender, SenderType } from "readium-desktop/common/models/sync";
 import {
-    apiActions, dialogActions, downloadActions, i18nActions, lcpActions, /*netActions,*/ readerActions,
-    toastActions, /*updateActions*/
+    apiActions, dialogActions, downloadActions, i18nActions, lcpActions, readerActions,
+    toastActions,
 } from "readium-desktop/common/redux/actions";
-import { diMainGet, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
+
 import { RootState } from "../states";
 
 const debug = debug_("readium-desktop:sync");
@@ -71,29 +72,39 @@ export const reduxSyncMiddleware: Middleware
 
                 // Send this action to all the registered renderer processes
 
-                // Get action serializer
-                const actionSerializer = diMainGet("action-serializer");
-
-                const readers = store.getState().win.session.reader;
-
                 // actually when a renderer process send an api action this middleware broadcast to all renderer
                 // It should rather keep the action and don't broadcast an api request between front and back
                 // this bug become a feature with a hack in publicationInfo in reader
                 // thanks to this broadcast we can listen on publication tag and make a live refresh
 
+                // Get action serializer
+                const actionSerializer = diMainGet("action-serializer");
+
+                const browserWin: Map<string, Electron.BrowserWindow> = new Map();
+
+                const libId = store.getState().win.session.library.identifier;
+                const libWin = getLibraryWindowFromDi();
+                browserWin.set(libId, libWin);
+
+                const readers = store.getState().win.session.reader;
                 for (const key in readers) {
                     if (readers[key]) {
+                        const readerWin = getReaderWindowFromDi(readers[key].identifier);
+                        browserWin.set(readers[key].identifier, readerWin);
+                    }
+                }
+
+                browserWin.forEach(
+                    (win, id) => {
                         if (
                             !(
                                 action.sender?.type === SenderType.Renderer
-                                && action.sender?.identifier === readers[key].identifier
+                                && action.sender?.identifier === id
                             )
                         ) {
 
-                            const readerWin = getReaderWindowFromDi(readers[key].identifier);
-
                             try {
-                                readerWin.webContents.send(syncIpc.CHANNEL, {
+                                win.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
                                     payload: {
                                         action: actionSerializer.serialize(action),
@@ -102,12 +113,12 @@ export const reduxSyncMiddleware: Middleware
                                         type: SenderType.Main,
                                     },
                                 } as syncIpc.EventPayload);
+
                             } catch (error) {
                                 debug("ERROR in SYNC ACTION", error);
                             }
                         }
-                    }
-                }
+                    });
 
                 // for (const readerWindow of readerWindows) {
                 //     // Notifies renderer process
