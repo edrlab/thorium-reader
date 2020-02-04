@@ -184,14 +184,12 @@ export function initApp() {
         debug(`create i18n key in configRepository with ${lang} locale`);
     });
 
-    //for some reason the "yield" call is the only way this gets saved, but also stops the book from closing
+    //save openApp event
     const analyticsRepository = diMainGet("analytics-repository");
     const doc = {
         analyticsType: AnalyticsType.OpenApp,
         publicationIdentifier : ""
     }
-    console.log(doc)
-    console.log(analyticsRepository)
     analyticsRepository.save(doc);
 
     const winRegistry = diMainGet("win-registry");
