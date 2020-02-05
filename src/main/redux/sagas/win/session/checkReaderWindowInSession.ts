@@ -32,6 +32,7 @@ function* openReaderFromPreviousSession(reader: IWinSessionReaderState) {
             manifestUrl,
             reader.windowBound,
             reader.reduxState,
+            reader.identifier,
         ));
     }
 }

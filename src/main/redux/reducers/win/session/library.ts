@@ -42,14 +42,14 @@ export function winSessionLibraryReducer(
             };
 
         case winActions.session.setBound.ID:
-            return {
-                ...state,
-                ...{
-                    windowBound: action.payload.bound,
-                },
-            };
-
-        default:
+            if (state.identifier === action.payload.identifier) {
+                return {
+                    ...state,
+                    ...{
+                        windowBound: action.payload.bound,
+                    },
+                };
+            }
+        }
     return state;
-}
 }

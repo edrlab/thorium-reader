@@ -118,8 +118,8 @@ function* winClose(_action: winActions.library.closed.TAction) {
 function* openLibraryWatcher() {
     yield all([
         takeLeading(winActions.library.openRequest.ID, createLibraryWindow),
+        takeLeading(winActions.library.openRequest.ID, checkReaderWindowInSession),
         takeLeading(winActions.library.openSucess.ID, winOpen),
-        takeLeading(winActions.library.openSucess.ID, checkReaderWindowInSession),
     ]);
 }
 
