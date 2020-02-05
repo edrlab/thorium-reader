@@ -96,10 +96,14 @@ const pouchDbFind = require("pouchdb-find");
 // tslint:disable-next-line:no-var-requires
 const pouchDbSearch = require("pouchdb-quick-search");
 
+// tslint:disable-next-line:no-var-requires
+const pouchDbAuthentication = require("pouchdb-authentication");
+
 // Load PouchDB plugins
 PouchDB.plugin(pouchDbAdapter.default ? pouchDbAdapter.default : pouchDbAdapter);
 PouchDB.plugin(pouchDbFind.default ? pouchDbFind.default : pouchDbFind);
 PouchDB.plugin(pouchDbSearch.default ? pouchDbSearch.default : pouchDbSearch);
+PouchDB.plugin(pouchDbAuthentication.default ? pouchDbAuthentication.default : pouchDbAuthentication);
 
 const dbOpts = {
     adapter: _POUCHDB_ADAPTER_NAME,
@@ -141,6 +145,45 @@ const analyticsDb = new PouchDB<AnalyticsDocument>(
 );
 
 const analyticsRepository = new AnalyticsRepository(analyticsDb);
+
+var PouchDBAuth = require("pouchdb-node");
+
+var analyticsRemoteDb = new PouchDBAuth('http://metrics.ekitabu.com:5984/brett', 
+{
+    auth: {
+      username: 'brett',
+      password: 'rIeMK3h&79Rk37'
+    }
+})
+var analyticsDbAuth = new PouchDBAuth(path.join(rootDbPath, "analytics"), {skip_setup: true});
+analyticsDbAuth.sync(analyticsDb, {live: true, retry: true}).on('error', console.log.bind(console));
+analyticsDbAuth.sync(analyticsRemoteDb, {live: true, retry: true}).on('error', console.log.bind(console));
+
+/*function makeid(length : number) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+ }
+var doc = {
+    "_id": makeid(10),
+    "name": "Mittens",
+    "occupation": "kitten",
+    "age": 3,
+    "hobbies": [
+        "playing with balls of yarn",
+        "chasing laser pointers",
+        "lookin' hella cute"
+    ]
+};
+
+analyticsDbAuth.put(doc)
+
+*/
+
 
 // Lcp secret db
 const lcpSecretDb = new PouchDB<LcpSecretDocument>(
