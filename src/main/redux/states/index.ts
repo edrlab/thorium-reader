@@ -34,7 +34,7 @@ export interface RootState {
         registry: {
             reader: IDictWinRegistryReaderState,
         },
-        mode: ReaderMode,
     };
+    mode: ReaderMode;
     lcp: ILcpState;
 }

@@ -37,7 +37,7 @@ export const rootReducer = combineReducers<RootState>({
         registry: combineReducers({
             reader: winRegistryReaderReducer,
         }),
-        mode: winModeReducer,
     }),
+    mode: winModeReducer,
     lcp: lcpReducer,
 });

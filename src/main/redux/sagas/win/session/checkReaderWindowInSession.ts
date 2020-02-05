@@ -9,9 +9,7 @@ import * as debug_ from "debug";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
-import {
-    IDictWinSessionReaderState, IWinSessionReaderState,
-} from "readium-desktop/main/redux/states/win/session/reader";
+import { IWinSessionReaderState } from "readium-desktop/main/redux/states/win/session/reader";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { fork, put } from "redux-saga/effects";
 
@@ -46,7 +44,7 @@ export function* checkReaderWindowInSession(_action: winActions.library.openRequ
     // ex: if 2 readers with the same pubId was previously opened,
     // at the next starting they need to deshydrate data from session and not from pubId registry
 
-    const readers: IDictWinSessionReaderState = yield selectTyped(
+    const readers = yield* selectTyped(
         (state: RootState) => state.win.session.reader,
     );
     const readersArray = ObjectValues(readers);
@@ -66,6 +64,7 @@ export function* checkReaderWindowInSession(_action: winActions.library.openRequ
         for (const reader of readersArray) {
             yield fork(openReaderFromPreviousSession, reader);
         }
+
     }
 
     // TODO

@@ -10,12 +10,14 @@ import { BrowserWindow, Event, Menu, shell } from "electron";
 import * as path from "path";
 import { defaultRectangle } from "readium-desktop/common/rectangle/window";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { saveLibraryWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
     _PACKAGING, _RENDERER_LIBRARY_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
 } from "readium-desktop/preprocessor-directives";
+import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { put } from "redux-saga/effects";
 
 // Logger
@@ -79,6 +81,16 @@ export function* createLibraryWindow(_action: winActions.library.openRequest.TAc
     }
 
     yield put(winActions.session.registerLibrary.build(libWindow, windowBound));
+
+    yield* callTyped(() => saveLibraryWindowInDi(libWindow));
+
+    const readers = yield* selectTyped(
+        (state: RootState) => state.win.session.reader,
+    );
+    const readersArray = ObjectValues(readers);
+    if (readersArray.length === 1) {
+            libWindow.hide();
+    }
 
     let rendererBaseUrl = _RENDERER_LIBRARY_BASE_URL;
     if (rendererBaseUrl === "file://") {

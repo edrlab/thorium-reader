@@ -151,7 +151,7 @@ function* getWinBound(publicationIdentifier: string) {
     const winBoundArray = [];
     winBoundArray.push(library.windowBound);
     readerArray.forEach(
-        (reader) => winBoundArray.push(reader.windowBound));
+        (reader) => reader && winBoundArray.push(reader.windowBound));
     const winBoundAlreadyTaken = !!winBoundArray.find((bound) => ramda.equals(winBound, bound));
 
     if (
@@ -206,6 +206,18 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
             reduxState,
         ));
 
+        const readers = yield* selectTyped(
+            (state: RootState) => state.win.session.reader,
+        );
+        const readersArray = ObjectValues(readers);
+
+        if (readersArray.length === 1) {
+            try {
+                getLibraryWindowFromDi().hide();
+            } catch (_err) {
+                // ignore
+            }
+        }
     }
 }
 
@@ -214,7 +226,7 @@ function* readerCloseRequestFromPublication(action: readerActions.closeRequestFr
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
 
     for (const key in readers) {
-        if (readers[key] && readers[key].publicationIdentifier === action.payload.publicationIdentifier) {
+        if (readers[key]?.publicationIdentifier === action.payload.publicationIdentifier) {
             yield call(readerCloseRequest, readers[key].identifier);
         }
     }

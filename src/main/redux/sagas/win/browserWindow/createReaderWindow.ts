@@ -11,6 +11,7 @@ import {
     trackBrowserWindow,
 } from "r2-navigator-js/dist/es6-es2015/src/electron/main/browser-window-tracker";
 import { callTyped, putTyped } from "readium-desktop/common/redux/typed-saga";
+import { saveReaderWindowInDi } from "readium-desktop/main/di";
 import { setMenu } from "readium-desktop/main/menu";
 import {
     _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH, IS_DEV,
@@ -65,8 +66,10 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         identifier,
     ));
 
+    yield* callTyped(() => saveReaderWindowInDi(readerWindow, identifier));
+
     /*
-    // should be handle in library saga
+    // should be handled in library saga
     const thereIsOnlyTheLibraryWindow = appWindows.length === 1;
 
     // Hide the only window (the library),

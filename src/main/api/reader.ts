@@ -190,6 +190,6 @@ export class ReaderApi implements IReaderApi {
     // TODO
     // may be removed and replaced with a action dispatched to every reader
     public async getMode() {
-        return this.store.getState().win.mode;
+        return this.store.getState().mode;
     }
 }

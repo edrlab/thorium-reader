@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
-import { getLibraryWindowFromDi, saveReaderWindowInDi } from "readium-desktop/main/di";
+import { getLibraryWindowFromDi } from "readium-desktop/main/di";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
@@ -78,7 +78,6 @@ function* winOpen(action: winActions.reader.openSucess.TAction) {
     //     },
     // } as syncIpc.EventPayload);
 
-    yield call(() => saveReaderWindowInDi(readerWin, identifier));
 }
 
 function* winClose(action: winActions.reader.closed.TAction) {
