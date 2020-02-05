@@ -45,6 +45,7 @@ function* appInitSuccessWatcher() {
         call(win.library.watchers),
 
         call(win.session.library.watchers),
+        call(win.session.reader.watchers),
 
         call(ipc.watchers),
 

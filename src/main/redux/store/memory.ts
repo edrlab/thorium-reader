@@ -13,10 +13,12 @@ import { rootReducer } from "readium-desktop/main/redux/reducers";
 import { rootSaga } from "readium-desktop/main/redux/sagas";
 import { RootState } from "readium-desktop/main/redux/states";
 import { applyMiddleware, createStore, Store } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
+import { composeWithDevTools } from "remote-redux-devtools";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
+
+const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
 
 export async function initStore(configRepository: ConfigRepository<Partial<RootState>>): Promise<Store<RootState>> {
 
@@ -36,7 +38,7 @@ export async function initStore(configRepository: ConfigRepository<Partial<RootS
     const store = createStore(
         rootReducer,
         preloadedState,
-        composeWithDevTools(
+        composeWithDevTools({ realtime: true, port: REDUX_REMOTE_DEVTOOLS_PORT })(
             applyMiddleware(
                 reduxSyncMiddleware,
                 sagaMiddleware,

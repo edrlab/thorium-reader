@@ -92,6 +92,8 @@ function* winClose(action: winActions.reader.closed.TAction) {
     if (reader) {
         yield put(streamerActions.publicationCloseRequest.build(reader.publicationIdentifier));
 
+        yield put(winActions.session.unregisterReader.build(identifier));
+
         yield put(winActions.registry.registerReaderPublication.build(
             reader.publicationIdentifier,
             reader.windowBound,

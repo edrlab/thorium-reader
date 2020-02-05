@@ -281,6 +281,9 @@ function* publicationCloseRequestWatcher(): SagaIterator {
 
         const publicationRepository = diMainGet("publication-repository");
 
+        // TODO
+        // action.payload.publicationIdentifier === publicationDocument.identifier
+        // remove publicationDocument getter
         let publicationDocument: PublicationDocument = null;
         try {
             publicationDocument =

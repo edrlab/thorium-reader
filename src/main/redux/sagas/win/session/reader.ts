@@ -5,15 +5,14 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { screen } from "electron";
-import * as ramda from "ramda";
-import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
+import * as debug_ from "debug";
 import { winActions } from "readium-desktop/main/redux/actions";
-import { RootState } from "readium-desktop/main/redux/states";
 import { debounce } from "readium-desktop/utils/debounce";
-import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { eventChannel } from "redux-saga";
 import { all, put, take, takeEvery } from "redux-saga/effects";
+
+// Logger
+const debug = debug_("readium-desktop:main:redux:sagas:session:reader");
 
 function* readerClosed(action: winActions.session.registerReader.TAction) {
 
@@ -32,8 +31,8 @@ function* readerClosed(action: winActions.session.registerReader.TAction) {
     );
 
     yield take(channel);
+    debug("event close requested -> emit unregisterReader and closed");
     yield put(winActions.reader.closed.build(identifier));
-    yield put(winActions.session.unregisterReader.build(identifier));
 }
 
 function* readerMovedOrResized(action: winActions.session.registerReader.TAction) {
@@ -64,30 +63,7 @@ function* readerMovedOrResized(action: winActions.session.registerReader.TAction
 
         yield take(channel);
 
-        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-
-        const displayArea = yield* callTyped(() => screen.getPrimaryDisplay().workAreaSize);
-
-        let winBound: Electron.Rectangle;
-        if (ObjectKeys(readers).length) {
-            const winBoundArray = [];
-            for (const key in readers) {
-                if (readers[key]) {
-                    const rectangle = readers[key].windowBound;
-
-                    rectangle.x += 100;
-                    rectangle.x %= displayArea.width - rectangle.width;
-                    rectangle.y += 100;
-                    rectangle.y %= displayArea.height - rectangle.height;
-
-                    winBoundArray.push(rectangle);
-                }
-            }
-
-            winBound = ramda.uniq(winBoundArray)[0];
-        } else {
-            winBound = reader.getBounds();
-        }
+        const winBound = reader.getBounds();
 
         yield put(winActions.session.setBound.build(id, winBound));
     }
