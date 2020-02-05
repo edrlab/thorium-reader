@@ -30,42 +30,75 @@ export function streamerReducer(
         streamerActions.publicationCloseSuccess.TAction |
         streamerActions.stopSuccess.TAction,
 ): StreamerState {
-    let pubId = null;
-    const newState = Object.assign({}, state);
 
     switch (action.type) {
         case streamerActions.startSuccess.ID:
-            newState.status = StreamerStatus.Running;
-            newState.baseUrl = action.payload.streamerUrl;
-            newState.openPublicationCounter = {};
-            newState.publicationManifestUrl = {};
-            return newState;
+            return {
+                ...{
+                    status: StreamerStatus.Running,
+                    baseUrl: action.payload.streamerUrl,
+                    openPublicationCounter: {},
+                    publicationManifestUrl: {},
+                },
+            };
+
         case streamerActions.stopSuccess.ID:
-            newState.baseUrl = null;
-            newState.status = StreamerStatus.Stopped;
-            newState.openPublicationCounter = {};
-            newState.publicationManifestUrl = {};
-            return newState;
-        case streamerActions.publicationOpenSuccess.ID:
-            pubId = action.payload.publicationDocument.identifier;
+            return {
+                ...{
+                    status: StreamerStatus.Stopped,
+                    baseUrl: undefined,
+                    openPublicationCounter: {},
+                    publicationManifestUrl: {},
+                },
+            };
 
-            if (!newState.openPublicationCounter.hasOwnProperty(pubId)) {
-                newState.openPublicationCounter[pubId] = 1;
-                newState.publicationManifestUrl[pubId] = action.payload.manifestUrl;
-            } else {
-                // Increment the number of pubs opened with the streamer
-                newState.openPublicationCounter[pubId] = state.openPublicationCounter[pubId] + 1;
-            }
-            return newState;
-        case streamerActions.publicationCloseSuccess.ID:
-            pubId = action.payload.publicationDocument.identifier;
-            newState.openPublicationCounter[pubId] = newState.openPublicationCounter[pubId] - 1;
+        case streamerActions.publicationOpenSuccess.ID: {
+            const pubId = action.payload.publicationDocument.identifier;
 
-            if (newState.openPublicationCounter[pubId] <= 0) {
-                delete newState.openPublicationCounter[pubId];
-                delete newState.publicationManifestUrl[pubId];
-            }
-            return newState;
+            return {
+                ...state,
+                ...{
+                    openPublicationCounter: {
+                        ...state.openPublicationCounter,
+                        ...{
+                            [pubId]: state.openPublicationCounter[pubId] + 1 || 1,
+                        },
+                    },
+                    publicationManifestUrl: {
+                        ...state.publicationManifestUrl,
+                        ...{
+                            [pubId]: action.payload.manifestUrl,
+                        },
+                    },
+                },
+            };
+        }
+
+        case streamerActions.publicationCloseSuccess.ID: {
+            const pubId = action.payload.publicationIdentifier;
+
+            return {
+                ...state,
+                ...{
+                    openPublicationCounter: {
+                        ...state.openPublicationCounter,
+                        ...{
+                            [pubId]: state.openPublicationCounter[pubId] - 1 < 1
+                                ? undefined
+                                : state.openPublicationCounter[pubId] - 1,
+                        },
+                    },
+                    publicationManifestUrl: {
+                        ...state.publicationManifestUrl,
+                        ...{
+                            [pubId]: state.openPublicationCounter[pubId] - 1 < 1
+                                ? undefined
+                                : state.publicationManifestUrl[pubId],
+                        },
+                    },
+                },
+            };
+        }
         default:
             return state;
     }

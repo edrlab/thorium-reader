@@ -19,7 +19,7 @@ import { RootState } from "readium-desktop/main/redux/states";
 import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
-import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
+import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects";
 import { streamerOpenPublicationAndReturnManifestUrl } from "./streamer";
 
@@ -142,31 +142,39 @@ function* getWinBound(publicationIdentifier: string) {
 
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
     const library = yield* selectTyped((state: RootState) => state.win.session.library);
+    const readerArray = ObjectValues(readers);
 
     let winBound = yield* selectTyped(
         (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
     );
 
-    if (!winBound) {
-        const winBoundArray = [];
+    const winBoundArray = [];
+    winBoundArray.push(library.windowBound);
+    readerArray.forEach(
+        (reader) => winBoundArray.push(reader.windowBound));
+    const winBoundAlreadyTaken = !!winBoundArray.find((bound) => ramda.equals(winBound, bound));
 
-        if (ObjectKeys(readers).length) {
+    if (
+        !winBound
+        || winBoundAlreadyTaken
+    ) {
+
+        if (readerArray.length) {
 
             const displayArea = yield* callTyped(() => screen.getPrimaryDisplay().workAreaSize);
 
-            for (const key in readers) {
-                if (readers[key]) {
-                    const rectangle = readers[key].windowBound;
+            const winBoundWithOffset = winBoundArray.map(
+                (reader) => {
+                    reader.x += 100;
+                    reader.x %= displayArea.width - reader.width;
+                    reader.y += 100;
+                    reader.y %= displayArea.height - reader.height;
 
-                    rectangle.x += 100;
-                    rectangle.x %= displayArea.width - rectangle.width;
-                    rectangle.y += 100;
-                    rectangle.y %= displayArea.height - rectangle.height;
+                    return reader;
+                },
+            );
 
-                    winBoundArray.push(rectangle);
-                }
-            }
-            winBound = ramda.uniq(winBoundArray)[0];
+            winBound = ramda.uniq(winBoundWithOffset)[0];
 
         } else {
             winBound = library.windowBound;
