@@ -6,14 +6,14 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { dialog } from "electron";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions } from "readium-desktop/common/redux/actions";
-import { selectTyped } from "readium-desktop/common/redux/typed-saga";
-import {
-    getLibraryWindowFromDi, getReaderWindowFromDi,
-} from "readium-desktop/main/di";
+import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
+import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
+import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { all, call, takeLeading } from "redux-saga/effects";
 
 import { appActivate } from "../app";
@@ -94,23 +94,42 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
     debug(`library -> winClose`);
 
+    const library = getLibraryWindowFromDi();
+
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+    const readersArray = ObjectValues(readers);
 
-    for (const key in readers) {
-        if (readers[key]) {
-            try {
-                // force quit the reader windows to keep session in next startup
-                yield call(() => getReaderWindowFromDi(readers[key].identifier).destroy());
+    if (readersArray.length) {
 
-            } catch (_err) {
-                // ignore
+        const value = dialog.showMessageBoxSync(library, {
+            type: "question",
+            buttons: ["No", "Yes"],
+            defaultId: 1,
+            title: "save session",
+            message: "Do you want save the session ?",
+        });
+        debug("result:", value);
+
+        for (const key in readers) {
+            if (readers[key]) {
+                try {
+                    const readerWin = yield* callTyped(() => getReaderWindowFromDi(readers[key].identifier));
+                    if (value === 1) {
+                        // force quit the reader windows to keep session in next startup
+                        readerWin.destroy();
+                    } else {
+                        readerWin.close();
+                    }
+
+                } catch (_err) {
+                    // ignore
+                }
             }
         }
     }
 
     // end of cycle
     // closed the library
-    const library = getLibraryWindowFromDi();
     library.destroy();
 }
 

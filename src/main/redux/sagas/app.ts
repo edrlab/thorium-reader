@@ -34,13 +34,14 @@ function* mainApp() {
 
     app.setAppUserModelId("io.github.edrlab.thorium");
 
-    app.on("window-all-closed", () => {
+    app.on("window-all-closed", async () => {
         // At the moment, there are no menu items to revive / re-open windows,
         // so let's terminate the app on MacOS too.
         // if (process.platform !== "darwin") {
         //     app.quit();
         // }
-        app.quit();
+
+        setTimeout(() => app.exit(0), 2000);
     });
 
     app.on("accessibility-support-changed", (_ev, accessibilitySupportEnabled) => {
