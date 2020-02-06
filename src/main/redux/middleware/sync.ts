@@ -13,7 +13,6 @@ import {
     toastActions,
 } from "readium-desktop/common/redux/actions";
 import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
-import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { RootState } from "../states";
@@ -71,8 +70,6 @@ export const reduxSyncMiddleware: Middleware
                     return next(action);
                 }
 
-                const actionToReturn = next(action);
-
                 // Send this action to all the registered renderer processes
 
                 // actually when a renderer process send an api action this middleware broadcast to all renderer
@@ -95,20 +92,21 @@ export const reduxSyncMiddleware: Middleware
                 }
 
                 const readers = store.getState().win.session.reader;
-                const readerArray = ObjectValues(readers);
-                debug("Number of reader handled:", readerArray.length);
-                readerArray.forEach((reader) => {
-                    debug("id: ", reader.identifier);
-                    try {
-                        const readerWin = getReaderWindowFromDi(reader.identifier);
-                        browserWin.set(reader.identifier, readerWin);
-                    } catch (_err) {
-                        // ignore
+                for (const key in readers) {
+                    if (readers[key]) {
+                        try {
+                            const readerWin = getReaderWindowFromDi(readers[key].identifier);
+                            browserWin.set(readers[key].identifier, readerWin);
+                        } catch (err) {
+                            // ignore
+                            debug("ERROR: Can't found ther reader win from di: ", readers[key].identifier);
+                        }
                     }
-                });
+                }
 
                 browserWin.forEach(
                     (win, id) => {
+
                         if (
                             !(
                                 action.sender?.type === SenderType.Renderer
@@ -116,6 +114,7 @@ export const reduxSyncMiddleware: Middleware
                             )
                         ) {
 
+                            debug("send to", id);
                             try {
                                 win.webContents.send(syncIpc.CHANNEL, {
                                     type: syncIpc.EventType.MainAction,
@@ -160,6 +159,6 @@ export const reduxSyncMiddleware: Middleware
                 //     }
                 // }
 
-                return actionToReturn;
+                return next(action);
 
             });

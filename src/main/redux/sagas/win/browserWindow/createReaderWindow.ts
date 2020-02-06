@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import {
@@ -19,6 +20,10 @@ import {
 import { put } from "redux-saga/effects";
 
 import { winActions } from "../../../actions";
+
+// Logger
+const debug = debug_("readium-desktop:createReaderWindow");
+debug("_");
 
 export function* createReaderWindow(action: winActions.reader.openRequest.TAction) {
 
@@ -66,7 +71,7 @@ export function* createReaderWindow(action: winActions.reader.openRequest.TActio
         identifier,
     ));
 
-    yield* callTyped(() => saveReaderWindowInDi(readerWindow, identifier));
+    yield* callTyped(() => saveReaderWindowInDi(readerWindow, registerReaderAction.payload.identifier));
 
     /*
     // should be handled in library saga
