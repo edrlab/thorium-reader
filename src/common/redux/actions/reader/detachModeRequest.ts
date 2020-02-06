@@ -5,7 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { Action } from "readium-desktop/common/models/redux";
+import { ActionWithSender, WithSender } from "readium-desktop/common/models/sync";
 
 export const ID = "READER_MODE_DETACH_REQUEST";
 
@@ -14,7 +14,7 @@ export interface Payload {
 }
 
 export function build():
-    Action<typeof ID, Payload> {
+    Omit<ActionWithSender<typeof ID, Payload>, keyof WithSender> & Partial<WithSender> {
 
     return {
         type: ID,

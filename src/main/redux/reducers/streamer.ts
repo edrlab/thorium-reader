@@ -77,7 +77,7 @@ export function streamerReducer(
         case streamerActions.publicationCloseSuccess.ID: {
             const pubId = action.payload.publicationIdentifier;
 
-            return {
+            const ret = {
                 ...state,
                 ...{
                     openPublicationCounter: {
@@ -98,6 +98,13 @@ export function streamerReducer(
                     },
                 },
             };
+
+            if (!ret.openPublicationCounter[pubId]) {
+                delete ret.openPublicationCounter[pubId];
+                delete ret.publicationManifestUrl[pubId];
+            }
+
+            return ret;
         }
         default:
             return state;

@@ -7,14 +7,16 @@
 
 import * as debug_ from "debug";
 import { readerIpc } from "readium-desktop/common/ipc";
+import { ReaderMode } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
-import { getLibraryWindowFromDi } from "readium-desktop/main/di";
+import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
     _NODE_MODULE_RELATIVE_URL, _PACKAGING, _RENDERER_READER_BASE_URL, _VSCODE_LAUNCH,
 } from "readium-desktop/preprocessor-directives";
+import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, takeEvery } from "redux-saga/effects";
 
 import { createReaderWindow } from "./browserWindow/createReaderWindow";
@@ -85,35 +87,67 @@ function* winClose(action: winActions.reader.closed.TAction) {
     const identifier = action.payload.identifier;
     debug(`reader ${identifier} -> winClose`);
 
-    const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
-    const reader = readers[identifier];
+    {
+        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+        const reader = readers[identifier];
 
-    if (reader) {
-        yield put(streamerActions.publicationCloseRequest.build(reader.publicationIdentifier));
+        if (reader) {
 
-        yield put(winActions.session.unregisterReader.build(identifier));
+            yield put(winActions.session.unregisterReader.build(identifier));
 
-        yield put(winActions.registry.registerReaderPublication.build(
-            reader.publicationIdentifier,
-            reader.windowBound,
-            reader.reduxState),
-        );
-    }
+            yield put(winActions.registry.registerReaderPublication.build(
+                reader.publicationIdentifier,
+                reader.windowBound,
+                reader.reduxState),
+                );
 
-    if (Object.keys(readers).length < 1) {
-        yield put(readerActions.attachModeRequest.build());
-    }
-
-    const libraryWindow = yield* callTyped(() => getLibraryWindowFromDi());
-    if (libraryWindow) {
-        if (libraryWindow.isMinimized()) {
-            libraryWindow.restore();
-        } else if (!libraryWindow.isVisible()) {
-            libraryWindow.close();
-            return;
+            yield put(streamerActions.publicationCloseRequest.build(reader.publicationIdentifier));
         }
-        libraryWindow.show(); // focuses as well
+
     }
+
+    {
+        // readers in session updated
+        const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
+        const readersArray = ObjectValues(readers);
+
+        try {
+            const libraryWindow = yield* callTyped(() => getLibraryWindowFromDi());
+
+            debug("Nb of readers:", readersArray.length);
+            debug("readers: ", readersArray);
+            if (readersArray.length < 1) {
+
+                const mode = yield* selectTyped((state: RootState) => state.mode);
+                if (mode === ReaderMode.Detached) {
+                    yield put(readerActions.attachModeRequest.build());
+
+                } else {
+                    try {
+                        const readerWin = getReaderWindowFromDi(identifier);
+                        libraryWindow.setBounds(readerWin.getBounds());
+
+                    } catch (_err) {
+                        debug("can't load readerWin from di :", identifier);
+                    }
+                }
+            }
+
+            if (libraryWindow) {
+                if (libraryWindow.isMinimized()) {
+                    libraryWindow.restore();
+                } else if (!libraryWindow.isVisible()) {
+                    libraryWindow.close();
+                    return;
+                }
+                libraryWindow.show(); // focuses as well
+            }
+
+        } catch (_err) {
+            debug("can't load libraryWin from di");
+        }
+    }
+
 }
 
 function* openReaderWatcher() {

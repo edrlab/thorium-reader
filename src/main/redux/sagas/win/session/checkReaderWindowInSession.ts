@@ -6,6 +6,7 @@
 // ==LICENSE-END=
 
 import * as debug_ from "debug";
+import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
@@ -18,17 +19,25 @@ import { streamerOpenPublicationAndReturnManifestUrl } from "../../streamer";
 // Logger
 const debug = debug_("readium-desktop:main:saga:checkReaderWindowSession");
 
-function* openReaderFromPreviousSession(reader: IWinSessionReaderState) {
+function* openReaderFromPreviousSession(reader: IWinSessionReaderState, nbOfReaderInSession: number) {
 
     const publicationIdentifier = reader.publicationIdentifier;
     const manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
 
     if (manifestUrl) {
 
+        let bound = reader.windowBound;
+
+        if (nbOfReaderInSession > 1) {
+            yield put(readerActions.detachModeRequest.build());
+        } else {
+            bound = yield* selectTyped((state: RootState) => state.win.session.library.windowBound);
+        }
+
         yield put(winActions.reader.openRequest.build(
             publicationIdentifier,
             manifestUrl,
-            reader.windowBound,
+            bound,
             reader.reduxState,
             reader.identifier,
         ));
@@ -62,7 +71,7 @@ export function* checkReaderWindowInSession(_action: winActions.library.openRequ
         }
     } else {
         for (const reader of readersArray) {
-            yield fork(openReaderFromPreviousSession, reader);
+            yield fork(openReaderFromPreviousSession, reader, readersArray.length);
         }
 
     }

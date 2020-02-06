@@ -50,12 +50,11 @@ export function winSessionReaderReducer(
             const id = action.payload.identifier;
 
             if (state[id]) {
-                return {
+                const ret = {
                     ...state,
-                    ...{
-                        [id]: undefined,
-                    },
                 };
+                delete ret[id];
+                return ret;
             }
             break;
         }

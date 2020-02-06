@@ -8,12 +8,11 @@
 import * as debug_ from "debug";
 import { screen } from "electron";
 import * as ramda from "ramda";
+import { ReaderMode } from "readium-desktop/common/models/reader";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { readerActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
-import {
-    getAllReaderWindowFromDi, getLibraryWindowFromDi, getReaderWindowFromDi,
-} from "readium-desktop/main/di";
+import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { streamerActions, winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import {
@@ -21,6 +20,7 @@ import {
 } from "readium-desktop/preprocessor-directives";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects";
+
 import { streamerOpenPublicationAndReturnManifestUrl } from "./streamer";
 
 // Logger
@@ -112,12 +112,17 @@ function* readerFullscreenRequest(action: readerActions.fullScreenRequest.TActio
     }
 }
 
-function* readerDetachRequest(_action: readerActions.detachModeRequest.TAction) {
+function* readerDetachRequest(action: readerActions.detachModeRequest.TAction) {
 
-    const readerWin = yield* callTyped(() => getAllReaderWindowFromDi()[0]);
+    const readerWinId = action.sender?.type === SenderType.Renderer && action.sender?.identifier;
+    const readerWin = readerWinId && getReaderWindowFromDi(readerWinId);
+
     const libWin = yield* callTyped(() => getLibraryWindowFromDi());
 
     if (libWin) {
+
+        const libBound = yield* callTyped(getWinBound, undefined);
+        libWin.setBounds(libBound);
 
         // this should never occur, but let's do it for certainty
         if (libWin.isMinimized()) {
@@ -143,6 +148,10 @@ function* getWinBound(publicationIdentifier: string) {
     const readers = yield* selectTyped((state: RootState) => state.win.session.reader);
     const library = yield* selectTyped((state: RootState) => state.win.session.library);
     const readerArray = ObjectValues(readers);
+
+    if (readerArray.length === 0) {
+        return library.windowBound;
+    }
 
     let winBound = yield* selectTyped(
         (state: RootState) => state.win.registry.reader[publicationIdentifier]?.windowBound,
@@ -199,6 +208,20 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
 
         const winBound = yield* callTyped(getWinBound, publicationIdentifier);
 
+        // const readers = yield* selectTyped(
+        //     (state: RootState) => state.win.session.reader,
+        // );
+        // const readersArray = ObjectValues(readers);
+
+        const mode = yield* selectTyped((state: RootState) => state.mode);
+        if (mode === ReaderMode.Attached) {
+            try {
+                getLibraryWindowFromDi().hide();
+            } catch (_err) {
+                debug("library can't be loaded from di");
+            }
+        }
+
         yield put(winActions.reader.openRequest.build(
             publicationIdentifier,
             manifestUrl,
@@ -206,18 +229,6 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
             reduxState,
         ));
 
-        const readers = yield* selectTyped(
-            (state: RootState) => state.win.session.reader,
-        );
-        const readersArray = ObjectValues(readers);
-
-        if (readersArray.length === 1) {
-            try {
-                getLibraryWindowFromDi().hide();
-            } catch (_err) {
-                // ignore
-            }
-        }
     }
 }
 
