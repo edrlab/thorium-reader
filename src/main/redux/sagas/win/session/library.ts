@@ -7,9 +7,8 @@
 
 import * as debug_ from "debug";
 import { winActions } from "readium-desktop/main/redux/actions";
-import { debounce } from "readium-desktop/utils/debounce";
 import { eventChannel } from "redux-saga";
-import { all, put, take, takeLeading } from "redux-saga/effects";
+import { all, debounce, put, take, takeLeading } from "redux-saga/effects";
 
 // Logger
 const debug = debug_("readium-desktop:main:redux:sagas:library");
@@ -42,32 +41,28 @@ function* libraryMovedOrResized(action: winActions.session.registerLibrary.TActi
 
     const library = action.payload.win;
     const id = action.payload.identifier;
+    const DEBOUNCE_TIME = 500;
 
     const channel = eventChannel<boolean>(
         (emit) => {
 
             const handler = () => emit(true);
 
-            const DEBOUNCE_TIME = 500;
-
-            const debounceHandler = debounce<typeof handler>(handler, DEBOUNCE_TIME);
-
-            library.on("move", debounceHandler);
-            library.on("resize", debounceHandler);
+            library.on("move", handler);
+            library.on("resize", handler);
 
             return () => {
-                library.removeListener("move", debounceHandler);
-                library.removeListener("resize", debounceHandler);
+                library.removeListener("move", handler);
+                library.removeListener("resize", handler);
             };
         },
     );
 
-    while (42) {
+    yield debounce(DEBOUNCE_TIME, channel, function*() {
 
-        yield take(channel);
-
-        yield put(winActions.session.setBound.build(id, library.getBounds()));
-    }
+        const winBound = library.getBounds();
+        yield put(winActions.session.setBound.build(id, winBound));
+    });
 }
 
 export function* watchers() {

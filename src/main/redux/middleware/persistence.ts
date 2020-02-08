@@ -5,29 +5,12 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as ramda from "ramda";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
-import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { CONFIGREPOSITORY_REDUX_WIN_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
-import { debounce } from "readium-desktop/utils/debounce";
-import { shallowEqual } from "readium-desktop/utils/shallowEqual";
+import { winActions } from "readium-desktop/main/redux/actions";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
 import { RootState } from "../states";
-
-const persistState = async (nextState: RootState) => {
-
-    const configRepository: ConfigRepository<Partial<RootState>> = diMainGet("config-repository");
-    await configRepository.save({
-        identifier: CONFIGREPOSITORY_REDUX_WIN_PERSISTENCE,
-        value: {
-            win: nextState.win,
-        },
-    });
-};
-
-const TIME_BETWEEN_2_RECORDING = 1000;
-
-const debouncePersistState = debounce<typeof persistState>(persistState, TIME_BETWEEN_2_RECORDING);
 
 export const reduxPersistMiddleware: Middleware
     = (store: MiddlewareAPI<Dispatch<AnyAction>, RootState>) =>
@@ -40,8 +23,10 @@ export const reduxPersistMiddleware: Middleware
 
                 const nextState = store.getState();
 
-                if (!shallowEqual(prevState.win, nextState.win)) {
-                    debouncePersistState(nextState);
+                if (!ramda.equals(prevState.win, nextState.win)) {
+
+                    // dispatch a new round in middleware
+                    store.dispatch(winActions.persistRequest.build());
                 }
 
                 return returnValue;

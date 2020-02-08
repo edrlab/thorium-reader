@@ -321,7 +321,7 @@ function* readerSetReduxStateWatcher() {
     yield takeEvery(readerActions.setReduxState.ID, readerSetReduxState);
 }
 
-export function* watcher() {
+export function* watchers() {
     yield all([
         call(readerOpenRequestWatcher),
         call(readerCloseRequestWatcher),

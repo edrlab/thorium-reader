@@ -12,6 +12,7 @@ import * as api from "./api";
 import * as app from "./app";
 import * as i18n from "./i18n";
 import * as ipc from "./ipc";
+import * as persist from "./persist";
 import * as reader from "./reader";
 import * as streamer from "./streamer";
 import * as win from "./win";
@@ -49,7 +50,11 @@ function* appInitSuccessWatcher() {
 
         call(ipc.watchers),
 
-        call(reader.watcher),
+        call(reader.watchers),
+
+        // data persist to FS
+        call(persist.watchers),
+
     ]);
 }
 

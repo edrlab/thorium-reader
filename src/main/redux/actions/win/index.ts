@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as library from "./library";
+import * as persistRequest from "./persistRequest";
 import * as reader from "./reader";
 import * as registry from "./registry";
 import * as session from "./session";
@@ -15,4 +16,5 @@ export {
     library,
     registry,
     reader,
+    persistRequest,
 };

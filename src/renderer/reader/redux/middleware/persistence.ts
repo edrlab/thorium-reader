@@ -5,24 +5,17 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as ramda from "ramda";
 import { ActionWithSender } from "readium-desktop/common/models/sync";
 import { readerActions } from "readium-desktop/common/redux/actions";
-import {
-    IReaderRootState,
-} from "readium-desktop/common/redux/states/renderer/readerRootState";
-import { debounce } from "readium-desktop/utils/debounce";
-import { shallowEqual } from "readium-desktop/utils/shallowEqual";
+import { IReaderRootState } from "readium-desktop/common/redux/states/renderer/readerRootState";
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from "redux";
 
-const dispatchReduxState = async (store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>) => {
+const dispatchSetReduxState = (store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>) => {
 
     const state = store.getState();
     store.dispatch(readerActions.setReduxState.build(state.win.identifier, state.reader));
 };
-
-const TIME_BETWEEN_2_RECORDING = 1000;
-
-const debounceDispatchState = debounce<typeof dispatchReduxState>(dispatchReduxState, TIME_BETWEEN_2_RECORDING);
 
 export const reduxPersistMiddleware: Middleware
     = (store: MiddlewareAPI<Dispatch<AnyAction>, IReaderRootState>) =>
@@ -35,8 +28,8 @@ export const reduxPersistMiddleware: Middleware
 
                 const nextState = store.getState();
 
-                if (!shallowEqual(prevState.reader, nextState.reader)) {
-                    debounceDispatchState(store);
+                if (!ramda.equals(prevState.reader, nextState.reader)) {
+                    dispatchSetReduxState(store);
                 }
 
                 return returnValue;
