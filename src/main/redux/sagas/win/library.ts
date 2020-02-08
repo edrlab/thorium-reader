@@ -10,7 +10,7 @@ import { dialog } from "electron";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
-import { getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
+import { diMainGet, getLibraryWindowFromDi, getReaderWindowFromDi } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { ObjectValues } from "readium-desktop/utils/object-keys-values";
@@ -101,26 +101,40 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
     if (readersArray.length) {
 
-        const value = dialog.showMessageBoxSync(library, {
-            type: "question",
-            buttons: ["No", "Yes"],
-            defaultId: 1,
-            title: "save session",
-            message: "Do you want save the session ?",
-        });
-        debug("result:", value);
+        const value = yield* callTyped(
+            async () => {
+
+                const translator = diMainGet("translator");
+
+                return dialog.showMessageBox(
+                    library,
+                    {
+                        type: "question",
+                        buttons: [
+                            translator.translate("app.session.exit.askBox.button.no"),
+                            translator.translate("app.session.exit.askBox.button.yes"),
+                        ],
+                        defaultId: 1,
+                        title: translator.translate("app.session.exit.askBox.title"),
+                        message: translator.translate("app.session.exit.askBox.message"),
+                    },
+                );
+            },
+        );
+        debug("result:", value.response);
 
         for (const key in readers) {
             if (readers[key]) {
+
                 try {
                     const readerWin = yield* callTyped(() => getReaderWindowFromDi(readers[key].identifier));
-                    if (value === 1) {
+
+                    if (value.response === 1) {
                         // force quit the reader windows to keep session in next startup
                         readerWin.destroy();
                     } else {
                         readerWin.close();
                     }
-
                 } catch (_err) {
                     // ignore
                 }
@@ -134,6 +148,7 @@ function* winClose(_action: winActions.library.closed.TAction) {
 }
 
 function* openLibraryWatcher() {
+
     yield all([
         takeLeading(winActions.library.openRequest.ID, createLibraryWindow),
         takeLeading(winActions.library.openRequest.ID, checkReaderWindowInSession),

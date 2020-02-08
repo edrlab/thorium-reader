@@ -19,7 +19,19 @@
             "title": "Édition",
             "undo": "Annuler"
         },
-        "quit": "Quitter Thorium"
+        "quit": "Quitter Thorium",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Non",
+                        "yes": "Oui"
+                    },
+                    "message": "Voulez-vous enregistrer la session ?",
+                    "title": "Sauvegarder la session"
+                }
+            }
+        }
     },
     "catalog": {
         "about": {

@@ -19,7 +19,19 @@
             "title": "Bearbeiten",
             "undo": "Rückgängig"
         },
-        "quit": "Beenden"
+        "quit": "Beenden",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "Nein",
+                        "yes": "Ja"
+                    },
+                    "message": "Möchten Sie die Sitzung speichern ?",
+                    "title": "Sitzung sichern"
+                }
+            }
+        }
     },
     "catalog": {
         "about": {

@@ -28,7 +28,16 @@ declare namespace typed_i18n {
     readonly "title": string,
     readonly "undo": string
   },
-  readonly "quit": string
+  readonly "quit": string,
+  readonly "session": {
+    readonly "exit": {
+      readonly "askBox": {
+        readonly "button": { readonly "no": string, readonly "yes": string },
+        readonly "message": string,
+        readonly "title": string
+      }
+    }
+  }
 };
   (_: "app.edit", __?: {}): {
   readonly "copy": string,
@@ -46,6 +55,32 @@ declare namespace typed_i18n {
   (_: "app.edit.selectAll", __?: {}): string;
   (_: "app.edit.title", __?: {}): string;
   (_: "app.edit.undo", __?: {}): string; (_: "app.quit", __?: {}): string;
+  (_: "app.session", __?: {}): {
+  readonly "exit": {
+    readonly "askBox": {
+      readonly "button": { readonly "no": string, readonly "yes": string },
+      readonly "message": string,
+      readonly "title": string
+    }
+  }
+};
+  (_: "app.session.exit", __?: {}): {
+  readonly "askBox": {
+    readonly "button": { readonly "no": string, readonly "yes": string },
+    readonly "message": string,
+    readonly "title": string
+  }
+};
+  (_: "app.session.exit.askBox", __?: {}): {
+  readonly "button": { readonly "no": string, readonly "yes": string },
+  readonly "message": string,
+  readonly "title": string
+};
+  (_: "app.session.exit.askBox.button", __?: {}): { readonly "no": string, readonly "yes": string };
+  (_: "app.session.exit.askBox.button.no", __?: {}): string;
+  (_: "app.session.exit.askBox.button.yes", __?: {}): string;
+  (_: "app.session.exit.askBox.message", __?: {}): string;
+  (_: "app.session.exit.askBox.title", __?: {}): string;
   (_: "catalog", __?: {}): {
   readonly "about": { readonly "button": string, readonly "title": string },
   readonly "addBookToLib": string,
@@ -74,7 +109,6 @@ declare namespace typed_i18n {
   readonly "opds": {
     readonly "info": {
       readonly "availableSince": string,
-      readonly "availableUntil": string,
       readonly "availableState": {
         readonly "available": string,
         readonly "ready": string,
@@ -82,6 +116,7 @@ declare namespace typed_i18n {
         readonly "unavailable": string,
         readonly "unknown": string
       },
+      readonly "availableUntil": string,
       readonly "copyAvalaible": string,
       readonly "copyTotal": string,
       readonly "holdPosition": string,
@@ -125,7 +160,6 @@ declare namespace typed_i18n {
   (_: "catalog.opds", __?: {}): {
   readonly "info": {
     readonly "availableSince": string,
-    readonly "availableUntil": string,
     readonly "availableState": {
       readonly "available": string,
       readonly "ready": string,
@@ -133,6 +167,7 @@ declare namespace typed_i18n {
       readonly "unavailable": string,
       readonly "unknown": string
     },
+    readonly "availableUntil": string,
     readonly "copyAvalaible": string,
     readonly "copyTotal": string,
     readonly "holdPosition": string,
@@ -144,7 +179,6 @@ declare namespace typed_i18n {
 };
   (_: "catalog.opds.info", __?: {}): {
   readonly "availableSince": string,
-  readonly "availableUntil": string,
   readonly "availableState": {
     readonly "available": string,
     readonly "ready": string,
@@ -152,6 +186,7 @@ declare namespace typed_i18n {
     readonly "unavailable": string,
     readonly "unknown": string
   },
+  readonly "availableUntil": string,
   readonly "copyAvalaible": string,
   readonly "copyTotal": string,
   readonly "holdPosition": string,
@@ -161,7 +196,6 @@ declare namespace typed_i18n {
   readonly "state": string
 };
   (_: "catalog.opds.info.availableSince", __?: {}): string;
-  (_: "catalog.opds.info.availableUntil", __?: {}): string;
   (_: "catalog.opds.info.availableState", __?: {}): {
   readonly "available": string,
   readonly "ready": string,
@@ -174,6 +208,7 @@ declare namespace typed_i18n {
   (_: "catalog.opds.info.availableState.reserved", __?: {}): string;
   (_: "catalog.opds.info.availableState.unavailable", __?: {}): string;
   (_: "catalog.opds.info.availableState.unknown", __?: {}): string;
+  (_: "catalog.opds.info.availableUntil", __?: {}): string;
   (_: "catalog.opds.info.copyAvalaible", __?: {}): string;
   (_: "catalog.opds.info.copyTotal", __?: {}): string;
   (_: "catalog.opds.info.holdPosition", __?: {}): string;

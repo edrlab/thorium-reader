@@ -19,7 +19,19 @@
             "title": "Edit",
             "undo": "Undo"
         },
-        "quit": "Quit Thorium"
+        "quit": "Quit Thorium",
+        "session": {
+            "exit": {
+                "askBox": {
+                    "button": {
+                        "no": "No",
+                        "yes": "Yes"
+                    },
+                    "message": "Do you want to save the session ?",
+                    "title": "Save session"
+                }
+            }
+        }
     },
     "catalog": {
         "about": {
