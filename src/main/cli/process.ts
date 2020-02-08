@@ -33,7 +33,7 @@ const gotTheLock = lockInstance();
 
 // main Fucntion variable
 // tslint:disable-next-line: no-empty
-let mainFct: () => (void | Promise<void>) = async () => {};
+let mainFct: (flushSession: boolean) => (void | Promise<void>) = async () => {};
 
 // yargs configuration
 yargs
@@ -125,7 +125,8 @@ yargs
             // if it's the main instance
             if (gotTheLock) {
 
-                await Promise.all([mainFct()]);
+                // flush session because user ask to read one publication
+                await Promise.all([mainFct(true)]);
 
                 try {
 
@@ -165,7 +166,16 @@ yargs
             // if it's the main instance
             if (gotTheLock) {
 
-                await Promise.all([mainFct()]);
+                // flush session if user want to read his book
+                await Promise.all(
+                    [
+                        mainFct(
+                            argv.path
+                                ? true
+                                : false,
+                        ),
+                    ],
+                );
 
                 if (argv.path) {
 
@@ -189,6 +199,7 @@ yargs
                     }
                 }
             } else {
+
                 app.exit(0);
             }
         },
@@ -206,7 +217,7 @@ yargs
  * @param main main function to exec
  * @param processArgv process.argv
  */
-export function cli(main: () => void | Promise<void>, processArgv = process.argv) {
+export function cli(main: (flushSession: boolean) => void | Promise<void>, processArgv = process.argv) {
     mainFct = main;
 
     const argFormated = processArgv
