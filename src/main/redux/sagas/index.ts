@@ -28,9 +28,6 @@ function* appInitSuccessWatcher() {
     yield all([
         call(api.watchers),
 
-        // I18N
-        call(i18n.watchers),
-
         // Net
         // call(netStatusWatcher),
 
@@ -65,5 +62,9 @@ export function* rootSaga() {
         call(app.watchers),
 
         call(appInitSuccessWatcher),
+
+        // I18N
+        call(i18n.watchers),
+
     ]);
 }

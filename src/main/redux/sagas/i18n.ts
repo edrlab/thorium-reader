@@ -10,21 +10,23 @@ import { i18nActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
-import { all, call, takeEvery } from "redux-saga/effects";
+import { all, call, takeLeading } from "redux-saga/effects";
 
 function* setLocale(action: i18nActions.setLocale.TAction) {
+
     const translator = yield* callTyped(() => diMainGet("translator"));
     const configRepository: ConfigRepository<LocaleConfigValueType> = yield* callTyped(() => diMainGet("config-repository"));
 
-    const configRepositorySave = async () =>
-        await configRepository.save({
+    const configRepositorySave = () =>
+        configRepository.save({
             identifier: LocaleConfigIdentifier,
             value: {
                 locale: action.payload.locale,
             },
         });
-    const translatorSetLocale = async () =>
-        await translator.setLocale(action.payload.locale);
+
+    const translatorSetLocale = () =>
+        translator.setLocale(action.payload.locale);
 
     yield all([
         call(configRepositorySave),
@@ -33,7 +35,7 @@ function* setLocale(action: i18nActions.setLocale.TAction) {
 }
 
 function* localeWatcher() {
-    yield takeEvery(i18nActions.setLocale.build, setLocale);
+    yield takeLeading(i18nActions.setLocale.build, setLocale);
 }
 
 export function* watchers() {

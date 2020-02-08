@@ -26,6 +26,8 @@ const createStoreFromDi = (preloadedState: Partial<IReaderRootState>) => {
 
     container.bind<Store<IReaderRootState>>(diSymbolTable.store).toConstantValue(store);
 
+    translator.setLocale(store.getState().i18n.locale);
+
     return store;
 };
 
