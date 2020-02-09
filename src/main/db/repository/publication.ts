@@ -7,7 +7,7 @@
 
 import { injectable } from "inversify";
 import * as PouchDB from "pouchdb-core";
-import { convertMultiLangStringToString } from "readium-desktop/common/utils";
+import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import { PublicationDocument } from "readium-desktop/main/db/document/publication";
 
 import { BaseRepository, ExcludeTimestampableAndIdentifiable } from "./base";

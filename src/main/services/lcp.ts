@@ -38,7 +38,7 @@ import { Server } from "@r2-streamer-js/http/server";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
 import { extractCrc32OnZip } from "../crc";
-import { appActions } from "../redux/actions";
+import { lcpActions } from "../redux/actions";
 import { DeviceIdManager } from "./device";
 
 // Logger
@@ -234,17 +234,17 @@ export class LcpManager {
         publicationDocument: PublicationDocument,
     ): Promise<PublicationDocument> {
         const rootState = this.store.getState();
-        if (rootState.app.publicationFileLocks[publicationDocument.identifier]) {
+        if (rootState.lcp.publicationFileLocks[publicationDocument.identifier]) {
             // skip LSD processStatusDocument()
             return Promise.resolve(publicationDocument);
             // return Promise.reject(`Publication file lock busy ${publicationDocument.identifier}`);
         }
-        this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
+        this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
         try {
             const r2Publication = await this.unmarshallR2Publication(publicationDocument, true);
             return await this.checkPublicationLicenseUpdate_(publicationDocument, r2Publication);
         } finally {
-            this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
+            this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
         }
     }
 
@@ -296,10 +296,10 @@ export class LcpManager {
     ): Promise<PublicationDocument> {
 
         const rootState = this.store.getState();
-        if (rootState.app.publicationFileLocks[publicationDocument.identifier]) {
+        if (rootState.lcp.publicationFileLocks[publicationDocument.identifier]) {
             return Promise.reject(`Publication file lock busy ${publicationDocument.identifier}`);
         }
-        this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
+        this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
         try {
             const locale = rootState.i18n.locale;
             const httpHeaders = {
@@ -395,7 +395,7 @@ export class LcpManager {
 
             return Promise.resolve(newPubDocument);
         } finally {
-            this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
+            this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
         }
     }
 
@@ -404,10 +404,10 @@ export class LcpManager {
     ): Promise<PublicationDocument> {
 
         const rootState = this.store.getState();
-        if (rootState.app.publicationFileLocks[publicationDocument.identifier]) {
+        if (rootState.lcp.publicationFileLocks[publicationDocument.identifier]) {
             return Promise.reject(`Publication file lock busy ${publicationDocument.identifier}`);
         }
-        this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
+        this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: true }));
         try {
             const locale = rootState.i18n.locale;
             const httpHeaders = {
@@ -495,7 +495,7 @@ export class LcpManager {
 
             return Promise.resolve(newPubDocument);
         } finally {
-            this.store.dispatch(appActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
+            this.store.dispatch(lcpActions.publicationFileLock.build({ [publicationDocument.identifier]: false }));
         }
     }
 

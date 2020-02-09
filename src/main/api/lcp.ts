@@ -7,30 +7,19 @@
 
 import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
+import { ILcpApi } from "readium-desktop/common/api/interface/lcpApi.interface";
 import { lcpActions } from "readium-desktop/common/redux/actions";
 import { readerActions } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
 import { PublicationRepository } from "readium-desktop/main/db/repository/publication";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { LcpManager } from "readium-desktop/main/services/lcp";
-import { RootState } from "readium-desktop/renderer/redux/states";
 import { Store } from "redux";
 
 import { PublicationViewConverter } from "../converter/publication";
+import { RootState } from "../redux/states";
 
 const debug = debug_("readium-desktop:main:redux:sagas:streamer");
-
-export interface ILcpApi {
-    renewPublicationLicense: (publicationIdentifier: string) => Promise<void>;
-    returnPublication: (publicationIdentifier: string) => Promise<void>;
-    unlockPublicationWithPassphrase: (passphrase: string, publicationViewIdentifer: string) => Promise<void>;
-}
-
-export interface ILcpModuleApi {
-    "lcp/renewPublicationLicense": ILcpApi["renewPublicationLicense"];
-    "lcp/returnPublication": ILcpApi["returnPublication"];
-    "lcp/unlockPublicationWithPassphrase": ILcpApi["unlockPublicationWithPassphrase"];
-}
 
 @injectable()
 export class LcpApi implements ILcpApi {

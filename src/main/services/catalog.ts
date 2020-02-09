@@ -18,9 +18,9 @@ import {
     downloadActions, readerActions, toastActions,
 } from "readium-desktop/common/redux/actions/";
 import { Translator } from "readium-desktop/common/services/translator";
-import { convertMultiLangStringToString } from "readium-desktop/common/utils";
 import { IOpdsLinkView } from "readium-desktop/common/views/opds";
 import { PublicationView } from "readium-desktop/common/views/publication";
+import { convertMultiLangStringToString } from "readium-desktop/main/converter/tools/localisation";
 import {
     PublicationDocument, PublicationDocumentWithoutTimestampable,
 } from "readium-desktop/main/db/document/publication";
@@ -37,7 +37,7 @@ import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
 import { EpubParsePromise } from "@r2-shared-js/parser/epub";
 
-import { OpdsFeedViewConverter } from "../converter/opds";
+import { getTagsFromOpdsPublication } from "../converter/tools/getTags";
 import { extractCrc32OnZip } from "../crc";
 import { RootState } from "../redux/states";
 import { Downloader } from "./downloader";
@@ -232,7 +232,7 @@ export class CatalogService {
         let publicationDocument = await this.importEpubOrLcplFile(download.dstPath, isLcpFile, lcpHashedPassphrase);
 
         if (publicationDocument) {
-            const tags = OpdsFeedViewConverter.getTagsFromOpdsPublication(r2OpdsPublication);
+            const tags = getTagsFromOpdsPublication(r2OpdsPublication);
 
             // Merge with the original publication
             publicationDocument = Object.assign(

@@ -9,7 +9,7 @@ import * as React from "react";
 import { Translator } from "readium-desktop/common/services/translator";
 import { TranslatorContext } from "readium-desktop/renderer/components/App";
 
-import { ReactBaseComponent } from "../ReactBaseComponent";
+import { ReactBaseComponent } from "../../../common/ReactBaseComponent";
 
 export function translatorDecorator<
     // tslint:disable-next-line:callable-types
