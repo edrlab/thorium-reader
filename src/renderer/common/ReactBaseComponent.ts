@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { I18nTyped } from "readium-desktop/common/services/translator";
+import { ICommonRootState } from "readium-desktop/renderer/common/redux/states";
 import { Store } from "redux";
 
 // PureComponnent implement a shallow comparison on props and state before the rendering decision
@@ -19,7 +20,7 @@ export class ReactBaseComponent<
     ReduxState = {},
     ReduxDispatch = {},
     Api = {},
-    ReduxStoreState = any
+    ReduxStoreState = ICommonRootState,
     > extends React.PureComponent<ReactProps, ReactState> {
 
     public __: I18nTyped;

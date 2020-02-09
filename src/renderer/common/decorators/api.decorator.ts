@@ -8,18 +8,17 @@
 import * as debug_ from "debug";
 import * as React from "react";
 import { TApiMethod, TApiMethodName } from "readium-desktop/common/api/api.type";
+import { TMethodApi } from "readium-desktop/common/api/methodApi.type";
+import { TModuleApi } from "readium-desktop/common/api/moduleApi.type";
 import { apiActions } from "readium-desktop/common/redux/actions";
-import { ICommonRootState } from "readium-desktop/common/redux/states/renderer/commonRootState";
-import { TMethodApi, TModuleApi } from "readium-desktop/main/di";
+import { StoreContext } from "readium-desktop/renderer/common/contexts/storeContext";
 import { ReactBaseComponent } from "readium-desktop/renderer/common/ReactBaseComponent";
+import { ICommonRootState } from "readium-desktop/renderer/common/redux/states";
 import { ApiResponse, LAST_API_SUCCESS_ID } from "readium-desktop/renderer/common/redux/states/api";
 import { ReturnPromiseType } from "readium-desktop/typings/promise";
 import { shallowEqual } from "readium-desktop/utils/shallowEqual";
 import { Store, Unsubscribe } from "redux";
 import * as uuid from "uuid";
-
-import { StoreContext } from "../../components/App";
-import { StoreContext } from "../../library/components/App";
 
 export type TApiDecorator<T extends TApiMethodName> = {
     [key in T]: {
@@ -67,7 +66,8 @@ export function apiDecorator<
 ) {
     return <
         // tslint:disable-next-line:callable-types
-        T extends { new(...args: any[]): ReactBaseComponent<Props, State, MapState, MapDispatch, TApiDecorator<TPath>> }
+        T extends { new(...args: any[]):
+            ReactBaseComponent<Props, State, MapState, MapDispatch, TApiDecorator<TPath>, TRootState> }
         , Props = {}
         , State = {}
         , MapState = {}
@@ -224,7 +224,7 @@ export function apiDecorator<
                     return React.createElement(
                         StoreContext.Consumer,
                         null,
-                        (store: Store<any>) => {
+                        (store: Store<TRootState>) => {
 
                             this.store = store;
 

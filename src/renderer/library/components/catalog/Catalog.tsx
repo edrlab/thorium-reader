@@ -9,13 +9,13 @@ import * as React from "react";
 import { TApiMethodName } from "readium-desktop/common/api/api.type";
 import {
     apiDecorator, TApiDecorator,
-} from "readium-desktop/renderer/common/decorator/api.decorator";
+} from "readium-desktop/renderer/common/decorators/api.decorator";
 import {
     reduxConnectDecorator,
-} from "readium-desktop/renderer/common/decorator/reduxConnect.decorator";
+} from "readium-desktop/renderer/common/decorators/reduxConnect.decorator";
 import {
     translatorDecorator,
-} from "readium-desktop/renderer/common/decorator/translator.decorator";
+} from "readium-desktop/renderer/common/decorators/translator.decorator";
 import { ReactBaseComponent } from "readium-desktop/renderer/common/ReactBaseComponent";
 
 import { ILibraryRootState } from "../../redux/states";
@@ -52,6 +52,7 @@ export default class Catalog extends ReactBaseComponent<
     , ReturnType<typeof mapState>
     , undefined
     , TApiDecorator<"catalog/get"> & TApiDecorator<"publication/getAllTags">
+    , ILibraryRootState
     > {
 
     constructor(props: IProps) {

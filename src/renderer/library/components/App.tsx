@@ -14,19 +14,15 @@ import Dropzone from "react-dropzone";
 import { Provider } from "react-redux";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import * as dialogActions from "readium-desktop/common/redux/actions/dialog";
-import { Translator } from "readium-desktop/common/services/translator";
 import * as styles from "readium-desktop/renderer/assets/styles/app.css";
+import { StoreContext } from "readium-desktop/renderer/common/contexts/storeContext";
+import { TranslatorContext } from "readium-desktop/renderer/common/contexts/translatorContext";
 import { diLibraryGet } from "readium-desktop/renderer/library/di";
-import { Store } from "redux";
 
-import { ILibraryRootState } from "../redux/states";
 import DialogManager from "./dialog/DialogManager";
 import DownloadsPanel from "./DownloadsPanel";
 import PageManager from "./PageManager";
 import ToastManager from "./toast/ToastManager";
-
-export const TranslatorContext = React.createContext<Translator>(null);
-export const StoreContext = React.createContext<Store<ILibraryRootState>>(null);
 
 export default class App extends React.Component<{}, undefined> {
 

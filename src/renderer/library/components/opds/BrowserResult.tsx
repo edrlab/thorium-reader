@@ -10,13 +10,17 @@ import * as styles from "readium-desktop/renderer/assets/styles/opds.css";
 import Loader from "readium-desktop/renderer/common/components/Loader";
 import {
     apiDecorator, TApiDecorator,
-} from "readium-desktop/renderer/common/decorator/api.decorator";
+} from "readium-desktop/renderer/common/decorators/api.decorator";
+import {
+    reduxConnectDecorator,
+} from "readium-desktop/renderer/common/decorators/reduxConnect.decorator";
 import {
     translatorDecorator,
-} from "readium-desktop/renderer/common/decorator/translator.decorator";
+} from "readium-desktop/renderer/common/decorators/translator.decorator";
 import { ReactBaseComponent } from "readium-desktop/renderer/common/ReactBaseComponent";
 
 import { BROWSE_OPDS_API_REQUEST_ID } from "../../redux/sagas/opds";
+import { ILibraryRootState } from "../../redux/states";
 import { DisplayType } from "../../routing";
 import PublicationCard from "../publication/PublicationCard";
 import { ListView } from "../utils/ListView";
@@ -30,14 +34,20 @@ import MessageOpdBrowserResult from "./MessageOpdBrowserResult";
 interface IProps {
 }
 
+const mapStateToProps =
+    (state: ILibraryRootState) =>
+        ({ location: state.router.location });
+
 @translatorDecorator
+@reduxConnectDecorator(mapStateToProps)
 @apiDecorator("opds/browse", undefined, undefined, BROWSE_OPDS_API_REQUEST_ID, false)
 export default class BrowserResult extends ReactBaseComponent<
 IProps
 , undefined
-, undefined
+, ReturnType<typeof mapStateToProps>
 , undefined
 , TApiDecorator<"opds/browse">
+, ILibraryRootState
 > {
 
     public render(): React.ReactElement<{}> {
@@ -133,7 +143,7 @@ IProps
                                         {
                                             group.publications &&
                                                 (
-                                                    this.props.location?.state?.displayType
+                                                    this.reduxState.location?.state?.displayType
                                                     || DisplayType.Grid
                                                 ) === DisplayType.Grid ?
                                                 <Slider

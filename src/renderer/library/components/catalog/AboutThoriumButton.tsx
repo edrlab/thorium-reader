@@ -12,10 +12,10 @@ import { _APP_VERSION } from "readium-desktop/preprocessor-directives";
 import * as styles from "readium-desktop/renderer/assets/styles/myBooks.css";
 import {
     reduxConnectDecorator,
-} from "readium-desktop/renderer/common/decorator/reduxConnect.decorator";
+} from "readium-desktop/renderer/common/decorators/reduxConnect.decorator";
 import {
     translatorDecorator,
-} from "readium-desktop/renderer/common/decorator/translator.decorator";
+} from "readium-desktop/renderer/common/decorators/translator.decorator";
 import { ReactBaseComponent } from "readium-desktop/renderer/common/ReactBaseComponent";
 import { TDispatch } from "readium-desktop/typings/redux";
 

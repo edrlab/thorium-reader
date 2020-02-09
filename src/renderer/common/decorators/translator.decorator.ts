@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { Translator } from "readium-desktop/common/services/translator";
-import { TranslatorContext } from "readium-desktop/renderer/components/App";
+import { TranslatorContext } from "readium-desktop/renderer/common/contexts/translatorContext";
 
 import { ReactBaseComponent } from "../ReactBaseComponent";
 

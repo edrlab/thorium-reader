@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { I18nTyped, Translator } from "readium-desktop/common/services/translator";
-import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
+import { TranslatorContext } from "../../contexts/translatorContext";
 
 export interface TranslatorProps {
     __?: I18nTyped;

@@ -6,24 +6,25 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { StoreContext } from "readium-desktop/renderer/common/contexts/storeContext";
 import { ReactBaseComponent } from "readium-desktop/renderer/common/ReactBaseComponent";
-import { TRootState } from "readium-desktop/renderer/redux/reducers";
+import { ICommonRootState } from "readium-desktop/renderer/common/redux/states";
 import { TDispatch } from "readium-desktop/typings/redux";
 import { shallowEqual } from "readium-desktop/utils/shallowEqual";
 import { Store, Unsubscribe } from "redux";
 
-import { StoreContext } from "../../App";
-
 export function reduxConnectDecorator<
     MapState extends { [key: string]: any } = {},
-    MapDispatch extends { [key: string]: () => void } = {}
+    MapDispatch extends { [key: string]: () => void } = {},
+    TRootState extends ICommonRootState = ICommonRootState
 >(
     mapStateFct?: (state: TRootState, props?: any) => MapState,
     mapDispatchFct?: (dispatch: TDispatch, props?: any) => MapDispatch,
 ) {
     return <
         // tslint:disable-next-line:callable-types
-        T extends { new(...args: any[]): ReactBaseComponent<Props, State, MapState, MapDispatch> }
+        T extends { new(...args: any[]):
+            ReactBaseComponent<Props, State, MapState, MapDispatch, {}, TRootState> }
         , Props = {}
         , State = {}
     >(component: T) => {
