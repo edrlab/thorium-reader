@@ -9,7 +9,7 @@ import "reflect-metadata";
 
 import * as React from "react";
 import { Provider } from "react-redux";
-import { TranslatorContext } from "readium-desktop/renderer/common/translator.context";
+import { TranslatorContext } from "readium-desktop/renderer/common/contexts/translatorContext";
 import DialogManager from "readium-desktop/renderer/reader/components/dialog/DialogManager";
 import { diReaderGet } from "readium-desktop/renderer/reader/di";
 
