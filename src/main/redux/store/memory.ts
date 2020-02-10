@@ -156,8 +156,8 @@ export async function initStore(configRepository: ConfigRepository<any>): Promis
                 ...{
                     win: {
                         session: {
-                            library: undefined,
-                            reader: undefined,
+                            library: reduxStateWin.win.session.library,
+                            reader: reduxStateWin.win.session.reader,
                         },
                         registry: {
                             reader: {

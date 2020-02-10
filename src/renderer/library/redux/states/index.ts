@@ -27,4 +27,5 @@ export interface ILibraryRootState extends ICommonRootState {
     import: ImportState;
     download: DownloadState;
     history: THistoryState;
+    updateCatalog: number;
 }

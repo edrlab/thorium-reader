@@ -36,6 +36,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
 
     readerActions.configSetDefault.ID,
     readerActions.configSetResetDefault.ID,
+    readerActions.setReduxState.ID, // used only to update the catalog when dispatched from reader
 
     // readerActions.saveBookmarkError.ID,
     // readerActions.saveBookmarkSuccess.ID,

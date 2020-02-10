@@ -48,6 +48,13 @@ class Catalog extends React.Component<IProps, undefined> {
         this.props.apiClean(this.publicationGetAllTagId);
     }
 
+    public componentDidUpdate(oldProps: IProps) {
+        console.log(this.props.refreshCatalog);
+        if (oldProps.refreshCatalog !== this.props.refreshCatalog) {
+            this.getFromApi();
+        }
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
 
@@ -99,6 +106,7 @@ const mapStateToProps = (state: ILibraryRootState) => ({
         // "reader/setLastReadingLocation",
     ]),
     location: state.router.location,
+    refreshCatalog: state.updateCatalog, // just to recall 'catalog/get' when readerActions.setReduxState is dispatched
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
