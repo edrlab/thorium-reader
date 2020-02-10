@@ -60,8 +60,6 @@ async function absorbLocatorRepositoryToReduxState() {
     for (const locator of locatorFromDb) {
         if (locator.publicationIdentifier) {
 
-            debug("LOCATOR in DB", locator);
-
             lastReadingQueue.push([locator.createdAt, locator.publicationIdentifier]);
 
             registryReader[locator.publicationIdentifier] = {
