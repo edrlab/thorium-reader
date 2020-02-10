@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { app } from "electron";
 import * as Ramda from "ramda";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
@@ -27,6 +28,9 @@ import { composeWithDevTools } from "remote-redux-devtools";
 
 import { reduxPersistMiddleware } from "../middleware/persistence";
 import { IDictWinRegistryReaderState } from "../states/win/registry/reader";
+
+// Logger
+const debug = debug_("readium-desktop:main:store:memory");
 
 const REDUX_REMOTE_DEVTOOLS_PORT = 7770;
 
@@ -56,7 +60,9 @@ async function absorbLocatorRepositoryToReduxState() {
     for (const locator of locatorFromDb) {
         if (locator.publicationIdentifier) {
 
-            lastReadingQueue.push([(new Date()).getTime(), locator.publicationIdentifier]);
+            debug("LOCATOR in DB", locator);
+
+            lastReadingQueue.push([locator.createdAt, locator.publicationIdentifier]);
 
             registryReader[locator.publicationIdentifier] = {
                 windowBound: {
@@ -117,9 +123,10 @@ export async function initStore(configRepository: ConfigRepository<any>): Promis
         if (i18nStateRepositoryResult.status === "fulfilled") {
             i18nStateRepository = i18nStateRepositoryResult.value;
         }
-    } catch (_err) {
+    } catch (err) {
         // ignore
         // first init
+        debug("ERR when get state from FS", err);
     }
 
     let reduxStateWin = reduxStateWinRepository?.value?.win
@@ -164,8 +171,8 @@ export async function initStore(configRepository: ConfigRepository<any>): Promis
                 },
             };
         }
-    } catch (_err) {
-        // ignore
+    } catch (err) {
+        debug("ERR on absorbLocatorRepositoryToReduxState", err);
     }
 
     const preloadedState = {

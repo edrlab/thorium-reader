@@ -5,6 +5,7 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { inject, injectable } from "inversify";
 import * as Ramda from "ramda";
 import { ICatalogApi } from "readium-desktop/common/api/interface/catalog.interface";
@@ -23,6 +24,9 @@ import { Store } from "redux";
 import { RootState } from "../redux/states";
 
 export const CATALOG_CONFIG_ID = "catalog";
+
+// Logger
+const debug = debug_("readium-desktop:main:api:catalog");
 
 @injectable()
 export class CatalogApi implements ICatalogApi {
@@ -80,7 +84,7 @@ export class CatalogApi implements ICatalogApi {
 
         const pushPublication = async (i: number) => {
 
-            if (i < lastReadPublicationViews.length) {
+            if (i < lastReading.length) {
                 const [, pubId] = lastReading[i];
 
                 try {
@@ -90,8 +94,9 @@ export class CatalogApi implements ICatalogApi {
                         this.publicationViewConverter.convertDocumentToView(publication),
                     );
 
-                } catch (_err) {
+                } catch (err) {
                     // ignore
+                    debug("ERR on LastReadPublication getter", err);
                 }
             }
         };
