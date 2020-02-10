@@ -16,7 +16,11 @@ import { PublicationRepository } from "readium-desktop/main/db/repository/public
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
 import { CatalogService } from "readium-desktop/main/services/catalog";
 import { LcpManager } from "readium-desktop/main/services/lcp";
+import { Store } from "redux";
 import { isArray } from "util";
+
+import { publicationActions } from "../redux/actions";
+import { RootState } from "../redux/states";
 
 // import * as debug_ from "debug";
 // Logger
@@ -36,6 +40,9 @@ export class PublicationApi implements IPublicationApi {
     @inject(diSymbolTable["lcp-manager"])
     private readonly lcpManager!: LcpManager;
 
+    @inject(diSymbolTable.store)
+    private readonly store!: Store<RootState>;
+
     // called for publication info dialog modal box
     public async get(identifier: string, checkLcpLsd: boolean): Promise<PublicationView> {
         let doc = await this.publicationRepository.get(identifier);
@@ -47,6 +54,9 @@ export class PublicationApi implements IPublicationApi {
 
     public async delete(identifier: string): Promise<void> {
         await this.catalogService.deletePublication(identifier);
+
+        // dispatch action to update publication/lastReadingQueue reducer
+        this.store.dispatch(publicationActions.deletePublication.build(identifier));
     }
 
     public async findAll(): Promise<PublicationView[]> {

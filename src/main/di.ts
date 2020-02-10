@@ -49,7 +49,7 @@ import { ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
 
-export const CONFIGREPOSITORY_REDUX_WIN_PERSISTENCE = "CONFIGREPOSITORY_REDUX_WIN_PERSISTENCE";
+export const CONFIGREPOSITORY_REDUX_PERSISTENCE = "CONFIGREPOSITORY_REDUX_PERSISTENCE";
 
 declare const __POUCHDB_ADAPTER_PACKAGE__: string;
 

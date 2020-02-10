@@ -5,18 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { CatalogEntryView, CatalogView } from "readium-desktop/common/views/catalog";
+import { CatalogView } from "readium-desktop/common/views/catalog";
 
 export interface ICatalogApi {
     get: () => Promise<CatalogView>;
-    addEntry: (entryView: CatalogEntryView) => Promise<CatalogEntryView[]>;
-    getEntries: () => Promise<CatalogEntryView[]>;
-    updateEntries: (entryView: CatalogEntryView[]) => Promise<CatalogEntryView[]>;
+    // addEntry: (entryView: CatalogEntryView) => Promise<CatalogEntryView[]>;
+    // getEntries: () => Promise<CatalogEntryView[]>;
+    // updateEntries: (entryView: CatalogEntryView[]) => Promise<CatalogEntryView[]>;
 }
 
 export interface ICatalogModuleApi {
     "catalog/get": ICatalogApi["get"];
-    "catalog/addEntry": ICatalogApi["addEntry"];
-    "catalog/getEntries": ICatalogApi["getEntries"];
-    "catalog/updateEntries": ICatalogApi["updateEntries"];
+    // "catalog/addEntry": ICatalogApi["addEntry"];
+    // "catalog/getEntries": ICatalogApi["getEntries"];
+    // "catalog/updateEntries": ICatalogApi["updateEntries"];
 }

@@ -23,7 +23,10 @@ export const reduxPersistMiddleware: Middleware
 
                 const nextState = store.getState();
 
-                if (!ramda.equals(prevState.win, nextState.win)) {
+                if (
+                        !ramda.equals(prevState.win, nextState.win)
+                    ||  !ramda.equals(prevState.publication, nextState.publication)
+                ) {
 
                     // dispatch a new round in middleware
                     store.dispatch(winActions.persistRequest.build());

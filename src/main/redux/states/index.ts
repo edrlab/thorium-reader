@@ -7,6 +7,7 @@
 
 import { ReaderConfig, ReaderMode } from "readium-desktop/common/models/reader";
 import { I18NState } from "readium-desktop/common/redux/states/i18n";
+import { TPQueueState } from "readium-desktop/utils/redux-reducers/pqueue.reducer";
 
 // import { NetState } from "readium-desktop/common/redux/states/net";
 // import { UpdateState } from "readium-desktop/common/redux/states/update";
@@ -37,4 +38,7 @@ export interface RootState {
     };
     mode: ReaderMode;
     lcp: ILcpState;
+    publication: {
+        lastReadingQueue: TPQueueState;
+    };
 }

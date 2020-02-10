@@ -9,7 +9,7 @@ import * as debug_ from "debug";
 import { app } from "electron";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
-import { CONFIGREPOSITORY_REDUX_WIN_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
+import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { eventChannel } from "redux-saga";
@@ -23,12 +23,17 @@ debug("_");
 
 const persistStateToFs = async (nextState: RootState) => {
 
+    // currently saved with pouchDb in one json file.
+    // may be consuming a lot of I/O
+    // rather need to save by chunck of data in many json file
+
     debug("start of persist reduxState in disk");
     const configRepository: ConfigRepository<Partial<RootState>> = diMainGet("config-repository");
     await configRepository.save({
-        identifier: CONFIGREPOSITORY_REDUX_WIN_PERSISTENCE,
+        identifier: CONFIGREPOSITORY_REDUX_PERSISTENCE,
         value: {
             win: nextState.win,
+            publication: nextState.publication,
         },
     });
     debug("end of persist reduxState in disk");
