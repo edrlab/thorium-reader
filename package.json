@@ -4,7 +4,8 @@
   "description": "Desktop application to read ebooks",
   "keywords": [
     "readium",
-    "epub"
+    "epub",
+    "audiobook"
   ],
   "engines": {
     "node": ">=7.0.0",
@@ -128,6 +129,11 @@
         "ext": "lcpl",
         "role": "Viewer",
         "mimeType": "application/vnd.readium.lcp.license.v1.0+json"
+      },
+      {
+        "ext": "audiobook",
+        "role": "Viewer",
+        "mimeType": "application/audiobook+zip"
       }
     ],
     "win": {

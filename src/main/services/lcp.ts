@@ -33,7 +33,7 @@ import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { LSD } from "@r2-lcp-js/parser/epub/lsd";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
-import { EpubParsePromise } from "@r2-shared-js/parser/epub";
+import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 import { Server } from "@r2-streamer-js/http/server";
 import { injectBufferInZip } from "@r2-utils-js/_utils/zip/zipInjector";
 
@@ -190,13 +190,13 @@ export class LcpManager {
                 publicationDocument.identifier,
             );
 
-            r2Publication = await EpubParsePromise(epubPath);
+            r2Publication = await PublicationParsePromise(epubPath);
             // just like when calling lsdLcpUpdateInject():
             // r2Publication.LCP.ZipPath is set to META-INF/license.lcpl
             // r2Publication.LCP.init(); is called to prepare for decryption (native NodeJS plugin)
             // r2Publication.LCP.JsonSource is set
 
-            // after EpubParsePromise, cleanup zip handler
+            // after PublicationParsePromise, cleanup zip handler
             // (no need to fetch ZIP data beyond this point)
             r2Publication.freeDestroy();
         } else {

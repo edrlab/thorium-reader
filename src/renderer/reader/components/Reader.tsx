@@ -340,11 +340,36 @@ class Reader extends React.Component<IProps, IState> {
 
         let docHref: string = queryParams.docHref;
         let docSelector: string = queryParams.docSelector;
+        let docProgression: string = queryParams.docProgression;
 
-        if (docHref && docSelector) {
+        if (docHref) {
             // Decode base64
             docHref = window.atob(docHref);
-            docSelector = window.atob(docSelector);
+        }
+        if (docSelector) {
+            // Decode base64
+            try {
+                docSelector = window.atob(docSelector);
+            } catch (err) {
+                console.log(docSelector);
+                console.log(err);
+                docSelector = undefined;
+            }
+        }
+        let progression: number | undefined;
+        if (docProgression) {
+            // Decode base64
+            try {
+                docProgression = window.atob(docProgression);
+            } catch (err) {
+                console.log(docProgression);
+                console.log(err);
+                docProgression = undefined;
+            }
+            // percentage number
+            if (docProgression) {
+                progression = parseFloat(docProgression);
+            }
         }
 
         // Note that CFI, etc. can optionally be restored too,
@@ -355,7 +380,7 @@ class Reader extends React.Component<IProps, IState> {
                 cfi: undefined,
                 cssSelector: docSelector,
                 position: undefined,
-                progression: undefined,
+                progression,
             },
         };
 
