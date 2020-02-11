@@ -14,7 +14,7 @@
   "scripts": {
     "clean": "rimraf dist && rimraf release",
     "test": "cross-env JEST_TESTS=1 jest --config=jest.config.js --verbose --runInBand --bail=1 --no-cache \"test\"",
-    "__postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=7.1.4 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
+    "__postinstall": "npm run rmLevelDownPrebuilds && npm rebuild --runtime=electron --target=7.1.12 --disturl=https://atom.io/download/atom-shell --build-from-source && npm run rmLevelDown",
     "rmLevelDown": "rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown\"",
     "rmLevelDownPrebuilds": "rimraf \"./node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/leveldown/prebuilds\" && rimraf \"./node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\" && rimraf \"./dist/node_modules/pouchdb-adapter-leveldb/node_modules/leveldown/prebuilds\"",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js && ncp src/package.json dist/package.json",
