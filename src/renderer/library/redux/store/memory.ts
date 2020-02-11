@@ -5,19 +5,18 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
-import { applyMiddleware, createStore, Store } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import createSagaMiddleware from "redux-saga";
-
 import { routerMiddleware } from "connected-react-router";
-
 import { History } from "history";
 import { reduxSyncMiddleware } from "readium-desktop/renderer/library/redux/middleware/sync";
 import { rootReducer } from "readium-desktop/renderer/library/redux/reducers";
 import { rootSaga } from "readium-desktop/renderer/library/redux/sagas";
 import { ILibraryRootState } from "readium-desktop/renderer/library/redux/states";
+import { IRouterLocationState } from "readium-desktop/renderer/library/routing";
+import { applyMiddleware, createStore, Store } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import createSagaMiddleware from "redux-saga";
 
-export function initStore(history: History): Store<ILibraryRootState> {
+export function initStore(history: History<IRouterLocationState>): Store<ILibraryRootState> {
 
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(
