@@ -6,6 +6,7 @@ const preprocessorDirectives = require("./webpack.config-preprocessor-directives
 
 // Get node environment
 const nodeEnv = process.env.NODE_ENV || "development";
+console.log(`MAIN nodeEnv: ${nodeEnv}`);
 
 // let ignorePlugin = new webpack.IgnorePlugin(new RegExp("/(bindings)/"))
 

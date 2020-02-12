@@ -30,6 +30,7 @@ const nodeExternals = require("./nodeExternals");
 
 // Get node environment
 const nodeEnv = process.env.NODE_ENV || "development";
+console.log(`READER nodeEnv: ${nodeEnv}`);
 
 let externals = {
     "bindings": "bindings",
@@ -114,6 +115,7 @@ let config = Object.assign({}, {
                 loader: "file-loader?name=assets/[name].[hash].[ext]",
                 options: {
                     esModule: false,
+                    outputPath: "fonts"
                 },
                 test: /\.(woff|woff2|ttf|eot|svg)$/,
             },
@@ -134,7 +136,7 @@ let config = Object.assign({}, {
             filename: "index_reader.html",
         }),
         new MiniCssExtractPlugin({
-            filename: "styles_reader.css"
+            filename: "styles_reader.css",
         }),
         preprocessorDirectives.definePlugin,
     ],
@@ -190,7 +192,12 @@ if (nodeEnv !== "production") {
     config.module.rules.push({
         test: /\.css$/,
         use: [
-            MiniCssExtractPlugin.loader,
+            {
+                loader: MiniCssExtractPlugin.loader,
+                options: {
+                    // publicPath: "./styling", // preprocessorDirectives.rendererReaderBaseUrl,
+                },
+            },
             {
                 loader: "css-loader",
                 options: {
