@@ -14,6 +14,7 @@ import * as lcpActions from "./lcp/";
 import * as netActions from "./net/";
 import * as readerActions from "./reader/";
 import * as toastActions from "./toast/";
+import * as watchdogActions from "./watchdog";
 // import * as updateActions from "./update/";
 
 export {
@@ -27,4 +28,5 @@ export {
     importActions,
     toastActions,
     downloadActions,
+    watchdogActions,
 };
