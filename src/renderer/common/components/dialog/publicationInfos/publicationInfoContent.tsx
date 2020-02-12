@@ -111,7 +111,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                             </> : undefined
                         }
                         {
-                            publication.numberOfPages &&
+                            publication.numberOfPages ?
                             <>
                                 <span>
                                     {
@@ -125,7 +125,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                                 </i>
                                 <br />
 
-                            </>
+                            </> : undefined
                         }
                     </p>
 
