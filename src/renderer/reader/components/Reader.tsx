@@ -595,7 +595,6 @@ class Reader extends React.Component<IProps, IState> {
                     .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
             };
 
-
         const store = diReaderGet("store");
         const winId = store.getState().win.identifier;
 
