@@ -81,7 +81,7 @@
         "deleteFeed": "Willst du diesen Katalog wirklich löschen?",
         "deletePublication": "Willst du diese Publikation wirklich löschen?",
         "import": "Willst du diese EPUB-Dateien wirklich importieren?",
-        "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung (.epub or .lcpl).",
+        "importError": "Ein Fehler ist aufgetreten, überprüfen Sie die Dateiendung (.epub / .lcpl / .audiobook).",
         "no": "Nein",
         "renew": "",
         "return": "",
