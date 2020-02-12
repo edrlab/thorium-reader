@@ -41,7 +41,7 @@ const persistStateToFs = async (nextState: RootState) => {
 
 function* needToPersistState() {
 
-    const nextState = yield* selectTyped<[], RootState>((store) => store);
+    const nextState = yield* selectTyped<(store: RootState) => RootState>((store) => store);
     yield* callTyped(() => persistStateToFs(nextState));
 }
 
@@ -74,7 +74,7 @@ export function* watchers() {
     yield cancel(debounceTask);
 
     // persist the winState now and exit 0 the app
-    const nextState = yield* selectTyped<[], RootState>((store) => store);
+    const nextState = yield* selectTyped<(store: RootState) => RootState>((store) => store);
     yield* callTyped(() => persistStateToFs(nextState));
 
     yield* callTyped(() => app.exit(0));

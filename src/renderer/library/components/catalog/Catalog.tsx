@@ -49,7 +49,6 @@ class Catalog extends React.Component<IProps, undefined> {
     }
 
     public componentDidUpdate(oldProps: IProps) {
-        console.log(this.props.refreshCatalog);
         if (oldProps.refreshCatalog !== this.props.refreshCatalog) {
             this.getFromApi();
         }
