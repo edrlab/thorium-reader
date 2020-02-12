@@ -52,11 +52,37 @@ debug("readium css path:", rcssPath);
 
 // TODO: centralize this code, currently duplicated
 // see src/renderer/components/reader/ReaderApp.jsx
-function computeReadiumCssJsonMessage(_r2Publication: R2Publication, _link: Link | undefined):
-    IEventPayload_R2_EVENT_READIUMCSS {
+function computeReadiumCssJsonMessage(
+    _r2Publication: R2Publication,
+    _link: Link | undefined,
+    sessionInfo: string | undefined,
+): IEventPayload_R2_EVENT_READIUMCSS {
+
     const store = diMainGet("store");
     const settings = store.getState().reader.config;
     debug(settings);
+
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    // debug(r2Publication.findFromInternal("zip"));
+    debug(sessionInfo);
+    const sessionInfoStr = Buffer.from(sessionInfo, "base64").toString("utf-8");
+    debug(sessionInfoStr);
+    const sessionInfoJson = JSON.parse(sessionInfoStr);
+    debug(sessionInfoJson);
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {
