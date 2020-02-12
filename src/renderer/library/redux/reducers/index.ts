@@ -26,7 +26,7 @@ import { combineReducers } from "redux";
 
 import { ILibraryRootState } from "../states";
 
-export const rootReducer = (history: History) => {
+export const rootReducer = (history: History<IRouterLocationState>) => {
     return combineReducers<ILibraryRootState>({
         i18n: i18nReducer,
         opds: combineReducers({

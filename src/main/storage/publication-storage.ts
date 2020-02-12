@@ -15,7 +15,7 @@ import { ContentType } from "readium-desktop/utils/content-type";
 import { getFileSize, rmDirSync } from "readium-desktop/utils/fs";
 import slugify from "slugify";
 
-import { EpubParsePromise } from "@r2-shared-js/parser/epub";
+import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 import { streamToBufferPromise } from "@r2-utils-js/_utils/stream/BufferUtils";
 import { IZip } from "@r2-utils-js/_utils/zip/zip.d";
 
@@ -43,7 +43,7 @@ export class PublicationStorage {
      * Store a publication in a repository
      *
      * @param identifier Identifier of publication
-     * @param srcPath Path of epub to import
+     * @param srcPath Path of epub/audiobook to import
      * @return List of all stored files
      */
     public async storePublication(
@@ -55,9 +55,9 @@ export class PublicationStorage {
         fs.mkdirSync(pubDirPath);
 
         // Store publication file and extract its cover
-        const bookFile: File = await this.storePublicationBook(
+        const bookFile = await this.storePublicationBook(
             identifier, srcPath);
-        const coverFile: File = await this.storePublicationCover(
+        const coverFile = await this.storePublicationCover(
             identifier, srcPath);
         const files: File[] = [];
         files.push(bookFile);
@@ -74,15 +74,25 @@ export class PublicationStorage {
     }
 
     public getPublicationEpubPath(identifier: string): string {
+
+        const root = this.buildPublicationPath(identifier);
+        const pathEpub = path.join(
+            root,
+            `book.epub`,
+        );
+        if (fs.existsSync(pathEpub)) {
+            return pathEpub;
+        }
         return path.join(
-            this.buildPublicationPath(identifier),
-            "book.epub",
+            root,
+            `book.audiobook`,
         );
     }
 
     public copyPublicationToPath(publicationView: PublicationView, destinationPath: string) {
-        const publicationPath = `${this.buildPublicationPath(publicationView.identifier)}/book.epub`;
-        const newFilePath = `${destinationPath}/${slugify(publicationView.title)}.epub`;
+        const publicationPath = this.getPublicationEpubPath(publicationView.identifier);
+        const extension = path.extname(publicationPath);
+        const newFilePath = `${destinationPath}/${slugify(publicationView.title)}${extension}`;
         fs.copyFile(publicationPath, newFilePath, (err) => {
             if (err) {
                 dialog.showMessageBox({
@@ -103,7 +113,10 @@ export class PublicationStorage {
         identifier: string,
         srcPath: string,
     ): Promise<File> {
-        const filename = "book.epub";
+        const extension = path.extname(srcPath);
+        const isAudioBook = /\.audiobook$/.test(extension);
+        const ext = isAudioBook ? "audiobook" : "epub";
+        const filename = `book.${ext}`;
         const dstPath = path.join(
             this.buildPublicationPath(identifier),
             filename,
@@ -114,8 +127,8 @@ export class PublicationStorage {
             const fileResolve = () => {
                 resolve({
                     url: `store://${identifier}/${filename}`,
-                    ext: "epub",
-                    contentType: ContentType.Epub,
+                    ext,
+                    contentType: isAudioBook ? ContentType.AudioBookPacked : ContentType.Epub,
                     size: getFileSize(dstPath),
                 });
             };
@@ -131,7 +144,7 @@ export class PublicationStorage {
         srcPath: string,
     ): Promise<File> {
 
-        const r2Publication = await EpubParsePromise(srcPath);
+        const r2Publication = await PublicationParsePromise(srcPath);
 
         // private Internal is very hacky! :(
         const zipInternal = (r2Publication as any).Internal.find((i: any) => {
@@ -144,7 +157,7 @@ export class PublicationStorage {
 
         const coverLink = r2Publication.GetCover();
         if (!coverLink) {
-            // after EpubParsePromise, cleanup zip handler
+            // after PublicationParsePromise, cleanup zip handler
             r2Publication.freeDestroy();
             return null;
         }
@@ -153,7 +166,7 @@ export class PublicationStorage {
         const zipStream = await zip.entryStreamPromise(coverLink.Href);
         const zipBuffer = await streamToBufferPromise(zipStream.stream);
 
-        // after EpubParsePromise, cleanup zip handler
+        // after PublicationParsePromise, cleanup zip handler
         r2Publication.freeDestroy();
 
         // Remove start dot in extensoion

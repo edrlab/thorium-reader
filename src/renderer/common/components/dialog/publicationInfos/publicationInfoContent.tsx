@@ -85,7 +85,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                     <h3>{__("catalog.moreInfo")}</h3>
                     <p>
                         {
-                            publication.publishers?.length &&
+                            publication.publishers?.length ?
                             <>
                                 <span>{`${__("catalog.publisher")} : `}</span>
                                 <i className={styles.allowUserSelect}>
@@ -96,10 +96,10 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                                     />
                                 </i>
                                 <br />
-                            </>
+                            </> : undefined
                         }
                         {
-                            publication.languages?.length &&
+                            publication.languages?.length ?
                             <>
                                 <span>
                                     {
@@ -108,10 +108,10 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                                 </span>
                                 <FormatPublicationLanguage publication={publication} __={__} />
                                 <br />
-                            </>
+                            </> : undefined
                         }
                         {
-                            publication.numberOfPages &&
+                            publication.numberOfPages ?
                             <>
                                 <span>
                                     {
@@ -125,7 +125,7 @@ export const PublicationInfoContent: React.FC<IProps> = (props) => {
                                 </i>
                                 <br />
 
-                            </>
+                            </> : undefined
                         }
                     </p>
 

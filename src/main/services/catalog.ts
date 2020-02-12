@@ -35,7 +35,7 @@ import * as uuid from "uuid";
 import { LCP } from "@r2-lcp-js/parser/epub/lcp";
 import { TaJsonDeserialize, TaJsonSerialize } from "@r2-lcp-js/serializable";
 import { OPDSPublication } from "@r2-opds-js/opds/opds2/opds2-publication";
-import { EpubParsePromise } from "@r2-shared-js/parser/epub";
+import { PublicationParsePromise } from "@r2-shared-js/parser/publication-parser";
 
 import { getTagsFromOpdsPublication } from "../converter/tools/getTags";
 import { extractCrc32OnZip } from "../crc";
@@ -97,7 +97,7 @@ export class CatalogService {
             } else {
                 if (isLCPLicense) {
                     publicationDocument = await this.importLcplFile(filePath, lcpHashedPassphrase);
-                } else if (/\.epub[3]?$/.test(ext) || (ext === ".part" && !isLcpFile)) {
+                } else if (/\.epub[3]?$/.test(ext) || /\.audiobook$/.test(ext) || (ext === ".part" && !isLcpFile)) {
                     publicationDocument = await this.importEpubFile(filePath, hash, lcpHashedPassphrase);
                 }
                 this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
@@ -125,8 +125,9 @@ export class CatalogService {
         const title = link.title || link.url;
         const isLcpFile = link.type === ContentType.Lcp;
         const isEpubFile = link.type === ContentType.Epub;
-        if (!isLcpFile && !isEpubFile) {
-            throw new Error(`OPDS download link is not EPUB! ${link.url} ${link.type}`);
+        const isAudioBookPacked = link.type === ContentType.AudioBookPacked;
+        if (!isLcpFile && !isEpubFile && !isAudioBookPacked) {
+            throw new Error(`OPDS download link is not EPUB or AudioBook! ${link.url} ${link.type}`);
         }
 
         // start the download service
@@ -430,8 +431,8 @@ export class CatalogService {
         hash?: string,
         lcpHashedPassphrase?: string): Promise<PublicationDocument> {
 
-        const r2Publication = await EpubParsePromise(filePath);
-        // after EpubParsePromise, cleanup zip handler
+        const r2Publication = await PublicationParsePromise(filePath);
+        // after PublicationParsePromise, cleanup zip handler
         // (no need to fetch ZIP data beyond this point)
         r2Publication.freeDestroy();
 

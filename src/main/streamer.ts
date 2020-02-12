@@ -52,20 +52,37 @@ debug("readium css path:", rcssPath);
 
 // TODO: centralize this code, currently duplicated
 // see src/renderer/components/reader/ReaderApp.jsx
-function computeReadiumCssJsonMessage(_r2Publication: R2Publication, _link: Link | undefined):
-    IEventPayload_R2_EVENT_READIUMCSS {
+function computeReadiumCssJsonMessage(
+    _r2Publication: R2Publication,
+    _link: Link | undefined,
+    sessionInfo: string | undefined,
+): IEventPayload_R2_EVENT_READIUMCSS {
 
-    // WARNING, the store isn't available at the beggining of app execution but once it load the state from FS.
-    // What is the runtime call process of this function ?
-    // @danielWeck ?
-    // In fact this function is call in each publication opening, refreshing ??
-    // 2 points :
-    //  - at this moment the store is loaded
-    //  - but we will criterized with the reader window id that display this publication and not only with the pubId.
-    //  - It's a big deal, how to that ?
     const store = diMainGet("store");
     const settings = store.getState().reader.defaultConfig;
     debug(settings);
+
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    debug("######");
+    // debug(r2Publication.findFromInternal("zip"));
+    debug(sessionInfo);
+    const sessionInfoStr = Buffer.from(sessionInfo, "base64").toString("utf-8");
+    debug(sessionInfoStr);
+    const sessionInfoJson = JSON.parse(sessionInfoStr);
+    debug(sessionInfoJson);
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
     const cssJson: IReadiumCSS = {

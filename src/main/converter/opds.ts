@@ -41,6 +41,7 @@ const debug = debug_("readium-desktop:main/converter/opds");
 debug("opds-converter");
 
 const supportedFileTypeLinkArray = [
+    ContentType.AudioBookPacked,
     ContentType.Epub,
     ContentType.Lcp,
 ];

@@ -40,7 +40,8 @@ export default class App extends React.Component<{}, undefined> {
                     files: acceptedFiles.filter((file) => {
                             const ext = path.extname(file.path);
                             return (/\.epub[3]?$/.test(ext) ||
-                            ext === ".lcpl");
+                                /\.audiobook$/.test(ext) ||
+                                ext === ".lcpl");
                     })
                         .map((file) => {
                             return {

@@ -595,6 +595,34 @@ class Reader extends React.Component<IProps, IState> {
                     .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
             };
 
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        console.log("######");
+        const sessionInfoJson: any = {
+            id: "0000-1110-222",
+            test: 1,
+            other: true,
+            obj: {
+                "sub-key": null,
+            },
+        };
+        console.log(sessionInfoJson);
+        const sessionInfoStr = JSON.stringify(sessionInfoJson, null, 4);
+        console.log(sessionInfoStr);
+        console.log(Buffer.from(sessionInfoStr).toString("base64"));
+
         installNavigatorDOM(
             r2Publication,
             this.state.publicationJsonUrl,
@@ -603,6 +631,7 @@ class Reader extends React.Component<IProps, IState> {
             locator,
             true,
             clipboardInterceptor,
+            sessionInfoStr,
         );
     }
 
