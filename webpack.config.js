@@ -8,7 +8,7 @@ const preloadConfig = require("./webpack.config.preload");
 console.log("-------------------- MAIN config:");
 console.log(util.inspect(mainConfig, { colors: true, depth: null, compact: false }));
 
-console.log("-------------------- RENDERER config:");
+console.log("-------------------- LIBRARY config:");
 console.log(util.inspect(libraryConfig, { colors: true, depth: null, compact: false }));
 
 console.log("-------------------- READER config:");

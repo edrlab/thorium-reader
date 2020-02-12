@@ -95,15 +95,16 @@
       "assets/",
       "ReadiumCSS/",
       "MathJax/",
-      "index_app.html",
-      "index_app.js",
+      "index_library.html",
+      "index_library.js",
       "index_reader.html",
       "index_reader.js",
-      "styles_app.css",
+      "styles_library.css",
       "styles_reader.css",
       "preload.js",
       "main.js",
-      "package.json"
+      "package.json",
+      "fonts"
     ],
     "asarUnpack": [
       "**/*.node",
