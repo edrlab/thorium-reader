@@ -19,8 +19,8 @@ export function readerConfigReducer(
         case setConfig.ID:
 
             return {
-                ...state,
                 ...action.payload,
+                ...state,
             };
         default:
             return state;

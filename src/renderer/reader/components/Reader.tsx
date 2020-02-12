@@ -325,7 +325,7 @@ class Reader extends React.Component<IProps, IState> {
                     setTimeout(() => {
                         // window.location.reload();
                         reloadContent();
-                    }, 300);
+                    }, 1000);
                 }
 
                 this.setState({ readerConfig, indexes });
@@ -595,33 +595,9 @@ class Reader extends React.Component<IProps, IState> {
                     .catch((error) => console.error("Error to fetch api reader/clipboardCopy", error));
             };
 
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        console.log("######");
-        const sessionInfoJson: any = {
-            id: "0000-1110-222",
-            test: 1,
-            other: true,
-            obj: {
-                "sub-key": null,
-            },
-        };
-        console.log(sessionInfoJson);
-        const sessionInfoStr = JSON.stringify(sessionInfoJson, null, 4);
-        console.log(sessionInfoStr);
-        console.log(Buffer.from(sessionInfoStr).toString("base64"));
+
+        const store = diReaderGet("store");
+        const winId = store.getState().win.identifier;
 
         installNavigatorDOM(
             r2Publication,
@@ -631,7 +607,7 @@ class Reader extends React.Component<IProps, IState> {
             locator,
             true,
             clipboardInterceptor,
-            sessionInfoStr,
+            winId,
         );
     }
 
@@ -820,10 +796,12 @@ class Reader extends React.Component<IProps, IState> {
         if (readerConfig.paged) {
             readerConfig.enableMathJax = false;
 
+            // TODO:
+            // replace this timeout with saga channel on 'WIN_SET_REDUXACTION' triggered
             setTimeout(() => {
                 // window.location.reload();
                 reloadContent();
-            }, 300);
+            }, 1000);
         }
 
         this.setSettings(readerConfig);

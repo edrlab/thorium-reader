@@ -14,7 +14,7 @@ import { _NODE_MODULE_RELATIVE_URL, _PACKAGING } from "readium-desktop/preproces
 
 import { IEventPayload_R2_EVENT_READIUMCSS } from "@r2-navigator-js/electron/common/events";
 import {
-    colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
+    colCountEnum, readiumCSSDefaults, textAlignEnum,
 } from "@r2-navigator-js/electron/common/readium-css-settings";
 import { setupReadiumCSS } from "@r2-navigator-js/electron/main/readium-css";
 import { secureSessions } from "@r2-navigator-js/electron/main/sessions";
@@ -23,6 +23,7 @@ import { Link } from "@r2-shared-js/models/publication-link";
 import { Transformers } from "@r2-shared-js/transform/transformer";
 import { TransformerHTML } from "@r2-shared-js/transform/transformer-html";
 import { Server } from "@r2-streamer-js/http/server";
+import { ReaderConfig } from "readium-desktop/common/models/reader";
 
 const debug = debug_("readium-desktop:main#streamer");
 
@@ -58,34 +59,34 @@ function computeReadiumCssJsonMessage(
     sessionInfo: string | undefined,
 ): IEventPayload_R2_EVENT_READIUMCSS {
 
-    const store = diMainGet("store");
-    const settings = store.getState().reader.defaultConfig;
-    debug(settings);
+    const winId = Buffer.from(sessionInfo, "base64").toString("utf-8");
+    debug("winId:", winId);
 
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    debug("######");
-    // debug(r2Publication.findFromInternal("zip"));
-    debug(sessionInfo);
-    const sessionInfoStr = Buffer.from(sessionInfo, "base64").toString("utf-8");
-    debug(sessionInfoStr);
-    const sessionInfoJson = JSON.parse(sessionInfoStr);
-    debug(sessionInfoJson);
+    let settings: ReaderConfig;
+    if (winId) {
+
+        const store = diMainGet("store");
+        const state = store.getState();
+
+        try {
+            settings = state.win.session.reader[winId].reduxState.config;
+
+            debug("PAGED: ", settings.paged, "colCount:", settings.colCount);
+
+        } catch (err) {
+            settings = state.reader.defaultConfig;
+
+            debug("settings from default config");
+            debug("ERROR", err);
+        }
+    } else {
+
+        const store = diMainGet("store");
+        settings = store.getState().reader.defaultConfig;
+    }
 
     // TODO: see the readiumCSSDefaults values below, replace with readium-desktop's own
-    const cssJson: IReadiumCSS = {
+    const cssJson = {
 
         a11yNormalize: readiumCSSDefaults.a11yNormalize,
 
@@ -126,8 +127,8 @@ function computeReadiumCssJsonMessage(
 
         textAlign: settings.align === textAlignEnum.left ? textAlignEnum.left :
             (settings.align === textAlignEnum.right ? textAlignEnum.right :
-            (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
-            (settings.align === textAlignEnum.start ? textAlignEnum.start : undefined))),
+                (settings.align === textAlignEnum.justify ? textAlignEnum.justify :
+                    (settings.align === textAlignEnum.start ? textAlignEnum.start : undefined))),
 
         textColor: readiumCSSDefaults.textColor,
 
@@ -139,6 +140,7 @@ function computeReadiumCssJsonMessage(
 
         reduceMotion: readiumCSSDefaults.reduceMotion,
     };
+
     const jsonMsg: IEventPayload_R2_EVENT_READIUMCSS = { setCSS: cssJson };
     return jsonMsg;
 }
