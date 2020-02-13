@@ -45,6 +45,7 @@ import { Store } from "redux";
 
 import { Server } from "@r2-streamer-js/http/server";
 
+import { KeyboardApi } from "./api/keyboard";
 import { ReaderApi } from "./api/reader";
 import { RootState } from "./redux/states";
 import { OpdsService } from "./services/opds";
@@ -218,6 +219,7 @@ container.bind<OpdsService>(diSymbolTable["opds-service"]).to(OpdsService).inSin
 container.bind<CatalogApi>(diSymbolTable["catalog-api"]).to(CatalogApi).inSingletonScope();
 container.bind<PublicationApi>(diSymbolTable["publication-api"]).to(PublicationApi).inSingletonScope();
 container.bind<OpdsApi>(diSymbolTable["opds-api"]).to(OpdsApi).inSingletonScope();
+container.bind<KeyboardApi>(diSymbolTable["keyboard-api"]).to(KeyboardApi).inSingletonScope();
 container.bind<LcpApi>(diSymbolTable["lcp-api"]).to(LcpApi).inSingletonScope();
 container.bind<ReaderApi>(diSymbolTable["reader-api"]).to(ReaderApi).inSingletonScope();
 
@@ -254,6 +256,7 @@ interface IGet {
     (s: "catalog-api"): CatalogApi;
     (s: "publication-api"): PublicationApi;
     (s: "opds-api"): OpdsApi;
+    (s: "keyboard-api"): KeyboardApi;
     (s: "lcp-api"): LcpApi;
     (s: "reader-api"): ReaderApi;
     (s: "action-serializer"): ActionSerializer;

@@ -9,6 +9,7 @@ import * as classNames from "classnames";
 import * as path from "path";
 import * as React from "react";
 import { connect } from "react-redux";
+import { keyboardShortcutMatch } from "readium-desktop/common/keyboard";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import {
     Reader as ReaderModel, ReaderConfig, ReaderConfigBooleans, ReaderConfigStrings,
@@ -168,6 +169,8 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 interface IState {
+    // keyboardShortcuts: TKeyboardShortcutsMapReadOnly;
+
     publicationJsonUrl?: string;
     title?: string;
 
@@ -208,6 +211,7 @@ class Reader extends React.Component<IProps, IState> {
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
 
         this.state = {
+            // keyboardShortcuts: undefined,
             publicationJsonUrl: "HTTP://URL",
             lcpHint: "LCP hint",
             title: "TITLE",
@@ -255,6 +259,8 @@ class Reader extends React.Component<IProps, IState> {
             currentLocation: undefined,
             bookmarks: undefined,
         };
+        // this.loadKeyboardShortcuts();
+        // this.loadKeyboardShortcuts = this.loadKeyboardShortcuts.bind(this);
 
         this.handleMenuButtonClick = this.handleMenuButtonClick.bind(this);
         this.handleSettingsClick = this.handleSettingsClick.bind(this);
@@ -273,6 +279,7 @@ class Reader extends React.Component<IProps, IState> {
     }
 
     public async componentDidMount() {
+        // this.loadKeyboardShortcuts();
 
         this.setState({
             publicationJsonUrl,
@@ -385,27 +392,25 @@ class Reader extends React.Component<IProps, IState> {
         };
 
         const keyDownEventHandler = (ev: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => {
-            // DEPRECATED
-            // if (ev.keyCode === 37 || ev.keyCode === 39) { // left / right
-            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
-            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
-            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code/code_values
-            const leftKey = ev.code === "ArrowLeft";
-            const rightKey = ev.code === "ArrowRight";
-            if (leftKey || rightKey) {
-                const noModifierKeys = !ev.ctrlKey && !ev.shiftKey && !ev.altKey && !ev.metaKey;
-                const spineNavModifierKeys = process.platform === "darwin" ? ev.ctrlKey && ev.shiftKey :
-                    ev.ctrlKey && ev.shiftKey && ev.altKey;
-                if (noModifierKeys || spineNavModifierKeys) {
-                    navLeftOrRight(leftKey, spineNavModifierKeys);
-                    if (spineNavModifierKeys) {
-                        if (this.fastLinkRef?.current) {
-                            setTimeout(() => {
-                                if (this.fastLinkRef?.current) {
-                                    this.fastLinkRef.current.focus();
-                                }
-                            }, 200);
-                        }
+
+            const keyboardShortcutNextPage = this.props.keyboardShortcuts.readerPageNavigationNext;
+            const keyboardShortcutPreviousPage = this.props.keyboardShortcuts.readerPageNavigationPrevious;
+            const keyboardShortcutNextSpine = this.props.keyboardShortcuts.readerSpineNavigationNext;
+            const keyboardShortcutPreviousSpine = this.props.keyboardShortcuts.readerSpineNavigationPrevious;
+            const isNextPage = keyboardShortcutMatch(keyboardShortcutNextPage, ev);
+            const isPreviousPage = keyboardShortcutMatch(keyboardShortcutPreviousPage, ev);
+            const isNextSpine = keyboardShortcutMatch(keyboardShortcutNextSpine, ev);
+            const isPreviousSpine = keyboardShortcutMatch(keyboardShortcutPreviousSpine, ev);
+
+            if (isNextPage || isPreviousPage || isNextSpine || isPreviousSpine) {
+                navLeftOrRight(isPreviousPage || isPreviousSpine, isNextSpine || isPreviousSpine);
+                if (isNextSpine || isPreviousSpine) {
+                    if (this.fastLinkRef?.current) {
+                        setTimeout(() => {
+                            if (this.fastLinkRef?.current) {
+                                this.fastLinkRef.current.focus();
+                            }
+                        }, 200);
                     }
                 }
             }
@@ -519,6 +524,15 @@ class Reader extends React.Component<IProps, IState> {
                 </div>
         );
     }
+
+    // private async loadKeyboardShortcuts() {
+    //     try {
+    //         const keyboardShortcuts = await apiAction("keyboard/getAll");
+    //         this.setState({ keyboardShortcuts });
+    //     } catch (e) {
+    //         console.error("Error to fetch api keyboard/getAll", e);
+    //     }
+    // }
 
     private displayPublicationInfo() {
         if (this.state.publicationView) {
@@ -880,6 +894,7 @@ class Reader extends React.Component<IProps, IState> {
 const mapStateToProps = (state: IReaderRootState, _props: IBaseProps) => {
     return {
         reader: state.reader.reader,
+        keyboardShortcuts: state.keyboard.shortcuts,
         mode: state.reader.mode,
         infoOpen: state.dialog.open &&
             state.dialog.type === DialogTypeName.PublicationInfoReader,

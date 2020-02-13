@@ -8,6 +8,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { keyboardShortcutMatch } from "readium-desktop/common/keyboard";
 import { IOpdsResultView } from "readium-desktop/common/views/opds";
 import * as ArrowRightIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_forward_ios-24px.svg";
 import * as ArrowLeftIcon from "readium-desktop/renderer/assets/icons/baseline-arrow_left_ios-24px.svg";
@@ -33,9 +34,25 @@ interface IBaseProps extends TranslatorProps {
 interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
 }
 
+// interface IState {
+//     keyboardShortcuts: TKeyboardShortcutsMapReadOnly;
+// }
+
 class PageNavigation extends React.Component<IProps, undefined> {
 
+    // constructor(props: IProps) {
+    //     super(props);
+
+    //     this.state = {
+    //         keyboardShortcuts: undefined,
+    //     };
+    //     this.loadKeyboardShortcuts();
+    //     // this.loadKeyboardShortcuts = this.loadKeyboardShortcuts.bind(this);
+    // }
+
     public componentDidMount() {
+        // this.loadKeyboardShortcuts();
+
         document.addEventListener("keydown", this.handleKeyDown);
     }
 
@@ -113,24 +130,34 @@ class PageNavigation extends React.Component<IProps, undefined> {
         );
     }
 
+    // private async loadKeyboardShortcuts() {
+    //     try {
+    //         const keyboardShortcuts = await apiAction("keyboard/getAll");
+    //         this.setState({ keyboardShortcuts });
+    //     } catch (e) {
+    //         console.error("Error to fetch api keyboard/getAll", e);
+    //     }
+    // }
     private handleKeyDown = (e: KeyboardEvent) => {
         const { pageLinks } = this.props;
 
-        if (e.shiftKey && e.ctrlKey) {
-            const next = pageLinks?.next[0];
-            const previous = pageLinks?.previous[0];
+        const keyboardShortcutNext = this.props.keyboardShortcuts.opdsPageNavigationNext;
+        const keyboardShortcutPrevious = this.props.keyboardShortcuts.opdsPageNavigationPrevious;
+        const isNext = keyboardShortcutMatch(keyboardShortcutNext, e);
+        const isPrevious = keyboardShortcutMatch(keyboardShortcutPrevious, e);
+
+        if (isNext || isPrevious) {
             const buildRoute = buildOpdsBrowserRouteWithLink(this.props.location.pathname);
 
-            // FIXME : Why e.key isn't typed ?
-            if (previous && e.key === "ArrowLeft") {
+            if (pageLinks?.previous[0]?.url && isPrevious) { // TODO RTL
                 this.props.historyPush({
                     ...this.props.location,
-                    pathname: buildRoute(next),
+                    pathname: buildRoute(pageLinks.previous[0]),
                 });
-            } else if (next && e.key === "ArrowRight") {
+            } else if (pageLinks?.next[0]?.url && isNext) { // TODO RTL
                 this.props.historyPush({
                     ...this.props.location,
-                    pathname: buildRoute(previous),
+                    pathname: buildRoute(pageLinks.next[0]),
                 });
             }
         }
@@ -139,6 +166,7 @@ class PageNavigation extends React.Component<IProps, undefined> {
 
 const mapStateToProps = (state: ILibraryRootState) => ({
     location: state.router.location,
+    keyboardShortcuts: state.keyboard.shortcuts,
 });
 
 const mapDispatchToProps = (dispatch: TDispatch) => ({
