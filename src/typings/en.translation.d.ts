@@ -63,7 +63,6 @@ declare namespace typed_i18n {
     readonly "lastAdditions": string
   },
   readonly "export": string,
-  readonly "id": string,
   readonly "lang": string,
   readonly "moreInfo": string,
   readonly "myBooks": string,
@@ -74,7 +73,6 @@ declare namespace typed_i18n {
   readonly "opds": {
     readonly "info": {
       readonly "availableSince": string,
-      readonly "availableUntil": string,
       readonly "availableState": {
         readonly "available": string,
         readonly "ready": string,
@@ -82,6 +80,7 @@ declare namespace typed_i18n {
         readonly "unavailable": string,
         readonly "unknown": string
       },
+      readonly "availableUntil": string,
       readonly "copyAvalaible": string,
       readonly "copyTotal": string,
       readonly "holdPosition": string,
@@ -114,7 +113,7 @@ declare namespace typed_i18n {
   (_: "catalog.entry", __?: {}): { readonly "continueReading": string, readonly "lastAdditions": string };
   (_: "catalog.entry.continueReading", __?: {}): string;
   (_: "catalog.entry.lastAdditions", __?: {}): string;
-  (_: "catalog.export", __?: {}): string; (_: "catalog.id", __?: {}): string;
+  (_: "catalog.export", __?: {}): string;
   (_: "catalog.lang", __?: {}): string;
   (_: "catalog.moreInfo", __?: {}): string;
   (_: "catalog.myBooks", __?: {}): string;
@@ -125,7 +124,6 @@ declare namespace typed_i18n {
   (_: "catalog.opds", __?: {}): {
   readonly "info": {
     readonly "availableSince": string,
-    readonly "availableUntil": string,
     readonly "availableState": {
       readonly "available": string,
       readonly "ready": string,
@@ -133,6 +131,7 @@ declare namespace typed_i18n {
       readonly "unavailable": string,
       readonly "unknown": string
     },
+    readonly "availableUntil": string,
     readonly "copyAvalaible": string,
     readonly "copyTotal": string,
     readonly "holdPosition": string,
@@ -144,7 +143,6 @@ declare namespace typed_i18n {
 };
   (_: "catalog.opds.info", __?: {}): {
   readonly "availableSince": string,
-  readonly "availableUntil": string,
   readonly "availableState": {
     readonly "available": string,
     readonly "ready": string,
@@ -152,6 +150,7 @@ declare namespace typed_i18n {
     readonly "unavailable": string,
     readonly "unknown": string
   },
+  readonly "availableUntil": string,
   readonly "copyAvalaible": string,
   readonly "copyTotal": string,
   readonly "holdPosition": string,
@@ -161,7 +160,6 @@ declare namespace typed_i18n {
   readonly "state": string
 };
   (_: "catalog.opds.info.availableSince", __?: {}): string;
-  (_: "catalog.opds.info.availableUntil", __?: {}): string;
   (_: "catalog.opds.info.availableState", __?: {}): {
   readonly "available": string,
   readonly "ready": string,
@@ -174,6 +172,7 @@ declare namespace typed_i18n {
   (_: "catalog.opds.info.availableState.reserved", __?: {}): string;
   (_: "catalog.opds.info.availableState.unavailable", __?: {}): string;
   (_: "catalog.opds.info.availableState.unknown", __?: {}): string;
+  (_: "catalog.opds.info.availableUntil", __?: {}): string;
   (_: "catalog.opds.info.copyAvalaible", __?: {}): string;
   (_: "catalog.opds.info.copyTotal", __?: {}): string;
   (_: "catalog.opds.info.holdPosition", __?: {}): string;
