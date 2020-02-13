@@ -8,6 +8,7 @@
 import * as debug_ from "debug";
 import { screen } from "electron";
 import * as ramda from "ramda";
+import { error } from "readium-desktop/common/error";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { SenderType } from "readium-desktop/common/models/sync";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -24,7 +25,8 @@ import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects
 import { streamerOpenPublicationAndReturnManifestUrl } from "./streamer";
 
 // Logger
-const debug = debug_("readium-desktop:main:redux:sagas:reader");
+const filename_ = "readium-desktop:main:saga:reader";
+const debug = debug_(filename_);
 debug("_");
 
 // const READER_CONFIG_ID = "reader";
@@ -300,25 +302,50 @@ function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
 }
 
 function* readerCloseRequestWatcher() {
-    yield takeEvery(readerActions.closeRequestFromPublication.ID, readerCloseRequestFromPublication);
-    yield takeEvery(readerActions.closeRequest.ID, readerCLoseRequestFromIdentifier);
+    try {
+
+        yield takeEvery(readerActions.closeRequestFromPublication.ID, readerCloseRequestFromPublication);
+        yield takeEvery(readerActions.closeRequest.ID, readerCLoseRequestFromIdentifier);
+    } catch (err) {
+        error(filename_ + ":readerCloseRequestWatcher", err);
+    }
 }
 
 // OPEN READER ENTRY POINT
 function* readerOpenRequestWatcher() {
-    yield takeEvery(readerActions.openRequest.ID, readerOpenRequest);
+    try {
+
+        yield takeEvery(readerActions.openRequest.ID, readerOpenRequest);
+    } catch (err) {
+        error(filename_ + ":readerOpenRequestWatcher", err);
+    }
 }
 
 function* readerDetachRequestWatcher() {
-    yield takeLeading(readerActions.detachModeRequest.ID, readerDetachRequest);
+    try {
+
+        yield takeLeading(readerActions.detachModeRequest.ID, readerDetachRequest);
+    } catch (err) {
+        error(filename_ + ":readerDetachRequestWatcher", err);
+    }
 }
 
 function* readerFullscreenRequestWatcher() {
-    yield takeLeading(readerActions.fullScreenRequest.ID, readerFullscreenRequest);
+    try {
+
+        yield takeLeading(readerActions.fullScreenRequest.ID, readerFullscreenRequest);
+    } catch (err) {
+        error(filename_ + ":readerFullscreenRequestWatcher", err);
+    }
 }
 
 function* readerSetReduxStateWatcher() {
-    yield takeEvery(readerActions.setReduxState.ID, readerSetReduxState);
+    try {
+
+        yield takeEvery(readerActions.setReduxState.ID, readerSetReduxState);
+    } catch (err) {
+        error(filename_ + ":readerSetReduxStateWatcher", err);
+    }
 }
 
 export function* watchers() {

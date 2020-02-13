@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
+import { error } from "readium-desktop/common/error";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { takeTyped } from "readium-desktop/common/redux/typed-saga";
@@ -19,7 +20,8 @@ import { apiSaga } from "../api";
 const REQUEST_ID = "PUBINFO_OPDS_REQUEST_ID";
 
 // Logger
-const debug = debug_("readium-desktop:renderer:redux:saga:publication-info-opds");
+const filename_ = "readium-desktop:renderer:redux:saga:publication-info-opds";
+const debug = debug_(filename_);
 
 // global access to opdsLInksView in iterator
 let linksIterator: IterableIterator<IOpdsLinkView>;
@@ -115,8 +117,13 @@ function* updateOpdsPublicationWatcher() {
 }
 
 export function* watchers() {
-    yield all([
-        call(checkOpdsPublicationWatcher),
-        call(updateOpdsPublicationWatcher),
-    ]);
+    try {
+
+        yield all([
+            call(checkOpdsPublicationWatcher),
+            call(updateOpdsPublicationWatcher),
+        ]);
+    } catch (err) {
+        error(filename_, err);
+    }
 }

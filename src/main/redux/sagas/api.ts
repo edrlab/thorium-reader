@@ -6,7 +6,8 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { CodeError } from "readium-desktop/common/errors";
+import { CodeError } from "readium-desktop/common/codeError.class";
+import { error } from "readium-desktop/common/error";
 import { apiActions } from "readium-desktop/common/redux/actions";
 import { diMainGet } from "readium-desktop/main/di";
 import { diSymbolTable } from "readium-desktop/main/diSymbolTable";
@@ -14,7 +15,8 @@ import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 import { all, call, put, takeEvery } from "redux-saga/effects";
 
 // Logger
-const debug = debug_("readium-desktop:main#redux/sagas/api");
+const filename_ = "readium-desktop:main:saga:api";
+const debug = debug_(filename_);
 
 const getSymbolName = (apiName: string) => {
     const keys = ObjectKeys(diSymbolTable);
@@ -51,7 +53,13 @@ function* requestWatcher() {
 }
 
 export function* watchers() {
-    yield all([
-        call(requestWatcher),
-    ]);
+
+    try {
+        yield all([
+            call(requestWatcher),
+        ]);
+
+    } catch (err) {
+        error(filename_, err);
+    }
 }

@@ -5,7 +5,9 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
+import { error } from "readium-desktop/common/error";
 import { DialogType, DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { selectTyped } from "readium-desktop/common/redux/typed-saga";
@@ -15,6 +17,11 @@ import { stringArrayEqual } from "readium-desktop/utils/stringArrayEqual";
 import { all, call, put, takeEvery } from "redux-saga/effects";
 
 import { ICommonRootState } from "../../../../../common/redux/states/renderer/commonRootState";
+
+// Logger
+const filename_ = "readium-desktop:renderer:redux:saga:publication-info-syncTags";
+const debug = debug_(filename_);
+debug("_");
 
 function* apiResult(action: apiActions.result.TAction) {
 
@@ -55,7 +62,12 @@ function* dialogOpenWatcher() {
 }
 
 export function* watchers() {
-    yield all([
-        call(dialogOpenWatcher),
-    ]);
+    try {
+
+        yield all([
+            call(dialogOpenWatcher),
+        ]);
+    } catch (err) {
+        error(filename_, err);
+    }
 }

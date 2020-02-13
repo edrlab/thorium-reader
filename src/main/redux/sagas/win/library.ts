@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { dialog } from "electron";
+import { error } from "readium-desktop/common/error";
 import { syncIpc, winIpc } from "readium-desktop/common/ipc";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
@@ -21,7 +22,8 @@ import { createLibraryWindow } from "./browserWindow/createLibraryWindow";
 import { checkReaderWindowInSession } from "./session/checkReaderWindowInSession";
 
 // Logger
-const debug = debug_("readium-desktop:main:redux:sagas:library");
+const filename_ = "readium-desktop:main:redux:sagas:win:library";
+const debug = debug_(filename_);
 debug("_");
 
 function* winOpen(action: winActions.library.openSucess.TAction) {
@@ -149,18 +151,29 @@ function* winClose(_action: winActions.library.closed.TAction) {
 
 function* openLibraryWatcher() {
 
-    yield all([
-        takeLeading(winActions.library.openRequest.ID, createLibraryWindow),
-        takeLeading(winActions.library.openRequest.ID, checkReaderWindowInSession),
-        takeLeading(winActions.library.openSucess.ID, winOpen),
-    ]);
+    try {
+
+        yield all([
+            takeLeading(winActions.library.openRequest.ID, createLibraryWindow),
+            takeLeading(winActions.library.openRequest.ID, checkReaderWindowInSession),
+            takeLeading(winActions.library.openSucess.ID, winOpen),
+        ]);
+    } catch (err) {
+        error(filename_ + ":openLibraryWatcher", err);
+    }
 }
 
 function* closedLibraryWatcher() {
-    yield all([
-        takeLeading(winActions.library.closed.ID, appActivate),
-        takeLeading(winActions.library.closed.ID, winClose),
+
+    try {
+
+        yield all([
+            takeLeading(winActions.library.closed.ID, appActivate),
+            takeLeading(winActions.library.closed.ID, winClose),
     ]);
+    } catch (err) {
+        error(filename_ + ":closedLibraryWatcher", err);
+    }
 }
 
 export function* watchers() {

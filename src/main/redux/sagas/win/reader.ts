@@ -6,6 +6,7 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { error } from "readium-desktop/common/error";
 import { readerIpc } from "readium-desktop/common/ipc";
 import { ReaderMode } from "readium-desktop/common/models/reader";
 import { readerActions } from "readium-desktop/common/redux/actions";
@@ -22,7 +23,8 @@ import { all, call, put, takeEvery } from "redux-saga/effects";
 import { createReaderWindow } from "./browserWindow/createReaderWindow";
 
 // Logger
-const debug = debug_("readium-desktop:main:redux:sagas:reader");
+const filename_ = "readium-desktop:main:redux:sagas:win:reader";
+const debug = debug_(filename_);
 debug("_");
 
 function* winOpen(action: winActions.reader.openSucess.TAction) {
@@ -151,16 +153,24 @@ function* winClose(action: winActions.reader.closed.TAction) {
 }
 
 function* openReaderWatcher() {
-    yield all([
-        takeEvery(winActions.reader.openRequest.ID, createReaderWindow),
-        takeEvery(winActions.reader.openSucess.ID, winOpen),
-    ]);
+    try {
+        yield all([
+            takeEvery(winActions.reader.openRequest.ID, createReaderWindow),
+            takeEvery(winActions.reader.openSucess.ID, winOpen),
+        ]);
+    } catch (err) {
+        error(filename_ + ":openReaderWatcher", err);
+    }
 }
 
 function* closedReaderWatcher() {
-    yield all([
-        takeEvery(winActions.reader.closed.ID, winClose),
-    ]);
+    try {
+        yield all([
+            takeEvery(winActions.reader.closed.ID, winClose),
+        ]);
+    } catch (err) {
+        error(filename_ + ":closedReaderWatcher", err);
+    }
 }
 
 export function* watchers() {

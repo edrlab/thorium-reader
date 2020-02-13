@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { app } from "electron";
+import { error } from "readium-desktop/common/error";
 import { callTyped, selectTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { CONFIGREPOSITORY_REDUX_PERSISTENCE, diMainGet } from "readium-desktop/main/di";
@@ -18,7 +19,8 @@ import { cancel, debounce, take } from "redux-saga/effects";
 const DEBOUNCE_TIME = 1000;
 
 // Logger
-const debug = debug_("readium-desktop:main:redux:sagas:library");
+const filename_ = "readium-desktop:main:saga:persist";
+const debug = debug_(filename_);
 debug("_");
 
 const persistStateToFs = async (nextState: RootState) => {
@@ -65,17 +67,23 @@ function* windowAllClosedEventChannel() {
 
 export function* watchers() {
 
-    const debounceTask = yield debounce(DEBOUNCE_TIME, winActions.persistRequest.ID, needToPersistState);
+    try {
 
-    // wait untill all windows are closed to continue
-    const channel = yield* callTyped(windowAllClosedEventChannel);
-    yield take(channel);
+        const debounceTask = yield debounce(DEBOUNCE_TIME, winActions.persistRequest.ID, needToPersistState);
 
-    yield cancel(debounceTask);
+        // wait untill all windows are closed to continue
+        const channel = yield* callTyped(windowAllClosedEventChannel);
+        yield take(channel);
 
-    // persist the winState now and exit 0 the app
-    const nextState = yield* selectTyped<(store: RootState) => RootState>((store) => store);
-    yield* callTyped(() => persistStateToFs(nextState));
+        yield cancel(debounceTask);
 
-    yield* callTyped(() => app.exit(0));
+        // persist the winState now and exit 0 the app
+        const nextState = yield* selectTyped<(store: RootState) => RootState>((store) => store);
+        yield* callTyped(() => persistStateToFs(nextState));
+
+        yield* callTyped(() => app.exit(0));
+
+    } catch (err) {
+        error(filename_, err);
+    }
 }

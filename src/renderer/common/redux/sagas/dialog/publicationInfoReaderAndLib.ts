@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import { TApiMethod } from "readium-desktop/common/api/api.type";
+import { error } from "readium-desktop/common/error";
 import { DialogTypeName } from "readium-desktop/common/models/dialog";
 import { apiActions, dialogActions } from "readium-desktop/common/redux/actions";
 import { takeTyped } from "readium-desktop/common/redux/typed-saga";
@@ -18,7 +19,8 @@ import { apiSaga } from "../api";
 const REQUEST_ID = "PUBINFO_READER_AND_LIB_REQUEST_ID";
 
 // Logger
-const debug = debug_("readium-desktop:renderer:redux:saga:publication-info-readerAndLib");
+const filename_ = "readium-desktop:renderer:redux:saga:publication-info-readerAndLib";
+const debug = debug_(filename_);
 
 // Triggered when a publication-info-reader is asked
 function* checkReaderAndLibPublicationWatcher() {
@@ -66,7 +68,12 @@ function* updateReaderAndLibPublicationWatcher() {
 }
 
 export function* watchers() {
-    yield all([
-        call(checkReaderAndLibPublicationWatcher),
-    ]);
+    try {
+
+        yield all([
+            call(checkReaderAndLibPublicationWatcher),
+        ]);
+    } catch (err) {
+        error(filename_, err);
+    }
 }

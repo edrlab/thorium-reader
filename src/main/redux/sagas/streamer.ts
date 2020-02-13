@@ -21,9 +21,11 @@ import { all, call, put, take, takeEvery } from "redux-saga/effects";
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Server } from "@r2-streamer-js/http/server";
+import { error } from "readium-desktop/common/error";
 
 // Logger
-const debug = debug_("readium-desktop:main:redux:sagas:streamer");
+const filename_ = "readium-desktop:main:redux:sagas:streamer";
+const debug = debug_(filename_);
 
 async function startStreamer(streamer: Server): Promise<string> {
     // Find a free port on your local machine
@@ -43,33 +45,32 @@ function stopStreamer(streamer: Server) {
     streamer.stop();
 }
 
-function* startRequestWatcher(): SagaIterator {
-    while (true) {
-        yield take(streamerActions.startRequest.ID);
-        const streamer = diMainGet("streamer");
+function* startRequest(): SagaIterator {
+    const streamer = diMainGet("streamer");
 
-        try {
-            const streamerUrl = yield* callTyped(() => startStreamer(streamer));
-            yield put(streamerActions.startSuccess.build(streamerUrl));
-        } catch (error) {
-            debug("Unable to start streamer");
-            yield put(streamerActions.startError.build(error));
-        }
+    try {
+
+        const streamerUrl = yield* callTyped(() => startStreamer(streamer));
+        yield put(streamerActions.startSuccess.build(streamerUrl));
+    } catch (error) {
+
+        debug("Unable to start streamer", error);
+        yield put(streamerActions.startError.build(error));
     }
 }
 
-function* stopRequestWatcher(): SagaIterator {
-    while (true) {
-        yield take(streamerActions.stopRequest.ID);
-        const streamer = diMainGet("streamer");
+function* stopRequest(): SagaIterator {
 
-        try {
-            yield call(() => stopStreamer(streamer));
-            yield put(streamerActions.stopSuccess.build());
-        } catch (error) {
-            debug("Unable to stop streamer");
-            yield put(streamerActions.stopError.build(error));
-        }
+    const streamer = diMainGet("streamer");
+
+    try {
+
+        yield call(() => stopStreamer(streamer));
+        yield put(streamerActions.stopSuccess.build());
+    } catch (error) {
+
+        debug("Unable to stop streamer", error);
+        yield put(streamerActions.stopError.build(error));
     }
 }
 
@@ -307,11 +308,35 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
 }
 
 function* publicationOpenRequestWatcher() {
-    yield takeEvery(streamerActions.publicationOpenRequest.ID, publicationOpenRequest);
+    try {
+        yield takeEvery(streamerActions.publicationOpenRequest.ID, publicationOpenRequest);
+    } catch (err) {
+        error(filename_ + ":publicationOpenRequestWatcher", err);
+    }
 }
 
 function* publicationCloseRequestWatcher() {
-    yield takeEvery(streamerActions.publicationCloseRequest.ID, publicationCloseRequest);
+    try {
+        yield takeEvery(streamerActions.publicationCloseRequest.ID, publicationCloseRequest);
+    } catch (err) {
+        error(filename_ + ":publicationCloseRequestWatcher", err);
+    }
+}
+
+function* stopRequestWatcher() {
+    try {
+        yield takeEvery(streamerActions.stopRequest.ID, stopRequest);
+    } catch (err) {
+        error(filename_ + ":stopRequestWatcher", err);
+    }
+}
+
+function* startRequestWatcher() {
+    try {
+        yield takeEvery(streamerActions.startRequest.ID, startRequest);
+    } catch (err) {
+        error(filename_ + ":startRequestWatcher", err);
+    }
 }
 
 export function* watchers() {

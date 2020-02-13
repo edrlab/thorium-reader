@@ -8,13 +8,15 @@
 import * as debug_ from "debug";
 import { app, protocol } from "electron";
 import * as path from "path";
+import { error } from "readium-desktop/common/error";
 import { diMainGet } from "readium-desktop/main/di";
 import { appActions, winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel } from "redux-saga";
 import { all, call, put, take } from "redux-saga/effects";
 
 // Logger
-const debug = debug_("readium-desktop:main:saga:app");
+const filename_ = "readium-desktop:main:saga:app";
+const debug = debug_(filename_);
 
 function* mainApp() {
 
@@ -85,7 +87,13 @@ export function* appActivate() {
 }
 
 export function* watchers() {
-    yield all([
-        call(appInitWatcher),
-    ]);
+    try {
+
+        yield all([
+            call(appInitWatcher),
+        ]);
+
+    } catch (err) {
+        error(filename_, err);
+    }
 }

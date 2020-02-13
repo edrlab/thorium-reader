@@ -8,7 +8,7 @@
 import "reflect-metadata";
 
 import { injectable} from "inversify";
-import { CodeError } from "readium-desktop/common/errors";
+import { CodeError } from "readium-desktop/common/codeError.class";
 import { Action } from "../models/redux";
 
 @injectable()

@@ -5,12 +5,19 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import * as debug_ from "debug";
 import { LocaleConfigIdentifier, LocaleConfigValueType } from "readium-desktop/common/config";
+import { error } from "readium-desktop/common/error";
 import { i18nActions } from "readium-desktop/common/redux/actions";
 import { callTyped } from "readium-desktop/common/redux/typed-saga";
 import { ConfigRepository } from "readium-desktop/main/db/repository/config";
 import { diMainGet } from "readium-desktop/main/di";
 import { all, call, takeLeading } from "redux-saga/effects";
+
+// Logger
+const filename_ = "readium-desktop:main:saga:i18n";
+const debug = debug_(filename_);
+debug("_");
 
 function* setLocale(action: i18nActions.setLocale.TAction) {
 
@@ -39,7 +46,12 @@ function* localeWatcher() {
 }
 
 export function* watchers() {
-    yield all([
-        call(localeWatcher),
-    ]);
+    try {
+        yield all([
+            call(localeWatcher),
+        ]);
+
+    } catch (err) {
+        error(filename_, err);
+    }
 }

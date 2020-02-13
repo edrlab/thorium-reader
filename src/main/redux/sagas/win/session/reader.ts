@@ -6,12 +6,14 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { error } from "readium-desktop/common/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel } from "redux-saga";
 import { all, debounce, put, take, takeEvery } from "redux-saga/effects";
 
 // Logger
-const debug = debug_("readium-desktop:main:redux:sagas:session:reader");
+const filename_ = "readium-desktop:main:redux:sagas:win:session:reader";
+const debug = debug_(filename_);
 
 function* readerClosed(action: winActions.session.registerReader.TAction) {
 
@@ -63,9 +65,14 @@ function* readerMovedOrResized(action: winActions.session.registerReader.TAction
 }
 
 export function* watchers() {
-    // need to fork on each registerReader action
-    yield all([
-        takeEvery(winActions.session.registerReader.ID, readerClosed),
-        takeEvery(winActions.session.registerReader.ID, readerMovedOrResized),
-    ]);
+
+    try {
+        // need to fork on each registerReader action
+        yield all([
+            takeEvery(winActions.session.registerReader.ID, readerClosed),
+            takeEvery(winActions.session.registerReader.ID, readerMovedOrResized),
+        ]);
+    } catch (err) {
+        error(filename_, err);
+    }
 }

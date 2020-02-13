@@ -6,12 +6,14 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
+import { error } from "readium-desktop/common/error";
 import { winActions } from "readium-desktop/main/redux/actions";
 import { eventChannel } from "redux-saga";
 import { all, debounce, put, take, takeLeading } from "redux-saga/effects";
 
 // Logger
-const debug = debug_("readium-desktop:main:redux:sagas:library");
+const filename_ = "readium-desktop:main:redux:sagas:win:session:library";
+const debug = debug_(filename_);
 debug("_");
 
 function* libraryClosed(action: winActions.session.registerLibrary.TAction) {
@@ -66,8 +68,14 @@ function* libraryMovedOrResized(action: winActions.session.registerLibrary.TActi
 }
 
 export function* watchers() {
-    yield all([
-        takeLeading(winActions.session.registerLibrary.ID, libraryClosed),
-        takeLeading(winActions.session.registerLibrary.ID, libraryMovedOrResized),
-    ]);
+
+    try {
+
+        yield all([
+            takeLeading(winActions.session.registerLibrary.ID, libraryClosed),
+            takeLeading(winActions.session.registerLibrary.ID, libraryMovedOrResized),
+        ]);
+    } catch (err) {
+        error(filename_, err);
+    }
 }
