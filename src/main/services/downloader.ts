@@ -8,7 +8,6 @@
 import * as debug_ from "debug";
 import * as fs from "fs";
 import { injectable } from "inversify";
-import * as path from "path";
 import { Download } from "readium-desktop/common/models/download";
 import { DownloadStatus } from "readium-desktop/common/models/downloadable";
 import { AccessTokenMap } from "readium-desktop/common/redux/states/catalog";
@@ -17,7 +16,6 @@ import { RootState } from "readium-desktop/main/redux/states";
 import { Store } from "redux";
 import * as request from "request";
 import { tmpNameSync } from "tmp";
-import { URL } from "url";
 import * as uuid from "uuid";
 
 type TRequestCoreOptionsRequiredUriUrl = request.CoreOptions & request.RequiredUriUrl;
@@ -63,16 +61,13 @@ export class Downloader {
         this.downloads = {};
     }
 
-    public addDownload(url: string): Download {
-        // Get extension from url
-        const urlObj = new URL(url);
-        const ext = path.extname(urlObj.pathname);
+    public addDownload(url: string, ext: string): Download {
 
         // Create temporary file as destination file
         const dstPath = tmpNameSync({
             dir: this.dstRepositoryPath,
             prefix: "readium-desktop-",
-            postfix: `${ext}.part`});
+            postfix: `${ext}`}); // .part
 
         // Create download
         const identifier = uuid.v4();

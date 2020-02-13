@@ -77,13 +77,13 @@ export class CatalogService {
 
     public async importEpubOrLcplFile(
         filePath: string,
-        isLcpFile?: boolean,
+        _isLcpFile?: boolean,
         lcpHashedPassphrase?: string): Promise<PublicationDocument | undefined> {
 
         let publicationDocument: PublicationDocument | undefined;
 
         const ext = path.extname(filePath);
-        const isLCPLicense = ext === ".lcpl" || (ext === ".part" && isLcpFile);
+        const isLCPLicense = ext === ".lcpl"; // || (ext === ".part" && isLcpFile);
         try {
             const hash = isLCPLicense ? undefined : await extractCrc32OnZip(filePath);
             const publicationArray = hash ? await this.publicationRepository.findByHashId(hash) : undefined;
@@ -95,7 +95,7 @@ export class CatalogService {
             } else {
                 if (isLCPLicense) {
                     publicationDocument = await this.importLcplFile(filePath, lcpHashedPassphrase);
-                } else if (/\.epub[3]?$/.test(ext) || /\.audiobook$/.test(ext) || (ext === ".part" && !isLcpFile)) {
+                } else if (/\.epub[3]?$/.test(ext) || /\.audiobook$/.test(ext)) { //  || (ext === ".part" && !isLcpFile)
                     publicationDocument = await this.importEpubFile(filePath, hash, lcpHashedPassphrase);
                 }
                 this.store.dispatch(toastActions.openRequest.build(ToastType.Success,
@@ -128,8 +128,9 @@ export class CatalogService {
             throw new Error(`OPDS download link is not EPUB or AudioBook! ${link.url} ${link.type}`);
         }
 
+        const ext = isLcpFile ? ".lcpl" : (isEpubFile ? ".epub" : (isAudioBookPacked ? ".audiobook" : ".unknown"));
         // start the download service
-        const download = this.downloader.addDownload(link.url);
+        const download = this.downloader.addDownload(link.url, ext);
 
         // this.store.dispatch(toastActions.openRequest.build(ToastType.Default,
         //     this.translator.translate("message.download.start", { title })));
@@ -356,7 +357,11 @@ export class CatalogService {
         if (r2LCP.Links) {
             for (const link of r2LCP.Links) {
                 if (link.Rel === "publication") {
-                    download = this.downloader.addDownload(link.Href);
+                    const isEpubFile = link.Type === ContentType.Epub;
+                    const isAudioBookPacked = link.Type === ContentType.AudioBookPacked;
+                    const ext = isEpubFile ? ".epub" : (isAudioBookPacked ? ".audiobook" : ".unknown");
+
+                    download = this.downloader.addDownload(link.Href, ext);
                     title = link.Title ?? download.srcUrl;
                 }
             }
