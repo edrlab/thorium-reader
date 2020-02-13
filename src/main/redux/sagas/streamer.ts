@@ -7,6 +7,7 @@
 
 import * as debug_ from "debug";
 import * as portfinder from "portfinder";
+import { error } from "readium-desktop/common/error";
 import { StreamerStatus } from "readium-desktop/common/models/streamer";
 import { ToastType } from "readium-desktop/common/models/toast";
 import { lcpActions, toastActions } from "readium-desktop/common/redux/actions/";
@@ -16,12 +17,11 @@ import { diMainGet } from "readium-desktop/main/di";
 import { streamerActions } from "readium-desktop/main/redux/actions";
 import { RootState } from "readium-desktop/main/redux/states";
 import { SagaIterator } from "redux-saga";
-import { all, call, put, take, takeEvery } from "redux-saga/effects";
+import { all, call, put, take, takeEvery, takeLeading } from "redux-saga/effects";
 
 import { StatusEnum } from "@r2-lcp-js/parser/epub/lsd";
 import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import { Server } from "@r2-streamer-js/http/server";
-import { error } from "readium-desktop/common/error";
 
 // Logger
 const filename_ = "readium-desktop:main:redux:sagas:streamer";
@@ -37,12 +37,6 @@ async function startStreamer(streamer: Server): Promise<string> {
     debug("Streamer started on %s", streamerUrl);
 
     return streamerUrl;
-}
-
-function stopStreamer(streamer: Server) {
-    // Stop server
-    debug("Stop streamer");
-    streamer.stop();
 }
 
 function* startRequest(): SagaIterator {
@@ -65,7 +59,7 @@ function* stopRequest(): SagaIterator {
 
     try {
 
-        yield call(() => stopStreamer(streamer));
+        yield call(() => streamer.stop());
         yield put(streamerActions.stopSuccess.build());
     } catch (error) {
 
@@ -309,7 +303,9 @@ function* publicationCloseRequest(action: streamerActions.publicationCloseReques
 
 function* publicationOpenRequestWatcher() {
     try {
-        yield takeEvery(streamerActions.publicationOpenRequest.ID, publicationOpenRequest);
+        yield all([
+            yield takeEvery(streamerActions.publicationOpenRequest.ID, publicationOpenRequest),
+        ]);
     } catch (err) {
         error(filename_ + ":publicationOpenRequestWatcher", err);
     }
@@ -317,7 +313,9 @@ function* publicationOpenRequestWatcher() {
 
 function* publicationCloseRequestWatcher() {
     try {
-        yield takeEvery(streamerActions.publicationCloseRequest.ID, publicationCloseRequest);
+        yield all([
+            yield takeEvery(streamerActions.publicationCloseRequest.ID, publicationCloseRequest),
+        ]);
     } catch (err) {
         error(filename_ + ":publicationCloseRequestWatcher", err);
     }
@@ -325,7 +323,9 @@ function* publicationCloseRequestWatcher() {
 
 function* stopRequestWatcher() {
     try {
-        yield takeEvery(streamerActions.stopRequest.ID, stopRequest);
+        yield all([
+            yield takeLeading(streamerActions.stopRequest.ID, stopRequest),
+        ]);
     } catch (err) {
         error(filename_ + ":stopRequestWatcher", err);
     }
@@ -333,7 +333,9 @@ function* stopRequestWatcher() {
 
 function* startRequestWatcher() {
     try {
-        yield takeEvery(streamerActions.startRequest.ID, startRequest);
+        yield all([
+            yield takeLeading(streamerActions.startRequest.ID, startRequest),
+        ]);
     } catch (err) {
         error(filename_ + ":startRequestWatcher", err);
     }
@@ -372,7 +374,7 @@ export function* streamerOpenPublicationAndReturnManifestUrl(publicationIdentifi
         throw new Error(`Failed to open publication in streamer ${publicationIdentifier}`);
     }
 
-    const { manifestUrl } = typedAction.payload as streamerActions.publicationOpenSuccess.Payload;
+    const { manifestUrl } = typedAction.payload as streamerActions.publicationOpenSuccess.Payload || {};
 
     return manifestUrl;
 }

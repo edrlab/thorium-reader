@@ -49,7 +49,9 @@ function* processRequest(requestAction: apiActions.request.TAction) {
 }
 
 function* requestWatcher() {
-    yield takeEvery(apiActions.request.ID, processRequest);
+    yield all([
+        yield takeEvery(apiActions.request.ID, processRequest),
+    ]);
 }
 
 export function* watchers() {

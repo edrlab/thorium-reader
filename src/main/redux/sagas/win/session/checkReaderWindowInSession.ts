@@ -22,7 +22,19 @@ const debug = debug_("readium-desktop:main:saga:checkReaderWindowSession");
 function* openReaderFromPreviousSession(reader: IWinSessionReaderState, nbOfReaderInSession: number) {
 
     const publicationIdentifier = reader.publicationIdentifier;
-    const manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
+    let manifestUrl: string;
+    try {
+        manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
+    } catch (err) {
+        debug("ERROR to open a publication from previous session:", reader.identifier, err);
+
+        yield put(winActions.session.unregisterReader.build(reader.identifier));
+        yield put(winActions.registry.registerReaderPublication.build(
+            reader.publicationIdentifier,
+            reader.windowBound,
+            reader.reduxState),
+        );
+    }
 
     if (manifestUrl) {
 
@@ -70,10 +82,10 @@ export function* checkReaderWindowInSession(_action: winActions.library.openRequ
             );
         }
     } else {
+
         for (const reader of readersArray) {
             yield fork(openReaderFromPreviousSession, reader, readersArray.length);
         }
-
     }
 
     // TODO

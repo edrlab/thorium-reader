@@ -304,8 +304,10 @@ function* readerSetReduxState(action: readerActions.setReduxState.TAction) {
 function* readerCloseRequestWatcher() {
     try {
 
-        yield takeEvery(readerActions.closeRequestFromPublication.ID, readerCloseRequestFromPublication);
-        yield takeEvery(readerActions.closeRequest.ID, readerCLoseRequestFromIdentifier);
+        yield all([
+            yield takeEvery(readerActions.closeRequestFromPublication.ID, readerCloseRequestFromPublication),
+            yield takeEvery(readerActions.closeRequest.ID, readerCLoseRequestFromIdentifier),
+        ]);
     } catch (err) {
         error(filename_ + ":readerCloseRequestWatcher", err);
     }
@@ -315,7 +317,9 @@ function* readerCloseRequestWatcher() {
 function* readerOpenRequestWatcher() {
     try {
 
-        yield takeEvery(readerActions.openRequest.ID, readerOpenRequest);
+        yield all([
+            yield takeEvery(readerActions.openRequest.ID, readerOpenRequest),
+        ]);
     } catch (err) {
         error(filename_ + ":readerOpenRequestWatcher", err);
     }
@@ -324,7 +328,9 @@ function* readerOpenRequestWatcher() {
 function* readerDetachRequestWatcher() {
     try {
 
-        yield takeLeading(readerActions.detachModeRequest.ID, readerDetachRequest);
+        yield all([
+            yield takeLeading(readerActions.detachModeRequest.ID, readerDetachRequest),
+        ]);
     } catch (err) {
         error(filename_ + ":readerDetachRequestWatcher", err);
     }
@@ -333,7 +339,9 @@ function* readerDetachRequestWatcher() {
 function* readerFullscreenRequestWatcher() {
     try {
 
-        yield takeLeading(readerActions.fullScreenRequest.ID, readerFullscreenRequest);
+        yield all([
+            yield takeLeading(readerActions.fullScreenRequest.ID, readerFullscreenRequest),
+        ]);
     } catch (err) {
         error(filename_ + ":readerFullscreenRequestWatcher", err);
     }
@@ -342,7 +350,9 @@ function* readerFullscreenRequestWatcher() {
 function* readerSetReduxStateWatcher() {
     try {
 
-        yield takeEvery(readerActions.setReduxState.ID, readerSetReduxState);
+        yield all([
+            yield takeEvery(readerActions.setReduxState.ID, readerSetReduxState),
+        ]);
     } catch (err) {
         error(filename_ + ":readerSetReduxStateWatcher", err);
     }

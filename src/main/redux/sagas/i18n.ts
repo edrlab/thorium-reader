@@ -42,7 +42,10 @@ function* setLocale(action: i18nActions.setLocale.TAction) {
 }
 
 function* localeWatcher() {
-    yield takeLeading(i18nActions.setLocale.build, setLocale);
+
+    yield all([
+        yield takeLeading(i18nActions.setLocale.build, setLocale),
+    ]);
 }
 
 export function* watchers() {
