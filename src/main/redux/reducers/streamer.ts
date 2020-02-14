@@ -53,7 +53,7 @@ export function streamerReducer(
             };
 
         case streamerActions.publicationOpenSuccess.ID: {
-            const pubId = action.payload.publicationDocument.identifier;
+            const pubId = action.payload.publicationIdentifier;
 
             return {
                 ...state,

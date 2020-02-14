@@ -200,7 +200,16 @@ function* readerOpenRequest(action: readerActions.openRequest.TAction) {
     debug(`readerOpenRequest:action:${JSON.stringify(action)}`);
 
     const publicationIdentifier = action.payload.publicationIdentifier;
-    const manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
+    let manifestUrl: string;
+    try {
+
+        manifestUrl = yield* callTyped(streamerOpenPublicationAndReturnManifestUrl, publicationIdentifier);
+    } catch (err) {
+
+        // a toast message is dispalyed inside fct
+
+        debug("ERROR to open, this publication:", publicationIdentifier, err);
+    }
 
     if (manifestUrl) {
 
