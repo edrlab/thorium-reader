@@ -51,6 +51,28 @@
 	}
 }
 
+.keyboard_shortcuts_section {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	& .keyboard_shortcuts_button {
+		cursor: pointer;
+		font-size: 1rem;
+		border: 1px solid rgb(50, 50, 50);
+		border-radius: 5px;
+		color: black;
+		display: inline-block;
+		width: 30%;
+		height: auto;
+		padding: 10px;
+		margin: 0;
+		margin-left: 0.5em;
+		margin-right: 0.5em;
+	}
+}
+
+
 /* LANGUAGES */
 
 .languages_list {

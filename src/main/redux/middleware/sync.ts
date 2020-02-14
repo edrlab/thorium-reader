@@ -45,6 +45,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     i18nActions.setLocale.ID,
 
     keyboardActions.setShortcuts.ID,
+    keyboardActions.showShortcuts.ID,
+    keyboardActions.reloadShortcuts.ID,
 
     // updateActions.latestVersion.ID,
 

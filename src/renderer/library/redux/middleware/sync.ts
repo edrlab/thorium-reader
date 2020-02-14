@@ -25,6 +25,8 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     i18nActions.setLocale.ID,
 
     keyboardActions.setShortcuts.ID,
+    keyboardActions.showShortcuts.ID,
+    keyboardActions.reloadShortcuts.ID,
 ];
 
 export const reduxSyncMiddleware = syncFactory(SYNCHRONIZABLE_ACTIONS);

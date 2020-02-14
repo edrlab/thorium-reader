@@ -15,13 +15,20 @@ const initialState: KeyboardState = {
 
 export function keyboardReducer(
     state: KeyboardState = initialState,
-    action: keyboardActions.setShortcuts.TAction,
+    action:
+        keyboardActions.setShortcuts.TAction |
+        keyboardActions.reloadShortcuts.TAction |
+        keyboardActions.showShortcuts.TAction,
     ): KeyboardState {
     switch (action.type) {
         case keyboardActions.setShortcuts.ID:
             return Object.assign({}, state, {
                 shortcuts: action.payload.shortcuts,
             } as KeyboardState);
+        case keyboardActions.showShortcuts.ID:
+            return Object.assign({}, state);
+        case keyboardActions.reloadShortcuts.ID:
+            return Object.assign({}, state);
         default:
             return state;
     }

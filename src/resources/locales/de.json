@@ -246,6 +246,13 @@
         }
     },
     "settings": {
+        "keyboard": {
+            "defaults": "standard",
+            "keyboardShortcuts": "Tastatürkürzel",
+            "open": "Öffnen",
+            "reload": "Neu laden",
+            "user": "user"
+        },
         "language": {
             "languageChoice": "Sprachauswahl"
         }

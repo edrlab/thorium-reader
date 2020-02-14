@@ -246,6 +246,13 @@
         }
     },
     "settings": {
+        "keyboard": {
+            "defaults": "default",
+            "keyboardShortcuts": "Keyboard shortcuts",
+            "open": "Open",
+            "reload": "Reload",
+            "user": "user"
+        },
         "language": {
             "languageChoice": "Language choice"
         }

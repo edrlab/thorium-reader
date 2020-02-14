@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import { connect } from "react-redux";
-import { i18nActions } from "readium-desktop/common/redux/actions/";
+import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions/";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
 import * as DoneIcon from "readium-desktop/renderer/assets/icons/done.svg";
 import * as styles from "readium-desktop/renderer/assets/styles/settings.css";
@@ -62,9 +62,34 @@ class LanguageSettings extends React.Component<IProps, undefined> {
                                 </div>,
                             )}
                     </form>
+
+                    <div className={styles.section_title}>{ __("settings.keyboard.keyboardShortcuts")}</div>
+                    <section className={styles.keyboard_shortcuts_section}>
+                        <button
+                            className={styles.keyboard_shortcuts_button}
+                            onClick={() => this.onClickKeyboardShortcutsShow()}>
+                            {__("settings.keyboard.open")}
+                        </button>
+                        <button
+                            className={styles.keyboard_shortcuts_button}
+                            onClick={() => this.onClickKeyboardShortcutsReload(false)}>
+                            {`${__("settings.keyboard.reload")} (${__("settings.keyboard.user")})`}
+                        </button>
+                        <button
+                            className={styles.keyboard_shortcuts_button}
+                            onClick={() => this.onClickKeyboardShortcutsReload(true)}>
+                            {`${__("settings.keyboard.reload")} (${__("settings.keyboard.defaults")})`}
+                        </button>
+                    </section>
                 </LibraryLayout>
             </>
         );
+    }
+    private onClickKeyboardShortcutsShow() {
+        this.props.showKeyboardShortcuts();
+    }
+    private onClickKeyboardShortcutsReload(defaults: boolean) {
+        this.props.reloadKeyboardShortcuts(defaults);
     }
 }
 
@@ -77,6 +102,8 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         setLocale: (locale: string) => dispatch(i18nActions.setLocale.build(locale)),
+        showKeyboardShortcuts: () => dispatch(keyboardActions.showShortcuts.build(true)),
+        reloadKeyboardShortcuts: (defaults: boolean) => dispatch(keyboardActions.reloadShortcuts.build(defaults)),
     };
 };
 

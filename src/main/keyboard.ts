@@ -68,6 +68,9 @@ function showFolder() {
 function showDefaultFile() {
     shell.showItemInFolder(defaultsFilePath);
 }
+function showUserFile() {
+    shell.showItemInFolder(userFilePath);
+}
 
 function load(fileName: string): TKeyboardShortcutsMapReadOnly | undefined {
     const filePath = path.join(
@@ -175,4 +178,5 @@ export const keyboardShortcuts = Object.freeze({
     },
     showFolder,
     showDefaultFile,
+    showUserFile,
 });
