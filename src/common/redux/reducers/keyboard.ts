@@ -22,13 +22,26 @@ export function keyboardReducer(
     ): KeyboardState {
     switch (action.type) {
         case keyboardActions.setShortcuts.ID:
-            return Object.assign({}, state, {
-                shortcuts: action.payload.shortcuts,
-            } as KeyboardState);
+            return (
+                {
+                    ...state,
+                    ...{
+                        shortcuts: action.payload.shortcuts,
+                    },
+                }
+            );
         case keyboardActions.showShortcuts.ID:
-            return Object.assign({}, state);
+            return (
+                {
+                    ...state,
+                }
+            );
         case keyboardActions.reloadShortcuts.ID:
-            return Object.assign({}, state);
+            return (
+                {
+                    ...state,
+                }
+            );
         default:
             return state;
     }

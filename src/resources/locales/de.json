@@ -247,10 +247,16 @@
     },
     "settings": {
         "keyboard": {
+            "cancel": "Stornieren",
             "defaults": "standard",
+            "edit": "Bearbeiten",
+            "hide": "Ausblenden",
             "keyboardShortcuts": "Tastatürkürzel",
             "open": "Öffnen",
             "reload": "Neu laden",
+            "reset": "Zurücksetzen",
+            "save": "Speichern",
+            "show": "Anzeigen",
             "user": "user"
         },
         "language": {

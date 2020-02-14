@@ -247,11 +247,17 @@
     },
     "settings": {
         "keyboard": {
-            "defaults": "default",
+            "cancel": "Cancel",
+            "defaults": "Default",
+            "edit": "Edit",
+            "hide": "Hide",
             "keyboardShortcuts": "Keyboard shortcuts",
             "open": "Open",
             "reload": "Reload",
-            "user": "user"
+            "reset": "Reset",
+            "save": "Save",
+            "show": "Show",
+            "user": "User"
         },
         "language": {
             "languageChoice": "Language choice"

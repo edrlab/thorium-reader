@@ -96,3 +96,10 @@ export function keyboardShortcutMatch(ks: TKeyboardShortcut, e: KeyboardEvent): 
         && (ks.meta && e.metaKey || !ks.meta && !e.metaKey)
         && (ks.shift && e.shiftKey || !ks.shift && !e.shiftKey);
 }
+export function keyboardShortcutMatch_(ks: TKeyboardShortcut, e: TKeyboardShortcut): boolean {
+    return ks.key === e.key
+        && (ks.alt && e.alt || !ks.alt && !e.alt)
+        && (ks.control && e.control || !ks.control && !e.control)
+        && (ks.meta && e.meta || !ks.meta && !e.meta)
+        && (ks.shift && e.shift || !ks.shift && !e.shift);
+}

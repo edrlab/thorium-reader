@@ -25,12 +25,13 @@ reset();
 function cloneDefaults(): TKeyboardShortcutsMap {
     // TODO: better deep clone with recursive freeze
     const obj = JSON.parse(JSON.stringify(defaults)) as TKeyboardShortcutsMap;
-    for (const id in obj) {
+    for (const id_ in obj) {
         // just good practice
-        if (!obj.hasOwnProperty(id)) {
+        if (!obj.hasOwnProperty(id_)) {
             continue;
         }
-        obj[id as TKeyboardShortcutId] = Object.freeze<TKeyboardShortcut>(obj[id as TKeyboardShortcutId]);
+        const id = id_ as TKeyboardShortcutId;
+        obj[id] = Object.freeze<TKeyboardShortcut>(obj[id]);
     }
     return obj;
 }
@@ -84,13 +85,15 @@ function load(fileName: string): TKeyboardShortcutsMapReadOnly | undefined {
     const json = JSON.parse(txt); // can throw!
 
     const obj = cloneDefaults();
-    for (const id in json) {
+    for (const id_ in json) {
         // just good practice
-        if (!json.hasOwnProperty(id)) {
+        if (!json.hasOwnProperty(id_)) {
             continue;
         }
+        const id = id_ as TKeyboardShortcutId;
+
         // filters out non-recognised names
-        if (!defaults[id as TKeyboardShortcutId]) {
+        if (!defaults[id]) {
             continue;
         }
 
@@ -115,7 +118,7 @@ function load(fileName: string): TKeyboardShortcutsMapReadOnly | undefined {
         };
 
         // replaces the default
-        obj[id as TKeyboardShortcutId] = s;
+        obj[id] = s;
     }
     return Object.freeze<TKeyboardShortcutsMapReadOnly>(obj);
 }

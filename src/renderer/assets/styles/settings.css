@@ -53,25 +53,89 @@
 
 .keyboard_shortcuts_section {
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	/* align-items: center; */
+	/* justify-content: center; */
 
 	& .keyboard_shortcuts_button {
+		display: inline-block;
+		width: 23%;
+		height: auto;
 		cursor: pointer;
 		font-size: 1rem;
 		border: 1px solid rgb(50, 50, 50);
 		border-radius: 5px;
 		color: black;
-		display: inline-block;
-		width: 30%;
-		height: auto;
 		padding: 10px;
 		margin: 0;
 		margin-left: 0.5em;
 		margin-right: 0.5em;
 	}
+	& .keyboard_shortcuts_button_hide {
+		display: none;
+	}
+	& .keyboard_shortcuts_button_primary {
+		font-weight: bold;
+	}
 }
 
+.keyboard_shortcuts_list {
+	margin-top: 2em !important;
+	margin-bottom: 2em !important;
+	margin-left: 3em !important;
+
+	& li {
+		margin-bottom: 1.5em;
+
+		& .keyboard_shortcuts_edit_title {
+			/* text-decoration: underline; */
+			margin-right: 1em;
+		}
+		& div {
+			display: block;
+			float: right;
+		}
+		& div.keyboard_shortcuts_edit_div {
+			display: inline-block;
+			float: none;
+		}
+
+		& .keyboard_shortcuts_edit_save_button {
+			width: auto;
+			height: auto;
+			padding: 0.4em;
+			border: 1px solid grey;
+			border-radius: 3px;
+			margin-right: 1em;
+		}
+
+		& .keyboard_shortcuts_key {
+			width: auto;
+			height: auto;
+			font-size: 80%;
+			display: inline;
+			padding: 0.3em;
+			margin-right: 1em;
+			border: 2px solid rgb(171, 171, 171);
+			border-bottom: 2px solid rgb(41, 41, 41);
+			border-right: 2px solid rgb(41, 41, 41);
+			border-radius: 3px;
+			background-color: #d0d0d0;
+		}
+		& .keyboard_shortcuts_key_off {
+			background-color: #d1bcbc;
+		}
+		& .keyboard_shortcuts_key_on{
+			background-color: #bac0b8;
+			border: 2px solid rgb(41, 41, 41);
+			border-bottom: 2px solid rgb(171, 171, 171);
+			border-right: 2px solid rgb(171, 171, 171);
+		}
+	}
+
+	& li.keyboard_shortcuts_edit_li {
+		outline: 1pt dashed rgb(0, 56, 74);
+	}
+}
 
 /* LANGUAGES */
 

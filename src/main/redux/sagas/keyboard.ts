@@ -6,10 +6,16 @@
 // ==LICENSE-END==
 
 import * as debug_ from "debug";
-import { keyboardActions } from "readium-desktop/common/redux/actions";
+import { ToastType } from "readium-desktop/common/models/toast";
+import { keyboardActions, toastActions } from "readium-desktop/common/redux/actions";
+import { takeTyped } from "readium-desktop/common/redux/typed-saga";
+import { diMainGet } from "readium-desktop/main/di";
 import { keyboardShortcuts } from "readium-desktop/main/keyboard";
+import { IS_DEV } from "readium-desktop/preprocessor-directives";
 import { all, call, takeEvery } from "redux-saga/effects";
 import { put } from "typed-redux-saga";
+
+import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
 const debug = debug_("readium-desktop:main:redux:sagas:keyboard");
 
@@ -35,23 +41,23 @@ function* setShortcuts(action: keyboardActions.setShortcuts.TAction) {
         call(debugShortcuts),
     ]);
 }
-function* reloadShortcuts(action: keyboardActions.reloadShortcuts.TAction) {
-    const loadShortcutsFromJson = async () => {
-        if (action.payload.defaults) {
-            keyboardShortcuts.loadDefaults();
-        }
-        const okay = action.payload.defaults ? true : keyboardShortcuts.loadUser();
+// function* reloadShortcuts(action: keyboardActions.reloadShortcuts.TAction) {
+//     const loadShortcutsFromJson = async () => {
+//         if (action.payload.defaults) {
+//             keyboardShortcuts.loadDefaults();
+//         }
+//         const okay = action.payload.defaults ? true : keyboardShortcuts.loadUser();
 
-        debug(`Keyboard shortcuts reload JSON (defaults: ${action.payload.defaults}) => ${okay}`);
-        if (okay) {
-            put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll()));
-        }
-    };
+//         debug(`Keyboard shortcuts reload JSON (defaults: ${action.payload.defaults}) => ${okay}`);
+//         if (okay) {
+//             yield put(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll()));
+//         }
+//     };
 
-    yield all([
-        call(loadShortcutsFromJson),
-    ]);
-}
+//     yield all([
+//         call(loadShortcutsFromJson),
+//     ]);
+// }
 
 function* keyboardSetWatcher() {
     yield takeEvery(keyboardActions.setShortcuts.build, setShortcuts);
@@ -59,8 +65,41 @@ function* keyboardSetWatcher() {
 function* keyboardShowWatcher() {
     yield takeEvery(keyboardActions.showShortcuts.build, showShortcuts);
 }
+// function* keyboardReloadWatcher() {
+//     yield takeEvery(keyboardActions.reloadShortcuts.build, reloadShortcuts);
+// }
 function* keyboardReloadWatcher() {
-    yield takeEvery(keyboardActions.reloadShortcuts.build, reloadShortcuts);
+    while (true) {
+        const action = yield* takeTyped(keyboardActions.reloadShortcuts.build);
+        if (action.payload.defaults) {
+            keyboardShortcuts.loadDefaults();
+        }
+        const okay = action.payload.defaults ? true : keyboardShortcuts.loadUser();
+
+        debug(`Keyboard shortcuts reload JSON (defaults: ${action.payload.defaults}) => ${okay}`);
+
+        const currentKeyboardShortcuts = keyboardShortcuts.getAll();
+        if (IS_DEV) {
+            const jsonDiff = require("json-diff");
+
+            const defaultKeyboardShortcuts = keyboardShortcuts.getAllDefaults();
+            const json1 = sortObject(JSON.parse(JSON.stringify(defaultKeyboardShortcuts)));
+            const json2 = sortObject(JSON.parse(JSON.stringify(currentKeyboardShortcuts)));
+            debug(jsonDiff.diffString(json1, json2) + "\n");
+        }
+
+        if (okay) {
+            yield put(keyboardActions.setShortcuts.build(currentKeyboardShortcuts));
+
+            const translator = diMainGet("translator");
+            const kind = action.payload.defaults ?
+                translator.translate("settings.keyboard.defaults") :
+                translator.translate("settings.keyboard.user");
+
+            yield put(toastActions.openRequest.build(ToastType.Success,
+                `${translator.translate("settings.keyboard.keyboardShortcuts")} (${kind})`));
+        }
+    }
 }
 
 export function* watchers() {
