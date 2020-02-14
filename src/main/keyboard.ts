@@ -115,6 +115,7 @@ function load(fileName: string): TKeyboardShortcutsMapReadOnly | undefined {
             alt: typeof json[id].alt !== "undefined" && json[id].alt ? true : false,
             control: typeof json[id].control !== "undefined" && json[id].control ? true : false,
             shift: typeof json[id].shift !== "undefined" && json[id].shift ? true : false,
+            meta: typeof json[id].meta !== "undefined" && json[id].meta ? true : false,
         };
 
         // replaces the default
@@ -135,6 +136,10 @@ function loadUser(): boolean {
     }
     current = obj;
     return  true;
+}
+function saveUser(obj: TKeyboardShortcutsMapReadOnly) {
+    const txt = JSON.stringify(obj, null, 4);
+    fs.writeFileSync(userFilePath, txt, { encoding: "utf8" });
 }
 
 function init() {
@@ -179,6 +184,7 @@ export const keyboardShortcuts = Object.freeze({
     loadDefaults: () => {
         reset();
     },
+    saveUser,
     showFolder,
     showDefaultFile,
     showUserFile,

@@ -9,8 +9,8 @@ import classNames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
 import {
-    _defaults, keyboardShortcutMatch_, TKeyboardShortcut, TKeyboardShortcutId,
-    TKeyboardShortcutsMap, TKeyboardShortcutsMapReadOnly,
+    _defaults, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutsMap,
+    TKeyboardShortcutsMapReadOnly,
 } from "readium-desktop/common/keyboard";
 import { i18nActions, keyboardActions } from "readium-desktop/common/redux/actions/";
 import { AvailableLanguages } from "readium-desktop/common/services/translator";
@@ -39,8 +39,8 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 
 interface IState {
     displayKeyboardShortcuts: boolean;
-    editKeyboardShortcut: TKeyboardShortcutId | undefined;
-    keyboardShortcuts: TKeyboardShortcutsMap | undefined;
+    editKeyboardShortcutId: TKeyboardShortcutId | undefined;
+    editKeyboardShortcutData: TKeyboardShortcut | undefined;
 }
 
 class LanguageSettings extends React.Component<IProps, IState> {
@@ -50,27 +50,27 @@ class LanguageSettings extends React.Component<IProps, IState> {
 
         this.state = {
             displayKeyboardShortcuts: false,
-            editKeyboardShortcut: undefined,
-            keyboardShortcuts: undefined,
+            editKeyboardShortcutId: undefined,
+            editKeyboardShortcutData: undefined,
         };
     }
 
-    public componentDidUpdate(_oldProps: IProps) {
-        // console.log("componentDidUpdate:");
-        // console.log(JSON.stringify(_oldProps.keyboardShortcuts, null, 4));
-        // console.log(JSON.stringify(this.props.keyboardShortcuts, null, 4));
+    // public componentDidUpdate(_oldProps: IProps) {
+    //     // console.log("componentDidUpdate:");
+    //     // console.log(JSON.stringify(_oldProps.keyboardShortcuts, null, 4));
+    //     // console.log(JSON.stringify(this.props.keyboardShortcuts, null, 4));
 
-        if (this.keyboardShortcutsIdentical(this.props.keyboardShortcuts, _oldProps.keyboardShortcuts)) {
-            console.log("### componentDidUpdate keyboardShortcutsIdentical");
-            return;
-        }
+    //     if (this.keyboardShortcutsIdentical(this.props.keyboardShortcuts, _oldProps.keyboardShortcuts)) {
+    //         console.log("### componentDidUpdate keyboardShortcutsIdentical");
+    //         return;
+    //     }
 
-        this.transferKeyboardShortcutsImmutablePropsToMutableLocalState();
-    }
+    //     this.transferKeyboardShortcutsImmutablePropsToMutableLocalState();
+    // }
 
-    public componentDidMount() {
-        this.transferKeyboardShortcutsImmutablePropsToMutableLocalState();
-    }
+    // public componentDidMount() {
+    //     this.transferKeyboardShortcutsImmutablePropsToMutableLocalState();
+    // }
 
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
@@ -114,13 +114,15 @@ class LanguageSettings extends React.Component<IProps, IState> {
                         </button>
                         <button
                             className={classNames(styles.keyboard_shortcuts_button,
-                                !this.state.displayKeyboardShortcuts ? styles.keyboard_shortcuts_button_hide : null)}
+                                (!this.state.displayKeyboardShortcuts || this.state.editKeyboardShortcutId) ?
+                                styles.keyboard_shortcuts_button_hide : null)}
                             onClick={() => this.onClickKeyboardShortcutsReload(false)}>
                             {`${__("settings.keyboard.reload")} (${__("settings.keyboard.user")})`}
                         </button>
                         <button
                             className={classNames(styles.keyboard_shortcuts_button,
-                                !this.state.displayKeyboardShortcuts ? styles.keyboard_shortcuts_button_hide : null)}
+                                (!this.state.displayKeyboardShortcuts || this.state.editKeyboardShortcutId) ?
+                                styles.keyboard_shortcuts_button_hide : null)}
                             onClick={() => this.onClickKeyboardShortcutsReload(true)}>
                             {`${__("settings.keyboard.reset")} (${__("settings.keyboard.defaults")})`}
                         </button>
@@ -128,39 +130,40 @@ class LanguageSettings extends React.Component<IProps, IState> {
                     {this.state.displayKeyboardShortcuts && (
                         <div>
                             <ul className={styles.keyboard_shortcuts_list}>
-                            {this.state.keyboardShortcuts && Object.keys(this.state.keyboardShortcuts).map((id_) => {
+                            {this.props.keyboardShortcuts && Object.keys(this.props.keyboardShortcuts).map((id_) => {
                                 const id = id_ as TKeyboardShortcutId;
-                                const def = this.state.keyboardShortcuts[id];
+                                const def = this.props.keyboardShortcuts[id];
                                 return <li className={
-                                    this.state.editKeyboardShortcut === id ? styles.keyboard_shortcuts_edit_li : null
+                                    this.state.editKeyboardShortcutId === id ? styles.keyboard_shortcuts_edit_li : null
                                     }
                                     key={`key_${id}`}>
                                     <button
                                         className={styles.keyboard_shortcuts_edit_save_button}
-                                        onClick={() => this.onClickKeyboardShortcutEdit(id)}>
-                                        {this.state.editKeyboardShortcut === id ?
+                                        onClick={() => this.onClickKeyboardShortcutEditSave(id)}>
+                                        {this.state.editKeyboardShortcutId === id ?
                                         __("settings.keyboard.save") : __("settings.keyboard.edit")}
                                     </button>
-                                    {(this.state.editKeyboardShortcut === id) &&
+                                    {
+                                    (this.state.editKeyboardShortcutId === id) &&
                                     <button
                                         className={styles.keyboard_shortcuts_edit_save_button}
-                                        onClick={() => this.onClickKeyboardShortcutEdit(id)}>
+                                        onClick={() => this.onClickKeyboardShortcutEditCancel()}>
                                         {__("settings.keyboard.cancel")}
                                     </button>
                                     }
 
                                     <strong className={
-                                        this.state.editKeyboardShortcut === id ?
+                                        this.state.editKeyboardShortcutId === id ?
                                         styles.keyboard_shortcuts_edit_title
                                         : null
                                         }>{id}</strong>
                                     <div className={
-                                        this.state.editKeyboardShortcut === id ?
+                                        this.state.editKeyboardShortcutId === id ?
                                         styles.keyboard_shortcuts_edit_div
                                         : null
                                         }>{
-                                        this.state.editKeyboardShortcut === id ?
-                                        this.editifyKeyboardShortcut(id, def)
+                                        this.state.editKeyboardShortcutId === id ?
+                                        this.editifyKeyboardShortcut(id, this.state.editKeyboardShortcutData)
                                         :
                                         this.prettifyKeyboardShortcut(def)
                                     }</div>
@@ -174,72 +177,105 @@ class LanguageSettings extends React.Component<IProps, IState> {
         );
     }
 
-    private keyboardShortcutsIdentical(k1: TKeyboardShortcutsMapReadOnly, k2: TKeyboardShortcutsMap): boolean {
+    // private keyboardShortcutsIdentical(k1: TKeyboardShortcutsMapReadOnly, k2: TKeyboardShortcutsMap): boolean {
 
-        if (k1 === k2) {
-            return true;
-        }
-        if (!k1 && !k2) {
-            return true;
-        }
-        if (!k2 && k1 || k2 && !k1) {
-            return false;
-        }
+    //     if (k1 === k2) {
+    //         return true;
+    //     }
+    //     if (!k1 && !k2) {
+    //         return true;
+    //     }
+    //     if (!k2 && k1 || k2 && !k1) {
+    //         return false;
+    //     }
 
-        for (const id_ in k1) {
-            // just good practice
-            if (!k1.hasOwnProperty(id_)) {
-                continue;
-            }
-            const id = id_ as TKeyboardShortcutId;
-            // filters out non-recognised names
-            if (!_defaults[id]) {
-                continue;
-            }
-            // filters out non-object values
-            if (typeof k1[id] !== "object") {
-                continue;
-            }
-            if (!k2.hasOwnProperty(id)) {
-                return false;
-            }
-            if (!k1[id] && k2[id]) {
-                return false;
-            }
-            if (k1[id] && !k2[id]) {
-                return false;
-            }
-            if (!keyboardShortcutMatch_(k1[id], k2[id])) {
-                return false;
-            }
-        }
+    //     for (const id_ in k1) {
+    //         // just good practice
+    //         if (!k1.hasOwnProperty(id_)) {
+    //             continue;
+    //         }
+    //         const id = id_ as TKeyboardShortcutId;
+    //         // filters out non-recognised names
+    //         if (!_defaults[id]) {
+    //             continue;
+    //         }
+    //         // filters out non-object values
+    //         if (typeof k1[id] !== "object") {
+    //             continue;
+    //         }
+    //         if (!k2.hasOwnProperty(id)) {
+    //             return false;
+    //         }
+    //         if (!k1[id] && k2[id]) {
+    //             return false;
+    //         }
+    //         if (k1[id] && !k2[id]) {
+    //             return false;
+    //         }
+    //         if (!keyboardShortcutMatch_(k1[id], k2[id])) {
+    //             return false;
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
-    private transferKeyboardShortcutsImmutablePropsToMutableLocalState() {
+    // private transferKeyboardShortcutsImmutablePropsToMutableLocalState() {
 
-        // console.log("transferKeyboardShortcutsImmutablePropsToMutableLocalState:");
-        // console.log(JSON.stringify(this.props.keyboardShortcuts, null, 4));
-        // console.log(JSON.stringify(this.state.keyboardShortcuts, null, 4));
+    //     // console.log("transferKeyboardShortcutsImmutablePropsToMutableLocalState:");
+    //     // console.log(JSON.stringify(this.props.keyboardShortcuts, null, 4));
+    //     // console.log(JSON.stringify(this.state.keyboardShortcuts, null, 4));
 
-        if (this.keyboardShortcutsIdentical(this.props.keyboardShortcuts, this.state.keyboardShortcuts)) {
-            console.log("### transferKeyboardShortcutsImmutablePropsToMutableLocalState keyboardShortcutsIdentical");
-            return;
-        }
-        const keys = JSON.parse(JSON.stringify(this.props.keyboardShortcuts)) as TKeyboardShortcutsMap; // mutable clone
+    //     if (this.keyboardShortcutsIdentical(this.props.keyboardShortcuts, this.state.keyboardShortcuts)) {
+    //         console.log("### transferKeyboardShortcutsImmutablePropsToMutableLocalState keyboardShortcutsIdentical");
+    //         return;
+    //     }
+    //     const keys =
+    //         JSON.parse(JSON.stringify(this.props.keyboardShortcuts)) as TKeyboardShortcutsMap; // mutable clone
+    //     this.setState({
+    //         keyboardShortcuts: keys,
+    //     });
+    // }
+
+    private onClickKeyboardShortcutEditCancel() {
         this.setState({
-            keyboardShortcuts: keys,
+            editKeyboardShortcutId: undefined,
+            editKeyboardShortcutData: undefined,
         });
     }
+    private onClickKeyboardShortcutEditSave(id: TKeyboardShortcutId) {
 
-    private onClickKeyboardShortcutEdit(id: TKeyboardShortcutId) {
-        this.setState({ editKeyboardShortcut: this.state.editKeyboardShortcut === id ? undefined : id });
+        if (!this.state.editKeyboardShortcutId ||
+            this.state.editKeyboardShortcutId !== id) {
+
+            this.setState({
+                editKeyboardShortcutId: id,
+                editKeyboardShortcutData:
+                    JSON.parse(JSON.stringify(this.props.keyboardShortcuts[id])) as TKeyboardShortcut,
+            });
+            return;
+        }
+
+        if (!this.state.editKeyboardShortcutData) {
+            return;
+        }
+
+        // this.state.editKeyboardShortcutId === id
+        const data = this.state.editKeyboardShortcutData;
+        this.setState({
+            editKeyboardShortcutId: undefined,
+            editKeyboardShortcutData: undefined,
+        });
+        const obj = JSON.parse(JSON.stringify(this.props.keyboardShortcuts)) as TKeyboardShortcutsMap;
+        obj[id] = data;
+        this.props.setKeyboardShortcuts(obj);
     }
     private onClickKeyboardShortcutsShowHide() {
         this.setState({
             displayKeyboardShortcuts: !this.state.displayKeyboardShortcuts,
-            editKeyboardShortcut: this.state.displayKeyboardShortcuts ? undefined : this.state.editKeyboardShortcut,
+
+            editKeyboardShortcutId: undefined,
+            editKeyboardShortcutData: undefined,
         });
     }
     private onClickKeyboardShortcutsShow() {
@@ -261,15 +297,13 @@ class LanguageSettings extends React.Component<IProps, IState> {
     private editifyKeyboardShortcut(id: TKeyboardShortcutId, def: TKeyboardShortcut) {
         const alt = <button
             onClick={() => {
-                const keyboardShortcuts = this.state.keyboardShortcuts;
-                if (!keyboardShortcuts) {
-                    return;
-                }
-                keyboardShortcuts[id].alt = !def.alt;
+                const editKeyboardShortcutData =
+                    JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
+                editKeyboardShortcutData.alt = !editKeyboardShortcutData.alt;
                 console.log("editifyKeyboardShortcut ALT:");
-                console.log(JSON.stringify(keyboardShortcuts, null, 4));
+                console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
                 this.setState({
-                    keyboardShortcuts,
+                    editKeyboardShortcutData,
                 });
             }}
             className={classNames(styles.keyboard_shortcuts_key,
@@ -278,15 +312,13 @@ class LanguageSettings extends React.Component<IProps, IState> {
 
         const shift = <button
             onClick={() => {
-                const keyboardShortcuts = this.state.keyboardShortcuts;
-                if (!keyboardShortcuts) {
-                    return;
-                }
-                keyboardShortcuts[id].shift = !def.shift;
+                const editKeyboardShortcutData =
+                    JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
+                editKeyboardShortcutData.shift = !editKeyboardShortcutData.shift;
                 console.log("editifyKeyboardShortcut SHIFT:");
-                console.log(JSON.stringify(keyboardShortcuts, null, 4));
+                console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
                 this.setState({
-                    keyboardShortcuts,
+                    editKeyboardShortcutData,
                 });
             }}
             className={classNames(styles.keyboard_shortcuts_key,
@@ -295,15 +327,13 @@ class LanguageSettings extends React.Component<IProps, IState> {
 
         const control = <button
             onClick={() => {
-                const keyboardShortcuts = this.state.keyboardShortcuts;
-                if (!keyboardShortcuts) {
-                    return;
-                }
-                keyboardShortcuts[id].control = !def.control;
+                const editKeyboardShortcutData =
+                    JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
+                editKeyboardShortcutData.control = !editKeyboardShortcutData.control;
                 console.log("editifyKeyboardShortcut CTRL:");
-                console.log(JSON.stringify(keyboardShortcuts, null, 4));
+                console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
                 this.setState({
-                    keyboardShortcuts,
+                    editKeyboardShortcutData,
                 });
             }}
             className={classNames(styles.keyboard_shortcuts_key,
@@ -312,15 +342,13 @@ class LanguageSettings extends React.Component<IProps, IState> {
 
         const meta = <button
             onClick={() => {
-                const keyboardShortcuts = this.state.keyboardShortcuts;
-                if (!keyboardShortcuts) {
-                    return;
-                }
-                keyboardShortcuts[id].meta = !def.meta;
+                const editKeyboardShortcutData =
+                    JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
+                editKeyboardShortcutData.meta = !editKeyboardShortcutData.meta;
                 console.log("editifyKeyboardShortcut META:");
-                console.log(JSON.stringify(keyboardShortcuts, null, 4));
+                console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
                 this.setState({
-                    keyboardShortcuts,
+                    editKeyboardShortcutData,
                 });
             }}
             className={classNames(styles.keyboard_shortcuts_key,
@@ -342,6 +370,8 @@ const mapStateToProps = (state: ILibraryRootState, _props: IBaseProps) => {
 const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
     return {
         setLocale: (locale: string) => dispatch(i18nActions.setLocale.build(locale)),
+        setKeyboardShortcuts:
+            (data: TKeyboardShortcutsMapReadOnly) => dispatch(keyboardActions.setShortcuts.build(data, true)),
         showKeyboardShortcuts: () => dispatch(keyboardActions.showShortcuts.build(true)),
         reloadKeyboardShortcuts: (defaults: boolean) => dispatch(keyboardActions.reloadShortcuts.build(defaults)),
     };

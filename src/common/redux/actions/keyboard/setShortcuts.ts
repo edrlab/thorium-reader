@@ -12,14 +12,16 @@ export const ID = "SHORTCUTS_SET";
 
 export interface Payload {
     shortcuts: TKeyboardShortcutsMapReadOnly;
+    save: boolean;
 }
 
-export function build(shortcuts: TKeyboardShortcutsMapReadOnly): Action<typeof ID, Payload> {
+export function build(shortcuts: TKeyboardShortcutsMapReadOnly, save: boolean): Action<typeof ID, Payload> {
 
     return {
         type: ID,
         payload: {
             shortcuts,
+            save,
         },
     };
 }

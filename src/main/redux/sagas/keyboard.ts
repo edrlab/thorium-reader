@@ -33,12 +33,17 @@ function* showShortcuts(action: keyboardActions.showShortcuts.TAction) {
     ]);
 }
 function* setShortcuts(action: keyboardActions.setShortcuts.TAction) {
-    const debugShortcuts = async () => {
-        debug("Keyboard shortcuts are set:", action.payload.shortcuts);
+    const saveShortcuts = async () => {
+        if (action.payload.save) {
+            debug("Keyboard shortcuts saving:", action.payload.shortcuts);
+            keyboardShortcuts.saveUser(action.payload.shortcuts);
+        } else {
+            debug("Keyboard shortcuts NOT saving (defaults):", action.payload.shortcuts);
+        }
     };
 
     yield all([
-        call(debugShortcuts),
+        call(saveShortcuts),
     ]);
 }
 // function* reloadShortcuts(action: keyboardActions.reloadShortcuts.TAction) {
@@ -89,7 +94,7 @@ function* keyboardReloadWatcher() {
         }
 
         if (okay) {
-            yield put(keyboardActions.setShortcuts.build(currentKeyboardShortcuts));
+            yield put(keyboardActions.setShortcuts.build(currentKeyboardShortcuts, !action.payload.defaults));
 
             const translator = diMainGet("translator");
             const kind = action.payload.defaults ?

@@ -98,7 +98,7 @@ const winOpenCallback = (appWindow: AppWindow) => {
     webContents.send(syncIpc.CHANNEL, {
         type: syncIpc.EventType.MainAction,
         payload: {
-            action: keyboardActions.setShortcuts.build(state.keyboard.shortcuts),
+            action: keyboardActions.setShortcuts.build(state.keyboard.shortcuts, false),
         },
     } as syncIpc.EventPayload);
 
@@ -175,7 +175,7 @@ export function initApp() {
     store.dispatch(appActions.initRequest.build());
 
     keyboardShortcuts.init();
-    store.dispatch(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll()));
+    store.dispatch(keyboardActions.setShortcuts.build(keyboardShortcuts.getAll(), false));
 
     const configRepository: ConfigRepository<LocaleConfigValueType> = diMainGet("config-repository");
     const config = configRepository.get(LocaleConfigIdentifier);
