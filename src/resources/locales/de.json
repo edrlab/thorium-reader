@@ -239,6 +239,11 @@
             "lineSpacing": "Zeilenabstand",
             "margin": "Seitenränder",
             "paginated": "Seitendarstellung",
+            "save": {
+                "apply": "",
+                "reset": "",
+                "title": ""
+            },
             "scrolled": "Fortlaufend",
             "spacing": "Abstand",
             "text": "Text",
