@@ -7,20 +7,19 @@
 
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
-
-import * as setConfig from "../actions/setConfig";
+import { readerLocalActionSetConfig } from "../actions";
 
 export function readerConfigReducer(
     state: ReaderConfig = readerConfigInitialState,
-    action: setConfig.TAction,
+    action: readerLocalActionSetConfig.TAction,
 ): ReaderConfig {
 
     switch (action.type) {
-        case setConfig.ID:
+        case readerLocalActionSetConfig.ID:
 
             return {
-                ...action.payload,
                 ...state,
+                ...action.payload,
             };
         default:
             return state;

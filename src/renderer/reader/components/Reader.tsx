@@ -307,6 +307,7 @@ class Reader extends React.Component<IProps, IState> {
         store.subscribe(() => {
             const storeState = store.getState();
             const readerConfig = storeState.reader.config;
+
             if (readerConfig && readerConfig !== this.state.readerConfig) {
 
                 const indexes = this.state.indexes;

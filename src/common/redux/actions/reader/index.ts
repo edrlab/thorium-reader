@@ -11,7 +11,6 @@ import * as closeRequest from "./closeRequest";
 import * as closeRequestFromPublication from "./closeRequestFromPublication";
 import * as closeSuccess from "./closeSuccess";
 import * as configSetDefault from "./configSetDefault";
-import * as configSetResetDefault from "./configSetResetDefault";
 import * as detachModeRequest from "./detachModeRequest";
 import * as detachModeSuccess from "./detachModeSuccess";
 import * as fullScreenRequest from "./fullScreenRequest";
@@ -35,7 +34,6 @@ export {
     detachModeRequest,
     detachModeSuccess,
     configSetDefault,
-    configSetResetDefault,
     setReduxState,
     // saveBookmarkRequest,
     // saveBookmarkSuccess,

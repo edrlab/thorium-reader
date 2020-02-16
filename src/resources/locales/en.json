@@ -239,6 +239,11 @@
             "lineSpacing": "Line spacing",
             "margin": "Margin",
             "paginated": "Paginated",
+            "save": {
+                "apply": "apply to default",
+                "reset": "reset to default",
+                "title": "save default config"
+            },
             "scrolled": "Scrollable",
             "spacing": "Spacing",
             "text": "Text",

@@ -6,8 +6,11 @@
 // ==LICENSE-END==
 
 import * as React from "react";
+import { connect } from "react-redux";
 import { Font } from "readium-desktop/common/models/font";
 import { ReaderConfig } from "readium-desktop/common/models/reader";
+import { readerActions } from "readium-desktop/common/redux/actions";
+import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import * as AutoIcon from "readium-desktop/renderer/assets/icons/auto.svg";
 import * as ColumnIcon from "readium-desktop/renderer/assets/icons/colonne.svg";
 import * as Column2Icon from "readium-desktop/renderer/assets/icons/colonne2.svg";
@@ -21,17 +24,18 @@ import {
     TranslatorProps, withTranslator,
 } from "readium-desktop/renderer/common/components/hoc/translator";
 import SVG from "readium-desktop/renderer/common/components/SVG";
+import { TDispatch } from "readium-desktop/typings/redux";
 import fontList from "readium-desktop/utils/fontList";
 
 import { colCountEnum, textAlignEnum } from "@r2-navigator-js/electron/common/readium-css-settings";
 import { reloadContent } from "@r2-navigator-js/electron/renderer/location";
 
+import { readerLocalActionSetConfig } from "../redux/actions";
 import optionsValues, { IReaderOptionsProps } from "./options-values";
 import SideMenu from "./sideMenu/SideMenu";
 import { SectionData } from "./sideMenu/sideMenuData";
 
 import classNames = require("classnames");
-
 // tslint:disable-next-line: no-empty-interface
 interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
     focusSettingMenuButton: () => void;
@@ -42,7 +46,7 @@ interface IBaseProps extends TranslatorProps, IReaderOptionsProps {
 // ReturnType<typeof mapStateToProps>
 // ReturnType<typeof mapDispatchToProps>
 // tslint:disable-next-line: no-empty-interface
-interface IProps extends IBaseProps {
+interface IProps extends IBaseProps, ReturnType<typeof mapDispatchToProps> {
 }
 
 enum themeType {
@@ -87,6 +91,10 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                 title: "MathML",
                 content: this.mathJax(),
             },
+            {
+                title: __("reader.settings.save.title"),
+                content: this.saveConfig(),
+            },
         ];
 
         return (
@@ -101,9 +109,39 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
         );
     }
 
+    private saveConfig() {
+
+        const { readerConfig, __ } = this.props;
+
+        return (
+
+            <div className={styles.line_tab_content}>
+
+                <button
+                    onClick={() => this.props.setDefaultConfig(readerConfig)}
+                    aria-hidden={false}
+                    // className={className}
+                >
+                    {
+                        __("reader.settings.save.apply")
+                    }
+                </button>
+                <button
+                    onClick={() => this.props.setDefaultConfig()}
+                    aria-hidden={false}
+                    // className={className}
+                >
+                    {
+                        __("reader.settings.save.reset")
+                    }
+                </button>
+            </div>
+        );
+    }
+
     private mathJax() {
 
-        const {readerConfig} = this.props;
+        const { readerConfig } = this.props;
         return (
             <div className={styles.mathml_section}>
                 <input
@@ -118,7 +156,7 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 
     private themeContent() {
-        const {__, readerConfig} = this.props;
+        const { __, readerConfig } = this.props;
         const withoutTheme = !readerConfig.sepia && !readerConfig.night;
         return (
             <div id={styles.themes_list}>
@@ -128,10 +166,10 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
                         type="radio"
                         name="theme"
                         onChange={() => this.handleChooseTheme(themeType.Without)}
-                        {...(withoutTheme && {checked: true})}
+                        {...(withoutTheme && { checked: true })}
                     />
                     <label htmlFor={"radio-" + themeType.Without}>
-                        {withoutTheme && <SVG svg={DoneIcon} ariaHidden/>}
+                        {withoutTheme && <SVG svg={DoneIcon} ariaHidden />}
                         { __("reader.settings.theme.name.Neutral")}
                     </label>
                 </div>
@@ -501,4 +539,17 @@ export class ReaderOptions extends React.Component<IProps, undefined> {
     }
 }
 
-export default withTranslator(ReaderOptions);
+const mapDispatchToProps = (dispatch: TDispatch, _props: IBaseProps) => {
+    return {
+        setDefaultConfig: (...config: Parameters<typeof readerActions.configSetDefault.build>) => {
+            dispatch(readerActions.configSetDefault.build(...config));
+
+            if (config.length === 0) {
+
+                dispatch(readerLocalActionSetConfig.build(readerConfigInitialState));
+            }
+        },
+    };
+};
+
+export default connect(undefined, mapDispatchToProps)(withTranslator(ReaderOptions));

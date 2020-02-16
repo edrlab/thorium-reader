@@ -17,6 +17,7 @@ const SYNCHRONIZABLE_ACTIONS: string[] = [
     readerActions.closeRequest.ID,
     readerActions.detachModeRequest.ID,
     readerActions.setReduxState.ID,
+    readerActions.configSetDefault.ID,
     // readerActions.saveBookmarkRequest.ID,
     readerActions.fullScreenRequest.ID,
 

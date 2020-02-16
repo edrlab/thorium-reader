@@ -7,6 +7,7 @@
 
 import { ReaderConfig } from "readium-desktop/common/models/reader";
 import { Action } from "readium-desktop/common/models/redux";
+import { readerConfigInitialState } from "../../states/reader";
 
 export const ID = "READER_DEFAULT_CONFIG_SET_REQUEST";
 
@@ -14,7 +15,7 @@ export interface Payload {
     config: ReaderConfig;
 }
 
-export function build(config: ReaderConfig):
+export function build(config: ReaderConfig = readerConfigInitialState):
     Action<typeof ID, Payload> {
 
     return {

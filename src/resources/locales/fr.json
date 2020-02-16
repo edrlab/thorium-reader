@@ -239,6 +239,11 @@
             "lineSpacing": "Espacement des lignes",
             "margin": "Marge",
             "paginated": "Paginé",
+            "save": {
+                "apply": "appliquer la config",
+                "reset": "reset de la config",
+                "title": "sauvegarde de la config"
+            },
             "scrolled": "Défilé",
             "spacing": "Espacement",
             "text": "Texte",

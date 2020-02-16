@@ -481,6 +481,11 @@ declare namespace typed_i18n {
     readonly "lineSpacing": string,
     readonly "margin": string,
     readonly "paginated": string,
+    readonly "save": {
+      readonly "apply": string,
+      readonly "reset": string,
+      readonly "title": string
+    },
     readonly "scrolled": string,
     readonly "spacing": string,
     readonly "text": string,
@@ -560,6 +565,11 @@ declare namespace typed_i18n {
   readonly "lineSpacing": string,
   readonly "margin": string,
   readonly "paginated": string,
+  readonly "save": {
+    readonly "apply": string,
+    readonly "reset": string,
+    readonly "title": string
+  },
   readonly "scrolled": string,
   readonly "spacing": string,
   readonly "text": string,
@@ -598,6 +608,14 @@ declare namespace typed_i18n {
   (_: "reader.settings.lineSpacing", __?: {}): string;
   (_: "reader.settings.margin", __?: {}): string;
   (_: "reader.settings.paginated", __?: {}): string;
+  (_: "reader.settings.save", __?: {}): {
+  readonly "apply": string,
+  readonly "reset": string,
+  readonly "title": string
+};
+  (_: "reader.settings.save.apply", __?: {}): string;
+  (_: "reader.settings.save.reset", __?: {}): string;
+  (_: "reader.settings.save.title", __?: {}): string;
   (_: "reader.settings.scrolled", __?: {}): string;
   (_: "reader.settings.spacing", __?: {}): string;
   (_: "reader.settings.text", __?: {}): string;
