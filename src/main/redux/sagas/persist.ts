@@ -36,6 +36,7 @@ const persistStateToFs = async (nextState: RootState) => {
         value: {
             win: nextState.win,
             publication: nextState.publication,
+            reader: nextState.reader,
         },
     });
     debug("end of persist reduxState in disk");

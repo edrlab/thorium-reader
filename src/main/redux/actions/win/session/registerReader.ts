@@ -8,8 +8,8 @@
 import { BrowserWindow, Rectangle } from "electron";
 import { Action } from "readium-desktop/common/models/redux";
 import { locatorInitialState } from "readium-desktop/common/redux/states/locatorInitialState";
-import { readerConfigInitialState } from "readium-desktop/common/redux/states/reader";
 import { IReaderStateReader } from "readium-desktop/common/redux/states/renderer/readerRootState";
+import { diMainGet } from "readium-desktop/main/di";
 import * as uuid from "uuid";
 
 export const ID = "WIN_SESSION_REGISTER_READER";
@@ -34,9 +34,13 @@ export function build(
     identifier: string = uuid.v4()):
     Action<typeof ID, Payload> {
 
+    // we lose purity !!
+    const store = diMainGet("store");
+    const readerConfigDefault = store.getState().reader.defaultConfig;
+
     if (!reduxStateReader) {
         reduxStateReader = {
-            config: readerConfigInitialState,
+            config: readerConfigDefault,
             info: {
                 filesystemPath,
                 manifestUrl,
