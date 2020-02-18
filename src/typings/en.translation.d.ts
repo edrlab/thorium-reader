@@ -589,44 +589,41 @@ declare namespace typed_i18n {
   (_: "reader.svg.right", __?: {}): string;
   (_: "settings", __?: {}): {
   readonly "keyboard": {
+    readonly "advancedMenu": string,
     readonly "cancel": string,
-    readonly "defaults": string,
     readonly "edit": string,
+    readonly "editUserJson": string,
     readonly "hide": string,
     readonly "keyboardShortcuts": string,
-    readonly "open": string,
-    readonly "reload": string,
-    readonly "reset": string,
+    readonly "loadUserJson": string,
+    readonly "resetDefaults": string,
     readonly "save": string,
-    readonly "show": string,
-    readonly "user": string
+    readonly "show": string
   },
   readonly "language": { readonly "languageChoice": string }
 };
   (_: "settings.keyboard", __?: {}): {
+  readonly "advancedMenu": string,
   readonly "cancel": string,
-  readonly "defaults": string,
   readonly "edit": string,
+  readonly "editUserJson": string,
   readonly "hide": string,
   readonly "keyboardShortcuts": string,
-  readonly "open": string,
-  readonly "reload": string,
-  readonly "reset": string,
+  readonly "loadUserJson": string,
+  readonly "resetDefaults": string,
   readonly "save": string,
-  readonly "show": string,
-  readonly "user": string
+  readonly "show": string
 };
+  (_: "settings.keyboard.advancedMenu", __?: {}): string;
   (_: "settings.keyboard.cancel", __?: {}): string;
-  (_: "settings.keyboard.defaults", __?: {}): string;
   (_: "settings.keyboard.edit", __?: {}): string;
+  (_: "settings.keyboard.editUserJson", __?: {}): string;
   (_: "settings.keyboard.hide", __?: {}): string;
   (_: "settings.keyboard.keyboardShortcuts", __?: {}): string;
-  (_: "settings.keyboard.open", __?: {}): string;
-  (_: "settings.keyboard.reload", __?: {}): string;
-  (_: "settings.keyboard.reset", __?: {}): string;
+  (_: "settings.keyboard.loadUserJson", __?: {}): string;
+  (_: "settings.keyboard.resetDefaults", __?: {}): string;
   (_: "settings.keyboard.save", __?: {}): string;
   (_: "settings.keyboard.show", __?: {}): string;
-  (_: "settings.keyboard.user", __?: {}): string;
   (_: "settings.language", __?: {}): { readonly "languageChoice": string };
   (_: "settings.language.languageChoice", __?: {}): string
 }

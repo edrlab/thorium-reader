@@ -247,17 +247,16 @@
     },
     "settings": {
         "keyboard": {
+            "advancedMenu": "Menü",
             "cancel": "Stornieren",
-            "defaults": "standard",
             "edit": "Bearbeiten",
+            "editUserJson": "Benutzerdatei bearbeiten ...",
             "hide": "Ausblenden",
             "keyboardShortcuts": "Tastatürkürzel",
-            "open": "Öffnen",
-            "reload": "Neu laden",
-            "reset": "Zurücksetzen",
+            "loadUserJson": "Aus Benutzerdatei laden",
+            "resetDefaults": "Zurücksetzen (standard)",
             "save": "Speichern",
-            "show": "Anzeigen",
-            "user": "user"
+            "show": "Anzeigen"
         },
         "language": {
             "languageChoice": "Sprachauswahl"

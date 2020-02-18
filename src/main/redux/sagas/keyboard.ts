@@ -94,15 +94,11 @@ function* keyboardReloadWatcher() {
         }
 
         if (okay) {
-            yield put(keyboardActions.setShortcuts.build(currentKeyboardShortcuts, !action.payload.defaults));
+            yield put(keyboardActions.setShortcuts.build(currentKeyboardShortcuts, true)); // !action.payload.defaults
 
             const translator = diMainGet("translator");
-            const kind = action.payload.defaults ?
-                translator.translate("settings.keyboard.defaults") :
-                translator.translate("settings.keyboard.user");
-
             yield put(toastActions.openRequest.build(ToastType.Success,
-                `${translator.translate("settings.keyboard.keyboardShortcuts")} (${kind})`));
+                `${translator.translate("settings.keyboard.keyboardShortcuts")}`));
         }
     }
 }

@@ -10,6 +10,8 @@ import { app, shell } from "electron";
 import * as fs from "fs";
 import * as path from "path";
 
+import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
+
 import {
     _defaults, TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutReadOnly,
     TKeyboardShortcutsMap, TKeyboardShortcutsMapReadOnly,
@@ -138,7 +140,7 @@ function loadUser(): boolean {
     return  true;
 }
 function saveUser(obj: TKeyboardShortcutsMapReadOnly) {
-    const txt = JSON.stringify(obj, null, 4);
+    const txt = JSON.stringify(sortObject(obj), null, 4);
     fs.writeFileSync(userFilePath, txt, { encoding: "utf8" });
 }
 
@@ -153,13 +155,13 @@ function init() {
 
     // always recreate at launch (ensures no mistaken tampering by users)
     if (true || !fs.existsSync(defaultsFilePath)) {
-        const txt = JSON.stringify(defaults, null, 4);
+        const txt = JSON.stringify(sortObject(defaults), null, 4);
         fs.writeFileSync(defaultsFilePath, txt, { encoding: "utf8" });
     }
 
     // preserve existing user-defined data
     if (!fs.existsSync(userFilePath)) {
-        const txt = JSON.stringify(defaults, null, 4);
+        const txt = JSON.stringify(sortObject(defaults), null, 4);
         fs.writeFileSync(userFilePath, txt, { encoding: "utf8" });
     } else {
         const okay = loadUser();

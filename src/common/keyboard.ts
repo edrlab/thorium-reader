@@ -5,6 +5,8 @@
 // that can be found in the LICENSE file exposed on Github (readium) in the project repository.
 // ==LICENSE-END==
 
+import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
+
 export interface TKeyboardShortcut {
     alt?: boolean;
     control?: boolean;
@@ -19,57 +21,54 @@ export interface TKeyboardShortcut {
 // the process.platform usage is really only relevant in the main Electron process
 // as the renderer process actually fetches data from apiAction("keyboard/getAll")
 // or from the shared keyboard state
-export const _defaults = Object.freeze({
-    opdsPageNavigationPrevious: Object.freeze({
+const _defaults_ = Object.freeze({
+    library_opds_PageNavigationPrevious: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: true,
         key: "ArrowLeft",
     }),
-    opdsPageNavigationNext: Object.freeze({
+    library_opds_PageNavigationNext: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: true,
         shift: true,
         key: "ArrowRight",
     }),
 
-    readerPageNavigationPrevious: Object.freeze({
+    reader_PageNavigationPrevious: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: false,
         shift: false,
         key: "ArrowLeft",
     }),
-    readerPageNavigationNext: Object.freeze({
+    reader_PageNavigationNext: Object.freeze<TKeyboardShortcut>({
         alt: false,
         control: false,
         shift: false,
         key: "ArrowRight",
     }),
 
-    readerSpineNavigationPrevious: Object.freeze({
+    reader_SpineNavigationPrevious: Object.freeze<TKeyboardShortcut>({
         alt: process && process.platform !== "darwin",
         control: true,
         shift: true,
         key: "ArrowLeft",
     }),
-    readerSpineNavigationNext: Object.freeze({
+    reader_SpineNavigationNext: Object.freeze<TKeyboardShortcut>({
         alt: process && process.platform !== "darwin",
         control: true,
         shift: true,
         key: "ArrowRight",
     }),
 });
+export const _defaults = sortObject(_defaults_);
 
-export type TKeyboardShortcutsMap_ = typeof _defaults;
-export type TKeyboardShortcutId = keyof TKeyboardShortcutsMap_;
+export type TKeyboardShortcutsMapReadOnly = typeof _defaults_;
+export type TKeyboardShortcutId = keyof TKeyboardShortcutsMapReadOnly;
 export type TKeyboardShortcutsMap = {
     [id in TKeyboardShortcutId]: TKeyboardShortcut;
 };
 export type TKeyboardShortcutReadOnly = Readonly<TKeyboardShortcut>;
-export type TKeyboardShortcutsMap__ = {
-    [id in TKeyboardShortcutId]: TKeyboardShortcutReadOnly;
-};
-export type TKeyboardShortcutsMapReadOnly = Readonly<TKeyboardShortcutsMap__>;
 
 // IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN
 export interface KeyboardEvent {

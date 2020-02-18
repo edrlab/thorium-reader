@@ -141,8 +141,8 @@ class PageNavigation extends React.Component<IProps, undefined> {
     private handleKeyDown = (e: KeyboardEvent) => {
         const { pageLinks } = this.props;
 
-        const keyboardShortcutNext = this.props.keyboardShortcuts.opdsPageNavigationNext;
-        const keyboardShortcutPrevious = this.props.keyboardShortcuts.opdsPageNavigationPrevious;
+        const keyboardShortcutNext = this.props.keyboardShortcuts.library_opds_PageNavigationNext;
+        const keyboardShortcutPrevious = this.props.keyboardShortcuts.library_opds_PageNavigationPrevious;
         const isNext = keyboardShortcutMatch(keyboardShortcutNext, e);
         const isPrevious = keyboardShortcutMatch(keyboardShortcutPrevious, e);
 

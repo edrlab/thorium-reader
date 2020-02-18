@@ -393,10 +393,10 @@ class Reader extends React.Component<IProps, IState> {
 
         const keyDownEventHandler = (ev: IEventPayload_R2_EVENT_WEBVIEW_KEYDOWN) => {
 
-            const keyboardShortcutNextPage = this.props.keyboardShortcuts.readerPageNavigationNext;
-            const keyboardShortcutPreviousPage = this.props.keyboardShortcuts.readerPageNavigationPrevious;
-            const keyboardShortcutNextSpine = this.props.keyboardShortcuts.readerSpineNavigationNext;
-            const keyboardShortcutPreviousSpine = this.props.keyboardShortcuts.readerSpineNavigationPrevious;
+            const keyboardShortcutNextPage = this.props.keyboardShortcuts.reader_PageNavigationNext;
+            const keyboardShortcutPreviousPage = this.props.keyboardShortcuts.reader_PageNavigationPrevious;
+            const keyboardShortcutNextSpine = this.props.keyboardShortcuts.reader_SpineNavigationNext;
+            const keyboardShortcutPreviousSpine = this.props.keyboardShortcuts.reader_SpineNavigationPrevious;
             const isNextPage = keyboardShortcutMatch(keyboardShortcutNextPage, ev);
             const isPreviousPage = keyboardShortcutMatch(keyboardShortcutPreviousPage, ev);
             const isNextSpine = keyboardShortcutMatch(keyboardShortcutNextSpine, ev);
