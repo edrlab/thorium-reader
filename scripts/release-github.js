@@ -3,7 +3,7 @@ var path = require("path");
 
 // https://github.com/octokit/rest.js
 // https://octokit.github.io/rest.js/
-const Octokit = require('@octokit/rest');
+const { Octokit } = require('@octokit/rest');
 
 console.log("process.cwd():");
 console.log(process.cwd());
