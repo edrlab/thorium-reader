@@ -150,11 +150,11 @@
 			/* text-decoration: underline; */
 			margin-right: 1em;
 		}
-		& div {
+		& .keyboard_shortcuts_buttons_container {
 			display: block;
 			width: 100%;
 			text-align: right;
-			margin-top: -0.5em;
+			margin-top: -0.1em;
 		}
 
 		& .keyboard_shortcuts_edit_save_button {
@@ -181,7 +181,11 @@
 			border-radius: 3px;
 			background-color: #d0d0d0;
 		}
-
+		& .keyboard_shortcuts_separator {
+			font-size: 80%;
+			margin-right: 1em;
+			font-weight: bold;
+		}
 		& .hiddenInput {
 			position: absolute;
 			left: -2000px;
@@ -229,6 +233,16 @@
 		& .keyboard_shortcuts_sink {
 			border: 1px solid silver;
 			margin-right: 1em;
+			width: 1em;
+		}
+
+		& .keyboard_shortcuts_sink:hover {
+			outline: 2px solid blue;
+		}
+
+		& .keyboard_shortcuts_sink:focus {
+			outline: 4px solid blue !important;
+			background-color: rgb(162, 162, 255);
 		}
 	}
 

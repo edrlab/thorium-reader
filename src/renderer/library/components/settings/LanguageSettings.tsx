@@ -7,6 +7,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
+import FocusLock from "react-focus-lock";
 import { connect } from "react-redux";
 import {
     TKeyboardShortcut, TKeyboardShortcutId, TKeyboardShortcutsMap, TKeyboardShortcutsMapReadOnly,
@@ -46,6 +47,8 @@ interface IState {
     editKeyboardShortcutData: TKeyboardShortcut | undefined;
     menuOpen: boolean;
 }
+
+const _DEBUG_KEYS = false;
 
 const _keyOptionsFunctions = [];
 for (let i = 1; i <= 12; i++) {
@@ -96,12 +99,109 @@ class LanguageSettings extends React.Component<IProps, IState> {
         this.selectRef = React.createRef<HTMLSelectElement>();
     }
 
+    public componentDidMount() {
+        
+        if ((document as any)._KEY_DOCUMENT_LISTEN) {
+            return;
+        }
+        (document as any)._KEY_DOCUMENT_LISTEN = true;
+
+        document.addEventListener("keydown", (ev) => {
+            if (!(document as any)._KEY_SINK_LISTEN) {
+                return;
+            }
+            if (_DEBUG_KEYS) {
+                console.log("editifyKeyboardShortcut sink KEY DOWN:", ev.code);
+            }
+
+            if (!ev.code) {
+                return;
+            }
+            // ev.preventDefault();
+
+            if (ev.code.startsWith("Shift")) {
+                (document as any)._KEY_SHIFT = true;
+            } else if (ev.code.startsWith("Control")) {
+                (document as any)._KEY_CONTROL = true;
+            } else if (ev.code.startsWith("Meta")) {
+                (document as any)._KEY_META = true;
+            } else if (ev.code.startsWith("Alt")) {
+                (document as any)._KEY_ALT = true;
+            }
+        }, {
+            once: false,
+            passive: false,
+            capture: true,
+        });
+        document.addEventListener("keyup", (ev) => {
+            if (!(document as any)._KEY_SINK_LISTEN) {
+                return;
+            }
+            if (_DEBUG_KEYS) {
+                console.log("editifyKeyboardShortcut sink KEY UP:", ev.code);
+            }
+            if (!ev.code) {
+                return;
+            }
+            // ev.preventDefault();
+
+            if (ev.code.startsWith("Shift")) {
+                (document as any)._KEY_SHIFT = false;
+            } else if (ev.code.startsWith("Control")) {
+                (document as any)._KEY_CONTROL = false;
+            } else if (ev.code.startsWith("Meta")) {
+                (document as any)._KEY_META = false;
+            } else if (ev.code.startsWith("Alt")) {
+                (document as any)._KEY_ALT = false;
+            } else if (!ev.code.startsWith("Tab")) {
+                // if (this.selectRef?.current) {
+                //     this.selectRef.current.value = ev.code;
+                // }
+
+                const editKeyboardShortcutData =
+                    JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
+                editKeyboardShortcutData.key = ev.code;
+
+                editKeyboardShortcutData.shift = (document as any)._KEY_SHIFT ? true : false;
+                editKeyboardShortcutData.control = (document as any)._KEY_CONTROL ? true : false;
+                editKeyboardShortcutData.meta = (document as any)._KEY_META ? true : false;
+                editKeyboardShortcutData.alt = (document as any)._KEY_ALT ? true : false;
+                    
+                if (_DEBUG_KEYS) {
+                    if (editKeyboardShortcutData.shift !== ev.shiftKey) {
+                        console.log("editifyKeyboardShortcut sink SHIFT differs?");
+                    }
+                    if (editKeyboardShortcutData.control !== ev.ctrlKey) {
+                        console.log("editifyKeyboardShortcut sink CONTROL differs?");
+                    }
+                    if (editKeyboardShortcutData.meta !== ev.metaKey) {
+                        console.log("editifyKeyboardShortcut sink META differs?");
+                    }
+                    if (editKeyboardShortcutData.alt !== ev.altKey) {
+                        console.log("editifyKeyboardShortcut sink ALT differs?");
+                    }
+
+                    console.log("editifyKeyboardShortcut sink KEY:");
+                    console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
+                }
+
+                this.setState({
+                    editKeyboardShortcutData,
+                });
+            }
+        }, {
+            once: false,
+            passive: false,
+            capture: true,
+        });
+    }
+
     public render(): React.ReactElement<{}> {
         const { __ } = this.props;
         return (
             <>
                 <LibraryLayout title={__("header.settings")}>
-                    <div className={styles.section_title}>{ __("settings.language.languageChoice")}</div>
+                    <h3>{ __("settings.language.languageChoice")}</h3>
                     <form className={styles.languages_list}>
                             { ObjectKeys(AvailableLanguages).map((lang, i) =>
                                 <div key={i}>
@@ -121,7 +221,7 @@ class LanguageSettings extends React.Component<IProps, IState> {
                             )}
                     </form>
 
-                    <div className={styles.section_title}>{ __("settings.keyboard.keyboardShortcuts")}</div>
+                    <h3>{ __("settings.keyboard.keyboardShortcuts")}</h3>
                     <section className={styles.keyboard_shortcuts_section}>
                         <button
                             className={
@@ -175,36 +275,43 @@ class LanguageSettings extends React.Component<IProps, IState> {
                             Object.keys(sortObject(this.props.keyboardShortcuts)).map((id_) => {
                                 const id = id_ as TKeyboardShortcutId;
                                 const def = this.props.keyboardShortcuts[id];
-                                return <li className={
-                                    this.state.editKeyboardShortcutId === id ? styles.keyboard_shortcuts_edit_li : null
-                                    }
-                                    key={`key_${id}`}>
+                                const hit = this.state.editKeyboardShortcutId === id;
+                                const frag = <>
                                     <button
                                         className={styles.keyboard_shortcuts_edit_save_button}
                                         onClick={() => this.onClickKeyboardShortcutEditCancel(id)}>
-                                        {this.state.editKeyboardShortcutId === id ?
+                                        {hit ?
                                         __("settings.keyboard.cancel") : __("settings.keyboard.edit")}
                                     </button>
                                     {
-                                    (this.state.editKeyboardShortcutId === id) &&
+                                    hit &&
                                     <button
                                         className={styles.keyboard_shortcuts_edit_save_button}
                                         onClick={() => this.onClickKeyboardShortcutSave(id)}>
                                         {__("settings.keyboard.save")}
                                     </button>
                                     }
-
+                    
                                     <strong className={
-                                        this.state.editKeyboardShortcutId === id ?
+                                        hit ?
                                         styles.keyboard_shortcuts_edit_title
                                         : null
                                         }>{id}</strong>
-                                    <div>{
-                                        this.state.editKeyboardShortcutId === id ?
+                                    <div className={styles.keyboard_shortcuts_buttons_container}>{
+                                        hit ?
                                         this.editifyKeyboardShortcut(id, this.state.editKeyboardShortcutData)
                                         :
                                         this.prettifyKeyboardShortcut(def)
                                     }</div>
+                                </>;
+                                return <li className={
+                                    hit ? styles.keyboard_shortcuts_edit_li : null
+                                    }
+                                    key={`key_${id}`}>{
+                                    (hit ? <FocusLock
+                                        disabled={false}
+                                        autoFocus={false}>{frag}</FocusLock> : frag)
+                                    }
                                 </li>;
                             })}
                             </ul>
@@ -266,16 +373,17 @@ class LanguageSettings extends React.Component<IProps, IState> {
     private onClickKeyboardShortcutsReload(defaults: boolean) {
         this.props.reloadKeyboardShortcuts(defaults);
     }
-
     private prettifyKeyboardShortcut(def: TKeyboardShortcut) {
-        const alt = def.alt ? <span className={styles.keyboard_shortcuts_key}>ALT</span> : <></>;
-        const shift = def.shift ? <span className={styles.keyboard_shortcuts_key}>SHIFT</span> : <></>;
-        const control = def.control ? <span className={styles.keyboard_shortcuts_key}>CTRL</span> : <></>;
-        const meta = def.meta ? <span className={styles.keyboard_shortcuts_key}>META</span> : <></>;
+        const alt = def.alt ? <span className={styles.keyboard_shortcuts_key}>ALT</span> : null;
+        const shift = def.shift ? <span className={styles.keyboard_shortcuts_key}>SHIFT</span> : null;
+        const control = def.control ? <span className={styles.keyboard_shortcuts_key}>CTRL</span> : null;
+        const meta = def.meta ? <span className={styles.keyboard_shortcuts_key}>META</span> : null;
         const key = <span className={styles.keyboard_shortcuts_key}>{def.key}</span>;
-        return <>{shift}{control}{alt}{meta}{key}</>;
+        return <>{shift}{control}{alt}{meta}{(def.shift || def.control || def.alt || def.meta) ? (<span className={styles.keyboard_shortcuts_separator}>+</span>) : null}{key}</>;
     }
-
+    private stringifyKeyboardShortcut(_id: TKeyboardShortcutId, def: TKeyboardShortcut) {
+        return `${def.shift ? "SHIFT " : ""}${def.control ? "CTRL " : ""}${def.alt ? "ALT " : ""}${def.meta ? "META " : ""}${(def.shift || def.control || def.alt || def.meta) ? "+ " : ""}${def.key}`;
+    }
     private editifyKeyboardShortcut(id: TKeyboardShortcutId, def: TKeyboardShortcut) {
 
         const alt = <><input
@@ -287,8 +395,10 @@ class LanguageSettings extends React.Component<IProps, IState> {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
                 editKeyboardShortcutData.alt = !editKeyboardShortcutData.alt;
-                console.log("editifyKeyboardShortcut ALT:");
-                console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
+                if (_DEBUG_KEYS) {
+                    console.log("editifyKeyboardShortcut ALT:");
+                    console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
+                }
                 this.setState({
                     editKeyboardShortcutData,
                 });
@@ -307,8 +417,10 @@ class LanguageSettings extends React.Component<IProps, IState> {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
                 editKeyboardShortcutData.shift = !editKeyboardShortcutData.shift;
-                console.log("editifyKeyboardShortcut SHIFT:");
-                console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
+                if (_DEBUG_KEYS) {
+                    console.log("editifyKeyboardShortcut SHIFT:");
+                    console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
+                }
                 this.setState({
                     editKeyboardShortcutData,
                 });
@@ -327,8 +439,10 @@ class LanguageSettings extends React.Component<IProps, IState> {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
                 editKeyboardShortcutData.control = !editKeyboardShortcutData.control;
-                console.log("editifyKeyboardShortcut CTRL:");
-                console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
+                if (_DEBUG_KEYS) {
+                    console.log("editifyKeyboardShortcut CTRL:");
+                    console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
+                }
                 this.setState({
                     editKeyboardShortcutData,
                 });
@@ -347,8 +461,10 @@ class LanguageSettings extends React.Component<IProps, IState> {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
                 editKeyboardShortcutData.meta = !editKeyboardShortcutData.meta;
-                console.log("editifyKeyboardShortcut META:");
-                console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
+                if (_DEBUG_KEYS) {
+                    console.log("editifyKeyboardShortcut META:");
+                    console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
+                }
                 this.setState({
                     editKeyboardShortcutData,
                 });
@@ -363,39 +479,26 @@ class LanguageSettings extends React.Component<IProps, IState> {
         }
 
         const keySelect =
-        // !this.state.editKeyboardShortcutSelector ?
-        // <button
-        //     ref={(ref) => {
-        //         if (ref && !(ref as any)._WAS_FOCUSED) {
-        //             (ref as any)._WAS_FOCUSED = true;
-        //             ref.focus();
-        //         }
-        //     }}
-        //     onClick={() => {
-        //         this.setState({
-        //             editKeyboardShortcutSelector: true,
-        //         });
-        //     }}
-        //     className={styles.keyboard_shortcuts_key}>{def.key}</button> :
-
         <select
             ref={this.selectRef}
             onChange={(ev) => {
                 const editKeyboardShortcutData =
                     JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
                 editKeyboardShortcutData.key = ev.target.value.toString();
-                console.log("editifyKeyboardShortcut select KEY:");
-                console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
+                if (_DEBUG_KEYS) {    
+                    console.log("editifyKeyboardShortcut select KEY:");
+                    console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
+                }
                 this.setState({
                     editKeyboardShortcutData,
                 });
             }}
-            onBlur={(ev) => {
+            onBlur={_DEBUG_KEYS ? (ev) => {
                 console.log("editifyKeyboardShortcut select BLUR:", ev.target.value.toString());
-            }}
-            onFocus={(ev) => {
+            } : null}
+            onFocus={_DEBUG_KEYS ? (ev) => {
                 console.log("editifyKeyboardShortcut select FOCUS:", ev.target.value.toString());
-            }}
+            } : null}
             value={def.key}
         >
             {_keyOptions.map((keyOption, idx) => {
@@ -410,89 +513,47 @@ class LanguageSettings extends React.Component<IProps, IState> {
             })}
         </select>
         ;
-        const keySink = <input className={styles.keyboard_shortcuts_sink} type="text" value="" size={1}
+        const keySink = <input
+        className={styles.keyboard_shortcuts_sink}
+        type="text"
+        value=""
+        size={1}
+        title={this.stringifyKeyboardShortcut(id, def)}
         onChange={(ev) => {
             // console.log("editifyKeyboardShortcut INPUT:", ev.target.value.toString());
             ev.preventDefault();
         }}
-        onBlur={() => {
+        onBlur={_DEBUG_KEYS ? () => {
             console.log("editifyKeyboardShortcut sink react BLUR");
-        }}
-        onFocus={() => {
+        } : null}
+        onFocus={_DEBUG_KEYS ? () => {
             console.log("editifyKeyboardShortcut sink react FOCUS");
-        }}
+        } : null}
         ref={(ref) => {
-            if (ref && !(ref as any)._WAS_FOCUSED) {
-                (ref as any)._WAS_FOCUSED = true;
-                // ref.focus();
+            if (ref && !(ref as any)._KEY_REF) {
+                (ref as any)._KEY_REF = true;
+
                 ref.addEventListener("focus", () => {
-                    console.log("editifyKeyboardShortcut sink FOCUS");
-                    (ref as any)._KEY_SHIFT = undefined;
-                    (ref as any)._KEY_CONTROL = undefined;
-                    (ref as any)._KEY_META = undefined;
-                    (ref as any)._KEY_ALT = undefined;
+                    if (_DEBUG_KEYS) {
+                        console.log("editifyKeyboardShortcut sink FOCUS");
+                    }
+                    (document as any)._KEY_SINK_LISTEN = true;
+
+                    (document as any)._KEY_SHIFT = undefined;
+                    (document as any)._KEY_CONTROL = undefined;
+                    (document as any)._KEY_META = undefined;
+                    (document as any)._KEY_ALT = undefined;
                 });
                 ref.addEventListener("blur", () => {
-                    console.log("editifyKeyboardShortcut sink BLUR");
-                    (ref as any)._KEY_SHIFT = undefined;
-                    (ref as any)._KEY_CONTROL = undefined;
-                    (ref as any)._KEY_META = undefined;
-                    (ref as any)._KEY_ALT = undefined;
-                });
-                ref.addEventListener("keydown", (ev) => {
-                    console.log("editifyKeyboardShortcut sink KEY DOWN:", ev.code);
-                    if (!ev.code) {
-                        return;
+                    if (_DEBUG_KEYS) {
+                        console.log("editifyKeyboardShortcut sink BLUR");
                     }
-                    if (ev.code.startsWith("Shift")) {
-                        (ref as any)._KEY_SHIFT = true;
-                    } else if (ev.code.startsWith("Control")) {
-                        (ref as any)._KEY_CONTROL = true;
-                    } else if (ev.code.startsWith("Meta")) {
-                        (ref as any)._KEY_META = true;
-                    } else if (ev.code.startsWith("Alt")) {
-                        (ref as any)._KEY_ALT = true;
-                    }
-                });
-                ref.addEventListener("keyup", (ev) => {
-                    console.log("editifyKeyboardShortcut sink KEY UP:", ev.code);
-                    if (!ev.code) {
-                        return;
-                    }
+                    (document as any)._KEY_SINK_LISTEN = false;
 
-                    if (ev.code.startsWith("Shift")) {
-                        (ref as any)._KEY_SHIFT = false;
-                    } else if (ev.code.startsWith("Control")) {
-                        (ref as any)._KEY_CONTROL = false;
-                    } else if (ev.code.startsWith("Meta")) {
-                        (ref as any)._KEY_META = false;
-                    } else if (ev.code.startsWith("Alt")) {
-                        (ref as any)._KEY_ALT = false;
-                    } else if (!ev.code.startsWith("Tab")) {
-                        // if (this.selectRef?.current) {
-                        //     this.selectRef.current.value = ev.code;
-                        // }
-
-                        const editKeyboardShortcutData =
-                            JSON.parse(JSON.stringify(this.state.editKeyboardShortcutData)) as TKeyboardShortcut;
-                        editKeyboardShortcutData.key = ev.code;
-
-                        editKeyboardShortcutData.shift = ((ref as any)._KEY_SHIFT ? true : false);
-                        editKeyboardShortcutData.control = ((ref as any)._KEY_CONTROL ? true : false);
-                        editKeyboardShortcutData.meta = ((ref as any)._KEY_META ? true : false);
-                        editKeyboardShortcutData.alt = ((ref as any)._KEY_ALT ? true : false);
-
-                        (ref as any)._KEY_SHIFT = undefined;
-                        (ref as any)._KEY_CONTROL = undefined;
-                        (ref as any)._KEY_META = undefined;
-                        (ref as any)._KEY_ALT = undefined;
-
-                        console.log("editifyKeyboardShortcut sink KEY:");
-                        console.log(JSON.stringify(editKeyboardShortcutData, null, 4));
-                        this.setState({
-                            editKeyboardShortcutData,
-                        });
-                    }
+                    (document as any)._KEY_SHIFT = undefined;
+                    (document as any)._KEY_CONTROL = undefined;
+                    (document as any)._KEY_META = undefined;
+                    (document as any)._KEY_ALT = undefined;
                 });
             }
         }}
