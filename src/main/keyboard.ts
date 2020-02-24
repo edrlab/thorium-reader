@@ -9,6 +9,7 @@ import * as debug_ from "debug";
 import { app, shell } from "electron";
 import * as fs from "fs";
 import * as path from "path";
+import { ObjectKeys } from "readium-desktop/utils/object-keys-values";
 
 import { sortObject } from "@r2-utils-js/_utils/JsonUtils";
 
@@ -27,12 +28,8 @@ reset();
 function cloneDefaults(): TKeyboardShortcutsMap {
     // TODO: better deep clone with recursive freeze
     const obj = JSON.parse(JSON.stringify(defaults)) as TKeyboardShortcutsMap;
-    for (const id_ in obj) {
-        // just good practice
-        if (!obj.hasOwnProperty(id_)) {
-            continue;
-        }
-        const id = id_ as TKeyboardShortcutId;
+    const ids = ObjectKeys(obj);
+    for (const id of ids) {
         obj[id] = Object.freeze<TKeyboardShortcut>(obj[id]);
     }
     return obj;
@@ -84,16 +81,11 @@ function load(fileName: string): TKeyboardShortcutsMapReadOnly | undefined {
         return undefined;
     }
     const txt = fs.readFileSync(filePath, { encoding: "utf8" });
-    const json = JSON.parse(txt); // can throw!
+    const json = JSON.parse(txt) as TKeyboardShortcutsMap; // can throw!
+    const ids = ObjectKeys(json);
 
     const obj = cloneDefaults();
-    for (const id_ in json) {
-        // just good practice
-        if (!json.hasOwnProperty(id_)) {
-            continue;
-        }
-        const id = id_ as TKeyboardShortcutId;
-
+    for (const id of ids) {
         // filters out non-recognised names
         if (!defaults[id]) {
             continue;
