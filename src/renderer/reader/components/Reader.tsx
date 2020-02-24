@@ -47,9 +47,6 @@ import {
 import {
     colCountEnum, IReadiumCSS, readiumCSSDefaults, textAlignEnum,
 } from "@r2-navigator-js/electron/common/readium-css-settings";
-import {
-    convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
-} from "@r2-navigator-js/electron/common/sessions";
 import { getURLQueryParams } from "@r2-navigator-js/electron/renderer/common/querystring";
 import {
     getCurrentReadingLocation, handleLinkLocator, handleLinkUrl, installNavigatorDOM,
@@ -63,6 +60,10 @@ import { Publication as R2Publication } from "@r2-shared-js/models/publication";
 import optionsValues, {
     AdjustableSettingsNumber, IReaderMenuProps, IReaderOptionsProps,
 } from "./options-values";
+
+// import {
+//     convertCustomSchemeToHttpUrl, READIUM2_ELECTRON_HTTP_PROTOCOL,
+// } from "@r2-navigator-js/electron/common/sessions";
 
 // import { registerProtocol } from "@r2-navigator-js/electron/renderer/common/protocol";
 // registerProtocol();
@@ -145,9 +146,10 @@ const queryParams = getURLQueryParams();
 const lcpHint = queryParams.lcpHint;
 // pub is undefined when loaded in dependency injection by library webview.
 // Dependency injection is shared between all the renderer view
-const publicationJsonUrl = queryParams.pub?.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
-    ? convertCustomSchemeToHttpUrl(queryParams.pub)
-    : queryParams.pub;
+const publicationJsonUrl = queryParams.pub;
+// ?.startsWith(READIUM2_ELECTRON_HTTP_PROTOCOL)
+//     ? convertCustomSchemeToHttpUrl(queryParams.pub)
+//     : queryParams.pub;
 
 // const pathBase64Raw = publicationJsonUrl.replace(/.*\/pub\/(.*)\/manifest.json/, "$1");
 // const pathBase64 = decodeURIComponent(pathBase64Raw);
@@ -168,7 +170,7 @@ interface IProps extends IBaseProps, ReturnType<typeof mapStateToProps>, ReturnT
 }
 
 interface IState {
-    publicationJsonUrl?: string;
+    // publicationJsonUrl?: string;
     title?: string;
 
     publicationView: PublicationView | undefined;
@@ -208,7 +210,7 @@ class Reader extends React.Component<IProps, IState> {
         this.fastLinkRef = React.createRef<HTMLAnchorElement>();
 
         this.state = {
-            publicationJsonUrl: "HTTP://URL",
+            // publicationJsonUrl: "HTTP://URL",
             lcpHint: "LCP hint",
             title: "TITLE",
             lcpPass: "LCP pass",
@@ -274,9 +276,9 @@ class Reader extends React.Component<IProps, IState> {
 
     public async componentDidMount() {
 
-        this.setState({
-            publicationJsonUrl,
-        });
+        // this.setState({
+        //     publicationJsonUrl,
+        // });
 
         if (lcpHint) {
             this.setState({
